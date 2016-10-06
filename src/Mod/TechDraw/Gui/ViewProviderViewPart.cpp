@@ -66,9 +66,6 @@ void ViewProviderViewPart::updateData(const App::Property* prop)
         prop == &(getViewObject()->ArcCenterMarks) ||
         prop == &(getViewObject()->CenterScale) ||
         prop == &(getViewObject()->ShowSectionLine)  ||
-        prop == &(getViewObject()->HorizSectionLine) ||
-        prop == &(getViewObject()->ArrowUpSection)   ||
-        prop == &(getViewObject()->SymbolSection)    ||
         prop == &(getViewObject()->HorizCenterLine)  ||
         prop == &(getViewObject()->VertCenterLine) ) {
         // redraw QGIVP

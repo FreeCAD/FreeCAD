@@ -250,7 +250,6 @@ void QGIViewPart::updateView(bool update)
         viewPart->isTouched() ||
         viewPart->Source.isTouched() ||
         viewPart->Direction.isTouched() ||
-        viewPart->XAxisDirection.isTouched() ||
         viewPart->Tolerance.isTouched() ||
         viewPart->Scale.isTouched() ||
         viewPart->HardHidden.isTouched() ||
@@ -394,9 +393,11 @@ void QGIViewPart::drawViewPart()
         }
     }
     //draw section line
-    if (viewPart->ShowSectionLine.getValue() &&
-        viewPart->getSectionRef() ) {
-        drawSectionLine(true);
+    if (viewPart->ShowSectionLine.getValue()) {
+        auto refs = viewPart->getSectionRefs();
+        for (auto& r:refs) {
+            drawSectionLine(r, true);
+        }
     }
     //draw center lines
     drawCenterLines(true);
@@ -464,10 +465,9 @@ void QGIViewPart::removeDecorations()
      }
 }
 
-void QGIViewPart::drawSectionLine(bool b)
+void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||
         !viewSection)  {
         return;
@@ -475,32 +475,38 @@ void QGIViewPart::drawSectionLine(bool b)
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
-        sectionLine->setSymbol(const_cast<char*>(viewPart->SymbolSection.getValue()));
-        Base::Vector3d sectionDir(0,1,0);
-        Base::Vector3d up(0,1,0);
-        Base::Vector3d down(0,-1,0);
-        Base::Vector3d right(1,0,0);
-        Base::Vector3d left(-1,0,0);
-        bool horiz = viewPart->HorizSectionLine.getValue();
-        bool normal = viewPart->ArrowUpSection.getValue();
-        if (horiz && normal) {
-            sectionDir = up;
-        } else if (horiz && !normal) {
-            sectionDir = down;
-        } else if (!horiz && normal) {
-            sectionDir = right;
-        } else if (!horiz && !normal) {
-            sectionDir = left;
+        sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
+
+        //TODO: handle oblique section lines?
+        //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle
+        //Base::Vector3d normalDir = viewSection->SectionNormal.getValue();
+        Base::Vector3d arrowDir(0,1,0);                //for drawing only, not geom
+        Base::Vector3d lineDir(1,0,0);
+        bool horiz = false;
+        if (viewSection->SectionDirection.isValue("Right")) {
+            arrowDir = Base::Vector3d(1,0,0);
+            lineDir = Base::Vector3d(0,1,0);
+        } else if (viewSection->SectionDirection.isValue("Left")) {
+            arrowDir = Base::Vector3d(-1,0,0);
+            lineDir = Base::Vector3d(0,-1,0);
+        } else if (viewSection->SectionDirection.isValue("Up")) {
+            arrowDir = Base::Vector3d(0,1,0);
+            lineDir = Base::Vector3d(1,0,0);
+            horiz = true;
+        } else if (viewSection->SectionDirection.isValue("Down")) {
+            arrowDir = Base::Vector3d(0,-1,0);
+            lineDir = Base::Vector3d(-1,0,0);
+            horiz = true;
         }
-        sectionLine->setDirection(sectionDir.x,sectionDir.y);
+        sectionLine->setDirection(arrowDir.x,arrowDir.y);
 
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
         double scale = viewPart->Scale.getValue();
         Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
-        pOrg.y = -1 * pOrg.y;
-        //now project pOrg onto sectionDir
+        //pOrg.y = -1 * pOrg.y;
+        //now project pOrg onto arrowDir
         Base::Vector3d displace;
-        displace.ProjectToLine(pOrg, sectionDir);
+        displace.ProjectToLine(pOrg, arrowDir);
         Base::Vector3d offset = pOrg + displace;
 
         sectionLine->setPos(offset.x,offset.y);

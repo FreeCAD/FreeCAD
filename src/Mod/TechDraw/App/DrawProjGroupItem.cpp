@@ -57,7 +57,6 @@ DrawProjGroupItem::DrawProjGroupItem(void)
 
     //projection group controls these
     Direction.setStatus(App::Property::ReadOnly,true);
-    XAxisDirection.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }

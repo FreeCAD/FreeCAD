@@ -72,7 +72,7 @@ public:
 
     App::PropertyLink   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
-    App::PropertyVector XAxisDirection;
+    //App::PropertyVector XAxisDirection;
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
@@ -93,11 +93,7 @@ public:
     App::PropertyFloatConstraint  Tolerance;
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
-
     App::PropertyBool   ShowSectionLine;
-    App::PropertyBool   HorizSectionLine;     //true(horiz)/false(vert)
-    App::PropertyBool   ArrowUpSection;       //true(up/right)/false(down/left)
-    App::PropertyString SymbolSection;
 
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
@@ -118,12 +114,11 @@ public:
     double getBoxX(void) const;
     double getBoxY(void) const;
     virtual QRectF getRect() const;
-    virtual DrawViewSection* getSectionRef() const;                    //is there a ViewSection based on this ViewPart?
+    virtual std::vector<DrawViewSection*> getSectionRefs() const;                    //are there ViewSections based on this ViewPart?
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
     const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
     const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
-    Base::Vector3d getValidXDir() const;
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
 
     virtual short mustExecute() const;
@@ -158,8 +153,7 @@ protected:
     double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2); //const;   //probably sb static or DrawUtil
 
     //Projection parameter space
-    void saveParamSpace(const Base::Vector3d& direction,
-                        const Base::Vector3d& xAxis);
+    void saveParamSpace(const Base::Vector3d& direction);
     Base::Vector3d uDir;                       //paperspace X
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z

@@ -25,7 +25,7 @@
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
-#include <HLRBRep_Data.hxx>
+//#include <HLRBRep_Data.hxx>
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
@@ -49,10 +49,13 @@ TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         const gp_Pnt& inputCenter,
                         double scale);
 
-//! Returns the centroid of shape, as viewed according to direction and xAxis
+//! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
-                        const Base::Vector3d &direction,
-                        const Base::Vector3d &xAxis);
+                        const Base::Vector3d &direction);
+
+gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
+                                  const Base::Vector3d& direction,
+                                  const bool flip=true);
 
 class TechDrawExport GeometryObject
 {
@@ -76,8 +79,7 @@ public:
 
     void projectShape(const TopoDS_Shape &input,
                                  const gp_Pnt& inputCenter,
-                                 const Base::Vector3d &direction,
-                                 const Base::Vector3d &xAxis);
+                                 const Base::Vector3d &direction);
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>358</width>
-    <height>461</height>
+    <width>410</width>
+    <height>492</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Calculate Section Parameters</string>
+   <string>Quick Section Parameters</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
@@ -35,25 +35,90 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Section Line Parameters</string>
+      <string>Define Your Section</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QFormLayout" name="formLayout_4">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-        </property>
+       <layout class="QGridLayout" name="gridLayout_3">
         <item row="0" column="0">
-         <widget class="QLabel" name="symbolLabel">
+         <widget class="QLabel" name="label_2">
           <property name="text">
            <string>Symbol</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QLineEdit" name="leSymbol">
+          <property name="toolTip">
+           <string>Identifier for this section</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
           <property name="text">
-           <string>A</string>
+           <string>Origin Y</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::QuantitySpinBox" name="sb_OrgX">
+          <property name="toolTip">
+           <string>Location of section plane</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Origin X</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Origin Z</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::QuantitySpinBox" name="sb_OrgY">
+          <property name="toolTip">
+           <string>Location of section plane</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::QuantitySpinBox" name="sb_OrgZ">
+          <property name="toolTip">
+           <string>Location of section plane</string>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true"/>
           </property>
          </widget>
         </item>
@@ -61,150 +126,146 @@
       </item>
       <item>
        <layout class="QGridLayout" name="gridLayout">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_3">
+        <item row="0" column="2">
+         <widget class="QPushButton" name="pb_Down">
+          <property name="toolTip">
+           <string>Looking down</string>
+          </property>
           <property name="text">
-           <string>Arrows</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-down.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="QCheckBox" name="cbHoriz">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="6">
+         <widget class="QPushButton" name="pb_Right">
+          <property name="toolTip">
+           <string>Looking right</string>
+          </property>
           <property name="text">
-           <string>Horizontal</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-right.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="0" column="2">
-         <widget class="QCheckBox" name="cbVert">
+        <item row="0" column="4">
+         <widget class="QPushButton" name="pb_Left">
+          <property name="toolTip">
+           <string>Looking left</string>
+          </property>
           <property name="text">
-           <string>Vertical</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-left.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QLabel" name="label_2">
+         <widget class="QPushButton" name="pb_Up">
+          <property name="toolTip">
+           <string>Looking up</string>
+          </property>
+          <property name="statusTip">
+           <string/>
+          </property>
+          <property name="whatsThis">
+           <string/>
+          </property>
           <property name="text">
-           <string>Line</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normalon>:/icons/actions/section-up.svg</normalon>
+           </iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>48</width>
+            <height>48</height>
+           </size>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
-        <item row="1" column="2">
-         <widget class="QCheckBox" name="cbReverse">
-          <property name="text">
-           <string>Up/Right</string>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
         </item>
-        <item row="1" column="1">
-         <widget class="QCheckBox" name="cbNormal">
-          <property name="text">
-           <string>Down/Left</string>
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>Section View Parameters</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
-       <layout class="QGridLayout" name="gridLayout_2" columnstretch="0,1,1">
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>X</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbXY">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="text">
-           <string>Y</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbXX">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgY">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgX">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Section Origin</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>X Axis </string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Z</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::QuantitySpinBox" name="sbOrgZ">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="Gui::QuantitySpinBox" name="sbXZ">
-          <property name="unit" stdset="0">
-           <string notr="true"/>
-          </property>
-         </widget>
+         </spacer>
         </item>
        </layout>
       </item>
@@ -271,14 +332,10 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pbCalc">
-          <property name="text">
-           <string>Calc</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="pbReset">
+          <property name="toolTip">
+           <string>Start over</string>
+          </property>
           <property name="text">
            <string>Reset</string>
           </property>
@@ -289,6 +346,19 @@
      </layout>
     </widget>
    </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -298,6 +368,8 @@
    <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../../Documents/CAD/DrawingModule/Resources/TechDraw.qrc"/>
+ </resources>
  <connections/>
 </ui>

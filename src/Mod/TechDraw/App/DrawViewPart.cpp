@@ -103,13 +103,12 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 {
     static const char *group = "Projection";
     static const char *fgroup = "Format";
-    static const char *lgroup = "SectionLine";
     static const char *sgroup = "Show";
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
     ADD_PROPERTY_TYPE(Direction ,(0,0,1.0)    ,group,App::Prop_None,"Projection direction. The direction you are looking from.");
-    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection's XAxis (rotation)");
+//    ADD_PROPERTY_TYPE(XAxisDirection ,(1,0,0) ,group,App::Prop_None,"Where to place projection's XAxis (rotation)");
     ADD_PROPERTY_TYPE(Tolerance,(0.05f),group,App::Prop_None,"Internal tolerance for calculations");
     Tolerance.setConstraints(&floatRange);
 
@@ -135,9 +134,6 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
 
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup,App::Prop_None,"Show/hide section line if applicable");
-    ADD_PROPERTY_TYPE(HorizSectionLine ,(true)    ,lgroup,App::Prop_None,"Section line is horizontal");
-    ADD_PROPERTY_TYPE(ArrowUpSection ,(false)    ,lgroup,App::Prop_None,"Section line arrows point up");
-    ADD_PROPERTY_TYPE(SymbolSection,("A") ,lgroup,App::Prop_None,"Section identifier");
 
     geometryObject = new TechDrawGeometry::GeometryObject(this);
     getRunControl();
@@ -166,6 +162,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
 
+    //Base::Console().Message("TRACE - DVP::execute - %s \n",Label.getValue());
+
     (void) DrawView::execute();           //make sure Scale is up to date
 
     geometryObject->setTolerance(Tolerance.getValue());
@@ -175,8 +173,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(shape,
-                                                     Direction.getValue(),
-                                                     getValidXDir());
+                                                     Direction.getValue());
         shapeCentroid = Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
     }
     catch (Standard_Failure) {
@@ -228,7 +225,6 @@ short DrawViewPart::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
-                    XAxisDirection.isTouched()  ||
                     Source.isTouched()  ||
                     Scale.isTouched() );
     }
@@ -241,6 +237,8 @@ short DrawViewPart::mustExecute() const
 
 void DrawViewPart::onChanged(const App::Property* prop)
 {
+    //Base::Console().Message("TRACE - DVP::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
+
     DrawView::onChanged(prop);
 
 //TODO: when scale changes, any Dimensions for this View sb recalculated.  DVD should pick this up subject to topological naming issues.
@@ -249,15 +247,12 @@ void DrawViewPart::onChanged(const App::Property* prop)
 void DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
 {
     Base::Vector3d baseProjDir = Direction.getValue();
-    Base::Vector3d validXDir = getValidXDir();
 
-    saveParamSpace(baseProjDir,
-                   validXDir);
+    saveParamSpace(baseProjDir);
 
     geometryObject->projectShape(shape,
                             inputCenter,
-                            Direction.getValue(),
-                            validXDir);
+                            Direction.getValue());
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -749,11 +744,7 @@ Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
     Base::Vector3d centeredPoint = pt - shapeCentroid;
     Base::Vector3d direction = Direction.getValue();
-    Base::Vector3d xAxis = getValidXDir();
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(gp_Pnt(0.0,0.0,0.0),
-                      gp_Dir(direction.x, direction.y, direction.z),
-                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
+    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(centeredPoint,direction);
     HLRAlgo_Projector projector( viewAxis );
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(centeredPoint.x,centeredPoint.y,centeredPoint.z), prjPnt);
@@ -774,64 +765,27 @@ bool DrawViewPart::hasGeometry(void) const
     return result;
 }
 
-Base::Vector3d DrawViewPart::getValidXDir() const
+void DrawViewPart::saveParamSpace(const Base::Vector3d& direction)
 {
-    Base::Vector3d X(1.0,0.0,0.0);
-    Base::Vector3d Y(0.0,1.0,0.0);
-    Base::Vector3d Z(0.0,0.0,1.0);
-    Base::Vector3d xDir = XAxisDirection.getValue();
-    if (xDir.Length() < Precision::Confusion()) {
-        Base::Console().Warning("XAxisDirection has zero length - using (1,0,0)\n");
-        xDir = X;
-    }
-    double xLength = xDir.Length();
-    xDir.Normalize();
-    Base::Vector3d viewDir = Direction.getValue();
-    viewDir.Normalize();
-    Base::Vector3d randomDir(0.0,0.0,0.0);
-    if (xDir == viewDir) {
-        randomDir = Y;
-        if (randomDir == xDir) {
-            randomDir = X;
-        }
-        xDir = randomDir;
-        Base::Console().Warning("XAxisDirection cannot equal +/- Direction - using (%.3f,%.3f%.3f)\n",
-                                xDir.x,xDir.y,xDir.z);
-    } else if (xDir == (-1.0 * viewDir)) {
-        randomDir = Y;
-        if ((xDir == randomDir) ||
-            (xDir == (-1.0 * randomDir))) {
-                randomDir = X;
-        }
-        xDir = randomDir;
-        Base::Console().Warning("XAxisDirection cannot equal +/- Direction - using (%.3f,%.3f%.3f)\n",
-                                xDir.x,xDir.y,xDir.z);
-    }
-    return xLength * xDir;
-}
+    Base::Vector3d origin(0.0,0.0,0.0);
+    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(origin,direction);
 
-void DrawViewPart::saveParamSpace(const Base::Vector3d& direction,
-                                  const Base::Vector3d& xAxis)
-{
-    gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
-                      gp_Dir(direction.x, -direction.y, direction.z),
-                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z)); // Y invert warning! //
-
-    uDir = Base::Vector3d(xAxis.x, -xAxis.y, xAxis.z);
+    gp_Dir xdir = viewAxis.XDirection();
+    uDir = Base::Vector3d(xdir.X(),xdir.Y(),xdir.Z());
     gp_Dir ydir = viewAxis.YDirection();
     vDir = Base::Vector3d(ydir.X(),ydir.Y(),ydir.Z());
     wDir = Base::Vector3d(direction.x, -direction.y, direction.z);
+    wDir.Normalize();
 }
 
 
-DrawViewSection* DrawViewPart::getSectionRef(void) const
+std::vector<DrawViewSection*> DrawViewPart::getSectionRefs(void) const
 {
-    DrawViewSection* result = nullptr;
+    std::vector<DrawViewSection*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o:inObjs) {
         if (o->getTypeId().isDerivedFrom(DrawViewSection::getClassTypeId())) {
-            result = static_cast<TechDraw::DrawViewSection*>(o);
+            result.push_back(static_cast<TechDraw::DrawViewSection*>(o));
         }
     }
     return result;

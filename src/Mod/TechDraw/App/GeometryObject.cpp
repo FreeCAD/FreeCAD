@@ -38,10 +38,10 @@
 #include <gp_Elips.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Vec.hxx>
-#include <HLRTopoBRep_OutLiner.hxx>
+//#include <HLRTopoBRep_OutLiner.hxx>
 #include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
-#include <HLRBRep_Data.hxx>
+//#include <HLRBRep_Data.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <TopoDS.hxx>
@@ -161,36 +161,18 @@ void GeometryObject::clear()
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShape(const TopoDS_Shape& input,
                              const gp_Pnt& inputCenter,
-                             const Base::Vector3d& direction,
-                             const Base::Vector3d& xAxis)
+                             const Base::Vector3d& direction)
 {
-    Base::Vector3d stdZ(0.0,0.0,1.0);
-    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
-    Base::Vector3d cross = flipDirection;
-    //special cases
-    if (flipDirection == stdZ) {
-        cross = Base::Vector3d(1.0,0.0,0.0);
-    } else if (flipDirection == (stdZ * -1.0)) {
-        cross = Base::Vector3d(1.0,0.0,0.0);
-    } else {
-        cross.Normalize();
-        cross = cross.Cross(stdZ);
-    }
     // Clear previous Geometry
     clear();
-
+    Base::Vector3d origin(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
     auto start = chrono::high_resolution_clock::now();
 
     Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input, m_isoCount);
-
-        gp_Ax2 viewAxis;
-        viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
-//                          gp_Dir(xAxis.x, -xAxis.y, xAxis.z));
-                          gp_Dir(cross.x, cross.y, cross.z));
         HLRAlgo_Projector projector( viewAxis );
         brep_hlr->Projector(projector);
         brep_hlr->Update();
@@ -688,15 +670,42 @@ bool GeometryObject::findVertex(Base::Vector2D v)
 }
 
 /// utility non-class member functions
-//! Returns the centroid of shape, as viewed according to direction and xAxis
-gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
-                                    const Base::Vector3d &direction,
-                                    const Base::Vector3d &xAxis)
+//! gets a coordinate system
+gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+                                     const Base::Vector3d& direction,
+                                     const bool flip)
 {
+    gp_Pnt inputCenter(origin.x,origin.y,origin.z);
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
+    if (!flip) {
+        flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
+    }
+    Base::Vector3d cross = flipDirection;
+    //special cases
+    if (flipDirection == stdZ) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else if (flipDirection == (stdZ * -1.0)) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else {
+        cross.Normalize();
+        cross = cross.Cross(stdZ);
+    }
     gp_Ax2 viewAxis;
-    viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
-                      gp_Dir(direction.x, -direction.y, direction.z),
-                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z));
+    viewAxis = gp_Ax2(inputCenter,
+                      gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                      gp_Dir(cross.x, cross.y, cross.z));
+    return viewAxis;
+}
+
+
+
+//! Returns the centroid of shape, as viewed according to direction
+gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+                                    const Base::Vector3d &direction)
+{
+    Base::Vector3d origin(0.0,0.0,0.0);
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);

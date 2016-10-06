@@ -335,11 +335,11 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
     }
     App::DocumentObject* dObj = *(shapes.begin());
     TechDraw::DrawViewPart* dvp = static_cast<TechDraw::DrawViewPart*>(dObj);
-    if (dvp->getSectionRef()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("This View already has a related Section. Choose another."));
-        return;
-    }
+//    if (dvp->getSectionRef()) {
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("This View already has a related Section. Choose another."));
+//        return;
+//    }
 
     std::string PageName = page->getNameInDocument();
 

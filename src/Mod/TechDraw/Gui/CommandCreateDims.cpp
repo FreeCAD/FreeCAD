@@ -872,6 +872,8 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
         return;
     }
 
+    //TODO: if (subs.empty()) { "no geometry found in selection" }
+
     // dialog to select the Dimension to link
     Gui::Control().showDialog(new TaskDlgLinkDim(obj3D,subs,page));
 

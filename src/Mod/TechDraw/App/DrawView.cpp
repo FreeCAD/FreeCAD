@@ -83,6 +83,7 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
+    //Base::Console().Message("TRACE - DV::execute - %s\n",Label.getValue());
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Document")) {
@@ -105,6 +106,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
+        //Base::Console().Message("TRACE - DV::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &ScaleType) {
             if (ScaleType.isValue("Document")) {
                 Scale.setStatus(App::Property::ReadOnly,true);

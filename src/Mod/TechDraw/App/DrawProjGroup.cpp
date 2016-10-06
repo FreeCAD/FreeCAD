@@ -399,7 +399,6 @@ void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projTyp
     //xDir = viewOrientationMatrix.getValue() * xDir;
 
     v->Direction.setValue(dir);
-    //v->XAxisDirection.setValue(xDir);
 }
 
 void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
