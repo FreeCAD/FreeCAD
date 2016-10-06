@@ -50,14 +50,20 @@ public:
     virtual bool reject();
 
 protected Q_SLOTS:
-    void onHorizontalClicked(bool b);
-    void onVerticalClicked(bool b);
-    void onNormalClicked(bool b);
-    void onReverseClicked(bool b);
-    void onCalcClicked(bool b);
+    void onUpClicked(bool b);
+    void onDownClicked(bool b);
+    void onLeftClicked(bool b);
+    void onRightClicked(bool b);
     void onResetClicked(bool b);
 
 protected:
+    void turnOnUp(void);
+    void turnOnDown(void);
+    void turnOnLeft(void);
+    void turnOnRight(void);
+    void checkAll(bool b);
+    void enableAll(bool b);
+    void blockButtons(bool b);
     void changeEvent(QEvent *e);
     void resetValues();
     void calcValues();
@@ -72,18 +78,16 @@ private:
     Base::Vector3d sectionNormal;
     Base::Vector3d sectionProjDir;
     Base::Vector3d sectionOrigin;
-    Base::Vector3d sectionXDir;
+    char* sectionDir;
     Base::Vector3d arrowDir;
 
     std::string saveSym;
     std::string saveLabel;
     bool saveHorizSectionLine;
     bool saveArrowUpSection;
-    Base::Vector3d saveSectionDirection;
-    Base::Vector3d saveSectionXDir;
+    Base::Vector3d saveSectionProjDir;
     Base::Vector3d saveSectionOrigin;
     Base::Vector3d saveSectionNormal;
-
 
 };
 
