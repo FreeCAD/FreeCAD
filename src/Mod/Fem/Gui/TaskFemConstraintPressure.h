@@ -57,6 +57,7 @@ public:
 private Q_SLOTS:
     void onReferenceDeleted(void);
 
+    void onCheckReverse(bool);
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);
