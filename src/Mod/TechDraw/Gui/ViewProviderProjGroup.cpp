@@ -143,7 +143,7 @@ bool ViewProviderProjGroup::setEdit(int ModNum)
 
 void ViewProviderProjGroup::unsetEdit(int ModNum)
 {
-    Base::Console().Message("TRACE - VPPG::unSetEdit(%d) \n",ModNum);
+    Q_UNUSED(ModNum);
     Gui::Control().closeDialog();
 }
 

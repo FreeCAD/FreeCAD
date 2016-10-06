@@ -70,7 +70,7 @@ void QGIViewSection::drawSectionFace()
 
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
-        Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
+        //Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
@@ -111,8 +111,9 @@ void QGIViewSection::updateView(bool update)
     }
 }
 
-void QGIViewSection::drawSectionLine(bool b)
+void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
 {
     Q_UNUSED(b);
+    Q_UNUSED(s);
    //override QGIVP::drawSectionLine
 }
