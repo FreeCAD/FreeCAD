@@ -701,12 +701,12 @@ void MDIViewPage::print(QPrinter* printer)
         return;
     }
 
-    QRect rect = printer->paperRect();
+    QRect targetRect = printer->paperRect();
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        rect = printer->pageRect();
+        targetRect = printer->pageRect();
 #endif
 
     //bool block =
@@ -718,7 +718,17 @@ void MDIViewPage::print(QPrinter* printer)
 
     Gui::Selection().clearSelection();
 
-    m_view->scene()->render(&p, rect);
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    double width  =  0.0;
+    double height =  0.0;
+    if( pageTemplate ) {
+      width  =  pageTemplate->Width.getValue();
+      height =  pageTemplate->Height.getValue();
+    }
+    QRectF sourceRect(0.0,-height,width,height);
+
+    m_view->scene()->render(&p, targetRect,sourceRect);
 
     // Reset
     m_view->toggleMarkers(true);
