@@ -29,7 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FemTools
-import QtCore
+from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
