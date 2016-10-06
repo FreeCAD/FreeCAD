@@ -50,6 +50,7 @@
 using namespace Gui;
 using namespace TechDrawGui;
 
+void _printVect(char* label, Base::Vector3d v);
 
 TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base, TechDraw::DrawViewSection* section) :
     ui(new Ui_TaskSectionView),
@@ -58,16 +59,14 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base, TechDraw::DrawVie
 {
     ui->setupUi(this);
 
-    connect(ui->cbHoriz, SIGNAL(clicked(bool)),
-            this, SLOT(onHorizontalClicked(bool)));
-    connect(ui->cbVert, SIGNAL(clicked(bool)),
-            this, SLOT(onVerticalClicked(bool)));
-    connect(ui->cbNormal, SIGNAL(clicked(bool)),
-            this, SLOT(onNormalClicked(bool)));
-    connect(ui->cbReverse, SIGNAL(clicked(bool)),
-            this, SLOT(onReverseClicked(bool)));
-    connect(ui->pbCalc, SIGNAL(clicked(bool)),
-            this, SLOT(onCalcClicked(bool)));
+    connect(ui->pb_Up, SIGNAL(clicked(bool)),
+            this, SLOT(onUpClicked(bool)));
+    connect(ui->pb_Down, SIGNAL(clicked(bool)),
+            this, SLOT(onDownClicked(bool)));
+    connect(ui->pb_Right, SIGNAL(clicked(bool)),
+            this, SLOT(onRightClicked(bool)));
+    connect(ui->pb_Left, SIGNAL(clicked(bool)),
+            this, SLOT(onLeftClicked(bool)));
     connect(ui->pbReset, SIGNAL(clicked(bool)),
             this, SLOT(onResetClicked(bool)));
 
@@ -83,12 +82,9 @@ TaskSectionView::~TaskSectionView()
 
 void TaskSectionView::saveInitialValues()
 {
-    saveSym              = m_base->SymbolSection.getValue();
-    saveHorizSectionLine = m_base->HorizSectionLine.getValue();     //true(horiz)/false(vert)
-    saveArrowUpSection   = m_base->ArrowUpSection.getValue();       //true(up/right)/false(down/left)
-    saveSectionOrigin    = m_section->SectionOrigin.getValue();
-    saveSectionXDir      = m_section->XAxisDirection.getValue();
-    saveSectionDirection = m_section->Direction.getValue();
+    saveSym              = m_section->SectionSymbol.getValue();
+    saveSectionOrigin    = m_base->getCentroid();
+    saveSectionProjDir   = m_section->Direction.getValue();
     saveSectionNormal    = m_section->SectionNormal.getValue();
     saveLabel            = m_section->Label.getValue();
 }
@@ -98,170 +94,201 @@ void TaskSectionView::resetValues()
 {
     ui->leSymbol->setText(QString::fromUtf8(saveSym.data(), saveSym.size()));
 
-    ui->cbHoriz->setChecked(false);
-    ui->cbVert->setChecked(false);
-    ui->cbNormal->setChecked(false);
-    ui->cbReverse->setChecked(false);
-    if (saveHorizSectionLine && !saveArrowUpSection) {
-        ui->cbHoriz->setChecked(true);
-        ui->cbNormal->setChecked(true);
-    } else if (saveHorizSectionLine && saveArrowUpSection) {
-        ui->cbHoriz->setChecked(true);
-        ui->cbReverse->setChecked(true);
-    } else if (!saveHorizSectionLine && !saveArrowUpSection) {
-        ui->cbVert->setChecked(true);
-        ui->cbNormal->setChecked(true);
-    } else if (!saveHorizSectionLine && saveArrowUpSection) {
-        ui->cbVert->setChecked(true);
-        ui->cbReverse->setChecked(true);
-    } else {
-        Base::Console().Error("%s Symbol Line Direction is invalid\n", m_base->getNameInDocument());
-    }
+    checkAll(false);
+    enableAll(true);
 
-    ui->sbOrgX->setValue(saveSectionOrigin.x);
-    ui->sbOrgY->setValue(saveSectionOrigin.y);
-    ui->sbOrgZ->setValue(saveSectionOrigin.z);
+    sectionProjDir = saveSectionProjDir;
+    sectionNormal = saveSectionNormal;
 
-    ui->sbXX->setValue(saveSectionXDir.x);
-    ui->sbXY->setValue(saveSectionXDir.y);
-    ui->sbXZ->setValue(saveSectionXDir.z);
+    ui->sb_OrgX->setValue(saveSectionOrigin.x);
+    ui->sb_OrgY->setValue(saveSectionOrigin.y);
+    ui->sb_OrgZ->setValue(saveSectionOrigin.z);
 
     ui->leProjDir->setReadOnly(true);
-    ui->leProjDir->setText(formatVector(saveSectionDirection));
+    ui->leProjDir->setText(formatVector(saveSectionProjDir));
     ui->leNormal->setReadOnly(true);
     ui->leNormal->setText(formatVector(saveSectionNormal));
 
     m_section->Label.setValue(saveLabel.c_str());
+    Base::Console().Message("");
 }
 
 //calculate good starting points from base view and push buttons
 void TaskSectionView::calcValues()
 {
-    arrowDir = Base::Vector3d(0,-1,0);
-    //section arrows should point to "remaining body" of part after sectioning.
-    //so the arrow direction is (-1) * sectionPlaneNormal/sectionViewDirection
-     if (ui->cbHoriz->isChecked()  &&
-         ui->cbNormal->isChecked()) {
-        arrowDir = -1.0 * m_base->getVDir();
-     } else if (ui->cbHoriz->isChecked() &&
-                ui->cbReverse->isChecked()) {
-        arrowDir = m_base->getVDir();
-     } else if (ui->cbVert->isChecked() &&
-                ui->cbNormal->isChecked()) {
-        arrowDir = -1.0 * m_base->getUDir();
-     } else if (ui->cbVert->isChecked() &&
-                ui->cbReverse->isChecked() ) {
-        arrowDir = m_base->getUDir();
-     } else {
-         Base::Console().Error("%s Symbol Line Direction is invalid\n", m_base->getNameInDocument());
-     }
+    Base::Vector3d stdX(1.0,0.0,0.0);
+    Base::Vector3d stdY(0.0,1.0,0.0);
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d view = m_base->Direction.getValue();
+    sectionDir = "unset";
 
-    sectionNormal = -1.0 * arrowDir;                  //point of observer (ViewDirection) is away from direction of arrows
+    if (ui->pb_Up->isChecked()) {
+        sectionDir = "Up";
+        sectionProjDir = view;
+        sectionNormal  = Base::Vector3d(view.x,view.z,-view.y);
+        if (view == stdZ) {
+            sectionProjDir = (-1.0 * stdY);
+            sectionNormal  = (-1.0 * stdY);
+        } else if (view == (-1.0 * stdZ)) {
+            sectionProjDir = (-1.0 * stdY);
+            sectionNormal  = (-1.0 * stdY);
+        }
+    } else if (ui->pb_Down->isChecked()) {
+        sectionDir = "Down";
+        sectionProjDir = view;
+        sectionNormal  = Base::Vector3d(-view.x,-view.z,view.y);
+        if (view == stdZ) {
+            sectionProjDir = stdY;
+            sectionNormal  = stdY;
+        } else if (view == (-1.0 * stdZ)) {
+            sectionProjDir = stdY;
+            sectionNormal  = stdY;
+        }
+    } else if (ui->pb_Left->isChecked()) {
+        sectionDir = "Left";
+        sectionProjDir = Base::Vector3d(-view.y,view.x,view.z);
+        sectionNormal  = Base::Vector3d(-view.y,view.x,0.0);
+        if (view == stdZ) {
+            sectionProjDir = stdX;
+            sectionNormal  = stdX;
+        } else if (view == (-1.0 * stdZ)) {
+            sectionProjDir = stdX;
+            sectionNormal  = stdX;
+        }
+    } else if (ui->pb_Right->isChecked()) {
+        sectionProjDir = Base::Vector3d(view.y,-view.x,view.z);
+        sectionNormal  = Base::Vector3d(view.y,-view.x,0.0);
+        if (view == stdZ) {
+            sectionProjDir = -1.0 * stdX;
+            sectionNormal  = -1.0 * stdX;
+        } else if (view == (-1.0 * stdZ)) {
+            sectionProjDir = -1.0 * stdX;
+            sectionNormal  = -1.0 * stdX;
+        }
+    }
+
     ui->leNormal->setText(formatVector(sectionNormal));
-
-    sectionProjDir = sectionNormal;                              //typical use-case is view perp to face
     ui->leProjDir->setText(formatVector(sectionProjDir));
 
-    sectionOrigin = m_base->getCentroid();                       //middle of the object
-    ui->sbOrgX->setValue(sectionOrigin.x);
-    ui->sbOrgY->setValue(sectionOrigin.y);
-    ui->sbOrgZ->setValue(sectionOrigin.z);
-
-    sectionXDir = m_base->Direction.getValue();                 //rotate 90*
-    ui->sbXX->setValue(sectionXDir.x);
-    ui->sbXY->setValue(sectionXDir.y);
-    ui->sbXZ->setValue(sectionXDir.z);
+    Base::Console().Message("Press Reset, OK or Cancel to continue\n");
 }
 
 //move values from screen to DocObjs
 void TaskSectionView::updateValues()
 {
+    m_section->SectionDirection.setValue(sectionDir);
     m_section->Direction.setValue(sectionProjDir);
     m_section->SectionNormal.setValue(sectionNormal);
-
-    Base::Vector3d origin(ui->sbOrgX->value().getValue(),
-                          ui->sbOrgY->value().getValue(),
-                          ui->sbOrgZ->value().getValue());
+    Base::Vector3d origin(ui->sb_OrgX->value().getValue(),
+                          ui->sb_OrgY->value().getValue(),
+                          ui->sb_OrgZ->value().getValue());
     m_section->SectionOrigin.setValue(origin);
+    m_section->SectionDirection.setValue(sectionDir);
+    m_section->SectionSymbol.setValue(ui->leSymbol->text().toUtf8().constData());
 
-    Base::Vector3d xDirIn(ui->sbXX->value().getValue(),
-                          ui->sbXY->value().getValue(),
-                          ui->sbXZ->value().getValue());
-    //edit is: can't be zero, can't be same/recip as sectionProjDir.  anything else is ok.
-    if ((xDirIn.Length() < FLT_EPSILON) ||
-        (xDirIn == sectionProjDir)      ||
-        (xDirIn == -1.0 * sectionProjDir)) {
-        Base::Console().Message("XAxisDirection Invalid. Will be substituted.\n");
-    }
-    m_section->XAxisDirection.setValue(xDirIn);
-
-    m_base->SymbolSection.setValue(ui->leSymbol->text().toUtf8().constData());
-    m_base->HorizSectionLine.setValue(ui->cbHoriz->isChecked());
-    m_base->ArrowUpSection.setValue(!ui->cbNormal->isChecked());
-
-    m_section->SymbolSection.setValue(ui->leSymbol->text().toUtf8().constData());
-    m_section->HorizSectionLine.setValue(ui->cbHoriz->isChecked());
-    m_section->ArrowUpSection.setValue(!ui->cbNormal->isChecked());
-
-    std::string symbol = m_base->SymbolSection.getValue();
-    std::string symbolText = "Section " + symbol + "-" + symbol;
-    if (symbolText.compare(m_section->Label.getValue())) {
-        m_section->Label.setValue(symbolText.c_str());
-    }
-
+    m_base->touch();
     m_base->getDocument()->recompute();
 }
 
-void TaskSectionView::onHorizontalClicked(bool b)
+void TaskSectionView::blockButtons(bool b)
 {
-    Q_UNUSED(b);
-    ui->cbHoriz->blockSignals(true);
-    ui->cbVert->blockSignals(true);
-    ui->cbHoriz->setChecked(true);
-    ui->cbVert->setChecked(false);
-    ui->cbHoriz->blockSignals(false);
-    ui->cbVert->blockSignals(false);
+    ui->pb_Up->blockSignals(b);
+    ui->pb_Down->blockSignals(b);
+    ui->pb_Left->blockSignals(b);
+    ui->pb_Right->blockSignals(b);
 }
 
-void TaskSectionView::onVerticalClicked(bool b)
+void TaskSectionView::turnOnUp()
 {
-    Q_UNUSED(b);
-    ui->cbHoriz->blockSignals(true);
-    ui->cbVert->blockSignals(true);
-    ui->cbVert->setChecked(true);
-    ui->cbHoriz->setChecked(false);
-    ui->cbHoriz->blockSignals(false);
-    ui->cbVert->blockSignals(false);
-}
-
-void TaskSectionView::onNormalClicked(bool b)
-{
-    Q_UNUSED(b);
-    ui->cbNormal->blockSignals(true);
-    ui->cbReverse->blockSignals(true);
-    ui->cbNormal->setChecked(true);
-    ui->cbReverse->setChecked(false);
-    ui->cbNormal->blockSignals(false);
-    ui->cbReverse->blockSignals(false);
-}
-
-void TaskSectionView::onReverseClicked(bool b)
-{
-    Q_UNUSED(b);
-    ui->cbReverse->blockSignals(true);
-    ui->cbNormal->blockSignals(true);
-    ui->cbReverse->setChecked(true);
-    ui->cbNormal->setChecked(false);
-    ui->cbReverse->blockSignals(false);
-    ui->cbNormal->blockSignals(false);
-}
-
-
-void TaskSectionView::onCalcClicked(bool b)
-{
-    Q_UNUSED(b);
+    blockButtons(true);
+    checkAll(false);
+    enableAll(false);
+    ui->pb_Up->setChecked(true);
+    ui->pb_Up->setEnabled(true);
+    blockButtons(false);
     calcValues();
     updateValues();
+}
+
+void TaskSectionView::turnOnDown()
+{
+    blockButtons(true);
+    checkAll(false);
+    enableAll(false);
+    ui->pb_Down->setChecked(true);
+    ui->pb_Down->setEnabled(true);
+    blockButtons(false);
+    calcValues();
+    updateValues();
+}
+
+void TaskSectionView::turnOnLeft()
+{
+    blockButtons(true);
+    checkAll(false);
+    enableAll(false);
+    ui->pb_Left->setChecked(true);
+    ui->pb_Left->setEnabled(true);
+    blockButtons(false);
+    calcValues();
+    updateValues();
+}
+
+void TaskSectionView::turnOnRight()
+{
+    blockButtons(true);
+    checkAll(false);
+    enableAll(false);
+    ui->pb_Right->setChecked(true);
+    ui->pb_Right->setEnabled(true);
+    blockButtons(false);
+    calcValues();
+    updateValues();
+}
+
+void TaskSectionView::checkAll(bool b)
+{
+    blockButtons(true);
+    ui->pb_Up->setChecked(b);
+    ui->pb_Down->setChecked(b);
+    ui->pb_Left->setChecked(b);
+    ui->pb_Right->setChecked(b);
+    blockButtons(false);
+}
+
+void TaskSectionView::enableAll(bool b)
+{
+    blockButtons(true);
+    ui->pb_Up->setEnabled(b);
+    ui->pb_Down->setEnabled(b);
+    ui->pb_Left->setEnabled(b);
+    ui->pb_Right->setEnabled(b);
+    blockButtons(false);
+}
+
+
+void TaskSectionView::onUpClicked(bool b)
+{
+    Q_UNUSED(b);
+    turnOnUp();
+}
+
+void TaskSectionView::onDownClicked(bool b)
+{
+    Q_UNUSED(b);
+    turnOnDown();
+}
+
+void TaskSectionView::onLeftClicked(bool b)
+{
+    Q_UNUSED(b);
+    turnOnLeft();
+}
+
+void TaskSectionView::onRightClicked(bool b)
+{
+    Q_UNUSED(b);
+    turnOnRight();
 }
 
 void TaskSectionView::onResetClicked(bool b)
@@ -275,10 +302,7 @@ void TaskSectionView::onResetClicked(bool b)
 
 bool TaskSectionView::accept()
 {
-    //calcValues();
     updateValues();
-    std::string BaseName = m_base->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.ShowSectionLine=True",BaseName.c_str());
     return true;
 }
 
@@ -287,7 +311,6 @@ bool TaskSectionView::reject()
     std::string BaseName = m_base->getNameInDocument();
     std::string PageName = m_base->findParentPage()->getNameInDocument();
     std::string SectionName = m_section->getNameInDocument();
-    Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.ShowSectionLine=False",BaseName.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
                             PageName.c_str(),SectionName.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",SectionName.c_str());
@@ -308,6 +331,11 @@ QString TaskSectionView::formatVector(Base::Vector3d v)
         .arg(QLocale::system().toString(v.y, 'f', 2))
         .arg(QLocale::system().toString(v.z, 'f', 2));
     return data;
+}
+
+void _printVect(char* label, Base::Vector3d v)
+{
+    Base::Console().Message("printVect: %s (%3f,%.3f,%.3f)\n",label,v.x,v.y,v.z);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

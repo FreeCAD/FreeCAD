@@ -32,6 +32,7 @@
 
 namespace TechDraw {
 class DrawViewPart;
+class DrawViewSection;
 class DrawHatch;
 }
 
@@ -57,7 +58,7 @@ public:
     virtual void updateView(bool update = false) override;
     void tidy();
     virtual QRectF boundingRect() const override;
-    virtual void drawSectionLine(bool b);
+    virtual void drawSectionLine(TechDraw::DrawViewSection* s, bool b);
     virtual void drawCenterLines(bool b);
     bool showSection;
 

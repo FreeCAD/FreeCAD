@@ -39,7 +39,7 @@ public:
     virtual void updateView(bool update = false) override;
     enum {Type = QGraphicsItem::UserType + 108};
     int type() const override { return Type;}
-    void drawSectionLine(bool b) override;
+    void drawSectionLine(TechDraw::DrawViewSection* s, bool b) override;
 
 
 protected:
