@@ -133,11 +133,17 @@ class Chord (object):
 
 class ObjectDressup:
 
+    LabelDogbone = 'Dogbone'
+    LabelTbone_H = 'T-bone horizontal'
+
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
-        obj.addProperty("App::PropertyEnumeration", "Side", "Side", "side of path to insert dog-bones")
+        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", "The side of path to insert dog-bones")
         obj.Side = ['Left', 'Right']
         obj.Side = 'Right'
+        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of dogboness")
+        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H]
+        obj.Shape = ObjectDressup.LabelDogbone
         obj.Proxy = self
 
     def __getstate__(self):
@@ -159,7 +165,7 @@ class ObjectDressup:
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
     # draw circles where dogbones go, easier to spot during testing
-    def debugCircleBone(self, inChord, outChord):
+    def debugCircleBone(self, obj,inChord, outChord):
         di = 0.
         dj = 0.5
         if inChord.Start.x < outChord.End.x:
@@ -168,22 +174,42 @@ class ObjectDressup:
         circle.update({"X": inChord.End.x, "Y": inChord.End.y})
         return [ Path.Command("G3", circle) ]
 
+    def bone(self, obj, inChord, outChord, angle, length):
+        x = length * math.cos(angle);
+        y = length * math.sin(angle);
+        boneChordIn = inChord.moveBy(x, y, 0)
+        boneChordOut = boneChordIn.moveTo(outChord.Start)
+        return [ boneChordIn.g1Command(), boneChordOut.g1Command() ]
+
     def dogbone(self, obj, inChord, outChord):
         baseAngle = inChord.getAngleXY()
         turnAngle = outChord.getAngle(inChord)
         boneAngle = baseAngle + (turnAngle - math.pi)/2
         if obj.Side == 'Left':
             boneAngle = boneAngle + math.pi
-        #print("base=%+3.2f turn=%+3.2f bond=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
-        x = self.toolRadius * math.cos(boneAngle) * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
-        y = self.toolRadius * math.sin(boneAngle) * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
-        boneChordIn = inChord.moveBy(x, y, 0)
-        boneChordOut = boneChordIn.moveTo(outChord.Start)
-        return [ boneChordIn.g1Command(), boneChordOut.g1Command() ]
+        #print("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
+        length = self.toolRadius * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
+        return self.bone(obj, inChord, outChord, boneAngle, length)
+
+    def tboneHorizontal(self, obj, inChord, outChord):
+        angle = 0
+        inAngle = inChord.getAngleXY()
+        outAngle = outChord.getAngleXY()
+        if math.fabs(inAngle) > 3*math.pi/4:
+            angle = - math.pi
+        elif math.fabs(inAngle) > math.pi/4:
+            if math.fabs(outAngle) < 3*math.pi/4:
+                angle = - math.pi
+        #print("in=%+3.2f out=%+3.2f angle=%+3.2f" % (inAngle/math.pi, outAngle/math.pi, angle/math.pi))
+        return self.bone(obj, inChord, outChord, angle, self.toolRadius)
 
     # Generate commands necessary to execute the dogbone
     def dogboneCommands(self, obj, inChord, outChord):
-        return self.dogbone(obj, inChord, outChord)
+        if obj.Shape == ObjectDressup.LabelDogbone:
+            return self.dogbone(obj, inChord, outChord)
+        if obj.Shape == ObjectDressup.LabelTbone_H:
+            return self.tboneHorizontal(obj, inChord, outChord)
+        return self.debugCircleBone(obj, inChord, outChord)
 
     def execute(self, obj):
         if not obj.Base:
