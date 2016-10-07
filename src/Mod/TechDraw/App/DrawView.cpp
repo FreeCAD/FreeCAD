@@ -131,10 +131,10 @@ short DrawView::mustExecute() const
                     Scale.isTouched()  ||
                     ScaleType.isTouched() );
     }
-    if (result) {
+    if ((bool) result) {
         return result;
     }
-        return App::DocumentObject::mustExecute();
+    return App::DocumentObject::mustExecute();
 }
 
 ////you must override this in derived class
