@@ -98,6 +98,7 @@ class _Floor:
     "The Floor object"
     def __init__(self,obj):
         obj.addProperty("App::PropertyLength","Height","Arch","The height of this object")
+        obj.addProperty("App::PropertyArea","Area", "Arch","The computed floor area of this floor")
         if not hasattr(obj,"Placement"):
             # obj can be a Part Feature and already has a placement
             obj.addProperty("App::PropertyPlacement","Placement","Arch","The placement of this object")
@@ -116,6 +117,14 @@ class _Floor:
         if not hasattr(self,"Object"):
             # on restore, self.Object is not there anymore
             self.Object = obj
+        if (prop == "Group") and hasattr(obj,"Area"):
+            a = 0
+            for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Space"):
+                if hasattr(o,"Area"):
+                    if hasattr(o.Area,"Value"):
+                        a += o.Area.Value
+                        if obj.Area.Value != a:
+                            obj.Area = a
 
     def execute(self,obj):
         # move children with this floor

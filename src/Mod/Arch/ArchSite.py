@@ -117,6 +117,7 @@ class _Site(ArchFloor._Floor):
         obj.addProperty("App::PropertyString","Country","Arch","The country of this site")
         obj.addProperty("App::PropertyFloat","Latitude","Arch","The latitude of this site")
         obj.addProperty("App::PropertyFloat","Longitude","Arch","The latitude of this site")
+        obj.addProperty("App::PropertyLength","Elevation","Arch","The elevation of level 0 of this site")
         obj.addProperty("App::PropertyString","Url","Arch","An url that shows this site in a mapping website")
         obj.addProperty("App::PropertyLinkList","Group","Arch","The objects that are part of this site")
         obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
