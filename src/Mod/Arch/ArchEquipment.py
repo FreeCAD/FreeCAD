@@ -241,6 +241,7 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyString","Model","Arch","The model description of this equipment")
         obj.addProperty("App::PropertyString","Url","Arch","The url of the product page of this equipment")
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch","Additional snap points for this equipment")
+        obj.addProperty("App::PropertyFloat","EquipmentPower","Arch","The electric power needed by this equipment in Watts")
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
