@@ -168,10 +168,12 @@ class ObjectDressup:
         circle.update({"X": inChord.End.x, "Y": inChord.End.y})
         return [ Path.Command("G3", circle) ]
 
-    def dogbone(self, inChord, outChord):
+    def dogbone(self, obj, inChord, outChord):
         baseAngle = inChord.getAngleXY()
         turnAngle = outChord.getAngle(inChord)
-        boneAngle = baseAngle - turnAngle/2
+        boneAngle = baseAngle + (turnAngle - math.pi)/2
+        if obj.Side == 'Left':
+            boneAngle = boneAngle + math.pi
         #print("base=%+3.2f turn=%+3.2f bond=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
         x = self.toolRadius * math.cos(boneAngle) * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
         y = self.toolRadius * math.sin(boneAngle) * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
@@ -180,8 +182,8 @@ class ObjectDressup:
         return [ boneChordIn.g1Command(), boneChordOut.g1Command() ]
 
     # Generate commands necessary to execute the dogbone
-    def dogboneCommands(self, inChord, outChord):
-        return self.dogbone(inChord, outChord)
+    def dogboneCommands(self, obj, inChord, outChord):
+        return self.dogbone(obj, inChord, outChord)
 
     def execute(self, obj):
         if not obj.Base:
@@ -206,13 +208,13 @@ class ObjectDressup:
                 thisIsACandidate = self.canAttachDogbone(thisCmd, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
-                    dogbone = self.dogboneCommands(lastChord, thisChord)
+                    dogbone = self.dogboneCommands(obj, lastChord, thisChord)
                     commands.extend(dogbone)
 
                 if lastCommand and thisChord.isAPlungeMove():
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
-                            commands.extend(self.dogboneCommands(lastChord, chord))
+                            commands.extend(self.dogboneCommands(obj, lastChord, chord))
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
