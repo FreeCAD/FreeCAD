@@ -328,8 +328,10 @@ int DrawProjGroup::purgeProjections()
         DrawProjGroupItem* dpgi;
         DocumentObject* dObj =  views.back();
         dpgi = dynamic_cast<DrawProjGroupItem*>(dObj);
-        std::string itemName = dpgi->Type.getValueAsString();
-        removeProjection(itemName.c_str());
+        if (dpgi) {
+            std::string itemName = dpgi->Type.getValueAsString();
+            removeProjection(itemName.c_str());
+        }
     }
     return Views.getValues().size();
 }
