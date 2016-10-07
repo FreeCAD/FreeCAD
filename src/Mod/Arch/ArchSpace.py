@@ -141,6 +141,15 @@ SpaceTypes = [
 "Transportation - Terminal - Ticket Counter"
 ]
 
+ConditioningTypes = [
+"Unconditioned",
+"Heated",
+"Cooled",
+"HeatedAndCooled",
+"Vented",
+"NaturallyVentedOnly"
+]
+
 import FreeCAD,ArchComponent,ArchCommands,math,Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -224,15 +233,22 @@ class _Space(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch","The objects that make the boundaries of this space object")
-        obj.addProperty("App::PropertyFloat",      "Area",          "Arch","The computed floor area of this space")
+        obj.addProperty("App::PropertyArea",       "Area",          "Arch","The computed floor area of this space")
         obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch","The finishing of the floor of this space")
         obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch","The finishing of the walls of this space")
         obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch","The finishing of the ceiling of this space")
         obj.addProperty("App::PropertyLinkList",   "Group",         "Arch","Objects that are included inside this space, such as furniture")
         obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch","The type of this space")
         obj.addProperty("App::PropertyLength",     "FloorThickness","Arch","The thickness of the floor finish")
+        obj.addProperty("App::PropertyLink",       "Zone",          "Arch","A zone this space is part of")
+        obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Arch","The number of people who typically occupy this space")
+        obj.addProperty("App::PropertyFloat",      "LightingPower", "Arch","The electric power needed to light this space in Watts")
+        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch","The electric power needed by the equipments of this space in Watts")
+        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch","If True, Equipment Power will be automatically filled by the equipments included in this space")
+        obj.addProperty("App::PropertyEnumeration","Conditioning",  "Arch","The type of air conditioning of this space")
         self.Type = "Space"
-        self.SpaceType = "Undefined"
+        obj.SpaceType = SpaceTypes
+        obj.Conditioning = ConditioningTypes
         obj.Role = Roles
 
     def execute(self,obj):
@@ -245,7 +261,19 @@ class _Space(ArchComponent.Component):
     def onChanged(self,obj,prop):
         if prop in ["Boundaries","Base"]:
             self.getShape(obj)
-            obj.Area = self.getArea(obj)
+            if hasattr(obj.Area,"Value"):
+                a = self.getArea(obj)
+                if obj.Area.Value != a:
+                    obj.Area = a
+        elif prop == "Group":
+            if hasattr(obj,"EquipmentPower"):
+                if obj.AutoPower:
+                    p = 0
+                    for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Equipment"):
+                        if hasattr(o,"EquipmentPower"):
+                            p += o.EquipmentPower
+                    if p != obj.EquipmentPower:
+                        obj.EquipmentPower = p
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
 
