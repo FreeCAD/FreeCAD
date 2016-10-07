@@ -233,15 +233,12 @@ class ObjectDressup:
         if not hasattr(self, 'toolRadius'):
             print("Here we go ... ")
             # By default the side for dogbones is opposite of the base path side
-            if obj.Base.Direction == 'CCW':
-                obj.Side = obj.Base.Side
+            if obj.Base.Side == 'Left':
+                obj.Side = 'Right'
+            elif obj.Base.Side == 'Right':
+                obj.Side = 'Left'
             else:
-                if obj.Base.Side == 'Left':
-                    obj.Side = 'Right'
-                elif obj.Base.Side == 'Right':
-                    obj.Side = 'Left'
-                else:
-                    obj.Side = 'On'
+                obj.Side = 'On'
 
         self.toolRadius = 5
         toolLoad = PathUtils.getLastToolLoad(obj)
