@@ -89,7 +89,10 @@ DrawProjGroupItem::~DrawProjGroupItem()
 void DrawProjGroupItem::onDocumentRestored()
 {
     setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
-    DrawProjGroupItem::execute();
+    App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
+    if (rc) {
+        delete rc;
+    }
 }
 
 

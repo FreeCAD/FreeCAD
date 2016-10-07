@@ -90,7 +90,7 @@ private:
     const char * viewChkIndexToCStr(int index);
 
 protected:
-  ViewProviderProjGroup *viewProvider;
+  //ViewProviderProjGroup *viewProvider;
   TechDraw::DrawProjGroup* multiView;
   bool m_createMode;
 };
