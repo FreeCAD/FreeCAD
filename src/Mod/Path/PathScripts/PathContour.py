@@ -86,6 +86,9 @@ class ObjectContour:
         obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the Contour runs
         obj.addProperty("App::PropertyBool", "UseComp", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","make True, if using Cutter Radius Compensation"))
+        obj.addProperty("App::PropertyEnumeration", "Side", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property", "Side of edge that tool should cut"))
+        obj.Side = ['Left', 'Right', 'On']  # side of profile that cutter is on in relation to direction of profile
+        obj.setEditorMode('Side', 2) # hide
 
         obj.addProperty("App::PropertyDistance", "RollRadius", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Radius at start and end"))
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Extra value to stay away from final Contour- good for roughing toolpath"))
@@ -170,12 +173,12 @@ class ObjectContour:
         lead_out_line_len = 0.0
 
         if obj.UseComp is False:
-            side = 'On'
+            obj.Side = 'On'
         else:
             if obj.Direction == 'CW':
-                side = 'Left'
+                obj.Side = 'Left'
             else:
-                side = 'Right'
+                obj.Side = 'Right'
 
         PathKurveUtils.clear_tags()
         for i in range(len(obj.locs)):
@@ -191,7 +194,7 @@ class ObjectContour:
             obj.FinalDepth.Value, None)
 
         PathKurveUtils.profile2(
-            curve, side, self.radius, self.vertFeed, self.horizFeed,
+            curve, obj.Side, self.radius, self.vertFeed, self.horizFeed,
             self.vertRapid, self.horizRapid, obj.OffsetExtra.Value, roll_radius,
             None, None, depthparams, extend_at_start, extend_at_end,
             lead_in_line_len, lead_out_line_len)
@@ -219,7 +222,7 @@ class ObjectContour:
             self.vertRapid = toolLoad.VertRapid.Value
             self.horizRapid = toolLoad.HorizRapid.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            if tool.Diameter == 0:
+            if not tool or tool.Diameter == 0:
                 self.radius = 0.25
             else:
                 self.radius = tool.Diameter/2

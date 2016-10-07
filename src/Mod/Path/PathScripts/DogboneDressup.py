@@ -24,7 +24,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from PySide import QtCore, QtGui
 import math
 
@@ -135,12 +135,9 @@ class ObjectDressup:
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
-        obj.addProperty("App::PropertyEnumeration", "side", "Side", "side of path to insert dog-bones")
-        obj.side = ['Left', 'Right']
-        # Setting the default value here makes it available regardless of how and when the
-        # receiver is invoked. And once it's set here it's not needed in Command::Activated
-        # TODO: figure out a better default depending on Base (which isn't set yet)
-        obj.side = 'Right'
+        obj.addProperty("App::PropertyEnumeration", "Side", "Side", "side of path to insert dog-bones")
+        obj.Side = ['Left', 'Right']
+        obj.Side = 'Right'
         obj.Proxy = self
 
     def __getstate__(self):
@@ -159,7 +156,7 @@ class ObjectDressup:
         return cmd.Name in movestraight and not chord.isAPlungeMove()
 
     def shouldInsertDogbone(self, obj, inChord, outChord):
-        return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.side))
+        return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
     # draw circles where dogbones go, easier to spot during testing
     def debugCircleBone(self, inChord, outChord):
@@ -231,7 +228,18 @@ class ObjectDressup:
         obj.Path = path
 
     def setup(self, obj):
-        #print( "Here we go ...")
+        if not hasattr(self, 'toolRadius'):
+            print("Here we go ... ")
+            # By default the side for dogbones is opposite of the base path side
+            if obj.Base.Direction == 'CCW':
+                obj.Side = obj.Base.Side
+            else:
+                if obj.Base.Side == 'Left':
+                    obj.Side = 'Right'
+                elif obj.Base.Side == 'Right':
+                    obj.Side = 'Left'
+                else:
+                    obj.Side = 'On'
 
         self.toolRadius = 5
         toolLoad = PathUtils.getLastToolLoad(obj)
@@ -310,14 +318,12 @@ class CommandDogboneDressup:
         FreeCADGui.addModule("PathScripts.DogboneDressup")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
-        FreeCADGui.doCommand('PathScripts.DogboneDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
         FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        # If I set the default value here and not in __init__ then FreeCAD uses the first
-        # entry in the enumeration array ...
-        #FreeCADGui.doCommand('obj.side = "Right"')
+        FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
