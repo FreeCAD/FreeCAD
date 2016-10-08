@@ -46,13 +46,13 @@ except AttributeError:
 
 class LoadTool():
     def __init__(self, obj):
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The active tool")
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The active tool"))
         obj.ToolNumber = (0, 0, 10000, 1)
-        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", "The speed of the cutting spindle in RPM")
-        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", "Direction of spindle rotation")
+        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The speed of the cutting spindle in RPM"))
+        obj.addProperty("App::PropertyEnumeration", "SpindleDir", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","Direction of spindle rotation"))
         obj.SpindleDir = ['Forward', 'Reverse']
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", "Feed rate for vertical moves in Z")
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", "Feed rate for horizontal moves")
+        obj.addProperty("App::PropertySpeed", "VertFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property","Feed rate for vertical moves in Z"))
+        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feed", QtCore.QT_TRANSLATE_NOOP("App::Property","Feed rate for horizontal moves"))
 
         obj.Proxy = self
         mode = 2

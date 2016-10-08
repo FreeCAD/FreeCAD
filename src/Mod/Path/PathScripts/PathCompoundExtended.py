@@ -41,11 +41,11 @@ class ObjectCompoundExtended:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Description",  "Path","An optional description of this compounded operation")
-#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path","The feed rate of the paths in these compounded operations")
-#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path","The spindle speed, in revolutions per minute, of the tool used in these compounded operations")
-        obj.addProperty("App::PropertyLength","SafeHeight",   "Path","The safe height for this operation")
-        obj.addProperty("App::PropertyLength","RetractHeight","Path","The retract height, above top surface of part, between compounded operations inside clamping area")
+        obj.addProperty("App::PropertyString","Description",  "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","An ptional description of this compounded operation"))
+#        obj.addProperty("App::PropertySpeed", "FeedRate",     "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The feed rate of the paths in these compounded operations"))
+#        obj.addProperty("App::PropertyFloat", "SpindleSpeed", "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The spindle speed, in revolutions per minute, of the tool used in these compounded operations"))
+        obj.addProperty("App::PropertyLength","SafeHeight",   "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The safe height for this operation"))
+        obj.addProperty("App::PropertyLength","RetractHeight","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The retract height, above top surface of part, between compounded operations inside clamping area"))
         obj.Proxy = self
 
     def __getstate__(self):

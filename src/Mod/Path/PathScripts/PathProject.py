@@ -47,11 +47,9 @@ class ObjectPathProject:
 
     def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
-        obj.addProperty("App::PropertyFile", "OutputFile",
-                        "CodeOutput", "The NC output file for this project")
+        obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.setEditorMode("OutputFile", 0)  # set to default mode
-        obj.addProperty("App::PropertyString",    "Description",
-                        "Path", "An optional description for this project")
+        obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this project"))
         obj.Proxy = self
 
     def __getstate__(self):

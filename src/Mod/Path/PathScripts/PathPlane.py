@@ -38,9 +38,9 @@ except AttributeError:
 
 class Plane:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "SelectionPlane","Plane","Orientation plane of CNC path")
+        obj.addProperty("App::PropertyEnumeration", "SelectionPlane","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Orientation plane of CNC path"))
         obj.SelectionPlane=['XY', 'XZ', 'YZ']
-        obj.addProperty("App::PropertyBool","Active","Sequence Parameters","Make False, to prevent operation from generating code")
+        obj.addProperty("App::PropertyBool","Active","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
         obj.Proxy = self
 
     def execute(self,obj):

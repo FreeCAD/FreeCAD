@@ -46,25 +46,25 @@ class Machine:
 
     def __init__(self, obj):
 
-        obj.addProperty("App::PropertyString",    "MachineName", "Base", "Name of the Machine that will use the CNC program")
+        obj.addProperty("App::PropertyString",    "MachineName", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
-        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this machine")
-        obj.addProperty("App::PropertyEnumeration", "MachineUnits", "CodeOutput", "Units that the machine works in, ie Metric or Inch")
+        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor file for this machine"))
+        obj.addProperty("App::PropertyEnumeration", "MachineUnits", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","Units that the machine works in, ie Metric or Inch"))
         obj.MachineUnits = ['Metric', 'Inch']
 
-        obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", "The tooltable used for this CNC program")
+        obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
 
-        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", "The Maximum distance in X the machine can travel")
-        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", "The Maximum distance in X the machine can travel")
-        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", "The Maximum distance in X the machine can travel")
+        obj.addProperty("App::PropertyDistance", "X_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Y_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in Y the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Z_Max", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Maximum distance in Z the machine can travel"))
 
-        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", "The Minimum distance in X the machine can travel")
-        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", "The Minimum distance in X the machine can travel")
-        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", "The Minimum distance in X the machine can travel")
+        obj.addProperty("App::PropertyDistance", "X_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in X the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Y_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in Y the machine can travel"))
+        obj.addProperty("App::PropertyDistance", "Z_Min", "Limits", QtCore.QT_TRANSLATE_NOOP("App::Property","The Minimum distance in Z the machine can travel"))
 
-        obj.addProperty("App::PropertyDistance", "X", "HomePosition", "Home position of machine, in X (mainly for visualization)")
-        obj.addProperty("App::PropertyDistance", "Y", "HomePosition", "Home position of machine, in Y (mainly for visualization)")
-        obj.addProperty("App::PropertyDistance", "Z", "HomePosition", "Home position of machine, in Z (mainly for visualization)")
+        obj.addProperty("App::PropertyDistance", "X", "HomePosition", QtCore.QT_TRANSLATE_NOOP("App::Property","Home position of machine, in X (mainly for visualization)"))
+        obj.addProperty("App::PropertyDistance", "Y", "HomePosition", QtCore.QT_TRANSLATE_NOOP("App::Property","Home position of machine, in Y (mainly for visualization)"))
+        obj.addProperty("App::PropertyDistance", "Z", "HomePosition", QtCore.QT_TRANSLATE_NOOP("App::Property","Home position of machine, in Z (mainly for visualization)"))
 
         obj.Proxy = self
         mode = 2

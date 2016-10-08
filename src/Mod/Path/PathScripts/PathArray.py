@@ -41,9 +41,9 @@ class ObjectArray:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Path","The path to array")
-        obj.addProperty("App::PropertyVectorDistance","Offset","Path","The spacing between the array copies")
-        obj.addProperty("App::PropertyInteger","Copies","Path","The number of copies")
+        obj.addProperty("App::PropertyLink","Base","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The path to array"))
+        obj.addProperty("App::PropertyVectorDistance","Offset","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The spacing between the array copies"))
+        obj.addProperty("App::PropertyInteger","Copies","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The number of copies"))
         obj.Proxy = self
 
     def __getstate__(self):
