@@ -1136,15 +1136,15 @@ void Application::initTypes(void)
     App ::PropertyExpressionEngine  ::init();
 
     // Extension classes
-    App ::Extension                 ::init();
-    App ::ExtensionContainer        ::init();
-    App ::DocumentObjectExtension   ::init();
-    App ::GroupExtension            ::init();
-    App ::GroupExtensionPython      ::init();
-    App ::GeoFeatureGroupExtension  ::init();
+    App ::Extension                     ::init();
+    App ::ExtensionContainer            ::init();
+    App ::DocumentObjectExtension       ::init();
+    App ::GroupExtension                ::init();
+    App ::GroupExtensionPython          ::init();
+    App ::GeoFeatureGroupExtension      ::init();
     App ::GeoFeatureGroupExtensionPython::init();
-    App ::OriginGroupExtension      ::init();
-    App ::OriginGroupExtensionPython::init();
+    App ::OriginGroupExtension          ::init();
+    App ::OriginGroupExtensionPython    ::init();
     
     // Document classes
     App ::TransactionalObject       ::init();

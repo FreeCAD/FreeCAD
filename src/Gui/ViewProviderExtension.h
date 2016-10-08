@@ -65,16 +65,16 @@ public:
     virtual void extensionDropObject(App::DocumentObject*) { }
 
     /// Hides the view provider
-    virtual void extensionHide(void) { };
+    virtual void extensionHide(void) { }
     /// Shows the view provider
-    virtual void extensionShow(void) { };
+    virtual void extensionShow(void) { }
     
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
-    virtual void extensionAttach(App::DocumentObject* pcObject) { };
-    virtual void extensionSetDisplayMode(const char* ModeName) { };
-    virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();};
+    virtual void extensionAttach(App::DocumentObject* pcObject) { }
+    virtual void extensionSetDisplayMode(const char* ModeName) { }
+    virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
 
     //update data of extended opject
     virtual void extensionUpdateData(const App::Property*);
