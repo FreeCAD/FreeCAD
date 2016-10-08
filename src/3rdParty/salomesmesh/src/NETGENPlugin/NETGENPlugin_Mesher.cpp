@@ -2524,7 +2524,12 @@ bool NETGENPlugin_Mesher::Compute()
     err = 0; //- MESHCONST_ANALYSE isn't so important step
     if ( !_ngMesh )
       return false;
+#if NETGEN_VERSION < 6
+    ngLib.setMesh(( Ng_Mesh*) _ngMesh);
+#else
     ngLib.setMesh(( Ng_Mesh*) _ngMesh.get() );
+#endif
+
 
     _ngMesh->ClearFaceDescriptors(); // we make descriptors our-self
 
