@@ -85,7 +85,6 @@
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
 
-
 #endif //_PreComp_
 
 #endif // APP_PRECOMPILED_H

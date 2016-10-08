@@ -131,6 +131,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
 
     if (name != "") {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
@@ -807,7 +808,6 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     reader.readElement("LinkSubList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     std::vector<DocumentObject*> values;
     values.reserve(count);

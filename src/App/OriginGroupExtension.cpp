@@ -21,7 +21,7 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include "OriginGroup.h"
+#include "OriginGroupExtension.h"
 
 #ifndef _PreComp_
 #endif
@@ -35,45 +35,52 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::OriginGroup, App::GeoFeatureGroup);
+EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtension);
 
-OriginGroup::OriginGroup () {
-    ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
+OriginGroupExtension::OriginGroupExtension () {
+    
+    initExtension(OriginGroupExtension::getExtensionClassTypeId());
+    
+    EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }
 
-OriginGroup::~OriginGroup ()
+OriginGroupExtension::~OriginGroupExtension ()
 { }
 
-App::Origin *OriginGroup::getOrigin () const {
+App::Origin *OriginGroupExtension::getOrigin () const {
     App::DocumentObject *originObj = Origin.getValue ();
 
     if ( !originObj ) {
         std::stringstream err;
-        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
+        err << "Can't find Origin for \"" << getExtendedObject()->getNameInDocument () << "\"";
         throw Base::Exception ( err.str().c_str () );
 
     } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
         std::stringstream err;
         err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
+            << ") linked to the Origin of \"" << getExtendedObject()->getNameInDocument () << "\"";
         throw Base::Exception ( err.str().c_str () );
     } else {
             return static_cast<App::Origin *> ( originObj );
     }
 }
 
-App::OriginGroup *OriginGroup::getGroupOfObject (const DocumentObject* obj, bool indirect) {
+App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj, bool indirect) {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType ( OriginGroup::getClassTypeId() );
+    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getExtensionClassTypeId() );
     for (auto grpObj: grps) {
-        OriginGroup* grp = static_cast <OriginGroup* >(grpObj);
+        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(
+                                                    OriginGroupExtension::getExtensionClassTypeId()));
+        
+        if(!grp) throw Base::TypeError("Wrong type in origin group extenion");
+            
         if ( indirect ) {
             if ( grp->geoHasObject (obj) ) {
-                return grp;
+                return grp->getExtendedObject();
             }
         } else {
             if ( grp->hasObject (obj) ) {
-                return grp;
+                return grp->getExtendedObject();
             }
         }
     }
@@ -81,43 +88,53 @@ App::OriginGroup *OriginGroup::getGroupOfObject (const DocumentObject* obj, bool
     return 0;
 }
 
-short OriginGroup::mustExecute() const {
+short OriginGroupExtension::extensionMustExecute() {
     if (Origin.isTouched ()) {
         return 1;
     } else {
-        return GeoFeatureGroup::mustExecute();
+        return GeoFeatureGroupExtension::extensionMustExecute();
     }
 }
 
-App::DocumentObjectExecReturn *OriginGroup::execute() {
+App::DocumentObjectExecReturn *OriginGroupExtension::extensionExecute() {
     try { // try to find all base axis and planes in the origin
         getOrigin ();
     } catch (const Base::Exception &ex) {
-        setError ();
+        //getExtendedObject()->setError ();
         return new App::DocumentObjectExecReturn ( ex.what () );
     }
 
-    return GeoFeatureGroup::execute ();
+    return GeoFeatureGroupExtension::extensionExecute ();
 }
 
-void OriginGroup::setupObject () {
-    App::Document *doc = getDocument ();
+void OriginGroupExtension::onExtendedSetupObject () {
+    App::Document *doc = getExtendedObject()->getDocument ();
 
-    std::string objName = std::string ( getNameInDocument()).append ( "Origin" );
+    std::string objName = std::string ( getExtendedObject()->getNameInDocument()).append ( "Origin" );
 
     App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
 
     assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
     Origin.setValue (originObj);
 
-    GeoFeatureGroup::setupObject ();
+    GeoFeatureGroupExtension::onExtendedSetupObject ();
 }
 
-void OriginGroup::unsetupObject () {
+void OriginGroupExtension::onExtendedUnsetupObject () {
     App::DocumentObject *origin = Origin.getValue ();
     if (origin && !origin->isDeleting ()) {
         origin->getDocument ()->remObject (origin->getNameInDocument());
     }
 
-    GeoFeatureGroup::unsetupObject ();
+    GeoFeatureGroupExtension::onExtendedUnsetupObject ();
+}
+
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::OriginGroupExtensionPython, App::OriginGroupExtension)
+
+// explicit template instantiation
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;
 }

@@ -28,7 +28,7 @@
 # include <Inventor/nodes/SoGroup.h>
 #endif
 
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 
 #include "ViewProviderGeoFeatureGroup.h"
 
@@ -36,58 +36,17 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderDocumentObjectGroup)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderGeoFeatureGroup, Gui::ViewProviderDocumentObject)
 
 ViewProviderGeoFeatureGroup::ViewProviderGeoFeatureGroup()
 {
-    pcGroupChildren = new SoGroup();
-    pcGroupChildren->ref();
+    ViewProviderGeoFeatureGroupExtension::initExtension(this);
 }
 
 ViewProviderGeoFeatureGroup::~ViewProviderGeoFeatureGroup()
 {
-    pcGroupChildren->unref();
-    pcGroupChildren = 0;
 }
 
-std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroup::claimChildren3D(void) const {
-    return static_cast<App::GeoFeatureGroup *>(getObject())->getGeoSubObjects ();
-}
-
-void ViewProviderGeoFeatureGroup::attach(App::DocumentObject* pcObject)
-{
-    Gui::ViewProviderDocumentObjectGroup::attach(pcObject);
-    addDisplayMaskMode(pcGroupChildren, "Group");
-}
-
-void ViewProviderGeoFeatureGroup::setDisplayMode(const char* ModeName)
-{
-    if ( strcmp("Group",ModeName)==0 )
-        setDisplayMaskMode("Group");
-
-    ViewProviderDocumentObjectGroup::setDisplayMode( ModeName );
-}
-
-std::vector<std::string> ViewProviderGeoFeatureGroup::getDisplayModes(void) const
-{
-    // get the modes of the father
-    std::vector<std::string> StrList = ViewProviderDocumentObjectGroup::getDisplayModes();
-
-    // add your own modes
-    StrList.push_back("Group");
-
-    return StrList;
-}
-
-void ViewProviderGeoFeatureGroup::updateData(const App::Property* prop)
-{
-    App::GeoFeatureGroup *obj = static_cast<App::GeoFeatureGroup*> ( getObject() );
-    if (prop == &obj->Placement) {
-        setTransformation ( obj->Placement.getValue().toMatrix() );
-    } else {
-        ViewProviderDocumentObjectGroup::updateData ( prop );
-    }
-}
 
 // Python feature -----------------------------------------------------------------------
 

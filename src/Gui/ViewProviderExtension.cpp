@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) Stefan Tröger          (stefantroeger@gmx.net) 2016     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,34 +23,47 @@
 
 #include "PreCompiled.h"
 
-#include "App/OriginGroup.h"
+#ifndef _PreComp_
+# include <cassert>
+# include <algorithm>
+#endif
 
-// inclusion of the generated files (generated out of OriginGroupPy.xml)
-#include "OriginGroupPy.h"
-#include "OriginGroupPy.cpp"
+#include "ViewProviderExtension.h"
+//#include "ViewProviderExtensionPy.h"
 
-using namespace App;
+using namespace Gui;
 
-// returns a string which represents the object e.g. when printed in python
-std::string OriginGroupPy::representation(void) const
+EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
+
+ViewProviderExtension::ViewProviderExtension() 
 {
-    return std::string("<OriginGroup object>");
+    initExtension(Gui::ViewProviderExtension::getExtensionClassTypeId());
 }
 
-
-
-
-
-
-
-PyObject *OriginGroupPy::getCustomAttributes(const char* /*attr*/) const
+ViewProviderExtension::~ViewProviderExtension()
 {
-    return 0;
+
 }
 
-int OriginGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
-{
-    return 0; 
+const ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() const{
+
+    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
+    return static_cast<const ViewProviderDocumentObject*>(getExtendedContainer());
 }
 
+ViewProviderDocumentObject* ViewProviderExtension::getExtendedViewProvider() {
 
+    assert(getExtendedContainer()->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())); 
+    return static_cast<ViewProviderDocumentObject*>(getExtendedContainer());
+}
+
+void ViewProviderExtension::extensionUpdateData(const App::Property*) {
+
+}
+
+namespace Gui {
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderExtensionPython, Gui::ViewProviderExtension)
+
+// explicit template instantiation
+template class GuiExport ViewProviderExtensionPythonT<ViewProviderExtension>;
+}

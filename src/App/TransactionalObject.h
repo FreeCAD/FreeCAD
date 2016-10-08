@@ -24,7 +24,7 @@
 #ifndef APP_TRANSACTIONALOBJECT_H
 #define APP_TRANSACTIONALOBJECT_H
 
-#include <App/PropertyContainer.h>
+#include <App/ExtensionContainer.h>
 
 namespace App
 {
@@ -34,7 +34,7 @@ class TransactionObject;
 
 /** Base class of transactional objects
  */
-class AppExport TransactionalObject : public App::PropertyContainer
+class AppExport TransactionalObject : public App::ExtensionContainer
 {
     PROPERTY_HEADER(App::TransactionalObject);
 

@@ -297,8 +297,9 @@ QString PropertyItem::pythonIdentifier(const App::Property* prop) const
         return QString::fromLatin1("FreeCAD.getDocument(\"%1\").getObject(\"%2\").%3")
             .arg(docName).arg(objName).arg(propName);
     }
-    if (parent->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
-        App::DocumentObject* obj = static_cast<Gui::ViewProviderDocumentObject*>(parent)->getObject();
+    auto* vp = dynamic_cast<Gui::ViewProviderDocumentObject*>(parent);
+    if (vp) {
+        App::DocumentObject* obj = vp->getObject();
         App::Document* doc = obj->getDocument();
         QString docName = QString::fromLatin1(App::GetApplication().getDocumentName(doc));
         QString objName = QString::fromLatin1(obj->getNameInDocument());
@@ -3375,12 +3376,12 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         // no object assigned
         // the document name
         if (c->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
-            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
+            App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);          
             list << QString::fromLatin1(obj->getDocument()->getName());
         }
-        else {
+        else
             list << QString::fromLatin1("");
-        }
+  
         // the internal object name
         list << QString::fromLatin1("Null");
         // the object label
@@ -3392,9 +3393,8 @@ QVariant PropertyLinkItem::value(const App::Property* prop) const
         App::DocumentObject* obj = static_cast<App::DocumentObject*>(c);
         list << QString::fromLatin1(obj->getNameInDocument());
     }
-    else {
+    else 
         list << QString::fromLatin1("Null");
-    }
 
     return QVariant(list);
 }

@@ -94,6 +94,7 @@
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
 #include "ViewProviderPythonFeature.h"
@@ -117,6 +118,7 @@
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
+#include "ViewProviderGroupExtension.h"
 #include "GuiInitScript.h"
 
 
@@ -1468,6 +1470,14 @@ void Application::initTypes(void)
     Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
+    Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderExtensionPython            ::init();
+    Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGroupExtensionPython       ::init();
+    Gui::ViewProviderGeoFeatureGroupExtension   ::init();
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
+    Gui::ViewProviderOriginGroupExtension       ::init();
+    Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();

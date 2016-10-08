@@ -98,8 +98,8 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 #include "Placement.h"
-#include "GeoFeatureGroup.h"
-#include "OriginGroup.h"
+#include "GeoFeatureGroupExtension.h"
+#include "OriginGroupExtension.h"
 #include "Part.h"
 #include "OriginFeature.h"
 #include "Origin.h"
@@ -1135,6 +1135,17 @@ void Application::initTypes(void)
     App ::PropertyPythonObject      ::init();
     App ::PropertyExpressionEngine  ::init();
 
+    // Extension classes
+    App ::Extension                 ::init();
+    App ::ExtensionContainer        ::init();
+    App ::DocumentObjectExtension   ::init();
+    App ::GroupExtension            ::init();
+    App ::GroupExtensionPython      ::init();
+    App ::GeoFeatureGroupExtension  ::init();
+    App ::GeoFeatureGroupExtensionPython::init();
+    App ::OriginGroupExtension      ::init();
+    App ::OriginGroupExtensionPython::init();
+    
     // Document classes
     App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
@@ -1158,9 +1169,6 @@ void Application::initTypes(void)
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
-    App ::OriginGroup               ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
 
