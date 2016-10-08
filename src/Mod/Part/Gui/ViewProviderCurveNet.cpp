@@ -67,7 +67,7 @@ PROPERTY_SOURCE(PartGui::ViewProviderCurveNet,PartGui::ViewProviderPart)
 
        
 ViewProviderCurveNet::ViewProviderCurveNet()
-  : bInEdit(false),bMovePointMode(false)
+  : bInEdit(false),bMovePointMode(false),EdgeRoot(0),VertexRoot(0)
 {
     LineWidth.setValue(4.0f);
     PointSize.setValue(0.05f);
