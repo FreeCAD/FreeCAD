@@ -53,10 +53,10 @@ currLocation = {}
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base",  "Path", "The base path to modify")
-        obj.addProperty("App::PropertyAngle", "filterangle", "Filter Angle", "Angles less than filter angle will not receive corner actions")
-        obj.addProperty("App::PropertyFloat", "offset", "Offset", "Distance the point trails behind the spindle")
-        obj.addProperty("App::PropertyFloat", "pivotheight", "Pivot Height", "Height to raise during corner action")
+        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
+        obj.addProperty("App::PropertyAngle", "filterangle", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Angles less than filter angle will not receive corner actions"))
+        obj.addProperty("App::PropertyFloat", "offset", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Distance the point trails behind the spindle"))
+        obj.addProperty("App::PropertyFloat", "pivotheight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Height to raise during corner action"))
 
         obj.Proxy = self
 

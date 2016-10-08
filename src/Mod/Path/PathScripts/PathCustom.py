@@ -41,7 +41,7 @@ class ObjectCustom:
 
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList","Gcode","Path","The gcode to be inserted")
+        obj.addProperty("App::PropertyStringList","Gcode","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The gcode to be inserted"))
         obj.Proxy = self
 
     def __getstate__(self):

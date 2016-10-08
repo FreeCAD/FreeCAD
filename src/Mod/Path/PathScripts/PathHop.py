@@ -43,10 +43,8 @@ except AttributeError:
 class ObjectHop:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "NextObject",
-                        "Path", "The object to be reached by this hop")
-        obj.addProperty("App::PropertyDistance", "HopHeight",
-                        "Path", "The Z height of the hop")
+        obj.addProperty("App::PropertyLink", "NextObject", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The object to be reached by this hop"))
+        obj.addProperty("App::PropertyDistance", "HopHeight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The Z height of the hop"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -123,7 +121,7 @@ class CommandPathHop:
             return
 
         FreeCAD.ActiveDocument.openTransaction(
-            translate("Pat_hHop", "Create Hop"))
+            translate("Path_Hop", "Create Hop"))
         FreeCADGui.addModule("PathScripts.PathHop")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand(
