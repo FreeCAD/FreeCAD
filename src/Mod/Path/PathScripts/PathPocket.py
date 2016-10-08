@@ -47,55 +47,55 @@ except AttributeError:
 class ObjectPocket:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
-        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
-        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base geometry of this object"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","User Assigned Label"))
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", "The library to use to generate the path")
+        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property","The library to use to generate the path"))
         obj.Algorithm = ['OCC Native', 'libarea']
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
         obj.setEditorMode('ToolDescription', 1)  # make this read only
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", "Incremental Step Down of Tool")
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
-        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", "Maximum material removed on final pass.")
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Starting Depth of Tool- first cut depth in Z"))
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum material removed on final pass."))
 
         # Pocket Properties
-        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW")
+        obj.addProperty("App::PropertyEnumeration", "CutMode", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.CutMode = ['Climb', 'Conventional']
-        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", "Amount of material to leave")
-        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", "Start pocketing at center or boundary")
+        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Amount of material to leave"))
+        obj.addProperty("App::PropertyEnumeration", "StartAt", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Start pocketing at center or boundary"))
         obj.StartAt = ['Center', 'Edge']
-        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", "Percent of cutter diameter to step over on each pass")
+        obj.addProperty("App::PropertyPercent", "StepOver", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Percent of cutter diameter to step over on each pass"))
         # obj.StepOver = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", "Attempts to avoid unnecessary retractions.")
-        obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", "Lifts tool at the end of each pass to respect cut mode.")
-        obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", "Use Zig Zag pattern to clear area.")
-        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", "Angle of the zigzag pattern")
+        obj.addProperty("App::PropertyBool", "KeepToolDown", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Attempts to avoid unnecessary retractions."))
+        obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Lifts tool at the end of each pass to respect cut mode."))
+        obj.addProperty("App::PropertyBool", "UseZigZag", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Use Zig Zag pattern to clear area."))
+        obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Pocket", QtCore.QT_TRANSLATE_NOOP("App::Property","Angle of the zigzag pattern"))
 
         # Entry Properties
-        obj.addProperty("App::PropertyBool", "UseEntry", "Entry", "Allow Cutter enter material with a straight plunge.")
-        obj.addProperty("App::PropertyFloatConstraint", "RampSize", "Entry", "The minimum fraction of tool diameter to use for ramp length")
+        obj.addProperty("App::PropertyBool", "UseEntry", "Entry", QtCore.QT_TRANSLATE_NOOP("App::Property","Allow Cutter enter material with a straight plunge."))
+        obj.addProperty("App::PropertyFloatConstraint", "RampSize", "Entry", QtCore.QT_TRANSLATE_NOOP("App::Property","The minimum fraction of tool diameter to use for ramp length"))
         obj.RampSize = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloatConstraint", "HelixSize", "Entry", "The fraction of tool diameter to use for calculating helix size.")
+        obj.addProperty("App::PropertyFloatConstraint", "HelixSize", "Entry", QtCore.QT_TRANSLATE_NOOP("App::Property","The fraction of tool diameter to use for calculating helix size."))
         obj.HelixSize = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", "The Angle of the ramp entry.")
+        obj.addProperty("App::PropertyFloatConstraint", "RampAngle", "Entry", QtCore.QT_TRANSLATE_NOOP("App::Property","The Angle of the ramp entry."))
         obj.RampAngle = (0.0, 0.01, 100.0, 0.5)
 
         # Start Point Properties
-        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", "The start point of this path")
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", "make True, if specifying a Start Point")
+        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","The start point of this path"))
+        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","make True, if specifying a Start Point"))
 
         obj.Proxy = self
 

@@ -41,7 +41,7 @@ class ObjectPathCopy:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Path","The path to be copied")
+        obj.addProperty("App::PropertyLink","Base","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The path to be copied"))
         obj.Proxy = self
 
     def __getstate__(self):

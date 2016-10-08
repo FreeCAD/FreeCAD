@@ -38,7 +38,7 @@ except AttributeError:
 
 class Stop:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "Stop", "Path", "Add Optional or Mandatory Stop to the program")
+        obj.addProperty("App::PropertyEnumeration", "Stop", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Add Optional or Mandatory Stop to the program"))
         obj.Stop=['Optional', 'Mandatory']
         obj.Proxy = self
         mode = 2

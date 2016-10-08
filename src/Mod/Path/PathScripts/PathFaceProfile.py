@@ -41,10 +41,10 @@ class ObjectFaceProfile:
     
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLinkSub","Base","Path","The base geometry of this object")
-        obj.addProperty("App::PropertyDistance","Offset","Path","The distance between the face and the path")
-        obj.addProperty("App::PropertyInteger","StartVertex","Path","The vertex index to start the path from")
-        obj.addProperty("App::PropertyEnumeration","FirstMove","Path","The type of the first move")
+        obj.addProperty("App::PropertyLinkSub","Base","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The base geometry of this object"))
+        obj.addProperty("App::PropertyDistance","Offset","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The distance between the face and the path"))
+        obj.addProperty("App::PropertyInteger","StartVertex","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The vertex index to start the path from"))
+        obj.addProperty("App::PropertyEnumeration","FirstMove","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","The type of the first move"))
         obj.FirstMove = ["G0","G1"]
         obj.Proxy = self
 
