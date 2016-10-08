@@ -183,7 +183,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
     if (prop->getTypeId() == App::PropertyLink::getClassTypeId()) {
-        App::GeoFeature* object = dynamic_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
+        App::GeoFeature* object = static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
         if (object) {
             float accuracy=0;
             Base::Type meshId  = Base::Type::fromName("Mesh::Feature");
