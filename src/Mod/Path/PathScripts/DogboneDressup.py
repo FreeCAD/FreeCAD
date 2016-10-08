@@ -82,6 +82,9 @@ class Chord (object):
     def asVector(self):
         return self.End - self.Start
 
+    def getLength(self):
+        return self.asVector().Length
+
     def getDirectionOfVector(self, B):
         A = self.asVector()
         # if the 2 vectors are identical, they head in the same direction
@@ -136,6 +139,8 @@ class ObjectDressup:
     LabelDogbone = 'Dogbone'
     LabelTbone_H = 'T-bone horizontal'
     LabelTbone_V = 'T-bone vertical'
+    LabelTbone_L = 'T-bone long edge'
+    LabelTbone_S = 'T-bone short edge'
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
@@ -143,7 +148,7 @@ class ObjectDressup:
         obj.Side = ['Left', 'Right']
         obj.Side = 'Right'
         obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of dogboness")
-        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H, ObjectDressup.LabelTbone_V]
+        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H, ObjectDressup.LabelTbone_V, ObjectDressup.LabelTbone_L, ObjectDressup.LabelTbone_S]
         obj.Shape = ObjectDressup.LabelDogbone
         obj.Proxy = self
 
@@ -214,6 +219,23 @@ class ObjectDressup:
             boneAngle = -boneAngle
         return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
 
+    def tboneEdgeCommands(self, obj, inChord, outChord, onIn):
+        boneAngle = outChord.getAngleXY()
+        if onIn:
+            boneAngle = inChord.getAngleXY()
+        boneAngle = boneAngle + math.pi/2
+        if 'Right' == outChord.getDirectionOf(inChord):
+            boneAngle = boneAngle - math.pi
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
+
+    def tboneLongEdge(self, obj, inChord, outChord):
+        inChordIsLonger = inChord.getLength() > outChord.getLength()
+        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsLonger)
+
+    def tboneShortEdge(self, obj, inChord, outChord):
+        inChordIsShorter = inChord.getLength() < outChord.getLength()
+        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter)
+
     # Generate commands necessary to execute the dogbone
     def dogboneCommands(self, obj, inChord, outChord):
         if obj.Shape == ObjectDressup.LabelDogbone:
@@ -222,6 +244,10 @@ class ObjectDressup:
             return self.tboneHorizontal(obj, inChord, outChord)
         if obj.Shape == ObjectDressup.LabelTbone_V:
             return self.tboneVertical(obj, inChord, outChord)
+        if obj.Shape == ObjectDressup.LabelTbone_L:
+            return self.tboneLongEdge(obj, inChord, outChord)
+        if obj.Shape == ObjectDressup.LabelTbone_S:
+            return self.tboneShortEdge(obj, inChord, outChord)
         return self.debugCircleBone(obj, inChord, outChord)
 
     def execute(self, obj):
