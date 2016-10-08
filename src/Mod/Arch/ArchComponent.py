@@ -37,8 +37,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 
@@ -289,20 +292,20 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
-        obj.addProperty("App::PropertyLink","CloneOf","Arch","The object this component is cloning")
-        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
-        obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
-        obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
-        obj.addProperty("App::PropertyLink","BaseMaterial","Material","A material for this object")
-        obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this object")
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch","Specifies if this object must move together when its host is moved")
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch","Custom IFC properties and attributes")
-        obj.addProperty("App::PropertyArea","VerticalArea","Arch","The area of all vertical faces of this object")
-        obj.addProperty("App::PropertyArea","HorizontalArea","Arch","The area of the projection of this object onto the XY plane")
-        obj.addProperty("App::PropertyLength","PerimeterLength","Arch","The perimeter length of the horizontal area")
+        obj.addProperty("App::PropertyLink","Base","Arch",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+        obj.addProperty("App::PropertyLink","CloneOf","Arch",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyLink","BaseMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+        obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None

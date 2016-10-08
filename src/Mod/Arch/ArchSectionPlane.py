@@ -28,8 +28,11 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from pivy import coin
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 def makeSectionPlane(objectslist=None,name="Section"):
@@ -74,8 +77,8 @@ class _CommandSectionPlane:
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -100,10 +103,10 @@ class _SectionPlane:
     "A section plane object"
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base","The placement of this object")
+        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
-        obj.addProperty("App::PropertyLinkList","Objects","Arch","The objects that must be considered by this section plane. Empty means all document")
-        obj.addProperty("App::PropertyBool","OnlySolids","Arch","If false, non-solids will be cut too, with possible wrong results.")
+        obj.addProperty("App::PropertyLinkList","Objects","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means all document"))
+        obj.addProperty("App::PropertyBool","OnlySolids","Arch",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
         obj.OnlySolids = True
         self.Type = "SectionPlane"
 
@@ -142,13 +145,13 @@ class _SectionPlane:
 class _ViewProviderSectionPlane:
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplayLength","Arch","The display length of this section plane")
-        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch","The display height of this section plane")
-        vobj.addProperty("App::PropertyLength","ArrowSize","Arch","The size of the arrows of this section plane")
+        vobj.addProperty("App::PropertyLength","DisplayLength","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch",QT_TRANSLATE_NOOP("App::Property","The display height of this section plane"))
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
-        vobj.addProperty("App::PropertyBool","CutView","Arch","Show the cut in the 3D view")
+        vobj.addProperty("App::PropertyBool","CutView","Arch",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
         vobj.DisplayLength = 1000
         vobj.DisplayHeight = 1000
         vobj.ArrowSize = 50
@@ -308,13 +311,13 @@ class _ViewProviderSectionPlane:
 
 class _ArchDrawingView:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view","The rendering mode to use")
-        obj.addProperty("App::PropertyBool","ShowCut","Drawing view","If cut geometry is shown or not")
-        obj.addProperty("App::PropertyBool","ShowFill","Drawing view","If cut geometry is filled or not")
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
-        obj.addProperty("App::PropertyLength","FontSize","Drawing view","The size of the texts inside this object")
-        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view","If checked, source objects are displayed regardless of being visible in the 3D model")
+        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view",QT_TRANSLATE_NOOP("App::Property","The rendering mode to use"))
+        obj.addProperty("App::PropertyBool","ShowCut","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is shown or not"))
+        obj.addProperty("App::PropertyBool","ShowFill","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is filled or not"))
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
+        obj.addProperty("App::PropertyLength","FontSize","Drawing view",QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
+        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view",QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35

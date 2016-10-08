@@ -27,6 +27,12 @@ if FreeCAD.GuiUp:
     import FreeCADGui, Arch_rc, os
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
@@ -42,8 +48,8 @@ class _CommandArchSchedule:
 
     def GetResources(self):
         return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
 
     def Activated(self):
         taskd = _ArchScheduleTaskPanel()
@@ -61,12 +67,12 @@ class _ArchSchedule:
     "the Arch Schedule object"
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList","Description","Arch","The description column")
-        obj.addProperty("App::PropertyStringList","Value",      "Arch","The values column")
-        obj.addProperty("App::PropertyStringList","Unit",       "Arch","The units column")
-        obj.addProperty("App::PropertyStringList","Objects",    "Arch","The objects column")
-        obj.addProperty("App::PropertyStringList","Filter",     "Arch","The filter column")
-        obj.addProperty("App::PropertyLink",      "Result",     "Arch","The spreadsheet to print the results to")
+        obj.addProperty("App::PropertyStringList","Description","Arch",QT_TRANSLATE_NOOP("App::Property","The description column"))
+        obj.addProperty("App::PropertyStringList","Value",      "Arch",QT_TRANSLATE_NOOP("App::Property","The values column"))
+        obj.addProperty("App::PropertyStringList","Unit",       "Arch",QT_TRANSLATE_NOOP("App::Property","The units column"))
+        obj.addProperty("App::PropertyStringList","Objects",    "Arch",QT_TRANSLATE_NOOP("App::Property","The objects column"))
+        obj.addProperty("App::PropertyStringList","Filter",     "Arch",QT_TRANSLATE_NOOP("App::Property","The filter column"))
+        obj.addProperty("App::PropertyLink",      "Result",     "Arch",QT_TRANSLATE_NOOP("App::Property","The spreadsheet to print the results to"))
         obj.Proxy = self
         self.Type = "Schedule"
 
