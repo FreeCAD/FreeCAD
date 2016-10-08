@@ -1140,13 +1140,13 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 -
-+ if (self.export.Initialisation):
-int @self.export.Name@::initialisation()
++ if (self.export.Initialization):
+int @self.export.Name@::initialization()
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
-int @self.export.Name@::deinitialisation()
+int @self.export.Name@::finalization()
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
