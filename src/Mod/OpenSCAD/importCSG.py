@@ -603,7 +603,8 @@ def process_linear_extrude(obj,h) :
     mylinear.Base = newobj #obj
     mylinear.Dir = (0,0,h)
     mylinear.Placement=FreeCAD.Placement()
-    mylinear.Solid = True
+    # V17 change to False mylinear.Solid = True
+    mylinear.Solid = False
     if gui:
         newobj.ViewObject.hide()
     return(mylinear)
