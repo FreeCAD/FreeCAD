@@ -134,8 +134,8 @@ DEF_MSG_BUFFER << os.str() << std::endl;
 #else  /* ifdef _DEBUG_*/
 
 #define INFOS_COMPILATION
-#define MESSAGE(msg)
-#define SCRUTE(var)
+#define MESSAGE(msg) {}
+#define SCRUTE(var) {}
 #define REPERE
 #define BEGIN_OF(msg)
 #define END_OF(msg)

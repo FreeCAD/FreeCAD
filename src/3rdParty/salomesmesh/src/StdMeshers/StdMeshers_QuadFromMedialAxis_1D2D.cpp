@@ -1582,7 +1582,7 @@ namespace
         int nbNodes2 = meshDS->MeshElements(edgeIDs[ edgeIDs2[i]] )->NbNodes();
         if ( nbNodes1 != nbNodes2 )
           return false;
-        if (( i-1 >= 0 ) &&
+        if (( i >= 1 ) &&
             ( edgeIDs1[i-1] == edgeIDs1[i] ||
               edgeIDs2[i-1] == edgeIDs2[i] ))
           return false;

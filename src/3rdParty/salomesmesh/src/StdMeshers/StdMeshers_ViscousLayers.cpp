@@ -1404,7 +1404,7 @@ namespace VISCOUS_3D
 #define dumpMoveComm(n,txt)
 #define dumpCmd(txt)
 #define dumpFunctionEnd()
-#define dumpChangeNodes(f)
+#define dumpChangeNodes(f) {}
 #define debugMsg( txt ) {}
 #endif
 }
@@ -6645,8 +6645,10 @@ bool _ViscousBuilder::shrink()
     dumpFunction(SMESH_Comment("beforeShrinkFace")<<f2sd->first); // debug
     SMDS_ElemIteratorPtr fIt = smDS->GetElements();
     while ( fIt->more() )
+    {
       if ( const SMDS_MeshElement* f = fIt->next() )
         dumpChangeNodes( f );
+    }
     dumpFunctionEnd();
 
     // Replace source nodes by target nodes in mesh faces to shrink

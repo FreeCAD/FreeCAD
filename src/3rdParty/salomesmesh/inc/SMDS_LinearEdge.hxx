@@ -42,7 +42,7 @@ public:
   {
     return SMDSEntity_Edge;
   }
-  virtual bool ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)
+  virtual bool ChangeNodes(const SMDS_MeshNode* /*nodes*/[], const int /*nbNodes*/)
   {
     return false;
   }

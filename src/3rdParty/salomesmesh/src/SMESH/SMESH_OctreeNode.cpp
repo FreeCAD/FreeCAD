@@ -117,7 +117,7 @@ Bnd_B3d* SMESH_OctreeNode::buildRootBox()
  */
 //====================================================================================
 
-const bool SMESH_OctreeNode::isInside (const gp_XYZ& p, const double precision)
+bool SMESH_OctreeNode::isInside (const gp_XYZ& p, const double precision)
 {
   if (precision <= 0.)
     return !(getBox()->IsOut(p));

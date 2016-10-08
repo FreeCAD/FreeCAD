@@ -1479,7 +1479,9 @@ bool StdMeshers_Projection_2D::Compute(SMESH_Mesh& theMesh, const TopoDS_Shape& 
 
       // mapper changed, no more "mapper puts on a seam edge nodes from 2 edges"
       if ( isSeam && ! getBoundaryNodes ( sm, tgtFace, u2nodesOnSeam, seamNodes ))
-        ;//RETURN_BAD_RESULT("getBoundaryNodes() failed");
+      {
+         //RETURN_BAD_RESULT("getBoundaryNodes() failed");
+      }
 
       SMDS_NodeIteratorPtr nIt = smDS->GetNodes();
       while ( nIt->more() )
