@@ -52,7 +52,7 @@ public:
     virtual std::vector<App::DocumentObject*> extensionClaimChildren3D(void) const { 
         return std::vector<App::DocumentObject*>(); }
         
-    virtual bool extensionOnDelete(const std::vector<std::string> &subNames){ return true;}
+    virtual bool extensionOnDelete(const std::vector<std::string> &){ return true;}
  
     virtual std::vector<App::DocumentObject*> extensionClaimChildren(void) const { 
         return std::vector<App::DocumentObject*>(); }
@@ -72,8 +72,8 @@ public:
     virtual SoSeparator* extensionGetFrontRoot(void) const {return nullptr;}
     virtual SoGroup*     extensionGetChildRoot(void) const {return nullptr;}
     virtual SoSeparator* extensionGetBackRoot(void) const {return nullptr;}
-    virtual void extensionAttach(App::DocumentObject* pcObject) { }
-    virtual void extensionSetDisplayMode(const char* ModeName) { }
+    virtual void extensionAttach(App::DocumentObject* ) { }
+    virtual void extensionSetDisplayMode(const char* ) { }
     virtual std::vector<std::string> extensionGetDisplayModes(void) const {return std::vector<std::string>();}
 
     //update data of extended opject
