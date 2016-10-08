@@ -130,9 +130,11 @@ int main( int argc, char ** argv )
     }
     catch (const Base::Exception& e) {
         e.ReportException();
+        exit(1);
     }
     catch (...) {
         Console().Error("Application unexpectedly terminated\n");
+        exit(1);
     }
 
     // Destruction phase ===========================================================
