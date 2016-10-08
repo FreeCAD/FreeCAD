@@ -30,8 +30,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Structure"
@@ -119,9 +122,9 @@ class _CommandStructure:
     "the Arch Structure command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Structure',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Structure","Structure"),
                 'Accel': "S, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Structure","Creates a structure object from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -374,14 +377,14 @@ class _Structure(ArchComponent.Component):
     "The Structure object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Tool","Arch","An optional extrusion path for this element")
-        obj.addProperty("App::PropertyLength","Length","Arch","The length of this element, if not based on a profile")
-        obj.addProperty("App::PropertyLength","Width","Arch","The width of this element, if not based on a profile")
-        obj.addProperty("App::PropertyLength","Height","Arch","The height or extrusion depth of this element. Keep 0 for automatic")
-        obj.addProperty("App::PropertyLinkList","Armatures","Arch","Armatures contained in this element")
-        obj.addProperty("App::PropertyVector","Normal","Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
-        obj.addProperty("App::PropertyVectorList","Nodes","Arch","The structural nodes of this element")
-        obj.addProperty("App::PropertyString","Profile","Arch","A description of the standard profile this element is based upon")
+        obj.addProperty("App::PropertyLink","Tool","Arch",QT_TRANSLATE_NOOP("App::Property","An optional extrusion path for this element"))
+        obj.addProperty("App::PropertyLength","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height or extrusion depth of this element. Keep 0 for automatic"))
+        obj.addProperty("App::PropertyLinkList","Armatures","Arch",QT_TRANSLATE_NOOP("App::Property","Armatures contained in this element"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
+        obj.addProperty("App::PropertyString","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"))
         self.Type = "Structure"
         obj.Role = Roles
 
@@ -494,10 +497,10 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
 
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
-        vobj.addProperty("App::PropertyBool","ShowNodes","Arch","If the nodes are visible or not").ShowNodes = False
-        vobj.addProperty("App::PropertyFloat","NodeLine","Base","The width of the nodes line")
-        vobj.addProperty("App::PropertyFloat","NodeSize","Base","The size of the node points")
-        vobj.addProperty("App::PropertyColor","NodeColor","Base","The color of the nodes line")
+        vobj.addProperty("App::PropertyBool","ShowNodes","Arch",QT_TRANSLATE_NOOP("App::Property","If the nodes are visible or not")).ShowNodes = False
+        vobj.addProperty("App::PropertyFloat","NodeLine","Base",QT_TRANSLATE_NOOP("App::Property","The width of the nodes line"))
+        vobj.addProperty("App::PropertyFloat","NodeSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the node points"))
+        vobj.addProperty("App::PropertyColor","NodeColor","Base",QT_TRANSLATE_NOOP("App::Property","The color of the nodes line"))
         vobj.NodeColor = (1.0,1.0,1.0,1.0)
         vobj.NodeSize = 6
         vobj.ShapeColor = ArchCommands.getDefaultColor("Structure")
@@ -566,9 +569,9 @@ class _StructuralSystem(ArchComponent.Component):
     "The Structural System object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkList","Axes","Arch","Axes systems this structure is built on")
-        obj.addProperty("App::PropertyIntegerList","Exclude","Arch","The element numbers to exclude when this structure is based on axes")
-        obj.addProperty("App::PropertyBool","Align","Arch","If true the element are aligned with axes").Align = False 
+        obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"))
+        obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"))
+        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes")).Align = False 
         self.Type = "StructuralSystem"
 
     def execute(self,obj):

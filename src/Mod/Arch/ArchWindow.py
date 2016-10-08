@@ -27,8 +27,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Window"
@@ -383,9 +386,9 @@ class _CommandWindow:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -622,15 +625,15 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch","the components of this window")
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")
-        obj.addProperty("App::PropertyLink","Subvolume","Arch","an optional object that defines a volume to be subtracted from hosts of this window")
-        obj.addProperty("App::PropertyLength","Width","Arch","The width of this window (for preset windows only)")
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this window (for preset windows only)")
-        obj.addProperty("App::PropertyVector","Normal","Arch","The normal direction of this window")
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","an optional object that defines a volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyLink","PanelMaterial","Material","A material for this object")
-        obj.addProperty("App::PropertyLink","GlassMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
