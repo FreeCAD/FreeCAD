@@ -27,8 +27,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Panel"
@@ -89,9 +92,9 @@ class _CommandPanel:
     "the Arch Panel command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Panel',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel","Panel"),
                 'Accel': "P, A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel","Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -254,11 +257,11 @@ class _Panel(ArchComponent.Component):
     "The Panel object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch",   "The length of this element, if not based on a profile")
-        obj.addProperty("App::PropertyLength","Width","Arch",    "The width of this element, if not based on a profile")
-        obj.addProperty("App::PropertyLength","Thickness","Arch","The thickness or extrusion depth of this element")
-        obj.addProperty("App::PropertyInteger","Sheets","Arch",  "The number of sheets to use")
-        obj.addProperty("App::PropertyLength","Offset","Arch",   "The offset between this panel and its baseline")
+        obj.addProperty("App::PropertyLength","Length","Arch",   QT_TRANSLATE_NOOP("App::Property","The length of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Width","Arch",    QT_TRANSLATE_NOOP("App::Property","The width of this element, if not based on a profile"))
+        obj.addProperty("App::PropertyLength","Thickness","Arch",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"))
+        obj.addProperty("App::PropertyInteger","Sheets","Arch",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"))
+        obj.addProperty("App::PropertyLength","Offset","Arch",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
         obj.Sheets = 1
         self.Type = "Panel"
 
@@ -388,14 +391,14 @@ class _PanelView:
     "A Drawing view for Arch Panels"
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
-        obj.addProperty("App::PropertyColor","LineColor","Drawing view","The color of the panel outline")
-        obj.addProperty("App::PropertyLength","FontSize","Tag view","The size of the tag text")
-        obj.addProperty("App::PropertyColor","TextColor","Tag view","The color of the tag text")
-        obj.addProperty("App::PropertyFloat","TextX","Tag view","The X offset of the tag text")
-        obj.addProperty("App::PropertyFloat","TextY","Tag view","The Y offset of the tag text")
-        obj.addProperty("App::PropertyString","FontName","Tag view","The font of the tag text")
+        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
+        obj.addProperty("App::PropertyColor","LineColor","Drawing view",QT_TRANSLATE_NOOP("App::Property","The color of the panel outline"))
+        obj.addProperty("App::PropertyLength","FontSize","Tag view",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+        obj.addProperty("App::PropertyColor","TextColor","Tag view",QT_TRANSLATE_NOOP("App::Property","The color of the tag text"))
+        obj.addProperty("App::PropertyFloat","TextX","Tag view",QT_TRANSLATE_NOOP("App::Property","The X offset of the tag text"))
+        obj.addProperty("App::PropertyFloat","TextY","Tag view",QT_TRANSLATE_NOOP("App::Property","The Y offset of the tag text"))
+        obj.addProperty("App::PropertyString","FontName","Tag view",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
         obj.Proxy = self
         self.Type = "PanelView"
         obj.LineWidth = 0.35

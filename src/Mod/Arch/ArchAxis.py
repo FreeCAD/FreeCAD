@@ -28,8 +28,11 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from pivy import coin
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Axis System"
@@ -59,9 +62,9 @@ class _CommandAxis:
     "the Arch Axis command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Axis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
@@ -81,9 +84,9 @@ class _CommandAxis:
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Arch", "The intervals between axes")
-        obj.addProperty("App::PropertyFloatList","Angles","Arch", "The angles of each axis")
-        obj.addProperty("App::PropertyLength","Length","Arch", "The length of the axes")
+        obj.addProperty("App::PropertyFloatList","Distances","Arch", QT_TRANSLATE_NOOP("App::Property","The intervals between axes"))
+        obj.addProperty("App::PropertyFloatList","Angles","Arch", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"))
+        obj.addProperty("App::PropertyLength","Length","Arch", QT_TRANSLATE_NOOP("App::Property","The length of the axes"))
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
@@ -126,8 +129,8 @@ class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", "The size of the axis bubbles")
-        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", "The numbering style")
+        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
+        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
         vobj.addProperty("App::PropertyEnumeration","BubblePosition","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
