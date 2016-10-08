@@ -225,8 +225,11 @@ namespace Gui {
         it = vp_nodes.find(&vp);
         if (it != vp_nodes.end()) {
             boost::unordered_set<ViewProviderIndex*>::const_iterator v;
-            v = it->second.begin();
-            return (*v)->clone();
+            if (!it->second.empty()) {
+                v = it->second.begin();
+                if (*v)
+                    return (*v)->clone();
+            }
         }
         return new ViewProviderIndex(vp, const_cast<DocumentIndex*>(this));
     }
