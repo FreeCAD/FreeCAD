@@ -30,8 +30,8 @@
 #include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include "ExtensionPy.h"
-#include "ExtensionPy.cpp"
+#include <App/ExtensionPy.h>
+#include <App/ExtensionPy.cpp>
 
 using namespace App;
 
@@ -41,12 +41,12 @@ std::string ExtensionPy::representation(void) const
     return std::string("<extension>");
 }
 
-PyObject *ExtensionPy::getCustomAttributes(const char* attr) const
+PyObject *ExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int ExtensionPy::setCustomAttributes(const char* attr, PyObject *obj)
+int ExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
 {
     return 0;
 }

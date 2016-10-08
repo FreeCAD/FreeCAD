@@ -95,10 +95,10 @@ DocumentObjectExecReturn *DocumentObject::execute(void)
 {
     //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
+    for(auto ext : vector) {
         if(ext->extensionMustExecute()) 
             ext->extensionExecute();
-        
+    }
     return StdReturn;
 }
 
@@ -106,13 +106,13 @@ short DocumentObject::mustExecute(void) const
 {
     if(isTouched())
         return 1;
-    
+
     //ask all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
-    for(auto ext : vector)
+    for(auto ext : vector) {
         if(ext->extensionMustExecute())
             return 1;
-        
+    }
     return 0;
     
 }
@@ -388,24 +388,24 @@ void DocumentObject::connectRelabelSignals()
     }
 }
 
-void DocumentObject::onSettingDocument() {
-
+void DocumentObject::onSettingDocument()
+{
     //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector)
         ext->onExtendedSettingDocument();
 }
 
-void DocumentObject::setupObject() {
-
+void DocumentObject::setupObject()
+{
     //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector)
         ext->onExtendedSetupObject();
 }
 
-void DocumentObject::unsetupObject() {
-
+void DocumentObject::unsetupObject()
+{
     //call all extensions
     auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
     for(auto ext : vector)

@@ -63,7 +63,7 @@ bool ViewProviderGroupExtension::extensionCanDragObject(App::DocumentObject*) co
 }
 
 void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
-    
+
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
             getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(), 
@@ -75,28 +75,27 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 }
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
-    
+
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    
+
     //we cannot drop thing of this group into it again
     if (group->hasObject(obj))
         return false;  
-    
+
     //group into group?
     if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
             if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
                 return false;
-    
+
     //We need to find the correct App extension to ask if this is a supported type, there should only be one
     if(group->allowObject(obj)) 
         return true;
-    
+
     return false;
-    
 }
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
-    
+
     // Open command
     App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
     App::Document* doc = grp->getDocument();
@@ -122,27 +121,26 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
                         .arg(QString::fromLatin1(doc->getName()))
                         .arg(QString::fromLatin1(grp->getNameInDocument()))
                         .arg(QString::fromLatin1(obj->getNameInDocument()));
-    
+
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-    
+
     gui->commitCommand();
 }
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
-    
+
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     
     return std::vector<App::DocumentObject*>(group->Group.getValues());
 }
 
-
 void ViewProviderGroupExtension::extensionShow(void) {
-   
+
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
     if (!getExtendedViewProvider()->isRestoring() && !this->visible) {
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        
+
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
         Gui::Document* doc = Application::Instance->getDocument(group->getExtendedObject()->getDocument());
         for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
@@ -157,13 +155,13 @@ void ViewProviderGroupExtension::extensionShow(void) {
 }
 
 void ViewProviderGroupExtension::extensionHide(void) {
-    
+
     // when reading the Visibility property from file then do not hide the
     // objects of this group because they have stored their visibility status, too
     if (!getExtendedViewProvider()->isRestoring() && this->visible) {
-        
+
         auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-        
+
         const std::vector<App::DocumentObject*> & links = group->Group.getValues();
         Gui::Document* doc = Application::Instance->getDocument(getExtendedViewProvider()->getObject()->getDocument());
         for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
@@ -178,7 +176,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
 }
 
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& vec) {
-    
+
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete it's content
     if ( group->Group.getSize () ) {
