@@ -55,7 +55,7 @@ public:
     void addObject(DocumentObject* obj);
     /*override this function if you want only special objects
      */
-    virtual bool allowObject(DocumentObject* obj) {return true;};
+    virtual bool allowObject(DocumentObject* ) {return true;};
     
     /** Removes an object from this group.
      */

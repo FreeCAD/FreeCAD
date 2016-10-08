@@ -452,7 +452,7 @@ CmdFemConstraintTransform::CmdFemConstraintTransform()
     sPixmap         = "fem-constraint-transform";
 }
 
-void CmdFemConstraintTransform::activated(int iMsg)
+void CmdFemConstraintTransform::activated(int)
 {
     Fem::FemAnalysis        *Analysis;
 

@@ -175,7 +175,7 @@ void ViewProviderGroupExtension::extensionHide(void) {
     this->visible = false;
 }
 
-bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& vec) {
+bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
     // If the group is nonempty ask the user if he wants to delete it's content
