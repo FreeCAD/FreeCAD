@@ -9,7 +9,7 @@
     Namespace="App" 
     FatherInclude="App/PropertyContainerPy.h" 
     FatherNamespace="App"
-    Initialisation="true"
+    Initialization="true"
     Constructor = "true">
     <Documentation>
       <Author Licence="LGPL" Name="Stefan Troeger" EMail="stefantroeger@gmx.net" />

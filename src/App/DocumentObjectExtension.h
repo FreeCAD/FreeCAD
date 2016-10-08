@@ -64,7 +64,7 @@ public:
     
     /// returns the type name of the ViewProviderExtension which is automatically attached 
     /// to the viewprovider object when it is initiated
-    virtual const char* getViewProviderExtensionName(void) const {return "";};
+    virtual const char* getViewProviderExtensionName(void) const {return "";}
 };
 
 } //App

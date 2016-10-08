@@ -60,7 +60,7 @@ public:
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
     static PyGetSetDef    GetterSetter[];
-    virtual PyTypeObject *GetType(void) {return &Type;};
+    virtual PyTypeObject *GetType(void) {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
@@ -68,9 +68,9 @@ public:
     virtual int PyInit(PyObject* args, PyObject*k);
     ~@self.export.Name@();
     
-+ if (self.export.Initialisation):
-    int initialisation();
-    int deinitialisation();
++ if (self.export.Initialization):
+    int initialization();
+    int finalization();
 -
 
     typedef @self.export.TwinPointer@* PointerType ;
@@ -612,8 +612,8 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
     pcObject->ref();
 -
     
-+ if (self.export.Initialisation):
-    initialisation();
++ if (self.export.Initialization):
+    initialization();
 -
 }
 
@@ -645,8 +645,8 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     @self.export.Name@::PointerType ptr = static_cast<@self.export.Name@::PointerType>(_pcTwinPointer);
     delete ptr;
 -
-+ if (self.export.Initialisation):
-    deinitialisation();
++ if (self.export.Initialization):
+    finalization();
 -
 }
 
@@ -820,12 +820,12 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 }
 -
 
-+ if (self.export.Initialisation):
-int @self.export.Name@::initialisation()
++ if (self.export.Initialization):
+int @self.export.Name@::initialization()
 {
     return 0;
 }
-int @self.export.Name@::deinitialisation()
+int @self.export.Name@::finalization()
 {
     return 0;
 }

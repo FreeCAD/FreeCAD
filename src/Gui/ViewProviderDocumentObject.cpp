@@ -161,7 +161,7 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
 {
     // save Object pointer
     pcObject = pcObj;
-    
+
     // Retrieve the supported display modes of the view provider
     aDisplayModesArray = this->getDisplayModes();
 

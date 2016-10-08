@@ -31,8 +31,8 @@
 #include "DocumentObject.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
-#include "ExtensionContainerPy.h"
-#include "ExtensionContainerPy.cpp"
+#include <App/ExtensionContainerPy.h>
+#include <App/ExtensionContainerPy.cpp>
 
 using namespace App;
 
@@ -42,16 +42,16 @@ std::string ExtensionContainerPy::representation(void) const
     return std::string("<extension>");
 }
 
-int  ExtensionContainerPy::initialisation() {
-        
+int  ExtensionContainerPy::initialization() {
+
     if (this->ob_type->tp_dict == NULL) {
         if (PyType_Ready(this->ob_type) < 0)
             return 0;
     }
-        
+
     ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
     for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
-        
+
         PyObject* obj = (*it).second->getExtensionPyObject();
         PyMethodDef* tmpptr = (PyMethodDef*)obj->ob_type->tp_methods;
         while(tmpptr->ml_name) {
@@ -66,10 +66,10 @@ int  ExtensionContainerPy::initialisation() {
             ++tmpptr;
         }
     }
-    return 1;   
+    return 1;
 }
 
-int  ExtensionContainerPy::deinitialisation() {
+int  ExtensionContainerPy::finalization() {
 /*
     //we need to delete all added python extensions, as we are the owner! 
     ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
@@ -78,7 +78,7 @@ int  ExtensionContainerPy::deinitialisation() {
             delete (*it).second;
     }*/
     return 1;
-};
+}
 
 PyObject* ExtensionContainerPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
@@ -92,18 +92,18 @@ int ExtensionContainerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
-{   
+PyObject *ExtensionContainerPy::getCustomAttributes(const char* /*attr*/) const
+{
     return 0;
 }
 
-int ExtensionContainerPy::setCustomAttributes(const char* attr, PyObject *obj)
-{        
+int ExtensionContainerPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
+{
     return 0;
 }
 
 PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
-    
+
     char *type;
     if (!PyArg_ParseTuple(args, "s", &type)) 
         return NULL;                                         // NULL triggers exception 
@@ -115,7 +115,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-    
+
     if(getExtensionContainerPtr()->hasExtension(extension)) {
         Py_INCREF(Py_True);
         return Py_True;
@@ -125,7 +125,7 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 }
 
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
-    
+
     char *type;
     PyObject* proxy;
     if (!PyArg_ParseTuple(args, "sO", &type, &proxy)) 
@@ -138,7 +138,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         str << "No extension found of type '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
-    
+
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
@@ -147,10 +147,10 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         std::stringstream str;
         str << "Extension is not a python addable version: '" << type << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
-    }    
-    
+    }
+
     ext->initExtension(getExtensionContainerPtr());
-    
+
     //set the proxy to allow python overrides
     App::Property* pp = ext->extensionGetPropertyByName("ExtensionProxy");
     if(!pp) {
@@ -159,7 +159,7 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
     static_cast<PropertyPythonObject*>(pp)->setPyObject(proxy);
-    
+
     //make sure all functions of the extension are acessible through this object
     PyMethodDef* tmpptr = (PyMethodDef*)ext->getExtensionPyObject()->ob_type->tp_methods;
     while(tmpptr->ml_name) {
@@ -167,12 +167,12 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
         //      self is added to the functions arguments list. FreeCAD py implementations are not 
         //      made to handle this, the do not accept self as argument. Hence we only use function
         PyObject *func = PyCFunction_New(tmpptr, ext->getExtensionPyObject());
-        //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));  
+        //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));
         PyDict_SetItem(this->ob_type->tp_dict, PyString_FromString(tmpptr->ml_name), func);
         Py_DECREF(func);
         //Py_DECREF(method);
         ++tmpptr;
     }
-    
+
     Py_Return;
 }
