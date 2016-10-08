@@ -82,7 +82,7 @@ class Chord (object):
     def asVector(self):
         return self.End - self.Start
 
-    def directionOfVector(self, B):
+    def getDirectionOfVector(self, B):
         A = self.asVector()
         # if the 2 vectors are identical, they head in the same direction
         if A == B:
@@ -97,15 +97,15 @@ class Chord (object):
 
     def getDirectionOf(self, chordOrVector):
         if type(chordOrVector) is Chord:
-            return self.directionOfVector(chordOrVector.asVector())
-        return self.directionOfVector(chordOrVector)
+            return self.getDirectionOfVector(chordOrVector.asVector())
+        return self.getDirectionOfVector(chordOrVector)
 
     def getAngleOfVector(self, ref):
         angle = self.asVector().getAngle(ref)
         # unfortunately they never figure out the sign :(
         # positive angles go up, so when the reference vector is left
         # then the receiver must go down
-        if self.directionOfVector(ref) == 'Left':
+        if self.getDirectionOfVector(ref) == 'Left':
             return -angle
         return angle
 
@@ -135,6 +135,7 @@ class ObjectDressup:
 
     LabelDogbone = 'Dogbone'
     LabelTbone_H = 'T-bone horizontal'
+    LabelTbone_V = 'T-bone vertical'
 
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
@@ -142,7 +143,7 @@ class ObjectDressup:
         obj.Side = ['Left', 'Right']
         obj.Side = 'Right'
         obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of dogboness")
-        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H]
+        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H, ObjectDressup.LabelTbone_V]
         obj.Shape = ObjectDressup.LabelDogbone
         obj.Proxy = self
 
@@ -174,34 +175,44 @@ class ObjectDressup:
         circle.update({"X": inChord.End.x, "Y": inChord.End.y})
         return [ Path.Command("G3", circle) ]
 
-    def bone(self, obj, inChord, outChord, angle, length):
+    def inOutBoneCommands(self, obj, inChord, outChord, angle, length):
         x = length * math.cos(angle);
         y = length * math.sin(angle);
         boneChordIn = inChord.moveBy(x, y, 0)
         boneChordOut = boneChordIn.moveTo(outChord.Start)
         return [ boneChordIn.g1Command(), boneChordOut.g1Command() ]
 
-    def dogbone(self, obj, inChord, outChord):
+    def dogboneAngle(self, obj, inChord, outChord):
         baseAngle = inChord.getAngleXY()
         turnAngle = outChord.getAngle(inChord)
         boneAngle = baseAngle + (turnAngle - math.pi)/2
         if obj.Side == 'Left':
             boneAngle = boneAngle + math.pi
+        while boneAngle < -math.pi:
+            boneAngle += 2*math.pi
+        while boneAngle > math.pi:
+            boneAngle -= 2*math.pi
         #print("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
+        return boneAngle
+
+    def dogbone(self, obj, inChord, outChord):
+        boneAngle = self.dogboneAngle(obj, inChord, outChord)
         length = self.toolRadius * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
-        return self.bone(obj, inChord, outChord, boneAngle, length)
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, length)
 
     def tboneHorizontal(self, obj, inChord, outChord):
-        angle = 0
-        inAngle = inChord.getAngleXY()
-        outAngle = outChord.getAngleXY()
-        if math.fabs(inAngle) > 3*math.pi/4:
-            angle = - math.pi
-        elif math.fabs(inAngle) > math.pi/4:
-            if math.fabs(outAngle) < 3*math.pi/4:
-                angle = - math.pi
-        #print("in=%+3.2f out=%+3.2f angle=%+3.2f" % (inAngle/math.pi, outAngle/math.pi, angle/math.pi))
-        return self.bone(obj, inChord, outChord, angle, self.toolRadius)
+        angle = self.dogboneAngle(obj, inChord, outChord)
+        boneAngle = 0
+        if angle == math.pi or math.fabs(angle) > math.pi/2:
+            boneAngle = -math.pi
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
+
+    def tboneVertical(self, obj, inChord, outChord):
+        angle = self.dogboneAngle(obj, inChord, outChord)
+        boneAngle = math.pi/2
+        if angle == math.pi or angle < 0:
+            boneAngle = -boneAngle
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
 
     # Generate commands necessary to execute the dogbone
     def dogboneCommands(self, obj, inChord, outChord):
@@ -209,6 +220,8 @@ class ObjectDressup:
             return self.dogbone(obj, inChord, outChord)
         if obj.Shape == ObjectDressup.LabelTbone_H:
             return self.tboneHorizontal(obj, inChord, outChord)
+        if obj.Shape == ObjectDressup.LabelTbone_V:
+            return self.tboneVertical(obj, inChord, outChord)
         return self.debugCircleBone(obj, inChord, outChord)
 
     def execute(self, obj):
