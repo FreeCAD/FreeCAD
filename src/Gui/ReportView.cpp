@@ -561,12 +561,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         setTabStopWidth(width);
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {
-        bool checked = rclGrp.GetBool(sReason);
+        bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stdout)
             onToggleRedirectPythonStdout();
     }
     else if (strcmp(sReason, "RedirectPythonErrors") == 0) {
-        bool checked = rclGrp.GetBool(sReason);
+        bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
     }
