@@ -18,7 +18,7 @@ IF(DEFINED MACPORTS_PREFIX OR DEFINED HOMEBREW_PREFIX)
     # We haven't supported Netgen prior to 5.3.1 on MacOS, and the current
     # plan is for the next Netgen version to be 6.1 (currently unreleased).
     IF(DEFINED HOMEBREW_PREFIX)
-        EXEC_PROGRAM(brew ARGS --prefix nglib OUTPUT_VARIABLE NGLIB_PREFIX)
+        SET(NGLIB_PREFIX ${HOMEBREW_PREFIX})
     ELSE(DEFINED HOMEBREW_PREFIX)
         SET(NGLIB_PREFIX ${MACPORTS_PREFIX})
     ENDIF(DEFINED HOMEBREW_PREFIX)
