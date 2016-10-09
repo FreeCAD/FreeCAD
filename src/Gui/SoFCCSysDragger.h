@@ -207,7 +207,6 @@ public:
 
     SoIdleSensor idleSensor; //!< might be overkill, but want to make sure of performance.
     void setUpAutoScale(SoCamera *cameraIn); //!< used to setup the auto scaling of dragger.
-    SoCamera *camera = nullptr; //!< don't assign directly! use setUpAutoScale.
     
     //! @name Visibility Functions
     //@{
