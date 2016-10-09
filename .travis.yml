@@ -142,9 +142,6 @@ before_install:
        #Remove GDAL if installed because it results in non-existent dependent library exceptions
        if [ -e /usr/local/lib/libgdal.1.dylib ]; then brew unlink gdal; fi
 
-       #Remove conflicting nglib formula that confuses cmake
-       rm $(brew --repository homebrew/science)/nglib.rb
-
        export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_CREATE_MAC_APP=ON"
        export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/bin/FreeCAD"
        ;;
