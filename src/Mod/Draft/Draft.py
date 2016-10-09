@@ -715,11 +715,13 @@ def makeDimension(p1,p2,p3=None,p4=None):
         l = []
         l.append((p1,"Edge"+str(p2+1)))
         if p3 == "radius":
-            l.append((p1,"Center"))
+            #l.append((p1,"Center"))
             obj.ViewObject.Override = "R $dim"
+            obj.Diameter = False
         elif p3 == "diameter":
-            l.append((p1,"Diameter"))
+            #l.append((p1,"Diameter"))
             obj.ViewObject.Override = "Ø $dim"
+            obj.Diameter = True
         obj.LinkedGeometry = l
         obj.Support = p1
         p3 = p4
@@ -3488,6 +3490,7 @@ class _Dimension(_DraftObject):
         obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
         obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
         obj.addProperty("App::PropertyLength","Distance","Draft",QT_TRANSLATE_NOOP("App::Property","The measurement of this dimension"))
+        obj.addProperty("App::PropertyBool","Diameter","Draft",QT_TRANSLATE_NOOP("App::Property","For arc/circle measurements, false = radius, true = diameter"))
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
@@ -3501,29 +3504,47 @@ class _Dimension(_DraftObject):
             obj.setEditorMode('Support',2)
 
     def execute(self, obj):
+        import DraftGeomUtils
+        # set start point and end point according to the linked geometry
         if obj.LinkedGeometry:
-            if "Edge" in obj.LinkedGeometry[0][1]:
-                n = int(obj.LinkedGeometry[0][1][4:])-1
-                if len(obj.LinkedGeometry) > 1:
-                    c = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Center
-                    r = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Radius
-                    ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
-                    if "Center" in obj.LinkedGeometry[1][1]:
-                        obj.Start = c
-                        obj.End = c.add(ray)
-                    elif "Diameter" in obj.LinkedGeometry[1][1]:
-                        obj.Start = c.add(ray.negative())
-                        obj.End = c.add(ray)
-                else:
-                    obj.Start = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[0].Point
-                    obj.End = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[-1].Point
-            elif "Vertex" in obj.LinkedGeometry[0][1]:
-                n = int(obj.LinkedGeometry[0][1][6:])-1
-                obj.Start = obj.LinkedGeometry[0][0].Shape.Vertexes[n].Point
-                if len(obj.LinkedGeometry) > 1:
-                    if "Vertex" in obj.LinkedGeometry[1][1]:
-                        n = int(obj.LinkedGeometry[1][1][6:])-1
-                        obj.End = obj.LinkedGeometry[1][0].Shape.Vertexes[n].Point
+            if len(obj.LinkedGeometry) == 1:
+                lobj = obj.LinkedGeometry[0][0]
+                lsub = obj.LinkedGeometry[0][1]
+                if len(lsub) == 1:
+                    if "Edge" in lsub[0]:
+                        n = int(lsub[0][4:])-1
+                        edge = lobj.Shape.Edges[n]
+                        if DraftGeomUtils.geomType(edge) == "Line":
+                            obj.Start = edge.Vertexes[0].Point
+                            obj.End = edge.Vertexes[-1].Point
+                        elif DraftGeomUtils.geomType(edge) == "Circle":
+                            c = edge.Curve.Center
+                            r = edge.Curve.Radius
+                            ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                            if hasattr(obj,"Diameter"):
+                                if obj.Diameter:
+                                    obj.Start = c.add(ray.negative())
+                                    obj.End = c.add(ray)
+                                else:
+                                    obj.Start = c
+                                    obj.End = c.add(ray)
+                elif len(lsub) == 2:
+                    if ("Vertex" in lsub[0]) and ("Vertex" in lsub[1]):
+                        n1 = int(lsub[0][6:])-1
+                        n2 = int(lsub[1][6:])-1
+                        obj.Start = lobj.Shape.Vertexes[n1].Point
+                        obj.End = lobj.Shape.Vertexes[n2].Point
+            elif len(obj.LinkedGeometry) == 2:
+                lobj1 = obj.LinkedGeometry[0][0]
+                lobj2 = obj.LinkedGeometry[1][0]
+                lsub1 = obj.LinkedGeometry[0][1]
+                lsub2 = obj.LinkedGeometry[1][1]
+                if (len(lsub1) == 1) and (len(lsub2) == 1):
+                    if ("Vertex" in lsub1[0]) and ("Vertex" in lsub2[1]):
+                        n1 = int(lsub1[0][6:])-1
+                        n2 = int(lsub2[0][6:])-1
+                        obj.Start = lobj1.Shape.Vertexes[n1].Point
+                        obj.End = lobj2.Shape.Vertexes[n2].Point
         if obj.ViewObject:
             obj.ViewObject.update()
 
@@ -3541,6 +3562,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyColor","LineColor","Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
         obj.addProperty("App::PropertyDistance","ExtLines","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the extension lines"))
         obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
+        obj.addProperty("App::PropertyBool","FlipText","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension text 180 degrees"))
         obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
@@ -3639,7 +3661,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         proj = None
                     else:
                         base = Part.Line(self.p2,self.p3).toShape()
-                        proj = DraftGeomUtils.findDistance(self.p1,base)
+                        proj = DraftGeomUtils.findDistance(self.p1,base).negative()
             if not base:
                 if DraftVecUtils.equals(self.p1,self.p4):
                     base = None
@@ -3650,20 +3672,22 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
                     self.p3 = self.p4.add(proj.negative())
-                    if hasattr(obj.ViewObject,"ExtLines"):
-                        dmax = obj.ViewObject.ExtLines.Value
-                        if dmax and (proj.Length > dmax):
-                            if (dmax > 0):
-                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
-                            else:
-                                rest = proj.Length + dmax
-                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,rest))
-                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,rest))
                 else:
                     self.p2 = self.p1
                     self.p3 = self.p4
-                    proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
+            if proj:
+                if hasattr(obj.ViewObject,"ExtLines"):
+                    dmax = obj.ViewObject.ExtLines.Value
+                    if dmax and (proj.Length > dmax):
+                        if (dmax > 0):
+                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                        else:
+                            rest = proj.Length + dmax
+                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,rest))
+                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,rest))
+            else:
+                proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
 
             # calculate the arrows positions
             self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
@@ -3679,7 +3703,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     else:
                         norm = Vector(0,0,1)
                 else:
-                    norm = obj.Normal
+                    norm = FreeCAD.Vector(obj.Normal)
             else:
                 if proj:
                     norm = (self.p3.sub(self.p2).cross(proj)).negative()
@@ -3702,20 +3726,24 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing.Value)
             else:
                 offset = DraftVecUtils.scaleTo(v1,0.05)
-
+            rott = rot1
+            if hasattr(obj.ViewObject,"FlipText"):
+                if obj.ViewObject.FlipText:
+                    rott = FreeCAD.Rotation(*rott).multiply(FreeCAD.Rotation(norm,180)).Q
+                    offset = offset.negative()
             # setting text
             try:
                 m = obj.ViewObject.DisplayMode
             except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
                 m = ["2D","3D"][getParam("dimstyle",0)]
-            if m== "3D":
+            if m == "3D":
                 offset = offset.negative()
             self.tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
             if hasattr(obj.ViewObject,"TextPosition"):
                 if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
                     self.tbase = obj.ViewObject.TextPosition
             self.textpos.translation.setValue([self.tbase.x,self.tbase.y,self.tbase.z])
-            self.textpos.rotation = coin.SbRotation(rot1[0],rot1[1],rot1[2],rot1[3])
+            self.textpos.rotation = coin.SbRotation(rott[0],rott[1],rott[2],rott[3])
             su = True
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
