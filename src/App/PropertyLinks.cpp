@@ -52,7 +52,7 @@ using namespace std;
 // PropertyLink
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLink , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -172,7 +172,7 @@ void PropertyLink::Paste(const Property &from)
 // PropertyLinkList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -328,7 +328,7 @@ unsigned int PropertyLinkList::getMemSize(void) const
 // PropertyLinkSub
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -515,7 +515,7 @@ void PropertyLinkSub::Paste(const Property &from)
 // PropertyLinkSubList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -586,12 +586,13 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
     aboutToSetValue();
-    int size = SubList.size();
+    std::size_t size = SubList.size();
     this->_lValueList.clear();
     if (size == 0) {
-        if (lValue)
+        if (lValue) {
             this->_lValueList.push_back(lValue);
-        this->_lSubList.clear();
+            this->_lSubList.push_back(std::string());
+        }
     }
     else {
         this->_lSubList = SubList;
