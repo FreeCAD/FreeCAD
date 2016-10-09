@@ -177,6 +177,8 @@ public:
     friend class CommandManager;
     /// Get somtile called to check the state of the command
     void testActive(void);
+    /// Enables or disables the command
+    void setEnabled(bool);
     /// get called by the QAction
     void invoke (int); 
     /// adds this command to arbitrary widgets
@@ -319,6 +321,7 @@ protected:
     int         eType;
     //@}
 private:
+    bool bEnabled;
     static bool _blockCmd;
 };
 
