@@ -241,9 +241,11 @@ int main( int argc, char ** argv )
     }
     catch (const Base::Exception& e) {
         e.ReportException();
+        exit(1);
     }
     catch (...) {
         Base::Console().Error("Application unexpectedly terminated\n");
+        exit(1);
     }
 
     std::cout.rdbuf(oldcout);
