@@ -811,14 +811,14 @@ SoFCCSysDragger::SoFCCSysDragger()
     this->setUpConnections(TRUE, TRUE);
     
     //we can't have user switching camera types while dragger is shown.
-    Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->blockCommand(true);
-    Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->blockCommand(true);
+    Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(false);
+    Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
 }
 
 SoFCCSysDragger::~SoFCCSysDragger()
 {
-  Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->blockCommand(false);
-  Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->blockCommand(false);
+  Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(true);
+  Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(true);
 }
 
 
