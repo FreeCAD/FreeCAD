@@ -217,6 +217,7 @@ Command::Command(const char* name)
     sAppModule  = "FreeCAD";
     sGroup      = QT_TR_NOOP("Standard");
     eType       = AlterDoc | Alter3DView | AlterSelection;
+    bEnabled    = true;
 }
 
 Command::~Command()
@@ -331,14 +332,15 @@ void Command::invoke(int i)
 
 void Command::testActive(void)
 {
-    if (!_pcAction) return;
+    if (!_pcAction)
+        return;
 
-    if (_blockCmd) {
+    if (_blockCmd || !bEnabled) {
         _pcAction->setEnabled(false);
         return;
     }
 
-    if (!(eType & ForEdit))  // special case for commands which are only in some edit modes active
+    if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
         
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
@@ -346,9 +348,18 @@ void Command::testActive(void)
              _pcAction->setEnabled(false);
             return;
         }
+    }
 
     bool bActive = isActive();
     _pcAction->setEnabled(bActive);
+}
+
+void Command::setEnabled(bool on)
+{
+    if (_pcAction) {
+        bEnabled = on;
+        _pcAction->setEnabled(on);
+    }
 }
 
 //--------------------------------------------------------------------------
