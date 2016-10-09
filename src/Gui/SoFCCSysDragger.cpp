@@ -49,8 +49,6 @@
 
 #include <Base/Quantity.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
 #include "SoFCDB.h"
 #include "SoFCCSysDragger.h"
 
@@ -809,16 +807,10 @@ SoFCCSysDragger::SoFCCSysDragger()
     this->addFinishCallback(&SoFCCSysDragger::finishDragCB, this);
 
     this->setUpConnections(TRUE, TRUE);
-    
-    //we can't have user switching camera types while dragger is shown.
-    Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(false);
-    Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(false);
 }
 
 SoFCCSysDragger::~SoFCCSysDragger()
 {
-  Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->setEnabled(true);
-  Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->setEnabled(true);
 }
 
 
