@@ -460,7 +460,7 @@ class Component:
                                 else:
                                     wires.append(wire)
         elif Draft.getType(obj) in ["Wall","Structure"]:
-            if (Draft.getType(obj) == "Structure") and (l > h):
+            if (Draft.getType(obj) == "Structure") and (l > h) and (obj.Role != "Slab"):
                 if noplacement:
                     h2 = h/2 or 0.5
                     w2 = w/2 or 0.5
