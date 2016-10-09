@@ -481,14 +481,20 @@ class _Structure(ArchComponent.Component):
                     else:
                         # nodes haven't been calculated yet, but are set (file load)
                         # we calculate the nodes now but don't change the property
-                        axis = self.getAxis(obj)
-                        if axis:
-                            self.nodes = [v.Point for v in axis.Vertexes]
+                        if obj.Role in ["Slab"]:
+                            nodes = self.getProfiles(obj)[0]
+                        else:
+                            nodes = self.getAxis(obj)
+                        if nodes:
+                            self.nodes = [v.Point for v in nodes.Vertexes]
                             return
                 # we calculate and set the nodes
-                axis = self.getAxis(obj)
-                if axis:
-                    self.nodes = [v.Point for v in axis.Vertexes]
+                if obj.Role in ["Slab"]:
+                    nodes = self.getProfiles(obj)[0]
+                else:
+                    nodes = self.getAxis(obj)
+                if nodes:
+                    self.nodes = [v.Point for v in nodes.Vertexes]
                     obj.Nodes = self.nodes
 
 
@@ -501,8 +507,10 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
         vobj.addProperty("App::PropertyFloat","NodeLine","Base",QT_TRANSLATE_NOOP("App::Property","The width of the nodes line"))
         vobj.addProperty("App::PropertyFloat","NodeSize","Base",QT_TRANSLATE_NOOP("App::Property","The size of the node points"))
         vobj.addProperty("App::PropertyColor","NodeColor","Base",QT_TRANSLATE_NOOP("App::Property","The color of the nodes line"))
+        vobj.addProperty("App::PropertyEnumeration","NodeType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of structural node"))
         vobj.NodeColor = (1.0,1.0,1.0,1.0)
         vobj.NodeSize = 6
+        vobj.NodeType = ["Linear","Area"]
         vobj.ShapeColor = ArchCommands.getDefaultColor("Structure")
 
     def getIcon(self):
@@ -518,11 +526,25 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
             if obj.Nodes:
                 if hasattr(self,"nodes"):
                     p = []
+                    self.pointset.numPoints.setValue(0)
+                    self.lineset.coordIndex.deleteValues(0)
+                    self.faceset.coordIndex.deleteValues(0)
                     for n in obj.Nodes:
                         p.append([n.x,n.y,n.z])
                     self.coords.point.setValues(0,len(p),p)
                     self.pointset.numPoints.setValue(len(p))
                     self.lineset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+                    if hasattr(obj.ViewObject,"NodeType"):
+                        if (obj.ViewObject.NodeType == "Area") and (len(p) > 2):
+                            self.coords.point.set1Value(len(p),p[0][0],p[0][1],p[0][2])
+                            self.lineset.coordIndex.setValues(0,len(p)+2,range(len(p)+1)+[-1])
+                            self.faceset.coordIndex.setValues(0,len(p)+1,range(len(p))+[-1])
+        elif prop == "Role":
+            if hasattr(obj.ViewObject,"NodeType"):
+                if obj.Role == "Slab":
+                    obj.ViewObject.NodeType = "Area"
+                else:
+                    obj.ViewObject.NodeType = "Linear"
         ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onChanged(self,vobj,prop):
@@ -541,12 +563,23 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 self.linestyle = coin.SoDrawStyle()
                 self.linestyle.style = coin.SoDrawStyle.LINES
                 self.lineset = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
+                self.facestyle = coin.SoDrawStyle()
+                self.facestyle.style = coin.SoDrawStyle.FILLED
+                self.shapehints = coin.SoShapeHints()
+                self.shapehints.faceType = coin.SoShapeHints.UNKNOWN_FACE_TYPE
+                self.fmat = coin.SoMaterial()
+                self.fmat.transparency.setValue(0.75)
+                self.faceset = coin.SoIndexedFaceSet()
                 self.nodes.addChild(self.coords)
                 self.nodes.addChild(self.mat)
                 self.nodes.addChild(self.pointstyle)
                 self.nodes.addChild(self.pointset)
                 self.nodes.addChild(self.linestyle)
                 self.nodes.addChild(self.lineset)
+                self.nodes.addChild(self.facestyle)
+                self.nodes.addChild(self.shapehints)
+                self.nodes.addChild(self.fmat)
+                self.nodes.addChild(self.faceset)
                 vobj.Annotation.addChild(self.nodes)
                 self.updateData(vobj.Object,"Nodes")
                 self.onChanged(vobj,"NodeColor")
@@ -556,12 +589,15 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
             if hasattr(self,"mat"):
                 l = vobj.NodeColor
                 self.mat.diffuseColor.setValue([l[0],l[1],l[2]])
+                self.fmat.diffuseColor.setValue([l[0],l[1],l[2]])
         elif prop == "NodeLine":
             if hasattr(self,"linestyle"):
                 self.linestyle.lineWidth = vobj.NodeLine
         elif prop == "NodeSize":
             if hasattr(self,"pointstyle"):
                 self.pointstyle.pointSize = vobj.NodeSize
+        elif prop == "NodeType":
+            self.updateData(vobj.Object,"Nodes")
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
 
