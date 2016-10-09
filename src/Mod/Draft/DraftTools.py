@@ -1713,8 +1713,36 @@ class Dimension(Creator):
                 self.force = None
                 self.info = None
                 self.selectmode = False
+                self.setFromSelection()
                 msg(translate("draft", "Pick first point:\n"))
                 FreeCADGui.draftToolBar.show()
+                
+    def setFromSelection(self):
+        "If we already have selected geometry, fill the nodes accordingly"
+        sel = FreeCADGui.Selection.getSelectionEx()
+        import DraftGeomUtils
+        if len(sel) == 1:
+            if len(sel[0].SubElementNames) == 1:
+                if "Edge" in sel[0].SubElementNames[0]:
+                    edge = sel[0].SubObjects[0]
+                    n = int(sel[0].SubElementNames[0].lstrip("Edge"))-1
+                    self.indices.append(n)
+                    if DraftGeomUtils.geomType(edge) == "Line":
+                        self.node.extend([edge.Vertexes[0].Point,edge.Vertexes[1].Point])
+                        v1 = None
+                        v2 =None
+                        for i,v in enumerate(sel[0].Object.Shape.Vertexes):
+                            if v.Point == edge.Vertexes[0].Point:
+                                v1 = i
+                            if v.Point == edge.Vertexes[1].Point:
+                                v2 = i
+                        if (v1 != None) and (v2 != None):
+                            self.link = [sel[0].Object,v1,v2]
+                    elif DraftGeomUtils.geomType(edge) == "Circle":
+                        self.node.extend([edge.Curve.Center,edge.Vertexes[0].Point])
+                        self.edges = [edge]
+                        self.arcmode = "diameter"
+                        self.link = [sel[0].Object,n]
 
     def hasMeasures(self):
         "checks if only measurements objects are selected"
@@ -1759,7 +1787,15 @@ class Dimension(Creator):
             self.commit(translate("draft","Create Dimension"),
                         ['Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')'])
         elif self.link and (not self.arcmode):
-            self.commit(translate("draft","Create Dimension"),
+            ops = []
+            if self.force == 1:
+                self.commit(translate("draft","Create Dimension"),
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(0,1,0)'])
+            elif self.force == 2:
+                self.commit(translate("draft","Create Dimension"),
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(1,0,0)'])
+            else:
+                self.commit(translate("draft","Create Dimension"),
                         ['Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')'])
         elif self.arcmode:
             self.commit(translate("draft","Create Dimension"),
@@ -1790,9 +1826,9 @@ class Dimension(Creator):
         elif arg["Type"] == "SoLocation2Event": #mouse movement detection
             import DraftGeomUtils
             shift = hasMod(arg,MODCONSTRAIN)
-            self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if self.arcmode or self.point2:
                 setMod(arg,MODCONSTRAIN,False)
+            self.point,ctrlPoint,self.info = getPoint(self,arg,noTracker=(len(self.node)>0))
             if (hasMod(arg,MODALT) or self.selectmode) and (len(self.node)<3):
                 self.dimtrack.off()
                 if not self.altdown:
