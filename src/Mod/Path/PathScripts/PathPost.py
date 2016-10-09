@@ -60,13 +60,13 @@ class CommandPathPost:
             translate("Path_Post", "Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
         # select the Path Job that you want to post output from
-        obj = FreeCADGui.Selection.getSelection()
+        obj = FreeCADGui.Selection.getCompleteSelection()
 
         # default to the dumper post and default .tap file
         postname = "dumper"
         filename = "tmp.tap"
 
-        print "in activated"
+        print "in activated %s" %(obj)
 
         # check if the user has a project and has set the default post and
         # output filename
