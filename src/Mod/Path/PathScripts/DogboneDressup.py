@@ -152,6 +152,7 @@ class ObjectDressup:
         obj.Shape = ObjectDressup.LabelDogbone
         obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "", "Bones that aren't dressed up")
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
+        obj.BoneBlacklist = []
         obj.Proxy = self
 
     def __getstate__(self):
@@ -238,19 +239,37 @@ class ObjectDressup:
         inChordIsShorter = inChord.getLength() < outChord.getLength()
         return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter)
 
+    def isBoneBlacklisted(self, obj, boneId, loc):
+        blacklisted = False
+        if boneId in obj.BoneBlacklist:
+            blacklisted = True
+        elif loc in self.locationBlacklist:
+            obj.BoneBlacklist.append(boneId)
+            blacklisted = True
+        if blacklisted:
+            self.locationBlacklist.add(loc)
+        return blacklisted
+
     # Generate commands necessary to execute the dogbone
-    def dogboneCommands(self, obj, inChord, outChord):
-        if obj.Shape == ObjectDressup.LabelDogbone:
-            return self.dogbone(obj, inChord, outChord)
-        if obj.Shape == ObjectDressup.LabelTbone_H:
-            return self.tboneHorizontal(obj, inChord, outChord)
-        if obj.Shape == ObjectDressup.LabelTbone_V:
-            return self.tboneVertical(obj, inChord, outChord)
-        if obj.Shape == ObjectDressup.LabelTbone_L:
-            return self.tboneLongEdge(obj, inChord, outChord)
-        if obj.Shape == ObjectDressup.LabelTbone_S:
-            return self.tboneShortEdge(obj, inChord, outChord)
-        return self.debugCircleBone(obj, inChord, outChord)
+    def boneCommands(self, obj, boneId, inChord, outChord):
+        loc = (inChord.End.x, inChord.End.y)
+        enabled = not self.isBoneBlacklisted(obj, boneId, loc)
+        self.bones.append((boneId, loc, enabled))
+
+        if enabled:
+            if obj.Shape == ObjectDressup.LabelDogbone:
+                return self.dogbone(obj, inChord, outChord)
+            if obj.Shape == ObjectDressup.LabelTbone_H:
+                return self.tboneHorizontal(obj, inChord, outChord)
+            if obj.Shape == ObjectDressup.LabelTbone_V:
+                return self.tboneVertical(obj, inChord, outChord)
+            if obj.Shape == ObjectDressup.LabelTbone_L:
+                return self.tboneLongEdge(obj, inChord, outChord)
+            if obj.Shape == ObjectDressup.LabelTbone_S:
+                return self.tboneShortEdge(obj, inChord, outChord)
+            return self.debugCircleBone(obj, inChord, outChord)
+        else:
+            return []
 
     def execute(self, obj):
         if not obj.Base:
@@ -269,19 +288,24 @@ class ObjectDressup:
         lastCommand = None      # the command that generated the last chord
         oddsAndEnds = []        # track chords that are connected to plunges - in case they form a loop
 
+        boneId = 1
+        self.bones = []
+        self.locationBlacklist = set()
+
         for thisCmd in obj.Base.Path.Commands:
             if thisCmd.Name in movecommands:
                 thisChord = lastChord.moveToParameters(thisCmd.Parameters)
                 thisIsACandidate = self.canAttachDogbone(thisCmd, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
-                    dogbone = self.dogboneCommands(obj, lastChord, thisChord)
-                    commands.extend(dogbone)
+                    commands.extend(self.boneCommands(obj, boneId, lastChord, thisChord))
+                    boneId = boneId + 1
 
                 if lastCommand and thisChord.isAPlungeMove():
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
-                            commands.extend(self.dogboneCommands(obj, lastChord, chord))
+                            commands.extend(self.boneCommands(obj, boneId,lastChord, chord))
+                            boneId = boneId + 1
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
@@ -305,6 +329,7 @@ class ObjectDressup:
             elif obj.Base.Side == 'Right':
                 obj.Side = 'Left'
             else:
+                # This will cause an error, which is fine for now 'cause I don't know what to do here
                 obj.Side = 'On'
 
         self.toolRadius = 5
@@ -318,8 +343,18 @@ class ObjectDressup:
             else:
                 self.toolRadius = tool.Diameter / 2
 
-    def boneStateList(self):
-        return [ (FreeCAD.Vector(0,0,17), False), (FreeCAD.Vector(1,1,23), True), (FreeCAD.Vector(7,9,0), True) ]
+    def boneStateList(self, obj):
+        state = {}
+        # If the receiver was loaded from file, then it never generated the bone list.
+        if not hasattr(self, 'bones'):
+            self.execute(obj)
+        for (id, loc, enabled) in self.bones:
+            item = state.get(loc)
+            if item:
+                item[1].append(id)
+            else:
+                state[loc] = (enabled, [id])
+        return state
 
 class ViewProviderDressup:
 
@@ -404,6 +439,9 @@ class CommandDogboneDressup:
         FreeCAD.ActiveDocument.recompute()
 
 class TaskPanel:
+    DataIds = QtCore.Qt.ItemDataRole.UserRole
+    DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
+
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
@@ -415,6 +453,7 @@ class TaskPanel:
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
+        FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
@@ -424,11 +463,16 @@ class TaskPanel:
     def getFields(self):
         self.obj.Shape = str(self.form.shape.currentText())
         self.obj.Side  = str(self.form.side.currentText())
+        blacklist = []
+        for i in range(0, self.form.bones.count()):
+            item = self.form.bones.item(i)
+            if item.checkState() == QtCore.Qt.CheckState.Unchecked:
+                blacklist.extend(item.data(self.DataIds))
+        self.obj.BoneBlacklist = sorted(blacklist)
         self.obj.Proxy.execute(self.obj)
 
     def updateModel(self):
         self.getFields()
-        self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
     def comboSelectText(self, combo, text):
@@ -437,17 +481,23 @@ class TaskPanel:
             combo.setCurrentIndex(index)
 
     def setFields(self):
+        # If the dressup was loaded from disk the Proxy might not be seupt properly
         self.comboSelectText(self.form.shape, self.obj.Shape)
         self.comboSelectText(self.form.side, self.obj.Side)
         self.form.bones.clear()
-        for (pos, enabled) in self.obj.Proxy.boneStateList():
-            lbl = '(%.2f, %2f, *)' % (pos.x, pos.y)
-            item = QtGui.QListWidgetItem(lbl, self.form.bones)
+        itemList = []
+        for loc, state in self.obj.Proxy.boneStateList(self.obj).iteritems():
+            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in state[1]))
+            item = QtGui.QListWidgetItem(lbl)
             item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            if enabled:
+            if state[0]:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
             else:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            item.setData(self.DataIds, state[1])
+            item.setData(self.DataKey, state[1][0])
+            itemList.append(item)
+        for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
             self.form.bones.addItem(item)
 
     def open(self):
@@ -459,10 +509,11 @@ class TaskPanel:
         return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
+        self.setFields()
+        # now that the form is filled, setup the signal handlers
         self.form.shape.currentIndexChanged.connect(self.updateModel)
         self.form.side.currentIndexChanged.connect(self.updateModel)
-        self.form.bones.itemActivated.connect(self.updateModel)
-        self.setFields()
+        self.form.bones.itemChanged.connect(self.updateModel)
 
 class SelObserver:
     def __init__(self):
