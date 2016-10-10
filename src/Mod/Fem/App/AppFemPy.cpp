@@ -67,6 +67,7 @@
 #include "FemMeshPy.h"
 #ifdef FC_USE_VTK
 #include "FemPostPipeline.h"
+#include "FemVTKTools.h"
 #endif
 
 #include <cstdlib>
@@ -93,6 +94,11 @@ public:
         add_varargs_method("read",&Module::read,
             "Read a mesh from a file and returns a Mesh object."
         );
+#ifdef FC_USE_VTK
+        add_varargs_method("readCfdResult",&Module::readCfdResult,
+            "Read a CFD result from a file and returns a Result object."
+        );
+#endif
         add_varargs_method("show",&Module::show,
             "show(shape) -- Add the shape to the active document or create one if no document exists."
         );
@@ -236,6 +242,30 @@ private:
         mesh->read(EncodedName.c_str());
         return Py::asObject(new FemMeshPy(mesh.release()));
     }
+
+#ifdef FC_USE_VTK
+    Py::Object readCfdResult(const Py::Tuple& args)
+    {
+        PyObject *pcObj;
+        char* Name; // PythonFeatureT<FemResultObject> is of type `App::DocumentObjectPy`
+        if (!PyArg_ParseTuple(args.ptr(), "etO","utf-8", &Name, &(App::DocumentObjectPy::Type), &pcObj))
+            throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+        // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
+        if (pcObj)
+        {
+            //App::DocumentObjectPy objpy(pcObj);
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+        }
+        else
+            FemVTKTools::readFluidicResult(EncodedName.c_str());
+        
+        return Py::None();
+    }
+#endif
+
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;

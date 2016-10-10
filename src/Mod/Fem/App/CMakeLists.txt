@@ -240,6 +240,8 @@ if(BUILD_FEM_VTK)
         FemPostFilter.cpp
         FemPostFunction.h
         FemPostFunction.cpp
+        FemVTKTools.h
+        FemVTKTools.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
 endif(BUILD_FEM_VTK)
