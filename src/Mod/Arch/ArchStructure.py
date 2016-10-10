@@ -353,19 +353,19 @@ class _CommandStructure:
                     self.dents.form.show()
                 else:
                     self.dents.form.hide()
-            else:    
+            else:
                 p=elt[0]
                 self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
                 self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
                 self.Profile = Presets[p]
-            
+
 
     def rotateLH(self):
         h = self.Height
         l = self.Length
         self.vLength.setText(FreeCAD.Units.Quantity(h,FreeCAD.Units.Length).UserString)
         self.vHeight.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
-        
+
     def rotateLW(self):
         w = self.Width
         l = self.Length
@@ -392,7 +392,7 @@ class _Structure(ArchComponent.Component):
         "creates the structure shape"
 
         import Part, DraftGeomUtils
-        
+
         if self.clone(obj):
             return
 
@@ -630,19 +630,38 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         self.optwid = QtGui.QWidget()
         self.optwid.setWindowTitle(QtGui.QApplication.translate("Arch", "Node Tools", None, QtGui.QApplication.UnicodeUTF8))
         lay = QtGui.QVBoxLayout(self.optwid)
+
         self.resetButton = QtGui.QPushButton(self.optwid)
         self.resetButton.setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
         self.resetButton.setText(QtGui.QApplication.translate("Arch", "Reset nodes", None, QtGui.QApplication.UnicodeUTF8))
+
         lay.addWidget(self.resetButton)
         QtCore.QObject.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.resetNodes)
+
         self.editButton = QtGui.QPushButton(self.optwid)
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
         self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit nodes", None, QtGui.QApplication.UnicodeUTF8))
         lay.addWidget(self.editButton)
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
+
+        self.extendButton = QtGui.QPushButton(self.optwid)
+        self.extendButton.setIcon(QtGui.QIcon(":/icons/Snap_Perpendicular.svg"))
+        self.extendButton.setText(QtGui.QApplication.translate("Arch", "Extend nodes", None, QtGui.QApplication.UnicodeUTF8))
+        self.extendButton.setToolTip(QtGui.QApplication.translate("Arch", "Extends the nodes of this element to reach the nodes of another element", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.extendButton)
+        QtCore.QObject.connect(self.extendButton, QtCore.SIGNAL("clicked()"), self.extendNodes)
+
+        self.connectButton = QtGui.QPushButton(self.optwid)
+        self.connectButton.setIcon(QtGui.QIcon(":/icons/Snap_Intersection.svg"))
+        self.connectButton.setText(QtGui.QApplication.translate("Arch", "Connect nodes", None, QtGui.QApplication.UnicodeUTF8))
+        self.connectButton.setToolTip(QtGui.QApplication.translate("Arch", "Connects nodes of this element with the nodes of another element", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.connectButton)
+        QtCore.QObject.connect(self.connectButton, QtCore.SIGNAL("clicked()"), self.connectNodes)
+
         self.form = [self.form,self.optwid]
         self.Object = obj
-        
+        self.observer = None
+
     def editNodes(self):
         FreeCADGui.Control.closeDialog()
         FreeCADGui.runCommand("Draft_Edit")
@@ -650,13 +669,98 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
     def resetNodes(self):
         self.Object.Proxy.onChanged(self.Object,"ResetNodes")
 
+    def extendNodes(self,other=None):
+        if not other:
+            self.observer = StructSelectionObserver(self.extendNodes)
+            FreeCADGui.Selection.addObserver(self.observer)
+            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+        else:
+            FreeCADGui.Selection.removeObserver(self.observer)
+            self.observer = None
+            if Draft.getType(other) != "Structure":
+                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure\n"))
+            else:
+                if not other.Nodes:
+                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes\n"))
+                else:
+                    if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
+                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes\n"))
+                    else:
+                        import DraftGeomUtils
+                        nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
+                        nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
+                        intersect = DraftGeomUtils.findIntersection(nodes1[0],nodes1[1],nodes2[0],nodes2[1],True,True)
+                        if not intersect:
+                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point\n"))
+                        else:
+                            intersect = intersect[0]
+                            FreeCAD.Console.PrintMessage(translate("Arch","Intersection found.\n"))
+                            if DraftGeomUtils.findClosest(intersect,nodes1) == 0:
+                                self.Object.Nodes = [self.Object.Placement.inverse().multVec(intersect),self.Object.Nodes[1]]
+                            else:
+                                self.Object.Nodes = [self.Object.Nodes[0],self.Object.Placement.inverse().multVec(intersect)]
+
+    def connectNodes(self,other=None):
+        if not other:
+            self.observer = StructSelectionObserver(self.connectNodes)
+            FreeCADGui.Selection.addObserver(self.observer)
+            FreeCAD.Console.PrintMessage(translate("Arch","Pick another Structure object: "))
+        else:
+            FreeCADGui.Selection.removeObserver(self.observer)
+            self.observer = None
+            if Draft.getType(other) != "Structure":
+                FreeCAD.Console.PrintError(translate("Arch","The picked object is not a Structure\n"))
+            else:
+                if not other.Nodes:
+                    FreeCAD.Console.PrintError(translate("Arch","The picked object has no structural nodes\n"))
+                else:
+                    if (len(self.Object.Nodes) != 2) or (len(other.Nodes) != 2):
+                        FreeCAD.Console.PrintError(translate("Arch","One of these objects has more than 2 nodes\n"))
+                    else:
+                        import DraftGeomUtils
+                        nodes1 = [self.Object.Placement.multVec(v) for v in self.Object.Nodes]
+                        nodes2 = [other.Placement.multVec(v) for v in other.Nodes]
+                        intersect = DraftGeomUtils.findIntersection(nodes1[0],nodes1[1],nodes2[0],nodes2[1],True,True)
+                        if not intersect:
+                            FreeCAD.Console.PrintError(translate("Arch","Unable to find a suitable intersection point\n"))
+                        else:
+                            intersect = intersect[0]
+                            FreeCAD.Console.PrintMessage(translate("Arch","Intersection found.\n"))
+                            if DraftGeomUtils.findClosest(intersect,nodes1) == 0:
+                                self.Object.Nodes = [self.Object.Placement.inverse().multVec(intersect),self.Object.Nodes[1]]
+                            else:
+                                self.Object.Nodes = [self.Object.Nodes[0],self.Object.Placement.inverse().multVec(intersect)]
+                            if DraftGeomUtils.findClosest(intersect,nodes2) == 0:
+                                other.Nodes = [other.Placement.inverse().multVec(intersect),other.Nodes[1]]
+                            else:
+                                other.Nodes = [other.Nodes[0],other.Placement.inverse().multVec(intersect)]
+
+    def accept(self):
+        if self.observer:
+            FreeCADGui.Selection.removeObserver(self.observer)
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+
+class StructSelectionObserver:
+
+    def __init__(self,callback):
+        self.callback = callback
+
+    def addSelection(self, docName, objName, sub, pos):
+        print "got ",objName
+        obj = FreeCAD.getDocument(docName).getObject(objName)
+        self.callback(obj)
+
+
 class _StructuralSystem(ArchComponent.Component):
     "The Structural System object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLinkList","Axes","Arch",QT_TRANSLATE_NOOP("App::Property","Axes systems this structure is built on"))
         obj.addProperty("App::PropertyIntegerList","Exclude","Arch",QT_TRANSLATE_NOOP("App::Property","The element numbers to exclude when this structure is based on axes"))
-        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes")).Align = False 
+        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","If true the element are aligned with axes")).Align = False
         self.Type = "StructuralSystem"
 
     def execute(self,obj):
