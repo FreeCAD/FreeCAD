@@ -49,6 +49,9 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
+#ifdef FC_USE_VTK
+    #include "FemVTKTools.h"
+#endif
 
 #include <boost/assign/list_of.hpp>
 #include <SMESH_Gen.hxx>
@@ -898,6 +901,12 @@ void FemMesh::read(const char *FileName)
         // read Nastran-file
         readNastran(File.filePath());
     }
+#ifdef FC_USE_VTK
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu")) {
+        // read *.vtk legacy format or *.vtu XML unstructure Mesh
+        FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
+    }
+#endif
     else{
         throw Base::Exception("Unknown extension");
     }
@@ -1185,6 +1194,12 @@ void FemMesh::write(const char *FileName) const
         // write ABAQUS Output
         writeABAQUS(File.filePath());
     }
+#ifdef FC_USE_VTK
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+        // write unstructure mesh to VTK format *.vtk and *.vtu
+        FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
+    }
+#endif
     else{
         throw Base::Exception("Unknown extension");
     }
