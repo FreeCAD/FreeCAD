@@ -658,9 +658,17 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
         lay.addWidget(self.connectButton)
         QtCore.QObject.connect(self.connectButton, QtCore.SIGNAL("clicked()"), self.connectNodes)
 
+        self.toggleButton = QtGui.QPushButton(self.optwid)
+        self.toggleButton.setIcon(QtGui.QIcon(":/icons/dagViewVisible.svg"))
+        self.toggleButton.setText(QtGui.QApplication.translate("Arch", "Toggle all nodes", None, QtGui.QApplication.UnicodeUTF8))
+        self.toggleButton.setToolTip(QtGui.QApplication.translate("Arch", "Toggles all structural nodes of the document on/off", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.toggleButton)
+        QtCore.QObject.connect(self.toggleButton, QtCore.SIGNAL("clicked()"), self.toggleNodes)
+
         self.form = [self.form,self.optwid]
         self.Object = obj
         self.observer = None
+        self.nodevis = None
 
     def editNodes(self):
         FreeCADGui.Control.closeDialog()
@@ -735,9 +743,23 @@ class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
                             else:
                                 other.Nodes = [other.Nodes[0],other.Placement.inverse().multVec(intersect)]
 
+    def toggleNodes(self):
+        if self.nodevis:
+            for obj in self.nodevis:
+                obj[0].ViewObject.ShowNodes = obj[1]
+            self.nodevis = None
+        else:
+            self.nodevis = []
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if hasattr(obj.ViewObject,"ShowNodes"):
+                    self.nodevis.append([obj,obj.ViewObject.ShowNodes])
+                    obj.ViewObject.ShowNodes = True
+
     def accept(self):
         if self.observer:
             FreeCADGui.Selection.removeObserver(self.observer)
+        if self.nodevis:
+            self.toggleNodes()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
