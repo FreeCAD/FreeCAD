@@ -3487,6 +3487,18 @@ class Edit(Modifier):
                         self.editpoints.append(self.obj.ViewObject.Proxy.getTextPosition(self.obj.ViewObject))
                     except:
                         pass
+                elif Draft.getType(self.obj) == "Structure":
+                    if self.obj.Nodes:
+                        self.originalDisplayMode = self.obj.ViewObject.DisplayMode
+                        self.originalPoints = self.obj.ViewObject.NodeSize
+                        self.originalNodes = self.obj.ViewObject.ShowNodes
+                        self.obj.ViewObject.DisplayMode = "Wireframe"
+                        self.obj.ViewObject.NodeSize = 1
+                        self.obj.ViewObject.ShowNodes = True
+                        for p in self.obj.Nodes:
+                            if self.pl: 
+                                p = self.pl.multVec(p)
+                            self.editpoints.append(p)
                 if Draft.getType(self.obj) != "BezCurve":
                     self.trackers = []
                     if self.editpoints:
@@ -3521,6 +3533,10 @@ class Edit(Modifier):
         if self.obj:
             if hasattr(self.obj.ViewObject,"Selectable"):
                 self.obj.ViewObject.Selectable = self.selectstate
+        if Draft.getType(self.obj) == "Structure":
+            self.obj.ViewObject.DisplayMode = self.originalDisplayMode 
+            self.obj.ViewObject.NodeSize = self.originalPoints
+            self.obj.ViewObject.ShowNodes = self.originalNodes
         Modifier.finish(self)
         plane.restore()
         if FreeCADGui.Snapper.grid:
@@ -3580,8 +3596,7 @@ class Edit(Modifier):
                                 self.trackers[self.editing].off()
                                 if hasattr(self.obj.ViewObject,"Selectable"):
                                     self.obj.ViewObject.Selectable = False
-                                if "Points" in self.obj.PropertiesList:
-                                    self.node.append(self.obj.Points[self.editing])
+                                self.node.append(self.trackers[self.editing].get())
                                 FreeCADGui.Snapper.setSelectMode(False)
                 else:
                     self.trackers[self.editing].on()
@@ -3703,6 +3718,10 @@ class Edit(Modifier):
         elif Draft.getType(self.obj) == "Space":
             if self.editing == 0:
                 self.obj.ViewObject.TextPosition = v
+        elif Draft.getType(self.obj) == "Structure":
+            nodes = self.obj.Nodes
+            nodes[self.editing] = self.invpl.multVec(v)
+            self.obj.Nodes = nodes
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar

@@ -469,10 +469,11 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop == "Shape":
+        if prop in ["Shape","ResetNodes"]:
+            # ResetNodes is not a property but it allows us to use this function to force reset the nodes
             if hasattr(obj,"Nodes"):
                 # update structural nodes
-                if obj.Nodes:
+                if obj.Nodes  and (prop != "ResetNodes"):
                     if hasattr(self,"nodes"):
                         if self.nodes:
                             if obj.Nodes != self.nodes:
@@ -496,6 +497,18 @@ class _Structure(ArchComponent.Component):
                 if nodes:
                     self.nodes = [v.Point for v in nodes.Vertexes]
                     obj.Nodes = self.nodes
+
+    def getNodeEdges(self,obj):
+        "returns a list of edges from stuctural nodes"
+        edges = []
+        if obj.Nodes:
+            import Part
+            for i in range(len(obj.Nodes)-1):
+                edges.append(Part.Line(obj.Placement.multVec(obj.Nodes[i]),obj.Placement.multVec(obj.Nodes[i+1])).toShape())
+            if hasattr(obj.ViewObject,"NodeType"):
+                if (obj.ViewObject.NodeType == "Area") and (len(obj.Nodes) > 2):
+                    edges.append(Part.Line(obj.Placement.multVec(obj.Nodes[-1]),obj.Placement.multVec(obj.Nodes[0])).toShape())
+        return edges
 
 
 class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
@@ -600,6 +613,42 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
             self.updateData(vobj.Object,"Nodes")
         ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
+    def setEdit(self,vobj,mode):
+        if mode == 0:
+            taskd = StructureTaskPanel(vobj.Object)
+            taskd.obj = self.Object
+            taskd.update()
+            FreeCADGui.Control.showDialog(taskd)
+            return True
+        return False
+
+
+class StructureTaskPanel(ArchComponent.ComponentTaskPanel):
+
+    def __init__(self,obj):
+        ArchComponent.ComponentTaskPanel.__init__(self)
+        self.optwid = QtGui.QWidget()
+        self.optwid.setWindowTitle(QtGui.QApplication.translate("Arch", "Node Tools", None, QtGui.QApplication.UnicodeUTF8))
+        lay = QtGui.QVBoxLayout(self.optwid)
+        self.resetButton = QtGui.QPushButton(self.optwid)
+        self.resetButton.setIcon(QtGui.QIcon(":/icons/edit-undo.svg"))
+        self.resetButton.setText(QtGui.QApplication.translate("Arch", "Reset nodes", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.resetButton)
+        QtCore.QObject.connect(self.resetButton, QtCore.SIGNAL("clicked()"), self.resetNodes)
+        self.editButton = QtGui.QPushButton(self.optwid)
+        self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit nodes", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.editButton)
+        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
+        self.form = [self.form,self.optwid]
+        self.Object = obj
+        
+    def editNodes(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.runCommand("Draft_Edit")
+
+    def resetNodes(self):
+        self.Object.Proxy.onChanged(self.Object,"ResetNodes")
 
 class _StructuralSystem(ArchComponent.Component):
     "The Structural System object"
