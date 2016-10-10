@@ -143,13 +143,15 @@ class ObjectDressup:
     LabelTbone_S = 'T-bone short edge'
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
+        obj.addProperty("App::PropertyLink", "Base","Base", "The base path to modify")
         obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", "The side of path to insert dog-bones")
         obj.Side = ['Left', 'Right']
         obj.Side = 'Right'
         obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of dogboness")
         obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H, ObjectDressup.LabelTbone_V, ObjectDressup.LabelTbone_L, ObjectDressup.LabelTbone_S]
         obj.Shape = ObjectDressup.LabelDogbone
+        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "", "Bones that aren't dressed up")
+        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
         obj.Proxy = self
 
     def __getstate__(self):
@@ -316,6 +318,9 @@ class ObjectDressup:
             else:
                 self.toolRadius = tool.Diameter / 2
 
+    def boneStateList(self):
+        return [ (FreeCAD.Vector(0,0,17), False), (FreeCAD.Vector(1,1,23), True), (FreeCAD.Vector(7,9,0), True) ]
+
 class ViewProviderDressup:
 
     def __init__(self, vobj):
@@ -336,6 +341,13 @@ class ViewProviderDressup:
                 print i.Group
         #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.Object.Base]
+
+    def setEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        panel = TaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+        return True
 
     def __getstate__(self):
         return None
@@ -391,6 +403,79 @@ class CommandDogboneDressup:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+class TaskPanel:
+    def __init__(self, obj):
+        self.obj = obj
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
+        self.updating = False
+
+    def accept(self):
+        self.getFields()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def reject(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
+
+    def getFields(self):
+        self.obj.Shape = str(self.form.shape.currentText())
+        self.obj.Side  = str(self.form.side.currentText())
+        self.obj.Proxy.execute(self.obj)
+
+    def updateModel(self):
+        self.getFields()
+        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
+
+    def comboSelectText(self, combo, text):
+        index = combo.findText(text, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            combo.setCurrentIndex(index)
+
+    def setFields(self):
+        self.comboSelectText(self.form.shape, self.obj.Shape)
+        self.comboSelectText(self.form.side, self.obj.Side)
+        self.form.bones.clear()
+        for (pos, enabled) in self.obj.Proxy.boneStateList():
+            lbl = '(%.2f, %2f, *)' % (pos.x, pos.y)
+            item = QtGui.QListWidgetItem(lbl, self.form.bones)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            if enabled:
+                item.setCheckState(QtCore.Qt.CheckState.Checked)
+            else:
+                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            self.form.bones.addItem(item)
+
+    def open(self):
+        self.s = SelObserver()
+        # install the function mode resident
+        FreeCADGui.Selection.addObserver(self.s)
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def setupUi(self):
+        self.form.shape.currentIndexChanged.connect(self.updateModel)
+        self.form.side.currentIndexChanged.connect(self.updateModel)
+        self.form.bones.itemActivated.connect(self.updateModel)
+        self.setFields()
+
+class SelObserver:
+    def __init__(self):
+        import PathScripts.PathSelection as PST
+        PST.eselect()
+
+    def __del__(self):
+        import PathScripts.PathSelection as PST
+        PST.clear()
+
+    def addSelection(self, doc, obj, sub, pnt):
+        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        FreeCADGui.updateGui()
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
