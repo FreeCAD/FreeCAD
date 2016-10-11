@@ -103,10 +103,7 @@
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QComboBox" name="lenght">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
+        <widget class="QComboBox" name="length">
          <property name="currentIndex">
           <number>2</number>
          </property>
