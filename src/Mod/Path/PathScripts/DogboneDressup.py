@@ -62,7 +62,7 @@ class Length:
     Fixed = 'fixed'
     Adaptive = 'adaptive'
     Custom = 'custom'
-    All = [Fixed, Custom]
+    All = [Adaptive, Fixed, Custom]
 
 # Chord
 # A class to represent the start and end point of a path command. If the underlying
@@ -83,7 +83,7 @@ class Chord (object):
         self.End = end
 
     def __str__(self):
-        return "Chord([%g, %g, %g] -> [%g, %g, %g]) -> %s" % (self.Start.x, self.Start.y, self.Start.z, self.End.x, self.Start.y, self.Start.z, self.End - self.Start)
+        return "Chord([%g, %g, %g] -> [%g, %g, %g])" % (self.Start.x, self.Start.y, self.Start.z, self.End.x, self.End.y, self.End.z)
 
     def moveTo(self, newEnd):
         #print("Chord(%s -> %s)" % (self.End, newEnd))
@@ -139,6 +139,13 @@ class Chord (object):
     def getAngleXY(self):
         return self.getAngle(FreeCAD.Vector(1,0,0))
 
+    def offsetBy(self, distance):
+        angle = self.getAngleXY() - math.pi/2
+        dx = distance * math.cos(angle)
+        dy = distance * math.sin(angle)
+        d = FreeCAD.Vector(dx, dy, 0)
+        return Chord(self.Start + d, self.End + d)
+
     def g1Command(self):
         return Path.Command("G1", {"X": self.End.x, "Y": self.End.y})
 
@@ -152,6 +159,37 @@ class Chord (object):
     def connectsTo(self, chord):
         return self.End == chord.Start
 
+    def lineEquation(self):
+        if self.End.x != self.Start.x:
+            slope = (self.End.y - self.Start.y) / (self.End.x - self.Start.x)
+            offset = self.Start.y - self.Start.x * slope
+            return (offset, slope)
+        return (None, None)
+
+    def intersection(self, chord, emergencyOffset = 0):
+        itsOffset, itsSlope = chord.lineEquation()
+        myOffset, mySlope = self.lineEquation()
+        x = 0
+        y = 0
+        if itsSlope is not None and mySlope is not None:
+            if itsSlope == mySlope:
+                # Now this is wierd, but it happens when the path folds onto itself
+                angle = self.getAngleXY()
+                x = self.End.x + emergencyOffset * math.cos(angle)
+                y = self.End.y + emergencyOffset * math.sin(angle)
+            else:
+                x = (myOffset - itsOffset) / (itsSlope - mySlope)
+                y = myOffset + mySlope * x
+        elif itsSlope is not None:
+            x = self.Start.x
+            y = itsOffset + x * itsSlope
+        elif mySlope is not None:
+            x = chord.Start.x
+            y = myOffset + x * mySlope
+        else:
+            print("Now this really sucks")
+
+        return (x, y)
 
 class ObjectDressup:
 
@@ -201,10 +239,25 @@ class ObjectDressup:
         circle.update({"X": inChord.End.x, "Y": inChord.End.y})
         return [ Path.Command("G3", circle) ]
 
+    def adaptiveBoneLength(self, obj, inChord, outChord, angle):
+        iChord = inChord.offsetBy(self.toolRadius)
+        oChord = outChord.offsetBy(self.toolRadius)
+        x,y = iChord.intersection(oChord, self.toolRadius)
+        dest = inChord.moveTo(FreeCAD.Vector(x, y, inChord.End.z))
+        destAngle = dest.getAngleXY()
+        distance = dest.getLength() - self.toolRadius * math.fabs(math.cos(destAngle - angle))
+        #print("adapt")
+        #print("  in  = %s -> %s" % (inChord, iChord))
+        #print("  out = %s -> %s" % (outChord, oChord))
+        #print("      = (%.2f, %.2f) -> %.2f (%.2f %.2f) -> %.2f" % (x, y, dest.getLength(), destAngle/math.pi, angle/math.pi, distance))
+        return distance
+
     def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength):
         length = fixedLength
         if obj.Length == Length.Custom:
             length = obj.Custom
+        if obj.Length == Length.Adaptive:
+            length = self.adaptiveBoneLength(obj, inChord, outChord, angle)
         x = length * math.cos(angle);
         y = length * math.sin(angle);
         boneChordIn = inChord.moveBy(x, y, 0)
@@ -226,7 +279,7 @@ class ObjectDressup:
 
     def dogbone(self, obj, inChord, outChord):
         boneAngle = self.dogboneAngle(obj, inChord, outChord)
-        length = self.toolRadius * 0.2929 # 0.2929 = 1 - 1/sqrt(2) + (a tiny bit)
+        length = self.toolRadius * 0.41422 # 0.41422 = 2/sqrt(2) - 1 + (a tiny bit)
         return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, length)
 
     def tboneHorizontal(self, obj, inChord, outChord):
