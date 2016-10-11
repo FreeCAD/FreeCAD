@@ -313,22 +313,27 @@ class ObjectDressup:
         inChordIsShorter = inChord.getLength() < outChord.getLength()
         return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter)
 
-    def isBoneBlacklisted(self, obj, boneId, loc):
+    def boneIsBlacklisted(self, obj, boneId, loc):
         blacklisted = False
+        parentConsumed = False
         if boneId in obj.BoneBlacklist:
             blacklisted = True
         elif loc in self.locationBlacklist:
             obj.BoneBlacklist.append(boneId)
             blacklisted = True
+        elif hasattr(obj.Base, 'BoneBlacklist'):
+            parentConsumed = boneId not in obj.Base.BoneBlacklist
+            blacklisted = parentConsumed
         if blacklisted:
             self.locationBlacklist.add(loc)
-        return blacklisted
+        return (blacklisted, parentConsumed)
 
     # Generate commands necessary to execute the dogbone
     def boneCommands(self, obj, boneId, inChord, outChord):
         loc = (inChord.End.x, inChord.End.y)
-        enabled = not self.isBoneBlacklisted(obj, boneId, loc)
-        self.bones.append((boneId, loc, enabled))
+        blacklisted, inaccessible = self.boneIsBlacklisted(obj, boneId, loc)
+        enabled = not blacklisted
+        self.bones.append((boneId, loc, enabled, inaccessible))
 
         if enabled:
             if obj.Shape == Shape.Dogbone:
@@ -397,14 +402,18 @@ class ObjectDressup:
     def setup(self, obj):
         if not hasattr(self, 'toolRadius'):
             print("Here we go ... ")
-            # By default the side for dogbones is opposite of the base path side
-            if obj.Base.Side == Side.Left:
-                obj.Side = Side.Right
-            elif obj.Base.Side == Side.Right:
-                obj.Side = Side.Left
+            if hasattr(obj.Base, "BoneBlacklist"):
+                # dressing up a bone dressup
+                obj.Side = obj.Base.Side
             else:
-                # This will cause an error, which is fine for now 'cause I don't know what to do here
-                obj.Side = 'On'
+                # otherwise dogbones are opposite of the base path's side
+                if obj.Base.Side == Side.Left:
+                    obj.Side = Side.Right
+                elif obj.Base.Side == Side.Right:
+                    obj.Side = Side.Left
+                else:
+                    # This will cause an error, which is fine for now 'cause I don't know what to do here
+                    obj.Side = 'On'
 
         self.toolRadius = 5
         toolLoad = PathUtils.getLastToolLoad(obj)
@@ -422,12 +431,12 @@ class ObjectDressup:
         # If the receiver was loaded from file, then it never generated the bone list.
         if not hasattr(self, 'bones'):
             self.execute(obj)
-        for (id, loc, enabled) in self.bones:
+        for (id, loc, enabled, inaccessible) in self.bones:
             item = state.get(loc)
             if item:
                 item[1].append(id)
             else:
-                state[loc] = (enabled, [id])
+                state[loc] = (enabled, inaccessible, [id])
         return state
 
 class ViewProviderDressup:
@@ -549,16 +558,19 @@ class TaskPanel:
 
     def updateBoneList(self):
         itemList = []
-        for loc, state in self.obj.Proxy.boneStateList(self.obj).iteritems():
-            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in state[1]))
+        for loc, (enabled, inaccessible, ids) in self.obj.Proxy.boneStateList(self.obj).iteritems():
+            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in ids))
             item = QtGui.QListWidgetItem(lbl)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            if state[0]:
+            if enabled:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
             else:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-            item.setData(self.DataIds, state[1])
-            item.setData(self.DataKey, state[1][0])
+            flags = QtCore.Qt.ItemFlag.ItemIsSelectable
+            if not inaccessible:
+                flags |= QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+            item.setFlags(flags)
+            item.setData(self.DataIds, ids)
+            item.setData(self.DataKey, ids[0])
             itemList.append(item)
         self.form.bones.clear()
         for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
