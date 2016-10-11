@@ -434,7 +434,7 @@ class ObjectDressup:
         for (id, loc, enabled, inaccessible) in self.bones:
             item = state.get(loc)
             if item:
-                item[1].append(id)
+                item[2].append(id)
             else:
                 state[loc] = (enabled, inaccessible, [id])
         return state
