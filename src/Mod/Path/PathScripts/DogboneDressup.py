@@ -45,6 +45,25 @@ except AttributeError:
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
 
+class Shape:
+    Dogbone = 'Dogbone'
+    Tbone_H = 'T-bone horizontal'
+    Tbone_V = 'T-bone vertical'
+    Tbone_L = 'T-bone long edge'
+    Tbone_S = 'T-bone short edge'
+    All = [Dogbone, Tbone_H, Tbone_V, Tbone_L, Tbone_S]
+
+class Side:
+    Left = 'Left'
+    Right = 'Right'
+    All = [Left, Right]
+
+class Length:
+    Fixed = 'fixed'
+    Adaptive = 'adaptive'
+    Custom = 'custom'
+    All = [Fixed, Custom]
+
 # Chord
 # A class to represent the start and end point of a path command. If the underlying
 # Command is a rotate command the receiver does represent a chord in the geometric
@@ -92,9 +111,9 @@ class Chord (object):
             return 'Straight'
         d = -A.x*B.y + A.y*B.x
         if d < 0:
-            return 'Left'
+            return Side.Left
         if d > 0:
-            return 'Right'
+            return Side.Right
         # at this point the only direction left is backwards
         return 'Back'
 
@@ -108,7 +127,7 @@ class Chord (object):
         # unfortunately they never figure out the sign :(
         # positive angles go up, so when the reference vector is left
         # then the receiver must go down
-        if self.getDirectionOfVector(ref) == 'Left':
+        if self.getDirectionOfVector(ref) == Side.Left:
             return -angle
         return angle
 
@@ -136,23 +155,22 @@ class Chord (object):
 
 class ObjectDressup:
 
-    LabelDogbone = 'Dogbone'
-    LabelTbone_H = 'T-bone horizontal'
-    LabelTbone_V = 'T-bone vertical'
-    LabelTbone_L = 'T-bone long edge'
-    LabelTbone_S = 'T-bone short edge'
-
     def __init__(self, obj):
         obj.addProperty("App::PropertyLink", "Base","Base", "The base path to modify")
-        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", "The side of path to insert dog-bones")
-        obj.Side = ['Left', 'Right']
-        obj.Side = 'Right'
-        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of dogboness")
-        obj.Shape = [ObjectDressup.LabelDogbone, ObjectDressup.LabelTbone_H, ObjectDressup.LabelTbone_V, ObjectDressup.LabelTbone_L, ObjectDressup.LabelTbone_S]
-        obj.Shape = ObjectDressup.LabelDogbone
-        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "", "Bones that aren't dressed up")
-        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
+        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", "The side of path to insert bones")
+        obj.Side = [Side.Left, Side.Right]
+        obj.Side = Side.Right
+        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of boness")
+        obj.Shape = Shape.All
+        obj.Shape = Shape.Dogbone
+        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", "Bones that aren't dressed up")
         obj.BoneBlacklist = []
+        obj.setEditorMode('BoneBlacklist', 2)  # hide this one
+        obj.addProperty("App::PropertyEnumeration", "Length", "Dressup", "The algorithm to determine the bone length")
+        obj.Length = Length.All
+        obj.Length = Length.Fixed
+        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", "Dressup length if lenght == custom")
+        obj.Custom = 0.0
         obj.Proxy = self
 
     def __getstate__(self):
@@ -162,9 +180,9 @@ class ObjectDressup:
         return None
 
     def theOtherSideOf(self, side):
-        if side == 'Left':
-            return 'Right'
-        return 'Left'
+        if side == Side.Left:
+            return Side.Right
+        return Side.Left
 
     # Answer true if a dogbone could be on either end of the chord, given its command
     def canAttachDogbone(self, cmd, chord):
@@ -183,7 +201,10 @@ class ObjectDressup:
         circle.update({"X": inChord.End.x, "Y": inChord.End.y})
         return [ Path.Command("G3", circle) ]
 
-    def inOutBoneCommands(self, obj, inChord, outChord, angle, length):
+    def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength):
+        length = fixedLength
+        if obj.Length == Length.Custom:
+            length = obj.Custom
         x = length * math.cos(angle);
         y = length * math.sin(angle);
         boneChordIn = inChord.moveBy(x, y, 0)
@@ -194,7 +215,7 @@ class ObjectDressup:
         baseAngle = inChord.getAngleXY()
         turnAngle = outChord.getAngle(inChord)
         boneAngle = baseAngle + (turnAngle - math.pi)/2
-        if obj.Side == 'Left':
+        if obj.Side == Side.Left:
             boneAngle = boneAngle + math.pi
         while boneAngle < -math.pi:
             boneAngle += 2*math.pi
@@ -227,7 +248,7 @@ class ObjectDressup:
         if onIn:
             boneAngle = inChord.getAngleXY()
         boneAngle = boneAngle + math.pi/2
-        if 'Right' == outChord.getDirectionOf(inChord):
+        if Side.Right == outChord.getDirectionOf(inChord):
             boneAngle = boneAngle - math.pi
         return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
 
@@ -257,15 +278,15 @@ class ObjectDressup:
         self.bones.append((boneId, loc, enabled))
 
         if enabled:
-            if obj.Shape == ObjectDressup.LabelDogbone:
+            if obj.Shape == Shape.Dogbone:
                 return self.dogbone(obj, inChord, outChord)
-            if obj.Shape == ObjectDressup.LabelTbone_H:
+            if obj.Shape == Shape.Tbone_H:
                 return self.tboneHorizontal(obj, inChord, outChord)
-            if obj.Shape == ObjectDressup.LabelTbone_V:
+            if obj.Shape == Shape.Tbone_V:
                 return self.tboneVertical(obj, inChord, outChord)
-            if obj.Shape == ObjectDressup.LabelTbone_L:
+            if obj.Shape == Shape.Tbone_L:
                 return self.tboneLongEdge(obj, inChord, outChord)
-            if obj.Shape == ObjectDressup.LabelTbone_S:
+            if obj.Shape == Shape.Tbone_S:
                 return self.tboneShortEdge(obj, inChord, outChord)
             return self.debugCircleBone(obj, inChord, outChord)
         else:
@@ -324,10 +345,10 @@ class ObjectDressup:
         if not hasattr(self, 'toolRadius'):
             print("Here we go ... ")
             # By default the side for dogbones is opposite of the base path side
-            if obj.Base.Side == 'Left':
-                obj.Side = 'Right'
-            elif obj.Base.Side == 'Right':
-                obj.Side = 'Left'
+            if obj.Base.Side == Side.Left:
+                obj.Side = Side.Right
+            elif obj.Base.Side == Side.Right:
+                obj.Side = Side.Left
             else:
                 # This will cause an error, which is fine for now 'cause I don't know what to do here
                 obj.Side = 'On'
@@ -463,6 +484,8 @@ class TaskPanel:
     def getFields(self):
         self.obj.Shape = str(self.form.shape.currentText())
         self.obj.Side  = str(self.form.side.currentText())
+        self.obj.Length = str(self.form.length.currentText())
+        self.obj.Custom = self.form.custom.value()
         blacklist = []
         for i in range(0, self.form.bones.count()):
             item = self.form.bones.item(i)
@@ -473,17 +496,26 @@ class TaskPanel:
 
     def updateModel(self):
         self.getFields()
+        self.form.custom.setEnabled(self.obj.Length == Length.Custom)
         FreeCAD.ActiveDocument.recompute()
 
-    def comboSelectText(self, combo, text):
+    def setupCombo(self, combo, text, items):
+        if items and len(items) > 0:
+            for i in range(combo.count(), -1, -1):
+                combo.removeItem(i)
+            combo.addItems(items)
         index = combo.findText(text, QtCore.Qt.MatchFixedString)
         if index >= 0:
             combo.setCurrentIndex(index)
 
     def setFields(self):
-        # If the dressup was loaded from disk the Proxy might not be seupt properly
-        self.comboSelectText(self.form.shape, self.obj.Shape)
-        self.comboSelectText(self.form.side, self.obj.Side)
+        self.setupCombo(self.form.shape, self.obj.Shape, Shape.All)
+        self.setupCombo(self.form.side, self.obj.Side, Side.All)
+        self.setupCombo(self.form.length, self.obj.Length, Length.All)
+        self.form.custom.setMinimum(0.0)
+        self.form.custom.setDecimals(3)
+        self.form.custom.setValue(self.obj.Custom)
+        self.form.custom.setEnabled(self.obj.Length == Length.Custom)
         self.form.bones.clear()
         itemList = []
         for loc, state in self.obj.Proxy.boneStateList(self.obj).iteritems():
@@ -513,6 +545,8 @@ class TaskPanel:
         # now that the form is filled, setup the signal handlers
         self.form.shape.currentIndexChanged.connect(self.updateModel)
         self.form.side.currentIndexChanged.connect(self.updateModel)
+        self.form.length.currentIndexChanged.connect(self.updateModel)
+        self.form.custom.valueChanged.connect(self.updateModel)
         self.form.bones.itemChanged.connect(self.updateModel)
 
 class SelObserver:
