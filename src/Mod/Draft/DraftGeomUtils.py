@@ -443,8 +443,9 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                     del int[i]
         
         return int
-    else :
-        print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
+    else:
+    #    print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
+        return []
         
 def wiresIntersect(wire1,wire2):
     "wiresIntersect(wire1,wire2): returns True if some of the edges of the wires are intersecting otherwise False"
