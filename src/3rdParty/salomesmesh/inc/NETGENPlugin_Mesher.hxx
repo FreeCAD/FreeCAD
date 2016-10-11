@@ -39,8 +39,6 @@
 namespace nglib {
 #include <nglib.h>
 }
-#include <meshing.hpp>
-#include <occgeom.hpp>
 
 #include <map>
 #include <vector>
@@ -56,10 +54,10 @@ class TopoDS_Shape;
 class NETGENPlugin_Hypothesis;
 class NETGENPlugin_SimpleHypothesis_2D;
 class NETGENPlugin_Internals;
-// namespace netgen {
-//   class OCCGeometry;
-//   class Mesh;
-// }
+namespace netgen {
+  class OCCGeometry;
+  class Mesh;
+}
 //=============================================================================
 /*!
  * \brief Struct storing nb of entities in netgen mesh

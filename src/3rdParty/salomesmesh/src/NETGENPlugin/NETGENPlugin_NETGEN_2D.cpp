@@ -46,8 +46,6 @@ namespace nglib {
 }
 #include <meshing.hpp>
 
-#include <iostream>
-
 using namespace std;
 
 //=============================================================================

@@ -2460,8 +2460,6 @@ bool NETGENPlugin_Mesher::Compute()
   // -------------------------
 #if NETGEN_VERSION < 6
   _ngMesh = NULL;
-// #else
-//   _ngMesh = std::make_shared<netgen::Mesh>();
 #endif
   NETGENPlugin_ngMeshInfo initState; // it remembers size of ng mesh equal to size of Smesh
 
@@ -2647,7 +2645,6 @@ bool NETGENPlugin_Mesher::Compute()
       err = ( err || !comment.empty() );
 
 #if NETGEN_VERSION > 5
-      // nglib::Ng_DeleteMesh((nglib::Ng_Mesh*)tmpNgMesh.get());
       tmpNgMesh.reset();
 #else
       nglib::Ng_DeleteMesh((nglib::Ng_Mesh*)tmpNgMesh);
