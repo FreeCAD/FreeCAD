@@ -235,6 +235,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
 {
   netgen::multithread.terminate = 0;
   //netgen::multithread.task = "Surface meshing";
+
   SMESHDS_Mesh* meshDS = aMesh.GetMeshDS();
   SMESH_MesherHelper helper(aMesh);
   helper.SetElementsOnShape( true );
