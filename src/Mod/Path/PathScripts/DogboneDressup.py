@@ -547,9 +547,27 @@ class TaskPanel:
         self.obj.BoneBlacklist = sorted(blacklist)
         self.obj.Proxy.execute(self.obj)
 
+    def updateBoneList(self):
+        itemList = []
+        for loc, state in self.obj.Proxy.boneStateList(self.obj).iteritems():
+            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in state[1]))
+            item = QtGui.QListWidgetItem(lbl)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
+            if state[0]:
+                item.setCheckState(QtCore.Qt.CheckState.Checked)
+            else:
+                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            item.setData(self.DataIds, state[1])
+            item.setData(self.DataKey, state[1][0])
+            itemList.append(item)
+        self.form.bones.clear()
+        for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
+            self.form.bones.addItem(item)
+
     def updateModel(self):
         self.getFields()
         self.form.custom.setEnabled(self.obj.Length == Length.Custom)
+        self.updateBoneList()
         FreeCAD.ActiveDocument.recompute()
 
     def setupCombo(self, combo, text, items):
@@ -569,21 +587,7 @@ class TaskPanel:
         self.form.custom.setDecimals(3)
         self.form.custom.setValue(self.obj.Custom)
         self.form.custom.setEnabled(self.obj.Length == Length.Custom)
-        self.form.bones.clear()
-        itemList = []
-        for loc, state in self.obj.Proxy.boneStateList(self.obj).iteritems():
-            lbl = '(%.2f, %.2f): %s' % (loc[0], loc[1], ','.join(str(id) for id in state[1]))
-            item = QtGui.QListWidgetItem(lbl)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            if state[0]:
-                item.setCheckState(QtCore.Qt.CheckState.Checked)
-            else:
-                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-            item.setData(self.DataIds, state[1])
-            item.setData(self.DataKey, state[1][0])
-            itemList.append(item)
-        for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
-            self.form.bones.addItem(item)
+        self.updateBoneList()
 
     def open(self):
         self.s = SelObserver()
