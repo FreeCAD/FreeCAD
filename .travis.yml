@@ -119,7 +119,6 @@ before_install:
        ;;
 
    "osx")
-       brew update >/dev/null
        xcodebuild -version -sdk
        brew --config
        if [ "${OSX_PORTS_CACHE}X" != "X" ]; then
@@ -127,22 +126,22 @@ before_install:
             cacheContext=$(create_helper_context repo=${OSX_PORTS_CACHE} auth_token=${GH_TOKEN} release=${FREECAD_RELEASE})
             prime_local_ports_cache $cacheContext
        fi
+       brew update >/dev/null
+       brew --config
 
        brew tap FreeCAD/freecad
-       brew install --verbose --only-dependencies freecad --with-freecad-bottles
-       brew install --verbose --only-dependencies freecad --with-freecad-bottles #Ensure all dependencies are satisfied
+       brew install --verbose --only-dependencies freecad --with-freecad-bottles --with-packaging-utils
+       brew install --verbose --only-dependencies freecad --with-freecad-bottles --with-packaging-utils #Ensure all dependencies are satisfied
 
        #Install the 3DConnexion frameworks
        if [ ! -d /Library/Frameworks/3DconnexionClient.framework ]; then
           curl -o /tmp/3dFW.dmg -L 'http://www.3dconnexion.com/index.php?eID=sdl&ext=tx_iccsoftware&oid=a273bdbc-c289-e10d-816b-567043331c9e&filename=3DxWareMac_v10-4-1_r2428.dmg'
           hdiutil attach -readonly /tmp/3dFW.dmg
           sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
+          diskutil eject /Volumes/3Dconnexion\ Software
        fi
 
-       #Remove GDAL if installed because it results in non-existent dependent library exceptions
-       if [ -e /usr/local/lib/libgdal.1.dylib ]; then brew unlink gdal; fi
-
-       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_CREATE_MAC_APP=ON"
+       export CMAKE_ARGS="${CMAKE_OPTS} -DFREECAD_USE_EXTERNAL_KDL=ON -DFREECAD_USE_EXTERNAL_PIVY=ON -DFREECAD_CREATE_MAC_APP=ON"
        export INSTALLED_APP_PATH="/usr/local/FreeCAD.app/Contents/bin/FreeCAD"
        ;;
 
@@ -179,12 +178,11 @@ after_success:
 - |
   if [ "${TRAVIS_OS_NAME}" == "osx" -a "${TRAVIS_PULL_REQUEST}" == "false" ]; then
      brew ls --versions jq || brew install jq
-     brew uninstall node && brew install node
      npm install -g appdmg
      export VSN=$(python ${TRAVIS_BUILD_DIR}/src/Tools/ArchiveNameFromVersionHeader.py ${TRAVIS_BUILD_DIR}/build/src/Build/Version.h)
      export DEPLOYMENT_ARCHIVE=${VSN}.dmg
      appdmg ${TRAVIS_BUILD_DIR}/src/MacAppBundle/DiskImage/layout.json "${DEPLOYMENT_ARCHIVE}"
      deployContext=$(create_helper_context repo=${TRAVIS_REPO_SLUG} auth_token=${GH_TOKEN} release=${DEPLOY_RELEASE})
      gitHub_deploy_asset_to_release_named $deployContext ${DEPLOYMENT_ARCHIVE}
-     gitHub_prune_assets_for_release_named $deployContext "-OSX-" 3
+     gitHub_prune_assets_for_release_named $deployContext "-OSX-" 1
   fi
