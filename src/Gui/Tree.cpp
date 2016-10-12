@@ -86,6 +86,11 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
+    this->markRecomputeAction = new QAction(this);
+    this->markRecomputeAction->setText(tr("Mark to recompute"));
+    this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    connect(this->markRecomputeAction, SIGNAL(triggered()),
+            this, SLOT(onMarkRecompute()));
 
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
@@ -173,6 +178,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
         contextMenu.addAction(this->relabelObjectAction);
+        contextMenu.addAction(this->markRecomputeAction);
 
         // if only one item is selected setup the edit menu
         if (this->selectedItems().size() == 1) {
@@ -297,6 +303,17 @@ void TreeWidget::onFinishEditing()
         doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
+    }
+}
+
+void TreeWidget::onMarkRecompute()
+{
+    if (this->contextItem && this->contextItem->type() == ObjectType) {
+        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
+            (this->contextItem);
+        App::DocumentObject* obj = objitem->object()->getObject();
+        if (!obj) return;
+        obj->touch();
     }
 }
 
@@ -721,6 +738,9 @@ void TreeWidget::changeEvent(QEvent *e)
 
         this->finishEditingAction->setText(tr("Finish editing"));
         this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+        
+        this->markRecomputeAction->setText(tr("Mark to recompute"));
+        this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
     }
 
     QTreeWidget::changeEvent(e);
