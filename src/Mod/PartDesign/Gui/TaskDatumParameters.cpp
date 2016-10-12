@@ -223,7 +223,7 @@ TaskDatumParameters::TaskDatumParameters(ViewProviderDatum *DatumView,QWidget *p
 
     DatumView->setPickable(false);
 
-    Gui::Selection().addSelectionGate(new NoDependentsSelection(DatumView->getObject(), true, true, true, true));
+    Gui::Selection().addSelectionGate(new NoDependentsSelection(DatumView->getObject()));
 
     // connect object deletion with slot
     auto bnd = boost::bind(&TaskDatumParameters::objectDeleted, this, _1);
