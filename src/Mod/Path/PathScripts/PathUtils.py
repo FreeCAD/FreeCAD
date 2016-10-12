@@ -501,10 +501,11 @@ def getLastToolLoad(obj):
         if hasattr(parent, 'Group'):
             sibs = parent.Group
             for g in sibs:
-                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
-                    lastfound = g
-                if g == child:
-                    tc = lastfound
+                if hasattr(g, 'Proxy'):
+                    if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                        lastfound = g
+                    if g == child:
+                        tc = lastfound
 
         if tc is None:
             try:
