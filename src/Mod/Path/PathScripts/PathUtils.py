@@ -498,13 +498,13 @@ def getLastToolLoad(obj):
         parent = None
 
     while parent is not None:
-
-        sibs = parent.Group
-        for g in sibs:
-            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
-                lastfound = g
-            if g == child:
-                tc = lastfound
+        if hasattr(parent, 'Group'):
+            sibs = parent.Group
+            for g in sibs:
+                if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                    lastfound = g
+                if g == child:
+                    tc = lastfound
 
         if tc is None:
             try:
@@ -533,7 +533,7 @@ def getToolControllers(obj):
     except:
         parent = None
 
-    if parent is not None:
+    if parent is not None and hasattr(parent, 'Group'):
         sibs = parent.Group
         for g in sibs:
             if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
@@ -542,19 +542,22 @@ def getToolControllers(obj):
 
 
 
-def getTool(obj, number=0):
-    "retrieves a tool from a hosting object with a tooltable, if any"
-    for o in obj.InList:
-        if o.TypeId == "Path::FeatureCompoundPython":
-            if hasattr(o, "Tooltable"):
-                return o.Tooltable.getTool(number)
-    return None
-
 def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
     for i in obj.InList:
         if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
             return i
+        if i.TypeId == "Path::FeaturePython":
+            grandParent = findParentJob(i)
+            if grandParent is not None:
+                return grandParent
+    return None
+
+def getTool(obj, number=0):
+    "retrieves a tool from a hosting object with a tooltable, if any"
+    job = findParentJob(obj)
+    if job is not None:
+        return job.Tooltable.getTool(number)
     return None
 
 def GetJobs(jobname = None):
