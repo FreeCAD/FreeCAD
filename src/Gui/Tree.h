@@ -101,6 +101,7 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onMarkRecompute();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -122,6 +123,7 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
