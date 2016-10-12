@@ -175,12 +175,18 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
 bool NoDependentsSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
 {
-    if (support && !support->testIfLinkDAGCompatible(pObj)) {
+    if (support && support->testIfLinkDAGCompatible(pObj)) {
+        return true;
+    }
+    else {
         this->notAllowedReason = QT_TR_NOOP("Selecting this will cause circular dependency.");
         return false;
     }
+}
 
-    return refSelection.allow(pDoc, pObj, sSubName);
+bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+{
+    return filter1->allow(pDoc, pObj, sSubName) && filter2->allow(pDoc, pObj, sSubName);
 }
 
 

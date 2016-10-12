@@ -56,21 +56,31 @@ public:
 
 class NoDependentsSelection : public Gui::SelectionFilterGate
 {
-    ReferenceSelection refSelection;
     const App::DocumentObject* support;
 
 public:
-    NoDependentsSelection(const App::DocumentObject* support_,
-        const bool edge_, const bool plane_, const bool planar_, const bool point_ = false)
-        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), refSelection(support_, edge_, plane_, planar_, point_), support(support_)
+    NoDependentsSelection(const App::DocumentObject* support_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), support(support_)
     {
     }
     /**
     * Allow the user to pick only objects wich are not in objs getDependencyList
     */
-    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName);
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
 };
 
+class CombineSelectionFilterGates: public Gui::SelectionFilterGate
+{
+    std::unique_ptr<Gui::SelectionFilterGate> filter1;
+    std::unique_ptr<Gui::SelectionFilterGate> filter2;
+
+public:
+    CombineSelectionFilterGates(std::unique_ptr<Gui::SelectionFilterGate> &filter1_, std::unique_ptr<Gui::SelectionFilterGate> &filter2_)
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), filter1(std::move(filter1_)), filter2(std::move(filter2_))
+    {
+    }
+    bool allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName) override;
+};
 // Convenience methods
 /// Extract reference from Selection
 void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::SelectionChanges& msg,
