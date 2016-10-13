@@ -253,6 +253,7 @@ class _Space(ArchComponent.Component):
         obj.SpaceType = SpaceTypes
         obj.Conditioning = ConditioningTypes
         obj.Role = Roles
+        obj.setEditorMode("HorizontalArea",2)
 
     def execute(self,obj):
         
@@ -375,9 +376,21 @@ class _Space(ArchComponent.Component):
             e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
-            return f.Area
         except Part.OCCError:
             return 0
+        else:
+            if hasattr(obj,"PerimeterLength"):
+                if w.Length != obj.PerimeterLength.Value:
+                    obj.PerimeterLength = w.Length
+            if hasattr(obj,"VerticalArea"):
+                a = 0
+                for f in sh.Faces:
+                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                    if (ang > 1.57) and (ang < 1.571):
+                        a += f.Area
+                    if a != obj.VerticalArea.Value:
+                        obj.VerticalArea = a
+            return f.Area
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
