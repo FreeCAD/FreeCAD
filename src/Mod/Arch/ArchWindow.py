@@ -634,6 +634,7 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
         obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
@@ -735,6 +736,8 @@ class _Window(ArchComponent.Component):
         if base:
             if not base.isNull():
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
+        if hasattr(obj,"Area"):
+            obj.Area = obj.Width.Value * obj.Height.Value
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
