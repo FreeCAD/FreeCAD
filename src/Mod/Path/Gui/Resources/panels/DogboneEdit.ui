@@ -44,6 +44,9 @@
        </item>
        <item row="0" column="1">
         <widget class="QComboBox" name="shape">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Select desired shape of the bone dressup:&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;Dogbone&lt;/span&gt; ... take the shortest path to cover the edge,&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;T-bone&lt;/span&gt; ... follow a certain direction until corner is covered&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <item>
           <property name="text">
            <string>Dogbone</string>
@@ -80,6 +83,9 @@
        </item>
        <item row="1" column="1">
         <widget class="QComboBox" name="side">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;On which side of the profile bones are inserted - this also determines which corners are dressed up. The default value is determined based on the profile being dressed up.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="currentIndex">
           <number>1</number>
          </property>
@@ -104,6 +110,9 @@
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="length">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Lenght of the bone to be inserted into the profile.&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;adaptive&lt;/span&gt; ... the lenght is adapted to cover the corner based on the angle of it's edges, taking the current tool radius into account (default)&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;fixed&lt;/span&gt; ... is the same as adaptive for straight angles. For T-bones it's the radius of the tool (R) and for dogbones it's R * (2/√2 - 1).&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;custom&lt;/span&gt; ... let's you sepcify a custom (fixed) distance below&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="currentIndex">
           <number>2</number>
          </property>
@@ -129,6 +138,9 @@
          <property name="enabled">
           <bool>false</bool>
          </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Enter distance for each bone if &lt;span style=&quot; font-weight:600;&quot;&gt;Lenght&lt;/span&gt; is set to &lt;span style=&quot; font-weight:600;&quot;&gt;custom&lt;/span&gt;, ignored otherwise.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
         </widget>
        </item>
        <item row="4" column="0" colspan="2">
@@ -138,6 +150,19 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of bone locations (with all bones at that location) that are part of this dressup. The list is determined by the corners in the profile and the selected &lt;span style=&quot; font-weight:600;&quot;&gt;Side&lt;/span&gt; for the bones. &lt;/p&gt;&lt;p&gt;You can &lt;span style=&quot; font-weight:600;&quot;&gt;un-check&lt;/span&gt; the bones you don't want to be dressed up.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If a bone is &lt;span style=&quot; font-weight:600;&quot;&gt;grayed out&lt;/span&gt; it means that it is already dressed up by a previous dressup. Or put another way, if you dress up this dogobone dressup again you will only be able to select the bones that are un-checked here.&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;If this list is empty it probably means you're trying to create bones on the wrong side of the profile.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="customLabel">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="text">
+          <string>Distance</string>
          </property>
         </widget>
        </item>
