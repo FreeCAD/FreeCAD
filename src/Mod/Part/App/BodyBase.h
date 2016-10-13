@@ -71,13 +71,13 @@ public:
 
     // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
     /// Remove the feature from the body
-    virtual void removeFeature(App::DocumentObject* feature){}
+    virtual void removeFeature(App::DocumentObject*){}
 
     /// Return true if the feature belongs to this body or either the body is based on the feature
-    const bool hasFeature(const App::DocumentObject *f) const;
+    bool hasFeature(const App::DocumentObject *f) const;
 
     /// Return true if the feature belongs to the body and is located after the target
-    const bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
+    bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
 
     /**
      * Return the body which this feature belongs too, or NULL.

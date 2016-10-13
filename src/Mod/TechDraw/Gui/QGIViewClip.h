@@ -46,12 +46,10 @@ public:
     virtual void updateView(bool update = false) override;
 
     virtual void draw() override;
-    virtual QRectF boundingRect() const override;
 
 protected:
     void drawClip();
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    QGIView* getQGIVByName(std::string name);
 
 private:
     QGCustomRect* m_frame;

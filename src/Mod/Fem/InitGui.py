@@ -56,42 +56,10 @@ class FemWorkbench (Workbench):
         import _CommandShellThickness
         import _CommandBeamSection
         import _CommandMechanicalMaterial
+        import _CommandMaterialMechanicalNonlinear
         import _CommandSolverCalculix
         import _CommandSolverZ88
-
-        import subprocess
-        from platform import system
-        ccx_path = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("ccxBinaryPath")
-        if not ccx_path:
-            try:
-                if system() == 'Linux':
-                    p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
-                    if p1.wait() == 0:
-                        ccx_path = p1.stdout.read().split('\n')[0]
-                elif system() == 'Windows':
-                    ccx_path = FreeCAD.getHomePath() + 'bin/ccx.exe'
-                if ccx_path:
-                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("ccxBinaryPath", ccx_path)
-                else:
-                    FreeCAD.Console.PrintError("CalculiX ccx binary not found! Please set it manually in FEM preferences.\n")
-            except Exception as e:
-                FreeCAD.Console.PrintError(e.message)
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-
-        import os
-        working_dir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").GetString("WorkingDir")
-        if not (os.path.isdir(working_dir)):
-            try:
-                os.makedirs(working_dir)
-            except:
-                print ("Dir \'{}\' from FEM preferences doesn't exist and cannot be created.".format(working_dir))
-                import tempfile
-                working_dir = tempfile.gettempdir()
-                print ("Dir \'{}\' will be used instead.".format(working_dir))
-        if working_dir:
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem").SetString("WorkingDir", working_dir)
-        else:
-            FreeCAD.Console.PrintError("Setting working directory \'{}\' for ccx failed!\n")
+        import _CommandConstraintSelfWeight
 
     def GetClassName(self):
         return "FemGui::Workbench"

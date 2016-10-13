@@ -52,6 +52,7 @@ MacroManager::MacroManager()
     recordGui(true),
     guiAsComment(true),
     scriptToPyConsole(true),
+    localEnv(true),
     pyConsole(0),
     pyDebugger(new PythonDebugger())
 {
@@ -69,13 +70,15 @@ MacroManager::~MacroManager()
 
 void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+    (void)rCaller;
+    (void)sReason;
     this->recordGui         = this->params->GetBool("RecordGui", true);
     this->guiAsComment      = this->params->GetBool("GuiAsComment", true);
     this->scriptToPyConsole = this->params->GetBool("ScriptToPyConsole", true);
     this->localEnv          = this->params->GetBool("LocalEnvironment", true);
 }
 
-void MacroManager::open(MacroType eType,const char *sName)
+void MacroManager::open(MacroType eType, const char *sName)
 {
     // check 
     assert(!this->openMacro);
@@ -203,7 +206,7 @@ namespace Gui {
     class PythonRedirector
     {
     public:
-        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj)
+        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj), old(0)
         {
             if (out) {
                 Base::PyGILStateLocker lock;
@@ -226,8 +229,10 @@ namespace Gui {
     };
 }
 
-void MacroManager::run(MacroType eType,const char *sName)
+void MacroManager::run(MacroType eType, const char *sName)
 {
+    Q_UNUSED(eType); 
+
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");

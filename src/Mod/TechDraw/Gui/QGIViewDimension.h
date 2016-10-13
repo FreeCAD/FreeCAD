@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
+#include <QGraphicsPathItem>
+#include <Base/Vector3D.h>
 #include "QGIView.h"
 #include "QGCustomText.h"
 
@@ -35,17 +37,20 @@ class DrawViewDimension;
 
 namespace TechDrawGeometry {
 class BaseGeom;
+class AOC;
 }
 
 namespace TechDrawGui
 {
+class QGIArrow;
+class QGIDimLines;
 
 class QGIDatumLabel : public QGCustomText
 {
 Q_OBJECT
 
 public:
-    explicit QGIDatumLabel(int ref = -1, QGraphicsScene *scene = 0 );
+    explicit QGIDatumLabel();
     ~QGIDatumLabel() {}
 
     enum {Type = QGraphicsItem::UserType + 107};
@@ -65,20 +70,15 @@ Q_SIGNALS:
 protected:
     // Preselection events:
     void mouseReleaseEvent( QGraphicsSceneMouseEvent * event);
-    void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     // Selection detection
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    int reference;
     double posX;
     double posY;
 
 private:
-    QPen m_pen;
-    QColor m_colNormal;
-    QColor m_colPre;
-    QColor m_colSel;
 };
 
 class TechDrawGuiExport QGIViewDimension : public QObject, public QGIView
@@ -95,7 +95,7 @@ public:
     int type() const { return Type;}
 
     virtual void drawBorder();
-    virtual void updateView(bool update = false);
+    virtual void updateView(bool update = false) override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 public Q_SLOTS:
@@ -107,18 +107,18 @@ public Q_SLOTS:
 
 protected:
     void draw();
-    // Selection detection
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual void setSvgPens(void);
+    virtual void setPens(void);
 
 protected:
     bool hasHover;
-    QGraphicsItem*datumLabel;                                         //dimension text
-    QGraphicsItem*arrows;                                             //dimension lines + extension lines
-    QGraphicsItem*centreLines;
-
-    std::vector<QGraphicsItem*> arw;                                  //arrowheads
-    std::vector<TechDrawGeometry::BaseGeom *> projGeom;
-    QPen pen;
+    QGIDatumLabel* datumLabel;                                         //dimension text
+    QGIDimLines* dimLines;                                       //dimension lines + extension lines
+    QGIArrow* aHead1;
+    QGIArrow* aHead2;
+    //QGICMark* centerMark
+    double m_lineWidth;
 };
 
 } // namespace MDIViewPageGui

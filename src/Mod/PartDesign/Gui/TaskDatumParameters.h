@@ -63,7 +63,7 @@ public:
      */
     Attacher::eMapMode getActiveMapMode();
 
-    const bool isCompleted() const { return completed; }
+    bool isCompleted() const { return completed; }
 
 private Q_SLOTS:
     void onSuperplacementChanged(double, int idx);
@@ -83,6 +83,7 @@ private Q_SLOTS:
     void onButtonRef3(const bool checked = true);
     void onButtonRef4(const bool checked = true);
     void onModeSelect(void);
+    void visibilityAutomation(bool opening_not_closing);
 
 protected:
     void changeEvent(QEvent *e);
@@ -90,7 +91,7 @@ protected:
 private:
     void resetViewMode();
     void objectDeleted(const Gui::ViewProviderDocumentObject&);
-    void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void updateReferencesUI();
 
     /**

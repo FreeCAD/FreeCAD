@@ -138,6 +138,30 @@ public:
     virtual ~PropertyLength(){}
 };
 
+/** Area property
+ * This is a property for representing areas. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^2 or mm^2.
+ */
+class AppExport PropertyArea : public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyArea(void);
+    virtual ~PropertyArea(){}
+};
+
+/** Volume property
+ * This is a property for representing volumes. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^3 or mm^3.
+ */
+class AppExport PropertyVolume : public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyVolume(void);
+    virtual ~PropertyVolume(){}
+};
+
 /** Angle property
  * This is a property for representing angles. It basicly a float
  * property. On the Gui it has a quantity like RAD.

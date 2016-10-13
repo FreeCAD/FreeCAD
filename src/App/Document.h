@@ -46,6 +46,7 @@ namespace Base {
 
 namespace App
 {
+    class TransactionalObject;
     class DocumentObject;
     class DocumentObjectExecReturn;
     class Document;
@@ -115,6 +116,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
@@ -203,7 +208,7 @@ public:
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
     /// Returns true if the DocumentObject is contained in this document
-    const bool isIn(const DocumentObject *pFeat) const;
+    bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -213,6 +218,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
@@ -308,9 +314,10 @@ public:
 
     friend class Application;
     /// because of transaction handling
+    friend class TransactionalObject;
     friend class DocumentObject;
     friend class Transaction;
-    friend class TransactionObject;
+    friend class TransactionDocumentObject;
 
     /// Destruction
     virtual ~Document();
@@ -329,7 +336,7 @@ protected:
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
-    void onBeforeChangeProperty(const DocumentObject *Who, const Property *What);
+    void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature

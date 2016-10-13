@@ -27,12 +27,14 @@
 
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderPythonFeature.h"
+#include "ViewProviderGroupExtension.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject
+class GuiExport ViewProviderDocumentObjectGroup : public ViewProviderDocumentObject, 
+                                                  public ViewProviderGroupExtension
 {
-    PROPERTY_HEADER(Gui::ViewProviderDocumentObjectGroup);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup);
 
 public:
     /// constructor.
@@ -40,36 +42,16 @@ public:
     /// destructor.
     virtual ~ViewProviderDocumentObjectGroup();
 
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
-    virtual bool canDragObjects() const;
-    virtual void dragObject(App::DocumentObject*);
-    virtual bool canDropObjects() const;
-    virtual void dropObject(App::DocumentObject*);
-
-    void attach(App::DocumentObject *pcObject);
-    void updateData(const App::Property*);
-    void Restore(Base::XMLReader &reader);
     QIcon getIcon(void) const;
     /// returns a list of all possible modes
     std::vector<std::string> getDisplayModes(void) const;
-    virtual void hide(void);
-    virtual void show(void);
     bool isShow(void) const;
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
-    /// get called if the user hover over a object in the tree
-    virtual bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-    /// get called if the user drops some objects
-    virtual void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
 
 protected:
-    /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property* prop);
     void getViewProviders(std::vector<ViewProviderDocumentObject*>&) const;
 
 private:
-    bool visible; // helper variable
     std::vector<ViewProvider*> nodes;
 };
 

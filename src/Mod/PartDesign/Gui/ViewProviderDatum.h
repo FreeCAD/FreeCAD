@@ -73,7 +73,7 @@ public:
      * @note should be reimplemented in the offspings
      * @note use FreeCAD-specific bbox here to simplify the math in derived classes
      */
-    virtual void setExtents (Base::BoundBox3d bbox)
+    virtual void setExtents (Base::BoundBox3d /*bbox*/)
         { }
 
     /// Update the visual sizes. This overloaded version of the previous function to allow pass coin type

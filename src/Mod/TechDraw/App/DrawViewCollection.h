@@ -48,6 +48,8 @@ public:
     short mustExecute() const;
 
     int addView(DrawView *view);
+    int removeView(DrawView *view);
+    void rebuildViewList(void);
 
     int countChildren();
     /** @name methods overide Feature */
@@ -61,6 +63,7 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewCollection";
     }
+    virtual QRectF getRect(void) const;
 
 protected:
     void onChanged(const App::Property* prop);

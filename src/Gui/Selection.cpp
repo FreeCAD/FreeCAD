@@ -38,7 +38,6 @@
 #include "Document.h"
 #include "Selection.h"
 #include "SelectionFilter.h"
-#include "SelectionObjectPy.h"
 #include "View3DInventor.h"
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -47,6 +46,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 
 
@@ -499,7 +499,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
                                 );
 
                     if (getMainWindow()) {
-                        getMainWindow()->showMessage(msg,3000);
+                        getMainWindow()->showMessage(msg);
                         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                         mdi->setOverrideCursor(QCursor(Qt::ForbiddenCursor));
                     }
@@ -574,7 +574,7 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
                                                        ,x,y,z);
 
     if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+        getMainWindow()->showMessage(QString::fromLatin1(buf));
 }
 
 void SelectionSingleton::rmvPreselect()
@@ -679,7 +679,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
                     } else {
                         msg = QCoreApplication::translate("SelectionFilter","Selection not allowed by filter");
                     }
-                    getMainWindow()->showMessage(msg,5000);
+                    getMainWindow()->showMessage(msg);
                     Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                     mdi->setOverrideCursor(Qt::ForbiddenCursor);
                 }
@@ -715,7 +715,9 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Add Selection \"%s.%s.%s(%f,%f,%f)\"\n",pDocName,pObjectName,pSubName,x,y,z);
+#endif
 
         // allow selection
         return true;
@@ -805,7 +807,9 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             signalSelectionChanged(Chng);
       
             rmvList.push_back(Chng);
+#ifdef FC_DEBUG
             Base::Console().Log("Sel : Rmv Selection \"%s.%s.%s\"\n",pDocName,pObjectName,pSubName);
+#endif
         }
         else {
             ++It;
@@ -901,7 +905,9 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         Notify(Chng);
         signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
         Base::Console().Log("Sel : Clear selection\n");
+#endif
     }
 }
 
@@ -919,7 +925,9 @@ void SelectionSingleton::clearCompleteSelection()
     Notify(Chng);
     signalSelectionChanged(Chng);
 
+#ifdef FC_DEBUG
     Base::Console().Log("Sel : Clear selection\n");
+#endif
 }
 
 bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectName, const char* pSubName) const
@@ -968,12 +976,18 @@ void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
  */
 SelectionSingleton::SelectionSingleton()
 {
+    hx = 0;
+    hy = 0;
+    hz = 0;
     ActiveGate = 0;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
+    CurrentPreselection.Type = SelectionChanges::ClrSelection;
     CurrentPreselection.pDocName = 0;
     CurrentPreselection.pObjectName = 0;
     CurrentPreselection.pSubName = 0;
-
+    CurrentPreselection.x = 0.0;
+    CurrentPreselection.y = 0.0;
+    CurrentPreselection.z = 0.0;
 }
 
 /**

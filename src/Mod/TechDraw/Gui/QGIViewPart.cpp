@@ -24,7 +24,6 @@
 #ifndef _PreComp_
 #include <cmath>
 #include <qmath.h>
-#include <strstream>
 #include <QAction>
 #include <QApplication>
 #include <QContextMenuEvent>
@@ -46,15 +45,22 @@
 #include <App/DocumentObject.h>
 #include <App/Material.h>
 #include <Base/Console.h>
+#include <Base/Vector3D.h>
 
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
+#include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 
 #include "ZVALUE.h"
 #include "QGIFace.h"
 #include "QGIEdge.h"
 #include "QGIVertex.h"
+#include "QGICMark.h"
+#include "QGISectionLine.h"
+#include "QGICenterLine.h"
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -72,6 +78,8 @@ QGIViewPart::QGIViewPart()
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemSendsScenePositionChanges, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges,true);
+
+    showSection = false;
 }
 
 QGIViewPart::~QGIViewPart()
@@ -102,6 +110,7 @@ QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant &valu
     return QGIView::itemChange(change, value);
 }
 
+//obs?
 void QGIViewPart::tidy()
 {
     //Delete any leftover items
@@ -134,7 +143,6 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
           path.addEllipse(x, y, geom->radius * 2, geom->radius * 2);            //topleft@(x,y) radx,rady
           //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
-
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
@@ -230,40 +238,29 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
 
 void QGIViewPart::updateView(bool update)
 {
-    if (getViewObject() == 0 ||
-        !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    if( viewPart == nullptr ) {
         return;
     }
 
     QGIView::updateView(update);
 
-    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
 
     if (update ||
-       viewPart->isTouched() ||
-       viewPart->Source.isTouched() ||
-       viewPart->Direction.isTouched() ||
-       viewPart->XAxisDirection.isTouched() ||
-       viewPart->Tolerance.isTouched() ||
-       viewPart->Scale.isTouched() ||
-       viewPart->ShowHiddenLines.isTouched() ||
-       viewPart->ShowSmoothLines.isTouched() ||
-       viewPart->ShowSeamLines.isTouched() ) {
-        // Remove all existing graphical representations (QGIxxxx)  otherwise BRect only grows, never shrinks?
-        // is this where selection messes up?
-        prepareGeometryChange();
-        QList<QGraphicsItem*> items = childItems();
-        for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
-            if (dynamic_cast<QGIEdge *> (*it) ||
-                dynamic_cast<QGIFace *>(*it) ||
-                dynamic_cast<QGIVertex *>(*it)) {
-                removeFromGroup(*it);
-                scene()->removeItem(*it);
-
-                // We store these and delete till later to prevent rendering crash ISSUE
-                deleteItems.append(*it);
-            }
-        }
+        viewPart->isTouched() ||
+        viewPart->Source.isTouched() ||
+        viewPart->Direction.isTouched() ||
+        viewPart->XAxisDirection.isTouched() ||
+        viewPart->Tolerance.isTouched() ||
+        viewPart->Scale.isTouched() ||
+        viewPart->HardHidden.isTouched() ||
+        viewPart->SmoothVisible.isTouched() ||
+        viewPart->SeamVisible.isTouched()   ||
+        viewPart->IsoVisible.isTouched()    ||
+        viewPart->SmoothHidden.isTouched()    ||
+        viewPart->SeamHidden.isTouched()      ||
+        viewPart->IsoHidden.isTouched()       ||
+        viewPart->IsoCount.isTouched()  ) {
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||
@@ -272,9 +269,9 @@ void QGIViewPart::updateView(bool update)
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
             if(edge  && edge->getHiddenEdge()) {
-                edge->setStrokeWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
+                edge->setWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
             } else {
-                edge->setStrokeWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
+                edge->setWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
             }
         }
         draw();
@@ -286,40 +283,43 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawBorder();
-    QGIView::draw();
 }
 
 void QGIViewPart::drawViewPart()
 {
-    if ( getViewObject() == 0 ||
-         !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    if ( viewPart == nullptr ) {
         return;
     }
 
-    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
-
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
+    float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
+    removePrimitives();                      //clean the slate
+    removeDecorations();
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    // Draw Faces
-    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-    const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
-    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,i);
-        TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
-        if (fHatch) {
-            if (!fHatch->HatchPattern.isEmpty()) {
-                App::Color hColor = fHatch->HatchColor.getValue();
-                newFace->setHatchColor(hColor.asCSSString());
-                newFace->setHatch(fHatch->HatchPattern.getValue());
+    if (viewPart->handleFaces()) {
+        // Draw Faces
+        std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
+        const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+        for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
+            QGIFace* newFace = drawFace(*fit,i);
+            TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
+            if (fHatch) {
+                if (!fHatch->HatchPattern.isEmpty()) {
+                    App::Color hColor = fHatch->HatchColor.getValue();
+                    newFace->setHatchColor(hColor.asCSSString());
+                    newFace->setHatch(fHatch->HatchPattern.getValue());
+                }
             }
+            newFace->setDrawEdges(false);
+            newFace->setZValue(ZVALUE::FACE);
+            newFace->setPrettyNormal();
         }
-        newFace->setZValue(ZVALUE::FACE);
-        newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
@@ -332,26 +332,34 @@ void QGIViewPart::drawViewPart()
         if ((*itEdge)->visible) {
             if (((*itEdge)->classOfEdge == ecHARD) ||
                 ((*itEdge)->classOfEdge == ecOUTLINE) ||
-                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())) {
+                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
+                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         } else {
-            if (viewPart->ShowHiddenLines.getValue()) {
+            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
+                 (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
                 showEdge = true;
             }
         }
         if (showEdge) {
             item = new QGIEdge(i);
             addToGroup(item);                                                   //item is at scene(0,0), not group(0,0)
-            item->setPos(0.0,0.0);
+            item->setPos(0.0,0.0);                                              //now at group(0,0)
             item->setPath(drawPainterPath(*itEdge));
-            item->setStrokeWidth(lineWidth);
+            item->setWidth(lineWidth);
             item->setZValue(ZVALUE::EDGE);
             if(!(*itEdge)->visible) {
-                item->setStrokeWidth(lineWidthHid);
+                item->setWidth(lineWidthHid);
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
+            }
+            if ((*itEdge)->classOfEdge == ecUVISO) {
+                item->setWidth(lineWidthIso);
             }
             item->setPrettyNormal();
             //debug a path
@@ -365,13 +373,33 @@ void QGIViewPart::drawViewPart()
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
+    bool showCenters = viewPart->ArcCenterMarks.getValue();
+    double cAdjust = viewPart->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
-        QGIVertex *item = new QGIVertex(i);
-        addToGroup(item);
-        item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
-        item->setRadius(lineWidth * vertexScaleFactor);
-        item->setZValue(ZVALUE::VERTEX);
-     }
+        if ((*vert)->isCenter) {
+            if (showCenters) {
+                QGICMark* cmItem = new QGICMark(i);
+                addToGroup(cmItem);
+                cmItem->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+                cmItem->setThick(0.5 * lineWidth * lineScaleFactor);             //need minimum?
+                cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
+                cmItem->setZValue(ZVALUE::VERTEX);
+            }
+        } else {
+            QGIVertex *item = new QGIVertex(i);
+            addToGroup(item);
+            item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+            item->setRadius(lineWidth * vertexScaleFactor);
+            item->setZValue(ZVALUE::VERTEX);
+        }
+    }
+    //draw section line
+    if (viewPart->ShowSectionLine.getValue() &&
+        viewPart->getSectionRef() ) {
+        drawSectionLine(true);
+    }
+    //draw center lines
+    drawCenterLines(true);
 }
 
 QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
@@ -389,10 +417,12 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
                 edgePath = edgePath.toReversed();
             }
             wirePath.connectPath(edgePath);
-            wirePath.setFillRule(Qt::WindingFill);
         }
+        //dumpPath("wirePath:",wirePath);
         facePath.addPath(wirePath);
     }
+    facePath.setFillRule(Qt::OddEvenFill);
+
     QGIFace* gFace = new QGIFace(idx);
     addToGroup(gFace);
     gFace->setPos(0.0,0.0);
@@ -403,6 +433,137 @@ QGIFace* QGIViewPart::drawFace(TechDrawGeometry::Face* f, int idx)
     //dumpPath(faceId.str().c_str(),facePath);
 
     return gFace;
+}
+
+//! Remove all existing QGIPrimPath items(Vertex,Edge,Face)
+void QGIViewPart::removePrimitives()
+{
+    QList<QGraphicsItem*> children = childItems();
+    for (auto& c:children) {
+         QGIPrimPath* prim = dynamic_cast<QGIPrimPath*>(c);
+         if (prim) {
+            removeFromGroup(prim);
+            scene()->removeItem(prim);
+//            deleteItems.append(prim);         //pretty sure we could just delete here since not in scene anymore
+            delete prim;
+         }
+     }
+}
+
+//! Remove all existing QGIDecoration items(SectionLine,SectionMark,...)
+void QGIViewPart::removeDecorations()
+{
+    QList<QGraphicsItem*> children = childItems();
+    for (auto& c:children) {
+         QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
+         if (decor) {
+            removeFromGroup(decor);
+            scene()->removeItem(decor);
+            delete decor;
+         }
+     }
+}
+
+void QGIViewPart::drawSectionLine(bool b)
+{
+    TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
+    TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
+    if (!viewPart ||
+        !viewSection)  {
+        return;
+    }
+    if (b) {
+        QGISectionLine* sectionLine = new QGISectionLine();
+        addToGroup(sectionLine);
+        sectionLine->setSymbol(const_cast<char*>(viewPart->SymbolSection.getValue()));
+        Base::Vector3d sectionDir(0,1,0);
+        Base::Vector3d up(0,1,0);
+        Base::Vector3d down(0,-1,0);
+        Base::Vector3d right(1,0,0);
+        Base::Vector3d left(-1,0,0);
+        bool horiz = viewPart->HorizSectionLine.getValue();
+        bool normal = viewPart->ArrowUpSection.getValue();
+        if (horiz && normal) {
+            sectionDir = up;
+        } else if (horiz && !normal) {
+            sectionDir = down;
+        } else if (!horiz && normal) {
+            sectionDir = right;
+        } else if (!horiz && !normal) {
+            sectionDir = left;
+        }
+        sectionLine->setDirection(sectionDir.x,sectionDir.y);
+
+        Base::Vector3d org = viewSection->SectionOrigin.getValue();
+        double scale = viewPart->Scale.getValue();
+        Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
+        pOrg.y = -1 * pOrg.y;
+        //now project pOrg onto sectionDir
+        Base::Vector3d displace;
+        displace.ProjectToLine(pOrg, sectionDir);
+        Base::Vector3d offset = pOrg + displace;
+
+        sectionLine->setPos(offset.x,offset.y);
+        double sectionSpan;
+        double sectionFudge = 10.0;
+        double xVal, yVal;
+        if (horiz)  {
+            sectionSpan = m_border->rect().width() + sectionFudge;
+            xVal = sectionSpan / 2.0;
+            yVal = 0.0;
+        } else {
+            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+            xVal = 0.0;
+            yVal = sectionSpan / 2.0;
+        }
+        sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
+        sectionLine->setWidth(viewPart->LineWidth.getValue());          //TODO: add fudge to make sectionLine thinner than reg lines?
+        sectionLine->setFont(m_font,6.0);
+        sectionLine->setZValue(ZVALUE::SECTIONLINE);
+        sectionLine->draw();
+    }
+}
+
+void QGIViewPart::drawCenterLines(bool b)
+{
+    TechDraw::DrawViewPart *viewPart = dynamic_cast<TechDraw::DrawViewPart *>(getViewObject());
+    if (!viewPart)  {
+        return;
+
+    }
+    if (b) {
+        bool horiz = viewPart->HorizCenterLine.getValue();
+        bool vert = viewPart->VertCenterLine.getValue();
+
+        QGICenterLine* centerLine;
+        double sectionSpan;
+        double sectionFudge = 10.0;
+        double xVal, yVal;
+        if (horiz)  {
+            centerLine = new QGICenterLine();
+            addToGroup(centerLine);
+            centerLine->setPos(0.0,0.0);
+            sectionSpan = m_border->rect().width() + sectionFudge;
+            xVal = sectionSpan / 2.0;
+            yVal = 0.0;
+            centerLine->setBounds(-xVal,-yVal,xVal,yVal);
+            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->draw();
+        }
+        if (vert) {
+            centerLine = new QGICenterLine();
+            addToGroup(centerLine);
+            centerLine->setPos(0.0,0.0);
+            sectionSpan = (m_border->rect().height() - m_label->boundingRect().height()) + sectionFudge;
+            xVal = 0.0;
+            yVal = sectionSpan / 2.0;
+            centerLine->setBounds(-xVal,-yVal,xVal,yVal);
+            //centerLine->setWidth(viewPart->LineWidth.getValue());
+            centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->draw();
+        }
+    }
 }
 
 // As called by arc of ellipse case:
@@ -550,11 +711,15 @@ void QGIViewPart::toggleVertices(bool state)
     QList<QGraphicsItem*> items = childItems();
     for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         QGIVertex *vert = dynamic_cast<QGIVertex *>(*it);
+        QGICMark *mark = dynamic_cast<QGICMark *>(*it);
+
         if(vert) {
-            if(state)
-                vert->show();
-            else
-                vert->hide();
+            if (!mark) {             //leave center marks showing
+                if(state)
+                    vert->show();
+                else
+                    vert->hide();
+            }
         }
     }
 }
@@ -571,12 +736,6 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::Draw
         }
     }
     return result;
-}
-
-QRectF QGIViewPart::boundingRect() const
-{
-    //return childrenBoundingRect().adjusted(-2.,-2.,2.,6.);             //just a bit bigger than the children need
-    return childrenBoundingRect();
 }
 
 void QGIViewPart::dumpPath(const char* text,QPainterPath path)
@@ -598,4 +757,9 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
             Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f,%.3f) M:%d L:%d C:%d\n",iElem,
                                     elem.type,typeName,elem.x,elem.y,elem.isMoveTo(),elem.isLineTo(),elem.isCurveTo());
         }
+}
+
+QRectF QGIViewPart::boundingRect() const
+{
+    return childrenBoundingRect();
 }

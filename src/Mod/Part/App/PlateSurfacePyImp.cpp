@@ -185,13 +185,13 @@ PyObject* PlateSurfacePy::makeApprox(PyObject *args, PyObject* kwds)
     } PY_CATCH_OCC;
 }
 
-PyObject* PlateSurfacePy::uIso(PyObject *args)
+PyObject* PlateSurfacePy::uIso(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 
-PyObject* PlateSurfacePy::vIso(PyObject *args)
+PyObject* PlateSurfacePy::vIso(PyObject * /*args*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;

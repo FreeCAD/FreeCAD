@@ -51,8 +51,11 @@ TaskDressUpParameters::TaskDressUpParameters(ViewProviderDressUp *DressUpView, b
     : TaskBox(Gui::BitmapFactory().pixmap((std::string("PartDesign_") + DressUpView->featureName()).c_str()),
               QString::fromLatin1((DressUpView->featureName() + " parameters").c_str()),
               true,
-              parent),
-      DressUpView(DressUpView), allowFaces(selectFaces), allowEdges(selectEdges)
+              parent)
+    , proxy(0)
+    , DressUpView(DressUpView)
+    , allowFaces(selectFaces)
+    , allowEdges(selectEdges)
 {
     selectionMode = none;
 }
@@ -63,7 +66,7 @@ TaskDressUpParameters::~TaskDressUpParameters()
     Gui::Selection().rmvSelectionGate();
 }
 
-const bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
+bool TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg)
 {
     if ((msg.Type == Gui::SelectionChanges::AddSelection) && (
                 (selectionMode == refAdd) || (selectionMode == refRemove))) {
@@ -192,6 +195,7 @@ void TaskDressUpParameters::exitSelectionMode()
 
 TaskDlgDressUpParameters::TaskDlgDressUpParameters(ViewProviderDressUp *DressUpView)
     : TaskDlgFeatureParameters(DressUpView)
+    , parameter(0)
 {
     assert(DressUpView);
 }
@@ -215,7 +219,7 @@ bool TaskDlgDressUpParameters::accept()
     for (std::vector<std::string>::const_iterator it = refs.begin(); it != refs.end(); ++it)
         str << "\"" << *it << "\",";
     str << "])";
-    Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
 
     return TaskDlgFeatureParameters::accept();
 }

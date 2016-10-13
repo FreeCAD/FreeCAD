@@ -145,6 +145,7 @@ public:
 QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
+  Q_UNUSED(f); 
   this->constructor(format, sharewidget);
 }
 
@@ -152,6 +153,7 @@ QuarterWidget::QuarterWidget(const QGLFormat & format, QWidget * parent, const Q
 QuarterWidget::QuarterWidget(QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
+  Q_UNUSED(f); 
   this->constructor(QGLFormat(), sharewidget);
 }
 
@@ -159,6 +161,7 @@ QuarterWidget::QuarterWidget(QWidget * parent, const QGLWidget * sharewidget, Qt
 QuarterWidget::QuarterWidget(QGLContext * context, QWidget * parent, const QGLWidget * sharewidget, Qt::WindowFlags f)
   : inherited(parent)
 {
+  Q_UNUSED(f); 
   this->constructor(context->format(), sharewidget);
 }
 

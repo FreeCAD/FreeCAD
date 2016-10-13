@@ -67,6 +67,11 @@ PropertyFemMeshItem::PropertyFemMeshItem()
     m_h->setParent(this);
     m_h->setPropertyName(QLatin1String("Polyhedrons"));
     this->appendChild(m_h);
+    m_g = static_cast<Gui::PropertyEditor::PropertyIntegerItem*>
+        (Gui::PropertyEditor::PropertyIntegerItem::create());
+    m_g->setParent(this);
+    m_g->setPropertyName(QLatin1String("Groups"));
+    this->appendChild(m_g);
 }
 
 void PropertyFemMeshItem::initialize()
@@ -82,6 +87,7 @@ QVariant PropertyFemMeshItem::value(const App::Property*) const
     int ctP = 0;
     int ctV = 0;
     int ctH = 0;
+    int ctG = 0;
 
     const std::vector<App::Property*>& props = getPropertyData();
     for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
@@ -93,10 +99,11 @@ QVariant PropertyFemMeshItem::value(const App::Property*) const
         ctP += mesh->NbPolygons();
         ctV += mesh->NbVolumes();
         ctH += mesh->NbPolyhedrons();
+        ctG += mesh->NbGroup();
     }
 
-    QString  str = QObject::tr("[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6]")
-        .arg(ctN).arg(ctE).arg(ctF).arg(ctP).arg(ctV).arg(ctH);
+    QString  str = QObject::tr("[Nodes: %1, Edges: %2, Faces: %3, Polygons: %4, Volumes: %5, Polyhedrons: %6, Groups: %7]")
+        .arg(ctN).arg(ctE).arg(ctF).arg(ctP).arg(ctV).arg(ctH).arg(ctG);
     return QVariant(str);
 }
 
@@ -107,19 +114,26 @@ QVariant PropertyFemMeshItem::toolTip(const App::Property* prop) const
 
 void PropertyFemMeshItem::setValue(const QVariant& value)
 {
+    Q_UNUSED(value);
 }
 
 QWidget* PropertyFemMeshItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(parent);
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     return 0;
 }
 
 void PropertyFemMeshItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
+    Q_UNUSED(editor);
+    Q_UNUSED(data);
 }
 
 QVariant PropertyFemMeshItem::editorData(QWidget *editor) const
 {
+    Q_UNUSED(editor);
     return QVariant();
 }
 
@@ -199,6 +213,19 @@ int PropertyFemMeshItem::countPolyhedrons() const
     }
 
     return ctH;
+}
+
+int PropertyFemMeshItem::countGroups() const
+{
+    int ctG = 0;
+    const std::vector<App::Property*>& props = getPropertyData();
+    for (std::vector<App::Property*>::const_iterator pt = props.begin(); pt != props.end(); ++pt) {
+        Fem::PropertyFemMesh* prop = static_cast<Fem::PropertyFemMesh*>(*pt);
+        SMESH_Mesh* mesh = const_cast<SMESH_Mesh*>(prop->getValue().getSMesh());
+        ctG += mesh->NbGroup();
+    }
+
+    return ctG;
 }
 
 #include "moc_PropertyFemMeshItem.cpp"

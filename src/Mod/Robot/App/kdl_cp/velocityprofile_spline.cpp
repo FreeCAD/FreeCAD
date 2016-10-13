@@ -48,7 +48,7 @@ VelocityProfile_Spline::~VelocityProfile_Spline()
 	return;
 }
 
-void VelocityProfile_Spline::SetProfile(double pos1, double pos2)
+void VelocityProfile_Spline::SetProfile(double /*pos1*/, double /*pos2*/)
 {
   return;
 }

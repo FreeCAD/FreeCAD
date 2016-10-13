@@ -781,7 +781,7 @@ Streambuf::seekoff(std::streambuf::off_type off,
 
 std::streambuf::pos_type
 Streambuf::seekpos(std::streambuf::pos_type pos,
-                   std::ios_base::openmode which/*mode*/)
+                   std::ios_base::openmode /*mode*/)
 {
     return seekoff(pos, std::ios_base::beg);
 }

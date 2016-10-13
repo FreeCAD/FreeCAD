@@ -49,6 +49,7 @@
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
+#include "FeatureOffset.h"
 #include "PartFeatures.h"
 #include "BodyBase.h"
 #include "PrimitiveFeature.h"
@@ -96,6 +97,9 @@
 #include "DatumFeature.h"
 #include "Attacher.h"
 #include "AttachableObject.h"
+#include "FaceMaker.h"
+#include "FaceMakerCheese.h"
+#include "FaceMakerBullseye.h"
 
 namespace Part {
 extern PyObject* initModule();
@@ -221,11 +225,31 @@ PyMODINIT_FUNC initPart()
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
 
+    try{
+        //import all submodules of BOPTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('BOPTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('BOPTools')");
+        module.setAttr(std::string("BOPTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import BOPTools package:\n");
+        err.ReportException();
+    }
+
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
     Part::PropertyGeometryList  ::init();
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
+
+    Part::FaceMaker             ::init();
+    Part::FaceMakerPublic       ::init();
+    Part::FaceMakerSimple       ::init();
+    Part::FaceMakerCheese       ::init();
+    Part::FaceMakerExtrusion    ::init();
+    Part::FaceMakerBullseye     ::init();
 
     Attacher::AttachEngine        ::init();
     Attacher::AttachEngine3D      ::init();
@@ -287,6 +311,7 @@ PyMODINIT_FUNC initPart()
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Offset2D              ::init();
     Part::Thickness             ::init();
 
     // Geometry types

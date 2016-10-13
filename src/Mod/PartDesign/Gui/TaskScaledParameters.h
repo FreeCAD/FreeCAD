@@ -68,8 +68,8 @@ protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     virtual void clearButtons();
-    const double getFactor(void) const;
-    const unsigned getOccurrences(void) const;
+    double getFactor(void) const;
+    unsigned getOccurrences(void) const;
 
 private:
     void setupUI();

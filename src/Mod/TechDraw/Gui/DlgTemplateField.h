@@ -25,6 +25,7 @@
 #define DRAWINGGUI_DLGTEMPLATEFIELD_H
 
 #include <QDialog>
+#include <QString>
 
 #include <Mod/TechDraw/Gui/ui_DlgTemplateField.h>
 
@@ -40,7 +41,7 @@ public:
 
     void setFieldName(std::string name);
     void setFieldContent(std::string content);
-    std::string getFieldContent();
+    QString getFieldContent();
 
 public Q_SLOTS:
     void accept();

@@ -85,17 +85,20 @@ public:
     void setSeekValueAsPercentage(const SbBool on);
     SbBool isSeekValuePercentage(void) const;
 
+    virtual float getPickRadius(void) const {return this->pickRadius;}
+    virtual void setPickRadius(float pickRadius);
+
     virtual void saveHomePosition(void);
     virtual void resetToHomePosition(void);
 
     virtual void setSceneGraph(SoNode* root) {
         QuarterWidget::setSceneGraph(root);
-    };
+    }
     
     virtual bool processSoEvent(const SoEvent* event);
           
     //this functions still need to be ported
-    virtual void afterRealizeHook(void) {}; //enables spacenav and joystick in soqt, dunno if this is needed
+    virtual void afterRealizeHook(void) {} //enables spacenav and joystick in soqt, dunno if this is needed
 
 private:
     void init();
@@ -120,6 +123,7 @@ private:
     SbBool m_seekdistanceabs;
     SoSearchAction searchaction;
     SoGetMatrixAction matrixaction;
+    float pickRadius;
     // Home position storage.
     SoNode * m_storedcamera;
     

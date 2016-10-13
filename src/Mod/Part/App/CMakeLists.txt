@@ -124,6 +124,8 @@ SET(Features_SRCS
     FeatureMirroring.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureOffset.cpp
+    FeatureOffset.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
@@ -280,6 +282,12 @@ SET(Part_SRCS
     OCCError.h
     FT2FC.cpp
     FT2FC.h
+    FaceMaker.cpp
+    FaceMaker.h
+    FaceMakerCheese.cpp
+    FaceMakerCheese.h
+    FaceMakerBullseye.cpp
+    FaceMakerBullseye.h
 )
 
 SET(Part_Scripts
@@ -292,6 +300,14 @@ SET(Part_Scripts
     AttachmentEditor/FrozenClass.py
     AttachmentEditor/TaskAttachmentEditor.py
     AttachmentEditor/TaskAttachmentEditor.ui
+    BOPTools/__init__.py
+    BOPTools/GeneralFuseResult.py
+    BOPTools/JoinAPI.py
+    BOPTools/JoinFeatures.py
+    BOPTools/ShapeMerge.py
+    BOPTools/SplitAPI.py
+    BOPTools/SplitFeatures.py
+    BOPTools/Utils.py
 )
 
 add_library(Part SHARED ${Part_SRCS})

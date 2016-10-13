@@ -32,6 +32,7 @@
 
 #include <Mod/TechDraw/App/DrawView.h>
 
+
 QT_BEGIN_NAMESPACE
 class QGraphicsScene;
 class QGraphicsSceneMouseEvent;
@@ -49,7 +50,7 @@ public:
     virtual ~QGIView() = default;
 
     enum {Type = QGraphicsItem::UserType + 101};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
     const char * getViewName() const;
     void setViewFeature(TechDraw::DrawView *obj);
@@ -61,33 +62,39 @@ public:
     virtual bool isVisible(void) {return m_visibility;};
     virtual void draw(void);
 
-    /// Methods to ensure that Y-Coordinates are orientated correctly.
+    /** Methods to ensure that Y-Coordinates are orientated correctly.
+     * @{ */
     void setPosition(qreal x, qreal y);
     inline qreal getY() { return y() * -1; }
     bool isInnerView() { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
     double getYInClip(double y);
+    /** @} */
 
     void alignTo(QGraphicsItem*, const QString &alignment);
-    void setLocked(bool state = true) { locked = true; }
+    void setLocked(bool /*state*/ = true) { locked = true; }
 
     virtual void toggleCache(bool state);
     virtual void updateView(bool update = false);
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    //virtual QPainterPath shape(void) const;
+    virtual void paint( QPainter *painter,
+                        const QStyleOptionGraphicsItem *option,
+                        QWidget *widget = nullptr ) override;
+    virtual QRectF boundingRect() const override;
 
-    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
 protected:
+    QGIView* getQGIVByName(std::string name);
 
-    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
+    virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse handling
-    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent * event );
-    virtual void mousePressEvent(QGraphicsSceneMouseEvent * event);
+    virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+    virtual void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     // Preselection events:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     virtual QRectF customChildrenBoundingRect(void);
+    void dumpRect(char* text, QRectF r);
 
     QColor getNormalColor(void);
     QColor getPreColor(void);
@@ -116,6 +123,6 @@ protected:
     QPen m_decorPen;
 };
 
-} // namespace MDIViewPageGui
+} // namespace
 
 #endif // DRAWINGGUI_QGRAPHICSITEMVIEW_H

@@ -44,20 +44,20 @@ public:
     ~QGCustomSvg();
 
     enum {Type = QGraphicsItem::UserType + 131};
-    int type() const { return Type;}
+    int type() const override { return Type;}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual void paint( QPainter *painter,
+                        const QStyleOptionGraphicsItem *option,
+                        QWidget *widget = nullptr ) override;
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
     virtual bool load(QByteArray *svgString);
+    virtual QRectF boundingRect(void) const override;
 
 protected:
     QSvgRenderer *m_svgRender;
-
-private:
-
 };
 
-} // namespace MDIViewPageGui
+} // namespace TechDrawGui
 
 #endif // DRAWINGGUI_QGCUSTOMSVG_H

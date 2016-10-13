@@ -72,7 +72,7 @@ const std::vector<TOC_Entry>& JtReader::readToc()
 
 }
 
-void JtReader::readLodSegment(const TOC_Entry& toc, LodHandler& handler)
+void JtReader::readLodSegment(const TOC_Entry& toc, LodHandler& /*handler*/)
 {
 	std::ifstream strm;
 	strm.open(_fileName, ios::binary);

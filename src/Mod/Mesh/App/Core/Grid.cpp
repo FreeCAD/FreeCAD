@@ -994,6 +994,7 @@ MeshPointGrid::MeshPointGrid (const MeshKernel &rclM, float fGridLen)
 
 void MeshPointGrid::AddPoint (const MeshPoint &rclPt, unsigned long ulPtIndex, float fEpsilon)
 {
+  (void)fEpsilon;
   unsigned long ulX, ulY, ulZ;
   Pos(Base::Vector3f(rclPt.x, rclPt.y, rclPt.z), ulX, ulY, ulZ);
   if ( (ulX < _ulCtGridsX) && (ulY < _ulCtGridsY) && (ulZ < _ulCtGridsZ) )

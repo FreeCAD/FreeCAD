@@ -28,7 +28,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -118,7 +117,7 @@ void PropertyPath::Restore(Base::XMLReader &reader)
     }
 }
 
-void PropertyPath::SaveDocFile (Base::Writer &writer) const
+void PropertyPath::SaveDocFile (Base::Writer &) const
 {
     // does nothing
 }

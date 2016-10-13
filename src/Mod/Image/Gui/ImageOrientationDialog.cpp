@@ -40,6 +40,7 @@ using namespace ImageGui;
 ImageOrientationDialog::ImageOrientationDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_ImageOrientationDialog)
 {
+    DirType = 0;
     ui->setupUi(this);
     onPreview();
 

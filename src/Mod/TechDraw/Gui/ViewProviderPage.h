@@ -78,7 +78,7 @@ public:
     virtual void finishRestoring();
     bool isRestoring(void) {return !m_docReady;}
 
-    TechDraw::DrawPage* getPageObject() const;
+    TechDraw::DrawPage* getDrawPage() const;
     void unsetEdit(int ModNum);
     MDIViewPage* getMDIViewPage();
 
@@ -87,7 +87,7 @@ protected:
     bool showMDIViewPage();
 
 private:
-    QPointer<MDIViewPage> view;
+    QPointer<MDIViewPage> m_mdiView;
     bool m_docReady;
 };
 

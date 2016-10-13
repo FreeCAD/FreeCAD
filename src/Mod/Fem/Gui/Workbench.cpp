@@ -60,6 +60,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          // << "Fem_SolverZ88"
          << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
+         << "Fem_MaterialMechanicalNonlinear"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
          << "Separator"
@@ -67,18 +68,30 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
          << "Separator"
          << "Fem_ConstraintFixed"
          << "Fem_ConstraintDisplacement"
+         << "Fem_ConstraintPlaneRotation"
+         << "Fem_ConstraintContact"
+         << "Fem_ConstraintTransform"
          << "Separator"
+         << "Fem_ConstraintSelfWeight"
          << "Fem_ConstraintForce"
          << "Fem_ConstraintPressure"
+         << "Separator"
          << "Fem_ConstraintBearing"
          << "Fem_ConstraintGear"
          << "Fem_ConstraintPulley"
+         << "Separator"         
+         << "Fem_ConstraintFluidBoundary"
+         << "Separator"
+         << "Fem_ConstraintTemperature"
+         << "Fem_ConstraintHeatflux"
+         << "Fem_ConstraintInitialTemperature"
          << "Separator"
          << "Fem_ControlSolver"
          << "Fem_RunSolver"
+         << "Separator"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
-         
+
 #ifdef FC_USE_VTK
      Gui::ToolBarItem* post = new Gui::ToolBarItem(root);
      post->setCommand("Post Processing");
@@ -92,7 +105,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Separator"
             << "Fem_PostCreateFunctions";
 #endif
-            
+
     return root;
 }
 
@@ -108,6 +121,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Fem_SolverZ88"
          << "Fem_MeshFromShape"
          << "Fem_MechanicalMaterial"
+         << "Fem_MaterialMechanicalNonlinear"
          << "Fem_BeamSection"
          << "Fem_ShellThickness"
          << "Separator"
@@ -115,15 +129,27 @@ Gui::MenuItem* Workbench::setupMenuBar() const
          << "Separator"
          << "Fem_ConstraintFixed"
          << "Fem_ConstraintDisplacement"
+         << "Fem_ConstraintPlaneRotation"
+         << "Fem_ConstraintContact"
+         << "Fem_ConstraintTransform"
          << "Separator"
+         << "Fem_ConstraintSelfWeight"
          << "Fem_ConstraintForce"
          << "Fem_ConstraintPressure"
+         << "Separator"
          << "Fem_ConstraintBearing"
          << "Fem_ConstraintGear"
          << "Fem_ConstraintPulley"
          << "Separator"
+         << "Fem_ConstraintFluidBoundary"
+         << "Separator"
+         << "Fem_ConstraintTemperature"
+         << "Fem_ConstraintHeatflux"
+         << "Fem_ConstraintInitialTemperature"
+         << "Separator"
          << "Fem_ControlSolver"
          << "Fem_RunSolver"
+         << "Separator"
          << "Fem_PurgeResults"
          << "Fem_ShowResult";
 

@@ -122,6 +122,7 @@ void DlgDisplayPropertiesImp::changeEvent(QEvent *e)
 void DlgDisplayPropertiesImp::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                                        Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||

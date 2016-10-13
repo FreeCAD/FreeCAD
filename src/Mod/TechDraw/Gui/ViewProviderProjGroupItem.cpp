@@ -40,11 +40,7 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Selection.h>
-#include <Gui/SoFCSelection.h>
 
-
-#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "ViewProviderProjGroupItem.h"
 
@@ -121,18 +117,23 @@ void ViewProviderProjGroupItem::updateData(const App::Property* prop)
 
 void ViewProviderProjGroupItem::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    Q_UNUSED(menu);
+    Q_UNUSED(receiver);
+    Q_UNUSED(member);
     //QAction* act;
     //act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderProjGroupItem::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     doubleClicked();
     return true;
 }
 
 void ViewProviderProjGroupItem::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     Gui::Control().closeDialog();
 }
 
@@ -141,8 +142,12 @@ bool ViewProviderProjGroupItem::doubleClicked(void)
     return true;
 }
 
+TechDraw::DrawProjGroupItem* ViewProviderProjGroupItem::getViewObject() const
+{
+    return dynamic_cast<TechDraw::DrawProjGroupItem*>(pcObject);
+}
 
 TechDraw::DrawProjGroupItem* ViewProviderProjGroupItem::getObject() const
 {
-    return dynamic_cast<TechDraw::DrawProjGroupItem*>(pcObject);
+    return getViewObject();
 }

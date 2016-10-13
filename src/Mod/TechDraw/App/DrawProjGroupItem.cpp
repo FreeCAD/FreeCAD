@@ -26,7 +26,6 @@
 # include <sstream>
 #endif
 
-#include <strstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 
@@ -56,17 +55,9 @@ DrawProjGroupItem::DrawProjGroupItem(void)
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Type, ((long)0));
 
-    // Set Hidden
-    //Direction.StatusBits.set(3);
-    Direction.setStatus(App::Property::Hidden,true);
-
-    // Set Hidden
-    //XAxisDirection.StatusBits.set(3);
-    XAxisDirection.setStatus(App::Property::Hidden,true);
-
-    // Scale and ScaleType are Readonly
-    //Scale.StatusBits.set(2);
-    //ScaleType.StatusBits.set(2);
+    //projection group controls these
+    Direction.setStatus(App::Property::ReadOnly,true);
+    XAxisDirection.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }
@@ -80,14 +71,14 @@ short DrawProjGroupItem::mustExecute() const
 
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
-    TechDraw::DrawViewPart::onChanged(prop);
-
     //TODO: Should we allow changes to the Type here?  Seems that should be handled through DrawProjGroup
     if (prop == &Type && Type.isTouched()) {
         if (!isRestoring()) {
             execute();
         }
     }
+
+    TechDraw::DrawViewPart::onChanged(prop);
 
 }
 
@@ -97,20 +88,10 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 void DrawProjGroupItem::onDocumentRestored()
 {
-    // Rebuild the view
-    execute();
+    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
+    DrawProjGroupItem::execute();
 }
 
-/*
-//TODO: Perhaps we don't need this anymore?
-App::DocumentObjectExecReturn *DrawProjGroupItem::execute(void)
-{
-    if(Type.isTouched()) {
-        Type.purgeTouched();
-    }
-
-    return TechDraw::DrawViewPart::execute();
-}*/
 
 PyObject *DrawProjGroupItem::getPyObject(void)
 {

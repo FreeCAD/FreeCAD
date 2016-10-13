@@ -24,7 +24,7 @@
 import FreeCAD
 import FreeCADGui
 import Path
-import PathGui
+import PathScripts.PathUtils as P
 from PySide import QtCore, QtGui
 
 """Path Dressup object and FreeCAD command"""
@@ -45,9 +45,9 @@ except AttributeError:
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
-        obj.addProperty("App::PropertyInteger", "Position", "Path", "The position of this dressup in the base path")
-        obj.addProperty("Path::PropertyPath", "Modification", "Path", "The modification to be added")
+        obj.addProperty("App::PropertyLink", "Base","Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
+        obj.addProperty("App::PropertyInteger", "Position", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The position of this dressup in the base path"))
+        obj.addProperty("Path::PropertyPath", "Modification", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The modification to be added"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -99,6 +99,11 @@ class ViewProviderDressup:
     def __setstate__(self, state):
         return None
 
+    def onDelete(self, arg1=None, arg2=None):
+        '''this makes sure that the base operation is added back to the project and visible'''
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        P.addToProject(arg1.Object.Base)
+        return True
 
 class CommandPathDressup:
 

@@ -85,7 +85,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
+        BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
 
         for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
@@ -101,7 +101,7 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
         TopTools_ListOfShape aLarg;
-        aLarg.Append(baseShape._Shape);
+        aLarg.Append(baseShape.getShape());
         if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
             return new App::DocumentObjectExecReturn("Resulting shape is invalid");
         }

@@ -569,7 +569,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     }
 }
 
-void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt& p= ellp.Location();
@@ -713,7 +713,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
 }
 
-void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     double uStart = c.FirstParameter();
     gp_Pnt PS;

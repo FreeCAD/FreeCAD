@@ -64,6 +64,7 @@ public:
      */
     void fillAxisCombo(bool forceRefill = false);
     void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
+
 private Q_SLOTS:
     void onAngleChanged(double);
     void onAxisChanged(int);
@@ -73,7 +74,7 @@ private Q_SLOTS:
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     void changeEvent(QEvent *e) override;
-    const bool updateView() const;
+    bool updateView() const;
     void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
     double getAngle(void) const;
     bool getMidplane(void) const;

@@ -1049,11 +1049,12 @@ typedef struct swig_const_info {
  * Wrapper of PyInstanceMethod_New() used in Python 3
  * It is exported to the generated module, used for -fastproxy
  * ----------------------------------------------------------------------------- */
-SWIGRUNTIME PyObject* SWIG_PyInstanceMethod_New(PyObject *self, PyObject *func)
+SWIGRUNTIME PyObject* SWIG_PyInstanceMethod_New(PyObject * /*self*/, PyObject *func)
 {
 #if PY_VERSION_HEX >= 0x03000000
   return PyInstanceMethod_New(func);
 #else
+  (void)func;
   return NULL;
 #endif
 }
@@ -1818,6 +1819,9 @@ _PySwigObject_type(void) {
 #if PY_VERSION_HEX >= 0x02030000
 	0,                                  /* tp_del */
 #endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                      /* tp_version_tag */
+#endif
 #ifdef COUNT_ALLOCS
 	0,0,0,0                             /* tp_alloc -> tp_next */
 #endif
@@ -1992,6 +1996,9 @@ _PySwigPacked_type(void) {
 #endif
 #if PY_VERSION_HEX >= 0x02030000
 	0,                                  /* tp_del */
+#endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                      /* tp_version_tag */
 #endif
 #ifdef COUNT_ALLOCS
 	0,0,0,0                             /* tp_alloc -> tp_next */
@@ -2637,6 +2644,8 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
       SWIG_Python_TypeError(SWIG_TypePrettyName(ty), obj);
       SWIG_Python_ArgFail(argnum);
     }
+#else
+    (void)argnum;
 #endif
   }
   return result;

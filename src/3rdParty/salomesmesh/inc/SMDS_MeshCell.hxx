@@ -33,7 +33,7 @@ public:
   virtual ~SMDS_MeshCell();
 
   virtual bool ChangeNodes(const SMDS_MeshNode* nodes[], const int nbNodes)= 0;
-  virtual bool vtkOrder(const SMDS_MeshNode* nodes[], const int nbNodes) {return true; }
+  virtual bool vtkOrder(const SMDS_MeshNode* /*nodes*/[], const int /*nbNodes*/) {return true; }
 
   static VTKCellType         toVtkType (SMDSAbs_EntityType vtkType);
   static SMDSAbs_EntityType  toSmdsType(VTKCellType vtkType);

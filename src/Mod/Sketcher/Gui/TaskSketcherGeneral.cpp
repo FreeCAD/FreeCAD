@@ -182,6 +182,8 @@ void TaskSketcherGeneral::toggleAutoconstraints(int state)
 void TaskSketcherGeneral::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                                    Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller);
+    Q_UNUSED(Reason);
     //if (Reason.Type == SelectionChanges::AddSelection ||
     //    Reason.Type == SelectionChanges::RmvSelection ||
     //    Reason.Type == SelectionChanges::SetSelection ||

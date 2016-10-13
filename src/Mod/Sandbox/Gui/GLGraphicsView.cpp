@@ -213,10 +213,10 @@ SceneEventFilter::unregisterInputDevice(SIM::Coin3D::Quarter::InputDevice * devi
   returns false.
  */
 bool
-SceneEventFilter::eventFilter(QObject * obj, QEvent * qevent)
+SceneEventFilter::eventFilter(QObject *, QEvent * qevent)
 {
     // Convert the scene event back to a standard event
-    std::auto_ptr<QEvent> sceneev;
+    std::unique_ptr<QEvent> sceneev;
     switch (qevent->type()) {
     //GraphicsSceneContextMenu = 159,
     //GraphicsSceneHoverEnter = 160,
@@ -732,7 +732,7 @@ void GraphicsScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
     if (event->buttons() & Qt::LeftButton) {
-        const QPointF delta = event->scenePos() - event->lastScenePos();
+        //const QPointF delta = event->scenePos() - event->lastScenePos();
         //const Point3d angularImpulse = Point3d(delta.y(), delta.x(), 0) * 0.1;
 
         //m_rotation += angularImpulse;
@@ -760,7 +760,7 @@ void GraphicsScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     if (event->isAccepted())
         return;
 
-    const int delta = m_time.elapsed() - m_mouseEventTime;
+    //const int delta = m_time.elapsed() - m_mouseEventTime;
     //m_angularMomentum = m_accumulatedMomentum * (1000.0 / qMax(1, delta));
     event->accept();
     update();
@@ -972,14 +972,17 @@ void GraphicsView3D::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     if (strcmp(Reason, "BackgroundColor") == 0)
     {
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
-        unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
-        unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
-        unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
-        float r1,g1,b1,r2,g2,b2,r3,g3,b3,r4,g4,b4;
+        //unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
+        //unsigned long col3 = rGrp.GetUnsigned("BackgroundColor3",2880160255UL); // default color (blue/grey)
+        //unsigned long col4 = rGrp.GetUnsigned("BackgroundColor4",1869583359UL); // default color (blue/grey)
+        float r1,g1,b1;
+        //float r2,g2,b2;
+        //float r3,g3,b3;
+        //float r4,g4,b4;
         r1 = ((col1 >> 24) & 0xff) / 255.0; g1 = ((col1 >> 16) & 0xff) / 255.0; b1 = ((col1 >> 8) & 0xff) / 255.0;
-        r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
-        r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
-        r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
+        //r2 = ((col2 >> 24) & 0xff) / 255.0; g2 = ((col2 >> 16) & 0xff) / 255.0; b2 = ((col2 >> 8) & 0xff) / 255.0;
+        //r3 = ((col3 >> 24) & 0xff) / 255.0; g3 = ((col3 >> 16) & 0xff) / 255.0; b3 = ((col3 >> 8) & 0xff) / 255.0;
+        //r4 = ((col4 >> 24) & 0xff) / 255.0; g4 = ((col4 >> 16) & 0xff) / 255.0; b4 = ((col4 >> 8) & 0xff) / 255.0;
         m_scene->setBackgroundColor(QColor::fromRgbF(r1, g1, b1));
         //if (rGrp.GetBool("UseBackgroundColorMid",false) == false)
         //    _viewer->setGradientBackgroundColor(SbColor(r2, g2, b2), SbColor(r3, g3, b3));

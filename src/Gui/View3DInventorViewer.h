@@ -138,6 +138,7 @@ public:
     void setBacklight(SbBool on);
     SbBool isBacklight(void) const;
     void setSceneGraph (SoNode *root);
+    SbBool searchNode(SoNode*) const;
 
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
@@ -156,6 +157,7 @@ public:
     int getFeedbackSize(void) const;
 
     void setRenderType(const RenderType type);
+    RenderType getRenderType() const;
     void renderToFramebuffer(QGLFramebufferObject*);
 
     virtual void setViewing(SbBool enable);

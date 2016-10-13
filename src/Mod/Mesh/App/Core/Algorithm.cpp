@@ -43,29 +43,26 @@ using Base::BoundBox2D;
 using Base::Polygon2D;
 
 
-bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base::Vector3f &rcView, const MeshFacetGrid &rclGrid ) const
+bool MeshAlgorithm::IsVertexVisible (const Base::Vector3f &rcVertex, const Base::Vector3f &rcView, const MeshFacetGrid &rclGrid) const
 {
-  Base::Vector3f cDirection = rcVertex-rcView;
-  float fDistance = cDirection.Length();
-  Base::Vector3f cIntsct; unsigned long uInd;
+    Base::Vector3f cDirection = rcVertex - rcView;
+    float fDistance = cDirection.Length();
+    Base::Vector3f cIntsct; unsigned long uInd;
 
-  // search for the nearest facet to rcView in direction to rcVertex
-  if ( NearestFacetOnRay( rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd) )
-  {
-    // now check if the facet overlays the point
-    float fLen = Base::Distance( rcView, cIntsct );
-    if ( fLen < fDistance )
-    {
-      // is it the same point?
-      if ( Base::Distance(rcVertex, cIntsct) > 0.001f )
-      {
-        // ok facet overlays the vertex
-        return false;
-      }
+    // search for the nearest facet to rcView in direction to rcVertex
+    if (NearestFacetOnRay(rcView, cDirection, /*1.2f*fDistance,*/ rclGrid, cIntsct, uInd)) {
+        // now check if the facet overlays the point
+        float fLen = Base::Distance(rcView, cIntsct);
+        if (fLen < fDistance) {
+            // is it the same point?
+            if (Base::Distance(rcVertex, cIntsct) > 0.001f) {
+                // ok facet overlays the vertex
+                return false;
+            }
+        }
     }
-  }
 
-  return true; // no facet between the two points
+    return true; // no facet between the two points
 }
 
 bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, Base::Vector3f &rclRes,
@@ -176,7 +173,7 @@ bool MeshAlgorithm::NearestFacetOnRay (const Base::Vector3f &rclPt, const Base::
 }
 
 bool MeshAlgorithm::RayNearestField (const Base::Vector3f &rclPt, const Base::Vector3f &rclDir, const std::vector<unsigned long> &raulFacets,
-                                     Base::Vector3f &rclRes, unsigned long &rulFacet, float fMaxAngle) const
+                                     Base::Vector3f &rclRes, unsigned long &rulFacet, float /*fMaxAngle*/) const
 {
     Base::Vector3f  clProj, clRes;
     bool bSol = false;
@@ -226,10 +223,10 @@ bool MeshAlgorithm::FirstFacetToVertex(const Base::Vector3f &rPt, float fMaxDist
         }
         else {
             // if not then check the distance to the border of the triangle
-            Base::Vector3f res = rPt;
+            Base::Vector3f res;
             float fDist;
             unsigned short uSide;
-            cFacet.ProjectPointToPlane(res);
+            cFacet.ProjectPointToPlane(rPt, res);
             cFacet.NearestEdgeToPoint(res, fDist, uSide);
             if (fDist < fEps) {
                 found = true;
@@ -1573,34 +1570,34 @@ bool MeshAlgorithm::ConnectPolygons(std::list<std::vector<Base::Vector3f> > &clP
                                     std::list<std::pair<Base::Vector3f, Base::Vector3f> > &rclLines) const
 {
 
-  for(std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end(); ++OutIter)
-  {
-    std::pair<Base::Vector3f,Base::Vector3f> currentSort;
-    float fDist = Base::Distance(OutIter->front(),OutIter->back());
-    currentSort.first = OutIter->front();
-    currentSort.second = OutIter->back();
+    for (std::list< std::vector<Base::Vector3f> >::iterator OutIter = clPolyList.begin(); OutIter != clPolyList.end(); ++OutIter) {
+        if (OutIter->empty())
+            continue;
+        std::pair<Base::Vector3f,Base::Vector3f> currentSort;
+        float fDist = Base::Distance(OutIter->front(),OutIter->back());
+        currentSort.first = OutIter->front();
+        currentSort.second = OutIter->back();
 
-    for(std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); ++InnerIter)
-    {
-      if(OutIter == InnerIter) continue;
+        for (std::list< std::vector<Base::Vector3f> >::iterator InnerIter = clPolyList.begin(); InnerIter != clPolyList.end(); ++InnerIter) {
+            if (OutIter == InnerIter)
+                continue;
 
-      if(Base::Distance(OutIter->front(),InnerIter->front()) < fDist)
-      {
-        currentSort.second = InnerIter->front();
-        fDist = Base::Distance(OutIter->front(),InnerIter->front());
-      }
-      if(Base::Distance(OutIter->front(),InnerIter->back()) < fDist)
-      {
-        currentSort.second = InnerIter->back();
-        fDist = Base::Distance(OutIter->front(),InnerIter->back());
-      }
+            if (Base::Distance(OutIter->front(), InnerIter->front()) < fDist) {
+                currentSort.second = InnerIter->front();
+                fDist = Base::Distance(OutIter->front(),InnerIter->front());
+            }
+
+            if (Base::Distance(OutIter->front(), InnerIter->back()) < fDist) {
+                currentSort.second = InnerIter->back();
+                fDist = Base::Distance(OutIter->front(),InnerIter->back());
+            }
+        }
+
+        rclLines.push_front(currentSort);
+
     }
 
-    rclLines.push_front(currentSort);
-
-  }
-
-  return true;
+    return true;
 }
 
 void MeshAlgorithm::GetFacetsFromPlane (const MeshFacetGrid &rclGrid, const Base::Vector3f& clNormal, float d, const Base::Vector3f &rclLeft,

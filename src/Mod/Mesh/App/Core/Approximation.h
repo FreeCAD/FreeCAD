@@ -415,6 +415,7 @@ public:
                        double &rfCurv0, double &rfCurv1,
                        Wm4::Vector3<double> &rkDir0,  Wm4::Vector3<double> &rkDir1, double &dDistance)
     {
+        (void)dDistance;
         return pImplSurf->ComputePrincipalCurvatureInfo( Wm4::Vector3<double>(x, y, z),rfCurv0, rfCurv1, rkDir0, rkDir1 );
     }
 
@@ -482,26 +483,32 @@ public:
     //+++++++++ 2. derivations ++++++++++++++++++++++++++++++++
     double Fxx( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( 2.0f*dKoeff[4] );
     }
     double Fxy( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( dKoeff[7] );
     }
     double Fxz( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( dKoeff[8] );
     }
     double Fyy( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( 2.0f*dKoeff[5] );
     }
     double Fyz( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( dKoeff[9] );
     }
     double Fzz( double x, double y, double z ) 
     {
+        (void)x; (void)y; (void)z;
         return( 2.0f*dKoeff[6] );
     }
    

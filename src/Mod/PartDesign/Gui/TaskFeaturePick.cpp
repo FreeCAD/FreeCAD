@@ -208,6 +208,8 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures() {
     int index = 0;
     std::vector<App::DocumentObject*> result;
     auto activeBody = PartDesignGui::getBody(false);
+    if (!activeBody)
+        return result;
     auto activePart = PartDesignGui::getPartFor(activeBody, false);
 
     for (std::vector<featureStatus>::const_iterator st = statuses.begin(); st != statuses.end(); st++) {
@@ -380,7 +382,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
     return copy;
 }
 
-void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& msg)
+void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
 {
     ui->listWidget->clearSelection();
     for(Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {

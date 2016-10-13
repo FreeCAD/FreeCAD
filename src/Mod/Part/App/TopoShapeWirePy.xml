@@ -16,7 +16,7 @@
     </Documentation>
 	  <Methode Name="makeOffset" Const="true">
 		  <Documentation>
-			  <UserDocu>Offset the shape by a given ammount</UserDocu>
+              <UserDocu>Offset the shape by a given amount. DEPRECATED - use makeOffset2D instead.</UserDocu>
 		  </Documentation>
 	  </Methode>
 		<Methode Name="add">
@@ -149,5 +149,17 @@ coordinate system.</UserDocu>
       </Documentation>
       <Parameter Name="PrincipalProperties" Type="Dict"/>
     </Attribute>
+    <Attribute Name="OrderedEdges" ReadOnly="true">
+      <Documentation>
+       <UserDocu>List of ordered edges in this shape.</UserDocu>
+      </Documentation>
+      <Parameter Name="OrderedEdges" Type="List"/>
+   </Attribute>
+   <Attribute Name="OrderedVertexes" ReadOnly="true">
+     <Documentation>
+      <UserDocu>List of ordered vertexes in this shape.</UserDocu>
+     </Documentation>
+     <Parameter Name="OrderedVertexes" Type="List"/>
+  </Attribute>
   </PythonExport>
 </GenerateModel>

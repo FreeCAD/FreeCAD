@@ -24,7 +24,7 @@
 #ifndef APP_DOCUMENTOBJECT_H
 #define APP_DOCUMENTOBJECT_H
 
-#include <App/PropertyContainer.h>
+#include <App/TransactionalObject.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyExpressionEngine.h>
@@ -76,7 +76,7 @@ public:
 
 /** Base class of all Classes handled in the Document
  */
-class AppExport DocumentObject: public App::PropertyContainer
+class AppExport DocumentObject: public App::TransactionalObject
 {
     PROPERTY_HEADER(App::DocumentObject);
 
@@ -95,6 +95,8 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
@@ -231,11 +233,11 @@ protected:
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
     /// get called after setting the document
-    virtual void onSettingDocument() {}
+    virtual void onSettingDocument();
     /// get called after a brand new object was created
-    virtual void setupObject() {}
+    virtual void setupObject();
     /// get called when object is going to be removed from the document
-    virtual void unsetupObject() {}
+    virtual void unsetupObject();
 
      /// python object of this class and all descendend
 protected: // attributes
@@ -256,6 +258,5 @@ protected: // attributes
 };
 
 } //namespace App
-
 
 #endif // APP_DOCUMENTOBJECT_H

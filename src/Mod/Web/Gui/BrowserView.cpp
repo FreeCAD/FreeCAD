@@ -359,12 +359,14 @@ void BrowserView::onOpenLinkInNewWindow(const QUrl& url)
 
 void BrowserView::OnChange(Base::Subject<const char*> &rCaller,const char* rcReason)
 {
+    Q_UNUSED(rCaller);
+    Q_UNUSED(rcReason);
 }
 
 /**
  * Runs the action specified by \a pMsg.
  */
-bool BrowserView::onMsg(const char* pMsg,const char** ppReturn)
+bool BrowserView::onMsg(const char* pMsg,const char** )
 {
     if (strcmp(pMsg,"Back")==0){
         view->back();

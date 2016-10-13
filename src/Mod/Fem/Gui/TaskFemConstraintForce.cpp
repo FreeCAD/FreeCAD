@@ -116,7 +116,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
     if (Objects.size() > 0)
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
-    ui->lineDirection->setText(dir.isEmpty() ? tr("") : dir);
+    ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
 
     ui->spinForce->blockSignals(false);
@@ -267,7 +267,7 @@ void TaskFemConstraintForce::onCheckReverse(const bool pressed)
 
 double TaskFemConstraintForce::getForce(void) const
 {
-    return ui->spinForce->value();
+    return ui->spinForce->value().getValue();
 }
 
 const std::string TaskFemConstraintForce::getReferences() const
@@ -357,13 +357,15 @@ bool TaskDlgFemConstraintForce::accept()
 
         if (parameterForce->getForce()<=0)
         {
-          QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));
+            QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));
             return false;
         }
         else
         {
-            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %f",name.c_str(), parameterForce->getForce());
+            QByteArray num = QByteArray::number(parameterForce->getForce());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %s",name.c_str(), num.data());
         }
+
         std::string dirname = parameterForce->getDirectionName().data();
         std::string dirobj = parameterForce->getDirectionObject().data();
         std::string scale = "1";

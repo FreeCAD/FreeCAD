@@ -37,7 +37,7 @@
 using namespace TechDrawGui;
 
 QGITemplate::QGITemplate(QGraphicsScene *scene) : QGraphicsItemGroup(),
-                                                                      pageTemplate(0)
+    pageTemplate(0)
 {
     setHandlesChildEvents(false);
     setCacheMode(QGraphicsItem::NoCache);
@@ -71,6 +71,7 @@ void QGITemplate::clearContents()
 
 void QGITemplate::updateView(bool update)
 {
+    Q_UNUSED(update);
     draw();
 }
 

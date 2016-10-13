@@ -154,6 +154,7 @@ void ViewProviderDrawingPage::setupContextMenu(QMenu* menu, QObject* receiver, c
 
 bool ViewProviderDrawingPage::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     doubleClicked();
     return false;
 }

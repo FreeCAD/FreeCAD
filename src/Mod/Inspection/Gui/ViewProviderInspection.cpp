@@ -260,9 +260,10 @@ void ViewProviderInspection::updateData(const App::Property* prop)
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
-            if (link) updateData(link);
+            if (link)
+                updateData(link);
+            setDistances();
         }
-        setDistances();
     }
     else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
         if (strcmp(prop->getName(), "SearchRadius") == 0) {
@@ -281,6 +282,9 @@ SoSeparator* ViewProviderInspection::getFrontRoot(void) const
 
 void ViewProviderInspection::setDistances()
 {
+    if (!pcObject)
+        return;
+
     App::Property* pDistances = pcObject->getPropertyByName("Distances");
     if (!pDistances) {
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
@@ -359,7 +363,7 @@ std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderInspection::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderInspection::OnChange(Base::Subject<int> &/*rCaller*/, int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -448,7 +452,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
-                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
+                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {

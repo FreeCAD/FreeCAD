@@ -23,6 +23,7 @@
         <file>icons/Arch_Structure_Tree.svg</file>
         <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
+        <file>icons/Arch_Window_Clone.svg</file>
         <file>icons/Arch_Axis.svg</file>
         <file>icons/Arch_Axis_Tree.svg</file>
         <file>icons/Arch_Roof.svg</file>
@@ -45,6 +46,7 @@
         <file>icons/Arch_Panel_Tree.svg</file>
         <file>icons/Arch_Equipment.svg</file>
         <file>icons/Arch_Equipment_Tree.svg</file>
+        <file>icons/Arch_Equipment_Clone.svg</file>
         <file>icons/Arch_Survey.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/IFC.svg</file>
@@ -65,6 +67,10 @@
         <file>ui/preferences-dae.ui</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchSchedule.ui</file>
+        <file>icons/Arch_Pipe.svg</file>
+        <file>icons/Arch_Pipe_Tree.svg</file>
+        <file>icons/Arch_PipeConnector.svg</file>
+        <file>icons/Arch_ToggleSubs.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
@@ -77,6 +83,7 @@
         <file>ui/ParametersPanel.svg</file>
         <file>ui/ParametersSlab.svg</file>
         <file>ui/ParametersIbeam.svg</file>
+        <file>ui/ParametersStairs.svg</file>
         <file>ui/BimServerTaskPanel.ui</file>
         <file>ui/GitTaskPanel.ui</file>
         <file>ui/DialogBimServerLogin.ui</file>

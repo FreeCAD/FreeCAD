@@ -26,11 +26,12 @@
 #include "ComplexGeoData.h"
 
 // inclusion of the generated files (generated out of ComplexGeoDataPy.xml)
-#include "ComplexGeoDataPy.h"
-#include "ComplexGeoDataPy.cpp"
+#include <App/ComplexGeoDataPy.h>
+#include <App/ComplexGeoDataPy.cpp>
 #include <Base/BoundBoxPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
+#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
 using namespace Data;
@@ -40,6 +41,45 @@ using namespace Base;
 std::string ComplexGeoDataPy::representation(void) const
 {
     return std::string("<ComplexGeoData object>");
+}
+
+PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
+{
+    char *type;
+    int index;
+    if (!PyArg_ParseTuple(args, "si", &type, &index))
+        return 0;
+
+    std::vector<Base::Vector3d> points;
+    std::vector<Base::Vector3d> normals;
+    std::vector<Data::ComplexGeoData::Facet> facets;
+    try {
+        Data::Segment* segm = getComplexGeoDataPtr()->getSubElement(type, index);
+        getComplexGeoDataPtr()->getFacesFromSubelement(segm, points, normals, facets);
+        delete segm;
+    }
+    catch (...) {
+        PyErr_SetString(PyExc_RuntimeError, "failed to get sub-element from object");
+        return 0;
+    }
+
+    Py::Tuple tuple(2);
+    Py::List vertex;
+    for (std::vector<Base::Vector3d>::const_iterator it = points.begin();
+        it != points.end(); ++it)
+        vertex.append(Py::Object(new Base::VectorPy(*it)));
+    tuple.setItem(0, vertex);
+    Py::List facet;
+    for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
+        it = facets.begin(); it != facets.end(); ++it) {
+        Py::Tuple f(3);
+        f.setItem(0,Py::Int((int)it->I1));
+        f.setItem(1,Py::Int((int)it->I2));
+        f.setItem(2,Py::Int((int)it->I3));
+        facet.append(f);
+    }
+    tuple.setItem(1, facet);
+    return Py::new_reference_to(tuple);
 }
 
 Py::Object ComplexGeoDataPy::getBoundBox(void) const

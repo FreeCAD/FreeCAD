@@ -34,7 +34,6 @@
 #include "../App/Sheet.h"
 #include <Gui/Command.h>
 #include <Base/Tools.h>
-#include <strstream>
 #include <boost/bind.hpp>
 
 using namespace SpreadsheetGui;
@@ -58,11 +57,13 @@ SheetModel::~SheetModel()
 
 int SheetModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 16384;
 }
 
 int SheetModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 26 * 26 + 26;
 }
 
@@ -272,7 +273,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         const App::PropertyString * stringProp = static_cast<const App::PropertyString*>(prop);
 
         switch (role) {
-        case Qt::TextColorRole:
+        case Qt::TextColorRole: // dead code!
             return QVariant::fromValue(QColor(Qt::black));
         case Qt::DisplayRole:
             return QVariant(QString::fromUtf8(stringProp->getValue()));
@@ -296,7 +297,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         const App::PropertyQuantity * floatProp = static_cast<const App::PropertyQuantity*>(prop);
 
         switch (role) {
-        case  Qt::TextColorRole:
+        case  Qt::TextColorRole: // dead code!
             if (floatProp->getValue() < 0)
                 return QVariant::fromValue(QColor(Qt::red));
             else
@@ -341,7 +342,7 @@ QVariant SheetModel::data(const QModelIndex &index, int role) const
         const App::PropertyFloat * floatProp = static_cast<const App::PropertyFloat*>(prop);
 
         switch (role) {
-        case  Qt::TextColorRole:
+        case  Qt::TextColorRole: // dead code!
             if (floatProp->getValue() < 0)
                 return QVariant::fromValue(QColor(Qt::red));
             else

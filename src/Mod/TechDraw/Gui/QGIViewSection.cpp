@@ -33,7 +33,6 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 #include <QTextOption>
-#include <strstream>
 #endif
 
 #include <qmath.h>
@@ -60,20 +59,16 @@ void QGIViewSection::draw()
 
 void QGIViewSection::drawSectionFace()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()))
-        return;
-
-    TechDraw::DrawViewSection *section = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
-    if (!section->hasGeometry()) {
+    auto section( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
+    if( section == nullptr ) {
         return;
     }
 
-    if (!section->ShowCutSurface.getValue()) {
+    if ( !section->hasGeometry() || !section->ShowCutSurface.getValue() ) {
         return;
     }
 
-    std::vector<TechDrawGeometry::Face*> sectionFaces;
-    sectionFaces = section->getFaceGeometry();
+    auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
         Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
@@ -84,6 +79,11 @@ void QGIViewSection::drawSectionFace()
         QGIFace* newFace = drawFace(*fit,-1);  //TODO: do we need to know which sectionFace this QGIFace came from?
         newFace->setZValue(ZVALUE::SECTIONFACE);
         newFace->setFill(faceColor, Qt::SolidPattern);
+        if (section->showSectionEdges()) {
+            newFace->setDrawEdges(true);
+        } else {
+            newFace->setDrawEdges(false);
+        }
         newFace->setPrettyNormal();
         newFace->setAcceptHoverEvents(false);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -92,10 +92,10 @@ void QGIViewSection::drawSectionFace()
 
 void QGIViewSection::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()))
+    auto viewPart( dynamic_cast<TechDraw::DrawViewSection *>(getViewObject()) );
+    if( viewPart == nullptr ) {
         return;
-
-    TechDraw::DrawViewSection *viewPart = dynamic_cast<TechDraw::DrawViewSection *>(getViewObject());
+    }
 
     if(update ||
        viewPart->SectionNormal.isTouched() ||
@@ -104,4 +104,10 @@ void QGIViewSection::updateView(bool update)
     } else {
         QGIViewPart::updateView();
     }
+}
+
+void QGIViewSection::drawSectionLine(bool b)
+{
+    Q_UNUSED(b);
+   //override QGIVP::drawSectionLine
 }

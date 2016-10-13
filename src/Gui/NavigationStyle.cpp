@@ -63,10 +63,12 @@ struct NavigationStyleP {
     NavigationStyleP()
     {
         this->animationsteps = 0;
+        this->animationdelta = 0;
         this->sensitivity = 2.0f;
         this->resetcursorpos = false;
         this->dragPointFound = false;
         this->dragAtCursor = false;
+        this->animsensor = 0;
     }
     static void viewAnimationCB(void * data, SoSensor * sensor);
 };
@@ -309,7 +311,7 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 
     SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
     rpaction.setPoint(screenpos);
-    rpaction.setRadius(2);
+    rpaction.setRadius(viewer->getPickRadius());
     rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
     SoPickedPoint * picked = rpaction.getPickedPoint();
@@ -453,6 +455,7 @@ void NavigationStyle::setCameraOrientation(const SbRotation& rot, SbBool moveToC
 
 void NavigationStyleP::viewAnimationCB(void * data, SoSensor * sensor)
 {
+    Q_UNUSED(sensor); 
     NavigationStyle* that = reinterpret_cast<NavigationStyle*>(data);
     if (PRIVATE(that)->animationsteps > 0) {
         // here the camera rotates from the current rotation to a given
@@ -994,7 +997,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent * const ev)
     if (PRIVATE(this)->dragAtCursor) {
         SoRayPickAction rpaction(viewer->getSoRenderManager()->getViewportRegion());
         rpaction.setPoint(this->localPos);
-        rpaction.setRadius(2);
+        rpaction.setRadius(viewer->getPickRadius());
         rpaction.apply(viewer->getSoRenderManager()->getSceneGraph());
 
         SoPickedPoint * picked = rpaction.getPickedPoint();
@@ -1058,6 +1061,7 @@ SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
 {
     SoHandleEventAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.setEvent(e);
+    action.setPickRadius(viewer->getPickRadius());
     action.apply(viewer->foregroundroot);
     return action.isHandled();
 }
@@ -1491,6 +1495,7 @@ SbBool NavigationStyle::isPopupMenuEnabled(void) const
 
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
+    Q_UNUSED(position); 
     // ask workbenches and view provider, ...
     MenuItem* view = new MenuItem;
     Gui::Application::Instance->setupContextMenu("View", view);
@@ -1563,7 +1568,7 @@ std::map<Base::Type, std::string> UserNavigationStyle::getUserFriendlyNames()
 
     for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
         if (*it != UserNavigationStyle::getClassTypeId()) {
-            std::auto_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
+            std::unique_ptr<UserNavigationStyle> inst(static_cast<UserNavigationStyle*>(it->createInstance()));
             if (inst.get()) {
                 names[*it] = inst->userFriendlyName();
             }

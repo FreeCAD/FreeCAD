@@ -62,7 +62,7 @@ public:
     SMESH_Mesh* getSMesh();
     static SMESH_Gen * getGenerator();
     void addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp);
-    void setStanardHypotheses();
+    void setStandardHypotheses();
     void compute();
 
     // from base class

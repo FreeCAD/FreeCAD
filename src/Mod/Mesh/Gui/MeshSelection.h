@@ -78,7 +78,6 @@ protected:
     void stopInteractiveCallback(Gui::View3DInventorViewer* viewer);
 
 private:
-
     static void selectGLCallback(void * ud, SoEventCallback * n);
     static void pickFaceCallback(void * ud, SoEventCallback * n);
 

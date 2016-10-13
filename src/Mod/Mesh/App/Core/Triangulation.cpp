@@ -354,6 +354,7 @@ bool EarClippingTriangulator::Triangulate::Process(const std::vector<Base::Vecto
         /* if we loop, it is probably a non-simple polygon */
         if (0 >= (count--)) {
             //** Triangulate: ERROR - probable bad polygon!
+            delete [] V;
             return false;
         }
 

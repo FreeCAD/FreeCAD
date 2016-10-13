@@ -47,7 +47,6 @@
 
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
-#include "QGIView.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
@@ -61,7 +60,8 @@ QGIFace::QGIFace(int index) :
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
     //setFiltersChildEvents(true);
 
-    m_styleCurrent = Qt::NoPen;    //don't draw face lines, just fill
+    //setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    setStyle(Qt::DashLine);
 
     m_styleNormal = m_styleDef;
     m_colNormalFill = m_colDefFill;
@@ -106,6 +106,14 @@ void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
 void QGIFace::setFill(QBrush b) {
     m_colNormalFill = b.color();
     m_styleNormal = b.style();
+}
+
+void QGIFace::setDrawEdges(bool b) {
+    if (b) {
+        setStyle(Qt::DashLine);
+    } else {
+        setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    }
 }
 
 void QGIFace::resetFill() {
@@ -173,6 +181,17 @@ void QGIFace::buildHatch()
 void QGIFace::setHatchColor(std::string c)
 {
     m_svgCol = c;
+}
+
+//QtSvg does not handle clipping, so we must be able to turn the hatching on/off
+void QGIFace::toggleSvg(bool b)
+{
+    if (b) {
+        m_rect->show();
+    } else {
+        m_rect->hide();
+    }
+    update();
 }
 
 QRectF QGIFace::boundingRect() const

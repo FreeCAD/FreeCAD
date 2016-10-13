@@ -81,15 +81,12 @@ ViewProviderShapeBinder::~ViewProviderShapeBinder()
 bool ViewProviderShapeBinder::setEdit(int ModNum) {
     // TODO Share code with other view providers (2015-09-11, Fat-Zer)
     
-    if (ModNum == ViewProvider::Default || ModNum == 1 ) {
-        
+    if (ModNum == ViewProvider::Default || ModNum == 1) {
         // When double-clicking on the item for this pad the
         // object unsets and sets its edit mode without closing
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder *sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
-        if (sbDlg)
-            sbDlg = 0; // another pad left open its task panel
         if (dlg && !sbDlg) {
             QMessageBox msgBox;
             msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
@@ -107,6 +104,7 @@ bool ViewProviderShapeBinder::setEdit(int ModNum) {
         Gui::Selection().clearSelection();
 
         // start the edit dialog
+        // another pad left open its task panel
         if (sbDlg)
             Gui::Control().showDialog(sbDlg);
         else
@@ -124,8 +122,8 @@ void ViewProviderShapeBinder::unsetEdit(int ModNum) {
     PartGui::ViewProviderPart::unsetEdit(ModNum);
 }
 
-void ViewProviderShapeBinder::highlightReferences(const bool on, bool auxillery) {
-    
+void ViewProviderShapeBinder::highlightReferences(const bool on, bool /*auxillery*/)
+{
     Part::Feature* obj;
     std::vector<std::string> subs;
 

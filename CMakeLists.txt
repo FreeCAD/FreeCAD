@@ -86,7 +86,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     if(BUILD_ENABLE_CXX11)
        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     endif(BUILD_ENABLE_CXX11)
-    set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
     # get linker errors as soon as possible and not at runtime e.g. for modules
@@ -181,7 +181,7 @@ if(APPLE)
     endif(FREECAD_CREATE_MAC_APP)
 endif(APPLE)
 
-OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
+OPTION(BUILD_FEM "Build the FreeCAD FEM module" ON)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
@@ -240,7 +240,7 @@ if (FREECAD_BUILD_DEBIAN)
     # A Debian package for SMESH doesn't exist
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
-if(BUILD_MESH_PART OR BUILD_FEM)
+if(BUILD_FEM)
     set(BUILD_SMESH ON)
 endif()
 
@@ -272,7 +272,7 @@ REQUIRES_MODS(BUILD_IDF                BUILD_PART)
 REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
 REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
 REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
-REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH BUILD_SMESH)
 REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
 REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
 REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
@@ -618,9 +618,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(SWIG)
 
     IF(NOT SWIG_FOUND)
-        MESSAGE("==================================================\n"
-                "SWIG not found, don't build SWIG binding for pivy.\n"
-                "==================================================\n")
+        MESSAGE("=====================================================\n"
+                "SWIG not found, will not build SWIG binding for pivy.\n"
+                "=====================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
 # -------------------------------- Eigen --------------------------------
@@ -635,6 +635,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
+
+    # If using MacPorts, help the Qt4 finder.
+    if(MACPORTS_PREFIX)
+        if(NOT QT_QMAKE_EXECUTABLE)
+            set(QT_QMAKE_EXECUTABLE ${MACPORTS_PREFIX}/libexec/qt4/bin/qmake)
+        endif()
+    endif()
 
     SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
@@ -651,15 +658,15 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     include(${QT_USE_FILE})
 
     IF(NOT QT4_FOUND)
-        MESSAGE(FATAL_ERROR "=======================\n"
-                            "Qt libraries not found.\n"
-                            "=======================\n")
+        MESSAGE(FATAL_ERROR "========================\n"
+                            "Qt4 libraries not found.\n"
+                            "========================\n")
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("=====================================================\n"
-                "Qt Webkit not found, don't build browser integration.\n"
-                "=====================================================\n")
+        MESSAGE("========================================================\n"
+                "Qt Webkit not found, will not build browser integration.\n"
+                "========================================================\n")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 

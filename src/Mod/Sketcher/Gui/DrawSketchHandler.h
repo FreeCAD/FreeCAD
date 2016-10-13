@@ -62,13 +62,13 @@ public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
-    virtual void activated(ViewProviderSketch *sketchgui){};
-    virtual void deactivated(ViewProviderSketch *sketchgui){};
+    virtual void activated(ViewProviderSketch *){}
+    virtual void deactivated(ViewProviderSketch *){}
     virtual void mouseMove(Base::Vector2D onSketchPos)=0;
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) { return false; };
-    virtual void registerPressedKey(bool pressed, int key){};
+    virtual bool onSelectionChanged(const Gui::SelectionChanges&) { return false; }
+    virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
     virtual void quit(void);
 

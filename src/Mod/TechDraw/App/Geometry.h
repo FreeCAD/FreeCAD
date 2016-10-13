@@ -24,6 +24,8 @@
 #define TECHDRAW_GEOMETRY_H
 
 #include <Base/Tools2D.h>
+#include <Base/Vector3D.h>
+
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
@@ -74,6 +76,8 @@ class TechDrawExport BaseGeom
         std::vector<Base::Vector2D> findEndPoints();
         Base::Vector2D getStartPoint();
         Base::Vector2D getEndPoint();
+        double minDist(Base::Vector2D p);
+        Base::Vector2D nearPoint(Base::Vector2D p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
 };
 
@@ -138,7 +142,7 @@ class TechDrawExport AOC: public Circle
         Base::Vector2D endPnt;
         Base::Vector2D midPnt;
 
-        /// Angle in radian
+        /// Angle in radian  ??angle with horizontal?
         double startAngle;
 
         /// Angle in radian
@@ -147,6 +151,10 @@ class TechDrawExport AOC: public Circle
         /// Arc is drawn clockwise from startAngle to endAngle if true, counterclockwise if false
         bool cw;  // TODO: Instead of this (and similar one in AOE), why not reorder startAngle and endAngle?
         bool largeArc;
+
+        bool isOnArc(Base::Vector3d v);
+        bool intersectsArc(Base::Vector3d p1,Base::Vector3d p2);
+        double distToArc(Base::Vector3d p);
 };
 
 /// Handles degree 1 to 3 Bezier segments
@@ -215,16 +223,20 @@ class TechDrawExport Face
 class TechDrawExport Vertex
 {
     public:
-        Vertex(double x, double y) { pnt = Base::Vector2D(x, y); }
-        Vertex(Base::Vector2D v) { pnt = v; }
+        Vertex(double x, double y);
+        Vertex(Base::Vector2D v) : Vertex(v.fX,v.fY) {}
         ~Vertex() = default;
 
         Base::Vector2D pnt;
-        ExtractionType extractType;
+        ExtractionType extractType;       //obs?
         bool visible;
-        int ref3D;
+        int ref3D;                        //obs. never used.
+        bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(Vertex* v, double tol);
+        Base::Vector3d getAs3D(void) {return Base::Vector3d(pnt.fX,pnt.fY,0.0);}
+        double x() {return pnt.fX;}
+        double y() {return pnt.fY;}
 };
 
 /// Encapsulates some useful static methods

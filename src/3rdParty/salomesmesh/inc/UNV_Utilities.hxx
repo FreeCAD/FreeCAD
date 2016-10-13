@@ -60,7 +60,7 @@ namespace UNV{
     std::string olds, news;
 
     in_file.seekg(0);
-    while(true)
+    while(!in_file.eof() && !in_file.fail())
     {
       in_file >> olds >> news;
       /*
@@ -81,7 +81,9 @@ namespace UNV{
       if (news == ds_name)
         return true;
     }
-    // should never end up here
+    // We didn't found the card
+    // Let's rewind the file handler and return an error
+    in_file.clear();
     return false;
   }
 

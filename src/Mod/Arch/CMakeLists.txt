@@ -38,6 +38,7 @@ SET(Arch_SRCS
     import3DS.py
     ArchPrecast.py
     importSH3D.py
+    ArchPipe.py
 )
 
 SET(Dice3DS_SRCS

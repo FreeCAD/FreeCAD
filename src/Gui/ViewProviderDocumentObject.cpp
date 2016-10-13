@@ -42,7 +42,8 @@
 #include "MDIView.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include "ViewProviderExtension.h"
+#include <Gui/ViewProviderDocumentObjectPy.h>
 
 
 using namespace Gui;
@@ -77,6 +78,30 @@ void ViewProviderDocumentObject::startRestoring()
 
 void ViewProviderDocumentObject::finishRestoring()
 {
+}
+
+bool ViewProviderDocumentObject::isAttachedToDocument() const
+{
+    return (!testStatus(Detach));
+}
+
+const char* ViewProviderDocumentObject::detachFromDocument()
+{
+    // here we can return an empty string since the object
+    // name comes from the document object
+    setStatus(Detach, true);
+    return "";
+}
+
+void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
+{
+    if (isAttachedToDocument()) {
+        App::DocumentObject* obj = getObject();
+        App::Document* doc = obj ? obj->getDocument() : 0;
+        if (doc) {
+            onBeforeChangeProperty(doc, prop);
+        }
+    }
 }
 
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)
@@ -155,6 +180,17 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     const char* defmode = this->getDefaultDisplayMode();
     if (defmode)
         DisplayMode.setValue(defmode);
+    
+    //attach the extensions
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionAttach(pcObj);
+}
+
+Gui::Document* ViewProviderDocumentObject::getDocument() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    return Gui::Application::Instance->getDocument(pAppDoc);
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
@@ -182,6 +218,13 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
     }
 
     return mdi;
+}
+
+Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+    return pGuiDoc->getViewOfNode(node);
 }
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
@@ -228,30 +271,10 @@ void ViewProviderDocumentObject::setActiveMode()
         ViewProvider::hide();
 }
 
-const char* ViewProviderDocumentObject::getDefaultDisplayMode() const
-{
-    // We use the first item then
-    return 0;
-}
-
-std::vector<std::string> ViewProviderDocumentObject::getDisplayModes(void) const
-{
-    // empty
-    return std::vector<std::string>();
-}
-
 PyObject* ViewProviderDocumentObject::getPyObject()
 {
     if (!pyViewObject)
         pyViewObject = new ViewProviderDocumentObjectPy(this);
     pyViewObject->IncRef();
     return pyViewObject;
-}
-
-bool ViewProviderDocumentObject::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    return false;
-}
-void ViewProviderDocumentObject::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
 }

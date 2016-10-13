@@ -69,7 +69,7 @@ TaskDriver::TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent)
 
 
 
-void TaskDriver::SwitchMethod(int Value)
+void TaskDriver::SwitchMethod(int /*Value*/)
 {
     //if(Value == 1){
     //    ui->groupBox_AngleSearch->setEnabled(true);

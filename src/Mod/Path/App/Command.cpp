@@ -109,7 +109,7 @@ Vector3d Command::getCenter (void)
     return vec;
 }
 
-const double Command::getValue(const std::string& attr)
+double Command::getValue(const std::string& attr)
 {
     std::string a(attr);
     boost::to_upper(a);
@@ -119,7 +119,7 @@ const double Command::getValue(const std::string& attr)
     return val;
 }
 
-const bool Command::has(const std::string& attr)
+bool Command::has(const std::string& attr)
 {
     std::string a(attr);
     boost::to_upper(a);

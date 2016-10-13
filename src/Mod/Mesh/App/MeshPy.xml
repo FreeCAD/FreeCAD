@@ -220,12 +220,22 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeNonManifoldPoints">
+			<Documentation>
+				<UserDocu>Remove non-manifold points</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="hasSelfIntersections" Const="true">
 			<Documentation>
 				<UserDocu>Check if the mesh intersects itself</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="fixSelfIntersections">
+        <Methode Name="getSelfIntersections" Const="true">
+            <Documentation>
+                <UserDocu>Returns a tuple of indices of intersecting triangles</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="fixSelfIntersections">
 			<Documentation>
 				<UserDocu>Repair self-intersections</UserDocu>
 			</Documentation>
@@ -245,7 +255,12 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Get the number of wrong oriented facets</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="hasInvalidPoints" Const="true">
+        <Methode Name="getNonUniformOrientedFacets" Const="true">
+            <Documentation>
+                <UserDocu>Get a tuple of wrong oriented facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasInvalidPoints" Const="true">
 			<Documentation>
 				<UserDocu>Check if the mesh has points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>

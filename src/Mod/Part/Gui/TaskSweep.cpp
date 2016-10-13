@@ -43,6 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -80,7 +81,7 @@ public:
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 if (!sSubName) {
@@ -127,8 +128,9 @@ public:
 SweepWidget::SweepWidget(QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Q_UNUSED(parent);
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
     d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
@@ -216,16 +218,16 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             return false;
         }
     }
-    else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
-        pathShape = shape._Shape;
+    else if (shape.getShape().ShapeType() == TopAbs_EDGE) {
+        pathShape = shape.getShape();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
-        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+    else if (shape.getShape().ShapeType() == TopAbs_WIRE) {
+        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape.getShape()));
         pathShape = mkWire.Wire();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
+    else if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         try {
-            TopoDS_Iterator it(shape._Shape);
+            TopoDS_Iterator it(shape.getShape());
             for (; it.More(); it.Next()) {
                 if ((it.Value().ShapeType() != TopAbs_EDGE) &&
                     (it.Value().ShapeType() != TopAbs_WIRE)) {
@@ -234,7 +236,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             }
             Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
             Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-            for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+            for (TopExp_Explorer xp(shape.getShape(), TopAbs_EDGE); xp.More(); xp.Next())
                 hEdges->Append(xp.Current());
 
             ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);
@@ -321,7 +323,7 @@ bool SweepWidget::accept()
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Sweep");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {

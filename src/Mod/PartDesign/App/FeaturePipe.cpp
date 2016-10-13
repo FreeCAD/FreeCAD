@@ -63,6 +63,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
+#include <Mod/Part/App/FaceMakerCheese.h>
 
 //#include "Body.h"
 #include "FeaturePipe.h"
@@ -256,8 +257,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         }
         
         //build the top and bottom face, sew the shell and build the final solid
-        TopoDS_Shape front = makeFace(frontwires);
-        TopoDS_Shape back  = makeFace(backwires);
+        TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+        TopoDS_Shape back  = Part::FaceMakerCheese::makeFace(backwires);
         
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
@@ -317,10 +318,8 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
             boolOp = refineShapeIfActive(boolOp);
             Shape.setValue(getSolid(boolOp));
         }
-        
+
         return App::DocumentObject::StdReturn;
-        
-        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -371,13 +370,13 @@ void Pipe::setupAlgorithm(BRepOffsetAPI_MakePipeShell& mkPipeShell, TopoDS_Shape
 }
 
 
-void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string >& SubNames) {
+void Pipe::getContiniusEdges(Part::TopoShape /*TopShape*/, std::vector< std::string >& /*SubNames*/) {
 
     /*
     TopTools_IndexedMapOfShape mapOfEdges;
     TopTools_IndexedDataMapOfShapeListOfShape mapEdgeEdge;
-    TopExp::MapShapesAndAncestors(TopShape._Shape, TopAbs_EDGE, TopAbs_EDGE, mapEdgeEdge);
-    TopExp::MapShapes(TopShape._Shape, TopAbs_EDGE, mapOfEdges);
+    TopExp::MapShapesAndAncestors(TopShape.getShape(), TopAbs_EDGE, TopAbs_EDGE, mapEdgeEdge);
+    TopExp::MapShapes(TopShape.getShape(), TopAbs_EDGE, mapOfEdges);
 
     Base::Console().Message("Initial edges:\n");
     for(int i=0; i<SubNames.size(); ++i)
@@ -424,7 +423,7 @@ void Pipe::getContiniusEdges(Part::TopoShape TopShape, std::vector< std::string 
 
 void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::string >& subedge, TopoDS_Shape& path) {
 
-    if (!shape._Shape.IsNull()) {
+    if (!shape.getShape().IsNull()) {
         try {
             if (!subedge.empty()) {
                 //if(SpineTangent.getValue())
@@ -437,15 +436,15 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
                 }
                 path = mkWire.Wire();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
-                path = shape._Shape;
+            else if (shape.getShape().ShapeType() == TopAbs_EDGE) {
+                path = shape.getShape();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
-                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+            else if (shape.getShape().ShapeType() == TopAbs_WIRE) {
+                BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape.getShape()));
                 path = mkWire.Wire();
             }
-            else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
-                TopoDS_Iterator it(shape._Shape);
+            else if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+                TopoDS_Iterator it(shape.getShape());
                 for (; it.More(); it.Next()) {
                     if (it.Value().IsNull())
                         throw Base::Exception("In valid element in spine.");
@@ -457,7 +456,7 @@ void Pipe::buildPipePath(const Part::TopoShape& shape, const std::vector< std::s
 
                 Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
                 Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-                for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+                for (TopExp_Explorer xp(shape.getShape(), TopAbs_EDGE); xp.More(); xp.Next())
                     hEdges->Append(xp.Current());
 
                 ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);

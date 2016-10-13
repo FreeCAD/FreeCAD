@@ -43,7 +43,7 @@
 #endif
 
 
-#include <strstream>
+#include <sstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -330,8 +330,8 @@ std::vector<Part::cutFaces> Part::findAllFacesCutBy(
     return result;
 }
 
-const bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                                   const bool quick, const bool touch_is_intersection) {
+bool Part::checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                             const bool quick, const bool touch_is_intersection) {
     Bnd_Box first_bb, second_bb;
     BRepBndLib::Add(first, first_bb);
     first_bb.SetGap(0);

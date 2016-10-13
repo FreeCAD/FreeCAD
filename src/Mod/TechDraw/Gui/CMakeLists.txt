@@ -36,6 +36,7 @@ set(TechDrawGui_MOC_HDRS
     DlgPrefsTechDrawImp.h
     TaskLinkDim.h
     DlgTemplateField.h
+    TaskSectionView.h
 )
 
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
@@ -48,6 +49,7 @@ set(TechDrawGui_UIC_SRCS
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
+    TaskSectionView.ui
 )
 
 qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
@@ -76,6 +78,11 @@ SET(TechDrawGui_SRCS
     DlgTemplateField.ui
     DlgTemplateField.cpp
     DlgTemplateField.h
+    TaskSectionView.ui
+    TaskSectionView.cpp
+    TaskSectionView.h
+    DrawGuiUtil.cpp
+    DrawGuiUtil.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
@@ -130,6 +137,16 @@ SET(TechDrawGuiView_SRCS
     QGIViewClip.h
     QGIPrimPath.cpp
     QGIPrimPath.h
+    QGICMark.cpp
+    QGICMark.h
+    QGIDimLines.cpp
+    QGIDimLines.h
+    QGISectionLine.cpp
+    QGISectionLine.h
+    QGIDecoration.cpp
+    QGIDecoration.h
+    QGICenterLine.cpp
+    QGICenterLine.h
     TemplateTextField.cpp
     TemplateTextField.h
     ZVALUE.h
@@ -170,6 +187,7 @@ SOURCE_GROUP("ViewProvider" FILES ${TechDrawGuiViewProvider_SRCS})
 SET(TechDrawGuiTaskDlgs_SRCS
     TaskProjGroup.ui
     TaskLinkDim.ui
+    TaskSectionView.ui
 )
 SOURCE_GROUP("TaskDialogs" FILES ${TechDrawGuiTaskDlgs_SRCS})
 

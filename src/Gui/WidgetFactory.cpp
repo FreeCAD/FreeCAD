@@ -40,6 +40,11 @@
 #endif
 #endif
 
+#ifdef __GNUC__
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 #ifdef HAVE_SHIBOKEN
 # undef _POSIX_C_SOURCE
 # undef _XOPEN_SOURCE
@@ -54,6 +59,10 @@
 PyTypeObject** SbkPySide_QtCoreTypes=NULL;
 PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # endif
+#endif
+
+#ifdef __GNUC__
+# pragma GCC diagnostic pop
 #endif
 
 #include <CXX/Objects.hxx>
@@ -206,6 +215,7 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
     }
     throw Py::RuntimeError("Failed to wrap widget");
 #else
+    Q_UNUSED(className);
     Py::Module sipmod(PyImport_AddModule((char*)"sip"));
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
@@ -260,6 +270,9 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
         }
         createChildrenNameAttributes(root, child);
     }
+#else
+    Q_UNUSED(root);
+    Q_UNUSED(object);
 #endif
 }
 
@@ -270,6 +283,9 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
         Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtGuiTypes[SBK_QWIDGET_IDX], parent));
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
+#else
+    Q_UNUSED(pyWdg);
+    Q_UNUSED(parent);
 #endif
 }
 
@@ -390,8 +406,11 @@ QWidget* WidgetFactoryInst::createPrefWidget(const char* sName, QWidget* parent,
     w->setParent(parent);
 
     try {
-        dynamic_cast<PrefWidget*>(w)->setEntryName(sPref);
-        dynamic_cast<PrefWidget*>(w)->restorePreferences();
+        PrefWidget* pw = dynamic_cast<PrefWidget*>(w);
+        if (pw) {
+            pw->setEntryName(sPref);
+            pw->restorePreferences();
+        }
     }
     catch (...) {
 #ifdef FC_DEBUG
@@ -557,7 +576,7 @@ QWidget* UiLoader::createWidget(const QString & className, QWidget * parent,
 
 // ----------------------------------------------------
 
-PyObject *UiLoaderPy::PyMake(struct _typeobject *type, PyObject * args, PyObject * kwds)
+PyObject *UiLoaderPy::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
@@ -1164,7 +1183,7 @@ Py::Object PyResource::setValue(const Py::Tuple& args)
 /**
  * If any resouce has been loaded this methods shows it as a modal dialog.
  */
-Py::Object PyResource::show(const Py::Tuple& args)
+Py::Object PyResource::show(const Py::Tuple&)
 {
     if (myDlg) {
         // small trick to get focus

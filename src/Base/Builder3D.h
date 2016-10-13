@@ -228,6 +228,14 @@ public:
      * \param crease - the crease angle in radians
      */
     void addShapeHints(float crease=0.0f);
+    /*!
+     * \brief Sets a polygon offset node.
+     * \param factor - Offset multiplication factor.
+     * \param units - Offset translation multiplication factor.
+     * \param styles - Can be FILLED, LINES or POINTS.
+     * \param on - Whether the offset is on or off.
+     */
+    void addPolygonOffset(float factor=1.0f, float units=1.0f, const char* styles="FILLED", bool on=true);
     //@}
 
     /** @name Add coordinates */

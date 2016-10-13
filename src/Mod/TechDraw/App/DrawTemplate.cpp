@@ -62,7 +62,7 @@ DrawTemplate::DrawTemplate(void)
     // Physical Properties inherent to every template class
     ADD_PROPERTY_TYPE(Width,     (0),  group, (App::PropertyType)(App::Prop_None), "Width of page");
     ADD_PROPERTY_TYPE(Height,    (0),  group, (App::PropertyType)(App::Prop_None), "Height of page");
-    ADD_PROPERTY_TYPE(PaperSize, (""), group, (App::PropertyType)(App::Prop_None), "Paper Format");
+    //ADD_PROPERTY_TYPE(PaperSize, (""), group, (App::PropertyType)(App::Prop_None), "Paper Format");   //obs?
 
     ADD_PROPERTY_TYPE(EditableTexts, (), group, (App::PropertyType)(App::Prop_None),
                       "Editable strings in the template");
@@ -126,7 +126,7 @@ App::DocumentObjectExecReturn *DrawTemplate::execute(void)
     return App::DocumentObject::execute();
 }
 
-void DrawTemplate::getBlockDimensions(double &x, double &y, double &width, double &height) const
+void DrawTemplate::getBlockDimensions(double & /*x*/, double & /*y*/, double & /*width*/, double & /*height*/) const
 {
     throw Base::Exception("implement in virtual function");
 }

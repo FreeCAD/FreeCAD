@@ -910,7 +910,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
             }
         }
 
-        std::auto_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
+        std::unique_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
         if (parameters.IsNull()) {
             aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
                 PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));

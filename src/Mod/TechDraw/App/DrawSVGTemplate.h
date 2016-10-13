@@ -33,14 +33,12 @@
 namespace TechDraw
 {
 
-/** Base class of all View Features in the drawing module
- */
 class TechDrawExport DrawSVGTemplate: public TechDraw::DrawTemplate
 {
     PROPERTY_HEADER(TechDraw::DrawSVGTemplate);
 
 public:
-    DrawSVGTemplate(); /// Constructor
+    DrawSVGTemplate();
     ~DrawSVGTemplate();
 
     App::PropertyFileIncluded PageResult;
@@ -59,13 +57,6 @@ public:
         return "TechDrawGui::ViewProviderTemplate";
     }
 
-    /// Returns the SVG ID for editable field with name editableName
-    /*!
-     * If editableName isn't known, returns an empty string
-     */
- //   std::string getSvgIdForEditable(const std::string &editableName);
-
-    // from base class
     virtual PyObject *getPyObject(void);
     virtual unsigned int getMemSize(void) const;
 

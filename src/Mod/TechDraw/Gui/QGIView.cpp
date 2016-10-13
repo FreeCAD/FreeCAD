@@ -38,7 +38,6 @@
 #include <QStyleOptionGraphicsItem>
 #include <QTextOption>
 #include <QTransform>
-#include <strstream>
 #endif
 
 #include <App/Application.h>
@@ -50,16 +49,15 @@
 
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
-
 #include "QGIView.h"
+#include "QGCustomBorder.h"
+#include "QGCustomLabel.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
 using namespace TechDrawGui;
-
-void _debugRect(char* text, QRectF r);
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
@@ -79,14 +77,13 @@ QGIView::QGIView()
     m_colCurrent = getNormalColor();
     m_pen.setColor(m_colCurrent);
 
+    //Border/Label styling
     m_font.setPointSize(5.0);     //scene units (mm), not points
-
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 
     m_label = new QGCustomLabel();
     addToGroup(m_label);
-
     m_border = new QGCustomBorder();
     addToGroup(m_border);
 
@@ -102,9 +99,9 @@ void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 
 QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 {
+    QPointF newPos(0.0,0.0);
     if(change == ItemPositionChange && scene()) {
-        QPointF newPos = value.toPointF();
-
+        newPos = value.toPointF();
         if(locked){
             newPos.setX(pos().x());
             newPos.setY(pos().y());
@@ -115,17 +112,17 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             QGraphicsItem*item = alignHash.begin().value();
             QString alignMode   = alignHash.begin().key();
 
-            if(alignMode == QString::fromAscii("Vertical")) {
+            if(alignMode == QString::fromLatin1("Vertical")) {
                 newPos.setX(item->pos().x());
-            } else if(alignMode == QString::fromAscii("Horizontal")) {
+            } else if(alignMode == QString::fromLatin1("Horizontal")) {
                 newPos.setY(item->pos().y());
-            } else if(alignMode == QString::fromAscii("45slash")) {
+            } else if(alignMode == QString::fromLatin1("45slash")) {
                 double dist = ( (newPos.x() - item->pos().x()) +
                                 (item->pos().y() - newPos.y()) ) / 2.0;
 
                 newPos.setX( item->pos().x() + dist);
                 newPos.setY( item->pos().y() - dist );
-            } else if(alignMode == QString::fromAscii("45backslash")) {
+            } else if(alignMode == QString::fromLatin1("45backslash")) {
                 double dist = ( (newPos.x() - item->pos().x()) +
                                 (newPos.y() - item->pos().y()) ) / 2.0;
 
@@ -165,6 +162,7 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
     if(!locked && isSelected()) {
+        getViewObject()->setMouseMove(true);
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
@@ -174,12 +172,14 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             getViewObject()->X.setValue(x());
             getViewObject()->Y.setValue(getYInClip(y()));
         }
+        getViewObject()->setMouseMove(false);
     }
     QGraphicsItem::mouseReleaseEvent(event);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     // TODO don't like this but only solution at the minute (MLP)
     if (isSelected()) {
         m_colCurrent = getSelectColor();
@@ -195,6 +195,7 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 
 void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 {
+    Q_UNUSED(event);
     if(isSelected()) {
         m_colCurrent = getSelectColor();
     } else {
@@ -215,15 +216,19 @@ void QGIView::setPosition(qreal x, qreal y)
 
 double QGIView::getYInClip(double y)
 {
-    QGCustomClip* parentClip = dynamic_cast<QGCustomClip*>(parentItem());
+    auto parentClip( dynamic_cast<QGCustomClip*>( parentItem() ) );
     if (parentClip) {
-        QGIViewClip* parentView = dynamic_cast<QGIViewClip*>(parentClip->parentItem());
-        TechDraw::DrawViewClip* parentFeat = dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject());
-        double newY = parentFeat->Height.getValue() - y;
-        return newY;
-    } else {
-        Base::Console().Log("Logic Error - getYInClip called for child (%s) not in Clip\n",getViewName());
+        auto parentView( dynamic_cast<QGIViewClip*>( parentClip->parentItem() ) );
+        if (parentView) {
+            auto parentFeat( dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject()) );
+            if (parentFeat) {
+                return parentFeat->Height.getValue() - y;
+            }
+        }
     }
+
+    Base::Console().Log( "Logic Error - getYInClip called for child "
+                         "(%s) not in Clip\n", getViewName() );
     return 0;
 }
 
@@ -299,11 +304,12 @@ void QGIView::draw()
 void QGIView::drawBorder()
 {
     if (!borderVisible) {
+         m_label->hide();
+         m_border->hide();
         return;
     }
 
     //double margin = 2.0;
-    prepareGeometryChange();
     m_label->hide();
     m_border->hide();
 
@@ -338,7 +344,8 @@ void QGIView::drawBorder()
                               displayArea.top(),
                               frameWidth,
                               frameHeight);
-    m_border->setRect(frameArea);
+    prepareGeometryChange();
+    m_border->setRect(frameArea.adjusted(-2,-2,2,2));
     m_border->setPos(0.,0.);
 
     m_label->show();
@@ -350,16 +357,12 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    if(!borderVisible){
-         m_label->hide();
-         m_border->hide();
-    }
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 
 QRectF QGIView::customChildrenBoundingRect() {
     QList<QGraphicsItem*> children = childItems();
-    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Magic number warning. make include file for custom types?
+    int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Magic number warning.
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
     int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
     QRectF result;
@@ -371,6 +374,27 @@ QRectF QGIView::customChildrenBoundingRect() {
         }
     }
     return result;
+}
+
+QRectF QGIView::boundingRect() const
+{
+    return m_border->rect().adjusted(-2.,-2.,2.,2.);     //allow for border line width  //TODO: fiddle brect if border off?
+}
+
+QGIView* QGIView::getQGIVByName(std::string name)
+{
+    QList<QGraphicsItem*> qgItems = scene()->items();
+    QList<QGraphicsItem*>::iterator it = qgItems.begin();
+    for (; it != qgItems.end(); it++) {
+        QGIView* qv = dynamic_cast<QGIView*>((*it));
+        if (qv) {
+            const char* qvName = qv->getViewName();
+            if(name.compare(qvName) == 0) {
+                return (qv);
+            }
+        }
+    }
+    return 0;
 }
 
 QColor QGIView::getNormalColor()
@@ -415,7 +439,7 @@ QString QGIView::getPrefFont()
     return QString::fromStdString(fontName);
 }
 
-void _debugRect(char* text, QRectF r) {
-    Base::Console().Message("TRACE - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
+void QGIView::dumpRect(char* text, QRectF r) {
+    Base::Console().Message("DUMP - %s - rect: (%.3f,%.3f) x (%.3f,%.3f)\n",text,
                             r.left(),r.top(),r.right(),r.bottom());
 }

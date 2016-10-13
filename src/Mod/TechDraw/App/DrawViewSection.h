@@ -1,6 +1,7 @@
 /***************************************************************************
  *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
  *   Copyright (c) Luke Parry             (l.parry@warwick.ac.uk) 2013     *
+ *   Copyright (c) WandererFan            (wandererfan@gmail.com) 2016     *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -54,18 +55,19 @@ public:
     DrawViewSection(void);
     virtual ~DrawViewSection();
 
+    App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyBool   ShowCutSurface;
     App::PropertyColor  CutSurfaceColor;
 
-    short mustExecute() const;
+    virtual short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
-//    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     //@}
 
     /// returns the type name of the ViewProvider

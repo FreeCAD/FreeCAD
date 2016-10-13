@@ -345,7 +345,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                            ,pp->getPoint()[1]
                                            ,pp->getPoint()[2]);
 
-                getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                getMainWindow()->showMessage(QString::fromLatin1(buf));
             }
             else { // picked point
                 if (highlighted) {
@@ -404,7 +404,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                        ,pp->getPoint()[1]
                                                        ,pp->getPoint()[2]);
 
-                            getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                            getMainWindow()->showMessage(QString::fromLatin1(buf));
                         }
                     }
                 }
@@ -438,7 +438,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                    ,pp->getPoint()[1]
                                                    ,pp->getPoint()[2]);
 
-                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf));
                     }
                 }
 
@@ -569,7 +569,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                        ,pp->getPoint()[1]
                                                        ,pp->getPoint()[2]);
 
-                            getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                            getMainWindow()->showMessage(QString::fromLatin1(buf));
                         }
                     }
                 }
@@ -603,7 +603,7 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                                                    ,pp->getPoint()[1]
                                                    ,pp->getPoint()[2]);
 
-                        getMainWindow()->showMessage(QString::fromLatin1(buf),3000);
+                        getMainWindow()->showMessage(QString::fromLatin1(buf));
                     }
                 }
 
@@ -748,6 +748,8 @@ SoFCSelection::preRender(SoGLRenderAction *action, GLint &oldDepthFunc)
 void
 SoFCSelection::redrawHighlighted(SoAction *  action , SbBool  doHighlight )
 {
+    Q_UNUSED(action); 
+    Q_UNUSED(doHighlight); 
     //Base::Console().Log("SoFCSelection::redrawHighlighted() (%p) doHigh=%d \n",this,doHighlight?1:0);
 
 #ifdef NO_FRONTBUFFER

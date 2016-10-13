@@ -68,6 +68,54 @@ int DrawViewCollection::addView(DrawView *view)
     return Views.getSize();
 }
 
+int DrawViewCollection::removeView(DrawView *view)
+{
+    // Remove the view from the the collection
+    const std::vector<App::DocumentObject*> currViews = Views.getValues();
+    std::vector<App::DocumentObject*> newViews;
+    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
+    for (; it != currViews.end(); it++) {
+        std::string viewName = view->getNameInDocument();
+        if (viewName.compare((*it)->getNameInDocument()) != 0) {
+            newViews.push_back((*it));
+        }
+    }
+    Views.setValues(newViews);
+
+//TODO: also have to touch the parent page's views to get repaint??
+    DrawPage* page = findParentPage();
+    if (page) {
+        page->Views.touch();
+    }
+    return Views.getSize();
+}
+
+//make sure everything in View list represents a real DrawView docObj and occurs only once
+void DrawViewCollection::rebuildViewList()
+{
+    const std::vector<App::DocumentObject*> currViews = Views.getValues();
+    std::vector<App::DocumentObject*> newViews;
+    std::vector<App::DocumentObject*> children = getOutList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+            //TechDraw::DrawView* view = static_cast<TechDraw::DrawView *>(*it);
+            bool found = false;
+            for (auto& v:currViews) {
+                if (v == (*it)) {
+                    found = true;
+                    break;
+                }
+            }
+            if (found) {
+                newViews.push_back((*it));
+            }
+        }
+    } // newViews contains only valid items, but may have duplicates
+    sort( newViews.begin(), newViews.end() );
+    newViews.erase( unique( newViews.begin(), newViews.end() ), newViews.end() );
+    Views.setValues(newViews);
+}
+
 short DrawViewCollection::mustExecute() const
 {
     // If Tolerance Property is touched
@@ -87,9 +135,8 @@ int DrawViewCollection::countChildren()
     const std::vector<App::DocumentObject *> &views = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
 
-        App::DocumentObject *docObj = dynamic_cast<App::DocumentObject *>(*it);
-        if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            TechDraw::DrawViewCollection *viewCollection = dynamic_cast<TechDraw::DrawViewCollection *>(*it);
+        if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
+            TechDraw::DrawViewCollection *viewCollection = static_cast<TechDraw::DrawViewCollection *>(*it);
             numChildren += viewCollection->countChildren() + 1;
         } else {
             numChildren += 1;
@@ -100,27 +147,23 @@ int DrawViewCollection::countChildren()
 
 void DrawViewCollection::onDocumentRestored()
 {
-    // Rebuild the view
-    execute();
+    DrawView::execute();
 }
 
-/// get called by the container when a Property was changed
 void DrawViewCollection::onChanged(const App::Property* prop)
 {
-    TechDraw::DrawView::onChanged(prop);
-
-    if (prop == &Source ||
-        prop == &Views){
+    if (prop == &Views){
         if (!isRestoring()) {
             std::vector<App::DocumentObject*> parent = getInList();
             for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
                 if ((*it)->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
                     TechDraw::DrawPage *page = static_cast<TechDraw::DrawPage *>(*it);
-                    page->Views.touch();
+                    page->Views.touch();                                        //touches page only, not my_views!
                 }
             }
         }
     }
+    TechDraw::DrawView::onChanged(prop);
 }
 
 App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
@@ -130,7 +173,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             App::DocumentObject *docObj = *it;
             if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
 
                 // Set scale factor of each view
                 view->ScaleType.setValue("Document");
@@ -143,7 +186,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             App::DocumentObject *docObj = *it;
             if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
-                TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
+                TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
 
                 view->ScaleType.setValue("Custom");
                 // Set scale factor of each view
@@ -154,4 +197,19 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
     }
 
     return DrawView::execute();
+}
+
+
+QRectF DrawViewCollection::getRect() const
+{
+    QRectF result;
+    for (auto& v:Views.getValues()) {
+        TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(v);
+        if (!view) {
+            throw Base::Exception("DrawViewCollection::getRect bad View\n");
+        }
+
+        result = result.united(view->getRect().translated(view->X.getValue(),view->Y.getValue()));
+    }
+    return QRectF(0,0,Scale.getValue() * result.width(),Scale.getValue() * result.height());
 }

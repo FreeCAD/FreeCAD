@@ -50,6 +50,9 @@ QGCustomText::QGCustomText()
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
+
+    isHighlighted = false;
+    m_colCurrent = getNormalColor();
 }
 
 void QGCustomText::centerAt(QPointF centerPos)
@@ -72,6 +75,50 @@ void QGCustomText::centerAt(double cX, double cY)
     setPos(newX,newY);
 }
 
+QVariant QGCustomText::itemChange(GraphicsItemChange change, const QVariant &value)
+{
+    if (change == ItemSelectedHasChanged && scene()) {
+        if(isSelected()) {
+            setPrettySel();
+        } else {
+            setPrettyNormal();
+        }
+    }
+    return QGraphicsTextItem::itemChange(change, value);
+}
+
+
+void QGCustomText::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    if (!isSelected()) {
+        setPrettyPre();
+    }
+    QGraphicsTextItem::hoverEnterEvent(event);
+}
+
+void QGCustomText::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    if(!isSelected() && !isHighlighted) {
+        setPrettyNormal();
+    }
+    QGraphicsTextItem::hoverLeaveEvent(event);
+}
+
+void QGCustomText::setPrettyNormal() {
+    m_colCurrent = getNormalColor();
+    update();
+}
+
+void QGCustomText::setPrettyPre() {
+    m_colCurrent = getPreColor();
+    update();
+}
+
+void QGCustomText::setPrettySel() {
+    m_colCurrent = getSelectColor();
+    update();
+}
+
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
@@ -83,6 +130,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
     //                     scale values are same for same font size + different fonts.
     //double svgScale = 2.835;      //72dpi/(25.4mm/in)
     //double svgScale = 3.84;       //96dpi/(25mm/in)
+    //double svgScale = 3.6;        //90dpi/(25mm/in) more/less CSS standard?
     double svgScale = 2.88;         //72dpi/(25mm/in)   Qt logicalDpiY() is int
     double svgMagicX = 8.0;
     //double svgMagicY = 7.5;        //idk
@@ -102,6 +150,7 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
         painter->scale(1.0,1.0);
     }
 
+    setDefaultTextColor(m_colCurrent);
     QGraphicsTextItem::paint (painter, &myOption, widget);
 }
 

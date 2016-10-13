@@ -27,8 +27,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Wall"
@@ -151,9 +154,9 @@ class _CommandWall:
     "the Arch Wall command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Wall',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Wall","Wall"),
                 'Accel': "W, A",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Wall","Creates a wall object from scratch or from a selected object (wire, face or solid)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -366,8 +369,8 @@ class _CommandMergeWalls:
     "the Arch Merge Walls command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_MergeWalls',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merge Walls"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_MergeWalls","Merges the selected walls, if possible")}
 
     def IsActive(self):
         return bool(FreeCADGui.Selection.getSelection())
@@ -408,13 +411,13 @@ class _Wall(ArchComponent.Component):
     "The Wall object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Length","Arch","The length of this wall. Not used if this wall is based on an underlying object")
-        obj.addProperty("App::PropertyLength","Width","Arch","The width of this wall. Not used if this wall is based on a face")
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid")
-        obj.addProperty("App::PropertyEnumeration","Align","Arch","The alignment of this wall on its base object, if applicable")
-        obj.addProperty("App::PropertyVector","Normal","Arch","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)")
-        obj.addProperty("App::PropertyInteger","Face","Arch","The face number of the base object used to build this wall")
-        obj.addProperty("App::PropertyDistance","Offset","Arch","The offset between this wall and its baseline (only for left and right alignments)")
+        obj.addProperty("App::PropertyLength","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this wall. Not used if this wall is based on an underlying object"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this wall. Not used if this wall is based on a face"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this wall. Keep 0 for automatic. Not used if this wall is based on a solid"))
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",QT_TRANSLATE_NOOP("App::Property","The alignment of this wall on its base object, if applicable"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
+        obj.addProperty("App::PropertyInteger","Face","Arch",QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this wall"))
+        obj.addProperty("App::PropertyDistance","Offset","Arch",QT_TRANSLATE_NOOP("App::Property","The offset between this wall and its baseline (only for left and right alignments)"))
         obj.Align = ['Left','Right','Center']
         obj.Role = Roles
         self.Type = "Wall"
@@ -505,6 +508,15 @@ class _Wall(ArchComponent.Component):
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
+        
+    def getFootprint(self,obj):
+        faces = []
+        if obj.Shape:
+            for f in obj.Shape.Faces:
+                if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,-1)) < 0.01:
+                    if abs(abs(f.CenterOfMass.z) - abs(obj.Shape.BoundBox.ZMin)) < 0.001:
+                        faces.append(f)
+        return faces
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
@@ -524,7 +536,55 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
 
     def attach(self,vobj):
         self.Object = vobj.Object
+        from pivy import coin
+        tex = coin.SoTexture2()
+        tex.image = Draft.loadTexture(Draft.svgpatterns()['simple'][1], 128)
+        texcoords = coin.SoTextureCoordinatePlane()
+        s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("patternScale",0.01)
+        texcoords.directionS.setValue(s,0,0)
+        texcoords.directionT.setValue(0,s,0)
+        self.fcoords = coin.SoCoordinate3()
+        self.fset = coin.SoIndexedFaceSet()
+        sep = coin.SoSeparator()
+        sep.addChild(tex)
+        sep.addChild(texcoords)
+        sep.addChild(self.fcoords)
+        sep.addChild(self.fset)
+        vobj.RootNode.addChild(sep)
         return
+
+    def updateData(self,obj,prop):
+        if prop in ["Placement","Shape"]:
+            if obj.ViewObject.DisplayMode == "Footprint":
+                obj.ViewObject.Proxy.setDisplayMode("Footprint")
+
+    def getDisplayModes(self,vobj):
+        modes=["Footprint"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        if mode == "Footprint":
+            if hasattr(self,"Object"):
+                faces = self.Object.Proxy.getFootprint(self.Object)
+                if faces:
+                    verts = []
+                    fdata = []
+                    idx = 0
+                    for face in faces:
+                        tri = face.tessellate(1)
+                        for v in tri[0]:
+                            verts.append([v.x,v.y,v.z])
+                        for f in tri[1]:
+                            fdata.extend([f[0]+idx,f[1]+idx,f[2]+idx,-1])
+                        idx += len(tri[0])
+                    self.fcoords.point.setValues(verts)
+                    self.fset.coordIndex.setValues(0,len(fdata),fdata)
+            return "Wireframe"
+        else:
+            self.fset.coordIndex.deleteValues(0)
+            self.fcoords.point.deleteValues(0)
+            return mode
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Wall',_CommandWall())

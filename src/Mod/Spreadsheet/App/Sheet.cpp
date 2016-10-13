@@ -33,6 +33,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Exception.h>
 #include <Base/Placement.h>
 #include <Base/Reader.h>
@@ -872,7 +873,7 @@ short Sheet::mustExecute(void) const
   *
   */
 
-void Sheet::clear(CellAddress address, bool all)
+void Sheet::clear(CellAddress address, bool /*all*/)
 {
     Cell * cell = getCell(address);
     std::string addr = address.toString();
@@ -1285,7 +1286,7 @@ void Sheet::onRelabledDocument(const Document &document)
  * @param document
  */
 
-void Sheet::onRenamedDocument(const Document &document)
+void Sheet::onRenamedDocument(const Document & /*document*/)
 {
 }
 
@@ -1344,6 +1345,13 @@ namespace App {
 PROPERTY_SOURCE_TEMPLATE(Spreadsheet::SheetPython, Spreadsheet::Sheet)
 template<> const char* Spreadsheet::SheetPython::getViewProviderName(void) const {
     return "SpreadsheetGui::ViewProviderSheet";
+}
+template<> PyObject* Spreadsheet::SheetPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeaturePythonPyT<Spreadsheet::SheetPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 /// @endcond
 

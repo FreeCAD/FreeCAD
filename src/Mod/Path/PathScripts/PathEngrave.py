@@ -47,27 +47,26 @@ except AttributeError:
 class ObjectPathEngrave:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this object")
-        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
-        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base geometry of this object"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","User Assigned Label"))
 
-        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", "The library or Algorithm used to generate the path")
+        obj.addProperty("App::PropertyEnumeration", "Algorithm", "Algorithm", QtCore.QT_TRANSLATE_NOOP("App::Property","The library or Algorithm used to generate the path"))
         obj.Algorithm = ['OCC Native']
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
         obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
-        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", "The vertex index to start the path from")
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyInteger", "StartVertex", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The vertex index to start the path from"))
 
         if FreeCAD.GuiUp:
             _ViewProviderEngrave(obj.ViewObject)
@@ -161,7 +160,7 @@ class ObjectPathEngrave:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
                     output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  # Rapid sto starting position
-                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(last.z) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
+                    output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
@@ -174,7 +173,7 @@ class ObjectPathEngrave:
                         output += "G2"
                     else:
                         output += "G3"
-                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += " X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value)
                     output += " I" + PathUtils.fmt(relcenter.x) + " J" + PathUtils.fmt(relcenter.y) + " K" + PathUtils.fmt(relcenter.z)
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
@@ -183,7 +182,7 @@ class ObjectPathEngrave:
                     point = edge.Vertexes[-1].Point
                     if point == last:  # edges can come flipped
                         point = edge.Vertexes[0].Point
-                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(point.z)
+                    output += "G1 X" + PathUtils.fmt(point.x) + " Y" + PathUtils.fmt(point.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value)
                     output += " F " + PathUtils.fmt(self.horizFeed)
                     output += "\n"
                     last = point
@@ -195,15 +194,13 @@ class ObjectPathEngrave:
         if len(baselist) == 0:  # When adding the first base object, guess at heights
             try:
                 bb = ss.Shape.BoundBox  # parent boundbox
-                obj.StartDepth = bb.ZMax
                 obj.ClearanceHeight = bb.ZMax + 5.0
                 obj.SafeHeight = bb.ZMax + 3.0
                 obj.FinalDepth = bb.ZMax - 1
             except:
-                obj.StartDepth = 5.0
-                obj.FinalDepth = 4.0
                 obj.ClearanceHeight = 10.0
                 obj.SafeHeight = 8.0
+                obj.FinalDepth = 4.0
 
         item = (ss, "")
         if item in baselist:
@@ -262,7 +259,6 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('PathScripts.PathEngrave.ObjectPathEngrave(obj)')
 
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')
-        FreeCADGui.doCommand('obj.StartDepth= 0')
         FreeCADGui.doCommand('obj.FinalDepth= -0.1')
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
@@ -292,8 +288,6 @@ class TaskPanel:
 
     def getFields(self):
         if self.obj:
-            if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = self.form.startDepth.text()
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = self.form.finalDepth.text()
             if hasattr(self.obj, "SafeHeight"):
@@ -304,7 +298,6 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
@@ -367,7 +360,6 @@ class TaskPanel:
     def setupUi(self):
 
         # Connect Signals and Slots
-        self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
         self.form.safeHeight.editingFinished.connect(self.getFields)
         self.form.clearanceHeight.editingFinished.connect(self.getFields)

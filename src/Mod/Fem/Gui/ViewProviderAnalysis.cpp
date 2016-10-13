@@ -78,7 +78,7 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
     return temp;
 }
 
-void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Activate analysis"));

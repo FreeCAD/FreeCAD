@@ -41,7 +41,7 @@ from pivy import coin
 
 class Tracker:
     "A generic Draft Tracker, to be used by other specific trackers"
-    def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False):
+    def __init__(self,dotted=False,scolor=None,swidth=None,children=[],ontop=False,name=None):
         global Part, DraftGeomUtils
         import Part, DraftGeomUtils
         self.ontop = ontop
@@ -58,6 +58,8 @@ class Tracker:
         for c in [drawstyle, color] + children:
             node.addChild(c)
         self.switch = coin.SoSwitch() # this is the on/off switch
+        if name:
+            self.switch.setName(name)
         self.switch.addChild(node)
         self.switch.whichChild = -1
         self.Visible = False
@@ -121,7 +123,7 @@ class snapTracker(Tracker):
         node.addChild(self.coords)
         node.addChild(color)
         node.addChild(self.marker)
-        Tracker.__init__(self,children=[node])
+        Tracker.__init__(self,children=[node],name="snapTracker")
 
     def setMarker(self,style):
         if (style == "square"):
@@ -145,7 +147,7 @@ class lineTracker(Tracker):
         line.numVertices.setValue(2)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,2,[[0,0,0],[1,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],ontop)
+        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],ontop,name="lineTracker")
 
     def p1(self,point=None):
         "sets or gets the first point of the line"
@@ -181,9 +183,9 @@ class rectangleTracker(Tracker):
             m1.diffuseColor.setValue([0.5,0.5,1.0])
             f = coin.SoIndexedFaceSet()
             f.coordIndex.setValues([0,1,2,3])
-            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f])
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line,m1,f],name="rectangleTracker")
         else:
-            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+            Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],name="rectangleTracker")
         self.u = FreeCAD.DraftWorkingPlane.u
         self.v = FreeCAD.DraftWorkingPlane.v
 
@@ -252,7 +254,7 @@ class dimTracker(Tracker):
         line.numVertices.setValue(4)
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValues(0,4,[[0,0,0],[0,0,0],[0,0,0],[0,0,0]])
-        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line])
+        Tracker.__init__(self,dotted,scolor,swidth,[self.coords,line],name="dimTracker")
         self.p1 = self.p2 = self.p3 = None
 
     def update(self,pts):
@@ -297,7 +299,7 @@ class bsplineTracker(Tracker):
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep])
+        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep],name="bsplineTracker")
         
     def update(self, points):
         self.points = points
@@ -364,7 +366,7 @@ class bezcurveTracker(Tracker):
         self.trans = coin.SoTransform()
         self.sep = coin.SoSeparator()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep])
+        Tracker.__init__(self,dotted,scolor,swidth,[self.trans,self.sep],name="bezcurveTracker")
         
     def update(self, points):
         self.points = points
@@ -441,7 +443,7 @@ class arcTracker(Tracker):
             self.normal = FreeCAD.DraftWorkingPlane.axis
         self.basevector = self.getDeviation()
         self.recompute()
-        Tracker.__init__(self,dotted,scolor,swidth,[self.trans, self.sep])
+        Tracker.__init__(self,dotted,scolor,swidth,[self.trans, self.sep],name="arcTracker")
         
     def getDeviation(self):
         "returns a deviation vector that represents the base of the circle"
@@ -552,7 +554,7 @@ class ghostTracker(Tracker):
         for obj in sel:
             rootsep.addChild(self.getNode(obj))
         self.children.append(rootsep)        
-        Tracker.__init__(self,children=self.children)
+        Tracker.__init__(self,children=self.children,name="ghostTracker")
 
     def update(self,obj):
         "recreates the ghost from a new object"
@@ -655,7 +657,7 @@ class editTracker(Tracker):
         selnode.addChild(color)
         selnode.addChild(self.marker)
         node.addChild(selnode)
-        Tracker.__init__(self,children=[node],ontop=True)
+        Tracker.__init__(self,children=[node],ontop=True,name="editTracker")
         self.on()
 
     def set(self,pos):
@@ -703,7 +705,7 @@ class PlaneTracker(Tracker):
         s.addChild(m2)
         s.addChild(c2)
         s.addChild(l)
-        Tracker.__init__(self,children=[s])
+        Tracker.__init__(self,children=[s],name="planeTracker")
 
     def set(self,pos=None):
         if pos:                        
@@ -727,7 +729,7 @@ class wireTracker(Tracker):
             self.line.numVertices.setValue(len(wire.Vertexes))
         self.coords = coin.SoCoordinate3()
         self.update(wire)
-        Tracker.__init__(self,children=[self.coords,self.line])
+        Tracker.__init__(self,children=[self.coords,self.line],name="wireTracker")
 
     def update(self,wire,forceclosed=False):
         if wire:
@@ -778,7 +780,7 @@ class gridTracker(Tracker):
         s.addChild(mat3)
         s.addChild(self.coords3)
         s.addChild(self.lines3)
-        Tracker.__init__(self,children=[s])
+        Tracker.__init__(self,children=[s],name="gridTracker")
         self.reset()
 
     def update(self):
@@ -873,7 +875,7 @@ class boxTracker(Tracker):
         if line:
             self.baseline = line
             self.update()
-        Tracker.__init__(self,children=[self.trans,m,self.cube])
+        Tracker.__init__(self,children=[self.trans,m,self.cube],name="boxTracker")
 
     def update(self,line=None,normal=None):
         import WorkingPlane, DraftGeomUtils
@@ -936,7 +938,7 @@ class radiusTracker(Tracker):
         self.sphere = coin.SoSphere()
         self.sphere.radius.setValue(radius)
         self.baseline = None
-        Tracker.__init__(self,children=[self.trans,m,self.sphere])
+        Tracker.__init__(self,children=[self.trans,m,self.sphere],name="radiusTracker")
 
     def update(self,arg1,arg2=None):
         if isinstance(arg1,FreeCAD.Vector):
@@ -962,7 +964,7 @@ class archDimTracker(Tracker):
         self.dimnode.textColor.setValue(coin.SbVec3f(color))
         self.setString()
         self.setMode(mode)
-        Tracker.__init__(self,children=[self.dimnode])
+        Tracker.__init__(self,children=[self.dimnode],name="archDimTracker")
         
     def setString(self,text=None):
         "sets the dim string to the given value or auto value"

@@ -41,14 +41,14 @@ bool ViewProviderSetGeometry::doubleClicked(void)
 }
 
 
-bool ViewProviderSetGeometry::setEdit(int ModNum)
+bool ViewProviderSetGeometry::setEdit(int)
 {
     //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
     //Gui::Control().showDialog(dlg);
     return true;
 }
 
-void ViewProviderSetGeometry::unsetEdit(int ModNum)
+void ViewProviderSetGeometry::unsetEdit(int)
 {
 
 }

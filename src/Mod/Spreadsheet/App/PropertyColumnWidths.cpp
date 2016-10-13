@@ -44,6 +44,7 @@ PropertyColumnWidths::PropertyColumnWidths()
 }
 
 PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths &other)
+  : Property(), std::map<int, int>(other)
 {
     std::map<int, int>::const_iterator i = other.begin();
 

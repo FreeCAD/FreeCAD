@@ -111,9 +111,9 @@ private Q_SLOTS:
     void onHighlightEdges();
 
 private:
-    std::auto_ptr<Ui_DlgFilletEdges> ui;
+    std::unique_ptr<Ui_DlgFilletEdges> ui;
     class Private;
-    std::auto_ptr<Private> d;
+    std::unique_ptr<Private> d;
 };
 
 class FilletEdgesDialog : public QDialog

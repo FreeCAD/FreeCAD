@@ -62,7 +62,7 @@ protected Q_SLOTS:
 
 protected:
     void exitSelectionMode();
-    const bool referenceSelected(const Gui::SelectionChanges& msg);
+    bool referenceSelected(const Gui::SelectionChanges& msg);
 
 protected:
     enum selectionModes { none, refAdd, refRemove, plane, line };

@@ -63,7 +63,8 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *p
       tr("Nodes set"),
       true,
       parent),
-      pcObject(pcObject)
+      pcObject(pcObject),
+      selectionMode(none)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);

@@ -37,7 +37,7 @@ class PartDesignGuiExport ViewProviderTransformed : public ViewProvider
 public:
     /// constructor
     ViewProviderTransformed()
-        : featureName("undefined") {}
+        : featureName("undefined"), pcRejectedRoot(nullptr) {}
     /// destructor
     virtual ~ViewProviderTransformed()
         {}
@@ -56,7 +56,7 @@ protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
 
-    const bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
+    bool checkDlgOpen(TaskDlgTransformedParameters* transformedDlg);
 
     // node for the representation of rejected repetitions
     SoGroup           * pcRejectedRoot;

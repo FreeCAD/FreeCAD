@@ -107,9 +107,11 @@ void Approximation::AddPoints(const std::list<Base::Vector3f> &rsPointList)
 Base::Vector3f Approximation::GetGravity() const
 {
     Base::Vector3f clGravity;
-    for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it!=_vPoints.end(); ++it)
-        clGravity += *it;
-    clGravity *= 1.0f / float(_vPoints.size());
+    if (!_vPoints.empty()) {
+        for (std::list<Base::Vector3f>::const_iterator it = _vPoints.begin(); it!=_vPoints.end(); ++it)
+            clGravity += *it;
+        clGravity *= 1.0f / float(_vPoints.size());
+    }
     return clGravity;
 }
 
@@ -451,7 +453,7 @@ const double& QuadraticFit::GetCoeffArray() const
 
 double QuadraticFit::GetCoeff(unsigned long ulIndex) const
 {
-    assert( ulIndex >= 0 && ulIndex < 10 );
+    assert(ulIndex < 10);
 
     if( _bIsFitted )
         return _fCoeff[ ulIndex ];
@@ -765,7 +767,8 @@ double SurfaceFit::PolynomFit()
     // that 'sigma' becomes negative.
     if (sigma < 0)
         sigma = 0;
-    sigma = sqrt(sigma/_vPoints.size());
+    if (!_vPoints.empty())
+        sigma = sqrt(sigma/_vPoints.size());
 
     _fLastResult = static_cast<float>(sigma);
     return _fLastResult;

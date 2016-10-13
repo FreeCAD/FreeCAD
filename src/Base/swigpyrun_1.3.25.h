@@ -680,7 +680,7 @@ PySwigObject_type(void) {
     (unaryfunc)PySwigObject_oct,  /*nb_oct*/
     (unaryfunc)PySwigObject_hex,  /*nb_hex*/
 #if PY_VERSION_HEX >= 0x02000000
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 /* nb_inplace_add -> nb_inplace_true_divide */ 
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 /* nb_inplace_add -> nb_inplace_true_divide */ 
 #endif
   };
 
@@ -726,6 +726,9 @@ PySwigObject_type(void) {
 #endif
 #if PY_VERSION_HEX >= 0x02030000
     0,                                  /* tp_del */
+#endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                  /* tp_version_tag */
 #endif
 #ifdef COUNT_ALLOCS
     0,0,0,0                             /* tp_alloc -> tp_next */
@@ -883,6 +886,9 @@ PySwigPacked_type(void) {
 #endif
 #if PY_VERSION_HEX >= 0x02030000
     0,                                  /* tp_del */
+#endif
+#if PY_VERSION_HEX >= 0x02060000
+    0,                                  /* tp_version_tag */
 #endif
 #ifdef COUNT_ALLOCS
     0,0,0,0                             /* tp_alloc -> tp_next */

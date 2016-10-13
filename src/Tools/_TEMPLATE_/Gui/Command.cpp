@@ -36,7 +36,7 @@
 //===========================================================================
 // Cmd_TEMPLATE_Test THIS IS JUST A TEST COMMAND
 //===========================================================================
-DEF_STD_CMD(Cmd_TEMPLATE_Test);
+DEF_STD_CMD(Cmd_TEMPLATE_Test)
 
 Cmd_TEMPLATE_Test::Cmd_TEMPLATE_Test()
   :Command("_TEMPLATE__Test")
@@ -51,7 +51,7 @@ Cmd_TEMPLATE_Test::Cmd_TEMPLATE_Test()
     sAccel        = "CTRL+H";
 }
 
-void Cmd_TEMPLATE_Test::activated(int iMsg)
+void Cmd_TEMPLATE_Test::activated(int)
 {
     Base::Console().Message("Hello, World!\n");
 }

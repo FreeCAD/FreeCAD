@@ -98,7 +98,7 @@ void MeshAlgos::offsetSpecial2(MeshCore::MeshKernel* Mesh, float fSize)
             }
         }
         
-        // if there no flipped triangels -> stop
+        // if there are no flipped triangles -> stop
         //int f =fliped.size();
         if(fliped.size() == 0)
             break;
@@ -141,7 +141,7 @@ void MeshAlgos::offsetSpecial(MeshCore::MeshKernel* Mesh, float fSize, float zma
 }
 
 
-void MeshAlgos::coarsen(MeshCore::MeshKernel* Mesh, float f)
+void MeshAlgos::coarsen(MeshCore::MeshKernel* /*Mesh*/, float /*f*/)
 {
 #ifdef FC_USE_GTS
   GtsSurface * surface;
@@ -166,7 +166,10 @@ void MeshAlgos::coarsen(MeshCore::MeshKernel* Mesh, float f)
 }
 
 
-MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1, MeshCore::MeshKernel* pMesh2, MeshCore::MeshKernel* pResult,int Type)
+MeshCore::MeshKernel* MeshAlgos::boolean(MeshCore::MeshKernel* pMesh1,
+                                         MeshCore::MeshKernel* /*pMesh2*/,
+                                         MeshCore::MeshKernel* /*pResult*/,
+                                         int /*Type*/)
 {
 #ifdef FC_USE_GTS
   GtsSurface * s1, * s2, * s3;

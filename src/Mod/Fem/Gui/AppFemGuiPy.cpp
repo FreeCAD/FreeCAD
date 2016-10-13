@@ -103,6 +103,8 @@ private:
     }
     Py::Object getActiveAnalysis(const Py::Tuple& args)
     {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
         if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
             return Py::asObject(FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject());
         }

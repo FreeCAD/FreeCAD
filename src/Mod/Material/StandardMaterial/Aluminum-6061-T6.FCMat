@@ -6,9 +6,12 @@
 [FCMat]
 Name = Aluminum 6061-T6
 Description = Precipitation-hardened, Nonferrous Aluminum alloy
-Father = Aluminum
+Father = Metal
 ProductURL = https://en.wikipedia.org/wiki/6061_aluminium_alloy
+YoungsModulus = 69000 Mpa
 UltimateTensileStrength = 310 Mpa
 PoissonRatio = 0.33
-ThermalConductivity = 167 W/m-K
 Density = 2700 kg/m^3
+KindOfMaterial = Aluminium
+KindOfMaterialDE = Aluminium
+ThermalConductivity = 167 W/m-K

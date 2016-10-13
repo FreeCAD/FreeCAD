@@ -231,7 +231,9 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
             if(!selObj)
                 return;
             // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+            if ( selectionMode == reference || 
+                selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ||
+                selObj->isDerivedFrom(PartDesign::Line::getClassTypeId()) ) {
                 pcPolarPattern->Axis.setValue(selObj, axes);
 
                 recomputeFeature();
@@ -277,7 +279,8 @@ void TaskPolarPatternParameters::onOccurrences(const uint n) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onAxisChanged(int num) {
+void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
+{
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
@@ -337,17 +340,17 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
     sub = lnk.getSubValues();
 }
 
-const bool TaskPolarPatternParameters::getReverse(void) const
+bool TaskPolarPatternParameters::getReverse(void) const
 {
     return ui->checkReverse->isChecked();
 }
 
-const double TaskPolarPatternParameters::getAngle(void) const
+double TaskPolarPatternParameters::getAngle(void) const
 {
     return ui->polarAngle->value().getValue();
 }
 
-const unsigned TaskPolarPatternParameters::getOccurrences(void) const
+unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
 }

@@ -56,6 +56,7 @@
 #endif  // #ifndef _PreComp_
 
 #include <algorithm>
+#include <chrono>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -64,11 +65,15 @@
 
 #include <Mod/Part/App/PartFeature.h>
 
+#include "DrawUtil.h"
 #include "GeometryObject.h"
+#include "DrawViewPart.h"
 
 //#include <QDebug>
 
 using namespace TechDrawGeometry;
+using namespace TechDraw;
+using namespace std;
 
 struct EdgePoints {
     gp_Pnt v1, v2;
@@ -77,10 +82,12 @@ struct EdgePoints {
 
 //debugging routine signatures
 const char* _printBool(bool b);
-void _dumpEdge(char* label, int i, TopoDS_Edge e);
 
-
-GeometryObject::GeometryObject() : Tolerance(0.05f), Scale(1.f)
+GeometryObject::GeometryObject(DrawViewPart* parent) :
+    Tolerance(0.05f),
+    Scale(1.f),
+    m_parent(parent),
+    m_isoCount(0)
 {
 }
 
@@ -99,9 +106,40 @@ void GeometryObject::setScale(double value)
     Scale = value;
 }
 
+const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges() const
+{
+    std::vector<BaseGeom *> result;
+    bool smoothOK = m_parent->SmoothVisible.getValue();
+    bool seamOK   = m_parent->SeamVisible.getValue();
+    for (auto& e:edgeGeom) {
+        if (e->visible) {
+            switch (e->classOfEdge) {
+                case ecHARD:
+                case ecOUTLINE:
+                    result.push_back(e);
+                    break;
+                case ecSMOOTH:
+                    if (smoothOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                case ecSEAM:
+                    if (seamOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                default:
+                ;
+            }
+        }
+    }
+    return result;
+}
+
+
+
 void GeometryObject::clear()
 {
-
     for(std::vector<BaseGeom *>::iterator it = edgeGeom.begin(); it != edgeGeom.end(); ++it) {
         delete *it;
         *it = 0;
@@ -131,10 +169,12 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     // Clear previous Geometry
     clear();
 
+    auto start = chrono::high_resolution_clock::now();
+
     Handle_HLRBRep_Algo brep_hlr = NULL;
     try {
-        brep_hlr = new HLRBRep_Algo();                //leak? when does this get freed? handle/smart pointer?
-        brep_hlr->Add(input);
+        brep_hlr = new HLRBRep_Algo();
+        brep_hlr->Add(input, m_isoCount);
 
         // Project the shape into view space with the object's centroid
         // at the origin.
@@ -150,6 +190,11 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
     }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parent->getNameInDocument(),diffOut);
+
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
 
@@ -164,6 +209,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         hidOutline = hlrToShape.OutLineHCompound();
         hidIso     = hlrToShape.IsoLineHCompound();
 
+//need these 3d curves to prevent "zero edges" later
         BRepLib::BuildCurves3d(visHard);
         BRepLib::BuildCurves3d(visSmooth);
         BRepLib::BuildCurves3d(visSeam);
@@ -199,6 +245,9 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
             case ecSEAM:
                 filtEdges = visSeam;
                 break;
+            case ecUVISO:
+                filtEdges = visIso;
+                break;
             default:
                 Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported visible edgeClass: %d\n",category);
                 return;
@@ -208,7 +257,18 @@ void GeometryObject::extractGeometry(edgeClass category, bool visible)
             case ecHARD:
                 filtEdges = hidHard;
                 break;
-            //more cases here?
+            case ecOUTLINE:
+                filtEdges = hidOutline;
+                break;
+            case ecSMOOTH:
+                filtEdges = hidSmooth;
+                break;
+            case ecSEAM:
+                filtEdges = hidSeam;
+                break;
+            case ecUVISO:
+                filtEdges = hidIso;
+                break;
             default:
                 Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",category);
                 return;
@@ -226,16 +286,16 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         return; // There is no OpenCascade Geometry to be calculated
     }
 
-    // build a mesh to explore the shape
-    BRepMesh_IncrementalMesh(edgeCompound, Tolerance);    //no idea why we need to mesh shape
-
-    // Explore all edges of edgeCompound and calculate base geometry representation
     BaseGeom* base;
     TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
     for (int i = 1 ; edges.More(); edges.Next(),i++) {
         const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
         if (edge.IsNull()) {
-            Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
+            //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
+            continue;
+        }
+        if (DrawUtil::isZeroEdge(edge)) {
+            Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
             continue;
         }
         base = BaseGeom::baseFactory(edge);
@@ -248,16 +308,31 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             BaseGeom* lastAdded = edgeGeom.back();
             //if (edgeGeom.empty()) {horrible_death();} //back() undefined behavior (can't happen? baseFactory always returns a Base?)
             bool v1Add = true, v2Add = true;
+            bool c1Add = true;
             TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
             TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
+            TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
+            TechDrawGeometry::Vertex* c1 = nullptr;
+            if (circle) {
+                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1->isCenter = true;
+                c1->visible = true;
+            }
+
             std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
             for (; itVertex != vertexGeom.end(); itVertex++) {
-                if ((*itVertex)->isEqual(v1,Tolerance)) {
+                if ((*itVertex)->isEqual(v1,Precision::Confusion())) {
                     v1Add = false;
                 }
-                if ((*itVertex)->isEqual(v2,Tolerance)) {
+                if ((*itVertex)->isEqual(v2,Precision::Confusion())) {
                     v2Add = false;
                 }
+                if (circle) {
+                    if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
+                        c1Add = false;
+                    }
+                }
+
             }
             if (v1Add) {
                 vertexGeom.push_back(v1);
@@ -271,9 +346,17 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             } else {
                 delete v2;
             }
-        }
 
-    }
+            if (circle) {
+                if (c1Add) {
+                    vertexGeom.push_back(c1);
+                    c1->visible = true;
+                } else {
+                    delete c1;
+                }
+            }
+        }
+    }  //end TopExp
 }
 
 //! empty Face geometry
@@ -670,18 +753,6 @@ void debugEdge(const TopoDS_Edge &e)
 }*/
 
 
-void _dumpEdge(char* label, int i, TopoDS_Edge e)
-{
-    BRepAdaptor_Curve adapt(e);
-    double start = BRepLProp_CurveTool::FirstParameter(adapt);
-    double end = BRepLProp_CurveTool::LastParameter(adapt);
-    BRepLProp_CLProps propStart(adapt,start,0,Precision::Confusion());
-    const gp_Pnt& vStart = propStart.Value();
-    BRepLProp_CLProps propEnd(adapt,end,0,Precision::Confusion());
-    const gp_Pnt& vEnd = propEnd.Value();
-    Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)/%0.3f end:(%.2f,%.3f,%.3f)/%.3f\n",label,i,
-                            vStart.X(),vStart.Y(),vStart.Z(),start,vEnd.X(),vEnd.Y(),vEnd.Z(),end);
-}
 
 const char* _printBool(bool b)
 {

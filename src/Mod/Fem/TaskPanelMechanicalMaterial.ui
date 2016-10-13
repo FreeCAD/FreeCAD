@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MechanicalMaterial</class>
- <widget class="QWidget" name="MechanicalMaterial">
+ <class>ThermalMechanicalMaterial</class>
+ <widget class="QWidget" name="ThermalMechanicalMaterial">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>253</width>
-    <height>541</height>
+    <width>370</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -93,7 +93,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Properties</string>
+      <string>Material Properties</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
@@ -121,6 +121,9 @@
             <width>80</width>
             <height>20</height>
            </size>
+          </property>
+          <property name="text">
+           <string>200 GPa</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -176,7 +179,7 @@
            <double>0.100000000000000</double>
           </property>
           <property name="value">
-           <double>0.000000000000000</double>
+           <double>0.300000000000000</double>
           </property>
          </widget>
         </item>
@@ -202,7 +205,7 @@
            </size>
           </property>
           <property name="text">
-           <string/>
+           <string>8000 kg/m^3</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -214,7 +217,161 @@
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true">kg/mm^3</string>
+           <string notr="true">kg/m^3</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupQuantities_5">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Temperature-Dependant Material Properties</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_8">
+      <item>
+       <layout class="QFormLayout" name="formLayout_3">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Thermal Conductivity:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Expansion Coefficient:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::InputField" name="input_fd_expansion_coefficient">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>12 um/m/K</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>2000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">m/m/K</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="text">
+           <string>Specific Heat:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="Gui::InputField" name="input_fd_specific_heat">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>500 J/kg/K</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>2050000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">J/kg/K</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::InputField" name="input_fd_thermal_conductivity">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>50 W/m/K</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>2000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">W/m/K</string>
           </property>
           <property name="decimals" stdset="0">
            <number>3</number>

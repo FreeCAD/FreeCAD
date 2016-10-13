@@ -74,15 +74,6 @@ DrawViewClip::~DrawViewClip()
 
 void DrawViewClip::onChanged(const App::Property* prop)
 {
-    if (prop == &Height ||
-        prop == &Width  ||
-        prop == &ShowFrame ||
-        prop == &ShowLabels) {
-        if (!isRestoring()) {
-            DrawViewClip::execute();
-        }
-    }
-
     DrawView::onChanged(prop);
 }
 
@@ -127,11 +118,16 @@ App::DocumentObjectExecReturn *DrawViewClip::execute(void)
 
 short DrawViewClip::mustExecute() const
 {
-    if (Views.isTouched()) {
-        return 1;
-    } else {
-        return TechDraw::DrawView::mustExecute();
+    short result = 0;
+    if (!isRestoring()) {
+        result = ( Height.isTouched() ||
+                   Width.isTouched()  ||
+                   Views.isTouched());
     }
+    if (result) {
+        return result;
+    }
+    return TechDraw::DrawView::mustExecute();
 }
 
 std::vector<std::string> DrawViewClip::getChildViewNames()

@@ -108,7 +108,7 @@ void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
     if (doc) {
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom
             (SketcherGui::ViewProviderSketch::getClassTypeId())) {
-                SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
+                SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*> (doc->getInEdit());
                 vp->purgeHandler();
                 vp->activateHandler(handler);
         }
@@ -193,7 +193,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createline),7,7);
     }
@@ -240,6 +240,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
@@ -324,6 +325,7 @@ CmdSketcherCreateLine::CmdSketcherCreateLine()
 
 void CmdSketcherCreateLine::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLine() );
 }
 
@@ -400,7 +402,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createbox),7,7);
     }
@@ -453,6 +455,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
@@ -567,6 +570,7 @@ CmdSketcherCreateRectangle::CmdSketcherCreateRectangle()
 
 void CmdSketcherCreateRectangle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBox() );
 }
 
@@ -635,10 +639,19 @@ class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerLineSet()
-      : Mode(STATUS_SEEK_First),SegmentMode(SEGMENT_MODE_Line),
-        TransitionMode(TRANSITION_MODE_Free),suppressTransition(false),EditCurve(2),
-        firstCurve(-1),previousCurve(-1),
-        firstPosId(Sketcher::none),previousPosId(Sketcher::none) {}
+      : Mode(STATUS_SEEK_First), SegmentMode(SEGMENT_MODE_Line)
+      , TransitionMode(TRANSITION_MODE_Free)
+      , suppressTransition(false)
+      , EditCurve(2)
+      , firstCurve(-1)
+      , previousCurve(-1)
+      , firstPosId(Sketcher::none)
+      , previousPosId(Sketcher::none)
+      , startAngle(0)
+      , endAngle(0)
+      , arcRadius(0)
+    {
+    }
     virtual ~DrawSketchHandlerLineSet() {}
     /// mode table
     enum SELECT_MODE {
@@ -739,7 +752,7 @@ public:
         }
     }
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createlineset),7,7);
     }
@@ -759,7 +772,7 @@ public:
                 EditCurve[EditCurve.size()-1] = onSketchPos;
                 if (TransitionMode == TRANSITION_MODE_Tangent) {
                     Base::Vector2D Tangent(dirVec.x,dirVec.y);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Tangent);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Tangent);
                     if (EditCurve[1] * Tangent < 0) {
                         EditCurve[1] = EditCurve[2];
                         suppressTransition = true;
@@ -770,7 +783,7 @@ public:
                 else if (TransitionMode == TRANSITION_MODE_Perpendicular_L ||
                          TransitionMode == TRANSITION_MODE_Perpendicular_R) {
                     Base::Vector2D Perpendicular(-dirVec.y,dirVec.x);
-                    EditCurve[1].ProjToLine(EditCurve[2] - EditCurve[0], Perpendicular);
+                    EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
 
@@ -1141,7 +1154,7 @@ protected:
         // Use updated startPoint/endPoint as autoconstraints can modify the position
         const Part::Geometry *geom = sketchgui->getSketchObject()->getGeometry(GeoId);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg = dynamic_cast<const Part::GeomLineSegment *>(geom);
+            const Part::GeomLineSegment *lineSeg = static_cast<const Part::GeomLineSegment *>(geom);
             dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
                        lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
                        0.f);
@@ -1153,7 +1166,7 @@ protected:
                 EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
         }
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arcSeg = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+            const Part::GeomArcOfCircle *arcSeg = static_cast<const Part::GeomArcOfCircle *>(geom);
             if (PosId == Sketcher::start) {
                 EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
                 dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
@@ -1184,6 +1197,7 @@ CmdSketcherCreatePolyline::CmdSketcherCreatePolyline()
 
 void CmdSketcherCreatePolyline::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerLineSet() );
 }
 
@@ -1252,7 +1266,14 @@ class DrawSketchHandlerArc : public DrawSketchHandler
 {
 public:
     DrawSketchHandlerArc()
-      : Mode(STATUS_SEEK_First),EditCurve(2){}
+      : Mode(STATUS_SEEK_First)
+      , EditCurve(2)
+      , rx(0), ry(0)
+      , startAngle(0)
+      , endAngle(0)
+      , arcAngle(0)
+    {
+    }
     virtual ~DrawSketchHandlerArc(){}
     /// mode table
     enum SelectMode {
@@ -1262,7 +1283,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createarc),7,7);
     }
@@ -1372,6 +1393,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End) {
             unsetCursor();
             resetPositionText();
@@ -1466,6 +1488,7 @@ CmdSketcherCreateArc::CmdSketcherCreateArc()
 
 void CmdSketcherCreateArc::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArc() );
 }
 
@@ -1520,7 +1543,13 @@ class DrawSketchHandler3PointArc : public DrawSketchHandler
 {
 public:
     DrawSketchHandler3PointArc()
-      : Mode(STATUS_SEEK_First),EditCurve(2){}
+      : Mode(STATUS_SEEK_First), EditCurve(2)
+      , radius(0), startAngle(0)
+      , endAngle(0), arcAngle(0)
+      , arcPos1(Sketcher::none)
+      , arcPos2(Sketcher::none)
+    {
+    }
     virtual ~DrawSketchHandler3PointArc(){}
     /// mode table
     enum SelectMode {
@@ -1530,7 +1559,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_create3pointarc),7,7);
     }
@@ -1674,6 +1703,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
         if (Mode==STATUS_End) {
             unsetCursor();
@@ -1770,6 +1800,7 @@ CmdSketcherCreate3PointArc::CmdSketcherCreate3PointArc()
 
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointArc() );
 }
 
@@ -1932,7 +1963,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createcircle),7,7);
     }
@@ -1989,6 +2020,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
             double rx = EditCurve[1].fX - EditCurve[0].fX;
             double ry = EditCurve[1].fY - EditCurve[0].fY;
@@ -2077,6 +2109,7 @@ CmdSketcherCreateCircle::CmdSketcherCreateCircle()
 
 void CmdSketcherCreateCircle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerCircle() );
 }
 
@@ -2168,9 +2201,13 @@ static const char *cursor_createellipse[]={
 class DrawSketchHandlerEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerEllipse(int constructionMethod) :
-        constrMethod(constructionMethod),
-        editCurve(33)
+    DrawSketchHandlerEllipse(int constructionMethod)
+      : mode(STATUS_Close)
+      , method(CENTER_PERIAPSIS_B)
+      , constrMethod(constructionMethod)
+      , a(0), b(0), e(0), ratio(0), ae(0)
+      , num(0), r(0), theta(0), phi(0)
+      , editCurve(33), fixedAxisLength(0)
     {
     }
     virtual ~DrawSketchHandlerEllipse(){}
@@ -2193,7 +2230,7 @@ public:
      * @brief Slot called when the create ellipse command is activated
      * @param sketchgui A pointer to the active sketch
      */
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createellipse),7,7);
         if (constrMethod == 0) {
@@ -2339,6 +2376,7 @@ public:
      */
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
             saveEllipse();
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -2452,7 +2490,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - f); // vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
+                w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
                 Base::Vector2D w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -2512,7 +2550,7 @@ private:
                 Base::Vector2D cursor = Base::Vector2D(onSketchPos - centroid); // vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2D w_1 = cursor;
-                w_1.ProjToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
+                w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
                 Base::Vector2D w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
@@ -2564,7 +2602,7 @@ private:
     {
         // We will approximate the ellipse as a sequence of connected chords
         // Number of points per quadrant of the ellipse
-        double n = (editCurve.size() - 1) / 4;
+        int n = static_cast<int>((editCurve.size() - 1) / 4);
 
         // We choose points in the perifocal frame then translate them to sketch cartesian.
         // This gives us a better approximation of an ellipse, i.e. more points where the
@@ -2621,9 +2659,9 @@ private:
      * @brief Prints the ellipse data to STDOUT as an GNU Octave script
      * @param onSketchPos position of the cursor on the sketch
      */
-    void ellipseToOctave(Base::Vector2D onSketchPos)
+    void ellipseToOctave(Base::Vector2D /*onSketchPos*/)
     {
-        double n = (editCurve.size() - 1) / 4;
+        int n = static_cast<int>((editCurve.size() - 1) / 4);
 
         // send a GNU Octave script to stdout to plot points for debugging
         std::ostringstream octave;
@@ -2923,6 +2961,7 @@ CmdSketcherCreateEllipseByCenter::CmdSketcherCreateEllipseByCenter()
 
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(0) );
 }
 
@@ -2952,6 +2991,7 @@ CmdSketcherCreateEllipseBy3Points::CmdSketcherCreateEllipseBy3Points()
 
 void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(1) );
 }
 
@@ -3002,7 +3042,12 @@ static const char *cursor_createarcofellipse[]={
 class DrawSketchHandlerArcOfEllipse : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerArcOfEllipse() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    DrawSketchHandlerArcOfEllipse()
+        : Mode(STATUS_SEEK_First), EditCurve(34)
+        , rx(0), ry(0), startAngle(0), endAngle(0)
+        , arcAngle(0), arcAngle_t(0)
+    {
+    }
     virtual ~DrawSketchHandlerArcOfEllipse(){}
     /// mode table
     enum SelectMode {
@@ -3013,7 +3058,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createarcofellipse),7,7);
     }
@@ -3156,6 +3201,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
             unsetCursor();
             resetPositionText();
@@ -3311,7 +3357,6 @@ protected:
     Base::Vector2D centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
-
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateArcOfEllipse);
@@ -3331,6 +3376,7 @@ CmdSketcherCreateArcOfEllipse::CmdSketcherCreateArcOfEllipse()
 
 void CmdSketcherCreateArcOfEllipse::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArcOfEllipse() );
 }
 
@@ -3505,7 +3551,7 @@ class DrawSketchHandler3PointCircle : public DrawSketchHandler
 {
 public:
     DrawSketchHandler3PointCircle()
-      : Mode(STATUS_SEEK_First),EditCurve(2),N(32.0){}
+      : Mode(STATUS_SEEK_First),EditCurve(2),radius(1),N(32.0){}
     virtual ~DrawSketchHandler3PointCircle(){}
     /// mode table
     enum SelectMode {
@@ -3515,7 +3561,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_create3pointcircle),7,7);
     }
@@ -3608,6 +3654,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
         if (Mode==STATUS_End) {
             unsetCursor();
@@ -3702,6 +3749,7 @@ CmdSketcherCreate3PointCircle::CmdSketcherCreate3PointCircle()
 
 void CmdSketcherCreate3PointCircle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandler3PointCircle() );
 }
 
@@ -3858,7 +3906,7 @@ public:
     DrawSketchHandlerPoint() : selectionDone(false) {}
     virtual ~DrawSketchHandlerPoint() {}
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createpoint),7,7);
     }
@@ -3882,6 +3930,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (selectionDone){
             unsetCursor();
             resetPositionText();
@@ -3953,6 +4002,7 @@ CmdSketcherCreatePoint::CmdSketcherCreatePoint()
 
 void CmdSketcherCreatePoint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPoint());
 }
 
@@ -3981,6 +4031,7 @@ CmdSketcherCreateText::CmdSketcherCreateText()
 
 void CmdSketcherCreateText::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
 }
 
 bool CmdSketcherCreateText::isActive(void)
@@ -4008,6 +4059,7 @@ CmdSketcherCreateDraftLine::CmdSketcherCreateDraftLine()
 
 void CmdSketcherCreateDraftLine::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
 }
 
 bool CmdSketcherCreateDraftLine::isActive(void)
@@ -4027,7 +4079,7 @@ namespace SketcherGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {}
 
-        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -4103,7 +4155,7 @@ static const char *cursor_createfillet[]={
 class DrawSketchHandlerFillet: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First) {}
+    DrawSketchHandlerFillet() : Mode(STATUS_SEEK_First), firstCurve(0) {}
     virtual ~DrawSketchHandlerFillet()
     {
         Gui::Selection().rmvSelectionGate();
@@ -4113,7 +4165,7 @@ public:
         STATUS_SEEK_Second
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(new FilletSelection(sketchgui->getObject()));
@@ -4122,10 +4174,12 @@ public:
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
     }
 
     virtual bool pressButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         return true;
     }
 
@@ -4152,8 +4206,8 @@ public:
                     construction=geom1->Construction && geom2->Construction;
                     if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                         geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                        const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>(geom1);
-                        const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>(geom2);
+                        const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>(geom1);
+                        const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>(geom2);
                         Base::Vector3d dir1 = lineSeg1->getEndPoint() - lineSeg1->getStartPoint();
                         Base::Vector3d dir2 = lineSeg2->getEndPoint() - lineSeg2->getStartPoint();
                         if (PosIdList[0] == Sketcher::end)
@@ -4225,9 +4279,9 @@ public:
                     Base::Vector2D secondPos = onSketchPos;
 
                     // guess fillet radius
-                    const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment *>
+                    const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(firstCurve));
-                    const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment *>
+                    const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(secondCurve));
                     Base::Vector3d refPnt1(firstPos.fX, firstPos.fY, 0.f);
                     Base::Vector3d refPnt2(secondPos.fX, secondPos.fY, 0.f);
@@ -4303,6 +4357,7 @@ CmdSketcherCreateFillet::CmdSketcherCreateFillet()
 
 void CmdSketcherCreateFillet::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerFillet());
 }
 
@@ -4323,7 +4378,7 @@ namespace SketcherGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {}
 
-        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document * /*pDoc*/, App::DocumentObject *pObj, const char *sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -4406,10 +4461,12 @@ public:
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
     }
 
     virtual bool pressButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         return true;
     }
 
@@ -4467,6 +4524,7 @@ CmdSketcherTrimming::CmdSketcherTrimming()
 
 void CmdSketcherTrimming::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerTrimming());
 }
 
@@ -4611,17 +4669,20 @@ public:
 
     virtual void mouseMove(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
     virtual bool pressButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         return true;
     }
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
         * in continuous creation mode because the 
         * handler is destroyed by the quit() method on pressing the
@@ -4697,6 +4758,7 @@ CmdSketcherExternal::CmdSketcherExternal()
 
 void CmdSketcherExternal::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerExternal());
 }
 
@@ -4749,7 +4811,12 @@ static const char *cursor_creatslot[]={
 class DrawSketchHandlerSlot: public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerSlot():Mode(STATUS_SEEK_First),EditCurve(36){}
+    DrawSketchHandlerSlot()
+      : Mode(STATUS_SEEK_First)
+      , lx(0), ly(0), r(0), a(0)
+      , EditCurve(36)
+    {
+    }
     virtual ~DrawSketchHandlerSlot(){}
     /// mode table
     enum BoxMode {
@@ -4758,7 +4825,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_creatslot),7,7);
     }
@@ -4830,6 +4897,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
@@ -4963,6 +5031,7 @@ CmdSketcherCreateSlot::CmdSketcherCreateSlot()
 
 void CmdSketcherCreateSlot::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerSlot() );
 }
 
@@ -5047,7 +5116,7 @@ public:
         STATUS_End
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch *)
     {
         setCursor(QPixmap(cursor_createregularpolygon),7,7);
     }
@@ -5107,6 +5176,7 @@ public:
 
     virtual bool releaseButton(Base::Vector2D onSketchPos)
     {
+        Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
             unsetCursor();
             resetPositionText();
@@ -5203,6 +5273,7 @@ CmdSketcherCreateTriangle::CmdSketcherCreateTriangle()
 
 void CmdSketcherCreateTriangle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(3) );
 }
 
@@ -5228,6 +5299,7 @@ CmdSketcherCreateSquare::CmdSketcherCreateSquare()
 
 void CmdSketcherCreateSquare::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(4) );
 }
 
@@ -5253,6 +5325,7 @@ CmdSketcherCreatePentagon::CmdSketcherCreatePentagon()
 
 void CmdSketcherCreatePentagon::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(5) );
 }
 
@@ -5279,6 +5352,7 @@ CmdSketcherCreateHexagon::CmdSketcherCreateHexagon()
 
 void CmdSketcherCreateHexagon::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(6) );
 }
 
@@ -5304,6 +5378,7 @@ CmdSketcherCreateHeptagon::CmdSketcherCreateHeptagon()
 
 void CmdSketcherCreateHeptagon::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(7) );
 }
 
@@ -5329,6 +5404,7 @@ CmdSketcherCreateOctagon::CmdSketcherCreateOctagon()
 
 void CmdSketcherCreateOctagon::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerRegularPolygon(8) );
 }
 

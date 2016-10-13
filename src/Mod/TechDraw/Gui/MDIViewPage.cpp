@@ -40,6 +40,8 @@
     #include <QPrintPreviewDialog>
 #endif  // #ifndef _PreComp_
 
+#include <math.h>
+
 #include "MDIViewPage.h"
 
 #include <Base/Stream.h>
@@ -92,27 +94,17 @@ using namespace TechDrawGui;
 
 MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* parent)
   : Gui::MDIView(doc, parent),
-    //m_view(new QGVPage(pageVp)),
-    pageGui(pageVp),
+    m_orientation(QPrinter::Landscape),
+    m_paperSize(QPrinter::A4),
+    m_vpPage(pageVp),
     m_frameState(true)
 {
-    m_view = new QGVPage(pageVp,m_scene,this);
 
-    m_backgroundAction = new QAction(tr("&Background"), this);
-    m_backgroundAction->setEnabled(false);
-    m_backgroundAction->setCheckable(true);
-    m_backgroundAction->setChecked(true);
-    connect(m_backgroundAction, SIGNAL(toggled(bool)), m_view, SLOT(setViewBackground(bool)));
+    m_scene = new QGraphicsScene(this);
+    m_view = new QGVPage(pageVp,m_scene,this);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
     connect(m_exportSVGAction, SIGNAL(triggered()), this, SLOT(saveSVG()));
-
-    //m_outlineAction is obs? never set to Enabled?
-    m_outlineAction = new QAction(tr("&Outline"), this);
-    m_outlineAction->setEnabled(false);
-    m_outlineAction->setCheckable(true);
-    m_outlineAction->setChecked(false);
-    connect(m_outlineAction, SIGNAL(toggled(bool)), m_view, SLOT(setViewOutline(bool)));    //in QGVPage
 
     m_nativeAction = new QAction(tr("&Native"), this);
     m_nativeAction->setCheckable(true);
@@ -147,20 +139,16 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     setWindowTitle(tr("dummy[*]"));      //Yuck. prevents "QWidget::setWindowModified: The window title does not contain a '[*]' placeholder"
     setCentralWidget(m_view);            //this makes m_view a Qt child of MDIViewPage
 
-    m_orientation = QPrinter::Landscape;
-    m_pageSize = QPrinter::A4;
-
     // Connect Signals and Slots
     QObject::connect(
         m_view->scene(), SIGNAL(selectionChanged()),
         this           , SLOT  (selectionChanged())
        );
 
-
-     // A fresh page is added and we iterate through its collected children and add these to Canvas View
+     // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
      // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
      // we'll have to make this recursive. -WF
-    const std::vector<App::DocumentObject*> &grp = pageGui->getPageObject()->Views.getValues();
+    const std::vector<App::DocumentObject*> &grp = m_vpPage->getDrawPage()->Views.getValues();
     std::vector<App::DocumentObject*> childViews;
     for (std::vector<App::DocumentObject*>::const_iterator it = grp.begin();it != grp.end(); ++it) {
         attachView(*it);
@@ -176,12 +164,16 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     //therefore we need to make sure parentage of the graphics representation is set properly. bit of a kludge.
     setDimensionGroups();
 
-    App::DocumentObject *obj = pageGui->getPageObject()->Template.getValue();
-    if(obj && obj->isDerivedFrom(TechDraw::DrawTemplate::getClassTypeId())) {
-        TechDraw::DrawTemplate *pageTemplate = dynamic_cast<TechDraw::DrawTemplate *>(obj);
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
+        //make sceneRect 1 pagesize bigger in every direction
+        double width  =  pageTemplate->Width.getValue();
+        double height =  pageTemplate->Height.getValue();
+        m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
+        viewAll();
     }
-
 }
 
 
@@ -220,48 +212,6 @@ void MDIViewPage::setDimensionGroups(void)
     }
 }
 
-
-void MDIViewPage::findPrinterSettings(const QString& fileName)
-{
-    if (fileName.indexOf(QLatin1String("Portrait"), Qt::CaseInsensitive) >= 0) {
-        m_orientation = QPrinter::Portrait;
-    }
-    else {
-        m_orientation = QPrinter::Landscape;
-    }
-
-    QMap<QPrinter::PageSize, QString> pageSizes;
-    pageSizes[QPrinter::A0] = QString::fromLatin1("A0");
-    pageSizes[QPrinter::A1] = QString::fromLatin1("A1");
-    pageSizes[QPrinter::A2] = QString::fromLatin1("A2");
-    pageSizes[QPrinter::A3] = QString::fromLatin1("A3");
-    pageSizes[QPrinter::A4] = QString::fromLatin1("A4");
-    pageSizes[QPrinter::A5] = QString::fromLatin1("A5");
-    pageSizes[QPrinter::A6] = QString::fromLatin1("A6");
-    pageSizes[QPrinter::A7] = QString::fromLatin1("A7");
-    pageSizes[QPrinter::A8] = QString::fromLatin1("A8");
-    pageSizes[QPrinter::A9] = QString::fromLatin1("A9");
-    pageSizes[QPrinter::B0] = QString::fromLatin1("B0");
-    pageSizes[QPrinter::B1] = QString::fromLatin1("B1");
-    pageSizes[QPrinter::B2] = QString::fromLatin1("B2");
-    pageSizes[QPrinter::B3] = QString::fromLatin1("B3");
-    pageSizes[QPrinter::B4] = QString::fromLatin1("B4");
-    pageSizes[QPrinter::B5] = QString::fromLatin1("B5");
-    pageSizes[QPrinter::B6] = QString::fromLatin1("B6");
-    pageSizes[QPrinter::B7] = QString::fromLatin1("B7");
-    pageSizes[QPrinter::B8] = QString::fromLatin1("B8");
-    pageSizes[QPrinter::B9] = QString::fromLatin1("B9");
-    pageSizes[QPrinter::Letter] = QString::fromLatin1("Letter");
-    pageSizes[QPrinter::Legal] = QString::fromLatin1("Legal");
-    for (QMap<QPrinter::PageSize, QString>::iterator it = pageSizes.begin(); it != pageSizes.end(); ++it) {
-        if (fileName.startsWith(it.value(), Qt::CaseInsensitive)) {
-            m_pageSize = it.key();
-            break;
-        }
-    }
-}
-
-
 void MDIViewPage::setDocumentObject(const std::string& name)
 {
     m_objectName = name;
@@ -290,8 +240,6 @@ void MDIViewPage::closeEvent(QCloseEvent* ev)
 void MDIViewPage::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu;
-    menu.addAction(m_backgroundAction);
-    menu.addAction(m_outlineAction);
     menu.addAction(m_exportSVGAction);
     QMenu* submenu = menu.addMenu(tr("&Renderer"));
     submenu->addAction(m_nativeAction);
@@ -308,68 +256,88 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
     m_view->setPageTemplate(obj);
     double width  =  obj->Width.getValue();
     double height =  obj->Height.getValue();
-    m_view->scene()->setSceneRect(QRectF(-1.,-height,width+1.,height));         //the +/- 1 is because of the way the template is define???
+    m_paperSize = getPaperSize(int(round(width)),int(round(height)));
+    if (width > height) {
+        m_orientation = QPrinter::Landscape;
+    } else {
+        m_orientation = QPrinter::Portrait;
+    }
 }
 
+QPointF MDIViewPage::getTemplateCenter(TechDraw::DrawTemplate *obj)
+{
+    double cx  =  obj->Width.getValue()/2.0;
+    double cy =  -obj->Height.getValue()/2.0;
+    QPointF result(cx,cy);
+    return result;
+}
 
-int MDIViewPage::attachView(App::DocumentObject *obj)
+void MDIViewPage::centerOnPage(void)
+{
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    if( pageTemplate ) {
+        QPointF viewCenter = getTemplateCenter(pageTemplate);
+        m_view->centerOn(viewCenter);
+    }
+}
+
+bool MDIViewPage::attachView(App::DocumentObject *obj)
 {
     auto typeId(obj->getTypeId());
 
     QGIView *qview(nullptr);
 
     if (typeId.isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId()) ) {
-        qview = m_view->addViewSection( dynamic_cast<TechDraw::DrawViewSection *>(obj) );
+        qview = m_view->addViewSection( static_cast<TechDraw::DrawViewSection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId()) ) {
-        qview = m_view->addViewPart( dynamic_cast<TechDraw::DrawViewPart *>(obj) );
+        qview = m_view->addViewPart( static_cast<TechDraw::DrawViewPart *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()) ) {
-        qview = m_view->addProjectionGroup( dynamic_cast<TechDraw::DrawProjGroup *>(obj) );
+        qview = m_view->addProjectionGroup( static_cast<TechDraw::DrawProjGroup *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId()) ) {
-        qview =  m_view->addDrawView( dynamic_cast<TechDraw::DrawViewCollection *>(obj) );
+        qview = m_view->addDrawView( static_cast<TechDraw::DrawViewCollection *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId()) ) {
-        qview = m_view->addViewDimension( dynamic_cast<TechDraw::DrawViewDimension *>(obj) );
+        qview = m_view->addViewDimension( static_cast<TechDraw::DrawViewDimension *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewAnnotation::getClassTypeId()) ) {
-        qview = m_view->addDrawViewAnnotation( dynamic_cast<TechDraw::DrawViewAnnotation *>(obj) );
+        qview = m_view->addDrawViewAnnotation( static_cast<TechDraw::DrawViewAnnotation *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(obj) );
+        qview = m_view->addDrawViewSymbol( static_cast<TechDraw::DrawViewSymbol *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId()) ) {
-        qview = m_view->addDrawViewClip( dynamic_cast<TechDraw::DrawViewClip *>(obj) );
+        qview = m_view->addDrawViewClip( static_cast<TechDraw::DrawViewClip *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawViewSpreadsheet::getClassTypeId()) ) {
-        qview = m_view->addDrawViewSpreadsheet( dynamic_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
+        qview = m_view->addDrawViewSpreadsheet( static_cast<TechDraw::DrawViewSpreadsheet *>(obj) );
 
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
+        return true;
 
     } else {
         Base::Console().Log("Logic Error - Unknown view type in MDIViewPage::attachView\n");
     }
 
-    if(!qview)
-        return -1;
-    else
-        return m_view->getViews().size();
+    return (qview != nullptr);
 }
 
 
 
 void MDIViewPage::updateTemplate(bool forceUpdate)
 {
-    App::DocumentObject *templObj = pageGui->getPageObject()->Template.getValue();
+    App::DocumentObject *templObj = m_vpPage->getDrawPage()->Template.getValue();
     // TODO: what if template has been deleted? templObj will be NULL. segfault?
     if (!templObj) {
-        Base::Console().Log("INFO - MDIViewPage::updateTemplate - Page: %s has NO template!!\n",pageGui->getPageObject()->getNameInDocument());
+        Base::Console().Log("INFO - MDIViewPage::updateTemplate - Page: %s has NO template!!\n",m_vpPage->getDrawPage()->getNameInDocument());
         return;
     }
 
-    if(pageGui->getPageObject()->Template.isTouched() || templObj->isTouched()) {
+    if(m_vpPage->getDrawPage()->Template.isTouched() || templObj->isTouched()) {
         // Template is touched so update
 
         if(forceUpdate ||
@@ -388,10 +356,9 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 
 void MDIViewPage::updateDrawing(bool forceUpdate)
 {
-    // We cannot guarantee if the number of graphical representations (QGIVxxxx) have changed so check the number
-    // Why?
+   // We cannot guarantee if the number of graphical representations (QGIVxxxx) have changed so check the number (MLP)
     const std::vector<QGIView *> &graphicsList = m_view->getViews();
-    const std::vector<App::DocumentObject*> &pageChildren  = pageGui->getPageObject()->Views.getValues();
+    const std::vector<App::DocumentObject*> &pageChildren  = m_vpPage->getDrawPage()->Views.getValues();
 
     // Count total # DocumentObjects in Page
     unsigned int docObjCount = 0;
@@ -513,7 +480,7 @@ bool MDIViewPage::orphanExists(const char *viewName, const std::vector<App::Docu
 }
 
 
-bool MDIViewPage::onMsg(const char *pMsg, const char **ppReturn)
+bool MDIViewPage::onMsg(const char *pMsg, const char **)
 {
     Gui::Document *doc(getGuiDocument());
 
@@ -576,14 +543,13 @@ void MDIViewPage::onRelabel(Gui::Document *pDoc)
     }
 }
 
-
 void MDIViewPage::printPdf()
 {
     Gui::FileOptionsDialog dlg(this, 0);
     dlg.setFileMode(QFileDialog::AnyFile);
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setWindowTitle(tr("Export PDF"));
-    dlg.setFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    dlg.setNameFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
 
     QGridLayout *gridLayout;
     QGridLayout *formLayout;
@@ -599,6 +565,8 @@ void MDIViewPage::printPdf()
     gridLayout->addWidget(listWidget, 0, 0, 1, 1);
     formLayout->addWidget(groupBox, 0, 0, 1, 1);
 
+    //the "Extended" part of the dialog
+    //doesn't have any impact on result?
     groupBox->setTitle(tr("Page sizes"));
     item = new QListWidgetItem(tr("A0"), listWidget);
     item->setData(Qt::UserRole, QVariant(QPrinter::A0));
@@ -619,7 +587,7 @@ void MDIViewPage::printPdf()
     //listWidget->item(4)->setSelected(true); // by default A4
     int index = 4; // by default A4
     for (int i=0; i<listWidget->count(); i++) {
-        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_pageSize) {
+        if (listWidget->item(i)->data(Qt::UserRole).toInt() == m_paperSize) {
             index = i;
             break;
         }
@@ -635,11 +603,13 @@ void MDIViewPage::printPdf()
         printer.setOutputFormat(QPrinter::PdfFormat);
         printer.setOutputFileName(filename);
         printer.setOrientation(m_orientation);
+        printer.setPaperSize(m_paperSize);
         QList<QListWidgetItem*> items = listWidget->selectedItems();
-        if (items.size() == 1) {
-            int AX = items.front()->data(Qt::UserRole).toInt();
-            printer.setPaperSize(QPrinter::PageSize(AX));
-        }
+
+//        if (items.size() == 1) {
+//            int AX = items.front()->data(Qt::UserRole).toInt();
+//            printer.setPaperSize(QPrinter::PaperSize(AX));
+//        }
 
         print(&printer);
     }
@@ -650,7 +620,7 @@ void MDIViewPage::print()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPageSize(m_pageSize);
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
     QPrintDialog dlg(&printer, this);
     if (dlg.exec() == QDialog::Accepted) {
@@ -658,12 +628,11 @@ void MDIViewPage::print()
     }
 }
 
-
 void MDIViewPage::printPreview()
 {
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    printer.setPageSize(m_pageSize);
+    printer.setPaperSize(m_paperSize);
     printer.setOrientation(m_orientation);
 
     QPrintPreviewDialog dlg(&printer, this);
@@ -690,8 +659,8 @@ void MDIViewPage::print(QPrinter* printer)
     if (printer->outputFormat() == QPrinter::NativeFormat) {
         int w = printer->widthMM();
         int h = printer->heightMM();
-        QPrinter::PaperSize realPaperSize = getPageSize(w, h);
-        QPrinter::PaperSize curPaperSize = printer->paperSize();
+        QPrinter::PaperSize psPrtCalcd = getPaperSize(w, h);
+        QPrinter::PaperSize psPrtSetting = printer->paperSize();
 
         // for the preview a 'Picture' paint engine is used which we don't
         // care if it uses wrong printer settings
@@ -705,7 +674,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && realPaperSize != m_pageSize) {
+        else if (doPrint && psPrtCalcd != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -713,7 +682,7 @@ void MDIViewPage::print(QPrinter* printer)
             if (ret != QMessageBox::Yes)
                 return;
         }
-        else if (doPrint && curPaperSize != m_pageSize) {
+        else if (doPrint && psPrtSetting != m_paperSize) {
             int ret = QMessageBox::warning(this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
                    "Do you want to continue?"),
@@ -732,32 +701,41 @@ void MDIViewPage::print(QPrinter* printer)
         return;
     }
 
-    QRect rect = printer->paperRect();
+    QRect targetRect = printer->paperRect();
 #ifdef Q_OS_WIN32
     // On Windows the preview looks broken when using paperRect as render area.
     // Although the picture is scaled when using pageRect, it looks just fine.
     if (paintType == QPaintEngine::Picture)
-        rect = printer->pageRect();
+        targetRect = printer->pageRect();
 #endif
 
     //bool block =
     static_cast<void> (blockConnection(true)); // avoid to be notified by itself
     Gui::Selection().clearSelection();
 
-    m_view->toggleEdit(false);
+    m_view->toggleMarkers(false);
     m_view->scene()->update();
 
     Gui::Selection().clearSelection();
 
-    m_view->scene()->render(&p, rect);
+    App::DocumentObject *obj = m_vpPage->getDrawPage()->Template.getValue();
+    auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
+    double width  =  0.0;
+    double height =  0.0;
+    if( pageTemplate ) {
+      width  =  pageTemplate->Width.getValue();
+      height =  pageTemplate->Height.getValue();
+    }
+    QRectF sourceRect(0.0,-height,width,height);
+
+    m_view->scene()->render(&p, targetRect,sourceRect);
 
     // Reset
-    m_view->toggleEdit(true);
+    m_view->toggleMarkers(true);
 }
 
 
-//QPrinter::PageSize is obsolete. Use QPrinter::PaperSize instead.
-QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
+QPrinter::PaperSize MDIViewPage::getPaperSize(int w, int h) const
 {
     static const float paperSizes[][2] = {
         {210, 297}, // A4
@@ -792,27 +770,28 @@ QPrinter::PageSize MDIViewPage::getPageSize(int w, int h) const
         {279.4f, 431.8f} // Tabloid
     };
 
-    QPrinter::PageSize ps = QPrinter::Custom;
+    QPrinter::PaperSize ps = QPrinter::Custom;
     for (int i=0; i<30; i++) {
         if (std::abs(paperSizes[i][0]-w) <= 1 &&
             std::abs(paperSizes[i][1]-h) <= 1) {
-            ps = static_cast<QPrinter::PageSize>(i);
+            ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
         else
         if (std::abs(paperSizes[i][0]-h) <= 1 &&
             std::abs(paperSizes[i][1]-w) <= 1) {
-            ps = static_cast<QPrinter::PageSize>(i);
+            ps = static_cast<QPrinter::PaperSize>(i);
             break;
         }
     }
-
     return ps;
 }
+
+
 void MDIViewPage::setFrameState(bool state)
 {
     m_frameState = state;
-    m_view->toggleEdit(state);
+    m_view->toggleMarkers(state);
     m_view->scene()->update();
 }
 
@@ -844,7 +823,8 @@ void MDIViewPage::setRenderer(QAction *action)
 
 void MDIViewPage::viewAll()
 {
-    m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+    //m_view->fitInView(m_view->scene()->sceneRect(), Qt::KeepAspectRatio);
+    m_view->fitInView(m_view->scene()->itemsBoundingRect(), Qt::KeepAspectRatio);
 }
 
 

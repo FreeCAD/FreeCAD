@@ -54,7 +54,7 @@ namespace Gui {
 class SplashObserver : public Base::ConsoleObserver
 {
 public:
-    SplashObserver(QSplashScreen* splasher=0, const char* name=0)
+    SplashObserver(QSplashScreen* splasher=0)
       : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
@@ -102,18 +102,24 @@ public:
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Message(const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Error  (const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Log (const char * s)
@@ -219,6 +225,8 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
   : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
 {
+    Q_UNUSED(showLic);
+
     setModal(true);
     ui->setupUi(this);
     ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());

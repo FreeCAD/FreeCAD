@@ -191,6 +191,9 @@ public:
     void setModal(bool);
     bool isModal() const;
 
+    void setAutoChangeColor(bool);
+    bool autoChangeColor() const;
+
 public Q_SLOTS:
     void onChooseColor();
 
@@ -397,6 +400,7 @@ public:
 public Q_SLOTS:
     virtual void setText(const QString &);
     virtual void setButtonText (const QString &);
+    virtual void validateText (const QString &);
 
 Q_SIGNALS:
     void textChanged(const QString &);

@@ -74,7 +74,7 @@ gp_Pnt DraftDxfRead::makePoint(const double* p)
     return gp_Pnt(sp1,sp2,sp3);
 }
 
-void DraftDxfRead::OnReadLine(const double* s, const double* e, bool hidden)
+void DraftDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)
 {
     gp_Pnt p0 = makePoint(s);
     gp_Pnt p1 = makePoint(e);
@@ -94,7 +94,7 @@ void DraftDxfRead::OnReadPoint(const double* s)
 }
 
 
-void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden)
+void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir, bool /*hidden*/)
 {
     gp_Pnt p0 = makePoint(s);
     gp_Pnt p1 = makePoint(e);
@@ -109,7 +109,7 @@ void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, 
 }
 
 
-void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool hidden)
+void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool /*hidden*/)
 {
     gp_Pnt p0 = makePoint(s);
     gp_Dir up(0, 0, 1);
@@ -123,13 +123,13 @@ void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool
 }
 
 
-void DraftDxfRead::OnReadSpline(struct SplineData& sd)
+void DraftDxfRead::OnReadSpline(struct SplineData& /*sd*/)
 {
     // not yet implemented
 }
 
 
-void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir)
+void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double /*start_angle*/, double /*end_angle*/, bool dir)
 {
     gp_Dir up(0, 0, 1);
     if(!dir)
@@ -143,7 +143,7 @@ void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double mi
 }
 
 
-void DraftDxfRead::OnReadText(const double *point, const double height, const char* text)
+void DraftDxfRead::OnReadText(const double *point, const double /*height*/, const char* text)
 {
     if (optionImportAnnotations) {
         Base::Vector3d pt(point[0] * optionScaling, point[1] * optionScaling, point[2] * optionScaling);
@@ -171,7 +171,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
             builder.MakeCompound(comp);
             std::vector<Part::TopoShape*> v = i->second;
             for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                const TopoDS_Shape& sh = (*j)->_Shape;
+                const TopoDS_Shape& sh = (*j)->getShape();
                 if (!sh.IsNull())
                     builder.Add(comp, sh);
             }
@@ -189,7 +189,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
 }
 
 
-void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double rotation)
+void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double /*rotation*/)
 {
     if (optionImportAnnotations) {
         Base::Interpreter().runString("import Draft");
@@ -266,7 +266,7 @@ void DraftDxfRead::AddGraphics() const
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
                 for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                    const TopoDS_Shape& sh = (*j)->_Shape;
+                    const TopoDS_Shape& sh = (*j)->getShape();
                     if (!sh.IsNull())
                         builder.Add(comp, sh);
                 }

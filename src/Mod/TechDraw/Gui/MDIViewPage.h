@@ -29,6 +29,7 @@
 
 #include <QPrinter>
 #include <QGraphicsScene>
+#include <QPointF>
 
 QT_BEGIN_NAMESPACE
 class QAction;
@@ -80,7 +81,11 @@ public:
 
     QGVPage* getQGVPage(void) {return m_view;};
 
-    QGraphicsScene m_scene;
+    QGraphicsScene* m_scene;
+
+    QPointF getTemplateCenter(TechDraw::DrawTemplate *obj);
+    void centerOnPage(void);
+
 
 public Q_SLOTS:
     void setRenderer(QAction *action);
@@ -92,11 +97,13 @@ protected:
     void findMissingViews( const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing);
     bool hasQView(App::DocumentObject *obj);
     bool orphanExists(const char *viewName, const std::vector<App::DocumentObject*> &list);
-    int attachView(App::DocumentObject *obj);
+
+    /// Attaches view of obj to m_view.  Returns true on success, false otherwise
+    bool attachView(App::DocumentObject *obj);
+
     void contextMenuEvent(QContextMenuEvent *event);
     void closeEvent(QCloseEvent*);
-    void findPrinterSettings(const QString&);
-    QPrinter::PageSize getPageSize(int w, int h) const;
+    QPrinter::PaperSize getPaperSize(int w, int h) const;
     void setDimensionGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
 
@@ -106,8 +113,6 @@ private:
     QAction *m_exportSVGAction;
     QAction *m_imageAction;
     QAction *m_highQualityAntialiasingAction;
-    QAction *m_backgroundAction;
-    QAction *m_outlineAction;
 
     std::string m_objectName;
     bool isSelectionBlocked;
@@ -115,8 +120,8 @@ private:
 
     QString m_currentPath;
     QPrinter::Orientation m_orientation;
-    QPrinter::PageSize m_pageSize;
-    ViewProviderPage *pageGui;
+    QPrinter::PaperSize m_paperSize;
+    ViewProviderPage *m_vpPage;
 
     bool m_frameState;
 

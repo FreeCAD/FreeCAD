@@ -202,12 +202,12 @@ void TaskScaledParameters::onFeatureDeleted(void)
     recomputeFeature();
 }
 
-const double TaskScaledParameters::getFactor(void) const
+double TaskScaledParameters::getFactor(void) const
 {
     return ui->spinFactor->value().getValue();
 }
 
-const unsigned TaskScaledParameters::getOccurrences(void) const
+unsigned TaskScaledParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
 }

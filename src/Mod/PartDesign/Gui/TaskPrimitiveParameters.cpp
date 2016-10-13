@@ -588,9 +588,9 @@ void  TaskBoxPrimitives::setPrimitive(QString name)
         // Execute the Python block
         QString prim = tr("Create primitive");
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
-        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create primitive"), QString::fromLatin1(e.what()));
@@ -616,7 +616,7 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
             Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
     
-    assert(vp);    
+    assert(vp);
     
     //make sure the relevant things are visible
     cs_visibility = vp->isVisible();

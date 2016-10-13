@@ -34,15 +34,12 @@
 #include "DrawViewDraft.h"
 #include "DrawViewSpreadsheet.h"
 
-extern struct PyMethodDef TechDraw_methods[];
-
-PyDoc_STRVAR(module_techdraw_doc,
-"This module is the TechDraw module.");
-
+namespace TechDraw {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void TechDrawExport initTechDraw()
+PyMODINIT_FUNC initTechDraw()
 {
     // load dependent module
     try {
@@ -53,7 +50,7 @@ void TechDrawExport initTechDraw()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("TechDraw", TechDraw_methods, module_techdraw_doc);   /* mod name, table ptr */
+    (void)TechDraw::initModule();
     Base::Console().Log("Loading TechDraw module... done\n");
 
 
@@ -87,5 +84,3 @@ void TechDrawExport initTechDraw()
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
 }
-
-} // extern "C"

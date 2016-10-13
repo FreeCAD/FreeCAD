@@ -63,6 +63,14 @@ public:
     TopoShape(const TopoShape&);
     ~TopoShape();
 
+    inline void setShape(const TopoDS_Shape& shape) {
+        this->_Shape = shape;
+    }
+
+    inline const TopoDS_Shape& getShape() const {
+        return this->_Shape;
+    }
+
     void operator = (const TopoShape&);
 
     /** @name Placement control */
@@ -183,6 +191,7 @@ public:
     TopoDS_Shape makePipeShell(const TopTools_ListOfShape& profiles, const Standard_Boolean make_solid,
         const Standard_Boolean isFrenet = Standard_False, int transition=0) const;
     TopoDS_Shape makePrism(const gp_Vec&) const;
+    ///revolve shape. Note: isSolid is deprecated (instead, use some Part::FaceMaker to make a face, first).
     TopoDS_Shape revolve(const gp_Ax1&, double d, Standard_Boolean isSolid=Standard_False) const;
     TopoDS_Shape makeSweep(const TopoDS_Shape& profile, double, int) const;
     TopoDS_Shape makeTube(double radius, double tol, int cont, int maxdeg, int maxsegm) const;
@@ -199,6 +208,8 @@ public:
     TopoDS_Shape makeOffsetShape(double offset, double tol,
         bool intersection = false, bool selfInter = false,
         short offsetMode = 0, short join = 0, bool fill = false) const;
+    TopoDS_Shape makeOffset2D(double offset, short joinType = 0,
+        bool fill = false, bool allowOpenResult = false, bool intersection = false) const;
     TopoDS_Shape makeThickSolid(const TopTools_ListOfShape& remFace,
         double offset, double tol,
         bool intersection = false, bool selfInter = false,
@@ -232,6 +243,7 @@ public:
                   const std::vector<Facet> &faces, float Accuracy=1.0e-06);
     //@}
 
+private:
     TopoDS_Shape _Shape;
 };
 

@@ -31,7 +31,6 @@
 # include <QMessageBox>
 # include <QMouseEvent>
 # include <QPainter>
-# include <strstream>
 #endif
 
 #include <App/Document.h>
@@ -113,33 +112,33 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
             TechDraw::DrawView *fView = gView->getViewObject();
             if(fView->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
                 TechDraw::DrawProjGroupItem *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
-                QString type = QString::fromAscii(projItemPtr->Type.getValueAsString());
+                QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 
-                if (type == QString::fromAscii("Front")) {
+                if (type == QString::fromLatin1("Front")) {
                     gView->setLocked(true);
                     installSceneEventFilter(gView);
                     App::DocumentObject *docObj = getViewObject();
                     TechDraw::DrawProjGroup *projectionGroup = dynamic_cast<TechDraw::DrawProjGroup *>(docObj);
                     projectionGroup->Anchor.setValue(fView);
                     updateView();
-                } else if ( type == QString::fromAscii("Top") ||
-                    type == QString::fromAscii("Bottom")) {
-                    gView->alignTo(origin, QString::fromAscii("Vertical"));
-                } else if ( type == QString::fromAscii("Left")  ||
-                            type == QString::fromAscii("Right") ||
-                            type == QString::fromAscii("Rear") ) {
-                    gView->alignTo(origin, QString::fromAscii("Horizontal"));
-                } else if ( type == QString::fromAscii("FrontTopRight") ||
-                            type == QString::fromAscii("FrontBottomLeft") ) {
-                    gView->alignTo(origin, QString::fromAscii("45slash"));
-                } else if ( type == QString::fromAscii("FrontTopLeft") ||
-                            type == QString::fromAscii("FrontBottomRight") ) {
-                    gView->alignTo(origin, QString::fromAscii("45backslash"));
+                } else if ( type == QString::fromLatin1("Top") ||
+                    type == QString::fromLatin1("Bottom")) {
+                    gView->alignTo(origin, QString::fromLatin1("Vertical"));
+                } else if ( type == QString::fromLatin1("Left")  ||
+                            type == QString::fromLatin1("Right") ||
+                            type == QString::fromLatin1("Rear") ) {
+                    gView->alignTo(origin, QString::fromLatin1("Horizontal"));
+                } else if ( type == QString::fromLatin1("FrontTopRight") ||
+                            type == QString::fromLatin1("FrontBottomLeft") ) {
+                    gView->alignTo(origin, QString::fromLatin1("45slash"));
+                } else if ( type == QString::fromLatin1("FrontTopLeft") ||
+                            type == QString::fromLatin1("FrontBottomRight") ) {
+                    gView->alignTo(origin, QString::fromLatin1("45backslash"));
                 }
             }
          }
     }
-    return QGIView::itemChange(change, value);
+    return QGIViewCollection::itemChange(change, value);
 }
 
 
@@ -183,7 +182,7 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
                                     getViewObject()->getNameInDocument(), x());
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                    getViewObject()->getNameInDocument(), getY());// inverts Y 
+                                    getViewObject()->getNameInDocument(), getY());// inverts Y
             Gui::Command::commitCommand();
             //Gui::Command::updateActive();
         }
@@ -196,7 +195,10 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 {
     // Get the currently assigned anchor view
     App::DocumentObject *anchorObj = getDrawView()->Anchor.getValue();
-    TechDraw::DrawView *anchorView = dynamic_cast<TechDraw::DrawView *>(anchorObj);
+    auto anchorView( dynamic_cast<TechDraw::DrawView *>(anchorObj) );
+    if( anchorView == nullptr ) {
+        return nullptr;
+    }
 
     // Locate the anchor view's qgraphicsitemview
     QList<QGraphicsItem*> list = childItems();
@@ -221,4 +223,3 @@ void QGIProjGroup::drawBorder()
 //QGIProjGroup does not have a border!
 //    Base::Console().Message("TRACE - QGIProjGroup::drawBorder - doing nothing!!\n");
 }
-

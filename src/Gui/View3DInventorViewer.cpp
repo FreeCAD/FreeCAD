@@ -590,6 +590,7 @@ void View3DInventorViewer::initialize()
 void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCaller,
                                     Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
@@ -599,6 +600,16 @@ void View3DInventorViewer::OnChange(Gui::SelectionSingleton::SubjectType& rCalle
     }
 }
 /// @endcond
+
+SbBool View3DInventorViewer::searchNode(SoNode* node) const
+{
+    SoSearchAction searchAction;
+    searchAction.setNode(node);
+    searchAction.setInterest(SoSearchAction::FIRST);
+    searchAction.apply(this->getSceneGraph());
+    SoPath* selectionPath = searchAction.getPath();
+    return selectionPath ? true : false;
+}
 
 SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 {
@@ -705,7 +716,7 @@ void View3DInventorViewer::updateOverrideMode(const std::string& mode)
     overrideMode = mode;
 }
 
-void View3DInventorViewer::setViewportCB(void* userdata, SoAction* action)
+void View3DInventorViewer::setViewportCB(void*, SoAction* action)
 {
     // Make sure to override the value set inside SoOffscreenRenderer::render()
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
@@ -716,7 +727,7 @@ void View3DInventorViewer::setViewportCB(void* userdata, SoAction* action)
     }
 }
 
-void View3DInventorViewer::clearBufferCB(void* userdata, SoAction* action)
+void View3DInventorViewer::clearBufferCB(void*, SoAction* action)
 {
     if (action->isOfType(SoGLRenderAction::getClassTypeId())) {
         // do stuff specific for GL rendering here.
@@ -830,8 +841,10 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
     }
 
     NavigationStyle* ns = static_cast<NavigationStyle*>(base);
-    ns->operator = (*this->navigation);
-    delete this->navigation;
+    if (this->navigation) {
+        ns->operator = (*this->navigation);
+        delete this->navigation;
+    }
     this->navigation = ns;
     this->navigation->setViewer(this);
 }
@@ -1144,13 +1157,13 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
     if (fi.hasExtension("idtf") || fi.hasExtension("svg")) {
         int ps=4;
         QColor c = Qt::white;
-        std::auto_ptr<SoVectorizeAction> vo;
+        std::unique_ptr<SoVectorizeAction> vo;
 
         if (fi.hasExtension("svg")) {
-            vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
+            vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
         }
         else if (fi.hasExtension("idtf")) {
-            vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+            vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
         }
         else {
             throw Base::Exception("Not supported vector graphic");
@@ -1177,7 +1190,7 @@ bool View3DInventorViewer::dumpToFile(SoNode* node, const char* filename, bool b
 /**
  * Sets the SoFCInteractiveElement to \a true.
  */
-void View3DInventorViewer::interactionStartCB(void* data, SoQTQuarterAdaptor* viewer)
+void View3DInventorViewer::interactionStartCB(void*, SoQTQuarterAdaptor* viewer)
 {
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), true);
@@ -1186,7 +1199,7 @@ void View3DInventorViewer::interactionStartCB(void* data, SoQTQuarterAdaptor* vi
 /**
  * Sets the SoFCInteractiveElement to \a false and forces a redraw.
  */
-void View3DInventorViewer::interactionFinishCB(void* data, SoQTQuarterAdaptor* viewer)
+void View3DInventorViewer::interactionFinishCB(void*, SoQTQuarterAdaptor* viewer)
 {
     SoGLRenderAction* glra = viewer->getSoRenderManager()->getGLRenderAction();
     SoFCInteractiveElement::set(glra->getState(), viewer->getSceneGraph(), false);
@@ -1196,7 +1209,7 @@ void View3DInventorViewer::interactionFinishCB(void* data, SoQTQuarterAdaptor* v
 /**
  * Logs the type of the action that traverses the Inventor tree.
  */
-void View3DInventorViewer::interactionLoggerCB(void* ud, SoAction* action)
+void View3DInventorViewer::interactionLoggerCB(void*, SoAction* action)
 {
     Base::Console().Log("%s\n", action->getTypeId().getName().getString());
 }
@@ -1270,6 +1283,11 @@ void View3DInventorViewer::setRenderType(const RenderType type)
     }
 }
 
+View3DInventorViewer::RenderType View3DInventorViewer::getRenderType() const
+{
+    return this->renderType;
+}
+
 void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 {
     static_cast<QGLWidget*>(this->viewport())->makeCurrent();
@@ -1284,7 +1302,7 @@ void View3DInventorViewer::renderToFramebuffer(QGLFramebufferObject* fbo)
 
     const QColor col = this->backgroundColor();
     glViewport(0, 0, width, height);
-    glClearColor(col.redF(), col.greenF(), col.blueF(), 1.0f);
+    glClearColor(col.redF(), col.greenF(), col.blueF(), col.alphaF());
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glDepthRange(0.1,1.0);
@@ -2252,7 +2270,7 @@ View3DInventorViewer::getFeedbackSize(void) const
   Decide whether or not the mouse pointer cursor should be visible in
   the rendering canvas.
 */
-void View3DInventorViewer::setCursorEnabled(SbBool enable)
+void View3DInventorViewer::setCursorEnabled(SbBool /*enable*/)
 {
     this->setCursorRepresentation(navigation->getViewingMode());
 }

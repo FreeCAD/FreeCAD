@@ -101,7 +101,7 @@ private:
             throw Py::Exception();
 
         std::stringstream out;
-        TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->getShape();
 
         PovTools::writeShape(out,PartName,aShape,(float)0.1);
         // This must not be done in PovTools::writeShape!
@@ -124,7 +124,7 @@ private:
             throw Py::Exception();
 
         std::stringstream out;
-        TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->getShape();
 
         // write a material entry
         // This must not be done in PovTools::writeShape!
@@ -144,7 +144,7 @@ private:
             &(Part::TopoShapePy::Type), &ShapeObject)) 
             throw Py::Exception();
 
-        TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape &aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->getShape();
 
         PovTools::writeShape(FileName,PartName,aShape,(float)0.1);
 
@@ -174,7 +174,7 @@ private:
             &ShapeObject,&FileName,&Acur,&Length))
             throw Py::Exception();
 
-        TopoDS_Shape aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->_Shape;
+        TopoDS_Shape aShape = static_cast<Part::TopoShapePy *>(ShapeObject)->getTopoShapePtr()->getShape();
         PovTools::writeShapeCSV(FileName,aShape,Acur,Length);
         return Py::None();
     }

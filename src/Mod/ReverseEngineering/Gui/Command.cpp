@@ -63,7 +63,7 @@ CmdApproxSurface::CmdApproxSurface()
     sPixmap         = "actions/FitSurface";
 }
 
-void CmdApproxSurface::activated(int iMsg)
+void CmdApproxSurface::activated(int)
 {
     App::DocumentObjectT objT;
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
@@ -97,7 +97,7 @@ CmdApproxPlane::CmdApproxPlane()
     sStatusTip      = sToolTipText;
 }
 
-void CmdApproxPlane::activated(int iMsg)
+void CmdApproxPlane::activated(int)
 {
     std::vector<App::GeoFeature*> obj = Gui::Selection().getObjectsOfType<App::GeoFeature>();
     for (std::vector<App::GeoFeature*>::iterator it = obj.begin(); it != obj.end(); ++it) {
@@ -143,8 +143,8 @@ void CmdApproxPlane::activated(int iMsg)
                 dirU = -dirU;
             }
 
-            float width, length;
-            fit.Dimension(width, length);
+            float length, width;
+            fit.Dimension(length, width);
 
             // move to the corner point
             base = base - (0.5f * length * dirU + 0.5f * width * dirV);
@@ -171,7 +171,7 @@ void CmdApproxPlane::activated(int iMsg)
                 << "Base.Rotation(" << q0 << "," << q1 << "," << q2 << "," << q3 << "))" << std::endl;
 
             openCommand("Fit plane");
-            doCommand(Gui::Command::Doc, str.str().c_str());
+            runCommand(Gui::Command::Doc, str.str().c_str());
             commitCommand();
             updateActive();
         }
@@ -198,7 +198,7 @@ CmdPoissonReconstruction::CmdPoissonReconstruction()
     sStatusTip      = sToolTipText;
 }
 
-void CmdPoissonReconstruction::activated(int iMsg)
+void CmdPoissonReconstruction::activated(int)
 {
     App::DocumentObjectT objT;
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
@@ -232,7 +232,7 @@ CmdViewTriangulation::CmdViewTriangulation()
     sWhatsThis      = "Reen_ViewTriangulation";
 }
 
-void CmdViewTriangulation::activated(int iMsg)
+void CmdViewTriangulation::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Points::Structured::getClassTypeId());
     addModule(App,"ReverseEngineering");
@@ -251,7 +251,7 @@ void CmdViewTriangulation::activated(int iMsg)
             .arg(document)
             .arg(object)
             ;
-            doCommand(Doc, command.toLatin1());
+            runCommand(Doc, command.toLatin1());
         }
 
         commitCommand();

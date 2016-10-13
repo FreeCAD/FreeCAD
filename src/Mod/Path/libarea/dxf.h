@@ -143,16 +143,16 @@ public:
 
 	bool IgnoreErrors() const { return(m_ignore_errors); }
 
-	virtual void OnReadLine(const double* s, const double* e){}
-	virtual void OnReadPoint(const double* s){}
-	virtual void OnReadText(const double* point, const double height, const char* text){}
-	virtual void OnReadArc(const double* s, const double* e, const double* c, bool dir){}
-	virtual void OnReadCircle(const double* s, const double* c, bool dir){}
-	virtual void OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir){}
-	virtual void OnReadSpline(struct SplineData& sd){}
-	virtual void OnReadInsert(const double* point, const double* scale, const char* name, double rotation){}
+	virtual void OnReadLine(const double* /*s*/, const double* /*e*/){}
+	virtual void OnReadPoint(const double* /*s*/){}
+	virtual void OnReadText(const double* /*point*/, const double /*height*/, const char* /*text*/){}
+	virtual void OnReadArc(const double* /*s*/, const double* /*e*/, const double* /*c*/, bool /*dir*/){}
+	virtual void OnReadCircle(const double* /*s*/, const double* /*c*/, bool /*dir*/){}
+	virtual void OnReadEllipse(const double* /*c*/, double /*major_radius*/, double /*minor_radius*/, double /*rotation*/, double /*start_angle*/, double /*end_angle*/, bool /*dir*/){}
+	virtual void OnReadSpline(struct SplineData& /*sd*/){}
+	virtual void OnReadInsert(const double* /*point*/, const double* /*scale*/, const char* /*name*/, double /*rotation*/){}
 	virtual void AddGraphics() const { }
 
-    std::string LayerName() const;
+	std::string LayerName() const;
 
 };

@@ -74,7 +74,7 @@ class SMDS_EXPORT SMDS_VolumeTool
   int ID() const;
   // return element ID
 
-  bool IsPoly() const { return myPolyedre; }
+  bool IsPoly() const { return myPolyedre != 0; }
 
   // -----------------------
   // general info

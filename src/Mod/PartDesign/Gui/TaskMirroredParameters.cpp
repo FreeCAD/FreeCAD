@@ -190,7 +190,9 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             if(!selObj)
                 return;
             // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
+            if ( selectionMode == reference || 
+				selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ||
+				selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
 
                 recomputeFeature();
@@ -206,7 +208,8 @@ void TaskMirroredParameters::clearButtons()
     ui->buttonRemoveFeature->setChecked(false);
 }
 
-void TaskMirroredParameters::onPlaneChanged(int num) {
+void TaskMirroredParameters::onPlaneChanged(int /*num*/)
+{
     if (blockUpdate)
         return;
     PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());

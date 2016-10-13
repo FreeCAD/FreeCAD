@@ -135,10 +135,10 @@ void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
     if (parent->isHidden(&prop))
         return;
 
-    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         propertyEditorData->appendProperty(prop);
     }
-    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+    else if (parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
         propertyEditorView->appendProperty(prop);
     }
 }

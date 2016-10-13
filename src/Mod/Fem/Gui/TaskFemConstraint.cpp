@@ -64,7 +64,12 @@ using namespace Gui;
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent),ConstraintView(ConstraintView)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
+    , proxy(nullptr)
+    , ConstraintView(ConstraintView)
+    , buttonBox(nullptr)
+    , okButton(nullptr)
+    , cancelButton(nullptr)
 {
     selectionMode = selref;
 
@@ -184,7 +189,7 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 void TaskDlgFemConstraint::open()
 {
     ConstraintView->setVisible(true);
-    Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+    Gui::Command::runCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
 }
 
 bool TaskDlgFemConstraint::accept()

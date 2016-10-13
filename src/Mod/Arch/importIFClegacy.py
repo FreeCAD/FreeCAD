@@ -691,10 +691,11 @@ def getShape(obj,objid):
         try:
             if MAKETEMPFILES:
                 import tempfile
-                tf = tempfile.mkstemp(suffix=".brp")[1]
+                th,tf = tempfile.mkstemp(suffix=".brp")
                 of = pyopen(tf,"wb")
                 of.write(brep_data)
                 of.close()
+                os.close(th)
                 sh = Part.read(tf)
                 os.remove(tf)
             else:

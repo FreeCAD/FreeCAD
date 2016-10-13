@@ -124,7 +124,7 @@ SheetView::~SheetView()
     //delete delegate;
 }
 
-bool SheetView::onMsg(const char *pMsg, const char **ppReturn)
+bool SheetView::onMsg(const char *pMsg, const char **)
 {
     if(strcmp("Undo",pMsg) == 0 ) {
         getGuiDocument()->undo(1);
@@ -172,6 +172,7 @@ bool SheetView::onHasMsg(const char *pMsg) const
 
 void SheetView::setCurrentCell(QString str)
 {
+    Q_UNUSED(str);
     updateContentLine();
 }
 
@@ -260,11 +261,13 @@ void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bott
 
 void SheetView::columnResized(int col, int oldSize, int newSize)
 {
+    Q_UNUSED(oldSize);
     newColumnSizes[col] = newSize;
 }
 
 void SheetView::rowResized(int row, int oldSize, int newSize)
 {
+    Q_UNUSED(oldSize);
     newRowSizes[row] = newSize;
 }
 
@@ -298,6 +301,8 @@ void SheetView::editingFinished()
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
     updateContentLine();
 }
 

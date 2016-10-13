@@ -62,9 +62,6 @@
 		  </Documentation>
 		  <Parameter Name="Waypoints" Type="List"/>
 	  </Attribute>
-	  <ClassDeclarations>
-		  bool touched;
-	  </ClassDeclarations>
 
   </PythonExport>
 </GenerateModel>

@@ -63,6 +63,9 @@ int SketchPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* SketchPy::solve(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    getSketchPtr()->resetSolver();
     return Py::new_reference_to(Py::Int(getSketchPtr()->solve()));
 }
 
@@ -169,10 +172,26 @@ Py::Int SketchPy::getConstraint(void) const
     throw Py::AttributeError("Not yet implemented");
 }
 
-Py::Tuple SketchPy::getConstraints(void) const
+Py::Tuple SketchPy::getConflicts(void) const
 {
-    //return Py::Tuple();
-    throw Py::AttributeError("Not yet implemented");
+    std::vector<int> c = getSketchPtr()->getConflicting();
+    Py::Tuple t(c.size());
+    for (std::size_t i=0; i<c.size(); i++) {
+        t.setItem(i, Py::Long(c[i]));
+    }
+
+    return t;
+}
+
+Py::Tuple SketchPy::getRedundancies(void) const
+{
+    std::vector<int> c = getSketchPtr()->getRedundant();
+    Py::Tuple t(c.size());
+    for (std::size_t i=0; i<c.size(); i++) {
+        t.setItem(i, Py::Long(c[i]));
+    }
+
+    return t;
 }
 
 Py::Tuple SketchPy::getGeometries(void) const

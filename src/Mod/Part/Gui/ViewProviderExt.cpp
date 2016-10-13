@@ -633,7 +633,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     return std::vector<Base::Vector3d>();
 }
 
-std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* Element) const
+std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /*Element*/) const
 {
     return std::vector<Base::Vector3d>();
 }
@@ -657,7 +657,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
     else if (colors.size() == 1) {
         pcShapeBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
-        pcShapeMaterial->transparency = colors[0].a;
+        //pcShapeMaterial->transparency = colors[0].a; do not get transparency from DiffuseColor in this case
     }
 }
 

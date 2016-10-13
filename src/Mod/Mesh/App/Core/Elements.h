@@ -349,7 +349,7 @@ public:
   /**
    * Calculates the projection of a point onto the plane defined by the triangle.
    */
-  void ProjectPointToPlane (Base::Vector3f &rclPoint) const;
+  void ProjectPointToPlane (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const;
   /**
    * Calculates the projection of a facet onto the plane defined by the triangle.
    */
@@ -358,14 +358,13 @@ public:
    * Checks whether the triangle is degenerated. A triangle is degenerated if its area
    * is less than an epsilon.
    */
-  bool IsDegenerated() const;
+  bool IsDegenerated(float epsilon) const;
   /**
-   * Checks whether the triangle is deformed. The definition of a deformed triangles is not as strong
-   * as the definition of a degenerated triangle. A triangle is deformed if the maximum angle exceeds 120 deg
-   * or the minimum angle falls below 30 deg.
-   * A degenerated triangle is also a deformed triangle.
+   * Checks whether the triangle is deformed. A triangle is deformed if the an angle
+   * exceeds a given maximum angle or falls below a given minimum angle.
+   * For performance reasons the cosine of minimum and maximum angle is expected.
    */
-  bool IsDeformed() const;
+  bool IsDeformed(float fCosOfMinAngle, float fCosOfMaxAngle) const;
   /**
    * Enlarges the triangle.
    */
@@ -590,6 +589,58 @@ public:
      * Decrements all point indices that are higher than \a ulIndex.
      */
     void DecrementIndices (unsigned long ulIndex);
+};
+
+/**
+ * MeshPointModifier is a helper class that allows to modify the
+ * point array of a mesh kernel but with limited access.
+ */
+class MeshExport MeshPointModifier
+{
+public:
+    MeshPointModifier(MeshPointArray& points)
+        : rPoints(points)
+    {
+    }
+
+    MeshPointModifier(const MeshPointModifier& c)
+        : rPoints(c.rPoints)
+    {
+    }
+
+private:
+    MeshPointArray& rPoints;
+};
+
+/**
+ * MeshFacetModifier is a helper class that allows to modify the
+ * facet array of a mesh kernel but with limited access.
+ */
+class MeshExport MeshFacetModifier
+{
+public:
+    MeshFacetModifier(MeshFacetArray& facets)
+        : rFacets(facets)
+    {
+    }
+
+    MeshFacetModifier(const MeshFacetModifier& c)
+        : rFacets(c.rFacets)
+    {
+    }
+
+    /**
+     * Replaces the index of the corner point of the facet at position \a pos
+     * that is equal to \a old by \a now. If the facet does not have a corner
+     * point with this index nothing happens.
+     */
+    void Transpose(unsigned long pos, unsigned long old, unsigned long now)
+    {
+        rFacets[pos].Transpose(old, now);
+    }
+
+private:
+    MeshFacetArray& rFacets;
 };
 
 inline MeshPoint::MeshPoint (const Base::Vector3f &rclPt)

@@ -58,9 +58,7 @@ public:
     TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = 0);
     ~TaskTetParameter();
 
-    ViewProviderFemMeshShapeNetgen * MeshViewProvider;
     void setInfo(void);
-
     bool touched;
 
 private Q_SLOTS:

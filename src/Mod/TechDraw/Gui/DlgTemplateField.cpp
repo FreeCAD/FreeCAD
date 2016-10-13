@@ -30,6 +30,7 @@ using namespace TechDrawGui;
 
 DlgTemplateField::DlgTemplateField( QWidget* parent )
 {
+    Q_UNUSED(parent);
     setupUi(this);
     leInput->setFocus();
 }
@@ -60,10 +61,10 @@ void DlgTemplateField::setFieldContent(std::string content)
     leInput->setText(qs);
 }
 
-std::string DlgTemplateField::getFieldContent()
+QString DlgTemplateField::getFieldContent()
 {
     QString result = leInput->text();
-    return result.toStdString();
+    return result;
 }
 
 void DlgTemplateField::accept()

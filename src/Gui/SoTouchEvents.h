@@ -39,9 +39,9 @@ class SoGestureEvent : public SoEvent {
 public:
     static void initClass(){
         SO_EVENT_INIT_CLASS(SoGestureEvent, SoEvent);
-    };
-    SoGestureEvent(){};
-    ~SoGestureEvent(){};
+    }
+    SoGestureEvent() : state(SbGSNoGesture) {}
+    ~SoGestureEvent(){}
     SbBool isSoGestureEvent(const SoEvent* ev) const;
 
     enum SbGestureState {
@@ -59,10 +59,10 @@ class SoGesturePanEvent : public SoGestureEvent {
 public:
     static void initClass(){//needs to be called before the class can be used. Initializes type IDs of the class.
         SO_EVENT_INIT_CLASS(SoGesturePanEvent, SoGestureEvent);
-    };
-    SoGesturePanEvent() {};
+    }
+    SoGesturePanEvent() {}
     SoGesturePanEvent(QPanGesture *qpan, QWidget *widget);
-    ~SoGesturePanEvent(){};
+    ~SoGesturePanEvent(){}
     SbBool isSoGesturePanEvent(const SoEvent* ev) const;
 
     SbVec2f deltaOffset;
@@ -74,10 +74,13 @@ class SoGesturePinchEvent : public SoGestureEvent {
 public:
     static void initClass(){
         SO_EVENT_INIT_CLASS(SoGesturePinchEvent, SoGestureEvent);
-    };
-    SoGesturePinchEvent(){};
+    }
+    SoGesturePinchEvent() : deltaZoom(0), totalZoom(0),
+                            deltaAngle(0), totalAngle(0)
+    {
+    }
     SoGesturePinchEvent(QPinchGesture* qpinch, QWidget* widget);
-    ~SoGesturePinchEvent(){};
+    ~SoGesturePinchEvent(){}
     SbBool isSoGesturePinchEvent(const SoEvent* ev) const;
 
     SbVec2f startCenter;//in GL pixel coordinates (from bottom left corner of view area)
@@ -95,10 +98,12 @@ class SoGestureSwipeEvent : public SoGestureEvent {
 public:
     static void initClass(){
         SO_EVENT_INIT_CLASS(SoGestureSwipeEvent, SoGestureEvent);
-    };
-    SoGestureSwipeEvent(){};
+    }
+    SoGestureSwipeEvent() : angle(0), vertDir(0), horzDir(0)
+    {
+    }
     SoGestureSwipeEvent(QSwipeGesture* qwsipe, QWidget *widget);
-    ~SoGestureSwipeEvent(){};
+    ~SoGestureSwipeEvent(){}
     SbBool isSoGestureSwipeEvent(const SoEvent* ev) const;
 
     double angle;

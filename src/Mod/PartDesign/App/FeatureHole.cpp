@@ -83,7 +83,7 @@ App::DocumentObjectExecReturn *Hole::execute(void)
     //    return new App::DocumentObjectExecReturn("No sketch linked");
     //if (!link->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()))
     //    return new App::DocumentObjectExecReturn("Linked object is not a Sketch or Part2DObject");
-    //TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape()._Shape;
+    //TopoDS_Shape shape = static_cast<Part::Part2DObject*>(link)->Shape.getShape().getShape();
     //if (shape.IsNull())
     //    return new App::DocumentObjectExecReturn("Linked shape object is empty");
 

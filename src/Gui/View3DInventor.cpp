@@ -93,7 +93,7 @@
 
 using namespace Gui;
 
-void GLOverlayWidget::paintEvent(QPaintEvent* ev)
+void GLOverlayWidget::paintEvent(QPaintEvent*)
 {
     QPainter paint(this);
     paint.drawImage(0,0,image);
@@ -192,6 +192,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"DimensionsVisible");
     OnChange(*hGrp,"Dimensions3dVisible");
     OnChange(*hGrp,"DimensionsDeltaVisible");
+    OnChange(*hGrp,"PickRadius");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -395,6 +396,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
       else
         _viewer->turnDeltaDimensionsOff();
     } 
+    else if (strcmp(Reason, "PickRadius") == 0)
+    {
+        _viewer->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
+    }
     else{
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
         unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
@@ -1029,7 +1034,7 @@ void View3DInventor::keyReleaseEvent (QKeyEvent* e)
     QMainWindow::keyReleaseEvent(e);
 }
 
-void View3DInventor::focusInEvent (QFocusEvent * e)
+void View3DInventor::focusInEvent (QFocusEvent *)
 {
     _viewer->getGLWidget()->setFocus();
 }

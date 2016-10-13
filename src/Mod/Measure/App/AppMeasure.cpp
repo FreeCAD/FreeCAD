@@ -33,7 +33,7 @@
 
 struct PyMethodDef Measure_methods[] = {
 //    {"read"   , read,  1},
-    {NULL, NULL}        /* end of table marker */
+    {NULL, NULL, 0, NULL}        /* end of table marker */
 };
 
 

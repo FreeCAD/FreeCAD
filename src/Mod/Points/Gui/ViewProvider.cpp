@@ -297,7 +297,7 @@ void ViewProviderPoints::unsetEdit(int)
 {
 }
 
-void ViewProviderPoints::clipPointsCallback(void * ud, SoEventCallback * n)
+void ViewProviderPoints::clipPointsCallback(void *, SoEventCallback * n)
 {
     // When this callback function is invoked we must in either case leave the edit mode
     Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(n->getUserData());

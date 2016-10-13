@@ -67,7 +67,7 @@ App::DocumentObjectExecReturn* ShapeBinder::execute(void) {
         ShapeBinder::getFilteredReferences(&Support, obj, subs);
         //if we have a link we rebuild the shape, but we change nothing if we are a simple copy
         if(obj) {
-            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs)._Shape);
+            Shape.setValue(ShapeBinder::buildShapeFromReferences(obj, subs).getShape());
             Placement.setValue(obj->Placement.getValue());
         }
     }

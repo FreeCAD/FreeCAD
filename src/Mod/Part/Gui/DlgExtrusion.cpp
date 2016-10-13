@@ -24,12 +24,16 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
+# include <BRepAdaptor_Curve.hxx>
 # include <BRepLProp_SLProps.hxx>
 # include <BRepGProp_Face.hxx>
+# include <BRep_Tool.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopExp_Explorer.hxx>
+# include <ShapeExtend_Explorer.hxx>
+# include <TopTools_HSequenceOfShape.hxx>
 # include <QMessageBox>
 # include <Inventor/system/inttypes.h>
 #endif
@@ -39,6 +43,7 @@
 #include "../App/PartFeature.h"
 #include <Base/Console.h>
 #include <Base/UnitsApi.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -52,23 +57,71 @@
 
 using namespace PartGui;
 
+class DlgExtrusion::EdgeSelection : public Gui::SelectionFilterGate
+{
+public:
+    bool canSelect;
+
+    EdgeSelection()
+        : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
+    {
+        canSelect = false;
+    }
+    bool allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* sSubName)
+    {
+        this->canSelect = false;
+        if (!pObj->isDerivedFrom(Part::Feature::getClassTypeId()))
+            return false;
+        if (!sSubName || sSubName[0] == '\0')
+            return false;
+        std::string element(sSubName);
+        if (element.substr(0,4) != "Edge")
+            return false;
+        Part::Feature* fea = static_cast<Part::Feature*>(pObj);
+        try {
+            TopoDS_Shape sub = fea->Shape.getShape().getSubShape(sSubName);
+            if (!sub.IsNull() && sub.ShapeType() == TopAbs_EDGE) {
+                const TopoDS_Edge& edge = TopoDS::Edge(sub);
+                BRepAdaptor_Curve adapt(edge);
+                if (adapt.GetType() == GeomAbs_Line) {
+                    this->canSelect = true;
+                    return true;
+                }
+            }
+        }
+        catch (...) {
+        }
+
+        return false;
+    }
+};
+
 DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog(parent, fl), ui(new Ui_DlgExtrusion)
+  : QDialog(parent, fl), ui(new Ui_DlgExtrusion), filter(nullptr)
 {
     ui->setupUi(this);
     ui->statusLabel->clear();
-    ui->labelNormal->hide();
-    ui->viewButton->hide();
     ui->dirX->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirY->setDecimals(Base::UnitsApi::getDecimals());
     ui->dirZ->setDecimals(Base::UnitsApi::getDecimals());
-    ui->dirLen->setUnit(Base::Unit::Length);
-    ui->taperAngle->setUnit(Base::Unit::Angle);
-    ui->dirLen->setMinimumWidth(55); // needed to show all digits
+    ui->spinLenFwd->setUnit(Base::Unit::Length);
+    ui->spinLenFwd->setValue(10.0);
+    ui->spinLenRev->setUnit(Base::Unit::Length);
+    ui->spinTaperAngle->setUnit(Base::Unit::Angle);
+    ui->spinTaperAngle->setUnit(Base::Unit::Angle);
     findShapes();
 
     Gui::ItemViewSelection sel(ui->treeWidget);
     sel.applyFrom(Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId()));
+
+    this->on_DirMode_changed();
+    ui->spinLenFwd->selectAll();
+    // Make sure that the spin box has the focus to get key events
+    // Calling setFocus() directly doesn't work because the spin box is not
+    // yet visible.
+    QMetaObject::invokeMethod(ui->spinLenFwd, "setFocus", Qt::QueuedConnection);
+
+    this->autoSolid();
 }
 
 /*  
@@ -76,6 +129,11 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgExtrusion::~DlgExtrusion()
 {
+    if (filter){
+        Gui::Selection().rmvSelectionGate();
+        filter = nullptr;
+    }
+
     // no need to delete child widgets, Qt does it all for us
     delete ui;
 }
@@ -86,6 +144,198 @@ void DlgExtrusion::changeEvent(QEvent *e)
         ui->retranslateUi(this);
     }
     QDialog::changeEvent(e);
+}
+
+void DlgExtrusion::on_rbDirModeCustom_toggled(bool on)
+{
+    if(on) //this check prevents dual fire of dirmode changed - on radio buttons, one will come on, and other will come off, causing two events.
+        this->on_DirMode_changed();
+}
+
+void DlgExtrusion::on_rbDirModeEdge_toggled(bool on)
+{
+    if(on)
+        this->on_DirMode_changed();
+}
+
+void DlgExtrusion::on_rbDirModeNormal_toggled(bool on)
+{
+    if(on)
+        this->on_DirMode_changed();
+}
+
+void DlgExtrusion::on_btnSelectEdge_clicked()
+{
+    if (!filter) {
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
+        ui->btnSelectEdge->setText(tr("Selecting..."));
+
+        //visibility automation
+        try{
+            QString code = QString::fromLatin1(
+                        "import TempoVis\n"
+                        "tv = TempoVis.TempoVis(App.ActiveDocument)\n"
+                        "tv.hide([%1])"
+                        );
+            std::vector<App::DocumentObject*>sources = getShapesToExtrude();
+            QString features_to_hide;
+            for (App::DocumentObject* obj: sources){
+                if (!obj)
+                    continue;
+                features_to_hide.append(QString::fromLatin1("App.ActiveDocument."));
+                features_to_hide.append(QString::fromLatin1(obj->getNameInDocument()));
+                features_to_hide.append(QString::fromLatin1(", \n"));
+            }
+            QByteArray code_2 = code.arg(features_to_hide).toLatin1();
+            Base::Interpreter().runString(code_2.constData());
+        } catch (Base::PyException &e){
+            e.ReportException();
+        }
+    } else {
+        Gui::Selection().rmvSelectionGate();
+        filter = nullptr;
+        ui->btnSelectEdge->setText(tr("Select"));
+
+        //visibility automation
+        try{
+            Base::Interpreter().runString("del(tv)");
+        } catch (Base::PyException &e){
+            e.ReportException();
+        }
+    }
+}
+
+void DlgExtrusion::on_btnX_clicked()
+{
+    Base::Vector3d axis(1.0, 0.0, 0.0);
+    if ((getDir() - axis).Length() < 1e-7)
+        axis = axis * (-1);
+    setDirMode(Part::Extrusion::dmCustom);
+    setDir(axis);
+}
+
+void DlgExtrusion::on_btnY_clicked()
+{
+    Base::Vector3d axis(0.0, 1.0, 0.0);
+    if ((getDir() - axis).Length() < 1e-7)
+        axis = axis * (-1);
+    setDirMode(Part::Extrusion::dmCustom);
+    setDir(axis);
+}
+
+void DlgExtrusion::on_btnZ_clicked()
+{
+    Base::Vector3d axis(0.0, 0.0, 1.0);
+    if ((getDir() - axis).Length() < 1e-7)
+        axis = axis * (-1);
+    setDirMode(Part::Extrusion::dmCustom);
+    setDir(axis);
+}
+
+void DlgExtrusion::on_chkSymmetric_toggled(bool on)
+{
+    ui->spinLenRev->setEnabled(!on);
+}
+
+void DlgExtrusion::on_txtLink_textChanged(QString)
+{
+    this->fetchDir();
+}
+
+void DlgExtrusion::on_DirMode_changed()
+{
+    Part::Extrusion::eDirMode dirMode = this->getDirMode();
+    ui->dirX->setEnabled(dirMode == Part::Extrusion::dmCustom);
+    ui->dirY->setEnabled(dirMode == Part::Extrusion::dmCustom);
+    ui->dirZ->setEnabled(dirMode == Part::Extrusion::dmCustom);
+    ui->txtLink->setEnabled(dirMode == Part::Extrusion::dmEdge);
+    this->fetchDir();
+}
+
+void DlgExtrusion::onSelectionChanged(const Gui::SelectionChanges& msg)
+{
+    if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        if (filter && filter->canSelect) {
+            this->setAxisLink(msg.pObjectName, msg.pSubName);
+            this->setDirMode(Part::Extrusion::dmEdge);
+        }
+    }
+}
+
+App::DocumentObject& DlgExtrusion::getShapeToExtrude() const
+{
+    std::vector<App::DocumentObject*> objs = this->getShapesToExtrude();
+    if (objs.size() == 0)
+        throw Base::Exception("No shapes selected");
+    return *(objs[0]);
+}
+
+void DlgExtrusion::fetchDir()
+{
+    bool lengths_are_at_defaults =
+            (fabs(ui->spinLenFwd->value().getValue() - 10.0) < 1e-7)
+            && (fabs(ui->spinLenRev->value().getValue() - 0.0) < 1e-7);
+    bool lengths_are_zero =
+            (fabs(ui->spinLenFwd->value().getValue() - 0.0) < 1e-7)
+            && (fabs(ui->spinLenRev->value().getValue() - 0.0) < 1e-7);
+
+    try{
+        Base::Vector3d pos, dir;
+        bool fetched = false;
+        bool dir_has_valid_magnitude = false;
+        if(this->getDirMode() == Part::Extrusion::dmEdge){
+            App::PropertyLinkSub lnk; this->getAxisLink(lnk);
+            fetched = Part::Extrusion::fetchAxisLink(lnk, pos, dir);
+            dir_has_valid_magnitude = fetched;
+        } else if (this->getDirMode() == Part::Extrusion::dmNormal){
+            App::PropertyLink lnk;
+            lnk.setValue(&this->getShapeToExtrude());
+            dir = Part::Extrusion::calculateShapeNormal(lnk);
+            fetched = true;
+        }
+        if (dir_has_valid_magnitude && lengths_are_at_defaults){
+            ui->spinLenFwd->setValue(0);
+        } else if (!dir_has_valid_magnitude && lengths_are_zero){
+            ui->spinLenFwd->setValue(1.0);
+        }
+        if (fetched){
+            this->setDir(dir);
+        }
+    } catch (Base::Exception &){
+
+    } catch (...){
+
+    }
+}
+
+void DlgExtrusion::autoSolid()
+{
+    try{
+        App::DocumentObject &dobj = this->getShapeToExtrude();
+        if (dobj.isDerivedFrom(Part::Feature::getClassTypeId())){
+            Part::Feature &feature = static_cast<Part::Feature&>(dobj);
+            TopoDS_Shape sh = feature.Shape.getValue();
+            if (sh.IsNull())
+                return;
+            ShapeExtend_Explorer xp;
+            Handle_TopTools_HSequenceOfShape leaves = xp.SeqFromCompound(sh, /*recursive= */Standard_True);
+            int cntClosedWires = 0;
+            for(int i = 0; i < leaves->Length(); i++){
+                const TopoDS_Shape &leaf = leaves->Value(i+1);
+                if (leaf.IsNull())
+                    return;
+                if (leaf.ShapeType() == TopAbs_WIRE || leaf.ShapeType() == TopAbs_EDGE){
+                    if (BRep_Tool::IsClosed(leaf)){
+                        cntClosedWires++;
+                    }
+                }
+            }
+            ui->chkSolid->setChecked( cntClosedWires == leaves->Length() );
+        }
+    } catch(...) {
+
+    }
 }
 
 void DlgExtrusion::findShapes()
@@ -139,133 +389,325 @@ bool DlgExtrusion::canExtrude(const TopoDS_Shape& shape) const
 
 void DlgExtrusion::accept()
 {
-    apply();
-    QDialog::accept();
+    try{
+        apply();
+        QDialog::accept();
+    } catch (Base::AbortException){
+
+    };
 }
 
 void DlgExtrusion::apply()
 {
-    if (ui->treeWidget->selectedItems().isEmpty()) {
-        QMessageBox::critical(this, windowTitle(), 
-            tr("Select a shape for extrusion, first."));
-        return;
-    }
+    try{
+        if (!validate())
+            throw Base::AbortException();
 
-    Gui::WaitCursor wc;
-    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
-    if (!activeDoc) {
-        QMessageBox::critical(this, windowTitle(), 
-            tr("The document '%1' doesn't exist.").arg(QString::fromUtf8(this->label.c_str())));
-        return;
-    }
-    activeDoc->openTransaction("Extrude");
+        if (filter) //if still selecting edge - stop. This is important for visibility automation.
+            this->on_btnSelectEdge_clicked();
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    bool addBaseName = hGrp->GetBool("AddBaseObjectName", false);
-
-    QString shape, type, name, label;
-    QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
-    for (QList<QTreeWidgetItem *>::iterator it = items.begin(); it != items.end(); ++it) {
-        shape = (*it)->data(0, Qt::UserRole).toString();
-        type = QString::fromLatin1("Part::Extrusion");
-        if (addBaseName) {
-            QString baseName = QString::fromLatin1("Extrude_%1").arg(shape);
-            label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
-            name = QString::fromLatin1(activeDoc->getUniqueObjectName((const char*)baseName.toLatin1()).c_str());
+        Gui::WaitCursor wc;
+        App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+        if (!activeDoc) {
+            QMessageBox::critical(this, windowTitle(),
+                tr("The document '%1' doesn't exist.").arg(QString::fromUtf8(this->label.c_str())));
+            return;
         }
-        else {
-            name = QString::fromLatin1(activeDoc->getUniqueObjectName("Extrude").c_str());
-            label = name;
-        }
+        activeDoc->openTransaction("Extrude");
 
-        double dirX = ui->dirX->value();
-        double dirY = ui->dirY->value();
-        double dirZ = ui->dirZ->value();
-        double len = ui->dirLen->value().getValue();
-        double angle = ui->taperAngle->value().getValue();
-        bool makeSolid = ui->makeSolid->isChecked();
+        Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+            .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+        bool addBaseName = hGrp->GetBool("AddBaseObjectName", false);
 
-        // inspect geometry
-        App::DocumentObject* obj = activeDoc->getObject((const char*)shape.toLatin1());
-        if (!obj || !obj->isDerivedFrom(Part::Feature::getClassTypeId())) continue;
-        Part::Feature* fea = static_cast<Part::Feature*>(obj);
-        const TopoDS_Shape& data = fea->Shape.getValue();
-        if (data.IsNull()) continue;
+        std::vector<App::DocumentObject*> objects = this->getShapesToExtrude();
+        for (App::DocumentObject* sourceObj: objects) {
+            assert(sourceObj);
 
-        // check for planes
-        if (ui->checkNormal->isChecked() && data.ShapeType() == TopAbs_FACE) {
-            BRepAdaptor_Surface adapt(TopoDS::Face(data));
-            if (adapt.GetType() == GeomAbs_Plane) {
-                double u = 0.5*(adapt.FirstUParameter() + adapt.LastUParameter());
-                double v = 0.5*(adapt.FirstVParameter() + adapt.LastVParameter());
-                BRepLProp_SLProps prop(adapt,u,v,1,Precision::Confusion());
-                if (prop.IsNormalDefined()) {
-                    gp_Pnt pnt; gp_Vec vec;
-                    // handles the orientation state of the shape
-                    BRepGProp_Face(TopoDS::Face(data)).Normal(u,v,pnt,vec);
-                    dirX = vec.X();
-                    dirY = vec.Y();
-                    dirZ = vec.Z();
-                }
+            if (!sourceObj->isDerivedFrom(Part::Feature::getClassTypeId())){
+                std::stringstream errmsg;
+                errmsg << "Object " << sourceObj->getNameInDocument() << " is not Part object (has no OCC shape). Can't extrude it.\n";
+                Base::Console().Error(errmsg.str().c_str());
+                continue;
             }
+
+            std::string name;
+            name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
+            if (addBaseName) {
+                //FIXME: implement
+                //QString baseName = QString::fromLatin1("Extrude_%1").arg(sourceObjectName);
+                //label = QString::fromLatin1("%1_Extrude").arg((*it)->text(0));
+            }
+
+            Gui::Command::doCommand(Gui::Command::Doc, "f = FreeCAD.getDocument('%s').addObject('Part::Extrusion', '%s')", sourceObj->getDocument()->getName(), name.c_str());
+
+            this->writeParametersToFeature(*(sourceObj->getDocument()->getObject(name.c_str())), sourceObj);
+
+            std::string sourceObjectName = sourceObj->getNameInDocument();
+            Gui::Command::copyVisual(name.c_str(), "ShapeColor", sourceObjectName.c_str());
+            Gui::Command::copyVisual(name.c_str(), "LineColor", sourceObjectName.c_str());
+            Gui::Command::copyVisual(name.c_str(), "PointColor", sourceObjectName.c_str());
+
+            Gui::Command::doCommand(Gui::Command::Gui,"f.Base.ViewObject.hide()");
         }
 
-        QString code = QString::fromLatin1(
-            "FreeCAD.getDocument(\"%1\").addObject(\"%2\",\"%3\")\n"
-            "FreeCAD.getDocument(\"%1\").%3.Base = FreeCAD.getDocument(\"%1\").%4\n"
-            "FreeCAD.getDocument(\"%1\").%3.Dir = (%5,%6,%7)\n"
-            "FreeCAD.getDocument(\"%1\").%3.Solid = (%8)\n"
-            "FreeCAD.getDocument(\"%1\").%3.TaperAngle = (%9)\n"
-            "FreeCADGui.getDocument(\"%1\").%4.Visibility = False\n"
-            "FreeCAD.getDocument(\"%1\").%3.Label = '%10'\n")
-            .arg(QString::fromLatin1(this->document.c_str()))
-            .arg(type).arg(name).arg(shape)
-            .arg(dirX*len)
-            .arg(dirY*len)
-            .arg(dirZ*len)
-            .arg(makeSolid ? QLatin1String("True") : QLatin1String("False"))
-            .arg(angle)
-            .arg(label);
-        Gui::Application::Instance->runPythonCode((const char*)code.toLatin1());
-        QByteArray to = name.toLatin1();
-        QByteArray from = shape.toLatin1();
-        Gui::Command::copyVisual(to, "ShapeColor", from);
-        Gui::Command::copyVisual(to, "LineColor", from);
-        Gui::Command::copyVisual(to, "PointColor", from);
+        activeDoc->commitTransaction();
+        Gui::Command::updateActive();
     }
-
-    activeDoc->commitTransaction();
-    try {
-        ui->statusLabel->clear();
-        activeDoc->recompute();
-        ui->statusLabel->setText(QString::fromLatin1
-            ("<span style=\" color:#55aa00;\">%1</span>").arg(tr("Succeeded")));
+    catch (Base::AbortException){
+        throw;
     }
-    catch (const std::exception& e) {
-        ui->statusLabel->setText(QString::fromLatin1
-            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
-        Base::Console().Error("%s\n", e.what());
+    catch (Base::Exception &err){
+        QMessageBox::critical(this, windowTitle(),
+            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8(err.what())));
+        return;
     }
-    catch (const Base::Exception& e) {
-        ui->statusLabel->setText(QString::fromLatin1
-            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
-        Base::Console().Error("%s\n", e.what());
-    }
-    catch (...) {
-        ui->statusLabel->setText(QString::fromLatin1
-            ("<span style=\" color:#ff0000;\">%1</span>").arg(tr("Failed")));
-        Base::Console().Error("General error in extrusion\n");
+    catch(...) {
+        QMessageBox::critical(this, windowTitle(),
+            tr("Creating Extrusion failed.\n\n%1").arg(QString::fromUtf8("Unknown error")));
+        return;
     }
 }
 
-void DlgExtrusion::on_checkNormal_toggled(bool b)
+void DlgExtrusion::reject()
 {
-    //ui->dirX->setDisabled(b);
-    //ui->dirY->setDisabled(b);
-    //ui->dirZ->setDisabled(b);
-    ui->labelNormal->setVisible(b);
+    if (filter) //if still selecting edge - stop.
+        this->on_btnSelectEdge_clicked();
+
+    QDialog::reject();
 }
+
+Base::Vector3d DlgExtrusion::getDir() const
+{
+    return Base::Vector3d(
+                ui->dirX->value(),
+                ui->dirY->value(),
+                ui->dirZ->value());
+}
+
+void DlgExtrusion::setDir(Base::Vector3d newDir)
+{
+    ui->dirX->setValue(newDir.x);
+    ui->dirY->setValue(newDir.y);
+    ui->dirZ->setValue(newDir.z);
+}
+
+Part::Extrusion::eDirMode DlgExtrusion::getDirMode() const
+{
+    if(ui->rbDirModeCustom->isChecked())
+        return Part::Extrusion::dmCustom;
+    if(ui->rbDirModeEdge->isChecked())
+        return Part::Extrusion::dmEdge;
+    if(ui->rbDirModeNormal->isChecked())
+        return Part::Extrusion::dmNormal;
+
+    //we shouldn't get here...
+    return Part::Extrusion::dmCustom;
+}
+
+void DlgExtrusion::setDirMode(Part::Extrusion::eDirMode newMode)
+{
+    ui->rbDirModeCustom->blockSignals(true);
+    ui->rbDirModeEdge->blockSignals(true);
+    ui->rbDirModeNormal->blockSignals(true);
+
+    ui->rbDirModeCustom->setChecked(newMode == Part::Extrusion::dmCustom);
+    ui->rbDirModeEdge->setChecked(newMode == Part::Extrusion::dmEdge);
+    ui->rbDirModeNormal->setChecked(newMode == Part::Extrusion::dmNormal);
+
+    ui->rbDirModeCustom->blockSignals(false);
+    ui->rbDirModeEdge->blockSignals(false);
+    ui->rbDirModeNormal->blockSignals(false);
+    this->on_DirMode_changed();
+}
+
+void DlgExtrusion::getAxisLink(App::PropertyLinkSub& lnk) const
+{
+    QString text = ui->txtLink->text();
+
+    if (text.length() == 0) {
+        lnk.setValue(nullptr);
+    } else {
+        QStringList parts = text.split(QChar::fromLatin1(':'));
+        App::DocumentObject* obj = App::GetApplication().getActiveDocument()->getObject(parts[0].toLatin1());
+        if(!obj){
+            throw Base::ValueError(tr("Object not found: %1").arg(parts[0]).toUtf8().constData());
+        }
+        lnk.setValue(obj);
+        if (parts.size() == 1) {
+            return;
+        } else if (parts.size() == 2) {
+            std::vector<std::string> subs;
+            subs.push_back(std::string(parts[1].toLatin1().constData()));
+            lnk.setValue(obj,subs);
+        }
+    }
+
+}
+
+void DlgExtrusion::setAxisLink(const App::PropertyLinkSub& lnk)
+{
+    if (!lnk.getValue()){
+        ui->txtLink->clear();
+        return;
+    }
+    if (lnk.getSubValues().size() == 1){
+        this->setAxisLink(lnk.getValue()->getNameInDocument(), lnk.getSubValues()[0].c_str());
+    } else {
+        this->setAxisLink(lnk.getValue()->getNameInDocument(), "");
+    }
+}
+
+void DlgExtrusion::setAxisLink(const char* objname, const char* subname)
+{
+    if(objname && strlen(objname) > 0){
+        QString txt = QString::fromLatin1(objname);
+        if (subname && strlen(subname) > 0){
+            txt = txt + QString::fromLatin1(":") + QString::fromLatin1(subname);
+        }
+        ui->txtLink->setText(txt);
+    } else {
+        ui->txtLink->clear();
+    }
+}
+
+std::vector<App::DocumentObject*> DlgExtrusion::getShapesToExtrude() const
+{
+    QList<QTreeWidgetItem *> items = ui->treeWidget->selectedItems();
+    App::Document* doc = App::GetApplication().getDocument(this->document.c_str());
+    if (!doc)
+        throw Base::Exception("Document lost");
+
+    std::vector<App::DocumentObject*> objects;
+    for (int i = 0; i < items.size(); i++) {
+        App::DocumentObject* obj = doc->getObject(items[i]->data(0, Qt::UserRole).toString().toLatin1());
+        if (!obj)
+            throw Base::Exception("Object not found");
+        objects.push_back(obj);
+    }
+    return objects;
+}
+
+bool DlgExtrusion::validate()
+{
+    //check source shapes
+    if (ui->treeWidget->selectedItems().isEmpty()) {
+        QMessageBox::critical(this, windowTitle(),
+            tr("No shapes selected for extrusion. Select some, first."));
+        return false;
+    }
+
+    //check axis link
+    QString errmsg;
+    bool hasValidAxisLink = false;
+    try{
+        App::PropertyLinkSub lnk;
+        this->getAxisLink(lnk);
+        Base::Vector3d dir, base;
+        hasValidAxisLink = Part::Extrusion::fetchAxisLink(lnk, base, dir);
+    } catch(Base::Exception &err) {
+        errmsg = QString::fromUtf8(err.what());
+    } catch(Standard_Failure &err) {
+        errmsg = QString::fromLocal8Bit(err.GetMessageString());
+    } catch(...) {
+        errmsg = QString::fromUtf8("Unknown error");
+    }
+    if (this->getDirMode() == Part::Extrusion::dmEdge && !hasValidAxisLink){
+        if (errmsg.length() > 0)
+            QMessageBox::critical(this, windowTitle(), tr("Revolution axis link is invalid.\n\n%1").arg(errmsg));
+        else
+            QMessageBox::critical(this, windowTitle(), tr("Direction mode is to use an edge, but no edge is linked."));
+        ui->txtLink->setFocus();
+        return false;
+    } else if (this->getDirMode() != Part::Extrusion::dmEdge && !hasValidAxisLink){
+        //axis link is invalid, but it is not required by the mode. We shouldn't complain it's invalid then...
+        ui->txtLink->clear();
+    }
+
+    //check normal
+    if (this->getDirMode() == Part::Extrusion::dmNormal){
+        errmsg.clear();
+        try {
+            App::PropertyLink lnk;
+            lnk.setValue(&this->getShapeToExtrude()); //simplified - check only for the first shape.
+            Part::Extrusion::calculateShapeNormal(lnk);
+        } catch(Base::Exception &err) {
+            errmsg = QString::fromUtf8(err.what());
+        } catch(Standard_Failure &err) {
+            errmsg = QString::fromLocal8Bit(err.GetMessageString());
+        } catch(...) {
+            errmsg = QString::fromUtf8("Unknown error");
+        }
+        if (errmsg.length() > 0){
+            QMessageBox::critical(this, windowTitle(), tr("Can't determine normal vector of shape to be extruded. Please use other mode. \n\n(%1)").arg(errmsg));
+            ui->rbDirModeNormal->setFocus();
+            return false;
+        }
+    }
+
+    //check axis dir
+    if (this->getDirMode() == Part::Extrusion::dmCustom){
+        if(this->getDir().Length() < Precision::Confusion()){
+            QMessageBox::critical(this, windowTitle(),
+                tr("Extrusion direction is zero-length. It must be non-zero."));
+            ui->dirX->setFocus();
+            return false;
+        }
+    }
+
+    //check lengths
+    if (!ui->chkSymmetric->isChecked()
+            && fabs(ui->spinLenFwd->value().getValue() + ui->spinLenRev->value().getValue()) < Precision::Confusion()
+            && ! (fabs(ui->spinLenFwd->value().getValue() - ui->spinLenRev->value().getValue()) < Precision::Confusion())){
+        QMessageBox::critical(this, windowTitle(),
+            tr("Total extrusion length is zero (length1 == -length2). It must be nonzero."));
+        ui->spinLenFwd->setFocus();
+        return false;
+    }
+
+    return true;
+}
+
+void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
+{
+    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
+
+    if (base)
+        Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument());
+
+    Part::Extrusion::eDirMode dirMode = this->getDirMode();
+    const char* modestr = Part::Extrusion::eDirModeStrings[dirMode];
+    Gui::Command::doCommand(Gui::Command::Doc,"f.DirMode = \"%s\"", modestr);
+
+    if (dirMode == Part::Extrusion::dmCustom){
+        Base::Vector3d dir = this->getDir();
+        Gui::Command::doCommand(Gui::Command::Doc, "f.Dir = App.Vector(%.15f, %.15f, %.15f)", dir.x, dir.y, dir.z);
+    }
+
+    App::PropertyLinkSub lnk;
+    this->getAxisLink(lnk);
+    std::stringstream linkstr;
+    if(lnk.getValue() == nullptr){
+        linkstr << "None";
+    } else {
+        linkstr << "(App.getDocument(\"" << lnk.getValue()->getDocument()->getName() <<"\")." << lnk.getValue()->getNameInDocument();
+        linkstr << ", [";
+        for (const std::string &str: lnk.getSubValues()){
+            linkstr << "\"" << str << "\"";
+        }
+        linkstr << "])";
+    }
+    Gui::Command::doCommand(Gui::Command::Doc,"f.DirLink = %s", linkstr.str().c_str());
+
+    Gui::Command::doCommand(Gui::Command::Doc,"f.LengthFwd = %.15f", ui->spinLenFwd->value().getValue());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.LengthRev = %.15f", ui->spinLenRev->value().getValue());
+
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Solid = %s", ui->chkSolid->isChecked() ? "True" : "False");
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Reversed = %s", ui->chkReversed->isChecked() ? "True" : "False");
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Symmetric = %s", ui->chkSymmetric->isChecked() ? "True" : "False");
+    Gui::Command::doCommand(Gui::Command::Doc,"f.TaperAngle = %.15f", ui->spinTaperAngle->value().getValue());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.TaperAngleRev = %.15f", ui->spinTaperAngleRev->value().getValue());
+}
+
 
 // ---------------------------------------
 
@@ -292,13 +734,18 @@ bool TaskExtrusion::accept()
 
 bool TaskExtrusion::reject()
 {
+    widget->reject();
     return true;
 }
 
 void TaskExtrusion::clicked(int id)
 {
     if (id == QDialogButtonBox::Apply) {
-        widget->apply();
+        try{
+            widget->apply();
+        } catch (Base::AbortException){
+
+        };
     }
 }
 

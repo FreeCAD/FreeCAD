@@ -78,7 +78,9 @@ public:
    * and get called by the observed class
    * @param rCaller a reference to the calling object
    */
-  virtual void OnDestroy(Subject<_MessageType> & rCaller){}
+  virtual void OnDestroy(Subject<_MessageType> & rCaller) {
+    (void)rCaller;
+  }
 
   /**
    * This method can be reimplemented from the concrete Observer

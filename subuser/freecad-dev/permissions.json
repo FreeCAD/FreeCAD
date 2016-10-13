@@ -1,0 +1,11 @@
+{
+ "maintainer": "Timothy <timothyhobbs@seznam.cz>",
+ "stateful-home": true,
+ "executable": "/bin/bash",
+ "allow-network-access": true,
+ "basic-common-permissions": true,
+ "description": "A development environment for building and running freecad.",
+ "access-working-directory": true,
+ "graphics-card": true,
+ "gui": {"clipboard":true}
+}

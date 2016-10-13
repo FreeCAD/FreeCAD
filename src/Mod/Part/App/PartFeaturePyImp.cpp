@@ -37,14 +37,18 @@ std::string PartFeaturePy::representation(void) const
     return std::string("<Part::PartFeature>");
 }
 
-PyObject *PartFeaturePy::getCustomAttributes(const char* attr) const
+PyObject *PartFeaturePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int PartFeaturePy::setCustomAttributes(const char* attr, PyObject *obj)
+int PartFeaturePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }
 
-
+PyObject* PartFeaturePy::test(PyObject * /*args*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return 0;
+}

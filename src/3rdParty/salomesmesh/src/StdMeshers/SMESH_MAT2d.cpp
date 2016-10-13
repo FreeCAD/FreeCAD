@@ -218,9 +218,9 @@ namespace
     }
   }
 #else
-  void inSegmentsToFile( vector< InSegment>& inSegments) {}
-  void dumpEdge( const TVDEdge* edge ) {}
-  void dumpCell( const TVDCell* cell ) {}
+  inline void inSegmentsToFile( vector< InSegment>& inSegments) {}
+  inline void dumpEdge( const TVDEdge* edge ) {}
+  inline void dumpCell( const TVDCell* cell ) {}
 #endif
 }
 // -------------------------------------------------------------------------------------
@@ -1701,7 +1701,7 @@ bool SMESH_MAT2d::Branch::getParameter(const BranchPoint & p, double & u ) const
   if ( p._iEdge > _params.size()-1 )
     return false;
   if ( p._iEdge == _params.size()-1 )
-    return u = 1.;
+    return (u = 1.);
 
   u = ( _params[ p._iEdge   ] * ( 1 - p._edgeParam ) +
         _params[ p._iEdge+1 ] * p._edgeParam );
@@ -1807,7 +1807,7 @@ bool SMESH_MAT2d::Branch::addDivPntForConcaVertex( std::vector< std::size_t >&  
   {
     // look for a VERTEX of the opposite EDGE
     // iNext - next after all null-length segments
-    while ( maE = ++iNext )
+    while ( ( maE = ++iNext ))
     {
       iSeg2 = getBndSegment( maE );
       if ( !_boundary->isConcaveSegment( ie1, iSeg2 ))
@@ -1839,7 +1839,7 @@ bool SMESH_MAT2d::Branch::addDivPntForConcaVertex( std::vector< std::size_t >&  
   else if ( isConcaPrev )
   {
     // all null-length segments passed, find their beginning
-    while ( maE = iPrev.edgePrev() )
+    while ( ( maE = iPrev.edgePrev() ))
     {
       iSeg1 = getBndSegment( maE );
       if ( _boundary->isConcaveSegment( edgeIDs1.back(), iSeg1 ))

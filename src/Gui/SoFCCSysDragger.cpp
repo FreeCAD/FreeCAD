@@ -49,8 +49,6 @@
 
 #include <Base/Quantity.h>
 #include <Gui/MainWindow.h>
-#include <Gui/Application.h>
-#include <Gui/Command.h>
 #include "SoFCDB.h"
 #include "SoFCCSysDragger.h"
 
@@ -199,19 +197,19 @@ SoGroup* TDragger::buildGeometry()
 
 void TDragger::startCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragStart();
 }
 
 void TDragger::motionCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->drag();
 }
 
 void TDragger::finishCB(void *, SoDragger *d)
 {
-    TDragger *sudoThis = dynamic_cast<TDragger *>(d);
+    TDragger *sudoThis = static_cast<TDragger *>(d);
     sudoThis->dragFinish();
 }
 
@@ -471,19 +469,19 @@ SoGroup* RDragger::buildGeometry()
 
 void RDragger::startCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragStart();
 }
 
 void RDragger::motionCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->drag();
 }
 
 void RDragger::finishCB(void *, SoDragger *d)
 {
-    RDragger *sudoThis = dynamic_cast<RDragger *>(d);
+    RDragger *sudoThis = static_cast<RDragger *>(d);
     sudoThis->dragFinish();
 }
 
@@ -809,16 +807,10 @@ SoFCCSysDragger::SoFCCSysDragger()
     this->addFinishCallback(&SoFCCSysDragger::finishDragCB, this);
 
     this->setUpConnections(TRUE, TRUE);
-    
-    //we can't have user switching camera types while dragger is shown.
-    Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->blockCommand(true);
-    Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->blockCommand(true);
 }
 
 SoFCCSysDragger::~SoFCCSysDragger()
 {
-  Gui::Application::Instance->commandManager().getCommandByName("Std_OrthographicCamera")->blockCommand(false);
-  Gui::Application::Instance->commandManager().getCommandByName("Std_PerspectiveCamera")->blockCommand(false);
 }
 
 
@@ -918,7 +910,6 @@ void SoFCCSysDragger::setUpAutoScale(SoCamera *cameraIn)
     //note: sofieldsensor checks if the current sensor is already attached
     //and takes appropriate action. So it is safe to attach to a field without
     //checking current attachment state.
-    camera = cameraIn;
     if (cameraIn->getTypeId() == SoOrthographicCamera::getClassTypeId())
     {
         SoOrthographicCamera *localCamera = dynamic_cast<SoOrthographicCamera *>(cameraIn);
@@ -951,28 +942,36 @@ void SoFCCSysDragger::cameraCB(void *data, SoSensor *)
 void SoFCCSysDragger::idleCB(void *data, SoSensor *)
 {
     SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
-    assert(sudoThis->camera);
+    SoField* field = sudoThis->cameraSensor.getAttachedField();
+    if (field)
+    {
+        SoCamera* camera = static_cast<SoCamera*>(field->getContainer());
+        SbMatrix localToWorld = sudoThis->getLocalToWorldMatrix();
+        SbVec3f origin;
+        localToWorld.multVecMatrix(SbVec3f(0.0, 0.0, 0.0), origin);
 
-    SbMatrix localToWorld = sudoThis->getLocalToWorldMatrix();
-    SbVec3f origin;
-    localToWorld.multVecMatrix(SbVec3f(0.0, 0.0, 0.0), origin);
-
-    SbViewVolume viewVolume = sudoThis->camera->getViewVolume();
-    float radius = sudoThis->draggerSize.getValue() / 2.0;
-    float localScale = viewVolume.getWorldToScreenScale(origin, radius);
-    SbVec3f scaleVector(localScale, localScale, localScale);
-    SoScale *localScaleNode = SO_GET_ANY_PART(sudoThis, "scaleNode", SoScale);
-    localScaleNode->scaleFactor.setValue(scaleVector);
-    sudoThis->autoScaleResult.setValue(localScale);
+        SbViewVolume viewVolume = camera->getViewVolume();
+        float radius = sudoThis->draggerSize.getValue() / 2.0;
+        float localScale = viewVolume.getWorldToScreenScale(origin, radius);
+        SbVec3f scaleVector(localScale, localScale, localScale);
+        SoScale *localScaleNode = SO_GET_ANY_PART(sudoThis, "scaleNode", SoScale);
+        localScaleNode->scaleFactor.setValue(scaleVector);
+        sudoThis->autoScaleResult.setValue(localScale);
+    }
 }
 
 void SoFCCSysDragger::finishDragCB(void *data, SoDragger *)
 {
     SoFCCSysDragger *sudoThis = reinterpret_cast<SoFCCSysDragger *>(data);
 
-    if (sudoThis->camera)
+    // note: when creating a second view of the document and then closing
+    // the first viewer it deletes the camera. However, the attached field
+    // of the cameraSensor will be detached automatically.
+    SoField* field = sudoThis->cameraSensor.getAttachedField();
+    if (field)
     {
-        if (sudoThis->camera->getTypeId() == SoPerspectiveCamera::getClassTypeId())
+        SoCamera* camera = static_cast<SoCamera*>(field->getContainer());
+        if (camera->getTypeId() == SoPerspectiveCamera::getClassTypeId())
             cameraCB(sudoThis, nullptr);
     }
 }

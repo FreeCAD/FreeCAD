@@ -43,14 +43,14 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryDressUp, RobotGui::ViewProviderT
 //}
 //
 
-bool ViewProviderTrajectoryDressUp::setEdit(int ModNum)
+bool ViewProviderTrajectoryDressUp::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(dynamic_cast<Robot::TrajectoryDressUpObject *>(getObject()));
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryDressUp(static_cast<Robot::TrajectoryDressUpObject *>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
 
-void ViewProviderTrajectoryDressUp::unsetEdit(int ModNum)
+void ViewProviderTrajectoryDressUp::unsetEdit(int)
 {
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();

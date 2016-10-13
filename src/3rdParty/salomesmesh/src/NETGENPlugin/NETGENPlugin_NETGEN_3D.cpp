@@ -75,7 +75,9 @@ namespace nglib {
 #include <nglib.h>
 }
 namespace netgen {
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 5
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
+#elif NETGEN_VERSION > 4
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -208,7 +210,11 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_triangle[3];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
+#if NETGEN_VERSION < 6
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
+#else
+  Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
+#endif
 
   // vector of nodes in which node index == netgen ID
   vector< const SMDS_MeshNode* > nodeVec;
@@ -342,7 +348,7 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
 
 namespace
 {
-  void limitVolumeSize( netgen::Mesh* ngMesh,
+  inline void limitVolumeSize( netgen::Mesh* ngMesh,
                         double        maxh )
   {
     // get average h of faces
@@ -428,7 +434,7 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   netgen::Mesh* ngMesh = (netgen::Mesh*)Netgen_mesh;
   int Netgen_NbOfNodes = Ng_GetNP(Netgen_mesh);
 
-#ifndef NETGEN_V5
+#if NETGEN_VERSION < 5
   char *optstr = 0;
 #endif
   int startWith = netgen::MESHCONST_MESHVOLUME;
@@ -470,7 +476,10 @@ bool NETGENPlugin_NETGEN_3D::compute(SMESH_Mesh&                     aMesh,
   {
     OCC_CATCH_SIGNALS;
 
-#ifdef NETGEN_V5
+#if NETGEN_VERSION >=6
+    std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
+    err = netgen::OCCGenerateMesh(occgeo, mesh_ptr, netgen::mparam, startWith, endWith);
+#elif NETGEN_VERSION > 4
     ngMesh->CalcLocalH(netgen::mparam.grading);
     err = netgen::OCCGenerateMesh(occgeo, ngMesh, netgen::mparam, startWith, endWith);
 #else
@@ -595,7 +604,11 @@ bool NETGENPlugin_NETGEN_3D::Compute(SMESH_Mesh&         aMesh,
   int Netgen_tetrahedron[4];
 
   NETGENPlugin_NetgenLibWrapper ngLib;
+#if NETGEN_VERSION < 6
   Ng_Mesh * Netgen_mesh = ngLib._ngMesh;
+#else
+  Ng_Mesh * Netgen_mesh = ngLib._ngMesh.get();
+#endif
 
   SMESH_ProxyMesh::Ptr proxyMesh( new SMESH_ProxyMesh( aMesh ));
   if ( aMesh.NbQuadrangles() > 0 )

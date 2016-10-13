@@ -42,6 +42,7 @@
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <App/Document.h>
+#include <Mod/Part/App/FaceMakerCheese.h>
 
 //#include "Body.h"
 #include "FeatureLoft.h"
@@ -151,7 +152,7 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         for(std::vector<TopoDS_Wire>& wires : wiresections)
             backwires.push_back(wires.back());
         
-        TopoDS_Shape back = makeFace(backwires);
+        TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
         
         BRepBuilderAPI_Sewing sewer;
         sewer.SetTolerance(Precision::Confusion());
@@ -212,8 +213,6 @@ App::DocumentObjectExecReturn *Loft::execute(void)
         }
         
         return App::DocumentObject::StdReturn;
-        
-        return ProfileBased::execute();   
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

@@ -31,9 +31,10 @@
 #include <QMouseEvent>
 #include <QString>
 #include <sstream>
+#include <QRectF>
 #endif
 
-#include <qmath.h>
+//#include <qmath.h>
 
 #include <App/Application.h>
 #include <App/Material.h>
@@ -54,6 +55,7 @@ QGIViewSymbol::QGIViewSymbol()
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
+    setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
     m_svgItem = new QGCustomSvg();
     addToGroup(m_svgItem);
@@ -79,10 +81,10 @@ void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
 
 void QGIViewSymbol::updateView(bool update)
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()))
+    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
+    if( viewSymbol == nullptr ) {
         return;
-
-    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
+    }
 
     if (update ||
         viewSymbol->isTouched() ||
@@ -103,10 +105,6 @@ void QGIViewSymbol::draw()
         return;
     }
 
-//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
-//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
-    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
-    setScale(viewSymbol->Scale.getValue());
     drawSvg();
     if (borderVisible) {
         drawBorder();
@@ -115,13 +113,17 @@ void QGIViewSymbol::draw()
 
 void QGIViewSymbol::drawSvg()
 {
-    if(getViewObject() == 0 || !getViewObject()->isDerivedFrom(TechDraw::DrawViewSymbol::getClassTypeId()))
+    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
+    if( viewSymbol == nullptr ) {
         return;
+    }
 
-    TechDraw::DrawViewSymbol *viewSymbol = dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject());
+//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
+//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
+
+    m_svgItem->setScale(viewSymbol->Scale.getValue());
 
     QString qs(QString::fromUtf8(viewSymbol->Symbol.getValue()));
-
     symbolToSvg(qs);
 }
 
@@ -133,13 +135,9 @@ void QGIViewSymbol::symbolToSvg(QString qs)
 
     QByteArray qba;
     qba.append(qs);
+    prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
         Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
     }
     m_svgItem->setPos(0.,0.);
-}
-
-QRectF QGIViewSymbol::boundingRect() const
-{
-    return childrenBoundingRect();
 }

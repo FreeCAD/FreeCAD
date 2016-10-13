@@ -41,114 +41,28 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include <Base/Console.h>
 
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
 
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup() : visible(false)
+ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
 #if 0
     setDefaultMode(SO_SWITCH_ALL);
 #endif
+    ViewProviderGroupExtension::initExtension(this);
 }
 
 ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
-}
-
-/**
- * Whenever a property of the group gets changed then the same property of all
- * associated view providers of the objects of the object group get changed as well.
- */
-void ViewProviderDocumentObjectGroup::onChanged(const App::Property* prop)
-{
-    ViewProviderDocumentObject::onChanged(prop);
-}
-
-void ViewProviderDocumentObjectGroup::attach(App::DocumentObject *pcObj)
-{
-    ViewProviderDocumentObject::attach(pcObj);
-}
-
-void ViewProviderDocumentObjectGroup::updateData(const App::Property* prop)
-{
-#if 0
-    if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
-        std::vector<App::DocumentObject*> obj =
-            static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        Gui::Document* doc = Gui::Application::Instance->getDocument
-            (&this->getObject()->getDocument());
-        MDIView* mdi = doc->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventorViewer* view = static_cast<View3DInventor*>(mdi)->getViewer();
-            SoSeparator* scene_graph = static_cast<SoSeparator*>(view->getSceneGraph());
-            std::vector<ViewProvider*> current_nodes;
-            for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-                current_nodes.push_back(doc->getViewProvider(*it));
-            std::sort(current_nodes.begin(), current_nodes.end());
-            std::sort(this->nodes.begin(), this->nodes.end());
-            // get the removed views
-            std::vector<ViewProvider*> diff_1, diff_2;
-            std::back_insert_iterator<std::vector<ViewProvider*> > biit(diff_2);
-            std::set_difference(this->nodes.begin(), this->nodes.end(), 
-                                current_nodes.begin(), current_nodes.end(), biit);
-            diff_1 = diff_2;
-            diff_2.clear();
-            // get the added views
-            std::set_difference(current_nodes.begin(), current_nodes.end(),
-                                this->nodes.begin(), this->nodes.end(), biit);
-            this->nodes = current_nodes;
-            // move from root node to switch
-            for (std::vector<ViewProvider*>::iterator it = diff_1.begin(); it != diff_1.end(); ++it) {
-                view->addViewProviderToGroup(*it, scene_graph);
-                view->removeViewProviderFromGroup(*it, this->pcModeSwitch);
-            }
-            // move from switch node to root node
-            for (std::vector<ViewProvider*>::iterator it = diff_2.begin(); it != diff_2.end(); ++it) {
-                view->addViewProviderToGroup(*it, this->pcModeSwitch);
-                view->removeViewProviderFromGroup(*it, scene_graph);
-            }
-        }
-    }
-#endif
-}
-
-std::vector<App::DocumentObject*> ViewProviderDocumentObjectGroup::claimChildren(void)const
-{
-    return std::vector<App::DocumentObject*>(static_cast<App::DocumentObjectGroup*>(getObject())->Group.getValues());
-}
-
-bool ViewProviderDocumentObjectGroup::canDragObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
-            "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
-            obj->getDocument()->getName(), obj->getNameInDocument() );
-}
-
-bool ViewProviderDocumentObjectGroup::canDropObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").addObject("
-            "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getObject()->getDocument()->getName(), getObject()->getNameInDocument(), 
-            obj->getDocument()->getName(), obj->getNameInDocument() );
 }
 
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
@@ -157,126 +71,9 @@ std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) 
     return std::vector<std::string>();
 }
 
-bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
-{
-    App::DocumentObjectGroup *group = static_cast<App::DocumentObjectGroup *> (getObject());
-    // If the group is nonempty ask the user if he wants to delete it's content
-    if ( group->Group.getSize () ) {
-        QMessageBox::StandardButton choice = 
-            QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
-                QObject::tr ( "The %1 is not empty, delete it's content as well?")
-                    .arg ( QString::fromUtf8 ( group->Label.getValue () ) ), 
-                QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
-
-        if ( choice == QMessageBox::Yes ) {
-            Gui::Command::doCommand(Gui::Command::Doc,
-                    "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                    ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-        }
-    }
-    return true;
-}
-
-bool ViewProviderDocumentObjectGroup::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it)
-        if ((*it)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            if (static_cast<App::DocumentObjectGroup*>(getObject())->isChildOf(
-                static_cast<const App::DocumentObjectGroup*>(*it))) {
-                return false;
-            }
-        }
-
-    return true;
-}
-void ViewProviderDocumentObjectGroup::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-        // Open command
-        App::DocumentObjectGroup* grp = static_cast<App::DocumentObjectGroup*>(getObject());
-        App::Document* doc = grp->getDocument();
-        Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-        gui->openCommand("Move object");
-        for( std::vector<const App::DocumentObject*>::const_iterator it = objList.begin();it!=objList.end();++it) {
-            // get document object
-            const App::DocumentObject* obj = *it;
-            const App::DocumentObjectGroup* par = App::DocumentObjectGroup::getGroupOfObject(obj);
-            if (par) {
-                // allow an object to be in one group only
-                QString cmd;
-                cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                                  "App.getDocument(\"%1\").getObject(\"%3\"))")
-                                  .arg(QString::fromLatin1(doc->getName()))
-                                  .arg(QString::fromLatin1(par->getNameInDocument()))
-                                  .arg(QString::fromLatin1(obj->getNameInDocument()));
-                Gui::Application::Instance->runPythonCode(cmd.toUtf8());
-            }
-
-            // build Python command for execution
-            QString cmd;
-            cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                              "App.getDocument(\"%1\").getObject(\"%3\"))")
-                              .arg(QString::fromLatin1(doc->getName()))
-                              .arg(QString::fromLatin1(grp->getNameInDocument()))
-                              .arg(QString::fromLatin1(obj->getNameInDocument()));
-            
-            Gui::Application::Instance->runPythonCode(cmd.toUtf8());
-        }
-        gui->commitCommand();
-
-}
-
-void ViewProviderDocumentObjectGroup::hide(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.testStatus(App::Property::User1) && this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->hide();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::hide();
-    this->visible = false;
-}
-
-void ViewProviderDocumentObjectGroup::show(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.testStatus(App::Property::User1) && !this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->show();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::show();
-    this->visible = true;
-}
-
 bool ViewProviderDocumentObjectGroup::isShow(void) const
 {
     return Visibility.getValue();
-}
-
-void ViewProviderDocumentObjectGroup::Restore(Base::XMLReader &reader)
-{
-    Visibility.setStatus(App::Property::User1, true); // tmp. set
-    ViewProviderDocumentObject::Restore(reader);
-    Visibility.setStatus(App::Property::User1, false); // unset
 }
 
 /**

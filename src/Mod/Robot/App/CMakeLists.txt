@@ -95,6 +95,7 @@ if (FREECAD_USE_EXTERNAL_KDL)
 
 else(FREECAD_USE_EXTERNAL_KDL)
   # here we use the internal supplied kdl
+  add_definitions(-DKDL_USE_NEW_TREE_INTERFACE=1)
   FILE( GLOB KDL_SRCS kdl_cp/[^.]*.cpp )
   FILE( GLOB KDL_HPPS kdl_cp/[^.]*.hpp kdl_cp/[^.]*.inl)
 

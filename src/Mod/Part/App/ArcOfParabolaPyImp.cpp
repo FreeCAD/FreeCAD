@@ -84,7 +84,7 @@ PyObject *ArcOfParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 }
 
 // constructor method
-int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* kwds)
+int ArcOfParabolaPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* o;
     double u1, u2;
@@ -210,12 +210,12 @@ Py::Object ArcOfParabolaPy::getParabola(void) const
     return Py::Object(new ParabolaPy(new GeomParabola(parabola)), true);
 }
 
-PyObject *ArcOfParabolaPy::getCustomAttributes(const char* attr) const
+PyObject *ArcOfParabolaPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int ArcOfParabolaPy::setCustomAttributes(const char* attr, PyObject *obj)
+int ArcOfParabolaPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

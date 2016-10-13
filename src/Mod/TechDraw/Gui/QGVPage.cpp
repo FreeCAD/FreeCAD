@@ -28,17 +28,17 @@
 # include <QFileInfo>
 # include <QFileDialog>
 # include <QGLWidget>
-//# include <QGraphicsScene>
 # include <QGraphicsEffect>
 # include <QMouseEvent>
 # include <QPainter>
 # include <QPaintEvent>
 # include <QSvgGenerator>
 # include <QWheelEvent>
-# include <strstream>
 # include <cmath>
 #endif
 
+#include <App/Application.h>
+#include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Stream.h>
 #include <Gui/FileDialog.h>
@@ -61,7 +61,9 @@
 
 
 #include "QGIDrawingTemplate.h"
+#include "QGITemplate.h"
 #include "QGISVGTemplate.h"
+#include "TemplateTextField.h"
 #include "QGIViewCollection.h"
 #include "QGIViewDimension.h"
 #include "QGIProjGroup.h"
@@ -71,6 +73,7 @@
 #include "QGIViewSymbol.h"
 #include "QGIViewClip.h"
 #include "QGIViewSpreadsheet.h"
+#include "QGIFace.h"
 
 #include "ZVALUE.h"
 #include "ViewProviderPage.h"
@@ -78,42 +81,43 @@
 
 using namespace TechDrawGui;
 
-QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene& s, QWidget *parent)
+QGVPage::QGVPage(ViewProviderPage *vp, QGraphicsScene* s, QWidget *parent)
     : QGraphicsView(parent)
     , pageTemplate(0)
     , m_renderer(Native)
     , drawBkg(true)
-    , m_backgroundItem(0)
-    , m_outlineItem(0)
-    , pageGui(0)
+    , m_vpPage(0)
 {
     assert(vp);
-    pageGui = vp;
-    const char* name = vp->getPageObject()->getNameInDocument();
+    m_vpPage = vp;
+    const char* name = vp->getDrawPage()->getNameInDocument();
     setObjectName(QString::fromLocal8Bit(name));
 
-    setScene(&s);
+    setScene(s);
+
+    setViewportUpdateMode(QGraphicsView::MinimalViewportUpdate);
     //setViewportUpdateMode(QGraphicsView::FullViewportUpdate);
+    //setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
     setCacheMode(QGraphicsView::CacheBackground);
-    setTransformationAnchor(AnchorUnderMouse);
+    //setTransformationAnchor(AnchorUnderMouse);
+    //setTransformationAnchor(NoAnchor);
+    setTransformationAnchor(AnchorViewCenter);
+    setResizeAnchor(AnchorViewCenter);
+    setAlignment(Qt::AlignCenter);
 
     setDragMode(ScrollHandDrag);
     setCursor(QCursor(Qt::ArrowCursor));
     setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
 
-    m_backgroundItem = new QGraphicsRectItem();
-    m_backgroundItem->setCacheMode(QGraphicsItem::NoCache);
-    m_backgroundItem->setZValue(ZVALUE::BACKGROUND);
-//     scene()->addItem(m_backgroundItem); // TODO IF SEGFAULTS WITH DRAW ENABLE THIS (REDRAWS ARE SLOWER :s)
-
-    bkgBrush = new QBrush(QColor::fromRgb(70,70,70));
+    bkgBrush = new QBrush(getBackgroundColor());
 
     resetCachedContent();
 }
+
 QGVPage::~QGVPage()
 {
     delete bkgBrush;
-    delete m_backgroundItem;
+
 }
 
 void QGVPage::drawBackground(QPainter *p, const QRectF &)
@@ -122,7 +126,7 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     if(!drawBkg)
         return;
 
-    if (!pageGui->getPageObject()) {
+    if (!m_vpPage->getDrawPage()) {
         //Base::Console().Log("TROUBLE - QGVP::drawBackground - no Page Object!\n");
         return;
     }
@@ -132,9 +136,9 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
 
 
     p->setBrush(*bkgBrush);
-    p->drawRect(viewport()->rect());
+    p->drawRect(viewport()->rect().adjusted(-2,-2,2,2));   //just bigger than viewport to prevent artifacts
 
-    if(!pageGui) {
+    if(!m_vpPage) {
         return;
     }
 
@@ -143,9 +147,9 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     float pageWidth = 420,
           pageHeight = 297;
 
-    if ( pageGui->getPageObject()->hasValidTemplate() ) {
-        pageWidth = pageGui->getPageObject()->getPageWidth();
-        pageHeight = pageGui->getPageObject()->getPageHeight();
+    if ( m_vpPage->getDrawPage()->hasValidTemplate() ) {
+        pageWidth = m_vpPage->getDrawPage()->getPageWidth();
+        pageHeight = m_vpPage->getDrawPage()->getPageHeight();
     }
 
     // Draw the white page
@@ -323,7 +327,7 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
 
 QGIView * QGVPage::findView(App::DocumentObject *obj) const
 {
-  if(scene()) {
+  if(obj) {
     const std::vector<QGIView *> qviews = views;
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
           TechDraw::DrawView *fview = (*it)->getViewObject();
@@ -380,35 +384,6 @@ QGIView * QGVPage::findParent(QGIView *view) const
     return 0;
 }
 
-void QGVPage::setPageFeature(TechDraw::DrawPage *page)
-{
-    //redundant
-#if 0
-    // TODO verify if the pointer should even be used. Not really safe
-    pageFeat = page;
-
-    float pageWidth  = pageGui->getPageObject()->getPageWidth();
-    float pageHeight = pageGui->getPageObject()->getPageHeight();
-
-    QRectF paperRect(0, -pageHeight, pageWidth, pageHeight);
-
-    QBrush brush(Qt::white);
-
-    m_backgroundItem->setBrush(brush);
-    m_backgroundItem->setRect(paperRect);
-
-    QGraphicsDropShadowEffect *shadow = new QGraphicsDropShadowEffect();
-    shadow->setBlurRadius(10.0);
-    shadow->setColor(Qt::white);
-    shadow->setOffset(0,0);
-    m_backgroundItem->setGraphicsEffect(shadow);
-
-    QRectF myRect = paperRect;
-    myRect.adjust(-20,-20,20,20);
-    setSceneRect(myRect);
-#endif
-}
-
 void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
 {
     // Remove currently set background template
@@ -416,11 +391,9 @@ void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
     removeTemplate();
 
     if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
-        //TechDraw::DrawParametricTemplate *dwgTemplate = static_cast<TechDraw::DrawParametricTemplate *>(obj);
         QGIDrawingTemplate *qTempItem = new QGIDrawingTemplate(scene());
         pageTemplate = qTempItem;
     } else if(obj->isDerivedFrom(TechDraw::DrawSVGTemplate::getClassTypeId())) {
-        //TechDraw::DrawSVGTemplate *dwgTemplate = static_cast<TechDraw::DrawSVGTemplate *>(obj);
         QGISVGTemplate *qTempItem = new QGISVGTemplate(scene(),this);
         pageTemplate = qTempItem;
     }
@@ -463,68 +436,54 @@ void QGVPage::setHighQualityAntialiasing(bool highQualityAntialiasing)
 #endif
 }
 
-void QGVPage::setViewBackground(bool enable)
+void QGVPage::toggleMarkers(bool enable)
 {
-    if (!m_backgroundItem)
-        return;
-
-    m_backgroundItem->setVisible(enable);
-}
-
-void QGVPage::setViewOutline(bool enable)
-{
-    if (!m_outlineItem)
-        return;
-
-    m_outlineItem->setVisible(enable);
-}
-
-void QGVPage::toggleEdit(bool enable)
-{
-// TODO: needs fiddling to handle items that don't inherit QGIViewPart: Annotation, Symbol, Templates, Edges, Faces, Vertices,...
     QList<QGraphicsItem*> list = scene()->items();
-
     for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *itemView = dynamic_cast<QGIView *>(*it);
         if(itemView) {
-            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
             itemView->setSelected(false);
+            itemView->toggleBorder(enable);
+            QGIViewPart *viewPart = dynamic_cast<QGIViewPart *>(*it);
             if(viewPart) {
-                viewPart->toggleCache(enable);
-                viewPart->toggleCosmeticLines(enable);
                 viewPart->toggleVertices(enable);
-                viewPart->toggleBorder(enable);
-                setViewBackground(enable);
-            } else {
-                itemView->toggleBorder(enable);
             }
-            //itemView->updateView(true);
         }
-
-        int textItemType = QGraphicsItem::UserType + 160;
-        QGraphicsItem*item = dynamic_cast<QGraphicsItem*>(*it);
-        if(item) {
-            //item->setCacheMode((enable) ? QGraphicsItem::DeviceCoordinateCache : QGraphicsItem::NoCache);
-            item->setCacheMode((enable) ? QGraphicsItem::NoCache : QGraphicsItem::NoCache);
-            item->update();
-            if (item->type() == textItemType) {    //TODO: move this into SVGTemplate or TemplateTextField
+        QGISVGTemplate* itemTemplate = dynamic_cast<QGISVGTemplate*> (*it);
+        if (itemTemplate) {
+            std::vector<TemplateTextField *> textFields = itemTemplate->getTextFields();
+            for (auto& t:textFields) {
                 if (enable) {
-                    item->show();
+                    t->show();
                 } else {
-                    item->hide();
+                    t->hide();
                 }
             }
         }
     }
-    scene()->update();
-    update();
-    viewport()->repaint();
+}
+
+void QGVPage::toggleHatch(bool enable)
+{
+    QList<QGraphicsItem*> sceneItems = scene()->items();
+    for (auto& qgi:sceneItems) {
+        QGIViewPart* qgiPart = dynamic_cast<QGIViewPart *>(qgi);
+        if(qgiPart) {
+            QList<QGraphicsItem*> partChildren = qgiPart->childItems();
+            int faceItemType = QGraphicsItem::UserType + 104;
+            for (auto& c:partChildren) {
+                if (c->type() == faceItemType) {
+                    static_cast<QGIFace*>(c)->toggleSvg(enable);
+                }
+            }
+        }
+    }
 }
 
 void QGVPage::saveSvg(QString filename)
 {
-    // TODO: We only have pageGui because constructor gets passed a view provider...
-    TechDraw::DrawPage *page( pageGui->getPageObject() );
+    // TODO: We only have m_vpPage because constructor gets passed a view provider...
+    TechDraw::DrawPage *page( m_vpPage->getDrawPage() );
 
     const QString docName( QString::fromUtf8(page->getDocument()->getName()) );
     const QString pageName( QString::fromUtf8(page->getNameInDocument()) );
@@ -545,7 +504,7 @@ void QGVPage::saveSvg(QString filename)
     //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
     //      duplicate all textItems and only show the appropriate one for screen/print vs export?
 
-// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI
+// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI  //really "user space units/inch"?
     svgGen.setResolution(25);    // mm/inch??  docs say this is DPI
 
     //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
@@ -555,20 +514,28 @@ void QGVPage::saveSvg(QString filename)
 
     Gui::Selection().clearSelection();
 
-    toggleEdit(false);             //fiddle cache, cosmetic lines, vertices, etc
+    toggleMarkers(false);             //fiddle cache, vertices, frames, etc
+    toggleHatch(false);
     scene()->update();
+    viewport()->repaint();
+
+    double width  =  page->getPageWidth();
+    double height =  page->getPageHeight();
+    QRectF sourceRect(0.0,-height,width,height);
+    QRectF targetRect;
 
     Gui::Selection().clearSelection();
     QPainter p;
 
     p.begin(&svgGen);
-    scene()->render(&p);
+    scene()->render(&p, targetRect,sourceRect);
     p.end();
 
-    toggleEdit(true);
+    toggleMarkers(true);
+    toggleHatch(true);
     scene()->update();
+    viewport()->repaint();
 }
-
 
 void QGVPage::paintEvent(QPaintEvent *event)
 {
@@ -591,10 +558,26 @@ void QGVPage::paintEvent(QPaintEvent *event)
 
 void QGVPage::wheelEvent(QWheelEvent *event)
 {
-    qreal factor = std::pow(1.2, -event->delta() / 240.0);
+//Delta is the distance that the wheel is rotated, in eighths of a degree.
+//positive indicates rotation forwards away from the user; negative backwards toward the user.
+//Most mouse types work in steps of 15 degrees, in which case the delta value is a multiple of 120; i.e., 120 units * 1/8 = 15 degrees.
+//1 click = 15 degrees.  15 degrees = 120 deltas.  delta/240 -> 1 click = 0.5 ==> factor = 1.2^0.5 = 1.095
+//                                                              1 click = -0.5 ==> factor = 1.2^-0.5 = 0.91
+//so to change wheel direction, multiply (event->delta() / 240.0) by +/-1
+    double mouseBase = 1.2;        //magic numbers. change for different mice?
+    double mouseAdjust = 240.0;
+
+    QPointF center = mapToScene(viewport()->rect().center());
+    qreal factor = std::pow(mouseBase, event->delta() / mouseAdjust);
     scale(factor, factor);
+
+    QPointF newCenter = mapToScene(viewport()->rect().center());
+    QPointF change = newCenter - center;
+    translate(change.x(), change.y());
+
     event->accept();
 }
+
 void QGVPage::enterEvent(QEvent *event)
 {
     QGraphicsView::enterEvent(event);
@@ -615,8 +598,16 @@ void QGVPage::mouseReleaseEvent(QMouseEvent *event)
 
 TechDraw::DrawPage* QGVPage::getDrawPage()
 {
-    return pageGui->getPageObject();
+    return m_vpPage->getDrawPage();
 }
 
+QColor QGVPage::getBackgroundColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Background", 0x70707000));
+    return fcColor.asValue<QColor>();
+}
 
 #include <Mod/TechDraw/Gui/moc_QGVPage.cpp>

@@ -306,12 +306,12 @@ void  CirclePy::setYAxis(Py::Object arg)
     }
 }
 
-PyObject *CirclePy::getCustomAttributes(const char* attr) const
+PyObject *CirclePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int CirclePy::setCustomAttributes(const char* attr, PyObject *obj)
+int CirclePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

@@ -157,12 +157,12 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     return 0;
 }
 
-PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
+PyObject *ViewProviderPy::getCustomAttributes(const char*) const
 {
     return 0;
 }
 
-int ViewProviderPy::setCustomAttributes(const char* attr, PyObject *obj)
+int ViewProviderPy::setCustomAttributes(const char*, PyObject *)
 {
     return 0; 
 }
@@ -180,7 +180,7 @@ Py::Object ViewProviderPy::getAnnotation(void) const
     }
 }
 
-void  ViewProviderPy::setAnnotation(Py::Object arg)
+void  ViewProviderPy::setAnnotation(Py::Object)
 {
 
 }
@@ -198,7 +198,7 @@ Py::Object ViewProviderPy::getRootNode(void) const
     }
 }
 
-void  ViewProviderPy::setRootNode(Py::Object arg)
+void  ViewProviderPy::setRootNode(Py::Object)
 {
 
 }

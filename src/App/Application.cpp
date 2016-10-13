@@ -98,14 +98,15 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 #include "Placement.h"
-#include "GeoFeatureGroup.h"
-#include "OriginGroup.h"
+#include "GeoFeatureGroupExtension.h"
+#include "OriginGroupExtension.h"
 #include "Part.h"
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
-#include "MaterialPy.h"
 #include "Expression.h"
+#include "Transactions.h"
+#include <App/MaterialPy.h>
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -128,9 +129,9 @@ using namespace boost::program_options;
 
 
 // scriptings (scripts are build in but can be overridden by command line option)
-#include "InitScript.h"
-#include "TestScript.h"
-#include "CMakeScript.h"
+#include <App/InitScript.h>
+#include <App/TestScript.h>
+#include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -296,7 +297,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    auto_ptr<Document> newDoc(new Document() );
+    std::unique_ptr<Document> newDoc(new Document() );
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -340,7 +341,7 @@ bool Application::closeDocument(const char* name)
     // For exception-safety use a smart pointer
     if (_pActiveDoc == pos->second)
         setActiveDocument((Document*)0);
-    auto_ptr<Document> delDoc (pos->second);
+    std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
     // Trigger observers after removing the document from the internal map.
@@ -1011,9 +1012,9 @@ void unexpection_error_handler()
     // try to throw an exception and give the user chance to save their work
 #if !defined(_DEBUG)
     throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#endif
-
+#else
     terminate();
+#endif
 }
 
 #ifdef _MSC_VER // Microsoft compiler
@@ -1095,6 +1096,8 @@ void Application::initTypes(void)
     App ::PropertyAngle             ::init();
     App ::PropertyDistance          ::init();
     App ::PropertyLength            ::init();
+    App ::PropertyArea              ::init();
+    App ::PropertyVolume            ::init();
     App ::PropertySpeed             ::init();
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
@@ -1132,7 +1135,19 @@ void Application::initTypes(void)
     App ::PropertyPythonObject      ::init();
     App ::PropertyExpressionEngine  ::init();
 
+    // Extension classes
+    App ::Extension                     ::init();
+    App ::ExtensionContainer            ::init();
+    App ::DocumentObjectExtension       ::init();
+    App ::GroupExtension                ::init();
+    App ::GroupExtensionPython          ::init();
+    App ::GeoFeatureGroupExtension      ::init();
+    App ::GeoFeatureGroupExtensionPython::init();
+    App ::OriginGroupExtension          ::init();
+    App ::OriginGroupExtensionPython    ::init();
+    
     // Document classes
+    App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();
     App ::FeatureTest               ::init();
@@ -1154,9 +1169,6 @@ void Application::initTypes(void)
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
-    App ::OriginGroup               ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
 
@@ -1173,6 +1185,9 @@ void Application::initTypes(void)
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
 
+    // register transaction type
+    new App::TransactionProducer<TransactionDocumentObject>
+            (DocumentObject::getClassTypeId());
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -2084,6 +2099,19 @@ void Application::ExtractUserPath()
         // the application due to branding reasons.
         appData += PATHSEP;
         mConfig["UserAppData"] = appData;
+
+        // Create the default macro directory
+        fi.setFile(getUserMacroDir());
+        if (!fi.exists() && !Py_IsInitialized()) {
+            if (!fi.createDirectory()) {
+                // If the creation fails only write an error but do not raise an
+                // exception because it doesn't prevent FreeCAD from working
+                std::string error = "Cannot create directory ";
+                error += fi.fileName();
+                // Want more details on console
+                std::cerr << error << std::endl;
+            }
+        }
     }
 #else
 # error "Implement ExtractUserPath() for your platform."

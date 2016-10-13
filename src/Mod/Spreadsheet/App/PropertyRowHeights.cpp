@@ -43,6 +43,7 @@ PropertyRowHeights::PropertyRowHeights()
 }
 
 PropertyRowHeights::PropertyRowHeights(const PropertyRowHeights &other)
+  : Property(), std::map<int, int>(other)
 {
 }
 

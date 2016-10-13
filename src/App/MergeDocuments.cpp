@@ -97,7 +97,7 @@ private:
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(0), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
         (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
