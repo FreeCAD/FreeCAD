@@ -525,10 +525,26 @@ class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole
     DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
 
+    PropertiesToRestore = ['Shape', 'Side', 'Length', 'Custom', 'BoneBlacklist']
+
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
-        self.updating = False
+        self.props = {}
+        for prop in self.PropertiesToRestore:
+            self.props[prop] = obj.getPropertyByName(prop)
+
+    def reject(self):
+        # haven't found a way to use the list :(
+        self.obj.Shape = self.props['Shape']
+        self.obj.Side = self.props['Side']
+        self.obj.Length = self.props['Length']
+        self.obj.Custom = self.props['Custom']
+        self.obj.BoneBlacklist = self.props['BoneBlacklist']
+        self.obj.Proxy.execute(self.obj)
+        FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
         self.getFields()
@@ -537,11 +553,6 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
         FreeCAD.ActiveDocument.recompute()
-
-    def reject(self):
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s)
 
     def getFields(self):
         self.obj.Shape = str(self.form.shape.currentText())
@@ -610,8 +621,8 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
+#    def getStandardButtons(self):
+#        return int(QtGui.QDialogButtonBox.OkCancel)
 
     def setupUi(self):
         self.setFields()
