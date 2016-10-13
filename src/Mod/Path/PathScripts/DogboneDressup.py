@@ -194,20 +194,20 @@ class Chord (object):
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Base", "The base path to modify")
-        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", "The side of path to insert bones")
+        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The base path to modify"))
+        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", "The shape of boness")
+        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The shape of boness"))
         obj.Shape = Shape.All
         obj.Shape = Shape.Dogbone
-        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", "Bones that aren't dressed up")
+        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Bones that aren't dressed up"))
         obj.BoneBlacklist = []
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        obj.addProperty("App::PropertyEnumeration", "Length", "Dressup", "The algorithm to determine the bone length")
+        obj.addProperty("App::PropertyEnumeration", "Length", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
         obj.Length = Length.All
-        obj.Length = Length.Fixed
-        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", "Dressup length if lenght == custom")
+        obj.Length = Length.Adaptive
+        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if lenght == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
 
@@ -576,10 +576,15 @@ class TaskPanel:
         for item in sorted(itemList, key=lambda item: item.data(self.DataKey)):
             self.form.bones.addItem(item)
 
+    def updateUI(self):
+        customSelected = self.obj.Length == Length.Custom
+        self.form.custom.setEnabled(customSelected)
+        self.form.customLabel.setEnabled(customSelected)
+        self.updateBoneList()
+
     def updateModel(self):
         self.getFields()
-        self.form.custom.setEnabled(self.obj.Length == Length.Custom)
-        self.updateBoneList()
+        self.updateUI()
         FreeCAD.ActiveDocument.recompute()
 
     def setupCombo(self, combo, text, items):
@@ -598,8 +603,7 @@ class TaskPanel:
         self.form.custom.setMinimum(0.0)
         self.form.custom.setDecimals(3)
         self.form.custom.setValue(self.obj.Custom)
-        self.form.custom.setEnabled(self.obj.Length == Length.Custom)
-        self.updateBoneList()
+        self.updateUI()
 
     def open(self):
         self.s = SelObserver()
