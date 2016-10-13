@@ -99,7 +99,7 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            obj.Result.set("A"+str(i+2),obj.Description[i])
+            obj.Result.set("A"+str(i+2),obj.Description[i].encode("utf8"))
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
                 print l
@@ -114,6 +114,10 @@ class _ArchSchedule:
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
+                if len(objs) == 1:
+                    # remove object itself if the object is a group
+                    if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
+                        objs = objs[0].Group
                 objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
                 objs = Arch.pruneIncluded(objs)
                 if obj.Filter[i]:
@@ -183,17 +187,20 @@ class _ArchSchedule:
                     val = sumval
                     # get unit
                     if obj.Unit[i]:
-                        if "2" in obj.Unit[i]:
+                        ustr = obj.Unit[i].encode("utf8")
+                        unit = ustr.replace("²","^2")
+                        unit = unit.replace("³","^3")
+                        if "2" in unit:
                             tp = FreeCAD.Units.Area
-                        elif "3" in obj.Unit[i]:
+                        elif "3" in unit:
                             tp = FreeCAD.Units.Volume
-                        elif "deg" in obj.Unit[i]:
+                        elif "deg" in unit:
                             tp = FreeCAD.Units.Angle
                         else:
                             tp = FreeCAD.Units.Length
                         q = FreeCAD.Units.Quantity(val,tp)
-                        obj.Result.set("B"+str(i+2),str(q.getValueAs(obj.Unit[i]).Value))
-                        obj.Result.set("C"+str(i+2),obj.Unit[i])
+                        obj.Result.set("B"+str(i+2),str(q.getValueAs(unit).Value))
+                        obj.Result.set("C"+str(i+2),ustr)
                     else:
                         obj.Result.set("B"+str(i+2),str(val))
                     if verbose:
@@ -267,6 +274,7 @@ class _ArchScheduleTaskPanel:
         QtCore.QObject.connect(self.form.buttonDel, QtCore.SIGNAL("clicked()"), self.remove)
         QtCore.QObject.connect(self.form.buttonClear, QtCore.SIGNAL("clicked()"), self.clear)
         QtCore.QObject.connect(self.form.buttonImport, QtCore.SIGNAL("clicked()"), self.importCSV)
+        QtCore.QObject.connect(self.form.buttonExport, QtCore.SIGNAL("clicked()"), self.exportCSV)
         QtCore.QObject.connect(self.form.buttonSelect, QtCore.SIGNAL("clicked()"), self.select)
         self.form.list.clearContents()
 
@@ -309,6 +317,12 @@ class _ArchScheduleTaskPanel:
                             t = t.replace("³","^3")
                             self.form.list.setItem(r,i,QtGui.QTableWidgetItem(t))
                     r += 1
+
+    def exportCSV(self):
+        if self.obj:
+            filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+            if filename:
+                self.obj.Result.exportFile(str(filename[0].encode("utf8")))
 
     def select(self):
         if self.form.list.currentRow() >= 0:
