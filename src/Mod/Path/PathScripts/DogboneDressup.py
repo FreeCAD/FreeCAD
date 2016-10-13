@@ -508,7 +508,7 @@ class CommandDogboneDressup:
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dogbone Dress-up"))
         FreeCADGui.addModule("PathScripts.DogboneDressup")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
@@ -525,29 +525,20 @@ class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole
     DataKey = QtCore.Qt.ItemDataRole.UserRole + 1
 
-    PropertiesToRestore = ['Shape', 'Side', 'Length', 'Custom', 'BoneBlacklist']
-
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
-        self.props = {}
-        for prop in self.PropertiesToRestore:
-            self.props[prop] = obj.getPropertyByName(prop)
+        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Edit Dogbone Dress-up"))
 
     def reject(self):
-        # haven't found a way to use the list :(
-        self.obj.Shape = self.props['Shape']
-        self.obj.Side = self.props['Side']
-        self.obj.Length = self.props['Length']
-        self.obj.Custom = self.props['Custom']
-        self.obj.BoneBlacklist = self.props['BoneBlacklist']
-        self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.abortTransaction()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
         self.getFields()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
