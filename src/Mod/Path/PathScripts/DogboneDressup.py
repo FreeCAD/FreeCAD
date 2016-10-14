@@ -45,7 +45,7 @@ except AttributeError:
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
 
-class Shape:
+class Style:
     Dogbone = 'Dogbone'
     Tbone_H = 'T-bone horizontal'
     Tbone_V = 'T-bone vertical'
@@ -58,7 +58,7 @@ class Side:
     Right = 'Right'
     All = [Left, Right]
 
-class Length:
+class Incision:
     Fixed = 'fixed'
     Adaptive = 'adaptive'
     Custom = 'custom'
@@ -198,15 +198,15 @@ class ObjectDressup:
         obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Shape", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The shape of boness"))
-        obj.Shape = Shape.All
-        obj.Shape = Shape.Dogbone
+        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The style of boness"))
+        obj.Style = Style.All
+        obj.Style = Style.Dogbone
         obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Bones that aren't dressed up"))
         obj.BoneBlacklist = []
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        obj.addProperty("App::PropertyEnumeration", "Length", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
-        obj.Length = Length.All
-        obj.Length = Length.Adaptive
+        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
+        obj.Incision = Incision.All
+        obj.Incision = Incision.Adaptive
         obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if lenght == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
@@ -254,9 +254,9 @@ class ObjectDressup:
 
     def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength):
         length = fixedLength
-        if obj.Length == Length.Custom:
+        if obj.Incision == Incision.Custom:
             length = obj.Custom
-        if obj.Length == Length.Adaptive:
+        if obj.Incision == Incision.Adaptive:
             length = self.adaptiveBoneLength(obj, inChord, outChord, angle)
         x = length * math.cos(angle);
         y = length * math.sin(angle);
@@ -336,15 +336,15 @@ class ObjectDressup:
         self.bones.append((boneId, loc, enabled, inaccessible))
 
         if enabled:
-            if obj.Shape == Shape.Dogbone:
+            if obj.Style == Style.Dogbone:
                 return self.dogbone(obj, inChord, outChord)
-            if obj.Shape == Shape.Tbone_H:
+            if obj.Style == Style.Tbone_H:
                 return self.tboneHorizontal(obj, inChord, outChord)
-            if obj.Shape == Shape.Tbone_V:
+            if obj.Style == Style.Tbone_V:
                 return self.tboneVertical(obj, inChord, outChord)
-            if obj.Shape == Shape.Tbone_L:
+            if obj.Style == Style.Tbone_L:
                 return self.tboneLongEdge(obj, inChord, outChord)
-            if obj.Shape == Shape.Tbone_S:
+            if obj.Style == Style.Tbone_S:
                 return self.tboneShortEdge(obj, inChord, outChord)
             return self.debugCircleBone(obj, inChord, outChord)
         else:
@@ -546,9 +546,9 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def getFields(self):
-        self.obj.Shape = str(self.form.shape.currentText())
-        self.obj.Side  = str(self.form.side.currentText())
-        self.obj.Length = str(self.form.length.currentText())
+        self.obj.Style = str(self.form.styleCombo.currentText())
+        self.obj.Side  = str(self.form.sideCombo.currentText())
+        self.obj.Incision = str(self.form.incisionCombo.currentText())
         self.obj.Custom = self.form.custom.value()
         blacklist = []
         for i in range(0, self.form.bones.count()):
@@ -579,7 +579,7 @@ class TaskPanel:
             self.form.bones.addItem(item)
 
     def updateUI(self):
-        customSelected = self.obj.Length == Length.Custom
+        customSelected = self.obj.Incision == Incision.Custom
         self.form.custom.setEnabled(customSelected)
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
@@ -599,9 +599,9 @@ class TaskPanel:
             combo.setCurrentIndex(index)
 
     def setFields(self):
-        self.setupCombo(self.form.shape, self.obj.Shape, Shape.All)
-        self.setupCombo(self.form.side, self.obj.Side, Side.All)
-        self.setupCombo(self.form.length, self.obj.Length, Length.All)
+        self.setupCombo(self.form.styleCombo, self.obj.Style, Style.All)
+        self.setupCombo(self.form.sideCombo, self.obj.Side, Side.All)
+        self.setupCombo(self.form.incisionCombo, self.obj.Incision, Incision.All)
         self.form.custom.setMinimum(0.0)
         self.form.custom.setDecimals(3)
         self.form.custom.setValue(self.obj.Custom)
@@ -618,9 +618,9 @@ class TaskPanel:
     def setupUi(self):
         self.setFields()
         # now that the form is filled, setup the signal handlers
-        self.form.shape.currentIndexChanged.connect(self.updateModel)
-        self.form.side.currentIndexChanged.connect(self.updateModel)
-        self.form.length.currentIndexChanged.connect(self.updateModel)
+        self.form.styleCombo.currentIndexChanged.connect(self.updateModel)
+        self.form.sideCombo.currentIndexChanged.connect(self.updateModel)
+        self.form.incisionCombo.currentIndexChanged.connect(self.updateModel)
         self.form.custom.valueChanged.connect(self.updateModel)
         self.form.bones.itemChanged.connect(self.updateModel)
 
