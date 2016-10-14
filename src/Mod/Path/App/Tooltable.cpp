@@ -44,7 +44,7 @@ TYPESYSTEM_SOURCE(Path::Tool , Base::Persistence);
 
 Tool::Tool(const char* name,
            ToolType type,
-           ToolMaterial material,
+           ToolMaterial /*material*/,
            double diameter, 
            double lengthoffset,
            double flatradius,

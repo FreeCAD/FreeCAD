@@ -29,7 +29,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
 #include <Base/Exception.h>
@@ -93,7 +92,7 @@ namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Drawing::FeatureViewPython, Drawing::FeatureView)
 template<> const char* Drawing::FeatureViewPython::getViewProviderName(void) const {
-    return "DrawingGui::ViewProviderDrawingView";
+    return "DrawingGui::ViewProviderDrawingViewPython";
 }
 /// @endcond
 

@@ -23,46 +23,10 @@
 
 class ArchWorkbench(Workbench):
     "Arch workbench object"
-    Icon = """
-        /* XPM */
-        static char * arch_xpm[] = {
-        "16 16 17 1",
-        " 	c None",
-        ".	c #373936",
-        "+	c #464845",
-        "@	c #545553",
-        "#	c #626461",
-        "$	c #6B6D6A",
-        "%	c #727471",
-        "&	c #7E807D",
-        "*	c #8A8C89",
-        "=	c #949693",
-        "-	c #A1A3A0",
-        ";	c #ADAFAC",
-        ">	c #BEC1BD",
-        ",	c #C9CBC8",
-        "'	c #D9DCD8",
-        ")	c #E4E6E3",
-        "!	c #FDFFFC",
-        "                ",
-        "                ",
-        "       &        ",
-        "      >)'-%     ",
-        "    #,))))),@   ",
-        "   >%*-))))*#   ",
-        " $')>!)**>%*%   ",
-        "@=')>!!!!$==#   ",
-        "=!=**;'!!&=$++  ",
-        "=!!!)*@&-%#@#&-.",
-        " ,!!!!#>&#=,'=%@",
-        "   ;)!#!!!-*$&=@",
-        "     *@!!!!!$=* ",
-        "        =>!!$&  ",
-        "           -+   ",
-        "                "};"""
-
-    MenuText = "Arch"
-    ToolTip = "Architecture workbench"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Arch/Resources/icons/ArchWorkbench.svg"
+        self.__class__.MenuText = "Arch"
+        self.__class__.ToolTip = "Architecture workbench"
 
     def Initialize(self):
         import DraftTools,DraftGui,Arch_rc,Arch,Draft_rc
@@ -74,13 +38,13 @@ class ArchWorkbench(Workbench):
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
                      "Arch_Panel","Arch_Equipment",
-                     "Arch_Frame","Arch_Material","Arch_Schedule","Arch_CutPlane",
-                     "Arch_Add","Arch_Remove","Arch_Survey"]
+                     "Arch_Frame","Arch_Material","Arch_Schedule","Arch_PipeTools",
+                     "Arch_CutPlane","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_Component","Arch_SplitMesh","Arch_MeshToShape",
                      "Arch_SelectNonSolidMeshes","Arch_RemoveShape",
                      "Arch_CloseHoles","Arch_MergeWalls","Arch_Check",
                      "Arch_IfcExplorer","Arch_ToggleIfcBrepFlag","Arch_3Views",
-                     "Arch_Bimserver","Arch_Git"]
+                     "Arch_Bimserver","Arch_Git","Arch_IfcSpreadsheet","Arch_ToggleSubs"]
 
         # draft tools
         self.drafttools = ["Draft_Line","Draft_Wire","Draft_Circle","Draft_Arc","Draft_Ellipse",
@@ -91,25 +55,27 @@ class ArchWorkbench(Workbench):
                         "Draft_Trimex", "Draft_Upgrade", "Draft_Downgrade", "Draft_Scale",
                         "Draft_Shape2DView","Draft_Draft2Sketch","Draft_Array",
                         "Draft_Clone"]
-        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString","Draft_PathArray"]
+        self.draftextratools = ["Draft_WireToBSpline","Draft_AddPoint","Draft_DelPoint","Draft_ShapeString",
+                                "Draft_PathArray","Draft_Mirror"]
         self.draftcontexttools = ["Draft_ApplyStyle","Draft_ToggleDisplayMode","Draft_AddToGroup",
                             "Draft_SelectGroup","Draft_SelectPlane",
                             "Draft_ShowSnapBar","Draft_ToggleGrid","Draft_UndoLine",
                             "Draft_FinishLine","Draft_CloseLine"]
         self.draftutils = ["Draft_VisGroup","Draft_Heal","Draft_FlipDimension",
-                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit"]
+                           "Draft_ToggleConstructionMode","Draft_ToggleContinueMode","Draft_Edit",
+                           "Draft_Slope"]
         self.snapList = ['Draft_Snap_Lock','Draft_Snap_Midpoint','Draft_Snap_Perpendicular',
                          'Draft_Snap_Grid','Draft_Snap_Intersection','Draft_Snap_Parallel',
                          'Draft_Snap_Endpoint','Draft_Snap_Angle','Draft_Snap_Center',
-                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho',
+                         'Draft_Snap_Extension','Draft_Snap_Near','Draft_Snap_Ortho','Draft_Snap_Special',
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
 
         def QT_TRANSLATE_NOOP(scope, text): return text
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Arch tools"),self.archtools)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft tools"),self.drafttools)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft mod tools"),self.draftmodtools)
-        self.appendMenu([translate("arch","&Architecture"),translate("arch","Utilities")],self.utilities)
-        self.appendMenu(translate("arch","&Architecture"),self.archtools)
+        self.appendMenu([translate("arch","&Arch"),translate("arch","Utilities")],self.utilities)
+        self.appendMenu(translate("arch","&Arch"),self.archtools)
         self.appendMenu(translate("arch","&Draft"),self.drafttools+self.draftmodtools+self.draftextratools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Utilities")],self.draftutils+self.draftcontexttools)
         self.appendMenu([translate("arch","&Draft"),translate("arch","Snapping")],self.snapList)
@@ -117,18 +83,12 @@ class ArchWorkbench(Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addPreferencePage(":/ui/preferences-arch.ui","Arch")
         FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui","Arch")
-        FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui","Import-Export")
-        FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui","Import-Export")
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui","Draft")
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui","Draft")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dxf.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-dwg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-svg.ui","Import-Export")
-                FreeCADGui.addPreferencePage(":/ui/preferences-oca.ui","Import-Export")
                 FreeCADGui.draftToolBar.loadedPreferences = True
         Log ('Loading Arch module... done\n')
 
@@ -154,12 +114,9 @@ class ArchWorkbench(Workbench):
 
 FreeCADGui.addWorkbench(ArchWorkbench)
 
-# add import/export types
-FreeCAD.addImportType("Industry Foundation Classes (*.ifc)","importIFC")
-FreeCAD.addExportType("Industry Foundation Classes (*.ifc)","importIFC")
-FreeCAD.addExportType("Wavefront OBJ - Arch module (*.obj)","importOBJ")
-FreeCAD.addExportType("WebGL file (*.html)","importWebGL")
-FreeCAD.addImportType("Collada (*.dae)","importDAE")
-FreeCAD.addExportType("Collada (*.dae)","importDAE")
+# File format pref pages are independent and can be loaded at startup
+import Arch_rc
+FreeCADGui.addPreferencePage(":/ui/preferences-ifc.ui","Import-Export")
+FreeCADGui.addPreferencePage(":/ui/preferences-dae.ui","Import-Export")
 
 

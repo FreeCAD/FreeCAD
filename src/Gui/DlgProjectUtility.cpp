@@ -31,6 +31,7 @@
 
 #include "DlgProjectUtility.h"
 #include "Application.h"
+#include "Command.h"
 #include "ui_DlgProjectUtility.h"
 
 
@@ -108,7 +109,7 @@ std::string DlgProjectUtility::doctools =
 
 /* TRANSLATOR Gui::Dialog::DlgProjectUtility */
 
-DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WFlags fl)
+DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);
@@ -140,7 +141,7 @@ void DlgProjectUtility::on_extractButton_clicked()
     str << doctools << "\n";
     str << "extractDocument(\"" << (const char*)source.toUtf8()
         << "\", \"" << (const char*)dest.toUtf8() << "\")";
-    Application::Instance->runPythonCode(str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
 }
 
 void DlgProjectUtility::on_createButton_clicked()
@@ -162,7 +163,7 @@ void DlgProjectUtility::on_createButton_clicked()
     str << doctools << "\n";
     str << "createDocument(\"" << (const char*)source.toUtf8()
         << "\", \"" << (const char*)dest.toUtf8() << "\")";
-    Application::Instance->runPythonCode(str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
 
     if (ui->checkLoadProject->isChecked())
         Application::Instance->open((const char*)dest.toUtf8(),"FreeCAD");

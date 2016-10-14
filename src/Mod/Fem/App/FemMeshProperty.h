@@ -49,21 +49,18 @@ public:
     /// set the FemMesh shape
     void setValue(const FemMesh&);
     /// does nothing, for add property macro
-    void setValue(void){}; 
+    void setValue(void){};
     /// get the FemMesh shape
     const FemMesh &getValue(void) const;
     const Data::ComplexGeoData* getComplexData() const;
     //@}
 
- 
+
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
     void transformGeometry(const Base::Matrix4D &rclMat);
-    void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
     //@}
 
     /** @name Python interface */
@@ -82,6 +79,7 @@ public:
     App::Property *Copy(void) const;
     void Paste(const App::Property &from);
     unsigned int getMemSize (void) const;
+    const char* getEditorName(void) const { return "FemGui::PropertyFemMeshItem"; }
     //@}
 
 private:

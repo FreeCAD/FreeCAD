@@ -38,9 +38,9 @@ except AttributeError:
 
 class Fixture:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "Fixture", "Fixture Parameters", translate("Fixture Offset", "Fixture Offset Number"))
+        obj.addProperty("App::PropertyEnumeration", "Fixture", "Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Fixture Offset Number"))
         obj.Fixture=['G53','G54','G55','G56','G57','G58','G59','G59.1', 'G59.2', 'G59.3', 'G59.4', 'G59.5','G59.6','G59.7', 'G59.8', 'G59.9']
-        obj.addProperty("App::PropertyBool","Active","Sequence Parameters",translate("Active","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyBool","Active","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
 
         obj.Proxy = self
 
@@ -116,15 +116,15 @@ class _ViewProviderFixture:
 class CommandPathFixture:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Datums',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathFixture","Fixture"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Fixture","Fixture"),
                 'Accel': "P, F",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathFixture","Creates a Fixture Offset object")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Fixture","Creates a Fixture Offset object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathFixture","Create a Fixture Offset"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Fixture","Create a Fixture Offset"))
         FreeCADGui.addModule("PathScripts.PathFixture")
         snippet = '''
 import Path

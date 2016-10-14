@@ -13,36 +13,6 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>This class handles document objects in group</UserDocu>
     </Documentation>
-    <Methode Name="newObject">
-      <Documentation>
-        <UserDocu>Create and add an object with given type and name to the group</UserDocu>
-      </Documentation>
-    </Methode>
-	  <Methode Name="addObject">
-		  <Documentation>
-			  <UserDocu>Add an object to the group</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="removeObject">
-      <Documentation>
-        <UserDocu>Remove an object from the group</UserDocu>
-      </Documentation>
-    </Methode>
-	  <Methode Name="removeObjectsFromDocument">
-		  <Documentation>
-			  <UserDocu>Remove all child objects from the group and document</UserDocu>
-		  </Documentation>
-	  </Methode>
-	  <Methode Name="getObject">
-      <Documentation>
-        <UserDocu>Return the object with the given name</UserDocu>
-      </Documentation>
-    </Methode>
-    <Methode Name="hasObject">
-      <Documentation>
-        <UserDocu>Checks if the group has a given object</UserDocu>
-      </Documentation>
-    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

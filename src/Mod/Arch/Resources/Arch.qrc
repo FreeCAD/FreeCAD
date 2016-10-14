@@ -21,7 +21,9 @@
         <file>icons/Arch_SectionPlane_Tree.svg</file>
         <file>icons/Arch_Site_Tree.svg</file>
         <file>icons/Arch_Structure_Tree.svg</file>
+        <file>icons/Arch_Structure_Clone.svg</file>
         <file>icons/Arch_Window_Tree.svg</file>
+        <file>icons/Arch_Window_Clone.svg</file>
         <file>icons/Arch_Axis.svg</file>
         <file>icons/Arch_Axis_Tree.svg</file>
         <file>icons/Arch_Roof.svg</file>
@@ -44,6 +46,7 @@
         <file>icons/Arch_Panel_Tree.svg</file>
         <file>icons/Arch_Equipment.svg</file>
         <file>icons/Arch_Equipment_Tree.svg</file>
+        <file>icons/Arch_Equipment_Clone.svg</file>
         <file>icons/Arch_Survey.svg</file>
         <file>icons/Arch_3Views.svg</file>
         <file>icons/IFC.svg</file>
@@ -57,18 +60,34 @@
         <file>icons/Arch_Material.svg</file>
         <file>icons/Arch_Material_Group.svg</file>
         <file>icons/Arch_Schedule.svg</file>
+        <file>icons/ArchWorkbench.svg</file>
         <file>ui/preferences-arch.ui</file>
         <file>ui/preferences-archdefaults.ui</file>
         <file>ui/preferences-ifc.ui</file>
         <file>ui/preferences-dae.ui</file>
         <file>ui/ArchMaterial.ui</file>
         <file>ui/ArchSchedule.ui</file>
+        <file>icons/Arch_Pipe.svg</file>
+        <file>icons/Arch_Pipe_Tree.svg</file>
+        <file>icons/Arch_PipeConnector.svg</file>
+        <file>icons/Arch_ToggleSubs.svg</file>
         <file>ui/ParametersWindowDouble.svg</file>
         <file>ui/ParametersWindowSimple.svg</file>
         <file>ui/ParametersWindowFixed.svg</file>
         <file>ui/ParametersWindowStash.svg</file>
         <file>ui/ParametersDoorSimple.svg</file>
         <file>ui/ParametersDoorGlass.svg</file>
+        <file>ui/ParametersBeam.svg</file>
+        <file>ui/ParametersPillar.svg</file>
+        <file>ui/ParametersDent.svg</file>
+        <file>ui/ParametersPanel.svg</file>
+        <file>ui/ParametersSlab.svg</file>
+        <file>ui/ParametersIbeam.svg</file>
+        <file>ui/ParametersStairs.svg</file>
+        <file>ui/BimServerTaskPanel.ui</file>
+        <file>ui/GitTaskPanel.ui</file>
+        <file>ui/DialogBimServerLogin.ui</file>
+        <file>ui/DialogDisplayText.ui</file>
         <file>translations/Arch_af.qm</file>
         <file>translations/Arch_de.qm</file>
         <file>translations/Arch_fi.qm</file>
@@ -93,5 +112,7 @@
         <file>translations/Arch_ro.qm</file>
         <file>translations/Arch_pt-PT.qm</file>
         <file>translations/Arch_sr.qm</file>
+        <file>translations/Arch_el.qm</file>
+        <file>translations/Arch_sl.qm</file>
     </qresource>
 </RCC> 

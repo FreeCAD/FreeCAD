@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+42"/>
         <source>Complete</source>
-        <translation>Completado</translation>
+        <translation>Completa</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -42,7 +42,7 @@
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>Bosquejo</translation>
+        <translation>Croquis</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -57,12 +57,12 @@
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Basado en esbozo</translation>
+        <translation>Basado en croquis</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Primitives</source>
-        <translation>Primarios</translation>
+        <translation>Primitivas</translation>
     </message>
     <message>
         <source>Parametric</source>

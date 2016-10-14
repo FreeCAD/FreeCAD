@@ -116,7 +116,7 @@ TaskFemConstraintForce::TaskFemConstraintForce(ViewProviderFemConstraintForce *C
         ui->listReferences->addItem(makeRefText(Objects[i], SubElements[i]));
     if (Objects.size() > 0)
         ui->listReferences->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
-    ui->lineDirection->setText(dir.isEmpty() ? tr("") : dir);
+    ui->lineDirection->setText(dir.isEmpty() ? QString() : dir);
     ui->checkReverse->setChecked(reversed);
 
     ui->spinForce->blockSignals(false);
@@ -267,7 +267,7 @@ void TaskFemConstraintForce::onCheckReverse(const bool pressed)
 
 double TaskFemConstraintForce::getForce(void) const
 {
-    return ui->spinForce->value();
+    return ui->spinForce->value().getValue();
 }
 
 const std::string TaskFemConstraintForce::getReferences() const
@@ -342,6 +342,8 @@ void TaskDlgFemConstraintForce::open()
     if (!Gui::Command::hasPendingCommand()) {
         QString msg = QObject::tr("Constraint force");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
@@ -352,10 +354,21 @@ bool TaskDlgFemConstraintForce::accept()
 
     try {
         //Gui::Command::openCommand("FEM force constraint changed");
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %f",name.c_str(), parameterForce->getForce());
+
+        if (parameterForce->getForce()<=0)
+        {
+            QMessageBox::warning(parameter, tr("Input error"), tr("Please specify a force greater than 0"));
+            return false;
+        }
+        else
+        {
+            QByteArray num = QByteArray::number(parameterForce->getForce());
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Force = %s",name.c_str(), num.data());
+        }
 
         std::string dirname = parameterForce->getDirectionName().data();
         std::string dirobj = parameterForce->getDirectionObject().data();
+        std::string scale = "1";
 
         if (!dirname.empty()) {
             QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
@@ -367,9 +380,12 @@ bool TaskDlgFemConstraintForce::accept()
         }
 
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s", name.c_str(), parameterForce->getReverse() ? "True" : "False");
+
+        scale = parameterForce->getScale();  //OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

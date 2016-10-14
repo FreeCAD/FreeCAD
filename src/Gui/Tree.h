@@ -44,7 +44,8 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue      
+                        Blue      ,
+                        LightBlue
 };
 
 /// highlight modes for the tree items
@@ -100,6 +101,7 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onMarkRecompute();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -121,6 +123,7 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
@@ -131,7 +134,7 @@ private:
 };
 
 /** The link between the tree and a document.
- * Every document in the application gets its associated DocumentItem which controls 
+ * Every document in the application gets its associated DocumentItem which controls
  * the visibility and the functions of the document.
  * \author Jürgen Riegel
  */
@@ -185,7 +188,7 @@ private:
 };
 
 /** The link between the tree and a document object.
- * Every object in the document gets its associated DocumentObjectItem which controls 
+ * Every object in the document gets its associated DocumentObjectItem which controls
  * the visibility and the functions of the object.
  * @author Werner Mayer
  */

@@ -147,7 +147,7 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~CheckListDialog();
 
   void setCheckableItems( const QStringList& items );
@@ -191,6 +191,9 @@ public:
     void setModal(bool);
     bool isModal() const;
 
+    void setAutoChangeColor(bool);
+    bool autoChangeColor() const;
+
 public Q_SLOTS:
     void onChooseColor();
 
@@ -225,7 +228,7 @@ class GuiExport UrlLabel : public QLabel
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WFlags f = 0 );
+  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
   virtual ~UrlLabel();
 
   QString url() const;
@@ -397,6 +400,7 @@ public:
 public Q_SLOTS:
     virtual void setText(const QString &);
     virtual void setButtonText (const QString &);
+    virtual void validateText (const QString &);
 
 Q_SIGNALS:
     void textChanged(const QString &);

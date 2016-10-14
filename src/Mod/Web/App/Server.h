@@ -29,9 +29,36 @@
 #include <QEvent>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <CXX/Objects.hxx>
 
 
 namespace Web {
+
+class Firewall
+{
+public:
+    Firewall();
+    virtual ~Firewall();
+    virtual bool filter(const QByteArray&) const = 0;
+
+public:
+    static Firewall* getInstance();
+    static void setInstance(Firewall*);
+
+private:
+    static Firewall* instance;
+};
+
+class FirewallPython : public Firewall
+{
+public:
+    FirewallPython(const Py::Object&);
+    virtual ~FirewallPython();
+    virtual bool filter(const QByteArray&) const;
+
+private:
+    Py::Object obj;
+};
 
 class ServerEvent : public QEvent
 {

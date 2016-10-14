@@ -59,7 +59,7 @@ public:
         {
             QPainter p(&img);
             p.setPen(Qt::white);
-            p.drawText(200,200,QString::fromAscii("Render to QImage"));
+            p.drawText(200,200,QString::fromLatin1("Render to QImage"));
         }
 
         img = QGLWidget::convertToGLFormat(img);
@@ -70,7 +70,7 @@ public:
         {
             QPainter p(fbo);
             p.setPen(Qt::white);
-            p.drawText(200,200,QString::fromAscii("Render to QGLFramebufferObject"));
+            p.drawText(200,200,QString::fromLatin1("Render to QGLFramebufferObject"));
             p.end();
             //img = fbo->toImage();
             //img = QGLWidget::convertToGLFormat(img);
@@ -201,7 +201,7 @@ void initializeGL()
     glDepthFunc(GL_LESS);
 }
 
-void resizeGL(int width, int height)
+void resizeGL(int /*width*/, int /*height*/)
 {
 #if 0
     fbObject->bind();
@@ -498,7 +498,7 @@ void DrawingPlane::terminate()
     SoGLRenderAction a(SbViewportRegion(128,128));
     a.apply(_pcView3D->getSoRenderManager()->getSceneGraph());
     fbo->release();
-    fbo->toImage().save(QString::fromAscii("C:/Temp/DrawingPlane.png"));
+    fbo->toImage().save(QString::fromLatin1("C:/Temp/DrawingPlane.png"));
     delete fbo;
 }
 
@@ -588,7 +588,7 @@ int DrawingPlane::mouseButtonEvent(const SoMouseButtonEvent * const e, const QPo
     return Continue;
 }
 
-int DrawingPlane::locationEvent(const SoLocation2Event * const e, const QPoint& pos)
+int DrawingPlane::locationEvent(const SoLocation2Event * const, const QPoint& pos)
 {
     if (scribbling) {
         drawLineTo(pos);
@@ -610,7 +610,7 @@ int DrawingPlane::locationEvent(const SoLocation2Event * const e, const QPoint& 
     return Continue;
 }
 
-int DrawingPlane::keyboardEvent( const SoKeyboardEvent * const e )
+int DrawingPlane::keyboardEvent(const SoKeyboardEvent * const)
 {
     return Continue;
 }

@@ -44,8 +44,8 @@ App::Color calcColor(double value,double min, double max)
     if (max < 0) max = 0;
     if (min > 0) min = 0;
 
-    if (value < min) 
-        return App::Color (0.0,0.0,1.0);    
+    if (value < min)
+        return App::Color (0.0,0.0,1.0);
     if (value > max)
         return App::Color (1.0,0.0,0.0);
     if (value == 0.0)
@@ -164,7 +164,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
         //this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
         this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeIds,NodeColors);
         Base::Console().Log("    %f: Finish ViewProviderFemMeshPy::setNodeColor() call \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-	}
+    }
 }
 
 Py::Dict ViewProviderFemMeshPy::getElementColor(void) const
@@ -186,7 +186,7 @@ void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
             NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
         }
         this->getViewProviderFemMeshPtr()->setColorByElementId(NodeColorMap);
-	}
+    }
 }
 
 Py::Dict ViewProviderFemMeshPy::getNodeDisplacement(void) const
@@ -212,7 +212,7 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
             }
         }
         this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(NodeDispMap);
-	}
+    }
 }
 
 Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
@@ -224,7 +224,7 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>
         (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
     std::set<long> res;
@@ -281,7 +281,7 @@ PyObject *ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 
 int ViewProviderFemMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

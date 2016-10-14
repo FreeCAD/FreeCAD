@@ -89,21 +89,27 @@ bool ViewProviderFemConstraintPressure::setEdit(int ModNum)
     }
 }
 
-#define ARROWLENGTH 5
-#define ARROWHEADRADIUS 3
+#define ARROWLENGTH (4)
+#define ARROWHEADRADIUS (ARROWLENGTH/3)
+//#define USE_MULTIPLE_COPY //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
 
 void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(this->getObject());
+    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
+#ifdef USE_MULTIPLE_COPY
+    //OvG: always need access to cp for scaling
+    SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
-        SoMultipleCopy* cp = new SoMultipleCopy();
         cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createArrow(ARROWLENGTH, ARROWHEADRADIUS));
+        cp->addChild((SoNode*)createArrow(scaledlength , scaledheadradius)); //OvG: Scaling
         pShapeSep->addChild(cp);
     }
+#endif
 
     if (strcmp(prop->getName(),"Points") == 0) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
@@ -113,29 +119,43 @@ void ViewProviderFemConstraintPressure::updateData(const App::Property* prop)
         }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
-        SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
+#ifdef USE_MULTIPLE_COPY
+        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0)); //OvG: Use top cp
         cp->matrix.setNum(points.size());
         SbMatrix* matrices = cp->matrix.startEditing();
         int idx = 0;
+#else
+        // Redraw all arrows
+        pShapeSep->removeAllChildren();
+#endif
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             SbVec3f dir(n->x, n->y, n->z);
             double rev;
             if (pcConstraint->Reversed.getValue()) {
-                base = base + dir * ARROWLENGTH;
+                base = base + dir * scaledlength; //OvG: Scaling
                 rev = 1;
             } else {
                 rev = -1;
             }
             SbRotation rot(SbVec3f(0, rev, 0), dir);
+#ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
             matrices[idx] = m;
             idx++;
+#else
+            SoSeparator* sep = new SoSeparator();
+            createPlacement(sep, base, rot);
+            createArrow(sep, scaledlength , scaledheadradius); //OvG: Scaling
+            pShapeSep->addChild(sep);
+#endif
             n++;
         }
+#ifdef USE_MULTIPLE_COPY
         cp->matrix.finishEditing();
+#endif
     }
 
     ViewProviderFemConstraint::updateData(prop);

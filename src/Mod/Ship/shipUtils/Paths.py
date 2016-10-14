@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *  
+#*   Copyright (c) 2011, 2016                                              *  
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *

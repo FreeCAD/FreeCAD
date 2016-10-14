@@ -131,9 +131,9 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
   //SoLineWidthElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker1);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
     const SoCoordinateElement * coords;
@@ -146,7 +146,7 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     this->getVertexData(state, coords, normals, cindices, nindices,
-        tindices, mindices, numcindices, FALSE, normalCacheUsed);
+        tindices, mindices, numcindices, false, normalCacheUsed);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
@@ -174,9 +174,9 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
   //SoLineWidthElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker2);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
     const SoCoordinateElement * coords;
@@ -189,7 +189,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     this->getVertexData(state, coords, normals, cindices, nindices,
-        tindices, mindices, numcindices, FALSE, normalCacheUsed);
+        tindices, mindices, numcindices, false, normalCacheUsed);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material

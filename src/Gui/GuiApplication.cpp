@@ -54,14 +54,13 @@
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Interpreter.h>
 
 #include <App/Application.h>
 
 using namespace Gui;
 
-GUIApplication::GUIApplication(int & argc, char ** argv, int exitcode)
-    : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
+GUIApplication::GUIApplication(int & argc, char ** argv)
+    : GUIApplicationNativeEventAware(argc, argv)
 {
 }
 
@@ -71,9 +70,10 @@ GUIApplication::~GUIApplication()
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
-    if (!receiver && event) {
+    if (!receiver) {
         Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
             (int)event->type());
+        return false;
     }
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
@@ -82,8 +82,9 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         else
             return QApplication::notify(receiver, event);
     }
-    catch (const Base::SystemExitException&) {
-        qApp->exit(systemExit);
+    catch (const Base::SystemExitException &e) {
+        caughtException.reset(new Base::SystemExitException(e));
+        qApp->exit(e.getExitCode());
         return true;
     }
     catch (const Base::Exception& e) {
@@ -225,8 +226,8 @@ public:
     bool running;
 };
 
-GUISingleApplication::GUISingleApplication(int & argc, char ** argv, int exitcode)
-    : GUIApplication(argc, argv, exitcode),
+GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
+    : GUIApplication(argc, argv),
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();

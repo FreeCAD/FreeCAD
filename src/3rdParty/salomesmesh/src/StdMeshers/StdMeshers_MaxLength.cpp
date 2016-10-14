@@ -1,27 +1,26 @@
-//  SMESH SMESH : implementaion of SMESH idl descriptions
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS 
-// 
-//  This library is free software; you can redistribute it and/or 
-//  modify it under the terms of the GNU Lesser General Public 
-//  License as published by the Free Software Foundation; either 
-//  version 2.1 of the License. 
-// 
-//  This library is distributed in the hope that it will be useful, 
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of 
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU 
-//  Lesser General Public License for more details. 
-// 
-//  You should have received a copy of the GNU Lesser General Public 
-//  License along with this library; if not, write to the Free Software 
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA 
-// 
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+//
 // See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
+//  SMESH SMESH : implementaion of SMESH idl descriptions
 //  File   : StdMeshers_MaxLength.cxx
 //  Module : SMESH
-
+//
 #include "StdMeshers_MaxLength.hxx"
 
 #include "SMESH_Mesh.hxx"
@@ -74,10 +73,10 @@ StdMeshers_MaxLength::~StdMeshers_MaxLength()
  */
 //=============================================================================
 
-void StdMeshers_MaxLength::SetLength(double length) throw(SMESH_Exception)
+void StdMeshers_MaxLength::SetLength(double length) throw(SALOME_Exception)
 {
   if (length <= 0)
-    throw SMESH_Exception(LOCALIZED("length must be positive"));
+    throw SALOME_Exception(LOCALIZED("length must be positive"));
   if ( _length != length ) {
     _length = length;
     NotifySubMeshesHypothesisModification();
@@ -159,20 +158,20 @@ istream & StdMeshers_MaxLength::LoadFrom(istream & load)
   bool isOK = true;
   double a;
 
-  isOK = !(load >> a).bad();
+  isOK = (bool)(load >> a);
   if (isOK)
     _length = a;
   else
     load.clear(ios::badbit | load.rdstate());
 
-  isOK = !(load >> a).bad();
+  isOK = (bool)(load >> a);
   if (isOK)
     _preestimated = a;
   else
     load.clear(ios::badbit | load.rdstate());
 
   bool pre;
-  isOK = !(load >> pre).bad();
+  isOK = (bool)(load >> pre);
   if ( isOK )
     _preestimation = pre;
   else
@@ -208,7 +207,7 @@ bool StdMeshers_MaxLength::SetParametersByMesh(const SMESH_Mesh*   theMesh,
   {
     const TopoDS_Edge& edge = TopoDS::Edge( edgeMap( iE ));
     Handle(Geom_Curve) C = BRep_Tool::Curve( edge, L, UMin, UMax );
-    GeomAdaptor_Curve AdaptCurve(C);
+    GeomAdaptor_Curve AdaptCurve(C, UMin, UMax);
 
     vector< double > params;
     SMESHDS_Mesh* aMeshDS = const_cast< SMESH_Mesh* >( theMesh )->GetMeshDS();

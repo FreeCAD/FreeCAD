@@ -55,7 +55,7 @@ public:
 
 private:
   bool initialized;
-  std::auto_ptr<WorkbenchHelper> workbenchHelper;
+  std::unique_ptr<WorkbenchHelper> workbenchHelper;
 
 protected:
   Gui::MenuItem *setupMenuBar() const;

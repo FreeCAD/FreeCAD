@@ -29,8 +29,8 @@
 # include <climits>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
-# include <Handle_TDocStd_Document.hxx>
-# include <Handle_XCAFApp_Application.hxx>
+# include <TDocStd_Document.hxx>
+# include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
@@ -97,7 +97,8 @@ void ImportOCAF::loadShapes()
     loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
 }
 
-void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef)
+void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
+                            const std::string& defaultname, const std::string& /*assembly*/, bool isRef)
 {
     int hash = 0;
     TopoDS_Shape aShape;

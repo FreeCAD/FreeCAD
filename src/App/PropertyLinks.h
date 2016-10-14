@@ -98,6 +98,59 @@ protected:
     App::DocumentObject *_pcLink;
 };
 
+class AppExport PropertyLinkList : public PropertyLists
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+    * A constructor.
+    * A more elaborate description of the constructor.
+    */
+    PropertyLinkList();
+
+    /**
+    * A destructor.
+    * A more elaborate description of the destructor.
+    */
+    virtual ~PropertyLinkList();
+
+    virtual void setSize(int newSize);
+    virtual int getSize(void) const;
+
+    /** Sets the property
+    */
+    void setValue(DocumentObject*);
+    void setValues(const std::vector<DocumentObject*>&);
+
+    /// index operator
+    DocumentObject* operator[] (const int idx) const {
+        return _lValueList.operator[] (idx);
+    }
+
+
+    void  set1Value(const int idx, DocumentObject* value) {
+        _lValueList.operator[] (idx) = value;
+    }
+
+    const std::vector<DocumentObject*> &getValues(void) const {
+        return _lValueList;
+    }
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save(Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    virtual unsigned int getMemSize(void) const;
+
+private:
+    std::vector<DocumentObject*> _lValueList;
+};
 
 /** the Link Poperty with sub elements
  *  This property links a object and a defined sequence of
@@ -166,65 +219,12 @@ protected:
 
 };
 
-class AppExport PropertyLinkList: public PropertyLists
-{
-    TYPESYSTEM_HEADER();
-
-public:
-    /**
-     * A constructor.
-     * A more elaborate description of the constructor.
-     */
-    PropertyLinkList();
-
-    /**
-     * A destructor.
-     * A more elaborate description of the destructor.
-     */
-    virtual ~PropertyLinkList();
-
-    virtual void setSize(int newSize);
-    virtual int getSize(void) const;
-
-    /** Sets the property
-     */
-    void setValue(DocumentObject*);
-    void setValues(const std::vector<DocumentObject*>&);
-
-    /// index operator
-    DocumentObject* operator[] (const int idx) const {
-        return _lValueList.operator[] (idx);
-    }
-
-
-    void  set1Value (const int idx, DocumentObject* value) {
-        _lValueList.operator[] (idx) = value;
-    }
-
-    const std::vector<DocumentObject*> &getValues(void) const {
-        return _lValueList;
-    }
-
-    virtual PyObject *getPyObject(void);
-    virtual void setPyObject(PyObject *);
-
-    virtual void Save (Base::Writer &writer) const;
-    virtual void Restore(Base::XMLReader &reader);
-
-    virtual Property *Copy(void) const;
-    virtual void Paste(const Property &from);
-
-    virtual unsigned int getMemSize (void) const;
-
-private:
-    std::vector<DocumentObject*> _lValueList;
-};
-
 class AppExport PropertyLinkSubList: public PropertyLists
 {
     TYPESYSTEM_HEADER();
 
 public:
+    typedef std::pair<DocumentObject*, std::vector<std::string> > SubSet;
     /**
      * A constructor.
      * A more elaborate description of the constructor.
@@ -237,34 +237,42 @@ public:
      */
     virtual ~PropertyLinkSubList();
 
-    struct SubSet {
-        SubSet(DocumentObject*o,const char*s):obj(o),sub(s){}
-        SubSet(DocumentObject*o,const std::string &s):obj(o),sub(s.c_str()){}
-        DocumentObject* obj;
-        const char*     sub;
-    };
-
     virtual void setSize(int newSize);
     virtual int getSize(void) const;
 
-    /** Sets the property
+    /** Sets the property.
+     * setValue(0, whatever) clears the property
      */
     void setValue(DocumentObject*,const char*);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<const char*>&);
     void setValues(const std::vector<DocumentObject*>&,const std::vector<std::string>&);
 
-    // index operator
-    SubSet operator[] (const int idx) const {
-        return SubSet(_lValueList.operator[] (idx),_lSubList.operator [](idx));
-    }
+    /**
+     * @brief setValue: PropertyLinkSub-compatible overload
+     * @param SubList
+     */
+    void setValue(App::DocumentObject *lValue, const std::vector<std::string> &SubList=std::vector<std::string>());
 
     const std::vector<DocumentObject*> &getValues(void) const {
         return _lValueList;
     }
 
+    const std::string getPyReprString();
+
+    /**
+     * @brief getValue emulates the action of a single-object link.
+     * @return reference to object, if the link os to only one object. NULL if
+     * the link is empty, or links to subelements of more than one documant
+     * object.
+     */
+    DocumentObject* getValue() const;
+
     const std::vector<std::string> &getSubValues(void) const {
         return _lSubList;
     }
+
+    void setSubListValues(const std::vector<SubSet>&);
+    std::vector<SubSet> getSubListValues() const;
 
     virtual PyObject *getPyObject(void);
     virtual void setPyObject(PyObject *);
@@ -278,6 +286,7 @@ public:
     virtual unsigned int getMemSize (void) const;
 
 private:
+    //FIXME: Do not make two independent lists because this will lead to some inconsistencies!
     std::vector<DocumentObject*> _lValueList;
     std::vector<std::string>     _lSubList;
 };

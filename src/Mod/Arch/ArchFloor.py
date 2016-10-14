@@ -1,3 +1,5 @@
+# -*- coding: utf8 -*-
+
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2011                                                    *
@@ -26,8 +28,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Arch Floor"
@@ -50,43 +55,56 @@ class _CommandFloor:
     "the Arch Cell command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
                 'Accel': "F, L",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
         sel = FreeCADGui.Selection.getSelection()
-        ok = False
-        if (len(sel) == 1):
-            if Draft.getType(sel[0]) in ["Cell","Site","Building"]:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Type conversion"))
-                FreeCADGui.addModule("Arch")
-                FreeCADGui.doCommand("obj = Arch.makeFloor()")
-                FreeCADGui.doCommand("Arch.copyProperties(FreeCAD.ActiveDocument."+sel[0].Name+",obj)")
-                FreeCADGui.doCommand('FreeCAD.ActiveDocument.removeObject("'+sel[0].Name+'")')
-                FreeCAD.ActiveDocument.commitTransaction()
-                ok = True
-        if not ok:
-            ss = "["
-            for o in sel:
-                if len(ss) > 1:
-                    ss += ","
-                ss += "FreeCAD.ActiveDocument."+o.Name
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        link = p.GetBool("FreeLinking",False)
+        floorobj = []
+        warning = False
+        for obj in sel :
+            if not Draft.getType(obj) in ["Site", "Building"] :
+                floorobj.append(obj)
+            else :
+                if link == True :
+                    floorobj.append(obj)
+                else:
+                    warning = True
+        if warning :
+            message = translate( "Arch" , "You can put anything but Site, Building, Floor object in a Floor object.\n\
+Floor object are not allowed to accept Site or Building object.\n\
+Site, Building and Floor objects will be removed from the selection.\n\
+You can change that in the preferences.\n" )
+            ArchCommands.printMessage( message )
+        if sel and len(floorobj) == 0:
+            message = translate( "Arch" , "There is no valid object in the selection.\n\
+Floor creation aborted.\n" )
+            ArchCommands.printMessage( message )
+        else :
+            ss = "[ "
+            for o in floorobj:
+                ss += "FreeCAD.ActiveDocument." + o.Name + ", "
             ss += "]"
-            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Floor"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
             FreeCADGui.addModule("Arch")
             FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
             FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
+            FreeCAD.ActiveDocument.recompute()
 
 class _Floor:
     "The Floor object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The height of this floor"))
-        obj.addProperty("App::PropertyPlacement","Placement","Arch",translate("Arch","The placement of this group"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        obj.addProperty("App::PropertyArea","Area", "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+        if not hasattr(obj,"Placement"):
+            # obj can be a Part Feature and already has a placement
+            obj.addProperty("App::PropertyPlacement","Placement","Arch",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj
@@ -97,6 +115,19 @@ class _Floor:
     def __setstate__(self,state):
         if state:
             self.Type = state
+            
+    def onChanged(self,obj,prop):
+        if not hasattr(self,"Object"):
+            # on restore, self.Object is not there anymore
+            self.Object = obj
+        if (prop == "Group") and hasattr(obj,"Area"):
+            a = 0
+            for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Space"):
+                if hasattr(o,"Area"):
+                    if hasattr(o.Area,"Value"):
+                        a += o.Area.Value
+                        if obj.Area.Value != a:
+                            obj.Area = a
 
     def execute(self,obj):
         # move children with this floor

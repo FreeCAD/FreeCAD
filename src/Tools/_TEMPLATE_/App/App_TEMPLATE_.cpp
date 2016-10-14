@@ -49,8 +49,7 @@ private:
 
 
 /* Python entry */
-extern "C" {
-void _TEMPLATE_AppExport init_TEMPLATE_() {
+PyMODINIT_FUNC init_TEMPLATE_() {
 
     // ADD YOUR CODE HERE
     //
@@ -58,5 +57,3 @@ void _TEMPLATE_AppExport init_TEMPLATE_() {
     new _TEMPLATE_::Module();
     Base::Console().Log("Loading _TEMPLATE_ module... done\n");
 }
-
-} // extern "C"

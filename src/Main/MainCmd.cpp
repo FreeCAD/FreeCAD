@@ -122,14 +122,30 @@ int main( int argc, char ** argv )
     }
 
     // Run phase ===========================================================
-    Application::runApplication();
-
+    try {
+        Application::runApplication();
+    }
+    catch (const Base::SystemExitException &e) {
+        exit(e.getExitCode());
+    }
+    catch (const Base::Exception& e) {
+        e.ReportException();
+        exit(1);
+    }
+    catch (...) {
+        Console().Error("Application unexpectedly terminated\n");
+        exit(1);
+    }
 
     // Destruction phase ===========================================================
     Console().Log("FreeCAD terminating...\n");
 
-    // close open documents
-    App::GetApplication().closeAllDocuments();
+    try {
+        // close open documents
+        App::GetApplication().closeAllDocuments();
+    }
+    catch(...) {
+    }
 
     // cleans up
     Application::destruct();

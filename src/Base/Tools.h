@@ -137,6 +137,7 @@ public:
     ~StopWatch();
 
     void start();
+    int restart();
     int elapsed();
     std::string toString(int ms) const;
 
@@ -155,6 +156,7 @@ struct BaseExport Tools
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
     static std::string escapedUnicodeFromUtf8(const char *s);
+    static std::string escapedUnicodeToUtf8(const std::string& s);
 
     /**
      * @brief toStdString Convert a QString into a UTF-8 encoded std::string.

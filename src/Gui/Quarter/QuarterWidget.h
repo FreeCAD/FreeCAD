@@ -124,7 +124,7 @@ public:
   QColor backgroundColor(void) const;
 
   void resetNavigationModeFile(void);
-  void setNavigationModeFile(const QUrl & url = QUrl(QString::fromAscii(DEFAULT_NAVIGATIONFILE)));
+  void setNavigationModeFile(const QUrl & url = QUrl(QString::fromLatin1(DEFAULT_NAVIGATIONFILE)));
   const QUrl & navigationModeFile(void) const;
 
   void setContextMenuEnabled(bool yes);

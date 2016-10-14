@@ -28,11 +28,23 @@
 
 
 #include <stdio.h>
+#if defined(FC_OS_BSD)
+#include <sys/time.h>
+#else
 #include <sys/timeb.h>
+#endif
 #include <time.h>
 
 #ifdef __GNUC__
 # include <stdint.h>
+#endif
+
+#if defined(FC_OS_BSD)
+struct timeb
+{
+    int64_t time;
+    unsigned short millitm;
+};
 #endif
 
 namespace Base

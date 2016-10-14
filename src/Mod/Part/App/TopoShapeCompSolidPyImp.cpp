@@ -65,7 +65,7 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeSolidPy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 if (!sh.IsNull())
                     builder.Add(Comp, sh);
             }
@@ -77,7 +77,7 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    getTopoShapePtr()->_Shape = Comp;
+    getTopoShapePtr()->setShape(Comp);
     return 0;
 }
 
@@ -88,11 +88,11 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
         return NULL;
 
     BRep_Builder builder;
-    TopoDS_Shape& comp = getTopoShapePtr()->_Shape;
+    TopoDS_Shape comp = getTopoShapePtr()->getShape();
     
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
-            getTopoShapePtr()->_Shape;
+            getTopoShapePtr()->getShape();
         if (!sh.IsNull())
             builder.Add(comp, sh);
         else
@@ -103,6 +103,8 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+
+    getTopoShapePtr()->setShape(comp);
 
     Py_Return;
 }

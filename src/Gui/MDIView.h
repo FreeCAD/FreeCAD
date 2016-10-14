@@ -26,10 +26,16 @@
 
 #include "View.h"
 #include <QMainWindow>
+#include "ActiveObjectList.h"
+
+QT_BEGIN_NAMESPACE
+class QPrinter;
+QT_END_NAMESPACE
 
 namespace Gui 
 {
 class Document;
+class ViewProviderDocumentObject;
 
 /** Base class of all windows belonging to a document.
  * There are two ways of belonging to a document:
@@ -56,7 +62,7 @@ public:
      * the view will attach to the active document. Be aware, there isn't
      * always an active document.
      */
-    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WFlags wflags=0);
+    MDIView(Gui::Document* pcDocument, QWidget* parent, Qt::WindowFlags wflags=0);
     /** View destructor
      * Detach the view from the document, if attached.
      */
@@ -104,6 +110,22 @@ public:
     virtual void setCurrentViewMode(ViewMode mode);
     ViewMode currentViewMode() const { return currentMode; }
 
+
+    /// access getter for the active object list
+    template<typename _T>
+    inline _T getActiveObject(const char* name) const
+    {
+        return ActiveObjects.getObject<_T>(name);
+    }
+    void setActiveObject(App::DocumentObject*o, const char*n)
+    {
+        ActiveObjects.setObject(o, n);
+    }
+    bool hasActiveObject(const char*n) const
+    {
+        return ActiveObjects.hasObject(n);
+    }
+
 public Q_SLOTS:
     virtual void setOverrideCursor(const QCursor&);
     virtual void restoreOverrideCursor();
@@ -126,6 +148,10 @@ protected:
 private:
     ViewMode currentMode;
     Qt::WindowStates wstate;
+    // list of active objects of this view
+    ActiveObjectList ActiveObjects;
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectDelObject; //remove active object upon delete.
 };
 
 } // namespace Gui

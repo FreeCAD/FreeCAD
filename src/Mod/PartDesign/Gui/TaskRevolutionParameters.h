@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderRevolution.h"
 
 class Ui_TaskRevolutionParameters;
@@ -44,72 +45,76 @@ namespace PartDesignGui {
 
 
 
-class TaskRevolutionParameters : public Gui::TaskView::TaskBox
+class TaskRevolutionParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskRevolutionParameters(ViewProviderRevolution *RevolutionView,QWidget *parent = 0);
+    TaskRevolutionParameters(ViewProvider* RevolutionView,QWidget *parent = 0);
     ~TaskRevolutionParameters();
 
-    void apply();
+    virtual void apply() override;
+
+    /**
+     * @brief fillAxisCombo fills the combo and selects the item according to
+     * current value of revolution object's axis reference.
+     * @param forceRefill if true, the combo box will be completely refilled. If
+     * false, the current value of revolution object's axis will be added to the
+     * list (if necessary), and selected. If the list is empty, it will be refilled anyway.
+     */
+    void fillAxisCombo(bool forceRefill = false);
+    void addAxisToCombo(App::DocumentObject *linkObj, std::string linkSubname, QString itemText);
 
 private Q_SLOTS:
     void onAngleChanged(double);
     void onAxisChanged(int);
     void onMidplane(bool);
     void onReversed(bool);
-    void onUpdateView(bool);
 
 protected:
-    void changeEvent(QEvent *e);
-    const bool updateView() const;
-    QString getReferenceAxis(void) const;
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
+    void changeEvent(QEvent *e) override;
+    bool updateView() const;
+    void getReferenceAxis(App::DocumentObject *&obj, std::vector<std::string> &sub) const;
     double getAngle(void) const;
     bool getMidplane(void) const;
     bool getReversed(void) const;
 
+    //mirrors of revolution's or groove's properties
+    //should have been done by inheriting revolution and groove from common class...
+    App::PropertyAngle* propAngle;
+    App::PropertyBool* propReversed;
+    App::PropertyBool* propMidPlane;
+    App::PropertyLinkSub* propReferenceAxis;
+
 private:
+    void updateUI();
 
 private:
     QWidget* proxy;
-    Ui_TaskRevolutionParameters* ui;
-    ViewProviderRevolution *RevolutionView;
+    Ui_TaskRevolutionParameters* ui;    
+
+    /**
+     * @brief axesInList is the list of links corresponding to axis combo; must
+     * be kept in sync with the combo. A special value of zero-pointer link is
+     * for "Select axis" item.
+     *
+     * It is a list of pointers, because properties prohibit assignment. Use new
+     * when adding stuff, and delete when removing stuff.
+     */
+    std::vector<App::PropertyLinkSub*> axesInList;
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgRevolutionParameters : public Gui::TaskView::TaskDialog
+class TaskDlgRevolutionParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskDlgRevolutionParameters(ViewProviderRevolution *RevolutionView);
-    ~TaskDlgRevolutionParameters();
+    TaskDlgRevolutionParameters(PartDesignGui::ViewProvider *RevolutionView);
 
-    ViewProviderRevolution* getRevolutionView() const
-    { return RevolutionView; }
-
-
-public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
-
-protected:
-    ViewProviderRevolution   *RevolutionView;
-
-    TaskRevolutionParameters  *parameter;
+    ViewProvider* getRevolutionView() const
+    { return vp; }
 };
 
 } //namespace PartDesignGui

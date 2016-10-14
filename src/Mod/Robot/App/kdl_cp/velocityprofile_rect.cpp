@@ -118,9 +118,8 @@ double VelocityProfile_Rectangular::Vel(double time) const {
     }
 }
 
-double VelocityProfile_Rectangular::Acc(double time) const {
+double VelocityProfile_Rectangular::Acc(double /*time*/) const {
 	throw Error_MotionPlanning_Incompatible();
-	return 0;
 }
 
 

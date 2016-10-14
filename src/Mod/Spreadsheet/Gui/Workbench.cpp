@@ -37,10 +37,11 @@
 #include <QToolBar>
 #include "qtcolorpicker.h"
 #include "Mod/Spreadsheet/App/Sheet.h"
-#include "Mod/Spreadsheet/App/Range.h"
+#include <App/Range.h>
 #include "Mod/Spreadsheet/Gui/SpreadsheetView.h"
 
 using namespace Base;
+using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 
@@ -65,7 +66,7 @@ Workbench::~Workbench()
 void Workbench::activated()
 {
     if (!initialized) {
-        QList<QToolBar*> bars = Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromAscii("Spreadsheet"));
+        QList<QToolBar*> bars = Gui::getMainWindow()->findChildren<QToolBar*>(QString::fromLatin1("Spreadsheet"));
 
         if (bars.size() == 1) {
             QToolBar * bar = bars[0];
@@ -73,24 +74,24 @@ void Workbench::activated()
             QtColorPicker * backgroundColor;
             QPalette palette = Gui::getMainWindow()->palette();
 
-            QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_ForegroundColor"));
+            QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
             if (fgList.size() > 0)
                 foregroundColor = fgList[0];
             else {
                 foregroundColor = new QtColorPicker();
-                foregroundColor->setObjectName(QString::fromAscii("Spreadsheet_ForegroundColor"));
+                foregroundColor->setObjectName(QString::fromLatin1("Spreadsheet_ForegroundColor"));
                 foregroundColor->setStandardColors();
                 foregroundColor->setCurrentColor(palette.color(QPalette::Foreground));
                 QObject::connect(foregroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setForegroundColor(QColor)));
             }
             bar->addWidget(foregroundColor);
 
-            QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_BackgroundColor"));
+            QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
             if (bgList.size() > 0)
                 backgroundColor = bgList[0];
             else {
                 backgroundColor = new QtColorPicker();
-                backgroundColor->setObjectName(QString::fromAscii("Spreadsheet_BackgroundColor"));
+                backgroundColor->setObjectName(QString::fromLatin1("Spreadsheet_BackgroundColor"));
                 backgroundColor->setStandardColors();
                 backgroundColor->setCurrentColor(palette.color(QPalette::Base));
                 QObject::connect(backgroundColor, SIGNAL(colorSet(QColor)), workbenchHelper.get(), SLOT(setBackgroundColor(QColor)));

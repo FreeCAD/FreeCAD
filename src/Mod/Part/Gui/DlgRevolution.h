@@ -31,31 +31,52 @@
 namespace PartGui {
 
 class Ui_DlgRevolution;
-class DlgRevolution : public Gui::LocationDialog, public Gui::SelectionObserver
+class DlgRevolution : public QDialog, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    DlgRevolution(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgRevolution(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgRevolution();
     void accept();
 
     Base::Vector3d getDirection() const;
+    Base::Vector3d getPosition() const;
+    void getAxisLink(App::PropertyLinkSub &lnk) const;
+    double getAngle() const;
+
+    void setDirection(Base::Vector3d dir);
+    void setPosition(Base::Vector3d dir);
+    void setAxisLink(const App::PropertyLinkSub &lnk);
+    void setAxisLink(const char* objname, const char* subname);
+
+    std::vector<App::DocumentObject*> getShapesToRevolve() const;
+
+    bool validate();
 
 protected:
     void changeEvent(QEvent *e);
 
 private Q_SLOTS:
     void on_selectLine_clicked();
+    void on_btnX_clicked();
+    void on_btnY_clicked();
+    void on_btnZ_clicked();
+    void on_txtAxisLink_textChanged(QString);
 
 private:
     void findShapes();
-    void directionActivated(int);
     void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+    ///returns link to any of selected source shapes. Throws if nothing is selected for extrusion.
+    App::DocumentObject& getShapeToRevolve() const;
+
+    ///automatically checks Solid checkbox depending on input shape
+    void autoSolid();
+
 private:
-    typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
-    Ui_RevolutionComp* ui;
+    //typedef Gui::LocationInterfaceComp<Ui_DlgRevolution> Ui_RevolutionComp;
+    Ui_DlgRevolution* ui;
     class EdgeSelection;
     EdgeSelection* filter;
 };

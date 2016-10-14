@@ -142,20 +142,15 @@ public:
 
 private:
     /** Checks if a new document was created */
-    virtual void slotCreatedDocument(const App::Document& Doc)
-        {}
+    virtual void slotCreatedDocument(const App::Document& Doc);
     /** Checks if the given document is about to be closed */
-    virtual void slotDeletedDocument(const App::Document& Doc)
-        {}
+    virtual void slotDeletedDocument(const App::Document& Doc);
     /** Checks if a new object was added. */
-    virtual void slotCreatedObject(const App::DocumentObject& Obj)
-        {}
+    virtual void slotCreatedObject(const App::DocumentObject& Obj);
     /** Checks if the given object is about to be removed. */
-    virtual void slotDeletedObject(const App::DocumentObject& Obj)
-        {}
+    virtual void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
-    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
-        {}
+    virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
 
 protected:
     Document* getDocument() const;
@@ -202,7 +197,11 @@ private:
     virtual void slotDeletedObject(const App::DocumentObject& Obj);
     /** The property of an observed object has changed */
     virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
-    virtual void cancelObservation() = 0;
+    /** This method gets called when all observed objects are deleted or the whole document is deleted.
+      * This method can be re-implemented to perform an extra step like closing a dialog tht observes
+      * a document.
+      */
+    virtual void cancelObservation();
 
 private:
     std::set<App::DocumentObject*> _objects;

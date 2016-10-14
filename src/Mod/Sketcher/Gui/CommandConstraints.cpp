@@ -68,7 +68,7 @@ bool isCreateConstraintActive(Gui::Document *doc)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            if (dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
+            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
                 ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
                 if (Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) > 0)
                     return true;
@@ -124,14 +124,7 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
         }
 
         // e.g. an angle or a distance X or Y applied on a line or two vertexes
-        if (Constr->Type == Sketcher::Angle ||
-            ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-             (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef)))
-            // hide negative sign
-            init_val.setValue(std::abs(datum));
-
-        else // show negative sign
-            init_val.setValue(datum);
+        init_val.setValue(datum);
 
         ui_ins_datum.labelEdit->setValue(init_val);
         ui_ins_datum.labelEdit->selectNumber();
@@ -145,15 +138,6 @@ void openEditDatumDialog(Sketcher::SketchObject* sketch, int ConstrNbr)
                 ui_ins_datum.labelEdit->pushToHistory();
 
                 double newDatum = newQuant.getValue();
-                if (Constr->Type == Sketcher::Angle ||
-                    ((Constr->Type == Sketcher::DistanceX || Constr->Type == Sketcher::DistanceY) &&
-                     (Constr->FirstPos == Sketcher::none || Constr->Second != Sketcher::Constraint::GeoUndef))) {
-                    // Permit negative values to flip the sign of the constraint
-                    if (newDatum >= 0) // keep the old sign
-                        newDatum = ((datum >= 0) ? 1 : -1) * std::abs(newDatum);
-                    else // flip sign
-                        newDatum = ((datum >= 0) ? -1 : 1) * std::abs(newDatum);
-                }
 
                 try {
                     if (ui_ins_datum.labelEdit->hasExpression())
@@ -223,7 +207,7 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
     Gui::Document *doc = cmd->getActiveGuiDocument();
     float sf = 1.f;
     if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-        SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
         sf = vp->getScaleFactor();
 
         constr->LabelDistance = 2. * sf;
@@ -518,11 +502,11 @@ int SketchSelection::setUp(void)
             return -1;
         }
 
-        SketchObj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
         SketchSubNames = selection[0].getSubNames();
     } else if(selection.size() == 2) {
         if(selection[0].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())){
-            SketchObj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+            SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
             if(selection[1].getObject() != SketchObj->Support.getValue()){
                 ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
@@ -534,7 +518,7 @@ int SketchSelection::setUp(void)
             SupportSubNames = selection[1].getSubNames();
 
         } else if (selection[1].getObject()->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-            SketchObj = dynamic_cast<Sketcher::SketchObject*>(selection[1].getObject());
+            SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
             if(selection[0].getObject() != SketchObj->Support.getValue()){
                 ErrorMsg = QObject::tr("Only sketch and its support is allowed to select");
@@ -577,6 +561,7 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
 
 void CmdSketcherConstrainHorizontal::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -589,7 +574,7 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
     std::vector<int> ids;
@@ -674,6 +659,7 @@ CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
 
 void CmdSketcherConstrainVertical::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -686,7 +672,7 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
     const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
      std::vector<int> ids;
@@ -770,6 +756,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
 
 void CmdSketcherConstrainLock::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -782,7 +769,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -838,10 +825,12 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_ConstrainLock"));
         break;
     }
 }
@@ -870,6 +859,7 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
 
 void CmdSketcherConstrainCoincident::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -882,7 +872,7 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -962,6 +952,7 @@ CmdSketcherConstrainDistance::CmdSketcherConstrainDistance()
 
 void CmdSketcherConstrainDistance::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -974,7 +965,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1044,7 +1035,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         const Part::Geometry *geom = Obj->getGeometry(GeoId2);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
+            lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             Base::Vector3d pnt1 = lineSeg->getStartPoint();
             Base::Vector3d pnt2 = lineSeg->getEndPoint();
             Base::Vector3d d = pnt2-pnt1;
@@ -1078,7 +1069,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         const Part::Geometry *geom = Obj->getGeometry(GeoId1);
         if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
+            lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             double ActLength = (lineSeg->getEndPoint()-lineSeg->getStartPoint()).Length();
 
             openCommand("add length constraint");
@@ -1109,10 +1100,12 @@ void CmdSketcherConstrainDistance::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Length"));
         break;
     }
 }
@@ -1141,6 +1134,7 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
 
 void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1153,7 +1147,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     //count curves and points
     std::vector<SelIdPair> points;
@@ -1227,6 +1221,7 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
 
 void CmdSketcherConstrainDistanceX::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1239,7 +1234,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1267,11 +1262,34 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
         PosId1 = Sketcher::start;
     }
 
+    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
+        if (GeoId1 < 0 && GeoId1 >= -2) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                            QObject::tr("Cannot add a horizontal length constraint on an axis!"));
+            return;
+        }
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            //convert to as if two endpoints of the line have been selected
+            PosId1 = Sketcher::start;
+            GeoId2 = GeoId1;
+            PosId2 = Sketcher::end;
+        }
+    }
     if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point horizontal distance
 
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.x-pnt1.x;
+
+        //negative sign avoidance: swap the points to make value positive
+        if (ActLength < -Precision::Confusion()) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+            std::swap(pnt1, pnt2);
+            ActLength = -ActLength;
+        }
 
         openCommand("add point to point horizontal distance constraint");
         Gui::Command::doCommand(
@@ -1289,38 +1307,6 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             finishDistanceConstraint(this, Obj,true);
 
         return;
-    }
-    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
-
-        if (GeoId1 < 0 && GeoId1 >= -2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("Cannot add a horizontal length constraint on an axis!"));
-            return;
-        }
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
-            double ActLength = lineSeg->getEndPoint().x-lineSeg->getStartPoint().x;
-
-            openCommand("add horizontal length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,ActLength);
-
-            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
-                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
-                finishDistanceConstraint(this, Obj,false);
-            }
-            else
-                finishDistanceConstraint(this, Obj,true);
-            
-            return;
-        }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed x-coordinate
 
@@ -1360,10 +1346,12 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_HorizontalDistance"));
         break;
     }
 }
@@ -1392,6 +1380,7 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
 
 void CmdSketcherConstrainDistanceY::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1404,7 +1393,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1430,11 +1419,35 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     else if (GeoId1 == -1 && PosId1 == Sketcher::none)
         PosId1 = Sketcher::start;
 
+    if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
+        if (GeoId1 < 0 && GeoId1 >= -2) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                        QObject::tr("Cannot add a vertical length constraint on an axis!"));
+            return;
+        }
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            //convert to as if two endpoints of the line have been selected
+            PosId1 = Sketcher::start;
+            GeoId2 = GeoId1;
+            PosId2 = Sketcher::end;
+        }
+    }
+
     if (isVertex(GeoId1,PosId1) && isVertex(GeoId2,PosId2)) { // point to point vertical distance
 
         Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
         double ActLength = pnt2.y-pnt1.y;
+
+        //negative sign avoidance: swap the points to make value positive
+        if (ActLength < -Precision::Confusion()) {
+            std::swap(GeoId1,GeoId2);
+            std::swap(PosId1,PosId2);
+            std::swap(pnt1, pnt2);
+            ActLength = -ActLength;
+        }
 
         openCommand("add point to point vertical distance constraint");
         Gui::Command::doCommand(
@@ -1452,38 +1465,6 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             finishDistanceConstraint(this, Obj,true);
         
         return;
-    }
-    else if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
-
-        if (GeoId1 < 0 && GeoId1 >= -2) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                        QObject::tr("Cannot add a vertical length constraint on an axis!"));
-            return;
-        }
-
-        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *lineSeg;
-            lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
-            double ActLength = lineSeg->getEndPoint().y-lineSeg->getStartPoint().y;
-
-            openCommand("add vertical length constraint");
-            Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%f)) ",
-                selection[0].getFeatName(),GeoId1,ActLength);
-
-            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
-                const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
-                
-                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
-                selection[0].getFeatName(),ConStr.size()-1,"False");
-                finishDistanceConstraint(this, Obj,false);
-            }
-            else
-                finishDistanceConstraint(this, Obj,true);
-            
-            return;
-        }
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed y-coordinate
 
@@ -1523,10 +1504,12 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
         break;
     }
 }
@@ -1555,6 +1538,7 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
 
 void CmdSketcherConstrainParallel::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -1567,7 +1551,7 @@ void CmdSketcherConstrainParallel::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
 
@@ -1654,6 +1638,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
 
 void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strBasicHelp =
             QObject::tr(
              "There is a number of ways this constraint can be applied.\n\n"
@@ -1677,7 +1662,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
     Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-    if (SubNames.size() != 2 && SubNames.size() != 3) {
+    if (!Obj || (SubNames.size() != 2 && SubNames.size() != 3)) {
         strError = QObject::tr("Wrong number of selected objects!","perpendicular constraint");
         if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -1966,6 +1951,7 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
 
 void CmdSketcherConstrainTangent::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strBasicHelp =
             QObject::tr(
              "There is a number of ways this constraint can be applied.\n\n"
@@ -1988,7 +1974,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 2 && SubNames.size() != 3){
         strError = QObject::tr("Wrong number of selected objects!","tangent constraint");
@@ -2230,6 +2216,7 @@ CmdSketcherConstrainRadius::CmdSketcherConstrainRadius()
 
 void CmdSketcherConstrainRadius::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -2242,7 +2229,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2259,12 +2246,12 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
             const Part::Geometry *geom = Obj->getGeometry(GeoId);
             if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
                 double radius = arc->getRadius();
                 geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
             else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
-                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geom);
+                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
                 double radius = circle->getRadius();
                 geoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
@@ -2273,12 +2260,12 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
             int GeoId = -std::atoi(it->substr(12,4000).c_str()) - 2;
             const Part::Geometry *geom = Obj->getGeometry(GeoId);
             if (geom && geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>(geom);
+                const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>(geom);
                 double radius = arc->getRadius();
                 externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
             else if (geom && geom->getTypeId() == Part::GeomCircle::getClassTypeId()) { 
-                const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>(geom);
+                const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geom);
                 double radius = circle->getRadius();
                 externalGeoIdRadiusMap.push_back(std::make_pair(GeoId, radius));
             }
@@ -2321,7 +2308,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         Gui::Document *doc = getActiveGuiDocument();
         float sf = 1.f;
         if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             sf = vp->getScaleFactor();
 
             for (std::size_t i=0; i<externalGeoIdRadiusMap.size();i++) {
@@ -2399,7 +2386,7 @@ void CmdSketcherConstrainRadius::activated(int iMsg)
         Gui::Document *doc = getActiveGuiDocument();
         float sf = 1.f;
         if (doc && doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
-            SketcherGui::ViewProviderSketch *vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+            SketcherGui::ViewProviderSketch *vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
             sf = vp->getScaleFactor();
 
             for (std::size_t i=0; i<geoIdRadiusMap.size();i++) {
@@ -2519,10 +2506,12 @@ void CmdSketcherConstrainRadius::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_Radius"));
         break;
     }
 }
@@ -2551,6 +2540,7 @@ CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
 
 void CmdSketcherConstrainAngle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     //TODO: comprehensive messages, like in CmdSketcherConstrainTangent
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -2564,7 +2554,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() < 1 || SubNames.size() > 3) {
         //goto ExitWithMessage;
@@ -2623,6 +2613,13 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             Base::Vector3d p = Obj->getPoint(GeoId3, PosId3 );
             ActAngle = Obj->calculateAngleViaPoint(GeoId1,GeoId2,p.x,p.y);
 
+            //negative constraint value avoidance
+            if (ActAngle < -Precision::Angular()){
+                std::swap(GeoId1, GeoId2);
+                std::swap(PosId1, PosId2);
+                ActAngle = -ActAngle;
+            }
+
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('AngleViaPoint',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,GeoId2,GeoId3,PosId3,ActAngle);
@@ -2655,8 +2652,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
             if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId() &&
                 geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                const Part::GeomLineSegment *lineSeg1 = dynamic_cast<const Part::GeomLineSegment*>(geom1);
-                const Part::GeomLineSegment *lineSeg2 = dynamic_cast<const Part::GeomLineSegment*>(geom2);
+                const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
+                const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
 
                 // find the two closest line ends
                 Sketcher::PointPos PosId1,PosId2;
@@ -2727,7 +2724,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             const Part::Geometry *geom = Obj->getGeometry(GeoId1);
             if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                 const Part::GeomLineSegment *lineSeg;
-                lineSeg = dynamic_cast<const Part::GeomLineSegment*>(geom);
+                lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
                 Base::Vector3d dir = lineSeg->getEndPoint()-lineSeg->getStartPoint();
                 double ActAngle = atan2(dir.y,dir.x);
 
@@ -2750,7 +2747,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
             }
             else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                 const Part::GeomArcOfCircle *arc;
-                arc = dynamic_cast<const Part::GeomArcOfCircle*>(geom);
+                arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 double startangle, endangle;
                 arc->getRange(startangle, endangle, /*EmulateCCWXY=*/true);
                 double angle = endangle - startangle;
@@ -2784,10 +2781,12 @@ void CmdSketcherConstrainAngle::updateAction(int mode)
 {
     switch (mode) {
     case Reference:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle_Driven"));
         break;
     case Driving:
-        getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_InternalAngle"));
         break;
     }
 }
@@ -2815,6 +2814,7 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
 
 void CmdSketcherConstrainEqual::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -2827,7 +2827,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
 
@@ -2934,9 +2934,9 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
@@ -2948,6 +2948,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     if (SubNames.size() != 3 && SubNames.size() != 2) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
@@ -2962,7 +2963,7 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
     if (SubNames.size() == 2) {
-        checkBothExternal(GeoId1, GeoId2);
+        //checkBothExternal(GeoId1, GeoId2);
         if (isVertex(GeoId1,PosId1) && isEdge(GeoId2,PosId2)) {
             std::swap(GeoId1,GeoId2);
             std::swap(PosId1,PosId2);
@@ -3104,6 +3105,7 @@ CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
 
 void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString strHelp = QObject::tr("Select two endpoints of lines to act as rays, and"
                                   " an edge representing a boundary. The first"
                                   " selected point corresponds to index n1, second"
@@ -3116,7 +3118,7 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
     try{
         // get the selection
         std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-        Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
         // only one sketch with its subelements are allowed to be selected
         if (selection.size() != 1) {
@@ -3252,6 +3254,7 @@ CmdSketcherConstrainInternalAlignment::CmdSketcherConstrainInternalAlignment()
 
 void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -3264,7 +3267,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
 
     // get the needed lists and objects
     const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
     // go through the selected subelements
     if (SubNames.size() < 2) {
@@ -3685,6 +3688,7 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
 
 void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool modeChange=true;
 
     std::vector<Gui::SelectionObject> selection;

@@ -32,7 +32,7 @@
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Surface.hxx>
+# include <Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
@@ -54,14 +54,19 @@ using namespace PartDesign;
 
 const char* Pocket::TypeEnums[]= {"Length","ThroughAll","UpToFirst","UpToFace",NULL};
 
-PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::Subtractive)
+PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::ProfileBased)
 
 Pocket::Pocket()
 {
+    addSubType = FeatureAddSub::Subtractive;
+    
     ADD_PROPERTY_TYPE(Type,((long)0),"Pocket",App::Prop_None,"Pocket type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length,(100.0),"Pocket",App::Prop_None,"Pocket length");
     ADD_PROPERTY_TYPE(UpToFace,(0),"Pocket",App::Prop_None,"Face where pocket will end");
+    ADD_PROPERTY_TYPE(Offset,(0.0),"Pocket",App::Prop_None,"Offset from face in which pocket will end");
+    static const App::PropertyQuantityConstraint::Constraints signedLengthConstraint = {-DBL_MAX, DBL_MAX, 1.0};
+    Offset.setConstraints ( &signedLengthConstraint );
 }
 
 short Pocket::mustExecute() const
@@ -69,9 +74,10 @@ short Pocket::mustExecute() const
     if (Placement.isTouched() ||
         Type.isTouched() ||
         Length.isTouched() ||
+        Offset.isTouched() ||
         UpToFace.isTouched())
         return 1;
-    return Subtractive::mustExecute();
+    return ProfileBased::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Pocket::execute(void)
@@ -87,93 +93,104 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
     if ((std::string(Type.getValueAsString()) == "Length") && (L < Precision::Confusion()))
         return new App::DocumentObjectExecReturn("Pocket: Length of pocket too small");
 
-    Part::Part2DObject* sketch = 0;
-    std::vector<TopoDS_Wire> wires;
-    TopoDS_Shape support;
+    Part::Feature* obj = 0;
+    TopoDS_Shape profileshape;
     try {
-        sketch = getVerifiedSketch();
-        wires = getSketchWires();
-        support = getSupportShape();
+        obj = getVerifiedObject();
+        profileshape = getVerifiedFace();
     } catch (const Base::Exception& e) {
         return new App::DocumentObjectExecReturn(e.what());
     }
 
+    // if the Base property has a valid shape, fuse the prism into it
+    TopoDS_Shape base;
+    try {
+        base = getBaseShape();
+    } catch (const Base::Exception&) {
+        return new App::DocumentObjectExecReturn("No sketch support and no base shape: Please tell me where to remove the material of the pocket!");
+    }
+
     // get the Sketch plane
-    Base::Placement SketchPos = sketch->Placement.getValue();
-    Base::Rotation SketchOrientation = SketchPos.getRotation();
-    Base::Vector3d SketchVector(0,0,1);
-    SketchOrientation.multVec(SketchVector,SketchVector);
+    Base::Placement SketchPos    = obj->Placement.getValue(); 
+    Base::Vector3d  SketchVector = getProfileNormal();
 
     // turn around for pockets
     SketchVector *= -1;
 
-    this->positionBySketch();
-    TopLoc_Location invObjLoc = this->getLocation().Inverted();
-
     try {
-        support.Move(invObjLoc);
+        this->positionByPrevious();
+        TopLoc_Location invObjLoc = this->getLocation().Inverted();
+
+        base.Move(invObjLoc);
 
         gp_Dir dir(SketchVector.x,SketchVector.y,SketchVector.z);
         dir.Transform(invObjLoc.Transformation());
 
-        TopoDS_Shape sketchshape = makeFace(wires);
-        if (sketchshape.IsNull())
+        if (profileshape.IsNull())
             return new App::DocumentObjectExecReturn("Pocket: Creating a face from sketch failed");
-        sketchshape.Move(invObjLoc);
+        profileshape.Move(invObjLoc);
 
         std::string method(Type.getValueAsString());
         if (method == "UpToFirst" || method == "UpToFace") {
+            if (base.IsNull())
+                return new App::DocumentObjectExecReturn("Pocket: Extruding up to a face is only possible if the sketch is located on a face");
+
+            // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
 
-            // Find a valid face to extrude up to
+            if (Reversed.getValue())
+                dir.Reverse();
+
+            // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
             if (method == "UpToFace") {
                 getUpToFaceFromLinkSub(upToFace, UpToFace);
                 upToFace.Move(invObjLoc);
             }
-            getUpToFace(upToFace, support, supportface, sketchshape, method, dir);
+            getUpToFace(upToFace, base, supportface, profileshape, method, dir, Offset.getValue());
 
-            // #0001655: When 'supportshape' consists of several faces BRepFeat_MakePrism uses only the first face.
-            // Thus, we have to iterate over the faces and use the algorithm for each of them.
-            TopoDS_Shape prism = support;
-            for (TopExp_Explorer xp(sketchshape, TopAbs_FACE); xp.More(); xp.Next()) {
-                // Special treatment because often the created stand-alone prism is invalid (empty) because
-                // BRepFeat_MakePrism(..., 2, 1) is buggy
-                BRepFeat_MakePrism PrismMaker;
-                PrismMaker.Init(prism, xp.Current(), supportface, dir, 0, 1);
-                PrismMaker.Perform(upToFace);
+            // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
+            // prism that is being created is contained completely inside the base solid
+            // In this case the resulting shape is empty. This is not a problem for the Pad or Pocket itself
+            // but it leads to an invalid SubShape
+            // The bug only occurs when the upToFace is limited (by a wire), not for unlimited upToFace. But
+            // other problems occur with unlimited concave upToFace so it is not an option to always unlimit upToFace
+            // Check supportface for limits, otherwise Perform() throws an exception
+            TopExp_Explorer Ex(supportface,TopAbs_WIRE);
+            if (!Ex.More())
+                supportface = TopoDS_Face();
+            BRepFeat_MakePrism PrismMaker;
+            PrismMaker.Init(base, profileshape, supportface, dir, 0, 1);
+            PrismMaker.Perform(upToFace);
 
-                if (!PrismMaker.IsDone())
-                    return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
-                prism = PrismMaker.Shape();
-            }
-
-            prism = refineShapeIfActive(prism);
+            if (!PrismMaker.IsDone())
+                return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not extrude the sketch!");
+            TopoDS_Shape prism = PrismMaker.Shape();
 
             // And the really expensive way to get the SubShape...
-            BRepAlgoAPI_Cut mkCut(support, prism);
+            BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
             TopoDS_Shape result = refineShapeIfActive(mkCut.Shape());
-            this->SubShape.setValue(result);
-            this->Shape.setValue(prism);
+            this->AddSubShape.setValue(result);
+            this->Shape.setValue(getSolid(prism));
         } else {
             TopoDS_Shape prism;
-            generatePrism(prism, sketchshape, method, dir, L, 0.0,
+            generatePrism(prism, profileshape, method, dir, L, 0.0,
                           Midplane.getValue(), Reversed.getValue());
             if (prism.IsNull())
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is empty");
 
             // set the subtractive shape property for later usage in e.g. pattern
             prism = refineShapeIfActive(prism);
-            this->SubShape.setValue(prism);
+            this->AddSubShape.setValue(prism);
 
-            // Cut the SubShape out of the support
-            BRepAlgoAPI_Cut mkCut(support, prism);
+            // Cut the SubShape out of the base feature
+            BRepAlgoAPI_Cut mkCut(base, prism);
             if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn("Pocket: Cut out of support failed");
+                return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
             TopoDS_Shape result = mkCut.Shape();
             // we have to get the solids (fuse sometimes creates compounds)
             TopoDS_Shape solRes = this->getSolid(result);
@@ -181,7 +198,7 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
                 return new App::DocumentObjectExecReturn("Pocket: Resulting shape is not a solid");
             solRes = refineShapeIfActive(solRes);
             remapSupportShape(solRes);
-            this->Shape.setValue(solRes);
+            this->Shape.setValue(getSolid(solRes));
         }
 
         return App::DocumentObject::StdReturn;

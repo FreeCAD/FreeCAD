@@ -49,7 +49,7 @@ namespace Fem{
     class FemAnalysis;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 class ViewProviderFemMesh;
 

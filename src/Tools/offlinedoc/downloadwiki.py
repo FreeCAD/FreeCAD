@@ -52,7 +52,7 @@ defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet
 css = """/* Basic CSS for offline wiki rendering */
 
 body {
-  font-family: Arial,Helvetica,sans-serif;
+  font-family: Fira Sans,Arial,Helvetica,sans-serif;
   font-size: 14px;
   text-align: justify;
   background: #fff;
@@ -69,8 +69,8 @@ h1 {
   
 h2 {
   font-weight: normal;
-  color: #888;
-  font-size: 2em;
+  font-size: 1.6em;
+  border-bottom: 1px solid #ddd;
   }
   
 h3 {
@@ -96,7 +96,7 @@ pre, .mw-code {
 a:link, a:visited {
   font-weight: bold;
   text-decoration: none;
-  color: #0084FF;
+  color: #2969C4;
   }
 
 a:hover {
@@ -128,6 +128,9 @@ a:hover {
   margin-left: 15px;
   padding: 10px;
   }
+#mw-navigation {
+  display:none; /*TODO remove on next build (included below)*/
+ }
 """
 
 def crawl():
@@ -162,9 +165,14 @@ def crawl():
 
 def get(page):
     "downloads a single page, returns the other pages it links to"
+    localpage = page
+    if "Command_Reference" in localpage:
+        localpage = localpage.replace("Category:","")
+        localpage = localpage.replace("&pagefrom=","+")
+        localpage = localpage.replace("#mw-pages","")
     if page[-4:] in [".png",".jpg",".svg",".gif","jpeg",".PNG",".JPG"]:
         fetchimage(page)
-    elif not exists(page):
+    elif not exists(localpage):
         html = fetchpage(page)
         html = cleanhtml(html)
         pages = getlinks(html)
@@ -183,14 +191,15 @@ def getlinks(html):
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
         if rg:
             rg = rg[0]
-            if "#" in rg:
-                rg = rg.split('#')[0]
-            if ":" in rg:
-                NORETRIEVE.append(rg)
-            if ";" in rg:
-                NORETRIEVE.append(rg)
-            if "&" in rg:
-                NORETRIEVE.append(rg)
+            if not "Command_Reference" in rg:
+                if "#" in rg:
+                    rg = rg.split('#')[0]
+                if ":" in rg:
+                    NORETRIEVE.append(rg)
+                if ";" in rg:
+                    NORETRIEVE.append(rg)
+                if "&" in rg:
+                    NORETRIEVE.append(rg)
             if "/" in rg:
                 if not GETTRANSLATIONS:
                     NORETRIEVE.append(rg)
@@ -217,6 +226,7 @@ def cleanhtml(html):
     html = re.compile('<div class="NavHead.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
+    html = re.compile('<div id="mw-navigation.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<table id="toc.*?</table>').sub('',html) # removing toc
     html = re.compile('width=\"100%\" style=\"float: right; width: 230px; margin-left: 1em\"').sub('',html) # removing command box styling
     html = re.compile('<div class="docnav.*?</div>Wlinebreak</div>').sub('',html) # removing docnav
@@ -237,6 +247,11 @@ def cleanlinks(html, pages=None):
         else:
             output = 'href="' + page.replace("/","-") + '.html"'
         html = re.compile('href="[^"]+' + page + '"').sub(output,html)
+        if "Command_Reference" in output:
+            html = html.replace("Category:","")
+            html = html.replace("&amp;pagefrom=","+")
+            html = html.replace("#mw-pages",".html")
+            html = html.replace("/wiki/index.php?title=Command_Reference","Command_Reference")
     return html
 
 def cleanimagelinks(html,links=None):
@@ -315,6 +330,11 @@ def output(html,page):
     footer = "</body></html>"
     html = header+html+footer
     filename = local(page.replace("/","-"))
+    if "Command_Reference" in filename:
+        filename = filename.replace("Category:","")
+        filename = filename.replace("&pagefrom=","+")
+        filename = filename.replace("#mw-pages","")
+        filename = filename.replace(".html.html",".html")
     print "    saving",filename
     file = open(filename,'wb')
     file.write(html)

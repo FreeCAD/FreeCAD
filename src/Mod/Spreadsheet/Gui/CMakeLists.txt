@@ -40,7 +40,6 @@ SET(SpreadsheetGui_RES_SRCS
     Resources/Spreadsheet.qrc
 )
 
-#fc_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
 qt4_add_resources(SpreadsheetGui_QRC_SRCS ${SpreadsheetGui_RES_SRCS})
 
 set(SpreadsheetGui_UIC_SRCS
@@ -52,9 +51,8 @@ qt4_wrap_ui(SpreadsheetGui_UIC_HDRS ${SpreadsheetGui_UIC_SRCS})
 
 SET(SpreadsheetGui_SRCS
 #   ${SpreadsheetGui_MOC_SRCS}
-#    ${SpreadsheetGui_QRC_SRCS}
+    ${SpreadsheetGui_QRC_SRCS}
     AppSpreadsheetGui.cpp
-    AppSpreadsheetGuiPy.cpp
     Command.cpp
     LineEdit.h
     LineEdit.cpp
@@ -92,3 +90,11 @@ SET_BIN_DIR(SpreadsheetGui SpreadsheetGui /Mod/Spreadsheet)
 SET_PYTHON_PREFIX_SUFFIX(SpreadsheetGui)
 
 INSTALL(TARGETS SpreadsheetGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(SpreadsheetGuiIcon_SVG
+    Resources/icons/SpreadsheetWorkbench.svg
+)
+
+fc_copy_sources(SpreadsheetGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet" ${SpreadsheetGuiIcon_SVG})
+
+INSTALL(FILES ${SpreadsheetGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Spreadsheet/Resources/icons")

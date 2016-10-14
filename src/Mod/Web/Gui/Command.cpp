@@ -58,6 +58,7 @@ CmdWebOpenWebsite::CmdWebOpenWebsite()
 
 void CmdWebOpenWebsite::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Doc,"import WebGui");
     doCommand(Command::Gui,"WebGui.openBrowser('http://www.freecadweb.org/')");
 }
@@ -82,6 +83,7 @@ CmdWebBrowserBack::CmdWebBrowserBack()
 
 void CmdWebBrowserBack::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Back')");
 }
 
@@ -110,6 +112,7 @@ CmdWebBrowserNext::CmdWebBrowserNext()
 
 void CmdWebBrowserNext::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Next')");
 }
 
@@ -138,6 +141,7 @@ CmdWebBrowserRefresh::CmdWebBrowserRefresh()
 
 void CmdWebBrowserRefresh::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Refresh')");
 }
 
@@ -166,6 +170,7 @@ CmdWebBrowserStop::CmdWebBrowserStop()
 
 void CmdWebBrowserStop::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('Stop')");
 }
 
@@ -194,6 +199,7 @@ CmdWebBrowserZoomIn::CmdWebBrowserZoomIn()
 
 void CmdWebBrowserZoomIn::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('ZoomIn')");
 }
 
@@ -222,6 +228,7 @@ CmdWebBrowserZoomOut::CmdWebBrowserZoomOut()
 
 void CmdWebBrowserZoomOut::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.SendMsgToActiveView('ZoomOut')");
 }
 

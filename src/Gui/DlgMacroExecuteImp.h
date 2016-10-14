@@ -40,7 +40,7 @@ class DlgMacroExecuteImp : public QDialog, public Ui_DlgMacroExecute, public Gui
     Q_OBJECT
 
 public:
-    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgMacroExecuteImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgMacroExecuteImp();
 
     void accept();
@@ -52,7 +52,9 @@ public Q_SLOTS:
     void on_editButton_clicked();
 
 protected Q_SLOTS:
-    void on_macroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_userMacroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_systemMacroListBox_currentItemChanged(QTreeWidgetItem*);
+    void on_tabMacroWidget_currentChanged(int index);
 
 protected:
     void fillUpList(void);

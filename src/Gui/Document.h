@@ -35,6 +35,7 @@
 
 #include "Tree.h"
 
+class SoNode;
 class SoPath;
 
 namespace Base {
@@ -51,12 +52,14 @@ class ViewProvider;
 class ViewProviderDocumentObject;
 class Application;
 class DocumentPy;
+class TransactionViewProvider;
+enum  HighlightMode;
 
 /** The Gui Document
  *  This is the document on GUI level. Its main responsibility is keeping
  *  track off open windows for a document and warning on unsaved closes.
  *  All handled views on the document must inherit from MDIView
- *  @see App::Document 
+ *  @see App::Document
  *  @see MDIView
  *  @author Jürgen Riegel
  */
@@ -74,12 +77,16 @@ protected:
     void slotDeletedObject(const App::DocumentObject&);
     void slotChangedObject(const App::DocumentObject&, const App::Property&);
     void slotRelabelObject(const App::DocumentObject&);
+    void slotTransactionAppend(const App::DocumentObject&, App::Transaction*);
+    void slotTransactionRemove(const App::DocumentObject&, App::Transaction*);
     void slotActivatedObject(const App::DocumentObject&);
     void slotStartRestoreDocument(const App::Document&);
     void slotFinishRestoreDocument(const App::Document&);
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     //@}
+
+    void addViewProvider(Gui::ViewProviderDocumentObject*);
 
 public:
     /** @name Signals of the document */
@@ -141,7 +148,7 @@ public:
     void setModified(bool);
     bool isModified() const;
 
-    /// Getter for the App Document 
+    /// Getter for the App Document
     App::Document*  getDocument(void) const;
 
     /** @name methods for View handling */
@@ -150,9 +157,10 @@ public:
     Gui::MDIView* getActiveView(void) const;
     Gui::MDIView* getEditingViewOfViewProvider(Gui::ViewProvider*) const;
     Gui::MDIView* getViewOfViewProvider(Gui::ViewProvider*) const;
+    Gui::MDIView* getViewOfNode(SoNode*) const;
     /// Create a new view
     void createView(const Base::Type& typeId);
-    /** send messages to the active view 
+    /** send messages to the active view
      * Send a specific massage to the active view and is able to recive a
      * return massage
      */
@@ -167,7 +175,7 @@ public:
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv=false);
     /// Detach a view (get called by the MDIView destructor)
-    void detachView(Gui::BaseView* pcView, bool bPassiv=false);
+    void detachView(Gui::BaseView* pcView, bool bPassiv=false); 
     /// helper for selection
     ViewProvider* getViewProviderByPathFromTail(SoPath * path) const;
     /// call update on all attached views
@@ -239,6 +247,9 @@ protected:
     Gui::DocumentPy *_pcDocPy;
 
 private:
+    //handles the scene graph nodes to correctly group child and parents
+    void handleChildren3D(ViewProvider* viewProvider);
+
     struct DocumentP* d;
     static int _iDocCount;
 
@@ -250,6 +261,8 @@ private:
     /// redo names list
     std::list<std::string> listRedoNames;
     //@}
+
+    friend class TransactionViewProvider;
 };
 
 } // namespace Gui

@@ -39,7 +39,8 @@ def makeInvoluteGear(name):
     '''makeInvoluteGear(name): makes an InvoluteGear'''
     obj = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",name)
     _InvoluteGear(obj)
-    _ViewProviderInvoluteGear(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderInvoluteGear(obj.ViewObject)
     #FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -93,6 +94,7 @@ class _InvoluteGear:
             involute.CreateInternalGear(w, obj.Modules.Value,obj.NumberOfTeeth, obj.PressureAngle.Value, obj.HighPrecision)
         gearw = Part.Wire([o.toShape() for o in w.wire])
         obj.Shape = gearw
+        obj.positionBySupport();
         return
         
         
@@ -243,5 +245,5 @@ class _InvoluteGearTaskPanel:
         FreeCADGui.ActiveDocument.resetEdit()
 
 
-         
-FreeCADGui.addCommand('PartDesign_InvoluteGear',_CommandInvoluteGear())
+if FreeCAD.GuiUp:
+    FreeCADGui.addCommand('PartDesign_InvoluteGear',_CommandInvoluteGear())

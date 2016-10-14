@@ -77,7 +77,7 @@ namespace PartGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -161,7 +161,7 @@ public:
 
         return false;
     }
-    void addFacesToSelection(Gui::View3DInventorViewer* viewer,
+    void addFacesToSelection(Gui::View3DInventorViewer* /*viewer*/,
                              const Gui::ViewVolumeProjection& proj,
                              const Base::Polygon2D& polygon,
                              const TopoDS_Shape& shape)
@@ -221,7 +221,7 @@ public:
         Gui::View3DInventorViewer* view  = reinterpret_cast<Gui::View3DInventorViewer*>(cb->getUserData());
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), selectionCallback, ud);
         SoNode* root = view->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
         std::vector<SbVec2f> picked = view->getGLPolygon();
         SoCamera* cam = view->getSoRenderManager()->getCamera();
@@ -257,6 +257,7 @@ public:
 FaceColors::FaceColors(ViewProviderPartExt* vp, QWidget* parent)
   : d(new Private(vp))
 {
+    Q_UNUSED(parent);
     d->ui->setupUi(this);
     d->ui->groupBox->setTitle(QString::fromUtf8(vp->getObject()->Label.getValue()));
     d->ui->colorButton->setDisabled(true);
@@ -277,7 +278,7 @@ FaceColors::~FaceColors()
         d->view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
             Private::selectionCallback, this);
         SoNode* root = d->view->getSceneGraph();
-        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(TRUE);
+        static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
     }
     Gui::Selection().rmvSelectionGate();
     d->connectDelDoc.disconnect();
@@ -308,7 +309,7 @@ void FaceColors::on_boxSelection_clicked()
             // avoid that the selection node handles the event otherwise the callback function won't be
             // called immediately
             SoNode* root = viewer->getSceneGraph();
-            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(FALSE);
+            static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(false);
             d->view = viewer;
         }
     }
@@ -369,14 +370,14 @@ void FaceColors::onSelectionChanged(const Gui::SelectionChanges& msg)
     }
 
     if (selection_changed) {
-        QString faces = QString::fromAscii("[");
+        QString faces = QString::fromLatin1("[");
         int size = d->index.size();
         for (QSet<int>::iterator it = d->index.begin(); it != d->index.end(); ++it) {
             faces += QString::number(*it + 1);
             if (--size > 0)
-                faces += QString::fromAscii(",");
+                faces += QString::fromLatin1(",");
         }
-        faces += QString::fromAscii("]");
+        faces += QString::fromLatin1("]");
         d->ui->labelElement->setText(faces);
         d->ui->colorButton->setDisabled(d->index.isEmpty());
     }

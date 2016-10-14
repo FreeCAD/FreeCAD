@@ -68,8 +68,8 @@ SoPolygon::SoPolygon()
 
     SO_NODE_ADD_FIELD(startIndex, (0));
     SO_NODE_ADD_FIELD(numVertices, (0));
-    SO_NODE_ADD_FIELD(highlight, (FALSE));
-    SO_NODE_ADD_FIELD(render, (TRUE));
+    SO_NODE_ADD_FIELD(highlight, (false));
+    SO_NODE_ADD_FIELD(render, (true));
 }
 
 /**
@@ -86,7 +86,7 @@ void SoPolygon::GLRender(SoGLRenderAction *action)
         if (!points) return;
 
         SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoTextureCoordinateBundle tb(action, true, false);
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
         mb.sendFirst();  // make sure we have the correct material
 
@@ -134,7 +134,7 @@ SoPolygon::rayPick(SoRayPickAction * action)
     inherited::rayPick(action);
 }
 
-void SoPolygon::generatePrimitives(SoAction* action)
+void SoPolygon::generatePrimitives(SoAction* /*action*/)
 {
 }
 

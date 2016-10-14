@@ -169,31 +169,31 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
     return std::string(ConvertFromWideString(std::wstring(buf)));
 #else
-    char buf[PATH_MAX+1];
+    std::string buf;
 
     // Path where the file is located
     if (Path)
-        std::strncpy(buf, Path, PATH_MAX);
+        buf = Path;
     else
-        std::strncpy(buf, getTempPath().c_str(), PATH_MAX);
-
-    buf[PATH_MAX] = 0; // null termination needed
+        buf = getTempPath();
 
     // File name in the path 
     if (FileName) {
-        std::strcat(buf, "/");
-        std::strcat(buf, FileName);
-        std::strcat(buf, "XXXXXX");
+        buf += "/";
+        buf += FileName;
+        buf += "XXXXXX";
     }
-    else
-        std::strcat(buf, "/fileXXXXXX");
+    else {
+        buf += "/fileXXXXXX";
+    }
 
-    int id = mkstemp(buf);
+    int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
         fclose(file);
+        unlink(buf.c_str());
     }
-    return std::string(buf);
+    return buf;
 #endif
 }
 
@@ -225,7 +225,24 @@ std::string FileInfo::fileName () const
 
 std::string FileInfo::dirPath () const
 {
-    return FileName.substr(0,FileName.find_last_of('/'));
+    std::size_t last_pos;
+    std::string retval;
+    last_pos = FileName.find_last_of('/');
+    if (last_pos != std::string::npos) {
+        retval = FileName.substr(0, last_pos);
+    }
+    else {
+#ifdef FC_OS_WIN32
+        wchar_t buf[MAX_PATH+1];
+        GetCurrentDirectoryW(MAX_PATH, buf);
+        retval = std::string(ConvertFromWideString(std::wstring(buf)));
+#else
+        char buf[PATH_MAX+1];
+        const char* cwd = getcwd(buf, PATH_MAX);
+        retval = std::string(cwd ? cwd : ".");
+#endif
+    }
+    return retval;
 }
 
 std::string FileInfo::fileNamePure () const

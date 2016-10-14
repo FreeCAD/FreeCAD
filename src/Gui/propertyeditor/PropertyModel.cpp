@@ -86,7 +86,7 @@ bool PropertyModel::setData(const QModelIndex& index, const QVariant & value, in
             // NOTE: Since 0.14 PropertyFloat uses double precision, so this is maybe unnecessary now?
             double d = data.toDouble();
             double v = value.toDouble();
-            if (fabs(d-v) > FLT_EPSILON)
+            if (fabs(d-v) > DBL_EPSILON)
                 return item->setData(value);
         }
         // Special case handling for quantities
@@ -211,6 +211,8 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
     // fill up the listview with the properties
     rootItem->reset();
 
+    beginResetModel();
+
     // sort the properties into their groups
     std::map<std::string, std::vector<std::vector<App::Property*> > > propGroup;
     PropertyModel::PropertyList::const_iterator jt;
@@ -229,13 +231,13 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
         PropertyItem* group = static_cast<PropertyItem*>(PropertySeparatorItem::create());
         group->setParent(rootItem);
         rootItem->appendChild(group);
-        group->setPropertyName(QString::fromAscii(kt->first.c_str()));
+        group->setPropertyName(QString::fromLatin1(kt->first.c_str()));
 
         // setup the items for the properties
         std::vector<std::vector<App::Property*> >::const_iterator it;
         for (it = kt->second.begin(); it != kt->second.end(); ++it) {
             App::Property* prop = it->front();
-            QString editor = QString::fromAscii(prop->getEditorName());
+            QString editor = QString::fromLatin1(prop->getEditorName());
             if (!editor.isEmpty()) {
                 Base::BaseClass* item = 0;
                 try {
@@ -252,14 +254,14 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
                     PropertyItem* child = (PropertyItem*)item;
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
-                    child->setPropertyName(QString::fromAscii(prop->getName()));
+                    child->setPropertyName(QString::fromLatin1(prop->getName()));
                     child->setPropertyData(*it);
                 }
             }
         }
     }
 
-    reset();
+    endResetModel();
 }
 
 void PropertyModel::updateProperty(const App::Property& prop)
@@ -282,7 +284,7 @@ void PropertyModel::updateProperty(const App::Property& prop)
 
 void PropertyModel::appendProperty(const App::Property& prop)
 {
-    QString editor = QString::fromAscii(prop.getEditorName());
+    QString editor = QString::fromLatin1(prop.getEditorName());
     if (!editor.isEmpty()) {
         Base::BaseClass* item = 0;
         try {
@@ -302,7 +304,7 @@ void PropertyModel::appendProperty(const App::Property& prop)
             PropertyItem* child = static_cast<PropertyItem*>(item);
             child->setParent(rootItem);
             rootItem->appendChild(child);
-            child->setPropertyName(QString::fromAscii(prop.getName()));
+            child->setPropertyName(QString::fromLatin1(prop.getName()));
             std::vector<App::Property*> data;
             data.push_back(const_cast<App::Property*>(&prop));
             child->setPropertyData(data);

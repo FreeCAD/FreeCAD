@@ -51,6 +51,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
@@ -119,14 +120,15 @@ private:
 };
 }
 
-CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WFlags fl)
+CrossSections::CrossSections(const Base::BoundBox3d& bb, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), bbox(bb)
 {
     ui = new Ui_CrossSections();
     ui->setupUi(this);
     ui->position->setRange(-DBL_MAX, DBL_MAX);
-    ui->position->setDecimals(Base::UnitsApi::getDecimals());
-    ui->distance->setDecimals(Base::UnitsApi::getDecimals());
+    ui->position->setUnit(Base::Unit::Length);
+    ui->distance->setRange(0, DBL_MAX);
+    ui->distance->setUnit(Base::Unit::Length);
     vp = new ViewProviderCrossSections();
 
     Base::Vector3d c = bbox.GetCenter();
@@ -188,7 +190,7 @@ void CrossSections::apply()
     if (ui->sectionsBox->isChecked())
         d = getPlanes();
     else
-        d.push_back(ui->position->value());
+        d.push_back(ui->position->value().getValue());
     double a=0,b=0,c=0;
     switch (plane()) {
         case CrossSections::XY:
@@ -231,36 +233,35 @@ void CrossSections::apply()
         section->purgeTouched();
     }
 #else
-    Gui::Application* app = Gui::Application::Instance;
     Base::SequencerLauncher seq("Cross-sections...", obj.size() * (d.size() +1));
-    app->runPythonCode("import Part\n");
-    app->runPythonCode("from FreeCAD import Base\n");
+    Gui::Command::runCommand(Gui::Command::App, "import Part\n");
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base\n");
     for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
         App::Document* doc = (*it)->getDocument();
         std::string s = (*it)->getNameInDocument();
         s += "_cs";
-        app->runPythonCode(QString::fromAscii(
+        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String((*it)->getNameInDocument())).toAscii());
+            .arg(QLatin1String((*it)->getNameInDocument())).toLatin1());
 
         for (std::vector<double>::iterator jt = d.begin(); jt != d.end(); ++jt) {
-            app->runPythonCode(QString::fromAscii(
+            Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
                 "for i in shape.slice(Base.Vector(%1,%2,%3),%4):\n"
                 "    wires.append(i)\n"
-                ).arg(a).arg(b).arg(c).arg(*jt).toAscii());
+                ).arg(a).arg(b).arg(c).arg(*jt).toLatin1());
             seq.next();
         }
 
-        app->runPythonCode(QString::fromAscii(
+        Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(
             "comp=Part.Compound(wires)\n"
             "slice=FreeCAD.getDocument(\"%1\").addObject(\"Part::Feature\",\"%2\")\n"
             "slice.Shape=comp\n"
             "slice.purgeTouched()\n"
             "del slice,comp,wires,shape")
             .arg(QLatin1String(doc->getName()))
-            .arg(QLatin1String(s.c_str())).toAscii());
+            .arg(QLatin1String(s.c_str())).toLatin1());
 
         seq.next();
     }
@@ -353,7 +354,7 @@ void CrossSections::on_sectionsBox_toggled(bool b)
 
 void CrossSections::on_checkBothSides_toggled(bool b)
 {
-    double d = ui->distance->value();
+    double d = ui->distance->value().getValue();
     d = b ? 2.0 * d : 0.5 * d;
     ui->distance->setValue(d);
     calcPlanes(plane());
@@ -445,8 +446,8 @@ void CrossSections::calcPlanes(Plane type)
 std::vector<double> CrossSections::getPlanes() const
 {
     int count = ui->countSections->value();
-    double pos = ui->position->value();
-    double stp = ui->distance->value();
+    double pos = ui->position->value().getValue();
+    double stp = ui->distance->value().getValue();
     bool both = ui->checkBothSides->isChecked();
 
     std::vector<double> d;

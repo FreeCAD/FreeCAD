@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>460</width>
-    <height>500</height>
+    <width>396</width>
+    <height>694</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,38 +21,9 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox_5">
-     <property name="title">
-      <string>Snapping</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_5">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="text">
-           <string>Snap to baselines of Arch objects (override with CTRL)</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ArchSnapToBase</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Arch</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="title">
-      <string>Walls drawing</string>
+      <string>Object creation</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
@@ -87,6 +58,117 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>joinWallSketches</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox">
+          <property name="toolTip">
+           <string>Two possible strategies to avoid circular dependencies: Create one more object (unchecked) or remove external geometry of base sketch (checked)</string>
+          </property>
+          <property name="text">
+           <string>Remove external geometry of base sketches when needed</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>archRemoveExternal</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_7">
+          <property name="toolTip">
+           <string>If this is checked, when an object becomes Subtraction or Addition of an Arch object, it will receive the Draft Construction color.</string>
+          </property>
+          <property name="text">
+           <string>Apply Draft construction style to subcomponents</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>applyconstructionStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_7">
+     <property name="title">
+      <string>Tree behaviour</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_14">
+        <item>
+         <widget class="QLabel" name="label_4">
+          <property name="toolTip">
+           <string>If these options are checked, the respective components will appear under their host object in the tree view. Otherwise, next to them.</string>
+          </property>
+          <property name="text">
+           <string>Swallow </string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_5">
+          <property name="text">
+           <string>Additions</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>swallowAdditions</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_6">
+          <property name="text">
+           <string>Subtractions</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>swallowSubtractions</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_4">
+          <property name="text">
+           <string>Windows</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>swallowWindows</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>
@@ -343,6 +425,68 @@
         </item>
        </layout>
       </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_15">
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Preferred</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Pattern scale</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+          <property name="toolTip">
+           <string>Scaling factor for patterns used by object that have a Footprint display mode</string>
+          </property>
+          <property name="decimals">
+           <number>4</number>
+          </property>
+          <property name="maximum">
+           <double>9999.989999999999782</double>
+          </property>
+          <property name="value">
+           <double>0.010000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>patternScale</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -371,6 +515,58 @@
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>BimServerUrl</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_3">
+          <property name="toolTip">
+           <string>if this is checked, the &quot;open BimServer in browser&quot; button will open the Bim Server interface in an external browser instead of the FreeCAD web workbench</string>
+          </property>
+          <property name="text">
+           <string>Open in external browser</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BimServerBrowser</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Arch</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Survey</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
+        <item>
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
+          <property name="toolTip">
+           <string>If this is checked, the text that gets placed in the clipboard will include the unit. Otherwise, it will be a simple number expressed in internal units (millimeters)</string>
+          </property>
+          <property name="text">
+           <string>Include unit when sending measurements to clipboard</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>surveyUnits</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Arch</cstring>

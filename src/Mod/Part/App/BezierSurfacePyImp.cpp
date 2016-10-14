@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
-# include <Handle_Geom_BezierCurve.hxx>
+# include <Geom_BezierCurve.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
@@ -740,7 +740,7 @@ Py::Int BezierSurfacePy::getVDegree(void) const
 {
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->UDegree()); 
+    return Py::Int(surf->VDegree()); 
 }
 
 Py::Int BezierSurfacePy::getMaxDegree(void) const

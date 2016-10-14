@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <strstream>
 #include <boost/regex.hpp>
 
 #include <Base/Writer.h>

@@ -188,6 +188,17 @@ TaskDlgFemConstraintPulley::TaskDlgFemConstraintPulley(ViewProviderFemConstraint
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgFemConstraintPulley::open()
+{
+    // a transaction is already open at creation time of the panel
+    if (!Gui::Command::hasPendingCommand()) {
+        QString msg = QObject::tr("Constraint pulley");
+        Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+    }
+}
+
 bool TaskDlgFemConstraintPulley::accept()
 {
     std::string name = ConstraintView->getObject()->getNameInDocument();
@@ -201,7 +212,7 @@ bool TaskDlgFemConstraintPulley::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.TensionForce = %f",name.c_str(), parameterPulley->getTensionForce());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

@@ -36,7 +36,7 @@ class PartDesignPadTestCases(unittest.TestCase):
 		TestSketcherApp.CreateSlotPlateSet(self.PadSketch)
 		self.Doc.recompute()
 		self.Pad = self.Doc.addObject("PartDesign::Pad","Pad")
-		self.Pad.Sketch = self.PadSketch
+		self.Pad.Profile = self.PadSketch
 		self.Doc.recompute()
 		self.failUnless(len(self.Pad.Shape.Faces) == 6)
 		

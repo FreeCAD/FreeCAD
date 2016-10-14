@@ -27,7 +27,6 @@
 # include <sstream>
 # include <QRegExp>
 # include <QTextStream>
-# include <QMessageBox>
 # include <Precision.hxx>
 #endif
 
@@ -45,6 +44,7 @@
 #include <Gui/Command.h>
 #include <Mod/PartDesign/App/FeaturePad.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include "TaskSketchBasedParameters.h"
 #include "ReferenceSelection.h"
 
 using namespace PartDesignGui;
@@ -52,85 +52,58 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskPadParameters */
 
-TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Pad"),tr("Pad parameters"),true, parent),PadView(PadView)
+TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView, QWidget *parent, bool newObj)
+    : TaskSketchBasedParameters(PadView, parent, "PartDesign_Pad",tr("Pad parameters"))
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskPadParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
-            this, SLOT(onLengthChanged(double)));
-    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
-            this, SLOT(onMidplane(bool)));
-    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
-            this, SLOT(onReversed(bool)));
-    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
-            this, SLOT(onLength2Changed(double)));
-    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(onModeChanged(int)));
-    connect(ui->buttonFace, SIGNAL(clicked()),
-            this, SLOT(onButtonFace()));
-    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
-            this, SLOT(onFaceName(QString)));
-    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
-            this, SLOT(onUpdateView(bool)));
 
     this->groupLayout()->addWidget(proxy);
-
-    // Temporarily prevent unnecessary feature recomputes
-    ui->lengthEdit->blockSignals(true);
-    ui->lengthEdit2->blockSignals(true);
-    ui->checkBoxMidplane->blockSignals(true);
-    ui->checkBoxReversed->blockSignals(true);
-    ui->buttonFace->blockSignals(true);
-    ui->lineFaceName->blockSignals(true);
-    ui->changeMode->blockSignals(true);
 
     // set the history path
     ui->lengthEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength"));
     ui->lengthEdit2->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadLength2"));
+    ui->offsetEdit->setParamGrpPath(QByteArray("User parameter:BaseApp/History/PadOffset"));
 
     // Get the feature data
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     Base::Quantity l = pcPad->Length.getQuantityValue();
+    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
+    Base::Quantity off = pcPad->Offset.getQuantityValue();
     bool midplane = pcPad->Midplane.getValue();
     bool reversed = pcPad->Reversed.getValue();
-    Base::Quantity l2 = pcPad->Length2.getQuantityValue();
     int index = pcPad->Type.getValue(); // must extract value here, clear() kills it!
+    App::DocumentObject* obj = pcPad->UpToFace.getValue();
     std::vector<std::string> subStrings = pcPad->UpToFace.getSubValues();
     std::string upToFace;
     int faceId = -1;
-    if (!subStrings.empty()) {
+    if ((obj != NULL) && !subStrings.empty()) {
         upToFace = subStrings.front();
         if (upToFace.substr(0,4) == "Face")
             faceId = std::atoi(&upToFace[4]);
     }
 
     // Fill data into dialog elements
-    ui->lengthEdit->setMinimum(0);
-    ui->lengthEdit->setMaximum(INT_MAX);
     ui->lengthEdit->setValue(l);
-    ui->lengthEdit2->setMinimum(0);
-    ui->lengthEdit2->setMaximum(INT_MAX);
     ui->lengthEdit2->setValue(l2);
+    ui->offsetEdit->setValue(off);
 
     // Bind input fields to properties
     ui->lengthEdit->bind(pcPad->Length);
     ui->lengthEdit2->bind(pcPad->Length2);
-
     ui->checkBoxMidplane->setChecked(midplane);
     // According to bug #0000521 the reversed option
     // shouldn't be de-activated if the pad has a support face
     ui->checkBoxReversed->setChecked(reversed);
-#if QT_VERSION >= 0x040700
-    ui->lineFaceName->setPlaceholderText(tr("No face selected"));
-#endif
-    ui->lineFaceName->setText(faceId >= 0 ?
-                              tr("Face") + QString::number(faceId) :
-                              QString());
+    if ((obj != NULL) && PartDesign::Feature::isDatum(obj))
+        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()));
+    else if (faceId >= 0)
+        ui->lineFaceName->setText(QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + tr("Face") +
+                                  QString::number(faceId));
+    else
+        ui->lineFaceName->setText(tr("No face selected"));
     ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     ui->changeMode->clear();
     ui->changeMode->insertItem(0, tr("Dimension"));
@@ -140,69 +113,96 @@ TaskPadParameters::TaskPadParameters(ViewProviderPad *PadView,bool newObj, QWidg
     ui->changeMode->insertItem(4, tr("Two dimensions"));
     ui->changeMode->setCurrentIndex(index);
 
-    // activate and de-activate dialog elements as appropriate
-    ui->lengthEdit->blockSignals(false);
-    ui->lengthEdit2->blockSignals(false);
-    ui->checkBoxMidplane->blockSignals(false);
-    ui->checkBoxReversed->blockSignals(false);
-    ui->buttonFace->blockSignals(false);
-    ui->lineFaceName->blockSignals(false);
-    ui->changeMode->blockSignals(false);
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->lengthEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onLengthChanged(double)));
+    connect(ui->lengthEdit2, SIGNAL(valueChanged(double)),
+            this, SLOT(onLength2Changed(double)));
+    connect(ui->offsetEdit, SIGNAL(valueChanged(double)),
+            this, SLOT(onOffsetChanged(double)));
+    connect(ui->checkBoxMidplane, SIGNAL(toggled(bool)),
+            this, SLOT(onMidplaneChanged(bool)));
+    connect(ui->checkBoxReversed, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->changeMode, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onModeChanged(int)));
+    connect(ui->buttonFace, SIGNAL(clicked()),
+            this, SLOT(onButtonFace()));
+    connect(ui->lineFaceName, SIGNAL(textEdited(QString)),
+            this, SLOT(onFaceName(QString)));
+    connect(ui->checkBoxUpdateView, SIGNAL(toggled(bool)),
+            this, SLOT(onUpdateView(bool)));
+
+    // Due to signals attached after changes took took into effect we should update the UI now.
     updateUI(index);
 
     // if it is a newly created object use the last value of the history
+    // TODO: newObj doesn't supplied normally by any caller (2015-07-24, Fat-Zer)
     if(newObj){
         ui->lengthEdit->setToLastUsedValue();
         ui->lengthEdit->selectNumber();
         ui->lengthEdit2->setToLastUsedValue();
         ui->lengthEdit2->selectNumber();
+        ui->offsetEdit->setToLastUsedValue();
+        ui->offsetEdit->selectNumber();
     }
 }
 
 void TaskPadParameters::updateUI(int index)
 {
+    // disable/hide evrything unless we are sure we don't need it
+    bool isLengthEditVisable  = false;
+    bool isLengthEdit2Visable = false;
+    bool isOffsetEditVisable  = false;
+    bool isMidplateEnabled    = false;
+    bool isReversedEnabled    = false;
+    bool isFaceEditEnabled    = false;
+
     if (index == 0) {  // dimension
-        ui->lengthEdit->setEnabled(true);
+        isLengthEditVisable = true;
         ui->lengthEdit->selectNumber();
         // Make sure that the spin box has the focus to get key events
         // Calling setFocus() directly doesn't work because the spin box is not
         // yet visible.
         QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        ui->checkBoxMidplane->setEnabled(true);
+        isMidplateEnabled = true;
         // Reverse only makes sense if Midplane is not true
-        ui->checkBoxReversed->setEnabled(!ui->checkBoxMidplane->isChecked());
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
+        isReversedEnabled = !ui->checkBoxMidplane->isChecked();
     } else if (index == 1 || index == 2) { // up to first/last
-        ui->lengthEdit->setEnabled(false);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(true);
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
-        onButtonFace(false);
+        isOffsetEditVisable  = true;
+        isReversedEnabled = true;
     } else if (index == 3) { // up to face
-        ui->lengthEdit->setEnabled(false);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false);
-        ui->lengthEdit2->setEnabled(false);
-        ui->buttonFace->setEnabled(true);
-        ui->lineFaceName->setEnabled(true);
+        isOffsetEditVisable  = true;
+        isFaceEditEnabled    = true;
         QMetaObject::invokeMethod(ui->lineFaceName, "setFocus", Qt::QueuedConnection);
         // Go into reference selection mode if no face has been selected yet
-        if (ui->lineFaceName->text().isEmpty())
+        if (ui->lineFaceName->text().isEmpty() || (ui->lineFaceName->text() == tr("No face selected")))
             onButtonFace(true);
     } else { // two dimensions
-        ui->lengthEdit->setEnabled(true);
-        ui->lengthEdit->selectNumber();
-        QMetaObject::invokeMethod(ui->lengthEdit, "setFocus", Qt::QueuedConnection);
-        ui->checkBoxMidplane->setEnabled(false);
-        ui->checkBoxReversed->setEnabled(false);
-        ui->lengthEdit2->setEnabled(true);
-        ui->buttonFace->setEnabled(false);
-        ui->lineFaceName->setEnabled(false);
+        isLengthEditVisable = true;
+        isLengthEdit2Visable = true;
+    }
+
+    ui->lengthEdit->setVisible( isLengthEditVisable );
+    ui->lengthEdit->setEnabled( isLengthEditVisable );
+    ui->labelLength->setVisible( isLengthEditVisable );
+
+    ui->offsetEdit->setVisible( isOffsetEditVisable );
+    ui->offsetEdit->setEnabled( isOffsetEditVisable );
+    ui->labelOffset->setVisible( isOffsetEditVisable );
+
+    ui->checkBoxMidplane->setEnabled( isMidplateEnabled );
+
+    ui->checkBoxReversed->setEnabled( isReversedEnabled );
+
+    ui->lengthEdit2->setVisible( isLengthEdit2Visable );
+    ui->lengthEdit2->setEnabled( isLengthEdit2Visable );
+    ui->labelLength2->setVisible( isLengthEdit2Visable );
+
+    ui->buttonFace->setEnabled( isFaceEditEnabled );
+    ui->lineFaceName->setEnabled( isFaceEditEnabled );
+    if (!isFaceEditEnabled) {
         onButtonFace(false);
     }
 }
@@ -210,43 +210,23 @@ void TaskPadParameters::updateUI(int index)
 void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        // Don't allow selection in other document
-        if (strcmp(msg.pDocName, PadView->getObject()->getDocument()->getName()) != 0)
-            return;
-
-        if (!msg.pSubName || msg.pSubName[0] == '\0')
-            return;
-        std::string subName(msg.pSubName);
-        if (subName.substr(0,4) != "Face")
-            return;
-        int faceId = std::atoi(&subName[4]);
-
-        // Don't allow selection outside support
-        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-        Part::Feature* support = pcPad->getSupport();
-        if (support == NULL) {
-            // There is no support, so we can't select from it...
+        QString refText = onAddSelection(msg);
+        if (refText.length() > 0) {
+            ui->lineFaceName->blockSignals(true);
+            ui->lineFaceName->setText(refText);
+            ui->lineFaceName->setProperty("FaceName", QByteArray(msg.pSubName));
+            ui->lineFaceName->blockSignals(false);
             // Turn off reference selection mode
             onButtonFace(false);
-            return;
+        } else {
+            ui->lineFaceName->blockSignals(true);
+            ui->lineFaceName->setText(tr("No face selected"));
+            ui->lineFaceName->setProperty("FaceName", QByteArray());
+            ui->lineFaceName->blockSignals(false);
         }
-        if (strcmp(msg.pObjectName, support->getNameInDocument()) != 0)
-            return;
-
-        std::vector<std::string> upToFaces(1,subName);
-        pcPad->UpToFace.setValue(support, upToFaces);
-        if (updateView())
-            pcPad->getDocument()->recomputeFeature(pcPad);
+    } else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
         ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr("Face") + QString::number(faceId));
-        ui->lineFaceName->setProperty("FaceName", QByteArray(subName.c_str()));
-        ui->lineFaceName->blockSignals(false);
-        // Turn off reference selection mode
-        onButtonFace(false);
-    }
-    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
-        ui->lineFaceName->blockSignals(true);
-        ui->lineFaceName->setText(tr(""));
+        ui->lineFaceName->setText(tr("No face selected"));
         ui->lineFaceName->setProperty("FaceName", QByteArray());
         ui->lineFaceName->blockSignals(false);
     }
@@ -254,46 +234,49 @@ void TaskPadParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
 void TaskPadParameters::onLengthChanged(double len)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length.setValue(len);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
-}
-
-void TaskPadParameters::onMidplane(bool on)
-{
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->Midplane.setValue(on);
-    ui->checkBoxReversed->setEnabled(!on);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
-}
-
-void TaskPadParameters::onReversed(bool on)
-{
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    pcPad->Reversed.setValue(on);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onLength2Changed(double len)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
     pcPad->Length2.setValue(len);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onOffsetChanged(double len)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Offset.setValue(len);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onMidplaneChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Midplane.setValue(on);
+    ui->checkBoxReversed->setEnabled(!on);
+    recomputeFeature();
+}
+
+void TaskPadParameters::onReversedChanged(bool on)
+{
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
+    pcPad->Reversed.setValue(on);
+    recomputeFeature();
 }
 
 void TaskPadParameters::onModeChanged(int index)
 {
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
+    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(vp->getObject());
 
     switch (index) {
         case 0:
             pcPad->Type.setValue("Length");
             // Avoid error message
-            if (ui->lengthEdit->value() < Precision::Confusion())
+            if (ui->lengthEdit->value() < Base::Quantity(Precision::Confusion(), Base::Unit::Length))
                 ui->lengthEdit->setValue(5.0);
             break;
         case 1: pcPad->Type.setValue("UpToLast"); break;
@@ -303,37 +286,11 @@ void TaskPadParameters::onModeChanged(int index)
     }
 
     updateUI(index);
-
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
+    recomputeFeature();
 }
 
-void TaskPadParameters::onButtonFace(const bool pressed)
-{
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    Part::Feature* support = pcPad->getSupport();
-    if (support == NULL) {
-        // There is no support, so we can't select from it...
-        return;
-    }
-
-    if (pressed) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setHide(PadView->getObject()->getNameInDocument());
-            doc->setShow(support->getNameInDocument());
-        }
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate
-            (new ReferenceSelection(support, false, true, false));
-    } else {
-        Gui::Selection().rmvSelectionGate();
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            doc->setShow(PadView->getObject()->getNameInDocument());
-            doc->setHide(support->getNameInDocument());
-        }
-    }
+void TaskPadParameters::onButtonFace(const bool pressed) {
+    TaskSketchBasedParameters::onSelectReference(pressed, false, true, false);
 
     // Update button if onButtonFace() is called explicitly
     ui->buttonFace->setChecked(pressed);
@@ -341,44 +298,22 @@ void TaskPadParameters::onButtonFace(const bool pressed)
 
 void TaskPadParameters::onFaceName(const QString& text)
 {
-    // We must expect that "text" is the translation of "Face" followed by an ID.
-    QString name;
-    QTextStream str(&name);
-    str << "^" << tr("Face") << "(\\d+)$";
-    QRegExp rx(name);
-    if (text.indexOf(rx) < 0) {
-        ui->lineFaceName->setProperty("FaceName", QByteArray());
-        return;
-    }
-
-    int faceId = rx.cap(1).toInt();
-    std::stringstream ss;
-    ss << "Face" << faceId;
-    ui->lineFaceName->setProperty("FaceName", QByteArray(ss.str().c_str()));
-
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    Part::Feature* support = pcPad->getSupport();
-    if (support == NULL) {
-        // There is no support, so we can't select from it...
-        return;
-    }
-    std::vector<std::string> upToFaces(1,ss.str());
-    pcPad->UpToFace.setValue(support, upToFaces);
-    if (updateView())
-        pcPad->getDocument()->recomputeFeature(pcPad);
-}
-
-void TaskPadParameters::onUpdateView(bool on)
-{
-    if (on) {
-        PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-        pcPad->getDocument()->recomputeFeature(pcPad);
-    }
+    ui->lineFaceName->setProperty("FaceName", TaskSketchBasedParameters::onFaceName(text));
 }
 
 double TaskPadParameters::getLength(void) const
 {
     return ui->lengthEdit->value().getValue();
+}
+
+double TaskPadParameters::getLength2(void) const
+{
+    return ui->lengthEdit2->value().getValue();
+}
+
+double TaskPadParameters::getOffset(void) const
+{
+    return ui->offsetEdit->value().getValue();
 }
 
 bool   TaskPadParameters::getReversed(void) const
@@ -391,24 +326,20 @@ bool   TaskPadParameters::getMidplane(void) const
     return ui->checkBoxMidplane->isChecked();
 }
 
-double TaskPadParameters::getLength2(void) const
-{
-    return ui->lengthEdit2->value().getValue();
-}
-
 int TaskPadParameters::getMode(void) const
 {
     return ui->changeMode->currentIndex();
 }
 
-QByteArray TaskPadParameters::getFaceName(void) const
+QString TaskPadParameters::getFaceName(void) const
 {
-    return ui->lineFaceName->property("FaceName").toByteArray();
-}
-
-const bool TaskPadParameters::updateView() const
-{
-    return ui->checkBoxUpdateView->isChecked();
+    if (getMode() == 3) {
+        QString faceName = ui->lineFaceName->property("FaceName").toString();
+        if (!faceName.isEmpty()) {
+            return getFaceReference(ui->lineFaceName->text(), faceName);
+        }
+    }
+    return QString();
 }
 
 TaskPadParameters::~TaskPadParameters()
@@ -422,6 +353,7 @@ void TaskPadParameters::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         ui->lengthEdit->blockSignals(true);
         ui->lengthEdit2->blockSignals(true);
+        ui->offsetEdit->blockSignals(true);
         ui->lineFaceName->blockSignals(true);
         ui->changeMode->blockSignals(true);
         int index = ui->changeMode->currentIndex();
@@ -434,7 +366,8 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->changeMode->addItem(tr("Two dimensions"));
         ui->changeMode->setCurrentIndex(index);
 
-        QByteArray upToFace = this->getFaceName();
+        QStringList parts = ui->lineFaceName->text().split(QChar::fromLatin1(':'));
+        QByteArray upToFace = ui->lineFaceName->property("FaceName").toByteArray();
         int faceId = -1;
         bool ok = false;
         if (upToFace.indexOf("Face") == 0) {
@@ -444,10 +377,11 @@ void TaskPadParameters::changeEvent(QEvent *e)
         ui->lineFaceName->setPlaceholderText(tr("No face selected"));
 #endif
         ui->lineFaceName->setText(ok ?
-                                  tr("Face") + QString::number(faceId) :
-                                  QString());
+                                  parts[0] + QString::fromLatin1(":") + tr("Face") + QString::number(faceId) :
+                                  tr(""));
         ui->lengthEdit->blockSignals(false);
         ui->lengthEdit2->blockSignals(false);
+        ui->offsetEdit->blockSignals(false);
         ui->lineFaceName->blockSignals(false);
         ui->changeMode->blockSignals(false);
     }
@@ -455,40 +389,33 @@ void TaskPadParameters::changeEvent(QEvent *e)
 
 void TaskPadParameters::saveHistory(void)
 {
-    // save the user values to history 
+    // save the user values to history
     ui->lengthEdit->pushToHistory();
     ui->lengthEdit2->pushToHistory();
+    ui->offsetEdit->pushToHistory();
 }
 
 void TaskPadParameters::apply()
 {
-    std::string name = PadView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
     const char * cname = name.c_str();
 
     ui->lengthEdit->apply();
-
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i",cname,getReversed()?1:0);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i",cname,getMidplane()?1:0);
-
     ui->lengthEdit2->apply();
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u",cname,getMode());
-    std::string facename = getFaceName().data();
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject());
-    Part::Feature* support = pcPad->getSupport();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Type = %u", cname, getMode());
+    QString facename = getFaceName();
 
-    if (support != NULL && !facename.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(support->getNameInDocument()));
-        buf = buf.arg(QString::fromStdString(facename));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s", cname, buf.toStdString().c_str());
-    } else
+    // TODO get rid of this if (2015-12-05, Fat-Zer)
+    if (!facename.isEmpty()) {
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = %s",
+                cname, facename.toLatin1().data());
+    } else {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.UpToFace = None", cname);
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    if (!PadView->getObject()->isValid())
-        throw Base::Exception(PadView->getObject()->getStatusString());
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    }
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %i", cname, getReversed()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Midplane = %i", cname, getMidplane()?1:0);
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Offset = %f", name.c_str(), getOffset());
 }
 
 //**************************************************************************
@@ -496,83 +423,13 @@ void TaskPadParameters::apply()
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView,bool newObj)
-    : TaskDialog(),PadView(PadView)
+TaskDlgPadParameters::TaskDlgPadParameters(ViewProviderPad *PadView, bool /*newObj*/)
+    : TaskDlgSketchBasedParameters(PadView)
 {
-    assert(PadView);
-    parameter  = new TaskPadParameters(PadView,newObj);
-
-    Content.push_back(parameter);
-}
-
-TaskDlgPadParameters::~TaskDlgPadParameters()
-{
-
+    assert(vp);
+    Content.push_back ( new TaskPadParameters(PadView ) );
 }
 
 //==== calls from the TaskView ===============================================================
-
-
-void TaskDlgPadParameters::open()
-{
-    // a transaction is already open at creation time of the pad
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Edit pad");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
-void TaskDlgPadParameters::clicked(int)
-{
-}
-
-bool TaskDlgPadParameters::accept()
-{
-
-    // save the history 
-    parameter->saveHistory();
-
-    try {
-        //Gui::Command::openCommand("Pad changed");
-        parameter->apply();
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
-        return false;
-    }
-
-    return true;
-}
-
-bool TaskDlgPadParameters::reject()
-{
-    // get the support and Sketch
-    PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(PadView->getObject()); 
-    Sketcher::SketchObject *pcSketch = 0;
-    App::DocumentObject    *pcSupport = 0;
-    if (pcPad->Sketch.getValue()) {
-        pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
-        pcSupport = pcSketch->Support.getValue();
-    }
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcPad)) {
-        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
-    }
-
-    //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    //Gui::Command::commitCommand();
-
-    return true;
-}
-
-
 
 #include "moc_TaskPadParameters.cpp"

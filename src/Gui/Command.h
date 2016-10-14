@@ -33,6 +33,8 @@
 #include <Base/Type.h>
 
 class QWidget;
+class QByteArray;
+
 typedef struct _object PyObject;
 
 namespace App
@@ -166,7 +168,6 @@ protected:
     /// Applies the menu text, tool and status tip to the passed action object
     void applyCommandData(const char* context, Action* );
     const char* keySequenceToAccel(int) const;
-    void adjustCameraPosition();
     //@}
 
 public:
@@ -176,10 +177,13 @@ public:
     friend class CommandManager;
     /// Get somtile called to check the state of the command
     void testActive(void);
+    /// Enables or disables the command
+    void setEnabled(bool);
     /// get called by the QAction
     void invoke (int); 
     /// adds this command to arbitrary widgets
     void addTo(QWidget *);
+    void addToGroup(ActionGroup *, bool checkable);
     //@}
 
 
@@ -243,6 +247,7 @@ public:
     /// Run a App level Action 
     static void doCommand(DoCmd_Type eType,const char* sCmd,...);
     static void runCommand(DoCmd_Type eType,const char* sCmd);
+    static void runCommand(DoCmd_Type eType,const QByteArray& sCmd);
     /// import an external (or own) module only once 
     static void addModule(DoCmd_Type eType,const char* sModuleName);
     /// assures the switch to a certain workbench, if already in the workbench, does nothing.
@@ -252,11 +257,11 @@ public:
     static void copyVisual(const char* to, const char* attr_to, const char* from, const char* attr_from);
     /// Get Python tuple from object and sub-elements 
     static std::string getPythonTuple(const std::string& name, const std::vector<std::string>& subnames);
-    /// import an external module only once 
-    //static void addModule(const char* sModuleName);
     /// translate a string to a python string literal (needed e.g. in file names for windows...)
     const std::string strToPython(const char* Str);
-    const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());};
+    const std::string strToPython(const std::string &Str){
+        return strToPython(Str.c_str());
+    }
     //@}
 
     /** @name Helper methods to generate help pages */
@@ -281,10 +286,18 @@ public:
     //@{
     /// returns the name to which the command belongs
     const char* getAppModuleName(void) const {return sAppModule;}
+    void setAppModuleName(const char*);
     /// Get the command name
     const char* getName() const { return sName; }
     /// Get the name of the grouping of the command
     const char* getGroupName() const { return sGroup; }
+    void setGroupName(const char*);
+    //@}
+    
+    
+    /** @name arbitrary helper methods */
+    //@{
+    void adjustCameraPosition();
     //@}
 
 protected:
@@ -308,6 +321,7 @@ protected:
     int         eType;
     //@}
 private:
+    bool bEnabled;
     static bool _blockCmd;
 };
 
@@ -429,7 +443,7 @@ protected:
 class MacroCommand: public Command
 {
 public:
-    MacroCommand(const char* name);
+    MacroCommand(const char* name, bool system = false);
     virtual ~MacroCommand();
 
 protected:
@@ -465,6 +479,7 @@ public:
 
 protected:
     const char* sScriptName;
+    bool systemMacro;
 };
 
 /** The CommandManager class

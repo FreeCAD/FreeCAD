@@ -155,9 +155,11 @@ void PythonEditor::drawMarker(int line, int x, int y, QPainter* p)
 void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
 {
     QMenu* menu = createStandardContextMenu();
-    menu->addSeparator();
-    menu->addAction( tr("Comment"), this, SLOT( onComment() ), Qt::ALT + Qt::Key_C );
-    menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), Qt::ALT + Qt::Key_U );
+    if (!isReadOnly()) {
+        menu->addSeparator();
+        menu->addAction( tr("Comment"), this, SLOT( onComment() ), Qt::ALT + Qt::Key_C );
+        menu->addAction( tr("Uncomment"), this, SLOT( onUncomment() ), Qt::ALT + Qt::Key_U );
+    }
 
     menu->exec(e->globalPos());
     delete menu;

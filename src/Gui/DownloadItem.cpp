@@ -271,7 +271,7 @@ void DownloadItem::init()
 
 QString DownloadItem::getDownloadDirectory() const
 {
-    QString exe = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
     QString path = QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation);
     QString dirPath = QDir(path).filePath(exe);
     Base::Reference<ParameterGrp> hPath = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
@@ -367,12 +367,12 @@ void DownloadItem::open()
         if (doc) {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
                 Gui::Application::Instance->importFrom(it.key().toUtf8(),
-                    doc->getDocument()->getName(), it.value().toAscii());
+                    doc->getDocument()->getName(), it.value().toLatin1());
             }
         }
         else {
             for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+                Gui::Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             }
         }
     }
@@ -453,6 +453,7 @@ void DownloadItem::error(QNetworkReply::NetworkError)
 
 void DownloadItem::metaDataChanged()
 {
+    // https://tools.ietf.org/html/rfc6266
     if (m_reply->hasRawHeader(QByteArray("Content-Disposition"))) {
         QByteArray header = m_reply->rawHeader(QByteArray("Content-Disposition"));
         int index = header.indexOf("filename=");
@@ -460,8 +461,10 @@ void DownloadItem::metaDataChanged()
             header = header.mid(index+9);
             if (header.startsWith("\"") || header.startsWith("'"))
                 header = header.mid(1);
-            if (header.endsWith("\"") || header.endsWith("'"))
-                header.chop(1);
+            if ((index = header.lastIndexOf("\"")) > 0)
+                header = header.left(index);
+            else if ((index = header.lastIndexOf("'")) > 0)
+                header = header.left(index);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
         // Sometimes "filename=" and "filename*=UTF-8''" is set.
@@ -471,19 +474,46 @@ void DownloadItem::metaDataChanged()
             header = header.mid(index+17);
             if (header.startsWith("\"") || header.startsWith("'"))
                 header = header.mid(1);
-            if (header.endsWith("\"") || header.endsWith("'"))
-                header.chop(1);
+            if ((index = header.lastIndexOf("\"")) > 0)
+                header = header.left(index);
+            else if ((index = header.lastIndexOf("'")) > 0)
+                header = header.left(index);
             m_fileName = QUrl::fromPercentEncoding(header);
         }
     }
 
-    QVariant statusCode = m_reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    if (!statusCode.isValid())
-        return;
-    int status = statusCode.toInt();
-    if (status != 200) {
-        QString reason = m_reply->attribute(QNetworkRequest::HttpReasonPhraseAttribute).toString();
-        qDebug() << reason;
+    QUrl url = m_reply->url();
+
+    // If this is a redirected url use this instead
+    QUrl redirectUrl = m_reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (!redirectUrl.isEmpty()) {
+        QString s = redirectUrl.toString();
+        std::cout << "Redirected to " << s.toStdString() << std::endl;
+
+        QVariant header = m_reply->header(QNetworkRequest::LocationHeader);
+        QString loc = header.toString();
+        Q_UNUSED(loc);
+
+        if (url != redirectUrl) {
+            url = redirectUrl;
+
+            if (m_reply) {
+                disconnect(m_reply, SIGNAL(readyRead()), this, SLOT(downloadReadyRead()));
+                disconnect(m_reply, SIGNAL(error(QNetworkReply::NetworkError)),
+                           this, SLOT(error(QNetworkReply::NetworkError)));
+                disconnect(m_reply, SIGNAL(downloadProgress(qint64, qint64)),
+                           this, SLOT(downloadProgress(qint64, qint64)));
+                disconnect(m_reply, SIGNAL(metaDataChanged()),
+                           this, SLOT(metaDataChanged()));
+                disconnect(m_reply, SIGNAL(finished()),
+                           this, SLOT(finished()));
+                m_reply->close();
+                m_reply->deleteLater();
+            }
+
+            m_reply = DownloadManager::getInstance()->networkAccessManager()->get(QNetworkRequest(url));
+            init();
+        }
     }
 }
 

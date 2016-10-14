@@ -66,9 +66,9 @@ ImageReader::readImage(const SbString & filename, SbImage & sbimage) const
     }
 
     QtCoinCompatibility::QImageToSbImage(image,sbimage);
-    return TRUE;
+    return true;
   }
-  return FALSE;
+  return false;
 }
 
 

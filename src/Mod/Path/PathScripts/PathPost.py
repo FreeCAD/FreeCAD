@@ -42,15 +42,15 @@ except AttributeError:
 class CommandPathPost:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Post',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathPost","Post Process"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Post","Post Process"),
                 'Accel': "P, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPost","Post Process the selected Project")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Post","Post Process the selected Project")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathPost","Post Process the Selected path(s)"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Post","Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
         #select the PathProject that you want to post output from
         obj = FreeCADGui.Selection.getSelection()

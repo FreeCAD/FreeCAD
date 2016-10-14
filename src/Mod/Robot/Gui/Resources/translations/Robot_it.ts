@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Add a tool shape to the robot</source>
-        <translation>Aggiunge uno strumento forma al robot</translation>
+        <translation>Aggiunge la forma di uno strumento al robot</translation>
     </message>
 </context>
 <context>
@@ -65,12 +65,12 @@
     <message>
         <location line="+1"/>
         <source>Edge to Trajectory...</source>
-        <translation>Da spigolo a traiettoria...</translation>
+        <translation>Da bordo a traiettoria...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Generate a Trajectory from a set of edges</source>
-        <translation>Genera una traiettoria da un insieme di spigoli</translation>
+        <translation>Genera una traiettoria da un insieme di bordi</translation>
     </message>
 </context>
 <context>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Inserire il percorso dell&apos;utensile del robot in traiettoria</translation>
+        <translation>Inserisce il percorso dell&apos;utensile del robot nella traiettoria</translation>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location line="+1"/>
         <source>Insert preselection position into trajectory (W)</source>
-        <translation>Inserisci la posizione di preselezione in traiettoria (W)</translation>
+        <translation>Inserisce la posizione di preselezione in traiettoria (W)</translation>
     </message>
 </context>
 <context>
@@ -314,7 +314,7 @@
     <message>
         <location line="+1"/>
         <source>Group and connect some trajectories to one</source>
-        <translation>Raggruppa e collega alcune traiettorie in una</translation>
+        <translation>Raggruppa e collega alcune traiettorie in una unica</translation>
     </message>
 </context>
 <context>
@@ -327,20 +327,20 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Vesti una traiettoria...</translation>
+        <translation>Foggia una traiettoria...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Crea un oggetto di vestimento che sostituisce alcuni aspetti di una traiettoria</translation>
+        <translation>Crea un oggetto di vestimento che sostituisce alcuni aspetti di una traiettoria</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
-        <translation type="obsolete">Dress up traiettoria ...</translation>
+        <translation type="obsolete">Vesti traiettoria ...</translation>
     </message>
     <message>
         <source>Create a dress up object which overide som aspects of a trajectory</source>
-        <translation type="obsolete">Crea un oggetto dress up che non tiene conti di alcuni aspetti di una traiettoria</translation>
+        <translation type="obsolete">Crea un oggetto di vestimento che non tiene conto di alcuni aspetti di una traiettoria</translation>
     </message>
 </context>
 <context>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -381,11 +381,11 @@
     <message>
         <location line="-28"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
-        <translation>Seleziona un Robot e un oggetto Traiettoria.</translation>
+        <translation>Selezionare un Robot e un oggetto Traiettoria.</translation>
     </message>
     <message>
         <location line="-24"/>
@@ -398,27 +398,35 @@
         <translation>Sono necessari almeno due punti in una traiettoria per eseguire la simulazione.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>File KRL(*.src)</translation>
+        <translation type="obsolete">File KRL(*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Tutti i File (*.*)</translation>
+        <translation type="obsolete">Tutti i File (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation>File KRL</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation>Tutti i file</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Esporta programma</translation>
     </message>
     <message>
         <location filename="../../CommandInsertRobot.cpp" line="+1"/>
         <source>Select one robot and one shape or VRML object.</source>
-        <translation>Seleziona un robot e una forma o un oggetto VRML.</translation>
+        <translation>Selezionare un robot e una forma oppure un oggetto VRML.</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="+79"/>
@@ -433,18 +441,18 @@
     <message>
         <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Seleziona un robot per impostare la posizione di partenza</translation>
+        <translation>Selezionare un robot per impostare la posizione di partenza</translation>
     </message>
     <message>
         <location line="+49"/>
         <source>Select one Robot</source>
-        <translation>Seleziona un Robot</translation>
+        <translation>Selezionare un Robot</translation>
     </message>
     <message>
         <location filename="../../CommandTrajectory.cpp" line="-24"/>
         <location line="+17"/>
         <source>Select one Trajectory object.</source>
-        <translation>Seleziona un oggetto traiettoria.</translation>
+        <translation>Selezionare un oggetto traiettoria.</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -479,7 +487,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Seleziona la traiettoria che si vuole vestire.</translation>
+        <translation>Selezionare la traiettoria da vestire.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>

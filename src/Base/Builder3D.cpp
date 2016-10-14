@@ -393,6 +393,27 @@ void InventorBuilder::addMaterial(float color_r,float color_g,float color_b)
     result << Base::blanks(indent) << "} " << std::endl;
 }
 
+void InventorBuilder::beginMaterial()
+{
+    result << Base::blanks(indent) << "Material { " << std::endl;
+    indent +=2;
+    result << Base::blanks(indent) << "diffuseColor [" << std::endl;
+    indent +=2;
+}
+
+void InventorBuilder::endMaterial()
+{
+    indent -=2;
+    result << Base::blanks(indent) << "]" << std::endl;
+    indent -=2;
+    result << Base::blanks(indent) << "}" << std::endl;
+}
+
+void InventorBuilder::addColor(float color_r,float color_g,float color_b)
+{
+    result << color_r << " " << color_g << " " << color_b << std::endl;
+}
+
 void InventorBuilder::addMaterialBinding(const char* bind)
 {
     result << Base::blanks(indent) << "MaterialBinding { value "
@@ -413,6 +434,16 @@ void InventorBuilder::addShapeHints(float crease)
 {
     result << Base::blanks(indent) << "ShapeHints {" << std::endl
            << Base::blanks(indent) << "  creaseAngle " << crease << std::endl
+           << Base::blanks(indent) << "}" << std::endl;
+}
+
+void InventorBuilder::addPolygonOffset(float factor, float units, const char* styles, bool on)
+{
+    result << Base::blanks(indent) << "PolygonOffset {" << std::endl
+           << Base::blanks(indent) << "  factor " << factor << std::endl
+           << Base::blanks(indent) << "  units " << units << std::endl
+           << Base::blanks(indent) << "  styles " << styles << std::endl
+           << Base::blanks(indent) << "  on " << (on ? "TRUE" : "FALSE") << std::endl
            << Base::blanks(indent) << "}" << std::endl;
 }
 

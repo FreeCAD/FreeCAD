@@ -32,6 +32,15 @@
 
 using namespace Base;
 
-std::auto_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> StrXUTF8::transcoder;
-std::auto_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> XUTF8Str::transcoder;
+std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> StrXUTF8::transcoder;
+std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> XUTF8Str::transcoder;
 
+void StrXUTF8::terminate()
+{
+    transcoder.reset();
+}
+
+void XUTF8Str::terminate()
+{
+    transcoder.reset();
+}

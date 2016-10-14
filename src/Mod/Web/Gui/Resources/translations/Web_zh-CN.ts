@@ -6,12 +6,12 @@
     <message>
         <location filename="../../Command.cpp" line="75"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="76"/>
         <source>Previous page</source>
-        <translation type="unfinished">Previous page</translation>
+        <translation>下一页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../../Command.cpp" line="103"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="104"/>
@@ -42,7 +42,7 @@
     <message>
         <location filename="../../Command.cpp" line="131"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="132"/>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../../Command.cpp" line="158"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="159"/>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../../Command.cpp" line="187"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="188"/>
@@ -92,7 +92,7 @@
     <message>
         <location filename="../../Command.cpp" line="215"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="216"/>
@@ -110,7 +110,7 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>网页</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>
@@ -126,12 +126,13 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
+        <location filename="../../BrowserView.cpp" line="348"/>
         <source>Browser</source>
         <translation type="unfinished">Browser</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="204"/>
+        <location filename="../../BrowserView.cpp" line="244"/>
         <source>File does not exist!</source>
         <translation type="unfinished">File does not exist!</translation>
     </message>
@@ -139,12 +140,12 @@
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="199"/>
+        <location filename="../../BrowserView.cpp" line="239"/>
         <source>Error</source>
-        <translation type="unfinished">错误</translation>
+        <translation>错误</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="279"/>
+        <location filename="../../BrowserView.cpp" line="319"/>
         <source>Loading %1...</source>
         <translation type="unfinished">Loading %1...</translation>
     </message>
@@ -152,9 +153,14 @@
 <context>
     <name>WebGui::WebView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="100"/>
+        <location filename="../../BrowserView.cpp" line="121"/>
         <source>Open in External Browser</source>
         <translation type="unfinished">Open in External Browser</translation>
+    </message>
+    <message>
+        <location filename="../../BrowserView.cpp" line="125"/>
+        <source>Open in new window</source>
+        <translation type="unfinished">Open in new window</translation>
     </message>
 </context>
 <context>

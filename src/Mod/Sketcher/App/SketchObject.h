@@ -72,6 +72,12 @@ public:
     */
     bool noRecomputes;
 
+    /*!
+     \brief Returns true if the sketcher supports the given geometry
+     \param geo - the geometry
+     \retval bool - true if the geometry is supported
+     */
+    bool isSupportedGeometry(const Part::Geometry *geo) const;
     /// add unspecified geometry
     int addGeometry(const Part::Geometry *geo, bool construction=false);
     /// add unspecified geometry
@@ -253,6 +259,20 @@ public:
     /// gets the solved sketch as a reference
     inline Sketch &getSolvedSketch(void) {return solvedSketch;}
 
+    /// Flag to allow external geometry from other bodies than the one this sketch belongs to
+    bool allowOtherBody;
+
+    enum eReasonList{
+        rlAllowed,
+        rlOtherDoc,
+        rlCircularReference,
+        rlOtherPart,
+        rlOtherBody,
+    };
+    /// Return true if this object is allowed as external geometry for the
+    /// sketch. rsn argument recieves the reason for disallowing.
+    bool isExternalAllowed(App::Document *pDoc, App::DocumentObject *pObj, eReasonList* rsn = 0) const;
+
 protected:
     /// get called by the container when a property has changed
     virtual void onChanged(const App::Property* /*prop*/);
@@ -264,6 +284,12 @@ protected:
 
     void constraintsRenamed(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renamed);
     void constraintsRemoved(const std::set<App::ObjectIdentifier> &removed);
+    /*!
+     \brief Returns a list of supported geometries from the input list
+     \param geoList - the geometry list
+     \retval list - the supported geometry list
+     */
+    std::vector<Part::Geometry *> supportedGeometry(const std::vector<Part::Geometry *> &geoList) const;
 
 private:
     std::vector<Part::Geometry *> ExternalGeo;

@@ -118,7 +118,7 @@ void PropertyQuantity::setPyObject(PyObject *value)
     PropertyFloat::setValue(quant.getValue());
 }
 
-void PropertyQuantity::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
 {
     if (value.type() == typeid(double))
         setValue(boost::any_cast<double>(value));
@@ -128,7 +128,7 @@ void PropertyQuantity::setPathValue(const ObjectIdentifier &path, const boost::a
         throw bad_cast();
 }
 
-const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier &path) const
+const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
 {
     return Quantity(_dValue, _Unit);
 }
@@ -229,6 +229,32 @@ TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint);
 PropertyLength::PropertyLength()
 {
     setUnit(Base::Unit::Length);
+    setConstraints(&LengthStandard);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyArea
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint);
+
+PropertyArea::PropertyArea()
+{
+    setUnit(Base::Unit::Area);
+    setConstraints(&LengthStandard);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyVolume
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint);
+
+PropertyVolume::PropertyVolume()
+{
+    setUnit(Base::Unit::Volume);
     setConstraints(&LengthStandard);
 }
 

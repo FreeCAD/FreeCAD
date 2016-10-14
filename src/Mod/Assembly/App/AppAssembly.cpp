@@ -30,6 +30,13 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
+#include "Item.h"
+#include "Product.h"
+#include "ProductRef.h"
+
+#include "Constraint.h"
+#include "ConstraintGroup.h"
+
 
 extern struct PyMethodDef Assembly_methods[];
 
@@ -39,12 +46,12 @@ PyDoc_STRVAR(module_Assembly_doc,
 
 /* Python entry */
 extern "C" {
-void AppAssemblyExport initAssembly()
+void AssemblyExport initAssembly()
 {
     // load dependend module
     try {
-        Base::Interpreter().loadModule("Part");
-        //Base::Interpreter().loadModule("Mesh");
+        Base::Interpreter().runString("import Part");
+        //Base::Interpreter().runString("import PartDesign");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
@@ -61,7 +68,14 @@ void AppAssemblyExport initAssembly()
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
  
-    //Assembly::FeatureViewPart        ::init();
+    // Item hirachy
+    Assembly::Item          ::init();
+    Assembly::Product       ::init();
+    Assembly::ProductRef    ::init();
+
+    // constraint hirachy
+    Assembly::Constraint        ::init();
+    Assembly::ConstraintGroup   ::init();
 }
 
 } // extern "C"

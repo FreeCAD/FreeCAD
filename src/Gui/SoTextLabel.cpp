@@ -105,7 +105,7 @@ SoTextLabel::SoTextLabel()
 {
     SO_NODE_CONSTRUCTOR(SoTextLabel);
     SO_NODE_ADD_FIELD(backgroundColor, (SbVec3f(1.0f,1.0f,1.0f)));
-    SO_NODE_ADD_FIELD(background, (TRUE));
+    SO_NODE_ADD_FIELD(background, (true));
     SO_NODE_ADD_FIELD(frameSize, (10.0f));
 }
 
@@ -131,7 +131,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
     SbVec3f center;
     this->computeBBox(action, box, center);
 
-    if (!SoCullElement::cullTest(state, box, TRUE)) {
+    if (!SoCullElement::cullTest(state, box, true)) {
         SoMaterialBundle mb(action);
         mb.sendFirst();
         const SbMatrix & mat = SoModelMatrixElement::get(state);
@@ -209,7 +209,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         // The font name is of the form "family:style". If 'style' is given it can be
         // 'Bold', 'Italic' or 'Bold Italic'.
         QFont font;
-        QString fn = QString::fromAscii(fontname.getString());
+        QString fn = QString::fromLatin1(fontname.getString());
         int pos = fn.indexOf(QLatin1Char(':'));
         if (pos > -1) {
             if (fn.indexOf(QLatin1String("Bold"),pos,Qt::CaseInsensitive) > pos)
@@ -254,11 +254,11 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         state->push();
 
         // disable textures for all units
-        SoGLTextureEnabledElement::set(state, this, FALSE);
+        SoGLTextureEnabledElement::set(state, this, false);
 #if COIN_MAJOR_VERSION > 3
-        SoMultiTextureEnabledElement::set(state, this, FALSE);
+        SoMultiTextureEnabledElement::set(state, this, false);
 #else
-        SoGLTexture3EnabledElement::set(state, this, FALSE);
+        SoGLTexture3EnabledElement::set(state, this, false);
 #endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
@@ -406,7 +406,7 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(justification, (LEFT));
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
-    SO_NODE_ADD_FIELD(frame, (TRUE));
+    SO_NODE_ADD_FIELD(frame, (true));
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
@@ -434,7 +434,7 @@ void SoFrameLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromAscii(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;

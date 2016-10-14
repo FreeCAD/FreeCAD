@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -88,11 +88,13 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
+#include "TransactionObject.h"
 #include "TaskView/TaskView.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
 #include "ViewProviderPythonFeature.h"
@@ -103,13 +105,20 @@
 #include "ViewProviderAnnotation.h"
 #include "ViewProviderMeasureDistance.h"
 #include "ViewProviderPlacement.h"
+#include "ViewProviderOriginFeature.h"
 #include "ViewProviderPlane.h"
+#include "ViewProviderLine.h"
+#include "ViewProviderGeoFeatureGroup.h"
+#include "ViewProviderOriginGroup.h"
+#include "ViewProviderPart.h"
+#include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
 
 #include "Language/Translator.h"
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
+#include "ViewProviderGroupExtension.h"
 #include "GuiInitScript.h"
 
 
@@ -269,7 +278,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     try {
         Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
-            std::auto_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
+            std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
             obj->getPropertyMap(Map);
             vp->attach(obj);
@@ -316,8 +325,17 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "getSoDBVersion() -> String\n\n"
      "Return a text string containing the name\n"
      "of the Coin library and version information"},
-    {NULL, NULL}  /* sentinel */
+    {NULL, NULL, 0, NULL}  /* sentinel */
 };
+
+
+Gui::MDIView* Application::activeView(void) const
+{
+	if (activeDocument())
+		return activeDocument()->getActiveView();
+	else
+		return NULL;
+}
 
 } // namespace Gui
 
@@ -336,7 +354,7 @@ Application::Application(bool GUIenabled)
         ParameterGrp::handle hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
         hPGrp = hPGrp->GetGroup("Preferences")->GetGroup("General");
         QString lang = QLocale::languageToString(QLocale::system().language());
-        Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str());
+        Translator::instance()->activateLanguage(hPGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str());
         GetWidgetFactorySupplier();
 
         ParameterGrp::handle hUnits = App::GetApplication().GetParameterGroupByPath
@@ -379,6 +397,7 @@ Application::Application(bool GUIenabled)
         UiLoaderPy::init_type();
         Base::Interpreter().addType(UiLoaderPy::type_object(),
             module,"UiLoader");
+        PyResource::init_type();
 
         // PySide additions
         PySideUicModule* pySide = new PySideUicModule();
@@ -423,6 +442,7 @@ Application::Application(bool GUIenabled)
     PythonStdin                 ::init_type();
     View3DInventorPy            ::init_type();
     View3DInventorViewerPy      ::init_type();
+    AbstractSplitViewPy         ::init_type();
 
     d = new ApplicationP;
 
@@ -589,10 +609,13 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
             }
 
             std::stringstream str;
+            std::set<App::DocumentObject*> unique_objs;
             str << "__objs__=[]" << std::endl;
             for (std::vector<App::DocumentObject*>::iterator it = sel.begin(); it != sel.end(); ++it) {
-                str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
-                    << (*it)->getNameInDocument() << "\"))" << std::endl;
+                if (unique_objs.insert(*it).second) {
+                    str << "__objs__.append(FreeCAD.getDocument(\"" << DocName << "\").getObject(\""
+                        << (*it)->getNameInDocument() << "\"))" << std::endl;
+                }
             }
 
             str << "import " << Module << std::endl;
@@ -601,16 +624,15 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             std::string code = str.str();
             // the original file name is required
-            if (runPythonCode(code.c_str(), false)) {
-                // search for a module that is able to open the exported file because otherwise
-                // it doesn't need to be added to the recent files list (#0002047)
-                std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
-                if (!importMap.empty())
-                    getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
-            }
+            Gui::Command::runCommand(Gui::Command::App, code.c_str());
+            // search for a module that is able to open the exported file because otherwise
+            // it doesn't need to be added to the recent files list (#0002047)
+            std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
+            if (!importMap.empty())
+                getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
 
             // allow exporters to pass _objs__ to submodules before deleting it
-            runPythonCode("del __objs__", false);
+            Gui::Command::runCommand(Gui::Command::App, "del __objs__");
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -677,7 +699,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         setActiveDocument(0);
 
     // For exception-safety use a smart pointer
-    auto_ptr<Document> delDoc (doc->second);
+    unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
 }
 
@@ -830,6 +852,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         return;
     }
 
+#ifdef FC_DEBUG
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
@@ -838,6 +861,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     else {
         Base::Console().Log("No active document\n");
     }
+#endif
 
     // notify all views attached to the application (not views belong to a special document)
     for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
@@ -913,9 +937,11 @@ void Application::onUpdate(void)
 /// Gets called if a view gets activated, this manages the whole activation scheme
 void Application::viewActivated(MDIView* pcView)
 {
+#ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
                  (const char*)pcView->windowTitle().toUtf8(),pcView);
+#endif
 
     signalActivateView(pcView);
 
@@ -1050,7 +1076,7 @@ bool Application::activateWorkbench(const char* name)
             ok = true; // already active
         // now try to create and activate the matching workbench object
         else if (WorkbenchManager::instance()->activate(name, type)) {
-            getMainWindow()->activateWorkbench(QString::fromAscii(name));
+            getMainWindow()->activateWorkbench(QString::fromLatin1(name));
             this->signalActivateWorkbench(name);
             ok = true;
         }
@@ -1095,7 +1121,7 @@ bool Application::activateWorkbench(const char* name)
     }
     catch (Py::Exception&) {
         Base::PyException e; // extract the Python error text
-        QString msg = QString::fromAscii(e.what());
+        QString msg = QString::fromLatin1(e.what());
         QRegExp rx;
         // ignore '<type 'exceptions.ImportError'>' prefixes
         rx.setPattern(QLatin1String("^\\s*<type 'exceptions.ImportError'>:\\s*"));
@@ -1105,7 +1131,7 @@ bool Application::activateWorkbench(const char* name)
             pos = rx.indexIn(msg);
         }
 
-        Base::Console().Error("%s\n", (const char*)msg.toAscii());
+        Base::Console().Error("%s\n", (const char*)msg.toLatin1());
         Base::Console().Log("%s\n", e.getStackTrace().c_str());
         if (!d->startingUp) {
             wc.restoreCursor();
@@ -1122,7 +1148,7 @@ QPixmap Application::workbenchIcon(const QString& wb) const
 {
     Base::PyGILStateLocker lock;
     // get the python workbench object from the dictionary
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // make a unique icon name
@@ -1196,7 +1222,7 @@ QString Application::workbenchToolTip(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -1220,7 +1246,7 @@ QString Application::workbenchMenuText(const QString& wb) const
 {
     // get the python workbench object from the dictionary
     Base::PyGILStateLocker lock;
-    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toAscii());
+    PyObject* pcWorkbench = PyDict_GetItemString(_pcWorkbenchDictionary, wb.toLatin1());
     // test if the workbench exists
     if (pcWorkbench) {
         // get its ToolTip member if possible
@@ -1251,13 +1277,13 @@ QStringList Application::workbenches(void) const
     const char* start = (st != config.end() ? st->second.c_str() : "<none>");
     QStringList hidden, extra;
     if (ht != config.end()) { 
-        QString items = QString::fromAscii(ht->second.c_str());
+        QString items = QString::fromLatin1(ht->second.c_str());
         hidden = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (hidden.isEmpty())
             hidden.push_back(QLatin1String(""));
     }
     if (et != config.end()) { 
-        QString items = QString::fromAscii(et->second.c_str());
+        QString items = QString::fromLatin1(et->second.c_str());
         extra = items.split(QLatin1Char(';'), QString::SkipEmptyParts);
         if (extra.isEmpty())
             extra.push_back(QLatin1String(""));
@@ -1273,18 +1299,18 @@ QStringList Application::workbenches(void) const
         // add only allowed workbenches
         bool ok = true;
         if (!extra.isEmpty()&&ok) {
-            ok = (extra.indexOf(QString::fromAscii(wbName)) != -1);
+            ok = (extra.indexOf(QString::fromLatin1(wbName)) != -1);
         }
         if (!hidden.isEmpty()&&ok) {
-            ok = (hidden.indexOf(QString::fromAscii(wbName)) == -1);
+            ok = (hidden.indexOf(QString::fromLatin1(wbName)) == -1);
         }
     
         // okay the item is visible
         if (ok)
-            wb.push_back(QString::fromAscii(wbName));
+            wb.push_back(QString::fromLatin1(wbName));
         // also allow start workbench in case it is hidden
         else if (strcmp(wbName, start) == 0)
-            wb.push_back(QString::fromAscii(wbName));
+            wb.push_back(QString::fromLatin1(wbName));
     }
 
     return wb;
@@ -1338,76 +1364,6 @@ CommandManager &Application::commandManager(void)
     return d->commandManager;
 }
 
-void Application::runCommand(bool bForce, const char* sCmd,...)
-{
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
-
-    if (bForce)
-        d->macroMngr->addLine(MacroManager::App,format);
-    else
-        d->macroMngr->addLine(MacroManager::Gui,format);
-
-    try { 
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
-
-    free (format);
-}
-
-bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
-{
-    if (gui)
-        d->macroMngr->addLine(MacroManager::Gui,cmd);
-    else
-        d->macroMngr->addLine(MacroManager::App,cmd);
-
-    try {
-        Base::Interpreter().runString(cmd);
-        return true;
-    }
-    catch (Base::PyException &e) {
-        if (pyexc) {
-            e.ReportException();
-            Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
-        }
-        else {
-            throw; // re-throw to handle in calling instance
-        }
-    }
-    catch (Base::AbortException&) {
-    }
-    catch (Base::Exception &e) {
-        e.ReportException();
-    }
-    catch (std::exception &e) {
-        std::string str;
-        str += "C++ exception thrown (";
-        str += e.what();
-        str += ")";
-        Base::Console().Error(str.c_str());
-    }
-    catch (const char* e) {
-        Base::Console().Error("%s\n", e);
-    }
-#ifndef FC_DEBUG
-    catch (...) {
-        Base::Console().Error("Unknown C++ exception in command thrown\n");
-    }
-#endif
-    return false;
-}
-
 //**************************************************************************
 // Init, Destruct and ingleton
 
@@ -1438,12 +1394,13 @@ void messageHandler(QtMsgType type, const char *msg)
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
+    Q_UNUSED(type);
     Base::Console().Log("%s\n", msg);
 #endif
 }
 
 #ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-void messageHandlerCoin(const SoError * error, void * userdata)
+void messageHandlerCoin(const SoError * error, void * /*userdata*/)
 {
     if (error && error->getTypeId() == SoDebugError::getClassTypeId()) {
         const SoDebugError* dbg = static_cast<const SoDebugError*>(error);
@@ -1483,11 +1440,18 @@ static void init_resources()
 
 void Application::initApplication(void)
 {
+    static bool init = false;
+    if (init) {
+        Base::Console().Error("Tried to run Gui::Application::initApplication() twice!\n");
+        return;
+    }
+
     try {
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
         old_qtmsg_handler = qInstallMsgHandler(messageHandler);
+        init = true;
     }
     catch (...) {
         // force to flush the log
@@ -1506,6 +1470,14 @@ void Application::initTypes(void)
     Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
+    Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderExtensionPython            ::init();
+    Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGroupExtensionPython       ::init();
+    Gui::ViewProviderGeoFeatureGroupExtension   ::init();
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
+    Gui::ViewProviderOriginGroupExtension       ::init();
+    Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
@@ -1521,7 +1493,14 @@ void Application::initTypes(void)
     Gui::ViewProviderPythonFeature              ::init();
     Gui::ViewProviderPythonGeometry             ::init();
     Gui::ViewProviderPlacement                  ::init();
+    Gui::ViewProviderOriginFeature              ::init();
     Gui::ViewProviderPlane                      ::init();
+    Gui::ViewProviderLine                       ::init();
+    Gui::ViewProviderGeoFeatureGroup            ::init();
+    Gui::ViewProviderGeoFeatureGroupPython      ::init();
+    Gui::ViewProviderOriginGroup                ::init();
+    Gui::ViewProviderPart                       ::init();
+    Gui::ViewProviderOrigin                     ::init();
     Gui::ViewProviderMaterialObject             ::init();
     Gui::ViewProviderMaterialObjectPython       ::init();
 
@@ -1534,6 +1513,10 @@ void Application::initTypes(void)
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+    // register transaction type
+    new App::TransactionProducer<TransactionViewProvider>
+            (ViewProviderDocumentObject::getClassTypeId());
 }
 
 void Application::runApplication(void)
@@ -1545,17 +1528,28 @@ void Application::runApplication(void)
     Base::Console().Log("Init: Creating Gui::Application and QApplication\n");
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
-    int systemExit = 1000;
-    GUISingleApplication mainApp(argc, App::Application::GetARGV(), systemExit);
+    GUISingleApplication mainApp(argc, App::Application::GetARGV());
+    // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
+    mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
     if (it != cfg.end() && mainApp.isRunning()) {
         // send the file names to be opened to the server application so that this
         // opens them
+        QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
         for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+            QFileInfo fi(fn);
+            // if path name is relative make it absolute because the running instance
+            // cannot determine the full path when trying to load the file
+            if (fi.isRelative()) {
+                fn = cwd.absoluteFilePath(fn);
+                fn = QDir::cleanPath(fn);
+            }
+
+            QByteArray msg = fn.toUtf8();
             msg.prepend("OpenFile:");
             if (!mainApp.sendMessage(msg)) {
                 qWarning("Failed to send message to server");
@@ -1718,7 +1712,7 @@ void Application::runApplication(void)
     // if the auto workbench is not visible then force to use the default workbech
     // and replace the wrong entry in the parameters
     QStringList wb = app.workbenches();
-    if (!wb.contains(QString::fromAscii(start.c_str()))) {
+    if (!wb.contains(QString::fromLatin1(start.c_str()))) {
         start = App::Application::Config()["StartWorkbench"];
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                               SetASCII("AutoloadModule", start.c_str());
@@ -1778,9 +1772,11 @@ void Application::runApplication(void)
         boost::interprocess::file_lock flock(s.str().c_str());
         flock.lock();
 
-        int ret = mainApp.exec();
-        if (ret == systemExit)
-            throw Base::SystemExitException();
+        mainApp.exec();
+        // Qt can't handle exceptions thrown from event handlers, so we need
+        // to manually rethrow SystemExitExceptions.
+        if(mainApp.caughtException.get())
+            throw Base::SystemExitException(*mainApp.caughtException.get());
 
         // close the lock file, in case of a crash we can see the existing lock file
         // on the next restart and try to repair the documents, if needed.
@@ -1790,6 +1786,12 @@ void Application::runApplication(void)
     }
     catch (const Base::SystemExitException&) {
         Base::Console().Message("System exit\n");
+        throw;
+    }
+    catch (const std::exception& e) {
+        // catching nasty stuff coming out of the event loop
+        App::Application::destructObserver();
+        Base::Console().Error("Event loop left through unhandled exception: %s\n", e.what());
         throw;
     }
     catch (...) {
@@ -1805,11 +1807,11 @@ void Application::runApplication(void)
 void Application::checkForPreviousCrashes()
 {
     QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
-    tmp.setNameFilters(QStringList() << QString::fromAscii("*.lock"));
+    tmp.setNameFilters(QStringList() << QString::fromLatin1("*.lock"));
     tmp.setFilter(QDir::Files);
 
     QList<QFileInfo> restoreDocFiles;
-    QString exeName = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString exeName = QString::fromLatin1(App::GetApplication().getExecutableName());
     QList<QFileInfo> locks = tmp.entryInfoList();
     for (QList<QFileInfo>::iterator it = locks.begin(); it != locks.end(); ++it) {
         QString bn = it->baseName();
@@ -1829,11 +1831,12 @@ void Application::checkForPreviousCrashes()
                 tmp.setFilter(QDir::Dirs);
                 QList<QFileInfo> dirs = tmp.entryInfoList();
                 if (dirs.isEmpty()) {
-                    // delete the lock file immediately if not transient directories are related
+                    // delete the lock file immediately if no transient directories are related
                     tmp.remove(fn);
                 }
                 else {
                     int countDeletedDocs = 0;
+                    QString recovery_files = QString::fromLatin1("fc_recovery_files");
                     for (QList<QFileInfo>::iterator it = dirs.begin(); it != dirs.end(); ++it) {
                         QDir doc_dir(it->absoluteFilePath());
                         doc_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
@@ -1844,10 +1847,21 @@ void Application::checkForPreviousCrashes()
                             if (tmp.rmdir(it->filePath()))
                                 countDeletedDocs++;
                         }
-                        // search for the existance of a recovery file
+                        // search for the existence of a recovery file
                         else if (doc_dir.exists(QLatin1String("fc_recovery_file.xml"))) {
                             // store the transient directory in case it's not empty
                             restoreDocFiles << *it;
+                        }
+                        // search for the 'fc_recovery_files' sub-directory and check that it's the only entry
+                        else if (entries == 1 && doc_dir.exists(recovery_files)) {
+                            // if the sub-directory is empty delete the transient directory
+                            QDir rec_dir(doc_dir.absoluteFilePath(recovery_files));
+                            rec_dir.setFilter(QDir::NoDotAndDotDot|QDir::AllEntries);
+                            if (rec_dir.entryList().isEmpty()) {
+                                doc_dir.rmdir(recovery_files);
+                                if (tmp.rmdir(it->filePath()))
+                                    countDeletedDocs++;
+                            }
                         }
                     }
 

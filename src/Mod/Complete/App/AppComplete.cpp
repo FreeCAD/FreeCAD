@@ -26,20 +26,38 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
 #include "CompleteConfiguration.h"
 
-extern struct PyMethodDef Complete_methods[];
+namespace Complete {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Complete")
+    {
+        initialize("This module is the Complete module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_Complete_doc,
-"This module is the Complete module.");
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace Complete
 
 
 /* Python entry */
-extern "C" {
-void AppCompleteExport initComplete()
+PyMODINIT_FUNC initComplete()
 {
     // load dependent module
     try {
@@ -70,8 +88,6 @@ void AppCompleteExport initComplete()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("Complete", Complete_methods, module_Complete_doc);   /* mod name, table ptr */
+    (void)Complete::initModule();
     Base::Console().Log("Loading Complete module... done\n");
 }
-
-} // extern "C"

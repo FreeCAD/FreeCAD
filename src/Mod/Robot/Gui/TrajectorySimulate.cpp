@@ -65,17 +65,17 @@ TrajectorySimulate::TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::
     for(unsigned int i=0;i<trac.getSize();i++){
         Robot::Waypoint pt = trac.getWaypoint(i);
         switch(pt.Type){
-            case Robot::Waypoint::UNDEF: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromAscii("UNDEF")));break;
-            case Robot::Waypoint::CIRC: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromAscii("CIRC")));break;
-            case Robot::Waypoint::PTP: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromAscii("PTP")));break;
-            case Robot::Waypoint::LINE: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromAscii("LIN")));break;
-            default: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromAscii("UNDEF")));break;
+            case Robot::Waypoint::UNDEF: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("UNDEF")));break;
+            case Robot::Waypoint::CIRC: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("CIRC")));break;
+            case Robot::Waypoint::PTP: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("PTP")));break;
+            case Robot::Waypoint::LINE: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("LIN")));break;
+            default: trajectoryTable->setItem(i, 0, new QTableWidgetItem(QString::fromLatin1("UNDEF")));break;
         }
         trajectoryTable->setItem(i, 1, new QTableWidgetItem(QString::fromUtf8(pt.Name.c_str())));
         if(pt.Cont)
-            trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromAscii("|")));
+            trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("|")));
         else
-            trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromAscii("-")));
+            trajectoryTable->setItem(i, 2, new QTableWidgetItem(QString::fromLatin1("-")));
         trajectoryTable->setItem(i, 3, new QTableWidgetItem(QString::number(pt.Velocity)));
         trajectoryTable->setItem(i, 4, new QTableWidgetItem(QString::number(pt.Accelaration)));
 
@@ -98,7 +98,7 @@ TrajectorySimulate::TrajectorySimulate(Robot::RobotObject *pcRobotObject,Robot::
     QObject::connect( timeSlider        ,SIGNAL(valueChanged(int)   ), this, SLOT(valueChanged(int)) );
 
     // get the view provider
-    ViewProv = dynamic_cast<ViewProviderRobotObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject) );
+    ViewProv = static_cast<ViewProviderRobotObject*>(Gui::Application::Instance->activeDocument()->getViewProvider(pcRobotObject) );
 
     setTo();
 }

@@ -42,25 +42,22 @@
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
 
-extern struct PyMethodDef Path_methods[];
-
-PyDoc_STRVAR(module_Path_doc,
-"This module is the Path module.");
-
+namespace Path {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PathExport initPath()
+PyMODINIT_FUNC initPath()
 {
-    PyObject* pathModule = Py_InitModule3("Path", Path_methods, module_Path_doc);   /* mod name, table ptr */
+    PyObject* pathModule = Path::initModule();
     Base::Console().Log("Loading Path module... done\n");
 
 
     // Add Types to module
-    Base::Interpreter().addType(&Path::CommandPy            ::Type,pathModule,"Command");
-    Base::Interpreter().addType(&Path::PathPy               ::Type,pathModule,"Path");
-    Base::Interpreter().addType(&Path::ToolPy               ::Type,pathModule,"Tool");
-    Base::Interpreter().addType(&Path::TooltablePy          ::Type,pathModule,"Tooltable");
+    Base::Interpreter().addType(&Path::CommandPy    ::Type, pathModule, "Command");
+    Base::Interpreter().addType(&Path::PathPy       ::Type, pathModule, "Path");
+    Base::Interpreter().addType(&Path::ToolPy       ::Type, pathModule, "Tool");
+    Base::Interpreter().addType(&Path::TooltablePy  ::Type, pathModule, "Tooltable");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
@@ -78,5 +75,3 @@ void PathExport initPath()
     Path::FeatureShape           ::init();
     Path::FeatureShapePython     ::init();
 }
-
-} // extern "C"

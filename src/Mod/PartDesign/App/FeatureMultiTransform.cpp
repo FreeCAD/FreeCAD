@@ -30,8 +30,7 @@
 
 #include "FeatureMultiTransform.h"
 #include "FeatureScaled.h"
-#include "FeatureAdditive.h"
-#include "FeatureSubtractive.h"
+#include "FeatureAddSub.h"
 #include <Mod/Part/App/TopoShape.h>
 
 #include <Base/Console.h>
@@ -79,12 +78,12 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
     Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
     TopoDS_Shape original;
 
-    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
-        PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(originalFeature);
-        original = addFeature->AddShape.getShape()._Shape;
-    } else if (originalFeature->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
-        PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(originalFeature);
-        original = subFeature->SubShape.getShape()._Shape;
+    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+        PartDesign::FeatureAddSub* addFeature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
+        //if (addFeature->getAddSubType() == FeatureAddSub::Additive)
+        //    original = addFeature->AddSubShape.getShape().getShape();
+        //else
+            original = addFeature->AddSubShape.getShape().getShape();
     }
 
     GProp_GProps props;
@@ -125,6 +124,8 @@ const std::list<gp_Trsf> MultiTransform::getTransformations(const std::vector<Ap
                 // In other words, the length of the result vector is equal to the length of the
                 // oldTransformations vector
 
+                if (newTransformations.empty())
+                    throw Base::Exception("Number of occurrences must be a divisor of previous number of occurrences");
                 if (oldTransformations.size() % newTransformations.size() != 0)
                     throw Base::Exception("Number of occurrences must be a divisor of previous number of occurrences");
 

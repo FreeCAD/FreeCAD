@@ -196,7 +196,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
   planeTVerts->finishEditing();
 }
 
-void draggerCB(void * data, SoDragger * dragger)
+void draggerCB(void * /*data*/, SoDragger * dragger)
 {
   SoTransformerDragger * drag = (SoTransformerDragger *)dragger;
   doClipping(drag->translation.getValue(), drag->rotation.getValue());
@@ -300,7 +300,7 @@ void LightManip(SoSeparator * root)
   for (int i = 0; i < 3; i++) {
     sa.setName( pointlightnames[i] );
     sa.setInterest( SoSearchAction::FIRST );
-    sa.setSearchingAll( FALSE );
+    sa.setSearchingAll( false );
     sa.apply( root );
     SoPath * path = sa.getPath();
     if ( path == NULL) return; // Shouldn't happen.
@@ -379,7 +379,7 @@ texture()
 static void
 timersensorcallback(void * data, SoSensor *)
 {
-  static SbBool direction = FALSE;
+  static SbBool direction = false;
 
   SoTexture2 * texnode = (SoTexture2*) data;
 

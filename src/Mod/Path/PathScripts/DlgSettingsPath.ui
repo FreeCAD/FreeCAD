@@ -31,72 +31,16 @@
         <item>
          <widget class="Gui::PrefCheckBox" name="pathTestSetting1">
           <property name="toolTip">
-           <string>If this is checked, object names will be prefixed with the IFC ID number</string>
+           <string>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</string>
           </property>
           <property name="text">
-           <string>Test setting 1</string>
+           <string>Automatic project handling</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>pathTestSetting1</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Test setting 2</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="pathTestSetting2">
-          <property name="toolTip">
-           <string>A comma-separated list of Ifc entities to exclude from import</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="placeholderText">
-           <string/>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>pathTestSetting2</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>Test group</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="pathTestSetting3">
-          <property name="toolTip">
-           <string>Some IFC viewers don't like objects exported as extrusions. Use this to force all objects to be exported as BREP geometry.</string>
-          </property>
-          <property name="text">
-           <string>Test setting 3</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>pathTestSetting3</cstring>
+           <cstring>pathAutoProject</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Path</cstring>
@@ -129,11 +73,6 @@
   <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefLineEdit</class>
-   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

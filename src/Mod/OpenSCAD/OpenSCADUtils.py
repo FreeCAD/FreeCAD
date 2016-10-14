@@ -87,7 +87,8 @@ def workaroundforissue128needed():
     for versions <= 2012.06.23 to the current working dir
     for versions above to the inputfile dir
     see https://github.com/openscad/openscad/issues/128'''
-    vdate=getopenscadversion().split(' ')[2].split('.')
+    vdate=getopenscadversion().split('-')[0]
+    vdate=vdate.split(' ')[2].split('.')
     year,mon=int(vdate[0]),int(vdate[1])
     return (year<2012 or (year==2012 and (mon <6 or (mon == 6 and \
         (len(vdate)<3 or int(vdate[2]) <=23)))))

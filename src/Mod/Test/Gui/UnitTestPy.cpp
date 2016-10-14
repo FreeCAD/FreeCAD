@@ -116,7 +116,7 @@ Py::Object UnitTestDialogPy::getUnitTest(const Py::Tuple& args)
 {
     if (!PyArg_ParseTuple(args.ptr(), ""))
         throw Py::Exception();
-    return Py::String((const char*)UnitTestDialog::instance()->getUnitTest().toAscii());
+    return Py::String((const char*)UnitTestDialog::instance()->getUnitTest().toLatin1());
 }
 
 Py::Object UnitTestDialogPy::setStatusText(const Py::Tuple& args)

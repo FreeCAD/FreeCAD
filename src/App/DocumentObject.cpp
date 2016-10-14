@@ -30,17 +30,18 @@
 
 #include "Document.h"
 #include "DocumentObject.h"
-#include "DocumentObjectPy.h"
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
+#include "DocumentObjectExtension.h"
+#include <App/DocumentObjectPy.h>
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
 
 using namespace App;
 
 
-PROPERTY_SOURCE(App::DocumentObject, App::PropertyContainer)
+PROPERTY_SOURCE(App::DocumentObject, App::TransactionalObject)
 
 DocumentObjectExecReturn *DocumentObject::StdReturn = 0;
 
@@ -59,7 +60,7 @@ DocumentObject::DocumentObject(void)
 DocumentObject::~DocumentObject(void)
 {
     if (!PythonObject.is(Py::_None())){
-        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed 
+        // Remark: The API of Py::Object has been changed to set whether the wrapper owns the passed
         // Python object or not. In the constructor we forced the wrapper to own the object so we need
         // not to dec'ref the Python object any more.
         // But we must still invalidate the Python object because it need not to be
@@ -92,12 +93,28 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector) {
+        if(ext->extensionMustExecute()) 
+            ext->extensionExecute();
+    }
     return StdReturn;
 }
 
 short DocumentObject::mustExecute(void) const
 {
-    return (isTouched() ? 1 : 0);
+    if(isTouched())
+        return 1;
+
+    //ask all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector) {
+        if(ext->extensionMustExecute())
+            return 1;
+    }
+    return 0;
+    
 }
 
 const char* DocumentObject::getStatusString(void) const
@@ -115,12 +132,24 @@ const char* DocumentObject::getStatusString(void) const
 const char *DocumentObject::getNameInDocument(void) const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
-    // part of a document (anymore). This is the case e.g. if we have a reference in Python 
+    // part of a document (anymore). This is the case e.g. if we have a reference in Python
     // to an object that has been removed from the document. In this case we should rather
     // return 0.
     //assert(pcNameInDocument);
     if (!pcNameInDocument) return 0;
     return pcNameInDocument->c_str();
+}
+
+bool DocumentObject::isAttachedToDocument() const
+{
+    return (pcNameInDocument != 0);
+}
+
+const char* DocumentObject::detachFromDocument()
+{
+    const std::string* name = pcNameInDocument;
+    pcNameInDocument = 0;
+    return name ? name->c_str() : 0;
 }
 
 std::vector<DocumentObject*> DocumentObject::getOutList(void) const
@@ -169,7 +198,41 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return DocumentObjectGroup::getGroupOfObject(this);
+    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
+{
+    std::vector<App::DocumentObject*> linkTo_in_vector;
+    linkTo_in_vector.push_back(linkTo);
+    return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const
+{
+    Document* doc = this->getDocument();
+    if (!doc)
+        throw Base::Exception("DocumentObject::testIfLinkIsDAG: object is not in any document.");
+    std::vector<App::DocumentObject*> deplist = doc->getDependencyList(linksTo);
+    if( std::find(deplist.begin(),deplist.end(),this) != deplist.end() )
+        //found this in dependency list
+        return false;
+    else
+        return true;
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSubList &linksTo) const
+{
+    const std::vector<App::DocumentObject*> &linksTo_in_vector = linksTo.getValues();
+    return this->testIfLinkDAGCompatible(linksTo_in_vector);
+}
+
+bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub &linkTo) const
+{
+    std::vector<App::DocumentObject*> linkTo_in_vector;
+    linkTo_in_vector.reserve(1);
+    linkTo_in_vector.push_back(linkTo.getValue());
+    return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
@@ -197,7 +260,7 @@ void DocumentObject::onBeforeChange(const Property* prop)
         oldLabel = Label.getStrValue();
 
     if (_pDoc)
-        _pDoc->onBeforeChangeProperty(this,prop);
+        onBeforeChangeProperty(_pDoc, prop);
 }
 
 /// get called by the container when a Property was changed
@@ -206,7 +269,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (_pDoc)
         _pDoc->onChangedProperty(this,prop);
 
-    if (prop == &Label && _pDoc)
+    if (prop == &Label && _pDoc && oldLabel != Label.getStrValue())
         _pDoc->signalRelabelObject(*this);
 
     if (prop->getType() & Prop_Output)
@@ -221,7 +284,7 @@ PyObject *DocumentObject::getPyObject(void)
         // ref counter is set to 1
         PythonObject = Py::Object(new DocumentObjectPy(this),true);
     }
-    return Py::new_reference_to(PythonObject); 
+    return Py::new_reference_to(PythonObject);
 }
 
 std::vector<PyObject *> DocumentObject::getPySubObjects(const std::vector<std::string>&) const
@@ -305,6 +368,10 @@ void DocumentObject::connectRelabelSignals()
         if (!onRelabledObjectConnection.connected())
             onRelabledObjectConnection = getDocument()->signalRelabelObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectRenamed, &ExpressionEngine, _1));
 
+        // Connect to signalDeletedObject, to properly track deletion of other objects that might be referenced in an expression
+        if (!onDeletedObjectConnection.connected())
+            onDeletedObjectConnection = getDocument()->signalDeletedObject.connect(boost::bind(&PropertyExpressionEngine::slotObjectDeleted, &ExpressionEngine, _1));
+
         try {
             // Crude method to resolve all expression dependencies
             ExpressionEngine.execute();
@@ -317,5 +384,30 @@ void DocumentObject::connectRelabelSignals()
         // Disconnect signals; nothing to track now
         onRelabledObjectConnection.disconnect();
         onRelabledDocumentConnection.disconnect();
+        onDeletedObjectConnection.disconnect();
     }
+}
+
+void DocumentObject::onSettingDocument()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedSettingDocument();
+}
+
+void DocumentObject::setupObject()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedSetupObject();
+}
+
+void DocumentObject::unsetupObject()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedUnsetupObject();
 }

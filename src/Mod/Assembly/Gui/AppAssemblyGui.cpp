@@ -27,13 +27,25 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
 #include "Workbench.h"
+
+#include "ViewProvider.h"
+#include "ViewProviderProduct.h"
+#include "ViewProviderProductRef.h"
+#include "ViewProviderConstraintGroup.h"
+#include "ViewProviderConstraint.h"
+
+#include <Mod/Assembly/App/Product.h>
+#include <Mod/Assembly/App/ProductRef.h>
+
 //#include "resources/qrc_Assembly.cpp"
 
 // use a different name to CreateCommand()
 void CreateAssemblyCommands(void);
+void CreateAssemblyConstraintCommands(void);
 
 void loadAssemblyResource()
 {
@@ -44,6 +56,7 @@ void loadAssemblyResource()
 
 /* registration table  */
 extern struct PyMethodDef AssemblyGui_Import_methods[];
+
 
 
 /* Python entry */
@@ -58,9 +71,22 @@ void AssemblyGuiExport initAssemblyGui()
     (void) Py_InitModule("AssemblyGui", AssemblyGui_Import_methods);   /* mod name, table ptr */
     Base::Console().Log("Loading GUI of Assembly module... done\n");
 
+    // directly load the module for usage in commands
+    Base::Interpreter().runString("import AssemblyGui");
+    Base::Interpreter().runString("import PartGui");
+
     // instanciating the commands
     CreateAssemblyCommands();
+    CreateAssemblyConstraintCommands();
+
     AssemblyGui::Workbench::init();
+
+    AssemblyGui::ViewProviderItem        ::init();
+    AssemblyGui::ViewProviderProduct     ::init();
+    AssemblyGui::ViewProviderProductRef  ::init();
+
+    AssemblyGui::ViewProviderConstraintGroup::init();
+    AssemblyGui::ViewProviderConstraint::init();
 
      // add resources and reloads the translators
     loadAssemblyResource();

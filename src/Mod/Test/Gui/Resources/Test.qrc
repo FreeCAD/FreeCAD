@@ -1,5 +1,6 @@
 <RCC>
     <qresource>
+        <file>icons/TestWorkbench.svg</file>
         <file>translations/Test_af.qm</file>
         <file>translations/Test_de.qm</file>
         <file>translations/Test_fi.qm</file>
@@ -24,5 +25,7 @@
         <file>translations/Test_ro.qm</file>
         <file>translations/Test_pt-PT.qm</file>
         <file>translations/Test_sr.qm</file>
+        <file>translations/Test_el.qm</file>
+        <file>translations/Test_sl.qm</file>
     </qresource>
 </RCC>

@@ -241,6 +241,26 @@ void DocumentObserver::detachDocument()
     }
 }
 
+void DocumentObserver::slotCreatedDocument(const App::Document& /*Doc*/)
+{
+}
+
+void DocumentObserver::slotDeletedDocument(const App::Document& /*Doc*/)
+{
+}
+
+void DocumentObserver::slotCreatedObject(const App::DocumentObject& /*Obj*/)
+{
+}
+
+void DocumentObserver::slotDeletedObject(const App::DocumentObject& /*Obj*/)
+{
+}
+
+void DocumentObserver::slotChangedObject(const App::DocumentObject& /*Obj*/, const App::Property& /*Prop*/)
+{
+}
+
 // -----------------------------------------------------------------------------
 
 DocumentObjectObserver::DocumentObjectObserver()
@@ -300,5 +320,9 @@ void DocumentObjectObserver::slotDeletedObject(const App::DocumentObject& Obj)
 
 void DocumentObjectObserver::slotChangedObject(const App::DocumentObject&,
                                                const App::Property&)
+{
+}
+
+void DocumentObjectObserver::cancelObservation()
 {
 }

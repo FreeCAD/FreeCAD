@@ -50,9 +50,11 @@ MeshOrientationVisitor::MeshOrientationVisitor() : _nonuniformOrientation(false)
 {
 }
 
-bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, 
+bool MeshOrientationVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                                     unsigned long ulFInd, unsigned long ulLevel)
 {
+    (void)ulFInd;
+    (void)ulLevel;
     if (!rclFrom.HasSameOrientation(rclFacet)) {
         _nonuniformOrientation = true;
         return false;
@@ -71,9 +73,10 @@ MeshOrientationCollector::MeshOrientationCollector(std::vector<unsigned long>& a
 {
 }
 
-bool MeshOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, 
+bool MeshOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
                                       unsigned long ulFInd, unsigned long ulLevel)
 {
+    (void)ulLevel;
     // different orientation of rclFacet and rclFrom
     if (!rclFacet.HasSameOrientation(rclFrom)) {
         // is not marked as false oriented
@@ -109,6 +112,7 @@ bool MeshSameOrientationCollector::Visit (const MeshFacet &rclFacet, const MeshF
                                           unsigned long ulFInd, unsigned long ulLevel)
 {
     // different orientation of rclFacet and rclFrom
+    (void)ulLevel;
     if (rclFacet.HasSameOrientation(rclFrom)) {
         _aulIndices.push_back(ulFInd);
     }
@@ -508,7 +512,7 @@ void MeshEvalPointManifolds::GetFacetIndices (std::vector<unsigned long> &facets
 bool MeshEvalSingleFacet::Evaluate ()
 {
   // get all non-manifolds
-  MeshEvalTopology::Evaluate();
+  (void)MeshEvalTopology::Evaluate();
 /*
   // for each (multiple) single linked facet there should
   // exist two valid facets sharing the same edge 
@@ -1070,7 +1074,7 @@ bool MeshEigensystem::Evaluate()
     for (MeshPointArray::_TConstIterator it = aclPoints.begin(); it!=aclPoints.end(); ++it) {
         // u-Richtung
         clVect = *it - _cC;
-        clProj.ProjToLine(clVect, _cU);
+        clProj.ProjectToLine(clVect, _cU);
         clVect = clVect + clProj;
         fH = clVect.Length();
       
@@ -1083,7 +1087,7 @@ bool MeshEigensystem::Evaluate()
 
         // v-Richtung
         clVect = *it - _cC;
-        clProj.ProjToLine(clVect, _cV);
+        clProj.ProjectToLine(clVect, _cV);
         clVect = clVect + clProj;
         fH = clVect.Length();
   
@@ -1096,7 +1100,7 @@ bool MeshEigensystem::Evaluate()
 
         // w-Richtung
         clVect = *it - _cC;
-        clProj.ProjToLine(clVect, _cW);
+        clProj.ProjectToLine(clVect, _cW);
         clVect = clVect + clProj;
         fH = clVect.Length();
   

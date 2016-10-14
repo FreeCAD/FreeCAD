@@ -125,7 +125,7 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// some basic python macros
 #define Py_NEWARGS 1
 /// return with no return value if nothing happens
-#define Py_Return Py_INCREF(Py_None); return Py_None;
+#define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
 #define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
 /// checks on a condition and returns an error on failure

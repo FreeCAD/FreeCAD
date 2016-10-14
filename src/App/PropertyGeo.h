@@ -263,6 +263,10 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<ObjectIdentifier> &paths) const;
 
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value);
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
@@ -355,9 +359,6 @@ public:
     //@{
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     virtual Base::BoundBox3d getBoundingBox() const = 0;
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const  = 0;
     //@}
 };
 

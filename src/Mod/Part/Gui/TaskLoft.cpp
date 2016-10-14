@@ -34,6 +34,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>
@@ -66,8 +67,9 @@ public:
 LoftWidget::LoftWidget(QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Q_UNUSED(parent);
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
     d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
@@ -118,7 +120,7 @@ void LoftWidget::findShapes()
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -135,19 +137,19 @@ bool LoftWidget::accept()
 {
     QString list, solid, ruled, closed;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromAscii("True");
+        solid = QString::fromLatin1("True");
     else
-        solid = QString::fromAscii("False");
+        solid = QString::fromLatin1("False");
 
     if (d->ui.checkRuledSurface->isChecked())
-        ruled = QString::fromAscii("True");
+        ruled = QString::fromLatin1("True");
     else
-        ruled = QString::fromAscii("False");
+        ruled = QString::fromLatin1("False");
 
     if (d->ui.checkClosed->isChecked())
-        closed = QString::fromAscii("True");
+        closed = QString::fromLatin1("True");
     else
-        closed = QString::fromAscii("False");
+        closed = QString::fromLatin1("False");
 
     QTextStream str(&list);
 
@@ -164,18 +166,18 @@ bool LoftWidget::accept()
 
     try {
         QString cmd;
-        cmd = QString::fromAscii(
+        cmd = QString::fromLatin1(
             "App.getDocument('%5').addObject('Part::Loft','Loft')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Solid=%2\n"
             "App.getDocument('%5').ActiveObject.Ruled=%3\n"
             "App.getDocument('%5').ActiveObject.Closed=%4\n"
-            ).arg(list).arg(solid).arg(ruled).arg(closed).arg(QString::fromAscii(d->document.c_str()));
+            ).arg(list).arg(solid).arg(ruled).arg(closed).arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Loft");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
@@ -186,7 +188,7 @@ bool LoftWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

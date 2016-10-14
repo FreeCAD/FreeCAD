@@ -55,6 +55,8 @@ public:
 
   App::PropertyColor        Colour;
   App::PropertyColorList    ColourList;
+  App::PropertyMaterial     Material;
+  App::PropertyMaterialList MaterialList;
 
   // special types
   App::PropertyDistance     Distance;
@@ -70,9 +72,10 @@ public:
   App::PropertyFloatList   FloatList;
 
   // Standard Properties (PropertyLinks.h)
-  App::PropertyLink     Link;
-  App::PropertyLinkSub  LinkSub;
-  App::PropertyLinkList LinkList;
+  App::PropertyLink        Link;
+  App::PropertyLinkSub     LinkSub;
+  App::PropertyLinkList    LinkList;
+  App::PropertyLinkSubList LinkSubList;
 
   // Standard Properties (PropertyGeo.h)
   App::PropertyMatrix     Matrix;
@@ -95,6 +98,7 @@ public:
   App::PropertyInteger   TypeTransient;
   
   App::PropertyQuantity  QuantityLength;
+  App::PropertyQuantity  QuantityOther;
   //App::PropertyQuantity  QuantityMass;
   //App::PropertyQuantity  QuantityAngle;
 

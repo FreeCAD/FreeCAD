@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+475"/>
+        <location filename="../../Command.cpp" line="+476"/>
         <source>Drawing</source>
         <translation>Rajzolás</translation>
     </message>
@@ -44,18 +44,18 @@
     <message>
         <location line="+183"/>
         <source>Drawing</source>
-        <translation type="unfinished">Rajzolás</translation>
+        <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Draft View</translation>
+        <translation>Tervrajz nézet</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Inserts a Draft view of the selected object(s) in the active drawing</translation>
+        <translation>Beilleszt a kiválasztott tárgy(ak)ról egy Tervezet nézetet az aktív rajzba</translation>
     </message>
 </context>
 <context>
@@ -198,22 +198,41 @@
     </message>
 </context>
 <context>
+    <name>CmdDrawingSpreadsheetView</name>
+    <message>
+        <location line="+62"/>
+        <source>Drawing</source>
+        <translation>Rajzolás</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Spreadsheet View</source>
+        <translation>&amp;Számolótábla megtekintése</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <source>Inserts a view of a selected spreadsheet in the active drawing</source>
+        <translation>Alkatrészlista beillesztése az aktív rajzba</translation>
+    </message>
+</context>
+<context>
     <name>CmdDrawingSymbol</name>
     <message>
-        <location line="-110"/>
+        <location line="-176"/>
         <source>Drawing</source>
-        <translation type="unfinished">Rajzolás</translation>
+        <translation>Rajzolás</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp;Symbol</translation>
+        <translation>&amp;Szimbólum</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Inserts a symbol from a svg file in the active drawing</translation>
+        <translation>Egy szimbólumot szúr be az aktív rajzon szereplő svg-fájlból</translation>
     </message>
 </context>
 <context>
@@ -246,7 +265,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;High Quality Antialiasing</source>
-        <translation>&amp;Magas minőségű Antialiasing &amp;H</translation>
+        <translation>Magas minőségű élsimítás</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -269,9 +288,13 @@
         <translation>Exportálás PDF-be</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>PDF file (*.pdf)</source>
-        <translation>PDF fájl (*.pdf)</translation>
+        <translation type="obsolete">PDF fájl (*.pdf)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>PDF file</source>
+        <translation>PDF-fájl</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -311,28 +334,36 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Different orientation</translation>
+        <translation>Eltérő tájolású</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different orientation  than the drawing.
-Do you want to continue?</translation>
+        <translation>A nyomtató a rajztól eltérő tájolást használ. Szeretné fojtatni?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Different paper size</translation>
+        <translation>Eltérő méretű papír</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">The printer uses a different paper size than the drawing.
-Do you want to continue?</translation>
+        <translation>A nyomtató a rajztól eltérő méretű papír méretet használ. Szeretné fojtatni?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Opening file failed</source>
+        <translation>Fájl megnyitás sikertelen</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation>Nem lehet megnyitni a &apos;%1&apos; fájlt írásra.</translation>
     </message>
 </context>
 <context>
@@ -356,118 +387,108 @@ Do you want to continue?</translation>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Right click for axonometric settings</translation>
+        <translation>Jobb kattintás az axonometric beállításokhoz</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Top left x / y</translation>
+        <translation>Bal felső x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Spacing dx / dy   </translation>
+        <translation>Térköz dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Axis out and right</translation>
+        <translation> Tengely ki és jobb</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Vertical tilt</translation>
+        <translation> Függőleges döntés</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X +ve</translation>
+        <translation>X + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y +ve</translation>
+        <translation>Y + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>Z + ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>X - ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>Y -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>Z -ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Isometric</translation>
+        <translation>Izometrikus</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetric</translation>
+        <translation>Dimetrikus</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetric</translation>
+        <translation>Trimetrikus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Scale</translation>
+        <translation> Méretarány</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> View projection   </translation>
+        <translation> Vetítés megtekintése   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Axis aligned up</translation>
+        <translation> Tengely felfelé igazítása</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Flip</translation>
+        <translation>Átfordítás</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetric</translation>
+        <translation> Trimetrikus</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -487,12 +508,12 @@ Do you want to continue?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">View from:</translation>
+        <translation>Nézet ebből:</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Axis aligned right:</translation>
+        <translation>Tengelyek jobbra igazítottak:</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -572,15 +593,17 @@ Do you want to continue?</translation>
         <translation type="obsolete">Másodlagos dx / dy</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Rejtettek megjelenítése</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation>Mutassa a rejtett vonalakat</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Simítás megjelenítése</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation>Mutassa a sima vonalakat</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Axonometric</translation>
     </message>
@@ -588,7 +611,7 @@ Do you want to continue?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Látható éles élek</translation>
     </message>
@@ -641,6 +664,26 @@ Do you want to continue?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Terv formák</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation>Nincs aktív dokumentum</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation>A művelet elvégzéséhez jelenleg nincs aktív dokumentum</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation>Nincs aktív nézetet</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation>A művelet elvégzéséhez jelenleg nincs aktív nézet</translation>
     </message>
 </context>
 <context>
@@ -696,32 +739,32 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Landscape</translation>
+        <translation>Fekvő</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Portrait</translation>
+        <translation>Álló</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 drawing</translation>
+        <translation>Új %1%2 %3 rajz beszúrása</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Insert new %1%2 %3 (%4) drawing</translation>
+        <translation>Új %1%2 %3 (%4) rajz beszúrása</translation>
     </message>
 </context>
 <context>
@@ -737,21 +780,20 @@ Do you want to continue?</translation>
         <translation type="obsolete">Rajz nézegető</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+519"/>
         <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-        <translation>Skálázható vektor grafika (*.svg *.svgz)</translation>
+        <translation type="obsolete">Skálázható vektor grafika (*.svg *.svgz)</translation>
     </message>
     <message>
-        <location line="-267"/>
+        <location line="-266"/>
         <location line="+78"/>
         <location line="+49"/>
         <location line="+186"/>
+        <location line="+116"/>
         <source>Wrong selection</source>
         <translation>Nem megfelelő kiválasztás</translation>
     </message>
     <message>
-        <location line="-312"/>
+        <location line="-428"/>
         <source>Select a Part object.</source>
         <translation>Objektum rész kiválasztása.</translation>
     </message>
@@ -768,27 +810,36 @@ Do you want to continue?</translation>
         <translation type="obsolete">Hozzon létre egy lapot a nézet beszúrásához.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="-253"/>
+        <location line="+519"/>
+        <location line="+52"/>
+        <source>Scalable Vector Graphic</source>
+        <translation>Méretezhető vektoros grafika</translation>
+    </message>
+    <message>
+        <location line="-310"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>No page found</source>
-        <translation type="unfinished">No page found</translation>
+        <translation>Az oldal nem található</translation>
     </message>
     <message>
-        <location line="-250"/>
+        <location line="-425"/>
         <location line="+78"/>
         <location line="+80"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+175"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Create a page first.</translation>
+        <translation>Először hozzon létre egy oldalt.</translation>
     </message>
     <message>
-        <location line="-182"/>
+        <location line="-357"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Select exactly one Part object.</translation>
+        <translation>Jelöljön ki pontosan egy tárgy alkotórészt.</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -797,26 +848,34 @@ Do you want to continue?</translation>
         <translation>Válasszon ki egy oldalas objektumot.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>All Files</source>
+        <translation>Minden Fájl</translation>
+    </message>
+    <message>
+        <location line="+110"/>
+        <source>Select exactly one Spreadsheet object.</source>
+        <translation>Jelöljön ki pontosan egy számolótábla tárgyat.</translation>
+    </message>
+    <message>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished">SVG (*.svg)</translation>
+        <translation type="obsolete">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
         <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Összes fájl (*.*)</translation>
+        <translation type="obsolete">Összes fájl (*.*)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-108"/>
         <source>Export page</source>
         <translation>Oldal exportálása</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+155"/>
+        <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
         <translation>Mutasd a rajzot</translation>
     </message>
@@ -845,22 +904,22 @@ Do you want to continue?</translation>
         <translation type="obsolete">Alsó</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+907"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Make axonometric...</translation>
+        <translation>Axonometric létrehozás...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Edit axonometric settings...</translation>
+        <translation>Axonometric beállítások szerkesztése...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-906"/>
+        <location line="+907"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Make orthographic</translation>
+        <translation>Ortografikus létrehozás</translation>
     </message>
 </context>
 <context>

@@ -45,16 +45,16 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WFlags fl )
+DlgMacroRecordImp::DlgMacroRecordImp( QWidget* parent, Qt::WindowFlags fl )
     : QDialog(parent, fl), WindowParameter("Macro")
 {
     this->setupUi(this);
 
     // get the macro home path
     this->macroPath = QString::fromUtf8(getWindowParameter()->GetASCII("MacroPath",
-        App::Application::getUserAppDataDir().c_str()).c_str());
+        App::Application::getUserMacroDir().c_str()).c_str());
     this->macroPath = QDir::toNativeSeparators(QDir(this->macroPath).path() + QDir::separator());
 
     // set the edit fields

@@ -12,7 +12,6 @@ set(Start_LIBS
 
 SET(Start_SRCS
     AppStart.cpp
-    AppStartPy.cpp
     PreCompiled.cpp
     PreCompiled.h
     StartConfiguration.h

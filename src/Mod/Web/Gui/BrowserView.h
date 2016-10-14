@@ -73,7 +73,7 @@ public:
 
     void load(const char* URL);
     void load(const QUrl & url);
-    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromAscii("Browser"));
+    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromLatin1("Browser"));
     void stop(void);
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);

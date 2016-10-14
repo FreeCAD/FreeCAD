@@ -50,6 +50,8 @@ public:
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)
     {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
         return Py::asObject(new TestGui::UnitTestDialogPy());
     }
     Py::Object setTest(const Py::Tuple& args)
@@ -88,8 +90,7 @@ void loadTestResource()
 }
 
 /* Python entry */
-extern "C" {
-void AppTestGuiExport initQtUnitGui()
+PyMODINIT_FUNC initQtUnitGui()
 {
     // the following constructor call registers our extension module
     // with the Python runtime system
@@ -101,5 +102,3 @@ void AppTestGuiExport initQtUnitGui()
     loadTestResource();
     return;
 }
-
-} // extern "C"

@@ -178,6 +178,14 @@ class GuiExport SelectionGate
 public:
     virtual ~SelectionGate(){}
     virtual bool allow(App::Document*,App::DocumentObject*, const char*)=0;
+
+    /**
+     * @brief notAllowedReason is a string that sets the message to be
+     * displayed in statusbar for cluing the user on why is the selection not
+     * allowed. Set this variable in allow() implementation. Enclose the
+     * literal into QT_TR_NOOP() for translatability.
+     */
+    std::string notAllowedReason;
 };
 
 
@@ -286,6 +294,13 @@ public:
      * The vector reflects the sequence of selection.
      */
     std::vector<Gui::SelectionObject> getSelectionEx(const char* pDocName=0,Base::Type typeId=App::DocumentObject::getClassTypeId()) const;
+
+    /**
+     * @brief getAsPropertyLinkSubList fills PropertyLinkSubList with current selection.
+     * @param prop (output). The property object to receive links
+     * @return the number of items written to the link
+     */
+    int getAsPropertyLinkSubList(App::PropertyLinkSubList &prop) const;
 
     /** Returns a vector of all selection objects of all documents. */
     std::vector<SelObj> getCompleteSelection() const;

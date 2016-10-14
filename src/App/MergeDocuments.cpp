@@ -97,7 +97,7 @@ private:
 };
 }
 
-MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), appdoc(doc)
+MergeDocuments::MergeDocuments(App::Document* doc) : guiup(false), verbose(true), stream(0), appdoc(doc)
 {
     connectExport = doc->signalExportObjects.connect
         (boost::bind(&MergeDocuments::exportObject, this, _1, _2));
@@ -127,6 +127,7 @@ MergeDocuments::importObjects(std::istream& input)
     this->nameMap.clear();
     this->stream = new zipios::ZipInputStream(input);
     XMLMergeReader reader(this->nameMap,"<memory>", *stream);
+    reader.setVerbose(isVerbose());
     std::vector<App::DocumentObject*> objs = appdoc->importObjects(reader);
 
     delete this->stream;

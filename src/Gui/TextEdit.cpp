@@ -39,7 +39,7 @@ using namespace Gui;
  *  Constructs a TextEdit which is a child of 'parent'.
  */
 TextEdit::TextEdit(QWidget* parent)
-    : QPlainTextEdit(parent), listBox(0)
+    : QPlainTextEdit(parent), cursorPosition(0), listBox(0)
 {
     //Note: Set the correct context to this shortcut as we may use several instances of this
     //class at a time
@@ -289,6 +289,10 @@ void TextEditor::highlightCurrentLine()
 
 void TextEditor::drawMarker(int line, int x, int y, QPainter* p)
 {
+    Q_UNUSED(line); 
+    Q_UNUSED(x); 
+    Q_UNUSED(y); 
+    Q_UNUSED(p); 
 }
 
 void TextEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -332,7 +336,7 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
         int indent = hPrefGrp->GetInt( "IndentSize", 4 );
         bool space = hPrefGrp->GetBool( "Spaces", false );
         QString ch = space ? QString(indent, QLatin1Char(' '))
-                           : QString::fromAscii("\t");
+                           : QString::fromLatin1("\t");
 
         QTextCursor cursor = textCursor();
         if (!cursor.hasSelection()) {
@@ -414,6 +418,7 @@ void TextEditor::keyPressEvent (QKeyEvent * e)
 /** Sets the font, font size and tab size of the editor. */  
 void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReason)
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
 #ifdef FC_OS_LINUX
@@ -421,12 +426,12 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
 #else
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
 #endif
-        QString fontFamily = QString::fromAscii(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
+        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII( "Font", "Courier" ).c_str());
         
         QFont font(fontFamily, fontSize);
         setFont(font);
     } else {
-        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromAscii(sReason));
+        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
             unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
@@ -442,6 +447,15 @@ void TextEditor::OnChange(Base::Subject<const char*> &rCaller,const char* sReaso
         QFontMetrics metric(font());
         int fontSize = metric.width(QLatin1String("0"));
         setTabStopWidth(tabWidth * fontSize);
+    }
+
+    // Enables/Disables Line number in the Macro Editor from Edit->Preferences->Editor menu.
+    QRect cr = contentsRect();
+    bool show = hPrefGrp->GetBool( "EnableLineNumber", true );
+    if(show) {
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+    } else {
+        lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), 0, cr.height()));
     }
 }
 

@@ -68,7 +68,7 @@ CmdRobotCreateTrajectory::CmdRobotCreateTrajectory()
 }
 
 
-void CmdRobotCreateTrajectory::activated(int iMsg)
+void CmdRobotCreateTrajectory::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Trajectory");
  
@@ -102,7 +102,7 @@ CmdRobotInsertWaypoint::CmdRobotInsertWaypoint()
 }
 
 
-void CmdRobotInsertWaypoint::activated(int iMsg)
+void CmdRobotInsertWaypoint::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
@@ -117,16 +117,16 @@ void CmdRobotInsertWaypoint::activated(int iMsg)
 
     Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
     Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     openCommand("Insert waypoint");
@@ -160,7 +160,7 @@ CmdRobotInsertWaypointPreselect::CmdRobotInsertWaypointPreselect()
 }
 
 
-void CmdRobotInsertWaypointPreselect::activated(int iMsg)
+void CmdRobotInsertWaypointPreselect::activated(int)
 {
     
     if (getSelection().size() != 1 ) {
@@ -179,7 +179,7 @@ void CmdRobotInsertWaypointPreselect::activated(int iMsg)
 
     Robot::TrajectoryObject *pcTrajectoryObject;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else  {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one Trajectory object."));
@@ -223,7 +223,7 @@ CmdRobotSetDefaultOrientation::CmdRobotSetDefaultOrientation()
 }
 
 
-void CmdRobotSetDefaultOrientation::activated(int iMsg)
+void CmdRobotSetDefaultOrientation::activated(int)
 {
     // create placement dialog 
     Gui::Dialog::Placement *Dlg = new Gui::Dialog::Placement();
@@ -262,32 +262,32 @@ CmdRobotSetDefaultValues::CmdRobotSetDefaultValues()
 }
 
 
-void CmdRobotSetDefaultValues::activated(int iMsg)
+void CmdRobotSetDefaultValues::activated(int)
 {
 
     bool ok;
     QString text = QInputDialog::getText(0, QObject::tr("set default speed"),
                                           QObject::tr("speed: (e.g. 1 m/s or 3 cm/s)"), QLineEdit::Normal,
-                                          QString::fromAscii("1 m/s"), &ok);
+                                          QString::fromLatin1("1 m/s"), &ok);
     if ( ok && !text.isEmpty() ) {
-        doCommand(Doc,"_DefSpeed = '%s'",text.toAscii().constData());
+        doCommand(Doc,"_DefSpeed = '%s'",text.toLatin1().constData());
     } 
 
     QStringList items;
-    items  << QString::fromAscii("False") << QString::fromAscii("True");
+    items  << QString::fromLatin1("False") << QString::fromLatin1("True");
 
     QString item = QInputDialog::getItem(0, QObject::tr("set default continuity"),
                                           QObject::tr("continuous ?"), items, 0, false, &ok);
     if (ok && !item.isEmpty())
-        doCommand(Doc,"_DefCont = %s",item.toAscii().constData());
+        doCommand(Doc,"_DefCont = %s",item.toLatin1().constData());
 
     text.clear();
 
     text = QInputDialog::getText(0, QObject::tr("set default acceleration"),
                                           QObject::tr("acceleration: (e.g. 1 m/s^2 or 3 cm/s^2)"), QLineEdit::Normal,
-                                          QString::fromAscii("1 m/s^2"), &ok);
+                                          QString::fromLatin1("1 m/s^2"), &ok);
     if ( ok && !text.isEmpty() ) {
-        doCommand(Doc,"_DefAccelaration = '%s'",text.toAscii().constData());
+        doCommand(Doc,"_DefAccelaration = '%s'",text.toLatin1().constData());
     } 
 
 
@@ -328,7 +328,7 @@ CmdRobotEdge2Trac::CmdRobotEdge2Trac()
 }
 
 
-void CmdRobotEdge2Trac::activated(int iMsg)
+void CmdRobotEdge2Trac::activated(int)
 {
      
  /*   App::DocumentObject *obj = this->getDocument()->getObject(FeatName.c_str());
@@ -392,7 +392,7 @@ CmdRobotTrajectoryDressUp::CmdRobotTrajectoryDressUp()
 }
 
 
-void CmdRobotTrajectoryDressUp::activated(int iMsg)
+void CmdRobotTrajectoryDressUp::activated(int)
 {
     Gui::SelectionFilter ObjectFilterDressUp("SELECT Robot::TrajectoryDressUpObject COUNT 1");
     Gui::SelectionFilter ObjectFilter("SELECT Robot::TrajectoryObject COUNT 1");
@@ -439,7 +439,7 @@ CmdRobotTrajectoryCompound::CmdRobotTrajectoryCompound()
 }
 
 
-void CmdRobotTrajectoryCompound::activated(int iMsg)
+void CmdRobotTrajectoryCompound::activated(int)
 {
     Gui::SelectionFilter ObjectFilter("SELECT Robot::TrajectoryCompound COUNT 1");
 

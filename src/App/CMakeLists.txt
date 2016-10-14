@@ -12,6 +12,27 @@ IF(DOCDIR)
     add_definitions(-DDOCDIR="${DOCDIR}")
 ENDIF(DOCDIR)
 
+add_definitions(-DBOOST_${Boost_VERSION})
+
+#write relevant cmake variables to a file for later access with python. Exportet are all variables 
+#starting with BUILD. As the variable only exists if the user set it to ON a dict is useless, we 
+#use a python list for export. 
+set(_vars "const char CMakeVariables[] =\"cmake = [")
+set(_delim "")
+get_cmake_property(_variableNames VARIABLES)
+foreach (_variableName ${_variableNames})
+    if (${_variableName})
+        STRING(REGEX MATCH "^[_]?[^_]*" _prefix "${_variableName}_") 
+        if(${_prefix} STREQUAL "BUILD")
+            STRING(REPLACE "\\" "\\\\" _name ${_variableName})
+            set(_vars "${_vars}${_delim}\\n\"\n\"\\\"${_name}\\\"")
+            set(_delim ",")
+        endif()
+    endif ()
+endforeach()
+set(_vars "${_vars}]\\n\" \n;")
+file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/CMakeScript.h "${_vars}" )
+
 include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
@@ -32,7 +53,16 @@ set(FreeCADApp_LIBS
 
 generate_from_xml(DocumentPy)
 generate_from_xml(DocumentObjectPy)
+generate_from_xml(ExtensionPy)
+generate_from_xml(ExtensionContainerPy)
+generate_from_xml(DocumentObjectExtensionPy)
+generate_from_xml(GroupExtensionPy)
 generate_from_xml(DocumentObjectGroupPy)
+generate_from_xml(GeoFeaturePy)
+generate_from_xml(GeoFeatureGroupExtensionPy)
+generate_from_xml(OriginGroupExtensionPy)
+generate_from_xml(PartPy)
+
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
@@ -41,8 +71,16 @@ generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
 
 SET(FreeCADApp_XML_SRCS
+    ExtensionPy.xml
+    ExtensionContainerPy.xml
+    DocumentObjectExtensionPy.xml
+    GroupExtensionPy.xml
     DocumentObjectGroupPy.xml
     DocumentObjectPy.xml
+    GeoFeaturePy.xml
+    GeoFeatureGroupExtensionPy.xml
+    OriginGroupExtensionPy.xml
+    PartPy.xml
     DocumentPy.xml
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
@@ -55,9 +93,18 @@ SET(Document_CPP_SRCS
     Annotation.cpp
     Document.cpp
     DocumentObject.cpp
+    Extension.cpp
+    ExtensionPyImp.cpp
+    DocumentObjectExtension.cpp
+    DocumentObjectExtensionPyImp.cpp
+    ExtensionContainer.cpp
+    ExtensionContainerPyImp.cpp
+    GroupExtension.cpp
+    GroupExtensionPyImp.cpp
     DocumentObjectFileIncluded.cpp
     DocumentObjectGroup.cpp
     DocumentObjectGroupPyImp.cpp
+    GeoFeaturePyImp.cpp
     DocumentObjectPyImp.cpp
     DocumentObserver.cpp
     DocumentObserverPython.cpp
@@ -66,11 +113,21 @@ SET(Document_CPP_SRCS
     FeaturePython.cpp
     FeatureTest.cpp
     GeoFeature.cpp
+    GeoFeatureGroupExtensionPyImp.cpp
+    GeoFeatureGroupExtension.cpp
+    OriginGroupExtensionPyImp.cpp
+    OriginGroupExtension.cpp
+    PartPyImp.cpp
+    Part.cpp
+    Origin.cpp
+    Path.cpp
     InventorObject.cpp
     MeasureDistance.cpp
     Placement.cpp
-    Plane.cpp
+    OriginFeature.cpp
+    Range.cpp
     Transactions.cpp
+    TransactionalObject.cpp
     VRMLObject.cpp
     MaterialObject.cpp
     MergeDocuments.cpp
@@ -80,21 +137,34 @@ SET(Document_HPP_SRCS
     Annotation.h
     Document.h
     DocumentObject.h
+    Extension.h
+    ExtensionContainer.h
+    GroupExtension.h
+    DocumentObjectExtension.h
     DocumentObjectFileIncluded.h
     DocumentObjectGroup.h
     DocumentObserver.h
     DocumentObserverPython.h
     Expression.h
+    ExpressionVisitors.h
+    FeatureCustom.h
     FeaturePython.h
     FeaturePythonPyImp.h
     FeaturePythonPyImp.inl
     FeatureTest.h
     GeoFeature.h
+    GeoFeatureGroupExtension.h
+    OriginGroupExtension.h
+    Part.h
+    Origin.h
+    Path.h
     InventorObject.h
     MeasureDistance.h
     Placement.h
-    Plane.h
+    OriginFeature.h
+    Range.h
     Transactions.h
+    TransactionalObject.h
     VRMLObject.h
     MaterialObject.h
     MergeDocuments.h

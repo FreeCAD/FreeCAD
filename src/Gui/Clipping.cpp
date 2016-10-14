@@ -86,6 +86,7 @@ public:
     }
     static void moveCallback(void * data, SoSensor * sensor)
     {
+        Q_UNUSED(sensor); 
         Private* self = reinterpret_cast<Private*>(data);
         if (self->view) {
             Gui::View3DInventorViewer* view = self->view->getViewer();

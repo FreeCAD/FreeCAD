@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>509</width>
+    <width>522</width>
     <height>462</height>
    </rect>
   </property>
@@ -169,6 +169,9 @@ such as &quot;Arial:Bold&quot;</string>
           </property>
           <property name="suffix">
            <string>mm</string>
+          </property>
+          <property name="minimum">
+           <double>-9999.989999999999782</double>
           </property>
           <property name="maximum">
            <double>9999.989999999999782</double>
@@ -361,7 +364,7 @@ such as &quot;Arial:Bold&quot;</string>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -403,16 +406,6 @@ such as &quot;Arial:Bold&quot;</string>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -430,6 +423,16 @@ such as &quot;Arial:Bold&quot;</string>
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

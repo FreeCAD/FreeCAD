@@ -166,6 +166,8 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemaMKS.cpp
     UnitsSchemaImperial1.h
     UnitsSchemaImperial1.cpp
+    UnitsSchemaCentimeters.h
+    UnitsSchemaCentimeters.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp

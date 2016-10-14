@@ -29,6 +29,7 @@
 #include <Inventor/SbBasic.h>
 #include <Inventor/SbBSPTree.h>
 
+#include <qglobal.h>
 #include <Base/FileInfo.h>
 #include "SoFCVectorizeSVGAction.h"
 
@@ -57,7 +58,9 @@ class SoVectorizePoint : public SoVectorizeItem {
 public:
     SoVectorizePoint(void) {
         this->type = POINT;
+        this->vidx = 0;
         this->size = 1.0f;
+        this->col = 0;
     }
     int vidx;       // index to BSPtree coordinate
     float size;     // Coin size (pixels)
@@ -90,6 +93,9 @@ class SoVectorizeText : public SoVectorizeItem {
 public:
     SoVectorizeText(void) {
         this->type = TEXT;
+        this->fontsize = 10;
+        this->col = 0;
+        this->justification = LEFT;
     }
 
     enum Justification {
@@ -301,11 +307,17 @@ void SoFCVectorizeSVGActionP::printTriangle(const SbVec3f * v, const SbColor * c
 void SoFCVectorizeSVGActionP::printCircle(const SbVec3f & v, const SbColor & c, const float radius) const
 {
     // todo
+    Q_UNUSED(v); 
+    Q_UNUSED(c); 
+    Q_UNUSED(radius); 
 }
 
 void SoFCVectorizeSVGActionP::printSquare(const SbVec3f & v, const SbColor & c, const float size) const
 {
     // todo
+    Q_UNUSED(v); 
+    Q_UNUSED(c); 
+    Q_UNUSED(size); 
 }
 
 void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
@@ -339,11 +351,13 @@ void SoFCVectorizeSVGActionP::printLine(const SoVectorizeLine * item) const
 void SoFCVectorizeSVGActionP::printPoint(const SoVectorizePoint * item) const
 {
     // todo
+    Q_UNUSED(item); 
 }
 
 void SoFCVectorizeSVGActionP::printImage(const SoVectorizeImage * item) const
 {
     // todo
+    Q_UNUSED(item); 
 }
 
 // -------------------------------------------------------

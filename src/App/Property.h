@@ -27,7 +27,11 @@
 // Std. configurations
 
 #include <Base/Persistence.h>
+#ifndef BOOST_105400
 #include <boost/any.hpp>
+#else
+#include <boost_any_1_55.hpp>
+#endif
 #include <string>
 #include <bitset>
 
@@ -52,6 +56,18 @@ class AppExport Property : public Base::Persistence
     TYPESYSTEM_HEADER();
 
 public:
+    enum Status
+    {
+        Touched = 0, // touched property
+        Immutable = 1, // can't modify property
+        ReadOnly = 2, // for property editor
+        Hidden = 3, // for property editor
+        User1 = 28, // user-defined status
+        User2 = 29, // user-defined status
+        User3 = 30, // user-defined status
+        User4 = 31  // user-defined status
+    };
+
     Property();
     virtual ~Property();
 
@@ -99,12 +115,35 @@ public:
     /// Get valid paths for this property; used by auto completer
     virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
 
+    /** Property status handling
+     */
+    //@{
     /// Set the property touched
     void touch();
     /// Test if this property is touched 
-    bool isTouched(void) const {return StatusBits.test(0);}
+    inline bool isTouched(void) const {
+        return StatusBits.test(0);
+    }
     /// Reset this property touched 
-    void purgeTouched(void){StatusBits.reset(0);}
+    inline void purgeTouched(void) {
+        StatusBits.reset(0);
+    }
+    /// return the status bits
+    inline unsigned long getStatus() const {
+        return StatusBits.to_ulong();
+    }
+    inline bool testStatus(Status pos) const {
+        return StatusBits.test(static_cast<size_t>(pos));
+    }
+    inline void setStatus(Status pos, bool on) {
+        StatusBits.set(static_cast<size_t>(pos), on);
+    }
+    ///Sets property editable/grayed out in property editor
+    void setReadOnly(bool readOnly);
+    inline bool isReadOnly() const {
+        return testStatus(App::Property::ReadOnly);
+    }
+    //@}
 
     /// Returns a new copy of the property (mainly for Undo/Redo and transactions)
     virtual Property *Copy(void) const = 0;
@@ -116,17 +155,17 @@ public:
 
     friend class PropertyContainer;
 
+protected:
     /** Status bits of the property
      * The first 8 bits are used for the base system the rest can be used in
      * descendent classes to to mark special stati on the objects.
      * The bits and their meaning are listed below:
      * 0 - object is marked as 'touched'
      * 1 - object is marked as 'immutable'
-     * 2 - object is marked as 'read-ony' (for property editor)
+     * 2 - object is marked as 'read-only' (for property editor)
      * 3 - object is marked as 'hidden' (for property editor)
      */
     std::bitset<32> StatusBits;
-
 
 protected:
     /// Gets called by all setValue() methods after the value has changed
@@ -159,6 +198,57 @@ class AppExport PropertyLists : public Property
 public:
     virtual void setSize(int newSize)=0;   
     virtual int getSize(void) const =0;   
+};
+
+/** A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties.
+ *
+ * A template class that is used to inhibit multiple nested calls to aboutToSetValue/hasSetValue for properties, and
+ * only invoke it the first and last time it is needed. This is useful in cases where you want to change multiple
+ * values in a property "atomically", using possibly multiple primitive functions that normally would trigger
+ * aboutToSetValue/hasSetValue calls on their own.
+ *
+ * To use, inherit privately from the AtomicPropertyChangeInterface class, using your class name as the template argument.
+ * In all cases where you normally would call aboutToSetValue/hasSetValue before and after a change, create
+ * an AtomicPropertyChange object before you do the change. Depending on a counter in the main property, the constructor might
+ * invoke aboutToSetValue. When the AtomicPropertyChange object is destructed, it might call hasSetValue if it is found
+ * necessary to do (i.e last item on the AtomicPropertyChange stack). This makes it easy to match the calls, and it is also
+ * exception safe in the sense that the destructors are guaranteed to be called during unwinding and exception
+ * handling, making the calls to boutToSetValue and hasSetValue balanced.
+ *
+ */
+
+template<class P> class AtomicPropertyChangeInterface {
+protected:
+    AtomicPropertyChangeInterface() : signalCounter(0) { }
+
+public:
+    class AtomicPropertyChange {
+    public:
+        AtomicPropertyChange(P & prop) : mProp(prop) {
+            // Signal counter == 0? Then we need to invoke the aboutToSetValue in the property.
+            if (mProp.signalCounter == 0)
+                mProp.aboutToSetValue();
+
+            mProp.signalCounter++;
+        }
+
+        ~AtomicPropertyChange() {
+            mProp.signalCounter--;
+
+            // Signal counter == 0? Then we need to invoke the hasSetValue in the property.
+            if (mProp.signalCounter == 0)
+                   mProp.hasSetValue();
+        }
+
+    private:
+        P & mProp; /**< Referenced to property we work on */
+    };
+
+    static AtomicPropertyChange * getAtomicPropertyChange(P & prop) { return new AtomicPropertyChange(prop); }
+
+private:
+
+    int signalCounter; /**< Counter for invoking transaction start/stop */
 };
 
 } // namespace App

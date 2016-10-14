@@ -46,7 +46,7 @@ using namespace Gui;
 TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
     : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
       tr("TaskObjectName"),
-      true, 
+      true,
       parent),
       pcObject(pcObject)
 {
@@ -63,7 +63,7 @@ TaskObjectName::TaskObjectName(App::DocumentObject *pcObject,QWidget *parent)
     if(strcmp(pcObject->Label.getValue(),"") != 0)
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
     else
-        ui->lineEdit_ObjectName->setText(QString::fromAscii(pcObject->getNameInDocument()));
+        ui->lineEdit_ObjectName->setText(QString::fromLatin1(pcObject->getNameInDocument()));
 
 }
 

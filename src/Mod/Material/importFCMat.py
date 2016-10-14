@@ -21,6 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, Material
+import os
 
 __title__="FreeCAD material card importer"
 __author__ = "Juergen Riegel"
@@ -46,7 +47,7 @@ def open(filename):
     "called when freecad wants to open a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc

@@ -150,6 +150,8 @@ public:
     boost::signal<void (const App::Property&)> signalAppendDynamicProperty;
     /// signal on about removing a dynamic property
     boost::signal<void (const App::Property&)> signalRemoveDynamicProperty;
+    /// signal on about changing the editor mode of a property
+    boost::signal<void (const App::Property&)> signalChangePropertyEditor;
     //@}
 
 
@@ -247,6 +249,7 @@ public:
     static std::string getTempPath();
     static std::string getTempFileName(const char* FileName=0);
     static std::string getUserAppDataDir();
+    static std::string getUserMacroDir();
     static std::string getResourceDir();
     static std::string getHelpDir();
     //@}
@@ -272,7 +275,7 @@ protected:
 
 private:
     /// Constructor
-    Application(ParameterManager *pcSysParamMngr, ParameterManager *pcUserParamMngr,std::map<std::string,std::string> &mConfig);
+    Application(std::map<std::string,std::string> &mConfig);
     /// Destructor
     virtual ~Application();
 

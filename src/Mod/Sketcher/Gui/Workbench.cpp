@@ -265,7 +265,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
 }
 
 template <typename T>
-inline void SketcherAddWorkspaceSketchExtra(T& sketch){
+inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/){
 }
 
 template <>

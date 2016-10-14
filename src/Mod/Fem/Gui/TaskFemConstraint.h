@@ -42,6 +42,7 @@ public:
 
     virtual const std::string getReferences(void) const {return std::string();}
     const std::string getReferences(const std::vector<std::string>& items) const;
+    const std::string getScale() const;
 
 protected Q_SLOTS:
     void onReferenceDeleted(const int row);
@@ -76,9 +77,10 @@ class TaskDlgFemConstraint : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    /*
+
     /// is called the TaskView when the dialog is opened
-    virtual void open() {}
+    void open();
+    /*
     /// is called by the framework if an button is clicked which has no accept or reject role
     virtual void clicked(int) {}
     /// is called by the framework if the dialog is accepted (Ok)

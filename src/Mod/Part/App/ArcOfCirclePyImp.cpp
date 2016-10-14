@@ -75,7 +75,7 @@ PyObject *ArcOfCirclePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  /
 }
 
 // constructor method
-int ArcOfCirclePy::PyInit(PyObject* args, PyObject* kwds)
+int ArcOfCirclePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* o;
     double u1, u2;
@@ -212,12 +212,12 @@ Py::Object ArcOfCirclePy::getCircle(void) const
     return Py::Object(new CirclePy(new GeomCircle(circle)), true);
 }
 
-PyObject *ArcOfCirclePy::getCustomAttributes(const char* attr) const
+PyObject *ArcOfCirclePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int ArcOfCirclePy::setCustomAttributes(const char* attr, PyObject *obj)
+int ArcOfCirclePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

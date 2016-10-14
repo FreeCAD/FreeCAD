@@ -48,6 +48,7 @@ public:
 
     Py::Object message(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
+    Py::Object boxZoom(const Py::Tuple&, const Py::Dict&);
     Py::Object viewBottom(const Py::Tuple&);
     Py::Object viewFront(const Py::Tuple&);
     Py::Object viewLeft(const Py::Tuple&);
@@ -102,6 +103,8 @@ public:
     Py::Object hasAxisCross(const Py::Tuple&);
     Py::Object addDraggerCallback(const Py::Tuple&);
     Py::Object removeDraggerCallback(const Py::Tuple&);
+    Py::Object setActiveObject(const Py::Tuple&);
+    Py::Object getActiveObject(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);

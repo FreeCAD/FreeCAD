@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+46"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Tessellate shape</source>
-        <translation>Tessellate shape</translation>
+        <translation type="unfinished">Tessellate shape</translation>
     </message>
 </context>
 <context>
@@ -39,7 +39,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standaard</translation>
+        <translation>Standaard</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -59,37 +59,37 @@
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fijnheid:</translation>
+        <translation>Fijnheid:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Zeer grof</translation>
+        <translation>Zeer grof</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Ruw</translation>
+        <translation>Ruw</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Normaal</translation>
+        <translation>Normaal</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fijn</translation>
+        <translation>Fijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Zeer fijn</translation>
+        <translation>Zeer fijn</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Door de gebruiker bepaald</translation>
+        <translation>Door de gebruiker bepaald</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -109,7 +109,7 @@
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Oppervlak optimaliseren</translation>
+        <translation>Oppervlak optimaliseren</translation>
     </message>
     <message>
         <location line="+10"/>

@@ -348,7 +348,7 @@ bool TaskDlgFemConstraintBearing::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.AxialFree = %s", name.c_str(), parameterBearing->getAxial() ? "True" : "False");
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

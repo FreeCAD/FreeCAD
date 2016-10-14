@@ -67,6 +67,7 @@ public:
     Qt::ItemFlags flags (const QModelIndex & index) const;
     bool setData (const QModelIndex & index, const QVariant & value,
                   int role = Qt::EditRole);
+    QVariant data(const QModelIndex&, int role = Qt::DisplayRole) const;
     void updateCheckStates();
 
 Q_SIGNALS:
@@ -80,7 +81,7 @@ class DlgFilletEdges : public QWidget, public Gui::SelectionObserver
 public:
     enum FilletType { FILLET, CHAMFER };
 
-    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgFilletEdges(FilletType type, Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgFilletEdges();
     bool accept();
 
@@ -104,15 +105,15 @@ private Q_SLOTS:
     void on_selectAllButton_clicked();
     void on_selectNoneButton_clicked();
     void on_filletType_activated(int);
-    void on_filletStartRadius_valueChanged(double);
-    void on_filletEndRadius_valueChanged(double);
+    void on_filletStartRadius_valueChanged(const Base::Quantity&);
+    void on_filletEndRadius_valueChanged(const Base::Quantity&);
     void toggleCheckState(const QModelIndex&);
     void onHighlightEdges();
 
 private:
-    std::auto_ptr<Ui_DlgFilletEdges> ui;
+    std::unique_ptr<Ui_DlgFilletEdges> ui;
     class Private;
-    std::auto_ptr<Private> d;
+    std::unique_ptr<Private> d;
 };
 
 class FilletEdgesDialog : public QDialog
@@ -120,7 +121,7 @@ class FilletEdgesDialog : public QDialog
     Q_OBJECT
 
 public:
-    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WFlags fl = 0);
+    FilletEdgesDialog(DlgFilletEdges::FilletType type, Part::FilletBase* fillet, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~FilletEdgesDialog();
     void accept();
 
@@ -133,7 +134,7 @@ class DlgChamferEdges : public DlgFilletEdges
     Q_OBJECT
 
 public:
-    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgChamferEdges(Part::FilletBase*, QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgChamferEdges();
 
 protected:
@@ -156,6 +157,8 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    virtual bool needsFullSpace() const
+    { return true; }
 
 private:
     DlgFilletEdges* widget;
@@ -178,6 +181,8 @@ public:
 
     virtual QDialogButtonBox::StandardButtons getStandardButtons() const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    virtual bool needsFullSpace() const
+    { return true; }
 
 private:
     DlgChamferEdges* widget;

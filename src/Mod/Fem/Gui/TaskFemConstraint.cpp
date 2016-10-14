@@ -56,13 +56,20 @@
 
 #include <Base/Console.h>
 
+# include <boost/lexical_cast.hpp> //OvG conversion between string and int etc.
+
 using namespace FemGui;
 using namespace Gui;
 
 /* TRANSLATOR FemGui::TaskFemConstraint */
 
 TaskFemConstraint::TaskFemConstraint(ViewProviderFemConstraint *ConstraintView,QWidget *parent,const char* pixmapname)
-    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent),ConstraintView(ConstraintView)
+    : TaskBox(Gui::BitmapFactory().pixmap(pixmapname),tr("FEM constraint parameters"),true, parent)
+    , proxy(nullptr)
+    , ConstraintView(ConstraintView)
+    , buttonBox(nullptr)
+    , okButton(nullptr)
+    , cancelButton(nullptr)
 {
     selectionMode = selref;
 
@@ -110,6 +117,14 @@ const std::string TaskFemConstraint::getReferences(const std::vector<std::string
         result = result + (i != items.begin() ? ", " : "") + "(" + objStr + "," + refStr + ")";
     }
 
+    return result;
+}
+
+const std::string TaskFemConstraint::getScale() const //OvG: Return pre-calculated scale for constraint display
+{
+    std::string result;
+    Fem::Constraint* pcConstraint = static_cast<Fem::Constraint*>(ConstraintView->getObject());
+    result = boost::lexical_cast<std::string>(pcConstraint->Scale.getValue());
     return result;
 }
 
@@ -171,6 +186,11 @@ const QString TaskFemConstraint::makeRefText(const App::DocumentObject* obj, con
 
 //==== calls from the TaskView ===============================================================
 
+void TaskDlgFemConstraint::open()
+{
+    ConstraintView->setVisible(true);
+    Gui::Command::runCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
+}
 
 bool TaskDlgFemConstraint::accept()
 {
@@ -193,7 +213,7 @@ bool TaskDlgFemConstraint::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

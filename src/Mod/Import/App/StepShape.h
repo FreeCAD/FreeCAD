@@ -37,7 +37,7 @@ namespace Import
 class ImportExport StepShape 
 {
 public:
-    StepShape(const char* fileName="");
+    StepShape();
     ~StepShape();
 
     int read(const char* fileName);

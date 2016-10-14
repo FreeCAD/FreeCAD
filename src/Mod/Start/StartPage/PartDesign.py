@@ -22,5 +22,9 @@
 #***************************************************************************
 
 import FreeCADGui
-FreeCADGui.activateWorkbench("PartDesignWorkbench")
+Gui.activateWorkbench("PartDesignWorkbench")
 App.newDocument()
+# Make the planes properly visible
+#Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.BaseplaneXY.Placement.Rotation.Q)
+#Gui.activeDocument().activeView().viewAxometric()
+#Gui.SendMsgToActiveView("ViewFit")

@@ -126,8 +126,10 @@ const char* XMLParseException::what() const throw()
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += sFileName;
+    if (sFileName) {
+        _sErrMsg += ": ";
+        _sErrMsg += sFileName;
+    }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
@@ -398,7 +400,7 @@ SignalException::~SignalException()
 
 void SignalException::throw_signal(int signum)
 {
-    std::cerr << "SIGSEGV signal raised" << std::endl;
+    std::cerr << "SIGSEGV signal raised: " << signum << std::endl;
     throw std::runtime_error ("throw_signal");
 }
 #endif

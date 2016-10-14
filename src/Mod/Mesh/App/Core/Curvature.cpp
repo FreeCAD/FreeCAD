@@ -30,8 +30,13 @@
 #include <QtConcurrentMap>
 #include <boost/bind.hpp>
 
+//#define OPTIMIZE_CURVATURE
+#ifdef OPTIMIZE_CURVATURE
+#include <Eigen/Eigenvalues>
+#else
 #include <Mod/Mesh/App/WildMagic4/Wm4Vector3.h>
 #include <Mod/Mesh/App/WildMagic4/Wm4MeshCurvature.h>
+#endif
 
 #include "Curvature.h"
 #include "Algorithm.h"
@@ -84,6 +89,205 @@ void MeshCurvature::ComputePerFace(bool parallel)
     }
 }
 
+#ifdef OPTIMIZE_CURVATURE
+namespace MeshCore {
+void GenerateComplementBasis (Eigen::Vector3f& rkU, Eigen::Vector3f& rkV,
+                              const Eigen::Vector3f& rkW)
+{
+    float fInvLength;
+
+    if (fabs(rkW[0]) >= fabs(rkW[1]))
+    {
+        // W.x or W.z is the largest magnitude component, swap them
+        fInvLength = 1.0/sqrt(rkW[0]*rkW[0] + rkW[2]*rkW[2]);
+        rkU[0] = -rkW[2]*fInvLength;
+        rkU[1] =  0.0;
+        rkU[2] = +rkW[0]*fInvLength;
+        rkV[0] = rkW[1]*rkU[2];
+        rkV[1] =  rkW[2]*rkU[0] - rkW[0]*rkU[2];
+        rkV[2] = -rkW[1]*rkU[0];
+    }
+    else
+    {
+        // W.y or W.z is the largest magnitude component, swap them
+        fInvLength = 1.0/sqrt(rkW[1]*rkW[1] + rkW[2]*rkW[2]);
+        rkU[0] =  0.0;
+        rkU[1] = +rkW[2]*fInvLength;
+        rkU[2] = -rkW[1]*fInvLength;
+        rkV[0] =  rkW[1]*rkU[2] - rkW[2]*rkU[1];
+        rkV[1] = -rkW[0]*rkU[2];
+        rkV[2] =  rkW[0]*rkU[1];
+    }
+}
+}
+
+void MeshCurvature::ComputePerVertex()
+{
+    // get all points
+    const MeshPointArray& pts = myKernel.GetPoints();
+
+    MeshCore::MeshRefPointToFacets pt2f(myKernel);
+    MeshCore::MeshRefPointToPoints pt2p(myKernel);
+    unsigned long numPoints = myKernel.CountPoints();
+
+    myCurvature.clear();
+    myCurvature.reserve(numPoints);
+
+    std::vector<Eigen::Vector3f> akNormal(numPoints);
+    std::vector<Eigen::Vector3f> akVertex(numPoints);
+    for (unsigned long i=0; i<numPoints; i++) {
+        Base::Vector3f n = pt2f.GetNormal(i);
+        akNormal[i][0] = n.x;
+        akNormal[i][1] = n.y;
+        akNormal[i][2] = n.z;
+        const Base::Vector3f& p = pts[i];
+        akVertex[i][0] = p.x;
+        akVertex[i][1] = p.y;
+        akVertex[i][2] = p.z;
+    }
+
+    // One could iterate over the triangles and then for each vertex of a triangle compute the derivates.
+    // One could also iterate over the points and then for each adjacent point calculate the derivates.
+    // Both methods must lead to the same values in the above matrices.
+    //
+    // Iterate over the vertexes
+    for (unsigned long i=0; i<numPoints; i++) {
+        Eigen::Matrix3f akDNormal;
+        akDNormal.setZero();
+        Eigen::Matrix3f akWWTrn;
+        akWWTrn.setZero();
+        Eigen::Matrix3f akDWTrn;
+        akDWTrn.setZero();
+
+        int iV0 = i;
+        int iV1;
+        const std::set<unsigned long>& nb = pt2p[i];
+        for (std::set<unsigned long>::const_iterator it = nb.begin(); it != nb.end(); ++it) {
+            iV1 = *it;
+
+            // Compute edge from V0 to V1, project to tangent plane of vertex,
+            // and compute difference of adjacent normals.
+            Eigen::Vector3f kE = akVertex[iV1] - akVertex[iV0];
+            Eigen::Vector3f kW = kE - (kE.dot(akNormal[iV0]))*akNormal[iV0];
+            Eigen::Vector3f kD = akNormal[iV1] - akNormal[iV0];
+            for (int iRow = 0; iRow < 3; iRow++)
+            {
+                for (int iCol = 0; iCol < 3; iCol++)
+                {
+                    akWWTrn(iRow,iCol) += 2*kW[iRow]*kW[iCol];
+                    akDWTrn(iRow,iCol) += 2*kD[iRow]*kW[iCol];
+                }
+            }
+        }
+
+        // Add in N*N^T to W*W^T for numerical stability.  In theory 0*0^T gets
+        // added to D*W^T, but of course no update needed in the implementation.
+        // Compute the matrix of normal derivatives.
+        for (int iRow = 0; iRow < 3; iRow++)
+        {
+            for (int iCol = 0; iCol < 3; iCol++)
+            {
+                akWWTrn(iRow,iCol) = 0.5*akWWTrn(iRow,iCol) + akNormal[i][iRow]*akNormal[i][iCol];
+                akDWTrn(iRow,iCol) *= 0.5;
+            }
+        }
+
+        akDNormal = akDWTrn*akWWTrn.inverse();
+
+        // If N is a unit-length normal at a vertex, let U and V be unit-length
+        // tangents so that {U, V, N} is an orthonormal set.  Define the matrix
+        // J = [U | V], a 3-by-2 matrix whose columns are U and V.  Define J^T
+        // to be the transpose of J, a 2-by-3 matrix.  Let dN/dX denote the
+        // matrix of first-order derivatives of the normal vector field.  The
+        // shape matrix is
+        //   S = (J^T * J)^{-1} * J^T * dN/dX * J = J^T * dN/dX * J
+        // where the superscript of -1 denotes the inverse.  (The formula allows
+        // for J built from non-perpendicular vectors.) The matrix S is 2-by-2.
+        // The principal curvatures are the eigenvalues of S.  If k is a principal
+        // curvature and W is the 2-by-1 eigenvector corresponding to it, then
+        // S*W = k*W (by definition).  The corresponding 3-by-1 tangent vector at
+        // the vertex is called the principal direction for k, and is J*W.
+        // compute U and V given N
+        float minCurvature;
+        float maxCurvature;
+        Base::Vector3f minDirection;
+        Base::Vector3f maxDirection;
+
+        Eigen::Vector3f kU, kV;
+        Eigen::Vector3f kN = akNormal[i];
+        float len = kN.squaredNorm();
+        if (len == 0)
+            continue; // skip
+        MeshCore::GenerateComplementBasis(kU,kV,kN);
+
+        // Compute S = J^T * dN/dX * J.  In theory S is symmetric, but
+        // because we have estimated dN/dX, we must slightly adjust our
+        // calculations to make sure S is symmetric.
+        float fS01 = kU.dot(akDNormal*kV);
+        float fS10 = kV.dot(akDNormal*kU);
+        float fSAvr = 0.5*(fS01+fS10);
+        Eigen::Matrix2f kS;
+        kS(0,0) = kU.dot(akDNormal*kU);
+        kS(0,1) = fSAvr;
+        kS(1,0) = fSAvr;
+        kS(1,1) = kV.dot(akDNormal*kV);
+
+        // compute the eigenvalues of S (min and max curvatures)
+        float fTrace = kS(0,0) + kS(1,1);
+        float fDet = kS(0,0)*kS(1,1) - kS(0,1)*kS(1,0);
+        float fDiscr = fTrace*fTrace - (4.0)*fDet;
+        float fRootDiscr = sqrt(fabs(fDiscr));
+        minCurvature = (0.5)*(fTrace - fRootDiscr);
+        maxCurvature = (0.5)*(fTrace + fRootDiscr);
+
+        // compute the eigenvectors of S
+        Eigen::Vector2f kW0(kS(0,1),minCurvature-kS(0,0));
+        Eigen::Vector2f kW1(minCurvature-kS(1,1),kS(1,0));
+        if (kW0.squaredNorm() >= kW1.squaredNorm())
+        {
+            float len = kW0.squaredNorm();
+            if (len > 0 && len != 1)
+                kW0.normalize();
+            Eigen::Vector3f v = kU*kW0[0] + kV*kW0[1];
+            minDirection.Set(v[0],v[1],v[2]);
+        }
+        else
+        {
+            float len = kW1.squaredNorm();
+            if (len > 0 && len != 1)
+                kW1.normalize();
+            Eigen::Vector3f v = kU*kW1[0] + kV*kW1[1];
+            minDirection.Set(v[0],v[1],v[2]);
+        }
+
+        kW0 = Eigen::Vector2f(kS(0,1),maxCurvature-kS(0,0));
+        kW1 = Eigen::Vector2f(maxCurvature-kS(1,1),kS(1,0));
+        if (kW0.squaredNorm() >= kW1.squaredNorm())
+        {
+            float len = kW0.squaredNorm();
+            if (len > 0 && len != 1)
+                kW0.normalize();
+            Eigen::Vector3f v = kU*kW0[0] + kV*kW0[1];
+            maxDirection.Set(v[0],v[1],v[2]);
+        }
+        else
+        {
+            float len = kW1.squaredNorm();
+            if (len > 0 && len != 1)
+                kW1.normalize();
+            Eigen::Vector3f v = kU*kW1[0] + kV*kW1[1];
+            maxDirection.Set(v[0],v[1],v[2]);
+        }
+
+        CurvatureInfo ci;
+        ci.fMaxCurvature = maxCurvature;
+        ci.cMaxCurvDir = maxDirection;
+        ci.fMinCurvature = minCurvature;
+        ci.cMinCurvDir = minDirection;
+        myCurvature.push_back(ci);
+    }
+}
+#else
 void MeshCurvature::ComputePerVertex()
 {
     myCurvature.clear();
@@ -130,6 +334,7 @@ void MeshCurvature::ComputePerVertex()
         myCurvature.push_back(ci);
     }
 }
+#endif // OPTIMIZE_CURVATURE
 
 // --------------------------------------------------------
 

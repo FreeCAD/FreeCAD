@@ -45,7 +45,7 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = 0, Qt::WFlags fl = 0);
+    Placement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~Placement();
     void accept();
     void reject();
@@ -98,7 +98,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DockablePlacement();
 
     void accept();

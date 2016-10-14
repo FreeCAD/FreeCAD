@@ -26,7 +26,11 @@
 
 #include <vector>
 #include <string>
+#ifndef BOOST_105400
 #include <boost/any.hpp>
+#else
+#include <boost_any_1_55.hpp>
+#endif
 
 namespace App
 {
@@ -47,7 +51,7 @@ public:
     public:
 
         // Constructor
-        String(const std::string & s = "", bool _isRealString = false) : str(s), isString(_isRealString) { }
+        String(const std::string & s = "", bool _isRealString = false, bool _forceIdentifier = false) : str(s), isString(_isRealString), forceIdentifier(_forceIdentifier) { }
 
         // Accessors
 
@@ -56,6 +60,8 @@ public:
 
         /** Return true is string need to be quoted */
         bool isRealString() const { return isString; }
+
+        bool isForceIdentifier() const { return forceIdentifier; }
 
         /** Returns a possibly quoted string */
         std::string toString() const;
@@ -80,6 +86,8 @@ public:
 
         std::string str;
         bool isString;
+        bool forceIdentifier;
+
     };
 
     /**
@@ -152,6 +160,8 @@ public:
 
     ObjectIdentifier(const App::Property & prop);
 
+    virtual ~ObjectIdentifier() {}
+
     // Components
     void addComponent(const Component &c) { components.push_back(c); }
 
@@ -186,9 +196,13 @@ public:
 
     const String getDocumentObjectName() const;
 
-    void renameDocumentObject(const std::string & oldName, const std::string & newName);
+    bool validDocumentObjectRename(const std::string &oldName, const std::string &newName);
 
-    void renameDocument(const std::string &oldName, const std::string &newName);
+    bool renameDocumentObject(const std::string & oldName, const std::string & newName);
+
+    bool validDocumentRename(const std::string &oldName, const std::string &newName);
+
+    bool renameDocument(const std::string &oldName, const std::string &newName);
 
     App::Document *getDocument(String name = String()) const;
 
@@ -221,28 +235,41 @@ public:
 
     static ObjectIdentifier parse(const App::DocumentObject *docObj, const std::string & str);
 
+    std::string resolveErrorString() const;
+
 protected:
+
+    struct ResolveResults {
+
+        ResolveResults(const ObjectIdentifier & oi);
+
+        int propertyIndex;
+        App::Document * resolvedDocument;
+        String resolvedDocumentName;
+        App::DocumentObject * resolvedDocumentObject;
+        String resolvedDocumentObjectName;
+        App::Property * resolvedProperty;
+        std::string propertyName;
+
+        std::string resolveErrorString() const;
+    };
 
     std::string getPythonAccessor() const;
 
-    void resolve() const;
+    void resolve(ResolveResults & results) const;
 
-    App::DocumentObject *getDocumentObject(const App::Document *doc, const std::string &name) const;
+    App::DocumentObject *getDocumentObject(const App::Document *doc, const String &name, bool &byIdentifier) const;
 
     const App::PropertyContainer * owner;
+    String  documentName;
     bool documentNameSet;
+    String  documentObjectName;
     bool documentObjectNameSet;
     std::vector<Component> components;
 
-    /// Mutable elements, updated by resolve()
-    mutable int propertyIndex;
-    mutable String documentName;
-    mutable String documentObjectName;
-    mutable std::string propertyName;
-
 };
 
-std::size_t hash_value(const App::ObjectIdentifier & path);
+std::size_t AppExport hash_value(const App::ObjectIdentifier & path);
 
 }
 

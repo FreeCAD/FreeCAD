@@ -92,6 +92,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
 
 void CmdSketcherToggleConstruction::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // Option A: nothing is selected change creation mode from/to construction
     if(Gui::Selection().countObjectsOfType(Sketcher::SketchObject::getClassTypeId()) == 0){
 

@@ -62,7 +62,10 @@
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="zPos">
+       <widget class="Gui::QuantitySpinBox" name="zPos">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="minimum">
          <double>-2147480000.000000000000000</double>
         </property>
@@ -72,7 +75,10 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="yPos">
+       <widget class="Gui::QuantitySpinBox" name="yPos">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="minimum">
          <double>-2147480000.000000000000000</double>
         </property>
@@ -82,7 +88,10 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="xPos">
+       <widget class="Gui::QuantitySpinBox" name="xPos">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="minimum">
          <double>-2147480000.000000000000000</double>
         </property>
@@ -121,7 +130,10 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QDoubleSpinBox" name="length">
+       <widget class="Gui::QuantitySpinBox" name="length">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="maximum">
          <double>2147480000.000000000000000</double>
         </property>
@@ -131,7 +143,10 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QDoubleSpinBox" name="radius">
+       <widget class="Gui::QuantitySpinBox" name="radius">
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
         <property name="maximum">
          <double>2147480000.000000000000000</double>
         </property>
@@ -153,6 +168,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>xPos</tabstop>
   <tabstop>yPos</tabstop>

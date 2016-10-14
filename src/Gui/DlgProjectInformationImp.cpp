@@ -44,9 +44,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'fl'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* parent, Qt::WFlags fl)
+DlgProjectInformationImp::DlgProjectInformationImp(App::Document* doc, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), _doc(doc), ui(new Ui_DlgProjectInformation)
 {
     ui->setupUi(this);
@@ -134,31 +134,31 @@ void DlgProjectInformationImp::onLicenseTypeChanged(int index)
 {
     switch (index) {
         case 0:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://en.wikipedia.org/wiki/All_rights_reserved"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
             break;
         case 1:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
             break;
         case 2:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by-sa/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
             break;
         case 3:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nd/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
             break;
         case 4:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
             break;
         case 5:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
             break;
         case 6:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
             break;
         case 7:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://en.wikipedia.org/wiki/Public_domain"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
             break;
         case 8:
-            ui->lineEditLicenseURL->setText(QString::fromAscii("http://artlibre.org/licence/lal"));
+            ui->lineEditLicenseURL->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
             break;
         default:
             ui->lineEditLicenseURL->setText(QString::fromUtf8(_doc->LicenseURL.getValue()));

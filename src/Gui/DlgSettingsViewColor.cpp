@@ -66,6 +66,7 @@ void DlgSettingsViewColor::saveSettings()
     checkBoxSelection->onSave();
     HighlightColor->onSave();
     SelectionColor->onSave();
+    spinPickRadius->onSave();
 }
 
 void DlgSettingsViewColor::loadSettings()
@@ -81,6 +82,7 @@ void DlgSettingsViewColor::loadSettings()
     checkBoxSelection->onRestore();
     HighlightColor->onRestore();
     SelectionColor->onRestore();
+    spinPickRadius->onRestore();
 }
 
 /**

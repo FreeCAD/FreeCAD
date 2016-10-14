@@ -67,7 +67,7 @@ SelectionView::SelectionView(Gui::Document* pcDocument, QWidget *parent)
     QToolButton* clearButton = new QToolButton(this);
     clearButton->setFixedSize(18, 21);
     clearButton->setCursor(Qt::ArrowCursor);
-    clearButton->setStyleSheet(QString::fromAscii("QToolButton {margin-bottom:6px}"));
+    clearButton->setStyleSheet(QString::fromLatin1("QToolButton {margin-bottom:6px}"));
     clearButton->setIcon(BitmapFactory().pixmap(":/icons/edit-cleartext.svg"));
     clearButton->setToolTip(tr("Clears the search field"));
     hLayout->addWidget(searchBox);
@@ -96,6 +96,7 @@ SelectionView::~SelectionView()
 void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -190,14 +191,14 @@ void SelectionView::select(QListWidgetItem* item)
         item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromAscii("."));
+    QStringList elements = item->text().split(QString::fromLatin1("."));
     // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
+    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
     //Gui::Selection().clearSelection();
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.Selection.clearSelection()");
-    //Gui::Selection().addSelection(elements[0].toAscii(),elements[1].toAscii(),0);
-    QString cmd = QString::fromAscii("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    //Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
+    QString cmd = QString::fromLatin1("Gui.Selection.addSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 }
 
 void SelectionView::deselect(void)
@@ -205,12 +206,12 @@ void SelectionView::deselect(void)
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromAscii("."));
+    QStringList elements = item->text().split(QString::fromLatin1("."));
     // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
-    //Gui::Selection().rmvSelection(elements[0].toAscii(),elements[1].toAscii(),0);
-    QString cmd = QString::fromAscii("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    //Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
+    QString cmd = QString::fromLatin1("Gui.Selection.removeSelection(App.getDocument(\"%1\").getObject(\"%2\"))").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
 }
 
 void SelectionView::zoom(void)
@@ -225,24 +226,36 @@ void SelectionView::treeSelect(void)
     Gui::Command::runCommand(Gui::Command::Gui,"Gui.runCommand(\"Std_TreeSelection\")"); 
 }
 
+void SelectionView::touch(void)
+{
+    QListWidgetItem *item = selectionView->currentItem();
+    if (!item)
+        return;
+    QStringList elements = item->text().split(QString::fromLatin1("."));
+    // remove possible space from object name followed by label
+    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
+    QString cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").touch()").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Doc,cmd.toLatin1());
+}
+
 void SelectionView::toPython(void)
 {
     QListWidgetItem *item = selectionView->currentItem();
     if (!item)
         return;
-    QStringList elements = item->text().split(QString::fromAscii("."));
+    QStringList elements = item->text().split(QString::fromLatin1("."));
     // remove possible space from object name followed by label
-    elements[1] = elements[1].split(QString::fromAscii(" "))[0];
+    elements[1] = elements[1].split(QString::fromLatin1(" "))[0];
 
-    QString cmd = QString::fromAscii("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
-    Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+    QString cmd = QString::fromLatin1("obj = App.getDocument(\"%1\").getObject(\"%2\")").arg(elements[0]).arg(elements[1]);
+    Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
     if (elements.length() > 2) {
-        elements[2] = elements[2].split(QString::fromAscii(" "))[0];
-        if ( elements[2].contains(QString::fromAscii("Face")) || elements[2].contains(QString::fromAscii("Edge")) ) {
-            cmd = QString::fromAscii("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape").arg(elements[0]).arg(elements[1]);
-            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
-            cmd = QString::fromAscii("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%3").arg(elements[0]).arg(elements[1]).arg(elements[2]);
-            Gui::Command::runCommand(Gui::Command::Gui,cmd.toAscii());
+        elements[2] = elements[2].split(QString::fromLatin1(" "))[0];
+        if ( elements[2].contains(QString::fromLatin1("Face")) || elements[2].contains(QString::fromLatin1("Edge")) ) {
+            cmd = QString::fromLatin1("shp = App.getDocument(\"%1\").getObject(\"%2\").Shape").arg(elements[0]).arg(elements[1]);
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
+            cmd = QString::fromLatin1("elt = App.getDocument(\"%1\").getObject(\"%2\").Shape.%3").arg(elements[0]).arg(elements[1]).arg(elements[2]);
+            Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
     }
 }
@@ -254,18 +267,21 @@ void SelectionView::onItemContextMenu(const QPoint& point)
         return;
     QMenu menu;
     QAction *selectAction = menu.addAction(tr("Select only"),this,SLOT(select()));
-    selectAction->setIcon(QIcon::fromTheme(QString::fromAscii("view-select")));
+    selectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-select")));
     selectAction->setToolTip(tr("Selects only this object"));
     QAction *deselectAction = menu.addAction(tr("Deselect"),this,SLOT(deselect()));
-    deselectAction->setIcon(QIcon::fromTheme(QString::fromAscii("view-unselectable")));
+    deselectAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-unselectable")));
     deselectAction->setToolTip(tr("Deselects this object"));
     QAction *zoomAction = menu.addAction(tr("Zoom fit"),this,SLOT(zoom()));
-    zoomAction->setIcon(QIcon::fromTheme(QString::fromAscii("zoom-fit-best")));
+    zoomAction->setIcon(QIcon::fromTheme(QString::fromLatin1("zoom-fit-best")));
     zoomAction->setToolTip(tr("Selects and fits this object in the 3D window"));
     QAction *gotoAction = menu.addAction(tr("Go to selection"),this,SLOT(treeSelect()));
     gotoAction->setToolTip(tr("Selects and locates this object in the tree view"));
+    QAction *touchAction = menu.addAction(tr("Mark to recompute"),this,SLOT(touch()));
+    touchAction->setIcon(QIcon::fromTheme(QString::fromLatin1("view-refresh")));
+    touchAction->setToolTip(tr("Mark this object to be recomputed"));
     QAction *toPythonAction = menu.addAction(tr("To python console"),this,SLOT(toPython()));
-    toPythonAction->setIcon(QIcon::fromTheme(QString::fromAscii("applications-python")));
+    toPythonAction->setIcon(QIcon::fromTheme(QString::fromLatin1("applications-python")));
     toPythonAction->setToolTip(tr("Reveals this object and its subelements in the python console."));
     menu.exec(selectionView->mapToGlobal(point));
 }
@@ -274,7 +290,7 @@ void SelectionView::onUpdate(void)
 {
 }
 
-bool SelectionView::onMsg(const char* pMsg,const char** ppReturn)
+bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 {
     return false;
 }

@@ -74,6 +74,7 @@
 						<Component Id="CompModRaytracingTemplates" Guid="C0319A8E-7B29-428a-84B7-4A84DB44ABD3" Win64='$(var.Win_64)' KeyPath="yes">
 							<File Id="ProjectStd" Name="ProjectStd.pov"  />
 							<File Id="RadiosityNormal" Name="RadiosityNormal.pov"  />
+							<File Id="RadiosityOutdoorHQ" Name="RadiosityOutdoorHQ.pov"  />
                             <File Id="LuxClassic" Name="LuxClassic.lxs"  />
                             <File Id="LuxOutdoor" Name="LuxOutdoor.lxs"  />
 						</Component>

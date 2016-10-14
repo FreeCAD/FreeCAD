@@ -50,18 +50,31 @@
 #include "FemConstraintPressure.h"
 #include "FemConstraintGear.h"
 #include "FemConstraintPulley.h"
+#include "FemConstraintDisplacement.h"
+#include "FemConstraintTemperature.h"
+#include "FemConstraintHeatflux.h"
+#include "FemConstraintInitialTemperature.h"
+#include "FemConstraintPlaneRotation.h"
+#include "FemConstraintContact.h"
+#include "FemConstraintFluidBoundary.h"
+#include "FemConstraintTransform.h"
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
 
-extern struct PyMethodDef Fem_methods[];
+#ifdef FC_USE_VTK
+#include "FemPostPipeline.h"
+#include "FemPostFilter.h"
+#include "FemPostFunction.h"
+#include "PropertyPostDataObject.h"
+#endif
 
-PyDoc_STRVAR(module_Fem_doc,
-"This module is the FEM module.");
+namespace Fem {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void AppFemExport initFem()
+PyMODINIT_FUNC initFem()
 {
     // load dependend module
     try {
@@ -72,7 +85,7 @@ void AppFemExport initFem()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    PyObject* femModule = Py_InitModule3("Fem", Fem_methods, module_Fem_doc);   /* mod name, table ptr */
+    PyObject* femModule = Fem::initModule();
     Base::Console().Log("Loading Fem module... done\n");
 
     Fem::StdMeshers_Arithmetic1DPy              ::init_type(femModule);
@@ -116,7 +129,7 @@ void AppFemExport initFem()
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
     // This function is responsible for adding inherited slots from a type's base class.
- 
+
     Fem::FemAnalysis                ::init();
     Fem::FemAnalysisPython          ::init();
     Fem::DocumentObject             ::init();
@@ -140,11 +153,32 @@ void AppFemExport initFem()
     Fem::ConstraintPressure         ::init();
     Fem::ConstraintGear             ::init();
     Fem::ConstraintPulley           ::init();
-
+    Fem::ConstraintDisplacement     ::init();
+    Fem::ConstraintTemperature      ::init();
+    Fem::ConstraintHeatflux         ::init();
+    Fem::ConstraintInitialTemperature ::init();
+    Fem::ConstraintPlaneRotation    ::init();
+    Fem::ConstraintContact          ::init();
+    Fem::ConstraintFluidBoundary              ::init();
+    Fem::ConstraintTransform        ::init();
+    
     Fem::FemResultObject            ::init();
     Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
-}
 
-} // extern "C"
+#ifdef FC_USE_VTK
+    Fem::FemPostObject              ::init();
+    Fem::FemPostPipeline            ::init();
+    Fem::FemPostFilter              ::init();
+    Fem::FemPostClipFilter          ::init();
+    Fem::FemPostScalarClipFilter    ::init();
+    Fem::FemPostWarpVectorFilter    ::init();
+    Fem::FemPostCutFilter           ::init();
+    Fem::FemPostFunction            ::init();
+    Fem::FemPostFunctionProvider    ::init();
+    Fem::FemPostPlaneFunction       ::init();
+    Fem::FemPostSphereFunction      ::init();
+    Fem::PropertyPostDataObject     ::init();
+#endif
+}

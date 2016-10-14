@@ -132,31 +132,31 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
 
     switch (index) {
         case 0:
-            prefLicenseUrl->setText(QString::fromAscii("http://en.wikipedia.org/wiki/All_rights_reserved"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/All_rights_reserved"));
             break;
         case 1:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by/4.0/"));
             break;
         case 2:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-sa/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-sa/4.0/"));
             break;
         case 3:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nd/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nd/4.0/"));
             break;
         case 4:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc/4.0/"));
             break;
         case 5:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-sa/4.0/"));
             break;
         case 6:
-            prefLicenseUrl->setText(QString::fromAscii("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://creativecommons.org/licenses/by-nc-nd/4.0/"));
             break;
         case 7:
-            prefLicenseUrl->setText(QString::fromAscii("http://en.wikipedia.org/wiki/Public_domain"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://en.wikipedia.org/wiki/Public_domain"));
             break;
         case 8:
-            prefLicenseUrl->setText(QString::fromAscii("http://artlibre.org/licence/lal"));
+            prefLicenseUrl->setText(QString::fromLatin1("http://artlibre.org/licence/lal"));
             break;
         default:
             prefLicenseUrl->clear();

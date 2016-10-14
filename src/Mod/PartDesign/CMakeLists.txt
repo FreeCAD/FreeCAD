@@ -43,7 +43,8 @@ INSTALL(
         
 )
 
-SET(WizardShaft_SRCS
+if(BUILD_FEM)
+    SET(WizardShaft_SRCS
         WizardShaft/__init__.py
         WizardShaft/WizardShaft.svg
         WizardShaft/WizardShaft.py
@@ -52,22 +53,55 @@ SET(WizardShaft_SRCS
         WizardShaft/ShaftFeature.py
         WizardShaft/ShaftDiagram.py
         WizardShaft/SegmentFunction.py
+    )
+    SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
+
+    SET(all_wizardshaft_files ${WizardShaft_SRCS})
+
+    ADD_CUSTOM_TARGET(WizardShaft ALL
+        SOURCES ${all_wizardshaft_files}
+    )
+
+    SET(all_files ${all_wizardshaft_files})
+
+    fc_copy_sources(WizardShaft "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+
+    INSTALL(
+        FILES
+            ${WizardShaft_SRCS}
+        DESTINATION
+            Mod/PartDesign/WizardShaft
+    )
+endif(BUILD_FEM)
+
+SET(FeatureHole_SRCS
+    FeatureHole/__init__.py
+    FeatureHole/HoleGui.py
+    FeatureHole/FeatureHole.py
+    FeatureHole/TaskHole.py
+    FeatureHole/ViewProviderHole.py
+    FeatureHole/Standards.py
+    FeatureHole/PartDesign_Hole.svg
 )
-SOURCE_GROUP("wizardshaft" FILES ${WizardShaft_SRCS})
+SOURCE_GROUP("featurehole" FILES ${FeatureHole_SRCS})
 
-SET(all_wizardshaft_files ${WizardShaft_SRCS})
-
-ADD_CUSTOM_TARGET(WizardShaft ALL
-    SOURCES ${all_wizardshaft_files}
+SET(FeatureHole_UI
+    FeatureHole/TaskHole.ui
 )
 
-SET(all_files ${all_wizardshaft_files})
+SET(all_featurehole_files ${FeatureHole_SRCS} ${FeatureHole_UI})
 
-fc_copy_sources(WizardShaft "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+#ADD_CUSTOM_TARGET(FeatureHole ALL
+#    SOURCES ${all_featurehole_files}
+#)
 
-INSTALL(
-    FILES
-        ${WizardShaft_SRCS}
-    DESTINATION
-        Mod/PartDesign/WizardShaft
-)
+#SET(all_files ${all_featurehole_files})
+
+#fc_copy_sources(FeatureHole "${CMAKE_BINARY_DIR}/Mod/PartDesign" ${all_files})
+
+#INSTALL(
+#    FILES
+#        ${FeatureHole_SRCS}
+#    DESTINATION
+#        Mod/PartDesign/FeatureHole
+#)

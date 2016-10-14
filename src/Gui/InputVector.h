@@ -26,7 +26,7 @@
 #include <cfloat>
 #include <QDialog>
 #include <QMessageBox>
-#include <QApplication> 
+#include <QApplication>
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
@@ -36,6 +36,7 @@ class QDoubleSpinBox;
 class QComboBox;
 
 namespace Gui {
+class QuantitySpinBox;
 
 class GuiExport LocationWidget : public QWidget
 {
@@ -65,9 +66,9 @@ private:
     QLabel *yLabel;
     QLabel *zLabel;
     QLabel *dLabel;
-    QDoubleSpinBox *xValue;
-    QDoubleSpinBox *yValue;
-    QDoubleSpinBox *zValue;
+    QuantitySpinBox *xValue;
+    QuantitySpinBox *yValue;
+    QuantitySpinBox *zValue;
     QComboBox *dValue;
 };
 
@@ -80,7 +81,7 @@ class GuiExport LocationDialog : public QDialog
     Q_OBJECT
 
 protected:
-    LocationDialog(QWidget* parent = 0, Qt::WFlags fl = 0);
+    LocationDialog(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     virtual ~LocationDialog();
 
 protected:
@@ -113,7 +114,7 @@ template <class Ui>
 class LocationInterface : public LocationDialog, public Ui
 {
 public:
-    LocationInterface(QWidget* parent = 0, Qt::WFlags fl = 0)  : LocationDialog(parent, fl)
+    LocationInterface(QWidget* parent = 0, Qt::WindowFlags fl = 0)  : LocationDialog(parent, fl)
     {
         this->setupUi(this);
         this->retranslate();
@@ -155,9 +156,9 @@ public:
 
     Base::Vector3d getPosition() const
     {
-        return Base::Vector3d(this->xPos->value(),
-                              this->yPos->value(),
-                              this->zPos->value());
+        return Base::Vector3d(this->xPos->value().getValue(),
+                              this->yPos->value().getValue(),
+                              this->zPos->value().getValue());
     }
 
     Base::Vector3d getDirection() const
@@ -190,7 +191,7 @@ private:
             bool ok;
             Base::Vector3d dir = this->getUserDirection(&ok);
             if (ok) {
-                if (dir.Length() < FLT_EPSILON) {
+                if (dir.Length() < Base::Vector3d::epsilon()) {
                     QMessageBox::critical(this, LocationDialog::tr("Wrong direction"),
                         LocationDialog::tr("Direction must not be the null vector"));
                     return;
@@ -209,7 +210,7 @@ private:
                 }
 
                 // add a new item before the very last item
-                QString display = QString::fromAscii("(%1,%2,%3)")
+                QString display = QString::fromLatin1("(%1,%2,%3)")
                     .arg(dir.x)
                     .arg(dir.y)
                     .arg(dir.z);
@@ -284,9 +285,9 @@ public:
 
     Base::Vector3d getPosition() const
     {
-        return Base::Vector3d(this->xPos->value(),
-                              this->yPos->value(),
-                              this->zPos->value());
+        return Base::Vector3d(this->xPos->value().getValue(),
+                              this->yPos->value().getValue(),
+                              this->zPos->value().getValue());
     }
 
     Base::Vector3d getDirection() const
@@ -303,7 +304,7 @@ public:
 public:
     void setDirection(const Base::Vector3d& dir)
     {
-        if (dir.Length() < FLT_EPSILON) {
+        if (dir.Length() < Base::Vector3d::epsilon()) {
             return;
         }
 
@@ -320,7 +321,7 @@ public:
         }
 
         // add a new item before the very last item
-        QString display = QString::fromAscii("(%1,%2,%3)")
+        QString display = QString::fromLatin1("(%1,%2,%3)")
             .arg(dir.x)
             .arg(dir.y)
             .arg(dir.z);
@@ -335,7 +336,7 @@ public:
             bool ok;
             Base::Vector3d dir = dlg->getUserDirection(&ok);
             if (ok) {
-                if (dir.Length() < FLT_EPSILON) {
+                if (dir.Length() < Base::Vector3d::epsilon()) {
                     QMessageBox::critical(dlg, LocationDialog::tr("Wrong direction"),
                         LocationDialog::tr("Direction must not be the null vector"));
                     return false;
@@ -359,7 +360,7 @@ template <class Ui>
 class LocationDialogComp : public LocationDialog
 {
 public:
-    LocationDialogComp(QWidget* parent = 0, Qt::WFlags fl = 0)
+    LocationDialogComp(QWidget* parent = 0, Qt::WindowFlags fl = 0)
       : LocationDialog(parent, fl), ui(this)
     {
     }

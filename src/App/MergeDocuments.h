@@ -39,6 +39,8 @@ class AppExport MergeDocuments : public Base::Persistence
 public:
     MergeDocuments(App::Document* doc);
     ~MergeDocuments();
+    bool isVerbose() const { return verbose; }
+    void setVerbose(bool on) { verbose = on; }
     unsigned int getMemSize (void) const;
     std::vector<App::DocumentObject*> importObjects(std::istream&);
     void importObject(const std::vector<App::DocumentObject*>& o, Base::XMLReader & r);
@@ -50,6 +52,7 @@ public:
 
 private:
     bool guiup;
+    bool verbose;
     zipios::ZipInputStream* stream;
     App::Document* appdoc;
     std::vector<App::DocumentObject*> objects;

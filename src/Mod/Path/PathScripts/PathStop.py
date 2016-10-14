@@ -38,7 +38,7 @@ except AttributeError:
 
 class Stop:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyEnumeration", "Stop", "Path", translate("Program Stop", "Add Optional or Mandatory Stop to the program"))
+        obj.addProperty("App::PropertyEnumeration", "Stop", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Add Optional or Mandatory Stop to the program"))
         obj.Stop=['Optional', 'Mandatory']
         obj.Proxy = self
         mode = 2
@@ -110,15 +110,15 @@ class _ViewProviderStop:
 class CommandPathStop:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Stop',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathStop","Stop"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Stop","Stop"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathStop","Add Optional or Mandatory Stop to the program")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Stop","Add Optional or Mandatory Stop to the program")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathStop","Add Optional or Mandatory Stop to the program"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Stop","Add Optional or Mandatory Stop to the program"))
         FreeCADGui.addModule("PathScripts.PathStop")
         snippet = '''
 import Path

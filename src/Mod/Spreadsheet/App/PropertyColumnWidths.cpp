@@ -28,6 +28,7 @@
 #include "PropertyColumnWidths.h"
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <App/Range.h>
 #include "Utils.h"
 #include <PropertyColumnWidthsPy.h>
 
@@ -43,6 +44,7 @@ PropertyColumnWidths::PropertyColumnWidths()
 }
 
 PropertyColumnWidths::PropertyColumnWidths(const PropertyColumnWidths &other)
+  : Property(), std::map<int, int>(other)
 {
     std::map<int, int>::const_iterator i = other.begin();
 
@@ -132,7 +134,7 @@ void PropertyColumnWidths::Restore(Base::XMLReader &reader)
 
         try {
             if (name && width) {
-                int col = decodeColumn(name);
+                int col = App::decodeColumn(name);
                 int colWidth = atoi(width);
 
                 setValue(col, colWidth);

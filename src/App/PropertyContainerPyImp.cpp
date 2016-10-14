@@ -29,6 +29,7 @@
 
 #include "PropertyContainer.h"
 #include "Property.h"
+#include "Application.h"
 
 // inclution of the generated files (generated out of PropertyContainerPy.xml)
 #include "PropertyContainerPy.h"
@@ -110,8 +111,12 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             return 0;
         }
 
-        prop->StatusBits.set(2,(type & 1) > 0);
-        prop->StatusBits.set(3,(type & 2) > 0);
+        unsigned long status = prop->getStatus();
+        prop->setStatus(Property::ReadOnly,(type & 1) > 0);
+        prop->setStatus(Property::Hidden,(type & 2) > 0);
+
+        if (status != prop->getStatus())
+            GetApplication().signalChangePropertyEditor(*prop);
 
         Py_Return;
     }
@@ -128,16 +133,20 @@ PyObject*  PropertyContainerPy::setEditorMode(PyObject *args)
             }
 
             // reset all bits first
-            prop->StatusBits.reset(2);
-            prop->StatusBits.reset(3);
+            unsigned long status = prop->getStatus();
+            prop->setStatus(Property::ReadOnly, false);
+            prop->setStatus(Property::Hidden, false);
 
             for (Py::Sequence::iterator it = seq.begin();it!=seq.end();++it) {
                 std::string str = (std::string)Py::String(*it);
                 if (str == "ReadOnly")
-                    prop->StatusBits.set(2);
+                    prop->setStatus(Property::ReadOnly, true);
                 else if (str == "Hidden")
-                    prop->StatusBits.set(3);
+                    prop->setStatus(Property::Hidden, true);
             }
+
+            if (status != prop->getStatus())
+                GetApplication().signalChangePropertyEditor(*prop);
 
             Py_Return;
         }
@@ -157,9 +166,9 @@ PyObject*  PropertyContainerPy::getEditorMode(PyObject *args)
     Py::List ret;
     if (prop) {
         short Type =  prop->getType();
-        if ((prop->StatusBits.test(2)) || (Type & Prop_ReadOnly))
+        if ((prop->testStatus(Property::ReadOnly)) || (Type & Prop_ReadOnly))
             ret.append(Py::String("ReadOnly"));
-        if ((prop->StatusBits.test(3)) || (Type & Prop_Hidden))
+        if ((prop->testStatus(Property::Hidden)) || (Type & Prop_Hidden))
             ret.append(Py::String("Hidden"));
     }
     return Py::new_reference_to(ret);

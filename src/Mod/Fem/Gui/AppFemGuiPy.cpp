@@ -27,6 +27,9 @@
 # include <QFileInfo>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <App/DocumentObjectPy.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -41,50 +44,82 @@
 #include "AbaqusHighlighter.h"
 
 
-/* module functions */
-static PyObject * setActiveAnalysis(PyObject *self, PyObject *args)
+namespace FemGui {
+class Module : public Py::ExtensionModule<Module>
 {
-    if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
-        FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,false);
-        FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
+public:
+    Module() : Py::ExtensionModule<Module>("FemGui")
+    {
+        add_varargs_method("setActiveAnalysis",&Module::setActiveAnalysis,
+            "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."
+        );
+        add_varargs_method("getActiveAnalysis",&Module::getActiveAnalysis,
+            "getActiveAnalysis() -- Returns the Analysis object in work."
+        );
+        add_varargs_method("open",&Module::open,
+            "open(string) -- Opens an Abaqus file in a text editor."
+        );
+        add_varargs_method("insert",&Module::open,
+            "insert(string,string) -- Opens an Abaqus file in a text editor."
+        );
+        initialize("This module is the FemGui module."); // register with Python
     }
 
-    PyObject *object=0;
-    if (PyArg_ParseTuple(args,"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
-        App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-        if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
-            PyErr_SetString(Base::BaseExceptionFreeCADError, "Active Analysis object have to be of type Fem::FemAnalysis!");
-            return 0;
+    virtual ~Module() {}
+
+private:
+    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    {
+        try {
+            return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
+        }
+        catch (const Base::Exception &e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const std::exception &e) {
+            throw Py::RuntimeError(e.what());
+        }
+    }
+    Py::Object setActiveAnalysis(const Py::Tuple& args)
+    {
+        if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,false);
+            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(0);
         }
 
-        // get the gui document of the Analysis Item
-        FemGui::ActiveAnalysisObserver::instance()->setActiveObject(static_cast<Fem::FemAnalysis*>(obj));
-        FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,true);
+        PyObject *object=0;
+        if (PyArg_ParseTuple(args.ptr(),"|O!",&(App::DocumentObjectPy::Type), &object)&& object) {
+            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
+            if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())){
+                throw Py::Exception(Base::BaseExceptionFreeCADError, "Active Analysis object have to be of type Fem::FemAnalysis!");
+            }
+
+            // get the gui document of the Analysis Item
+            FemGui::ActiveAnalysisObserver::instance()->setActiveObject(static_cast<Fem::FemAnalysis*>(obj));
+            FemGui::ActiveAnalysisObserver::instance()->highlightActiveObject(Gui::Blue,true);
+        }
+
+        return Py::None();
     }
-
-    Py_Return;
-}
-
-/* module functions */
-static PyObject * getActiveAnalysis(PyObject *self, PyObject *args)
-{
-    if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
-        return FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject();
+    Py::Object getActiveAnalysis(const Py::Tuple& args)
+    {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
+        if (FemGui::ActiveAnalysisObserver::instance()->hasActiveObject()) {
+            return Py::asObject(FemGui::ActiveAnalysisObserver::instance()->getActiveObject()->getPyObject());
+        }
+        return Py::None();
     }
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&DocName))
+            throw Py::Exception();
 
-    Py_Return;
-}
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-/* module functions */
-static PyObject * open(PyObject *self, PyObject *args)
-{
-    char* Name;
-    const char* DocName;
-    if (!PyArg_ParseTuple(args, "et|s","utf-8",&Name,&DocName))
-        return NULL;
-    std::string EncodedName = std::string(Name);
-    PyMem_Free(Name);
-    PY_TRY {
         QString fileName = QString::fromUtf8(EncodedName.c_str());
         QFileInfo fi;
         fi.setFile(fileName);
@@ -93,7 +128,7 @@ static PyObject * open(PyObject *self, PyObject *args)
         for (QList<Gui::EditorView*>::Iterator it = views.begin(); it != views.end(); ++it) {
             if ((*it)->fileName() == fileName) {
                 (*it)->setFocus();
-                Py_Return;
+                return Py::None();
             }
         }
 
@@ -111,22 +146,14 @@ static PyObject * open(PyObject *self, PyObject *args)
             font.setFamily(QString::fromLatin1("Arial"));
             editor->setFont(font);
         }
-    } PY_CATCH;
 
-    Py_Return;
+        return Py::None();
+    }
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
 }
 
-
-
-/* registration table  */
-struct PyMethodDef FemGui_Import_methods[] = {
-    {"setActiveAnalysis"       ,setActiveAnalysis      ,METH_VARARGS,
-     "setActiveAnalysis(AnalysisObject) -- Set the Analysis object in work."},
-    {"getActiveAnalysis"       ,getActiveAnalysis      ,METH_VARARGS,
-     "getActiveAnalysis() -- Returns the Analysis object in work."},
-    {"open"                    ,open                   ,METH_VARARGS,
-     "open(string) -- Opens an Abaqus file in a text editor."},
-    {"insert"                  ,open                   ,METH_VARARGS,
-     "insert(string,string) -- Opens an Abaqus file in a text editor."},
-    {NULL, NULL}                   /* end of table marker */
-};
+} // namespace FemGui

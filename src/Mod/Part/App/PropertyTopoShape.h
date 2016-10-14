@@ -67,10 +67,6 @@ public:
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
-    /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
     //@}
 
     /** @name Python interface */
@@ -100,6 +96,10 @@ private:
 };
 
 struct PartExport ShapeHistory {
+    /**
+    * @brief MapList: key is index of subshape (of type 'type') in source
+    * shape. Value is list of indexes of subshapes in result shape.
+    */
     typedef std::map<int, std::vector<int> > MapList;
     typedef std::vector<int> List;
 

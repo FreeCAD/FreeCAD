@@ -34,9 +34,9 @@ using namespace PartGui;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WFlags fl)
+DlgPartBoxImp::DlgPartBoxImp(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationInterface<Ui_DlgPartBox>(parent, fl)
 {
 }

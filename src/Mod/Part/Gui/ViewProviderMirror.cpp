@@ -45,6 +45,7 @@
 #include <Mod/Part/App/FeatureFillet.h>
 #include <Mod/Part/App/FeatureChamfer.h>
 #include <Mod/Part/App/FeatureRevolution.h>
+#include <Mod/Part/App/FeatureOffset.h>
 #include <Mod/Part/App/PartFeatures.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -89,7 +90,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         Base::Vector3d base = mf->Base.getValue();
         Base::Vector3d norm = mf->Normal.getValue();
         Base::Vector3d cent = bbox.GetCenter();
-        base = cent.ProjToPlane(base, norm);
+        base = cent.ProjectToPlane(base, norm);
 
         // setup the graph for editing the mirror plane
         SoTransform* trans = new SoTransform;
@@ -119,7 +120,7 @@ bool ViewProviderMirror::setEdit(int ModNum)
         // translation and center fields are overridden.
         SoSearchAction sa;
         sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(FALSE);
+        sa.setSearchingAll(false);
         sa.setNode(trans);
         sa.apply(pcEditNode);
         SoPath * path = sa.getPath();
@@ -191,13 +192,13 @@ bool ViewProviderMirror::onDelete(const std::vector<std::string> &)
     return true;
 }
 
-void ViewProviderMirror::dragStartCallback(void *data, SoDragger *)
+void ViewProviderMirror::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Edit Mirror");
 }
 
-void ViewProviderMirror::dragFinishCallback(void *data, SoDragger *)
+void ViewProviderMirror::dragFinishCallback(void *, SoDragger *)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
@@ -238,6 +239,8 @@ void ViewProviderFillet::updateData(const App::Property* prop)
         if (hist.size() != 1)
             return;
         Part::Fillet* objFill = dynamic_cast<Part::Fillet*>(getObject());
+        if (!objFill)
+            return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(objFill->Base.getValue());
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
@@ -341,6 +344,8 @@ void ViewProviderChamfer::updateData(const App::Property* prop)
         if (hist.size() != 1)
             return;
         Part::Chamfer* objCham = dynamic_cast<Part::Chamfer*>(getObject());
+        if (!objCham)
+            return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(objCham->Base.getValue());
         if (objBase) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
@@ -579,6 +584,11 @@ bool ViewProviderOffset::onDelete(const std::vector<std::string> &)
 
     return true;
 }
+
+// ---------------------------------------
+
+PROPERTY_SOURCE(PartGui::ViewProviderOffset2D, PartGui::ViewProviderOffset)
+
 
 // ---------------------------------------
 

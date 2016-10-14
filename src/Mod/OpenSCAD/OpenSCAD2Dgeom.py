@@ -477,6 +477,8 @@ def superWireReverse(debuglist,closed=False):
 def importDXFface(filename,layer=None,doc=None):
     import FreeCAD,importDXF
     importDXF.readPreferences()
+    importDXF.getDXFlibs()
+    importDXF.dxfMakeBlocks = False
     doc = doc or FreeCAD.activeDocument()
     layers = importDXF.processdxf(doc,filename) or importDXF.layers
     for l in layers:

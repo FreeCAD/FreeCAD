@@ -388,62 +388,62 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     tabWidget->addTab(page1, QLatin1String("Action Box"));
 
     // setup ActionBox 1
-    ui->ActionBox1->setIcon(QPixmap(QString::fromAscii(":/icons/document-open.svg")));
-    ui->ActionBox1->header()->setText(QString::fromAscii("Header of the group"));
+    ui->ActionBox1->setIcon(QPixmap(QString::fromLatin1(":/icons/document-open.svg")));
+    ui->ActionBox1->header()->setText(QString::fromLatin1("Header of the group"));
     connect(ui->ActionBox1->header(), SIGNAL(clicked()), action, SIGNAL(triggered()));
 
-    QSint::ActionLabel *a1 = ui->ActionBox1->createItem(QString::fromAscii("This action has no icon"));
+    QSint::ActionLabel *a1 = ui->ActionBox1->createItem(QString::fromLatin1("This action has no icon"));
     connect(a1, SIGNAL(clicked()), action, SIGNAL(triggered()));
-    QSint::ActionLabel *a2 = ui->ActionBox1->createItem(QPixmap(QString::fromAscii(":/icons/document-print.svg")),
-                                                QString::fromAscii("This action has icon"));
+    QSint::ActionLabel *a2 = ui->ActionBox1->createItem(QPixmap(QString::fromLatin1(":/icons/document-print.svg")),
+                                                QString::fromLatin1("This action has icon"));
     connect(a2, SIGNAL(clicked()), action, SIGNAL(triggered()));
 
     QLayout *hbl1 = ui->ActionBox1->createHBoxLayout();
-    QSint::ActionLabel *a3 = ui->ActionBox1->createItem(QString::fromAscii("1st action in row"), hbl1);
+    QSint::ActionLabel *a3 = ui->ActionBox1->createItem(QString::fromLatin1("1st action in row"), hbl1);
     connect(a3, SIGNAL(clicked()), action, SIGNAL(triggered()));
-    QSint::ActionLabel *a4 = ui->ActionBox1->createItem(QString::fromAscii("2nd action in row"), hbl1);
+    QSint::ActionLabel *a4 = ui->ActionBox1->createItem(QString::fromLatin1("2nd action in row"), hbl1);
     connect(a4, SIGNAL(clicked()), action, SIGNAL(triggered()));
 
     // setup ActionBox 2
-    ui->ActionBox2->setIcon(QPixmap(QString::fromAscii(":/icons/document-save.png")));
-    ui->ActionBox2->header()->setText(QString::fromAscii("Checkable actions allowed"));
+    ui->ActionBox2->setIcon(QPixmap(QString::fromLatin1(":/icons/document-save.png")));
+    ui->ActionBox2->header()->setText(QString::fromLatin1("Checkable actions allowed"));
     connect(ui->ActionBox2->header(), SIGNAL(clicked()), action, SIGNAL(triggered()));
 
-    QSint::ActionLabel *b1 = ui->ActionBox2->createItem(QString::fromAscii("Action 1 (Exclusive)"));
+    QSint::ActionLabel *b1 = ui->ActionBox2->createItem(QString::fromLatin1("Action 1 (Exclusive)"));
     b1->setCheckable(true);
     b1->setAutoExclusive(true);
     b1->setChecked(true);
-    QSint::ActionLabel *b2 = ui->ActionBox2->createItem(QString::fromAscii("Action 2 (Exclusive)"));
+    QSint::ActionLabel *b2 = ui->ActionBox2->createItem(QString::fromLatin1("Action 2 (Exclusive)"));
     b2->setCheckable(true);
     b2->setAutoExclusive(true);
-    QSint::ActionLabel *b3 = ui->ActionBox2->createItem(QString::fromAscii("Action 3 (Exclusive)"));
+    QSint::ActionLabel *b3 = ui->ActionBox2->createItem(QString::fromLatin1("Action 3 (Exclusive)"));
     b3->setCheckable(true);
     b3->setAutoExclusive(true);
 
-    QSint::ActionLabel *b4 = ui->ActionBox2->createItem(QString::fromAscii("Non-exclusive but still checkable"));
+    QSint::ActionLabel *b4 = ui->ActionBox2->createItem(QString::fromLatin1("Non-exclusive but still checkable"));
     b4->setCheckable(true);
 
     // setup ActionBox 3
-    ui->ActionBox3->setIcon(QPixmap(QString::fromAscii(":/icons/document-print.png")));
-    ui->ActionBox3->header()->setText(QString::fromAscii("Also, widgets allowed as well"));
+    ui->ActionBox3->setIcon(QPixmap(QString::fromLatin1(":/icons/document-print.png")));
+    ui->ActionBox3->header()->setText(QString::fromLatin1("Also, widgets allowed as well"));
 
-    ui->ActionBox3->addWidget(new QPushButton(QString::fromAscii("PushButton"), this));
-    ui->ActionBox3->addWidget(new QCheckBox(QString::fromAscii("CheckBox"), this));
+    ui->ActionBox3->addWidget(new QPushButton(QString::fromLatin1("PushButton"), this));
+    ui->ActionBox3->addWidget(new QCheckBox(QString::fromLatin1("CheckBox"), this));
     QLayout *hbl3 = ui->ActionBox3->createHBoxLayout();
-    ui->ActionBox3->addWidget(new QRadioButton(QString::fromAscii("RadioButton 1"), this), hbl3);
-    ui->ActionBox3->addWidget(new QRadioButton(QString::fromAscii("RadioButton 2"), this), hbl3);
+    ui->ActionBox3->addWidget(new QRadioButton(QString::fromLatin1("RadioButton 1"), this), hbl3);
+    ui->ActionBox3->addWidget(new QRadioButton(QString::fromLatin1("RadioButton 2"), this), hbl3);
 
     // setup ActionBox 4
-    ui->ActionBox4->setIcon(QPixmap(QString::fromAscii(":/icons/document-open.png")));
-    ui->ActionBox4->header()->setText(QString::fromAscii("ActionBox with different scheme"));
+    ui->ActionBox4->setIcon(QPixmap(QString::fromLatin1(":/icons/document-open.png")));
+    ui->ActionBox4->header()->setText(QString::fromLatin1("ActionBox with different scheme"));
 
-    ui->ActionBox4->createItem(QString::fromAscii("This action has no icon"));
-    ui->ActionBox4->createItem(QPixmap(QString::fromAscii(":/icons/document-print.png")),
-                                                QString::fromAscii("This action has icon"));
+    ui->ActionBox4->createItem(QString::fromLatin1("This action has no icon"));
+    ui->ActionBox4->createItem(QPixmap(QString::fromLatin1(":/icons/document-print.png")),
+                                                QString::fromLatin1("This action has icon"));
     QLayout *hbl4 = ui->ActionBox4->createHBoxLayout();
-    ui->ActionBox4->createItem(QString::fromAscii("1st action in row"), hbl4);
-    ui->ActionBox4->createItem(QString::fromAscii("2nd action in row"), hbl4);
-    ui->ActionBox4->createItem(QString::fromAscii("3rd action in row"), hbl4);
+    ui->ActionBox4->createItem(QString::fromLatin1("1st action in row"), hbl4);
+    ui->ActionBox4->createItem(QString::fromLatin1("2nd action in row"), hbl4);
+    ui->ActionBox4->createItem(QString::fromLatin1("3rd action in row"), hbl4);
 
     const char* ActionBoxNewStyle =
         "QSint--ActionBox {"
@@ -490,17 +490,17 @@ TaskPanelView::TaskPanelView(QWidget *parent)
         "}"
     ;
 
-    ui->ActionBox4->setStyleSheet(QString::fromAscii(ActionBoxNewStyle));
+    ui->ActionBox4->setStyleSheet(QString::fromLatin1(ActionBoxNewStyle));
 
     // setup ActionBox 5
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    ui->ActionBox5->setIcon(QPixmap(QString::fromAscii(":/icons/document-save.png")));
-    ui->ActionBox5->header()->setText(QString::fromAscii("TaskGroup with different scheme"));
+    ui->ActionBox5->setIcon(QPixmap(QString::fromLatin1(":/icons/document-save.png")));
+    ui->ActionBox5->header()->setText(QString::fromLatin1("TaskGroup with different scheme"));
 
     rcCmdMgr.addTo("Std_New", ui->ActionBox5);
     rcCmdMgr.addTo("Std_Open", ui->ActionBox5);
     rcCmdMgr.addTo("Std_Save", ui->ActionBox5);
-    ui->ActionBox5->setStyleSheet(QString::fromAscii(ActionBoxNewStyle));
+    ui->ActionBox5->setStyleSheet(QString::fromLatin1(ActionBoxNewStyle));
     }
     {
     Ui_TaskGroup* ui(new Ui_TaskGroup);
@@ -512,22 +512,22 @@ TaskPanelView::TaskPanelView(QWidget *parent)
 
     // create ActionGroups on ActionPanel
     QIcon save = QIcon::fromTheme(QString::fromLatin1("document-save"));
-    QSint::ActionGroup *group1 = ui->ActionPanel->createGroup(save.pixmap(24,24), QString::fromAscii("Expandable Group"));
+    QSint::ActionGroup *group1 = ui->ActionPanel->createGroup(save.pixmap(24,24), QString::fromLatin1("Expandable Group"));
     group1->addAction(ui->actionNew);
     group1->addAction(ui->actionLoad);
-    group1->addWidget(new QPushButton(QString::fromAscii("Just a button"), this));
+    group1->addWidget(new QPushButton(QString::fromLatin1("Just a button"), this));
     group1->addAction(ui->actionSave);
     group1->addAction(ui->actionPrint);
-    group1->addWidget(new QPushButton(QString::fromAscii("Just another button"), this));
+    group1->addWidget(new QPushButton(QString::fromLatin1("Just another button"), this));
 
     QIcon redo = QIcon::fromTheme(QString::fromLatin1("edit-redo"));
-    QSint::ActionGroup *group2 = ui->ActionPanel->createGroup(redo.pixmap(24,24), QString::fromAscii("Non-Expandable Group"), false);
+    QSint::ActionGroup *group2 = ui->ActionPanel->createGroup(redo.pixmap(24,24), QString::fromLatin1("Non-Expandable Group"), false);
     group2->addAction(ui->actionNew);
     group2->addAction(ui->actionLoad);
     group2->addAction(ui->actionSave);
     group2->addAction(ui->actionPrint);
 
-    ui->ActionPanel->addWidget(new QLabel(QString::fromAscii("Action Group without header"), this));
+    ui->ActionPanel->addWidget(new QLabel(QString::fromLatin1("Action Group without header"), this));
 
     QSint::ActionGroup *group3 = ui->ActionPanel->createGroup();
     group3->addAction(ui->actionNew);
@@ -585,7 +585,7 @@ TaskPanelView::TaskPanelView(QWidget *parent)
     QGridLayout* gridLayout = new QGridLayout(this);
     iisTaskPanel *taskPanel = new iisTaskPanel(this);
     iisTaskBox *tb1 = new iisTaskBox(
-        QPixmap(QString::fromAscii(":/icons/document-save.svg")),QLatin1String("Expandable Group"),true, this);
+        QPixmap(QString::fromLatin1(":/icons/document-save.svg")),QLatin1String("Expandable Group"),true, this);
     taskPanel->addWidget(tb1);
     gridLayout->addWidget(taskPanel, 0, 0, 2, 1);
 
@@ -678,7 +678,7 @@ TaskPanelView::~TaskPanelView()
 
 void TaskPanelView::executeAction()
 {
-    QMessageBox::about(0, QString::fromAscii("Action clicked"), QString::fromAscii("Do something here :)"));
+    QMessageBox::about(0, QString::fromLatin1("Action clicked"), QString::fromLatin1("Do something here :)"));
 }
 
 void TaskPanelView::on_rbDefaultScheme_toggled(bool b)

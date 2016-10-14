@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Remaining:</source>
@@ -77,7 +77,7 @@
     </message>
     <message>
         <source>Test</source>
-        <translation>Vizsgálat</translation>
+        <translation>Teszt</translation>
     </message>
     <message>
         <source>Select test name:</source>

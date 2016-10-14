@@ -108,7 +108,7 @@ void TaskTrajectoryDressUpParameter::viewPlacement(void)
     double A,B,C;
     Base::Vector3d pos = PosAdd.getPosition();
     PosAdd.getRotation().getYawPitchRoll(A,B,C);
-    QString val = QString::fromAscii("(%1,%2,%3),(%4,%5,%6)\n")
+    QString val = QString::fromLatin1("(%1,%2,%3),(%4,%5,%6)\n")
          .arg(pos.x,0,'g',6)
          .arg(pos.y,0,'g',6)
          .arg(pos.z,0,'g',6)

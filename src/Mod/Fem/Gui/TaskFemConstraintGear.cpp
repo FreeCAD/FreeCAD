@@ -85,7 +85,7 @@ TaskFemConstraintGear::TaskFemConstraintGear(ViewProviderFemConstraint *Constrai
     ui->checkReversed->blockSignals(true);
 
     // Get the feature data
-    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());    
+    Fem::ConstraintGear* pcConstraint = static_cast<Fem::ConstraintGear*>(ConstraintView->getObject());
     double dia = pcConstraint->Diameter.getValue();
     double force = pcConstraint->Force.getValue();
     double angle = pcConstraint->ForceAngle.getValue();
@@ -307,7 +307,7 @@ bool TaskDlgFemConstraintGear::accept()
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ForceAngle = %f",name.c_str(), parameterGear->getForceAngle());
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

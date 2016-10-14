@@ -28,36 +28,11 @@
 
 #include "ViewProviderMirrored.h"
 #include "TaskMirroredParameters.h"
-#include <Mod/PartDesign/App/FeatureMirrored.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderMirrored,PartDesignGui::ViewProviderTransformed)
 
-bool ViewProviderMirrored::setEdit(int ModNum)
-{
-    ViewProviderTransformed::setEdit(ModNum);
-
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgMirroredParameters *mirroredDlg = NULL;
-
-        if (checkDlgOpen(mirroredDlg)) {
-            // start the edit dialog
-            if (mirroredDlg)
-                Gui::Control().showDialog(mirroredDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgMirroredParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters *ViewProviderMirrored::getEditDialog() {
+    return new TaskDlgMirroredParameters (this);
 }

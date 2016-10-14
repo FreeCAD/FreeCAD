@@ -74,12 +74,12 @@ double Constraint::error()
     return 0.;
 }
 
-double Constraint::grad(double *param)
+double Constraint::grad(double * /*param*/)
 {
     return 0.;
 }
 
-double Constraint::maxStep(MAP_pD_D &dir, double lim)
+double Constraint::maxStep(MAP_pD_D & /*dir*/, double lim)
 {
     return lim;
 }

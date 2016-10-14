@@ -37,15 +37,15 @@ except AttributeError:
 class CommandPathToolTableEdit:
     def GetResources(self):
         return {'Pixmap'  : 'Path-ToolTable',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathToolTableEdit","EditToolTable"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_ToolTableEdit","EditToolTable"),
                 'Accel': "P, T",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathToolTableEdit","Edits a Tool Table in a selected Project")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_ToolTableEdit","Edits a Tool Table in a selected Project")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathToolTableEdit","Edits a Tool Table in a selected Project"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_ToolTableEdit","Edits a Tool Table in a selected Project"))
         FreeCADGui.doCommand("from PathScripts import TooltableEditor")
         FreeCADGui.doCommand("from PathScripts import PathUtils")
         FreeCADGui.doCommand('machine = PathUtils.findMachine()')

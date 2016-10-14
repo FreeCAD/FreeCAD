@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QApplication>
+# include <QByteArray>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -216,6 +217,7 @@ Command::Command(const char* name)
     sAppModule  = "FreeCAD";
     sGroup      = QT_TR_NOOP("Standard");
     eType       = AlterDoc | Alter3DView | AlterSelection;
+    bEnabled    = true;
 }
 
 Command::~Command()
@@ -240,6 +242,15 @@ void Command::addTo(QWidget *pcWidget)
         _pcAction = createAction();
 
     _pcAction->addTo(pcWidget);
+}
+
+void Command::addToGroup(ActionGroup* group, bool checkable)
+{
+    if (!_pcAction)
+        _pcAction = createAction();
+
+    _pcAction->setCheckable(checkable);
+    group->addAction(_pcAction->findChild<QAction*>());
 }
 
 Application *Command::getGuiApplication(void)
@@ -321,14 +332,15 @@ void Command::invoke(int i)
 
 void Command::testActive(void)
 {
-    if (!_pcAction) return;
+    if (!_pcAction)
+        return;
 
-    if (_blockCmd) {
+    if (_blockCmd || !bEnabled) {
         _pcAction->setEnabled(false);
         return;
     }
 
-    if (!(eType & ForEdit))  // special case for commands which are only in some edit modes active
+    if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
         
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
@@ -336,9 +348,18 @@ void Command::testActive(void)
              _pcAction->setEnabled(false);
             return;
         }
+    }
 
     bool bActive = isActive();
     _pcAction->setEnabled(bActive);
+}
+
+void Command::setEnabled(bool on)
+{
+    if (_pcAction) {
+        bEnabled = on;
+        _pcAction->setEnabled(on);
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -365,6 +386,24 @@ std::string Command::getUniqueObjectName(const char *BaseName) const
     assert(hasActiveDocument());
 
     return getActiveGuiDocument()->getDocument()->getUniqueObjectName(BaseName);
+}
+
+void Command::setAppModuleName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sAppModule = _strdup(s);
+#else
+    this->sAppModule = strdup(s);
+#endif
+}
+
+void Command::setGroupName(const char* s)
+{
+#if defined (_MSC_VER)
+    this->sGroup = _strdup(s);
+#else
+    this->sGroup = strdup(s);
+#endif
 }
 
 
@@ -413,44 +452,47 @@ void Command::blockCommand(bool block)
 }
 
 /// Run a App level Action
-void Command::doCommand(DoCmd_Type eType,const char* sCmd,...)
+void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
 {
-    // temp buffer
-    size_t format_len = std::strlen(sCmd)+4024;
-    char* format = (char*) malloc(format_len);
-    va_list namelessVars;
-    va_start(namelessVars, sCmd);  // Get the "..." vars
-    vsnprintf(format, format_len, sCmd, namelessVars);
-    va_end(namelessVars);
+    va_list ap;
+    va_start(ap, sCmd);
+    QString s;
+    const QString cmd = s.vsprintf(sCmd, ap);
+    va_end(ap);
 
-    if (eType == Gui)
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,format);
-    else
-        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,format);
-
-    try {
-        Base::Interpreter().runString(format);
-    }
-    catch (...) {
-        // free memory to avoid a leak if an exception occurred
-        free (format);
-        throw;
-    }
+    // 'vsprintf' expects a utf-8 string for '%s'
+    QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
-    Base::Console().Log("CmdC: %s\n",format);
+    Base::Console().Log("CmdC: %s\n", format.constData());
 #endif
-    free (format);
+
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui, format.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App, format.constData());
+
+    Base::Interpreter().runString(format.constData());
 }
 
 /// Run a App level Action
-void Command::runCommand(DoCmd_Type eType,const char* sCmd)
+void Command::runCommand(DoCmd_Type eType, const char* sCmd)
 {
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
+}
+
+/// Run a App level Action
+void Command::runCommand(DoCmd_Type eType, const QByteArray& sCmd)
+{
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.constData());
+    Base::Interpreter().runString(sCmd.constData());
 }
 
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
@@ -602,15 +644,20 @@ void Command::applyCommandData(const char* context, Action* action)
 
 const char* Command::keySequenceToAccel(int sk) const
 {
+    /* Local class to ensure free()'ing the strings allocated below */
+    typedef std::map<int, std::string> StringMap;
+    static StringMap strings;
+    StringMap::iterator i = strings.find(sk);
+
+    if (i != strings.end())
+        return i->second.c_str();
+
     QKeySequence::StandardKey type = (QKeySequence::StandardKey)sk;
     QKeySequence ks(type);
     QString qs = ks.toString();
-    QByteArray data = qs.toAscii();
-#if defined (_MSC_VER)
-    return _strdup((const char*)data);
-#else
-    return strdup((const char*)data);
-#endif
+    QByteArray data = qs.toLatin1();
+
+    return (strings[sk] = static_cast<const char*>(data)).c_str();
 }
 
 void Command::adjustCameraPosition()
@@ -658,7 +705,7 @@ Action * Command::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this,getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
     applyCommandData(this->className(), pcAction);
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(sPixmap));
@@ -683,15 +730,16 @@ void Command::updateAction(int)
 
 /* TRANSLATOR Gui::MacroCommand */
 
-MacroCommand::MacroCommand(const char* name)
+MacroCommand::MacroCommand(const char* name, bool system)
 #if defined (_MSC_VER)
-  : Command( _strdup(name) )
+  : Command( _strdup(name) ), systemMacro(system)
 #else
-  : Command( strdup(name) )
+  : Command( strdup(name) ), systemMacro(system)
 #endif
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
+    sScriptName = 0;
 }
 
 MacroCommand::~MacroCommand()
@@ -702,11 +750,23 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
-    std::string cMacroPath = App::GetApplication().GetParameterGroupByPath
-                             ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
-                                     App::Application::getUserAppDataDir().c_str());
+    Q_UNUSED(iMsg); 
 
-    QDir d(QString::fromUtf8(cMacroPath.c_str()));
+    QDir d;
+    if(!systemMacro) {
+	std::string cMacroPath;
+	
+	cMacroPath = App::GetApplication().GetParameterGroupByPath
+                             ("User parameter:BaseApp/Preferences/Macro")->GetASCII("MacroPath",
+                                     App::Application::getUserMacroDir().c_str());
+			     
+	d = QDir(QString::fromUtf8(cMacroPath.c_str()));
+    }
+    else {
+	QString dirstr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+	d = QDir(dirstr);
+    }
+    
     QFileInfo fi(d, QString::fromUtf8(sScriptName));
     if (!fi.exists()) {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -733,7 +793,7 @@ Action * MacroCommand::createAction(void)
     pcAction->setWhatsThis(QString::fromUtf8(sWhatsThis));
     if (sPixmap)
         pcAction->setIcon(Gui::BitmapFactory().pixmap(sPixmap));
-    pcAction->setShortcut(QString::fromAscii(sAccel));
+    pcAction->setShortcut(QString::fromLatin1(sAccel));
 
     QString accel = pcAction->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
@@ -777,6 +837,9 @@ void MacroCommand::load()
             if ((*it)->GetASCII("Pixmap", "nix") != "nix")
                 macro->setPixmap    ( (*it)->GetASCII( "Pixmap"     ).c_str() );
             macro->setAccel       ( (*it)->GetASCII( "Accel",0    ).c_str() );
+	    
+	    macro->systemMacro = (*it)->GetBool("System", false);
+	    
             Application::Instance->commandManager().addCommand( macro );
         }
     }
@@ -799,6 +862,7 @@ void MacroCommand::save()
             hMacro->SetASCII( "Statustip", macro->getStatusTip  () );
             hMacro->SetASCII( "Pixmap",    macro->getPixmap     () );
             hMacro->SetASCII( "Accel",     macro->getAccel      () );
+	    hMacro->SetBool( "System",     macro->systemMacro );
         }
     }
 }
@@ -890,7 +954,7 @@ void PythonCommand::activated(int iMsg)
         }
     }
     else {
-        doCommand(Doc,Activation.c_str());
+        runCommand(Doc,Activation.c_str());
     }
 }
 
@@ -941,7 +1005,7 @@ Action * PythonCommand::createAction(void)
     Action *pcAction;
 
     pcAction = new Action(this, qtAction, getMainWindow());
-    pcAction->setShortcut(QString::fromAscii(getAccel()));
+    pcAction->setShortcut(QString::fromLatin1(getAccel()));
     applyCommandData(this->getName(), pcAction);
     if (strcmp(getResource("Pixmap"),"") != 0)
         pcAction->setIcon(Gui::BitmapFactory().iconFromTheme(getResource("Pixmap")));

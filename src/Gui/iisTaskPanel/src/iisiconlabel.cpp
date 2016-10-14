@@ -83,6 +83,7 @@ QSize iisIconLabel::minimumSizeHint() const
 
 void iisIconLabel::paintEvent ( QPaintEvent * event ) 
 {
+	Q_UNUSED(event); 
 	QPainter p(this);
 
 	QRect textRect(rect().adjusted(0,0,-1,0));

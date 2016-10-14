@@ -26,13 +26,18 @@
 #ifndef _PreComp_
 # include <QPainter>
 # include <QPixmap>
+# include <QMessageBox>
 #endif
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
 #include "TaskSketcherGeneral.h"
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Command.h>
 
 using namespace SketcherGui;
 
@@ -81,6 +86,8 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 
         ui->comboBox->addItem(QIcon(px), QString(), QVariant(it->second));
     }
+
+    connect(ui->btnTVApply, SIGNAL(clicked(bool)), this, SLOT(onBtnTVApplyClicked(bool)));
 }
 
 /** 
@@ -118,7 +125,15 @@ void SketcherSettings::saveSettings()
     ui->dialogOnDistanceConstraint->onSave();
     ui->continueMode->onSave();
     ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxTVHideDependent->onSave();
+    ui->checkBoxTVShowLinks->onSave();
+    ui->checkBoxTVShowSupport->onSave();
+    ui->checkBoxTVRestoreCamera->onSave();
     form->saveSettings();
+
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = ui->EditSketcherMarkerSize->itemData(ui->EditSketcherMarkerSize->currentIndex()).toInt();
+    hViewGrp->SetInt("EditSketcherMarkerSize", markerSize);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
@@ -152,7 +167,21 @@ void SketcherSettings::loadSettings()
     ui->dialogOnDistanceConstraint->onRestore();
     ui->continueMode->onRestore();
     ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxTVHideDependent->onRestore();
+    ui->checkBoxTVShowLinks->onRestore();
+    ui->checkBoxTVShowSupport->onRestore();
+    ui->checkBoxTVRestoreCamera->onRestore();
     form->loadSettings();
+
+    std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_FILLED");
+    for (std::list<int>::iterator it = sizes.begin(); it != sizes.end(); ++it)
+        ui->EditSketcherMarkerSize->addItem(tr("%1 px").arg(*it), *it);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = hViewGrp->GetInt("EditSketcherMarkerSize", 7);
+    int markerIndex = ui->EditSketcherMarkerSize->findData(QVariant(markerSize));
+    if (markerIndex < 0)
+        markerIndex = 1;
+    ui->EditSketcherMarkerSize->setCurrentIndex(markerIndex);
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
@@ -171,6 +200,33 @@ void SketcherSettings::changeEvent(QEvent *e)
     }
     else {
         QWidget::changeEvent(e);
+    }
+}
+
+void SketcherSettings::onBtnTVApplyClicked(bool)
+{
+    QString errMsg;
+    try{
+        Gui::Command::doCommand(Gui::Command::Gui,
+            "for name,doc in App.listDocuments().items():\n"
+            "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
+            "        sketch.ViewObject.HideDependent = %s\n"
+            "        sketch.ViewObject.ShowLinks = %s\n"
+            "        sketch.ViewObject.ShowSupport = %s\n"
+            "        sketch.ViewObject.RestoreCamera = %s\n",
+            this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
+            this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
+            this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False");
+    } catch (Base::PyException &e){
+        Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
+        e.ReportException();
+        errMsg = QString::fromLatin1(e.what());
+    } catch (...) {
+        errMsg = tr("Unexpected C++ exception");
+    }
+    if(errMsg.length()>0){
+        QMessageBox::warning(this, tr("Sketcher"),errMsg);
     }
 }
 

@@ -40,7 +40,7 @@ class DlgActivateWindowImp : public QDialog
     Q_OBJECT
 
 public:
-    DlgActivateWindowImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgActivateWindowImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgActivateWindowImp();
 
 protected:

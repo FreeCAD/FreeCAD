@@ -47,6 +47,7 @@ public:
     bool execute();
     void onBeforeChange(const Property* prop);
     void onChanged(const Property* prop);
+    void onDocumentRestored();
     PyObject *getPyObject(void);
 
 private:
@@ -199,6 +200,10 @@ protected:
     virtual void onChanged(const Property* prop) {
         imp->onChanged(prop);
         FeatureT::onChanged(prop);
+    }
+    virtual void onDocumentRestored() {
+        imp->onDocumentRestored();
+        FeatureT::onDocumentRestored();
     }
 
 private:

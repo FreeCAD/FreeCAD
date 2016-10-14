@@ -17,7 +17,7 @@
 
 from math import cos, sin, pi, acos, asin, atan, sqrt
 
-import FreeCAD, FreeCADGui, Part
+import FreeCAD, Part
 from FreeCAD import Base, Console
 import involute
 reload(involute)

@@ -79,6 +79,7 @@ void Thumbnail::Save (Base::Writer &writer) const
 
 void Thumbnail::Restore(Base::XMLReader &reader)
 {
+    Q_UNUSED(reader); 
     //reader.addFile("Thumbnail.png",this);
 }
 
@@ -101,13 +102,14 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         }
     }
 
-    if (!img.isNull()) {
-        QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    if (!img.isNull())
         px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
 
+    if (!px.isNull()) {
         // according to specification add some meta-information to the image
         uint mt = QDateTime::currentDateTime().toTime_t();
-        QString mtime = QString::fromAscii("%1").arg(mt);
+        QString mtime = QString::fromLatin1("%1").arg(mt);
         img.setText(QLatin1String("Software"), qApp->applicationName());
         img.setText(QLatin1String("Thumb::Mimetype"), QLatin1String("application/x-extension-fcstd"));
         img.setText(QLatin1String("Thumb::MTime"), mtime);
@@ -123,6 +125,7 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
 
 void Thumbnail::RestoreDocFile(Base::Reader &reader)
 {
+    Q_UNUSED(reader); 
 }
 
 void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const

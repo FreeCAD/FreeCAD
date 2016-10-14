@@ -5,439 +5,461 @@
     <name>CmdCreateSpreadsheet</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Create spreadsheet</source>
-        <translation type="unfinished">Create spreadsheet</translation>
+        <translation>Számolótábla létrehozása</translation>
     </message>
     <message>
         <source>Create a new spreadsheet</source>
-        <translation type="unfinished">Create a new spreadsheet</translation>
+        <translation>Új számolótábla létrehozása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Align bottom</source>
-        <translation type="unfinished">Align bottom</translation>
+        <translation>Lefelé igazítás</translation>
     </message>
     <message>
         <source>Bottom-align contents of selected cells</source>
-        <translation type="unfinished">Bottom-align contents of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának lefelé igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Align center</source>
-        <translation type="unfinished">Align center</translation>
+        <translation>Középre igazítás</translation>
     </message>
     <message>
         <source>Center-align contents of selected cells</source>
-        <translation type="unfinished">Center-align contents of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának középre igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Align left</source>
-        <translation type="unfinished">Align left</translation>
+        <translation>Balra igazítás</translation>
     </message>
     <message>
         <source>Left-align contents of selected cells</source>
-        <translation type="unfinished">Left-align contents of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának balra igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Align right</source>
-        <translation type="unfinished">Align right</translation>
+        <translation>Jobbra igazítás</translation>
     </message>
     <message>
         <source>Right-align contents of selected cells</source>
-        <translation type="unfinished">Right-align contents of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának jobbra igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Align top</source>
-        <translation type="unfinished">Align top</translation>
+        <translation>Felfelé igazítás</translation>
     </message>
     <message>
         <source>Top-align contents of selected cells</source>
-        <translation type="unfinished">Top-align contents of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának felfelé igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Vertically center-align</source>
-        <translation type="unfinished">Vertically center-align</translation>
+        <translation>Függőlegesen középre igazítás</translation>
     </message>
     <message>
         <source>Center-align contents vertically of selected cells</source>
-        <translation type="unfinished">Center-align contents vertically of selected cells</translation>
+        <translation>A kijelölt cellák tartalmának függőlegesen középre igazítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetExport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Export spreadsheet</source>
-        <translation type="unfinished">Export spreadsheet</translation>
+        <translation>Számolótábla exportálás</translation>
     </message>
     <message>
         <source>Export spreadsheet to CSV file</source>
-        <translation type="unfinished">Export spreadsheet to CSV file</translation>
+        <translation>Számolótábla exportálása CSV-fájlba</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetImport</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Import spreadsheet</source>
-        <translation type="unfinished">Import spreadsheet</translation>
+        <translation>Számolótábla importálása</translation>
     </message>
     <message>
         <source>Import CSV file into spreadsheet</source>
-        <translation type="unfinished">Import CSV file into spreadsheet</translation>
+        <translation>CSV-fájl importálása táblázatba</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetMergeCells</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Merge cells</source>
-        <translation type="unfinished">Merge cells</translation>
+        <translation>Cellák egyesítése</translation>
     </message>
     <message>
         <source>Merge selected cells in spreadsheet</source>
-        <translation type="unfinished">Merge selected cells in spreadsheet</translation>
+        <translation>A számolótáblában kijelölt cellák egyesítése</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSpreadsheetSetAlias</name>
+    <message>
+        <source>Spreadsheet</source>
+        <translation>Számolótábla</translation>
+    </message>
+    <message>
+        <source>Set alias</source>
+        <translation>Autodesk álnév beállítása</translation>
+    </message>
+    <message>
+        <source>Set alias for selected cell</source>
+        <translation>A kijelölt cellákra Autodesk álnév beállítása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetSplitCell</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Split cell</source>
-        <translation type="unfinished">Split cell</translation>
+        <translation>Cellák szétválasztása</translation>
     </message>
     <message>
         <source>Split previously merged cells in spreadsheet</source>
-        <translation type="unfinished">Split previously merged cells in spreadsheet</translation>
+        <translation>A számolótáblában előzőleg egyesített cellák szétválasztása</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Bold text</source>
-        <translation type="unfinished">Bold text</translation>
+        <translation>Félkövér szöveg</translation>
     </message>
     <message>
         <source>Set bold text in selected cells</source>
-        <translation type="unfinished">Set bold text in selected cells</translation>
+        <translation>Félkövér szöveg beállítása a kijelölt cellákban</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Italic text</source>
-        <translation type="unfinished">Italic text</translation>
+        <translation>Dőlt szöveg</translation>
     </message>
     <message>
         <source>Set italic text in selected cells</source>
-        <translation type="unfinished">Set italic text in selected cells</translation>
+        <translation>Dőlt szöveg beállítása a kijelölt cellákban</translation>
     </message>
 </context>
 <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
     <message>
         <source>Underline text</source>
-        <translation type="unfinished">Underline text</translation>
+        <translation>Aláhúzott szöveg</translation>
     </message>
     <message>
         <source>Set underline text in selected cells</source>
-        <translation type="unfinished">Set underline text in selected cells</translation>
+        <translation>Aláhúzott szöveg beállítása a kijelölt cellákban</translation>
     </message>
 </context>
 <context>
     <name>ColorPickerPopup</name>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Egyéni</translation>
     </message>
 </context>
 <context>
     <name>PropertiesDialog</name>
     <message>
         <source>Cell properties</source>
-        <translation type="unfinished">Cell properties</translation>
+        <translation>Cella tulajdonságai</translation>
     </message>
     <message>
         <source>&amp;Color</source>
-        <translation type="unfinished">&amp;Color</translation>
+        <translation>Szín</translation>
     </message>
     <message>
         <source>Text</source>
-        <translation type="unfinished">Szöveg</translation>
+        <translation>Szöveg</translation>
     </message>
     <message>
         <source>Background</source>
-        <translation type="unfinished">Background</translation>
+        <translation>Háttér</translation>
     </message>
     <message>
         <source>&amp;Alignment</source>
-        <translation type="unfinished">&amp;Alignment</translation>
+        <translation>Ig&amp;azítás</translation>
     </message>
     <message>
         <source>Horizontal</source>
-        <translation type="unfinished">Vízszintes</translation>
+        <translation>Vízszintes</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation type="unfinished">Bal nézet</translation>
+        <translation>Bal nézet</translation>
     </message>
     <message>
         <source>Center</source>
-        <translation type="unfinished">Center</translation>
+        <translation>Középre</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation type="unfinished">Jobb</translation>
+        <translation>Jobb</translation>
     </message>
     <message>
         <source>Vertical</source>
-        <translation type="unfinished">Függőleges</translation>
+        <translation>Függőleges</translation>
     </message>
     <message>
         <source>Top</source>
-        <translation type="unfinished">Felülnézet</translation>
+        <translation>Felülnézet</translation>
     </message>
     <message>
         <source>Bottom</source>
-        <translation type="unfinished">Alsó</translation>
+        <translation>Alsó</translation>
     </message>
     <message>
         <source>&amp;Style</source>
-        <translation type="unfinished">&amp;Style</translation>
+        <translation>&amp;Stílus</translation>
     </message>
     <message>
         <source>Bold</source>
-        <translation type="unfinished">Bold</translation>
+        <translation>Félkövér</translation>
     </message>
     <message>
         <source>Italic</source>
-        <translation type="unfinished">Italic</translation>
+        <translation>Dőlt</translation>
     </message>
     <message>
         <source>Underline</source>
-        <translation type="unfinished">Underline</translation>
+        <translation>Aláhúzott</translation>
     </message>
     <message>
         <source>&amp;Display unit</source>
-        <translation type="unfinished">&amp;Display unit</translation>
+        <translation>Egység mutatása</translation>
     </message>
     <message>
         <source>Unit string</source>
-        <translation type="unfinished">Unit string</translation>
+        <translation>Karakterlánc egység</translation>
     </message>
     <message>
         <source>A&amp;lias</source>
-        <translation type="unfinished">A&amp;lias</translation>
+        <translation>Á&amp;lnév</translation>
     </message>
     <message>
         <source>Alias for this cell</source>
-        <translation type="unfinished">Alias for this cell</translation>
+        <translation>Álnév erre a cellára</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>All (*)</source>
-        <translation type="unfinished">All (*)</translation>
+        <translation>Összes (*)</translation>
     </message>
     <message>
         <source>Import file</source>
-        <translation type="unfinished">Fájl importálása</translation>
+        <translation>Fájl importálása</translation>
     </message>
     <message>
         <source>Export file</source>
-        <translation type="unfinished">Fájl exportálása</translation>
+        <translation>Fájl exportálása</translation>
     </message>
     <message>
         <source>Cell contents</source>
-        <translation type="unfinished">Cell contents</translation>
+        <translation>Cellatartalom</translation>
     </message>
     <message>
         <source>Show spreadsheet</source>
-        <translation type="unfinished">Show spreadsheet</translation>
+        <translation>Számolótábla mutatása</translation>
     </message>
 </context>
 <context>
     <name>QtColorPicker</name>
     <message>
         <source>Black</source>
-        <translation type="unfinished">Fekete</translation>
+        <translation>Fekete</translation>
     </message>
     <message>
         <source>White</source>
-        <translation type="unfinished">Fehér</translation>
+        <translation>Fehér</translation>
     </message>
     <message>
         <source>Red</source>
-        <translation type="unfinished">Red</translation>
+        <translation>Piros</translation>
     </message>
     <message>
         <source>Dark red</source>
-        <translation type="unfinished">Dark red</translation>
+        <translation>Sötétvörös</translation>
     </message>
     <message>
         <source>Green</source>
-        <translation type="unfinished">Green</translation>
+        <translation>Zöld</translation>
     </message>
     <message>
         <source>Dark green</source>
-        <translation type="unfinished">Dark green</translation>
+        <translation>Sötétzöld</translation>
     </message>
     <message>
         <source>Blue</source>
-        <translation type="unfinished">Blue</translation>
+        <translation>Kék</translation>
     </message>
     <message>
         <source>Dark blue</source>
-        <translation type="unfinished">Dark blue</translation>
+        <translation>Sötétkék</translation>
     </message>
     <message>
         <source>Cyan</source>
-        <translation type="unfinished">Cyan</translation>
+        <translation>Cián</translation>
     </message>
     <message>
         <source>Dark cyan</source>
-        <translation type="unfinished">Dark cyan</translation>
+        <translation>Sötét cián</translation>
     </message>
     <message>
         <source>Magenta</source>
-        <translation type="unfinished">Magenta</translation>
+        <translation>Bíbor</translation>
     </message>
     <message>
         <source>Dark magenta</source>
-        <translation type="unfinished">Dark magenta</translation>
+        <translation>Sötétbíbor</translation>
     </message>
     <message>
         <source>Yellow</source>
-        <translation type="unfinished">Yellow</translation>
+        <translation>Citromsárga</translation>
     </message>
     <message>
         <source>Dark yellow</source>
-        <translation type="unfinished">Dark yellow</translation>
+        <translation>Narancssárga</translation>
     </message>
     <message>
         <source>Gray</source>
-        <translation type="unfinished">Gray</translation>
+        <translation>Szürke</translation>
     </message>
     <message>
         <source>Dark gray</source>
-        <translation type="unfinished">Dark gray</translation>
+        <translation>Sötét szürke</translation>
     </message>
     <message>
         <source>Light gray</source>
-        <translation type="unfinished">Light gray</translation>
+        <translation>Világosszürke</translation>
     </message>
     <message>
         <source>Custom</source>
-        <translation type="unfinished">Custom</translation>
+        <translation>Egyéni</translation>
     </message>
 </context>
 <context>
     <name>Sheet</name>
     <message>
         <source>Form</source>
-        <translation type="unfinished">Űrlap</translation>
+        <translation>Űrlap</translation>
     </message>
     <message>
         <source>&amp;Contents</source>
-        <translation type="unfinished">&amp;Contents</translation>
+        <translation>Tartalom</translation>
+    </message>
+</context>
+<context>
+    <name>SpreadsheetGui::Module</name>
+    <message>
+        <source>Unnamed</source>
+        <translation>Névtelen</translation>
     </message>
 </context>
 <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
         <source>Insert rows</source>
-        <translation type="unfinished">Insert rows</translation>
+        <translation>Sorok beszúrása</translation>
     </message>
     <message>
         <source>Remove rows</source>
-        <translation type="unfinished">Remove rows</translation>
+        <translation>Sorok eltávolítása</translation>
     </message>
     <message>
         <source>Insert columns</source>
-        <translation type="unfinished">Insert columns</translation>
+        <translation>Oszlopok beszúrása</translation>
     </message>
     <message>
         <source>Remove columns</source>
-        <translation type="unfinished">Remove columns</translation>
+        <translation>Oszlopok eltávolítása</translation>
     </message>
     <message>
         <source>Properties...</source>
-        <translation type="unfinished">Properties...</translation>
+        <translation>Tulajdonságok...</translation>
     </message>
 </context>
 <context>
     <name>Workbench</name>
     <message>
         <source>Spreadsheet</source>
-        <translation type="unfinished">Spreadsheet</translation>
+        <translation>Számolótábla</translation>
     </message>
 </context>
 </TS>

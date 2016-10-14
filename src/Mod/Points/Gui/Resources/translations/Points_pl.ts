@@ -2,9 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="pl" sourcelanguage="en">
 <context>
+    <name>CmdPointsConvert</name>
+    <message>
+        <location filename="../../Command.cpp" line="+184"/>
+        <source>Points</source>
+        <translation>Punkty</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert to points...</source>
+        <translation type="unfinished">Convert to points...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Convert to points</source>
+        <translation type="unfinished">Convert to points</translation>
+    </message>
+</context>
+<context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+104"/>
+        <location line="-78"/>
         <source>Points</source>
         <translation>Punkty</translation>
     </message>
@@ -24,7 +44,7 @@
 <context>
     <name>CmdPointsImport</name>
     <message>
-        <location line="-47"/>
+        <location line="-51"/>
         <source>Points</source>
         <translation>Punkty</translation>
     </message>
@@ -44,7 +64,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+122"/>
+        <location line="+203"/>
         <source>Points</source>
         <translation>Punkty</translation>
     </message>
@@ -64,7 +84,7 @@
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-39"/>
+        <location line="-125"/>
         <source>Points</source>
         <translation>Punkty</translation>
     </message>
@@ -175,7 +195,7 @@
         <location line="+29"/>
         <location line="+57"/>
         <source>none</source>
-        <translation>żaden</translation>
+        <translation>brak</translation>
     </message>
     <message>
         <location line="-81"/>
@@ -229,10 +249,30 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-84"/>
-        <location line="+43"/>
         <source>Ascii Points (*.asc);;All Files (*.*)</source>
-        <translation>Punkty ASCII (*.asc);;Wszystkie Pliki(*. *)</translation>
+        <translation type="obsolete">Punkty ASCII (*.asc);;Wszystkie Pliki(*. *)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="-78"/>
+        <location line="+49"/>
+        <source>Ascii Points</source>
+        <translation>Punkty Ascii</translation>
+    </message>
+    <message>
+        <location line="-49"/>
+        <location line="+49"/>
+        <source>All Files</source>
+        <translation>Wszystkie pliki</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>Distance</source>
+        <translation>Odległość</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter maximum distance:</source>
+        <translation type="unfinished">Enter maximum distance:</translation>
     </message>
 </context>
 <context>
@@ -240,7 +280,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Points tools</source>
-        <translation>Narzędzia Punktów</translation>
+        <translation>Narzędzia punktów</translation>
     </message>
     <message>
         <location line="+1"/>

@@ -92,13 +92,49 @@ void PyException::ReportException (void) const
 
 SystemExitException::SystemExitException()
 {
-    _sErrMsg = "System exit";
+    // Set exception message and code based upon the pthon sys.exit() code and/or message 
+    // based upon the the following sys.exit() call semantics.
+    //
+    // Invocation       |  _exitCode  |  _sErrMsg
+    // ---------------- +  ---------  +  --------
+    // sys.exit(int#)   |   int#      |   "System Exit"
+    // sys.exit(string) |   1         |   string
+    // sys.exit()       |   1         |   "System Exit"
+
+    long int errCode = 1;
+    std::string errMsg  = "System exit";
+    PyObject  *type, *value, *traceback, *code;
+
+    PyGILStateLocker locker;
+    PyErr_Fetch(&type, &value, &traceback);
+    PyErr_NormalizeException(&type, &value, &traceback);
+
+    if (value) {
+        code = PyObject_GetAttrString(value, "code");
+        if (code != NULL && value != Py_None) {
+           Py_DECREF(value);
+           value = code;
+        }
+
+        if (PyInt_Check(value)) {
+            errCode = PyInt_AsLong(value);
+        }
+        else {
+            const char *str = PyString_AsString(value);
+            if (str)
+                errMsg = errMsg + ": " + str;
+        }
+    }
+
+    _sErrMsg  = errMsg;
+    _exitCode = errCode;
 }
 
 SystemExitException::SystemExitException(const SystemExitException &inst)
-        : Exception(inst)
+  : Exception(inst), _exitCode(inst._exitCode)
 {
 }
+
 
 // ---------------------------------------------------------
 
@@ -135,7 +171,7 @@ public:
 
 InterpreterSingleton::InterpreterSingleton()
 {
-    //Py_Initialize();
+    this->_global = 0;
 }
 
 InterpreterSingleton::~InterpreterSingleton()
@@ -159,7 +195,10 @@ std::string InterpreterSingleton::runString(const char *sCmd)
 
     presult = PyRun_String(sCmd, Py_file_input, dict, dict); /* eval direct */
     if (!presult) {
-        throw PyException();
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
     }
 
     PyObject* repr = PyObject_Repr(presult);
@@ -173,6 +212,30 @@ std::string InterpreterSingleton::runString(const char *sCmd)
         PyErr_Clear();
         return std::string();
     }
+}
+
+Py::Object InterpreterSingleton::runStringObject(const char *sCmd)
+{
+    PyObject *module, *dict, *presult;          /* "exec code in d, d" */
+
+    PyGILStateLocker locker;
+    module = PP_Load_Module("__main__");         /* get module, init python */
+    if (module == NULL)
+        throw PyException();                         /* not incref'd */
+    dict = PyModule_GetDict(module);            /* get dict namespace */
+    if (dict == NULL)
+        throw PyException();                           /* not incref'd */
+
+
+    presult = PyRun_String(sCmd, Py_eval_input, dict, dict); /* eval direct */
+    if (!presult) {
+        if (PyErr_ExceptionMatches(PyExc_SystemExit))
+            throw SystemExitException();
+        else
+            throw PyException();
+    }
+
+    return Py::asObject(presult);
 }
 
 void InterpreterSingleton::systemExit(void)
@@ -265,43 +328,43 @@ void InterpreterSingleton::runFile(const char*pxFileName, bool local)
         //std::string encoding = PyUnicode_GetDefaultEncoding();
         //PyUnicode_SetDefaultEncoding("utf-8");
         //PyUnicode_SetDefaultEncoding(encoding.c_str());
+        PyObject *module, *dict;
+        module = PyImport_AddModule("__main__");
+        dict = PyModule_GetDict(module);
         if (local) {
-            PyObject *module, *dict;
-            module = PyImport_AddModule("__main__");
-            dict = PyModule_GetDict(module);
             dict = PyDict_Copy(dict);
-            if (PyDict_GetItemString(dict, "__file__") == NULL) {
-                PyObject *f = PyString_FromString(pxFileName);
-                if (f == NULL) {
-                    fclose(fp);
-                    return;
-                }
-                if (PyDict_SetItemString(dict, "__file__", f) < 0) {
-                    Py_DECREF(f);
-                    fclose(fp);
-                    return;
-                }
-                Py_DECREF(f);
-            }
-
-            PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
-            fclose(fp);
-            Py_DECREF(dict);
-            if (!result) {
-                if (PyErr_ExceptionMatches(PyExc_SystemExit))
-                    throw SystemExitException();
-                else
-                    throw PyException();
-            }
-            Py_DECREF(result);
         }
         else {
-            int ret = PyRun_SimpleFile(fp, pxFileName);
-            fclose(fp);
-            if (ret != 0)
-                throw PyException();
+            Py_INCREF(dict); // avoid to further distinguish between local and global dict
         }
 
+        if (PyDict_GetItemString(dict, "__file__") == NULL) {
+            PyObject *f = PyString_FromString(pxFileName);
+            if (f == NULL) {
+                fclose(fp);
+                Py_DECREF(dict);
+                return;
+            }
+            if (PyDict_SetItemString(dict, "__file__", f) < 0) {
+                Py_DECREF(f);
+                fclose(fp);
+                Py_DECREF(dict);
+                return;
+            }
+            Py_DECREF(f);
+        }
+
+        PyObject *result = PyRun_File(fp, pxFileName, Py_file_input, dict, dict);
+        fclose(fp);
+        Py_DECREF(dict);
+
+        if (!result) {
+            if (PyErr_ExceptionMatches(PyExc_SystemExit))
+                throw SystemExitException();
+            else
+                throw PyException();
+        }
+        Py_DECREF(result);
     }
     else {
         std::string err = "Unknown file: ";

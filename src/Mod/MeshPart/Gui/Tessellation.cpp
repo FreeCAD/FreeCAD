@@ -41,6 +41,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Mesh/Gui/ViewProvider.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 
 using namespace MeshPartGui;
 
@@ -59,7 +61,7 @@ Tessellation::Tessellation(QWidget* parent)
             this, SLOT(meshingMethod(int)));
 
     ui->spinSurfaceDeviation->setMaximum(INT_MAX);
-    ui->spinMaximumEdgeLength->setMaximum(INT_MAX);
+    ui->spinMaximumEdgeLength->setRange(0, INT_MAX);
 
     // set the standard method
     ui->radioButtonStandard->setChecked(true);
@@ -173,7 +175,7 @@ void Tessellation::findShapes()
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) return;
 
-    this->document = QString::fromAscii(activeDoc->getName());
+    this->document = QString::fromLatin1(activeDoc->getName());
     std::vector<Part::Feature*> objs = activeDoc->getObjectsOfType<Part::Feature>();
 
     double edgeLen = 0;
@@ -194,7 +196,7 @@ void Tessellation::findShapes()
             edgeLen = std::max<double>(edgeLen, bbox.LengthY());
             edgeLen = std::max<double>(edgeLen, bbox.LengthZ());
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -223,7 +225,7 @@ bool Tessellation::accept()
         return false;
     }
 
-    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toAscii());
+    App::Document* activeDoc = App::GetApplication().getDocument((const char*)this->document.toLatin1());
     if (!activeDoc) {
         QMessageBox::critical(this, windowTitle(),
             tr("No such document '%1'.").arg(this->document));
@@ -245,24 +247,31 @@ bool Tessellation::accept()
 
             QString cmd;
             if (method == 0) { // Standard
-                double devFace = ui->spinSurfaceDeviation->value();
-                cmd = QString::fromAscii(
+                double devFace = ui->spinSurfaceDeviation->value().getValue();
+                QString param = QString::fromLatin1("Shape=__doc__.getObject(\"%1\").Shape,LinearDeflection=%2")
+                    .arg(shape)
+                    .arg(devFace);
+                if (ui->meshShapeColors->isChecked())
+                    param += QString::fromLatin1(",Segments=True");
+                if (ui->groupsFaceColors->isChecked())
+                    param += QString::fromLatin1(",GroupColors=__doc__.getObject(\"%1\").ViewObject.DiffuseColor")
+                            .arg(shape);
+                cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
-                    "__mesh__.Mesh=Mesh.Mesh(__doc__.getObject(\"%2\").Shape.tessellate(%3))\n"
-                    "__mesh__.Label=\"%4 (Meshed)\"\n"
+                    "__mesh__.Mesh=MeshPart.meshFromShape(%2)\n"
+                    "__mesh__.Label=\"%3 (Meshed)\"\n"
                     "__mesh__.ViewObject.CreaseAngle=25.0\n"
                     "del __doc__, __mesh__\n")
                     .arg(this->document)
-                    .arg(shape)
-                    .arg(devFace)
+                    .arg(param)
                     .arg(label);
             }
             else if (method == 1) { // Mefisto
-                double maxEdge = ui->spinMaximumEdgeLength->value();
+                double maxEdge = ui->spinMaximumEdgeLength->value().getValue();
                 if (!ui->spinMaximumEdgeLength->isEnabled())
                     maxEdge = 0;
-                cmd = QString::fromAscii(
+                cmd = QString::fromLatin1(
                     "__doc__=FreeCAD.getDocument(\"%1\")\n"
                     "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                     "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,MaxLength=%3)\n"
@@ -283,7 +292,7 @@ bool Tessellation::accept()
                 bool optimize = ui->checkOptimizeSurface->isChecked();
                 bool allowquad = ui->checkQuadDominated->isChecked();
                 if (fineness < 5) {
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"
@@ -300,7 +309,7 @@ bool Tessellation::accept()
                         .arg(label);
                 }
                 else {
-                    cmd = QString::fromAscii(
+                    cmd = QString::fromLatin1(
                         "__doc__=FreeCAD.getDocument(\"%1\")\n"
                         "__mesh__=__doc__.addObject(\"Mesh::Feature\",\"Mesh\")\n"
                         "__mesh__.Mesh=MeshPart.meshFromShape(Shape=__doc__.getObject(\"%2\").Shape,"
@@ -319,7 +328,32 @@ bool Tessellation::accept()
                         .arg(label);
                 }
             }
-            Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
+            Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
+
+            // if Standard mesher is used and face colors should be applied
+            if (method == 0) { // Standard
+                if (ui->meshShapeColors->isChecked()) {
+                    Gui::ViewProvider* vpm = Gui::Application::Instance->getViewProvider
+                            (activeDoc->getActiveObject());
+                    Gui::ViewProvider* vpp = Gui::Application::Instance->getViewProvider
+                            (activeDoc->getObject(shape.toLatin1()));
+                    MeshGui::ViewProviderMesh* vpmesh = dynamic_cast<MeshGui::ViewProviderMesh*>(vpm);
+                    PartGui::ViewProviderPart* vppart = dynamic_cast<PartGui::ViewProviderPart*>(vpp);
+                    if (vpmesh && vppart) {
+                        std::vector<App::Color> diff_col = vppart->DiffuseColor.getValues();
+                        if (ui->groupsFaceColors->isChecked()) {
+                            // unique colors
+                            std::set<uint32_t> col_set;
+                            for (auto it : diff_col)
+                                col_set.insert(it.getPackedValue());
+                            diff_col.clear();
+                            for (auto it : col_set)
+                                diff_col.push_back(App::Color(it));
+                        }
+                        vpmesh->highlightSegments(diff_col);
+                    }
+                }
+            }
         }
         activeDoc->commitTransaction();
     }

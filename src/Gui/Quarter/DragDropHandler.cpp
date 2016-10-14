@@ -44,6 +44,7 @@
 #include <QtCore/QStringList>
 #include <QtGui/QDragEnterEvent>
 #include <QtGui/QDropEvent>
+#include <QMimeData>
 
 #include <Inventor/SoInput.h>
 #include <Inventor/nodes/SoSeparator.h>

@@ -51,11 +51,12 @@
 #include "TaskTransformedParameters.h"
 #include <Base/Console.h>
 #include <Gui/Control.h>
+#include <Gui/Command.h>
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Mod/Part/App/TopoShape.h>
-#include <Mod/PartDesign/App/FeatureAdditive.h>
-#include <Mod/PartDesign/App/FeatureSubtractive.h>
 #include <Mod/PartDesign/App/FeatureTransformed.h>
+#include <Mod/PartDesign/App/FeatureAddSub.h>
 
 using namespace PartDesignGui;
 
@@ -66,25 +67,12 @@ void ViewProviderTransformed::setupContextMenu(QMenu* menu, QObject* receiver, c
     QAction* act;
     act = menu->addAction(QObject::tr((std::string("Edit ") + featureName + " feature").c_str()), receiver, member);
     act->setData(QVariant((int)ViewProvider::Default));
-    PartGui::ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderTransformed::setEdit(int ModNum)
 {
     pcRejectedRoot = new SoSeparator();
     pcRejectedRoot->ref();
-
-    rejectedTrfms = new SoMultipleCopy();
-    rejectedTrfms->ref();
-
-    rejectedCoords = new SoCoordinate3();
-    rejectedCoords->ref();
-
-    rejectedNorms = new SoNormal();
-    rejectedNorms->ref();
-
-    rejectedFaceSet = new SoIndexedFaceSet();
-    rejectedFaceSet->ref();
 
     SoPickStyle* rejectedPickStyle = new SoPickStyle();
     rejectedPickStyle->style = SoPickStyle::UNPICKABLE;
@@ -115,83 +103,36 @@ bool ViewProviderTransformed::setEdit(int ModNum)
     pcRejectedRoot->addChild(rejectedMaterial);
     pcRejectedRoot->addChild(rejectedHints);
     pcRejectedRoot->addChild(rejectedFaceStyle);
-    pcRejectedRoot->addChild(rejectedCoords);
-    pcRejectedRoot->addChild(rejectedNorms);
-    pcRejectedRoot->addChild(rejectedNormb);
-    pcRejectedRoot->addChild(rejectedTrfms);
-    rejectedTrfms->addChild(rejectedFaceSet);
-
+    pcRejectedRoot->addChild(rejectedNormb); // NOTE: The code relies on the last child added here being index 6
     pcRoot->addChild(pcRejectedRoot);
 
     recomputeFeature();
-    return true;
+
+    return ViewProvider::setEdit(ModNum);
 }
 
 void ViewProviderTransformed::unsetEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default) {
-        // when pressing ESC make sure to close the dialog
-        Gui::Control().closeDialog();
-    }
-    else {
-        PartGui::ViewProviderPart::unsetEdit(ModNum);
-    }
+    ViewProvider::unsetEdit(ModNum);
 
-    rejectedTrfms->removeAllChildren();
+    while (pcRejectedRoot->getNumChildren() > 7) {
+        SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
+        SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
+        rejectedTrfms   ->removeAllChildren();
+        sep->removeChild(1);
+        sep->removeChild(0);
+        pcRejectedRoot  ->removeChild(7);
+    }
     pcRejectedRoot->removeAllChildren();
 
     pcRoot->removeChild(pcRejectedRoot);
 
     pcRejectedRoot->unref();
-    rejectedTrfms->unref();
-    rejectedCoords->unref();
-    rejectedNorms->unref();
-    rejectedFaceSet->unref();
 }
 
-bool ViewProviderTransformed::onDelete(const std::vector<std::string> &)
+bool ViewProviderTransformed::onDelete(const std::vector<std::string> &s)
 {
-    PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
-    std::vector<App::DocumentObject*> originals = pcTransformed->Originals.getValues();
-
-    // if abort command deleted the object the originals are visible again
-    for (std::vector<App::DocumentObject*>::const_iterator it = originals.begin(); it != originals.end(); ++it)
-    {
-        if (((*it) != NULL) && Gui::Application::Instance->getViewProvider(*it))
-            Gui::Application::Instance->getViewProvider(*it)->show();
-    }
-
-    return true;
-}
-
-const bool ViewProviderTransformed::checkDlgOpen(TaskDlgTransformedParameters* transformedDlg) {
-    // When double-clicking on the item for this feature the
-    // object unsets and sets its edit mode without closing
-    // the task panel
-    Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-    transformedDlg = qobject_cast<TaskDlgTransformedParameters *>(dlg);
-
-    if ((transformedDlg != NULL) && (transformedDlg->getTransformedView() != this))
-        transformedDlg = NULL; // another transformed feature left open its task panel
-
-    if ((dlg != NULL) && (transformedDlg == NULL)) {
-        QMessageBox msgBox;
-        msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-        msgBox.setInformativeText(QObject::tr("Do you want to close this dialog?"));
-        msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-        msgBox.setDefaultButton(QMessageBox::Yes);
-        int ret = msgBox.exec();
-        if (ret == QMessageBox::Yes)
-            Gui::Control().reject();
-        else
-            return false;
-    }
-
-    // clear the selection (convenience)
-    Gui::Selection().clearSelection();
-
-    // Continue (usually in virtual method setEdit())
-    return true;
+    return ViewProvider::onDelete(s);
 }
 
 void ViewProviderTransformed::recomputeFeature(void)
@@ -199,8 +140,11 @@ void ViewProviderTransformed::recomputeFeature(void)
     PartDesign::Transformed* pcTransformed = static_cast<PartDesign::Transformed*>(getObject());
     pcTransformed->getDocument()->recomputeFeature(pcTransformed);
     const std::vector<App::DocumentObjectExecReturn*> log = pcTransformed->getDocument()->getRecomputeLog();
-    unsigned rejected = pcTransformed->getRejectedTransformations().size();
-    QString msg = QString::fromAscii("%1");
+    PartDesign::Transformed::rejectedMap rejected_trsf = pcTransformed->getRejectedTransformations();
+    unsigned rejected = 0;
+    for (PartDesign::Transformed::rejectedMap::const_iterator r = rejected_trsf.begin(); r != rejected_trsf.end(); r++)
+        rejected += r->second.size();
+    QString msg = QString::fromLatin1("%1");
     if (rejected > 0) {
         msg = QString::fromLatin1("<font color='orange'>%1<br/></font>\r\n%2");
         if (rejected == 1)
@@ -219,25 +163,27 @@ void ViewProviderTransformed::recomputeFeature(void)
     }
     signalDiagnosis(msg);
 
-    TopoDS_Shape shape;
-    if (rejected != 0) {
-        // FIXME: create a compound if there are more than one originals
-        App::DocumentObject* original = pcTransformed->Originals.getValues().front();
-        if (original->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
-            PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(original);
-            shape = addFeature->AddShape.getShape()._Shape;
-        } else if (original->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
-            PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(original);
-            shape = subFeature->SubShape.getShape()._Shape;
-        }
+    // Clear all the rejected stuff
+    while (pcRejectedRoot->getNumChildren() > 7) {
+        SoSeparator* sep = static_cast<SoSeparator*>(pcRejectedRoot->getChild(7));
+        SoMultipleCopy* rejectedTrfms = static_cast<SoMultipleCopy*>(sep->getChild(2));
+        rejectedTrfms   ->removeAllChildren();
+        sep->removeChild(1);
+        sep->removeChild(0);
+        pcRejectedRoot  ->removeChild(7);
     }
 
-    if (rejected == 0 || shape.IsNull()) {
-        rejectedCoords  ->point      .setNum(0);
-        rejectedNorms   ->vector     .setNum(0);
-        rejectedFaceSet ->coordIndex .setNum(0);
-        rejectedTrfms   ->matrix     .setNum(0);
-    } else {
+    for (PartDesign::Transformed::rejectedMap::const_iterator o = rejected_trsf.begin(); o != rejected_trsf.end(); o++) {
+        if (o->second.empty()) continue;
+
+        TopoDS_Shape shape;
+        if ((o->first)->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+            PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(o->first);
+            shape = feature->AddSubShape.getShape().getShape();
+        }
+
+        if (shape.IsNull()) continue;
+
         // Display the rejected transformations in red
         TopoDS_Shape cShape(shape);
 
@@ -253,6 +199,7 @@ void ViewProviderTransformed::recomputeFeature(void)
             Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
 
             // create or use the mesh on the data structure
+            // Note: This DOES have an effect on cShape
 #if OCC_VERSION_HEX >= 0x060600
             Standard_Real AngDeflectionRads = AngularDeflection.getValue() / 180.0 * M_PI;
             BRepMesh_IncrementalMesh(cShape,deflection,Standard_False,
@@ -278,8 +225,11 @@ void ViewProviderTransformed::recomputeFeature(void)
             }
 
             // create memory for the nodes and indexes
+            SoCoordinate3* rejectedCoords = new SoCoordinate3();
             rejectedCoords  ->point      .setNum(nbrNodes);
+            SoNormal* rejectedNorms = new SoNormal();
             rejectedNorms   ->vector     .setNum(nbrNodes);
+            SoIndexedFaceSet* rejectedFaceSet = new SoIndexedFaceSet();
             rejectedFaceSet ->coordIndex .setNum(nbrTriangles*4);
 
             // get the raw memory for fast fill up
@@ -375,17 +325,23 @@ void ViewProviderTransformed::recomputeFeature(void)
             rejectedFaceSet ->coordIndex .finishEditing();
 
             // fill in the transformation matrices
-            rejectedTrfms->matrix.setNum(rejected);
+            SoMultipleCopy* rejectedTrfms = new SoMultipleCopy();
+            rejectedTrfms->matrix.setNum((o->second).size());
             SbMatrix* mats = rejectedTrfms->matrix.startEditing();
 
-            std::list<gp_Trsf> rejected_trsf = pcTransformed->getRejectedTransformations();
-            std::list<gp_Trsf>::const_iterator trsf = rejected_trsf.begin();
-            for (unsigned int i=0; i < rejected; i++,trsf++) {
+            std::list<gp_Trsf>::const_iterator trsf = (o->second).begin();
+            for (unsigned int i=0; i < (o->second).size(); i++,trsf++) {
                 Base::Matrix4D mat;
                 Part::TopoShape::convertToMatrix(*trsf,mat);
                 mats[i] = convert(mat);
             }
             rejectedTrfms->matrix.finishEditing();
+            rejectedTrfms->addChild(rejectedFaceSet);
+            SoSeparator* sep = new SoSeparator();
+            sep->addChild(rejectedCoords);
+            sep->addChild(rejectedNorms);
+            sep->addChild(rejectedTrfms);
+            pcRejectedRoot->addChild(sep);
         }
         catch (...) {
             Base::Console().Error("Cannot compute Inventor representation for the rejected transformations of shape of %s.\n",

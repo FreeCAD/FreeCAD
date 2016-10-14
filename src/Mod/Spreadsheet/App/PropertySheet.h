@@ -37,7 +37,7 @@ class Sheet;
 class PropertySheet;
 class SheetObserver;
 
-class PropertySheet : public App::Property {
+class PropertySheet : public App::Property, private App::AtomicPropertyChangeInterface<PropertySheet> {
     TYPESYSTEM_HEADER();
 public:
 
@@ -53,49 +53,55 @@ public:
 
     virtual void Restore(Base::XMLReader & reader);
 
-    Cell *createCell(CellAddress address);
+    Cell *createCell(App::CellAddress address);
 
     void setValue() { }
 
-    void setContent(CellAddress address, const char * value);
+    void setContent(App::CellAddress address, const char * value);
 
-    void setAlignment(CellAddress address, int _alignment);
+    void setAlignment(App::CellAddress address, int _alignment);
 
-    void setStyle(CellAddress address, const std::set<std::string> & _style);
+    void setStyle(App::CellAddress address, const std::set<std::string> & _style);
 
-    void setForeground(CellAddress address, const App::Color &color);
+    void setForeground(App::CellAddress address, const App::Color &color);
 
-    void setBackground(CellAddress address, const App::Color &color);
+    void setBackground(App::CellAddress address, const App::Color &color);
 
-    void setDisplayUnit(CellAddress address, const std::string & unit);
+    void setDisplayUnit(App::CellAddress address, const std::string & unit);
 
-    void setAlias(CellAddress address, const std::string &alias);
+    void setAlias(App::CellAddress address, const std::string &alias);
 
-    void setComputedUnit(CellAddress address, const Base::Unit & unit);
+    void setComputedUnit(App::CellAddress address, const Base::Unit & unit);
 
-    void setSpans(CellAddress address, int rows, int columns);
+    void setSpans(App::CellAddress address, int rows, int columns);
 
-    void clear(CellAddress address);
+    void clear(App::CellAddress address);
 
     void clear();
 
-    Cell * getValue(CellAddress key);
+    Cell * getValue(App::CellAddress key);
 
-    std::set<CellAddress> getUsedCells() const;
+    const Cell * getValue(App::CellAddress key) const;
+
+    const Cell * getValueFromAlias(const std::string &alias) const;
+
+    bool isValidAlias(const std::string &candidate);
+
+    std::set<App::CellAddress> getUsedCells() const;
 
     Sheet * sheet() const { return owner; }
 
-    const std::set<CellAddress> & getDirty() { return dirty; }
+    const std::set<App::CellAddress> & getDirty() { return dirty; }
 
-    void setDirty(CellAddress address);
+    void setDirty(App::CellAddress address);
 
-    void clearDirty(CellAddress key) { dirty.erase(key); }
+    void clearDirty(App::CellAddress key) { dirty.erase(key); }
 
     void clearDirty() { dirty.clear(); purgeTouched(); }
 
     bool isDirty() const { return dirty.size() > 0; }
 
-    void moveCell(CellAddress currPos, CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
+    void moveCell(App::CellAddress currPos, App::CellAddress newPos, std::map<App::ObjectIdentifier, App::ObjectIdentifier> &renames);
 
     void insertRows(int row, int count);
 
@@ -107,31 +113,23 @@ public:
 
     virtual unsigned int getMemSize (void) const;
 
-    bool mergeCells(CellAddress from, CellAddress to);
+    bool mergeCells(App::CellAddress from, App::CellAddress to);
 
-    void splitCell(CellAddress address);
+    void splitCell(App::CellAddress address);
 
-    void getSpans(CellAddress address, int &rows, int &cols) const;
+    void getSpans(App::CellAddress address, int &rows, int &cols) const;
 
-    bool isMergedCell(CellAddress address) const;
+    bool isMergedCell(App::CellAddress address) const;
 
-    bool isHidden(CellAddress address) const;
+    bool isHidden(App::CellAddress address) const;
 
-    const std::set< CellAddress > & getDeps(const std::string & name) const;
+    const std::set< App::CellAddress > & getDeps(const std::string & name) const;
 
-    const std::set<std::string> &getDeps(CellAddress pos) const;
+    const std::set<std::string> &getDeps(App::CellAddress pos) const;
 
     const std::set<App::DocumentObject*> & getDocDeps() const { return docDeps; }
 
-    class Signaller {
-    public:
-        Signaller(PropertySheet & sheet);
-        ~Signaller();
-    private:
-        PropertySheet & mSheet;
-    };
-
-    void recomputeDependencies(CellAddress key);
+    void recomputeDependencies(App::CellAddress key);
 
     PyObject *getPyObject(void);
 
@@ -143,6 +141,8 @@ public:
 
     void renamedDocument(const App::Document *doc);
 
+    void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths);
+
     void deletedDocumentObject(const App::DocumentObject *docObj);
 
     void documentSet();
@@ -151,30 +151,34 @@ private:
 
     PropertySheet(const PropertySheet & other);
 
-    friend class Signaller;
+    /* friends */
+
+    friend class AtomicPropertyChange;
 
     friend class SheetObserver;
 
-    Cell *cellAt(CellAddress address);
-
-    Cell *nonNullCellAt(CellAddress address);
-
-    const Cell *cellAt(CellAddress address) const;
-
-    bool colSortFunc(const CellAddress &a, const CellAddress &b);
-
-    bool rowSortFunc(const CellAddress &a, const CellAddress &b);
-
     friend class Cell;
 
+    friend class Sheet;
+
+    Cell *cellAt(App::CellAddress address);
+
+    Cell *nonNullCellAt(App::CellAddress address);
+
+    const Cell *cellAt(App::CellAddress address) const;
+
+    bool colSortFunc(const App::CellAddress &a, const App::CellAddress &b);
+
+    bool rowSortFunc(const App::CellAddress &a, const App::CellAddress &b);
+
     /*! Set of cells that have been marked dirty */
-    std::set<CellAddress> dirty;
+    std::set<App::CellAddress> dirty;
 
     /*! Cell data in this property */
-    std::map<CellAddress, Cell*> data;
+    std::map<App::CellAddress, Cell*> data;
 
     /*! Merged cells; cell -> anchor cell */
-    std::map<CellAddress, CellAddress> mergedCells;
+    std::map<App::CellAddress, App::CellAddress> mergedCells;
 
     /*! Owner of this property */
     Sheet * owner;
@@ -183,9 +187,9 @@ private:
      * Cell dependency tracking
      */
 
-    void addDependencies(CellAddress key);
+    void addDependencies(App::CellAddress key);
 
-    void removeDependencies(CellAddress key);
+    void removeDependencies(App::CellAddress key);
 
     void recomputeDependants(const App::Property * prop);
 
@@ -196,18 +200,18 @@ private:
     /*! Cell dependencies, i.e when a change occurs to property given in key,
       the set of addresses needs to be recomputed.
       */
-    std::map<std::string, std::set< CellAddress > > propertyNameToCellMap;
+    std::map<std::string, std::set< App::CellAddress > > propertyNameToCellMap;
 
     /*! Properties this cell depends on */
-    std::map<CellAddress, std::set< std::string > > cellToPropertyNameMap;
+    std::map<App::CellAddress, std::set< std::string > > cellToPropertyNameMap;
 
     /*! Cell dependencies, i.e when a change occurs to documentObject given in key,
       the set of addresses needs to be recomputed.
       */
-    std::map<std::string, std::set< CellAddress > > documentObjectToCellMap;
+    std::map<std::string, std::set< App::CellAddress > > documentObjectToCellMap;
 
     /*! DocumentObject this cell depends on */
-    std::map<CellAddress, std::set< std::string > > cellToDocumentObjectMap;
+    std::map<App::CellAddress, std::set< std::string > > cellToDocumentObjectMap;
 
     /*! Other document objects the sheet depends on */
     std::set<App::DocumentObject*> docDeps;
@@ -219,13 +223,10 @@ private:
     std::map<const App::Document*, std::string> documentName;
 
     /*! Mapping of cell position to alias property */
-    std::map<CellAddress, std::string> aliasProp;
+    std::map<App::CellAddress, std::string> aliasProp;
 
     /*! Mapping of alias property to cell position */
-    std::map<std::string, CellAddress> revAliasProp;
-
-    /*! Internal counter used to track when to emit aboutToSet and hasSetValue calls */
-    int signalCounter;
+    std::map<std::string, App::CellAddress> revAliasProp;
 
     /*! The associated python object */
     Py::Object PythonObject;

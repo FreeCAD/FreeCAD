@@ -45,20 +45,25 @@ PROPERTY_SOURCE(Raytracing::RayProject, App::DocumentObjectGroup)
 
 RayProject::RayProject(void)
 {
-    ADD_PROPERTY_TYPE(PageResult ,(0),0,App::Prop_Output,"Resulting povray Project file");
-    ADD_PROPERTY_TYPE(Template   ,(""),0,App::Prop_Transient ,"Template for the Povray project");
-    ADD_PROPERTY_TYPE(Camera     ,(""),0,App::Prop_None ,"Camera settings");
+    ADD_PROPERTY_TYPE(PageResult, (0), 0, App::Prop_Output, "Resulting povray Project file");
+    ADD_PROPERTY_TYPE(Template, (""), 0, App::Prop_None, "Template for the Povray project");
+    ADD_PROPERTY_TYPE(Camera, (""), 0, App::Prop_None, "Camera settings");
 }
 
 void RayProject::onDocumentRestored()
 {
-    Base::FileInfo fi(PageResult.getValue());
-    std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
-    // try to find the template in user dir/Templates first
-    Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
-    if (tempfi.exists())
-        path = tempfi.filePath();
-    Template.setValue(path);
+    Base::FileInfo templateInfo(Template.getValue());
+    if (!templateInfo.exists()) {
+        Base::FileInfo fi(Template.getValue());
+        if (fi.fileName().empty())
+            fi.setFile(PageResult.getValue());
+        std::string path = App::Application::getResourceDir() + "Mod/Raytracing/Templates/" + fi.fileName();
+        // try to find the template in user dir/Templates first
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        if (tempfi.exists())
+            path = tempfi.filePath();
+        Template.setValue(path);
+    }
 }
 
 App::DocumentObjectExecReturn *RayProject::execute(void)
@@ -94,7 +99,7 @@ App::DocumentObjectExecReturn *RayProject::execute(void)
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ((*It)->getTypeId().isDerivedFrom(Raytracing::RaySegment::getClassTypeId())) {
-                    Raytracing::RaySegment *View = dynamic_cast<Raytracing::RaySegment *>(*It);
+                    Raytracing::RaySegment *View = static_cast<Raytracing::RaySegment *>(*It);
                     ofile << View->Result.getValue();
                     ofile << endl << endl << endl;
                 }

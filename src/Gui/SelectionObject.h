@@ -44,6 +44,7 @@ class GuiExport SelectionObject : public Base::BaseClass
 public:
     /** Constructs a SelectionObject object. */
     SelectionObject();
+    SelectionObject(App::DocumentObject*);
     virtual ~SelectionObject();
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.

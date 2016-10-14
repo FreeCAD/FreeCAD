@@ -67,12 +67,12 @@ SoShapeScale::SoShapeScale(void)
 {
     SO_KIT_CONSTRUCTOR(SoShapeScale);
 
-    SO_KIT_ADD_FIELD(active, (TRUE));
+    SO_KIT_ADD_FIELD(active, (true));
     SO_KIT_ADD_FIELD(scaleFactor, (1.0f));
 
-    SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, FALSE, this, "", FALSE);
-    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoNode, SoCube, TRUE, topSeparator, "", TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(scale, SoScale, FALSE, topSeparator, shape, FALSE);
+    SO_KIT_ADD_CATALOG_ENTRY(topSeparator, SoSeparator, false, this, "", false);
+    SO_KIT_ADD_CATALOG_ABSTRACT_ENTRY(shape, SoNode, SoCube, true, topSeparator, "", true);
+    SO_KIT_ADD_CATALOG_ENTRY(scale, SoScale, false, topSeparator, shape, false);
 
     SO_KIT_INIT_INSTANCE();
 }
@@ -93,7 +93,7 @@ SoShapeScale::GLRender(SoGLRenderAction * action)
 {
     SoState * state = action->getState();
 
-    SoScale * scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), TRUE));
+    SoScale * scale = static_cast<SoScale*>(this->getAnyPart(SbName("scale"), true));
     if (!this->active.getValue()) {
         SbVec3f v(1.0f, 1.0f, 1.0f);
         if (scale->scaleFactor.getValue() != v)
@@ -130,17 +130,17 @@ SoAxisCrossKit::SoAxisCrossKit()
 
    // Add the parts to the catalog...
    SO_KIT_ADD_CATALOG_ENTRY(xAxis, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
    SO_KIT_ADD_CATALOG_ENTRY(xHead, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
    SO_KIT_ADD_CATALOG_ENTRY(yAxis, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
    SO_KIT_ADD_CATALOG_ENTRY(yHead, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
    SO_KIT_ADD_CATALOG_ENTRY(zAxis, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
    SO_KIT_ADD_CATALOG_ENTRY(zHead, SoShapeKit, 
-                            TRUE, this,"", TRUE);
+                            true, this,"", true);
 
    SO_KIT_INIT_INSTANCE();
 
@@ -156,10 +156,10 @@ SoAxisCrossKit::~SoAxisCrossKit()
 SbBool
 SoAxisCrossKit::affectsState() const
 {
-   return FALSE;
+   return false;
 }
 
-void SoAxisCrossKit::addWriteReference(SoOutput * out, SbBool isfromfield)
+void SoAxisCrossKit::addWriteReference(SoOutput * /*out*/, SbBool /*isfromfield*/)
 {
     // this node should not be written out to a file
 }
@@ -168,7 +168,7 @@ void SoAxisCrossKit::getBoundingBox(SoGetBoundingBoxAction * action)
 {
     inherited::getBoundingBox(action);
     action->resetCenter();
-    action->setCenter(SbVec3f(0,0,0), FALSE);
+    action->setCenter(SbVec3f(0,0,0), false);
 }
 
 // Set up parts for default configuration of the jumping jack
@@ -294,7 +294,7 @@ void SoRegPoint::GLRender(SoGLRenderAction *action)
         SoState*  state = action->getState();
         state->push();
         SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoTextureCoordinateBundle tb(action, true, false);
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
         mb.sendFirst();  // make sure we have the correct material
 
@@ -321,7 +321,7 @@ void SoRegPoint::GLRender(SoGLRenderAction *action)
     }
 }
 
-void SoRegPoint::generatePrimitives(SoAction* action)
+void SoRegPoint::generatePrimitives(SoAction* /*action*/)
 {
 }
 

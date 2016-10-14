@@ -39,7 +39,14 @@ Get a list of intersection points with another triangle.
 			  </UserDocu>
 		  </Documentation>
 	  </Methode>
-	  <Attribute Name="Index" ReadOnly="true">
+      <Methode Name="isDegenerated">
+          <Documentation>
+              <UserDocu>isDegenerated([float]) -> boolean
+Returns true if the facet is degenerated, otherwise false.
+              </UserDocu>
+          </Documentation>
+      </Methode>
+      <Attribute Name="Index" ReadOnly="true">
 		  <Documentation>
 			  <UserDocu>The index of this facet in the MeshObject</UserDocu>
 		  </Documentation>
@@ -75,5 +82,11 @@ Get a list of intersection points with another triangle.
 			</Documentation>
 			<Parameter Name="NeighbourIndices" Type="Tuple"/>
 		</Attribute>
-	</PythonExport>
+        <Attribute Name="Area" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The area of the facet</UserDocu>
+            </Documentation>
+            <Parameter Name="Area" Type="Float"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

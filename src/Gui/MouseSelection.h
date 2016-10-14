@@ -80,13 +80,13 @@ public:
     //@}
 
 protected:
-    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos) {
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const, const QPoint&) {
         return 0;
     };
-    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos) {
+    virtual int locationEvent(const SoLocation2Event*    const, const QPoint&) {
         return 0;
     };
-    virtual int keyboardEvent(const SoKeyboardEvent*     const e)                   {
+    virtual int keyboardEvent(const SoKeyboardEvent*     const)                   {
         return 0;
     };
 
@@ -167,14 +167,14 @@ protected:
 // -----------------------------------------------------------------------------------
 
 /**
- * The brush selection class
+ * The freehand selection class
  * \author Werner Mayer
  */
-class GuiExport BrushSelection : public PolyPickerSelection
+class GuiExport FreehandSelection : public PolyPickerSelection
 {
 public:
-    BrushSelection();
-    virtual ~BrushSelection();
+    FreehandSelection();
+    virtual ~FreehandSelection();
 
     void setClosed(bool c);
 

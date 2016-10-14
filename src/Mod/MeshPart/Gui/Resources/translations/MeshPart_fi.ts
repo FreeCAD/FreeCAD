@@ -6,7 +6,7 @@
     <message>
         <location filename="../../Command.cpp" line="+46"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -34,92 +34,92 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Verkon asetukset</translation>
+        <translation>Verkon asetukset</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standardi</translation>
+        <translation>Standardi</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maksimaalin en reunan pituus:</translation>
+        <translation>Maksimaalin en reunan pituus:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Hienous:</translation>
+        <translation>Hienous:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Hyvin karkea</translation>
+        <translation>Hyvin karkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Karkea</translation>
+        <translation>Karkea</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Kohtalainen</translation>
+        <translation>Kohtalainen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Hieno</translation>
+        <translation>Hieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Erittäin hieno</translation>
+        <translation>Erittäin hieno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Käyttäjän määrittämä</translation>
+        <translation>Käyttäjän määrittämä</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Verkkopinnan koon luokittelu:</translation>
+        <translation>Verkkopinnan koon luokittelu:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">yksiköitä reunaa kohden:</translation>
+        <translation>yksiköitä reunaa kohden:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Yksiköitä kaarevuussädettä kohden:</translation>
+        <translation>Yksiköitä kaarevuussädettä kohden:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimoi pinta</translation>
+        <translation>Optimoi pinta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Elementtien toinen järjestys</translation>
+        <translation>Elementtien toinen järjestys</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Nelikkö Quad on hallitseva</translation>
+        <translation>Nelikkö Quad on hallitseva</translation>
     </message>
     <message>
         <source>Settings</source>

@@ -31,6 +31,7 @@
 
 class SoMaterial;
 class SoDrawStyle;
+class SoNode;
 class SoType;
 
 namespace App
@@ -43,6 +44,7 @@ namespace App
 namespace Gui {
 
 class MDIView;
+class Document;
 
 class GuiExport ViewProviderDocumentObject : public ViewProvider
 {
@@ -60,10 +62,6 @@ public:
     App::PropertyBool Visibility;
 
     virtual void attach(App::DocumentObject *pcObject);
-    /// Get the default display mode
-    virtual const char* getDefaultDisplayMode() const;
-    /// Return a list of all possible modes
-    virtual std::vector<std::string> getDisplayModes(void) const;
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view
@@ -76,10 +74,10 @@ public:
 
     /// Run a redraw
     void updateView();
-    /// Gets called if some of the property hade bin changed
-    virtual void updateData(const App::Property*){}
     /// Get the object of this ViewProvider object
     App::DocumentObject *getObject(void) const {return pcObject;}
+    /// Get the GUI document to this ViewProvider object
+    Gui::Document* getDocument() const;
     /// Get the python wrapper for that ViewProvider
     PyObject* getPyObject();
 
@@ -108,6 +106,11 @@ protected:
       If a value different to 0 is returned it is guaranteed to be a 3d view.
      */
     Gui::MDIView* getInventorView() const;
+    /*! Get the mdi view of the document that contains the given \a node.
+     */
+    Gui::MDIView* getViewOfNode(SoNode* node) const;
+    /// get called before the value is changed
+    virtual void onBeforeChange(const App::Property* prop);
     /// Gets called by the container whenever a property has been changed
     virtual void onChanged(const App::Property* prop);
     /** Searches in all view providers that are attached to an object that
@@ -118,6 +121,13 @@ protected:
      * matches. If no front root node matches, 0 is returned.
      */
     SoNode* findFrontRootOfType(const SoType& type) const;
+
+    /** @name Transaction handling
+     */
+    //@{
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
+    //@}
 
 protected:
     App::DocumentObject *pcObject;

@@ -51,7 +51,7 @@ text01 = translate("StartPage","FreeCAD Start Center")
 text02 = translate("StartPage","Start a new project")
 text03 = translate("StartPage","Recent Files")
 text04 = translate("StartPage","Latest videos")
-text05 = translate("StartPage","Latest news")
+text05 = translate("StartPage","Latest commits")
 text06 = translate("StartPage","On the web")
 text07 = translate("StartPage","This is the FreeCAD Homepage. Here you will be able to find a lot of information about FreeCAD, including tutorials, examples and user documentation.")
 text08 = translate("StartPage","FreeCAD Homepage")
@@ -106,6 +106,11 @@ text56 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=T
 text57 = translate("StartPage","http://www.freecadweb.org/wiki/index.php?title=Power_users_hub")
 text58 = translate("StartPage","Your version of FreeCAD is up to date.")
 text59 = translate("StartPage","There is a new release of FreeCAD available.")
+text60 = translate("StartPage","Load an FEM 3D example analysis")
+text61 = translate("StartPage","Obtain a development version")
+text62 = translate("StartPage","<b>Development versions</b> are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.")
+text63 = translate("StartPage","See all commits")
+text64 = translate("StartPage","Load an FEM 2D example analysis")
 
 # get FreeCAD version
 
@@ -172,9 +177,9 @@ page = """
             var aminor = data[0]['minor'];
             var abuild = data[0]['build'];
             if (cmajor >= amajor && cminor >= aminor && cbuild >= abuild) {
-                vdiv.innerHTML=" """ + text58 + """ ";
+                vdiv.innerHTML=" """ + text58 + """: """ + vmajor + """.""" + vminor + """.""" + vbuild + """";
             } else {
-                vdiv.innerHTML="<a href=exthttp://www.freecadweb.org> """ + text59 + """ </a>";
+                vdiv.innerHTML="<a href=exthttp://github.com/FreeCAD/FreeCAD/releases/latest> """ + text59 + """:"+amajor+"."+aminor+"."+abuild+"</a>";
             }
         }
 
@@ -182,7 +187,7 @@ page = """
             // load latest news
             ddiv = document.getElementById("news");
             ddiv.innerHTML = "Connecting...";
-            var tobj=new JSONscriptRequest('http://pipes.yahoo.com/pipes/pipe.run?_id=da8b612e97a6bb4588b1ce27db30efd9&_render=json&_callback=showTweets');
+            var tobj=new JSONscriptRequest('https://api.github.com/repos/FreeCAD/FreeCAD/commits?callback=showTweets');
             tobj.buildScriptTag(); // Build the script tag
             tobj.addScriptTag(); // Execute (add) the script tag
             ddiv.innerHTML = "Downloading latest news...";
@@ -212,21 +217,16 @@ page = """
             ddiv.innerHTML = "Received";
             var html = ['<ul>'];
             for (var i = 0; i < 15; i++) {
-                html.push('<li><img src="web.png">&nbsp;<a href="ext', data.value.items[i].link, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.value.items[i].title, '</a></li>');
-                if ("description" in data.value.items[i]) {
-                    linkDescriptions.push(stripTags(data.value.items[i].description));
-                } else if ("content" in data.value.items[i]) {
-                    if ("content" in data.value.items[i].content) {
-                        linkDescriptions.push(data.value.items[i].content.content);
-                    } else {
-                        linkDescriptions.push(data.value.items[i].content);
-                    }
+                html.push('<li><img src="web.png">&nbsp;<a href="ext', data.data[i].commit.url, '" onMouseOver="showDescr(', i+1, ')" onMouseOut="showDescr()">', data.data[i].commit.message, '</a></li>');
+                if ("message" in data.data[i].commit) {
+                    linkDescriptions.push(stripTags(data.data[i].commit.message)+'<br/>'+data.data[i].commit.author.name+'<br/>'+data.data[i].commit.author.date);
                 } else {
                     linkDescriptions.push("");
                 }
                 
             }
             html.push('</ul>');
+            html.push('<a href="exthttp://github.com/FreeCAD/FreeCAD/commits/master">""" + text63 + """<a/>');
             ddiv.innerHTML = html.join('');
         }
 
@@ -288,6 +288,7 @@ page = """
             letter-spacing: 2px;
             padding: 20px 0 0 80px;
             align: bottom;
+            color: #ffffff;
         }
 
         h2 {
@@ -434,6 +435,8 @@ def getExamples():
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadDrawingExample.py">""" + text12 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadRobotExample.py">""" + text13 + """</a></li>
         <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadArchExample.py">""" + text55 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample2D.py">""" + text64 + """</a></li>
+        <li><img src="FreeCAD.png" style="width: 16px">&nbsp;<a href="LoadFemExample3D.py">""" + text60 + """</a></li>
     </ul>"""
       
 def getLinks():
@@ -442,23 +445,28 @@ def getLinks():
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text07 + """</p>')" 
                 onMouseout="show('')"
-                href="http://www.freecadweb.org/">""" + text08 + """</a></li>
+                href="exthttp://www.freecadweb.org/">""" + text08 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text45 + """</p>')" 
                 onMouseout="show('')"
-                href=""" + text38 + """>""" + text37 + """</a></li>
+                href=ext""" + text38 + """>""" + text37 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text46 + """</p>')" 
                 onMouseout="show('')"
-                href=""" + text56 + """>""" + text39 + """</a></li>
+                href=ext""" + text56 + """>""" + text39 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text47 + """</p>')" 
                 onMouseout="show('')"
-                href=""" + text57 + """>""" + text40 + """</a></li>
+                href=ext""" + text57 + """>""" + text40 + """</a></li>
         <li><img src="web.png">&nbsp;
             <a onMouseover="show('<p>""" + text48 + """</p>')" 
                 onMouseout="show('')"
                 href="exthttp://freecad-tutorial.blogspot.com/">""" + text43 + """</a></li>
+        <li><img src="web.png">&nbsp;
+            <a href="exthttp://github.com/FreeCAD/FreeCAD/releases" 
+               onMouseOver="show('<p>""" + text62 + """</p>')" 
+               onMouseOut="show('')">""" + text61 + """</a></li>
+
     </ul>"""
 
 def getWorkbenches():

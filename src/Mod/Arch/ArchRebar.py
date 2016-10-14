@@ -27,8 +27,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Rebar"
@@ -36,8 +39,8 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
-    """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
+def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
+    """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -45,19 +48,28 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
-    if hasattr(sketch,"Support"):
-        if sketch.Support:
-            if isinstance(sketch.Support,tuple):
-                if sketch.Support[0] == baseobj:
+    if baseobj and sketch:
+        if hasattr(sketch,"Support"):
+            if sketch.Support:
+                if isinstance(sketch.Support,tuple):
+                    if sketch.Support[0] == baseobj:
+                        sketch.Support = None
+                elif sketch.Support == baseobj:
                     sketch.Support = None
-            elif sketch.Support == baseobj:
-                sketch.Support = None
-    obj.Base = sketch
-    if FreeCAD.GuiUp:
-        sketch.ViewObject.hide()
-    a = baseobj.Armatures
-    a.append(obj)
-    baseobj.Armatures = a
+        obj.Base = sketch
+        if FreeCAD.GuiUp:
+            sketch.ViewObject.hide()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        if p.GetBool("archRemoveExternal",False):
+            a = baseobj.Armatures
+            a.append(obj)
+            baseobj.Armatures = a
+        else:
+            import Arch
+            host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
+            a = host.Armatures
+            a.append(obj)
+            host.Armatures = a
     if diameter:
         obj.Diameter = diameter
     else:
@@ -78,9 +90,9 @@ class _CommandRebar:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -111,10 +123,11 @@ class _CommandRebar:
                 # we have only the sketch: extract the base object from it
                 if hasattr(obj,"Support"):
                     if obj.Support:
-                        if isinstance(obj.Support,tuple):
-                            sup = obj.Support[0]
+                        if len(obj.Support) != 0:
+                            sup = obj.Support[0][0]
                         else:
-                            sup = obj.Support
+                            print "Arch: error: couldn't extract a base object"
+                            return
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.addModule("Arch")
                         FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
@@ -136,13 +149,13 @@ class _Rebar(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Diameter","Arch","The diameter of the bar")
-        obj.addProperty("App::PropertyLength","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
-        obj.addProperty("App::PropertyLength","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
-        obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars")
-        obj.addProperty("App::PropertyLength","Spacing","Arch","The spacing between the bars")
-        obj.addProperty("App::PropertyVector","Direction","Arch","The direction to use to spread the bars. Keep (0,0,0) for automatic direction.")
-        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
+        obj.addProperty("App::PropertyLength","Diameter","Arch",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
+        obj.addProperty("App::PropertyLength","OffsetStart","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the fist bar (concrete cover)."))
+        obj.addProperty("App::PropertyLength","OffsetEnd","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+        obj.addProperty("App::PropertyInteger","Amount","Arch",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
+        obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+        obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
+        obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 

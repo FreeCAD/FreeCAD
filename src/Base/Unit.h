@@ -65,7 +65,7 @@ public:
     Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0, int8_t Density=0);
     Unit(void);
     Unit(const Unit&);
-    Unit(const std::string& Pars);
+    Unit(const QString& expr);
     /// Destruction
     ~Unit () {}
 
@@ -85,37 +85,41 @@ public:
     const UnitSignature & getSignature(void)const {return Sig;} 
     bool isEmpty(void)const;
     
-	QString getString(void) const;
+    QString getString(void) const;
     /// get the type as an string such as "Area", "Length" or "Pressure". 
-	QString getTypeString(void) const;
+    QString getTypeString(void) const;
 
     /** Predefined Unit types. */
     //@{
-	/// Length unit 
-	static Unit Length;
-	/// Mass unit 
-	static Unit Mass;
-	/// Angle
-	static Unit Angle;
-	static Unit Density;
+    /// Length unit
+    static Unit Length;
+    /// Mass unit
+    static Unit Mass;
+    /// Angle
+    static Unit Angle;
+    static Unit Density;
 
-	static Unit Area;
-	static Unit Volume;
-	static Unit TimeSpan;
-	static Unit Velocity;
-	static Unit Acceleration;
-	static Unit Temperature;
-	
-	static Unit ElectricCurrent;
-	static Unit AmountOfSubstance;
-	static Unit LuminoseIntensity;
+    static Unit Area;
+    static Unit Volume;
+    static Unit TimeSpan;
+    static Unit Velocity;
+    static Unit Acceleration;
+    static Unit Temperature;
 
-	static Unit Stress;
-	static Unit Pressure;
-	static Unit Force;  
-	static Unit Work;   
-	static Unit Power;  
+    static Unit ElectricCurrent;
+    static Unit AmountOfSubstance;
+    static Unit LuminoseIntensity;
 
+    static Unit Stress;
+    static Unit Pressure;
+    static Unit Force;
+    static Unit Work;
+    static Unit Power;
+
+    static Unit ThermalConductivity;
+    static Unit ThermalExpansionCoefficient;
+    static Unit SpecificHeat;
+    static Unit ThermalTransferCoefficient;
 
     //@}
 protected:

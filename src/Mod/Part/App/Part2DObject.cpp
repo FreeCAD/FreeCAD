@@ -45,8 +45,12 @@
 
 
 #include <Base/Exception.h>
+#include <Base/Reader.h>
+#include <App/Property.h>
+#include <App/PropertyLinks.h>
 #include "Part2DObject.h"
 #include "Geometry.h"
+#include "DatumFeature.h"
 
 #include <App/FeaturePythonPyImp.h>
 #include "Part2DObjectPy.h"
@@ -57,132 +61,28 @@ const int Part2DObject::H_Axis = -1;
 const int Part2DObject::V_Axis = -2;
 const int Part2DObject::N_Axis = -3;
 
-PROPERTY_SOURCE(Part::Part2DObject, Part::Feature)
+PROPERTY_SOURCE(Part::Part2DObject, Part::AttachableObject)
 
 
 Part2DObject::Part2DObject()
 {
-     ADD_PROPERTY_TYPE(Support,(0),   "2D",(App::PropertyType)(App::Prop_None),"Support of the 2D geometry");
+    this->setAttacher(new Attacher::AttachEnginePlane);
 }
 
 
 App::DocumentObjectExecReturn *Part2DObject::execute(void)
 {
-    return App::DocumentObject::StdReturn;
-}
-
-void Part2DObject::positionBySupport(void)
-{
-    // recalculate support:
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return;
-
-    Base::Placement Place = part->Placement.getValue();
-    const std::vector<std::string> &sub = Support.getSubValues();
-    assert(sub.size()==1);
-    // get the selected sub shape (a Face)
-    const Part::TopoShape &shape = part->Shape.getShape();
-    if (shape._Shape.IsNull())
-        throw Base::Exception("Support shape is empty!");
-    TopoDS_Shape sh;
-    try {
-        sh = shape.getSubShape(sub[0].c_str());
-    }
-    catch (Standard_Failure) {
-        throw Base::Exception("Face in support shape doesn't exist!");
-    }
-    const TopoDS_Face &face = TopoDS::Face(sh);
-    if (face.IsNull())
-        throw Base::Exception("Null face in Part2DObject::positionBySupport()!");
-
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() != GeomAbs_Plane)
-        throw Base::Exception("No planar face in Part2DObject::positionBySupport()!");
-
-    bool Reverse = false;
-    if (face.Orientation() == TopAbs_REVERSED)
-        Reverse = true;
-
-    gp_Pln plane = adapt.Plane();
-    Standard_Boolean ok = plane.Direct();
-    if (!ok) {
-        // toggle if plane has a left-handed coordinate system
-        plane.UReverse();
-        Reverse = !Reverse;
-    }
-
-    gp_Ax1 Normal = plane.Axis();
-    if (Reverse)
-        Normal.Reverse();
-
-    gp_Pnt ObjOrg(Place.getPosition().x,Place.getPosition().y,Place.getPosition().z);
-
-    Handle (Geom_Plane) gPlane = new Geom_Plane(plane);
-    GeomAPI_ProjectPointOnSurf projector(ObjOrg,gPlane);
-    gp_Pnt SketchBasePoint = projector.NearestPoint();
-
-    gp_Dir dir = Normal.Direction();
-    gp_Ax3 SketchPos;
-
-    Base::Vector3d dX,dY,dZ;
-    Place.getRotation().multVec(Base::Vector3d(1,0,0),dX);
-    Place.getRotation().multVec(Base::Vector3d(0,1,0),dY);
-    Place.getRotation().multVec(Base::Vector3d(0,0,1),dZ);
-    gp_Dir dirX(dX.x, dX.y, dX.z);
-    gp_Dir dirY(dY.x, dY.y, dY.z);
-    gp_Dir dirZ(dZ.x, dZ.y, dZ.z);
-    double cosNX = dir.Dot(dirX);
-    double cosNY = dir.Dot(dirY);
-    double cosNZ = dir.Dot(dirZ);
-    std::vector<double> cosXYZ;
-    cosXYZ.push_back(fabs(cosNX));
-    cosXYZ.push_back(fabs(cosNY));
-    cosXYZ.push_back(fabs(cosNZ));
-
-    int pos = std::max_element(cosXYZ.begin(), cosXYZ.end()) - cosXYZ.begin();
-
-    // +X/-X
-    if (pos == 0) {
-        if (cosNX > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, dirY);
-        else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirY);
-    }
-    // +Y/-Y
-    else if (pos == 1) {
-        if (cosNY > 0)
-            SketchPos = gp_Ax3(SketchBasePoint, dir, -dirX);
-        else
-            SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
-    }
-    // +Z/-Z
-    else {
-        SketchPos = gp_Ax3(SketchBasePoint, dir, dirX);
-    }
-
-    gp_Trsf Trf;
-    Trf.SetTransformation(SketchPos);
-    Trf.Invert();
-    Trf.SetScaleFactor(Standard_Real(1.0));
-
-    Base::Matrix4D mtrx;
-    TopoShape::convertToMatrix(Trf,mtrx);
-
-    // check the angle against the Z Axis
-    //Standard_Real a = Normal.Angle(gp_Ax1(gp_Pnt(0,0,0),gp_Dir(0,0,1)));
-
-    Placement.setValue(Base::Placement(mtrx));
+    return AttachableObject::execute();
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
 {
-    Part::Feature *part = static_cast<Part::Feature*>(Support.getValue());
-    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        part->transformPlacement(transform);
+    if (Support.getValues().size() > 0) {
+        //part->transformPlacement(transform);
         positionBySupport();
-    } else
+    } else {
         GeoFeature::transformPlacement(transform);
+    }
 }
 
 int Part2DObject::getAxisCount(void) const
@@ -296,19 +196,74 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
         }
     }
 
-   if (GeoId1 < 0 && GeoId2 < 0)
-       return false;
+    if (GeoId1 < 0 && GeoId2 < 0)
+        return false;
 
-   if (GeoId1 >= 0)
-       intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
-   if (GeoId2 >= 0)
-       intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
-   return true;
+    if (GeoId1 >= 0)
+        intersect1 = Base::Vector3d(p1.X(),p1.Y(),0.f);
+    if (GeoId2 >= 0)
+        intersect2 = Base::Vector3d(p2.X(),p2.Y(),0.f);
+    return true;
 }
 
 void Part2DObject::acceptGeometry()
 {
     // implemented in sub-classes
+}
+
+void Part2DObject::Restore(Base::XMLReader &reader)
+{
+    //override generic restoration to convert Support property from PropertyLinkSub to PropertyLinkSubList
+
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+        // NOTE: We must also check the type of the current property because a
+        // subclass of PropertyContainer might change the type of a property but
+        // not its name. In this case we would force to read-in a wrong property
+        // type and the behaviour would be undefined.
+        try {
+            if(prop){
+                if (strcmp(prop->getTypeId().getName(), TypeName) == 0){
+                    prop->Restore(reader);
+                } else if (prop->isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())){
+                    //reading legacy Support - when the Support could only be a single flat face.
+                    App::PropertyLinkSub tmp;
+                    if (0 == strcmp(tmp.getTypeId().getName(),TypeName)) {
+                        tmp.setContainer(this);
+                        tmp.Restore(reader);
+                        static_cast<App::PropertyLinkSubList*>(prop)->setValue(tmp.getValue(), tmp.getSubValues());
+                    }
+                    this->MapMode.setValue(Attacher::mmFlatFace);
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 // Python Drawing feature ---------------------------------------------------------

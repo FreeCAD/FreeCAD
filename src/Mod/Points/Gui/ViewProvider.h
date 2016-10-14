@@ -32,24 +32,25 @@
 
 class SoSwitch;
 class SoPointSet;
+class SoIndexedPointSet;
 class SoLocateHighlight;
 class SoCoordinate3;
 class SoNormal;
 class SoEventCallback;
 
 namespace App {
-  class PropertyColorList;
+    class PropertyColorList;
 }
 
 namespace Gui {
-  class SoFCSelection;
+    class SoFCSelection;
 }
 
 namespace Points {
-  class PropertyGreyValueList;
-  class PropertyNormalList;
-  class PointKernel;
-  class Feature;
+    class PropertyGreyValueList;
+    class PropertyNormalList;
+    class PointKernel;
+    class Feature;
 }
 
 namespace PointsGui {
@@ -61,6 +62,7 @@ public:
     ~ViewProviderPointsBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
     void createPoints(const App::Property*, SoCoordinate3*, SoPointSet*) const;
+    void createPoints(const App::Property*, SoCoordinate3*, SoIndexedPointSet*) const;
 };
 
 /**
@@ -78,17 +80,10 @@ public:
 
     App::PropertyFloatConstraint PointSize;
 
-    /** 
-     * Extracts the point data from the feature \a pcFeature and creates
-     * an Inventor node \a SoNode with these data. 
-     */
-    virtual void attach(App::DocumentObject *);
     /// set the viewing mode
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
-    /// Update the point representation
-    virtual void updateData(const App::Property*);
     virtual QIcon getIcon() const;
 
     /// Sets the edit mnode
@@ -100,17 +95,15 @@ public:
     static void clipPointsCallback(void * ud, SoEventCallback * n);
 
 protected:
-    Gui::SoFCSelection* createFromSettings() const;
     void onChanged(const App::Property* prop);
     void setVertexColorMode(App::PropertyColorList*);
     void setVertexGreyvalueMode(Points::PropertyGreyValueList*);
     void setVertexNormalMode(Points::PropertyNormalList*);
-    virtual void cut( const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer) = 0;
 
 protected:
     Gui::SoFCSelection  * pcHighlight;
     SoCoordinate3       * pcPointsCoord;
-    SoPointSet          * pcPoints;
     SoMaterial          * pcColorMat;
     SoNormal            * pcPointsNormal;
     SoDrawStyle         * pcPointStyle;
@@ -119,7 +112,63 @@ private:
     static App::PropertyFloatConstraint::Constraints floatRange;
 };
 
-typedef Gui::ViewProviderPythonFeatureT<ViewProviderPoints> ViewProviderPython;
+/**
+ * The ViewProviderScattered class creates
+ * a node representing the scattered point cloud.
+ * @author Werner Mayer
+ */
+class PointsGuiExport ViewProviderScattered : public ViewProviderPoints
+{
+    PROPERTY_HEADER(PointsGui::ViewProviderScattered);
+
+public:
+    ViewProviderScattered();
+    virtual ~ViewProviderScattered();
+
+    /**
+     * Extracts the point data from the feature \a pcFeature and creates
+     * an Inventor node \a SoNode with these data. 
+     */
+    virtual void attach(App::DocumentObject *);
+    /// Update the point representation
+    virtual void updateData(const App::Property*);
+
+protected:
+    virtual void cut( const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+
+protected:
+    SoPointSet          * pcPoints;
+};
+
+/**
+ * The ViewProviderStructured class creates
+ * a node representing the structured points.
+ * @author Werner Mayer
+ */
+class PointsGuiExport ViewProviderStructured : public ViewProviderPoints
+{
+    PROPERTY_HEADER(PointsGui::ViewProviderStructured);
+
+public:
+    ViewProviderStructured();
+    virtual ~ViewProviderStructured();
+
+    /**
+     * Extracts the point data from the feature \a pcFeature and creates
+     * an Inventor node \a SoNode with these data. 
+     */
+    virtual void attach(App::DocumentObject *);
+    /// Update the point representation
+    virtual void updateData(const App::Property*);
+
+protected:
+    virtual void cut(const std::vector<SbVec2f>& picked, Gui::View3DInventorViewer &Viewer);
+
+protected:
+    SoIndexedPointSet   * pcPoints;
+};
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderScattered> ViewProviderPython;
 
 } // namespace PointsGui
 

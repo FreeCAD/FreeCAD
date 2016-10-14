@@ -28,60 +28,15 @@
 #include <set>
 #include <memory>
 #include <Base/BaseClass.h>
-#include "PreCompiled.h"
 
 namespace Spreadsheet {
 
-struct CellAddress;
-
 SpreadsheetExport std::string columnName(int col);
 SpreadsheetExport std::string rowName(int row);
-int decodeColumn(const std::string &colstr);
-int decodeRow(const std::string &rowstr);
-SpreadsheetExport CellAddress stringToAddress(const char *strAddress);
+
 SpreadsheetExport void createRectangles(std::set<std::pair<int, int> > & cells, std::map<std::pair<int, int>, std::pair<int, int> > & rectangles);
 SpreadsheetExport std::string quote(const std::string &input);
 SpreadsheetExport std::string unquote(const std::string & input);
-
-struct SpreadsheetExport CellAddress {
-
-    CellAddress(int row = -1, int col = -1) : _row(row), _col(col) { }
-
-    CellAddress(const char * address) {
-        *this = stringToAddress(address);
-    }
-
-    CellAddress(const std::string & address) {
-        *this = stringToAddress(address.c_str());
-    }
-
-    inline int row() const { return _row; }
-
-    inline int col() const { return _col; }
-
-    inline bool operator<(const CellAddress & other) const { return asInt() < other.asInt(); }
-
-    inline bool operator==(const CellAddress & other) const { return asInt() == other.asInt(); }
-
-    inline bool operator!=(const CellAddress & other) const { return asInt() != other.asInt(); }
-
-    inline bool isValid() { return (row() >=0 && row() < MAX_ROWS && col() >= 0 && col() < MAX_COLUMNS); }
-
-    std::string toString() const;
-
-    // Static members
-
-    static const int MAX_ROWS;
-
-    static const int MAX_COLUMNS;
-
-protected:
-
-    inline unsigned int asInt() const { return ((_row << 16) | _col); }
-
-    short _row;
-    short _col;
-};
 
 }
 

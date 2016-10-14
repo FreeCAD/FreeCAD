@@ -105,10 +105,63 @@ private Q_SLOTS:
 protected:
     virtual QString textFromValue ( int v ) const;
     virtual int valueFromText ( const QString & text ) const;
+    virtual void onChange();        
 
 private:
     void updateValidator();
     UIntSpinBoxPrivate * d;
+};
+
+
+/**
+ * The IntSpinBox class does exactly the same as Qt's QSpinBox but has expression support
+ * @author Stefan Tröger
+ */
+class GuiExport IntSpinBox : public QSpinBox, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    IntSpinBox ( QWidget* parent=0 );
+    virtual ~IntSpinBox();
+
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+
+    void keyPressEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+private Q_SLOTS:
+    void finishFormulaDialog();
+    void openFormulaDialog();
+    virtual void onChange();
+};
+
+/**
+ * The DoubleSpinBox class does exactly the same as Qt's QDoubleSpinBox but has expression 
+ * support
+ * @author Stefan Tröger
+ */
+class GuiExport DoubleSpinBox : public QDoubleSpinBox, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    DoubleSpinBox ( QWidget* parent=0 );
+    virtual ~DoubleSpinBox();
+
+    void setExpression(boost::shared_ptr<App::Expression> expr);
+    void bind(const App::ObjectIdentifier &_path);
+    bool apply(const std::string &propName);
+
+    void keyPressEvent(QKeyEvent *event);
+    void resizeEvent(QResizeEvent *event);
+
+private Q_SLOTS:
+    void finishFormulaDialog();
+    void openFormulaDialog();
+    virtual void onChange();
 };
 
 } // namespace Gui

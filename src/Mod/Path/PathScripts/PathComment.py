@@ -38,7 +38,7 @@ except AttributeError:
 
 class Comment:
     def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Comment","Path",translate("Comment","Comment or note for CNC program"))
+        obj.addProperty("App::PropertyString","Comment","Path",QtCore.QT_TRANSLATE_NOOP("App::Property","Comment or note for CNC program"))
         obj.Proxy = self
         mode = 2
         obj.setEditorMode('Placement',mode)
@@ -105,15 +105,15 @@ class _ViewProviderComment:
 class CommandPathComment:
     def GetResources(self):
         return {'Pixmap'  : 'Path-Comment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathComment","Comment"),
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Comment"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathComment","Add a Comment to your CNC program")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Add a Comment to your CNC program")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("PathComment","Create a Comment in your CNC program"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Comment","Create a Comment in your CNC program"))
         FreeCADGui.addModule("PathScripts.PathComment")
         snippet = '''
 import Path

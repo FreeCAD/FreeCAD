@@ -42,7 +42,8 @@
 #include "MDIView.h"
 #include "TaskView/TaskAppearance.h"
 #include "ViewProviderDocumentObject.h"
-#include "ViewProviderDocumentObjectPy.h"
+#include "ViewProviderExtension.h"
+#include <Gui/ViewProviderDocumentObjectPy.h>
 
 
 using namespace Gui;
@@ -79,6 +80,30 @@ void ViewProviderDocumentObject::finishRestoring()
 {
 }
 
+bool ViewProviderDocumentObject::isAttachedToDocument() const
+{
+    return (!testStatus(Detach));
+}
+
+const char* ViewProviderDocumentObject::detachFromDocument()
+{
+    // here we can return an empty string since the object
+    // name comes from the document object
+    setStatus(Detach, true);
+    return "";
+}
+
+void ViewProviderDocumentObject::onBeforeChange(const App::Property* prop)
+{
+    if (isAttachedToDocument()) {
+        App::DocumentObject* obj = getObject();
+        App::Document* doc = obj ? obj->getDocument() : 0;
+        if (doc) {
+            onBeforeChangeProperty(doc, prop);
+        }
+    }
+}
+
 void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 {
     if (prop == &DisplayMode) {
@@ -86,10 +111,10 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
     }
     else if (prop == &Visibility) {
         // use this bit to check whether show() or hide() must be called
-        if (Visibility.StatusBits.test(8) == false) {
-            Visibility.StatusBits.set(8);
+        if (Visibility.testStatus(App::Property::User2) == false) {
+            Visibility.setStatus(App::Property::User2, true);
             Visibility.getValue() ? show() : hide();
-            Visibility.StatusBits.reset(8);
+            Visibility.setStatus(App::Property::User2, false);
         }
     }
 
@@ -99,10 +124,10 @@ void ViewProviderDocumentObject::onChanged(const App::Property* prop)
 void ViewProviderDocumentObject::hide(void)
 {
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.StatusBits.test(8) == false) {
-        Visibility.StatusBits.set(8);
+    if (Visibility.testStatus(App::Property::User2) == false) {
+        Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(false);
-        Visibility.StatusBits.reset(8);
+        Visibility.setStatus(App::Property::User2, false);
     }
     ViewProvider::hide();
 }
@@ -110,10 +135,10 @@ void ViewProviderDocumentObject::hide(void)
 void ViewProviderDocumentObject::show(void)
 {
     // use this bit to check whether 'Visibility' must be adjusted
-    if (Visibility.StatusBits.test(8) == false) {
-        Visibility.StatusBits.set(8);
+    if (Visibility.testStatus(App::Property::User2) == false) {
+        Visibility.setStatus(App::Property::User2, true);
         Visibility.setValue(true);
-        Visibility.StatusBits.reset(8);
+        Visibility.setStatus(App::Property::User2, false);
     }
     ViewProvider::show();
 }
@@ -155,6 +180,17 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     const char* defmode = this->getDefaultDisplayMode();
     if (defmode)
         DisplayMode.setValue(defmode);
+    
+    //attach the extensions
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionAttach(pcObj);
+}
+
+Gui::Document* ViewProviderDocumentObject::getDocument() const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    return Gui::Application::Instance->getDocument(pAppDoc);
 }
 
 Gui::MDIView* ViewProviderDocumentObject::getActiveView() const
@@ -182,6 +218,13 @@ Gui::MDIView* ViewProviderDocumentObject::getInventorView() const
     }
 
     return mdi;
+}
+
+Gui::MDIView* ViewProviderDocumentObject::getViewOfNode(SoNode* node) const
+{
+    App::Document* pAppDoc = pcObject->getDocument();
+    Gui::Document* pGuiDoc = Gui::Application::Instance->getDocument(pAppDoc);
+    return pGuiDoc->getViewOfNode(node);
 }
 
 SoNode* ViewProviderDocumentObject::findFrontRootOfType(const SoType& type) const
@@ -226,18 +269,6 @@ void ViewProviderDocumentObject::setActiveMode()
     }
     if (!Visibility.getValue())
         ViewProvider::hide();
-}
-
-const char* ViewProviderDocumentObject::getDefaultDisplayMode() const
-{
-    // We use the first item then
-    return 0;
-}
-
-std::vector<std::string> ViewProviderDocumentObject::getDisplayModes(void) const
-{
-    // empty
-    return std::vector<std::string>();
 }
 
 PyObject* ViewProviderDocumentObject::getPyObject()

@@ -1,0 +1,2 @@
+To build FreeCAD on trusty/xenial using vagrant please copy either Vagrantfile.trusty/Vagrantfile.xenial to Vagrantfile then kick from this directory vagrant up. Go have a drink compilation can be very long
+Build results are kept into the vm, use vagrant ssh to connect to it and go into Results directory where you will get your deb and snap files 

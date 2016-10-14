@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskFemConstraintTransform</class>
+ <widget class="QWidget" name="TaskFemConstraintTransform">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>382</width>
+    <height>491</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QRadioButton" name="rb_rect">
+       <property name="text">
+        <string>Rectangular transform</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rb_cylin">
+       <property name="text">
+        <string>Cylindrical transform</string>
+       </property>
+       <property name="autoExclusive">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="lbl_info_2">
+     <property name="text">
+      <string>Select a face, click Add or Remove</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hLayout1_3">
+     <item>
+      <widget class="QPushButton" name="btnAdd">
+       <property name="text">
+        <string>Add</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnRemove">
+       <property name="text">
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="lw_Rect">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>31</height>
+      </size>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="sw_transform">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item>
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Rotation about X-Axis</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sp_X">
+           <property name="minimum">
+            <number>-360</number>
+           </property>
+           <property name="maximum">
+            <number>360</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QLabel" name="label_10">
+           <property name="text">
+            <string>Rotation about Y-Axis</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sp_Y">
+           <property name="minimum">
+            <number>-360</number>
+           </property>
+           <property name="maximum">
+            <number>360</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_9">
+         <item>
+          <widget class="QLabel" name="label_11">
+           <property name="text">
+            <string>Rotation about Z-Axis</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSpinBox" name="sp_Z">
+           <property name="minimum">
+            <number>-360</number>
+           </property>
+           <property name="maximum">
+            <number>360</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox">
+         <property name="title">
+          <string>Transformable surfaces</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QListWidget" name="lw_displobj_rect"/>
+          </item>
+          <item>
+           <widget class="QListWidget" name="lw_dis_rect"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>Transformable surfaces</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QListWidget" name="lw_displobj_cylin"/>
+          </item>
+          <item>
+           <widget class="QListWidget" name="lw_dis_cylin"/>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

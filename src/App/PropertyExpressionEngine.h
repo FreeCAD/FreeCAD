@@ -25,6 +25,7 @@
 
 #include <boost/unordered/unordered_map.hpp>
 #include <boost/function.hpp>
+#include <boost/signals.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 #include <App/Property.h>
@@ -43,13 +44,14 @@ class DocumentObjectExecReturn;
 class ObjectIdentifier;
 class Expression;
 
-class AppExport PropertyExpressionEngine : public App::Property
+
+class AppExport PropertyExpressionEngine : public App::Property, private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
 {
     TYPESYSTEM_HEADER();
 public:
 
     typedef boost::function<std::string (const App::ObjectIdentifier & path, boost::shared_ptr<const App::Expression> expr)> ValidatorFunc;
-
+    
     /**
      * @brief The ExpressionInfo struct encapsulates an expression and a comment.
      */
@@ -118,6 +120,13 @@ public:
 
     void slotObjectRenamed(const App::DocumentObject & obj);
 
+    void slotObjectDeleted(const DocumentObject &obj);
+    
+    ///signal called when a expression was changed 
+    boost::signal<void (const App::ObjectIdentifier &)> expressionChanged; 
+
+    void onDocumentRestored();
+
     /* Python interface */
     PyObject *getPyObject(void);
     void setPyObject(PyObject *);
@@ -142,6 +151,10 @@ private:
     ExpressionMap expressions; /**< Stored expressions */
 
     ValidatorFunc validator; /**< Valdiator functor */
+
+    ExpressionMap restoredExpressions; /**< Expressions are read from file to this map first before they are validated and inserted into the actual map */
+
+    friend class AtomicPropertyChange;
 
 };
 

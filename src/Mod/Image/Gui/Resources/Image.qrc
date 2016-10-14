@@ -1,6 +1,7 @@
 <RCC>
     <qresource> 
         <file>icons/image-import.svg</file>
+        <file>icons/ImageWorkbench.svg</file>
         <file>translations/Image_af.qm</file>
         <file>translations/Image_de.qm</file>
         <file>translations/Image_fi.qm</file>
@@ -25,5 +26,7 @@
         <file>translations/Image_hu.qm</file>
         <file>translations/Image_pt-PT.qm</file>
         <file>translations/Image_sr.qm</file>
+        <file>translations/Image_el.qm</file>
+        <file>translations/Image_sl.qm</file>
     </qresource>
 </RCC> 

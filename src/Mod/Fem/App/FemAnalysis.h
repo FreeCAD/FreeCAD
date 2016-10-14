@@ -55,7 +55,7 @@ public:
 
     /// Member objects of the Analysis
     App::PropertyLinkList Member;
-    /// unique identifier of the Analysis 
+    /// unique identifier of the Analysis
     App::PropertyUUID    Uid;
 
 

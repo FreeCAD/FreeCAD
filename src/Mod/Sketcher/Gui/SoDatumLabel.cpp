@@ -110,7 +110,7 @@ void SoDatumLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromAscii(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 
@@ -142,7 +142,7 @@ void SoDatumLabel::drawImage()
     Gui::BitmapFactory().convert(image, this->image);
 }
 
-void SoDatumLabel::computeBBox(SoAction *action, SbBox3f &box, SbVec3f &center)
+void SoDatumLabel::computeBBox(SoAction * /*action*/, SbBox3f &box, SbVec3f &center)
 {
     if (!this->bbox.isEmpty()) {
         // Set the bounding box using stored parameters

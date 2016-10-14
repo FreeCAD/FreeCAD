@@ -50,7 +50,6 @@
 # include <QSvgRenderer>
 # include <QSvgWidget>
 # include <QWheelEvent>
-# include <strstream>
 # include <cmath>
 #endif
 
@@ -381,7 +380,7 @@ void DrawingView::setRenderer(QAction *action)
     }
 }
 
-bool DrawingView::onMsg(const char* pMsg, const char** ppReturn)
+bool DrawingView::onMsg(const char* pMsg, const char** )
 {
     if (strcmp("ViewFit",pMsg) == 0) {
         viewAll();
@@ -459,7 +458,7 @@ void DrawingView::printPdf()
     dlg.setFileMode(QFileDialog::AnyFile);
     dlg.setAcceptMode(QFileDialog::AcceptSave);
     dlg.setWindowTitle(tr("Export PDF"));
-    dlg.setFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
+    dlg.setNameFilters(QStringList() << QString::fromLatin1("%1 (*.pdf)").arg(tr("PDF file")));
 
     QGridLayout *gridLayout;
     QGridLayout *formLayout;

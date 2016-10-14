@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Export a Raytracing project to a file</translation>
+        <translation>A Sugárkövetés projekt exportálása fájlba</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -26,35 +26,35 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+206"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Sugárkövetés</translation>
+        <translation>Sugárkövetés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New Luxrender project</source>
-        <translation type="unfinished">New Luxrender project</translation>
+        <translation>Új Luxrender projekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Insert new Luxrender project into the document</translation>
+        <translation>Új Luxrender projekt beszúrása a dokumentumba</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Nincs sablon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Nincs elérhető sablon</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-340"/>
         <source>Raytracing</source>
         <translation>Sugárkövetés</translation>
     </message>
@@ -66,7 +66,7 @@
     <message>
         <location line="+1"/>
         <source>Insert a new part object into a Raytracing project</source>
-        <translation type="unfinished">Insert a new part object into a Raytracing project</translation>
+        <translation>Egy új rész objektum beillesztése a Sugárkövetés projektbe</translation>
     </message>
     <message>
         <source>Insert a new part object into a Povray project</source>
@@ -91,40 +91,40 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished">New POV-Ray project</translation>
+        <translation>Új Nézőpont-fénysugár projekt</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+        <translation>Új Nézőpont-fénysugár projekt beszúrása a dokumentumba</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">No template</translation>
+        <translation>Nincs sablon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">No template available</translation>
+        <translation>Nincs elérhető sablon</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+203"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Sugárkövetés</translation>
+        <translation>Sugárkövetés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">&amp;Render</translation>
+        <translation>&amp;Renderelés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Renders the current raytracing project with an external renderer</source>
-        <translation type="unfinished">Renders the current raytracing project with an external renderer</translation>
+        <translation>A jelenlegi sugárkövetés projektet rendereli egy külső renderer-rel</translation>
     </message>
 </context>
 <context>
@@ -132,35 +132,35 @@
     <message>
         <location line="+249"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Sugárkövetés</translation>
+        <translation>Sugárkövetés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+        <translation>Kamera alaphelyzetbe állítása</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sets the camera of the selected Raytracing project to match the current view</source>
-        <translation type="unfinished">Sets the camera of the selected Raytracing project to match the current view</translation>
+        <translation>Beállítja a kiválasztott Sugárkövetés projekt kameráját, hogy megfeleljen az aktuális nézethez</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-736"/>
         <source>Raytracing</source>
         <translation>Sugárkövetés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+        <translation>Kamera exportálása Nézőpont-fánysugárba...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation>Kamera helyzet aktív 3D-s nézet Nézőpont-fénysugár formátumának exportálása fájlba</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -181,12 +181,12 @@
     <message>
         <location line="+1"/>
         <source>Export part to POV-Ray...</source>
-        <translation type="unfinished">Export part to POV-Ray...</translation>
+        <translation>Alkatrész exportálás Nézőpont-fénysugárba...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the selected Part (object) as a POV-Ray file</source>
-        <translation type="unfinished">Write the selected Part (object) as a POV-Ray file</translation>
+        <translation>Írja a kijelölt részt (objektumot) Nézőpont-fénysugár fájlba</translation>
     </message>
     <message>
         <source>Export part to povray...</source>
@@ -203,28 +203,27 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+397"/>
         <source>No perspective camera</source>
-        <translation>Nincs perspektivikus kamera</translation>
+        <translation>Nincs perspektivikus (távoli) kamera</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-628"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
-Do you want to continue?</translation>
+        <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép Nézőpont-fánysugár eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
     </message>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+        <translation>Nézet exportálása Nézőpont-fénysugárba...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write the active 3D view with camera and all its content to a POV-Ray file</source>
-        <translation type="unfinished">Write the active 3D view with camera and all its content to a POV-Ray file</translation>
+        <translation>Írja le az aktív 3D-s nézetet a kamerával és összes tartalmával egy Nézőpont-fénysugár fájlba</translation>
     </message>
     <message>
         <source>The current view camera is not perspective and thus the result of the povray image later might look different to what you expect.
@@ -245,11 +244,10 @@ Do you want to continue?</source>
         <translation type="obsolete">Az aktuális 3D nézet minden tartalmának írása egy Povray fájlba</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+507"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
-        <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
-Do you want to continue?</translation>
+        <translation>A jelenlegi kamera nézet nem távoli nézet, így a kép luxrender eredménye később eltérhet az elvárttól. Folytatni szeretné?</translation>
     </message>
 </context>
 <context>
@@ -259,43 +257,35 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray(*.pov)</translation>
     </message>
     <message>
+        <source>POV-Ray (*.pov)</source>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
+    </message>
+    <message>
+        <source>All Files (*.*)</source>
+        <translation type="obsolete">Minden fájl (*.*)</translation>
+    </message>
+    <message>
         <location line="-591"/>
         <location line="+51"/>
-        <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
-    </message>
-    <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
-        <source>All Files (*.*)</source>
-        <translation>Minden fájl (*.*)</translation>
-    </message>
-    <message>
-        <location line="-502"/>
-        <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+283"/>
         <source>Export page</source>
         <translation>Oldal exportálása</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Wrong selection</source>
         <translation>Rossz választás</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-398"/>
         <source>Select a Part object.</source>
         <translation>Válasszon ki egy alkatrész objektumot.</translation>
     </message>
@@ -303,95 +293,113 @@ Do you want to continue?</translation>
         <location line="+10"/>
         <location line="+12"/>
         <source>No Raytracing project to insert</source>
-        <translation type="unfinished">No Raytracing project to insert</translation>
+        <translation>Nincs beszúrható Sugárkövetés projekt</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>Create a Raytracing project to insert a view.</source>
-        <translation type="unfinished">Create a Raytracing project to insert a view.</translation>
+        <translation>Hozzon létre egy Sugárkövetés projektet egy nézet beillesztéshez.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select a Raytracing project to insert the view.</source>
-        <translation type="unfinished">Select a Raytracing project to insert the view.</translation>
+        <translation>Válasszon egy Sugárkövetés projektet a nézet beillesztéshez.</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
+        <location line="+63"/>
         <location line="+249"/>
         <source>Select one Raytracing project object.</source>
-        <translation type="unfinished">Select one Raytracing project object.</translation>
+        <translation>Jelöljön ki egy Sugárkövetés projekt tárgyat.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-308"/>
+        <source>Luxrender</source>
+        <translation>Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+        <translation>Nézőpont-fénysugár nem található</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>Please set the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Kérjük, állítsa be a Nézőpont-fénysugár elérési útját a beállításokban.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the POV-Ray executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
+        <translation>Kérjük, javítsa a Nézőpont-fénysugár elérési útját a beállításokban.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+74"/>
         <source>Lux project file missing</source>
-        <translation type="unfinished">Lux project file missing</translation>
+        <translation>Lux projekt fájl hiányzik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The Lux project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
+        <translation>A Lux projekt fájl nem létezik.</translation>
     </message>
     <message>
         <location line="-68"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">Luxrender not found</translation>
+        <translation>Luxrender nem található</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-482"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+279"/>
+        <source>POV-Ray</source>
+        <translation>Nézőpont-fénysugár</translation>
+    </message>
+    <message>
+        <location line="-391"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+283"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation>Minden Fájl</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation>Kérjük, állítsa be a végrehajtható luxrender vagy luxkonzol elérési utat a beállításoknál.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Please correct the path to the luxrender or luxconsole executable in the preferences.</source>
-        <translation type="unfinished">Please correct the path to the luxrender or luxconsole executable in the preferences.</translation>
+        <translation>Kérjük, javítsa a végrehajtható luxrender vagy luxkonzol elérési utat a beállításoknál.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+        <translation>Nézőpont-fénysugár fájl hiányzik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The POV-Ray project file doesn&apos;t exist.</source>
-        <translation type="unfinished">The POV-Ray project file doesn&apos;t exist.</translation>
+        <translation>A Nézőpont-fénysugár projekt fájl nem létezik.</translation>
     </message>
     <message>
         <source>Rendered image (*.bmp)</source>
         <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="obsolete">Rendered image (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
-        <translation type="unfinished">Rendered image</translation>
+        <translation>Renderelt kép</translation>
     </message>
     <message>
         <source>No Povray project to insert</source>
@@ -420,22 +428,22 @@ Do you want to continue?</translation>
     <message>
         <location line="+103"/>
         <source>The path to the POV-Ray executable, if you want to render from FreeCAD</source>
-        <translation type="unfinished">The path to the POV-Ray executable, if you want to render from FreeCAD</translation>
+        <translation>A futtatható nézőpont-fénysugár elérési út, ha a FreeCAD-ból szerete renderelni</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>POV-Ray executable:</source>
-        <translation type="unfinished">POV-Ray executable:</translation>
+        <translation>Végrehajtható Nézőpont-fénysugár:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>POV-Ray output parameters:</source>
-        <translation type="unfinished">POV-Ray output parameters:</translation>
+        <translation>Nézőpont-fénysugár kimeneti paraméterek:</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The POV-Ray parameters to be passed to the render.</source>
-        <translation type="unfinished">The POV-Ray parameters to be passed to the render.</translation>
+        <translation>A nézőpont-fénysugár paraméterek átadása a renderel-nek.</translation>
     </message>
     <message>
         <location line="+95"/>
@@ -453,44 +461,49 @@ Do you want to continue?</translation>
         <translation>Kamera fájl neve:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation>Max háló eltérés:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
-        <translation type="unfinished">Render</translation>
+        <translation>Renderelés - Fotórealisztikus, háromdimenziós megjelenítés, árnyékkal és tükrözéssel</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>+P +A</source>
-        <translation type="unfinished">+P +A</translation>
+        <translation>+ P + A</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>+W: </source>
-        <translation type="unfinished">+W: </translation>
+        <translation>+ SZ: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The width of the rendered image</source>
-        <translation type="unfinished">The width of the rendered image</translation>
+        <translation>Az igazított kép szélessége</translation>
     </message>
     <message>
         <location line="+19"/>
         <source> +H : </source>
-        <translation type="unfinished"> +H : </translation>
+        <translation> + M: </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The height of the rendered image</source>
-        <translation type="unfinished">The height of the rendered image</translation>
+        <translation>Az igazított kép magassága</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Luxrender executable:</source>
-        <translation type="unfinished">Luxrender executable:</translation>
+        <translation>Futtatható Luxrender:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The path to the luxrender (or luxconsole) executable</source>
-        <translation type="unfinished">The path to the luxrender (or luxconsole) executable</translation>
+        <translation>A futtatható luxrender (vagy luxconsole) elérési útja</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -502,7 +515,7 @@ Do you want to continue?</translation>
         <location line="+23"/>
         <location line="+16"/>
         <source>Used by utility tools</source>
-        <translation type="unfinished">Used by utility tools</translation>
+        <translation>Segédprogram eszközök által használt</translation>
     </message>
     <message>
         <location line="-13"/>
@@ -520,12 +533,11 @@ Do you want to continue?</translation>
         <translation>Háló objektum beállítások</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max. háló eltérés:</translation>
+        <translation type="obsolete">Max. háló eltérés:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Nem számítson vertex helyzetet</translation>
     </message>
@@ -540,17 +552,17 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProvider.cpp" line="+68"/>
         <source>Edit LuxRender project</source>
-        <translation type="unfinished">Edit LuxRender project</translation>
+        <translation>LuxRender vetítés szerkesztése</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>LuxRender template</source>
-        <translation type="unfinished">LuxRender template</translation>
+        <translation>LuxRender sablon</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a LuxRender template</source>
-        <translation type="unfinished">Select a LuxRender template</translation>
+        <translation>LuxRender sablon kiválasztása</translation>
     </message>
 </context>
 <context>
@@ -558,17 +570,17 @@ Do you want to continue?</translation>
     <message>
         <location line="+48"/>
         <source>Edit Povray project</source>
-        <translation type="unfinished">Edit Povray project</translation>
+        <translation>Povray vetítés szerkesztése</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Povray template</source>
-        <translation type="unfinished">Povray template</translation>
+        <translation>Povray sablon</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a Povray template</source>
-        <translation type="unfinished">Select a Povray template</translation>
+        <translation>Válasszon egy Povray sablont</translation>
     </message>
 </context>
 <context>
@@ -576,7 +588,7 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>&amp;Raytracing</source>
-        <translation>Sugáriánynyomvonal</translation>
+        <translation>Sugárkövetés</translation>
     </message>
 </context>
 </TS>

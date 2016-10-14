@@ -36,8 +36,8 @@
 
 #include <Quarter/devices/SpaceNavigatorDevice.h>
 
-#include <QtGui/QApplication>
-#include <QtGui/QWidget>
+#include <QApplication>
+#include <QWidget>
 #include <QtCore/QEvent>
 
 #include <Inventor/events/SoEvent.h>
@@ -111,6 +111,7 @@ SpaceNavigatorDevice::~SpaceNavigatorDevice()
 const SoEvent *
 SpaceNavigatorDevice::translateEvent(QEvent * event)
 {
+  Q_UNUSED(event); 
   SoEvent * ret = NULL;
 
 #ifdef HAVE_SPACENAV_LIB

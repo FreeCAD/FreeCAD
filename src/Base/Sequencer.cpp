@@ -319,7 +319,7 @@ void ProgressIndicatorPy::init_type()
     behaviors().supportRepr();
     behaviors().supportGetattr();
     behaviors().supportSetattr();
-    behaviors().type_object()->tp_new = &PyMake;
+    behaviors().set_tp_new(PyMake);
 
     add_varargs_method("start",&ProgressIndicatorPy::start,"start(string,int)");
     add_varargs_method("next",&ProgressIndicatorPy::next,"next()");

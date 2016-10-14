@@ -17,6 +17,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Drawing_LIBS
     Part
+    Spreadsheet
     FreeCADApp
 )
 
@@ -37,6 +38,8 @@ SET(Features_SRCS
     FeatureClip.h
     PageGroup.cpp
     PageGroup.h
+    FeatureViewSpreadsheet.cpp
+    FeatureViewSpreadsheet.h
 )
 
 SET(Drawing_SRCS

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
+ *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015-2016        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,9 +37,8 @@
 
 #include "SpreadsheetView.h"
 #include "SpreadsheetDelegate.h"
-#include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Range.h>
+#include <App/Range.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -57,6 +56,7 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace Gui;
+using namespace App;
 
 /* TRANSLATOR SpreadsheetGui::SheetView */
 
@@ -99,16 +99,18 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
     columnWidthChangedConnection = sheet->columnWidthChanged.connect(bind(&SheetView::resizeColumn, this, _1, _2));
     rowHeightChangedConnection = sheet->rowHeightChanged.connect(bind(&SheetView::resizeRow, this, _1, _2));
 
+    connect( model, SIGNAL(dataChanged(const QModelIndex &, const QModelIndex &)), this, SLOT(modelUpdated(const QModelIndex &, const QModelIndex &)));
+
     QPalette palette = ui->cells->palette();
     palette.setColor(QPalette::Base, QColor(255, 255, 255));
     palette.setColor(QPalette::Text, QColor(0, 0, 0));
     ui->cells->setPalette(palette);
 
-    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_BackgroundColor"));
+    QList<QtColorPicker*> bgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_BackgroundColor"));
     if (bgList.size() > 0)
         bgList[0]->setCurrentColor(palette.color(QPalette::Base));
 
-    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromAscii("Spreadsheet_ForegroundColor"));
+    QList<QtColorPicker*> fgList = Gui::getMainWindow()->findChildren<QtColorPicker*>(QString::fromLatin1("Spreadsheet_ForegroundColor"));
     if (fgList.size() > 0)
         fgList[0]->setCurrentColor(palette.color(QPalette::Text));
 
@@ -118,24 +120,24 @@ SheetView::SheetView(Gui::Document *pcDocument, App::DocumentObject *docObj, QWi
 
 SheetView::~SheetView()
 {
-    Application::Instance->detachView(this);
+    Gui::Application::Instance->detachView(this);
     //delete delegate;
 }
 
-bool SheetView::onMsg(const char *pMsg, const char **ppReturn)
+bool SheetView::onMsg(const char *pMsg, const char **)
 {
     if(strcmp("Undo",pMsg) == 0 ) {
         getGuiDocument()->undo(1);
         App::Document* doc = getAppDocument();
         if (doc)
-            doc->recomputeFeature(sheet);
+            doc->recompute();
         return true;
     }
     else  if(strcmp("Redo",pMsg) == 0 ) {
         getGuiDocument()->redo(1);
         App::Document* doc = getAppDocument();
         if (doc)
-            doc->recomputeFeature(sheet);
+            doc->recompute();
         return true;
     }
     else if (strcmp("Save",pMsg) == 0) {
@@ -170,6 +172,7 @@ bool SheetView::onHasMsg(const char *pMsg) const
 
 void SheetView::setCurrentCell(QString str)
 {
+    Q_UNUSED(str);
     updateContentLine();
 }
 
@@ -246,13 +249,25 @@ void SheetView::rowResizeFinished()
     newRowSizes.clear();
 }
 
+void SheetView::modelUpdated(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+{
+    const QModelIndex & current = ui->cells->currentIndex();
+
+    if (current < topLeft || bottomRight < current)
+        return;
+
+    updateContentLine();
+}
+
 void SheetView::columnResized(int col, int oldSize, int newSize)
 {
+    Q_UNUSED(oldSize);
     newColumnSizes[col] = newSize;
 }
 
 void SheetView::rowResized(int row, int oldSize, int newSize)
 {
+    Q_UNUSED(oldSize);
     newRowSizes[row] = newSize;
 }
 
@@ -286,6 +301,8 @@ void SheetView::editingFinished()
 
 void SheetView::currentChanged ( const QModelIndex & current, const QModelIndex & previous  )
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
     updateContentLine();
 }
 
@@ -295,7 +312,9 @@ void SheetView::updateCell(const App::Property *prop)
         CellAddress address;
 
         sheet->getCellAddress(prop, address);
-        updateContentLine();
+
+        if (currentIndex().row() == address.row() && currentIndex().column() == address.col() )
+            updateContentLine();
     }
     catch (...) {
         // Property is not a cell

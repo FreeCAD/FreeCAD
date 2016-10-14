@@ -61,30 +61,30 @@ RotTransDragger::RotTransDragger()
 
    // Don't create "surroundScale" by default. It's only put 
    // to use if this dragger is used within a manipulator.
-   SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, TRUE,
-                            topSeparator, geomSeparator, TRUE);
+   SO_KIT_ADD_CATALOG_ENTRY(surroundScale, SoSurroundScale, true,
+                            topSeparator, geomSeparator, true);
    // Create an anti-squish node by default.
-   SO_KIT_ADD_CATALOG_ENTRY(antiSquish, SoAntiSquish, FALSE,
-                            topSeparator, geomSeparator, TRUE);
+   SO_KIT_ADD_CATALOG_ENTRY(antiSquish, SoAntiSquish, false,
+                            topSeparator, geomSeparator, true);
    SO_KIT_ADD_CATALOG_ENTRY(translator, SoTranslate1Dragger,
-                            TRUE, topSeparator, geomSeparator,
-                            TRUE);
-   SO_KIT_ADD_CATALOG_ENTRY(XRotatorSep, SoSeparator, FALSE,
-                            topSeparator, geomSeparator, FALSE);
-   SO_KIT_ADD_CATALOG_ENTRY(XRotatorRot, SoRotation, TRUE,
-                            XRotatorSep,0 , FALSE);
+                            true, topSeparator, geomSeparator,
+                            true);
+   SO_KIT_ADD_CATALOG_ENTRY(XRotatorSep, SoSeparator, false,
+                            topSeparator, geomSeparator, false);
+   SO_KIT_ADD_CATALOG_ENTRY(XRotatorRot, SoRotation, true,
+                            XRotatorSep,0 , false);
    SO_KIT_ADD_CATALOG_ENTRY(XRotator,SoRotateCylindricalDragger,
-                            TRUE, XRotatorSep, 0,TRUE);
+                            true, XRotatorSep, 0,true);
 
    SO_KIT_ADD_CATALOG_ENTRY(YRotator, SoRotateCylindricalDragger,
-                            TRUE, topSeparator, geomSeparator, TRUE);
+                            true, topSeparator, geomSeparator, true);
 
-   SO_KIT_ADD_CATALOG_ENTRY(ZRotatorSep, SoSeparator, FALSE,
-                            topSeparator, geomSeparator, FALSE);
-   SO_KIT_ADD_CATALOG_ENTRY(ZRotatorRot, SoRotation, TRUE,
-                            ZRotatorSep,0 ,FALSE);
+   SO_KIT_ADD_CATALOG_ENTRY(ZRotatorSep, SoSeparator, false,
+                            topSeparator, geomSeparator, false);
+   SO_KIT_ADD_CATALOG_ENTRY(ZRotatorRot, SoRotation, true,
+                            ZRotatorSep,0 ,false);
    SO_KIT_ADD_CATALOG_ENTRY(ZRotator, SoRotateCylindricalDragger,
-                            TRUE, ZRotatorSep, 0,TRUE);
+                            true, ZRotatorSep, 0,true);
 
    // Read geometry resources. Only do this the first time we
    // construct one. 'geomBuffer' contains our compiled in
@@ -165,7 +165,7 @@ RotTransDragger::RotTransDragger()
                            &RotTransDragger::fieldSensorCB,this);
    translFieldSensor->setPriority(0);
 
-   setUpConnections(TRUE, TRUE);
+   setUpConnections(true, true);
 }
 
 RotTransDragger::~RotTransDragger()
@@ -201,7 +201,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
      //        will be transferred into motion of the entire 
      //        dragger.
       SoDragger *tD =
-               (SoDragger *) getAnyPart("translator", FALSE);
+               (SoDragger *) getAnyPart("translator", false);
       // [a] Set up the parts in the child dragger...
       tD->setPartAsDefault("translator",
                            "rotTransTranslatorTranslator");
@@ -219,7 +219,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       registerChildDragger(tD);
 
       SoDragger *XD =
-               (SoDragger *) getAnyPart("XRotator", FALSE);
+               (SoDragger *) getAnyPart("XRotator", false);
       // [a] Set up the parts in the child dragger...
       XD->setPartAsDefault("rotator",
                            "rotTransRotatorRotator");
@@ -237,7 +237,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       registerChildDragger(XD);
 
       SoDragger *YD =
-               (SoDragger *) getAnyPart("YRotator", FALSE);
+               (SoDragger *) getAnyPart("YRotator", false);
       // [a] Set up the parts in the child dragger...
       YD->setPartAsDefault("rotator",
                            "rotTransRotatorRotator");
@@ -255,7 +255,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       registerChildDragger(YD);
 
       SoDragger *ZD =
-               (SoDragger *) getAnyPart("ZRotator", FALSE);
+               (SoDragger *) getAnyPart("ZRotator", false);
       // [a] Set up the parts in the child dragger...
       ZD->setPartAsDefault("rotator",
                            "rotTransRotatorRotator");
@@ -288,7 +288,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
      // Remove the callbacks from the child draggers,
      // and unregister them as children.
       SoDragger *tD =
-               (SoDragger *) getAnyPart("translator", FALSE);
+               (SoDragger *) getAnyPart("translator", false);
       tD->removeStartCallback(
                &RotTransDragger::invalidateSurroundScaleCB, this);
       tD->removeFinishCallback(
@@ -296,7 +296,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       unregisterChildDragger(tD);
 
       SoDragger *XD =
-               (SoDragger *) getAnyPart("XRotator", FALSE);
+               (SoDragger *) getAnyPart("XRotator", false);
       XD->removeStartCallback(
                &RotTransDragger::invalidateSurroundScaleCB, this);
       XD->removeFinishCallback(
@@ -304,7 +304,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       unregisterChildDragger(XD);
 
       SoDragger *YD =
-               (SoDragger *) getAnyPart("YRotator", FALSE);
+               (SoDragger *) getAnyPart("YRotator", false);
       YD->removeStartCallback(
                &RotTransDragger::invalidateSurroundScaleCB, this);
       YD->removeFinishCallback(
@@ -312,7 +312,7 @@ RotTransDragger::setUpConnections(SbBool onOff, SbBool doItAlways)
       unregisterChildDragger(YD);
 
       SoDragger *ZD =
-               (SoDragger *) getAnyPart("ZRotator", FALSE);
+               (SoDragger *) getAnyPart("ZRotator", false);
       ZD->removeStartCallback(
                &RotTransDragger::invalidateSurroundScaleCB, this);
       ZD->removeFinishCallback(
@@ -389,8 +389,8 @@ RotTransDragger::setDefaultOnNonWritingFields()
    // The nodes pointed to by these part-fields may 
    // change after construction, but we
    // don't want to write them out.
-   surroundScale.setDefault(TRUE);
-   antiSquish.setDefault(TRUE);
+   surroundScale.setDefault(true);
+   antiSquish.setDefault(true);
 
    SoDragger::setDefaultOnNonWritingFields();
 }

@@ -122,6 +122,7 @@ InteractionMode::keyReleaseEvent(QKeyEvent * event)
 bool
 InteractionMode::focusOutEvent(QFocusEvent * event)
 {
+  Q_UNUSED(event); 
   if (this->altkeydown) {
     QKeyEvent keyevent(QEvent::KeyRelease, Qt::Key_Alt, Qt::NoModifier);
     return QCoreApplication::sendEvent(this->quarterwidget, &keyevent);

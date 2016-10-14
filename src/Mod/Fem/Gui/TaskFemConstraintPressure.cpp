@@ -45,6 +45,12 @@
 #include <App/Application.h>
 #include <Gui/Command.h>
 
+
+
+#include <Gui/Selection.h>
+#include <Gui/SelectionFilter.h>
+
+
 using namespace FemGui;
 using namespace Gui;
 
@@ -52,7 +58,7 @@ using namespace Gui;
 
 TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent)
   : TaskFemConstraint(ConstraintView, parent, "fem-constraint-pressure")
-{
+{ //Note change "pressure" in line above to new constraint name
     proxy = new QWidget(this);
     ui = new Ui_TaskFemConstraintPressure();
     ui->setupUi(proxy);
@@ -63,34 +69,30 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     ui->lw_references->addAction(action);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-    connect(ui->if_pressure, SIGNAL(valueChanged(Base::Quantity)),
-            this, SLOT(onPressureChanged(Base::Quantity)));
-    connect(ui->b_add_reference, SIGNAL(pressed()),
-            this, SLOT(onButtonReference()));
-    connect(ui->cb_reverse_direction, SIGNAL(toggled(bool)),
-            this, SLOT(onCheckReverse(bool)));
+    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+
+    connect(ui->checkBoxReverse, SIGNAL(toggled(bool)),
+        this, SLOT(onCheckReverse(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
-    // Temporarily prevent unnecessary feature recomputes
-    ui->if_pressure->blockSignals(true);
-    ui->lw_references->blockSignals(true);
-    ui->b_add_reference->blockSignals(true);
-    ui->cb_reverse_direction->blockSignals(true);
-
+/* Note: */
     // Get the feature data
     Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
-    double f = pcConstraint->Pressure.getValue();
+
     std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
     std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-    bool reversed = pcConstraint->Reversed.getValue();
 
     // Fill data into dialog elements
     ui->if_pressure->setMinimum(0);
     ui->if_pressure->setMaximum(FLOAT_MAX);
-    //1000 because FreeCAD used kPa internally
-    Base::Quantity p = Base::Quantity(1000 * f, Base::Unit::Stress);
+    Base::Quantity p = Base::Quantity(1000 * (pcConstraint->Pressure.getValue()), Base::Unit::Stress);
     ui->if_pressure->setValue(p);
+    bool reversed = pcConstraint->Reversed.getValue();
+    ui->checkBoxReverse->setChecked(reversed);
+/* */
+
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
         ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
@@ -98,12 +100,10 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(ViewProviderFemConstraintPr
     if (Objects.size() > 0) {
         ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
     }
-    ui->cb_reverse_direction->setChecked(reversed);
 
-    ui->if_pressure->blockSignals(false);
-    ui->lw_references->blockSignals(false);
-    ui->b_add_reference->blockSignals(false);
-    ui->cb_reverse_direction->blockSignals(false);
+    //Selection buttons
+    connect(ui->btnAdd, SIGNAL(clicked()),  this, SLOT(addToSelection()));
+    connect(ui->btnRemove, SIGNAL(clicked()),  this, SLOT(removeFromSelection()));
 
     updateUI();
 }
@@ -122,71 +122,138 @@ void TaskFemConstraintPressure::updateUI()
     }
 }
 
-void TaskFemConstraintPressure::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if ((msg.Type != Gui::SelectionChanges::AddSelection) ||
-        // Don't allow selection in other document
-        (strcmp(msg.pDocName, ConstraintView->getObject()->getDocument()->getName()) != 0) ||
-        // Don't allow selection mode none
-        (selectionMode != selref) ||
-        // Don't allow empty smenu/submenu
-        (!msg.pSubName || msg.pSubName[0] == '\0')) {
-        return;
-    }
-
-    std::string subName(msg.pSubName);
-    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
-    App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(msg.pObjectName);
-
-    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-
-    if (subName.substr(0,4) != "Face") {
-        QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
-        return;
-    }
-    // Avoid duplicates
-    std::size_t pos = 0;
-    for (; pos < Objects.size(); pos++) {
-        if (obj == Objects[pos])
-            break;
-    }
-
-    if (pos != Objects.size()) {
-        if (subName == SubElements[pos])
-            return;
-    }
-
-    // add the new reference
-    Objects.push_back(obj);
-    SubElements.push_back(subName);
-    pcConstraint->References.setValues(Objects,SubElements);
-    ui->lw_references->addItem(makeRefText(obj, subName));
-
-    // Turn off reference selection mode
-    onButtonReference(false);
-    Gui::Selection().clearSelection();
-    updateUI();
-}
-
-void TaskFemConstraintPressure::onPressureChanged(const Base::Quantity& f)
-{
-    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
-    double val = f.getValueAs(Base::Quantity::MegaPascal);
-    pcConstraint->Pressure.setValue(val);
-}
-
-void TaskFemConstraintPressure::onReferenceDeleted() {
-    int row = ui->lw_references->currentIndex().row();
-    TaskFemConstraint::onReferenceDeleted(row);
-    ui->lw_references->model()->removeRow(row);
-    ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
-}
-
 void TaskFemConstraintPressure::onCheckReverse(const bool pressed)
 {
     Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
     pcConstraint->Reversed.setValue(pressed);
+ }
+
+void TaskFemConstraintPressure::addToSelection()
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    if (selection.size()==0){
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
+
+    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
+            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+            return;
+        }
+
+        std::vector<std::string> subNames=it->getSubNames();
+        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
+
+
+        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+            bool addMe=true;
+        if (subNames[subIt].substr(0,4) != "Face") {
+            QMessageBox::warning(this, tr("Selection error"), tr("Only faces can be picked"));
+            return;
+        }
+            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                   itr!= SubElements.end();
+                   itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
+            {// for every sub element in selection that matches one in old list
+                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so don't add
+                    addMe=false;
+                }
+            }
+            if (addMe){
+                disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
+                Objects.push_back(obj);
+                SubElements.push_back(subNames[subIt]);
+                ui->lw_references->addItem(makeRefText(obj, subNames[subIt]));
+                connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+                    this, SLOT(setSelection(QListWidgetItem*)));
+            }
+        }
+    }
+    //Update UI
+    pcConstraint->References.setValues(Objects,SubElements);
+    updateUI();
+}
+
+void TaskFemConstraintPressure::removeFromSelection()
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx(); //gets vector of selected objects of active document
+    if (selection.size()==0){
+        QMessageBox::warning(this, tr("Selection error"), tr("Nothing selected!"));
+        return;
+    }
+
+    Fem::ConstraintPressure* pcConstraint = static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+    std::vector<int> itemsToDel;
+    for (std::vector<Gui::SelectionObject>::iterator it = selection.begin();  it != selection.end(); ++it){//for every selected object
+        if (static_cast<std::string>(it->getTypeName()).substr(0,4).compare(std::string("Part"))!=0){
+            QMessageBox::warning(this, tr("Selection error"),tr("Selected object is not a part!"));
+            return;
+        }
+
+        std::vector<std::string> subNames=it->getSubNames();
+        App::DocumentObject* obj = ConstraintView->getObject()->getDocument()->getObject(it->getFeatName());
+
+        for (unsigned int subIt=0;subIt<(subNames.size());++subIt){// for every selected sub element
+            for (std::vector<std::string>::iterator itr=std::find(SubElements.begin(),SubElements.end(),subNames[subIt]);
+                itr!= SubElements.end();
+                itr =  std::find(++itr,SubElements.end(),subNames[subIt]))
+            {// for every sub element in selection that matches one in old list
+                if (obj==Objects[std::distance(SubElements.begin(),itr)]){//if selected sub element's object equals the one in old list then it was added before so mark for deletion
+                    itemsToDel.push_back(std::distance(SubElements.begin(),itr));
+                }
+            }
+        }
+    }
+
+    std::sort(itemsToDel.begin(),itemsToDel.end());
+    while (itemsToDel.size()>0){
+        Objects.erase(Objects.begin()+itemsToDel.back());
+        SubElements.erase(SubElements.begin()+itemsToDel.back());
+        itemsToDel.pop_back();
+    }
+    //Update UI
+    disconnect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+
+    ui->lw_references->clear();
+    for (unsigned int j=0;j<Objects.size();j++){
+        ui->lw_references->addItem(makeRefText(Objects[j], SubElements[j]));
+    }
+    connect(ui->lw_references, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+        this, SLOT(setSelection(QListWidgetItem*)));
+
+    pcConstraint->References.setValues(Objects,SubElements);
+    updateUI();
+}
+
+void TaskFemConstraintPressure::setSelection(QListWidgetItem* item){
+    std::string docName=ConstraintView->getObject()->getDocument()->getName();
+
+    std::string s = item->text().toStdString();
+    std::string delimiter = ":";
+
+    size_t pos = 0;
+    std::string objName;
+    std::string subName;
+    pos = s.find(delimiter);
+    objName = s.substr(0, pos);
+    s.erase(0, pos + delimiter.length());
+    subName=s;
+
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(docName.c_str(),objName.c_str(),subName.c_str(),0,0,0);
+}
+
+void TaskFemConstraintPressure::onReferenceDeleted() {
+    TaskFemConstraintPressure::removeFromSelection();
 }
 
 const std::string TaskFemConstraintPressure::getReferences() const
@@ -199,26 +266,22 @@ const std::string TaskFemConstraintPressure::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-double TaskFemConstraintPressure::getPressure(void) const
+/* Note: */
+double TaskFemConstraintPressure::get_Pressure() const
 {
     Base::Quantity pressure =  ui->if_pressure->getQuantity();
     double pressure_in_MPa = pressure.getValueAs(Base::Quantity::MegaPascal);
     return pressure_in_MPa;
 }
 
-bool TaskFemConstraintPressure::getReverse() const
+bool TaskFemConstraintPressure::get_Reverse() const
 {
-    return ui->cb_reverse_direction->isChecked();
+    return ui->checkBoxReverse->isChecked();
 }
+/* */
 
-void TaskFemConstraintPressure::changeEvent(QEvent *e)
+void TaskFemConstraintPressure::changeEvent(QEvent *)
 {
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        ui->if_pressure->blockSignals(true);
-        ui->retranslateUi(proxy);
-        ui->if_pressure->blockSignals(false);
-    }
 }
 
 //**************************************************************************
@@ -240,27 +303,32 @@ void TaskDlgFemConstraintPressure::open()
 {
     // a transaction is already open at creation time of the panel
     if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Constraint normal stress");
+        QString msg = QObject::tr("Constraint pressure");
         Gui::Command::openCommand((const char*)msg.toUtf8());
+        ConstraintView->setVisible(true);
+        Gui::Command::doCommand(Gui::Command::Doc,ViewProviderFemConstraint::gethideMeshShowPartStr((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str()); //OvG: Hide meshes and show parts
     }
 }
 
 bool TaskDlgFemConstraintPressure::accept()
 {
+/* Note: */
     std::string name = ConstraintView->getObject()->getNameInDocument();
     const TaskFemConstraintPressure* parameterPressure = static_cast<const TaskFemConstraintPressure*>(parameter);
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Pressure = %f",
-            name.c_str(), parameterPressure->getPressure());
+            name.c_str(), parameterPressure->get_Pressure());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %s",
-            name.c_str(), parameterPressure->getReverse() ? "True" : "False");
+            name.c_str(), parameterPressure->get_Reverse() ? "True" : "False");
+        std::string scale = parameterPressure->getScale();  //OvG: determine modified scale
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Scale = %s", name.c_str(), scale.c_str()); //OvG: implement modified scale
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(parameter, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
-
+/* */
     return TaskDlgFemConstraint::accept();
 }
 

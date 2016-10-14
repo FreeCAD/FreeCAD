@@ -52,10 +52,6 @@ public:
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
-    /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
     //@}
 
     /** @name Python interface */
@@ -83,6 +79,8 @@ public:
 
     /** @name Modification */
     //@{
+    PointKernel* startEditing();
+    void finishEditing();
     /// Transform the real 3d point kernel
     void transformGeometry(const Base::Matrix4D &rclMat);
     void removeIndices( const std::vector<unsigned long>& );

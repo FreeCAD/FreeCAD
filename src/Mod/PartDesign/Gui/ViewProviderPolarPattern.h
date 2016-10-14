@@ -30,14 +30,15 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderPolarPattern : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderPolarPattern);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderPolarPattern);
 public:
     ViewProviderPolarPattern()
         { featureName = std::string("PolarPattern");
 	   sPixmap = "PartDesign_PolarPattern.svg"; }
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

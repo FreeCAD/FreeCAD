@@ -79,6 +79,7 @@ void TaskAppearance::changeEvent(QEvent *e)
 void TaskAppearance::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                               Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
@@ -142,14 +143,14 @@ void TaskAppearance::on_changeMode_activated(const QString& s)
         App::Property* prop = (*It)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* Display = (App::PropertyEnumeration*)prop;
-            Display->setValue((const char*)s.toAscii());
+            Display->setValue((const char*)s.toLatin1());
         }
     }
 }
 
 void TaskAppearance::on_changePlot_activated(const QString&s)
 {
-    Base::Console().Log("Plot = %s\n",(const char*)s.toAscii());
+    Base::Console().Log("Plot = %s\n",(const char*)s.toLatin1());
 }
 
 /**
@@ -231,7 +232,7 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
         if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
             App::PropertyEnumeration* display = static_cast<App::PropertyEnumeration*>(prop);
-            QString activeMode = QString::fromAscii(display->getValueAsString());
+            QString activeMode = QString::fromLatin1(display->getValueAsString());
             int index = ui->changeMode->findText(activeMode);
             if (index != -1) {
                 ui->changeMode->setCurrentIndex(index);

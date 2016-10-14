@@ -42,7 +42,6 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
-#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 
 using namespace PartDesignGui;
@@ -50,33 +49,17 @@ using namespace Gui;
 
 /* TRANSLATOR PartDesignGui::TaskDraftParameters */
 
-TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("PartDesign_Draft"),tr("Draft parameters"),true, parent),DraftView(DraftView)
+TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp *DressUpView,QWidget *parent)
+    : TaskDressUpParameters(DressUpView, false, true, parent)
 {
-    selectionMode = none;
-
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui = new Ui_TaskDraftParameters();
     ui->setupUi(proxy);
-    QMetaObject::connectSlotsByName(this);
-
-    connect(ui->draftAngle, SIGNAL(valueChanged(double)),
-            this, SLOT(onAngleChanged(double)));
-    connect(ui->checkReverse, SIGNAL(toggled(bool)),
-            this, SLOT(onReversedChanged(bool)));
-    connect(ui->buttonFaceAdd, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonFaceAdd(bool)));
-    connect(ui->buttonFaceRemove, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonFaceRemove(bool)));
-    connect(ui->buttonPlane, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonPlane(bool)));
-    connect(ui->buttonLine, SIGNAL(toggled(bool)),
-            this, SLOT(onButtonLine(bool)));
 
     this->groupLayout()->addWidget(proxy);
 
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     double a = pcDraft->Angle.getValue();
 
     ui->draftAngle->setMinimum(0.0);
@@ -91,21 +74,37 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDraft *DraftView,QWidget *p
     std::vector<std::string> strings = pcDraft->Base.getSubValues();
     for (std::vector<std::string>::const_iterator i = strings.begin(); i != strings.end(); ++i)
     {
-        ui->listWidgetFaces->insertItem(0, QString::fromStdString(*i));
+        ui->listWidgetReferences->addItem(QString::fromStdString(*i));
     }
+
+    QMetaObject::connectSlotsByName(this);
+
+    connect(ui->draftAngle, SIGNAL(valueChanged(double)),
+            this, SLOT(onAngleChanged(double)));
+    connect(ui->checkReverse, SIGNAL(toggled(bool)),
+            this, SLOT(onReversedChanged(bool)));
+    connect(ui->buttonRefAdd, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefAdd(bool)));
+    connect(ui->buttonRefRemove, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonRefRemove(bool)));
+    connect(ui->buttonPlane, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonPlane(bool)));
+    connect(ui->buttonLine, SIGNAL(toggled(bool)),
+            this, SLOT(onButtonLine(bool)));
+
     // Create context menu
     QAction* action = new QAction(tr("Remove"), this);
-    ui->listWidgetFaces->addAction(action);
-    connect(action, SIGNAL(triggered()), this, SLOT(onFaceDeleted()));
-    ui->listWidgetFaces->setContextMenuPolicy(Qt::ActionsContextMenu);
+    ui->listWidgetReferences->addAction(action);
+    connect(action, SIGNAL(triggered()), this, SLOT(onRefDeleted()));
+    ui->listWidgetReferences->setContextMenuPolicy(Qt::ActionsContextMenu);
 
+    App::DocumentObject* ref = pcDraft->NeutralPlane.getValue();
     strings = pcDraft->NeutralPlane.getSubValues();
-    std::string neutralPlane = (strings.empty() ? "" : strings[0]);
-    ui->linePlane->setText(QString::fromStdString(neutralPlane));
+    ui->linePlane->setText(getRefStr(ref, strings));
 
+    ref = pcDraft->PullDirection.getValue();
     strings = pcDraft->PullDirection.getSubValues();
-    std::string pullDirection = (strings.empty() ? "" : strings[0]);
-    ui->lineLine->setText(QString::fromStdString(pullDirection));
+    ui->lineLine->setText(getRefStr(ref, strings));
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -114,205 +113,126 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
         return;
 
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
-        if (strcmp(msg.pDocName, DraftView->getObject()->getDocument()->getName()) != 0)
-            return;
-
-        PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
-        App::DocumentObject* base = this->getBase();
-        // TODO: Must we make a copy here instead of assigning to const char* ?
-        const char* fname = base->getNameInDocument();
-        std::string subName(msg.pSubName);
-
-        if ((selectionMode == faceAdd) && (subName.size() > 4 && subName.substr(0,4) == "Face")) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
-                return;
-
-            std::vector<std::string> faces = pcDraft->Base.getSubValues();
-            if (std::find(faces.begin(), faces.end(), subName) == faces.end()) {
-                faces.push_back(subName);
-                pcDraft->Base.setValue(base, faces);
-                ui->listWidgetFaces->insertItem(0, QString::fromStdString(subName));
-
-                pcDraft->getDocument()->recomputeFeature(pcDraft);
-                ui->buttonFaceAdd->setChecked(false);
-                exitSelectionMode();
-            }
-        } else if ((selectionMode == faceRemove) && (subName.size() > 4 && subName.substr(0,4) == "Face")) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
-                return;
-
-            std::vector<std::string> faces = pcDraft->Base.getSubValues();
-            std::vector<std::string>::iterator f = std::find(faces.begin(), faces.end(), subName);
-            if (f != faces.end()) {
-                faces.erase(f);
-                pcDraft->Base.setValue(base, faces);
-                QList<QListWidgetItem*> items = ui->listWidgetFaces->findItems(QString::fromStdString(subName), Qt::MatchExactly);
-                if (!items.empty()) {
-                    for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); ++i) {
-                        QListWidgetItem* it = ui->listWidgetFaces->takeItem(ui->listWidgetFaces->row(*i));
-                        delete it;
-                    }
-                }
-                pcDraft->getDocument()->recomputeFeature(pcDraft);
-                ui->buttonFaceRemove->setChecked(false);
-                exitSelectionMode();
-            }
-        } else if ((selectionMode == plane) && (subName.size() > 4) &&
-                   ((subName.substr(0,4) == "Face") || (subName.substr(0,4) == "Edge"))) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
-                return;
-
-            std::vector<std::string> planes(1,subName);
-            pcDraft->NeutralPlane.setValue(base, planes);
-            ui->linePlane->setText(QString::fromStdString(subName));
-
-            pcDraft->getDocument()->recomputeFeature(pcDraft);
-            ui->buttonPlane->setChecked(false);
+        if (referenceSelected(msg)) {
+            if (selectionMode == refAdd)
+                ui->listWidgetReferences->addItem(QString::fromStdString(msg.pSubName));
+            else
+                removeItemFromListWidget(ui->listWidgetReferences, msg.pSubName);
+            clearButtons(none);
             exitSelectionMode();
-        } else if ((selectionMode == line) && (subName.size() > 4 && subName.substr(0,4) == "Edge")) {
-
-            if (strcmp(msg.pObjectName, fname) != 0)
+        } else if (selectionMode == plane) {
+            PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+            std::vector<std::string> planes;
+            App::DocumentObject* selObj;
+            getReferencedSelection(pcDraft, msg, selObj, planes);
+            if(!selObj)
                 return;
-
-            std::vector<std::string> edges(1,subName);
-            pcDraft->PullDirection.setValue(base, edges);
-            ui->lineLine->setText(QString::fromStdString(subName));
+            pcDraft->NeutralPlane.setValue(selObj, planes);
+            ui->linePlane->setText(getRefStr(selObj, planes));
 
             pcDraft->getDocument()->recomputeFeature(pcDraft);
-            ui->buttonLine->setChecked(false);
+            clearButtons(none);
+            exitSelectionMode();
+        } else if (selectionMode == line) {
+            PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
+            std::vector<std::string> edges;
+            App::DocumentObject* selObj;
+            getReferencedSelection(pcDraft, msg, selObj, edges);
+            if(!selObj)
+                return;
+            pcDraft->PullDirection.setValue(selObj, edges);
+            ui->lineLine->setText(getRefStr(selObj, edges));
+
+            pcDraft->getDocument()->recomputeFeature(pcDraft);
+            clearButtons(none);
             exitSelectionMode();
         }
     }
 }
 
-void TaskDraftParameters::onButtonFaceAdd(bool checked)
+void TaskDraftParameters::clearButtons(const selectionModes notThis)
 {
-    if (checked) {
-        hideObject();
-        selectionMode = faceAdd;
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
-    } else {
-        exitSelectionMode();
-    }
-}
-
-void TaskDraftParameters::onButtonFaceRemove(bool checked)
-{
-    if (checked) {
-        hideObject();
-        selectionMode = faceRemove;
-        Gui::Selection().clearSelection();
-        Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), false, true, false));
-    } else {
-        exitSelectionMode();
-    }
+    if (notThis != refAdd) ui->buttonRefAdd->setChecked(false);
+    if (notThis != refRemove) ui->buttonRefRemove->setChecked(false);
+    if (notThis != line) ui->buttonLine->setChecked(false);
+    if (notThis != plane) ui->buttonPlane->setChecked(false);
+    DressUpView->highlightReferences(false);
 }
 
 void TaskDraftParameters::onButtonPlane(bool checked)
 {
     if (checked) {
+        clearButtons(plane);
         hideObject();
         selectionMode = plane;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), true, true, true));
-    } else {
-        exitSelectionMode();
     }
 }
 
 void TaskDraftParameters::onButtonLine(bool checked)
 {
     if (checked) {
+        clearButtons(line);
         hideObject();
         selectionMode = line;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(this->getBase(), true, false, true));
-    } else {
-        exitSelectionMode();
     }
 }
 
-const std::vector<std::string> TaskDraftParameters::getFaces(void) const
+void TaskDraftParameters::onRefDeleted(void)
 {
-    std::vector<std::string> result;
-    for (int i = 0; i < ui->listWidgetFaces->count(); i++)
-        result.push_back(ui->listWidgetFaces->item(i)->text().toStdString());
-    return result;
-}
-
-void TaskDraftParameters::onFaceDeleted(void)
-{
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     App::DocumentObject* base = pcDraft->Base.getValue();
     std::vector<std::string> faces = pcDraft->Base.getSubValues();
-    faces.erase(faces.begin() + ui->listWidgetFaces->currentRow());
+    faces.erase(faces.begin() + ui->listWidgetReferences->currentRow());
     pcDraft->Base.setValue(base, faces);
-    ui->listWidgetFaces->model()->removeRow(ui->listWidgetFaces->currentRow());
+    ui->listWidgetReferences->model()->removeRow(ui->listWidgetReferences->currentRow());
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const std::string TaskDraftParameters::getPlane(void) const
+void TaskDraftParameters::getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    return ui->linePlane->text().toStdString();
+    sub = std::vector<std::string>(1,"");
+    QStringList parts = ui->linePlane->text().split(QChar::fromLatin1(':'));
+    obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    if (parts.size() > 1)
+        sub[0] = parts[1].toStdString();
 }
 
-const std::string TaskDraftParameters::getLine(void) const
+void TaskDraftParameters::getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const
 {
-    return ui->lineLine->text().toStdString();
-}
-
-void TaskDraftParameters::hideObject()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setHide(DraftView->getObject()->getNameInDocument());
-        doc->setShow(base->getNameInDocument());
-    }
-}
-
-void TaskDraftParameters::showObject()
-{
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    App::DocumentObject* base = getBase();
-    if (doc != NULL && base != NULL) {
-        doc->setShow(DraftView->getObject()->getNameInDocument());
-        doc->setHide(base->getNameInDocument());
-    }
+    sub = std::vector<std::string>(1,"");
+    QStringList parts = ui->lineLine->text().split(QChar::fromLatin1(':'));
+    obj = DressUpView->getObject()->getDocument()->getObject(parts[0].toStdString().c_str());
+    if (parts.size() > 1)
+        sub[0] = parts[1].toStdString();
 }
 
 void TaskDraftParameters::onAngleChanged(double angle)
 {
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
+    clearButtons(none);
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     pcDraft->Angle.setValue(angle);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const double TaskDraftParameters::getAngle(void) const
+double TaskDraftParameters::getAngle(void) const
 {
     return ui->draftAngle->value().getValue();
 }
 
 void TaskDraftParameters::onReversedChanged(const bool on) {
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
+    clearButtons(none);
+    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DressUpView->getObject());
     pcDraft->Reversed.setValue(on);
     pcDraft->getDocument()->recomputeFeature(pcDraft);
 }
 
-const bool TaskDraftParameters::getReversed(void) const
+bool TaskDraftParameters::getReversed(void) const
 {
     return ui->checkReverse->isChecked();
-}
-
-App::DocumentObject* TaskDraftParameters::getBase(void) const
-{
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
-    return pcDraft->Base.getValue();
 }
 
 TaskDraftParameters::~TaskDraftParameters()
@@ -329,23 +249,16 @@ void TaskDraftParameters::changeEvent(QEvent *e)
     }
 }
 
-void TaskDraftParameters::exitSelectionMode()
-{
-    selectionMode = none;
-    Gui::Selection().rmvSelectionGate();
-    showObject();
-}
 
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft *DraftView)
-    : TaskDialog(),DraftView(DraftView)
+TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft *DressUpView)
+    : TaskDlgDressUpParameters(DressUpView)
 {
-    assert(DraftView);
-    parameter  = new TaskDraftParameters(DraftView);
+    parameter  = new TaskDraftParameters(DressUpView);
 
     Content.push_back(parameter);
 }
@@ -358,92 +271,44 @@ TaskDlgDraftParameters::~TaskDlgDraftParameters()
 //==== calls from the TaskView ===============================================================
 
 
-void TaskDlgDraftParameters::open()
-{
-    // a transaction is already open at creation time of the draft
-    if (!Gui::Command::hasPendingCommand()) {
-        QString msg = QObject::tr("Edit draft");
-        Gui::Command::openCommand((const char*)msg.toUtf8());
-    }
-}
-
-void TaskDlgDraftParameters::clicked(int)
-{
-
-}
+//void TaskDlgDraftParameters::open()
+//{
+//    // a transaction is already open at creation time of the draft
+//    if (!Gui::Command::hasPendingCommand()) {
+//        QString msg = QObject::tr("Edit draft");
+//        Gui::Command::openCommand((const char*)msg.toUtf8());
+//    }
+//}
 
 bool TaskDlgDraftParameters::accept()
 {
     parameter->showObject();
 
+    std::vector<std::string> strings;
+    App::DocumentObject* obj;
+    TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
+
+    draftparameter->getPlane(obj, strings);
+    std::string neutralPlane = buildLinkSingleSubPythonStr(obj, strings);
+
+    draftparameter->getLine(obj, strings);
+    std::string pullDirection = buildLinkSingleSubPythonStr(obj, strings);
+
     // Force the user to select a neutral plane
-    if (parameter->getPlane().empty()) {
+    if (neutralPlane.empty() || neutralPlane == "None") {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Missing neutral plane"),
             QObject::tr("Please select a plane or an edge plus a pull direction"));
         return false;
     }
 
-    std::string name = DraftView->getObject()->getNameInDocument();
+    std::string name = vp->getObject()->getNameInDocument();
 
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),parameter->getAngle());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),parameter->getReversed());
-    try {
-        std::vector<std::string> faces = parameter->getFaces();
-        std::stringstream str;
-        str << "App.ActiveDocument." << name.c_str() << ".Base = (App.ActiveDocument."
-            << parameter->getBase()->getNameInDocument() << ",[";
-        for (std::vector<std::string>::const_iterator it = faces.begin(); it != faces.end(); ++it)
-            str << "\"" << *it << "\",";
-        str << "])";
-        Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
-    }
-    catch (const Base::Exception& e) {
-        QMessageBox::warning(parameter, tr("Input error"), QString::fromAscii(e.what()));
-        return false;
-    }
-    std::string neutralPlane = parameter->getPlane();
-    if (!neutralPlane.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(parameter->getBase()->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(neutralPlane.c_str()));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), buf.toStdString().c_str());
-    } else
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = None", name.c_str());
-    std::string pullDirection = parameter->getLine();
-    if (!pullDirection.empty()) {
-        QString buf = QString::fromUtf8("(App.ActiveDocument.%1,[\"%2\"])");
-        buf = buf.arg(QString::fromUtf8(parameter->getBase()->getNameInDocument()));
-        buf = buf.arg(QString::fromUtf8(pullDirection.c_str()));
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), buf.toStdString().c_str());
-    } else
-        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = None", name.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Angle = %f",name.c_str(),draftparameter->getAngle());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Reversed = %u",name.c_str(),draftparameter->getReversed());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.NeutralPlane = %s", name.c_str(), neutralPlane.c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.PullDirection = %s", name.c_str(), pullDirection.c_str());
 
-    return true;
+    return TaskDlgDressUpParameters::accept();
 }
-
-bool TaskDlgDraftParameters::reject()
-{
-    // get the support
-    PartDesign::Draft* pcDraft = static_cast<PartDesign::Draft*>(DraftView->getObject());
-    App::DocumentObject    *pcSupport;
-    pcSupport = pcDraft->Base.getValue();
-
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    // if abort command deleted the object the support is visible again
-    if (!Gui::Application::Instance->getViewProvider(pcDraft)) {
-        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-            Gui::Application::Instance->getViewProvider(pcSupport)->show();
-    }
-
-    return true;
-}
-
-
 
 #include "moc_TaskDraftParameters.cpp"

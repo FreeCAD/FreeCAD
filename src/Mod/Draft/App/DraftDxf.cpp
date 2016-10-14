@@ -27,7 +27,6 @@
 
 #include "DraftDxf.h"
 
-#include <gp_Pnt.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Ax2.hxx>
@@ -43,6 +42,7 @@
 #include <Base/Parameter.h>
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Annotation.h>
@@ -50,18 +50,34 @@
 
 using namespace DraftUtils;
 
+
 DraftDxfRead::DraftDxfRead(std::string filepath, App::Document *pcDoc) : CDxfRead(filepath.c_str())
 {
     document = pcDoc;
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Draft");
     optionGroupLayers = hGrp->GetBool("groupLayers",false);
+    optionImportAnnotations = hGrp->GetBool("dxftext",false);
+    optionScaling = hGrp->GetFloat("dxfScaling",1.0);
 }
 
 
-void DraftDxfRead::OnReadLine(const double* s, const double* e, bool hidden)
+gp_Pnt DraftDxfRead::makePoint(const double* p)
 {
-    gp_Pnt p0(s[0], s[1], s[2]);
-    gp_Pnt p1(e[0], e[1], e[2]);
+    double sp1(p[0]);
+    double sp2(p[1]);
+    double sp3(p[2]);
+    if (optionScaling != 1.0) {
+        sp1 = sp1 * optionScaling;
+        sp2 = sp2 * optionScaling;
+        sp3 = sp3 * optionScaling;
+    }
+    return gp_Pnt(sp1,sp2,sp3);
+}
+
+void DraftDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)
+{
+    gp_Pnt p0 = makePoint(s);
+    gp_Pnt p1 = makePoint(e);
     if (p0.IsEqual(p1,0.00000001))
         return;
     BRepBuilderAPI_MakeEdge makeEdge(p0, p1);
@@ -72,20 +88,20 @@ void DraftDxfRead::OnReadLine(const double* s, const double* e, bool hidden)
 
 void DraftDxfRead::OnReadPoint(const double* s)
 {
-    BRepBuilderAPI_MakeVertex makeVertex(gp_Pnt(s[0], s[1], s[2]));
+    BRepBuilderAPI_MakeVertex makeVertex(makePoint(s));
     TopoDS_Vertex vertex = makeVertex.Vertex();
     AddObject(new Part::TopoShape(vertex));
 }
 
 
-void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden)
+void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, bool dir, bool /*hidden*/)
 {
-    gp_Pnt p0(s[0], s[1], s[2]);
-    gp_Pnt p1(e[0], e[1], e[2]);
+    gp_Pnt p0 = makePoint(s);
+    gp_Pnt p1 = makePoint(e);
     gp_Dir up(0, 0, 1);
     if (!dir)
         up = -up;
-    gp_Pnt pc(c[0], c[1], c[2]);
+    gp_Pnt pc = makePoint(c);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
     BRepBuilderAPI_MakeEdge makeEdge(circle, p0, p1);
     TopoDS_Edge edge = makeEdge.Edge();
@@ -93,13 +109,13 @@ void DraftDxfRead::OnReadArc(const double* s, const double* e, const double* c, 
 }
 
 
-void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool hidden)
+void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool /*hidden*/)
 {
-    gp_Pnt p0(s[0], s[1], s[2]);
+    gp_Pnt p0 = makePoint(s);
     gp_Dir up(0, 0, 1);
     if (!dir)
         up = -up;
-    gp_Pnt pc(c[0], c[1], c[2]);
+    gp_Pnt pc = makePoint(c);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
     BRepBuilderAPI_MakeEdge makeEdge(circle);
     TopoDS_Edge edge = makeEdge.Edge();
@@ -107,19 +123,19 @@ void DraftDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool
 }
 
 
-void DraftDxfRead::OnReadSpline(struct SplineData& sd)
+void DraftDxfRead::OnReadSpline(struct SplineData& /*sd*/)
 {
     // not yet implemented
 }
 
 
-void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double start_angle, double end_angle, bool dir)
+void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double minor_radius, double rotation, double /*start_angle*/, double /*end_angle*/, bool dir)
 {
     gp_Dir up(0, 0, 1);
     if(!dir)
         up = -up;
-    gp_Pnt pc(c[0], c[1], c[2]);
-    gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
+    gp_Pnt pc = makePoint(c);
+    gp_Elips ellipse(gp_Ax2(pc, up), major_radius * optionScaling, minor_radius * optionScaling);
     ellipse.Rotate(gp_Ax1(pc,up),rotation);
     BRepBuilderAPI_MakeEdge makeEdge(ellipse);
     TopoDS_Edge edge = makeEdge.Edge();
@@ -127,21 +143,23 @@ void DraftDxfRead::OnReadEllipse(const double* c, double major_radius, double mi
 }
 
 
-void DraftDxfRead::OnReadText(const double *point, const double height, const char* text)
+void DraftDxfRead::OnReadText(const double *point, const double /*height*/, const char* text)
 {
-    Base::Vector3d pt(point[0],point[1],point[2]);
-    if(LayerName().substr(0, 6) != "BLOCKS") {
-        App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
-        pcFeature->LabelText.setValue(Deformat(text));
-        pcFeature->Position.setValue(pt);
+    if (optionImportAnnotations) {
+        Base::Vector3d pt(point[0] * optionScaling, point[1] * optionScaling, point[2] * optionScaling);
+        if(LayerName().substr(0, 6) != "BLOCKS") {
+            App::Annotation *pcFeature = (App::Annotation *)document->addObject("App::Annotation", "Text");
+            pcFeature->LabelText.setValue(Deformat(text));
+            pcFeature->Position.setValue(pt);
+        }
+        //else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }
-    else std::cout << "skipped text in block: " << LayerName() << std::endl;
 }
 
 
 void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const char* name, double rotation)
 {
-    std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
+    //std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] << "," << point[1] << "," << point[2] << " scale " << scale[0] << "," << scale[1] << "," << scale[2] << std::endl;
     for(std::map<std::string,std::vector<Part::TopoShape*> > ::const_iterator i = layers.begin(); i != layers.end(); ++i) {
         std::string k = i->first;
         std::string prefix = "BLOCKS ";
@@ -153,7 +171,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
             builder.MakeCompound(comp);
             std::vector<Part::TopoShape*> v = i->second;
             for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                const TopoDS_Shape& sh = (*j)->_Shape;
+                const TopoDS_Shape& sh = (*j)->getShape();
                 if (!sh.IsNull())
                     builder.Add(comp, sh);
             }
@@ -162,7 +180,7 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
                 Base::Matrix4D mat;
                 mat.scale(scale[0],scale[1],scale[2]);
                 mat.rotZ(rotation);
-                mat.move(point[0],point[1],point[2]);
+                mat.move(point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
                 pcomp->transformShape(mat,true);
                 AddObject(pcomp);
             }
@@ -171,9 +189,15 @@ void DraftDxfRead::OnReadInsert(const double* point, const double* scale, const 
 }
 
 
-void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double rotation)
+void DraftDxfRead::OnReadDimension(const double* s, const double* e, const double* point, double /*rotation*/)
 {
-    std::cout << "Dimension: " << std::endl;
+    if (optionImportAnnotations) {
+        Base::Interpreter().runString("import Draft");
+        Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",s[0]*optionScaling,s[1]*optionScaling,s[2]*optionScaling);
+        Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",e[0]*optionScaling,e[1]*optionScaling,e[2]*optionScaling);
+        Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",point[0]*optionScaling,point[1]*optionScaling,point[2]*optionScaling);
+        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+    }
 }
 
 
@@ -192,7 +216,7 @@ void DraftDxfRead::AddObject(Part::TopoShape *shape)
 }
 
 
-const char* DraftDxfRead::Deformat(const char* text)
+std::string DraftDxfRead::Deformat(const char* text)
 {
     // this function removes DXF formatting from texts
     std::stringstream ss;
@@ -223,10 +247,11 @@ const char* DraftDxfRead::Deformat(const char* text)
                 }
             }
         }
-        else if ( (text[i] != '{') && (text[i] != '}') )
+        else if ( (text[i] != '{') && (text[i] != '}') ) {
             ss << text[i];
+        }
     }
-    return ss.str().c_str();
+    return ss.str();
 }
 
 
@@ -241,7 +266,7 @@ void DraftDxfRead::AddGraphics() const
             std::vector<Part::TopoShape*> v = i->second;
             if(k.substr(0, 6) != "BLOCKS") {
                 for(std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) { 
-                    const TopoDS_Shape& sh = (*j)->_Shape;
+                    const TopoDS_Shape& sh = (*j)->getShape();
                     if (!sh.IsNull())
                         builder.Add(comp, sh);
                 }

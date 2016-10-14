@@ -31,8 +31,6 @@ generate_from_xml(PointsPy)
 SET(Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
-    FeaturePointsImportAscii.cpp
-    FeaturePointsImportAscii.h
     Points.cpp
     Points.h
     PointsPy.xml
@@ -49,6 +47,8 @@ SET(Points_SRCS
     Properties.h
     PropertyPointKernel.cpp
     PropertyPointKernel.h
+    Structured.cpp
+    Structured.h
 )
 
 add_library(Points SHARED ${Points_SRCS})

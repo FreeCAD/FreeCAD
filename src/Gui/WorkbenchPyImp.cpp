@@ -51,6 +51,9 @@ std::string WorkbenchPy::representation(void) const
 /** Retrieves the workbench name */
 PyObject*  WorkbenchPy::name(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception
+
     PY_TRY {
         std::string name = getWorkbenchPtr()->name(); 
         PyObject* pyName = PyString_FromString(name.c_str());
@@ -61,6 +64,9 @@ PyObject*  WorkbenchPy::name(PyObject *args)
 /** Activates the workbench object */
 PyObject*  WorkbenchPy::activate(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                    // NULL triggers exception
+
     PY_TRY {
         std::string name = getWorkbenchPtr()->name(); 
         WorkbenchManager::instance()->activate( name, getWorkbenchPtr()->getTypeId().getName() );
@@ -68,12 +74,12 @@ PyObject*  WorkbenchPy::activate(PyObject *args)
     }PY_CATCH;
 }
 
-PyObject *WorkbenchPy::getCustomAttributes(const char* attr) const
+PyObject *WorkbenchPy::getCustomAttributes(const char*) const
 {
     return 0;
 }
 
-int WorkbenchPy::setCustomAttributes(const char* attr, PyObject *obj)
+int WorkbenchPy::setCustomAttributes(const char*, PyObject *)
 {
     return 0; 
 }

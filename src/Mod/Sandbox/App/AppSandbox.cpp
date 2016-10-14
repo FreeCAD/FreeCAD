@@ -52,6 +52,9 @@ public:
             Py::String name( names[i] );
             std::cout << "    " << name << std::endl;
         }
+        m_array.push_back(Py::Long(2));
+        m_array.push_back(Py::Float(3.0));
+        m_array.push_back(Py::String("4.0"));
     }
 
     virtual ~PythonBaseClass()
@@ -65,6 +68,7 @@ public:
         behaviors().doc( "documentation for PythonBaseClass class" );
         behaviors().supportGetattro();
         behaviors().supportSetattro();
+        behaviors().supportSequenceType();
 
         PYCXX_ADD_NOARGS_METHOD( func_noargs, PythonBaseClass_func_noargs, "docs for PythonBaseClass_func_noargs" );
         PYCXX_ADD_VARARGS_METHOD( func_varargs, PythonBaseClass_func_varargs, "docs for PythonBaseClass_func_varargs" );
@@ -142,28 +146,67 @@ public:
             return genericSetAttro( name_, value );
         }
     }
+    virtual int sequence_length()
+    {
+        // len(x)
+        return m_array.size();
+    }
+    virtual Py::Object sequence_concat(const Py::Object &)
+    {
+        // x + y
+        throw Py::NotImplementedError("not yet implemented");
+    }
+    virtual Py::Object sequence_repeat(Py_ssize_t)
+    {
+        // x * 3
+        throw Py::NotImplementedError("not yet implemented");
+    }
+    virtual Py::Object sequence_item(Py_ssize_t i)
+    {
+        // x[0]
+        if (i >= static_cast<Py_ssize_t>(m_array.size()))
+            throw Py::IndexError("index out of range");
+        return m_array[i];
+    }
+    virtual Py::Object sequence_slice(Py_ssize_t, Py_ssize_t)
+    {
+        // x[0:3]
+        throw Py::NotImplementedError("not yet implemented");
+    }
+    virtual int sequence_ass_item(Py_ssize_t i, const Py::Object & o)
+    {
+        // x[0] = y
+        if (i >= static_cast<Py_ssize_t>(m_array.size()))
+            throw Py::IndexError("index out of range");
+        m_array[i] = o;
+        return 0;
+    }
+    virtual int sequence_ass_slice(Py_ssize_t, Py_ssize_t, const Py::Object &)
+    {
+        // x[0:3] = y
+        throw Py::NotImplementedError("not yet implemented");
+    }
 
     Py::String m_value;
+    std::vector<Py::Object> m_array;
 };
-
-} // namespace Sandbox
 
 /* module functions */
 
-class SandboxModule : public Py::ExtensionModule<SandboxModule>
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    SandboxModule() : Py::ExtensionModule<SandboxModule>("Sandbox")
+    Module() : Py::ExtensionModule<Module>("Sandbox")
     {
         Sandbox::PythonBaseClass::init_type();
         Sandbox::DocumentProtectorPy::init_type();
         add_varargs_method("DocumentProtector",
-            &SandboxModule::new_DocumentProtector,
+            &Module::new_DocumentProtector,
             "DocumentProtector(Document)");
         Sandbox::DocumentObjectProtectorPy::init_type();
         add_varargs_method("DocumentObjectProtector",
-            &SandboxModule::new_DocumentObjectProtector,
+            &Module::new_DocumentObjectProtector,
             "DocumentObjectProtector(DocumentObject)");
         initialize("This module is the Sandbox module"); // register with Python
         
@@ -172,7 +215,7 @@ public:
         d["PythonBaseClass"] = x;
     }
     
-    virtual ~SandboxModule() {}
+    virtual ~Module() {}
 
 private:
     Py::Object new_DocumentProtector(const Py::Tuple& args)
@@ -193,18 +236,17 @@ private:
     }
 };
 
+} // namespace Sandbox
+
 
 /* Python entry */
-extern "C" {
-void SandboxAppExport initSandbox() {
+PyMODINIT_FUNC initSandbox() {
 
     Sandbox::DocumentProtector  ::init();
     Sandbox::SandboxObject      ::init();
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxModule;
+    (void)new Sandbox::Module;
     Base::Console().Log("Loading Sandbox module... done\n");
 }
-
-} // extern "C"

@@ -36,7 +36,7 @@
 #include "SpreadsheetView.h"
 
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <Mod/Spreadsheet/App/Range.h>
+#include <App/Range.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Application.h>
@@ -49,6 +49,7 @@
 
 using namespace Base;
 using namespace Gui;
+using namespace App;
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 
@@ -181,7 +182,7 @@ SheetView *ViewProviderSheet::showSpreadsheetView()
             (this->pcObject->getDocument());
         view = new SheetView(doc, this->pcObject, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap(":icons/Spreadsheet.svg"));
-        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QString::fromAscii("[*]"));
+        view->setWindowTitle(QString::fromUtf8(pcObject->Label.getValue()) + QString::fromLatin1("[*]"));
         Gui::getMainWindow()->addWindow(view);
         startEditing();
     }

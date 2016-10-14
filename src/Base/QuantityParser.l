@@ -131,7 +131,9 @@ CGRP     '\,'[0-9][0-9][0-9]
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
 
 {DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = num_change(yytext,'.',',');return NUM;  }
+"."?{DIGIT}+{EXPO}?                                 {  yylval = num_change(yytext,'.',',');return NUM;  }
 {DIGIT}+","?{DIGIT}*{EXPO}?                         {  yylval = num_change(yytext,',','.');return NUM;  }
+","?{DIGIT}+{EXPO}?                                 {  yylval = num_change(yytext,',','.');return NUM;  }
 
 
 "pi"                   {yylval = M_PI          ; return NUM;} // constant pi         

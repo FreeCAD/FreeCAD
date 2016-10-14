@@ -28,7 +28,7 @@
 # include <climits>
 # include <QCursor>
 # include <QTimer>
-#include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "DemoMode.h"
@@ -45,7 +45,7 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DemoMode */
 
-DemoMode::DemoMode(QWidget* parent, Qt::WFlags fl)
+DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
   : QDialog(0, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
 {
     // create widgets
@@ -184,6 +184,7 @@ void DemoMode::reorientCamera(SoCamera * cam, const SbRotation & rot)
 
 void DemoMode::on_speedSlider_valueChanged(int v)
 {
+    Q_UNUSED(v); 
     Gui::View3DInventor* view = activeView();
     if (view && view->getViewer()->isAnimating()) {
         startAnimation(view);

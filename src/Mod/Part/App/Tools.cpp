@@ -26,6 +26,7 @@
 # include <gp_Pln.hxx>
 # include <gp_Lin.hxx>
 # include <Adaptor3d_HCurveOnSurface.hxx>
+# include <Geom_BSplineSurface.hxx>
 # include <Geom_Plane.hxx>
 # include <GeomAdaptor_HCurve.hxx>
 # include <GeomAPI_IntSS.hxx>
@@ -113,6 +114,7 @@ Part::Tools::makeSurface(const TColStd_ListOfTransient &theBoundaries,
                          const Standard_Integer theNbIter,
                          const Standard_Integer theMaxDeg)
 {
+    (void)theTol;
     //constants for algorithm
     const Standard_Integer aNbIter = theNbIter; //number of algorithm iterations
     const Standard_Integer aNbPnts = theNbPnts; //sample points per each constraint

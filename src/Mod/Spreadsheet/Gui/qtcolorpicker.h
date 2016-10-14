@@ -46,11 +46,11 @@
 
 #ifndef QTCOLORPICKER_H
 #define QTCOLORPICKER_H
-#include <QtGui/QPushButton>
+#include <QPushButton>
 #include <QtCore/QString>
 #include <QtGui/QColor>
 
-#include <QtGui/QLabel>
+#include <QLabel>
 #include <QtCore/QEvent>
 #include <QtGui/QFocusEvent>
 

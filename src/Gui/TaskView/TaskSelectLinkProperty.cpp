@@ -69,6 +69,7 @@ TaskSelectLinkProperty::TaskSelectLinkProperty(const char *sFilter,App::Property
 
     // property have to be set! 
     assert(prop);
+    StartObject = 0;
     if (prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
         LinkSub = dynamic_cast<App::PropertyLinkSub *>(prop);
     }
@@ -206,6 +207,7 @@ void TaskSelectLinkProperty::checkSelectionStatus(void)
 void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                                       Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     if (Reason.Type == SelectionChanges::AddSelection ||
         Reason.Type == SelectionChanges::RmvSelection ||
         Reason.Type == SelectionChanges::SetSelection ||
@@ -219,7 +221,7 @@ void TaskSelectLinkProperty::OnChange(Gui::SelectionSingleton::SubjectType &rCal
                     temp += "::";
                     temp += it->SubName;
                 }
-                new QListWidgetItem(QString::fromAscii(temp.c_str()), ui->listWidget);
+                new QListWidgetItem(QString::fromLatin1(temp.c_str()), ui->listWidget);
             }
             checkSelectionStatus();
     }

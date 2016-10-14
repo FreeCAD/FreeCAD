@@ -41,7 +41,7 @@
 
 using namespace Gui::Dialog;
 
-const QString DlgWorkbenchesImp::all_workbenches = QString::fromAscii("ALL");
+const QString DlgWorkbenchesImp::all_workbenches = QString::fromLatin1("ALL");
 
 /* TRANSLATOR Gui::Dialog::DlgWorkbenchesImp */
 
@@ -51,9 +51,13 @@ DlgWorkbenchesImp::DlgWorkbenchesImp(QWidget* parent)
     this->setupUi(this);
     set_lw_properties(lw_enabled_workbenches);
     set_lw_properties(lw_disabled_workbenches);
-    const QString lw_disabled_name = QString::fromAscii("disabled workbenches");
-    lw_disabled_workbenches->setAccessibleName(lw_disabled_name);
+    lw_disabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName());
     lw_disabled_workbenches->setSortingEnabled(true);
+
+    lw_enabled_workbenches->setProperty("OnlyAcceptFrom",
+        QStringList() << lw_enabled_workbenches->objectName()
+                      << lw_disabled_workbenches->objectName());
 
     QStringList enabled_wbs_list = load_enabled_workbenches();
     QStringList disabled_wbs_list = load_disabled_workbenches();
@@ -114,19 +118,23 @@ void DlgWorkbenchesImp::changeEvent(QEvent *e)
 
 void DlgWorkbenchesImp::hideEvent(QHideEvent * event)
 {
+    Q_UNUSED(event); 
     save_workbenches();
 }
 
 void DlgWorkbenchesImp::onAddMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::onRemoveMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::onModifyMacroAction(const QByteArray& macro)
 {
+    Q_UNUSED(macro); 
 }
 
 void DlgWorkbenchesImp::move_workbench(QListWidgetCustom *lwc_dest,
@@ -237,22 +245,22 @@ void DlgWorkbenchesImp::save_workbenches()
     hGrp->Clear();
 
     if (lw_enabled_workbenches->count() == 0) {
-        enabled_wbs.append(QString::fromAscii("NoneWorkbench"));
+        enabled_wbs.append(QString::fromLatin1("NoneWorkbench"));
     } else {
         for (int i = 0; i < lw_enabled_workbenches->count(); i++) {
             QVariant item_data = lw_enabled_workbenches->item(i)->data(Qt::UserRole);
             QString name = item_data.toString();
-            enabled_wbs.append(name + QString::fromAscii(","));
+            enabled_wbs.append(name + QString::fromLatin1(","));
         }
     }
-    hGrp->SetASCII("Enabled", enabled_wbs.toAscii());
+    hGrp->SetASCII("Enabled", enabled_wbs.toLatin1());
 
     for (int i = 0; i < lw_disabled_workbenches->count(); i++) {
         QVariant item_data = lw_disabled_workbenches->item(i)->data(Qt::UserRole);
         QString name = item_data.toString();
-        disabled_wbs.append(name + QString::fromAscii(","));
+        disabled_wbs.append(name + QString::fromLatin1(","));
     }
-    hGrp->SetASCII("Disabled", disabled_wbs.toAscii());
+    hGrp->SetASCII("Disabled", disabled_wbs.toLatin1());
 }
 
 #include "moc_DlgWorkbenchesImp.cpp"

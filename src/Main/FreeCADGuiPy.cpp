@@ -120,8 +120,10 @@ FreeCADGui_showMainWindow(PyObject * /*self*/, PyObject *args)
     }
 
     if (!thr) {
-        if (!setupMainWindow())
+        if (!setupMainWindow()) {
+            PyErr_SetString(PyExc_RuntimeError, "Cannot create main window\n");
             return NULL;
+        }
     }
 
     Py_INCREF(Py_None);
@@ -236,7 +238,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "an event loop or showing up any GUI\n"},
     {"embedToWindow",FreeCADGui_embedToWindow,METH_VARARGS,
      "embedToWindow() -- Embeds the main window into another window\n"},
-    {NULL, NULL}  /* sentinel */
+    {NULL, NULL, 0, NULL}  /* sentinel */
 };
 
 static
@@ -248,9 +250,18 @@ QWidget* setupMainWindow()
     }
 
     if (!Gui::MainWindow::getInstance()) {
+        static bool hasMainWindow = false;
+        if (hasMainWindow) {
+            // if a main window existed and has been deleted it's not supported
+            // to re-create it
+            return 0;
+        }
+
         Base::PyGILStateLocker lock;
         PyObject* input = PySys_GetObject("stdin");
         Gui::MainWindow *mw = new Gui::MainWindow();
+        hasMainWindow = true;
+
         QIcon icon = qApp->windowIcon();
         if (icon.isNull())
             qApp->setWindowIcon(Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str()));
@@ -259,7 +270,7 @@ QWidget* setupMainWindow()
         if (!appName.isEmpty())
             mw->setWindowTitle(appName);
         else
-            mw->setWindowTitle(QString::fromAscii(App::Application::Config()["ExeName"].c_str()));
+            mw->setWindowTitle(QString::fromLatin1(App::Application::Config()["ExeName"].c_str()));
 
         if (!SoDB::isInitialized()) {
             // init the Inventor subsystem
@@ -291,7 +302,7 @@ QWidget* setupMainWindow()
         // if the auto workbench is not visible then force to use the default workbech
         // and replace the wrong entry in the parameters
         QStringList wb = Gui::Application::Instance->workbenches();
-        if (!wb.contains(QString::fromAscii(start.c_str()))) {
+        if (!wb.contains(QString::fromLatin1(start.c_str()))) {
             start = App::Application::Config()["StartWorkbench"];
             App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
                                   SetASCII("AutoloadModule", start.c_str());

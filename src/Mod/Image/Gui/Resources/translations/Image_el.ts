@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0" language="el" sourcelanguage="en">
+<context>
+    <name>CmdCreateImagePlane</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Image</source>
+        <translation>Εικόνα</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create image plane...</source>
+        <translation>Δημιουργία επιπέδου εικόνας...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a planar image in the 3D space</source>
+        <translation type="unfinished">Create a planar image in the 3D space</translation>
+    </message>
+    <message>
+        <source>create a planar image in the 3D space</source>
+        <translation type="obsolete">create a planar image in the 3D space</translation>
+    </message>
+</context>
+<context>
+    <name>CmdImageOpen</name>
+    <message>
+        <location line="-44"/>
+        <source>Image</source>
+        <translation>Εικόνα</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Open...</source>
+        <translation>Άνοιγμα...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Open image view</source>
+        <translation type="unfinished">Open image view</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::GLImageBox</name>
+    <message>
+        <location filename="../../GLImageBox.cpp" line="+325"/>
+        <source>Undefined type of colour space for image viewing</source>
+        <translation>Μη ορισμός χρωματικού περιβάλλοντος για την προβολή της εικόνας</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Image pixel format</source>
+        <translation type="unfinished">Image pixel format</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::ImageOrientationDialog</name>
+    <message>
+        <location filename="../../ImageOrientationDialog.ui" line="+14"/>
+        <source>Choose orientation</source>
+        <translation type="unfinished">Choose orientation</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Image plane</source>
+        <translation type="unfinished">Image plane</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>XY-Plane</source>
+        <translation type="unfinished">XY-Plane</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>XZ-Plane</source>
+        <translation type="unfinished">XZ-Plane</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>YZ-Plane</source>
+        <translation type="unfinished">YZ-Plane</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Reverse direction</source>
+        <translation type="unfinished">Reverse direction</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Offset:</source>
+        <translation type="unfinished">Offset:</translation>
+    </message>
+</context>
+<context>
+    <name>ImageGui::ImageView</name>
+    <message>
+        <location filename="../../ImageView.cpp" line="+77"/>
+        <source>&amp;Fit image</source>
+        <translation type="unfinished">&amp;Fit image</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stretch the image to fit the view</source>
+        <translation type="unfinished">Stretch the image to fit the view</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>&amp;1:1 scale</source>
+        <translation type="unfinished">&amp;1:1 scale</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Display the image at a 1:1 scale</source>
+        <translation type="unfinished">Display the image at a 1:1 scale</translation>
+    </message>
+    <message>
+        <source>&amp;Original color</source>
+        <translation type="obsolete">&amp;Original color</translation>
+    </message>
+    <message>
+        <source>Display the image with its original color(s)</source>
+        <translation type="obsolete">Display the image with its original color(s)</translation>
+    </message>
+    <message>
+        <source>&amp;Brightened color</source>
+        <translation type="obsolete">&amp;Brightened color</translation>
+    </message>
+    <message>
+        <source>Display the image with brightened color(s)</source>
+        <translation type="obsolete">Display the image with brightened color(s)</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Standard</source>
+        <translation>Κανονικό</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Ready...</source>
+        <translation>Έτοιμο...</translation>
+    </message>
+    <message>
+        <location line="+390"/>
+        <source>grey</source>
+        <translation>γκρι</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+10"/>
+        <location line="+5"/>
+        <location line="+11"/>
+        <location line="+5"/>
+        <location line="+11"/>
+        <location line="+5"/>
+        <source>zoom</source>
+        <translation type="unfinished">zoom</translation>
+    </message>
+    <message>
+        <location line="-62"/>
+        <location line="+10"/>
+        <location line="+15"/>
+        <location line="+16"/>
+        <location line="+16"/>
+        <source>outside image</source>
+        <translation type="unfinished">outside image</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <source>Image viewer</source>
+        <translation type="obsolete">Image viewer</translation>
+    </message>
+    <message>
+        <source>Images (*.png *.xpm *.jpg *.bmp)</source>
+        <translation type="obsolete">Images (*.png *.xpm *.jpg *.bmp)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="+18"/>
+        <location line="+41"/>
+        <source>Choose an image file to open</source>
+        <translation>Επιλέξτε ένα αρχείο εικόνας για άνοιγμα</translation>
+    </message>
+    <message>
+        <location line="-48"/>
+        <location line="+41"/>
+        <source>Images</source>
+        <translation>Εικόνες</translation>
+    </message>
+    <message>
+        <location line="-36"/>
+        <location line="+41"/>
+        <source>All files</source>
+        <translation>Όλα τα αρχεία</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Error open image</source>
+        <translation>Σφάλμα ανοίγματος εικόνας</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Could not load the choosen image</source>
+        <translation>Δεν ήταν δυνατή η φόρτωση της επιλεγμένης εικόνας</translation>
+    </message>
+</context>
+<context>
+    <name>Workbench</name>
+    <message>
+        <location filename="../../Workbench.cpp" line="+36"/>
+        <source>Image</source>
+        <translation>Εικόνα</translation>
+    </message>
+</context>
+</TS>

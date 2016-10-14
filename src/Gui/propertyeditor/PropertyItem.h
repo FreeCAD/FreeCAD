@@ -37,6 +37,7 @@
 #include <Base/UnitsApi.h>
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
+#include <Gui/ExpressionBinding.h>
 
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
@@ -49,7 +50,7 @@ namespace Gui {
 namespace Dialog { class TaskPlacement; }
 namespace PropertyEditor {
 
-class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass
+class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass, public ExpressionBinding
 {
     Q_OBJECT
 
@@ -73,6 +74,12 @@ public:
     virtual QVariant editorData(QWidget *editor) const;
     virtual bool isSeparator() const { return false; }
 
+    /**override the bind functions to ensure we issue the propertyBound() call, which is then overloaded by 
+       childs which like to be informed of a binding*/
+    virtual void bind(const App::Property& prop);
+    virtual void bind(const App::ObjectIdentifier& _path);
+    virtual void propertyBound()  {};
+       
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
@@ -80,6 +87,7 @@ public:
 
     void setReadOnly(bool);
     bool isReadOnly() const;
+    bool testStatus(App::Property::Status pos) const;
     void setDecimals(int);
     int decimals() const;
 
@@ -98,7 +106,7 @@ public:
 protected:
     PropertyItem();
 
-    virtual QVariant decoration(const App::Property*) const;
+    virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
@@ -114,6 +122,7 @@ private:
     QList<PropertyItem*> childItems;
     bool readonly;
     int precision;
+    bool cleared;
 };
 
 /**
@@ -181,6 +190,7 @@ class GuiExport PropertyIntegerItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
 protected:
+    virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
 
@@ -201,6 +211,7 @@ class GuiExport PropertyIntegerConstraintItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
 protected:
+    virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
 
@@ -351,6 +362,7 @@ protected:
 
 protected:
     PropertyVectorItem();
+    virtual void propertyBound();   
 
 private:
     PropertyFloatItem* m_x;
@@ -374,6 +386,8 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
 
     Base::Quantity x() const;
     void setX(Base::Quantity x);
@@ -517,6 +531,8 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
     virtual QVariant editorData(QWidget *editor) const;
 
+    virtual void propertyBound();
+
     Base::Quantity getAngle() const;
     void setAngle(Base::Quantity);
     Base::Vector3d getAxis() const;
@@ -638,13 +654,115 @@ class GuiExport PropertyColorItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
 protected:
-    virtual QVariant decoration(const App::Property*) const;
+    virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toString(const QVariant&) const;
     virtual QVariant value(const App::Property*) const;
     virtual void setValue(const QVariant&);
 
 protected:
     PropertyColorItem();
+};
+
+/**
+* Change a material property.
+* \author Werner Mayer
+*/
+class GuiExport PropertyMaterialItem : public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(QColor AmbientColor READ getAmbientColor WRITE setAmbientColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor READ getDiffuseColor WRITE setDiffuseColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+
+    QColor getAmbientColor() const;
+    void setAmbientColor(const QColor&);
+    QColor getDiffuseColor() const;
+    void setDiffuseColor(const QColor&);
+    QColor getSpecularColor() const;
+    void setSpecularColor(const QColor&);
+    QColor getEmissiveColor() const;
+    void setEmissiveColor(const QColor&);
+    float getShininess() const;
+    void setShininess(float);
+    float getTransparency() const;
+    void setTransparency(float);
+
+protected:
+    PropertyMaterialItem();
+    virtual ~PropertyMaterialItem();
+
+    virtual QVariant decoration(const QVariant&) const;
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    PropertyColorItem* ambient;
+    PropertyColorItem* diffuse;
+    PropertyColorItem* specular;
+    PropertyColorItem* emissive;
+    PropertyFloatItem* shininess;
+    PropertyFloatItem* transparency;
+};
+
+class GuiExport PropertyMaterialListItem : public PropertyItem
+{
+    Q_OBJECT
+    Q_PROPERTY(QColor AmbientColor READ getAmbientColor WRITE setAmbientColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor DiffuseColor READ getDiffuseColor WRITE setDiffuseColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor SpecularColor READ getSpecularColor WRITE setSpecularColor DESIGNABLE true USER true)
+    Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
+    Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
+    Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
+    TYPESYSTEM_HEADER();
+
+    virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
+    virtual void setEditorData(QWidget *editor, const QVariant& data) const;
+    virtual QVariant editorData(QWidget *editor) const;
+
+    virtual void propertyBound();
+
+    QColor getAmbientColor() const;
+    void setAmbientColor(const QColor&);
+    QColor getDiffuseColor() const;
+    void setDiffuseColor(const QColor&);
+    QColor getSpecularColor() const;
+    void setSpecularColor(const QColor&);
+    QColor getEmissiveColor() const;
+    void setEmissiveColor(const QColor&);
+    float getShininess() const;
+    void setShininess(float);
+    float getTransparency() const;
+    void setTransparency(float);
+
+protected:
+    PropertyMaterialListItem();
+    virtual ~PropertyMaterialListItem();
+
+    virtual QVariant decoration(const QVariant&) const;
+    virtual QVariant toolTip(const App::Property*) const;
+    virtual QVariant toString(const QVariant&) const;
+    virtual QVariant value(const App::Property*) const;
+    virtual void setValue(const QVariant&);
+
+private:
+    PropertyColorItem* ambient;
+    PropertyColorItem* diffuse;
+    PropertyColorItem* specular;
+    PropertyColorItem* emissive;
+    PropertyFloatItem* shininess;
+    PropertyFloatItem* transparency;
 };
 
 /**

@@ -6,6 +6,7 @@
 # COIN3D_LIBRARIES    - Link this to use Coin3D
 #
  
+SET( COIN3D_FOUND "NO" )
 
 IF (WIN32)
   IF (CYGWIN)
@@ -68,25 +69,30 @@ ELSE (WIN32)
       /usr/local/lib
     )   
     SET(COIN3D_LIBRARIES "-framework Coin3d" CACHE STRING "Coin3D library for OSX")
-   ELSE(APPLE)
+  ELSE(APPLE)
+    # Try to use pkg-config first...
+    find_package(PkgConfig)
+    pkg_check_modules(COIN3D Coin)
+    # ... then fall back to manual lookup
+    IF(NOT COIN3D_FOUND)
+      FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
+        /usr/include/Coin3
+        /usr/include
+        /usr/include/coin
+        /usr/local/include
+      )
 
-  FIND_PATH(COIN3D_INCLUDE_DIRS Inventor/So.h
-    /usr/include/Coin3
-    /usr/include
-    /usr/local/include
-  )
-
-  FIND_LIBRARY(COIN3D_LIBRARIES Coin
-    /usr/lib
-    /usr/local/lib
-    PATH_SUFFIXES Coin2 Coin3
-  )   
+      FIND_LIBRARY(COIN3D_LIBRARIES Coin
+        /usr/lib
+        /usr/local/lib
+        PATH_SUFFIXES Coin2 Coin3
+      )
+    ENDIF(NOT COIN3D_FOUND)
   ENDIF(APPLE)
 
 ENDIF (WIN32)
 
 
-SET( COIN3D_FOUND "NO" )
 IF(COIN3D_LIBRARIES)
   SET( COIN3D_FOUND "YES" )
 ENDIF(COIN3D_LIBRARIES)

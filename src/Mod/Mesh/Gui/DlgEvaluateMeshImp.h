@@ -30,7 +30,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
-#include "ui_DlgEvaluateMesh.h"
+
+class QAbstractButton;
 
 namespace Gui {
 class View3DInventor;
@@ -61,15 +62,15 @@ public Q_SLOTS:
 /**
  * \author Werner Mayer
  */
-class DlgEvaluateMeshImp : public QDialog, public Ui_DlgEvaluateMesh, public App::DocumentObserver
+class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
 { 
     Q_OBJECT
 
 public:
-    DlgEvaluateMeshImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgEvaluateMeshImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgEvaluateMeshImp();
 
-    void setMesh( Mesh::Feature* );
+    void setMesh(Mesh::Feature*);
 
 private:
     /** Checks if the given document is about to be closed */
@@ -119,6 +120,7 @@ protected Q_SLOTS:
 
     void on_refreshButton_clicked();
     void on_meshNameButton_activated(int);
+    void on_buttonBox_clicked(QAbstractButton *);
 
 protected:
     void refreshList();
@@ -143,7 +145,7 @@ class DockEvaluateMeshImp : public DlgEvaluateMeshImp
     Q_OBJECT
 
 protected:
-    DockEvaluateMeshImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DockEvaluateMeshImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DockEvaluateMeshImp();
     void closeEvent(QCloseEvent* e);
 

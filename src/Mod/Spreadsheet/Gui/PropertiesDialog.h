@@ -24,7 +24,6 @@
 #define PROPERTIESDIALOG_H
 
 #include <QDialog>
-#include "PreCompiled.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 namespace Ui {
@@ -38,7 +37,7 @@ class PropertiesDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit PropertiesDialog(Spreadsheet::Sheet *_sheet, const std::vector<Spreadsheet::Range> & _ranges, QWidget *parent = 0);
+    explicit PropertiesDialog(Spreadsheet::Sheet *_sheet, const std::vector<App::Range> & _ranges, QWidget *parent = 0);
     ~PropertiesDialog();
     
     void apply();
@@ -53,7 +52,7 @@ private Q_SLOTS:
     void aliasChanged(const QString &text);
 private:
     Spreadsheet::Sheet * sheet;
-    std::vector<Spreadsheet::Range> ranges;
+    std::vector<App::Range> ranges;
     Ui::PropertiesDialog *ui;
     App::Color foregroundColor;
     App::Color backgroundColor;

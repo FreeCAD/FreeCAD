@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -27,6 +27,8 @@ import FreeCAD
 import FreeCADGui
 from FreeCAD import Base
 import Spreadsheet
+import matplotlib.ticker as mtick
+
 
 class Plot(object):
     def __init__(self, l, z, v, tank):
@@ -64,11 +66,16 @@ class Plot(object):
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
         vols.line.set_color((0.0, 0.0, 0.0))
-        Plot.xlabel(r'Percentage of filling level')
+        Plot.xlabel(r'$\mathrm{level}$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         plt.axes.xaxis.label.set_fontsize(20)
         plt.axes.yaxis.label.set_fontsize(20)
         Plot.grid(True)
+
+        # Special percentage formatter for the x axis
+        fmt = '%.0f%%'
+        xticks = mtick.FormatStrFormatter(fmt)
+        plt.axes.xaxis.set_major_formatter(xticks)
 
         # Now duplicate the axes
         ax = Plot.addNewAxes()
@@ -80,20 +87,22 @@ class Plot(object):
         ax.yaxis.set_label_position('right')
         # And X axis can be placed at top
         ax.xaxis.tick_top()
-        ax.spines['top'].set_color((0.0, 0.0, 0.0))
+        ax.spines['top'].set_color((0.0, 0.0, 1.0))
         ax.spines['bottom'].set_color('none')
         ax.xaxis.set_ticks_position('top')
         ax.xaxis.set_label_position('top')
 
         # Plot the volume as a function of the level z coordinate
-        vols = Plot.plot(z, v, 'Capacity')
+        vols = Plot.plot(z, v, 'level')
         vols.line.set_linestyle('-')
         vols.line.set_linewidth(2.0)
-        vols.line.set_color((0.0, 0.0, 0.0))
+        vols.line.set_color((0.0, 0.0, 1.0))
         Plot.xlabel(r'$z \; [\mathrm{m}]$')
         Plot.ylabel(r'$V \; [\mathrm{m}^3]$')
         ax.xaxis.label.set_fontsize(20)
         ax.yaxis.label.set_fontsize(20)
+        ax.xaxis.label.set_color((0.0, 0.0, 1.0))
+        ax.tick_params(axis='x', colors=(0.0, 0.0, 1.0))
         Plot.grid(True)
 
         # End

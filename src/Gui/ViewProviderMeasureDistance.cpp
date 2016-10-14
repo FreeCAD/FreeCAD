@@ -258,7 +258,7 @@ int PointMarker::countPoints() const
     return vp->pCoords->point.getNum();
 }
 
-void PointMarker::customEvent(QEvent* e)
+void PointMarker::customEvent(QEvent*)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     doc->openCommand("Measure distance");

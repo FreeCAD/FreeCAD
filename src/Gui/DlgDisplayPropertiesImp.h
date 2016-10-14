@@ -55,7 +55,7 @@ class DlgDisplayPropertiesImp : public QDialog, public Ui_DlgDisplayProperties,
     Q_OBJECT
 
 public:
-    DlgDisplayPropertiesImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgDisplayPropertiesImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgDisplayPropertiesImp();
     /// Observer message from the Selection
     void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,

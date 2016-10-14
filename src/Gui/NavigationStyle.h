@@ -259,6 +259,8 @@ public:
     UserNavigationStyle(){}
     ~UserNavigationStyle(){}
     virtual const char* mouseButtons(ViewerMode) = 0;
+    virtual std::string userFriendlyName() const;
+    static std::map<Base::Type, std::string> getUserFriendlyNames();
 };
 
 class GuiExport InventorNavigationStyle : public UserNavigationStyle {
@@ -270,9 +272,13 @@ public:
     InventorNavigationStyle();
     ~InventorNavigationStyle();
     const char* mouseButtons(ViewerMode);
+    virtual std::string userFriendlyName() const;
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport CADNavigationStyle : public UserNavigationStyle {
@@ -290,6 +296,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport BlenderNavigationStyle : public UserNavigationStyle {
@@ -307,6 +314,7 @@ protected:
 
 private:
     SbBool lockButton1;
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport MayaGestureNavigationStyle : public UserNavigationStyle {
@@ -345,6 +353,9 @@ public:
 
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
+
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 class GuiExport GestureNavigationStyle : public UserNavigationStyle {
@@ -384,6 +395,8 @@ public:
 protected:
     SbBool processSoEvent(const SoEvent * const ev);
 
+private:
+    SoMouseButtonEvent mouseDownConsumedEvent;
 };
 
 } // namespace Gui

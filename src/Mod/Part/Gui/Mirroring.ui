@@ -13,8 +13,8 @@
   <property name="windowTitle">
    <string>Mirroring</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0" colspan="7">
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0" colspan="2">
     <widget class="QTreeWidget" name="shapes">
      <property name="editTriggers">
       <set>QAbstractItemView::CurrentChanged|QAbstractItemView::EditKeyPressed</set>
@@ -42,7 +42,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1" colspan="6">
+   <item row="1" column="1">
     <widget class="QComboBox" name="comboBox">
      <item>
       <property name="text">
@@ -61,75 +61,93 @@
      </item>
     </widget>
    </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_2">
-     <property name="text">
-      <string>Base point:</string>
+   <item row="2" column="0" colspan="2">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Base point</string>
      </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QLabel" name="label_3">
-     <property name="text">
-      <string>x</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QDoubleSpinBox" name="baseX">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QLabel" name="label_4">
-     <property name="text">
-      <string>y</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="4">
-    <widget class="QDoubleSpinBox" name="baseY">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="5">
-    <widget class="QLabel" name="label_5">
-     <property name="text">
-      <string>z</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="6">
-    <widget class="QDoubleSpinBox" name="baseZ">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>x</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::QuantitySpinBox" name="baseX">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>y</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::QuantitySpinBox" name="baseY">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>z</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::QuantitySpinBox" name="baseZ">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="unit" stdset="0">
+         <string notr="true">mm</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </widget>
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

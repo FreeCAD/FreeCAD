@@ -44,6 +44,7 @@
 # include <QStackedWidget>
 # include <QTimer>
 # include <QUrl>
+# include <QMimeData>
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
@@ -92,7 +93,7 @@
 
 using namespace Gui;
 
-void GLOverlayWidget::paintEvent(QPaintEvent* ev)
+void GLOverlayWidget::paintEvent(QPaintEvent*)
 {
     QPainter paint(this);
     paint.drawImage(0,0,image);
@@ -104,7 +105,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QGLWidget* sharewidget, Qt::WFlags wflags)
+                               const QGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
@@ -155,6 +156,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     // create the inventor widget and set the defaults
     _viewer->setDocument(this->_pcDocument);
+    _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
     // describes a minor error but trying to fix it leads to a major issue
@@ -190,6 +192,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"DimensionsVisible");
     OnChange(*hGrp,"Dimensions3dVisible");
     OnChange(*hGrp,"DimensionsDeltaVisible");
+    OnChange(*hGrp,"PickRadius");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -252,8 +255,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -277,8 +280,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -343,7 +346,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        bool on = rGrp.GetBool("ZoomAtCursor", false);
+        bool on = rGrp.GetBool("ZoomAtCursor", true);
         _viewer->navigationStyle()->setZoomAtCursor(on);
     }
     else if (strcmp(Reason,"ZoomStep") == 0) {
@@ -393,6 +396,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
       else
         _viewer->turnDeltaDimensionsOff();
     } 
+    else if (strcmp(Reason, "PickRadius") == 0)
+    {
+        _viewer->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
+    }
     else{
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
         unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
@@ -616,7 +623,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if(strcmp("SetStereoOff",pMsg) == 0 ) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
-   }
+    }
     else if(strcmp("Example1",pMsg) == 0 ) {
         SoSeparator * root = new SoSeparator;
         Texture3D(root);
@@ -944,7 +951,7 @@ void View3DInventor::dropEvent (QDropEvent * e)
 
 void View3DInventor::dragEnterEvent (QDragEnterEvent * e)
 {
-    // Here we must allow uri drafs and check them in dropEvent
+    // Here we must allow uri drags and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls())
         e->accept();
@@ -1027,7 +1034,7 @@ void View3DInventor::keyReleaseEvent (QKeyEvent* e)
     QMainWindow::keyReleaseEvent(e);
 }
 
-void View3DInventor::focusInEvent (QFocusEvent * e)
+void View3DInventor::focusInEvent (QFocusEvent *)
 {
     _viewer->getGLWidget()->setFocus();
 }

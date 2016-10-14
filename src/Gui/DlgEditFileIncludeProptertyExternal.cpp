@@ -41,11 +41,11 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgEditFileIncludePropertyExternal::
 DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop,
-                                   QWidget* parent, Qt::WFlags fl)
+                                   QWidget* parent, Qt::WindowFlags fl)
     : DlgRunExternal(parent, fl), Prop(Prop)
 {
 

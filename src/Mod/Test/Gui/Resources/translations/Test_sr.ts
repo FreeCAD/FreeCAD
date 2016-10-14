@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Remaining:</source>
@@ -88,7 +88,7 @@
     <name>TestGui::UnitTestDialog</name>
     <message>
         <source>Help</source>
-        <translation>Help</translation>
+        <translation>Помоћ</translation>
     </message>
     <message>
         <source>About FreeCAD UnitTest</source>

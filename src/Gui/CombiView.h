@@ -99,7 +99,7 @@ private:
     Gui::PropertyView                  * prop;
     QTreeView                          * tree;
     Gui::TaskView::TaskView            * taskPanel;
-    Gui::ProjectWidget                 * projectView;
+  //Gui::ProjectWidget                 * projectView;
 };
 
 } // namespace DockWnd

@@ -28,7 +28,7 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
- 
+
 #include "SketchObjectSF.h"
 #include "SketchObject.h"
 #include "Constraint.h"
@@ -38,15 +38,12 @@
 #include "PropertyConstraintList.h"
 
 
-extern struct PyMethodDef Sketcher_methods[];
-
-PyDoc_STRVAR(module_Sketcher_doc,
-"This module is the Sketcher module.");
-
+namespace Sketcher {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void SketcherExport initSketcher()
+PyMODINIT_FUNC initSketcher()
 {
     // load dependent module
     try {
@@ -56,8 +53,9 @@ void SketcherExport initSketcher()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    PyObject* sketcherModule = Py_InitModule3("Sketcher", Sketcher_methods, module_Sketcher_doc);   /* mod name, table ptr */
- 
+
+    PyObject* sketcherModule = Sketcher::initModule();
+
     // Add Types to module
     Base::Interpreter().addType(&Sketcher::ConstraintPy  ::Type,sketcherModule,"Constraint");
     Base::Interpreter().addType(&Sketcher::SketchPy      ::Type,sketcherModule,"Sketch");
@@ -75,15 +73,4 @@ void SketcherExport initSketcher()
     Sketcher::PropertyConstraintList::init();
 
     Base::Console().Log("Loading Sketcher module... done\n");
-
-}
-
-
-
-} // extern "C"
-
-// debug print for sketchsolv 
-void debugprint(std::string s)
-{
-    Base::Console().Log(s.c_str());
 }

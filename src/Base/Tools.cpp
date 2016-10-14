@@ -30,6 +30,7 @@
 
 # include <QTime>
 #include "PyExport.h"
+#include "Interpreter.h"
 #include "Tools.h"
 
 namespace Base {
@@ -144,12 +145,43 @@ std::string Base::Tools::narrow(const std::wstring& str)
 
 std::string Base::Tools::escapedUnicodeFromUtf8(const char *s)
 {
+    Base::PyGILStateLocker lock;
+    std::string escapedstr;
+
     PyObject* unicode = PyUnicode_FromString(s);
+    if (!unicode)
+        return escapedstr;
+
     PyObject* escaped = PyUnicode_AsUnicodeEscapeString(unicode);
+    if (escaped) {
+        escapedstr = std::string(PyString_AsString(escaped));
+        Py_DECREF(escaped);
+    }
+
     Py_DECREF(unicode);
-    std::string escapedstr = std::string(PyString_AsString(escaped));
-    Py_DECREF(escaped);
     return escapedstr;
+}
+
+std::string Base::Tools::escapedUnicodeToUtf8(const std::string& s)
+{
+    Base::PyGILStateLocker lock;
+    std::string string;
+
+    PyObject* unicode = PyUnicode_DecodeUnicodeEscape(s.c_str(), s.size(), "strict");
+    if (!unicode)
+        return string;
+
+    if (PyUnicode_Check(unicode)) {
+        PyObject* value = PyUnicode_AsUTF8String(unicode);
+        string = PyString_AsString(value);
+        Py_DECREF(value);
+    }
+    else if (PyString_Check(unicode)) {
+        string = PyString_AsString(unicode);
+    }
+
+    Py_DECREF(unicode);
+    return string;
 }
 
 // ----------------------------------------------------------------------------
@@ -173,6 +205,11 @@ StopWatch::~StopWatch()
 void StopWatch::start()
 {
     d->t.start();
+}
+
+int StopWatch::restart()
+{
+    return d->t.restart();
 }
 
 int StopWatch::elapsed()

@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
+import Tools
 import PlotAux
 import TankInstance as Instance
 from shipUtils import Paths
@@ -40,8 +41,21 @@ class TaskPanel:
     def accept(self):
         if self.tank is None:
             return False
-        # Plot data
-        l, z, v = self.compute()
+
+        mw = self.getMainWindow()
+        form = mw.findChild(QtGui.QWidget, "TaskPanel")
+        form.points = self.widget(QtGui.QSpinBox, "Points")
+        n = form.points.value()
+
+        points = Tools.tankCapacityCurve(self.tank, n)
+        l = []
+        z = []
+        v = []
+        for p in points:
+            l.append(p[0] * 100)
+            z.append(p[1].getValueAs("m").Value)
+            v.append(p[2].getValueAs("m^3").Value)
+
         PlotAux.Plot(l, z, v, self.tank)
         return True
 
@@ -153,29 +167,6 @@ class TaskPanel:
                 "Number of points",
                 None,
                 QtGui.QApplication.UnicodeUTF8))
-
-    def compute(self):
-        mw = self.getMainWindow()
-        form = mw.findChild(QtGui.QWidget, "TaskPanel")
-        form.points = self.widget(QtGui.QSpinBox, "Points")
-
-        bbox = self.tank.Shape.BoundBox
-        dz = Units.Quantity(bbox.ZMax - bbox.ZMin, Units.Length)
-
-        n = form.points.value()
-        dlevel = 100.0 / (n - 1)
-        l = [0.0]
-        v = [0.0]
-        z = [0.0]
-
-        for i in range(1, n):
-            level = i * dlevel
-            vol = self.tank.Proxy.setFillingLevel(self.tank, level)
-            l.append(level)
-            z.append(level / 100.0 * dz.getValueAs("m").Value)
-            v.append(vol.getValueAs("m^3").Value)
-        return (l, z, v)
-
 
 def createTask():
     panel = TaskPanel()

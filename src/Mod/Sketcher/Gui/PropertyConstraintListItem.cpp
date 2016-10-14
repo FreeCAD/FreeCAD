@@ -40,7 +40,8 @@ TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {
-
+    blockEvent = false;
+    onlyUnnamed = false;
 }
 
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
@@ -60,8 +61,8 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
 
 void PropertyConstraintListItem::initialize()
 {
-    const Sketcher::PropertyConstraintList* item = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
-    const std::vector< Sketcher::Constraint * > &vals = item->getValues();
+    const Sketcher::PropertyConstraintList* list = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
+    const std::vector< Sketcher::Constraint * > &vals = list->getValues();
 
     int id = 1;
     int iNamed = 0;
@@ -101,6 +102,9 @@ void PropertyConstraintListItem::initialize()
                 item->setObjectName(internalName);
                 this->appendChild(item);
             }
+            
+            item->bind(list->createPath(id-1));
+            item->setAutoApply(false);
         }
     }
 
@@ -243,10 +247,13 @@ bool PropertyConstraintListItem::event (QEvent* ev)
 void PropertyConstraintListItem::setValue(const QVariant& value)
 {
     // see PropertyConstraintListItem::event
+    Q_UNUSED(value);
 }
 
 QWidget* PropertyConstraintListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     QLineEdit *le = new QLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(true);

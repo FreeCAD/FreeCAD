@@ -314,11 +314,11 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         if (strcmp(msg.pDocName,sketchView->getSketchObject()->getDocument()->getName())==0 &&
             strcmp(msg.pObjectName,sketchView->getSketchObject()->getNameInDocument())== 0) {
             if (msg.pSubName) {
-                QString expr = QString::fromAscii(msg.pSubName);
+                QString expr = QString::fromLatin1(msg.pSubName);
                 std::string shapetype(msg.pSubName);
                 // if-else edge vertex
                 if (shapetype.size() > 4 && shapetype.substr(0,4) == "Edge") {
-                    QRegExp rx(QString::fromAscii("^Edge(\\d+)$"));
+                    QRegExp rx(QString::fromLatin1("^Edge(\\d+)$"));
                     int pos = expr.indexOf(rx);
                     if (pos > -1) {
                         bool ok;
@@ -337,7 +337,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
                     }
                 }
                 else if (shapetype.size() > 6 && shapetype.substr(0,6) == "Vertex"){
-                    QRegExp rx(QString::fromAscii("^Vertex(\\d+)$"));
+                    QRegExp rx(QString::fromLatin1("^Vertex(\\d+)$"));
                     int pos = expr.indexOf(rx);
                     if (pos > -1) {
                         bool ok;
@@ -562,7 +562,7 @@ void TaskSketcherElements::on_listWidgetElements_itemSelectionChanged(void)
 void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *item)
 {
     ElementItem *it = dynamic_cast<ElementItem*>(item);
-    if (!item) return;
+    if (!it) return;
     
     Gui::Selection().rmvPreselect();
     
@@ -619,8 +619,9 @@ void TaskSketcherElements::on_listWidgetElements_itemEntered(QListWidgetItem *it
     }
 }
 
-void TaskSketcherElements::leaveEvent ( QEvent * event )
+void TaskSketcherElements::leaveEvent (QEvent * event)
 {
+    Q_UNUSED(event);
     Gui::Selection().rmvPreselect();
     ui->listWidgetElements->clearFocus();
 }

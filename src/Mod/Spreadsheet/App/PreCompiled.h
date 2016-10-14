@@ -30,10 +30,8 @@
 // Importing of App classes
 #ifdef FC_OS_WIN32
 # define SpreadsheetExport __declspec(dllexport)
-# define SpreadsheetGuiExport __declspec(dllexport)
 #else // for Linux
 # define SpreadsheetExport
-# define SpreadsheetGuiExport
 #endif
 
 

@@ -15,6 +15,7 @@
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>
+# include <Standard_Version.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -48,7 +49,9 @@
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
+#include "FeatureOffset.h"
 #include "PartFeatures.h"
+#include "BodyBase.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
@@ -89,29 +92,30 @@
 #include "ToroidPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
+#include "AttachEnginePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
+#include "Attacher.h"
+#include "AttachableObject.h"
+#include "FaceMaker.h"
+#include "FaceMakerCheese.h"
+#include "FaceMakerBullseye.h"
 
-extern struct PyMethodDef Part_methods[];
+namespace Part {
+extern PyObject* initModule();
+}
+
 using namespace Part;
+
 PyObject* Part::PartExceptionOCCError;
 PyObject* Part::PartExceptionOCCDomainError;
 PyObject* Part::PartExceptionOCCRangeError;
 PyObject* Part::PartExceptionOCCConstructionError;
 PyObject* Part::PartExceptionOCCDimensionError;
 
-PyDoc_STRVAR(module_part_doc,
-"This is a module working with shapes.");
 
-extern "C" {
-void PartExport initPart()
+PyMODINIT_FUNC initPart()
 {
-    std::stringstream str;
-    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
-#ifdef OCC_VERSION_DEVELOPMENT
-    str << "." OCC_VERSION_DEVELOPMENT;
-#endif
-    App::Application::Config()["OCC_VERSION"] = str.str();
-
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
@@ -122,41 +126,45 @@ void PartExport initPart()
     OSD::SetSignal(Standard_False);
 #endif
 
-    PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
+    PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
+
+    Py::Object module(partModule);
+    module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
+
+    // Python exceptions
+    //
     PyObject* OCCError = 0;
-    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, 
-                PyExc_RuntimeError)) {
-        OCCError = PyErr_NewException("Part.OCCError", 
-            Base::BaseExceptionFreeCADError, NULL);
+    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, PyExc_RuntimeError)) {
+        OCCError = PyErr_NewException("Part.OCCError", Base::BaseExceptionFreeCADError, NULL);
     }
     else {
         Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
-        OCCError = PyErr_NewException("Part.OCCError", 
-            PyExc_RuntimeError, NULL);
+        OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, NULL);
     }
     Py_INCREF(OCCError);
     PyModule_AddObject(partModule, "OCCError", OCCError);
     PartExceptionOCCError = OCCError; //set global variable ;(
-    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError",
-            PartExceptionOCCError, NULL);
+
+    // domain error
+    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError", PartExceptionOCCError, NULL);
     Py_INCREF(PartExceptionOCCDomainError);
-    PyModule_AddObject(partModule, "OCCDomainError",
-            PartExceptionOCCDomainError);
-    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError",
-            PartExceptionOCCDomainError, NULL);
+    PyModule_AddObject(partModule, "OCCDomainError", PartExceptionOCCDomainError);
+
+    // range error
+    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCRangeError);
     PyModule_AddObject(partModule, "OCCRangeError", PartExceptionOCCRangeError);
-    PartExceptionOCCConstructionError = PyErr_NewException(
-            "Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
+
+    // construction error
+    PartExceptionOCCConstructionError = PyErr_NewException("Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCConstructionError);
-    PyModule_AddObject(partModule, "OCCConstructionError",
-            PartExceptionOCCConstructionError);
-    PartExceptionOCCDimensionError = PyErr_NewException(
-            "Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
+    PyModule_AddObject(partModule, "OCCConstructionError", PartExceptionOCCConstructionError);
+
+    // dimension error
+    PartExceptionOCCDimensionError = PyErr_NewException("Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
     Py_INCREF(PartExceptionOCCConstructionError);
-    PyModule_AddObject(partModule, "OCCDimensionError",
-            PartExceptionOCCDimensionError);
+    PyModule_AddObject(partModule, "OCCDimensionError", PartExceptionOCCDimensionError);
 
     //rename the types properly to pickle and unpickle them
     Part::TopoShapePy         ::Type.tp_name = "Part.Shape";
@@ -210,10 +218,25 @@ void PartExport initPart()
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
 
+    Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+
+    try{
+        //import all submodules of BOPTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('BOPTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('BOPTools')");
+        module.setAttr(std::string("BOPTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import BOPTools package:\n");
+        err.ReportException();
+    }
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
@@ -221,8 +244,24 @@ void PartExport initPart()
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
+    Part::FaceMaker             ::init();
+    Part::FaceMakerPublic       ::init();
+    Part::FaceMakerSimple       ::init();
+    Part::FaceMakerCheese       ::init();
+    Part::FaceMakerExtrusion    ::init();
+    Part::FaceMakerBullseye     ::init();
+
+    Attacher::AttachEngine        ::init();
+    Attacher::AttachEngine3D      ::init();
+    Attacher::AttachEnginePlane   ::init();
+    Attacher::AttachEngineLine    ::init();
+    Attacher::AttachEnginePoint   ::init();
+
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
+    Part::AttachableObject      ::init();
+    Part::AttachableObjectPython::init();
+    Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
     Part::CustomFeature         ::init();
@@ -264,6 +303,7 @@ void PartExport initPart()
     Part::Helix                 ::init();
     Part::Spiral                ::init();
     Part::Wedge                 ::init();
+
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
     Part::Face                  ::init();
@@ -271,6 +311,7 @@ void PartExport initPart()
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Offset2D              ::init();
     Part::Thickness             ::init();
 
     // Geometry types
@@ -304,7 +345,7 @@ void PartExport initPart()
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
@@ -381,5 +422,3 @@ void PartExport initPart()
     Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
        Interface_Static::CVal("write.step.product.name")).c_str());
 }
-
-} // extern "C"

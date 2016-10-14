@@ -45,6 +45,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Gui/Command.h>
 #include <Mod/Part/App/PartFeatures.h>
 
 
@@ -73,7 +74,7 @@ public:
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -90,8 +91,9 @@ public:
 ThicknessWidget::ThicknessWidget(Part::Thickness* thickness, QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Q_UNUSED(parent);
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->thickness = thickness;
     d->ui.setupUi(this);
@@ -211,7 +213,7 @@ bool ThicknessWidget::accept()
                 name.c_str(),d->selection.c_str());
         }
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value());
+            name.c_str(),d->ui.spinOffset->value().getValue());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
             name.c_str(),d->ui.modeType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
@@ -228,7 +230,7 @@ bool ThicknessWidget::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

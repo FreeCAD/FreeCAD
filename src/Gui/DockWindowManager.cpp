@@ -46,7 +46,7 @@ DockWindowItems::~DockWindowItems()
 void DockWindowItems::addDockWidget(const char* name, Qt::DockWidgetArea pos, bool visibility, bool tabbed)
 {
     DockWindowItem item;
-    item.name = QString::fromAscii(name);
+    item.name = QString::fromLatin1(name);
     item.pos = pos;
     item.visibility = visibility;
     item.tabbed = tabbed;
@@ -243,7 +243,7 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
 void DockWindowManager::retranslate()
 {
     for (QList<QDockWidget*>::Iterator it = d->_dockedWindows.begin(); it != d->_dockedWindows.end(); ++it) {
-        (*it)->setWindowTitle(QDockWidget::tr((*it)->objectName().toAscii()));
+        (*it)->setWindowTitle(QDockWidget::tr((*it)->objectName().toLatin1()));
     }
 }
 
@@ -276,6 +276,17 @@ bool DockWindowManager::registerDockWindow(const char* name, QWidget* widget)
     return true;
 }
 
+QWidget* DockWindowManager::unregisterDockWindow(const char* name)
+{
+    QWidget* widget = 0;
+    QMap<QString, QPointer<QWidget> >::Iterator it = d->_dockWindows.find(QLatin1String(name));
+    if (it != d->_dockWindows.end()) {
+        widget = d->_dockWindows.take(QLatin1String(name));
+    }
+
+    return widget;
+}
+
 /** Sets up the dock windows of the activated workbench. */
 void DockWindowManager::setup(DockWindowItems* items)
 {
@@ -290,7 +301,7 @@ void DockWindowManager::setup(DockWindowItems* items)
     QList<QDockWidget*> areas[4];
     for (QList<DockWindowItem>::ConstIterator it = dws.begin(); it != dws.end(); ++it) {
         QDockWidget* dw = findDockWidget(docked, it->name);
-        QByteArray dockName = it->name.toAscii();
+        QByteArray dockName = it->name.toLatin1();
         bool visible = hPref->GetBool(dockName.constData(), it->visibility);
 
         if (!dw) {

@@ -2,6 +2,7 @@
 #include "PreCompiled.h"
 
 #include "Mod/Part/App/Part2DObject.h"
+#include "OCCError.h"
 
 // inclusion of the generated files (generated out of Part2DObjectPy.xml)
 #include "Part2DObjectPy.h"
