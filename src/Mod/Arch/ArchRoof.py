@@ -614,29 +614,33 @@ class _Roof(ArchComponent.Component):
                         if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < math.pi/2:
                             fset.append(f)
                     if fset:
-                        shell = Part.Shell(fset)
-                        lut={}
-                        if shell.Faces:
-                            for f in shell.Faces:
-                                for e in f.Edges:
-                                    hc = e.hashCode()
-                                    if hc in lut:
-                                        lut[hc] = lut[hc] + 1
-                                    else:
-                                        lut[hc] = 1
-                            for e in shell.Edges:
-                                if lut[e.hashCode()] == 1:
-                                    bl += e.Length
-                                    bn += 1
-                                elif lut[e.hashCode()] == 2:
-                                    rl += e.Length
-                                    rn += 1
-                            if obj.RidgeLength.Value != rl:
-                                obj.RidgeLength = rl
-                                print str(rn)+" ridge edges in roof "+obj.Name
-                            if obj.BorderLength.Value != bl:
-                                obj.BorderLength = bl
-                                print str(bn)+" border edges in roof "+obj.Name
+                        try:
+                            shell = Part.Shell(fset)
+                        except:
+                            pass
+                        else:
+                            lut={}
+                            if shell.Faces:
+                                for f in shell.Faces:
+                                    for e in f.Edges:
+                                        hc = e.hashCode()
+                                        if hc in lut:
+                                            lut[hc] = lut[hc] + 1
+                                        else:
+                                            lut[hc] = 1
+                                for e in shell.Edges:
+                                    if lut[e.hashCode()] == 1:
+                                        bl += e.Length
+                                        bn += 1
+                                    elif lut[e.hashCode()] == 2:
+                                        rl += e.Length
+                                        rn += 1
+            if obj.RidgeLength.Value != rl:
+                obj.RidgeLength = rl
+                print str(rn)+" ridge edges in roof "+obj.Name
+            if obj.BorderLength.Value != bl:
+                obj.BorderLength = bl
+                print str(bn)+" border edges in roof "+obj.Name
         ArchComponent.Component.computeAreas(self,obj)
 
 

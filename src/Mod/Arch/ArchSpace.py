@@ -441,14 +441,17 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         self.text2.justification = coin.SoAsciiText.LEFT
         self.coords = coin.SoTransform()
         self.header = coin.SoTransform()
-        label = coin.SoSeparator()
-        label.addChild(self.coords)
-        label.addChild(self.color)
-        label.addChild(self.font)
-        label.addChild(self.text2)
-        label.addChild(self.header)
-        label.addChild(self.text1)
-        vobj.Annotation.addChild(label)
+        self.label = coin.SoSwitch()
+        sep = coin.SoSeparator()
+        self.label.whichChild = 0
+        sep.addChild(self.coords)
+        sep.addChild(self.color)
+        sep.addChild(self.font)
+        sep.addChild(self.text2)
+        sep.addChild(self.header)
+        sep.addChild(self.text1)
+        self.label.addChild(sep)
+        vobj.Annotation.addChild(self.label)
         self.onChanged(vobj,"TextColor")
         self.onChanged(vobj,"FontSize")
         self.onChanged(vobj,"FirstLine")
@@ -563,6 +566,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 else:
                     self.text1.justification = coin.SoAsciiText.LEFT
                     self.text2.justification = coin.SoAsciiText.LEFT
+                    
+        elif prop == "Visibility":
+            if vobj.Visibility:
+                self.label.whichChild = 0
+            else:
+                self.label.whichChild = -1
 
     def setEdit(self,vobj,mode):
         taskd = SpaceTaskPanel()
