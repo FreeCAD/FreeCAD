@@ -159,6 +159,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->createGroupAction);
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
@@ -177,8 +178,8 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         }
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
-        contextMenu.addAction(this->relabelObjectAction);
         contextMenu.addAction(this->markRecomputeAction);
+        contextMenu.addAction(this->relabelObjectAction);
 
         // if only one item is selected setup the edit menu
         if (this->selectedItems().size() == 1) {
@@ -308,12 +309,24 @@ void TreeWidget::onFinishEditing()
 
 void TreeWidget::onMarkRecompute()
 {
-    if (this->contextItem && this->contextItem->type() == ObjectType) {
-        DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>
-            (this->contextItem);
-        App::DocumentObject* obj = objitem->object()->getObject();
-        if (!obj) return;
-        obj->touch();
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        std::vector<App::DocumentObject*> obj = doc->getObjects();
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+            (*it)->touch();
+    }
+    // mark all selected objects
+    else {
+        QList<QTreeWidgetItem*> items = this->selectedItems();
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            if ((*it)->type() == ObjectType) {
+                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                App::DocumentObject* obj = objitem->object()->getObject();
+                obj->touch();
+            }
+        }
     }
 }
 
