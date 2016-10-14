@@ -385,6 +385,7 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         obj.addProperty("App::PropertyString","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"))
+        obj.addProperty("App::PropertyDistance","NodesOffset","Arch",QT_TRANSLATE_NOOP("App::Property","Offset distance between the centerline and the nodes line"))
         self.Type = "Structure"
         obj.Role = Roles
 
@@ -469,10 +470,13 @@ class _Structure(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        if prop in ["Shape","ResetNodes"]:
+        if prop in ["Shape","ResetNodes","NodesOffset"]:
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
             if hasattr(obj,"Nodes"):
                 # update structural nodes
+                offset = FreeCAD.Vector()
+                if hasattr(obj,"NodesOffset"):
+                    offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)
                 if obj.Nodes  and (prop != "ResetNodes"):
                     if hasattr(self,"nodes"):
                         if self.nodes:
@@ -487,7 +491,7 @@ class _Structure(ArchComponent.Component):
                         else:
                             nodes = self.getAxis(obj)
                         if nodes:
-                            self.nodes = [v.Point for v in nodes.Vertexes]
+                            self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                             return
                 # we calculate and set the nodes
                 if obj.Role in ["Slab"]:
@@ -495,7 +499,7 @@ class _Structure(ArchComponent.Component):
                 else:
                     nodes = self.getAxis(obj)
                 if nodes:
-                    self.nodes = [v.Point for v in nodes.Vertexes]
+                    self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                     obj.Nodes = self.nodes
 
     def getNodeEdges(self,obj):
