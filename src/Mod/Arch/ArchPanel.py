@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands
+import FreeCAD,Draft,ArchComponent,DraftVecUtils,ArchCommands,math
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -262,8 +262,16 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyLength","Thickness","Arch",QT_TRANSLATE_NOOP("App::Property","The thickness or extrusion depth of this element"))
         obj.addProperty("App::PropertyInteger","Sheets","Arch",  QT_TRANSLATE_NOOP("App::Property","The number of sheets to use"))
         obj.addProperty("App::PropertyLength","Offset","Arch",   QT_TRANSLATE_NOOP("App::Property","The offset between this panel and its baseline"))
+        obj.addProperty("App::PropertyLength","WaveLength","Arch", QT_TRANSLATE_NOOP("App::Property","The length of waves for corrugated elements"))
+        obj.addProperty("App::PropertyLength","WaveHeight","Arch", QT_TRANSLATE_NOOP("App::Property","The height of waves for corrugated elements"))
+        obj.addProperty("App::PropertyAngle","WaveDirection","Arch", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
+        obj.addProperty("App::PropertyEnumeration","WaveType","Arch", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
+        obj.addProperty("App::PropertyArea","Area","Arch",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
         obj.Sheets = 1
         self.Type = "Panel"
+        obj.WaveType = ["Curved","Trapezoidal"]
+        obj.setEditorMode("VerticalArea",2)
+        obj.setEditorMode("HorizontalArea",2)
 
     def execute(self,obj):
         "creates the panel shape"
@@ -303,15 +311,14 @@ class _Panel(ArchComponent.Component):
         pl = obj.Placement
         base = None
         normal = None
+        baseprofile = None
         if obj.Base:
             base = obj.Base.Shape.copy()
             if not base.Solids:
                 p = FreeCAD.Placement(obj.Base.Placement)
-                normal = p.Rotation.multVec(Vector(0,0,1))
-                normal = normal.multiply(thickness)
                 if base.Faces:
-                    self.BaseProfile = base
-                    self.ExtrusionVector = normal
+                    baseprofile = base
+                    normal = baseprofile.Faces[0].normalAt(0,0).multiply(thickness)
                     base = base.extrude(normal)
                 elif base.Wires:
                     closed = True
@@ -319,10 +326,9 @@ class _Panel(ArchComponent.Component):
                         if not w.isClosed():
                             closed = False
                     if closed:
-                        base = ArchCommands.makeFace(base.Wires)
-                        self.BaseProfile = base
-                        self.ExtrusionVector = normal
-                        base = base.extrude(normal)
+                        baseprofile = ArchCommands.makeFace(base.Wires)
+                        normal = baseprofile.normalAt(0,0).multiply(thickness)
+                        base = baseprofile.extrude(normal)
                 elif obj.Base.isDerivedFrom("Mesh::Feature"):
                     if obj.Base.Mesh.isSolid():
                         if obj.Base.Mesh.countComponents() == 1:
@@ -331,7 +337,6 @@ class _Panel(ArchComponent.Component):
                                 base = sh
         else:
             normal = Vector(0,0,1).multiply(thickness)
-            self.ExtrusionVector = normal
             l2 = length/2 or 0.5
             w2 = width/2 or 0.5
             v1 = Vector(-l2,-w2,0)
@@ -339,9 +344,66 @@ class _Panel(ArchComponent.Component):
             v3 = Vector(l2,w2,0)
             v4 = Vector(-l2,w2,0)
             base = Part.makePolygon([v1,v2,v3,v4,v1])
-            base = Part.Face(base)
-            self.BaseProfile = base
-            base = base.extrude(self.ExtrusionVector)
+            baseprofile = Part.Face(base)
+            base = baseprofile.extrude(normal)
+            
+        if hasattr(obj,"Area"):
+            if baseprofile:
+                obj.Area = baseprofile.Area
+            
+        if hasattr(obj,"WaveLength"):
+            if baseprofile and obj.WaveLength.Value and obj.WaveHeight.Value:
+                # corrugated element
+                bb = baseprofile.BoundBox
+                bb.enlarge(bb.DiagonalLength)
+                p1 = Vector(bb.getPoint(0).x,bb.getPoint(0).y,bb.Center.z)
+                if obj.WaveType == "Curved":
+                    p2 = p1.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
+                    p3 = p2.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
+                    e1 = Part.Arc(p1,p2,p3).toShape()
+                    p4 = p3.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
+                    p5 = p4.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
+                    e2 = Part.Arc(p3,p4,p5).toShape()
+                else:
+                    if obj.WaveHeight.Value < obj.WaveLength.Value:
+                        p2 = p1.add(Vector(obj.WaveHeight.Value,0,obj.WaveHeight.Value))
+                        p3 = p2.add(Vector(obj.WaveLength.Value-2*obj.WaveHeight.Value,0,0))
+                        p4 = p3.add(Vector(obj.WaveHeight.Value,0,-obj.WaveHeight.Value))
+                        e1 = Part.makePolygon([p1,p2,p3,p4])
+                        p5 = p4.add(Vector(obj.WaveHeight.Value,0,-obj.WaveHeight.Value))
+                        p6 = p5.add(Vector(obj.WaveLength.Value-2*obj.WaveHeight.Value,0,0))
+                        p7 = p6.add(Vector(obj.WaveHeight.Value,0,obj.WaveHeight.Value))
+                        e2 = Part.makePolygon([p4,p5,p6,p7])
+                    else:
+                        p2 = p1.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
+                        p3 = p2.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
+                        e1 = Part.makePolygon([p1,p2,p3])
+                        p4 = p3.add(Vector(obj.WaveLength.Value/2,0,-obj.WaveHeight.Value))
+                        p5 = p4.add(Vector(obj.WaveLength.Value/2,0,obj.WaveHeight.Value))
+                        e2 = Part.makePolygon([p3,p4,p5])
+                edges = [e1,e2]
+                for i in range(int(bb.XLength/(obj.WaveLength.Value*2))):
+                    e1 = e1.copy()
+                    e1.translate(Vector(obj.WaveLength.Value*2,0,0))
+                    e2 = e2.copy()
+                    e2.translate(Vector(obj.WaveLength.Value*2,0,0))
+                    edges.extend([e1,e2])
+                basewire = Part.Wire(edges)
+                baseface = basewire.extrude(Vector(0,bb.YLength,0))
+                base = baseface.extrude(Vector(0,0,thickness))
+                rot = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),normal)
+                base.rotate(bb.Center,rot.Axis,math.degrees(rot.Angle))
+                if obj.WaveDirection.Value:
+                    base.rotate(bb.Center,normal,obj.WaveDirection.Value)
+                n1 = normal.negative().normalize().multiply(obj.WaveHeight.Value*2)
+                self.vol = baseprofile.copy()
+                self.vol.translate(n1)
+                self.vol = self.vol.extrude(n1.negative().multiply(2))
+                base = self.vol.common(base)
+                base = base.removeSplitter()
+                if not base:
+                    FreeCAD.Console.PrintError(transpate("Arch","Error computing shape of ")+obj.Label+"\n")
+                    return False
 
         if base and (obj.Sheets > 1) and normal and thickness:
             bases = [base]
