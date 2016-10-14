@@ -670,7 +670,7 @@ def pruneIncluded(objectslist):
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if not (Draft.getType(obj) in ["Window","Clone"]):
+            if not (Draft.getType(obj) in ["Window","Clone","Pipe"]):
                 for parent in obj.InList:
                     if parent.isDerivedFrom("Part::Feature"):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
