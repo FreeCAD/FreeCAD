@@ -140,22 +140,33 @@ public:
                 goto end;
             }
             else if (len > 1) {
-                const int dec = copy.indexOf(locale.decimalPoint());
-                if (dec != -1) {
-                    if (dec + 1 < copy.size() && copy.at(dec + 1) == locale.decimalPoint() && pos == dec + 1) {
-                        copy.remove(dec + 1, 1);
-                    }
-                    else if (copy.indexOf(locale.decimalPoint(), dec + 1) != -1) {
-                        // trying to add a second decimal point is not allowed
-                        state = QValidator::Invalid;
-                        goto end;
-                    }
-                    for (int i=dec + 1; i<copy.size(); ++i) {
-                        // a group separator after the decimal point is not allowed
-                        if (copy.at(i) == locale.groupSeparator()) {
+                bool decOccurred = false;
+                // Check to the left of cursor until beginning of number
+                for (int i = pos;
+                     i >= 0 && (copy.at(i).isDigit() ||
+                                copy.at(i) == locale.decimalPoint() ||
+                                copy.at(i) == locale.groupSeparator());
+                     i--) {
+                    if (copy.at(i) == locale.decimalPoint()) {
+                        if(decOccurred) {
                             state = QValidator::Invalid;
                             goto end;
                         }
+                        decOccurred = true;
+                    }
+                }
+                // Check to the left of cursor until end of number
+                for (int i = pos+1;
+                     i < copy.size() && (copy.at(i).isDigit() ||
+                                         copy.at(i) == locale.decimalPoint() ||
+                                         copy.at(i) == locale.groupSeparator());
+                     i++) {
+                    if (copy.at(i) == locale.decimalPoint()) {
+                        if(decOccurred) {
+                            state = QValidator::Invalid;
+                            goto end;
+                        }
+                        decOccurred = true;
                     }
                 }
             }
