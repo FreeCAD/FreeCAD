@@ -166,7 +166,7 @@ class _ArchSchedule:
                     obj.Result.set("B"+str(i+2),str(val))
                 else:
                     vals = val.split(".")
-                    sumval = None
+                    sumval = 0
                     for o in objs:
                         if verbose:
                             l = o.Name+" ("+o.Label+"):"
@@ -177,6 +177,8 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if verbose:
                                 print d
+                            if hasattr(d,"Value"):
+                                d = d.Value
                         except:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:

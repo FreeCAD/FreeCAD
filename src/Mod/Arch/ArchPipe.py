@@ -205,7 +205,9 @@ class _ArchPipe(ArchComponent.Component):
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe\n"))
         else:
             obj.Shape = sh
-            if not obj.Base:
+            if obj.Base:
+                obj.Length = w.Length
+            else:
                 obj.Placement = pl
 
     def getWire(self,obj):
@@ -421,5 +423,7 @@ if FreeCAD.GuiUp:
             return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
                      'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
                    }
+        def IsActive(self):
+            return not FreeCAD.ActiveDocument is None
 
     FreeCADGui.addCommand('Arch_PipeTools', _ArchPipeGroupCommand())
