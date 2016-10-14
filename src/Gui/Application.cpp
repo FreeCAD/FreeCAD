@@ -1537,9 +1537,19 @@ void Application::runApplication(void)
     if (it != cfg.end() && mainApp.isRunning()) {
         // send the file names to be opened to the server application so that this
         // opens them
+        QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
         for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+            QFileInfo fi(fn);
+            // if path name is relative make it absolute because the running instance
+            // cannot determine the full path when trying to load the file
+            if (fi.isRelative()) {
+                fn = cwd.absoluteFilePath(fn);
+                fn = QDir::cleanPath(fn);
+            }
+
+            QByteArray msg = fn.toUtf8();
             msg.prepend("OpenFile:");
             if (!mainApp.sendMessage(msg)) {
                 qWarning("Failed to send message to server");
