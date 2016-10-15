@@ -80,8 +80,6 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-//debugging routine signatures
-const char* _printBool(bool b);
 
 GeometryObject::GeometryObject(DrawViewPart* parent) :
     Tolerance(0.05f),
@@ -166,6 +164,18 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
                              const Base::Vector3d& direction,
                              const Base::Vector3d& xAxis)
 {
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
+    Base::Vector3d cross = flipDirection;
+    //special cases
+    if (flipDirection == stdZ) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else if (flipDirection == (stdZ * -1.0)) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else {
+        cross.Normalize();
+        cross = cross.Cross(stdZ);
+    }
     // Clear previous Geometry
     clear();
 
@@ -176,12 +186,11 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         brep_hlr = new HLRBRep_Algo();
         brep_hlr->Add(input, m_isoCount);
 
-        // Project the shape into view space with the object's centroid
-        // at the origin.
         gp_Ax2 viewAxis;
         viewAxis = gp_Ax2(inputCenter,
-                          gp_Dir(direction.x, direction.y, direction.z),
-                          gp_Dir(xAxis.x, xAxis.y, xAxis.z));
+                          gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+//                          gp_Dir(xAxis.x, -xAxis.y, xAxis.z));
+                          gp_Dir(cross.x, cross.y, cross.z));
         HLRAlgo_Projector projector( viewAxis );
         brep_hlr->Projector(projector);
         brep_hlr->Update();
@@ -687,7 +696,7 @@ gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
     gp_Ax2 viewAxis;
     viewAxis = gp_Ax2(gp_Pnt(0, 0, 0),
                       gp_Dir(direction.x, -direction.y, direction.z),
-                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z)); // Y invert warning!
+                      gp_Dir(xAxis.x, -xAxis.y, xAxis.z));
 
     gp_Trsf tempTransform;
     tempTransform.SetTransformation(viewAxis);
@@ -719,7 +728,6 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
     try {
         // Make tempTransform scale the object around it's centre point and
         // mirror about the Y axis
-        // TODO: is this really always Y axis? sb whatever is vertical direction in projection?
         gp_Trsf tempTransform;
         tempTransform.SetScale(inputCenter, scale);
         gp_Trsf mirrorTransform;

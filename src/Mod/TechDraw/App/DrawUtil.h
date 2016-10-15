@@ -49,6 +49,7 @@ class TechDrawExport DrawUtil {
         static void countFaces(const char* label, const TopoDS_Shape& s);
         static void countWires(const char* label, const TopoDS_Shape& s);
         static void countEdges(const char* label, const TopoDS_Shape& s);
+        static const char* printBool(bool b);
 };
 
 } //end namespace TechDraw
