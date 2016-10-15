@@ -197,4 +197,8 @@ void DrawUtil::dumpEdge(char* label, int i, TopoDS_Edge e)
     Base::Console().Message("%s edge:%d start:(%.3f,%.3f,%.3f)  end:(%.2f,%.3f,%.3f)\n",label,i,
                             vStart.X(),vStart.Y(),vStart.Z(),vEnd.X(),vEnd.Y(),vEnd.Z());
 }
+const char* DrawUtil::printBool(bool b)
+{
+    return (b ? "True" : "False");
+}
 //==================================
