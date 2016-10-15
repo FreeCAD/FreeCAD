@@ -39,7 +39,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # presets
-WindowPartTypes = ["Frame","Solid panel","Glass panel"]
+WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                    "Sliding 2-pane", "Simple door", "Glass door"]
@@ -626,6 +626,7 @@ class _Window(ArchComponent.Component):
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
         obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
         obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","an optional object that defines a volume to be subtracted from hosts of this window"))
         obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
@@ -635,6 +636,8 @@ class _Window(ArchComponent.Component):
         obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
         obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
+        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
@@ -721,6 +724,22 @@ class _Window(ArchComponent.Component):
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
+                                if obj.WindowParts[(i*5)+1] == "Louvre":
+                                    if hasattr(obj,"LouvreWidth"):
+                                        if obj.LouvreWidth and obj.LouvreSpacing:
+                                            bb = shape.BoundBox
+                                            bb.enlarge(bb.DiagonalLength)
+                                            step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
+                                            if step < bb.YLength:
+                                                box = Part.makeBox(bb.XLength,obj.LouvreWidth.Value,bb.ZLength)
+                                                boxes = []
+                                                for i in range(int(bb.YLength/step)+1):
+                                                    b = box.copy()
+                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
+                                                    boxes.append(b)
+                                                self.boxes = Part.makeCompound(boxes)
+                                                self.boxes.Placement = obj.Base.Placement
+                                                shape = shape.common(self.boxes)
                                 shapes.append(shape)
                         if shapes:
                             base = Part.makeCompound(shapes)
