@@ -682,7 +682,7 @@ class _Window(ArchComponent.Component):
         if self.clone(obj):
             return
         
-        import Part, DraftGeomUtils
+        import Part,DraftGeomUtils,math
         pl = obj.Placement
         base = None
         if obj.Base:
@@ -738,7 +738,9 @@ class _Window(ArchComponent.Component):
                                                     b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
                                                     boxes.append(b)
                                                 self.boxes = Part.makeCompound(boxes)
-                                                self.boxes.Placement = obj.Base.Placement
+                                                rot = obj.Base.Placement.Rotation
+                                                self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                                self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
                                                 shape = shape.common(self.boxes)
                                 shapes.append(shape)
                         if shapes:
