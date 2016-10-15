@@ -140,21 +140,35 @@ public:
                 goto end;
             }
             else if (len > 1) {
-                const int dec = copy.indexOf(locale.decimalPoint());
+                int dec = copy.indexOf(locale.decimalPoint());
                 if (dec != -1) {
+                    // fix two directly consecutive decimal points immediately
                     if (dec + 1 < copy.size() && copy.at(dec + 1) == locale.decimalPoint() && pos == dec + 1) {
                         copy.remove(dec + 1, 1);
                     }
-                    else if (copy.indexOf(locale.decimalPoint(), dec + 1) != -1) {
-                        // trying to add a second decimal point is not allowed
-                        state = QValidator::Invalid;
-                        goto end;
-                    }
-                    for (int i=dec + 1; i<copy.size(); ++i) {
-                        // a group separator after the decimal point is not allowed
-                        if (copy.at(i) == locale.groupSeparator()) {
-                            state = QValidator::Invalid;
-                            goto end;
+                    else {
+                        // search for a second decimal point
+                        int dec2 = copy.indexOf(locale.decimalPoint(), dec + 1);
+                        while (dec2 != -1) {
+                            // if the string between the two decimal points builds one number then
+                            // the input is invalid
+                            bool digits = true;
+                            for (int i = dec + 1; i < dec2; i++) {
+                                QChar c = copy.at(i);
+                                if (!(c.isDigit() || c == locale.groupSeparator())) {
+                                    digits = false;
+                                    break;
+                                }
+                            }
+
+                            if (digits) {
+                                // trying to add a second decimal point inside the same number is not allowed
+                                state = QValidator::Invalid;
+                                goto end;
+                            }
+
+                            dec = dec2;
+                            dec2 = copy.indexOf(locale.decimalPoint(), dec + 1);
                         }
                     }
                 }
