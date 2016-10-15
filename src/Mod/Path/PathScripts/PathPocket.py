@@ -197,7 +197,6 @@ class ObjectPocket:
         PathAreaUtils.flush_nc()
         PathAreaUtils.output('mem')
         PathAreaUtils.feedrate_hv(self.horizFeed, self.vertFeed)
-
         if obj.UseStartPoint:
             start_point = (obj.StartPoint.x, obj.StartPoint.y)
 
@@ -216,7 +215,6 @@ class ObjectPocket:
                 zig_unidirectional,
                 start_point,
                 cut_mode)
-
         return PathAreaUtils.retrieve_gcode()
 
     def buildpathocc(self, obj, shape):
@@ -232,14 +230,12 @@ class ObjectPocket:
         output = ""
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
-        output += 'G0 Z' + fmt(obj.ClearanceHeight.Value) + "\n"
+        output += 'G0 Z' + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
         offsets = []
         nextradius = self.radius + extraoffset
         result = DraftGeomUtils.pocket2d(shape, nextradius)
-        print "did we get something: " + str(result)
         while result:
-            print "Adding " + str(len(result)) + " wires"
             offsets.extend(result)
             nextradius += (self.radius * 2) * (float(obj.StepOver)/100)
             result = DraftGeomUtils.pocket2d(shape, nextradius)
@@ -322,13 +318,13 @@ class ObjectPocket:
                             else:
                                 print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
                                 startPoint = edge.Vertexes[0].Point
-                                output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+                                output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                                 output += "G0 X" + fmt(startPoint.x) + " Y" + fmt(startPoint.y) +\
-                                          " Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+                                          " Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.horizRapid) + "\n"
                             first = False
                         # then move slow down to our starting point for our profile
                         last = edge.Vertexes[0].Point
-                        output += "G1 X" + fmt(last.x) + " Y" + fmt(last.y) + " Z" + fmt(vpos) + "\n"
+                        output += "G1 X" + fmt(last.x) + " Y" + fmt(last.y) + " Z" + fmt(vpos) + " F" + fmt(self.vertFeed) + "\n"
                     if DraftGeomUtils.geomType(edge) == "Circle":
                         point = edge.Vertexes[-1].Point
                         if point == last:  # edges can come flipped
@@ -342,18 +338,18 @@ class ObjectPocket:
                         else:
                             output += "G3"
                         output += " X" + fmt(point.x) + " Y" + fmt(point.y) + " Z" + fmt(vpos)
-                        output += " I" + fmt(relcenter.x) + " J" + fmt(relcenter.y) + " K" + fmt(relcenter.z)
+                        output += " I" + fmt(relcenter.x) + " J" + fmt(relcenter.y) + " K" + fmt(relcenter.z)  + " F" + fmt(self.horizFeed) 
                         output += "\n"
                         last = point
                     else:
                         point = edge.Vertexes[-1].Point
                         if point == last:  # edges can come flipped
                             point = edge.Vertexes[0].Point
-                        output += "G1 X" + fmt(point.x) + " Y" + fmt(point.y) + " Z" + fmt(vpos) + "\n"
+                        output += "G1 X" + fmt(point.x) + " Y" + fmt(point.y) + " Z" + fmt(vpos) + " F" + fmt(self.horizFeed)  + "\n"
                         last = point
 
         # move back up
-        output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "\n"
+        output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
         return output
 
     # To reload this from FreeCAD, use: import PathScripts.PathPocket; reload(PathScripts.PathPocket)
@@ -363,12 +359,16 @@ class ObjectPocket:
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
+            self.vertRapid = 100
+            self.horiRrapid = 100
             self.radius = 0.25
             obj.ToolNumber = 0
             obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
+            self.vertRapid = toolLoad.VertRapid.Value
+            self.horizRapid = toolLoad.HorizRapid.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
             if tool.Diameter == 0:
                 self.radius = 0.25
@@ -387,18 +387,14 @@ class ObjectPocket:
         if obj.Base:
             for b in obj.Base:
                 for sub in b[1]:
-                    print "object base: " + str(b)
                     import Part
                     import PathScripts.PathKurveUtils
                     if "Face" in sub:
-                        print "inside"
                         shape = getattr(b[0].Shape, sub)
                         wire = shape.OuterWire
                         edges = wire.Edges
                     else:
-                        print "in else"
                         edges = [getattr(b[0].Shape, sub) for sub in b[1]]
-                        print "myedges: " + str(edges)
                         wire = Part.Wire(edges)
                         shape = None
 
@@ -490,7 +486,11 @@ class CommandPathPocket:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathPocket", "Creates a Path Pocket object from a face or faces")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -516,7 +516,7 @@ class CommandPathPocket:
         FreeCADGui.doCommand('obj.RampAngle = 3.0')
         FreeCADGui.doCommand('obj.RampSize = 0.75')
         FreeCADGui.doCommand('obj.HelixSize = 0.75')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()

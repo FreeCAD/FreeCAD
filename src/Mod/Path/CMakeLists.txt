@@ -14,6 +14,7 @@ INSTALL(
 )
 
 SET(PathScripts_SRCS
+    PathCommands.py
     PathScripts/__init__.py
     PathScripts/PostUtils.py
     PathScripts/example_pre.py
@@ -27,6 +28,8 @@ SET(PathScripts_SRCS
     PathScripts/rml_post.py
     PathScripts/TooltableEditor.py
     PathScripts/PathProfile.py
+    PathScripts/PathProfileEdges.py
+    PathScripts/PathContour.py
     PathScripts/PathPocket.py
     PathScripts/PathDrilling.py
     PathScripts/PathDressup.py
@@ -37,8 +40,7 @@ SET(PathScripts_SRCS
     PathScripts/PathFixture.py
     PathScripts/PathCopy.py
     PathScripts/PathCompoundExtended.py
-    PathScripts/PathProject.py
-    PathScripts/PathToolTableEdit.py
+    PathScripts/PathJob.py
     PathScripts/PathStock.py
     PathScripts/PathPlane.py
     PathScripts/PathPost.py
@@ -46,7 +48,6 @@ SET(PathScripts_SRCS
     PathScripts/PathToolLenOffset.py
     PathScripts/PathComment.py
     PathScripts/PathStop.py
-    PathScripts/PathMachine.py
     PathScripts/PathFromShape.py
     PathScripts/DlgSettingsPath.ui
     PathScripts/PathKurveUtils.py
@@ -62,7 +63,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSurface.py
     PathScripts/PathRemote.py
     PathScripts/PathSanity.py
-
+    PathScripts/PathToolLibraryManager.py
 )
 
 SET(PathScripts_NC_SRCS

@@ -174,6 +174,13 @@ class POCKETGate:
 
         return pocketable
 
+class CONTOURGate:
+    def allow(self, doc, obj, sub):
+        pass
+
+def contourselect():
+    FreeCADGui.Selection.addSelectionGate(CONTOURGate())
+    FreeCAD.Console.PrintWarning("Contour Select Mode\n")
 
 def fselect():
     FreeCADGui.Selection.addSelectionGate(FGate())

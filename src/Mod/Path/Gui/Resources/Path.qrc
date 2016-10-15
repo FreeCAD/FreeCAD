@@ -5,9 +5,10 @@
         <file>icons/Path-Compound.svg</file>
         <file>icons/Path-Shape.svg</file>
         <file>icons/Path-Profile.svg</file>
+        <file>icons/Path-Contour.svg</file>
         <file>icons/Path-Pocket.svg</file>
         <file>icons/Path-Drilling.svg</file>
-        <file>icons/Path-Project.svg</file>
+        <file>icons/Path-Job.svg</file>
         <file>icons/Path-Dressup.svg</file>
         <file>icons/Path-Hop.svg</file>
         <file>icons/Path-Datums.svg</file>
@@ -74,5 +75,12 @@
         <file>panels/SurfaceEdit.ui</file>
         <file>panels/RemoteEdit.ui</file>
         <file>panels/ToolControl.ui</file>
+        <file>panels/ToolLibraryEditor.ui</file>
+        <file>panels/JobEdit.ui</file>
+        <file>panels/DlgToolCopy.ui</file>
+        <file>panels/ToolEdit.ui</file>
+        <file>panels/DlgJobChooser.ui</file>
+        <file>panels/ContourEdit.ui</file>
+        <file>panels/ProfileEdgesEdit.ui</file>
     </qresource>
 </RCC>

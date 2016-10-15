@@ -56,6 +56,9 @@ class ObjectPathEngrave:
         obj.Algorithm = ['OCC Native']
 
         # Tool Properties
+        obj.addProperty("App::PropertyEnumeration", "ToolController", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool controller to use"))
+        obj.ToolController = ["None"]
+
         obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
@@ -88,18 +91,36 @@ class ObjectPathEngrave:
         if obj.Comment != "":
             output += '(' + str(obj.Comment)+')\n'
 
+        # myJob = PathUtils.findParentJob(obj)
+        # if myJob is not None:
+        #     controllers = myJob.Proxy.getToolControllers(myJob)
+        #     if len(controllers) >= 1:
+        #         mlist = []
+        #         for c in controllers:
+        #             mlist.append(c.Name)
+        #     else:
+        #         mlist = ["None"]
+        #     obj.ToolController = mlist
+
         toolLoad = PathUtils.getLastToolLoad(obj)
         if toolLoad is None or toolLoad.ToolNumber == 0:
             self.vertFeed = 100
             self.horizFeed = 100
+            self.vertRapid = 100
+            self.horizRapid = 100
             self.radius = 0.25
             obj.ToolNumber = 0
             obj.ToolDescription = "UNDEFINED"
         else:
             self.vertFeed = toolLoad.VertFeed.Value
             self.horizFeed = toolLoad.HorizFeed.Value
+            self.vertRapid = toolLoad.VertRapid.Value
+            self.horizRapid = toolLoad.HorizRapid.Value
             tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            self.radius = tool.Diameter/2
+            if tool.Diameter == 0:
+                self.radius = 0.25
+            else:
+                self.radius = tool.Diameter/2
             obj.ToolNumber = toolLoad.ToolNumber
             obj.ToolDescription = toolLoad.Name
 
@@ -109,7 +130,7 @@ class ObjectPathEngrave:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
         if obj.Base:
-            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
 
             wires = []
             for o in obj.Base:
@@ -121,7 +142,7 @@ class ObjectPathEngrave:
                 if obj.Algorithm == "OCC Native":
                     output += self.buildpathocc(obj, wires)
 
-            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value)+"\n"
+            output += "G0 Z" + PathUtils.fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) +"\n"
 
 
         # print output
@@ -159,7 +180,7 @@ class ObjectPathEngrave:
                 if not last:
                     # we set the first move to our first point
                     last = edge.Vertexes[0].Point
-                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  # Rapid sto starting position
+                    output += "G0" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.SafeHeight.Value)  + "F " + PathUtils.fmt(self.horizRapid)  # Rapid sto starting position
                     output += "G1" + " X" + PathUtils.fmt(last.x) + " Y" + PathUtils.fmt(last.y) + " Z" + PathUtils.fmt(obj.FinalDepth.Value) + "F " + PathUtils.fmt(self.vertFeed) + "\n"  # Vertical feed to depth
                 if isinstance(edge.Curve, Part.Circle):
                     point = edge.Vertexes[-1].Point
@@ -238,6 +259,9 @@ class _ViewProviderEngrave:
     def __setstate__(self, state):
         return None
 
+    def onDelete(self):
+        return None
+
 
 class CommandPathEngrave:
 
@@ -247,7 +271,11 @@ class CommandPathEngrave:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Engrave", "Creates an Engraving Path around a Draft ShapeString")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -263,7 +291,7 @@ class CommandPathEngrave:
         FreeCADGui.doCommand('obj.SafeHeight= 5.0')
         FreeCADGui.doCommand('obj.Active = True')
 
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.doCommand('obj.ViewObject.startEditing()')
@@ -272,6 +300,9 @@ class CommandPathEngrave:
 class TaskPanel:
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/EngraveEdit.ui")
+
+    def __del__(self):
+        FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
         self.getFields()
