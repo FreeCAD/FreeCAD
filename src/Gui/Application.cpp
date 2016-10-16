@@ -89,7 +89,7 @@
 #include "Control.h"
 #include "DocumentRecovery.h"
 #include "TransactionObject.h"
-#include "TaskView/TaskView.h"
+#include "FileDialog.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
@@ -113,13 +113,14 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
+#include "ViewProviderGroupExtension.h"
 
 #include "Language/Translator.h"
+#include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
-#include "ViewProviderGroupExtension.h"
-#include "GuiInitScript.h"
+#include <Gui/GuiInitScript.h>
 
 
 using namespace Gui;
@@ -529,7 +530,9 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
             }
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -577,7 +580,9 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
 
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -1624,6 +1629,10 @@ void Application::runApplication(void)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
 #endif
+
+//#if defined(FC_OS_LINUX)
+//    FileDialog::setWorkingDirectory(QDir::currentPath());
+//#endif
 
     Application app(true);
     MainWindow mw;
