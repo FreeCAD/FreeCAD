@@ -34,6 +34,8 @@
 #include "SurfaceOfExtrusionPy.cpp"
 #include "GeometryCurvePy.h"
 #include "LinePy.h"
+#include "BezierCurvePy.h"
+#include "BSplineCurvePy.h"
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
@@ -159,11 +161,11 @@ PyObject* SurfaceOfExtrusionPy::uIso(PyObject * args)
         }
         if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
             Handle_Geom_BezierCurve aCurve = Handle_Geom_BezierCurve::DownCast(c);
-            return new GeometryCurvePy(new GeomBezierCurve(aCurve));
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
             Handle_Geom_BSplineCurve aCurve = Handle_Geom_BSplineCurve::DownCast(c);
-            return new GeometryCurvePy(new GeomBSplineCurve(aCurve));
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
@@ -202,11 +204,11 @@ PyObject* SurfaceOfExtrusionPy::vIso(PyObject * args)
         }
         if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
             Handle_Geom_BezierCurve aCurve = Handle_Geom_BezierCurve::DownCast(c);
-            return new GeometryCurvePy(new GeomBezierCurve(aCurve));
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
             Handle_Geom_BSplineCurve aCurve = Handle_Geom_BSplineCurve::DownCast(c);
-            return new GeometryCurvePy(new GeomBSplineCurve(aCurve));
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
