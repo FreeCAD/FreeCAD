@@ -1632,7 +1632,9 @@ void Application::runApplication(void)
 
 #if defined(FC_OS_LINUX)
     // See #0001588
+    QString path = FileDialog::restoreLocation();
     FileDialog::setWorkingDirectory(QDir::currentPath());
+    FileDialog::saveLocation(path);
 #else
     FileDialog::setWorkingDirectory(FileDialog::restoreLocation());
 #endif
