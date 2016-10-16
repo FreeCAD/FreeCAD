@@ -159,6 +159,7 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
+    urls << QUrl::fromLocalFile(QDir::currentPath());
 
     QString file;
     FileDialog dlg(parent);
@@ -239,6 +240,7 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
+    urls << QUrl::fromLocalFile(QDir::currentPath());
 
     QString file;
     FileDialog dlg(parent);
@@ -298,6 +300,7 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
+    urls << QUrl::fromLocalFile(QDir::currentPath());
 
     QStringList files;
     FileDialog dlg(parent);
