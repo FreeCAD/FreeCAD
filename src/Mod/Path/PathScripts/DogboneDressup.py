@@ -64,6 +64,12 @@ class Incision:
     Custom = 'custom'
     All = [Adaptive, Fixed, Custom]
 
+class Smooth:
+    Neither = 0
+    In = 1
+    Out = 2
+    InAndOut = In | Out
+
 # Chord
 # A class to represent the start and end point of a path command. If the underlying
 # Command is a rotate command the receiver does represent a chord in the geometric
@@ -252,17 +258,31 @@ class ObjectDressup:
         #print("      = (%.2f, %.2f) -> %.2f (%.2f %.2f) -> %.2f" % (x, y, dest.getLength(), destAngle/math.pi, angle/math.pi, distance))
         return distance
 
-    def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength):
+    def smoothChordCommands(self, inChord, outChord, smooth):
+        if smooth == 0:
+            return [ inChord.g1Command(), outChord.g1Command() ]
+        inAngle = inChord.getAngleXY()
+        outAngle = outChord.getAngleXY()
+        if inAngle == outAngle:  # straight line, combine g1
+            return [ Chord(inChord.Start, outChord.End).g1Command() ]
+        return [ inChord.g1Command(), outChord.g1Command() ]
+
+    def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength, smooth):
         length = fixedLength
         if obj.Incision == Incision.Custom:
             length = obj.Custom
         if obj.Incision == Incision.Adaptive:
             length = self.adaptiveBoneLength(obj, inChord, outChord, angle)
+
         x = length * math.cos(angle);
         y = length * math.sin(angle);
-        boneChordIn = inChord.moveBy(x, y, 0)
-        boneChordOut = boneChordIn.moveTo(outChord.Start)
-        return [ boneChordIn.g1Command(), boneChordOut.g1Command() ]
+        boneInChord = inChord.moveBy(x, y, 0)
+        boneOutChord = boneInChord.moveTo(outChord.Start)
+
+        bones = []
+        bones.extend(self.smoothChordCommands(inChord, boneInChord, smooth & Smooth.In))
+        bones.extend(self.smoothChordCommands(boneOutChord, outChord, smooth & Smooth.Out))
+        return bones
 
     def dogboneAngle(self, obj, inChord, outChord):
         baseAngle = inChord.getAngleXY()
@@ -277,41 +297,41 @@ class ObjectDressup:
         #print("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
         return boneAngle
 
-    def dogbone(self, obj, inChord, outChord):
+    def dogbone(self, obj, inChord, outChord, smooth):
         boneAngle = self.dogboneAngle(obj, inChord, outChord)
         length = self.toolRadius * 0.41422 # 0.41422 = 2/sqrt(2) - 1 + (a tiny bit)
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, length)
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, length, smooth)
 
-    def tboneHorizontal(self, obj, inChord, outChord):
+    def tboneHorizontal(self, obj, inChord, outChord, smooth):
         angle = self.dogboneAngle(obj, inChord, outChord)
         boneAngle = 0
         if angle == math.pi or math.fabs(angle) > math.pi/2:
             boneAngle = -math.pi
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
 
-    def tboneVertical(self, obj, inChord, outChord):
+    def tboneVertical(self, obj, inChord, outChord, smooth):
         angle = self.dogboneAngle(obj, inChord, outChord)
         boneAngle = math.pi/2
         if angle == math.pi or angle < 0:
             boneAngle = -boneAngle
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
 
-    def tboneEdgeCommands(self, obj, inChord, outChord, onIn):
+    def tboneEdgeCommands(self, obj, inChord, outChord, onIn, smooth):
         boneAngle = outChord.getAngleXY()
         if onIn:
             boneAngle = inChord.getAngleXY()
         boneAngle = boneAngle + math.pi/2
         if Side.Right == outChord.getDirectionOf(inChord):
             boneAngle = boneAngle - math.pi
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius)
+        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
 
-    def tboneLongEdge(self, obj, inChord, outChord):
+    def tboneLongEdge(self, obj, inChord, outChord, smooth):
         inChordIsLonger = inChord.getLength() > outChord.getLength()
-        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsLonger)
+        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsLonger, smooth)
 
-    def tboneShortEdge(self, obj, inChord, outChord):
+    def tboneShortEdge(self, obj, inChord, outChord, smooth):
         inChordIsShorter = inChord.getLength() < outChord.getLength()
-        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter)
+        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter, smooth)
 
     def boneIsBlacklisted(self, obj, boneId, loc):
         blacklisted = False
@@ -329,7 +349,7 @@ class ObjectDressup:
         return (blacklisted, parentConsumed)
 
     # Generate commands necessary to execute the dogbone
-    def boneCommands(self, obj, boneId, inChord, outChord):
+    def boneCommands(self, obj, boneId, inChord, outChord, smooth):
         loc = (inChord.End.x, inChord.End.y)
         blacklisted, inaccessible = self.boneIsBlacklisted(obj, boneId, loc)
         enabled = not blacklisted
@@ -337,18 +357,23 @@ class ObjectDressup:
 
         if enabled:
             if obj.Style == Style.Dogbone:
-                return self.dogbone(obj, inChord, outChord)
+                return self.dogbone(obj, inChord, outChord, smooth)
             if obj.Style == Style.Tbone_H:
-                return self.tboneHorizontal(obj, inChord, outChord)
+                return self.tboneHorizontal(obj, inChord, outChord, smooth)
             if obj.Style == Style.Tbone_V:
-                return self.tboneVertical(obj, inChord, outChord)
+                return self.tboneVertical(obj, inChord, outChord, smooth)
             if obj.Style == Style.Tbone_L:
-                return self.tboneLongEdge(obj, inChord, outChord)
+                return self.tboneLongEdge(obj, inChord, outChord, smooth)
             if obj.Style == Style.Tbone_S:
-                return self.tboneShortEdge(obj, inChord, outChord)
+                return self.tboneShortEdge(obj, inChord, outChord, smooth)
             return self.debugCircleBone(obj, inChord, outChord)
         else:
             return []
+
+    def insertBone(self, boneId, obj, inChord, outChord, commands, smooth):
+        bones = self.boneCommands(obj, boneId, inChord, outChord, smooth)
+        commands.extend(bones[:-1])
+        return boneId + 1, bones[-1]
 
     def execute(self, obj):
         if not obj.Base:
@@ -377,25 +402,28 @@ class ObjectDressup:
                 thisIsACandidate = self.canAttachDogbone(thisCmd, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
-                    commands.extend(self.boneCommands(obj, boneId, lastChord, thisChord))
-                    boneId = boneId + 1
-
-                if lastCommand and thisChord.isAPlungeMove():
+                    boneId, lastCommand = self.insertBone(boneId, obj, lastChord, thisChord, commands, Smooth.InAndOut)
+                elif lastCommand and thisChord.isAPlungeMove():
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
-                            commands.extend(self.boneCommands(obj, boneId,lastChord, chord))
-                            boneId = boneId + 1
+                            boneId, lastCommand = self.insertBone(boneId, obj, lastChord, chord, commands, Smooth.In)
+                elif thisIsACandidate:
+                    lastCommand = thisCmd
+                else:
+                    if lastCommand:
+                        commands.append(lastCommand)
+                        lastCommand = None
+                    commands.append(thisCmd)
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
 
-                if thisIsACandidate:
-                    lastCommand = thisCmd
-                else:
-                    lastCommand = None
-
                 lastChord = thisChord
-            commands.append(thisCmd)
+            else:
+                if lastCommand:
+                    commands.append(lastCommand)
+                    lastCommand = None
+                commands.append(thisCmd)
         path = Path.Path(commands)
         obj.Path = path
 
@@ -438,88 +466,6 @@ class ObjectDressup:
             else:
                 state[loc] = (enabled, inaccessible, [id])
         return state
-
-class ViewProviderDressup:
-
-    def __init__(self, vobj):
-        vobj.Proxy = self
-
-    def attach(self, vobj):
-        self.Object = vobj.Object
-        return
-
-    def claimChildren(self):
-        for i in self.Object.Base.InList:
-            if hasattr(i, "Group"):
-                group = i.Group
-                for g in group:
-                    if g.Name == self.Object.Base.Name:
-                        group.remove(g)
-                i.Group = group
-                print i.Group
-        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
-        return [self.Object.Base]
-
-    def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
-        FreeCADGui.Control.showDialog(panel)
-        panel.setupUi()
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
-
-    def onDelete(self, arg1=None, arg2=None):
-        '''this makes sure that the base operation is added back to the project and visible'''
-        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
-        PathUtils.addToJob(arg1.Object.Base)
-        return True
-
-class CommandDogboneDressup:
-
-    def GetResources(self):
-        return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dogbone Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Creates a Dogbone Dress-up object from a selected path")}
-
-    def IsActive(self):
-        if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
-                        return True
-        return False
-
-    def Activated(self):
-
-        # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select one path object\n"))
-            return
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "The selected object is not a path\n"))
-            return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Path object"))
-            return
-
-        # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dogbone Dress-up"))
-        FreeCADGui.addModule("PathScripts.DogboneDressup")
-        FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj)')
-        FreeCAD.ActiveDocument.commitTransaction()
-        FreeCAD.ActiveDocument.recompute()
 
 class TaskPanel:
     DataIds = QtCore.Qt.ItemDataRole.UserRole
@@ -636,6 +582,88 @@ class SelObserver:
     def addSelection(self, doc, obj, sub, pnt):
         FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
+
+class ViewProviderDressup:
+
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def attach(self, vobj):
+        self.Object = vobj.Object
+        return
+
+    def claimChildren(self):
+        for i in self.Object.Base.InList:
+            if hasattr(i, "Group"):
+                group = i.Group
+                for g in group:
+                    if g.Name == self.Object.Base.Name:
+                        group.remove(g)
+                i.Group = group
+                print i.Group
+        #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
+        return [self.Object.Base]
+
+    def setEdit(self, vobj, mode=0):
+        FreeCADGui.Control.closeDialog()
+        panel = TaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(panel)
+        panel.setupUi()
+        return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None
+
+    def onDelete(self, arg1=None, arg2=None):
+        '''this makes sure that the base operation is added back to the project and visible'''
+        FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
+        PathUtils.addToJob(arg1.Object.Base)
+        return True
+
+class CommandDogboneDressup:
+
+    def GetResources(self):
+        return {'Pixmap': 'Path-Dressup',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dogbone Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Creates a Dogbone Dress-up object from a selected path")}
+
+    def IsActive(self):
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
+
+    def Activated(self):
+
+        # check that the selection contains exactly what we want
+        selection = FreeCADGui.Selection.getSelection()
+        if len(selection) != 1:
+            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select one path object\n"))
+            return
+        if not selection[0].isDerivedFrom("Path::Feature"):
+            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "The selected object is not a path\n"))
+            return
+        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
+            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Path object"))
+            return
+
+        # everything ok!
+        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dogbone Dress-up"))
+        FreeCADGui.addModule("PathScripts.DogboneDressup")
+        FreeCADGui.addModule("PathScripts.PathUtils")
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
+        FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
+        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('dbo.setup(obj)')
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
