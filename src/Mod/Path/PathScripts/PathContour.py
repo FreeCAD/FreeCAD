@@ -52,51 +52,51 @@ __url__ = "http://www.freecadweb.org"
 class ObjectContour:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
-        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this Contour")
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
+        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property", "An optional comment for this Contour"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","User Assigned Label"))
 
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 1)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
         obj.setEditorMode('ToolDescription', 1) # make this read only
 
         # Depth Properties
-        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
-        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", "Incremental Step Down of Tool")
+        obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
+        obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
         obj.StepDown = (1, 0.01, 1000, 0.5)
-        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
-        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
+        obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Starting Depth of Tool- first cut depth in Z"))
+        obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
 
         # Start Point Properties
-        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", "The start point of this path")
-        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", "make True, if specifying a Start Point")
-        obj.addProperty("App::PropertyLength", "ExtendAtStart", "Start Point", "extra length of tool path before start of part edge")
-        obj.addProperty("App::PropertyLength", "LeadInLineLen", "Start Point", "length of straight segment of toolpath that comes in at angle to first part edge")
+        obj.addProperty("App::PropertyVector", "StartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","The start point of this path"))
+        obj.addProperty("App::PropertyBool", "UseStartPoint", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","make True, if specifying a Start Point"))
+        obj.addProperty("App::PropertyLength", "ExtendAtStart", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","extra length of tool path before start of part edge"))
+        obj.addProperty("App::PropertyLength", "LeadInLineLen", "Start Point", QtCore.QT_TRANSLATE_NOOP("App::Property","length of straight segment of toolpath that comes in at angle to first part edge"))
 
         # End Point Properties
-        obj.addProperty("App::PropertyBool", "UseEndPoint", "End Point", "make True, if specifying an End Point")
-        obj.addProperty("App::PropertyLength", "ExtendAtEnd", "End Point", "extra length of tool path after end of part edge")
-        obj.addProperty("App::PropertyLength", "LeadOutLineLen", "End Point", "length of straight segment of toolpath that comes in at angle to last part edge")
-        obj.addProperty("App::PropertyVector", "EndPoint", "End Point", "The end point of this path")
+        obj.addProperty("App::PropertyBool", "UseEndPoint", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property","make True, if specifying an End Point"))
+        obj.addProperty("App::PropertyLength", "ExtendAtEnd", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property","extra length of tool path after end of part edge"))
+        obj.addProperty("App::PropertyLength", "LeadOutLineLen", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property","length of straight segment of toolpath that comes in at angle to last part edge"))
+        obj.addProperty("App::PropertyVector", "EndPoint", "End Point", QtCore.QT_TRANSLATE_NOOP("App::Property","The end point of this path"))
 
         # Contour Properties
-        obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", "The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW")
+        obj.addProperty("App::PropertyEnumeration", "Direction", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.Direction = ['CW', 'CCW']  # this is the direction that the Contour runs
-        obj.addProperty("App::PropertyBool", "UseComp", "Contour", "make True, if using Cutter Radius Compensation")
+        obj.addProperty("App::PropertyBool", "UseComp", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","make True, if using Cutter Radius Compensation"))
 
-        obj.addProperty("App::PropertyDistance", "RollRadius", "Contour", "Radius at start and end")
-        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", "Extra value to stay away from final Contour- good for roughing toolpath")
-        obj.addProperty("App::PropertyLength", "SegLen", "Contour", "Tesselation  value for tool paths made from beziers, bsplines, and ellipses")
-        obj.addProperty("App::PropertyAngle", "PlungeAngle", "Contour", "Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn")
+        obj.addProperty("App::PropertyDistance", "RollRadius", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Radius at start and end"))
+        obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Extra value to stay away from final Contour- good for roughing toolpath"))
+        obj.addProperty("App::PropertyLength", "SegLen", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
+        obj.addProperty("App::PropertyAngle", "PlungeAngle", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn"))
 
-        obj.addProperty("App::PropertyVectorList", "locs", "Tags", "List of holding tag locations")
+        obj.addProperty("App::PropertyVectorList", "locs", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of holding tag locations"))
 
-        obj.addProperty("App::PropertyFloatList", "angles", "Tags", "List of angles for the holding tags")
-        obj.addProperty("App::PropertyFloatList", "heights", "Tags", "List of angles for the holding tags")
-        obj.addProperty("App::PropertyFloatList", "lengths", "Tags", "List of angles for the holding tags")
+        obj.addProperty("App::PropertyFloatList", "angles", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of angles for the holding tags"))
+        obj.addProperty("App::PropertyFloatList", "heights", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of angles for the holding tags"))
+        obj.addProperty("App::PropertyFloatList", "lengths", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of angles for the holding tags"))
         locations = []
         angles = []
         lengths = []
