@@ -173,7 +173,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     return false;
 }
 
-bool NoDependentsSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+bool NoDependentsSelection::allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* /*sSubName*/)
 {
     if (support && support->testIfLinkDAGCompatible(pObj)) {
         return true;
