@@ -1364,8 +1364,9 @@ std::list<std::string> Application::getCmdLineFiles()
     return files;
 }
 
-void Application::processFiles(const std::list<std::string>& files)
+std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
+    std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
     for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
         Base::FileInfo file(*it);
@@ -1376,17 +1377,21 @@ void Application::processFiles(const std::list<std::string>& files)
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
+                processed.push_back(*it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
+                processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
                 try{
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
+                    processed.push_back(*it);
                 }
                 catch(const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
+                    processed.push_back(*it);
                 }
             }
             else {
@@ -1398,6 +1403,7 @@ void Application::processFiles(const std::list<std::string>& files)
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
+                    processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else {
@@ -1415,6 +1421,8 @@ void Application::processFiles(const std::list<std::string>& files)
             Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
+
+    return processed; // successfully processed files
 }
 
 void Application::processCmdLineFiles(void)
