@@ -166,13 +166,13 @@ PyObject* SurfaceOfExtrusionPy::uIso(PyObject * args)
             return new GeometryCurvePy(new GeomBSplineCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
-            Handle_Geom_Line aCurve = Handle_Geom_Line::DownCast(c);
+            Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
             GeomLineSegment* line = new GeomLineSegment();
             Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
                 (line->handle());
             Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
                 (this_curv->BasisCurve());
-            this_line->SetLin(aCurve->Lin());
+            this_line->SetLin(aLine->Lin());
             return new LinePy(line);
         }
         PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
@@ -209,13 +209,13 @@ PyObject* SurfaceOfExtrusionPy::vIso(PyObject * args)
             return new GeometryCurvePy(new GeomBSplineCurve(aCurve));
         }
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
-            Handle_Geom_Line aCurve = Handle_Geom_Line::DownCast(c);
+            Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
             GeomLineSegment* line = new GeomLineSegment();
             Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
                 (line->handle());
             Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
                 (this_curv->BasisCurve());
-            this_line->SetLin(aCurve->Lin());
+            this_line->SetLin(aLine->Lin());
             return new LinePy(line);
         }
         PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
