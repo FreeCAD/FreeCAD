@@ -87,7 +87,7 @@ class FemInputWriter():
     def get_constraints_fixed_nodes(self):
         # get nodes
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
             # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
             for node in femobj['Nodes']:
                 self.constraint_conflict_nodes.append(node)
@@ -95,7 +95,7 @@ class FemInputWriter():
     def get_constraints_displacement_nodes(self):
         # get nodes
         for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
             # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
             for node in femobj['Nodes']:
                 self.constraint_conflict_nodes.append(node)
@@ -103,17 +103,17 @@ class FemInputWriter():
     def get_constraints_planerotation_nodes(self):
         # get nodes
         for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_transform_nodes(self):
         # get nodes
         for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_temperature_nodes(self):
         # get nodes
         for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_force_nodeloads(self):
         # check shape type of reference shape

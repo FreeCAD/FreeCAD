@@ -29,6 +29,17 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 
+def get_femnodes_by_femobj_with_references(femmesh, femobj):
+    node_set = []
+    if femmesh.GroupCount:
+        node_set = get_femnode_set_from_group_data(femmesh, femobj)
+        # print 'node_set_group: ', node_set
+    if not node_set:
+        node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
+        # print 'node_set_nogroup: ', node_set
+    return node_set
+
+
 def get_femelements_by_references(femmesh, femelement_table, references):
     '''get the femelements for a list of references
     '''
@@ -195,9 +206,23 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
+def get_femnode_set_from_group_data(femmesh, fem_object):
+    # get femnodes from femmesh groupdata for reference shapes of each obj.References
+    # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
+    # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
+    obj = fem_object['Object']
+    if femmesh.GroupCount:
+        for g in femmesh.Groups:
+            grp_name = femmesh.getGroupName(g)
+            if grp_name.startswith(obj.Name + '_'):
+                if femmesh.getGroupElementType(g) == "Node":
+                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return group_nodes
+
+
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
     # get femelements from femmesh groupdata for reference shapes of each obj.References
-    print("")
     count_femelements = 0
     sum_group_elements = []
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
