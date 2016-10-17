@@ -78,18 +78,6 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 }
 
-PyObject* OffsetSurfacePy::uIso(PyObject *)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
-}
-
-PyObject* OffsetSurfacePy::vIso(PyObject *)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
-}
-
 Py::Float OffsetSurfacePy::getOffsetValue(void) const
 {
     Handle_Geom_OffsetSurface surf = Handle_Geom_OffsetSurface::DownCast(getGeometryPtr()->handle());

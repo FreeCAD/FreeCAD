@@ -46,6 +46,16 @@
 			</Documentation>
 			<Parameter Name="Continuity" Type="String"/>
 		</Attribute>
+		<Methode Name="uIso">
+			<Documentation>
+				<UserDocu>Builds the U isoparametric curve</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="vIso">
+			<Documentation>
+				<UserDocu>Builds the V isoparametric curve</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="isUPeriodic">
 			<Documentation>
 				<UserDocu>Returns true if this patch is periodic in the given parametric direction.</UserDocu>
