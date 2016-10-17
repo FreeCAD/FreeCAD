@@ -52,7 +52,7 @@ PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
 DrawProjGroup::DrawProjGroup(void)
 {
-    static const char *group = "Drawing view";
+    static const char *group = "ProjGroup";
 
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
 
