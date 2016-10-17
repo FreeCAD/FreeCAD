@@ -153,3 +153,11 @@ class FemInputWriter():
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
             elif femobj['RefShapeType'] == 'Face':  # area load on faces
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
+
+    def get_constraints_pressure_faces(self):
+        # TODO see comments in get_constraints_force_nodeloads(), it applies here too. Mhh it applies to all constraints ...
+
+        # get the faces and face numbers
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces(self.femmesh, femobj)
+            # print femobj['PressureFaces']
