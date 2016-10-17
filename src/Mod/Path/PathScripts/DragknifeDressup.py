@@ -506,7 +506,7 @@ class CommandDragknifeDressup:
         FreeCADGui.doCommand('PathScripts.DragknifeDressup.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
         FreeCADGui.doCommand('PathScripts.DragknifeDressup.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCADGui.doCommand('obj.filterangle = 20')
         FreeCADGui.doCommand('obj.offset = 2')
