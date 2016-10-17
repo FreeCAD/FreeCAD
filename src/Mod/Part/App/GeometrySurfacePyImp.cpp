@@ -61,34 +61,34 @@ const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c)
 {
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
         Handle_Geom_Circle circ = Handle_Geom_Circle::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomCircle(circ)));
+        return Py::asObject(new GeometryCurvePy(new GeomCircle(circ)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Ellipse))) {
         Handle_Geom_Ellipse ell = Handle_Geom_Ellipse::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomEllipse(ell)));
+        return Py::asObject(new GeometryCurvePy(new GeomEllipse(ell)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Hyperbola))) {
         Handle_Geom_Hyperbola hyp = Handle_Geom_Hyperbola::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomHyperbola(hyp)));
+        return Py::asObject(new GeometryCurvePy(new GeomHyperbola(hyp)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
         Handle_Geom_Line lin = Handle_Geom_Line::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomLine(lin)));
+        return Py::asObject(new GeometryCurvePy(new GeomLine(lin)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_OffsetCurve))) {
         Handle_Geom_OffsetCurve oc = Handle_Geom_OffsetCurve::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomOffsetCurve(oc)));
+        return Py::asObject(new GeometryCurvePy(new GeomOffsetCurve(oc)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_Parabola))) {
         Handle_Geom_Parabola par = Handle_Geom_Parabola::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomParabola(par)));
+        return Py::asObject(new GeometryCurvePy(new GeomParabola(par)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
         Handle_Geom_TrimmedCurve trc = Handle_Geom_TrimmedCurve::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomTrimmedCurve(trc)));
+        return Py::asObject(new GeometryCurvePy(new GeomTrimmedCurve(trc)));
     } else/* if (c->IsKind(STANDARD_TYPE(Geom_BoundedCurve))) {
         Handle_Geom_BoundedCurve bc = Handle_Geom_BoundedCurve::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomBoundedCurve(bc)));
+        return Py::asObject(new GeometryCurvePy(new GeomBoundedCurve(bc)));
     } else */if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
         Handle_Geom_BezierCurve bezier = Handle_Geom_BezierCurve::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomBezierCurve(bezier)));
+        return Py::asObject(new GeometryCurvePy(new GeomBezierCurve(bezier)));
     } else if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
         Handle_Geom_BSplineCurve bspline = Handle_Geom_BSplineCurve::DownCast(c);
-        return Py::Object(new GeometryCurvePy(new GeomBSplineCurve(bspline)));
+        return Py::asObject(new GeometryCurvePy(new GeomBSplineCurve(bspline)));
     }
 
     PyErr_SetString(PyExc_Exception, "Unknown curve type");
