@@ -3042,8 +3042,18 @@ GeomCylinder::GeomCylinder()
     this->mySurface = s;
 }
 
+GeomCylinder::GeomCylinder(const Handle_Geom_CylindricalSurface& c)
+{
+    this->mySurface = Handle_Geom_CylindricalSurface::DownCast(c->Copy());
+}
+
 GeomCylinder::~GeomCylinder()
 {
+}
+
+void GeomCylinder::setHandle(const Handle_Geom_CylindricalSurface& s)
+{
+    mySurface = Handle_Geom_CylindricalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCylinder::handle() const
@@ -3079,8 +3089,18 @@ GeomCone::GeomCone()
     this->mySurface = s;
 }
 
+GeomCone::GeomCone(const Handle_Geom_ConicalSurface& c)
+{
+    this->mySurface = Handle_Geom_ConicalSurface::DownCast(c->Copy());
+}
+
 GeomCone::~GeomCone()
 {
+}
+
+void GeomCone::setHandle(const Handle_Geom_ConicalSurface& s)
+{
+    mySurface = Handle_Geom_ConicalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCone::handle() const
@@ -3116,8 +3136,18 @@ GeomToroid::GeomToroid()
     this->mySurface = s;
 }
 
+GeomToroid::GeomToroid(const Handle_Geom_ToroidalSurface& t)
+{
+    this->mySurface = Handle_Geom_ToroidalSurface::DownCast(t->Copy());
+}
+
 GeomToroid::~GeomToroid()
 {
+}
+
+void GeomToroid::setHandle(const Handle_Geom_ToroidalSurface& s)
+{
+    mySurface = Handle_Geom_ToroidalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomToroid::handle() const
@@ -3153,8 +3183,18 @@ GeomSphere::GeomSphere()
     this->mySurface = s;
 }
 
+GeomSphere::GeomSphere(const Handle_Geom_SphericalSurface& s)
+{
+    this->mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
+}
+
 GeomSphere::~GeomSphere()
 {
+}
+
+void GeomSphere::setHandle(const Handle_Geom_SphericalSurface& s)
+{
+    mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomSphere::handle() const
@@ -3190,8 +3230,18 @@ GeomPlane::GeomPlane()
     this->mySurface = s;
 }
 
+GeomPlane::GeomPlane(const Handle_Geom_Plane& p)
+{
+    this->mySurface = Handle_Geom_Plane::DownCast(p->Copy());
+}
+
 GeomPlane::~GeomPlane()
 {
+}
+
+void GeomPlane::setHandle(const Handle_Geom_Plane& s)
+{
+    mySurface = Handle_Geom_Plane::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomPlane::handle() const
