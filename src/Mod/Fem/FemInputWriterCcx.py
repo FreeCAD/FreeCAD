@@ -607,21 +607,20 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('\n')
 
     def write_constraints_pressure(self, f):
+        # get the faces and face numbers
+        self.get_constraints_pressure_faces()
+        # write face loads to file
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             prs_obj = femobj['Object']
+            rev = -1 if prs_obj.Reversed else 1
             f.write('*DLOAD\n')
-            for o, elem_tup in prs_obj.References:
-                rev = -1 if prs_obj.Reversed else 1
-                for elem in elem_tup:
-                    ref_shape = o.Shape.getElement(elem)
-                    if ref_shape.ShapeType == 'Face':
-                        v = self.femmesh.getccxVolumesByFace(ref_shape)
-                        f.write("** Load on face {}\n".format(elem))
-                        for i in v:
-                            f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
+            for ref_shape in femobj['PressureFaces']:
+                f.write('** ' + ref_shape[0] + '\n')
+                for face, fno in ref_shape[1]:
+                    f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
 
     def write_constraints_temperature(self, f):
         f.write('\n***********************************************************\n')

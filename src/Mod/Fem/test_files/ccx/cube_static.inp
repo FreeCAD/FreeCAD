@@ -547,7 +547,7 @@ FemConstraintFixed,3
 ** Element + CalculiX face + load in [MPa]
 ** written by write_constraints_pressure function
 *DLOAD
-** Load on face Face2
+** face load on shape: Box:Face2
 635,P1,1000.0
 638,P3,1000.0
 641,P2,1000.0
