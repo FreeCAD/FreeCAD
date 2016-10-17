@@ -61,6 +61,7 @@
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeFacePy.h>
 
+namespace Part {
 const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c)
 {
     if (c->IsKind(STANDARD_TYPE(Geom_Circle))) {
@@ -104,10 +105,13 @@ const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c)
         return Py::asObject(new BSplineCurvePy(new GeomBSplineCurve(bspline)));
     }
 
-    std::string err = "Unknown curve type ";
+    std::string err = "Unhandled curve type ";
     err += c->DynamicType()->Name();
     throw Py::TypeError(err);
 }
+
+} // Part
+
 // ---------------------------------------
 
 using namespace Part;

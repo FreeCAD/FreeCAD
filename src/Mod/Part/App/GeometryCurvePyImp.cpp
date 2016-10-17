@@ -72,8 +72,9 @@
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
 
-// TODO: This should be somewhere globally, but where? Currently located in GeometrySurfacePyImp.cpp
+namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c);
+}
 
 using namespace Part;
 
