@@ -42,6 +42,8 @@ namespace TechDrawGui
 {
 class QGCustomBorder;
 class QGCustomLabel;
+class QGCustomText;
+class QGICaption;
 
 class TechDrawGuiExport  QGIView : public QGraphicsItemGroup
 {
@@ -61,6 +63,7 @@ public:
     virtual void isVisible(bool state) { m_visibility = state; };
     virtual bool isVisible(void) {return m_visibility;};
     virtual void draw(void);
+    virtual void drawCaption(void);
 
     /** Methods to ensure that Y-Coordinates are orientated correctly.
      * @{ */
@@ -100,6 +103,7 @@ protected:
     QColor getPreColor(void);
     QColor getSelectColor(void);
     QString getPrefFont(void);
+    double getPrefFontSize(void);
     Base::Reference<ParameterGrp> getParmGroupCol(void);
 
     TechDraw::DrawView *viewObj;
@@ -120,6 +124,7 @@ protected:
     QFont m_font;
     QGCustomLabel* m_label;
     QGCustomBorder* m_border;
+    QGICaption* m_caption;
     QPen m_decorPen;
 };
 
