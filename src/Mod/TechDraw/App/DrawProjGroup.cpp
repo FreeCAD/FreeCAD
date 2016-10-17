@@ -338,59 +338,68 @@ int DrawProjGroup::purgeProjections()
 
 void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projType) const
 {
-    Base::Vector3d dir, xDir;
+    Base::Vector3d dir;
+//    Base::Vector3d dir, xDir;
 
     // Traditional orthographic
     if(strcmp(projType, "Front") == 0) {
-        dir.Set(0, 1, 0);
-        xDir.Set(1, 0, 0);
+        dir.Set(0, -1, 0);
+//        xDir.Set(1, 0, 0);
 
     } else if(strcmp(projType, "Rear") == 0) {
-        dir.Set(0, -1, 0);
-        xDir.Set(-1, 0, 0);
+        dir.Set(0, 1, 0);
+//        xDir.Set(-1, 0, 0);
 
     } else if(strcmp(projType, "Right") == 0) {
         dir.Set(1, 0, 0);
-        xDir.Set(0, -1, 0);
+//        xDir.Set(0, -1, 0);
 
     } else if(strcmp(projType, "Left") == 0) {
         dir.Set(-1, 0, 0);
-        xDir.Set(0, 1, 0);
+//        xDir.Set(0, 1, 0);
 
     } else if(strcmp(projType, "Top") == 0) {
         dir.Set(0, 0, 1);
-        xDir.Set(1, 0, 0);
+//        xDir.Set(1, 0, 0);
 
     } else if(strcmp(projType, "Bottom") == 0) {
         dir.Set(0, 0, -1);
-        xDir.Set(1, 0, 0);
+//        xDir.Set(1, 0, 0);
 
     // Isometric
     } else if(strcmp(projType, "FrontTopLeft") == 0) {
-        dir.Set(-1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
-        xDir.Set(sqrt(2)/2.0, sqrt(2.0)/2.0, 0);
+        dir.Set(-1,-1,1);
+        dir.Normalize();
+//        dir.Set(-1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
+//        xDir.Set(sqrt(2)/2.0, sqrt(2.0)/2.0, 0);
 
     } else if(strcmp(projType, "FrontTopRight") == 0) {
-        dir.Set(1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
-        xDir.Set(sqrt(2)/2.0, -sqrt(2.0)/2.0, 0);
+        dir.Set(1, -1, 1);
+        dir.Normalize();
+//        dir.Set(1/sqrt(3), 1/sqrt(3), 1/sqrt(3));
+//        xDir.Set(sqrt(2)/2.0, -sqrt(2.0)/2.0, 0);
 
     } else if(strcmp(projType, "FrontBottomRight") == 0) {
-        dir.Set(1/sqrt(3), 1/sqrt(3), -1/sqrt(3));
-        xDir.Set(sqrt(2)/2.0, -sqrt(2.0)/2.0, 0);
+        dir.Set(1, -1, -1);
+        dir.Normalize();
+//        dir.Set(1/sqrt(3), 1/sqrt(3), -1/sqrt(3));
+//        xDir.Set(sqrt(2)/2.0, -sqrt(2.0)/2.0, 0);
 
     } else if(strcmp(projType, "FrontBottomLeft") == 0) {
-        dir.Set(-1/sqrt(3), 1/sqrt(3), -1/sqrt(3));
-        xDir.Set(sqrt(2)/2.0, sqrt(2.0)/2.0, 0);
+        dir.Set(-1, -1, -1);
+        dir.Normalize();
+//        dir.Set(-1/sqrt(3), 1/sqrt(3), -1/sqrt(3));
+//        xDir.Set(sqrt(2)/2.0, sqrt(2.0)/2.0, 0);
 
     } else {
         throw Base::Exception("Unknown view type in DrawProjGroup::setViewOrientation()");
     }
 
-    dir = viewOrientationMatrix.getValue() * dir;
-    xDir = viewOrientationMatrix.getValue() * xDir;
+    dir = viewOrientationMatrix.getValue() * dir;              //multiply std dir by transform matrix
+    //xDir = viewOrientationMatrix.getValue() * xDir;
 
     v->Direction.setValue(dir);
-    v->XAxisDirection.setValue(xDir);
+    //v->XAxisDirection.setValue(xDir);
 }
 
 void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
