@@ -233,6 +233,51 @@ def reverseEdge(e):
 
     return newedge
 
+def edge_to_path(lastpt, edge, Z, hf=2.0):
+    if isinstance(edge.Curve, Part.Circle):
+        # FreeCAD.Console.PrintMessage("arc\n")
+        arcstartpt = edge.valueAt(edge.FirstParameter)
+        midpt = edge.valueAt(
+            (edge.FirstParameter + edge.LastParameter) * 0.5)
+        arcendpt = edge.valueAt(edge.LastParameter)
+        # arcchkpt = edge.valueAt(edge.LastParameter * .99)
+
+        if DraftVecUtils.equals(lastpt, arcstartpt):
+            startpt = arcstartpt
+            endpt = arcendpt
+        else:
+            startpt = arcendpt
+            endpt = arcstartpt
+        center = edge.Curve.Center
+        relcenter = center.sub(lastpt)
+        # FreeCAD.Console.PrintMessage("arc  startpt= " + str(startpt)+ "\n")
+        # FreeCAD.Console.PrintMessage("arc  midpt= " + str(midpt)+ "\n")
+        # FreeCAD.Console.PrintMessage("arc  endpt= " + str(endpt)+ "\n")
+        arc_cw = check_clockwise(
+            [(startpt.x, startpt.y), (midpt.x, midpt.y), (endpt.x, endpt.y)])
+        # FreeCAD.Console.PrintMessage("arc_cw="+ str(arc_cw)+"\n")
+        if arc_cw:
+            output = "G2"
+        else:
+            output = "G3"
+        output += " X" + str(fmt(endpt.x)) + " Y" + \
+            str(fmt(endpt.y)) + " Z" + str(fmt(Z)) + " F" + str(hf)
+        output += " I" + str(fmt(relcenter.x)) + " J" + \
+            str(fmt(relcenter.y)) + " K" + str(fmt(relcenter.z))
+        output += "\n"
+        lastpt = endpt
+        # FreeCAD.Console.PrintMessage("last pt arc= " + str(lastpt)+ "\n")
+    else:
+        point = edge.Vertexes[-1].Point
+        if DraftVecUtils.equals(point, lastpt):  # edges can come flipped
+            point = edge.Vertexes[0].Point
+        output = "G1 X" + str(fmt(point.x)) + " Y" + str(fmt(point.y)) + \
+            " Z" + str(fmt(Z)) + " F" + str(hf) + "\n"
+        lastpt = point
+        # FreeCAD.Console.PrintMessage("line\n")
+        # FreeCAD.Console.PrintMessage("last pt line= " + str(lastpt)+ "\n")
+    return lastpt, output
+
 
 def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, vf=1.0, hf=2.0) :
     '''convert(toolpath,Z=0.0,vf=1.0,hf=2.0,PlungeAngle=90.0,Zprevious=None,StopLength=None) Converts lines and arcs to G1,G2,G3 moves. Returns a string.'''
@@ -247,51 +292,6 @@ def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, 
             #FreeCAD.Console.PrintMessage('Increasing ramp angle to {0} degrees, to be able to make a full round\n'.format(math.atan(tanA) * 180.0 / math.pi))
     else:
         Zprevious = Z
-
-    def edge_to_path(lastpt, edge, Z):
-        if isinstance(edge.Curve, Part.Circle):
-            # FreeCAD.Console.PrintMessage("arc\n")
-            arcstartpt = edge.valueAt(edge.FirstParameter)
-            midpt = edge.valueAt(
-                (edge.FirstParameter + edge.LastParameter) * 0.5)
-            arcendpt = edge.valueAt(edge.LastParameter)
-            # arcchkpt = edge.valueAt(edge.LastParameter * .99)
-
-            if DraftVecUtils.equals(lastpt, arcstartpt):
-                startpt = arcstartpt
-                endpt = arcendpt
-            else:
-                startpt = arcendpt
-                endpt = arcstartpt
-            center = edge.Curve.Center
-            relcenter = center.sub(lastpt)
-            # FreeCAD.Console.PrintMessage("arc  startpt= " + str(startpt)+ "\n")
-            # FreeCAD.Console.PrintMessage("arc  midpt= " + str(midpt)+ "\n")
-            # FreeCAD.Console.PrintMessage("arc  endpt= " + str(endpt)+ "\n")
-            arc_cw = check_clockwise(
-                [(startpt.x, startpt.y), (midpt.x, midpt.y), (endpt.x, endpt.y)])
-            # FreeCAD.Console.PrintMessage("arc_cw="+ str(arc_cw)+"\n")
-            if arc_cw:
-                output = "G2"
-            else:
-                output = "G3"
-            output += " X" + str(fmt(endpt.x)) + " Y" + \
-                str(fmt(endpt.y)) + " Z" + str(fmt(Z)) + " F" + str(hf)
-            output += " I" + str(fmt(relcenter.x)) + " J" + \
-                str(fmt(relcenter.y)) + " K" + str(fmt(relcenter.z))
-            output += "\n"
-            lastpt = endpt
-            # FreeCAD.Console.PrintMessage("last pt arc= " + str(lastpt)+ "\n")
-        else:
-            point = edge.Vertexes[-1].Point
-            if DraftVecUtils.equals(point, lastpt):  # edges can come flipped
-                point = edge.Vertexes[0].Point
-            output = "G1 X" + str(fmt(point.x)) + " Y" + str(fmt(point.y)) + \
-                " Z" + str(fmt(Z)) + " F" + str(hf) + "\n"
-            lastpt = point
-            # FreeCAD.Console.PrintMessage("line\n")
-            # FreeCAD.Console.PrintMessage("last pt line= " + str(lastpt)+ "\n")
-        return lastpt, output
 
     lastpt = None
     output = ""
@@ -334,13 +334,13 @@ def convert(toolpath, Z=0.0, PlungeAngle=90.0, Zprevious=None, StopLength=None, 
                 subwire = edge.split(t)
                 assert(len(subwire.Edges) == 2)
                 Z_cur = Z
-                lastpt, codes = edge_to_path(lastpt, subwire.Edges[0], Z_cur)
+                lastpt, codes = edge_to_path(lastpt, subwire.Edges[0], Z_cur, hf)
                 output += codes
                 edge = subwire.Edges[1]
             else:
                 Z_cur = Z_next
 
-        lastpt, codes = edge_to_path(lastpt, edge, Z_cur)
+        lastpt, codes = edge_to_path(lastpt, edge, Z_cur, hf)
         output += codes
 
         if StopLength:

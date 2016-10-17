@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
 #*   Copyright (c) 2009, 2010                                              *
-#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *  
+#*   Yorik van Havre <yorik@uncreated.net>, Ken Cline <cline@frii.com>     *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -133,7 +133,7 @@ def isAligned(edge,axis="x"):
             if edge.StartPoint.z == edge.EndPoint.z:
                     return True
     return False
-    
+
 def getQuad(face):
     """getQuad(face): returns a list of 3 vectors (basepoint, Xdir, Ydir) if the face
     is a quad, or None if not."""
@@ -162,7 +162,7 @@ def areColinear(e1,e2):
         return False
     v1 = vec(e1)
     v2 = vec(e2)
-    a = round(v1.getAngle(v2),precision()) 
+    a = round(v1.getAngle(v2),precision())
     if (a == 0) or (a == round(math.pi,precision())):
         v3 = e2.Vertexes[0].Point.sub(e1.Vertexes[0].Point)
         if DraftVecUtils.isNull(v3):
@@ -225,7 +225,7 @@ def findEdge(anEdge,aList):
                 if DraftVecUtils.equals(anEdge.Vertexes[-1].Point,aList[e].Vertexes[-1].Point):
                     return(e)
     return None
-    
+
 
 def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False,dts=True) :
     '''findIntersection(edge1,edge2,infinite1=False,infinite2=False,dts=True):
@@ -268,13 +268,13 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                      (pt3.x-pt1.x)*(vec2.y-vec2.z))/(norm3.x+norm3.y+norm3.z)
                 vec1.scale(k,k,k)
                 intp = pt1.add(vec1)
-                
+
                 if  infinite1 == False and not isPtOnEdge(intp,edge1) :
                     return []
-                    
+
                 if  infinite2 == False and not isPtOnEdge(intp,edge2) :
                     return []
-                    
+
                 return [intp]
             else :
                 return [] # Lines have same direction
@@ -303,26 +303,26 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         infinite2 = ex2
         return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
 
-    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :  
-        # we have 2 straight lines  
+    elif (geomType(edge1) == "Line") and (geomType(edge2) == "Line") :
+        # we have 2 straight lines
         pt1, pt2, pt3, pt4 = [edge1.Vertexes[0].Point,
                                       edge1.Vertexes[1].Point,
                                       edge2.Vertexes[0].Point,
                                       edge2.Vertexes[1].Point]
         return getLineIntersections(pt1,pt2,pt3,pt4,infinite1,infinite2)
-            
+
     elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Line") \
       or (geomType(edge1) == "Line") and (geomType(edge2) == "Circle") :
-        
+
         # deals with an arc or circle and a line
-        
+
         edges = [edge1,edge2]
         for edge in edges :
             if geomType(edge) == "Line":
                 line = edge
             else :
                 arc  = edge
-                
+
         dirVec = vec(line) ; dirVec.normalize()
         pt1    = line.Vertexes[0].Point
         pt2    = line.Vertexes[1].Point
@@ -335,15 +335,15 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                 return [pt1]
         elif (pt2 in [pt3,pt4]):
                 return [pt2]
-                
+
         if DraftVecUtils.isNull(pt1.sub(center).cross(pt2.sub(center)).cross(arc.Curve.Axis)) :
             # Line and Arc are on same plane
-            
+
             dOnLine = center.sub(pt1).dot(dirVec)
             onLine  = Vector(dirVec)
             onLine.scale(dOnLine,dOnLine,dOnLine)
             toLine  = pt1.sub(center).add(onLine)
-            
+
             if toLine.Length < arc.Curve.Radius :
                 dOnLine = (arc.Curve.Radius**2 - toLine.Length**2)**(0.5)
                 onLine  = Vector(dirVec)
@@ -356,8 +356,8 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                 int = [center.add(toLine)]
             else :
                 return []
-                
-        else : 
+
+        else :
             # Line isn't on Arc's plane
             if dirVec.dot(arc.Curve.Axis) != 0 :
                 toPlane  = Vector(arc.Curve.Axis) ; toPlane.normalize()
@@ -374,7 +374,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                     return []
             else :
                 return []
-                
+
         if infinite1 == False :
             for i in range(len(int)-1,-1,-1) :
                 if not isPtOnEdge(int[i],edge1) :
@@ -384,16 +384,16 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                 if not isPtOnEdge(int[i],edge2) :
                     del int[i]
         return int
-        
+
     elif (geomType(edge1) == "Circle") and (geomType(edge2) == "Circle") :
-        
+
         # deals with 2 arcs or circles
 
         cent1, cent2 = edge1.Curve.Center, edge2.Curve.Center
         rad1 , rad2  = edge1.Curve.Radius, edge2.Curve.Radius
         axis1, axis2 = edge1.Curve.Axis  , edge2.Curve.Axis
         c2c          = cent2.sub(cent1)
-        
+
         if DraftVecUtils.isNull(axis1.cross(axis2)) :
             if round(c2c.dot(axis1),precision()) == 0 :
                 # circles are on same plane
@@ -432,7 +432,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             for pt in intTemp :
                 if round(pt.sub(cent2).Length-rad2,precision()) == 0 :
                     int += [pt]
-                    
+
         if infinite1 == False :
             for i in range(len(int)-1,-1,-1) :
                 if not isPtOnEdge(int[i],edge1) :
@@ -441,12 +441,12 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
             for i in range(len(int)-1,-1,-1) :
                 if not isPtOnEdge(int[i],edge2) :
                     del int[i]
-        
+
         return int
     else:
     #    print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
         return []
-        
+
 def wiresIntersect(wire1,wire2):
     "wiresIntersect(wire1,wire2): returns True if some of the edges of the wires are intersecting otherwise False"
     for e1 in wire1.Edges:
@@ -454,7 +454,7 @@ def wiresIntersect(wire1,wire2):
             if findIntersection(e1,e2,dts=False):
                 return True
     return False
-    
+
 def pocket2d(shape,offset):
     """pocket2d(shape,offset): return a list of wires obtained from offsetting the wires from the given shape
     by the given offset, and intersection if needed."""
@@ -551,7 +551,7 @@ def mirror (point, edge):
         return refl
     else:
         return None
-        
+
 def isClockwise(edge,ref=None):
     """Returns True if a circle-based edge has a clockwise direction"""
     if not geomType(edge) == "Circle":
@@ -572,7 +572,7 @@ def isClockwise(edge,ref=None):
     if n.z < 0:
         return False
     return True
-    
+
 def isSameLine(e1,e2):
     """isSameLine(e1,e2): return True if the 2 edges are lines and have the same
     points"""
@@ -587,7 +587,7 @@ def isSameLine(e1,e2):
        (DraftVecUtils.equals(e1.Vertexes[0].Point,e2.Vertexes[-1].Point)):
            return True
     return False
-    
+
 def isWideAngle(edge):
     """returns True if the given edge is an arc with angle > 180 degrees"""
     if geomType(edge) != "Circle":
@@ -657,9 +657,9 @@ def isLine(bsp):
 
 def sortEdges(edges):
     "Deprecated. Use Part.__sortEdges__ instead"
-    
+
     raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
-    
+
     # Build a dictionary of edges according to their end points.
     # Each entry is a set of edges that starts, or ends, at the
     # given vertex hash.
@@ -685,7 +685,7 @@ def sortEdges(edges):
         if v not in edict and len(se) == 1:
             startedge = se
             break
-    # The above may not find a start vertex; if the start edge is reversed, 
+    # The above may not find a start vertex; if the start edge is reversed,
     # the start vertex will appear in edict (and not sdict).
     if not startedge:
         for v, se in edict.items():
@@ -735,9 +735,9 @@ def sortEdges(edges):
 
 def sortEdgesOld(lEdges, aVertex=None):
     "Deprecated. Use Part.__sortEdges__ instead"
-    
+
     raise DeprecationWarning("Deprecated. Use Part.__sortEdges__ instead")
-    
+
     #There is no reason to limit this to lines only because every non-closed edge always
     #has exactly two vertices (wmayer)
     #for e in lEdges:
@@ -781,7 +781,7 @@ def sortEdgesOld(lEdges, aVertex=None):
                     else:
                         return lEdges
 
-    olEdges = [] # ol stands for ordered list 
+    olEdges = [] # ol stands for ordered list
     if aVertex == None:
         for i in range(len(lEdges)*2) :
             if len(lEdges[i/2].Vertexes) > 1:
@@ -791,7 +791,7 @@ def sortEdgesOld(lEdges, aVertex=None):
                     return olEdges
         # if the wire is closed there is no end so choose 1st Vertex
         # print("closed wire, starting from ",lEdges[0].Vertexes[0].Point)
-        return sortEdgesOld(lEdges, lEdges[0].Vertexes[0]) 
+        return sortEdgesOld(lEdges, lEdges[0].Vertexes[0])
     else :
         #print("looking ",aVertex.Point)
         result = lookfor(aVertex,lEdges)
@@ -876,7 +876,7 @@ def findWires(edgeslist):
         if DraftVecUtils.equals(e1.Vertexes[-1].Point,e2.Vertexes[-1].Point):
             return True
         return False
-    
+
     edges = edgeslist[:]
     wires = []
     lost = []
@@ -916,7 +916,7 @@ def findWires(edgeslist):
         else:
             nwires.append(wi)
     return nwires
-                
+
 def superWire(edgeslist,closed=False):
         '''superWire(edges,[closed]): forces a wire between edges that don't necessarily
         have coincident endpoints. If closed=True, wire will always be closed'''
@@ -1089,7 +1089,7 @@ def getNormal(shape):
         if FreeCAD.GuiUp:
             import Draft
             vdir = Draft.get3DView().getViewDirection()
-            if n.getAngle(vdir) < 0.78: 
+            if n.getAngle(vdir) < 0.78:
                 n = n.negative()
         return n
 
@@ -1193,7 +1193,7 @@ def connect(edges,closed=False):
                 i = findIntersection(curr,prev,True,True)
                 if i:
                     v1 = i[DraftVecUtils.closest(curr.Vertexes[0].Point,i)]
-                else:    
+                else:
                     v1 = curr.Vertexes[0].Point
             else:
                 v1 = curr.Vertexes[0].Point
@@ -1203,7 +1203,7 @@ def connect(edges,closed=False):
                 if i:
                     v2 = i[DraftVecUtils.closest(curr.Vertexes[-1].Point,i)]
                 else:
-                    v2 = curr.Vertexes[-1].Point 
+                    v2 = curr.Vertexes[-1].Point
             else:
                 v2 = curr.Vertexes[-1].Point
             if geomType(curr) == "Line":
@@ -1444,7 +1444,7 @@ def cleanFaces(shape):
                                 if ee.hashCode() in eset:
                                         return i
                 return None
-        
+
         # build lookup table
         lut = {}
         for face in faceset:
@@ -1655,7 +1655,7 @@ def fillet(lEdges,r,chamfer=False):
     Returns a list of sorted edges describing a round corner'''
 
     def getCurveType(edge,existingCurveType = None):
-            '''Builds or completes a dictionnary containing edges with keys "Arc" and "Line"''' 
+            '''Builds or completes a dictionnary containing edges with keys "Arc" and "Line"'''
             if not existingCurveType :
                     existingCurveType = { 'Line' : [], 'Arc' : [] }
             if issubclass(type(edge.Curve),Part.Line) :
@@ -1665,51 +1665,51 @@ def fillet(lEdges,r,chamfer=False):
             else :
                     raise ValueError("Edge's curve must be either Line or Arc")
             return existingCurveType
-            
+
     rndEdges = lEdges[0:2]
     rndEdges = Part.__sortEdges__(rndEdges)
 
     if len(rndEdges) < 2 :
         return rndEdges
-    
+
     if r <= 0 :
         print("DraftGeomUtils.fillet : Error : radius is negative.")
         return rndEdges
-        
+
     curveType = getCurveType(rndEdges[0])
     curveType = getCurveType(rndEdges[1],curveType)
-        
+
     lVertexes = rndEdges[0].Vertexes + [rndEdges[1].Vertexes[-1]]
-        
+
     if len(curveType['Line']) == 2:
-        
-        # Deals with 2-line-edges lists -------------------------------------- 
-        
+
+        # Deals with 2-line-edges lists --------------------------------------
+
         U1 = lVertexes[0].Point.sub(lVertexes[1].Point) ; U1.normalize()
         U2 = lVertexes[2].Point.sub(lVertexes[1].Point) ; U2.normalize()
         alpha = U1.getAngle(U2)
-        
+
         if chamfer:
             # correcting r value so the size of the chamfer = r
             beta = math.pi - alpha/2
             r = (r/2)/math.cos(beta)
-            
+
         if round(alpha,precision()) == 0 or round(alpha - math.pi,precision()) == 0: # Edges have same direction
             print("DraftGeomUtils.fillet : Warning : edges have same direction. Did nothing")
             return rndEdges
-            
-        dToCenter = r / math.sin(alpha/2.) 
+
+        dToCenter = r / math.sin(alpha/2.)
         dToTangent = (dToCenter**2-r**2)**(0.5)
         dirVect = Vector(U1) ; dirVect.scale(dToTangent,dToTangent,dToTangent)
         arcPt1 = lVertexes[1].Point.add(dirVect)
-        
+
         dirVect = U2.add(U1) ; dirVect.normalize()
         dirVect.scale(dToCenter-r,dToCenter-r,dToCenter-r)
         arcPt2 = lVertexes[1].Point.add(dirVect)
-        
+
         dirVect = Vector(U2) ; dirVect.scale(dToTangent,dToTangent,dToTangent)
         arcPt3 = lVertexes[1].Point.add(dirVect)
-            
+
         if (dToTangent>lEdges[0].Length) or (dToTangent>lEdges[1].Length) :
             print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
@@ -1717,15 +1717,23 @@ def fillet(lEdges,r,chamfer=False):
             rndEdges[1]   =  Part.Edge(Part.Line(arcPt1,arcPt3))
         else:
             rndEdges[1]   =  Part.Edge(Part.Arc(arcPt1,arcPt2,arcPt3))
-        rndEdges[0]   =  Part.Edge(Part.Line(lVertexes[0].Point,arcPt1))
-        rndEdges     += [Part.Edge(Part.Line(arcPt3,lVertexes[2].Point))]
-        
+
+        if lVertexes[0].Point == arcPt1:
+            # fillet consumes entire first edge
+            rndEdges.pop(0)
+        else:
+            rndEdges[0]   =  Part.Edge(Part.Line(lVertexes[0].Point,arcPt1))
+
+        if lVertexes[2].Point != arcPt3:
+            # fillet does not consume entire second edge
+            rndEdges     += [Part.Edge(Part.Line(arcPt3,lVertexes[2].Point))]
+
         return rndEdges
-        
+
     elif len(curveType['Arc']) == 1 :
-        
+
         # Deals with lists containing an arc and a line ----------------------------------
-        
+
         if lEdges[0] in curveType['Arc'] :
             lineEnd = lVertexes[2] ; arcEnd = lVertexes[0] ; arcFirst = True
         else :
@@ -1734,23 +1742,23 @@ def fillet(lEdges,r,chamfer=False):
         arcRadius = curveType['Arc'][0].Curve.Radius
         arcAxis   = curveType['Arc'][0].Curve.Axis
         arcLength = curveType['Arc'][0].Length
-        
+
         U1 = lineEnd.Point.sub(lVertexes[1].Point) ; U1.normalize()
         toCenter = arcCenter.sub(lVertexes[1].Point)
         if arcFirst : # make sure the tangent points towards the arc
             T = arcAxis.cross(toCenter)
         else :
             T = toCenter.cross(arcAxis)
-            
+
         projCenter = toCenter.dot(U1)
         if round(abs(projCenter),precision()) > 0 :
             normToLine = U1.cross(T).cross(U1)
         else :
-            normToLine = Vector(toCenter) 
+            normToLine = Vector(toCenter)
         normToLine.normalize()
-        
+
         dCenterToLine = toCenter.dot(normToLine) - r
-        
+
         if  round(projCenter,precision()) > 0 :
             newRadius = arcRadius - r
         elif round(projCenter,precision()) < 0 or (round(projCenter,precision()) == 0 and U1.dot(T) > 0):
@@ -1758,65 +1766,65 @@ def fillet(lEdges,r,chamfer=False):
         else :
             print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
             return rndEdges
-        
+
         toNewCent = newRadius**2-dCenterToLine**2
         if toNewCent > 0 :
             toNewCent = abs(abs(projCenter) - toNewCent**(0.5))
         else :
             print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
-            
+
         U1.scale(toNewCent,toNewCent,toNewCent)
-        normToLine.scale(r,r,r) 
+        normToLine.scale(r,r,r)
         newCent = lVertexes[1].Point.add(U1).add(normToLine)
-        
+
         arcPt1= lVertexes[1].Point.add(U1)
         arcPt2= lVertexes[1].Point.sub(newCent); arcPt2.normalize()
         arcPt2.scale(r,r,r) ; arcPt2 = arcPt2.add(newCent)
         if newRadius == arcRadius - r :
             arcPt3= newCent.sub(arcCenter)
         else :
-            arcPt3= arcCenter.sub(newCent) 
+            arcPt3= arcCenter.sub(newCent)
         arcPt3.normalize()
         arcPt3.scale(r,r,r) ; arcPt3 = arcPt3.add(newCent)
         arcPt = [arcPt1,arcPt2,arcPt3]
-        
-        
+
+
         # Warning : In the following I used a trick for calling the right element
         # in arcPt or V : arcFirst is a boolean so - not arcFirst is -0 or -1
         # list[-1] is the last element of a list and list[0] the first
         # this way I don't have to proceed tests to know the position of the arc
-        
+
         myTrick = not arcFirst
-        
+
         V  = [arcPt3]
         V += [arcEnd.Point]
-        
+
         toCenter.scale(-1,-1,-1)
-        
+
         delLength = arcRadius * V[0].sub(arcCenter).getAngle(toCenter)
-        if delLength > arcLength or toNewCent > curveType['Line'][0].Length: 
+        if delLength > arcLength or toNewCent > curveType['Line'][0].Length:
             print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
-            
+
         arcAsEdge = arcFrom2Pts(V[-arcFirst],V[-myTrick],arcCenter,arcAxis)
-        
+
         V = [lineEnd.Point,arcPt1]
         lineAsEdge = Part.Edge(Part.Line(V[-arcFirst],V[myTrick]))
-        
+
         rndEdges[not arcFirst]   =  arcAsEdge
         rndEdges[arcFirst]       =  lineAsEdge
         if chamfer:
             rndEdges[1:1] = [Part.Edge(Part.Line(arcPt[- arcFirst],arcPt[- myTrick]))]
         else:
             rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[- arcFirst],arcPt[1],arcPt[- myTrick]))]
-        
+
         return rndEdges
-        
+
     elif len(curveType['Arc']) == 2 :
-        
+
         # Deals with lists of 2 arc-edges --------------------------------------------
-        
+
         arcCenter, arcRadius, arcAxis, arcLength, toCenter, T, newRadius = [], [], [], [], [], [], []
         for i in range(2) :
             arcCenter += [curveType['Arc'][i].Curve.Center]
@@ -1828,7 +1836,7 @@ def fillet(lEdges,r,chamfer=False):
         T += [toCenter[1].cross(arcAxis[1])]
         CentToCent = toCenter[1].sub(toCenter[0])
         dCentToCent = CentToCent.Length
-        
+
         sameDirection = (arcAxis[0].dot(arcAxis[1]) > 0)
         TcrossT = T[0].cross(T[1])
         if sameDirection :
@@ -1844,7 +1852,7 @@ def fillet(lEdges,r,chamfer=False):
             else :
                 print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
                 return rndEdges
-        elif not sameDirection : 
+        elif not sameDirection :
             if   round(TcrossT.dot(arcAxis[0]),precision()) > 0 :
                 newRadius += [arcRadius[0]+r]
                 newRadius += [arcRadius[1]-r]
@@ -1864,16 +1872,16 @@ def fillet(lEdges,r,chamfer=False):
             else :
                 print("DraftGeomUtils.fillet : Warning : edges are already tangent. Did nothing")
                 return rndEdges
-                
+
         if newRadius[0]+newRadius[1] < dCentToCent or \
            newRadius[0]-newRadius[1] > dCentToCent or \
            newRadius[1]-newRadius[0] > dCentToCent :
             print("DraftGeomUtils.fillet : Error : radius value ", r," is too high")
             return rndEdges
-                
+
         x = (dCentToCent**2+newRadius[0]**2-newRadius[1]**2)/(2*dCentToCent)
         y = (newRadius[0]**2-x**2)**(0.5)
-        
+
         CentToCent.normalize() ; toCenter[0].normalize() ; toCenter[1].normalize()
         if abs(toCenter[0].dot(toCenter[1])) != 1 :
             normVect = CentToCent.cross(CentToCent.cross(toCenter[0]))
@@ -1895,7 +1903,7 @@ def fillet(lEdges,r,chamfer=False):
         arcPt2 = newCent.add(toThirdPt)
         arcPt3 = newCent.add(CentToNewCent[1])
         arcPt = [arcPt1,arcPt2,arcPt3]
-        
+
         arcAsEdge = []
         for i in range(2) :
             toCenter[i].scale(-1,-1,-1)
@@ -1905,21 +1913,21 @@ def fillet(lEdges,r,chamfer=False):
                 return rndEdges
             V = [arcPt[-i],lVertexes[-i].Point]
             arcAsEdge += [arcFrom2Pts(V[i-1],V[-i],arcCenter[i],arcAxis[i])]
-        
+
         rndEdges[0]   =  arcAsEdge[0]
         rndEdges[1]   =  arcAsEdge[1]
         if chamfer:
             rndEdges[1:1] = [Part.Edge(Part.Line(arcPt[0],arcPt[2]))]
         else:
             rndEdges[1:1] = [Part.Edge(Part.Arc(arcPt[0],arcPt[1],arcPt[2]))]
-        
+
         return rndEdges
-                
+
 def filletWire(aWire,r,chamfer=False):
     ''' Fillets each angle of a wire with r as radius value
     if chamfer is true, a chamfer is made instead and r is the
     size of the chamfer'''
-    
+
     edges = aWire.Edges
     edges = Part.__sortEdges__(edges)
     filEdges = [edges[0]]
@@ -1935,7 +1943,7 @@ def filletWire(aWire,r,chamfer=False):
             filEdges[-1:] = result[0:2]
             filEdges[0]   = result[2]
     return Part.Wire(filEdges)
-    
+
 def getCircleFromSpline(edge):
     "returns a circle-based edge from a bspline-based edge"
     if geomType(edge) != "BSplineCurve":
@@ -2018,7 +2026,7 @@ def cleanProjection(shape,tessellate=True,seglength=.05):
         except:
             print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
-    
+
 def curvetosegment(curve,seglen):
     points = curve.discretize(seglen)
     p0 = points[0]
@@ -2049,10 +2057,10 @@ def tessellateProjection(shape,seglen):
         except:
             print("Debug: error cleaning edge ",e)
     return Part.makeCompound(newedges)
-    
-    
+
+
 def rebaseWire(wire,vidx):
-    
+
     """rebaseWire(wire,vidx): returns a new wire which is a copy of the
     current wire, but where the first vertex is the vertex indicated by the given
     index vidx, starting from 1. 0 will return an exact copy of the wire."""
@@ -2109,7 +2117,7 @@ def getBoundaryAngles(angle,alist):
                         if a < higher:
                                 higher = a
         return (lower,higher)
-                        
+
 
 def circleFrom2tan1pt(tan1, tan2, point):
     "circleFrom2tan1pt(edge, edge, Vector)"
@@ -2237,7 +2245,7 @@ def circleFrom3LineTangents (edge1, edge2, edge3):
     bis23 = angleBisection(edge2,edge3)
     bis31 = angleBisection(edge3,edge1)
     intersections = []
-    int = findIntersection(bis12, bis23, True, True)    
+    int = findIntersection(bis12, bis23, True, True)
     if int:
         radius = findDistance(int[0],edge1).Length
         intersections.append(Part.Circle(int[0],NORM,radius))
@@ -2457,7 +2465,7 @@ def innerSoddyCircle(circle1, circle2, circle3):
         print("debug: innerSoddyCircle bad parameters!\n")
         # FreeCAD.Console.PrintMessage("debug: innerSoddyCircle bad parameters!\n")
         return None
- 
+
 def circleFrom3CircleTangents(circle1, circle2, circle3):
     '''
     http://en.wikipedia.org/wiki/Problem_of_Apollonius#Inversive_methods
@@ -2560,7 +2568,7 @@ def determinant (mat,n):
     else:
         return 0
 
-    
+
 def findHomotheticCenterOfCircles(circle1, circle2):
     '''
     findHomotheticCenterOfCircles(circle1, circle2)
