@@ -91,6 +91,8 @@ SET(TechDrawGuiView_SRCS
     QGVPage.h
     QGCustomText.cpp
     QGCustomText.h
+    QGICaption.cpp
+    QGICaption.h
     QGCustomRect.cpp
     QGCustomRect.h
     QGCustomSvg.cpp

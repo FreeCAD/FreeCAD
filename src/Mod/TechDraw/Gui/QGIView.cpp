@@ -1,5 +1,3 @@
-
-
 /***************************************************************************
  *   Copyright (c) 2012-2013 Luke Parry <l.parry@warwick.ac.uk>            *
  *                                                                         *
@@ -52,12 +50,17 @@
 #include "QGIView.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
+#include "QGCustomText.h"
+#include "QGICaption.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
 using namespace TechDrawGui;
+
+const float labelCaptionFudge = 0.2;   // temp fiddle for devel
+
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
@@ -78,7 +81,8 @@ QGIView::QGIView()
     m_pen.setColor(m_colCurrent);
 
     //Border/Label styling
-    m_font.setPointSize(5.0);     //scene units (mm), not points
+    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
+
     m_decorPen.setStyle(Qt::DashLine);
     m_decorPen.setWidth(0); // 0 => 1px "cosmetic pen"
 
@@ -86,6 +90,8 @@ QGIView::QGIView()
     addToGroup(m_label);
     m_border = new QGCustomBorder();
     addToGroup(m_border);
+    m_caption = new QGICaption();
+    addToGroup(m_caption);
 
     isVisible(true);
 }
@@ -190,7 +196,6 @@ void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
         //}
     }
     drawBorder();
-    //update();
 }
 
 void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
@@ -202,7 +207,6 @@ void QGIView::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
         m_colCurrent = getNormalColor();
     }
     drawBorder();
-    //update();
 }
 
 void QGIView::setPosition(qreal x, qreal y)
@@ -243,7 +247,7 @@ void QGIView::updateView(bool update)
     }
 
     if (update ||
-        getViewObject()->Rotation.isTouched()) {
+        getViewObject()->Rotation.isTouched() ) {
         //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
         //Scale is handled in GeometryObject for DVP & descendents
         //Objects not descended from DVP must setScale for themselves
@@ -286,29 +290,54 @@ void QGIView::toggleCache(bool state)
     setCacheMode((state)? NoCache : NoCache);
 }
 
-
 void QGIView::toggleBorder(bool state)
 {
     borderVisible = state;
-    drawBorder();
+    QGIView::draw();
 }
+
 void QGIView::draw()
 {
     if (isVisible()) {
+        drawBorder();
         show();
     } else {
         hide();
     }
 }
 
+void QGIView::drawCaption()
+{
+    prepareGeometryChange();
+    QRectF displayArea = customChildrenBoundingRect();
+    m_caption->setDefaultTextColor(m_colCurrent);
+    m_font.setFamily(getPrefFont());
+    m_caption->setFont(m_font);
+    QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
+    m_caption->setPlainText(captionStr);
+    QRectF captionArea = m_caption->boundingRect();
+    QPointF displayCenter = displayArea.center();
+    m_caption->setX(displayCenter.x() - captionArea.width()/2.);
+    double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
+    if (borderVisible || viewObj->KeepLabel.getValue()) {            //place below label if label visible
+        m_caption->setY(displayArea.bottom() + labelHeight);
+    } else {
+        m_caption->setY(displayArea.bottom() + labelCaptionFudge * getPrefFontSize());
+    }
+    m_caption->show();
+}
+
 void QGIView::drawBorder()
 {
-    if (!borderVisible) {
+    drawCaption();
+    //show neither
+    if (!borderVisible && !viewObj->KeepLabel.getValue()) {
          m_label->hide();
          m_border->hide();
         return;
     }
 
+    //show both or show label
     //double margin = 2.0;
     m_label->hide();
     m_border->hide();
@@ -320,25 +349,23 @@ void QGIView::drawBorder()
     m_label->setPlainText(labelStr);
     QRectF labelArea = m_label->boundingRect();
     double labelWidth = m_label->boundingRect().width();
-    double labelHeight = m_label->boundingRect().height();
+    double labelHeight = (1 - labelCaptionFudge) * m_label->boundingRect().height();
 
-    m_border->hide();
     m_decorPen.setColor(m_colCurrent);
     m_border->setPen(m_decorPen);
 
     QRectF displayArea = customChildrenBoundingRect();
     double displayWidth = displayArea.width();
     double displayHeight = displayArea.height();
+    QPointF displayCenter = displayArea.center();
+    m_label->setX(displayCenter.x() - labelArea.width()/2.);
+    m_label->setY(displayArea.bottom());
 
     double frameWidth = displayWidth;
     if (labelWidth > displayWidth) {
         frameWidth = labelWidth;
     }
     double frameHeight = labelHeight + displayHeight;
-    QPointF displayCenter = displayArea.center();
-
-    m_label->setX(displayCenter.x() - labelArea.width()/2.);
-    m_label->setY(displayArea.bottom());
 
     QRectF frameArea = QRectF(displayCenter.x() - frameWidth/2.,
                               displayArea.top(),
@@ -349,7 +376,9 @@ void QGIView::drawBorder()
     m_border->setPos(0.,0.);
 
     m_label->show();
-    m_border->show();
+    if (borderVisible) {
+        m_border->show();
+    }
 }
 
 void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -365,12 +394,16 @@ QRectF QGIView::customChildrenBoundingRect() {
     int dimItemType = QGraphicsItem::UserType + 106;  // TODO: Magic number warning.
     int borderItemType = QGraphicsItem::UserType + 136;  // TODO: Magic number warning
     int labelItemType = QGraphicsItem::UserType + 135;  // TODO: Magic number warning
+    int captionItemType = QGraphicsItem::UserType + 180;  // TODO: Magic number warning
     QRectF result;
     for (QList<QGraphicsItem*>::iterator it = children.begin(); it != children.end(); ++it) {
         if ( ((*it)->type() != dimItemType) &&
              ((*it)->type() != borderItemType) &&
-             ((*it)->type() != labelItemType) ) {
-            result = result.united((*it)->boundingRect());
+             ((*it)->type() != labelItemType)  &&
+             ((*it)->type() != captionItemType) ) {
+            QRectF childRect = mapFromItem(*it,(*it)->boundingRect()).boundingRect();
+            result = result.united(childRect);
+            //result = result.united((*it)->boundingRect());
         }
     }
     return result;
@@ -437,6 +470,14 @@ QString QGIView::getPrefFont()
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
     std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
     return QString::fromStdString(fontName);
+}
+
+double QGIView::getPrefFontSize()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+    double fontSize = hGrp->GetFloat("LabelSize", 5.0);
+    return fontSize;
 }
 
 void QGIView::dumpRect(char* text, QRectF r) {

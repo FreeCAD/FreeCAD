@@ -61,7 +61,9 @@ DrawView::DrawView(void)
   : autoPos(true),
     mouseMove(false)
 {
-    static const char *group = "Drawing view";
+    static const char *group = "BaseView";
+    static const char *fgroup = "Format";
+
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
@@ -69,6 +71,9 @@ DrawView::DrawView(void)
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+
+    ADD_PROPERTY_TYPE(KeepLabel ,(false),fgroup,App::Prop_None,"Keep Label on Page even if toggled off");
+    ADD_PROPERTY_TYPE(Caption ,(""),fgroup,App::Prop_None,"Short text about the view");
 
 }
 
