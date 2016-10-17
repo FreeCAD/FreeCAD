@@ -26,6 +26,7 @@
 # include <BRepBuilderAPI_MakeFace.hxx>
 # include <gp_Dir.hxx>
 # include <gp_Vec.hxx>
+# include <gp_Lin.hxx>
 # include <Geom_Geometry.hxx>
 # include <Geom_Surface.hxx>
 # include <GeomConvert_ApproxSurface.hxx>
