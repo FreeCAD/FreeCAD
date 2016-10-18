@@ -1600,6 +1600,10 @@ pair<string, string> customSyntax(const string& s)
         return make_pair(string("display"), string("null"));
     else if (s.find("-style") == 0)
         return make_pair(string("style"), string("null"));
+    else if (s.find("-graphicssystem") == 0)
+        return make_pair(string("graphicssystem"), string("null"));
+    else if (s.find("-widgetcount") == 0)
+        return make_pair(string("widgetcount"), string(""));
     else if (s.find("-geometry") == 0)
         return make_pair(string("geometry"), string("null"));
     else if (s.find("-font") == 0)
@@ -1690,6 +1694,8 @@ void Application::ParseOptions(int ac, char ** av)
     ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
     ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
     ("reverse",                                               "set the application's layout direction from right to left")
+    ("widgetcount",                                           "print debug messages about widgets")
+    ("graphicssystem", boost::program_options::value< string >(), "backend to be used for on-screen widgets and pixmaps")
     ("display",    boost::program_options::value< string >(), "set the X-Server")
     ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
     ("font",       boost::program_options::value< string >(), "set the X-Window font")
