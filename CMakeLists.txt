@@ -566,7 +566,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
-        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        find_package(VTK COMPONENTS vtkCommonCore vtkCommonDataModel vtkFiltersVerdict vtkIOXML vtkFiltersCore vtkFiltersGeneral vtkIOLegacy vtkFiltersExtraction vtkFiltersSources vtkFiltersGeometry REQUIRED) #don't check VERSION 6 as this would exclude version 7
         set(BUILD_FEM_VTK ON)
         if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
