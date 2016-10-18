@@ -47,19 +47,27 @@ except AttributeError:
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
 
+debugDogbone = False
+
+def debugPrint(msg):
+    if debugDogbone:
+        print(msg)
+
 def debugMarker(vector, label):
-    obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
-    obj.Label = label
-    obj.Radius = 0.5
-    obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+    if debugDogbone:
+        obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
+        obj.Label = label
+        obj.Radius = 0.5
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
 
 def debugCircle(vector, r, label):
-    obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
-    obj.Label = label
-    obj.Radius = r
-    obj.Height = 1
-    obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
-    obj.ViewObject.Transparency = 95
+    if debugDogbone:
+        obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
+        obj.Label = label
+        obj.Radius = r
+        obj.Height = 1
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.ViewObject.Transparency = 95
 
 class Style:
     Dogbone = 'Dogbone'
@@ -108,7 +116,7 @@ class Chord (object):
         return "Chord([%g, %g, %g] -> [%g, %g, %g])" % (self.Start.x, self.Start.y, self.Start.z, self.End.x, self.End.y, self.End.z)
 
     def moveTo(self, newEnd):
-        #print("Chord(%s -> %s)" % (self.End, newEnd))
+        #debugPrint("Chord(%s -> %s)" % (self.End, newEnd))
         return Chord(self.End, newEnd)
 
     def moveToParameters(self, params):
@@ -238,8 +246,8 @@ class ObjectDressup:
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
         obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
         obj.Incision = Incision.All
-        obj.Incision = Incision.Adaptive
-        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if lenght == custom"))
+        obj.Incision = Incision.Fixed
+        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
 
@@ -268,46 +276,46 @@ class ObjectDressup:
         dest = inChord.moveTo(FreeCAD.Vector(v.x, v.y, v.z))
         destAngle = dest.getAngleXY()
         distance = dest.getLength() - self.toolRadius * math.fabs(math.cos(destAngle - angle))
-        #print("adapt")
-        #print("  in  = %s -> %s" % (inChord, iChord))
-        #print("  out = %s -> %s" % (outChord, oChord))
-        #print("      = (%.2f, %.2f) -> %.2f (%.2f %.2f) -> %.2f" % (x, y, dest.getLength(), destAngle/math.pi, angle/math.pi, distance))
+        #debugPrint("adapt")
+        #debugPrint("  in  = %s -> %s" % (inChord, iChord))
+        #debugPrint("  out = %s -> %s" % (outChord, oChord))
+        #debugPrint("      = (%.2f, %.2f) -> %.2f (%.2f %.2f) -> %.2f" % (x, y, dest.getLength(), destAngle/math.pi, angle/math.pi, distance))
         return distance
 
     def smoothChordCommands(self, inChord, outChord, side, smooth):
         if smooth == 0:
             return [ inChord.g1Command(), outChord.g1Command() ]
-        print("(%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (inChord.Start.x, inChord.Start.y, inChord.End.x, inChord.End.y, outChord.End.x, outChord.End.y))
+        debugPrint("(%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (inChord.Start.x, inChord.Start.y, inChord.End.x, inChord.End.y, outChord.End.x, outChord.End.y))
         inAngle = inChord.getAngleXY()
         outAngle = outChord.getAngleXY()
-        print("    inAngle = %.2f  outAngle = %.2f" % (inAngle/math.pi, outAngle/math.pi))
+        debugPrint("    inAngle = %.2f  outAngle = %.2f" % (inAngle/math.pi, outAngle/math.pi))
         if inAngle == outAngle:  # straight line, outChord includes inChord
-            print("    ---> (%.2f, %.2f)" %(outChord.End.x, outChord.End.y))
+            debugPrint("    ---> (%.2f, %.2f)" %(outChord.End.x, outChord.End.y))
             return [ outChord.g1Command() ]
-        print("%s  ::  %s" % (inChord, outChord))
+        debugPrint("%s  ::  %s" % (inChord, outChord))
         inEdge = DraftGeomUtils.edg(inChord.Start, inChord.End)
         outEdge = DraftGeomUtils.edg(outChord.Start, outChord.End)
         #wire = Part.Wire([inEdge, outEdge])
-        #print("      => %s" % wire)
+        #debugPrint("      => %s" % wire)
         #wire = wire.makeOffset2D(self.toolRadius)
-        #print("     ==> %s" % wire)
+        #debugPrint("     ==> %s" % wire)
         #wire = wire.makeOffset2D(-self.toolRadius)
-        #print("    ===> %s" % wire)
+        #debugPrint("    ===> %s" % wire)
         radius = self.toolRadius
         while radius > 0:
             lastpt = None
             commands = ""
             edges = DraftGeomUtils.fillet([inEdge, outEdge], radius)
             if DraftGeomUtils.isSameLine(edges[0], inEdge) or DraftGeomUtils.isSameLine(edges[1], inEdge):
-                print("Oh, we got a problem, try smaller radius")
+                debugPrint("Oh, we got a problem, try smaller radius")
                 radius = radius - 0.1 * self.toolRadius
                 continue
-            print("we're good")
+            debugPrint("we're good")
             #for edge in wire.Edges[:-1]: # makeOffset2D closes the wire
             for edge in edges:
                 if not lastpt:
                     lastpt = edge.Vertexes[0].Point
-                lastpt, cmds = PathUtils.edge_to_path(lastpt, edge, 0)
+                lastpt, cmds = PathUtils.edge_to_path(lastpt, edge, inChord.Start.z)
                 commands += cmds
             path = Path.Path(commands)
             return path.Commands
@@ -325,12 +333,12 @@ class ObjectDressup:
         boneInChord = inChord.moveBy(x, y, 0)
         boneOutChord = boneInChord.moveTo(outChord.Start)
 
-        debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
+        #debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
         debugCircle(boneInChord.End, self.toolRadius, 'boneEnd')
 
         bones = []
-        bones.extend(self.smoothChordCommands(inChord, boneInChord, obj.Side, smooth & Smooth.In))
-        bones.extend(self.smoothChordCommands(boneOutChord, outChord, obj.Side, smooth & Smooth.Out))
+        bones.extend(self.smoothChordCommands(inChord, boneInChord, obj.Side, 0)) #smooth & Smooth.In))
+        bones.extend(self.smoothChordCommands(boneOutChord, outChord, obj.Side, 0)) #smooth & Smooth.Out))
         return bones
 
     def dogboneAngle(self, obj, inChord, outChord):
@@ -343,7 +351,7 @@ class ObjectDressup:
             boneAngle += 2*math.pi
         while boneAngle > math.pi:
             boneAngle -= 2*math.pi
-        #print("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
+        #debugPrint("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
         return boneAngle
 
     def dogbone(self, obj, inChord, outChord, smooth):
@@ -414,18 +422,18 @@ class ObjectDressup:
             return [ inChord.g1Command(), outChord.g1Command() ]
 
     def insertBone(self, boneId, obj, inChord, outChord, commands, smooth):
-        print(">----------------------------------- %d --------------------------------------" % boneId)
+        debugPrint(">----------------------------------- %d --------------------------------------" % boneId)
         loc = (inChord.End.x, inChord.End.y)
         blacklisted, inaccessible = self.boneIsBlacklisted(obj, boneId, loc)
         enabled = not blacklisted
         self.bones.append((boneId, loc, enabled, inaccessible))
 
-        if boneId < 9:
-            bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
-        else:
+        if debugDogbone and boneId > 3:
             bones = self.boneCommands(obj, False, inChord, outChord, smooth)
+        else:
+            bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
         commands.extend(bones[:-1])
-        print("<----------------------------------- %d --------------------------------------" % boneId)
+        debugPrint("<----------------------------------- %d --------------------------------------" % boneId)
         return boneId + 1, bones[-1]
 
     def execute(self, obj):
@@ -478,13 +486,13 @@ class ObjectDressup:
                     lastCommand = None
                 commands.append(thisCmd)
         #for cmd in commands:
-        #    print("cmd = '%s'" % cmd)
+        #    debugPrint("cmd = '%s'" % cmd)
         path = Path.Path(commands)
         obj.Path = path
 
     def setup(self, obj):
         if not hasattr(self, 'toolRadius'):
-            print("Here we go ... ")
+            debugPrint("Here we go ... ")
             if hasattr(obj.Base, "BoneBlacklist"):
                 # dressing up a bone dressup
                 obj.Side = obj.Base.Side
