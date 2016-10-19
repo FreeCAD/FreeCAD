@@ -9,12 +9,12 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        PathCommands.py
     DESTINATION
         Mod/Path
 )
 
 SET(PathScripts_SRCS
-    PathCommands.py
     PathScripts/__init__.py
     PathScripts/PostUtils.py
     PathScripts/example_pre.py
