@@ -341,6 +341,9 @@ class Component:
                     if hasattr(obj,"BaseMaterial"):
                         if hasattr(obj.CloneOf,"BaseMaterial"):
                             obj.BaseMaterial = obj.CloneOf.BaseMaterial
+                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
+                        if hasattr(obj,prop) and hasattr(obj.CloneOf,prop):
+                            setattr(obj,prop,getattr(obj.CloneOf,prop))
                     return True
         return False
 
