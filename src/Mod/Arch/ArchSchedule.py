@@ -119,7 +119,7 @@ class _ArchSchedule:
                     if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
                         objs = objs[0].Group
                 objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
-                objs = Arch.pruneIncluded(objs)
+                objs = Arch.pruneIncluded(objs,strict=True)
                 if obj.Filter[i]:
                     # apply filters
                     nobjs = []

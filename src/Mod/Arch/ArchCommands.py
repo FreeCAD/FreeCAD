@@ -662,9 +662,10 @@ def getHost(obj,strict=True):
                 return par
     return None
 
-def pruneIncluded(objectslist):
-    """pruneIncluded(objectslist): removes from a list of Arch objects, those that are subcomponents of
-    another shape-based object, leaving only the top-level shapes."""
+def pruneIncluded(objectslist,strict=False):
+    """pruneIncluded(objectslist,[strict]): removes from a list of Arch objects, those that are subcomponents of
+    another shape-based object, leaving only the top-level shapes. If strict is True, the object
+    is removed only if the parent is also part of the selection."""
     import Draft
     newlist = []
     for obj in objectslist:
@@ -683,6 +684,9 @@ def pruneIncluded(objectslist):
                                     toplevel = False
                             else:
                                 toplevel = False
+                    if (toplevel == False) and strict:
+                        if not(parent in objectslist) and not(parent in newlist):
+                            toplevel = True
         if toplevel:
             newlist.append(obj)
     return newlist
