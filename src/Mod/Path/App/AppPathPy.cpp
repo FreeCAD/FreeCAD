@@ -37,16 +37,34 @@
 #include <App/DocumentObjectPy.h>
 #include <App/Application.h>
 
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/TopoShapePy.h>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Iterator.hxx>
+#include <TopExp_Explorer.hxx>
+#include <gp_Lin.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
+#include <Approx_Curve3d.hxx>
+#include <BRepAdaptor_HCurve.hxx>
+
 #include "CommandPy.h"
 #include "PathPy.h"
 #include "Path.h"
 #include "FeaturePath.h"
 #include "FeaturePathCompound.h"
 
+
 namespace Path {
 class Module : public Py::ExtensionModule<Module>
 {
+    
 public:
+
     Module() : Py::ExtensionModule<Module>("Path")
     {
         add_varargs_method("write",&Module::write,
@@ -58,12 +76,16 @@ public:
         add_varargs_method("show",&Module::show,
             "show(path): Add the path to the active document or create one if no document exists"
         );
+        add_varargs_method("fromShape",&Module::fromShape,
+            "fromShape(Shape): Returns a Path object from a Part Shape"
+        );
         initialize("This module is the Path module."); // register with Python
     }
 
     virtual ~Module() {}
 
 private:
+
     Py::Object write(const Py::Tuple& args)
     {
         char* Name;
@@ -90,6 +112,7 @@ private:
 
         return Py::None();
     }
+
 
     Py::Object read(const Py::Tuple& args)
     {
@@ -131,6 +154,7 @@ private:
         return Py::None();
     }
 
+
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;
@@ -157,6 +181,88 @@ private:
 
         return Py::None();
     }
+
+
+    Py::Object fromShape(const Py::Tuple& args)
+    {
+        PyObject *pcObj;
+        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj))
+            throw Py::Exception();
+        TopoDS_Shape shape;
+        try {
+            if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
+                shape = static_cast<Part::TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
+            } else {
+                throw Py::TypeError("the given object is not a shape");
+            }
+            if (!shape.IsNull()) {
+                if (shape.ShapeType() == TopAbs_WIRE) {
+                    Path::Toolpath result;
+                    bool first = true;
+                    Base::Placement last;
+                    
+                    TopExp_Explorer ExpEdges (shape,TopAbs_EDGE);
+                    while (ExpEdges.More()) {
+                        const TopoDS_Edge& edge = TopoDS::Edge(ExpEdges.Current());
+                        TopExp_Explorer ExpVerts(edge,TopAbs_VERTEX);
+                        bool vfirst = true;
+                        while (ExpVerts.More()) {
+                            const TopoDS_Vertex& vert = TopoDS::Vertex(ExpVerts.Current());
+                            gp_Pnt pnt = BRep_Tool::Pnt(vert);
+                            Base::Placement tpl;
+                            tpl.setPosition(Base::Vector3d(pnt.X(),pnt.Y(),pnt.Z()));
+                            if (first) {
+                                // add first point as a G0 move
+                                Path::Command cmd;
+                                std::ostringstream ctxt;
+                                ctxt << "G0 X" << tpl.getPosition().x << " Y" << tpl.getPosition().y << " Z" << tpl.getPosition().z;
+                                cmd.setFromGCode(ctxt.str());
+                                result.addCommand(cmd);
+                                first = false;
+                                vfirst = false;
+                            } else {
+                                if (vfirst)
+                                    vfirst = false;
+                                else {
+                                    Path::Command cmd;
+                                    cmd.setFromPlacement(tpl);
+                        
+                                    // write arc data if needed
+                                    BRepAdaptor_Curve adapt(edge);
+                                    if (adapt.GetType() == GeomAbs_Circle) {
+                                        gp_Circ circ = adapt.Circle();
+                                        gp_Pnt c = circ.Location();
+                                        bool clockwise = false;
+                                        gp_Dir n = circ.Axis().Direction();
+                                        if (n.Z() < 0)
+                                            clockwise = true;
+                                        Base::Vector3d center = Base::Vector3d(c.X(),c.Y(),c.Z());
+                                        // center coords must be relative to last point
+                                        center -= last.getPosition();
+                                        cmd.setCenter(center,clockwise);
+                                    }
+                                    result.addCommand(cmd);
+                                }
+                            }
+                            ExpVerts.Next();
+                            last = tpl;
+                        }
+                        ExpEdges.Next();
+                    }
+                    return Py::asObject(new PathPy(new Path::Toolpath(result)));
+                } else {
+                    throw Py::TypeError("the given shape must be a wire");
+                }
+            } else {
+                throw Py::TypeError("the given shape is empty");
+            }
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        return Py::None();
+    }
+    
 };
 
 PyObject* initModule()
