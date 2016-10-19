@@ -369,7 +369,7 @@ class _ViewProviderProfile:
         return True
 
     def getIcon(self):
-        return ":/icons/Path-Profile.svg"
+        return ":/icons/Path-Profile-Face.svg"
 
     def __getstate__(self):
         return None
@@ -454,7 +454,7 @@ class _CommandSetEndPoint:
 
 class CommandPathProfile:
     def GetResources(self):
-        return {'Pixmap': 'Path-Profile',
+        return {'Pixmap': 'Path-Profile-Face',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Face Profile"),
                 'Accel': "P, F",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathProfile", "Profile based on face or faces")}
