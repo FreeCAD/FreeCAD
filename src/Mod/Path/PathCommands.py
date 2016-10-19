@@ -23,11 +23,10 @@
 # ***************************************************************************
 
 import FreeCAD
-import Part
 from PathScripts.PathUtils import loopdetect
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtGui,QtCore
+    from PySide import QtCore
     from DraftTools import translate
 else:
     def translate(ctxt,txt):
@@ -41,7 +40,7 @@ __url__ = "http://www.freecadweb.org"
 class _CommandSelectLoop:
     "the Arch RemoveShape command definition"
     def GetResources(self):
-        return {'Pixmap'  : 'Path_SelectLoop',
+        return {'Pixmap'  : 'Path-SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Finish Selecting Loop"),
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Complete loop selection from two edges")}
 
