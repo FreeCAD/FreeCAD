@@ -74,7 +74,7 @@ if open.__module__ == '__builtin__':
 CurrentState = {}
 
 
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
     global CurrentState
 
     for obj in objectslist:

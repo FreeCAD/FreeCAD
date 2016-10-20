@@ -79,8 +79,26 @@ TOOL_CHANGE = ''''''
 if open.__module__ == '__builtin__':
     pythonopen = open
 
+def processArguments(argstring):
+    global OUTPUT_HEADER
+    global OUTPUT_COMMENTS
+    global OUTPUT_LINE_NUMBERS
+    for arg in argstring.split():
+        if arg == '--header':
+            OUTPUT_HEADER = True
+        elif arg == '--no-header':
+            OUTPUT_HEADER = False
+        elif arg == '--comments':
+            OUTPUT_COMMENTS = True
+        elif arg == '--no-comments':
+            OUTPUT_COMMENTS = False
+        elif arg == '--line-numbers':
+            OUTPUT_LINE_NUMBERS = True
+        elif arg == '--no-line-numbers':
+            OUTPUT_LINE_NUMBERS = False
 
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
+    processArguments(argstring)
     global UNITS
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -167,7 +185,6 @@ def linenumber():
         LINENR += 10
         return "N" + str(LINENR) + " "
     return ""
-
 
 def parse(pathobj):
     out = ""

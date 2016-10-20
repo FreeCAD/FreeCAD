@@ -35,15 +35,15 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="General">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>378</width>
-        <height>409</height>
+        <width>363</width>
+        <height>443</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -145,8 +145,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>451</width>
-        <height>349</height>
+        <width>378</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -215,8 +215,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>451</width>
-        <height>349</height>
+        <width>378</width>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -272,6 +272,20 @@
        </item>
        <item>
         <widget class="QComboBox" name="cboPostProcessor"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Post Processor Arguments</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="cboPostProcessorArgs">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the Post Processor. The arguments are specific for each Post Processor, please see it's documentation for details.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
        </item>
        <item>
         <spacer name="verticalSpacer_2">

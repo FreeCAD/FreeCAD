@@ -71,7 +71,7 @@ def lineout(command, oldvals, modal):
         line += "F"+str(ffmt(command.Parameters['F']))
     return line
 
-def export(obj,filename):
+def export(obj,filename,argstring):
     modal=True
     commands = obj[0]
     gcode = ''

@@ -44,7 +44,7 @@ if open.__module__ == '__builtin__':
 
 
 # Entrypoint used by FreeCAD
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
     "Export objects as Roland Modela code."
 
     code = ""
