@@ -21,7 +21,8 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
+TOOLTIP=''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
+
 import FreeCAD
 import Path, PathScripts
 from PathScripts import PostUtils
