@@ -69,7 +69,7 @@ FOOTER = 'M99'+'\n'
 if open.__module__ == '__builtin__':
     pythonopen = open
 
-def export(selection,filename):
+def export(selection,filename,argstring):
     params = ['X','Y','Z','A','B','I','J','F','H','S','T','Q','R','L'] #Using XY plane most of the time so skipping K
     for obj in selection:
         if not hasattr(obj,"Path"):

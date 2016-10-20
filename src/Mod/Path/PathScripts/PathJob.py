@@ -68,6 +68,8 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = allposts
+        obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
+        obj.PostProcessorArgs = ""
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
         obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
@@ -263,6 +265,8 @@ class TaskPanel:
         if self.obj:
             if hasattr(self.obj, "PostProcessor"):
                 self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
+            if hasattr(self.obj, "PostProcessorArgs"):
+                self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText)
             if hasattr(self.obj, "Label"):
                 self.obj.Label = str(self.form.leLabel.text())
             if hasattr(self.obj, "OutputFile"):
@@ -298,6 +302,7 @@ class TaskPanel:
             self.form.cboPostProcessor.blockSignals(True)
             self.form.cboPostProcessor.setCurrentIndex(postindex)
             self.form.cboPostProcessor.blockSignals(False)
+        self.form.cboPostProcessorArgs.displayText = self.obj.PostProcessorArgs
 
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
