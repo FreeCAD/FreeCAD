@@ -32,7 +32,7 @@
 #endif
 
 #include <App/OriginFeature.h>
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <App/Origin.h>
 #include <App/Part.h>
 #include <Gui/Application.h>
@@ -60,7 +60,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 {
     // TODO review this function (2015-09-04, Fat-Zer)
     PartDesign::Body *body;
-    App::GeoFeatureGroup *geoGroup;
+    App::DocumentObject* originGroupObject = nullptr;
 
     if ( support ) {
         body = PartDesign::Body::findBodyOf (support);
@@ -69,12 +69,16 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     }
 
     if ( body ) { // Search for Part of the body
-        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( body ) ;
+        originGroupObject = App::OriginGroupExtension::getGroupOfObject ( body ) ;
     } else if ( support ) { // if no body search part for support
-        geoGroup = App::GeoFeatureGroup::getGroupOfObject ( support ) ;
+        originGroupObject = App::OriginGroupExtension::getGroupOfObject ( support ) ;
     } else { // fallback to active part
-        geoGroup = PartDesignGui::getActivePart ( );
+        originGroupObject = PartDesignGui::getActivePart ( );
     }
+    
+    App::OriginGroupExtension* originGroup = nullptr;
+    if(originGroupObject)
+        originGroup = originGroupObject->getExtensionByType<App::OriginGroupExtension>();
 
     // Don't allow selection in other document
     if ( support && pDoc != support->getDocument() ) {
@@ -96,8 +100,8 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
                     if (body->getOrigin ()->hasObject (pObj) ) {
                         return true;
                     }
-                } else if (geoGroup && geoGroup->isDerivedFrom ( App::OriginGroup::getClassTypeId () ) ) {
-                    if ( static_cast<App::OriginGroup *>(geoGroup)->getOrigin ()->hasObject (pObj) ) {
+                } else if (originGroup ) {
+                    if ( originGroup->getOrigin ()->hasObject (pObj) ) {
                         return true;
                     }
                 }
@@ -169,14 +173,20 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
     return false;
 }
 
-bool NoDependentsSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+bool NoDependentsSelection::allow(App::Document* /*pDoc*/, App::DocumentObject* pObj, const char* /*sSubName*/)
 {
-    if (support && !support->testIfLinkDAGCompatible(pObj)) {
+    if (support && support->testIfLinkDAGCompatible(pObj)) {
+        return true;
+    }
+    else {
         this->notAllowedReason = QT_TR_NOOP("Selecting this will cause circular dependency.");
         return false;
     }
+}
 
-    return refSelection.allow(pDoc, pObj, sSubName);
+bool CombineSelectionFilterGates::allow(App::Document* pDoc, App::DocumentObject* pObj, const char* sSubName)
+{
+    return filter1->allow(pDoc, pObj, sSubName) && filter2->allow(pDoc, pObj, sSubName);
 }
 
 

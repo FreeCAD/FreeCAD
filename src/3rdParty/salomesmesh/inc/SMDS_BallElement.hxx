@@ -41,7 +41,7 @@ class SMDS_EXPORT SMDS_BallElement: public SMDS_MeshCell
   bool ChangeNode (const SMDS_MeshNode * node);
 
   virtual bool ChangeNodes(const SMDS_MeshNode* nodes[],
-                           const int            nbNodes) { return ChangeNode( nodes[0] ); }
+                           const int      /*nbNodes*/) { return ChangeNode( nodes[0] ); }
   virtual void Print (std::ostream & OS) const;
 
   virtual SMDSAbs_ElementType  GetType()       const { return SMDSAbs_Ball; }

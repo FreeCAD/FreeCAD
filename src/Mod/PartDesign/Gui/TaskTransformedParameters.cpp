@@ -338,7 +338,9 @@ void TaskTransformedParameters::exitSelectionMode()
 
 void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
 {
-    Gui::Selection().addSelectionGate(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
+    Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
 //**************************************************************************

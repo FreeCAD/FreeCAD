@@ -238,8 +238,8 @@ bool isPartDesignAwareObjecta (App::DocumentObject *obj, bool respectGroups = fa
             PartDesign::Body::isAllowed ( obj ) ||
             obj->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
             ( respectGroups && (
-                                obj->isDerivedFrom (App::GeoFeatureGroup::getClassTypeId () ) ||
-                                obj->isDerivedFrom (App::DocumentObjectGroup::getClassTypeId () )
+                                obj->hasExtension (App::GeoFeatureGroupExtension::getExtensionClassTypeId () ) ||
+                                obj->hasExtension (App::GroupExtension::getExtensionClassTypeId () )
                                ) ) );
 }
 

@@ -29,8 +29,9 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import FemTools
+from PySide import QtCore
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
 
 
 class FemToolsCcx(FemTools.FemTools):
@@ -121,7 +122,7 @@ class FemToolsCcx(FemTools.FemTools):
                 if p1.wait() == 0:
                     ccx_path = p1.stdout.read().split('\n')[0]
                 elif p1.wait() == 1:
-                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences.\n"
+                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
                     if FreeCAD.GuiUp:
                         QtGui.QMessageBox.critical(None, error_title, error_message)
                     raise Exception(error_message)
@@ -130,6 +131,12 @@ class FemToolsCcx(FemTools.FemTools):
             if not ccx_binary:
                 self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
                 ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
+                if not ccx_binary:
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetBool("UseStandardCcxLocation", True)
+                    error_message = "FEM: CalculiX binary ccx path not set at all. The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, error_title, error_message)
+                    raise Exception(error_message)
             self.ccx_binary = ccx_binary
 
         import subprocess
@@ -153,7 +160,7 @@ class FemToolsCcx(FemTools.FemTools):
         except OSError as e:
             FreeCAD.Console.PrintError(e.message)
             if e.errno == 2:
-                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences.\n".format(ccx_binary)
+                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 raise Exception(error_message)

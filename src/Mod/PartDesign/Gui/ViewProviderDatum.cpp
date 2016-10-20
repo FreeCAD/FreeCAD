@@ -53,7 +53,7 @@
 #endif
 
 #include <App/DocumentObjectGroup.h>
-#include <App/GeoFeatureGroup.h>
+#include <App/GeoFeatureGroupExtension.h>
 #include <Gui/Control.h>
 #include <Gui/Command.h>
 #include <Gui/Application.h>
@@ -327,10 +327,12 @@ SbBox3f ViewProviderDatum::getRelevantBoundBox () const {
         objs = body->getFullModel ();
     } else {
         // Probe if we belongs to some group
-        App::DocumentObjectGroup* group =  App::DocumentObjectGroup::getGroupOfObject ( this->getObject () );
+        App::DocumentObject* group =  App::DocumentObjectGroup::getGroupOfObject ( this->getObject () );
 
         if(group) {
-            objs = group->getObjects ();
+            auto* ext = group->getExtensionByType<App::GroupExtension>();
+            if(ext) 
+                objs = ext->getObjects ();
         } else {
             // Fallback to whole document
             objs = this->getObject ()->getDocument ()->getObjects ();

@@ -247,15 +247,20 @@ void QGIViewPart::updateView(bool update)
 
 
     if (update ||
-       viewPart->isTouched() ||
-       viewPart->Source.isTouched() ||
-       viewPart->Direction.isTouched() ||
-       viewPart->XAxisDirection.isTouched() ||
-       viewPart->Tolerance.isTouched() ||
-       viewPart->Scale.isTouched() ||
-       viewPart->ShowHiddenLines.isTouched() ||
-       viewPart->ShowSmoothLines.isTouched() ||
-       viewPart->ShowSeamLines.isTouched() ) {
+        viewPart->isTouched() ||
+        viewPart->Source.isTouched() ||
+        viewPart->Direction.isTouched() ||
+        viewPart->XAxisDirection.isTouched() ||
+        viewPart->Tolerance.isTouched() ||
+        viewPart->Scale.isTouched() ||
+        viewPart->HardHidden.isTouched() ||
+        viewPart->SmoothVisible.isTouched() ||
+        viewPart->SeamVisible.isTouched()   ||
+        viewPart->IsoVisible.isTouched()    ||
+        viewPart->SmoothHidden.isTouched()    ||
+        viewPart->SeamHidden.isTouched()      ||
+        viewPart->IsoHidden.isTouched()       ||
+        viewPart->IsoCount.isTouched()  ) {
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||
@@ -282,8 +287,6 @@ void QGIViewPart::draw() {
 
 void QGIViewPart::drawViewPart()
 {
-    //Base::Console().Message("TRACE - QGIVP::drawViewPart\n");
-
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
         return;
@@ -291,29 +294,32 @@ void QGIViewPart::drawViewPart()
 
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
+    float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
     removeDecorations();
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    // Draw Faces
-    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-    const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
-    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,i);
-        TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
-        if (fHatch) {
-            if (!fHatch->HatchPattern.isEmpty()) {
-                App::Color hColor = fHatch->HatchColor.getValue();
-                newFace->setHatchColor(hColor.asCSSString());
-                newFace->setHatch(fHatch->HatchPattern.getValue());
+    if (viewPart->handleFaces()) {
+        // Draw Faces
+        std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
+        const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+        for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
+            QGIFace* newFace = drawFace(*fit,i);
+            TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
+            if (fHatch) {
+                if (!fHatch->HatchPattern.isEmpty()) {
+                    App::Color hColor = fHatch->HatchColor.getValue();
+                    newFace->setHatchColor(hColor.asCSSString());
+                    newFace->setHatch(fHatch->HatchPattern.getValue());
+                }
             }
+            newFace->setDrawEdges(false);
+            newFace->setZValue(ZVALUE::FACE);
+            newFace->setPrettyNormal();
         }
-        newFace->setDrawEdges(false);
-        newFace->setZValue(ZVALUE::FACE);
-        newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
@@ -326,12 +332,17 @@ void QGIViewPart::drawViewPart()
         if ((*itEdge)->visible) {
             if (((*itEdge)->classOfEdge == ecHARD) ||
                 ((*itEdge)->classOfEdge == ecOUTLINE) ||
-                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())) {
+                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
+                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         } else {
-            if (viewPart->ShowHiddenLines.getValue()) {
+            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
+                 (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
                 showEdge = true;
             }
         }
@@ -347,6 +358,9 @@ void QGIViewPart::drawViewPart()
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
             }
+            if ((*itEdge)->classOfEdge == ecUVISO) {
+                item->setWidth(lineWidthIso);
+            }
             item->setPrettyNormal();
             //debug a path
             //QPainterPath edgePath=drawPainterPath(*itEdge);
@@ -359,7 +373,7 @@ void QGIViewPart::drawViewPart()
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool showCenters = viewPart->ShowCenters.getValue();
+    bool showCenters = viewPart->ArcCenterMarks.getValue();
     double cAdjust = viewPart->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter) {
@@ -452,8 +466,6 @@ void QGIViewPart::removeDecorations()
 
 void QGIViewPart::drawSectionLine(bool b)
 {
-    //Base::Console().Message("TRACE - QGIVP::drawSectionLine);
-
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
     TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||

@@ -31,10 +31,6 @@ import json
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
-    from DraftTools import translate
-else:
-    def translate(ctxt, txt):
-        return txt
 
 __title__ = "Path Remote Operation"
 __author__ = "sliptonic (Brad Collette)"
@@ -57,30 +53,30 @@ class ObjectRemote:
 
     def __init__(self, obj):
 
-        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", "The base geometry of this toolpath")
-        obj.addProperty("App::PropertyBool", "Active", "Path", "Make False, to prevent operation from generating code")
-        obj.addProperty("App::PropertyString", "Comment", "Path", "An optional comment for this profile")
-        obj.addProperty("App::PropertyString", "UserLabel", "Path", "User Assigned Label")
+        obj.addProperty("App::PropertyLinkSubList", "Base", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base geometry of this toolpath"))
+        obj.addProperty("App::PropertyBool", "Active", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Make False, to prevent operation from generating code"))
+        obj.addProperty("App::PropertyString", "Comment", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional comment for this profile"))
+        obj.addProperty("App::PropertyString", "UserLabel", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","User Assigned Label"))
 
-        obj.addProperty("App::PropertyString", "URL", "API", "The Base URL of the remote path service")
-        obj.addProperty("App::PropertyStringList", "proplist", "Path", "list of remote properties")
+        obj.addProperty("App::PropertyString", "URL", "API", QtCore.QT_TRANSLATE_NOOP("App::Property","The Base URL of the remote path service"))
+        obj.addProperty("App::PropertyStringList", "proplist", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","list of remote properties"))
         obj.setEditorMode('proplist', 2)  # make this hidden
 
         # Tool Properties
-        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool", "The tool number in use")
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool",QtCore.QT_TRANSLATE_NOOP("App::Property","The tool number in use"))
         obj.ToolNumber = (0, 0, 1000, 0)
         obj.setEditorMode('ToolNumber', 1)  # make this read only
-        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", "The description of the tool ")
+        obj.addProperty("App::PropertyString", "ToolDescription", "Tool", QtCore.QT_TRANSLATE_NOOP("App::Property","The description of the tool "))
         obj.setEditorMode('ToolDescription', 1)  # make this read onlyt
 
         # Depth Properties
-        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", "The height needed to clear clamps and obstructions")
-        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", "Rapid Safety Height between locations.")
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", "Incremental Step Down of Tool")
+        obj.addProperty("App::PropertyFloat", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
+        obj.addProperty("App::PropertyFloat", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
+        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Step", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
         obj.StepDown = (0.0, 0.01, 100.0, 0.5)
-        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", "Starting Depth of Tool- first cut depth in Z")
-        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", "Final Depth of Tool- lowest value in Z")
-        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", "Maximum material removed on final pass.")
+        obj.addProperty("App::PropertyFloat", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Starting Depth of Tool- first cut depth in Z"))
+        obj.addProperty("App::PropertyFloat", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
+        obj.addProperty("App::PropertyFloat", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum material removed on final pass."))
 
         obj.Proxy = self
 
@@ -303,7 +299,11 @@ class CommandPathRemote:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Remote", "Request a Path from a remote cloud service")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         ztop = 10.0
@@ -322,7 +322,7 @@ class CommandPathRemote:
         FreeCADGui.doCommand('obj.StepDown = ' + str((ztop-zbottom)/8))
 
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()

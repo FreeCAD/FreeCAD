@@ -1,4 +1,5 @@
 /***************************************************************************
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
  *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -20,57 +21,64 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINGROUP_H_QHTU73IF
-#define ORIGINGROUP_H_QHTU73IF
 
-#include "GeoFeatureGroup.h"
-#include "PropertyLinks.h"
+#ifndef APP_GeoFeatureGroup_H
+#define APP_GeoFeatureGroup_H
 
-namespace App {
-class Origin;
+#include <App/FeaturePython.h>
+
+#include "DocumentObjectGroup.h"
+#include "PropertyGeo.h"
+
+namespace App
+{
 
 /**
- * Represents an abstact placeable group of objects with an associated Origin
+ * The base class for placeable group of DocumentObjects
  */
-class AppExport OriginGroup: public App::GeoFeatureGroup
+class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
-    PROPERTY_HEADER(App::OriginGroup);
+    EXTENSION_PROPERTY_HEADER(App::GeoFeatureGroupExtension);
+
 public:
-    OriginGroup ();
-    virtual ~OriginGroup ();
+    PropertyPlacement Placement;
 
-    /// Returns the origin link or throws an exception
-    App::Origin *getOrigin () const;
+    /**
+     * @brief transformPlacement applies transform to placement of this shape.
+     * Override this function to propagate the change of placement to base
+     * features.
+     * @param transform (input).
+     */
+    virtual void transformPlacement(const Base::Placement &transform);
+    /// Constructor
+    GeoFeatureGroupExtension(void);
+    virtual ~GeoFeatureGroupExtension();
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName () const {
-        return "Gui::ViewProviderOriginGroup";
-    }
+    /// Returns all geometrically controlled objects: all objects of this group and it's non-geo subgroups
+    std::vector<App::DocumentObject*> getGeoSubObjects () const;
 
-    /** 
-     * Returns the origin group which contains this object.
+    /// Returns true if either the group or one of it's non-geo subgroups has the object
+    bool geoHasObject (const DocumentObject* obj) const;
+
+    /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
+     * Unlike DocumentObjectGroup::getGroupOfObject serches only for GeoFeatureGroups
      * @param obj       the object to search for
      * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static OriginGroup* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
 
-    /// Returns true on changing OriginFeature set
-    virtual short mustExecute () const;
-    
-    /// Origin linked to the group
-    PropertyLink Origin;
-
-protected:
-    /// Checks integrity of the Origin
-    virtual App::DocumentObjectExecReturn *execute ();
-    /// Creates the corresponding Origin object
-    virtual void setupObject ();
-    /// Removes all planes and axis if they are still linked to the document
-    virtual void unsetupObject ();
+    /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
+    static bool isNonGeoGroup(const DocumentObject* obj) {
+        return obj->hasExtension(GroupExtension::getExtensionClassTypeId());
+    }
 };
 
-} /* App */
+typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
 
-#endif /* end of include guard: ORIGINGROUP_H_QHTU73IF */
+
+} //namespace App
+
+
+#endif // APP_GeoFeatureGroup_H

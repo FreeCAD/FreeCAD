@@ -3042,8 +3042,18 @@ GeomCylinder::GeomCylinder()
     this->mySurface = s;
 }
 
+GeomCylinder::GeomCylinder(const Handle_Geom_CylindricalSurface& c)
+{
+    this->mySurface = Handle_Geom_CylindricalSurface::DownCast(c->Copy());
+}
+
 GeomCylinder::~GeomCylinder()
 {
+}
+
+void GeomCylinder::setHandle(const Handle_Geom_CylindricalSurface& s)
+{
+    mySurface = Handle_Geom_CylindricalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCylinder::handle() const
@@ -3079,8 +3089,18 @@ GeomCone::GeomCone()
     this->mySurface = s;
 }
 
+GeomCone::GeomCone(const Handle_Geom_ConicalSurface& c)
+{
+    this->mySurface = Handle_Geom_ConicalSurface::DownCast(c->Copy());
+}
+
 GeomCone::~GeomCone()
 {
+}
+
+void GeomCone::setHandle(const Handle_Geom_ConicalSurface& s)
+{
+    mySurface = Handle_Geom_ConicalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCone::handle() const
@@ -3116,8 +3136,18 @@ GeomToroid::GeomToroid()
     this->mySurface = s;
 }
 
+GeomToroid::GeomToroid(const Handle_Geom_ToroidalSurface& t)
+{
+    this->mySurface = Handle_Geom_ToroidalSurface::DownCast(t->Copy());
+}
+
 GeomToroid::~GeomToroid()
 {
+}
+
+void GeomToroid::setHandle(const Handle_Geom_ToroidalSurface& s)
+{
+    mySurface = Handle_Geom_ToroidalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomToroid::handle() const
@@ -3153,8 +3183,18 @@ GeomSphere::GeomSphere()
     this->mySurface = s;
 }
 
+GeomSphere::GeomSphere(const Handle_Geom_SphericalSurface& s)
+{
+    this->mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
+}
+
 GeomSphere::~GeomSphere()
 {
+}
+
+void GeomSphere::setHandle(const Handle_Geom_SphericalSurface& s)
+{
+    mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomSphere::handle() const
@@ -3190,8 +3230,18 @@ GeomPlane::GeomPlane()
     this->mySurface = s;
 }
 
+GeomPlane::GeomPlane(const Handle_Geom_Plane& p)
+{
+    this->mySurface = Handle_Geom_Plane::DownCast(p->Copy());
+}
+
 GeomPlane::~GeomPlane()
 {
+}
+
+void GeomPlane::setHandle(const Handle_Geom_Plane& s)
+{
+    mySurface = Handle_Geom_Plane::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomPlane::handle() const
@@ -3644,6 +3694,62 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
     return arc;
+}
+
+GeomSurface* makeFromSurface(const Handle_Geom_Surface& s)
+{
+    if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
+        Handle_Geom_ToroidalSurface hSurf = Handle_Geom_ToroidalSurface::DownCast(s);
+        return new GeomToroid(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
+        Handle_Geom_BezierSurface hSurf = Handle_Geom_BezierSurface::DownCast(s);
+        return new GeomBezierSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
+        Handle_Geom_BSplineSurface hSurf = Handle_Geom_BSplineSurface::DownCast(s);
+        return new GeomBSplineSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
+        Handle_Geom_CylindricalSurface hSurf = Handle_Geom_CylindricalSurface::DownCast(s);
+        return new GeomCylinder(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
+        Handle_Geom_ConicalSurface hSurf = Handle_Geom_ConicalSurface::DownCast(s);
+        return new GeomCone(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
+        Handle_Geom_SphericalSurface hSurf = Handle_Geom_SphericalSurface::DownCast(s);
+        return new GeomSphere(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
+        Handle_Geom_Plane hSurf = Handle_Geom_Plane::DownCast(s);
+        return new GeomPlane(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
+        Handle_Geom_OffsetSurface hSurf = Handle_Geom_OffsetSurface::DownCast(s);
+        return new GeomOffsetSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
+        Handle_GeomPlate_Surface hSurf = Handle_GeomPlate_Surface::DownCast(s);
+        return new GeomPlateSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
+        Handle_Geom_RectangularTrimmedSurface hSurf = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+        return new GeomTrimmedSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
+        Handle_Geom_SurfaceOfRevolution hSurf = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+        return new GeomSurfaceOfRevolution(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
+        Handle_Geom_SurfaceOfLinearExtrusion hSurf = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+        return new GeomSurfaceOfExtrusion(hSurf);
+    }
+
+    std::string err = "Unhandled surface type ";
+    err += s->DynamicType()->Name();
+    throw Base::TypeError(err);
 }
 
 }

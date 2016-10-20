@@ -24,7 +24,7 @@
 #ifndef APP_Part_H
 #define APP_Part_H
 
-#include "OriginGroup.h"
+#include "OriginGroupExtension.h"
 #include "PropertyLinks.h"
 
 
@@ -35,9 +35,9 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Part : public App::OriginGroup
+class AppExport Part : public App::DocumentObject, public App::OriginGroupExtension
 {
-    PROPERTY_HEADER(App::Part);
+    PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
 
 public:
     /// type of the part

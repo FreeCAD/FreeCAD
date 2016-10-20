@@ -38,7 +38,6 @@
 #include "Document.h"
 #include "Selection.h"
 #include "SelectionFilter.h"
-#include "SelectionObjectPy.h"
 #include "View3DInventor.h"
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -47,6 +46,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 
 
@@ -981,6 +981,7 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = 0;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
+    CurrentPreselection.Type = SelectionChanges::ClrSelection;
     CurrentPreselection.pDocName = 0;
     CurrentPreselection.pObjectName = 0;
     CurrentPreselection.pSubName = 0;

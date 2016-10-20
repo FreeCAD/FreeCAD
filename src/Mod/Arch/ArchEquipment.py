@@ -33,8 +33,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 # presets
@@ -163,9 +166,9 @@ class _CommandEquipment:
     "the Arch Equipment command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Equipment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
                 'Accel': "E, Q",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -191,8 +194,8 @@ class _Command3Views:
     "the Arch 3Views command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_3Views',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_3Views","3 views from mesh"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_3Views","Creates 3 views (top, front, side) from a mesh-based object")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_3Views","3 views from mesh"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_3Views","Creates 3 views (top, front, side) from a mesh-based object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -235,12 +238,10 @@ class _Equipment(ArchComponent.Component):
     "The Equipment object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        #obj.addProperty("Part::PropertyPartShape","TopView","Arch","an optional 2D shape representing a top view of this equipment")
-        #obj.addProperty("Part::PropertyPartShape","FrontView","Arch","an optional 2D shape representing a front view of this equipment")
-        #obj.addProperty("Part::PropertyPartShape","SideView","Arch","an optional 2D shape representing a side view of this equipment")
-        obj.addProperty("App::PropertyString","Model","Arch","The model description of this equipment")
-        obj.addProperty("App::PropertyString","Url","Arch","The url of the product page of this equipment")
-        obj.addProperty("App::PropertyVectorList","SnapPoints","Arch","Additional snap points for this equipment")
+        obj.addProperty("App::PropertyString","Model","Arch",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
+        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
+        obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
+        obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self

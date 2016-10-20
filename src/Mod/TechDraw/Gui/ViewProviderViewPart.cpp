@@ -63,7 +63,7 @@ void ViewProviderViewPart::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->LineWidth)   ||
         prop == &(getViewObject()->HiddenWidth) ||
-        prop == &(getViewObject()->ShowCenters) ||
+        prop == &(getViewObject()->ArcCenterMarks) ||
         prop == &(getViewObject()->CenterScale) ||
         prop == &(getViewObject()->ShowSectionLine)  ||
         prop == &(getViewObject()->HorizSectionLine) ||

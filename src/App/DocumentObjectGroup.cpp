@@ -33,148 +33,15 @@
 
 using namespace App;
 
-PROPERTY_SOURCE(App::DocumentObjectGroup, App::DocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::DocumentObjectGroup, App::DocumentObject)
 
+DocumentObjectGroup::DocumentObjectGroup(void): DocumentObject(), GroupExtension() {
 
-DocumentObjectGroup::DocumentObjectGroup()
-{
-    ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
+    GroupExtension::initExtension(this);
 }
 
-DocumentObjectGroup::~DocumentObjectGroup()
-{
-}
+DocumentObjectGroup::~DocumentObjectGroup() {
 
-DocumentObject* DocumentObjectGroup::addObject(const char* sType, const char* pObjectName)
-{
-    DocumentObject* obj = getDocument()->addObject(sType, pObjectName);
-    if (obj) addObject(obj);
-    return obj;
-}
-
-void DocumentObjectGroup::addObject(DocumentObject* obj)
-{
-    if (!hasObject(obj)) {
-        std::vector<DocumentObject*> grp = Group.getValues();
-        grp.push_back(obj);
-        Group.setValues(grp);
-    }
-}
-
-void DocumentObjectGroup::removeObject(DocumentObject* obj)
-{
-    const std::vector<DocumentObject*> & grp = Group.getValues();
-    std::vector<DocumentObject*> newGrp;
-
-    std::remove_copy (grp.begin(), grp.end(), std::back_inserter (newGrp), obj);
-    if (grp.size() != newGrp.size()) {
-        Group.setValues (newGrp);
-    }
-}
-
-void DocumentObjectGroup::removeObjectsFromDocument()
-{
-    const std::vector<DocumentObject*> & grp = Group.getValues();
-    // Use set so iterate on each linked object exactly one time (in case of multiple links to the same document)
-    std::set<DocumentObject*> grpSet (grp.begin(), grp.end());
-
-    for (std::set<DocumentObject*>::iterator it = grpSet.begin(); it != grpSet.end(); ++it) {
-        removeObjectFromDocument(*it);
-    }
-}
-
-void DocumentObjectGroup::removeObjectFromDocument(DocumentObject* obj)
-{
-    // remove all children
-    if (obj->getTypeId().isDerivedFrom(DocumentObjectGroup::getClassTypeId())) {
-        DocumentObjectGroup *grp = static_cast<DocumentObjectGroup*>(obj);
-        // recursive call to remove all subgroups
-        grp->removeObjectsFromDocument();
-    }
-
-    this->getDocument()->remObject(obj->getNameInDocument());
-}
-
-DocumentObject *DocumentObjectGroup::getObject(const char *Name) const
-{
-    DocumentObject* obj = getDocument()->getObject(Name);
-    if (obj && hasObject(obj))
-        return obj;
-    return 0;
-}
-
-bool DocumentObjectGroup::hasObject(const DocumentObject* obj, bool recursive) const
-{
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == obj) {
-            return true;
-        } else if ( recursive && (*it)->isDerivedFrom (App::DocumentObjectGroup::getTypeId()) ) {
-            App::DocumentObjectGroup *subGroup = static_cast<App::DocumentObjectGroup *> (*it);
-            if (subGroup->hasObject (obj, recursive)) {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-bool DocumentObjectGroup::isChildOf(const DocumentObjectGroup* group) const
-{
-    const std::vector<DocumentObject*>& grp = group->Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if (*it == this)
-            return true;
-        if ((*it)->getTypeId().isDerivedFrom(DocumentObjectGroup::getClassTypeId())) {
-            if (this->isChildOf(static_cast<DocumentObjectGroup*>(*it)))
-                return true;
-        }
-    }
-
-    return false;
-}
-
-std::vector<DocumentObject*> DocumentObjectGroup::getObjects() const
-{
-    return Group.getValues();
-}
-
-std::vector<DocumentObject*> DocumentObjectGroup::getObjectsOfType(const Base::Type& typeId) const
-{
-    std::vector<DocumentObject*> type;
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type.push_back(*it);
-    }
-
-    return type;
-}
-
-int DocumentObjectGroup::countObjectsOfType(const Base::Type& typeId) const
-{
-    int type=0;
-    const std::vector<DocumentObject*>& grp = Group.getValues();
-    for (std::vector<DocumentObject*>::const_iterator it = grp.begin(); it != grp.end(); ++it) {
-        if ( (*it)->getTypeId().isDerivedFrom(typeId))
-            type++;
-    }
-
-    return type;
-}
-
-DocumentObjectGroup* DocumentObjectGroup::getGroupOfObject(const DocumentObject* obj)
-{
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(DocumentObjectGroup::getClassTypeId());
-    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        DocumentObjectGroup* grp = (DocumentObjectGroup*)(*it);
-        if (grp->hasObject(obj))
-            return grp;
-    }
-
-    return 0;
 }
 
 PyObject *DocumentObjectGroup::getPyObject()
@@ -186,9 +53,11 @@ PyObject *DocumentObjectGroup::getPyObject()
     return Py::new_reference_to(PythonObject);
 }
 
+
 // Python feature ---------------------------------------------------------
 
 namespace App {
+    
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(App::DocumentObjectGroupPython, App::DocumentObjectGroup)
 template<> const char* App::DocumentObjectGroupPython::getViewProviderName(void) const {

@@ -268,7 +268,7 @@ class Snapper:
 
                 if obj.isDerivedFrom("Part::Feature"):
                     
-                    snaps.extend(self.snapToSpecials(obj))
+                    snaps.extend(self.snapToSpecials(obj,lastpoint,eline))
                     
                     if Draft.getType(obj) == "Polygon":
                         # special snapping for polygons: add the center
@@ -283,7 +283,6 @@ class Snapper:
                                 snaps.extend(self.snapToEndpoints(edge))
                                 snaps.extend(self.snapToMidpoint(edge))
                                 snaps.extend(self.snapToPerpendicular(edge,lastpoint))
-                                #snaps.extend(self.snapToOrtho(edge,lastpoint,constrain)) # now part of snapToPolar
                                 snaps.extend(self.snapToIntersection(edge))
                                 snaps.extend(self.snapToElines(edge,eline))
                                 
@@ -700,8 +699,7 @@ class Snapper:
                     for p in pts:
                         snaps.append([p,'intersection',self.toWP(p)])
         return snaps
-            
-    
+
     def snapToAngles(self,shape):
         "returns a list of angle snap locations"
         snaps = []
@@ -783,7 +781,7 @@ class Snapper:
         else:
             return []
             
-    def snapToSpecials(self,obj):
+    def snapToSpecials(self,obj,lastpoint=None,eline=None):
         "returns special snap locations, if any"
         snaps = []
         if self.isEnabled("special"):
@@ -804,6 +802,13 @@ class Snapper:
                 else:
                     b = obj.Placement.Base
                     snaps.append([b,'special',self.toWP(b)])
+                if obj.ViewObject.ShowNodes:
+                    for edge in obj.Proxy.getNodeEdges(obj):
+                        snaps.extend(self.snapToEndpoints(edge))
+                        snaps.extend(self.snapToMidpoint(edge))
+                        snaps.extend(self.snapToPerpendicular(edge,lastpoint))
+                        snaps.extend(self.snapToIntersection(edge))
+                        snaps.extend(self.snapToElines(edge,eline))
 
             elif hasattr(obj,"SnapPoints"):
                 for p in obj.SnapPoints:

@@ -2400,6 +2400,17 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     return Objects;
 }
 
+std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId) const {
+
+    std::vector<DocumentObject*> Objects;
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+        if ((*it)->hasExtension(typeId))
+            Objects.push_back(*it);
+    }
+    return Objects;
+}
+
+
 std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
 {
     boost::regex rx(objname);

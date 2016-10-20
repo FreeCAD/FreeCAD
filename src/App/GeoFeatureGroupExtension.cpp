@@ -29,30 +29,32 @@
 
 #include <App/Document.h>
 
-#include "GeoFeatureGroup.h"
-#include "GeoFeatureGroupPy.h"
-#include "FeaturePythonPyImp.h"
+#include "GeoFeatureGroupExtension.h"
+//#include "GeoFeatureGroupPy.h"
+//#include "FeaturePythonPyImp.h"
 
 using namespace App;
 
 
-PROPERTY_SOURCE(App::GeoFeatureGroup, App::DocumentObjectGroup)
+EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 
 //===========================================================================
 // Feature
 //===========================================================================
 
-GeoFeatureGroup::GeoFeatureGroup(void)
+GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
-    ADD_PROPERTY(Placement,(Base::Placement()));
+    initExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
+    
+    EXTENSION_ADD_PROPERTY(Placement,(Base::Placement()));
 }
 
-GeoFeatureGroup::~GeoFeatureGroup(void)
+GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
 {
 }
 
-void GeoFeatureGroup::transformPlacement(const Base::Placement &transform)
+void GeoFeatureGroupExtension::transformPlacement(const Base::Placement &transform)
 {
     // NOTE: Keep in sync with APP::GeoFeature
     Base::Placement plm = this->Placement.getValue();
@@ -60,10 +62,10 @@ void GeoFeatureGroup::transformPlacement(const Base::Placement &transform)
     this->Placement.setValue(plm);
 }
 
-std::vector<App::DocumentObject*> GeoFeatureGroup::getGeoSubObjects () const {
+std::vector<App::DocumentObject*> GeoFeatureGroupExtension::getGeoSubObjects () const {
     const auto & objs = Group.getValues();
 
-    std::set<const App::DocumentObjectGroup*> processedGroups;
+    std::set<const App::GroupExtension*> processedGroups;
     std::set<App::DocumentObject*> rvSet;
     std::set<App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
 
@@ -91,14 +93,14 @@ std::vector<App::DocumentObject*> GeoFeatureGroup::getGeoSubObjects () const {
     return std::vector<App::DocumentObject*> ( rvSet.begin(), rvSet.end() );
 }
 
-bool GeoFeatureGroup::geoHasObject (const DocumentObject* obj) const {
+bool GeoFeatureGroupExtension::geoHasObject (const DocumentObject* obj) const {
     const auto & objs = Group.getValues();
 
     if (!obj) {
         return false;
     }
 
-    std::set<const App::DocumentObjectGroup*> processedGroups;
+    std::set<const App::GroupExtension*> processedGroups;
     std::set<const App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
 
     processedGroups.insert ( this );
@@ -123,19 +125,19 @@ bool GeoFeatureGroup::geoHasObject (const DocumentObject* obj) const {
     return false;
 }
 
-GeoFeatureGroup* GeoFeatureGroup::getGroupOfObject(const DocumentObject* obj, bool indirect)
+DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj, bool indirect)
 {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroup::getClassTypeId());
+    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroupExtension::getExtensionClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GeoFeatureGroup* grp = (GeoFeatureGroup*)(*it);
+        GeoFeatureGroupExtension* grp = (GeoFeatureGroupExtension*)(*it);
         if ( indirect ) {
             if (grp->geoHasObject(obj)) {
-                return grp;
+                return dynamic_cast<App::DocumentObject*>(grp);
             }
         } else {
             if (grp->hasObject(obj)) {
-                return grp;
+                return dynamic_cast<App::DocumentObject*>(grp);
             }
         }
     }
@@ -143,33 +145,11 @@ GeoFeatureGroup* GeoFeatureGroup::getGroupOfObject(const DocumentObject* obj, bo
     return 0;
 }
 
-PyObject *GeoFeatureGroup::getPyObject()
-{
-    if (PythonObject.is(Py::_None())){
-        // ref counter is set to 1
-        PythonObject = Py::Object(new GeoFeatureGroupPy(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
-
 // Python feature ---------------------------------------------------------
 
-
 namespace App {
-/// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(App::GeoFeatureGroupPython, App::GeoFeatureGroup)
-template<> const char* App::GeoFeatureGroupPython::getViewProviderName(void) const {
-    return "Gui::ViewProviderGeoFeatureGroupPython";
-}
-template<> PyObject* App::GeoFeatureGroupPython::getPyObject(void) {
-    if (PythonObject.is(Py::_None())) {
-        // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<App::GeoFeatureGroupPy>(this),true);
-    }
-    return Py::new_reference_to(PythonObject);
-}
-/// @endcond
+EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GeoFeatureGroupExtensionPython, App::GeoFeatureGroupExtension)
 
 // explicit template instantiation
-template class AppExport FeaturePythonT<App::GeoFeatureGroup>;
+template class AppExport ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>>;
 }

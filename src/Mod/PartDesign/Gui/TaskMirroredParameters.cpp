@@ -136,6 +136,9 @@ void TaskMirroredParameters::setupUI()
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         this->fillPlanesCombo(planeLinks,static_cast<Part::Part2DObject*>(sketch));
     }
+    else {
+        this->fillPlanesCombo(planeLinks, NULL);
+    }
 
     //show the parts coordinate system planes for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf ( getObject() );
@@ -181,23 +184,18 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
                 removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
             exitSelectionMode();
         } else {
-            // TODO checkme (2015-09-01, Fat-Zer)
-            exitSelectionMode();
-            std::vector<std::string> mirrorPlanes;
-            App::DocumentObject* selObj;
-            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-            getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-            if(!selObj)
-                return;
-            // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || 
-				selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ||
-				selObj->isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+            if ( selectionMode == reference) {
+                std::vector<std::string> mirrorPlanes;
+                App::DocumentObject* selObj;
+                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+                if (!selObj)
+                    return;
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
-
                 recomputeFeature();
                 updateUI();
             }
+            exitSelectionMode();
         }
     }
 }

@@ -45,9 +45,9 @@ except AttributeError:
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Path", "The base path to modify")
-        obj.addProperty("App::PropertyInteger", "Position", "Path", "The position of this dressup in the base path")
-        obj.addProperty("Path::PropertyPath", "Modification", "Path", "The modification to be added")
+        obj.addProperty("App::PropertyLink", "Base","Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
+        obj.addProperty("App::PropertyInteger", "Position", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The position of this dressup in the base path"))
+        obj.addProperty("Path::PropertyPath", "Modification", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The modification to be added"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -114,7 +114,11 @@ class CommandPathDressup:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Dressup", "Creates a Path Dress-up object from a selected path")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 

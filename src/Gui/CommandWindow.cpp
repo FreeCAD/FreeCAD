@@ -138,9 +138,10 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     sToolTipText  = QT_TR_NOOP("Close active window");
     sWhatsThis    = QT_TR_NOOP("Close active window");
     sStatusTip    = QT_TR_NOOP("Close active window");
-    // CTRL+F4 is already set by an QMdiSubWindow and thus we must use the
-    // alternative CTRL+W here to avoid an ambiguous shortcut overload
-	sAccel        = "Ctrl+W";
+    // In QMdiSubWindow the 'QKeySequence::Close' shortcut is set which will
+    // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
+    // reset in MainWindow::addWindow() (#0002631)
+    sAccel        = keySequenceToAccel(QKeySequence::Close);
     eType         = 0;
 }
 

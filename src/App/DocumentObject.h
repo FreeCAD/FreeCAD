@@ -233,11 +233,11 @@ protected:
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
     /// get called after setting the document
-    virtual void onSettingDocument() {}
+    virtual void onSettingDocument();
     /// get called after a brand new object was created
-    virtual void setupObject() {}
+    virtual void setupObject();
     /// get called when object is going to be removed from the document
-    virtual void unsetupObject() {}
+    virtual void unsetupObject();
 
      /// python object of this class and all descendend
 protected: // attributes
@@ -258,6 +258,5 @@ protected: // attributes
 };
 
 } //namespace App
-
 
 #endif // APP_DOCUMENTOBJECT_H
