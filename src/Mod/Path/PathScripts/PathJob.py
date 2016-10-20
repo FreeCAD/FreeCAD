@@ -125,6 +125,13 @@ class ObjectPathJob:
                 obj.Y_Min = current_post.CORNER_MIN['y']
                 obj.Z_Min = current_post.CORNER_MIN['z']
 
+            self.tooltip = None
+            self.tooltipArgs = None
+            if hasattr(current_post, "TOOLTIP"):
+                self.tooltip = current_post.TOOLTIP
+                if hasattr(current_post, "TOOLTIP_ARGS"):
+                    self.tooltipArgs = current_post.TOOLTIP_ARGS
+
     # def getToolControllers(self, obj):
     #     '''returns a list of ToolControllers for the current job'''
     #     controllers = []
@@ -249,6 +256,8 @@ class TaskPanel:
             if hasattr(o, "Shape"):
                 self.form.cboBaseObject.addItem(o.Name)
 
+        self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
+        self.postProcessorDefaultArgsTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
         self.getFields()
@@ -259,6 +268,17 @@ class TaskPanel:
     def reject(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
+
+    def updateTooltips(self):
+        if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "tooltip") and self.obj.Proxy.tooltip:
+            self.form.cboPostProcessor.setToolTip(self.obj.Proxy.tooltip)
+            if hasattr(self.obj.Proxy, "tooltipArgs") and self.obj.Proxy.tooltipArgs:
+                self.form.cboPostProcessorArgs.setToolTip(self.obj.Proxy.tooltipArgs)
+            else:
+                self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
+        else:
+            self.form.cboPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
+            self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
 
     def getFields(self):
         '''sets properties in the object to match the form'''
@@ -288,6 +308,8 @@ class TaskPanel:
                 selObj = Draft.clone(selObj)
             self.obj.Base = selObj
 
+            self.updateTooltips()
+
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -302,6 +324,9 @@ class TaskPanel:
             self.form.cboPostProcessor.blockSignals(True)
             self.form.cboPostProcessor.setCurrentIndex(postindex)
             self.form.cboPostProcessor.blockSignals(False)
+            # make sure the proxy loads post processor script values and settings
+            self.obj.Proxy.onChanged(self.obj, "PostProcessor")
+            self.updateTooltips()
         self.form.cboPostProcessorArgs.displayText = self.obj.PostProcessorArgs
 
         for child in self.obj.Group:
