@@ -294,23 +294,44 @@ class ObjectDressup:
     def shouldInsertDogbone(self, obj, inChord, outChord):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
+    def cornerDistanceAndAngle(self, obj, inChord, outChord):
+        baseAngle = inChord.getAngleXY()
+        turnAngle = outChord.getAngle(inChord)
+        boneAngle = addAngle(baseAngle, (turnAngle - math.pi)/2)
+        if obj.Side == Side.Left:
+            boneAngle = addAngle(boneAngle, math.pi)
+        #debugPrint("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
+        distance = self.toolRadius / math.cos(turnAngle/2)
+        return (distance, boneAngle)
+
     def adaptiveBoneLength(self, obj, inChord, outChord, boneAngle):
-        inAngle = inChord.getAngleXY()
-        outAngle = outChord.getAngleXY()
-        # if the bone is on any of the edges - the corner is tangential
-        if anglesAreParallel(boneAngle, inAngle) or anglesAreParallel(boneAngle, outAngle):
-            return self.toolRadius
-        debugPrint("angle=%.2f in=%.2f out=%.2f" % (boneAngle/math.pi, inAngle/math.pi, outAngle/math.pi))
+        cornerDistance, cornerAngle = self.cornerDistanceAndAngle(obj, inChord, outChord)
+        if cornerAngle == boneAngle:
+            # moving directly towards the corner
+            return cornerDistance - self.toolRadius
 
-        # TODO: need to figure out if there even is an intersection ...
+        # The bones root and end point form a triangle with the intersection of the tool path
+        # with the toolRadius circle around the bone end point.
+        # In case the math looks questionable, look for "triangle ssa"
+        # c = cornerDistance
+        # b = self.toolRadius
+        # beta = fabs(boneAngle - cornerAngle)
+        beta = math.fabs(addAngle(boneAngle, -cornerAngle))
+        D = (cornerDistance / self.toolRadius) * math.sin(beta)
+        if D > 1: # no intersection
+            return 0
+        gamma = math.asin(D)
+        alpha = math.pi - beta - gamma
+        boneDistance = self.toolRadius * math.sin(alpha) / math.sin(beta)
+        if D < 1 and self.toolRadius < cornerDistance: # there exists a second solution
+            beta2 = beta
+            gamma2 = math.pi - gamma
+            alpha2 = math.pi - beta2 - gamma2
+            boneDistance2 = self.toolRadius * math.sin(alpha2) / math.sin(beta2)
+            boneDistance = min(boneDistance, boneDistance2)
 
-        cornerRelAngle = inChord.getAngle(outChord) / 2
-        cornerDistance = self.toolRadius / math.cos(cornerRelAngle)
-        boneRelAngle = addAngle(inAngle, -boneAngle)
-        # only works if there is an intersection, but if there is no intersection, the bone is screwed up anyway
-        distance = cornerDistance - self.toolRadius * math.fabs(math.cos(addAngle(cornerRelAngle, boneRelAngle)))
-        debugPrint("corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerRelAngle, distance, boneRelAngle))
-        return distance
+        debugPrint("corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerAngle, boneDistance, boneAngle))
+        return boneDistance
 
     def smoothChordCommands(self, inChord, outChord, side, smooth):
         if smooth == 0:
@@ -358,6 +379,10 @@ class ObjectDressup:
         if obj.Incision == Incision.Adaptive:
             length = self.adaptiveBoneLength(obj, inChord, outChord, angle)
 
+        if length == 0:
+            # no bone after all ..
+            return [ inChord.g1Command(), outChord.g1Command() ]
+
         x = length * math.cos(angle);
         y = length * math.sin(angle);
         boneInChord = inChord.moveBy(x, y, 0)
@@ -372,13 +397,8 @@ class ObjectDressup:
         return bones
 
     def dogboneAngle(self, obj, inChord, outChord):
-        baseAngle = inChord.getAngleXY()
-        turnAngle = outChord.getAngle(inChord)
-        boneAngle = addAngle(baseAngle, (turnAngle - math.pi)/2)
-        if obj.Side == Side.Left:
-            boneAngle = addAngle(boneAngle, math.pi)
-        #debugPrint("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
-        return boneAngle
+        distance, angle = self.cornerDistanceAndAngle(obj, inChord, outChord)
+        return angle
 
     def dogbone(self, obj, inChord, outChord, smooth):
         boneAngle = self.dogboneAngle(obj, inChord, outChord)
@@ -454,7 +474,7 @@ class ObjectDressup:
         enabled = not blacklisted
         self.bones.append((boneId, loc, enabled, inaccessible))
 
-        if False and debugDogbone and boneId > 5:
+        if debugDogbone and boneId != 2:
             bones = self.boneCommands(obj, False, inChord, outChord, smooth)
         else:
             bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
@@ -649,8 +669,6 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-#    def getStandardButtons(self):
-#        return int(QtGui.QDialogButtonBox.OkCancel)
 
     def setupUi(self):
         self.setFields()
