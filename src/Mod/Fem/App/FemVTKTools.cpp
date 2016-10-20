@@ -40,6 +40,7 @@
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
+#include <Base/Type.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -200,6 +201,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
         Base::Console().Error("file name extension is not supported\n");
         return NULL;
     }
+    //Mesh should link to the part feature, in order to set up FemConstraint
 
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
     return mesh;
@@ -430,42 +432,55 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 }
 
 
-template<class FemObjectT> App::DocumentObject* getActiveFemObject(bool creating = false)
+App::DocumentObject* getObjectByType(const Base::Type type)
 {
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if(!pcDoc)
     {
-        Base::Console().Message("No active document is found\n");
+        Base::Console().Message("No active document is found thus created\n");
         pcDoc = App::GetApplication().newDocument();
     }
-        
     App::DocumentObject* obj = pcDoc->getActiveObject();
-    FemObjectT tobj; // will be added to document? will it destruct out of scope?
-    //Base::Type meshId = Base::Type::fromName("Fem::FemMeshObject");
-    if(obj->getTypeId() == tobj.getTypeId())
+
+    if(obj->getTypeId() == type)
     {
+        Base::Console().Message("active documentObject type: %s \n", obj->getTypeId());
         return obj;
     }
-    else if (creating)
+    if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
     {
-        if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
-        {
-            std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Member.getValues();
-            for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
-                if ((*it)->getTypeId().isDerivedFrom(tobj.getClassTypeId()))
-                    return static_cast<App::DocumentObject*>(*it); // return the first of that type
-            }
-            App::DocumentObject* newobj = pcDoc->addObject(tobj.getTypeId().getName());
-            fem.push_back(newobj); // FemAnalysis is not a DocumentGroup derived class but DocumentObject
-            (static_cast<FemAnalysis*>(obj))->Member.setValues(fem);
-            return newobj;
-        }
-        else
-        {
-            return pcDoc->addObject(tobj.getTypeId().getName()); // create in the acitive document
+        std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Member.getValues();
+        for (std::vector<App::DocumentObject*>::iterator it = fem.begin(); it != fem.end(); ++it) {
+            if ((*it)->getTypeId().isDerivedFrom(type))
+                return static_cast<App::DocumentObject*>(*it); // return the first of that type
         }
     }
     return NULL;
+}
+
+App::DocumentObject* createObjectByType(const Base::Type type)
+{
+    App::Document* pcDoc = App::GetApplication().getActiveDocument();
+    if(!pcDoc)
+    {
+        Base::Console().Message("No active document is found thus created\n");
+        pcDoc = App::GetApplication().newDocument();
+    }
+    App::DocumentObject* obj = pcDoc->getActiveObject();
+
+    if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
+    {
+        std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Member.getValues();
+        App::DocumentObject* newobj = pcDoc->addObject(type.getName());
+        fem.push_back(newobj); // FemAnalysis is not a DocumentGroup derived class but DocumentObject
+        (static_cast<FemAnalysis*>(obj))->Member.setValues(fem);
+        return newobj;
+    }
+    else
+    {
+        return pcDoc->addObject(type.getName()); // create in the acitive document
+    }
+
 }
 
 
@@ -489,24 +504,39 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     {
         Base::Console().Error("file name extension is not supported\n");
     }
+    
+    App::Document* pcDoc = App::GetApplication().getActiveDocument();
+    if(!pcDoc)
+    {
+        Base::Console().Message("No active document is found thus created\n");
+        pcDoc = App::GetApplication().newDocument();
+    }
+    App::DocumentObject* obj = pcDoc->getActiveObject();
 
     vtkSmartPointer<vtkDataSet> dataset = ds;
     App::DocumentObject* result = NULL;
     if(!res)
-        result = static_cast<App::DocumentObject*>(res);
+        result = res;
     else
-        //result = getActiveFemObject<FemResultObject>();
-        Base::Console().Error("FemResultObject pointer is invalid\n");
+    {
+        Base::Console().Log("FemResultObject pointer is NULL, trying to get the active object\n");
+        if (obj->getTypeId() == Base::Type::fromName("Fem::FemResultObjectPython"))
+            result = obj;
+        else
+        {
+            Base::Console().Log("the active object is not the correct type, do nothing\n");
+            return NULL;  
+        }
+    }
 
-    App::DocumentObject* mesh = getActiveFemObject<FemMeshObject>(true);
+    App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
     FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to relase FemMesh ??
+    importVTKMesh(dataset, fmesh);  // in doc, mesh is empty, why? 
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
-    importVTKMesh(dataset, fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     //PropertyLink is the property type to store DocumentObject pointer
     
     importFluidicResult(dataset, result);
-    App::Document *pcDoc = App::GetApplication().getActiveDocument();
     pcDoc->recompute();
     
     Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
@@ -514,10 +544,98 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     return result;
 }
 
+/*
+App::DocumentObject* readFluidicResult(const char* filename, const std::string objName) {
+    App::Document* pcDoc = App::GetApplication().getActiveDocument();
+    if(!pcDoc)
+    {
+        Base::Console().Message("No active document is found thus created\n");
+        pcDoc = App::GetApplication().newDocument();
+    }
+    
+    App::DocumentObject* res = pcDoc->getObject(objName.c_str());
+    if (!res) {
+        return FemVTKTools::readFluidicResult(filename, res);
+    }
+    else{
+        Base::Console().Message("Can not find ResultObject by name %s in activeDocument", objName);
+        return FemVTKTools::readFluidicResult(filename, NULL);
+    }
+}
+ * */
+
+void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* res) {
+    if (!res) 
+    {
+        App::Document* pcDoc = App::GetApplication().getActiveDocument();
+        if(!pcDoc)
+        {
+            Base::Console().Message("No active document is found thus do nothing and return\n");
+            return;
+        }
+        res = pcDoc->getActiveObject(); //type checking
+    }
+    if(!res) {
+        Base::Console().Error("Result object pointer is invalid and it is not active oject");
+        return;
+    }
+
+    Base::TimeInfo Start;
+    Base::Console().Log("Start: write FemResult or CfdResult to VTK unstructuredGrid dataset =======\n");
+    Base::FileInfo f(filename);
+      
+    vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
+    App::DocumentObject* mesh = static_cast<App::PropertyLink*>(res->getPropertyByName("Mesh"))->getValue();
+    const FemMesh& fmesh = static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->getValue();
+    FemVTKTools::exportVTKMesh(&fmesh, grid);
+    
+    if(res->getPropertyByName("Velocity")){
+        FemVTKTools::exportFluidicResult(res, grid);
+    }
+    else if(res->getPropertyByName("DisplacementVectors")){
+        FemVTKTools::exportMechanicalResult(res, grid);
+    }
+    else{
+        return;
+    }
+    
+    //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
+    if(f.hasExtension("vtu")){
+        writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
+    }
+    else if(f.hasExtension("vtk")){
+        writeVTKFile<vtkDataSetWriter>(filename, grid);
+    }
+    else{
+        Base::Console().Error("file name extension is not supported to write VTK\n");
+    }
+    
+    Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
+}
+
+/*
+void FemVTKTools::writeResult(const char* filename,  const std::string objName) {
+    App::Document* pcDoc = App::GetApplication().getActiveDocument();
+    if(!pcDoc)
+    {
+        Base::Console().Message("No active document is found thus writing is ignored\n");
+        return;
+    }
+    
+    App::DocumentObject* res = pcDoc->getObject(objName.c_str());
+    if (!res) {
+        return FemVTKTools::writeResult(filename, res);
+    }
+    else{
+        Base::Console().Message("Can not find ResultObject by name %s in activeDocument", objName);
+        return FemVTKTools::writeResult(filename, NULL);
+    }
+}
+*/
 void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
 
-    // Temperature is optional, same for other turbulence related
-    std::map<const char*, const char*> vars;  // varable name openfoam -> defined in CfdResult.py
+    // velocity and pressure are essential, Temperature is optional, so are turbulence related variables
+    std::map<const char*, const char*> vars;  // varable name defined in openfoam -> property defined in CfdResult.py
     vars["Pressure"] = "p";
     vars["Velocity"] = "U";
     vars["Temperature"] = "T";
@@ -528,66 +646,96 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     vars["TurbulenceSpecificDissipation"] = "omega";
     
     const int max_var_index = 11;
-    std::vector<double> stats(3*max_var_index);
-    for(int i=0; i<3*max_var_index; i++)
-        stats[i] = 0.0;
+    std::vector<double> stats(3*max_var_index, 0.0);
 
-    std::map<const char*, int> varids;
+    std::map<const char*, int> varids; // must agree with definition in  _TaskPanelCfdResult.py
     varids["Ux"] = 0;
     varids["Uy"] = 1;
     varids["Uz"] = 2;
     varids["Umag"] = 3;
     varids["Pressure"] = 4;
     varids["Temperature"] = 5;
-    varids["TurbulenceThermalDiffusivity"] = 6;
+    varids["TurbulenceEnergy"] = 6;
     varids["TurbulenceViscosity"] = 7;
-    varids["TurbulenceEnergy"] = 8;
-    varids["TurbulenceDissipationRate"] = 9;
-    varids["TurbulenceSpecificDissipation"] = 10;
+    varids["TurbulenceDissipationRate"] = 8;
+    //varids["TurbulenceThermalDiffusivity"] = 9;
+    //varids["TurbulenceSpecificDissipation"] = 10;
     
     double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(res->getPropertyByName("Time"))->setValue(ts);
     
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
+    if(pd->GetNumberOfArrays() == 0) {
+        Base::Console().Error("No point data array is found in vtk data set, do nothin\n");
+        // if pointData is empty, data may be in cellDate, cellData -> pointData interpolation is possible in VTK
+        return;
+    }
     
-    double vmin=1.0e100, vmean=0.0, vmax=0.0;
+    std::vector<long> nodeIds(nPoints);
     vtkSmartPointer<vtkDataArray> vel = pd->GetArray(vars["Velocity"]);
-    //vtkSmartPointer<vtkDoubleArray> vel = vtkDoubleArray::SafeDownCast(pd->GetArray("Velocity"));
     if(nPoints && vel && vel->GetNumberOfComponents() == 3) {
         std::vector<Base::Vector3d> vec(nPoints);
+        double vmin=1.0e100, vmean=0.0, vmax=0.0;  // only velocity magnitude is calc in c++
         for(vtkIdType i=0; i<nPoints; ++i) {
-            double *p = vel->GetTuple(i); // GetTuple3(): only for vtkDataArray
+            double *p = vel->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
             double vmag = std::sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
             vmean += vmag;
             if(vmag > vmax) vmax = vmag;
             if(vmag < vmin) vmin = vmag;
-            vec.push_back(Base::Vector3d(p[0], p[1], p[2]));
+            vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
+            nodeIds[i] = i;
         }
-        int index = varids["Vmag"];
+        int index = varids["Umag"];
         stats[index*3] = vmin;
         stats[index*3 + 2] = vmax;
         stats[index*3 + 1] = vmean/nPoints;
+        Base::Console().Message("debug info: vel ptr: %p \n", res->getPropertyByName("Velocity"));
         App::PropertyVectorList* velocity = static_cast<App::PropertyVectorList*>(res->getPropertyByName("Velocity"));
-        velocity->setValues(vec);  // is that possible to avoid copy, using std::move() ?
+        if(velocity) {
+            //PropertyVectorList will not show up in PropertyEditor
+            velocity->setValues(vec);
+            static_cast<App::PropertyIntegerList*>(res->getPropertyByName("NodeNumbers"))->setValues(nodeIds);
+            Base::Console().Message("Velocity field has been loaded \n");
+        }
+        else
+            Base::Console().Error("Velocity property is not found in Cfd Result object \n");
     }
-    else{
-        Base::Console().Message("Error: pressure or velocity fields is not found in Cfd Result vtk file \n");
+    else {
+        Base::Console().Error("Velocity field is not found in Cfd Result vtk file \n");
+        return;
     }
 
     for(auto const& kv: vars){
-        vtkSmartPointer<vtkDoubleArray> vec = vtkDoubleArray::SafeDownCast(pd->GetArray(kv.second));
-        if(!vec) {
+        if (std::string(kv.first) == std::string("Velocity"))
+            continue;
+        vtkDataArray* vec = vtkDataArray::SafeDownCast(pd->GetArray(kv.second));
+        if(nPoints && vec && vec->GetNumberOfComponents() == 1) {  
             App::PropertyFloatList* field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(kv.first));
-            int index = varids[kv.first];
-            stats[index*3] = vec->GetDataTypeValueMin();
-            stats[index*3 + 2] = vec->GetDataTypeValueMin();
-            stats[index*3 + 1] = (stats[index*3 + 2] + stats[index*3] ) * 0.5;  // not mean value, but the middle range
-            for(vtkIdType i=0; i<nPoints; ++i)  //vec.SetNumberOfValues
-            {
-                //(*field)[i] = vec->GetTuple1(); // both PropertyFloatList and vtkArray support [] operator, 
-                field->set1Value(i, vec->GetTuple1(i));
+            if (!field) {
+                Base::Console().Error("static_cast<App::PropertyFloatList*>((res->getPropertyByName(\"%s\")) failed \n", kv.first);
+                continue;
             }
+
+            Base::Console().Message("debug info: npoints = %d, NumberOfTuples = %d", nPoints, vec->GetNumberOfTuples());
+            double vmin=1.0e100, vmean=0.0, vmax=0.0;
+            std::vector<double> values(nPoints, 0.0);
+            for(vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++)
+            {
+                double v = *(vec->GetTuple(i));
+                values[i] = v;
+                vmean += v;
+                if(v > vmax) vmax = v;
+                if(v < vmin) vmin = v;
+            }
+            field->setValues(values);
+
+            int index = varids[kv.first];
+            stats[index*3] = vmin;
+            stats[index*3 + 2] = vmax;
+            stats[index*3 + 1] = vmean/nPoints;
+            
+            Base::Console().Message("field  \"%s\" has been loaded \n", kv.first);
         }
     }
     static_cast<App::PropertyFloatList*>(res->getPropertyByName("Stats"))->setValues(stats);
@@ -600,8 +748,6 @@ void FemVTKTools::importMechanicalResult(const vtkDataSet* grid, App::DocumentOb
  * */
 
 void FemVTKTools::exportFluidicResult(const App::DocumentObject* res, vtkSmartPointer<vtkDataSet> grid) {
-    //FemResultObject* res = static_cast<FemResultObject*>(obj);
-    // Property defined in Python is dynamicProperty, which can not be accessed by ->PropertyName in c++
     if(!res->getPropertyByName("Velocity")){
         Base::Console().Message("Warning: essential field like `velocity` is not found in CfdResult\n");
         return;
@@ -623,8 +769,8 @@ void FemVTKTools::exportFluidicResult(const App::DocumentObject* res, vtkSmartPo
     else{
         Base::Console().Message("Warning: essential fields pressure and velocity is empty in CfdResult\n");
     }
-    // Temperature is optional, same for other turbulence related
-    std::vector<const char*> vars;  // varable name is defined in CfdResult.py
+    // Temperature is optional, so are other turbulence related variables
+    std::vector<const char*> vars;  // varable names are defined in CfdResult.py
     vars.push_back("Pressure");
     vars.push_back("Temperature");
     vars.push_back("TurbulenceThermalDiffusivity");
