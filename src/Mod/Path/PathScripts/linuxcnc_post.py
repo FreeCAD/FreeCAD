@@ -22,7 +22,7 @@
 # ***************************************************************************/
 
 
-'''
+TOOLTIP='''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
@@ -31,6 +31,13 @@ FreeCAD, via the GUI importer or via python scripts with:
 
 import linuxcnc_post
 linuxcnc_post.export(object,"/path/to/file.ncc")
+'''
+
+TOOLTIP_ARGS='''
+Arguments for linuxcnc:
+    --header,--no-header             ... output headers (--header)
+    --comments,--no-comments         ... output comments (--comments)
+    --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
 '''
 
 import datetime
