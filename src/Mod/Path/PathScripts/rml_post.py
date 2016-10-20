@@ -22,7 +22,7 @@
 #***************************************************************************/
 
 
-'''
+TOOLTIP='''
 FreeCAD Path post-processor to output code for the Roland Modela MDX-## machines.
 
 The machine speaks RML-1, specified in 'Roland RML-1 Programming Guidelines'
