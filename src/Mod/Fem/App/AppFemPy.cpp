@@ -96,7 +96,10 @@ public:
         );
 #ifdef FC_USE_VTK
         add_varargs_method("readCfdResult",&Module::readCfdResult,
-            "Read a CFD result from a file and returns a Result object."
+            "Read a CFD result from a file (file format detected from file suffix)"
+        );
+        add_varargs_method("writeResult",&Module::writeResult,
+            "write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"
         );
 #endif
         add_varargs_method("show",&Module::show,
@@ -246,21 +249,65 @@ private:
 #ifdef FC_USE_VTK
     Py::Object readCfdResult(const Py::Tuple& args)
     {
-        PyObject *pcObj;
-        char* Name; // PythonFeatureT<FemResultObject> is of type `App::DocumentObjectPy`
-        if (!PyArg_ParseTuple(args.ptr(), "etO","utf-8", &Name, &(App::DocumentObjectPy::Type), &pcObj))
+        //the second parameter is either objName (utf8,  obj.Label is unicode type) or python obj (not yet implemented)
+        //PyObject *pcObj; // PythonFeatureT<FemResultObject> is of python type  `` or c++ type
+        char* fileName; 
+        char* objName;
+        //if (!PyArg_ParseTuple(args.ptr(), "etO!","utf-8", &Name, &(App::DocumentObjectPy::Type), &pcObj))
+        if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8", &fileName, "utf-8", &objName))
             throw Py::Exception();
-        std::string EncodedName = std::string(Name);
-        PyMem_Free(Name);
-        // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
+        std::string EncodedName = std::string(fileName);
+        PyMem_Free(fileName);
+        std::string resName = std::string(objName);
+        PyMem_Free(objName);
+        /*
         if (pcObj)
         {
-            //App::DocumentObjectPy objpy(pcObj);
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+            // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
+            App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
+            App::DocumentObject* obj = objpy->getDocumentObjectPtr();
+            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+        */
+        if (resName.length())
+        {
+            App::Document* pcDoc = App::GetApplication().getActiveDocument();
+            App::DocumentObject* obj = pcDoc->getObject(resName.c_str());
             FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
         }
         else
-            FemVTKTools::readFluidicResult(EncodedName.c_str());
+            FemVTKTools::readFluidicResult(EncodedName.c_str());  //assuming activeObject can hold Result
+        
+        return Py::None();
+    }
+    
+    Py::Object writeResult(const Py::Tuple& args)
+    {
+        char* fileName;
+        PyObject *pcObj; // PythonFeatureT<FemResultObject> is of type 
+        //char* objName; 
+        if (!PyArg_ParseTuple(args.ptr(), "etO!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
+        //if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8", &Name, "utf-8", &objName))
+            throw Py::Exception();
+        std::string EncodedName = std::string(fileName);
+        PyMem_Free(fileName);
+        //std::string resName = std::string(objName);
+        //PyMem_Free(objName);
+        
+        //if (resName.length())
+        if (!pcObj)
+        {
+            // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
+            App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
+            App::DocumentObject* obj = objpy->getDocumentObjectPtr();
+            if (!obj)
+            {
+                App::Document* pcDoc = App::GetApplication().getActiveDocument();
+                obj = pcDoc->getActiveObject();
+            }
+            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+        }
+        else
+            FemVTKTools::writeResult(EncodedName.c_str());
         
         return Py::None();
     }
