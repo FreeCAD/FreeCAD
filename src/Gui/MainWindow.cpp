@@ -35,6 +35,7 @@
 # include <QDesktopWidget>
 # include <QDockWidget>
 # include <QFontMetrics>
+# include <QKeySequence>
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMessageBox>
@@ -723,6 +724,16 @@ void MainWindow::addWindow(MDIView* view)
     child->setWidget(view);
     child->setWindowIcon(view->windowIcon());
     QMenu* menu = child->systemMenu();
+
+    // See StdCmdCloseActiveWindow (#0002631)
+    QList<QAction*> acts = menu->actions();
+    for (QList<QAction*>::iterator it = acts.begin(); it != acts.end(); ++it) {
+        if ((*it)->shortcut() == QKeySequence(QKeySequence::Close)) {
+            (*it)->setShortcuts(QList<QKeySequence>());
+            break;
+        }
+    }
+
     QAction* action = menu->addAction(tr("Close All"));
     connect(action, SIGNAL(triggered()), d->mdiArea, SLOT(closeAllSubWindows()));
     d->mdiArea->addSubWindow(child);
