@@ -38,6 +38,7 @@
 
 #include <Mod/Fem/App/FemAnalysis.h>
 #include <Mod/Fem/App/FemSolverObject.h>
+#include <Mod/Fem/App/FemResultObject.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemConstraint.h>
@@ -166,6 +167,8 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemResultObject::getClassTypeId()))
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
         return true;
