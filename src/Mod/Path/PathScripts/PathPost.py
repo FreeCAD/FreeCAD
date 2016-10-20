@@ -65,6 +65,7 @@ class CommandPathPost:
         # default to the dumper post and default .tap file
         postname = "dumper"
         filename = "tmp.tap"
+        postArgs = ""
 
         print "in activated %s" %(obj)
 
@@ -90,11 +91,13 @@ class CommandPathPost:
 
                 if proj.OutputFile:
                     filename = proj.OutputFile
+                if hasattr(postobj, "PostProcessorArgs"):
+                    postArgs = postobj.PostProcessorArgs
 
         postname += "_post"
         exec "import %s as current_post" % postname
         reload(current_post)
-        current_post.export(obj, filename)
+        current_post.export(obj, filename, postArgs)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
