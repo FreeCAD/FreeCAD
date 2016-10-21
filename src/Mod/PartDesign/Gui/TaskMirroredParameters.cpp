@@ -181,7 +181,7 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             if (selectionMode == addFeature)
                 ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
             else
-                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+                removeItemFromListWidget(ui->listWidgetFeatures, QString::fromLatin1(msg.pObjectName));
             exitSelectionMode();
         } else {
             if ( selectionMode == reference) {
