@@ -135,10 +135,13 @@ void TaskPolarPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
-    {
-        if ((*i) != NULL)
-            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
+        const App::DocumentObject* obj = *i;
+        if (obj != NULL) {
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setText(QString::fromLatin1(obj->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(item);
+        }
     }
     // ---------------------
 
@@ -219,10 +222,11 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         
         if (originalSelected(msg)) {
+            QString objectName = QString::fromLatin1(msg.pObjectName);
             if (selectionMode == addFeature)
-                ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
+                ui->listWidgetFeatures->addItem(objectName);
             else
-                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+                removeItemFromListWidget(ui->listWidgetFeatures, objectName);
             exitSelectionMode();
         } else {
             if (selectionMode == reference) {
