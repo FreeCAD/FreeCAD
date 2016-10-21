@@ -101,6 +101,7 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSkipRecompute(bool on);
     void onMarkRecompute();
 
 private Q_SLOTS:
@@ -123,6 +124,7 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* skipRecomputeAction;
     QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
