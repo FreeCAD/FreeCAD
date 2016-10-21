@@ -68,7 +68,7 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = allposts
-        obj.PostProcessor
+        obj.PostProcessor = 'dumper'
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = ""
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
@@ -256,6 +256,7 @@ class TaskPanel:
         posts = glob.glob(path + '/*_post.py')
 
         allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
+        allposts.sort()
 
         for post in allposts:
             self.form.cboPostProcessor.addItem(post)
