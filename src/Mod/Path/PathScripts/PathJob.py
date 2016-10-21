@@ -68,6 +68,7 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = allposts
+        obj.PostProcessor
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = ""
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
@@ -88,6 +89,13 @@ class ObjectPathJob:
         obj.addProperty("App::PropertyLink", "Base", "Base", "The base object for all operations")
 
         obj.Proxy = self
+
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        defaultPostProcessor = preferences.GetString("DefaultPostProcessor", "")
+        print("DefaultPostProcessor = '%s'" % defaultPostProcessor)
+        if defaultPostProcessor:
+            obj.PostProcessor = defaultPostProcessor
+        obj.PostProcessorArgs = preferences.GetString("DefaultPostProcessorArgs", "")
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
@@ -131,6 +139,8 @@ class ObjectPathJob:
                 self.tooltip = current_post.TOOLTIP
                 if hasattr(current_post, "TOOLTIP_ARGS"):
                     self.tooltipArgs = current_post.TOOLTIP_ARGS
+
+            self.PostProcessorArgs = ''
 
     # def getToolControllers(self, obj):
     #     '''returns a list of ToolControllers for the current job'''
@@ -274,11 +284,14 @@ class TaskPanel:
             self.form.cboPostProcessor.setToolTip(self.obj.Proxy.tooltip)
             if hasattr(self.obj.Proxy, "tooltipArgs") and self.obj.Proxy.tooltipArgs:
                 self.form.cboPostProcessorArgs.setToolTip(self.obj.Proxy.tooltipArgs)
+                self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
             else:
                 self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
+                self.form.cboPostProcessorArgs.setText('')
         else:
             self.form.cboPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
             self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
+            self.form.cboPostProcessorArgs.setText('')
 
     def getFields(self):
         '''sets properties in the object to match the form'''
@@ -286,7 +299,7 @@ class TaskPanel:
             if hasattr(self.obj, "PostProcessor"):
                 self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
             if hasattr(self.obj, "PostProcessorArgs"):
-                self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText)
+                self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText())
             if hasattr(self.obj, "Label"):
                 self.obj.Label = str(self.form.leLabel.text())
             if hasattr(self.obj, "OutputFile"):
@@ -327,7 +340,6 @@ class TaskPanel:
             # make sure the proxy loads post processor script values and settings
             self.obj.Proxy.onChanged(self.obj, "PostProcessor")
             self.updateTooltips()
-        self.form.cboPostProcessorArgs.displayText = self.obj.PostProcessorArgs
 
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
