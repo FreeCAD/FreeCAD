@@ -64,6 +64,12 @@ class AppExport Document : public App::PropertyContainer
     PROPERTY_HEADER(App::Document);
 
 public:
+    enum Status {
+        SkipRecompute = 0,
+        KeepTrailingDigits = 1,
+        Closable = 2,
+    };
+
     /** @name Properties */
     //@{
     /// holds the long name of the document (utf-8 coded)
@@ -83,24 +89,24 @@ public:
     /// Id e.g. Part number
     PropertyString Id;
     /// unique identifier of the document
-    PropertyUUID   Uid;
+    PropertyUUID Uid;
     /** License string
       * Holds the short license string for the Item, e.g. CC-BY
       * for the Creative Commons license suit.
       */
-    App::PropertyString  License;
+    App::PropertyString License;
     /// License descripton/contract URL
-    App::PropertyString  LicenseURL;
+    App::PropertyString LicenseURL;
     /// Meta descriptons
-    App::PropertyMap     Meta;
+    App::PropertyMap Meta;
     /// Material descriptons, used and defined in the Material module.
-    App::PropertyMap     Material;
+    App::PropertyMap Material;
     /// read-only name of the temp dir created wen the document is opened
-    PropertyString		TransientDir;
-	/// Tip object of the document (if any)
-	PropertyLink		Tip;
- 	/// Tip object of the document (if any)
-	PropertyString		TipName;
+    PropertyString TransientDir;
+    /// Tip object of the document (if any)
+    PropertyLink Tip;
+    /// Tip object of the document (if any)
+    PropertyString TipName;
     //@}
 
     /** @name Signals of the document */
@@ -248,6 +254,10 @@ public:
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a spezified object
     const char* getErrorDescription(const App::DocumentObject*) const;
+    /// return the status bits
+    bool testStatus(Status pos) const;
+    /// set the status bits
+    void setStatus(Status pos, bool on);
     //@}
 
 
