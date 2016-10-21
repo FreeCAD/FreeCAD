@@ -187,7 +187,7 @@ protected:
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
     virtual void clearButtons()=0;
-    static void removeItemFromListWidget(QListWidget* widget, const char* itemstr);
+    static void removeItemFromListWidget(QListWidget* widget, const QString& itemstr);
 
     void fillAxisCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
     void fillPlanesCombo(ComboLinks &combolinks, Part::Part2DObject *sketch);
