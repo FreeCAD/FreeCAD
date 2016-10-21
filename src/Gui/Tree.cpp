@@ -75,17 +75,27 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->createGroupAction->setStatusTip(tr("Create a group"));
     connect(this->createGroupAction, SIGNAL(triggered()),
             this, SLOT(onCreateGroup()));
+
     this->relabelObjectAction = new QAction(this);
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
+
     this->finishEditingAction = new QAction(this);
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
+
+    this->skipRecomputeAction = new QAction(this);
+    this->skipRecomputeAction->setCheckable(true);
+    this->skipRecomputeAction->setText(tr("Skip recomputes"));
+    this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+    connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
+            this, SLOT(onSkipRecompute(bool)));
+
     this->markRecomputeAction = new QAction(this);
     this->markRecomputeAction->setText(tr("Mark to recompute"));
     this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
@@ -159,6 +169,10 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+        contextMenu.addAction(this->skipRecomputeAction);
         contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->createGroupAction);
     }
@@ -304,6 +318,16 @@ void TreeWidget::onFinishEditing()
         doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
+    }
+}
+
+void TreeWidget::onSkipRecompute(bool on)
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        doc->setStatus(App::Document::SkipRecompute, on);
     }
 }
 
@@ -751,7 +775,10 @@ void TreeWidget::changeEvent(QEvent *e)
 
         this->finishEditingAction->setText(tr("Finish editing"));
         this->finishEditingAction->setStatusTip(tr("Finish editing object"));
-        
+
+        this->skipRecomputeAction->setText(tr("Skip recomputes"));
+        this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+
         this->markRecomputeAction->setText(tr("Mark to recompute"));
         this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
     }

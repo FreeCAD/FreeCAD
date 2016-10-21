@@ -1195,6 +1195,7 @@ void StdCmdRefresh::activated(int iMsg)
         //Note: Don't add the recompute to undo/redo because it complicates
         //testing the changes of properties.
         //openCommand("Refresh active document");
+        this->getDocument()->setStatus(App::Document::SkipRecompute, false);
         doCommand(Doc,"App.activeDocument().recompute()");
         //commitCommand();
     }
