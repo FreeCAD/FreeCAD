@@ -95,7 +95,10 @@ class CommandPathPost:
                     postArgs = postobj.PostProcessorArgs
 
         postname += "_post"
-        exec "import %s as current_post" % postname
+        try:
+            current_post
+        except NameError:
+            exec "import %s as current_post" % postname
         reload(current_post)
         current_post.export(obj, filename, postArgs)
 
