@@ -148,6 +148,22 @@ double BaseGeom::minDist(Base::Vector2D p)
 }
 
 //!find point on me nearest to p
+Base::Vector2D BaseGeom::nearPoint(const BaseGeom* p)
+{
+    Base::Vector2D result(0.0,0.0);
+    TopoDS_Edge pEdge = p->occEdge;
+    BRepExtrema_DistShapeShape extss(occEdge, pEdge);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            gp_Pnt p1;
+            p1 = extss.PointOnShape1(1);
+            result =  Base::Vector2D(p1.X(),p1.Y());
+        }
+    }
+    return result;
+}
+
 Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
 {
     gp_Pnt pnt(p.fX,p.fY,0.0);
@@ -164,6 +180,7 @@ Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
     }
     return result;
 }
+
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)

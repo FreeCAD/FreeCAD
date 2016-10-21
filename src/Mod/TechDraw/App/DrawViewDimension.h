@@ -22,6 +22,7 @@
 
 #ifndef _TechDraw_DrawViewDimension_h_
 #define _TechDraw_DrawViewDimension_h_
+#include <tuple>
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
@@ -82,12 +83,14 @@ public:
     virtual double getDimValue() const;
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
+    static int getRefType1(const std::string s);
+    static int getRefType2(const std::string s1, const std::string s2);
+    int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
 
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
     int getIndexFromName(std::string geomName) const;
-    int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     bool showUnits() const;
 
 protected:

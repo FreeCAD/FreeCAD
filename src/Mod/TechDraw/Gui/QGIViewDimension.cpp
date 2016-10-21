@@ -358,7 +358,14 @@ void QGIViewDimension::draw()
                                     idx0,idx1,refObj->getEdgeGeometry().size());
                 return;
             }
-            if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
+            if (strcmp(dimType, "DistanceX") == 0 ||
+                strcmp(dimType, "DistanceY") == 0) {
+                Base::Vector2D p1,p2;
+                p1 = geom0->nearPoint(geom1);
+                p2 = geom1->nearPoint(geom0);
+                distStart = Base::Vector3d(p1.fX,p1.fY,0.0);
+                distEnd   = Base::Vector3d(p2.fX,p2.fY,0.0);
+            } else if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
                  (geom1->geomType == TechDrawGeometry::GENERIC) ){
                 TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
                 TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);

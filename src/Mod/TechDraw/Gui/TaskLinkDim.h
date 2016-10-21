@@ -31,6 +31,10 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
+namespace Gui {
+class Document;
+}
+
 class Ui_TaskLinkDim;
 
 namespace TechDrawGui
@@ -55,6 +59,8 @@ protected:
     void changeEvent(QEvent *e);
     void loadAvailDims();
     void updateDims();
+    void loadToTree(const TechDraw::DrawViewDimension* dim, const bool selected, Gui::Document* guiDoc);
+    bool dimReferencesSelection(const TechDraw::DrawViewDimension* dim) const;
 
 private:
     Ui_TaskLinkDim * ui;
