@@ -9,6 +9,7 @@ INSTALL(
     FILES
         Init.py
         InitGui.py
+        PathCommands.py
     DESTINATION
         Mod/Path
 )
