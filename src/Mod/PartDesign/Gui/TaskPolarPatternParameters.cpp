@@ -139,7 +139,8 @@ void TaskPolarPatternParameters::setupUI()
         const App::DocumentObject* obj = *i;
         if (obj != NULL) {
             QListWidgetItem* item = new QListWidgetItem();
-            item->setText(QString::fromLatin1(obj->getNameInDocument()));
+            item->setText(QString::fromUtf8(obj->Label.getValue()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
             ui->listWidgetFeatures->addItem(item);
         }
     }
@@ -222,13 +223,25 @@ void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges&
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         
         if (originalSelected(msg)) {
+            Gui::SelectionObject selObj(msg);
+            App::DocumentObject* obj = selObj.getObject();
+            Q_ASSERT(obj);
+
+            QString label = QString::fromUtf8(obj->Label.getValue());
             QString objectName = QString::fromLatin1(msg.pObjectName);
-            if (selectionMode == addFeature)
-                ui->listWidgetFeatures->addItem(objectName);
-            else
-                removeItemFromListWidget(ui->listWidgetFeatures, objectName);
+
+            if (selectionMode == addFeature) {
+                QListWidgetItem* item = new QListWidgetItem();
+                item->setText(label);
+                item->setData(Qt::UserRole, objectName);
+                ui->listWidgetFeatures->addItem(item);
+            }
+            else {
+                removeItemFromListWidget(ui->listWidgetFeatures, label);
+            }
             exitSelectionMode();
-        } else {
+        }
+        else {
             if (selectionMode == reference) {
                 std::vector<std::string> axes;
                 App::DocumentObject* selObj;
