@@ -34,6 +34,8 @@ namespace App {
 
 namespace Gui {
 
+class SelectionChanges;
+
 /**
  * The Selection object class
  */
@@ -44,6 +46,9 @@ class GuiExport SelectionObject : public Base::BaseClass
 public:
     /** Constructs a SelectionObject object. */
     SelectionObject();
+    /*! Constructs a SelectionObject from the SelectionChanges structure.
+     */
+    SelectionObject(const SelectionChanges& msg);
     SelectionObject(App::DocumentObject*);
     virtual ~SelectionObject();
     /**

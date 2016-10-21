@@ -70,12 +70,22 @@ public:
         SetPreselect,
         RmvPreselect
     };
+    SelectionChanges()
+    : Type(ClrSelection)
+    , pDocName(0)
+    , pObjectName(0)
+    , pSubName(0)
+    , pTypeName(0)
+    , x(0),y(0),z(0)
+    {
+    }
 
     MsgType Type;
 
     const char* pDocName;
     const char* pObjectName;
     const char* pSubName;
+    const char* pTypeName;
     float x;
     float y;
     float z;
