@@ -361,9 +361,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("\"%s\" is not registered\n", sName);
+        Base::Console().Warning("Cannot create an instance of \"%s\"\n", sName);
 #else
-        Base::Console().Log("\"%s\" is not registered\n", sName);
+        Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
 #endif
         return 0;
     }
@@ -770,10 +770,21 @@ PrefPagePyProducer::~PrefPagePyProducer ()
 void* PrefPagePyProducer::Produce () const
 {
     Base::PyGILStateLocker lock;
-    Py::Callable method(type);
-    Py::Tuple args;
-    Py::Object page = method.apply(args);
-    return new Gui::Dialog::PreferencePagePython(page);
+    try {
+        Py::Callable method(type);
+        Py::Tuple args;
+        Py::Object page = method.apply(args);
+        QWidget* widget = new Gui::Dialog::PreferencePagePython(page);
+        if (!widget->layout()) {
+            delete widget;
+            widget = 0;
+        }
+        return widget;
+    }
+    catch (Py::Exception& e) {
+        e.clear();
+        return 0;
+    }
 }
 
 // ----------------------------------------------------
@@ -784,20 +795,25 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
   : PreferencePage(parent), page(p)
 {
     Base::PyGILStateLocker lock;
-    if (page.hasAttr(std::string("form"))) {
-        Py::Object widget(page.getAttr(std::string("form")));
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
 
-        Gui::PythonWrapper wrap;
-        if (wrap.loadCoreModule()) {
-            QObject* object = wrap.toQObject(widget);
-            if (object) {
-                QWidget* form = qobject_cast<QWidget*>(object);
-                if (form) {
-                    this->setWindowTitle(form->windowTitle());
-                    QVBoxLayout *layout = new QVBoxLayout;
-                    layout->addWidget(form);
-                    setLayout(layout);
-                }
+        // old style class must have a form attribute while
+        // new style classes can be the widget itself
+        Py::Object widget;
+        if (page.hasAttr(std::string("form")))
+            widget = page.getAttr(std::string("form"));
+        else
+            widget = page;
+
+        QObject* object = wrap.toQObject(widget);
+        if (object) {
+            QWidget* form = qobject_cast<QWidget*>(object);
+            if (form) {
+                this->setWindowTitle(form->windowTitle());
+                QVBoxLayout *layout = new QVBoxLayout;
+                layout->addWidget(form);
+                setLayout(layout);
             }
         }
     }
