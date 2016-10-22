@@ -168,6 +168,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
     // http://pastebin.com/JByDAF5Z
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if 1
     PyTypeObject * type = Shiboken::SbkType<QObject>();
     if (type) {
         if (Shiboken::Object::checkType(pyobject.ptr())) {
@@ -176,8 +177,18 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
             return reinterpret_cast<QObject*>(cppobject);
         }
     }
+#else // does the same using shiboken's Python interface
+    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
+    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+    Py::Tuple arguments(1);
+    arguments[0] = pyobject; //PySide pointer
+    Py::Tuple result(func.apply(arguments));
+    void* ptr = PyLong_AsVoidPtr(result[0].ptr());
+    return reinterpret_cast<QObject*>(ptr);
+#endif
 #else
-    Py::Module mainmod(PyImport_AddModule((char*)"sip"));
+    Py::Module mainmod(PyImport_ImportModule((char*)"sip"), true);
     Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
     Py::Tuple arguments(1);
     arguments[0] = pyobject; //PyQt pointer
@@ -202,6 +213,7 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if 1
     PyTypeObject * type = Shiboken::SbkType<QWidget>();
     if (type) {
         SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
@@ -214,9 +226,18 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap widget");
+#else // does the same using shiboken's Python interface
+    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    Py::Callable func = mainmod.getDict().getItem("wrapInstance");
+    Py::Tuple arguments(2);
+    arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
+    Py::Module qtmod(PyImport_ImportModule((char*)"PySide.QtGui"));
+    arguments[1] = qtmod.getDict().getItem(className);
+    return func.apply(arguments);
+#endif
 #else
     Q_UNUSED(className);
-    Py::Module sipmod(PyImport_AddModule((char*)"sip"));
+    Py::Module sipmod(PyImport_ImportModule((char*)"sip"), true);
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
@@ -781,8 +802,8 @@ void* PrefPagePyProducer::Produce () const
         }
         return widget;
     }
-    catch (Py::Exception& e) {
-        e.clear();
+    catch (Py::Exception&) {
+        PyErr_Print();
         return 0;
     }
 }
