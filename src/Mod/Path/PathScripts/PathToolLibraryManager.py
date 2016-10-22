@@ -356,20 +356,21 @@ class EditorPanel():
         pass
 
     def getType(self, tooltype):
+        print("tooltype: ", tooltype)
         "gets a combobox index number for a given type or viceversa"
         toolslist = ["Drill", "CenterDrill", "CounterSink", "CounterBore",
                      "Reamer", "Tap", "EndMill", "SlotCutter", "BallEndMill",
                      "ChamferMill", "CornerRound", "Engraver"]
         if isinstance(tooltype, str):
             if tooltype in toolslist:
-                return toolslist.index(tooltype) + 1
+                return toolslist.index(tooltype)
             else:
                 return 0
         else:
-            if tooltype == 0:
-                return "Undefined"
-            else:
-                return toolslist[tooltype - 1]
+            #if tooltype == 0:
+            #    return "Undefined"
+            #else:
+            return toolslist[tooltype]
 
     def getMaterial(self, material):
         "gets a combobox index number for a given material or viceversa"
@@ -377,14 +378,14 @@ class EditorPanel():
                     "Carbide", "Ceramics", "Diamond", "Sialon"]
         if isinstance(material, str):
             if material in matslist:
-                return matslist.index(material) + 1
+                return matslist.index(material)
             else:
                 return 0
         else:
-            if material == 0:
-                return "Undefined"
-            else:
-                return matslist[material - 1]
+            #if material == 0:
+            #    return "Undefined"
+            #else:
+            return matslist[material]
 
     def addTool(self):
         t = Path.Tool()
