@@ -25,7 +25,7 @@
 import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
-from PathScripts import PathJob
+from PathScripts.PathPostProcessor import PostProcessor
 
 
 class Page:
@@ -41,13 +41,13 @@ class Page:
             item = self.form.postProcessorList.item(i)
             if item.checkState() == QtCore.Qt.CheckState.Unchecked:
                 blacklist.append(item.text())
-        PathJob.PostProcessor.saveDefaults(processor, args, blacklist)
+        PostProcessor.saveDefaults(processor, args, blacklist)
 
     def loadSettings(self):
         print("loadSettings")
         self.form.defaultPostProcessor.addItem("")
-        blacklist = PathJob.PostProcessor.blacklist()
-        for processor in PathJob.PostProcessor.all():
+        blacklist = PostProcessor.blacklist()
+        for processor in PostProcessor.all():
             self.form.defaultPostProcessor.addItem(processor)
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
@@ -57,12 +57,12 @@ class Page:
             item.setFlags( QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             self.form.postProcessorList.addItem(item)
 
-        postindex = self.form.defaultPostProcessor.findText(PathJob.PostProcessor.default(), QtCore.Qt.MatchFixedString)
+        postindex = self.form.defaultPostProcessor.findText(PostProcessor.default(), QtCore.Qt.MatchFixedString)
 
         if postindex >= 0:
             self.form.defaultPostProcessor.blockSignals(True)
             self.form.defaultPostProcessor.setCurrentIndex(postindex)
             self.form.defaultPostProcessor.blockSignals(False)
 
-        self.form.defaultPostProcessorArgs.setText(PathJob.PostProcessor.defaultArgs())
+        self.form.defaultPostProcessorArgs.setText(PostProcessor.defaultArgs())
 
