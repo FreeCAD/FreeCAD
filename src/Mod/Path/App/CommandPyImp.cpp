@@ -52,18 +52,18 @@ std::string CommandPy::representation(void) const
     str << " ]";
     return str.str();
 }
-    
+
 
 PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of CommandPy and the Twin object 
+    // create a new instance of CommandPy and the Twin object
     return new CommandPy(new Command);
 }
 
 // constructor method
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
-    PyObject *parameters;
+    PyObject *parameters = NULL;
     char *name = "";
     static char *kwlist[] = {"name", "parameters", NULL};
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters) ) {
@@ -73,7 +73,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             getCommandPtr()->setFromGCode(name);
         PyObject *key, *value;
         Py_ssize_t pos = 0;
-        while (PyDict_Next(parameters, &pos, &key, &value)) {
+        while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
             if ( !PyObject_TypeCheck(key,&(PyString_Type)) || (!PyObject_TypeCheck(value,&(PyFloat_Type)) && !PyObject_TypeCheck(value,&(PyInt_Type))) ) {
                 PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string:number pairs");
                 return -1;
@@ -91,7 +91,7 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    
+
     if ( PyArg_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &(Base::PlacementPy::Type), &parameters) ) {
         std::string sname(name);
         boost::to_upper(sname);
@@ -222,8 +222,8 @@ PyObject *CommandPy::getCustomAttributes(const char* attr) const
 int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
 {
     std::string satt(attr);
-    if (satt.length() == 1) { 
-        if (isalpha(satt[0])) { 
+    if (satt.length() == 1) {
+        if (isalpha(satt[0])) {
             boost::to_upper(satt);
             double cvalue;
             if (PyObject_TypeCheck(obj,&(PyInt_Type))) {
