@@ -26,7 +26,6 @@ TOOLTIP=''' example post for Centroid CNC mill'''
 import FreeCAD
 import datetime
 now = datetime.datetime.now()
-originfile = FreeCAD.ActiveDocument.FileName
 import Path, PathScripts
 from PathScripts import PostUtils
 
@@ -46,7 +45,7 @@ COMMENT= ';' #centroid control comment symbol
 HEADER = ""
 HEADER += ";Exported by FreeCAD\n"
 HEADER += ";Post Processor: " + __name__ +"\n"
-HEADER += ";CAM file: "+originfile+"\n"
+HEADER += ";CAM file: %s\n"
 HEADER += ";Output Time:"+str(now)+"\n"
 
 TOOLRETURN = '''M5 M25
@@ -89,7 +88,7 @@ def export(selection,filename,argstring):
         print "No machine found in this selection"
 
     gcode =''
-    gcode+= HEADER
+    gcode+= HEADER % (FreeCAD.ActiveDocument.FileName)
     gcode+= SAFETYBLOCK
     gcode+= UNITS+'\n'
 
