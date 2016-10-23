@@ -50,7 +50,8 @@ except AttributeError:
 
 class ObjectPathJob:
 
-    def __init__(self, obj):
+    @classmethod
+    def allPostProcessors(cls):
         path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
         posts = glob.glob(path + '/*_post.py')
         allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
@@ -61,14 +62,16 @@ class ObjectPathJob:
 
         allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
         allposts.sort()
+        return allposts
 
+    def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
         obj.setEditorMode("OutputFile", 0)  # set to default mode
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
-        obj.PostProcessor = allposts
+        obj.PostProcessor = self.allPostProcessors()
         obj.PostProcessor = 'dumper'
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = ""
@@ -254,18 +257,8 @@ class TaskPanel:
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
-        path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
-        posts = glob.glob(path + '/*_post.py')
-        allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
 
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-        posts = glob.glob(path + '/*_post.py')
-
-        allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
-        allposts.sort()
-
-        for post in allposts:
+        for post in ObjectPathJob.allPostProcessors():
             self.form.cboPostProcessor.addItem(post)
         self.updating = False
 
