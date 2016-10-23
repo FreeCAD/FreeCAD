@@ -47,18 +47,20 @@ except AttributeError:
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
 
-debugDogbone = False
+debugDogbone = True
 
 def debugPrint(msg):
     if debugDogbone:
         print(msg)
 
-def debugMarker(vector, label):
+def debugMarker(vector, label, color = None):
     if debugDogbone:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = 0.5
         obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        if color:
+            obj.ViewObject.ShapeColor = color
 
 def debugCircle(vector, r, label):
     if debugDogbone:
@@ -153,8 +155,19 @@ class Chord (object):
     def moveBy(self, x, y, z):
         return self.moveTo(self.End + FreeCAD.Vector(x, y, z))
 
+    def move(self, distance, angle):
+        dx = distance * math.cos(angle)
+        dy = distance * math.sin(angle)
+        return self.moveBy(dx, dy, 0)
+
     def asVector(self):
         return self.End - self.Start
+
+    def asLine(self):
+        return Part.Line(self.Start, self.End)
+
+    def asEdge(self):
+        return Part.Edge(self.asLine())
 
     def getLength(self):
         return self.asVector().Length
@@ -194,18 +207,21 @@ class Chord (object):
     def getAngleXY(self):
         return self.getAngle(FreeCAD.Vector(1,0,0))
 
-    def offsetBy(self, distance):
-        angle = self.getAngleXY() - math.pi/2
-        dx = distance * math.cos(angle)
-        dy = distance * math.sin(angle)
-        d = FreeCAD.Vector(dx, dy, 0)
-        return Chord(self.Start + d, self.End + d)
+    def withLength(self, length):
+        return Chord(self.Start, self.Start).move(length, self.getAngleXY())
 
     def g1Command(self):
         return Path.Command("G1", {"X": self.End.x, "Y": self.End.y})
 
-    def arcCommand(self, orientation):
-        return self.g1Command()
+    def arcCommand(self, cmd, center):
+        d = center - self.Start
+        debugPrint("arc (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)" % (self.Start.x, self.Start.y, center.x, center.y, self.End.x, self.End.y))
+        return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "I": d.x, "J": d.y, "K": 0})
+
+    def g2Command(self, center):
+        return self.arcCommand("G2", center)
+    def g3Command(self, center):
+        return self.arcCommand("G3", center)
 
     def isAPlungeMove(self):
         return self.End.z != self.Start.z
@@ -256,6 +272,16 @@ class Chord (object):
     def footOfPerpendicularFrom(self, vector):
         return self.intersection(Chord(vector, vector + self.perpendicular()))
 
+    def offsetBy(self, distance, direction):
+        if direction == Side.Left:
+            angle = addAngle(self.getAngleXY(),  math.pi/2)
+        else:
+            angle = addAngle(self.getAngleXY(), -math.pi/2)
+        dx = distance * math.cos(angle)
+        dy = distance * math.sin(angle)
+        d = FreeCAD.Vector(dx, dy, 0)
+        return Chord(self.Start + v, self.End.v)
+
 class ObjectDressup:
 
     def __init__(self, obj):
@@ -275,6 +301,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
+        self.shapes = {}
 
     def __getstate__(self):
         return None
@@ -333,67 +360,89 @@ class ObjectDressup:
         debugPrint("corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerAngle, boneDistance, boneAngle))
         return boneDistance
 
-    def smoothChordCommands(self, inChord, outChord, side, smooth):
+    def smoothChordCommands(self, obj, inChord, outChord, edge, bone, corner, smooth, color):
         if smooth == 0:
+            debugPrint(" No smoothing requested")
             return [ inChord.g1Command(), outChord.g1Command() ]
-        debugPrint("(%.2f, %.2f) -> (%.2f, %.2f) -> (%.2f, %.2f)" % (inChord.Start.x, inChord.Start.y, inChord.End.x, inChord.End.y, outChord.End.x, outChord.End.y))
-        inAngle = inChord.getAngleXY()
-        outAngle = outChord.getAngleXY()
-        debugPrint("    inAngle = %.2f  outAngle = %.2f" % (inAngle/math.pi, outAngle/math.pi))
-        if inAngle == outAngle:  # straight line, outChord includes inChord
-            debugPrint("    ---> (%.2f, %.2f)" %(outChord.End.x, outChord.End.y))
+
+        d = 'in'
+        if smooth == Smooth.Out:
+            d = 'out'
+
+        if DraftGeomUtils.areColinear(inChord.asEdge(), outChord.asEdge()):
+            debugPrint(" straight edge %s" % d)
             return [ outChord.g1Command() ]
-        debugPrint("%s  ::  %s" % (inChord, outChord))
-        inEdge = DraftGeomUtils.edg(inChord.Start, inChord.End)
-        outEdge = DraftGeomUtils.edg(outChord.Start, outChord.End)
-        #wire = Part.Wire([inEdge, outEdge])
-        #debugPrint("      => %s" % wire)
-        #wire = wire.makeOffset2D(self.toolRadius)
-        #debugPrint("     ==> %s" % wire)
-        #wire = wire.makeOffset2D(-self.toolRadius)
-        #debugPrint("    ===> %s" % wire)
-        radius = self.toolRadius
-        while radius > 0:
-            lastpt = None
-            commands = ""
-            edges = DraftGeomUtils.fillet([inEdge, outEdge], radius)
-            if DraftGeomUtils.isSameLine(edges[0], inEdge) or DraftGeomUtils.isSameLine(edges[1], inEdge):
-                debugPrint("Oh, we got a problem, try smaller radius")
-                radius = radius - 0.1 * self.toolRadius
-                continue
-            debugPrint("we're good")
-            #for edge in wire.Edges[:-1]: # makeOffset2D closes the wire
-            for edge in edges:
-                if not lastpt:
-                    lastpt = edge.Vertexes[0].Point
-                lastpt, cmds = PathUtils.edge_to_path(lastpt, edge, inChord.Start.z)
-                commands += cmds
-            path = Path.Path(commands)
-            return path.Commands
+
+        pivots = []
+        for e in bone.Edges:
+            for pt in DraftGeomUtils.findIntersection(edge, e, True):
+                if pt != corner and not pt in pivots:
+                    pivots.append(pt)
+                else:
+                    debugPrint(" corner intersect %s (%.2f, %.2f) (%.2f, %.2f)" % (d, corner.x, corner.y, pt.x, pt.y))
+
+        for p in pivots:
+            debugMarker(p, "pivot.%d-%s" % (self.boneId, d), color)
+
         return [ inChord.g1Command(), outChord.g1Command() ]
 
-    def inOutBoneCommands(self, obj, inChord, outChord, angle, fixedLength, smooth):
+    def inOutBoneCommands(self, obj, inChord, outChord, boneAngle, fixedLength, smooth):
+        cornerDistance, cornerAngle = self.cornerDistanceAndAngle(obj, inChord, outChord)
+        corner = inChord.move(cornerDistance, cornerAngle).End
+
+        debugPrint("corner = (%.2f, %.2f)" % (corner.x, corner.y))
+        #debugMarker(corner, 'corner', (1., 0., 1.))
+
         length = fixedLength
         if obj.Incision == Incision.Custom:
             length = obj.Custom
         if obj.Incision == Incision.Adaptive:
-            length = self.adaptiveBoneLength(obj, inChord, outChord, angle)
+            length = self.adaptiveBoneLength(obj, inChord, outChord, boneAngle)
 
         if length == 0:
             # no bone after all ..
             return [ inChord.g1Command(), outChord.g1Command() ]
 
-        x = length * math.cos(angle);
-        y = length * math.sin(angle);
-        boneInChord = inChord.moveBy(x, y, 0)
+        boneInChord = inChord.move(length, boneAngle)
         boneOutChord = boneInChord.moveTo(outChord.Start)
 
-        #debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
-        debugCircle(boneInChord.End, self.toolRadius, 'boneEnd')
-
         bones = []
-        bones.extend(self.smoothChordCommands(inChord, boneInChord, obj.Side, 0)) #smooth & Smooth.In))
-        bones.extend(self.smoothChordCommands(boneOutChord, outChord, obj.Side, 0)) #smooth & Smooth.Out))
+
+        #debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
+        #debugCircle(boneInChord.End, self.toolRadius, 'boneEnd')
+
+        if smooth == 0:
+            return [ inChord.g1Command(), boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
+
+        # reconstruct the corner and convert to an edge
+        offset = corner - inChord.End
+        iChord = Chord(inChord.Start + offset, inChord.End + offset)
+        oChord = Chord(outChord.Start + offset, outChord.End + offset)
+        iLine = iChord.asLine()
+        oLine = oChord.asLine()
+        cornerEdge = Part.Shape([iLine, oLine])
+
+        # construct a shape representing the cut made by the bone
+        vt0 = FreeCAD.Vector(     0,  self.toolRadius, 0)
+        vt1 = FreeCAD.Vector(length,  self.toolRadius, 0)
+        vb0 = FreeCAD.Vector(     0, -self.toolRadius, 0)
+        vb1 = FreeCAD.Vector(length, -self.toolRadius, 0)
+        vm2 = FreeCAD.Vector(length + self.toolRadius, 0, 0)
+
+        boneBot = Part.Line(vb1, vb0)
+        boneTop = Part.Line(vt0, vt1)
+        boneFlat = Part.Line(vb0, vt0)
+        # what we actually want is an Arc - but findIntersect only returns the coincident if one exists
+        # which really sucks because that's the one we're probably not interested in ....
+        #boneArc = Part.Arc(vt1, vm2, vb1)
+        boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
+        boneWire = Part.Shape([boneTop,boneArc,boneBot])
+        boneWire.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), boneAngle * 180 / math.pi)
+        boneWire.translate(inChord.End)
+        self.boneShapes = [cornerEdge, boneWire]
+
+        bones.extend(self.smoothChordCommands(obj, inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, smooth & Smooth.In, (1., 0., 0.)))
+        bones.extend(self.smoothChordCommands(obj, boneOutChord, outChord, Part.Edge(oLine), boneWire, corner, smooth & Smooth.Out, (0., 1., 0.)))
         return bones
 
     def dogboneAngle(self, obj, inChord, outChord):
@@ -469,16 +518,19 @@ class ObjectDressup:
 
     def insertBone(self, boneId, obj, inChord, outChord, commands, smooth):
         debugPrint(">----------------------------------- %d --------------------------------------" % boneId)
+        self.boneShapes = []
         loc = (inChord.End.x, inChord.End.y)
         blacklisted, inaccessible = self.boneIsBlacklisted(obj, boneId, loc)
         enabled = not blacklisted
         self.bones.append((boneId, loc, enabled, inaccessible))
 
-        if debugDogbone and boneId != 2:
+        self.boneId = boneId
+        if debugDogbone and boneId == 0:
             bones = self.boneCommands(obj, False, inChord, outChord, smooth)
         else:
             bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
         commands.extend(bones[:-1])
+        self.shapes[boneId] = self.boneShapes
         debugPrint("<----------------------------------- %d --------------------------------------" % boneId)
         return boneId + 1, bones[-1]
 
@@ -664,6 +716,15 @@ class TaskPanel:
         self.form.custom.setValue(self.obj.Custom)
         self.updateUI()
 
+        if hasattr(self.obj.Proxy, "shapes"):
+            print("showing shapes attribute")
+            for shapes in self.obj.Proxy.shapes.itervalues():
+                for shape in shapes:
+                    Part.show(shape)
+        else:
+            print("no shapes attribute found")
+
+
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
@@ -753,11 +814,15 @@ class CommandDogboneDressup:
         if len(selection) != 1:
             FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select one path object\n"))
             return
-        if not selection[0].isDerivedFrom("Path::Feature"):
+        baseObject = selection[0]
+        if not baseObject.isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "The selected object is not a path\n"))
             return
-        if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Path object"))
+        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
+            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
+            return
+        if not hasattr(baseObject, "Side"):
+            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
             return
 
         # everything ok!
@@ -766,7 +831,7 @@ class CommandDogboneDressup:
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
         FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
-        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
+        FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + baseObject.Name)
         FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
