@@ -41,8 +41,14 @@ except AttributeError:
 
 
 def review(obj):
-    "checks the selected project for common errors"
+    "checks the selected job for common errors"
     toolcontrolcount = 0
+
+    if len(obj.Tooltable.Tools) == 0:
+        FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(obj.Label) + " has no tools defined in the tool table\n"))
+    if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
+        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+
     for item in obj.Group:
         print "Checking: " + item.Label
         if item.Name[:2] == "TC":
@@ -61,13 +67,6 @@ def review(obj):
                 FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Tool Controller: " + str(item.Label) + " has a 0 value for the Vertical feed rate\n"))
             if item.SpindleSpeed == 0:
                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
-
-        if item.Name[:7] == "Machine":
-            if len(item.Tooltable.Tools) == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(item.Label) + " has no tools defined in the tool table\n"))
-
-            if item.X_Max == item.X_Min or item.Y_Max == item.Y_Min:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
 
     if toolcontrolcount == 0:
         FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))

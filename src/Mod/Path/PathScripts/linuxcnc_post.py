@@ -30,7 +30,7 @@ in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import linuxcnc_post
-linuxcnc_post.export(object,"/path/to/file.ncc")
+linuxcnc_post.export(object,"/path/to/file.ncc","")
 '''
 
 TOOLTIP_ARGS='''
@@ -119,18 +119,16 @@ def export(objectslist, filename, argstring):
     # The user my have overriden post processor defaults in the GUI.  Make
     # sure we're using the current values in the Machine Def.
     myMachine = None
-    for pathobj in objectslist:
-        if hasattr(pathobj, "Group"):  # We have a compound or project.
-            for p in pathobj.Group:
-                if p.Name == "Machine":
-                    myMachine = p
+    for pathobj in selection:
+        if hasattr(pathobj,"MachineName"):
+            myMachine = pathobj.MachineName
+        if hasattr(pathobj, "MachineUnits"):
+            if pathobj.MachineUnits == "Metric":
+               UNITS = "G21"
+            else:
+               UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this project"
-    else:
-        if myMachine.MachineUnits == "Metric":
-            UNITS = "G21"
-        else:
-            UNITS = "G20"
+        print "No machine found in this selection"
 
     # write header
     if OUTPUT_HEADER:
