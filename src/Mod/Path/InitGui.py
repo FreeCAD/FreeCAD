@@ -70,6 +70,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathContour
         from PathScripts import PathProfileEdges
         from PathScripts import DogboneDressup
+        from PathScripts import PathPreferencesPathJob
         import PathCommands
 
         # build commands list
@@ -115,9 +116,7 @@ class PathWorkbench (Workbench):
         self.appendMenu([translate("Path", "&Path")], extracmdlist)
 
         # Add preferences pages
-        import os
-        FreeCADGui.addPreferencePage(FreeCAD.getHomePath(
-        ) + os.sep + "Mod" + os.sep + "Path" + os.sep + "PathScripts" + os.sep + "DlgSettingsPath.ui", "Path")
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.Page, "Path")
 
         Log('Loading Path workbench... done\n')
 

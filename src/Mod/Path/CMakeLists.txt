@@ -51,7 +51,6 @@ SET(PathScripts_SRCS
     PathScripts/PathComment.py
     PathScripts/PathStop.py
     PathScripts/PathFromShape.py
-    PathScripts/DlgSettingsPath.ui
     PathScripts/PathKurveUtils.py
     PathScripts/PathAreaUtils.py
     PathScripts/slic3r_pre.py
@@ -67,6 +66,7 @@ SET(PathScripts_SRCS
     PathScripts/PathSanity.py
     PathScripts/PathToolLibraryManager.py
     PathScripts/DogboneDressup.py
+    PathScripts/PathPreferencesPathJob.py
 )
 
 SET(PathScripts_NC_SRCS
