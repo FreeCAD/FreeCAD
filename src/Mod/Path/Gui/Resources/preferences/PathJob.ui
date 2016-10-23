@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>General Path settings</string>
+   <string>Job Preferences</string>
   </property>
   <layout class="QVBoxLayout">
    <property name="spacing">
@@ -29,7 +29,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
-         <widget class="Gui::PrefCheckBox" name="pathTestSetting1">
+         <widget class="QCheckBox" name="pathTestSetting1">
           <property name="toolTip">
            <string>If this option is enabled, new paths will automatically be placed in the active project, which will be created if necessary.</string>
           </property>
@@ -55,25 +55,38 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Job Output</string>
+      <string>Post Processor</string>
      </property>
      <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="1" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
          <string>Default Post Processor</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="defaultPostProcessor">
+        <property name="prefEntry" stdset="0">
+         <string>DefaultPostProcessor</string>
+        </property>
+        <property name="prefPath" stdset="0">
+         <string>Mod/Path</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
        <widget class="QLabel" name="label_2">
         <property name="text">
          <string>Default Arguments</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="Gui::PrefLineEdit" name="defaultPostProcessorArgs">
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="defaultPostProcessorArgs">
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Optional arguments passed to the default Post Processor specified above. See the Post Processor's documentation for supported arguments.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
         </property>
@@ -85,15 +98,15 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefLineEdit" name="defaultPostProcessor">
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultPostProcessor</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Path</cstring>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Enabled Post Processors </string>
         </property>
        </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QListWidget" name="postProcessorList"/>
       </item>
      </layout>
     </widget>
@@ -115,13 +128,6 @@
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
- <customwidgets>
-  <customwidget>
-   <class>Gui::PrefCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>
