@@ -24,7 +24,7 @@
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
 import FreeCAD
 import FreeCADGui
-import PathScripts
+from PathScripts.PathPostProcessor import PostProcessor
 import os
 import sys
 from PySide import QtCore, QtGui
@@ -90,13 +90,8 @@ class CommandPathPost:
                 if hasattr(postobj, "PostProcessorArgs"):
                     postArgs = postobj.PostProcessorArgs
 
-        postname += "_post"
-        try:
-            current_post
-        except NameError:
-            exec "import %s as current_post" % postname
-        reload(current_post)
-        current_post.export(obj, filename, postArgs)
+        processor = PostProcessor.load(postname)
+        processor.export(obj, filename, postArgs)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
