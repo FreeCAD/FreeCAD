@@ -47,11 +47,14 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+class PostProcessor:
 
-class ObjectPathJob:
+    Default     = "PostProcessorDefault"
+    DefaultArgs = "PostProcessorDefaultArgs"
+    Blacklist   = "PostProcessorBlacklist"
 
     @classmethod
-    def allPostProcessors(cls):
+    def all(cls):
         path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
         posts = glob.glob(path + '/*_post.py')
         allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
@@ -64,6 +67,39 @@ class ObjectPathJob:
         allposts.sort()
         return allposts
 
+    @classmethod
+    def allEnabled(cls):
+        blacklist = cls.blacklist()
+        return [processor for processor in cls.all() if not processor in blacklist]
+
+
+    @classmethod
+    def default(cls):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        return preferences.GetString(cls.Default, "")
+
+    @classmethod
+    def defaultArgs(cls):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        return preferences.GetString(cls.DefaultArgs, "")
+
+    @classmethod
+    def blacklist(cls):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        blacklist = preferences.GetString(cls.Blacklist, "")
+        if not blacklist:
+            return []
+        return eval(blacklist)
+
+    @classmethod
+    def saveDefaults(cls, processor, args, blacklist):
+        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        preferences.SetString(cls.Default, processor)
+        preferences.SetString(cls.DefaultArgs, args)
+        preferences.SetString(cls.Blacklist, "%s" % (blacklist))
+
+class ObjectPathJob:
+
     def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
@@ -71,7 +107,7 @@ class ObjectPathJob:
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
-        obj.PostProcessor = self.allPostProcessors()
+        obj.PostProcessor = PostProcessor.allEnabled()
         obj.PostProcessor = 'dumper'
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
         obj.PostProcessorArgs = ""
@@ -94,12 +130,10 @@ class ObjectPathJob:
 
         obj.Proxy = self
 
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        defaultPostProcessor = preferences.GetString("DefaultPostProcessor", "")
-        print("DefaultPostProcessor = '%s'" % defaultPostProcessor)
+        defaultPostProcessor = PostProcessor.default()
         if defaultPostProcessor:
             obj.PostProcessor = defaultPostProcessor
-        obj.PostProcessorArgs = preferences.GetString("DefaultPostProcessorArgs", "")
+        obj.PostProcessorArgs = PostProcessor.defaultArgs()
 
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
@@ -258,7 +292,7 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
-        for post in ObjectPathJob.allPostProcessors():
+        for post in PostProcessor.allEnabled():
             self.form.cboPostProcessor.addItem(post)
         self.updating = False
 
