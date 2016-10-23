@@ -47,6 +47,7 @@ SET(PathScripts_SRCS
     PathScripts/PathStock.py
     PathScripts/PathPlane.py
     PathScripts/PathPost.py
+    PathScripts/PathPostProcessor.py
     PathScripts/PathLoadTool.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathComment.py
