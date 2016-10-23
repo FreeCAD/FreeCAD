@@ -38,12 +38,12 @@
 namespace Sketcher
 {
 
-struct GeoEnum
+struct SketcherExport GeoEnum
 {
-    static const int RtPnt  = -1;
-    static const int HAxis  = -1;
-    static const int VAxis  = -2;
-    static const int RefExt = -3;
+    static const int RtPnt;
+    static const int HAxis;
+    static const int VAxis;
+    static const int RefExt;
 };
 
 class SketcherExport SketchObject : public Part::Part2DObject
