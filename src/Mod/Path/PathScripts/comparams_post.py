@@ -27,6 +27,8 @@ import FreeCAD
 import Path, PathScripts
 from PathScripts import PostUtils
 
+SHOW_EDITOR=True
+
 def fmt(num):
     fnum = ""
     fnum += '%.3f' % (num)
@@ -98,7 +100,8 @@ def export(obj,filename,argstring):
         gfile.close()
     else:
         FreeCAD.Console.PrintError('Select a path object and try again\n')
-    if obj[0].Editor:
+
+    if SHOW_EDITOR:
         FreeCAD.Console.PrintMessage('Editor Activated\n')
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)
