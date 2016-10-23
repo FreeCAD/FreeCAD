@@ -78,6 +78,11 @@
 using namespace Sketcher;
 using namespace Base;
 
+const int GeoEnum::RtPnt  = -1;
+const int GeoEnum::HAxis  = -1;
+const int GeoEnum::VAxis  = -2;
+const int GeoEnum::RefExt = -3;
+
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
 
