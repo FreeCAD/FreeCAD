@@ -60,6 +60,7 @@ class ObjectPathJob:
         posts = glob.glob(path + '/*_post.py')
 
         allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
+        allposts.sort()
 
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))

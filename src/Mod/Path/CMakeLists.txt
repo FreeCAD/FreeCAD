@@ -25,6 +25,8 @@ SET(PathScripts_SRCS
     PathScripts/linuxcnc_post.py
     PathScripts/centroid_post.py
     PathScripts/comparams_post.py
+    PathScripts/dynapath_post.py
+    PathScripts/generic_post.py
     PathScripts/dumper_post.py
     PathScripts/rml_post.py
     PathScripts/TooltableEditor.py

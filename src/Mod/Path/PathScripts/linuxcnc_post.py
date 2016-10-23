@@ -119,7 +119,7 @@ def export(objectslist, filename, argstring):
     # The user my have overriden post processor defaults in the GUI.  Make
     # sure we're using the current values in the Machine Def.
     myMachine = None
-    for pathobj in selection:
+    for pathobj in objectslist:
         if hasattr(pathobj,"MachineName"):
             myMachine = pathobj.MachineName
         if hasattr(pathobj, "MachineUnits"):
