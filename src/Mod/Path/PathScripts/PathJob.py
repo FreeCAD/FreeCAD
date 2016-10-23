@@ -233,7 +233,7 @@ class TaskPanel:
                 self.form.cboBaseObject.addItem(o.Name)
 
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
-        self.postProcessorDefaultArgsTooltip = self.form.cboPostProcessorArgs.toolTip()
+        self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
         self.getFields()
@@ -252,11 +252,11 @@ class TaskPanel:
                 self.form.cboPostProcessorArgs.setToolTip(self.obj.Proxy.tooltipArgs)
                 self.form.cboPostProcessorArgs.setText(self.obj.PostProcessorArgs)
             else:
-                self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
+                self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
                 self.form.cboPostProcessorArgs.setText('')
         else:
             self.form.cboPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
-            self.form.cboPostProcessorArgs.setToolTip(self.postProcessorDefaultArgsTooltip)
+            self.form.cboPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
             self.form.cboPostProcessorArgs.setText('')
 
     def getFields(self):

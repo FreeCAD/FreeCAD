@@ -32,6 +32,10 @@ class Page:
     def __init__(self, parent=None):
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
 
+        self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
+        self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()
+        self.tooltip = { }
+
     def saveSettings(self):
         print("saveSettings")
         processor = str(self.form.defaultPostProcessor.currentText())
@@ -65,4 +69,14 @@ class Page:
             self.form.defaultPostProcessor.blockSignals(False)
 
         self.form.defaultPostProcessorArgs.setText(PostProcessor.defaultArgs())
+
+        self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
+
+    def setProcessorListTooltip(self, item):
+        if not item.text() in self.tooltip.keys():
+            processor = PostProcessor.load(item.text())
+            if processor.tooltip:
+                self.form.postProcessorList.setToolTip(processor.tooltip)
+            else:
+                self.form.postProcessorList.setToolTip('')
 
