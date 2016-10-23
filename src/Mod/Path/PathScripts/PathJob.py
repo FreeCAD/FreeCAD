@@ -27,7 +27,7 @@ import Path
 from PySide import QtCore, QtGui
 import os
 import glob
-#import PathLoadTool
+from PathScripts.PathPostProcessor import PostProcessor
 import Draft
 
 
@@ -46,57 +46,6 @@ try:
 except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
-
-class PostProcessor:
-
-    Default     = "PostProcessorDefault"
-    DefaultArgs = "PostProcessorDefaultArgs"
-    Blacklist   = "PostProcessorBlacklist"
-
-    @classmethod
-    def all(cls):
-        path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
-        posts = glob.glob(path + '/*_post.py')
-        allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
-
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-        posts = glob.glob(path + '/*_post.py')
-
-        allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
-        allposts.sort()
-        return allposts
-
-    @classmethod
-    def allEnabled(cls):
-        blacklist = cls.blacklist()
-        return [processor for processor in cls.all() if not processor in blacklist]
-
-
-    @classmethod
-    def default(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.Default, "")
-
-    @classmethod
-    def defaultArgs(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.DefaultArgs, "")
-
-    @classmethod
-    def blacklist(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        blacklist = preferences.GetString(cls.Blacklist, "")
-        if not blacklist:
-            return []
-        return eval(blacklist)
-
-    @classmethod
-    def saveDefaults(cls, processor, args, blacklist):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        preferences.SetString(cls.Default, processor)
-        preferences.SetString(cls.DefaultArgs, args)
-        preferences.SetString(cls.Blacklist, "%s" % (blacklist))
 
 class ObjectPathJob:
 
@@ -150,39 +99,21 @@ class ObjectPathJob:
         obj.setEditorMode('Placement', mode)
 
         if prop == "PostProcessor":
-            postname = obj.PostProcessor + "_post"
-
-            exec "import %s as current_post" % postname
-            # make sure the script is reloaded if it was previously loaded
-            # should the script have been imported for the first time above
-            # then the initialization code of the script gets executed twice
-            # resulting in 2 load messages if the script outputs one of those.
-            exec "reload(%s)" % 'current_post'
-
-            if hasattr(current_post, "UNITS"):
-                if current_post.UNITS == "G21":
-                    obj.MachineUnits = "Metric"
-                else:
-                    obj.MachineUnits = "Inch"
-            if hasattr(current_post, "MACHINE_NAME"):
-                obj.MachineName = current_post.MACHINE_NAME
-
-            if hasattr(current_post, "CORNER_MAX"):
-                obj.X_Max = current_post.CORNER_MAX['x']
-                obj.Y_Max = current_post.CORNER_MAX['y']
-                obj.Z_Max = current_post.CORNER_MAX['z']
-
-            if hasattr(current_post, "CORNER_MIN"):
-                obj.X_Min = current_post.CORNER_MIN['x']
-                obj.Y_Min = current_post.CORNER_MIN['y']
-                obj.Z_Min = current_post.CORNER_MIN['z']
-
-            self.tooltip = None
-            self.tooltipArgs = None
-            if hasattr(current_post, "TOOLTIP"):
-                self.tooltip = current_post.TOOLTIP
-                if hasattr(current_post, "TOOLTIP_ARGS"):
-                    self.tooltipArgs = current_post.TOOLTIP_ARGS
+            processor = PostProcessor.load(obj.PostProcessor)
+            if processor.units:
+                obj.MachineUnits = processor.units
+            if processor.machineName:
+                obj.MachineName = processor.machineName
+            if processor.cornerMax:
+                obj.X_Max = processor.cornerMax['x']
+                obj.Y_Max = processor.cornerMax['y']
+                obj.Z_Max = processor.cornerMax['z']
+            if processor.cornerMin:
+                obj.X_Min = processor.cornerMin['x']
+                obj.Y_Min = processor.cornerMin['y']
+                obj.Z_Min = processor.cornerMin['z']
+            self.tooltip = processor.tooltip
+            self.tooltipArgs = processor.tooltipArgs
 
             self.PostProcessorArgs = ''
 
