@@ -74,10 +74,6 @@ class CommandPathPost:
         if hasattr(obj[0], "Group") and hasattr(obj[0], "Path"):
         #     # Check for a selected post post processor if it's set
             proj = obj[0]
-        #     postobj = None
-        #     for p in obj[0].Group:
-        #         if p.Name == "Machine":
-        #             postobj = p
 
             if hasattr(obj[0], "PostProcessor"):
                 postobj = obj[0]
