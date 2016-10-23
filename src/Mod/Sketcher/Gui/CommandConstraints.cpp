@@ -259,15 +259,15 @@ void getIdsFromName(const std::string &name, const Sketcher::SketchObject* Obj,
         GeoId = std::atoi(name.substr(4,4000).c_str()) - 1;
     }
     else if (name.size() == 9 && name.substr(0,9) == "RootPoint") {
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::start;
     }
     else if (name.size() == 6 && name.substr(0,6) == "H_Axis")
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::HAxis;
     else if (name.size() == 6 && name.substr(0,6) == "V_Axis")
-        GeoId = -2;
+        GeoId = Sketcher::GeoEnum::VAxis;
     else if (name.size() > 12 && name.substr(0,12) == "ExternalEdge")
-        GeoId = -2 - std::atoi(name.substr(12,4000).c_str());
+        GeoId = Sketcher::GeoEnum::RefExt + 1 - std::atoi(name.substr(12,4000).c_str());
     else if (name.size() > 6 && name.substr(0,6) == "Vertex") {
         int VtId = std::atoi(name.substr(6,4000).c_str()) - 1;
         Obj->getGeoVertexIndex(VtId,GeoId,PosId);
@@ -286,7 +286,7 @@ bool inline isEdge(int GeoId, PointPos PosId)
 
 bool isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, PointPos PosId)
 {
-    if (PosId == Sketcher::start && (GeoId == -1 || GeoId == -2))
+    if (PosId == Sketcher::start && (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis))
         return true;
     const Part::Geometry *geo = Obj->getGeometry(GeoId);
     if (geo->getTypeId() == Part::GeomPoint::getClassTypeId())
@@ -781,7 +781,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     Sketcher::PointPos PosId;
     getIdsFromName(SubNames[0], Obj, GeoId, PosId);
 
-    if (isEdge(GeoId,PosId) || (GeoId < 0 && GeoId >= -2)) {
+    if (isEdge(GeoId,PosId) || (GeoId < 0 && GeoId >= Sketcher::GeoEnum::VAxis)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one vertex from the sketch other than the origin."));
         return;
@@ -798,7 +798,7 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
         selection[0].getFeatName(),GeoId,PosId,pnt.y);
 
-    if (GeoId < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+    if (GeoId <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
         
         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -981,24 +981,24 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     
     bool bothexternal=checkBothExternal(GeoId1, GeoId2);
     
-    if (isVertex(GeoId1,PosId1) && (GeoId2 == -2 || GeoId2 == -1)) {
+    if (isVertex(GeoId1,PosId1) && (GeoId2 == Sketcher::GeoEnum::VAxis || GeoId2 == Sketcher::GeoEnum::HAxis)) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
 
-    if ((isVertex(GeoId1,PosId1) || GeoId1 == -2 || GeoId1 == -1) &&
+    if ((isVertex(GeoId1,PosId1) || GeoId1 == Sketcher::GeoEnum::VAxis || GeoId1 == Sketcher::GeoEnum::HAxis) &&
         isVertex(GeoId2,PosId2)) { // point to point distance
 
         Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
 
-        if (GeoId1 == -1 && PosId1 == Sketcher::none) {
+        if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::none) {
             PosId1 = Sketcher::start;
             openCommand("add distance from horizontal axis constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2,pnt2.y);
         }
-        else if (GeoId1 == -2 && PosId1 == Sketcher::none) {
+        else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) {
             PosId1 = Sketcher::start;
             openCommand("add distance from vertical axis constraint");
             Gui::Command::doCommand(
@@ -1060,7 +1060,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
     }
     else if (isEdge(GeoId1,PosId1)) { // line length
-        if (GeoId1 < 0 && GeoId1 >= -2) {
+        if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                  QObject::tr("Cannot add a length constraint on an axis!"));
             return;
@@ -1077,7 +1077,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
                 selection[0].getFeatName(),GeoId1,ActLength);
             
-            if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+            if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                 const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                 
                 Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1250,20 +1250,20 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     bool bothexternal=checkBothExternal(GeoId1, GeoId2);
 
-    if (GeoId2 == -1 || GeoId2 == -2) {
+    if (GeoId2 == Sketcher::GeoEnum::HAxis || GeoId2 == Sketcher::GeoEnum::VAxis) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
 
-    if (GeoId1 == -1 && PosId1 == Sketcher::none) // reject horizontal axis from selection
+    if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::none) // reject horizontal axis from selection
         GeoId1 = Constraint::GeoUndef;
-    else if (GeoId1 == -2 && PosId1 == Sketcher::none) {
-        GeoId1 = -1;
+    else if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) {
+        GeoId1 = Sketcher::GeoEnum::HAxis;
         PosId1 = Sketcher::start;
     }
 
     if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // horizontal length of a line
-        if (GeoId1 < 0 && GeoId1 >= -2) {
+        if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                             QObject::tr("Cannot add a horizontal length constraint on an axis!"));
             return;
@@ -1310,7 +1310,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed x-coordinate
 
-        if (GeoId1 < 0 && GeoId1 >= -2) {
+        if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                     QObject::tr("Cannot add a fixed x-coordinate constraint on the root point!"));
             return;
@@ -1324,7 +1324,7 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActX);
         
-        if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+        if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -1409,18 +1409,18 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     bool bothexternal=checkBothExternal(GeoId1, GeoId2);
     
-    if (GeoId2 == -1 || GeoId2 == -2) {
+    if (GeoId2 == Sketcher::GeoEnum::HAxis || GeoId2 == Sketcher::GeoEnum::VAxis) {
         std::swap(GeoId1,GeoId2);
         std::swap(PosId1,PosId2);
     }
 
-    if (GeoId1 == -2 && PosId1 == Sketcher::none) // reject vertical axis from selection
+    if (GeoId1 == Sketcher::GeoEnum::VAxis && PosId1 == Sketcher::none) // reject vertical axis from selection
         GeoId1 = Constraint::GeoUndef;
-    else if (GeoId1 == -1 && PosId1 == Sketcher::none)
+    else if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::none)
         PosId1 = Sketcher::start;
 
     if (isEdge(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef)  { // vertical length of a line
-        if (GeoId1 < 0 && GeoId1 >= -2) {
+        if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                         QObject::tr("Cannot add a vertical length constraint on an axis!"));
             return;
@@ -1468,7 +1468,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     }
     else if (isVertex(GeoId1,PosId1) && GeoId2 == Constraint::GeoUndef) { // point on fixed y-coordinate
 
-        if (GeoId1 < 0 && GeoId1 >= -2) {
+        if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Cannot add a fixed y-coordinate constraint on the root point!"));
             return;
@@ -1482,7 +1482,7 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
             Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
             selection[0].getFeatName(),GeoId1,PosId1,ActY);
 
-        if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+        if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
             const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
             
             Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2715,7 +2715,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 return;
             }
         } else if (isEdge(GeoId1,PosId1)) { // line angle
-            if (GeoId1 < 0 && GeoId1 >= -2) {
+            if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                     QObject::tr("Cannot add an angle constraint on an axis!"));
                 return;
@@ -2733,7 +2733,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,ActAngle);
 
-                if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                     
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2757,7 +2757,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
                     selection[0].getFeatName(),GeoId1,angle);
 
-                if (GeoId1 < -2 || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+                if (GeoId1 <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
                     const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
                     
                     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
@@ -2852,7 +2852,7 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             return;
         }
         else if (GeoId < 0) {
-            if (GeoId == -1 || GeoId == -2) {
+            if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                      QObject::tr("Sketch axes cannot be used in equality constraints"));
                 return;
@@ -3290,7 +3290,7 @@ void CmdSketcherConstrainInternalAlignment::activated(int iMsg)
         getIdsFromName(*it, Obj, GeoId, PosId);
         
         if (GeoId < 0) {
-            if (GeoId == -1 || GeoId == -2) {
+            if (GeoId == Sketcher::GeoEnum::HAxis || GeoId == Sketcher::GeoEnum::VAxis) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                                      QObject::tr("Sketch axes cannot be used in internal alignment constraint"));
                 return;

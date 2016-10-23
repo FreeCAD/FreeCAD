@@ -1446,15 +1446,15 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         this->updateColor();
                     }
                     else if (shapetype == "RootPoint") {
-                        addSelectPoint(-1);
+                        addSelectPoint(Sketcher::GeoEnum::RtPnt);
                         this->updateColor();
                     }
                     else if (shapetype == "H_Axis") {
-                        edit->SelCurvSet.insert(-1);
+                        edit->SelCurvSet.insert(Sketcher::GeoEnum::HAxis);
                         this->updateColor();
                     }
                     else if (shapetype == "V_Axis") {
-                        edit->SelCurvSet.insert(-2);
+                        edit->SelCurvSet.insert(Sketcher::GeoEnum::VAxis);
                         this->updateColor();
                     }
                     else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1491,15 +1491,15 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                             this->updateColor();
                         }
                         else if (shapetype == "RootPoint") {
-                            removeSelectPoint(-1);
+                            removeSelectPoint(Sketcher::GeoEnum::RtPnt);
                             this->updateColor();
                         }
                         else if (shapetype == "H_Axis") {
-                            edit->SelCurvSet.erase(-1);
+                            edit->SelCurvSet.erase(Sketcher::GeoEnum::HAxis);
                             this->updateColor();
                         }
                         else if (shapetype == "V_Axis") {
-                            edit->SelCurvSet.erase(-2);
+                            edit->SelCurvSet.erase(Sketcher::GeoEnum::VAxis);
                             this->updateColor();
                         }
                         else if (shapetype.size() > 10 && shapetype.substr(0,10) == "Constraint") {
@@ -1658,7 +1658,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
                 // get the index
                 PtIndex = static_cast<const SoPointDetail *>(point_detail)->getCoordinateIndex();
                 PtIndex -= 1; // shift corresponding to RootPoint
-                if (PtIndex == -1)
+                if (PtIndex == Sketcher::GeoEnum::RtPnt)
                     CrossIndex = 0; // RootPoint was hit
             }
         } else {
@@ -1709,7 +1709,7 @@ bool ViewProviderSketch::detectPreselection(const SoPickedPoint *Point,
             if (GeoIndex >= 0)
                 ss << "Edge" << GeoIndex + 1;
             else // external geometry
-                ss << "ExternalEdge" << -GeoIndex - 2; // convert index start from -3 to 1
+                ss << "ExternalEdge" << -GeoIndex + Sketcher::GeoEnum::RefExt + 1; // convert index start from -3 to 1
             bool accepted =
             Gui::Selection().setPreselect(getSketchObject()->getDocument()->getName()
                                          ,getSketchObject()->getNameInDocument()
@@ -2262,7 +2262,7 @@ void ViewProviderSketch::updateColor(void)
                 verts[j] = SbVec3f(x,y,zHighLine);
             }
         }
-        else if (GeoId < -2) {  // external Geometry
+        else if (GeoId <= Sketcher::GeoEnum::RefExt) {  // external Geometry
             color[i] = CurveExternalColor;
             for (int k=j; j<k+indexes; j++) {
                 verts[j].getValue(x,y,z);
@@ -2300,7 +2300,7 @@ void ViewProviderSketch::updateColor(void)
     else
         crosscolor[0] = CrossColorH;
 
-    if (edit->SelCurvSet.find(-2) != edit->SelCurvSet.end())
+    if (edit->SelCurvSet.find(Sketcher::GeoEnum::VAxis) != edit->SelCurvSet.end())
         crosscolor[1] = SelectColor;
     else if (edit->PreselectCross == 2)
         crosscolor[1] = PreselectColor;
@@ -4874,7 +4874,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                 if( GeoId >= 0 )
                     delInternalGeometries.insert(GeoId);
                 else
-                    delExternalGeometries.insert(-3-GeoId);
+                    delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
             } else if (it->size() > 12 && it->substr(0,12) == "ExternalEdge") {
                 int GeoId = std::atoi(it->substr(12,4000).c_str()) - 1;
                 delExternalGeometries.insert(GeoId);
@@ -4888,12 +4888,12 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
                     if(GeoId>=0)
                         delInternalGeometries.insert(GeoId);
                     else
-                        delExternalGeometries.insert(-3-GeoId);
+                        delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
                 }
                 else
                     delCoincidents.insert(VtId);
             } else if (*it == "RootPoint") {
-                delCoincidents.insert(-1);
+                delCoincidents.insert(Sketcher::GeoEnum::RtPnt);
             } else if (it->size() > 10 && it->substr(0,10) == "Constraint") {
                 int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
                 delConstraints.insert(ConstrId);

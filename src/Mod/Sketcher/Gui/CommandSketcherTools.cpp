@@ -1101,21 +1101,21 @@ void CmdSketcherSymmetry::activated(int iMsg)
     }
     // check if last selected element is horizontal axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "H_Axis"){
-        LastGeoId = -1;
+        LastGeoId = Sketcher::GeoEnum::HAxis;
         LastPointPos = Sketcher::none;
         lastgeotype = line;
         lastvertexoraxis=true;
     }
     // check if last selected element is vertical axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "V_Axis"){
-        LastGeoId = -2;
+        LastGeoId = Sketcher::GeoEnum::VAxis;
         LastPointPos = Sketcher::none;
         lastgeotype = line;
         lastvertexoraxis=true;
     }
     // check if last selected element is the root point
     else if(SubNames.rbegin()->size() == 9 && SubNames.rbegin()->substr(0,9) == "RootPoint"){
-        LastGeoId = -1;
+        LastGeoId = Sketcher::GeoEnum::RtPnt;
         LastPointPos = Sketcher::start;
         lastgeotype = point;
         lastvertexoraxis=true;

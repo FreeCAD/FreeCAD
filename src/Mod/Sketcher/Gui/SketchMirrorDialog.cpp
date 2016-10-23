@@ -34,6 +34,7 @@
 
 #include "ui_SketchMirrorDialog.h"
 #include "SketchMirrorDialog.h"
+#include <Mod/Sketcher/App/SketchObject.h>
 
 using namespace SketcherGui;
 
@@ -54,15 +55,15 @@ SketchMirrorDialog::~SketchMirrorDialog()
 void SketchMirrorDialog::accept()
 {
     if (ui->XAxisRadioButton->isChecked()) {
-        RefGeoid=-1;
+        RefGeoid=Sketcher::GeoEnum::HAxis;
         RefPosid=Sketcher::none;
     }
     else if (ui->YAxisRadioButton->isChecked()) {
-        RefGeoid=-2;
+        RefGeoid=Sketcher::GeoEnum::VAxis;
         RefPosid=Sketcher::none; 
     }
     else if (ui->OriginRadioButton->isChecked()) {
-        RefGeoid=-1;
+        RefGeoid=Sketcher::GeoEnum::RtPnt;
         RefPosid=Sketcher::start; 
     }
 
