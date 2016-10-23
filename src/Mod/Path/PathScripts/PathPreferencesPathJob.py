@@ -34,10 +34,9 @@ class Page:
 
         self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()
-        self.tooltip = { }
+        self.processor = { }
 
     def saveSettings(self):
-        print("saveSettings")
         processor = str(self.form.defaultPostProcessor.currentText())
         args = str(self.form.defaultPostProcessorArgs.text())
         blacklist = []
@@ -48,7 +47,6 @@ class Page:
         PostProcessor.saveDefaults(processor, args, blacklist)
 
     def loadSettings(self):
-        print("loadSettings")
         self.form.defaultPostProcessor.addItem("")
         blacklist = PostProcessor.blacklist()
         for processor in PostProcessor.all():
@@ -71,12 +69,34 @@ class Page:
         self.form.defaultPostProcessorArgs.setText(PostProcessor.defaultArgs())
 
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
+        self.form.defaultPostProcessor.currentIndexChanged.connect(self.updateDefaultPostProcessorToolTip)
+
+    def getPostProcessor(self, name):
+        if not name in self.processor.keys():
+            processor = PostProcessor.load(name)
+            self.processor[name] = processor
+            return processor
+        return self.processor[name]
+
+    def setPostProcessorTooltip(self, widget, name, default):
+        processor = self.getPostProcessor(name)
+        if processor.tooltip:
+            widget.setToolTip(processor.tooltip)
+        else:
+            widget.setToolTip(default)
 
     def setProcessorListTooltip(self, item):
-        if not item.text() in self.tooltip.keys():
-            processor = PostProcessor.load(item.text())
-            if processor.tooltip:
-                self.form.postProcessorList.setToolTip(processor.tooltip)
-            else:
-                self.form.postProcessorList.setToolTip('')
+        self.setPostProcessorTooltip(self.form.postProcessorList, item.text(), '')
 
+    def updateDefaultPostProcessorToolTip(self):
+        name = str(self.form.defaultPostProcessor.currentText())
+        if name:
+            self.setPostProcessorTooltip(self.form.defaultPostProcessor, name, self.postProcessorDefaultTooltip)
+            processor = self.getPostProcessor(name)
+            if processor.tooltipArgs:
+                self.form.defaultPostProcessorArgs.setToolTip(processor.tooltipArgs)
+            else:
+                self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
+        else:
+            self.form.defaultPostProcessor.setToolTip(self.postProcessorDefaultTooltip)
+            self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
