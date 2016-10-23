@@ -140,22 +140,19 @@ public:
                 goto end;
             }
             else if (len > 1) {
-                const int dec = copy.indexOf(locale.decimalPoint());
-                if (dec != -1) {
-                    if (dec + 1 < copy.size() && copy.at(dec + 1) == locale.decimalPoint() && pos == dec + 1) {
-                        copy.remove(dec + 1, 1);
-                    }
-                    else if (copy.indexOf(locale.decimalPoint(), dec + 1) != -1) {
-                        // trying to add a second decimal point is not allowed
-                        state = QValidator::Invalid;
-                        goto end;
-                    }
-                    for (int i=dec + 1; i<copy.size(); ++i) {
-                        // a group separator after the decimal point is not allowed
-                        if (copy.at(i) == locale.groupSeparator()) {
+                bool decOccurred = false;
+                for (int i = 0; i<copy.size(); i++) {
+                    if (copy.at(i) == locale.decimalPoint()) {
+                        // Disallow multiple decimal points within the same numeric substring
+                        if (decOccurred) {
                             state = QValidator::Invalid;
                             goto end;
                         }
+                        decOccurred = true;
+                    }
+                    // Reset decOcurred if non-numeric character found
+                    else if (!(copy.at(i) == locale.groupSeparator() || copy.at(i).isDigit())) {
+                        decOccurred = false;
                     }
                 }
             }

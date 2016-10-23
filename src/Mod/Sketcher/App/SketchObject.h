@@ -38,6 +38,14 @@
 namespace Sketcher
 {
 
+struct SketcherExport GeoEnum
+{
+    static const int RtPnt;
+    static const int HAxis;
+    static const int VAxis;
+    static const int RefExt;
+};
+
 class SketcherExport SketchObject : public Part::Part2DObject
 {
     PROPERTY_HEADER(Sketcher::SketchObject);

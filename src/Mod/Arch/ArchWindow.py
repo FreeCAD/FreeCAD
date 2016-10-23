@@ -27,8 +27,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Window"
@@ -36,7 +39,7 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # presets
-WindowPartTypes = ["Frame","Solid panel","Glass panel"]
+WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                    "Sliding 2-pane", "Simple door", "Glass door"]
@@ -383,9 +386,9 @@ class _CommandWindow:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -622,15 +625,19 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch","the components of this window")
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")
-        obj.addProperty("App::PropertyLink","Subvolume","Arch","an optional object that defines a volume to be subtracted from hosts of this window")
-        obj.addProperty("App::PropertyLength","Width","Arch","The width of this window (for preset windows only)")
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this window (for preset windows only)")
-        obj.addProperty("App::PropertyVector","Normal","Arch","The normal direction of this window")
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","an optional object that defines a volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyLink","PanelMaterial","Material","A material for this object")
-        obj.addProperty("App::PropertyLink","GlassMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
+        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.setEditorMode("Preset",2)
 
         self.Type = "Window"
@@ -675,7 +682,7 @@ class _Window(ArchComponent.Component):
         if self.clone(obj):
             return
         
-        import Part, DraftGeomUtils
+        import Part,DraftGeomUtils,math
         pl = obj.Placement
         base = None
         if obj.Base:
@@ -717,6 +724,24 @@ class _Window(ArchComponent.Component):
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
+                                if obj.WindowParts[(i*5)+1] == "Louvre":
+                                    if hasattr(obj,"LouvreWidth"):
+                                        if obj.LouvreWidth and obj.LouvreSpacing:
+                                            bb = shape.BoundBox
+                                            bb.enlarge(bb.DiagonalLength)
+                                            step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
+                                            if step < bb.YLength:
+                                                box = Part.makeBox(bb.XLength,obj.LouvreWidth.Value,bb.ZLength)
+                                                boxes = []
+                                                for i in range(int(bb.YLength/step)+1):
+                                                    b = box.copy()
+                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
+                                                    boxes.append(b)
+                                                self.boxes = Part.makeCompound(boxes)
+                                                rot = obj.Base.Placement.Rotation
+                                                self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                                self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
+                                                shape = shape.common(self.boxes)
                                 shapes.append(shape)
                         if shapes:
                             base = Part.makeCompound(shapes)
@@ -732,6 +757,8 @@ class _Window(ArchComponent.Component):
         if base:
             if not base.isNull():
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
+        if hasattr(obj,"Area"):
+            obj.Area = obj.Width.Value * obj.Height.Value
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"

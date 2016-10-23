@@ -28,8 +28,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Site"
@@ -59,9 +62,9 @@ class _CommandSite:
     "the Arch Site command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Site',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Site","Site"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Site","Site"),
                 'Accel': "S, I",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Site","Creates a site object including selected objects.")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -110,23 +113,24 @@ class _Site(ArchFloor._Floor):
     def __init__(self,obj):
 
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Terrain","Arch","The base terrain of this site")
-        obj.addProperty("App::PropertyString","Address","Arch","The street and housenumber of this site")
-        obj.addProperty("App::PropertyString","PostalCode","Arch","The postal or zip code of this site")
-        obj.addProperty("App::PropertyString","City","Arch","The city of this site")
-        obj.addProperty("App::PropertyString","Country","Arch","The country of this site")
-        obj.addProperty("App::PropertyFloat","Latitude","Arch","The latitude of this site")
-        obj.addProperty("App::PropertyFloat","Longitude","Arch","The latitude of this site")
-        obj.addProperty("App::PropertyString","Url","Arch","An url that shows this site in a mapping website")
-        obj.addProperty("App::PropertyLinkList","Group","Arch","The objects that are part of this site")
-        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
-        obj.addProperty("App::PropertyArea","ProjectedArea","Arch","The area of the projection of this object onto the XY plane")
-        obj.addProperty("App::PropertyLength","Perimeter","Arch","The perimeter length of this terrain")
-        obj.addProperty("App::PropertyVolume","AdditionVolume","Arch","The volume of earth to be added to this terrain")
-        obj.addProperty("App::PropertyVolume","SubtractionVolume","Arch","The volume of earth to be removed from this terrain")
-        obj.addProperty("App::PropertyVector","ExtrusionVector","Arch","An extrusion vector to use when performing boolean operations")
-        obj.addProperty("App::PropertyBool","RemoveSplitter","Arch","Remove splitters from the resulting shape")
+        obj.addProperty("App::PropertyLink","Terrain","Arch",QT_TRANSLATE_NOOP("App::Property","The base terrain of this site"))
+        obj.addProperty("App::PropertyString","Address","Arch",QT_TRANSLATE_NOOP("App::Property","The street and housenumber of this site"))
+        obj.addProperty("App::PropertyString","PostalCode","Arch",QT_TRANSLATE_NOOP("App::Property","The postal or zip code of this site"))
+        obj.addProperty("App::PropertyString","City","Arch",QT_TRANSLATE_NOOP("App::Property","The city of this site"))
+        obj.addProperty("App::PropertyString","Country","Arch",QT_TRANSLATE_NOOP("App::Property","The country of this site"))
+        obj.addProperty("App::PropertyFloat","Latitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+        obj.addProperty("App::PropertyFloat","Longitude","Arch",QT_TRANSLATE_NOOP("App::Property","The latitude of this site"))
+        obj.addProperty("App::PropertyLength","Elevation","Arch",QT_TRANSLATE_NOOP("App::Property","The elevation of level 0 of this site"))
+        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","An url that shows this site in a mapping website"))
+        obj.addProperty("App::PropertyLinkList","Group","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that are part of this site"))
+        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        obj.addProperty("App::PropertyArea","ProjectedArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        obj.addProperty("App::PropertyLength","Perimeter","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of this terrain"))
+        obj.addProperty("App::PropertyVolume","AdditionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be added to this terrain"))
+        obj.addProperty("App::PropertyVolume","SubtractionVolume","Arch",QT_TRANSLATE_NOOP("App::Property","The volume of earth to be removed from this terrain"))
+        obj.addProperty("App::PropertyVector","ExtrusionVector","Arch",QT_TRANSLATE_NOOP("App::Property","An extrusion vector to use when performing boolean operations"))
+        obj.addProperty("App::PropertyBool","RemoveSplitter","Arch",QT_TRANSLATE_NOOP("App::Property","Remove splitters from the resulting shape"))
         self.Type = "Site"
         obj.setEditorMode('Height',2)
         obj.ExtrusionVector = FreeCAD.Vector(0,0,-100000)

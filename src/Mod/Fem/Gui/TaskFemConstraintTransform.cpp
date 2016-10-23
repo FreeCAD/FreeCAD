@@ -480,7 +480,7 @@ std::string TaskFemConstraintTransform::get_transform_type(void) const {
     return transform;
 }
 
-void TaskFemConstraintTransform::changeEvent(QEvent *e){
+void TaskFemConstraintTransform::changeEvent(QEvent *){
 }
 
 //**************************************************************************

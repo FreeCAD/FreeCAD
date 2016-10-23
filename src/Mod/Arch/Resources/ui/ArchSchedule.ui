@@ -149,6 +149,21 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="buttonExport">
+       <property name="toolTip">
+        <string>This exports the contents of the &quot;Result&quot; spreadsheet to a csv file. In Libreoffice, you can keep this csv file linked by right-clicking the sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link</string>
+       </property>
+       <property name="text">
+        <string>Export</string>
+       </property>
+       <property name="icon">
+        <iconset theme="document-export">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

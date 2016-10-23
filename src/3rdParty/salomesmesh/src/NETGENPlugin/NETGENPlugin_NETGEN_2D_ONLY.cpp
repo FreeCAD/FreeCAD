@@ -47,6 +47,7 @@
 #include <utilities.h>
 
 #include <list>
+#include <memory>
 #include <vector>
 #include <limits>
 
@@ -243,7 +244,11 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   ngLib._isComputeOk = false;
 
   netgen::Mesh   ngMeshNoLocSize;
+#if NETGEN_VERSION < 6
   netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh,  & ngMeshNoLocSize };
+#else
+  netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh.get(),  & ngMeshNoLocSize };
+#endif
   netgen::OCCGeometry occgeoComm;
 
   // min / max sizes are set as follows:
@@ -474,7 +479,10 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       try {
         OCC_CATCH_SIGNALS;
 
-#if NETGEN_VERSION > 4
+#if NETGEN_VERSION >=6
+        std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeom, mesh_ptr, netgen::mparam, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeom, ngMesh, netgen::mparam, startWith, endWith);
 #else
         char *optstr = 0;

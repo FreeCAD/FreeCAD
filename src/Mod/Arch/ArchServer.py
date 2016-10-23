@@ -27,8 +27,11 @@ from PySide import QtCore, QtGui
 if FreeCAD.GuiUp:
     import FreeCADGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Arch Server commands"
@@ -47,8 +50,8 @@ class _CommandBimserver:
     
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Bimserver',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Bimserver","BIM server"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Bimserver","Connects and interacts with a BIM server instance")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Bimserver","BIM server"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Bimserver","Connects and interacts with a BIM server instance")}
 
     def Activated(self):
         try:

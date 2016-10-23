@@ -52,7 +52,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
-#endif  // #ifndef _PreComp_
+#endif
 
 #include <boost/bind.hpp>
 
@@ -72,11 +72,16 @@
 #include <Mod/Part/App/BodyBase.h>
 
 #include "SketchObject.h"
-#include "SketchObjectPy.h"
 #include "Sketch.h"
+#include <Mod/Sketcher/App/SketchObjectPy.h>
 
 using namespace Sketcher;
 using namespace Base;
+
+const int GeoEnum::RtPnt  = -1;
+const int GeoEnum::HAxis  = -1;
+const int GeoEnum::VAxis  = -2;
+const int GeoEnum::RefExt = -3;
 
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
@@ -760,8 +765,8 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
 {
     int GeoId;
     PointPos PosId;
-    if (VertexId == -1) { // RootPoint
-        GeoId = -1;
+    if (VertexId == GeoEnum::RtPnt) { // RootPoint
+        GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = start;
     } else
         getGeoVertexIndex(VertexId, GeoId, PosId);
@@ -2839,7 +2844,7 @@ int SketchObject::delExternal(int ExtGeoId)
 
     const std::vector< Constraint * > &constraints = Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = -3 - ExtGeoId;
+    int GeoId = GeoEnum::RefExt - ExtGeoId;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
@@ -2893,9 +2898,9 @@ int SketchObject::delAllExternal()
     std::vector< Constraint * > newConstraints(0);
 
     for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
-        if ((*it)->First > -3 && 
-            ((*it)->Second > -3 || (*it)->Second == Constraint::GeoUndef ) && 
-            ((*it)->Third > -3 || (*it)->Third == Constraint::GeoUndef) ) {
+        if ((*it)->First > GeoEnum::RefExt &&
+            ((*it)->Second > GeoEnum::RefExt || (*it)->Second == Constraint::GeoUndef ) &&
+            ((*it)->Third > GeoEnum::RefExt || (*it)->Third == Constraint::GeoUndef) ) {
             Constraint *copiedConstr = (*it)->clone();
             
             newConstraints.push_back(copiedConstr);
@@ -2924,7 +2929,7 @@ int SketchObject::delConstraintsToExternal()
 {
     const std::vector< Constraint * > &constraints = Constraints.getValuesForce();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = -3, NullId = -2000;
+    int GeoId = GeoEnum::RefExt, NullId = Constraint::GeoUndef;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if (    (*it)->First > GeoId
@@ -3042,7 +3047,7 @@ void SketchObject::validateExternalLinks(void)
                         
             const std::vector< Constraint * > &constraints = Constraints.getValues();
             std::vector< Constraint * > newConstraints(0);
-            int GeoId = -3 - i;
+            int GeoId = GeoEnum::RefExt - i;
             for (std::vector<Constraint *>::const_iterator it = constraints.begin();
                  it != constraints.end(); ++it) {
                 if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
@@ -4085,7 +4090,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                 case 3: geoId=newVals[ic]->Third; posId = newVals[ic]->ThirdPos; break;
             }
 
-            if ( geoId <= -3 &&
+            if ( geoId <= GeoEnum::RefExt &&
                  (posId==Sketcher::start || posId==Sketcher::end)){
                 //we are dealing with a link to an endpoint of external geom
                 Part::Geometry* g = this->ExternalGeo[-geoId-1];

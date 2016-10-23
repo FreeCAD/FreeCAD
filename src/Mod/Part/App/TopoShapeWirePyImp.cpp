@@ -29,6 +29,7 @@
 # include <BRepBuilderAPI_FindPlane.hxx>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <BRepOffsetAPI_MakeOffset.hxx>
+# include <BRepTools_WireExplorer.hxx>
 # include <Precision.hxx>
 # include <ShapeFix_Wire.hxx>
 # include <TopoDS.hxx>
@@ -48,13 +49,14 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
-#include "BSplineCurvePy.h"
 #include "TopoShape.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeWirePy.cpp"
+#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/Part/App/TopoShapeShellPy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Part/App/TopoShapeWirePy.cpp>
+#include <Mod/Part/App/TopoShapeVertexPy.h>
 #include "OCCError.h"
 #include "Tools.h"
 
@@ -586,6 +588,32 @@ Py::Dict TopoShapeWirePy::getPrincipalProperties(void) const
     rog.setItem(2, Py::Float(Rzz));
     dict.setItem("RadiusOfGyration",rog);
     return dict;
+}
+
+Py::List TopoShapeWirePy::getOrderedEdges(void) const
+{
+    Py::List ret;
+
+    BRepTools_WireExplorer xp(TopoDS::Wire(getTopoShapePtr()->getShape()));
+    while (xp.More()) {
+        ret.append(Py::asObject(new TopoShapeEdgePy(new TopoShape(xp.Current()))));
+        xp.Next();
+    }
+
+    return ret;
+}
+
+Py::List TopoShapeWirePy::getOrderedVertexes(void) const
+{
+    Py::List ret;
+
+    BRepTools_WireExplorer xp(TopoDS::Wire(getTopoShapePtr()->getShape()));
+    while (xp.More()) {
+        ret.append(Py::asObject(new TopoShapeVertexPy(new TopoShape(xp.CurrentVertex()))));
+        xp.Next();
+    }
+
+    return ret;
 }
 
 PyObject *TopoShapeWirePy::getCustomAttributes(const char* /*attr*/) const

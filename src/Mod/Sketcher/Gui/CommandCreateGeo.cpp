@@ -2602,7 +2602,7 @@ private:
     {
         // We will approximate the ellipse as a sequence of connected chords
         // Number of points per quadrant of the ellipse
-        double n = static_cast<double>((editCurve.size() - 1) / 4);
+        int n = static_cast<int>((editCurve.size() - 1) / 4);
 
         // We choose points in the perifocal frame then translate them to sketch cartesian.
         // This gives us a better approximation of an ellipse, i.e. more points where the
@@ -2661,7 +2661,7 @@ private:
      */
     void ellipseToOctave(Base::Vector2D /*onSketchPos*/)
     {
-        double n = static_cast<double>((editCurve.size() - 1) / 4);
+        int n = static_cast<int>((editCurve.size() - 1) / 4);
 
         // send a GNU Octave script to stdout to plot points for debugging
         std::ostringstream octave;

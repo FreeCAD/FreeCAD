@@ -168,6 +168,7 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
 {
     // http://pastebin.com/JByDAF5Z
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if 1
     PyTypeObject * type = Shiboken::SbkType<QObject>();
     if (type) {
         if (Shiboken::Object::checkType(pyobject.ptr())) {
@@ -176,8 +177,18 @@ QObject* PythonWrapper::toQObject(const Py::Object& pyobject)
             return reinterpret_cast<QObject*>(cppobject);
         }
     }
+#else // does the same using shiboken's Python interface
+    // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
+    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    Py::Callable func = mainmod.getDict().getItem("getCppPointer");
+    Py::Tuple arguments(1);
+    arguments[0] = pyobject; //PySide pointer
+    Py::Tuple result(func.apply(arguments));
+    void* ptr = PyLong_AsVoidPtr(result[0].ptr());
+    return reinterpret_cast<QObject*>(ptr);
+#endif
 #else
-    Py::Module mainmod(PyImport_AddModule((char*)"sip"));
+    Py::Module mainmod(PyImport_ImportModule((char*)"sip"), true);
     Py::Callable func = mainmod.getDict().getItem("unwrapinstance");
     Py::Tuple arguments(1);
     arguments[0] = pyobject; //PyQt pointer
@@ -202,6 +213,7 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
 Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if 1
     PyTypeObject * type = Shiboken::SbkType<QWidget>();
     if (type) {
         SbkObjectType* sbk_type = reinterpret_cast<SbkObjectType*>(type);
@@ -214,9 +226,18 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
         return Py::asObject(pyobj);
     }
     throw Py::RuntimeError("Failed to wrap widget");
+#else // does the same using shiboken's Python interface
+    Py::Module mainmod(PyImport_ImportModule((char*)"shiboken"), true);
+    Py::Callable func = mainmod.getDict().getItem("wrapInstance");
+    Py::Tuple arguments(2);
+    arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
+    Py::Module qtmod(PyImport_ImportModule((char*)"PySide.QtGui"));
+    arguments[1] = qtmod.getDict().getItem(className);
+    return func.apply(arguments);
+#endif
 #else
     Q_UNUSED(className);
-    Py::Module sipmod(PyImport_AddModule((char*)"sip"));
+    Py::Module sipmod(PyImport_ImportModule((char*)"sip"), true);
     Py::Callable func = sipmod.getDict().getItem("wrapinstance");
     Py::Tuple arguments(2);
     arguments[0] = Py::asObject(PyLong_FromVoidPtr(widget));
@@ -361,9 +382,9 @@ Gui::Dialog::PreferencePage* WidgetFactoryInst::createPreferencePage (const char
     // this widget class is not registered
     if (!w) {
 #ifdef FC_DEBUG
-        Base::Console().Warning("\"%s\" is not registered\n", sName);
+        Base::Console().Warning("Cannot create an instance of \"%s\"\n", sName);
 #else
-        Base::Console().Log("\"%s\" is not registered\n", sName);
+        Base::Console().Log("Cannot create an instance of \"%s\"\n", sName);
 #endif
         return 0;
     }
@@ -770,10 +791,21 @@ PrefPagePyProducer::~PrefPagePyProducer ()
 void* PrefPagePyProducer::Produce () const
 {
     Base::PyGILStateLocker lock;
-    Py::Callable method(type);
-    Py::Tuple args;
-    Py::Object page = method.apply(args);
-    return new Gui::Dialog::PreferencePagePython(page);
+    try {
+        Py::Callable method(type);
+        Py::Tuple args;
+        Py::Object page = method.apply(args);
+        QWidget* widget = new Gui::Dialog::PreferencePagePython(page);
+        if (!widget->layout()) {
+            delete widget;
+            widget = 0;
+        }
+        return widget;
+    }
+    catch (Py::Exception&) {
+        PyErr_Print();
+        return 0;
+    }
 }
 
 // ----------------------------------------------------
@@ -784,20 +816,25 @@ PreferencePagePython::PreferencePagePython(const Py::Object& p, QWidget* parent)
   : PreferencePage(parent), page(p)
 {
     Base::PyGILStateLocker lock;
-    if (page.hasAttr(std::string("form"))) {
-        Py::Object widget(page.getAttr(std::string("form")));
+    Gui::PythonWrapper wrap;
+    if (wrap.loadCoreModule()) {
 
-        Gui::PythonWrapper wrap;
-        if (wrap.loadCoreModule()) {
-            QObject* object = wrap.toQObject(widget);
-            if (object) {
-                QWidget* form = qobject_cast<QWidget*>(object);
-                if (form) {
-                    this->setWindowTitle(form->windowTitle());
-                    QVBoxLayout *layout = new QVBoxLayout;
-                    layout->addWidget(form);
-                    setLayout(layout);
-                }
+        // old style class must have a form attribute while
+        // new style classes can be the widget itself
+        Py::Object widget;
+        if (page.hasAttr(std::string("form")))
+            widget = page.getAttr(std::string("form"));
+        else
+            widget = page;
+
+        QObject* object = wrap.toQObject(widget);
+        if (object) {
+            QWidget* form = qobject_cast<QWidget*>(object);
+            if (form) {
+                this->setWindowTitle(form->windowTitle());
+                QVBoxLayout *layout = new QVBoxLayout;
+                layout->addWidget(form);
+                setLayout(layout);
             }
         }
     }

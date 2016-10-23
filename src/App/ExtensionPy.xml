@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+    Father="PyObjectBase" 
+    Name="ExtensionPy" 
+    TwinPointer="Extension" 
+    Twin="Extension" 
+    Include="App/Extension.h" 
+    Namespace="App" 
+    FatherInclude="Base/PyObjectBase.h" 
+    FatherNamespace="Base">
+    <Documentation>
+      <Author Licence="LGPL" Name="Stefan Troeger" EMail="stefantroeger@gmx.net" />
+      <UserDocu>Base class for all extensions</UserDocu>
+    </Documentation>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

@@ -75,17 +75,32 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->createGroupAction->setStatusTip(tr("Create a group"));
     connect(this->createGroupAction, SIGNAL(triggered()),
             this, SLOT(onCreateGroup()));
+
     this->relabelObjectAction = new QAction(this);
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
+
     this->finishEditingAction = new QAction(this);
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
+
+    this->skipRecomputeAction = new QAction(this);
+    this->skipRecomputeAction->setCheckable(true);
+    this->skipRecomputeAction->setText(tr("Skip recomputes"));
+    this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+    connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
+            this, SLOT(onSkipRecompute(bool)));
+
+    this->markRecomputeAction = new QAction(this);
+    this->markRecomputeAction->setText(tr("Mark to recompute"));
+    this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    connect(this->markRecomputeAction, SIGNAL(triggered()),
+            this, SLOT(onMarkRecompute()));
 
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
@@ -154,6 +169,11 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+        contextMenu.addAction(this->skipRecomputeAction);
+        contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->createGroupAction);
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
@@ -172,6 +192,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         }
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->relabelObjectAction);
 
         // if only one item is selected setup the edit menu
@@ -297,6 +318,39 @@ void TreeWidget::onFinishEditing()
         doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
+    }
+}
+
+void TreeWidget::onSkipRecompute(bool on)
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        doc->setStatus(App::Document::SkipRecompute, on);
+    }
+}
+
+void TreeWidget::onMarkRecompute()
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        std::vector<App::DocumentObject*> obj = doc->getObjects();
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+            (*it)->touch();
+    }
+    // mark all selected objects
+    else {
+        QList<QTreeWidgetItem*> items = this->selectedItems();
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            if ((*it)->type() == ObjectType) {
+                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                App::DocumentObject* obj = objitem->object()->getObject();
+                obj->touch();
+            }
+        }
     }
 }
 
@@ -564,7 +618,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             // now add the object to the target object
             vp->dropObject(obj);
         }
-        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -722,6 +775,12 @@ void TreeWidget::changeEvent(QEvent *e)
 
         this->finishEditingAction->setText(tr("Finish editing"));
         this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+
+        this->skipRecomputeAction->setText(tr("Skip recomputes"));
+        this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+
+        this->markRecomputeAction->setText(tr("Mark to recompute"));
+        this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
     }
 
     QTreeWidget::changeEvent(e);
@@ -1442,15 +1501,6 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
-}
-
-bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    return viewObject->allowDrop(objList,keys,mouseBts,pos);
-}
-void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()
