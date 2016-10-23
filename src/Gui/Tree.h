@@ -101,6 +101,8 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSkipRecompute(bool on);
+    void onMarkRecompute();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -122,6 +124,8 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* skipRecomputeAction;
+    QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
@@ -202,9 +206,6 @@ public:
     void setExpandedStatus(bool);
     void setData(int column, int role, const QVariant & value);
     bool isChildOfItem(DocumentObjectItem*);
-
-    bool allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
-    void drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos);
 
 protected:
     void slotChangeIcon();

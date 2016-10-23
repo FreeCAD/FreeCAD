@@ -52,7 +52,7 @@ using namespace std;
 // PropertyLink
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLink , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyLink , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -131,6 +131,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
 
     if (name != "") {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
+
         App::Document* document = parent->getDocument();
         DocumentObject* object = document ? document->getObject(name.c_str()) : 0;
         if (!object) {
@@ -171,7 +172,7 @@ void PropertyLink::Paste(const Property &from)
 // PropertyLinkList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyLinkList, App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -327,7 +328,7 @@ unsigned int PropertyLinkList::getMemSize(void) const
 // PropertyLinkSub
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property);
+TYPESYSTEM_SOURCE(App::PropertyLinkSub , App::Property)
 
 //**************************************************************************
 // Construction/Destruction
@@ -514,7 +515,7 @@ void PropertyLinkSub::Paste(const Property &from)
 // PropertyLinkSubList
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists);
+TYPESYSTEM_SOURCE(App::PropertyLinkSubList , App::PropertyLists)
 
 //**************************************************************************
 // Construction/Destruction
@@ -585,12 +586,13 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
     aboutToSetValue();
-    int size = SubList.size();
+    std::size_t size = SubList.size();
     this->_lValueList.clear();
     if (size == 0) {
-        if (lValue)
+        if (lValue) {
             this->_lValueList.push_back(lValue);
-        this->_lSubList.clear();
+            this->_lSubList.push_back(std::string());
+        }
     }
     else {
         this->_lSubList = SubList;
@@ -807,7 +809,6 @@ void PropertyLinkSubList::Restore(Base::XMLReader &reader)
     reader.readElement("LinkSubList");
     // get the value of my attribute
     int count = reader.getAttributeAsInteger("count");
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
 
     std::vector<DocumentObject*> values;
     values.reserve(count);

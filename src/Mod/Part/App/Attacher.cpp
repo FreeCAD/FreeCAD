@@ -1639,9 +1639,6 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
 
 
         switch (mmode) {
-        case mmDeactivated:
-            //should have been filtered out already!
-            break;
         case mm1AxisInertia1:
         case mm1AxisInertia2:
         case mm1AxisInertia3:{
@@ -1802,7 +1799,7 @@ Base::Placement AttachEngineLine::calculateAttachedPlacement(Base::Placement ori
 
 //=================================================================================
 
-TYPESYSTEM_SOURCE(Attacher::AttachEnginePoint, Attacher::AttachEngine);
+TYPESYSTEM_SOURCE(Attacher::AttachEnginePoint, Attacher::AttachEngine)
 
 AttachEnginePoint::AttachEnginePoint()
 {
@@ -1874,7 +1871,7 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
         std::vector<eRefType> types;
         readLinks(this->references, parts, shapes, copiedShapeStorage, types);
 
-        if (parts.size() == 0)
+        if (parts.empty())
             throw ExceptionCancel();
 
 
@@ -1884,9 +1881,6 @@ Base::Placement AttachEnginePoint::calculateAttachedPlacement(Base::Placement or
 
 
         switch (mmode) {
-        case mmDeactivated:
-            //should have been filtered out already!
-        break;
         case mm0Vertex:{
             std::vector<gp_Pnt> points;
             assert(shapes.size()>0);

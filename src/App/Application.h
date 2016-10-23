@@ -230,7 +230,7 @@ public:
     static void destructObserver(void);
     static void processCmdLineFiles(void);
     static std::list<std::string> getCmdLineFiles();
-    static void processFiles(const std::list<std::string>&);
+    static std::list<std::string> processFiles(const std::list<std::string>&);
     static void runApplication(void);
     friend Application &GetApplication(void);
     static std::map<std::string,std::string> &Config(void){return mConfig;}

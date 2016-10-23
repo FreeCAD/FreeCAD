@@ -47,4 +47,8 @@ int PartFeaturePy::setCustomAttributes(const char* , PyObject *)
     return 0; 
 }
 
-
+PyObject* PartFeaturePy::test(PyObject * /*args*/)
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return 0;
+}

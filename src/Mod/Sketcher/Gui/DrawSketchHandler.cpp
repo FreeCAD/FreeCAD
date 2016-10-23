@@ -162,16 +162,16 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             
     }
     else if (preSelCrs == 0) { // root point
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::start;
     }
     else if (preSelCrs == 1){ // x axis
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1,0,0);
         
     }
     else if (preSelCrs == 2){ // y axis
-        GeoId = -2;
+        GeoId = Sketcher::GeoEnum::VAxis;
         hitShapeDir = Base::Vector3d(0,1,0);
     }
 
@@ -196,7 +196,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             
             // the angle between the line and the hitting direction are over around 6 degrees (it is substantially parallel)
             // or if it is an sketch axis (that can not move to accomodate to the shape), then only if it is around 6 degrees with the normal (around 84 degrees)
-            if (fabs(cosangle) < 0.995f || ((GeoId==-1 || GeoId==-2) && fabs(cosangle) < 0.1))
+            if (fabs(cosangle) < 0.995f || ((GeoId==Sketcher::GeoEnum::HAxis || GeoId==Sketcher::GeoEnum::VAxis) && fabs(cosangle) < 0.1))
                 suggestedConstraints.push_back(constr);
             
             

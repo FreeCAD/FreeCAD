@@ -86,9 +86,11 @@ void ViewProviderBoolean::updateData(const App::Property* prop)
         if (hist.size() != 2)
             return;
         Part::Boolean* objBool = dynamic_cast<Part::Boolean*>(getObject());
+        if (!objBool)
+            return;
         Part::Feature* objBase = dynamic_cast<Part::Feature*>(objBool->Base.getValue());
         Part::Feature* objTool = dynamic_cast<Part::Feature*>(objBool->Tool.getValue());
-        if (objBool && objBase && objTool) {
+        if (objBase && objTool) {
             const TopoDS_Shape& baseShape = objBase->Shape.getValue();
             const TopoDS_Shape& toolShape = objTool->Shape.getValue();
             const TopoDS_Shape& boolShape = objBool->Shape.getValue();

@@ -14,16 +14,6 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu></UserDocu>
 		</Documentation>
-		<Methode Name="uIso">
-			<Documentation>
-				<UserDocu>Builds the U isoparametric line of this surface</UserDocu>
-			</Documentation>
-		</Methode>
-		<Methode Name="vIso">
-			<Documentation>
-				<UserDocu>Builds the V isoparametric line of this surface</UserDocu>
-			</Documentation>
-		</Methode>
 		<Methode Name="makeApprox" Keyword="true">
 			<Documentation>
 				<UserDocu>Approximate the plate surface to a B-Spline surface</UserDocu>

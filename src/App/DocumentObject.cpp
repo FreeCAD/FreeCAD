@@ -33,6 +33,7 @@
 #include "DocumentObjectGroup.h"
 #include "PropertyLinks.h"
 #include "PropertyExpressionEngine.h"
+#include "DocumentObjectExtension.h"
 #include <App/DocumentObjectPy.h>
 #include <boost/signals/connection.hpp>
 #include <boost/bind.hpp>
@@ -92,12 +93,28 @@ App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 
 DocumentObjectExecReturn *DocumentObject::execute(void)
 {
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector) {
+        if(ext->extensionMustExecute()) 
+            ext->extensionExecute();
+    }
     return StdReturn;
 }
 
 short DocumentObject::mustExecute(void) const
 {
-    return (isTouched() ? 1 : 0);
+    if(isTouched())
+        return 1;
+
+    //ask all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector) {
+        if(ext->extensionMustExecute())
+            return 1;
+    }
+    return 0;
+    
 }
 
 const char* DocumentObject::getStatusString(void) const
@@ -181,7 +198,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 
 DocumentObjectGroup* DocumentObject::getGroup() const
 {
-    return DocumentObjectGroup::getGroupOfObject(this);
+    return dynamic_cast<DocumentObjectGroup*>(GroupExtension::getGroupOfObject(this));
 }
 
 bool DocumentObject::testIfLinkDAGCompatible(DocumentObject *linkTo) const
@@ -369,4 +386,28 @@ void DocumentObject::connectRelabelSignals()
         onRelabledDocumentConnection.disconnect();
         onDeletedObjectConnection.disconnect();
     }
+}
+
+void DocumentObject::onSettingDocument()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedSettingDocument();
+}
+
+void DocumentObject::setupObject()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedSetupObject();
+}
+
+void DocumentObject::unsetupObject()
+{
+    //call all extensions
+    auto vector = getExtensionsDerivedFromType<App::DocumentObjectExtension>();
+    for(auto ext : vector)
+        ext->onExtendedUnsetupObject();
 }

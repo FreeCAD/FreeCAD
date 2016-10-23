@@ -38,7 +38,6 @@
 #include "Document.h"
 #include "Selection.h"
 #include "SelectionFilter.h"
-#include "SelectionObjectPy.h"
 #include "View3DInventor.h"
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -47,6 +46,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectPy.h>
+#include <Gui/SelectionObjectPy.h>
 #include "MainWindow.h"
 
 
@@ -527,6 +527,7 @@ bool SelectionSingleton::setPreselect(const char* pDocName, const char* pObjectN
     Chng.pDocName  = DocName.c_str();
     Chng.pObjectName = FeatName.c_str();
     Chng.pSubName  = SubName.c_str();
+    Chng.pTypeName = "";
     Chng.x = x;
     Chng.y = y;
     Chng.z = z;
@@ -706,6 +707,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Chng.pDocName  = pDocName;
         Chng.pObjectName = pObjectName ? pObjectName : "";
         Chng.pSubName  = pSubName ? pSubName : "";
+        Chng.pTypeName = temp.TypeName.c_str();
         Chng.x         = x;
         Chng.y         = y;
         Chng.z         = z;
@@ -761,6 +763,7 @@ bool SelectionSingleton::addSelection(const char* pDocName, const char* pObjectN
         Chng.pDocName  = pDocName;
         Chng.pObjectName = pObjectName ? pObjectName : "";
         Chng.pSubName  = "";
+        Chng.pTypeName = temp.TypeName.c_str();
         Chng.x         = 0;
         Chng.y         = 0;
         Chng.z         = 0;
@@ -793,6 +796,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             std::string tmpDocName = It->DocName;
             std::string tmpFeaName = It->FeatName;
             std::string tmpSubName = It->SubName;
+            std::string tmpTypName = It->TypeName;
 
             // destroy the _SelObj item
             It = _SelList.erase(It);
@@ -801,6 +805,7 @@ void SelectionSingleton::rmvSelection(const char* pDocName, const char* pObjectN
             Chng.pDocName  = tmpDocName.c_str();
             Chng.pObjectName = tmpFeaName.c_str();
             Chng.pSubName  = tmpSubName.c_str();
+            Chng.pTypeName = tmpTypName.c_str();
             Chng.Type      = SelectionChanges::RmvSelection;
 
             Notify(Chng);
@@ -868,6 +873,7 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
     Chng.pDocName = pDocName;
     Chng.pObjectName = "";
     Chng.pSubName = "";
+    Chng.pTypeName = "";
 
     Notify(Chng);
     signalSelectionChanged(Chng);
@@ -901,6 +907,7 @@ void SelectionSingleton::clearSelection(const char* pDocName)
         Chng.pDocName = docName.c_str();
         Chng.pObjectName = "";
         Chng.pSubName = "";
+        Chng.pTypeName = "";
 
         Notify(Chng);
         signalSelectionChanged(Chng);
@@ -920,6 +927,7 @@ void SelectionSingleton::clearCompleteSelection()
     Chng.pDocName = "";
     Chng.pObjectName = "";
     Chng.pSubName = "";
+    Chng.pTypeName = "";
 
 
     Notify(Chng);
@@ -981,9 +989,11 @@ SelectionSingleton::SelectionSingleton()
     hz = 0;
     ActiveGate = 0;
     App::GetApplication().signalDeletedObject.connect(boost::bind(&Gui::SelectionSingleton::slotDeletedObject, this, _1));
+    CurrentPreselection.Type = SelectionChanges::ClrSelection;
     CurrentPreselection.pDocName = 0;
     CurrentPreselection.pObjectName = 0;
     CurrentPreselection.pSubName = 0;
+    CurrentPreselection.pTypeName = 0;
     CurrentPreselection.x = 0.0;
     CurrentPreselection.y = 0.0;
     CurrentPreselection.z = 0.0;

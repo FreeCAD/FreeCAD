@@ -98,8 +98,8 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 #include "Placement.h"
-#include "GeoFeatureGroup.h"
-#include "OriginGroup.h"
+#include "GeoFeatureGroupExtension.h"
+#include "OriginGroupExtension.h"
 #include "Part.h"
 #include "OriginFeature.h"
 #include "Origin.h"
@@ -297,7 +297,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    std::unique_ptr<Document> newDoc(new Document() );
+    std::unique_ptr<Document> newDoc(new Document());
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -1135,6 +1135,17 @@ void Application::initTypes(void)
     App ::PropertyPythonObject      ::init();
     App ::PropertyExpressionEngine  ::init();
 
+    // Extension classes
+    App ::Extension                     ::init();
+    App ::ExtensionContainer            ::init();
+    App ::DocumentObjectExtension       ::init();
+    App ::GroupExtension                ::init();
+    App ::GroupExtensionPython          ::init();
+    App ::GeoFeatureGroupExtension      ::init();
+    App ::GeoFeatureGroupExtensionPython::init();
+    App ::OriginGroupExtension          ::init();
+    App ::OriginGroupExtensionPython    ::init();
+    
     // Document classes
     App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
@@ -1158,9 +1169,6 @@ void Application::initTypes(void)
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
-    App ::OriginGroup               ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
 
@@ -1356,8 +1364,9 @@ std::list<std::string> Application::getCmdLineFiles()
     return files;
 }
 
-void Application::processFiles(const std::list<std::string>& files)
+std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
+    std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
     for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
         Base::FileInfo file(*it);
@@ -1368,17 +1377,21 @@ void Application::processFiles(const std::list<std::string>& files)
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
+                processed.push_back(*it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
+                processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
                 try{
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
+                    processed.push_back(*it);
                 }
                 catch(const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
+                    processed.push_back(*it);
                 }
             }
             else {
@@ -1390,6 +1403,7 @@ void Application::processFiles(const std::list<std::string>& files)
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
+                    processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else {
@@ -1407,6 +1421,8 @@ void Application::processFiles(const std::list<std::string>& files)
             Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
+
+    return processed; // successfully processed files
 }
 
 void Application::processCmdLineFiles(void)
@@ -1584,6 +1600,10 @@ pair<string, string> customSyntax(const string& s)
         return make_pair(string("display"), string("null"));
     else if (s.find("-style") == 0)
         return make_pair(string("style"), string("null"));
+    else if (s.find("-graphicssystem") == 0)
+        return make_pair(string("graphicssystem"), string("null"));
+    else if (s.find("-widgetcount") == 0)
+        return make_pair(string("widgetcount"), string(""));
     else if (s.find("-geometry") == 0)
         return make_pair(string("geometry"), string("null"));
     else if (s.find("-font") == 0)
@@ -1674,6 +1694,8 @@ void Application::ParseOptions(int ac, char ** av)
     ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
     ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
     ("reverse",                                               "set the application's layout direction from right to left")
+    ("widgetcount",                                           "print debug messages about widgets")
+    ("graphicssystem", boost::program_options::value< string >(), "backend to be used for on-screen widgets and pixmaps")
     ("display",    boost::program_options::value< string >(), "set the X-Server")
     ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
     ("font",       boost::program_options::value< string >(), "set the X-Window font")

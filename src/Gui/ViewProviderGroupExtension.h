@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2014    *
- *   Copyright (c) Alexander Golubev (Fat-Zer) <fatzer2@gmail.com> 2015    *
+ *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,31 +21,44 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"
+#ifndef GUI_VIEWPROVIDERGROUPEXTENSION_H
+#define GUI_VIEWPROVIDERGROUPEXTENSION_H
 
-#include "App/GeoFeatureGroup.h"
+#include <App/Extension.h>
+#include "ViewProviderExtension.h"
 
-// inclusion of the generated files (generated out of GeoFeatureGroupPy.xml)
-#include "GeoFeatureGroupPy.h"
-#include "GeoFeatureGroupPy.cpp"
-
-using namespace App;
-
-// returns a string which represents the object e.g. when printed in python
-std::string GeoFeatureGroupPy::representation(void) const
+namespace Gui
 {
-    return std::string("<GeoFeatureGroup object>");
-}
 
-
-PyObject *GeoFeatureGroupPy::getCustomAttributes(const char* /*attr*/) const
+class GuiExport ViewProviderGroupExtension : public ViewProviderExtension
 {
-    return 0;
-}
+    EXTENSION_PROPERTY_HEADER(Gui::ViewProviderGroupExtension);
 
-int GeoFeatureGroupPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
-{
-    return 0;
-}
+public:
+    /// Constructor
+    ViewProviderGroupExtension(void);
+    virtual ~ViewProviderGroupExtension();
 
+    virtual std::vector<App::DocumentObject*> extensionClaimChildren(void)const override;
+    virtual bool extensionCanDragObjects() const override; 
+    virtual bool extensionCanDragObject(App::DocumentObject*) const override;
+    virtual void extensionDragObject(App::DocumentObject*) override;
+    virtual bool extensionCanDropObjects() const override;
+    virtual bool extensionCanDropObject(App::DocumentObject*) const override;
+    virtual void extensionDropObject(App::DocumentObject*) override;   
+ 
+    virtual void extensionHide(void) override;
+    virtual void extensionShow(void) override;
 
+    virtual bool extensionOnDelete(const std::vector<std::string> &) override;
+
+private:
+    bool visible; // helper variable
+    std::vector<ViewProvider*> nodes;
+};
+
+typedef ViewProviderExtensionPythonT<Gui::ViewProviderGroupExtension> ViewProviderGroupExtensionPython;
+
+} //namespace Gui
+
+#endif // GUI_VIEWPROVIDERGROUPEXTENSION_H

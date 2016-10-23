@@ -519,11 +519,16 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 
+    double width  =  page->getPageWidth();
+    double height =  page->getPageHeight();
+    QRectF sourceRect(0.0,-height,width,height);
+    QRectF targetRect;
+
     Gui::Selection().clearSelection();
     QPainter p;
 
     p.begin(&svgGen);
-    scene()->render(&p);
+    scene()->render(&p, targetRect,sourceRect);
     p.end();
 
     toggleMarkers(true);
@@ -531,7 +536,6 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 }
-
 
 void QGVPage::paintEvent(QPaintEvent *event)
 {

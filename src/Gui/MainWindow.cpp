@@ -35,6 +35,7 @@
 # include <QDesktopWidget>
 # include <QDockWidget>
 # include <QFontMetrics>
+# include <QKeySequence>
 # include <QLabel>
 # include <QMdiSubWindow>
 # include <QMessageBox>
@@ -723,6 +724,16 @@ void MainWindow::addWindow(MDIView* view)
     child->setWidget(view);
     child->setWindowIcon(view->windowIcon());
     QMenu* menu = child->systemMenu();
+
+    // See StdCmdCloseActiveWindow (#0002631)
+    QList<QAction*> acts = menu->actions();
+    for (QList<QAction*>::iterator it = acts.begin(); it != acts.end(); ++it) {
+        if ((*it)->shortcut() == QKeySequence(QKeySequence::Close)) {
+            (*it)->setShortcuts(QList<QKeySequence>());
+            break;
+        }
+    }
+
     QAction* action = menu->addAction(tr("Close All"));
     connect(action, SIGNAL(triggered()), d->mdiArea, SLOT(closeAllSubWindows()));
     d->mdiArea->addSubWindow(child);
@@ -1026,7 +1037,11 @@ void MainWindow::processMessages(const QList<QByteArray> & msg)
             if (it->startsWith(action))
                 files.push_back(std::string(it->mid(action.size()).constData()));
         }
-        App::Application::processFiles(files);
+        files = App::Application::processFiles(files);
+        for (std::list<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
+            QString filename = QString::fromUtf8(it->c_str(), it->size());
+            FileDialog::setWorkingDirectory(filename);
+        }
     }
     catch (const Base::SystemExitException&) {
     }
@@ -1036,7 +1051,12 @@ void MainWindow::delayedStartup()
 {
     // processing all command line files
     try {
-        App::Application::processCmdLineFiles();
+        std::list<std::string> files = App::Application::getCmdLineFiles();
+        files = App::Application::processFiles(files);
+        for (std::list<std::string>::iterator it = files.begin(); it != files.end(); ++it) {
+            QString filename = QString::fromUtf8(it->c_str(), it->size());
+            FileDialog::setWorkingDirectory(filename);
+        }
     }
     catch (const Base::SystemExitException&) {
         throw;

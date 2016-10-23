@@ -29,6 +29,17 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 
 
+def get_femnodes_by_femobj_with_references(femmesh, femobj):
+    node_set = []
+    if femmesh.GroupCount:
+        node_set = get_femnode_set_from_group_data(femmesh, femobj)
+        # print 'node_set_group: ', node_set
+    if not node_set:
+        node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
+        # print 'node_set_nogroup: ', node_set
+    return node_set
+
+
 def get_femelements_by_references(femmesh, femelement_table, references):
     '''get the femelements for a list of references
     '''
@@ -195,9 +206,23 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
         FreeCAD.Console.PrintError('Error in get_femelement_sets -- > femelements_count_ok() failed!\n')
 
 
+def get_femnode_set_from_group_data(femmesh, fem_object):
+    # get femnodes from femmesh groupdata for reference shapes of each obj.References
+    # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
+    # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
+    obj = fem_object['Object']
+    if femmesh.GroupCount:
+        for g in femmesh.Groups:
+            grp_name = femmesh.getGroupName(g)
+            if grp_name.startswith(obj.Name + '_'):
+                if femmesh.getGroupElementType(g) == "Node":
+                    print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
+                    group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
+    return group_nodes
+
+
 def get_femelement_sets_from_group_data(femmesh, fem_objects):
     # get femelements from femmesh groupdata for reference shapes of each obj.References
-    print("")
     count_femelements = 0
     sum_group_elements = []
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
@@ -343,6 +368,18 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
             print(n, ' --> ', l)
 
     return force_obj_node_load_table
+
+
+def get_pressure_obj_faces(femmesh, femobj):
+    pressure_faces = []
+    for o, elem_tup in femobj['Object'].References:
+        for elem in elem_tup:
+            ref_shape = o.Shape.getElement(elem)
+            elem_info_string = 'face load on shape: ' + o.Name + ':' + elem
+            print(elem_info_string)
+            if ref_shape.ShapeType == 'Face':
+                pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
+    return pressure_faces
 
 
 def get_force_obj_face_nodeload_table(femmesh, femelement_table, femnodes_mesh, frc_obj):
@@ -794,6 +831,188 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
         else:
             node_sum_geom_table[n] = A
     return node_sum_geom_table
+
+
+def get_analysis_group_elements(aAnalysis, aPart):
+    ''' all Reference shapes of all Analysis member are searched in the Shape of aPart. If found in shape they are added to a dict
+    {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
+    '''
+    aShape = aPart.Shape
+    group_elements = {}
+    empty_references = []
+    for m in aAnalysis.Member:
+        if hasattr(m, "References"):
+            # print(m.Name)
+            key = m.Name
+            indexes = []
+            stype = None
+            if m.References:
+                for r in m.References:
+                    parent = r[0]
+                    childs = r[1]
+                    # print(parent)
+                    # print(childs)
+                    for child in childs:
+                        if child:
+                            # Face, Edge, Vertex
+                            ref_shape = parent.Shape.getElement(child)
+                        else:
+                            # Solid
+                            ref_shape = parent.Shape
+                        if not stype:
+                            stype = ref_shape.ShapeType
+                        elif stype != ref_shape.ShapeType:
+                            FreeCAD.Console.PrintError('Error, two refschapes in References with different ShapeTypes.\n')
+                        # print(ref_shape)
+                        found_element = find_element_in_shape(aShape, ref_shape)
+                        if found_element is not None:
+                            indexes.append(found_element)
+                        else:
+                            FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
+                            print('    ' + m.Name)
+                            print('    ' + str(m.References))
+                            print('    ' + r[0].Name)
+                group_elements[key] = [stype, sorted(indexes)]
+            else:
+                print('Empty reference: ' + m.Name)
+                empty_references.append(m)
+    if empty_references:
+        if len(empty_references) == 1:
+            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
+        else:
+            FreeCAD.Console.PrintError('Error: more than one object with empty references!\n')
+            print(empty_references)
+    # check if all groups have elements:
+    for g in group_elements:
+        # print group_elements[g][1]
+        if len(group_elements[g][1]) == 0:
+            FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
+    return group_elements
+
+
+def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):
+    '''get the elementIDs if the Reference shape is empty
+    see get_analysis_group_elements()
+    '''
+    material_ref_shapes = []
+    material_shape_type = ''
+    missed_material_refshapes = []
+    empty_reference_material = None
+    for m in aAnalysis.Member:
+        # only materials could have an empty reference without beeing something wrong!
+        if m.isDerivedFrom("App::MaterialObjectPython"):
+            if hasattr(m, "References") and m.References:
+                if not material_shape_type:
+                    material_shape_type = group_elements[m.Name][0]
+                elif material_shape_type != group_elements[m.Name][0]:
+                    print('Problem, material shape type does not match get_anlysis_empty_references_group_elements')
+                for i in group_elements[m.Name][1]:
+                    material_ref_shapes.append(i)
+            elif hasattr(m, "References") and not m.References:
+                if not empty_reference_material:
+                    empty_reference_material = m.Name
+                else:
+                    print('Problem in get_anlysis_empty_references_group_elements, we seams to have two materials with empty referneces')
+                    return {}
+    if material_shape_type == 'Solid':
+        # print(len(aShape.Solids))
+        for i in range(len(aShape.Solids)):
+            if i not in material_ref_shapes:
+                missed_material_refshapes.append(i)
+    elif material_shape_type == 'Face':
+        # print(len(aShape.Faces))
+        for i in range(len(aShape.Faces)):
+            if i not in material_ref_shapes:
+                missed_material_refshapes.append(i)
+    elif material_shape_type == 'Edge':
+        # print(len(aShape.Edges))
+        for i in range(len(aShape.Edges)):
+            if i not in material_ref_shapes:
+                missed_material_refshapes.append(i)
+    else:
+        print('It seams we only have one material with no reference shapes. Means the whole solid is one material. Since we only support material groups for Solids at the moment this should be Solid')
+        material_shape_type = 'Solid'
+        missed_material_refshapes.append(0)
+    # print(sorted(material_ref_shapes))
+    # print(sorted(missed_material_refshapes))
+    # print(group_elements)
+    group_elements[empty_reference_material] = [material_shape_type, sorted(missed_material_refshapes)]
+    # print(group_elements)
+    return group_elements
+
+
+def find_element_in_shape(aShape, anElement):
+    # import Part
+    if anElement.ShapeType == 'Solid' or anElement.ShapeType == 'CompSolid':
+        for index, solid in enumerate(aShape.Solids):
+            # print(is_same_geometry(solid, anElement))
+            if is_same_geometry(solid, anElement):
+                # print(index)
+                # Part.show(aShape.Solids[index])
+                return index
+        FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
+        if anElement.ShapeType == 'Solid' and aShape.ShapeType == 'Solid':
+            print('We have been searching for a Solid in a Solid and we have not found it. In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.')
+        # Part.show(anElement)
+        # Part.show(aShape)
+    elif anElement.ShapeType == 'Face' or anElement.ShapeType == 'Shell':
+        for index, face in enumerate(aShape.Faces):
+            # print(is_same_geometry(face, anElement))
+            if is_same_geometry(face, anElement):
+                # print(index)
+                # Part.show(aShape.Faces[index])
+                return index
+    elif anElement.ShapeType == 'Edge' or anElement.ShapeType == 'Wire':
+        for index, face in enumerate(aShape.Edges):
+            # print(is_same_geometry(face, anElement))
+            if is_same_geometry(face, anElement):
+                # print(index)
+                # Part.show(aShape.Edges[index])
+                return index
+    elif anElement.ShapeType == 'Vertex':
+        for index, face in enumerate(aShape.Vertexes):
+            # print(is_same_geometry(face, anElement))
+            if is_same_geometry(face, anElement):
+                # print(index)
+                # Part.show(aShape.Vertexes[index])
+                return index
+    elif anElement.ShapeType == 'Compound':
+        FreeCAD.Console.PrintError('Compound is not supported.\n')
+
+
+def is_same_geometry(shape1, shape2):
+    # the vertexes and the CenterOfMass are compared
+    # it is a hack, but I do not know any better !
+    # check of Volume and Area before starting with the vertices could be added
+    # BoundBox is possible too, but is BB calcualtions robust?!
+    # print(shape1)
+    # print(shape2)
+    same_Vertexes = 0
+    if len(shape1.Vertexes) == len(shape2.Vertexes) and len(shape1.Vertexes) > 1:
+        # compare CenterOfMass
+        if shape1.CenterOfMass != shape2.CenterOfMass:
+            return False
+        else:
+            # compare the Vertexes
+            for vs1 in shape1.Vertexes:
+                for vs2 in shape2.Vertexes:
+                    if vs1.X == vs2.X and vs1.Y == vs2.Y and vs1.Z == vs2.Z:
+                        same_Vertexes += 1
+                        continue
+            # print(same_Vertexes)
+            if same_Vertexes == len(shape1.Vertexes):
+                return True
+            else:
+                return False
+    if len(shape1.Vertexes) == len(shape2.Vertexes) and len(shape1.Vertexes) == 1:
+        vs1 = shape1.Vertexes[0]
+        vs2 = shape2.Vertexes[0]
+        if vs1.X == vs2.X and vs1.Y == vs2.Y and vs1.Z == vs2.Z:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 
 def femelements_count_ok(len_femelement_table, count_femelements):

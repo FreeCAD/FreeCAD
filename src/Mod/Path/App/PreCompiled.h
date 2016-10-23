@@ -30,7 +30,7 @@
 #ifdef FC_OS_WIN32
 # define PathExport  __declspec(dllexport)
 //# define RobotExport __declspec(dllexport) uncomment this to use KDL
-# define PartExport __declspec(dllexport)
+# define PartExport __declspec(dllimport)
 # define BaseExport  __declspec(dllimport)
 #else // for Linux
 # define PathExport

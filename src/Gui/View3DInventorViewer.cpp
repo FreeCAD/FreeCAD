@@ -841,9 +841,10 @@ void View3DInventorViewer::setNavigationType(Base::Type t)
     }
 
     NavigationStyle* ns = static_cast<NavigationStyle*>(base);
-    ns->operator = (*this->navigation);
-    if (this->navigation)
+    if (this->navigation) {
         ns->operator = (*this->navigation);
+        delete this->navigation;
+    }
     this->navigation = ns;
     this->navigation->setViewer(this);
 }

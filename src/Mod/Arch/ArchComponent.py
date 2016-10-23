@@ -37,8 +37,11 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 
@@ -122,8 +125,8 @@ def removeFromComponent(compobject,subobject):
 class SelectionTaskPanel:
     """A temp taks panel to wait for a selection"""
     def __init__(self):
-        self.form = QtGui.QLabel()
-        self.form.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None, QtGui.QApplication.UnicodeUTF8))
+        self.baseform = QtGui.QLabel()
+        self.baseform.setText(QtGui.QApplication.translate("Arch", "Please select a base object", None, QtGui.QApplication.UnicodeUTF8))
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Cancel)
@@ -144,27 +147,28 @@ class ComponentTaskPanel:
 
         self.obj = None
         self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures"]
-        self.form = QtGui.QWidget()
-        self.form.setObjectName("TaskPanel")
-        self.grid = QtGui.QGridLayout(self.form)
+        self.baseform = QtGui.QWidget()
+        self.baseform.setObjectName("TaskPanel")
+        self.grid = QtGui.QGridLayout(self.baseform)
         self.grid.setObjectName("grid")
-        self.title = QtGui.QLabel(self.form)
+        self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 2)
+        self.form = self.baseform
 
         # tree
-        self.tree = QtGui.QTreeWidget(self.form)
+        self.tree = QtGui.QTreeWidget(self.baseform)
         self.grid.addWidget(self.tree, 1, 0, 1, 2)
         self.tree.setColumnCount(1)
         self.tree.header().hide()
 
         # buttons
-        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton = QtGui.QPushButton(self.baseform)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
         self.grid.addWidget(self.addButton, 3, 0, 1, 1)
         self.addButton.setEnabled(False)
 
-        self.delButton = QtGui.QPushButton(self.form)
+        self.delButton = QtGui.QPushButton(self.baseform)
         self.delButton.setObjectName("delButton")
         self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
         self.grid.addWidget(self.delButton, 3, 1, 1, 1)
@@ -233,7 +237,7 @@ class ComponentTaskPanel:
                             item.setIcon(0,self.getIcon(o))
                             Tattrib.addChild(item)
                         self.tree.expandItem(Tattrib)
-        self.retranslateUi(self.form)
+        self.retranslateUi(self.baseform)
 
     def addElement(self):
         it = self.tree.currentItem()
@@ -273,7 +277,7 @@ class ComponentTaskPanel:
                 FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
+        self.baseform.setWindowTitle(QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
         self.title.setText(QtGui.QApplication.translate("Arch", "Components of this object", None, QtGui.QApplication.UnicodeUTF8))
@@ -289,20 +293,20 @@ class ComponentTaskPanel:
 class Component:
     "The default Arch Component object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Arch","The base object this component is built upon")
-        obj.addProperty("App::PropertyLink","CloneOf","Arch","The object this component is cloning")
-        obj.addProperty("App::PropertyLinkList","Additions","Arch","Other shapes that are appended to this object")
-        obj.addProperty("App::PropertyLinkList","Subtractions","Arch","Other shapes that are subtracted from this object")
-        obj.addProperty("App::PropertyString","Description","Arch","An optional description for this component")
-        obj.addProperty("App::PropertyString","Tag","Arch","An optional tag for this component")
-        obj.addProperty("App::PropertyMap","IfcAttributes","Arch","Custom IFC properties and attributes")
-        obj.addProperty("App::PropertyLink","BaseMaterial","Material","A material for this object")
-        obj.addProperty("App::PropertyEnumeration","Role","Arch","The role of this object")
-        obj.addProperty("App::PropertyBool","MoveWithHost","Arch","Specifies if this object must move together when its host is moved")
-        obj.addProperty("App::PropertyLink","IfcProperties","Arch","Custom IFC properties and attributes")
-        obj.addProperty("App::PropertyArea","VerticalArea","Arch","The area of all vertical faces of this object")
-        obj.addProperty("App::PropertyArea","HorizontalArea","Arch","The area of the projection of this object onto the XY plane")
-        obj.addProperty("App::PropertyLength","PerimeterLength","Arch","The perimeter length of the horizontal area")
+        obj.addProperty("App::PropertyLink","Base","Arch",QT_TRANSLATE_NOOP("App::Property","The base object this component is built upon"))
+        obj.addProperty("App::PropertyLink","CloneOf","Arch",QT_TRANSLATE_NOOP("App::Property","The object this component is cloning"))
+        obj.addProperty("App::PropertyLinkList","Additions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are appended to this object"))
+        obj.addProperty("App::PropertyLinkList","Subtractions","Arch",QT_TRANSLATE_NOOP("App::Property","Other shapes that are subtracted from this object"))
+        obj.addProperty("App::PropertyString","Description","Arch",QT_TRANSLATE_NOOP("App::Property","An optional description for this component"))
+        obj.addProperty("App::PropertyString","Tag","Arch",QT_TRANSLATE_NOOP("App::Property","An optional tag for this component"))
+        obj.addProperty("App::PropertyMap","IfcAttributes","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyLink","BaseMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyEnumeration","Role","Arch",QT_TRANSLATE_NOOP("App::Property","The role of this object"))
+        obj.addProperty("App::PropertyBool","MoveWithHost","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if this object must move together when its host is moved"))
+        obj.addProperty("App::PropertyLink","IfcProperties","Arch",QT_TRANSLATE_NOOP("App::Property","Custom IFC properties and attributes"))
+        obj.addProperty("App::PropertyArea","VerticalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of all vertical faces of this object"))
+        obj.addProperty("App::PropertyArea","HorizontalArea","Arch",QT_TRANSLATE_NOOP("App::Property","The area of the projection of this object onto the XY plane"))
+        obj.addProperty("App::PropertyLength","PerimeterLength","Arch",QT_TRANSLATE_NOOP("App::Property","The perimeter length of the horizontal area"))
         obj.Proxy = self
         self.Type = "Component"
         self.Subvolume = None
@@ -337,6 +341,9 @@ class Component:
                     if hasattr(obj,"BaseMaterial"):
                         if hasattr(obj.CloneOf,"BaseMaterial"):
                             obj.BaseMaterial = obj.CloneOf.BaseMaterial
+                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
+                        if hasattr(obj,prop) and hasattr(obj.CloneOf,prop):
+                            setattr(obj,prop,getattr(obj.CloneOf,prop))
                     return True
         return False
 
@@ -457,7 +464,7 @@ class Component:
                                 else:
                                     wires.append(wire)
         elif Draft.getType(obj) in ["Wall","Structure"]:
-            if (Draft.getType(obj) == "Structure") and (l > h):
+            if (Draft.getType(obj) == "Structure") and (l > h) and (obj.Role != "Slab"):
                 if noplacement:
                     h2 = h/2 or 0.5
                     w2 = w/2 or 0.5

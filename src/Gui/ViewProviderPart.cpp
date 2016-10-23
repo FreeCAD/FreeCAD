@@ -43,14 +43,16 @@
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderPart, Gui::ViewProviderOriginGroup)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderPart, Gui::ViewProviderDocumentObject)
 
 
 /**
  * Creates the view provider for an object group.
  */
 ViewProviderPart::ViewProviderPart()
-{ }
+{ 
+    initExtension(this);
+}
 
 ViewProviderPart::~ViewProviderPart()
 { }
@@ -61,7 +63,7 @@ ViewProviderPart::~ViewProviderPart()
  * associated view providers of the objects of the object group get changed as well.
  */
 void ViewProviderPart::onChanged(const App::Property* prop) {
-    ViewProviderOriginGroup::onChanged(prop);
+    ViewProviderDocumentObject::onChanged(prop);
 }
 
 bool ViewProviderPart::doubleClicked(void)
@@ -93,16 +95,6 @@ bool ViewProviderPart::doubleClicked(void)
 
     return true;
 }
-
-bool ViewProviderPart::canDropObject(App::DocumentObject* obj) const {
-    
-    //it is not allowed to have any part or assembly object within a part, hence we exclude origin groups
-    if(obj->isDerivedFrom(App::OriginGroup::getClassTypeId()))
-        return false;
-    
-    return Gui::ViewProvider::canDropObject(obj);
-}
-
 
 /**
  * Returns the pixmap for the list item.

@@ -1498,7 +1498,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
                             # extruded composite curve
                             else:
-                                po = createCurve(ifcfile,p)
+                                pol = createCurve(ifcfile,p)
                             profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
 
         if profile and not(DraftVecUtils.isNull(extrusionv)):

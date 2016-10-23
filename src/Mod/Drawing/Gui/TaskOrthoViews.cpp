@@ -273,6 +273,9 @@ void orthoview::set_projection(gp_Ax2 cs)
 
 OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * partname)
 {
+    horiz = 0;
+    vert = 0;
+
     parent_doc = doc;
     parent_doc->openTransaction("Create view");
 
