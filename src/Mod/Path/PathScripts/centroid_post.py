@@ -78,17 +78,15 @@ def export(selection,filename,argstring):
             return
     myMachine = None
     for pathobj in selection:
-        if hasattr(pathobj,"Group"): #We have a compound or selection.
-            for p in pathobj.Group:
-                if p.Name == "Machine":
-                    myMachine = p
-    if myMachine is None: 
+        if hasattr(pathobj,"MachineName"):
+            myMachine = pathobj.MachineName
+        if hasattr(pathobj, "MachineUnits"):
+            if pathobj.MachineUnits == "Metric":
+               UNITS = "G21"
+            else:
+               UNITS = "G20"
+    if myMachine is None:
         print "No machine found in this selection"
-    else:
-        if myMachine.MachineUnits == "Metric":
-           UNITS = "G21"
-        else:
-           UNITS = "G20"
 
     gcode =''
     gcode+= HEADER
@@ -100,8 +98,7 @@ def export(selection,filename,argstring):
 
     gobjects = []
     for g in selection[0].Group:
-        if g.Name <>'Machine': #filtering out gcode home position from Machine object
-            gobjects.append(g)
+        gobjects.append(g)
 
     for obj in gobjects:
         for c in obj.Path.Commands:
@@ -114,11 +111,11 @@ def export(selection,filename,argstring):
             outstring.append(command)
             if MODAL == True:
                 if command == lastcommand:
-                    outstring.pop(0) 
+                    outstring.pop(0)
             if c.Parameters >= 1:
                 for param in params:
                     if param in c.Parameters:
-                        if param == 'F': 
+                        if param == 'F':
                             outstring.append(param + PostUtils.fmt(c.Parameters['F'], FEED_DECIMALS,UNITS))
                         elif param == 'H':
                             outstring.append(param + str(int(c.Parameters['H'])))
