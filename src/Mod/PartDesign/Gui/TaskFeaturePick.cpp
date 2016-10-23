@@ -79,6 +79,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
   : TaskBox(Gui::BitmapFactory().pixmap("edit-select-box"),
             tr("Select feature"), true, parent)
   , ui(new Ui_TaskFeaturePick)
+  , doSelection(false)
 {
 
     proxy = new QWidget(this);
@@ -90,6 +91,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
     connect(ui->radioIndependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioDependent, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
     connect(ui->radioXRef, SIGNAL(toggled(bool)), this, SLOT(onUpdate(bool)));
+    connect(ui->listWidget, SIGNAL(itemSelectionChanged()), this, SLOT(onItemSelectionChanged()));
 
     enum { axisBit=0, planeBit = 1};
 
@@ -108,6 +110,9 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
         );
         item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
         ui->listWidget->addItem(item);
+
+        App::Document* pDoc = (*objIt)->getDocument();
+        documentName = pDoc->getName();
 
         //check if we need to set any origin in temporary visibility mode
         if (*statusIt != invalidShape && (*objIt)->isDerivedFrom ( App::OriginFeature::getClassTypeId () )) {
@@ -203,7 +208,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::getFeatures()
     std::vector<App::DocumentObject*> result;
 
     for (std::vector<QString>::const_iterator s = features.begin(); s != features.end(); ++s)
-        result.push_back(App::GetApplication().getActiveDocument()->getObject(s->toLatin1().data()));
+        result.push_back(App::GetApplication().getDocument(documentName.c_str())->getObject(s->toLatin1().data()));
 
     return result;
 }
@@ -222,7 +227,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
 
         if (item->isSelected() && !item->isHidden()) {
             QString t = item->data(Qt::UserRole).toString();
-            auto obj = App::GetApplication().getActiveDocument()->getObject(t.toLatin1().data());
+            auto obj = App::GetApplication().getDocument(documentName.c_str())->getObject(t.toLatin1().data());
 
             //build the dependend copy or reference if wanted by the user
             if (*st == otherBody || *st == otherPart || *st == notInBody) {
@@ -387,16 +392,38 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
 void TaskFeaturePick::onSelectionChanged(const Gui::SelectionChanges& /*msg*/)
 {
+    if (doSelection)
+        return;
+    doSelection = true;
     ui->listWidget->clearSelection();
     for (Gui::SelectionSingleton::SelObj obj :  Gui::Selection().getSelection()) {
         for (int row = 0; row < ui->listWidget->count(); row++) {
             QListWidgetItem *item = ui->listWidget->item(row);
             QString t = item->data(Qt::UserRole).toString();
             if (t.compare(QString::fromLatin1(obj.FeatName))==0) {
-                ui->listWidget->setItemSelected(item, true);
+                item->setSelected(true);
             }
         }
     }
+    doSelection = false;
+}
+
+void TaskFeaturePick::onItemSelectionChanged()
+{
+    if (doSelection)
+        return;
+    doSelection = true;
+    ui->listWidget->blockSignals(true);
+    Gui::Selection().clearSelection();
+    for (int row = 0; row < ui->listWidget->count(); row++) {
+        QListWidgetItem *item = ui->listWidget->item(row);
+        QString t = item->data(Qt::UserRole).toString();
+        if (item->isSelected()) {
+            Gui::Selection().addSelection(documentName.c_str(), t.toLatin1());
+        }
+    }
+    ui->listWidget->blockSignals(false);
+    doSelection = false;
 }
 
 void TaskFeaturePick::showExternal(bool val)
