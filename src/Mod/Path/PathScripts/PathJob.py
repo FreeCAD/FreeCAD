@@ -28,6 +28,7 @@ from PySide import QtCore, QtGui
 import os
 import glob
 from PathScripts.PathPostProcessor import PostProcessor
+from PathScripts.PathPost import CommandPathPost as PathPost
 import Draft
 
 
@@ -47,12 +48,24 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+class OutputPolicy:
+    Default          = 'Use default'
+    Dialog           = 'Open File Dialog'
+    DialogOnConflict = 'Open File Dialog on conflict'
+    Overwrite        = 'Overwrite existing file'
+    AppendID         = 'Append Unique ID on conflict'
+    All = [Default, Dialog, DialogOnConflict, Overwrite, AppendID]
+
 class ObjectPathJob:
 
     def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
+        obj.OutputFile = PathPost.defaultOutputFile()
         obj.setEditorMode("OutputFile", 0)  # set to default mode
+        obj.addProperty("App::PropertyEnumeration", "OutputPolicy", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The policy on how to save output files and resolve name conflicts"))
+        obj.OutputPolicy = OutputPolicy.All
+        obj.OutputPolicy = OutputPolicy.Default
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
@@ -270,6 +283,8 @@ class TaskPanel:
                 self.obj.Label = str(self.form.leLabel.text())
             if hasattr(self.obj, "OutputFile"):
                 self.obj.OutputFile = str(self.form.leOutputFile.text())
+            if hasattr(self.obj, "OutputPolicy"):
+                self.obj.OutputPolicy = str(self.form.cboOutputPolicy.currentText())
 
             oldlist = self.obj.Group
             newlist = []
@@ -291,21 +306,23 @@ class TaskPanel:
 
         self.obj.Proxy.execute(self.obj)
 
+    def selectComboBoxText(self, widget, text):
+        index = widget.findText(text, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(index)
+            widget.blockSignals(False)
+
     def setFields(self):
         '''sets fields in the form to match the object'''
 
         self.form.leLabel.setText(self.obj.Label)
         self.form.leOutputFile.setText(self.obj.OutputFile)
+        self.selectComboBoxText(self.form.cboOutputPolicy, self.obj.OutputPolicy)
 
-        postindex = self.form.cboPostProcessor.findText(
-                self.obj.PostProcessor, QtCore.Qt.MatchFixedString)
-        if postindex >= 0:
-            self.form.cboPostProcessor.blockSignals(True)
-            self.form.cboPostProcessor.setCurrentIndex(postindex)
-            self.form.cboPostProcessor.blockSignals(False)
-            # make sure the proxy loads post processor script values and settings
-            self.obj.Proxy.onChanged(self.obj, "PostProcessor")
-            self.updateTooltips()
+        self.selectComboBoxText(self.form.cboPostProcessor, self.obj.PostProcessor)
+        self.obj.Proxy.onChanged(self.obj, "PostProcessor")
+        self.updateTooltips()
 
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
@@ -335,6 +352,7 @@ class TaskPanel:
         # Connect Signals and Slots
         self.form.cboPostProcessor.currentIndexChanged.connect(self.getFields)
         self.form.leOutputFile.editingFinished.connect(self.getFields)
+        self.form.cboOutputPolicy.currentIndexChanged.connect(self.getFields)
         self.form.leLabel.editingFinished.connect(self.getFields)
         self.form.btnSelectFile.clicked.connect(self.setFile)
         self.form.PathsList.indexesMoved.connect(self.getFields)
