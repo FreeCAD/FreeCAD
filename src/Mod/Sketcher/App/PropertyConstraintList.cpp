@@ -302,6 +302,8 @@ void PropertyConstraintList::Restore(Base::XMLReader &reader)
 
     // assignment
     setValues(values);
+    for (Constraint* it : values)
+        delete it;
 }
 
 Property *PropertyConstraintList::Copy(void) const
