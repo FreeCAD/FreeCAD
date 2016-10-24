@@ -67,10 +67,23 @@ public:
         return "SketcherGui::PropertyConstraintListItem";
     }
 
-    /** Sets the property
-     */
+    /*!
+      Sets a single constraint to the property at a certain
+      position. The value is cloned inernally so it's in the
+      responsibility of the caller to free the memory.
+    */
     void set1Value(const int idx, const Constraint*);
+    /*!
+      Sets a single constraint to the property.
+      The value is cloned inernally so it's in the
+      responsibility of the caller to free the memory.
+    */
     void setValue(const Constraint*);
+    /*!
+      Sets a vector of constraint to the property.
+      The values of the array are cloned inernally so it's
+      in the responsibility of the caller to free the memory.
+    */
     void setValues(const std::vector<Constraint*>&);
 
     /// index operator
