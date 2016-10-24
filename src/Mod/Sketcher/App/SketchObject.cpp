@@ -655,6 +655,8 @@ int SketchObject::delGeometry(int GeoId)
 
     this->Geometry.setValues(newVals);
     this->Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     this->Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     
@@ -2882,11 +2884,15 @@ int SketchObject::delExternal(int ExtGeoId)
         Base::Console().Error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects,originalSubElements);
+        for (Constraint* it : newConstraints)
+            delete it;
         return -1;
     }
     
     solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -2917,7 +2923,7 @@ int SketchObject::delAllExternal()
             newConstraints.push_back(copiedConstr);
         }
     }
-         
+
     ExternalGeometry.setValues(Objects,SubElements);
     try {
         rebuildExternalGeometry();
@@ -2926,11 +2932,15 @@ int SketchObject::delAllExternal()
         Base::Console().Error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects,originalSubElements);
+        for (Constraint* it : newConstraints)
+            delete it;
         return -1;
     }
     
     solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -3037,13 +3047,13 @@ void SketchObject::validateExternalLinks(void)
 {
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
-    
-    bool rebuild = false ;
+
+    bool rebuild = false;
     
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
         const std::string SubElement=SubElements[i];
-        
+
         const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
         const Part::TopoShape& refShape=refObj->Shape.getShape();
         
@@ -3055,7 +3065,7 @@ void SketchObject::validateExternalLinks(void)
             rebuild = true ;
             Objects.erase(Objects.begin()+i);
             SubElements.erase(SubElements.begin()+i);
-                        
+
             const std::vector< Constraint * > &constraints = Constraints.getValues();
             std::vector< Constraint * > newConstraints(0);
             int GeoId = GeoEnum::RefExt - i;
@@ -3076,8 +3086,10 @@ void SketchObject::validateExternalLinks(void)
                     newConstraints.push_back(copiedConstr);
                 }
             }
-            
+
             Constraints.setValues(newConstraints);
+            for (Constraint* it : newConstraints)
+                delete it;
             i--; // we deleted an item, so the next one took its place
         }  
     }
