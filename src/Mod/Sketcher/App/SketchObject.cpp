@@ -887,6 +887,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
+    std::vector<Constraint *> changed;
     for (int i=0; i < int(newVals.size()); i++) {
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)) {
@@ -894,15 +895,25 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
             newVals[i] = constNew;
-        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
-                   !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
+            changed.push_back(constNew);
+        }
+        else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
+                 !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
             newVals[i] = constNew;
+            changed.push_back(constNew);
         }
     }
-    this->Constraints.setValues(newVals);
+
+    // assign the new values only if something has changed
+    if (!changed.empty()) {
+        this->Constraints.setValues(newVals);
+        // free memory
+        for (Constraint* it : changed)
+            delete it;
+    }
     return 0;
 }
 
