@@ -38,12 +38,15 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "ViewProviderProjGroup.h"
+#include "ViewProviderProjGroupItem.h"
+#include "ViewProviderPage.h"
 #include "TaskProjGroup.h"
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
@@ -93,6 +96,12 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     // Slot for Projection Type (layout)
     connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
+
+    m_page = multiView->findParentPage();
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
+    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    m_mdi = dvp->getMDIViewPage();
 }
 
 TaskProjGroup::~TaskProjGroup()
@@ -106,8 +115,12 @@ void TaskProjGroup::viewToggled(bool toggle)
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
+    App::DocumentObject* newObj;
+    TechDraw::DrawView* newView;
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
-        multiView->addProjection( viewNameCStr );
+        newObj = multiView->addProjection( viewNameCStr );
+        newView = static_cast<TechDraw::DrawView*>(newObj);
+        m_mdi->redraw1View(newView);
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         multiView->removeProjection( viewNameCStr );
     }

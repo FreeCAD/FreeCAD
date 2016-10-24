@@ -418,7 +418,25 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
     }
 }
 
+void MDIViewPage::redrawAllViews()
+{
+    const std::vector<QGIView *> &upviews = m_view->getViews();
+    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
+            (*it)->updateView(true);
+    }
+}
 
+void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
+{
+    std::string dvName = dv->getNameInDocument();
+    const std::vector<QGIView *> &upviews = m_view->getViews();
+    for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
+        std::string qgivName = (*it)->getViewObject()->getNameInDocument();
+        if(dvName == qgivName) {
+            (*it)->updateView(true);
+        }
+    }
+}
 void MDIViewPage::findMissingViews(const std::vector<App::DocumentObject*> &list, std::vector<App::DocumentObject*> &missing)
 {
     for(std::vector<App::DocumentObject*>::const_iterator it = list.begin(); it != list.end(); ++it) {
