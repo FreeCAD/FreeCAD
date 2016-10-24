@@ -33,6 +33,11 @@
         <UserDocu>getItemByLabel(string projectionType) - return specified Projection Item</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setViewOrientation">
+      <Documentation>
+        <UserDocu>setViewOrientation(DrawProjGroupItem item, string projectionType) - sets item's view Direction according to projectionType</UserDocu>
+      </Documentation>
+    </Methode>
     <CustomAttributes />
   </PythonExport>
 </GenerateModel>

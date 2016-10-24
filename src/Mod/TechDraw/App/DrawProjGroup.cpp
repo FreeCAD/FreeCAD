@@ -292,6 +292,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
+        view->recompute();
     }
 
     return view;

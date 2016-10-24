@@ -114,25 +114,11 @@ public:
     /// Allowed projection types - either Document, First Angle or Third Angle
     static const char* ProjectionTypeEnums[];
 
-protected:
-    void onChanged(const App::Property* prop);
-
-    //! Moves anchor view to keep our bounding box centre on the origin
-    void moveToCentre();
-
-    /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
-    /*!
-     * \TODO See note regarding App::PropertyEnumeration on my wiki page http://freecadweb.org/wiki/index.php?title=User:Ian.rees
-     * \return true iff 'in' is a valid name for an orthographic/isometric view
-     */
-    bool checkViewProjType(const char *in);
-
-    /// Sets Direction and XAxisDirection in v
+    /// Sets Direction in v
     /*!
      * Applies viewOrientationMatrix to appropriate unit vectors depending on projType
      */
     void setViewOrientation(DrawProjGroupItem *v, const char *projType) const;
-
     /// Populates an array of DrawProjGroupItem*s arranged for drawing
     /*!
      * Setup array of pointers to the views that we're displaying,
@@ -151,6 +137,20 @@ protected:
      *               FTRight  T  FTL
      * </pre>
      */
+
+protected:
+    void onChanged(const App::Property* prop);
+
+    //! Moves anchor view to keep our bounding box centre on the origin
+    void moveToCentre();
+
+    /// Annoying helper - keep in sync with DrawProjGroupItem::TypeEnums
+    /*!
+     * \TODO See note regarding App::PropertyEnumeration on my wiki page http://freecadweb.org/wiki/index.php?title=User:Ian.rees
+     * \return true iff 'in' is a valid name for an orthographic/isometric view
+     */
+    bool checkViewProjType(const char *in);
+
     void arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const;
 
     /// Populates array of 10 BoundBox3d's given DrawProjGroupItem *s
