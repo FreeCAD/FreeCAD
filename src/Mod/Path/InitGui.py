@@ -31,6 +31,10 @@ class PathWorkbench (Workbench):
         self.__class__.ToolTip = "Path workbench"
 
     def Initialize(self):
+        # Add preferences pages - before loading PathGui to properly order pages of Path group
+        from PathScripts import PathPreferencesPathJob
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.Page, "Path")
+
         # load the builtin modules
         import Path
         import PathGui
@@ -70,7 +74,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathContour
         from PathScripts import PathProfileEdges
         from PathScripts import DogboneDressup
-        from PathScripts import PathPreferencesPathJob
         import PathCommands
 
         # build commands list
@@ -114,9 +117,6 @@ class PathWorkbench (Workbench):
         # self.appendMenu([translate("Path", "Path"), translate(
         #     "Path", "Remote Operations")], remotecmdlist)
         self.appendMenu([translate("Path", "&Path")], extracmdlist)
-
-        # Add preferences pages
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.Page, "Path")
 
         Log('Loading Path workbench... done\n')
 
