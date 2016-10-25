@@ -47,29 +47,31 @@ except AttributeError:
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
 
-debugDogbone = True
+debugDogbone = False
 
 def debugPrint(msg):
     if debugDogbone:
         print(msg)
 
-def debugMarker(vector, label, color = None):
+def debugMarker(vector, label, color = None, radius = 0.5):
     if debugDogbone:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
-        obj.Radius = 0.5
+        obj.Radius = radius
         obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
         if color:
             obj.ViewObject.ShapeColor = color
 
-def debugCircle(vector, r, label):
+def debugCircle(vector, r, label, color = None):
     if debugDogbone:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
         obj.Height = 1
         obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
-        obj.ViewObject.Transparency = 95
+        obj.ViewObject.Transparency = 90
+        if color:
+            obj.ViewObject.ShapeColor = color
 
 def addAngle(a1, a2):
     a = a1 + a2
@@ -373,16 +375,44 @@ class ObjectDressup:
             debugPrint(" straight edge %s" % d)
             return [ outChord.g1Command() ]
 
-        pivots = []
+        pivot = None
+        pivotDistance = 0
+
         for e in bone.Edges:
             for pt in DraftGeomUtils.findIntersection(edge, e, True):
-                if pt != corner and not pt in pivots:
-                    pivots.append(pt)
+                if pt != corner:
+                    distance = (pt - inChord.End).Length
+                    if not pivot or pivotDistance > distance:
+                        pivot = pt
+                        pivotDistance = distance
                 else:
                     debugPrint(" corner intersect %s (%.2f, %.2f) (%.2f, %.2f)" % (d, corner.x, corner.y, pt.x, pt.y))
 
-        for p in pivots:
-            debugMarker(p, "pivot.%d-%s" % (self.boneId, d), color)
+        if pivot:
+            debugCircle(pivot, self.toolRadius, "pivot.%d-%s" % (self.boneId, d), color)
+            inTangent = DraftGeomUtils.findDistance(pivot, inChord.asEdge(), True)
+            if not inTangent:
+                inTangent = inChord.Start - pivot
+            outTangent = DraftGeomUtils.findDistance(pivot, outChord.asEdge(), True)
+            if not outTangent:
+                outTangent = outChord.End - pivot
+            t1 = pivot + inTangent
+            t2 = pivot + outTangent
+
+            commands = []
+            if t1 != inChord.Start:
+                commands.append(Chord(inChord.Start, t1).g1Command())
+            if obj.Side == Side.Left:
+                commands.append(Chord(t1, t2).g3Command(pivot))
+            else:
+                commands.append(Chord(t1, t2).g2Command(pivot))
+            if t2 != outChord.End:
+                commands.append(Chord(t2, outChord.End).g1Command())
+
+            debugMarker(t1, "pivot.%d-%s.in" % (self.boneId, d), color, 0.2)
+            debugMarker(t2, "pivot.%d-%s.out" % (self.boneId, d), color, 0.2)
+
+            return commands
 
         return [ inChord.g1Command(), outChord.g1Command() ]
 
