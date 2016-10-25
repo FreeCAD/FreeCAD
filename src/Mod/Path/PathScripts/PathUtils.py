@@ -609,7 +609,9 @@ def addToJob(obj, jobname = None):
         elif len(jobs) == 1:
             job = jobs[0]
         else:
-            form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+            #form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/DlgJobChooser.ui")
+            form = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobChooser.ui")
+            
             mylist = [i.Name for i in jobs]
             form.cboProject.addItems(mylist)
             r = form.exec_()
