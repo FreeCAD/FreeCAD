@@ -422,8 +422,6 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     // set the anchor
     std::string anchor = "Front";
     doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
-    doCommand(Doc,"App.activeDocument().%s.Anchor = App.activeDocument().%s.getItemByLabel('%s')",
-              multiViewName.c_str(),multiViewName.c_str(),anchor.c_str());
     // add the multiView to the page
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
 

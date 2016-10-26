@@ -65,7 +65,7 @@ public:
     Base::BoundBox3d getBoundingBox() const;
     double calculateAutomaticScale() const;
     virtual QRectF getRect(void) const;
-
+    virtual bool checkFit(TechDraw::DrawPage* p) const override;
     /// Check if container has a view of a specific type
     bool hasProjection(const char *viewProjType) const;
 
@@ -172,6 +172,8 @@ protected:
 
     /// Returns pointer to our page, or NULL if it couldn't be located
     TechDraw::DrawPage * getPage(void) const;
+    void updateChildren(double scale);
+
 };
 
 } //namespace TechDraw
