@@ -47,6 +47,8 @@
 #include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderDocumentObject.h>
 
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
+
 
 #include "TaskProjGroup.h"
 #include "ViewProviderProjGroup.h"
@@ -106,14 +108,23 @@ void ViewProviderProjGroup::updateData(const App::Property* prop)
 
  }
 
+void ViewProviderProjGroup::onChanged(const App::Property *prop)
+{
+    Base::Console().Message("TRACE - VPPG::onChanged(%s) \n",prop->getName());
+    if (prop == &(getViewObject()->Scale)) {
+            if (getViewObject()->ScaleType.isValue("Automatic")) {
+                    getMDIViewPage()->redraw1View(getViewObject());
+            }
+    } else if (prop == &(getViewObject()->ScaleType)) {
+        getMDIViewPage()->redraw1View(getViewObject());
+    }
+}
 
 void ViewProviderProjGroup::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     Q_UNUSED(menu);
     Q_UNUSED(receiver);
     Q_UNUSED(member);
-    //QAction* act;
-    //act = menu->addAction(QObject::tr("Show drawing"), receiver, member);
 }
 
 bool ViewProviderProjGroup::setEdit(int ModNum)

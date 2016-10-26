@@ -162,7 +162,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
 
-    //Base::Console().Message("TRACE - DVP::execute - %s \n",Label.getValue());
+    //Base::Console().Message("TRACE - DVP::execute - %s/%s ScaleType: %s\n",getNameInDocument(),Label.getValue(),ScaleType.getValueAsString());
 
     (void) DrawView::execute();           //make sure Scale is up to date
 
@@ -226,7 +226,8 @@ short DrawViewPart::mustExecute() const
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
                     Source.isTouched()  ||
-                    Scale.isTouched() );
+                    Scale.isTouched() ||
+                    ScaleType.isTouched());
     }
 
     if (result) {

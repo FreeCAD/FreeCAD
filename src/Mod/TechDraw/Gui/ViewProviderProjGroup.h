@@ -59,6 +59,8 @@ public:
     TechDraw::DrawProjGroup* getObject() const;
     virtual TechDraw::DrawProjGroup* getViewObject() const;
     void unsetEdit(int ModNum);
+    virtual void onChanged(const App::Property *prop);
+
 
 protected:
     bool setEdit(int ModNum);

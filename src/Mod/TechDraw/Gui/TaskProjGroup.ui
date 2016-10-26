@@ -133,6 +133,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleNum">
+            <property name="minimum">
+             <number>1</number>
+            </property>
             <property name="value">
              <number>1</number>
             </property>
@@ -147,6 +150,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleDen">
+            <property name="minimum">
+             <number>1</number>
+            </property>
             <property name="value">
              <number>1</number>
             </property>
