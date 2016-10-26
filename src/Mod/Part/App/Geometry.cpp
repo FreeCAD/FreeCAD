@@ -50,6 +50,7 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
@@ -70,8 +71,11 @@
 # include <gp_Torus.hxx>
 # include <Standard_Real.hxx>
 # include <Standard_Version.hxx>
+# include <Standard_ConstructionError.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
+# include <TColgp_HArray1OfPnt.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <gp.hxx>
@@ -103,6 +107,7 @@
 #include "ArcOfParabolaPy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
+#include "HermiteCurvePy.h"
 #include "HyperbolaPy.h"
 #include "ArcOfHyperbolaPy.h"
 #include "OffsetCurvePy.h"
@@ -463,6 +468,148 @@ void         GeomBezierCurve::Restore    (Base::XMLReader &/*reader*/)    {asser
 PyObject *GeomBezierCurve::getPyObject(void)
 {
     return new BezierCurvePy((GeomBezierCurve*)this->clone());
+}
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::GeomHermiteCurve,Part::GeomCurve);
+
+GeomHermiteCurve::GeomHermiteCurve()
+{
+    std::vector<gp_Pnt> p;
+    p.push_back(gp_Pnt(0.0,0.0,0.0));
+    p.push_back(gp_Pnt(1.0,0.0,0.0));
+
+    std::vector<gp_Vec> t;
+    t.push_back(gp_Vec(1,0,0));
+    t.push_back(gp_Vec(1,0,0));
+
+    compute(p, t);
+}
+
+GeomHermiteCurve::GeomHermiteCurve(const std::vector<gp_Pnt>& p,
+                                   const std::vector<gp_Vec>& t)
+{
+    compute(p, t);
+}
+
+GeomHermiteCurve::~GeomHermiteCurve()
+{
+}
+
+void GeomHermiteCurve::interpolate(const std::vector<gp_Pnt>& p,
+                                   const std::vector<gp_Vec>& t)
+{
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+    if (p.size() != t.size())
+        Standard_ConstructionError::Raise();
+
+    compute(p, t);
+}
+
+void GeomHermiteCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p,
+                                                 const std::vector<double>& c,
+                                                 std::vector<gp_Vec>& t) const
+{
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+    if (p.size() != c.size())
+        Standard_ConstructionError::Raise();
+
+    t.resize(p.size());
+    if (p.size() == 2) {
+        t[0] = gp_Vec(p[0], p[1]);
+        t[1] = gp_Vec(p[0], p[1]);
+    }
+    else {
+        std::size_t e = p.size() - 1;
+
+        for (std::size_t i = 1; i < e; i++) {
+            gp_Vec v = gp_Vec(p[i-1], p[i+1]);
+            double f = 0.5 * (1-c[i]);
+            v.Scale(f);
+            t[i] = v;
+        }
+
+        t[0] = t[1];
+        t[t.size()-1] = t[t.size()-2];
+    }
+}
+
+void GeomHermiteCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p, double c,
+                                                 std::vector<gp_Vec>& t) const
+{
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+
+    t.resize(p.size());
+    if (p.size() == 2) {
+        t[0] = gp_Vec(p[0], p[1]);
+        t[1] = gp_Vec(p[0], p[1]);
+    }
+    else {
+        std::size_t e = p.size() - 1;
+        double f = 0.5 * (1-c);
+
+        for (std::size_t i = 1; i < e; i++) {
+            gp_Vec v = gp_Vec(p[i-1], p[i+1]);
+            v.Scale(f);
+            t[i] = v;
+        }
+
+        t[0] = t[1];
+        t[t.size()-1] = t[t.size()-2];
+    }
+}
+
+const Handle_Geom_Geometry& GeomHermiteCurve::handle() const
+{
+    return myCurve;
+}
+
+void GeomHermiteCurve::compute(const std::vector<gp_Pnt>& p,
+                               const std::vector<gp_Vec>& t)
+{
+    double tol3d = Precision::Approximation();
+    Handle_TColgp_HArray1OfPnt pts = new TColgp_HArray1OfPnt(1, p.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        pts->SetValue(i+1, p[i]);
+    }
+
+    TColgp_Array1OfVec tgs(1, t.size());
+    Handle_TColStd_HArray1OfBoolean fgs = new TColStd_HArray1OfBoolean(1, t.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        tgs.SetValue(i+1, t[i]);
+        fgs->SetValue(i+1, Standard_True);
+    }
+
+    GeomAPI_Interpolate interpolate(pts, Standard_False, tol3d);
+    interpolate.Load(tgs, fgs);
+    interpolate.Perform();
+    this->myCurve = interpolate.Curve();
+
+    this->poles = p;
+    this->tangents = t;
+}
+
+Geometry *GeomHermiteCurve::clone(void) const
+{
+    GeomHermiteCurve *newCurve = new GeomHermiteCurve(poles, tangents);
+    newCurve->Construction = this->Construction;
+    return newCurve;
+}
+
+// Persistence implementer
+unsigned int GeomHermiteCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
+void         GeomHermiteCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
+void         GeomHermiteCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+
+PyObject *GeomHermiteCurve::getPyObject(void)
+{
+    return new HermiteCurvePy(static_cast<GeomHermiteCurve*>(this->clone()));
 }
 
 // -------------------------------------------------

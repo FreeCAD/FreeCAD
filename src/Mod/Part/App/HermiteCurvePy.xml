@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+	<PythonExport
+		Father="GeometryCurvePy"
+		Name="HermiteCurvePy"
+		Twin="GeomHermiteCurve"
+		TwinPointer="GeomHermiteCurve"
+		Include="Mod/Part/App/Geometry.h"
+		Namespace="Part"
+		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+		FatherNamespace="Part"
+		Constructor="true">
+		<Documentation>
+			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+			<UserDocu>
+				Describes a Hermite curve
+			</UserDocu>
+		</Documentation>
+        <Methode Name="interpolate" Keyword="true">
+			<Documentation>
+				<UserDocu>Set the poles and tangents to compute the Hermite curve.</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="getCardinalSplineTangents" Keyword="true">
+			<Documentation>
+				<UserDocu>Compute the tangents for a Cardinal spline</UserDocu>
+			</Documentation>
+		</Methode>
+	</PythonExport>
+</GenerateModel>

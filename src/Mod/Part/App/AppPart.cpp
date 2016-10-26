@@ -75,6 +75,7 @@
 #include "ArcOfHyperbolaPy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
+#include "HermiteCurvePy.h"
 #include "HyperbolaPy.h"
 #include "OffsetCurvePy.h"
 #include "ParabolaPy.h"
@@ -200,6 +201,7 @@ PyMODINIT_FUNC initPart()
     Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");    
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
+    Base::Interpreter().addType(&Part::HermiteCurvePy       ::Type,partModule,"HermiteCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
 
     Base::Interpreter().addType(&Part::PlanePy              ::Type,partModule,"Plane");
@@ -320,6 +322,7 @@ PyMODINIT_FUNC initPart()
     Part::GeomCurve               ::init();
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
+    Part::GeomHermiteCurve        ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
     Part::GeomArcOfEllipse        ::init();

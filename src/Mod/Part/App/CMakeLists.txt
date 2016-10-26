@@ -56,6 +56,7 @@ generate_from_xml(LinePy)
 generate_from_xml(PointPy)
 generate_from_xml(BezierCurvePy)
 generate_from_xml(BSplineCurvePy)
+generate_from_xml(HermiteCurvePy)
 generate_from_xml(PlanePy)
 generate_from_xml(ConePy)
 generate_from_xml(CylinderPy)
@@ -194,6 +195,8 @@ SET(Python_SRCS
     BezierCurvePyImp.cpp
     BSplineCurvePy.xml
     BSplineCurvePyImp.cpp
+    HermiteCurvePy.xml
+    HermiteCurvePyImp.cpp
     PlanePy.xml
     PlanePyImp.cpp
     ConePy.xml
