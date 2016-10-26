@@ -5640,28 +5640,45 @@ class _Facebinder(_DraftObject):
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Facebinder")
         obj.addProperty("App::PropertyLinkSubList","Faces","Draft",QT_TRANSLATE_NOOP("App::Property","Linked faces"))
+        obj.addProperty("App::PropertyBool","RemoveSplitter","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed"))
+        obj.addProperty("App::PropertyDistance","Extrusion","Draft",QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces"))
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         if not obj.Faces:
             return
         faces = []
-        for f in obj.Faces:
-            if "Face" in f[1]:
-                try:
-                    fnum = int(f[1][4:])-1
-                    faces.append(f[0].Shape.Faces[fnum])
-                except(IndexError,Part.OCCError):
-                    print("Draft: wrong face index")
-                    return
+        for sel in obj.Faces:
+            for f in sel[1]:
+                if "Face" in f:
+                    try:
+                        fnum = int(f[4:])-1
+                        faces.append(sel[0].Shape.Faces[fnum])
+                    except(IndexError,Part.OCCError):
+                        print("Draft: wrong face index")
+                        return
         if not faces:
             return
-        import Part
         try:
             if len(faces) > 1:
-                sh = faces.pop()
-                sh = sh.multiFuse(faces)
-                sh = sh.removeSplitter()
+                sh = None
+                if hasattr(obj,"Extrusion"):
+                    if obj.Extrusion.Value:
+                        for f in faces:
+                            f = f.extrude(f.normalAt(0,0).multiply(obj.Extrusion.Value))
+                            if sh:
+                                sh = sh.fuse(f)
+                            else:
+                                sh = f
+                if not sh:
+                    sh = faces.pop()
+                    sh = sh.multiFuse(faces)
+                if hasattr(obj,"RemoveSplitter"):
+                    if obj.RemoveSplitter:
+                        sh = sh.removeSplitter()
+                else:
+                    sh = sh.removeSplitter()
             else:
                 sh = faces[0]
                 sh.transformShape(sh.Matrix, True)
