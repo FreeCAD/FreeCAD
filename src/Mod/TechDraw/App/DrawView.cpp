@@ -40,6 +40,8 @@
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
@@ -83,7 +85,6 @@ DrawView::~DrawView()
 
 App::DocumentObjectExecReturn *DrawView::execute(void)
 {
-    //Base::Console().Message("TRACE - DV::execute - %s\n",Label.getValue());
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
         if (ScaleType.isValue("Document")) {
@@ -92,12 +93,19 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
             }
         } else if (ScaleType.isValue("Automatic")) {
             //check fit. if too big, rescale
-            if (!checkFit(page)) {
-                double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                    Scale.setValue(newScale);
+            //if (dpg) { leave alone } else {
+            if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
+                //do nothing
+            } else {
+                if (!checkFit(page)) {
+                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                    if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                        Scale.setValue(newScale);
+                    }
                 }
             }
+        } else if (ScaleType.isValue("Custom")) {
+            //Base::Console().Message("TRACE - DV::execute - custom %s Scale: %.3f\n",getNameInDocument(),Scale.getValue());
         }
     }
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
