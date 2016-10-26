@@ -35,15 +35,15 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="General">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>378</width>
-        <height>409</height>
+        <width>363</width>
+        <height>443</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -146,7 +146,7 @@
         <x>0</x>
         <y>0</y>
         <width>378</width>
-        <height>409</height>
+        <height>391</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -215,8 +215,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>378</width>
-        <height>409</height>
+        <width>424</width>
+        <height>376</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -283,7 +283,7 @@
             </property>
             <item>
              <property name="text">
-              <string>Use default</string>
+              <string></string>
              </property>
             </item>
             <item>

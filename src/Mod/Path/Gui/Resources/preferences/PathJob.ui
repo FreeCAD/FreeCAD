@@ -62,7 +62,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="browseFileSystem">
+          <widget class="QPushButton" name="pbBrowseFileSystem">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
              <horstretch>0</horstretch>
