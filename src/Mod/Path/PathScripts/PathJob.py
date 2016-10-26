@@ -25,11 +25,11 @@
 import FreeCAD
 import Path
 from PySide import QtCore, QtGui
+from PathScripts.PathPostProcessor import PostProcessor
+from PathScripts.PathPreferences import PathPreferences
+import Draft
 import os
 import glob
-from PathScripts.PathPostProcessor import PostProcessor
-from PathScripts.PathPost import CommandPathPost as PathPost
-import Draft
 
 
 FreeCADGui = None
@@ -49,7 +49,7 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 class OutputPolicy:
-    Default          = 'Use default'
+    Default          = ''
     Dialog           = 'Open File Dialog'
     DialogOnConflict = 'Open File Dialog on conflict'
     Overwrite        = 'Overwrite existing file'
@@ -61,7 +61,7 @@ class ObjectPathJob:
     def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
-        obj.OutputFile = PathPost.defaultOutputFile()
+        obj.OutputFile = ''
         obj.setEditorMode("OutputFile", 0)  # set to default mode
         obj.addProperty("App::PropertyEnumeration", "OutputPolicy", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The policy on how to save output files and resolve name conflicts"))
         obj.OutputPolicy = OutputPolicy.All
@@ -69,10 +69,10 @@ class ObjectPathJob:
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
-        obj.PostProcessor = PostProcessor.allEnabled()
-        obj.PostProcessor = 'dumper'
+        obj.PostProcessor = PathPreferences.allEnabledPostProcessors([''])
+        obj.PostProcessor = ''
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
-        obj.PostProcessorArgs = ""
+        obj.PostProcessorArgs = ''
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
         obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
@@ -92,11 +92,6 @@ class ObjectPathJob:
 
         obj.Proxy = self
 
-        defaultPostProcessor = PostProcessor.default()
-        if defaultPostProcessor:
-            obj.PostProcessor = defaultPostProcessor
-        obj.PostProcessorArgs = PostProcessor.defaultArgs()
-
         if FreeCAD.GuiUp:
             ViewProviderJob(obj.ViewObject)
 
@@ -111,7 +106,7 @@ class ObjectPathJob:
         mode = 2
         obj.setEditorMode('Placement', mode)
 
-        if prop == "PostProcessor":
+        if prop == "PostProcessor" and obj.PostProcessor:
             processor = PostProcessor.load(obj.PostProcessor)
             if processor.units:
                 obj.MachineUnits = processor.units
@@ -236,7 +231,7 @@ class TaskPanel:
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
-        for post in PostProcessor.allEnabled():
+        for post in PathPreferences.allEnabledPostProcessors(['']):
             self.form.cboPostProcessor.addItem(post)
         self.updating = False
 
@@ -341,7 +336,7 @@ class TaskPanel:
 
     def setFile(self):
         filename = QtGui.QFileDialog.getSaveFileName(self.form, translate("PathJob", "Select Output File", None), None, translate("Path Job", "All Files (*.*)", None))
-        if filename:
+        if filename and filename[0]:
             self.obj.OutputFile = str(filename[0])
             self.setFields()
 
