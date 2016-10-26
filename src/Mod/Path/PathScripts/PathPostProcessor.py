@@ -23,60 +23,13 @@
 # ***************************************************************************
 
 import FreeCAD
-import os
-import glob
-
+from PathScripts.PathPreferences import PathPreferences
 
 class PostProcessor:
 
-    Default     = "PostProcessorDefault"
-    DefaultArgs = "PostProcessorDefaultArgs"
-    Blacklist   = "PostProcessorBlacklist"
-
     @classmethod
-    def all(cls):
-        path = FreeCAD.getHomePath() + ("Mod/Path/PathScripts/")
-        posts = glob.glob(path + '/*_post.py')
-        allposts = [ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts]
-
-        grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-        path = grp.GetString("MacroPath", FreeCAD.getUserAppDataDir())
-        posts = glob.glob(path + '/*_post.py')
-
-        allposts.extend([ str(os.path.split(os.path.splitext(p)[0])[1][:-5]) for p in posts])
-        allposts.sort()
-        return allposts
-
-    @classmethod
-    def allEnabled(cls):
-        blacklist = cls.blacklist()
-        return [processor for processor in cls.all() if not processor in blacklist]
-
-
-    @classmethod
-    def default(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.Default, "")
-
-    @classmethod
-    def defaultArgs(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.DefaultArgs, "")
-
-    @classmethod
-    def blacklist(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        blacklist = preferences.GetString(cls.Blacklist, "")
-        if not blacklist:
-            return []
-        return eval(blacklist)
-
-    @classmethod
-    def saveDefaults(cls, processor, args, blacklist):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        preferences.SetString(cls.Default, processor)
-        preferences.SetString(cls.DefaultArgs, args)
-        preferences.SetString(cls.Blacklist, "%s" % (blacklist))
+    def exists(cls, processor):
+        return processor in PathPreferences.allAvailablePostProcessors()
 
     @classmethod
     def load(cls, processor):

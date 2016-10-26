@@ -25,8 +25,8 @@
 import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
+from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
-from PathScripts.PathPost import CommandPathPost as PathPost
 
 
 class Page:
@@ -45,11 +45,11 @@ class Page:
             item = self.form.postProcessorList.item(i)
             if item.checkState() == QtCore.Qt.CheckState.Unchecked:
                 blacklist.append(item.text())
-        PostProcessor.saveDefaults(processor, args, blacklist)
+        PathPreferences.savePostProcessorDefaults(processor, args, blacklist)
 
         path = str(self.form.leOutputFile.text())
         policy = str(self.form.cboOutputPolicy.currentText())
-        PathPost.saveDefaults(path, policy)
+        PathPreferences.saveOutputFileDefaults(path, policy)
 
     def selectComboEntry(self, widget, text):
         index = widget.findText(text, QtCore.Qt.MatchFixedString)
@@ -60,8 +60,8 @@ class Page:
 
     def loadSettings(self):
         self.form.defaultPostProcessor.addItem("")
-        blacklist = PostProcessor.blacklist()
-        for processor in PostProcessor.all():
+        blacklist = PathPreferences.postProcessorBlacklist()
+        for processor in PathPreferences.allAvailablePostProcessors():
             self.form.defaultPostProcessor.addItem(processor)
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
@@ -70,15 +70,15 @@ class Page:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
             item.setFlags( QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             self.form.postProcessorList.addItem(item)
-        self.selectComboEntry(self.form.defaultPostProcessor, PostProcessor.default())
+        self.selectComboEntry(self.form.defaultPostProcessor, PathPreferences.defaultPostProcessor())
 
-        self.form.defaultPostProcessorArgs.setText(PostProcessor.defaultArgs())
-        self.form.leOutputFile.setText(PathPost.defaultOutputFile())
-        self.selectComboEntry(self.form.cboOutputPolicy, PathPost.defaultOutputPolicy())
+        self.form.defaultPostProcessorArgs.setText(PathPreferences.defaultPostProcessorArgs())
+        self.form.leOutputFile.setText(PathPreferences.defaultOutputFile())
+        self.selectComboEntry(self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy())
 
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
         self.form.defaultPostProcessor.currentIndexChanged.connect(self.updateDefaultPostProcessorToolTip)
-        self.form.browseFileSystem.clicked.connect(self.browseFileSystem)
+        self.form.pbBrowseFileSystem.clicked.connect(self.browseFileSystem)
 
     def getPostProcessor(self, name):
         if not name in self.processor.keys():
@@ -111,6 +111,6 @@ class Page:
             self.form.defaultPostProcessorArgs.setToolTip(self.postProcessorArgsDefaultTooltip)
 
     def browseFileSystem(self):
-        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.qApp.activeWindow(), "Path - Output File/Directory", self.form.defaultOutputPath.text())
+        foo = QtGui.QFileDialog.getExistingDirectory(QtGui.qApp.activeWindow(), "Path - Output File/Directory", self.form.leOutputFile.text())
         if foo:
-            self.form.defaultOutputPath.setText(foo)
+            self.form.leOutputFile.setText(foo)

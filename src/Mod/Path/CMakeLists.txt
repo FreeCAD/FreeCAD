@@ -69,6 +69,7 @@ SET(PathScripts_SRCS
     PathScripts/PathToolLibraryManager.py
     PathScripts/DogboneDressup.py
     PathScripts/PathPreferencesPathJob.py
+    PathScripts/PathPreferences.py
 )
 
 SET(PathScripts_NC_SRCS

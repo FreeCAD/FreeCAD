@@ -24,10 +24,12 @@
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
 import FreeCAD
 import FreeCADGui
+from PySide import QtCore, QtGui
+from PathScripts import PathUtils
+from PathScripts.PathPreferences import PathPreferences
 from PathScripts.PathPostProcessor import PostProcessor
 import os
 import sys
-from PySide import QtCore, QtGui
 
 # Qt tanslation handling
 try:
@@ -39,30 +41,44 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+class DlgSelectPostProcessor:
+
+    def __init__(self, parent=None):
+        self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgSelectPostProcessor.ui")
+        for post in PathPreferences.allEnabledPostProcessors():
+            item = QtGui.QListWidgetItem(post)
+            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled)
+            self.dialog.lwPostProcessor.addItem(item)
+        self.tooltips = {}
+        self.dialog.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(False)
+        self.dialog.lwPostProcessor.itemDoubleClicked.connect(self.dialog.accept)
+        self.dialog.lwPostProcessor.itemSelectionChanged.connect(self.enableOkButton)
+        self.dialog.lwPostProcessor.setMouseTracking(True)
+        self.dialog.lwPostProcessor.itemEntered.connect(self.updateTooltip)
+
+    def enableOkButton(self):
+        self.dialog.buttonBox.button(QtGui.QDialogButtonBox.Ok).setEnabled(True)
+
+    def updateTooltip(self, item):
+        if item.text() in self.tooltips.keys():
+            tooltip = self.tooltips[item.text()]
+        else:
+            processor = PostProcessor.load(item.text())
+            self.tooltips[item.text()] = processor.tooltip
+            tooltip = processor.tooltip
+        self.dialog.lwPostProcessor.setToolTip(tooltip)
+
+    def exec_(self):
+        if self.dialog.exec_() == 1:
+            posts = self.dialog.lwPostProcessor.selectedItems()
+            return posts[0].text()
+        return None
 
 class CommandPathPost:
 
-    DefaultOutputFile = "DefaultOutputFile"
-    DefaultOutputPolicy = "DefaultOutputPolicy"
-
-    @classmethod
-    def saveDefaults(cls, path, policy):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        preferences.SetString(cls.DefaultOutputFile, path)
-        preferences.SetString(cls.DefaultOutputPolicy, policy)
-
-    @classmethod
-    def defaultOutputFile(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.DefaultOutputFile, "")
-
-    @classmethod
-    def defaultOutputPolicy(cls):
-        preferences = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
-        return preferences.GetString(cls.DefaultOutputPolicy, "")
-
     def resolveFileName(self, job):
-        path = "tmp.tap"
+        print("resolveFileName(%s)" % job.Label)
+        path = PathPreferences.defaultOutputFile()
         if job.OutputFile:
             path = job.OutputFile
         filename = path
@@ -89,8 +105,8 @@ class CommandPathPost:
             filename = filename.replace('%M', M)
 
         policy = job.OutputPolicy
-        if not policy or policy == 'Use default':
-            policy = self.defaultOutputPolicy()
+        if not policy or policy == '':
+            policy = PathPreferences.defaultOutputPolicy()
 
         openDialog = policy == 'Open File Dialog'
         if os.path.isdir(filename) or not os.path.isdir(os.path.dirname(filename)):
@@ -118,8 +134,19 @@ class CommandPathPost:
             else:
                 filename = None
 
-        #print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
+        print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
         return filename
+
+    def resolvePostProcessor(self, job):
+        if hasattr(job, "PostProcessor"):
+            post = PathPreferences.defaultPostProcessor()
+            if job.PostProcessor:
+                post = job.PostProcessor
+            if post and PostProcessor.exists(post):
+                return post
+        dlg = DlgSelectPostProcessor()
+        return dlg.exec_()
+
 
     def GetResources(self):
         return {'Pixmap': 'Path-Post',
@@ -129,8 +156,9 @@ class CommandPathPost:
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
-            for o in FreeCAD.ActiveDocument.Objects:
-                if o.Name[:3] == "Job":
+            if FreeCADGui.Selection.getCompleteSelection():
+                for o in FreeCAD.ActiveDocument.Objects:
+                    if o.Name[:3] == "Job":
                         return True
         return False
 
@@ -139,41 +167,45 @@ class CommandPathPost:
             translate("Path_Post", "Post Process the Selected path(s)"))
         FreeCADGui.addModule("PathScripts.PathPost")
         # select the Path Job that you want to post output from
-        obj = FreeCADGui.Selection.getCompleteSelection()
+        selected = FreeCADGui.Selection.getCompleteSelection()
+        print "in activated %s" %(selected)
 
-        # default to the dumper post and default .tap file
-        postname = "dumper"
-        postArgs = ""
-
-        print "in activated %s" %(obj)
-
-        # check if the user has a project and has set the default post and
-        # output filename
-        if hasattr(obj[0], "Group") and hasattr(obj[0], "Path"):
-        #     # Check for a selected post post processor if it's set
-            job = obj[0]
-
-            if hasattr(obj[0], "PostProcessor"):
-                postobj = obj[0]
-
-                # need to check for existance of these: obj.PostProcessor,
-                # obj.OutputFile
-                if postobj and postobj.PostProcessor:
-                    sys.path.append(os.path.split(postobj.PostProcessor)[0])
-                    lessextn = os.path.splitext(postobj.PostProcessor)[0]
-                    postname = os.path.split(lessextn)[1]
-
-                if hasattr(postobj, "PostProcessorArgs"):
-                    postArgs = postobj.PostProcessorArgs
-
-        filename = self.resolveFileName(job)
-        if filename:
-            processor = PostProcessor.load(postname)
-            processor.export(obj, filename, postArgs)
-
-            FreeCAD.ActiveDocument.commitTransaction()
-        else:
+        # try to find the job, if it's not directly selected ...
+        jobs = set()
+        for obj in selected:
+            if hasattr(obj, 'OutputFile') or hasattr(obj, 'PostProcessor'):
+                jobs.add(obj)
+            elif hasattr(obj, 'Path') or hasattr(obj, 'ToolNumber'):
+                job = PathUtils.findParentJob(obj)
+                if job:
+                    jobs.add(job)
+        if len(jobs) != 1:
+            FreeCAD.Console.PrintError("Please select a single job or other path object\n")
             FreeCAD.ActiveDocument.abortTransaction()
+        else:
+            job = jobs.pop()
+            print("Job for selected objects = %s" % job.Name)
+
+            # check if the user has a project and has set the default post and
+            # output filename
+            postArgs = PathPreferences.defaultPostProcessorArgs()
+            if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
+                postArgs = job.PostProcessorArgs
+            elif hasattr(job, "PostProcessor") and job.PostProcessor:
+                postArgs = ''
+
+            postname = self.resolvePostProcessor(job)
+            if postname:
+                filename = self.resolveFileName(job)
+
+            if postname and filename:
+                print("post: %s(%s, %s)" % (postname, filename, postArgs))
+                processor = PostProcessor.load(postname)
+                processor.export(selected, filename, postArgs)
+
+                FreeCAD.ActiveDocument.commitTransaction()
+            else:
+                FreeCAD.ActiveDocument.abortTransaction()
         FreeCAD.ActiveDocument.recompute()
 
 if FreeCAD.GuiUp:

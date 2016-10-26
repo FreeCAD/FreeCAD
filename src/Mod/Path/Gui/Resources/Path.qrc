@@ -86,6 +86,7 @@
         <file>panels/ContourEdit.ui</file>
         <file>panels/ProfileEdgesEdit.ui</file>
         <file>panels/DogboneEdit.ui</file>
+        <file>panels/DlgSelectPostProcessor.ui</file>
         <file>preferences/PathJob.ui</file>
     </qresource>
 </RCC>
