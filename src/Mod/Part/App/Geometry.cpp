@@ -74,6 +74,7 @@
 # include <Standard_ConstructionError.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
+# include <TColgp_Array1OfVec.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_HArray1OfBoolean.hxx>
 # include <TColStd_Array1OfReal.hxx>
