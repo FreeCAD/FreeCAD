@@ -335,9 +335,13 @@ class ObjectDressup:
 
     def adaptiveBoneLength(self, obj, inChord, outChord, boneAngle):
         cornerDistance, cornerAngle = self.cornerDistanceAndAngle(obj, inChord, outChord)
-        if cornerAngle == boneAngle:
+        # there is something weird happening if the boneAngle came from a horizontal/vertical t-bone
+        # for some reason pi/2 is not equal to pi/2
+        if math.fabs(cornerAngle - boneAngle) < 0.00001:
             # moving directly towards the corner
+            debugPrint("adaptive - on target: %.2f - %.2f" % (cornerDistance, self.toolRadius))
             return cornerDistance - self.toolRadius
+        debugPrint("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (cornerAngle/math.pi, boneAngle/math.pi, cornerAngle - boneAngle))
 
         # The bones root and end point form a triangle with the intersection of the tool path
         # with the toolRadius circle around the bone end point.
@@ -348,6 +352,7 @@ class ObjectDressup:
         beta = math.fabs(addAngle(boneAngle, -cornerAngle))
         D = (cornerDistance / self.toolRadius) * math.sin(beta)
         if D > 1: # no intersection
+            debugPrint("adaptive - no intersection - no bone")
             return 0
         gamma = math.asin(D)
         alpha = math.pi - beta - gamma
@@ -359,17 +364,37 @@ class ObjectDressup:
             boneDistance2 = self.toolRadius * math.sin(alpha2) / math.sin(beta2)
             boneDistance = min(boneDistance, boneDistance2)
 
-        debugPrint("corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerAngle, boneDistance, boneAngle))
+        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerAngle, boneDistance, boneAngle))
         return boneDistance
 
-    def smoothChordCommands(self, obj, inChord, outChord, edge, bone, corner, smooth, color):
+    def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
+        ppt = None
+        pptDistance = 0
+        for pt in DraftGeomUtils.findIntersection(edge, pivotEdge):
+            #debugMarker(pt, "pti.%d-%s.in" % (self.boneId, d), color, 0.2)
+            distance = (pt - refPt).Length
+            if not ppt or pptDistance < distance:
+                ppt = pt
+                pptDistance = distance
+        if not ppt:
+            tangent = DraftGeomUtils.findDistance(pivot, edge)
+            if tangent:
+                ppt = pivot + tangent
+            else:
+                ppt = inChord.Start
+            #debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
+        return ppt
+
+    def smoothChordCommands(self, obj, inChord, outChord, edge, bone, corner, smooth, color = None):
         if smooth == 0:
             debugPrint(" No smoothing requested")
             return [ inChord.g1Command(), outChord.g1Command() ]
 
         d = 'in'
+        refPoint = inChord.Start
         if smooth == Smooth.Out:
             d = 'out'
+            refPoint = outChord.End
 
         if DraftGeomUtils.areColinear(inChord.asEdge(), outChord.asEdge()):
             debugPrint(" straight edge %s" % d)
@@ -381,7 +406,7 @@ class ObjectDressup:
         for e in bone.Edges:
             for pt in DraftGeomUtils.findIntersection(edge, e, True):
                 if pt != corner:
-                    distance = (pt - inChord.End).Length
+                    distance = (pt - refPoint).Length
                     if not pivot or pivotDistance > distance:
                         pivot = pt
                         pivotDistance = distance
@@ -390,14 +415,10 @@ class ObjectDressup:
 
         if pivot:
             debugCircle(pivot, self.toolRadius, "pivot.%d-%s" % (self.boneId, d), color)
-            inTangent = DraftGeomUtils.findDistance(pivot, inChord.asEdge(), True)
-            if not inTangent:
-                inTangent = inChord.Start - pivot
-            outTangent = DraftGeomUtils.findDistance(pivot, outChord.asEdge(), True)
-            if not outTangent:
-                outTangent = outChord.End - pivot
-            t1 = pivot + inTangent
-            t2 = pivot + outTangent
+
+            pivotEdge = Part.Edge(Part.Circle(pivot, FreeCAD.Vector(0,0,1), self.toolRadius))
+            t1 = self.findPivotIntersection(pivot, pivotEdge, inChord.asEdge(), inChord.End, d, color)
+            t2 = self.findPivotIntersection(pivot, pivotEdge, outChord.asEdge(), inChord.End, d, color)
 
             commands = []
             if t1 != inChord.Start:
@@ -450,7 +471,7 @@ class ObjectDressup:
         oChord = Chord(outChord.Start + offset, outChord.End + offset)
         iLine = iChord.asLine()
         oLine = oChord.asLine()
-        cornerEdge = Part.Shape([iLine, oLine])
+        cornerShape = Part.Shape([iLine, oLine])
 
         # construct a shape representing the cut made by the bone
         vt0 = FreeCAD.Vector(     0,  self.toolRadius, 0)
@@ -469,7 +490,7 @@ class ObjectDressup:
         boneWire = Part.Shape([boneTop,boneArc,boneBot])
         boneWire.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), boneAngle * 180 / math.pi)
         boneWire.translate(inChord.End)
-        self.boneShapes = [cornerEdge, boneWire]
+        self.boneShapes = [cornerShape, boneWire]
 
         bones.extend(self.smoothChordCommands(obj, inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, smooth & Smooth.In, (1., 0., 0.)))
         bones.extend(self.smoothChordCommands(obj, boneOutChord, outChord, Part.Edge(oLine), boneWire, corner, smooth & Smooth.Out, (0., 1., 0.)))
@@ -555,7 +576,7 @@ class ObjectDressup:
         self.bones.append((boneId, loc, enabled, inaccessible))
 
         self.boneId = boneId
-        if debugDogbone and boneId == 0:
+        if debugDogbone and boneId != 4:
             bones = self.boneCommands(obj, False, inChord, outChord, smooth)
         else:
             bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
@@ -585,10 +606,10 @@ class ObjectDressup:
         self.bones = []
         self.locationBlacklist = set()
 
-        for thisCmd in obj.Base.Path.Commands:
-            if thisCmd.Name in movecommands:
-                thisChord = lastChord.moveToParameters(thisCmd.Parameters)
-                thisIsACandidate = self.canAttachDogbone(thisCmd, thisChord)
+        for thisCommand in obj.Base.Path.Commands:
+            if thisCommand.Name in movecommands:
+                thisChord = lastChord.moveToParameters(thisCommand.Parameters)
+                thisIsACandidate = self.canAttachDogbone(thisCommand, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
                     boneId, lastCommand = self.insertBone(boneId, obj, lastChord, thisChord, commands, Smooth.InAndOut)
@@ -597,14 +618,16 @@ class ObjectDressup:
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             boneId, lastCommand = self.insertBone(boneId, obj, lastChord, chord, commands, Smooth.In)
                     lastCommand = None
-                    commands.append(thisCmd)
+                    commands.append(thisCommand)
                 elif thisIsACandidate:
-                    lastCommand = thisCmd
+                    if lastCommand:
+                        commands.append(lastCommand)
+                    lastCommand = thisCommand
                 else:
                     if lastCommand:
                         commands.append(lastCommand)
                         lastCommand = None
-                    commands.append(thisCmd)
+                    commands.append(thisCommand)
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
@@ -614,7 +637,7 @@ class ObjectDressup:
                 if lastCommand:
                     commands.append(lastCommand)
                     lastCommand = None
-                commands.append(thisCmd)
+                commands.append(thisCommand)
         #for cmd in commands:
         #    debugPrint("cmd = '%s'" % cmd)
         path = Path.Path(commands)
@@ -723,6 +746,19 @@ class TaskPanel:
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
 
+        if debugDogbone:
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.Name.startswith('Shape'):
+                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            if hasattr(self.obj.Proxy, "shapes"):
+                print("showing shapes attribute")
+                for shapes in self.obj.Proxy.shapes.itervalues():
+                    for shape in shapes:
+                        Part.show(shape)
+            else:
+                print("no shapes attribute found")
+
+
     def updateModel(self):
         self.getFields()
         self.updateUI()
@@ -745,14 +781,6 @@ class TaskPanel:
         self.form.custom.setDecimals(3)
         self.form.custom.setValue(self.obj.Custom)
         self.updateUI()
-
-        if hasattr(self.obj.Proxy, "shapes"):
-            print("showing shapes attribute")
-            for shapes in self.obj.Proxy.shapes.itervalues():
-                for shape in shapes:
-                    Part.show(shape)
-        else:
-            print("no shapes attribute found")
 
 
     def open(self):
