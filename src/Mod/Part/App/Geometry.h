@@ -52,7 +52,10 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #include <list>
+#include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -148,6 +151,57 @@ public:
 
 private:
     Handle_Geom_BezierCurve myCurve;
+};
+
+/*!
+ * \brief The GeomHermiteCurve class
+ * The GeomHermiteCurve describes a cubic Hermite spline.
+ * @note Since OpenCascade doesn't directly support Hermite splines
+ * the returned curve will be a B-Spline curve.
+ */
+class PartExport GeomHermiteCurve : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomHermiteCurve();
+    GeomHermiteCurve(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
+    virtual ~GeomHermiteCurve();
+    virtual Geometry *clone(void) const;
+    /*!
+     * Set the poles and tangents for the cubic Hermite spline
+     */
+    void interpolate(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&,
+                                   const std::vector<double>&,
+                                   std::vector<gp_Vec>&) const;
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     * It uses the same parameter for each tangent.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&, double,
+                                   std::vector<gp_Vec>&) const;
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize (void) const;
+    virtual void Save (Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    void compute(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
+
+private:
+    Handle_Geom_BSplineCurve myCurve;
+    std::vector<gp_Pnt> poles;
+    std::vector<gp_Vec> tangents;
 };
 
 class PartExport GeomBSplineCurve : public GeomCurve
