@@ -53,15 +53,17 @@ PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
 DrawProjGroup::DrawProjGroup(void)
 {
-    static const char *group = "ProjGroup";
+    static const char *group = "Base";
+    static const char *agroup = "Distribute";
+
 
     ADD_PROPERTY_TYPE(Anchor, (0), group, App::Prop_None, "The root view to align projections with");
-
     ProjectionType.setEnums(ProjectionTypeEnums);
     ADD_PROPERTY(ProjectionType, ((long)0));
 
-    ADD_PROPERTY_TYPE(spacingX, (15), group, App::Prop_None, "Horizontal spacing between views");
-    ADD_PROPERTY_TYPE(spacingY, (15), group, App::Prop_None, "Vertical spacing between views");
+    ADD_PROPERTY_TYPE(AutoDistribute ,(true),agroup,App::Prop_None,"Distribute Views Automatically or Manually");
+    ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
+    ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
     ADD_PROPERTY(viewOrientationMatrix, (Base::Matrix4D()));
 }
@@ -208,9 +210,13 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             recompute();
         } else if (prop == &Scale) {
             updateChildren(Scale.getValue());
-            resetPositions();
+            //resetPositions();
             distributeProjections();
         } else if (prop == &ScaleType) {
+            recompute();
+        } else if (prop == &AutoDistribute  &&
+            AutoDistribute.getValue()) {
+            resetPositions();
             recompute();
         }
     }
@@ -465,6 +471,9 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
 
 bool DrawProjGroup::distributeProjections()
 {
+    if (!AutoDistribute.getValue()) {
+        return true;
+    }
     DrawProjGroupItem *viewPtrs[10];
 
     arrangeViewPointers(viewPtrs);
@@ -485,41 +494,37 @@ bool DrawProjGroup::distributeProjections()
     double xSpacing = scale * spacingX.getValue();    //in mm
     double ySpacing = scale * spacingY.getValue();    //in mm
 
-    if (viewPtrs[0] &&
-        viewPtrs[0]->allowAutoPos() &&
+    if (viewPtrs[0] && viewPtrs[0]->allowAutoPos() &&
         bboxes[0].IsValid()) {
         double displace = std::max(bboxes[0].LengthX() + bboxes[4].LengthX(),
                                    bboxes[0].LengthY() + bboxes[4].LengthY());
         viewPtrs[0]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[0]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[1] &&
-        viewPtrs[1]->allowAutoPos() &&
+    if (viewPtrs[1] && viewPtrs[1]->allowAutoPos() &&
         bboxes[1].IsValid()) {
         viewPtrs[1]->Y.setValue((bboxes[1].LengthY() + bboxes[4].LengthY()) / 2.0 + ySpacing);
     }
-    if (viewPtrs[2] && viewPtrs[2]->allowAutoPos()) {
+    if (viewPtrs[2] && viewPtrs[2]->allowAutoPos()
+        ) {
         double displace = std::max(bboxes[2].LengthX() + bboxes[4].LengthX(),
                                    bboxes[2].LengthY() + bboxes[4].LengthY());
         viewPtrs[2]->X.setValue(displace / 2.0 + xSpacing);
         viewPtrs[2]->Y.setValue(displace / 2.0 + ySpacing);
     }
-    if (viewPtrs[3] &&
-        viewPtrs[3]->allowAutoPos() &&
+    if (viewPtrs[3] && viewPtrs[3]->allowAutoPos() &&
         bboxes[3].IsValid() &&
         bboxes[4].IsValid()) {
         viewPtrs[3]->X.setValue((bboxes[3].LengthX() + bboxes[4].LengthX()) / -2.0 - xSpacing);
     }
     if (viewPtrs[4]) {  // TODO: Move this check above, and figure out a sane bounding box based on other existing views
     }
-    if (viewPtrs[5] &&
-        viewPtrs[5]->allowAutoPos() &&
+    if (viewPtrs[5] && viewPtrs[5]->allowAutoPos() &&
         bboxes[5].IsValid() &&
         bboxes[4].IsValid()) {
         viewPtrs[5]->X.setValue((bboxes[5].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
     }
-    if (viewPtrs[6] &&
-        viewPtrs[6]->allowAutoPos() &&
+    if (viewPtrs[6] && viewPtrs[6]->allowAutoPos() &&
         bboxes[6].IsValid()) {    //"Rear"
         if (viewPtrs[5] &&
             bboxes[5].IsValid()) {
@@ -529,22 +534,19 @@ bool DrawProjGroup::distributeProjections()
             viewPtrs[6]->X.setValue((bboxes[6].LengthX() + bboxes[4].LengthX()) / 2.0 + xSpacing);
         }
     }
-    if (viewPtrs[7] &&
-        viewPtrs[7]->allowAutoPos() &&
+    if (viewPtrs[7] && viewPtrs[7]->allowAutoPos() &&
         bboxes[7].IsValid()) {
         double displace = std::max(bboxes[7].LengthX() + bboxes[4].LengthX(),
                                    bboxes[7].LengthY() + bboxes[4].LengthY());
         viewPtrs[7]->X.setValue(displace / -2.0 - xSpacing);
         viewPtrs[7]->Y.setValue(displace / -2.0 - ySpacing);
     }
-    if (viewPtrs[8] &&
-        viewPtrs[8]->allowAutoPos() &&
+    if (viewPtrs[8] && viewPtrs[8]->allowAutoPos() &&
         bboxes[8].IsValid() &&
         bboxes[4].IsValid()) {
         viewPtrs[8]->Y.setValue((bboxes[8].LengthY() + bboxes[4].LengthY()) / -2.0 - ySpacing);
     }
-    if (viewPtrs[9] &&
-        viewPtrs[9]->allowAutoPos() &&
+    if (viewPtrs[9] && viewPtrs[9]->allowAutoPos() &&
         bboxes[9].IsValid()) {
         double displace = std::max(bboxes[9].LengthX() + bboxes[4].LengthX(),
                                    bboxes[9].LengthY() + bboxes[4].LengthY());
@@ -555,16 +557,17 @@ bool DrawProjGroup::distributeProjections()
     return true;
 }
 
-//!allow child DPGI's to be automatically positioned
+//!allow all child DPGI's to be automatically positioned
 void DrawProjGroup::resetPositions(void)
 {
-    for( auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( view ) {
-            view->setAutoPos(true);
-            //X,Y == 0??
-        }
-     }
+    if (AutoDistribute.getValue()) {
+        for( auto it : Views.getValues() ) {
+            auto view( dynamic_cast<DrawProjGroupItem *>(it) );
+            if( view ) {
+                view->setAutoPos(true);
+            }
+         }
+    }
 }
 
 //TODO: Turn this into a command so it can be issued from python
@@ -597,12 +600,14 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         if (!checkFit(page)) {
             newScale = calculateAutomaticScale();
             if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
+                resetPositions();
                 Scale.setValue(newScale);
             }
          }
     } else if (ScaleType.isValue("Document")) {
         newScale = page->Scale.getValue();
         if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
+            resetPositions();
             Scale.setValue(newScale);
         }
     } else if (ScaleType.isValue("Custom")) {
@@ -612,7 +617,7 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
     // recalculate positions for children
     if (Views.getSize()) {
         updateChildren(newScale);
-        resetPositions();
+        //resetPositions();
         distributeProjections();
     }
     return DrawViewCollection::execute();

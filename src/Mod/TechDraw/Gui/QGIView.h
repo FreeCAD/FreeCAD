@@ -110,6 +110,8 @@ protected:
     std::string viewName;
 
     QHash<QString, QGraphicsItem*> alignHash;
+    //std::string alignMode;
+    //QGIView* alignAnchor;
     bool locked;
     bool borderVisible;
     bool m_visibility;

@@ -30,6 +30,7 @@
 
 namespace TechDraw
 {
+class DrawProjGroup;
 
 class TechDrawExport DrawProjGroupItem : public TechDraw::DrawViewPart
 {
@@ -49,6 +50,8 @@ public:
     virtual void onDocumentRestored();
 //    virtual App::DocumentObjectExecReturn *execute(void);  // TODO: Delete me too if we take out the implementation
     //@}
+
+    DrawProjGroup* getGroup(void);
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {

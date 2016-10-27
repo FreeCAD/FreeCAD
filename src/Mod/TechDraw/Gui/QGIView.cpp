@@ -56,6 +56,8 @@
 #include "QGIViewClip.h"
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 using namespace TechDrawGui;
 
@@ -67,6 +69,9 @@ QGIView::QGIView()
      locked(false),
      borderVisible(true),
      m_innerView(false)
+     //isAligned(false)
+     //alignMode("")
+     //alignAnchor(nullptr)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -99,6 +104,9 @@ QGIView::QGIView()
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)
 {
+//    isAligned = true;
+//    alignMode  = alignment.toStdString();
+//    alignAnchor = item;
     alignHash.clear();
     alignHash.insert(alignment, item);
 }
@@ -114,26 +122,33 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         }
 
         // TODO  find a better data structure for this
-        if(alignHash.size() == 1) {
-            QGraphicsItem*item = alignHash.begin().value();
-            QString alignMode   = alignHash.begin().key();
+        // this is just a pair isn't it?
+        if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+            TechDraw::DrawProjGroup* dpg = dpgi->getGroup();
+            if ((dpg != nullptr) && dpg->AutoDistribute.getValue()) {
+                if(alignHash.size() == 1) {   //if aligned.
+                    QGraphicsItem*item = alignHash.begin().value();
+                    QString alignMode   = alignHash.begin().key();
 
-            if(alignMode == QString::fromLatin1("Vertical")) {
-                newPos.setX(item->pos().x());
-            } else if(alignMode == QString::fromLatin1("Horizontal")) {
-                newPos.setY(item->pos().y());
-            } else if(alignMode == QString::fromLatin1("45slash")) {
-                double dist = ( (newPos.x() - item->pos().x()) +
-                                (item->pos().y() - newPos.y()) ) / 2.0;
+                    if(alignMode == QString::fromLatin1("Vertical")) {
+                        newPos.setX(item->pos().x());
+                    } else if(alignMode == QString::fromLatin1("Horizontal")) {
+                        newPos.setY(item->pos().y());
+                    } else if(alignMode == QString::fromLatin1("45slash")) {
+                        double dist = ( (newPos.x() - item->pos().x()) +
+                                        (item->pos().y() - newPos.y()) ) / 2.0;
 
-                newPos.setX( item->pos().x() + dist);
-                newPos.setY( item->pos().y() - dist );
-            } else if(alignMode == QString::fromLatin1("45backslash")) {
-                double dist = ( (newPos.x() - item->pos().x()) +
-                                (newPos.y() - item->pos().y()) ) / 2.0;
+                        newPos.setX( item->pos().x() + dist);
+                        newPos.setY( item->pos().y() - dist );
+                    } else if(alignMode == QString::fromLatin1("45backslash")) {
+                        double dist = ( (newPos.x() - item->pos().x()) +
+                                        (newPos.y() - item->pos().y()) ) / 2.0;
 
-                newPos.setX( item->pos().x() + dist);
-                newPos.setY( item->pos().y() + dist );
+                        newPos.setX( item->pos().x() + dist);
+                        newPos.setY( item->pos().y() + dist );
+                    }
+                }
             }
         }
         return newPos;
@@ -172,11 +187,13 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
-            getViewObject()->X.setValue(tempX);
-            getViewObject()->Y.setValue(tempY);
+//            getViewObject()->X.setValue(tempX);
+//            getViewObject()->Y.setValue(tempY);
+            getViewObject()->setPosition(tempX,tempY);
         } else {
-            getViewObject()->X.setValue(x());
-            getViewObject()->Y.setValue(getYInClip(y()));
+//            getViewObject()->X.setValue(x());
+//            getViewObject()->Y.setValue(getYInClip(y()));
+            getViewObject()->setPosition(x(),getYInClip(y()));
         }
         getViewObject()->setMouseMove(false);
     }
@@ -278,10 +295,10 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
     viewObj = obj;
     viewName = obj->getNameInDocument();
 
-    // Set the QGIGroup initial position based on the DrawView
-    float x = obj->X.getValue();
-    float y = obj->Y.getValue();
-    setPosition(x, y);
+    // Set the QGIGroup initial position based on the DrawView ( wrong. new views are always at Page center)
+//    float x = obj->X.getValue();
+//    float y = obj->Y.getValue();
+//    setPosition(x, y);
 }
 
 void QGIView::toggleCache(bool state)

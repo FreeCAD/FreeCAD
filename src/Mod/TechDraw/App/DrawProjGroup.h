@@ -52,6 +52,7 @@ public:
 
     App::PropertyEnumeration ProjectionType;
 
+    App::PropertyBool AutoDistribute;
     /// Default horizontal spacing between adjacent views on Drawing, in mm
     App::PropertyFloat spacingX;
     /// Default vertical spacing between adjacent views on Drawing, in mm
