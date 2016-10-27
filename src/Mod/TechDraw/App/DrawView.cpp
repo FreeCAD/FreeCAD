@@ -53,7 +53,7 @@ using namespace TechDraw;
 // DrawView
 //===========================================================================
 
-const char* DrawView::ScaleTypeEnums[]= {"Document",
+const char* DrawView::ScaleTypeEnums[]= {"Page",
                                             "Automatic",
                                             "Custom",
                                              NULL};
@@ -88,7 +88,7 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 {
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        if (ScaleType.isValue("Document")) {
+        if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
             }
@@ -117,7 +117,7 @@ void DrawView::onChanged(const App::Property* prop)
     if (!isRestoring()) {
         //Base::Console().Message("TRACE - DV::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &ScaleType) {
-            if (ScaleType.isValue("Document")) {
+            if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Custom") ) {

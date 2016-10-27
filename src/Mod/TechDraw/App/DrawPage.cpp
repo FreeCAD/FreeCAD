@@ -113,7 +113,7 @@ void DrawPage::onChanged(const App::Property* prop)
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
       for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
           TechDraw::DrawView *view = dynamic_cast<TechDraw::DrawView *>(*it);
-          if (view != NULL && view->ScaleType.isValue("Document")) {
+          if (view != NULL && view->ScaleType.isValue("Page")) {
               view->Scale.touch();
           }
       }
@@ -122,7 +122,7 @@ void DrawPage::onChanged(const App::Property* prop)
       const std::vector<App::DocumentObject*> &vals = Views.getValues();
       for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
           TechDraw::DrawProjGroup *view = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
-          if (view != NULL && view->ProjectionType.isValue("Document")) {
+          if (view != NULL && view->ProjectionType.isValue("Default")) {
               view->ProjectionType.touch();
           }
       }

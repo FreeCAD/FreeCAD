@@ -168,7 +168,7 @@ void DrawViewCollection::onChanged(const App::Property* prop)
 
 App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
 {
-    if (ScaleType.isValue("Document")) {
+    if (ScaleType.isValue("Page")) {
         const std::vector<App::DocumentObject *> &views = Views.getValues();
         for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
             App::DocumentObject *docObj = *it;
@@ -176,7 +176,7 @@ App::DocumentObjectExecReturn *DrawViewCollection::execute(void)
                 TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
 
                 // Set scale factor of each view
-                view->ScaleType.setValue("Document");
+                view->ScaleType.setValue("Page");
                 view->touch();
             }
         }

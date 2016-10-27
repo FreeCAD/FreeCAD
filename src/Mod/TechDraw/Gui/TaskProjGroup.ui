@@ -62,7 +62,7 @@
             </property>
             <item>
              <property name="text">
-              <string>Document</string>
+              <string>Page</string>
              </property>
             </item>
             <item>
@@ -92,7 +92,7 @@
            <widget class="QComboBox" name="cmbScaleType">
             <item>
              <property name="text">
-              <string>Document</string>
+              <string>Page</string>
              </property>
             </item>
             <item>

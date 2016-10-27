@@ -180,7 +180,7 @@ void TaskProjGroup::projectionTypeChanged(int index)
         //layout per Page (Document)
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Document");
+                                multiView->getNameInDocument(), "Default");
     } else if(index == 1) {
         // First Angle layout
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -210,7 +210,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
     if(index == 0) {
         // Document Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Document");
+                                                                                             , "Page");
     } else if(index == 1) {
         // Automatic Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
