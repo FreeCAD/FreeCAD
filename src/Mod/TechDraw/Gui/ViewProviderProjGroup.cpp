@@ -29,7 +29,6 @@
 # include <QMenu>
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
@@ -110,7 +109,6 @@ void ViewProviderProjGroup::updateData(const App::Property* prop)
 
 void ViewProviderProjGroup::onChanged(const App::Property *prop)
 {
-    Base::Console().Message("TRACE - VPPG::onChanged(%s) \n",prop->getName());
     if (prop == &(getViewObject()->Scale)) {
             if (getViewObject()->ScaleType.isValue("Automatic")) {
                     getMDIViewPage()->redraw1View(getViewObject());
