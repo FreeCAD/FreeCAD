@@ -432,14 +432,25 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             try:
                 f = Part.Face(Part.makePolygon(pts))
             except:
-                pass
+                print "getShapeFromMesh: error building face from polygon"
+                #pass
             else:
                 faces.append(f)
         shell = Part.makeShell(faces)
-        solid = Part.Solid(shell)
-        solid = solid.removeSplitter()
-        return solid
-
+        try:
+            solid = Part.Solid(shell)
+        except Part.OCCError:
+            print "getShapeFromMesh: error creating solid"
+        else:
+            try:
+                solid = solid.removeSplitter()
+            except Part.OCCError:
+                print "getShapeFromMesh: error removing splitter"
+                #pass
+            return solid
+    
+    #if not mesh.isSolid():
+    #    print "getShapeFromMesh: non-solid mesh, using slow method"
     faces = []
     segments = mesh.getPlanarSegments(tolerance)
     #print len(segments)
@@ -462,9 +473,11 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         if flat:
             return se
     except Part.OCCError:
+        print "getShapeFromMesh: error removing splitter"
         try:
             cp = Part.makeCompound(faces)
         except Part.OCCError:
+            print "getShapeFromMesh: error creating compound"
             return None
         else:
             return cp
@@ -472,6 +485,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         try:
             solid = Part.Solid(se)
         except Part.OCCError:
+            print "getShapeFromMesh: error creating solid"
             return se
         else:
             return solid
@@ -673,7 +687,7 @@ def pruneIncluded(objectslist,strict=False):
         if obj.isDerivedFrom("Part::Feature"):
             if not (Draft.getType(obj) in ["Window","Clone","Pipe"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature"):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"CloneOf"):
@@ -936,8 +950,12 @@ def getExtrusionData(shape):
         return None
     # build faces list with normals
     faces = []
+    import Part
     for f in shape.Faces:
-        faces.append([f,f.normalAt(0,0)])
+        try:
+            faces.append([f,f.normalAt(0,0)])
+        except Part.OCCError:
+            return None
     # find opposite normals pairs
     pairs = []
     for i1, f1 in enumerate(faces):

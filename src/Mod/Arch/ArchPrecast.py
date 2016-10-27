@@ -44,9 +44,9 @@ else:
 class _Precast(ArchComponent.Component):
 
     "The base Precast class"
-    
+
     def __init__(self,obj):
-        
+
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of this element"))
         obj.addProperty("App::PropertyDistance","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this element"))
@@ -55,25 +55,19 @@ class _Precast(ArchComponent.Component):
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         self.Type = "Precast"
         obj.Role = ["Beam","Column","Panel","Slab","Stairs"]
-        
-    def getProfile(self,obj,noplacement=True):
-        return []
-        
-    def getExtrusionVector(self,obj,noplacement=True):
-        return FreeCAD.Vector()
-        
+
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
 
 
 class _PrecastBeam(_Precast):
-    
+
     "The Precast Beam"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
         obj.addProperty("App::PropertyDistance","DentLength","Arch",QT_TRANSLATE_NOOP("App::Property","The dent length of this element"))
@@ -82,7 +76,7 @@ class _PrecastBeam(_Precast):
         obj.Role = ["Beam"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
 
@@ -94,12 +88,12 @@ class _PrecastBeam(_Precast):
         dentlength = obj.DentLength.Value
         dentheight = obj.DentHeight.Value
         dents = obj.Dents
-    
+
         if (length == 0) or (width == 0) or (height == 0):
             return
         if (chamfer >= width/2) or (chamfer >= height/2):
             return
-    
+
         import Part
         p = []
         if chamfer > 0:
@@ -174,18 +168,18 @@ class _PrecastBeam(_Precast):
 
 
 class _PrecastIbeam(_Precast):
-    
+
     "The Precast Ibeam"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The chamfer length of this element"))
         obj.addProperty("App::PropertyDistance","BeamBase","Arch",QT_TRANSLATE_NOOP("App::Property","The base length of this element"))
         obj.Role = ["Beam"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
 
@@ -195,12 +189,12 @@ class _PrecastIbeam(_Precast):
         height = obj.Height.Value
         base = obj.BeamBase.Value
         slant = obj.Chamfer.Value
-    
+
         if (length == 0) or (width == 0) or (height == 0):
             return
         if (slant*2 >= width) or (base*2+slant*2 >= height):
             return
-    
+
         import Part
         p = []
         p.append(Vector(0,0,0))
@@ -225,11 +219,11 @@ class _PrecastIbeam(_Precast):
 
 
 class _PrecastPillar(_Precast):
-    
+
     "The Precast Pillar"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
         obj.addProperty("App::PropertyDistance","GrooveDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The groove depth of this element"))
@@ -240,10 +234,10 @@ class _PrecastPillar(_Precast):
         obj.Role = ["Column"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-  
+
         pl = obj.Placement
         length = obj.Length.Value
         width = obj.Width.Value
@@ -259,7 +253,7 @@ class _PrecastPillar(_Precast):
             return
         if (chamfer >= width/2) or (chamfer >= length/2):
             return
-    
+
         import Part
         p = []
         if chamfer > 0:
@@ -341,17 +335,17 @@ class _PrecastPillar(_Precast):
                     dentshape.translate(Vector(dentoffset,0,0))
                 dentshape.translate(Vector(0,0,dentlevel))
                 shape = shape.fuse(dentshape)
-                
+
         shape = self.processSubShapes(obj,shape,pl)
         self.applyShape(obj,shape,pl)
 
 
 class _PrecastPanel(_Precast):
-    
+
     "The Precast Panel"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","Chamfer","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the chamfer of this element"))
         obj.addProperty("App::PropertyDistance","DentWidth","Arch",QT_TRANSLATE_NOOP("App::Property","The dent width of this element"))
@@ -359,10 +353,10 @@ class _PrecastPanel(_Precast):
         obj.Role = ["Plate"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
- 
+
         pl = obj.Placement
         length = obj.Length.Value
         width = obj.Width.Value
@@ -370,12 +364,12 @@ class _PrecastPanel(_Precast):
         chamfer = obj.Chamfer.Value
         dentheight = obj.DentHeight.Value
         dentwidth = obj.DentWidth.Value
-        
+
         if (length == 0) or (width == 0) or (height == 0):
             return
         if ((chamfer+dentwidth) >= width) or (dentheight >= height):
             return
-    
+
         import Part
         p = []
         p.append(Vector(0,0,0))
@@ -436,17 +430,17 @@ class _PrecastPanel(_Precast):
             shape = shape.cut(s)
             s.translate(Vector(0,0,height))
             shape = shape.fuse(s)
-        
+
         shape = self.processSubShapes(obj,shape,pl)
         self.applyShape(obj,shape,pl)
 
 
 class _PrecastSlab(_Precast):
-    
+
     "The Precast Slab"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyEnumeration","SlabType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this slab"))
         obj.addProperty("App::PropertyDistance","SlabBase","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the base of this element"))
@@ -458,7 +452,7 @@ class _PrecastSlab(_Precast):
         obj.SlabType = ["Champagne","Hat"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
 
@@ -472,9 +466,9 @@ class _PrecastSlab(_Precast):
         holemajor = obj.HoleMajor.Value
         holeminor = obj.HoleMinor.Value
         holespacing = obj.HoleSpacing.Value
-            
+
         slant = (height-base) / 3 # this gives the inclination of the vertical walls
-        
+
         if (length == 0) or (width == 0) or (height == 0):
             return
         if base >= height:
@@ -486,7 +480,7 @@ class _PrecastSlab(_Precast):
         if holemajor < holeminor:
             return
         import Part
-    
+
         p = []
         if slabtype == "Champagne":
             p.append(Vector(0,0,0))
@@ -512,7 +506,7 @@ class _PrecastSlab(_Precast):
         p = Part.makePolygon(p)
         f = Part.Face(p)
         shape = f.extrude(Vector(length,0,0))
-        
+
         if holenumber > 0:
             holespan = holenumber * holeminor + (holenumber - 1) * holespacing
             holestart = (width/2 - holespan/2) + holeminor/2
@@ -529,17 +523,17 @@ class _PrecastSlab(_Precast):
                 s = tube.copy()
                 s.translate(Vector(0,x,height/2))
                 shape = shape.cut(s)
-            
+
         shape = self.processSubShapes(obj,shape,pl)
         self.applyShape(obj,shape,pl)
 
 
 class _PrecastStairs(_Precast):
-    
+
     "The Precast Stairs"
-    
+
     def __init__(self,obj):
-        
+
         _Precast.__init__(self,obj)
         obj.addProperty("App::PropertyDistance","DownLength","Arch",QT_TRANSLATE_NOOP("App::Property","The length of the down floor of this element"))
         obj.addProperty("App::PropertyInteger","RiserNumber","Arch",QT_TRANSLATE_NOOP("App::Property","The number of risers in this element"))
@@ -548,7 +542,7 @@ class _PrecastStairs(_Precast):
         obj.Role = ["Stairs"]
 
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
 
@@ -573,7 +567,7 @@ class _PrecastStairs(_Precast):
             return
         if length < tread:
             length = tread # minimum
-            
+
         import math,Part
 
         p = [Vector(0,0,0)] # relative moves
@@ -628,7 +622,7 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Structure_Clone.svg"
         return ":/icons/Arch_Structure_Tree.svg"
-        
+
     def setEdit(self,vobj,mode):
         if mode == 0:
             import FreeCADGui
@@ -643,7 +637,7 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
             FreeCADGui.Control.showDialog(taskd)
             return True
         return False
-        
+
     def unsetEdit(self,vobj,mode):
         import FreeCADGui
         if hasattr(self,"dentd"):
@@ -654,18 +648,18 @@ class _ViewProviderPrecast(ArchComponent.ViewProviderComponent):
 
 
 class _PrecastTaskPanel:
-    
+
     '''The TaskPanel for precast creation'''
-    
+
     def __init__(self):
-        
+
         import FreeCADGui
         from PySide import QtCore,QtGui,QtSvg
         self.form = QtGui.QWidget()
         self.grid = QtGui.QGridLayout(self.form)
         self.PrecastTypes = ["Beam","I-Beam","Pillar","Panel","Slab","Stairs"]
         self.SlabTypes = ["Champagne","Hat"]
-        
+
         # image display
         self.preview = QtSvg.QSvgWidget(":/ui/ParametersBeam.svg")
         self.preview.setMaximumWidth(200)
@@ -679,67 +673,67 @@ class _PrecastTaskPanel:
         self.valueSlabType.setCurrentIndex(0)
         self.grid.addWidget(self.labelSlabType,1,0,1,1)
         self.grid.addWidget(self.valueSlabType,1,1,1,1)
-        
+
         self.labelChamfer = QtGui.QLabel()
         self.valueChamfer = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelChamfer,2,0,1,1)
         self.grid.addWidget(self.valueChamfer,2,1,1,1)
-        
+
         self.labelDentLength = QtGui.QLabel()
         self.valueDentLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelDentLength,3,0,1,1)
         self.grid.addWidget(self.valueDentLength,3,1,1,1)
-        
+
         self.labelDentWidth = QtGui.QLabel()
         self.valueDentWidth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelDentWidth,4,0,1,1)
         self.grid.addWidget(self.valueDentWidth,4,1,1,1)
-        
+
         self.labelDentHeight = QtGui.QLabel()
         self.valueDentHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelDentHeight,5,0,1,1)
         self.grid.addWidget(self.valueDentHeight,5,1,1,1)
-        
+
         self.labelBase = QtGui.QLabel()
         self.valueBase = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelBase,6,0,1,1)
         self.grid.addWidget(self.valueBase,6,1,1,1)
-        
+
         self.labelHoleNumber = QtGui.QLabel()
         self.valueHoleNumber = QtGui.QSpinBox()
         self.grid.addWidget(self.labelHoleNumber,7,0,1,1)
         self.grid.addWidget(self.valueHoleNumber,7,1,1,1)
-        
+
         self.labelHoleMajor = QtGui.QLabel()
         self.valueHoleMajor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelHoleMajor,8,0,1,1)
         self.grid.addWidget(self.valueHoleMajor,8,1,1,1)
-        
+
         self.labelHoleMinor = QtGui.QLabel()
         self.valueHoleMinor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelHoleMinor,9,0,1,1)
         self.grid.addWidget(self.valueHoleMinor,9,1,1,1)
-        
+
         self.labelHoleSpacing = QtGui.QLabel()
         self.valueHoleSpacing = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelHoleSpacing,10,0,1,1)
         self.grid.addWidget(self.valueHoleSpacing,10,1,1,1)
-        
+
         self.labelGrooveNumber = QtGui.QLabel()
         self.valueGrooveNumber = QtGui.QSpinBox()
         self.grid.addWidget(self.labelGrooveNumber,11,0,1,1)
         self.grid.addWidget(self.valueGrooveNumber,11,1,1,1)
-        
+
         self.labelGrooveDepth = QtGui.QLabel()
         self.valueGrooveDepth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelGrooveDepth,12,0,1,1)
         self.grid.addWidget(self.valueGrooveDepth,12,1,1,1)
-        
+
         self.labelGrooveHeight = QtGui.QLabel()
         self.valueGrooveHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelGrooveHeight,13,0,1,1)
         self.grid.addWidget(self.valueGrooveHeight,13,1,1,1)
-        
+
         self.labelGrooveSpacing = QtGui.QLabel()
         self.valueGrooveSpacing = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelGrooveSpacing,14,0,1,1)
@@ -749,17 +743,17 @@ class _PrecastTaskPanel:
         self.valueRiserNumber = QtGui.QSpinBox()
         self.grid.addWidget(self.labelRiserNumber,15,0,1,1)
         self.grid.addWidget(self.valueRiserNumber,15,1,1,1)
-        
+
         self.labelDownLength = QtGui.QLabel()
         self.valueDownLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelDownLength,16,0,1,1)
         self.grid.addWidget(self.valueDownLength,16,1,1,1)
-        
+
         self.labelRiser = QtGui.QLabel()
         self.valueRiser = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelRiser,17,0,1,1)
         self.grid.addWidget(self.valueRiser,17,1,1,1)
-        
+
         self.labelTread = QtGui.QLabel()
         self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelTread,18,0,1,1)
@@ -782,7 +776,7 @@ class _PrecastTaskPanel:
         QtCore.QObject.connect(self.valueTread,QtCore.SIGNAL("valueChanged(double)"),self.setTread)
         self.retranslateUi(self.form)
         self.form.hide()
-        
+
     def getValues(self):
         d = {}
         d["SlabType"] = self.SlabTypes[self.valueSlabType.currentIndex()]
@@ -806,49 +800,49 @@ class _PrecastTaskPanel:
         if hasattr(self,"Dents"):
             d["Dents"] = self.Dents.getValues()
         return d
-        
+
     def setChamfer(self,value):
         self.Chamfer = value
-        
+
     def setDentLength(self,value):
         self.DentLength = value
-        
+
     def setDentWidth(self,value):
         self.DentWidth = value
-        
+
     def setDentHeight(self,value):
         self.DentHeight = value
-        
+
     def setBase(self,value):
         self.Base = value
-        
+
     def setHoleMajor(self,value):
         self.HoleMajor = value
-        
+
     def setHoleMinor(self,value):
         self.HoleMinor = value
-        
+
     def setHoleSpacing(self,value):
         self.HoleSpacing = value
-        
+
     def setGrooveDepth(self,value):
         self.GrooveDepth = value
-        
+
     def setGrooveHeight(self,value):
         self.GrooveHeight = value
-        
+
     def setGrooveSpacing(self,value):
         self.GrooveSpacing = value
 
     def setDownLength(self,value):
         self.DownLength = value
-        
+
     def setRiser(self,value):
         self.Riser = value
-        
+
     def setTread(self,value):
         self.Tread = value
-        
+
     def retranslateUi(self, dialog):
         from PySide import QtGui
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Precast elements", None, QtGui.QApplication.UnicodeUTF8))
@@ -1106,62 +1100,62 @@ class _PrecastTaskPanel:
 
 
 class _DentsTaskPanel:
-    
+
     '''The TaskPanel for dent creation'''
-    
+
     def __init__(self):
-        
+
         import FreeCADGui
         from PySide import QtCore,QtGui,QtSvg
         self.form = QtGui.QWidget()
         self.grid = QtGui.QGridLayout(self.form)
         self.Rotations = ["N","S","E","O"]
         self.RotationAngles = [90,270,0,180]
-    
+
         # dents list
         self.labelDents = QtGui.QLabel()
         self.listDents = QtGui.QListWidget()
         self.grid.addWidget(self.labelDents,0,0,1,2)
         self.grid.addWidget(self.listDents,1,0,1,2)
-        
+
         # buttons
         self.buttonAdd = QtGui.QPushButton()
         self.buttonRemove = QtGui.QPushButton()
         self.grid.addWidget(self.buttonAdd,2,0,1,1)
         self.grid.addWidget(self.buttonRemove,2,1,1,1)
-        
+
         # image display
         self.preview = QtSvg.QSvgWidget(":/ui/ParametersDent.svg")
         self.preview.setMaximumWidth(200)
         self.preview.setMinimumHeight(120)
         self.grid.addWidget(self.preview,3,0,1,2)
 
-        # parameters        
+        # parameters
         self.labelLength = QtGui.QLabel()
         self.valueLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelLength,4,0,1,1)
         self.grid.addWidget(self.valueLength,4,1,1,1)
-        
+
         self.labelWidth = QtGui.QLabel()
         self.valueWidth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelWidth,5,0,1,1)
         self.grid.addWidget(self.valueWidth,5,1,1,1)
-        
+
         self.labelHeight = QtGui.QLabel()
         self.valueHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelHeight,6,0,1,1)
         self.grid.addWidget(self.valueHeight,6,1,1,1)
-        
+
         self.labelSlant = QtGui.QLabel()
         self.valueSlant = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelSlant,7,0,1,1)
         self.grid.addWidget(self.valueSlant,7,1,1,1)
-        
+
         self.labelLevel = QtGui.QLabel()
         self.valueLevel = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelLevel,8,0,1,1)
         self.grid.addWidget(self.valueLevel,8,1,1,1)
-        
+
         self.labelRotation = QtGui.QLabel()
         self.valueRotation = QtGui.QComboBox()
         self.valueRotation.addItems(self.Rotations)
@@ -1173,7 +1167,7 @@ class _DentsTaskPanel:
         self.valueOffset = FreeCADGui.UiLoader().createWidget("Gui::InputField")
         self.grid.addWidget(self.labelOffset,10,0,1,1)
         self.grid.addWidget(self.valueOffset,10,1,1,1)
-        
+
         # signals/slots
         QtCore.QObject.connect(self.valueLength,QtCore.SIGNAL("valueChanged(double)"),self.setLength)
         QtCore.QObject.connect(self.valueWidth,QtCore.SIGNAL("valueChanged(double)"),self.setWidth)
@@ -1187,31 +1181,31 @@ class _DentsTaskPanel:
         QtCore.QObject.connect(self.listDents,QtCore.SIGNAL("itemClicked(QListWidgetItem*)"),self.editDent)
         self.retranslateUi(self.form)
         self.form.hide()
-        
+
     def setLength(self,value):
         self.Length = value
         self.setDent()
-        
+
     def setWidth(self,value):
         self.Width = value
         self.setDent()
-        
+
     def setHeight(self,value):
         self.Height = value
         self.setDent()
-        
+
     def setSlant(self,value):
         self.Slant = value
         self.setDent()
-        
+
     def setLevel(self,value):
         self.Level = value
         self.setDent()
-        
+
     def setOffset(self,value):
         self.Offset = value
         self.setDent()
-        
+
     def fillDents(self,dents):
         self.listDents.clear()
         i = 1
@@ -1219,14 +1213,14 @@ class _DentsTaskPanel:
             s = "Dent "+str(i)+" :"+d
             self.listDents.addItem(s)
             i += 1
-        
+
     def setDent(self,i=0):
         if self.listDents.currentItem():
             num = str(self.listDents.currentRow()+1)
             rot = self.RotationAngles[self.valueRotation.currentIndex()]
             s = "Dent "+num+" :"+str(self.Length)+";"+str(self.Width)+";"+str(self.Height)+";"+str(self.Slant)+";"+str(self.Level)+";"+str(rot)+";"+str(self.Offset)
             self.listDents.currentItem().setText(s)
-        
+
     def addDent(self):
         num = str(self.listDents.count()+1)
         rot = self.RotationAngles[self.valueRotation.currentIndex()]
@@ -1234,11 +1228,11 @@ class _DentsTaskPanel:
         self.listDents.addItem(s)
         self.listDents.setCurrentRow(self.listDents.count()-1)
         self.editDent()
-        
+
     def removeDent(self):
         if self.listDents.currentItem():
             self.listDents.takeItem(self.listDents.currentRow())
-        
+
     def editDent(self,item=None):
         if self.listDents.currentItem():
             s = self.listDents.currentItem().text()
@@ -1251,7 +1245,7 @@ class _DentsTaskPanel:
             self.valueLevel.setText(FreeCAD.Units.Quantity(float(s[4]),FreeCAD.Units.Length).UserString)
             self.valueRotation.setCurrentIndex(self.RotationAngles.index(int(s[5])))
             self.valueOffset.setText(FreeCAD.Units.Quantity(float(s[6]),FreeCAD.Units.Length).UserString)
-        
+
     def retranslateUi(self, dialog):
         from PySide import QtGui
         self.form.setWindowTitle(QtGui.QApplication.translate("Arch", "Precast options", None, QtGui.QApplication.UnicodeUTF8))
@@ -1265,19 +1259,19 @@ class _DentsTaskPanel:
         self.labelLevel.setText(QtGui.QApplication.translate("Arch", "Level", None, QtGui.QApplication.UnicodeUTF8))
         self.labelRotation.setText(QtGui.QApplication.translate("Arch", "Rotation", None, QtGui.QApplication.UnicodeUTF8))
         self.labelOffset.setText(QtGui.QApplication.translate("Arch", "Offset", None, QtGui.QApplication.UnicodeUTF8))
-        
+
     def getValues(self):
         l = []
         for i in range(self.listDents.count()):
             s = self.listDents.item(i).text()
             l.append(s.split(":")[1])
         return l
-        
+
 
 def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0,dentlength=0,dentwidth=0,dentheight=0,dents=[],base=0,holenumber=0,holemajor=0,holeminor=0,holespacing=0,groovenumber=0,groovedepth=0,grooveheight=0,groovespacing=0,risernumber=0,downlength=0,riser=0,tread=0):
-    
+
     "creates one of the precast objects in the current document"
-    
+
     if precasttype == "Beam":
         obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Beam")
         _PrecastBeam(obj)
@@ -1345,4 +1339,4 @@ def makePrecast(precasttype=None,length=0,width=0,height=0,slabtype="",chamfer=0
     if FreeCAD.GuiUp:
         _ViewProviderPrecast(obj.ViewObject)
     return obj
-        
+
