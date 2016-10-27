@@ -137,6 +137,31 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e)
     return result;
 }
 
+//based on Function provided by Joe Dowsett, 2014
+double DrawUtil::sensibleScale(double working_scale)
+{
+    double result = 1.0;
+    //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
+    //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
+
+    float exponent = std::floor(std::log10(working_scale));                  //if working_scale = a * 10^b, what is b?
+    working_scale *= std::pow(10, -exponent);                                //now find what 'a' is.
+
+    int choices = 10;
+    float valid_scales[2][choices] =
+                          {{1.0, 1.25, 2.0, 2.5, 3.75, 5.0, 7.5, 10.0, 50.0, 100.0},   //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
+                                                                                       //          .1   .125            .375      .75
+                           {1.0, 1.5 , 2.0, 3.0, 4.0 , 5.0, 8.0, 10.0, 50.0, 100.0}};  //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
+                                                                                       //              1.5:1
+    int i = choices - 1;
+    while (valid_scales[(exponent >= 0)][i] > working_scale)                 //choose closest value smaller than 'a' from list.
+        i -= 1;                                                              //choosing top list if exponent -ve, bottom list for +ve exponent
+
+    //now have the appropriate scale, reapply the *10^b
+    result = valid_scales[(exponent >= 0)][i] * pow(10, exponent);
+    return result;
+}
+
 //============================
 // various debugging routines.
 void DrawUtil::dumpVertexes(const char* text, const TopoDS_Shape& s)

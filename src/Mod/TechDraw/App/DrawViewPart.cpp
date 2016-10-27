@@ -736,7 +736,15 @@ double DrawViewPart::getBoxY(void) const
 
 QRectF DrawViewPart::getRect() const
 {
-    QRectF result(0.0,0.0,getBoxX(),getBoxY());  //this is from GO and is already scaled
+    double x = getBoxX();
+    double y = getBoxY();
+    QRectF result;
+    if (std::isinf(x) || std::isinf(y)) {
+        //geometry isn't created yet.  return an arbitrary rect.
+        result = QRectF(0.0,0.0,100.0,100.0);
+    } else {
+        result = QRectF(0.0,0.0,getBoxX(),getBoxY());  //this is from GO and is already scaled
+    }
     return result;
 }
 

@@ -35,6 +35,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
+#include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjGroup.h"
@@ -134,6 +135,9 @@ double DrawProjGroup::calculateAutomaticScale() const
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                               //get 1:1 bbxs
+    double bbFudge = 1.2;
+    width *= bbFudge;
+    height *= bbFudge;
 
     // C++ Standard says casting bool to int gives 0 or 1
     int numVertSpaces = (viewPtrs[0] || viewPtrs[3] || viewPtrs[7]) +
@@ -151,24 +155,9 @@ double DrawProjGroup::calculateAutomaticScale() const
     double scale_x = availableX / width;
     double scale_y = availableY / height;
 
-    double fudgeFactor = 0.90;
-    float working_scale = fudgeFactor * std::min(scale_x, scale_y);
-
-    //which gives the largest scale for which the min_space requirements can be met, but we want a 'sensible' scale, rather than 0.28457239...
-    //eg if working_scale = 0.115, then we want to use 0.1, similarly 7.65 -> 5, and 76.5 -> 50
-
-    float exponent = std::floor(std::log10(working_scale));                  //if working_scale = a * 10^b, what is b?
-    working_scale *= std::pow(10, -exponent);                                //now find what 'a' is.
-
-    float valid_scales[2][8] = {{1.0, 1.25, 2.0, 2.5, 3.75, 5.0, 7.5, 10.0},   //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
-                                {1.0, 1.5 , 2.0, 3.0, 4.0 , 5.0, 8.0, 10.0}};  //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
-
-    int i = 7;
-    while (valid_scales[(exponent >= 0)][i] > working_scale)                 //choose closest value smaller than 'a' from list.
-        i -= 1;                                                              //choosing top list if exponent -ve, bottom list for +ve exponent
-
-    //now have the appropriate scale, reapply the *10^b
-    double result = valid_scales[(exponent >= 0)][i] * pow(10, exponent);
+    double scaleFudge = 0.80;
+    float working_scale = scaleFudge * std::min(scale_x, scale_y);
+    double result = DrawUtil::sensibleScale(working_scale);
     return result;
 }
 

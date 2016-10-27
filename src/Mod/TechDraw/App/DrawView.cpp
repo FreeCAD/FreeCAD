@@ -42,6 +42,7 @@
 #include "DrawViewClip.h"
 #include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
+#include "DrawUtil.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
@@ -202,10 +203,14 @@ double DrawView::autoScale(double w, double h) const
 {
     double fudgeFactor = 0.90;
     QRectF viewBox = getRect();
-    double xScale = w/viewBox.width();
-    double yScale = h/viewBox.height();
-    //find a standard scale that's close? 1:2, 1:10, 1:100...?
+    //have to unscale rect to determine new scale
+    double vbw = viewBox.width()/Scale.getValue();
+    double vbh = viewBox.height()/Scale.getValue();
+    double xScale = w/vbw;
+    double yScale = h/vbh;
+    //TODO: find a standard scale that's close? 1:2, 1:10, 1:100...?  Logic in TaskProjGroup
     double newScale = fudgeFactor * std::min(xScale,yScale);
+    newScale = DrawUtil::sensibleScale(newScale);
     return newScale;
 }
 
