@@ -31,7 +31,7 @@ Roles = ['Undefined','Beam','Chimney','Column','Covering','Curtain Wall',
          'Member','Plate','Railing','Ramp','Ramp Flight','Rebar','Pile','Roof','Shading Device','Slab','Space',
          'Stair','Stair Flight','Tendon','Wall','Wall Layer','Window']
 
-import FreeCAD,Draft,ArchCommands
+import FreeCAD,Draft,ArchCommands,math
 from FreeCAD import Vector
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -363,195 +363,43 @@ class Component:
                                 siblings.append(o)
         return siblings
 
-    def getAxis(self,obj):
-        "Returns an open wire which is the axis of this component, if applicable"
-        if Draft.getType(obj) == "Precast":
-            return None
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.Base.Shape:
-                    if (len(obj.Base.Shape.Wires) == 1) and not(obj.Base.Shape.Faces):
-                        if not obj.Base.Shape.Wires[0].isClosed():
-                            return obj.Base.Shape.copy()
-                    elif not(obj.Base.Shape.Solids):
-                        if hasattr(obj.Base.Shape,"CenterOfMass"):
-                            p1 = obj.Base.Shape.CenterOfMass
-                            v = self.getExtrusionVector(obj)
-                            if v:
-                                p2 = p1.add(v)
-                                import Part
-                                return Part.Line(p1,p2).toShape()
-        else:
-            p1 = FreeCAD.Vector()
-            v = self.getExtrusionVector(obj)
-            if v:
-                p2 = p1.add(v)
-                import Part
-                return Part.Line(p1,p2).toShape()
-        return None
-
-    def getProfiles(self,obj,noplacement=False):
-        "Returns the base profile(s) of this component, if applicable"
-        wires = []
-        if Draft.getType(obj) == "Precast":
-            return wires
-        n,l,w,h = self.getDefaultValues(obj)
+    def getExtrusionData(self,obj):
+        "returns (shape,extrusion vector,placement) or None"
+        if hasattr(obj,"CloneOf"):
+            if obj.CloneOf:
+                data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
+                if data:
+                    return data 
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
-                    base = obj.Base.Base.Shape.copy()
-                    #if noplacement:
-                    #    base.Placement = FreeCAD.Placement()
-                    return [base]
-            elif obj.Base.isDerivedFrom("Part::Feature"):
-                if obj.Base.Shape:
-                    base = obj.Base.Shape.copy()
-                    if noplacement:
-                        base.Placement = FreeCAD.Placement()
-                    if not base.Solids:
-                        if base.Faces:
-                            import DraftGeomUtils
-                            if not DraftGeomUtils.isCoplanar(base.Faces):
-                                return []
-                            return [base]
-
-                        basewires = []
-                        if not base.Wires:
-                            if len(base.Edges) == 1:
-                                import Part
-                                basewires = [Part.Wire(base.Edges)]
-                        else:
-                            basewires = base.Wires
-                        if basewires:
-                            import DraftGeomUtils,DraftVecUtils,Part
-                            for wire in basewires:
-                                e = wire.Edges[0]
-                                if isinstance(e.Curve,Part.Circle):
-                                    dvec = e.Vertexes[0].Point.sub(e.Curve.Center)
-                                else:
-                                    dvec = DraftGeomUtils.vec(wire.Edges[0]).cross(n)
-                                if not DraftVecUtils.isNull(dvec):
-                                    dvec.normalize()
-                                sh = None
-                                if hasattr(obj,"Align"):
-                                    if obj.Align == "Left":
-                                        dvec.multiply(w)
-                                        if hasattr(obj,"Offset"):
-                                            if obj.Offset.Value:
-                                                dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
-                                                wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
-                                        sh = DraftGeomUtils.bind(w1,w2)
-                                    elif obj.Align == "Right":
-                                        dvec.multiply(w)
-                                        dvec = dvec.negative()
-                                        if hasattr(obj,"Offset"):
-                                            if obj.Offset.Value:
-                                                dvec2 = DraftVecUtils.scaleTo(dvec,obj.Offset.Value)
-                                                wire = DraftGeomUtils.offsetWire(wire,dvec2)
-                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        w1 = Part.Wire(Part.__sortEdges__(wire.Edges))
-                                        sh = DraftGeomUtils.bind(w1,w2)
-                                    elif obj.Align == "Center":
-                                        dvec.multiply(w/2)
-                                        w1 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        dvec = dvec.negative()
-                                        w2 = DraftGeomUtils.offsetWire(wire,dvec)
-                                        sh = DraftGeomUtils.bind(w1,w2)
-                                    if sh:
-                                        wires.append(sh)
-                                else:
-                                    wires.append(wire)
-        elif Draft.getType(obj) in ["Wall","Structure"]:
-            if (Draft.getType(obj) == "Structure") and (l > h) and (obj.Role != "Slab"):
-                if noplacement:
-                    h2 = h/2 or 0.5
-                    w2 = w/2 or 0.5
-                    v1 = Vector(-h2,-w2,0)
-                    v2 = Vector(h2,-w2,0)
-                    v3 = Vector(h2,w2,0)
-                    v4 = Vector(-h2,w2,0)
-                else:
-                    h2 = h/2 or 0.5
-                    w2 = w/2 or 0.5
-                    v1 = Vector(0,-w2,-h2)
-                    v2 = Vector(0,-w2,h2)
-                    v3 = Vector(0,w2,h2)
-                    v4 = Vector(0,w2,-h2)
-            else:
-                l2 = l/2 or 0.5
-                w2 = w/2 or 0.5
-                v1 = Vector(-l2,-w2,0)
-                v2 = Vector(l2,-w2,0)
-                v3 = Vector(l2,w2,0)
-                v4 = Vector(-l2,w2,0)
-            import Part
-            base = Part.makePolygon([v1,v2,v3,v4,v1])
-            return [base]
-        return wires
-
-    def getExtrusionVector(self,obj,noplacement=False):
-        "Returns an extrusion vector of this component, if applicable"
-        n,l,w,h = self.getDefaultValues(obj)
-        if Draft.getType(obj) == "Precast":
-            return FreeCAD.Vector()
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Part::Extrusion"):
-                return FreeCAD.Vector(obj.Base.Dir)
-        if Draft.getType(obj) == "Structure":
-            if l > h:
-                v = n.multiply(l)
-                if noplacement:
-                    import DraftVecUtils
-                    v = DraftVecUtils.rounded(FreeCAD.Rotation(FreeCAD.Vector(0,1,0),-90).multVec(v))
-                return v
-        return n.multiply(h)
-
-    def getDefaultValues(self,obj):
-        "returns normal,length,width,height values from this component"
-        length = 0
-        if hasattr(obj,"Length"):
-            if obj.Length.Value:
-                length = obj.Length.Value
-        width = 0
-        if hasattr(obj,"Width"):
-            if obj.Width.Value:
-                width = obj.Width.Value
-        height = 0
-        if hasattr(obj,"Height"):
-            if obj.Height.Value:
-                height = obj.Height.Value
-            else:
-                for p in obj.InList:
-                    if Draft.getType(p) == "Floor":
-                        if p.Height.Value:
-                            height = p.Height.Value
-        default = Vector(0,0,1)
-        if Draft.getType(obj) == "Structure":
-            if length > height:
-                default = Vector(1,0,0)
-        if hasattr(obj,"Normal"):
-            if obj.Normal == Vector(0,0,0):
-                normal = default
-            else:
-                normal = Vector(obj.Normal)
+                    base,placement = self.rebase(obj.Base.Base.Shape)
+                    extrusion = obj.Base.Dir
+                    if extrusion.Length == 0:
+                        extrusion = FreeCAD.Vector(0,0,1)
+                    if hasattr(obj.Base,"LengthForward"):
+                        if obj.Base.LengthForward.Value:
+                            extrusion = extrusion.multiply(obj.Base.LengthForward.Value)
+                    return (base,extrusion,placement)
+        return None
+        
+    def rebase(self,shape):
+        import DraftGeomUtils,math
+        if hasattr(shape,"CenterOfMass"):
+            v = shape.CenterOfMass
         else:
-            normal = default
-        return normal,length,width,height
-
-    def getPlacement(self,obj):
-        "returns a total placement for the profile of this component"
+            v = shape.BoundBox.Center
+        n = DraftGeomUtils.getNormal(shape)
+        r = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),n)
+        if round(r.Angle,8) == round(math.pi,8):
+            r = FreeCAD.Rotation()
+        shape = shape.copy()
+        shape.translate(v.negative())
+        shape.rotate(FreeCAD.Vector(0,0,0),r.inverted().Axis,math.degrees(r.inverted().Angle))
         p = FreeCAD.Placement()
-        if obj.Base:
-            p = obj.Base.Placement.multiply(p)
-        else:
-            if Draft.getType(obj) == "Structure":
-                n,l,w,h = self.getDefaultValues(obj)
-                if l > h:
-                    p.Rotation = FreeCAD.Rotation(FreeCAD.Vector(0,1,0),90)
-        p = obj.Placement.multiply(p)
-        return p
+        p.Base = v
+        p.Rotation = r
+        return (shape,p)
 
     def hideSubobjects(self,obj,prop):
         "Hides subobjects when a subobject lists change"
@@ -701,33 +549,42 @@ class Component:
             return
         if not obj.Shape.Faces:
             return
+        import Drawing,Part
         a = 0
         fset = []
-        for f in obj.Shape.Faces:
-            ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
-            if (ang > 1.57) and (ang < 1.571):
-                a += f.Area
-            if ang < 1.5707:
-                fset.append(f)
+        for i,f in enumerate(obj.Shape.Faces):
+            try:
+                ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+            except Part.OCCError:
+                print "Debug: Error computing areas for ",obj.Label,": normalAt() Face ",i
+                return
+            else:
+                if (ang > 1.57) and (ang < 1.571):
+                    a += f.Area
+                if ang < 1.5707:
+                    fset.append(f)
         if a and hasattr(obj,"VerticalArea"):
             if obj.VerticalArea.Value != a:
                 obj.VerticalArea = a
         if fset and hasattr(obj,"HorizontalArea"):
-            import Drawing,Part
             pset = []
             for f in fset:
-                try:
-                    pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
-                except Part.OCCError:
-                    # error in computing the areas. Better set them to zero than show a wrong value
-                    if obj.HorizontalArea.Value != 0:
-                        print "Error computing areas for ",obj.Label
-                        obj.HorizontalArea = 0
-                    if hasattr(obj,"PerimeterLength"):
-                        if obj.PerimeterLength.Value != 0:
-                            obj.PerimeterLength = 0
+                if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < 0.00001:
+                    # already horizontal
+                    pset.append(f)
                 else:
-                    pset.append(pf)
+                    try:
+                        pf = Part.Face(Part.Wire(Drawing.project(f,FreeCAD.Vector(0,0,1))[0].Edges))
+                    except Part.OCCError:
+                        # error in computing the areas. Better set them to zero than show a wrong value
+                        if obj.HorizontalArea.Value != 0:
+                            print "Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")"
+                            obj.HorizontalArea = 0
+                        if hasattr(obj,"PerimeterLength"):
+                            if obj.PerimeterLength.Value != 0:
+                                obj.PerimeterLength = 0
+                    else:
+                        pset.append(pf)
             if pset:
                 self.flatarea = pset.pop()
                 for f in pset:

@@ -374,7 +374,9 @@ class _CommandStructure:
 
 
 class _Structure(ArchComponent.Component):
+
     "The Structure object"
+
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
         obj.addProperty("App::PropertyLink","Tool","Arch",QT_TRANSLATE_NOOP("App::Property","An optional extrusion path for this element"))
@@ -386,7 +388,9 @@ class _Structure(ArchComponent.Component):
         obj.addProperty("App::PropertyVectorList","Nodes","Arch",QT_TRANSLATE_NOOP("App::Property","The structural nodes of this element"))
         obj.addProperty("App::PropertyString","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","A description of the standard profile this element is based upon"))
         obj.addProperty("App::PropertyDistance","NodesOffset","Arch",QT_TRANSLATE_NOOP("App::Property","Offset distance between the centerline and the nodes line"))
+        obj.addProperty("App::PropertyEnumeration","FaceMaker","Arch",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
         self.Type = "Structure"
+        obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         obj.Role = Roles
 
     def execute(self,obj):
@@ -397,11 +401,22 @@ class _Structure(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        normal,length,width,height = self.getDefaultValues(obj)
-
-        # creating base shape
-        pl = obj.Placement
+        import Part, DraftGeomUtils
         base = None
+        pl = obj.Placement
+        extdata = self.getExtrusionData(obj)
+        if extdata:
+            base = extdata[0]
+            base.Placement = extdata[2].multiply(base.Placement)
+            extv = extdata[2].Rotation.multVec(extdata[1])
+            if obj.Tool:
+                try:
+                    base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
+                except Part.OCCError:
+                    FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object")+"\n")
+                    return
+            else:
+                base = base.extrude(extv)
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.isNull():
@@ -410,42 +425,8 @@ class _Structure(ArchComponent.Component):
                     if not obj.Base.Shape.Solids:
                         # let pass invalid objects if they have solids...
                         return
-                if hasattr(obj,"Tool"):
-                    if obj.Tool:
-                        try:
-                            base = obj.Tool.Shape.copy().makePipe(obj.Base.Shape.copy())
-                        except Part.OCCError:
-                            FreeCAD.Console.PrintError(translate("Arch","Error: The base shape couldn't be extruded along this tool object"))
-                            return
-                if not base:
-                    if not height:
-                        return
-                    if obj.Normal == Vector(0,0,0):
-                        if len(obj.Base.Shape.Faces) > 0 :
-                            normal=obj.Base.Shape.Faces[0].normalAt(.5,.5)
-                        else:
-                            normal = DraftGeomUtils.getNormal(obj.Base.Shape)
-                            if not normal:
-                                normal = FreeCAD.Vector(0,0,1)
-                            #p = FreeCAD.Placement(obj.Base.Placement)
-                            #normal = p.Rotation.multVec(normal)
-                    else:
-                        normal = Vector(obj.Normal)
-                    normal = normal.multiply(height)
+                elif obj.Base.Shape.Solids:
                     base = obj.Base.Shape.copy()
-                    if base.Solids:
-                        pass
-                    elif base.Faces:
-                        base = base.extrude(normal)
-                    elif (len(base.Wires) == 1):
-                        if base.Wires[0].isClosed():
-                            try:
-                                base = Part.Face(base.Wires[0])
-                                base = base.extrude(normal)
-                            except Part.OCCError:
-                                FreeCAD.Console.PrintError(obj.Label+" : "+str(translate("Arch","Unable to extrude the base shape\n")))
-                                return
-
             elif obj.Base.isDerivedFrom("Mesh::Feature"):
                 if obj.Base.Mesh.isSolid():
                     if obj.Base.Mesh.countComponents() == 1:
@@ -453,54 +434,133 @@ class _Structure(ArchComponent.Component):
                         if sh.isClosed() and sh.isValid() and sh.Solids and (not sh.isNull()):
                             base = sh
                         else:
-                            FreeCAD.Console.PrintWarning(str(translate("Arch","This mesh is an invalid solid")))
+                            FreeCAD.Console.PrintWarning(translate("Arch","This mesh is an invalid solid")+"\n")
                             obj.Base.ViewObject.show()
-        else:
-            base = self.getProfiles(obj)
-            if base:
-                if length > height:
-                    normal = normal.multiply(length)
-                else:
-                    normal = normal.multiply(height)
-                base = Part.Face(base[0])
-                base = base.extrude(normal)
+        if not base:
+            FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
+            return
 
         base = self.processSubShapes(obj,base,pl)
         self.applyShape(obj,base,pl)
+        
+    def getExtrusionData(self,obj):
+        """returns (shape,extrusion vector,placement) or None"""
+        import Part,DraftGeomUtils
+        data = ArchComponent.Component.getExtrusionData(self,obj)
+        if data:
+            return data
+        length  = obj.Length.Value
+        width = obj.Width.Value
+        height = obj.Height.Value
+        normal = None
+        if not height:
+            for p in obj.InList:
+                if Draft.getType(p) == "Floor":
+                    if p.Height.Value:
+                        height = p.Height.Value
+        base = None
+        placement = None
+        if obj.Base:
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                if obj.Base.Shape:
+                    if obj.Base.Shape.Solids:
+                        return None
+                    elif obj.Base.Shape.Faces:
+                        if not DraftGeomUtils.isCoplanar(obj.Base.Shape.Faces):
+                            return None
+                        else:
+                            base,placement = self.rebase(obj.Base.Shape)
+                            normal = obj.Base.Shape.Faces[0].normalAt(0,0)
+                    elif obj.Base.Shape.Wires:
+                        baseface = None
+                        if hasattr(obj,"FaceMaker"):
+                            if obj.FaceMaker != "None":
+                                try:
+                                    baseface = Part.makeFace(obj.Base.Shape.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
+                                except:
+                                    FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
+                                    return None
+                                normal = baseface.normalAt(0,0)
+                        if not baseface:
+                            for w in obj.Base.Shape.Wires:
+                                w.fix(0.1,0,1) # fixes self-intersecting wires
+                                f = Part.Face(sh)
+                                if baseface:
+                                    baseface = baseface.fuse(f)
+                                else:
+                                    baseface = f
+                                    normal = f.normalAt(0,0)
+                        base,placement = self.rebase(baseface)
+                    elif (len(obj.Base.Shape.Edges) == 1) and (len(obj.Base.Shape.Vertexes) == 1):
+                        # closed edge
+                        w = Part.Wire(obj.Base.Shape.Edges[0])
+                        baseface = Part.Face(w)
+                        base,placement = self.rebase(baseface)
+        elif length and width and height:
+            if (length > height) and (obj.Role != "Slab"):
+                h2 = height/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(0,-w2,-h2)
+                v2 = Vector(0,-w2,h2)
+                v3 = Vector(0,w2,h2)
+                v4 = Vector(0,w2,-h2)
+            else:
+                l2 = length/2 or 0.5
+                w2 = width/2 or 0.5
+                v1 = Vector(-l2,-w2,0)
+                v2 = Vector(l2,-w2,0)
+                v3 = Vector(l2,w2,0)
+                v4 = Vector(-l2,w2,0)
+            import Part
+            baseface = Part.Face(Part.makePolygon([v1,v2,v3,v4,v1]))
+            base,placement = self.rebase(baseface)
+        if base and placement:
+            if obj.Normal == Vector(0,0,0):
+                if not normal:
+                    normal = Vector(0,0,1)
+            else:
+                normal = Vector(obj.Normal)
+            if (length > height) and (obj.Role != "Slab"):
+                extrusion = normal.multiply(length)
+            else:
+                extrusion = normal.multiply(height)
+            return (base,extrusion,placement)
+        return None
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
         if prop in ["Shape","ResetNodes","NodesOffset"]:
             # ResetNodes is not a property but it allows us to use this function to force reset the nodes
-            if hasattr(obj,"Nodes"):
-                # update structural nodes
-                offset = FreeCAD.Vector()
-                if hasattr(obj,"NodesOffset"):
-                    offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)
-                if obj.Nodes  and (prop != "ResetNodes"):
-                    if hasattr(self,"nodes"):
-                        if self.nodes:
-                            if obj.Nodes != self.nodes:
-                                # nodes are set manually: don't touch them
-                                return
+            nodes = None
+            extdata = self.getExtrusionData(obj)
+            if extdata:
+                nodes = extdata[0]
+                nodes.Placement = nodes.Placement.multiply(extdata[2])
+                if obj.Role not in ["Slab"]:
+                    if obj.Tool:
+                        nodes = obj.Tool.Shape
                     else:
-                        # nodes haven't been calculated yet, but are set (file load)
-                        # we calculate the nodes now but don't change the property
-                        if obj.Role in ["Slab"]:
-                            nodes = self.getProfiles(obj)[0]
-                        else:
-                            nodes = self.getAxis(obj)
-                        if nodes:
-                            self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
+                        import Part
+                        nodes = Part.Line(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
+            offset = FreeCAD.Vector()
+            if hasattr(obj,"NodesOffset"):
+                offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)
+            if obj.Nodes and (prop != "ResetNodes"):
+                if hasattr(self,"nodes"):
+                    if self.nodes:
+                        if obj.Nodes != self.nodes:
+                            # nodes are set manually: don't touch them
                             return
-                # we calculate and set the nodes
-                if obj.Role in ["Slab"]:
-                    nodes = self.getProfiles(obj)[0]
                 else:
-                    nodes = self.getAxis(obj)
-                if nodes:
-                    self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
-                    obj.Nodes = self.nodes
+                    # nodes haven't been calculated yet, but are set (file load)
+                    # we set the nodes now but don't change the property
+                    if nodes:
+                        self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
+                        return
+            # we set the nodes
+            if nodes:
+                self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
+                obj.Nodes = self.nodes
 
     def getNodeEdges(self,obj):
         "returns a list of edges from stuctural nodes"
