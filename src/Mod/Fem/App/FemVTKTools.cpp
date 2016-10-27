@@ -107,7 +107,6 @@ template<class TWriter> void writeVTKFile(const char* filename, vtkSmartPointer<
   writer->SetFileName(filename);
   writer->SetInputData(dataset);
   writer->Write();
-  //writer->Update();
 }
   
 void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* mesh)
@@ -444,7 +443,6 @@ App::DocumentObject* getObjectByType(const Base::Type type)
 
     if(obj->getTypeId() == type)
     {
-        Base::Console().Message("active documentObject type: %s \n", obj->getTypeId());
         return obj;
     }
     if(obj->getTypeId() ==  FemAnalysis::getClassTypeId())
@@ -491,7 +489,6 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     Base::FileInfo f(filename);
       
     vtkSmartPointer<vtkDataSet> ds;
-    //vtkDataSet* ds;  //
     if(f.hasExtension("vtu"))
     {
         ds = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
@@ -531,10 +528,10 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
 
     App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
     FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to relase FemMesh ??
-    importVTKMesh(dataset, fmesh);  // in doc, mesh is empty, why? 
+    importVTKMesh(dataset, fmesh);
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
-    //PropertyLink is the property type to store DocumentObject pointer
+    // PropertyLink is the property type to store DocumentObject pointer
     
     importFluidicResult(dataset, result);
     pcDoc->recompute();
@@ -544,25 +541,6 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     return result;
 }
 
-/*
-App::DocumentObject* readFluidicResult(const char* filename, const std::string objName) {
-    App::Document* pcDoc = App::GetApplication().getActiveDocument();
-    if(!pcDoc)
-    {
-        Base::Console().Message("No active document is found thus created\n");
-        pcDoc = App::GetApplication().newDocument();
-    }
-    
-    App::DocumentObject* res = pcDoc->getObject(objName.c_str());
-    if (!res) {
-        return FemVTKTools::readFluidicResult(filename, res);
-    }
-    else{
-        Base::Console().Message("Can not find ResultObject by name %s in activeDocument", objName);
-        return FemVTKTools::readFluidicResult(filename, NULL);
-    }
-}
- * */
 
 void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* res) {
     if (!res) 
@@ -613,25 +591,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
-/*
-void FemVTKTools::writeResult(const char* filename,  const std::string objName) {
-    App::Document* pcDoc = App::GetApplication().getActiveDocument();
-    if(!pcDoc)
-    {
-        Base::Console().Message("No active document is found thus writing is ignored\n");
-        return;
-    }
-    
-    App::DocumentObject* res = pcDoc->getObject(objName.c_str());
-    if (!res) {
-        return FemVTKTools::writeResult(filename, res);
-    }
-    else{
-        Base::Console().Message("Can not find ResultObject by name %s in activeDocument", objName);
-        return FemVTKTools::writeResult(filename, NULL);
-    }
-}
-*/
+
 void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::DocumentObject* res) {
 
     // velocity and pressure are essential, Temperature is optional, so are turbulence related variables
@@ -690,7 +650,6 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
         stats[index*3] = vmin;
         stats[index*3 + 2] = vmax;
         stats[index*3 + 1] = vmean/nPoints;
-        Base::Console().Message("debug info: vel ptr: %p \n", res->getPropertyByName("Velocity"));
         App::PropertyVectorList* velocity = static_cast<App::PropertyVectorList*>(res->getPropertyByName("Velocity"));
         if(velocity) {
             //PropertyVectorList will not show up in PropertyEditor
@@ -717,7 +676,6 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
                 continue;
             }
 
-            Base::Console().Message("debug info: npoints = %d, NumberOfTuples = %d", nPoints, vec->GetNumberOfTuples());
             double vmin=1.0e100, vmean=0.0, vmax=0.0;
             std::vector<double> values(nPoints, 0.0);
             for(vtkIdType i = 0; i < vec->GetNumberOfTuples(); i++)
