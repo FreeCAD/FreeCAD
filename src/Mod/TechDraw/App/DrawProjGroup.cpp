@@ -44,7 +44,7 @@
 
 using namespace TechDraw;
 
-const char* DrawProjGroup::ProjectionTypeEnums[] = {"Document",
+const char* DrawProjGroup::ProjectionTypeEnums[] = {"Default",
                                                               "First Angle",
                                                               "Third Angle",
                                                               NULL};
@@ -397,7 +397,7 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
 
     // Determine layout - should be either "First Angle" or "Third Angle"
     const char* projType;
-    if (ProjectionType.isValue("Document")) {
+    if (ProjectionType.isValue("Default")) {
         projType = findParentPage()->ProjectionType.getValueAsString();
     } else {
         projType = ProjectionType.getValueAsString();
@@ -604,7 +604,7 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
                 Scale.setValue(newScale);
             }
          }
-    } else if (ScaleType.isValue("Document")) {
+    } else if (ScaleType.isValue("Page")) {
         newScale = page->Scale.getValue();
         if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
             resetPositions();
@@ -631,8 +631,8 @@ void DrawProjGroup::updateChildren(double scale)
             if (ScaleType.isValue("Automatic")) {
                 view->ScaleType.setValue("Custom");
                 view->Scale.setStatus(App::Property::ReadOnly,true);
-            } else if (ScaleType.isValue("Document")) {
-                view->ScaleType.setValue("Document");
+            } else if (ScaleType.isValue("Page")) {
+                view->ScaleType.setValue("Page");
                 view->Scale.setStatus(App::Property::ReadOnly,true);
             } else if (ScaleType.isValue("Custom")) {
                 view->ScaleType.setValue("Custom");
@@ -677,7 +677,7 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
 {
     //TODO: Would've been nice to have an Enumeration(const PropertyEnumeration &) constructor
     App::Enumeration ret(ProjectionTypeEnums, ProjectionType.getValueAsString());
-    if (ret.isValue("Document")) {
+    if (ret.isValue("Default")) {
         TechDraw::DrawPage * page = getPage();
         if ( page != NULL ) {
             ret.setValue(page->ProjectionType.getValueAsString());
