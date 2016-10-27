@@ -129,8 +129,8 @@ void DrawView::onChanged(const App::Property* prop)
             }
         } else if (prop == &X ||
                    prop == &Y) {
-            if (isMouseMove()) {
-                setAutoPos(false);         //should only be for manual changes? not programmatic changes?
+            if (isMouseMove()) {     //actually "has mouse moved this item?"
+                setAutoPos(false);
             }
         }
     }
@@ -224,6 +224,14 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
         result = false;
     }
     return result;
+}
+
+void DrawView::setPosition(double x, double y)
+{
+    //recompute.lock()
+    X.setValue(x);
+    Y.setValue(y);
+    //recompute.unlock()
 }
 
 PyObject *DrawView::getPyObject(void)
