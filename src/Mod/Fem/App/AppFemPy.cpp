@@ -249,25 +249,16 @@ private:
 #ifdef FC_USE_VTK
     Py::Object readCfdResult(const Py::Tuple& args)
     {
-        //the second parameter is either objName (utf8,  obj.Label is unicode type) or python obj (not yet implemented)
-        //PyObject *pcObj; // PythonFeatureT<FemResultObject> is of python type  `` or c++ type
-        char* fileName; 
-        char* objName;
-        //if (!PyArg_ParseTuple(args.ptr(), "etO!","utf-8", &Name, &(App::DocumentObjectPy::Type), &pcObj))
-        if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8", &fileName, "utf-8", &objName))
+        char* fileName = NULL; 
+        char* objName = NULL;
+
+        if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))
             throw Py::Exception();
         std::string EncodedName = std::string(fileName);
         PyMem_Free(fileName);
         std::string resName = std::string(objName);
         PyMem_Free(objName);
-        /*
-        if (pcObj)
-        {
-            // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
-            App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
-            App::DocumentObject* obj = objpy->getDocumentObjectPtr();
-            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
-        */
+
         if (resName.length())
         {
             App::Document* pcDoc = App::GetApplication().getActiveDocument();
@@ -282,21 +273,16 @@ private:
     
     Py::Object writeResult(const Py::Tuple& args)
     {
-        char* fileName;
-        PyObject *pcObj; // PythonFeatureT<FemResultObject> is of type 
-        //char* objName; 
-        if (!PyArg_ParseTuple(args.ptr(), "etO!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
-        //if (!PyArg_ParseTuple(args.ptr(), "etet","utf-8", &Name, "utf-8", &objName))
+        char* fileName = NULL;
+        PyObject *pcObj = NULL;
+
+        if (!PyArg_ParseTuple(args.ptr(), "et|O!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
             throw Py::Exception();
         std::string EncodedName = std::string(fileName);
         PyMem_Free(fileName);
-        //std::string resName = std::string(objName);
-        //PyMem_Free(objName);
-        
-        //if (resName.length())
+
         if (!pcObj)
         {
-            // this function needs the second parameter: App::DocumentObjectPy, since it is created in python
             App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
             App::DocumentObject* obj = objpy->getDocumentObjectPtr();
             if (!obj)
