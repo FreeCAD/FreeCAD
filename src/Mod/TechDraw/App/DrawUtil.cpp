@@ -147,13 +147,14 @@ double DrawUtil::sensibleScale(double working_scale)
     float exponent = std::floor(std::log10(working_scale));                  //if working_scale = a * 10^b, what is b?
     working_scale *= std::pow(10, -exponent);                                //now find what 'a' is.
 
-    int choices = 10;
-    float valid_scales[2][choices] =
+    //int choices = 10;
+    float valid_scales[2][10] =
                           {{1.0, 1.25, 2.0, 2.5, 3.75, 5.0, 7.5, 10.0, 50.0, 100.0},   //equate to 1:10, 1:8, 1:5, 1:4, 3:8, 1:2, 3:4, 1:1
                                                                                        //          .1   .125            .375      .75
                            {1.0, 1.5 , 2.0, 3.0, 4.0 , 5.0, 8.0, 10.0, 50.0, 100.0}};  //equate to 1:1, 3:2, 2:1, 3:1, 4:1, 5:1, 8:1, 10:1
                                                                                        //              1.5:1
-    int i = choices - 1;
+    //int i = choices - 1;
+    int i = 9;
     while (valid_scales[(exponent >= 0)][i] > working_scale)                 //choose closest value smaller than 'a' from list.
         i -= 1;                                                              //choosing top list if exponent -ve, bottom list for +ve exponent
 
