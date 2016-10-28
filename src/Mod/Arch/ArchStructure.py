@@ -484,7 +484,7 @@ class _Structure(ArchComponent.Component):
                         if not baseface:
                             for w in obj.Base.Shape.Wires:
                                 w.fix(0.1,0,1) # fixes self-intersecting wires
-                                f = Part.Face(sh)
+                                f = Part.Face(w)
                                 if baseface:
                                     baseface = baseface.fuse(f)
                                 else:
