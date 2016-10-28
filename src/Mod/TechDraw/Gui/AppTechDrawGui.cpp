@@ -115,6 +115,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
     TechDrawGui::ViewProviderAnnotation::init();
     TechDrawGui::ViewProviderSymbol::init();
     TechDrawGui::ViewProviderDraft::init();
+    TechDrawGui::ViewProviderArch::init();
     TechDrawGui::ViewProviderHatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
 

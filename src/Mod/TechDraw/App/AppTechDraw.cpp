@@ -33,6 +33,7 @@
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
 #include "DrawViewDraft.h"
+#include "DrawViewArch.h"
 #include "DrawViewSpreadsheet.h"
 
 namespace TechDraw {
@@ -78,6 +79,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawViewClip        ::init();
     TechDraw::DrawHatch           ::init();
     TechDraw::DrawViewDraft       ::init();
+    TechDraw::DrawViewArch        ::init();
 
    // Python Types
     TechDraw::DrawViewPython      ::init();

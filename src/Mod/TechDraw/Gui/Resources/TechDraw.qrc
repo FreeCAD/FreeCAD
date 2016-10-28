@@ -38,6 +38,7 @@
         <file>icons/actions/techdraw-clipminus.svg</file>
         <file>icons/actions/techdraw-symbol.svg</file>
         <file>icons/actions/techdraw-draft-view.svg</file>
+        <file>icons/actions/techdraw-arch-view.svg</file>
         <file>icons/actions/techdraw-saveSVG.svg</file>
         <file>icons/actions/techdraw-viewsection.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>

@@ -77,6 +77,8 @@ SET(Draw_SRCS
     DrawHatch.h
     DrawViewDraft.cpp
     DrawViewDraft.h
+    DrawViewArch.cpp
+    DrawViewArch.h
 )
 
 SET(TechDraw_SRCS

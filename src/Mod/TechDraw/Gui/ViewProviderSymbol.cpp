@@ -99,3 +99,18 @@ ViewProviderDraft::ViewProviderDraft()
 ViewProviderDraft::~ViewProviderDraft()
 {
 }
+
+//**************************************************************************
+// Arch view
+
+PROPERTY_SOURCE(TechDrawGui::ViewProviderArch, TechDrawGui::ViewProviderSymbol)
+
+
+ViewProviderArch::ViewProviderArch()
+{
+    sPixmap = "actions/techdraw-arch-view.svg";
+}
+
+ViewProviderArch::~ViewProviderArch()
+{
+}

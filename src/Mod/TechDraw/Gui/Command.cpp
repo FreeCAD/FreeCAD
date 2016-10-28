@@ -790,6 +790,63 @@ bool CmdTechDrawDraftView::isActive(void)
 }
 
 //===========================================================================
+// TechDraw_ArchView
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawArchView);
+
+CmdTechDrawArchView::CmdTechDrawArchView()
+  : Command("TechDraw_ArchView")
+{
+    // setting the Gui eye-candy
+    sGroup        = QT_TR_NOOP("TechDraw");
+    sMenuText     = QT_TR_NOOP("Insert an ArchView");
+    sToolTipText  = QT_TR_NOOP("Inserts a view of an Arch Section Plane into the active drawing");
+    sWhatsThis    = "TechDraw_ArchView";
+    sStatusTip    = QT_TR_NOOP("Inserts a view of an Arch Section Plane into the active drawing");
+    sPixmap       = "actions/techdraw-arch-view";
+}
+
+void CmdTechDrawArchView::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> objects = getSelection().getObjectsOfType(App::DocumentObject::getClassTypeId());
+    if (objects.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select exactly one Arch Section Plane object."));
+        return;
+    }
+    App::Property* prop1 = objects[0]->getPropertyByName("Objects");
+    App::Property* prop2 = objects[0]->getPropertyByName("OnlySolids");
+    if ( (!prop1) || (!prop2) ) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("The selected object is not an Arch Section Plane."));
+        return;
+    }
+    
+    std::string PageName = page->getNameInDocument();
+
+    std::string FeatName = getUniqueObjectName("ArchView");
+    std::string SourceName = objects[0]->getNameInDocument();
+    openCommand("Create ArchView");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewArch','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdTechDrawArchView::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
+//===========================================================================
 // TechDraw_Spreadheet
 //===========================================================================
 
@@ -910,5 +967,6 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPage());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
+    rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheet());
 }
