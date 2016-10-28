@@ -150,7 +150,9 @@ void DrawViewSection::onChanged(const App::Property* prop)
         }
         if (prop == &SectionOrigin) {
             App::DocumentObject* base = BaseView.getValue();
-            base->touch();
+            if (base != nullptr) {
+                base->touch();
+            }
         }
     }
     DrawView::onChanged(prop);
