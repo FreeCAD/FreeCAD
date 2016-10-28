@@ -206,6 +206,8 @@ class ComponentTaskPanel:
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
             return QtGui.QIcon(":/icons/Tree_Part.svg")
 
@@ -233,7 +235,8 @@ class ComponentTaskPanel:
                             Oattrib = [Oattrib]
                         for o in Oattrib:
                             item = QtGui.QTreeWidgetItem()
-                            item.setText(0,o.Name)
+                            item.setText(0,o.Label)
+                            item.setToolTip(0,o.Name)
                             item.setIcon(0,self.getIcon(o))
                             Tattrib.addChild(item)
                         self.tree.expandItem(Tattrib)
@@ -253,7 +256,7 @@ class ComponentTaskPanel:
     def removeElement(self):
         it = self.tree.currentItem()
         if it:
-            comp = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
+            comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
             removeFromComponent(self.obj,comp)
         self.update()
 
@@ -264,7 +267,7 @@ class ComponentTaskPanel:
 
     def editObject(self,wid,col):
         if wid.parent():
-            obj = FreeCAD.ActiveDocument.getObject(str(wid.text(0)))
+            obj = FreeCAD.ActiveDocument.getObject(str(wid.toolTip(0)))
             if obj:
                 self.obj.ViewObject.Transparency = 80
                 self.obj.ViewObject.Selectable = False
