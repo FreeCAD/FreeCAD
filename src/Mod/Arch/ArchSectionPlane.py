@@ -145,7 +145,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                     else:
                         shapes.append(o.Shape)
                 else:
-                    FreeCAD.Console.PrintWarning(translate("Arch","Skipping invalid object: ")+o.Name)
+                    print section.Label,": Skipping invalid object:",o.Label
         cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
         if cutvolume:
             nsh = []
@@ -583,6 +583,8 @@ class SectionPlaneTaskPanel:
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
             return QtGui.QIcon(":/icons/Tree_Part.svg")
 
@@ -592,7 +594,8 @@ class SectionPlaneTaskPanel:
         if self.obj:
             for o in self.obj.Objects:
                 item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,o.Name)
+                item.setText(0,o.Label)
+                item.setToolTip(0,o.Name)
                 item.setIcon(0,self.getIcon(o))
         self.retranslateUi(self.form)
 
@@ -606,7 +609,7 @@ class SectionPlaneTaskPanel:
         if self.obj:
             it = self.tree.currentItem()
             if it:
-                comp = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
+                comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
                 ArchComponent.removeFromComponent(self.obj,comp)
             self.update()
 
