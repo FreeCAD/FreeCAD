@@ -48,31 +48,20 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
-class OutputPolicy:
-    Default          = ''
-    Dialog           = 'Open File Dialog'
-    DialogOnConflict = 'Open File Dialog on conflict'
-    Overwrite        = 'Overwrite existing file'
-    AppendID         = 'Append Unique ID on conflict'
-    All = [Default, Dialog, DialogOnConflict, Overwrite, AppendID]
-
 class ObjectPathJob:
 
     def __init__(self, obj):
         #        obj.addProperty("App::PropertyFile", "PostProcessor", "CodeOutput", "Select the Post Processor file for this project")
         obj.addProperty("App::PropertyFile", "OutputFile", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The NC output file for this project"))
-        obj.OutputFile = ''
+        obj.OutputFile = PathPreferences.defaultOutputFile()
         obj.setEditorMode("OutputFile", 0)  # set to default mode
-        obj.addProperty("App::PropertyEnumeration", "OutputPolicy", "CodeOutput", QtCore.QT_TRANSLATE_NOOP("App::Property","The policy on how to save output files and resolve name conflicts"))
-        obj.OutputPolicy = OutputPolicy.All
-        obj.OutputPolicy = OutputPolicy.Default
 
         obj.addProperty("App::PropertyString", "Description", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","An optional description for this job"))
         obj.addProperty("App::PropertyEnumeration", "PostProcessor", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Select the Post Processor"))
         obj.PostProcessor = PathPreferences.allEnabledPostProcessors([''])
-        obj.PostProcessor = ''
+        obj.PostProcessor = PathPreferences.defaultPostProcessor()
         obj.addProperty("App::PropertyString", "PostProcessorArgs", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property", "Arguments for the Post Processor (specific to the script)"))
-        obj.PostProcessorArgs = ''
+        obj.PostProcessorArgs = PathPreferences.defaultPostProcessorArgs()
         obj.addProperty("App::PropertyString",    "MachineName", "Output", QtCore.QT_TRANSLATE_NOOP("App::Property","Name of the Machine that will use the CNC program"))
 
         obj.addProperty("Path::PropertyTooltable", "Tooltable", "Base", QtCore.QT_TRANSLATE_NOOP("App::Property","The tooltable used for this CNC program"))
@@ -270,16 +259,10 @@ class TaskPanel:
     def getFields(self):
         '''sets properties in the object to match the form'''
         if self.obj:
-            if hasattr(self.obj, "PostProcessor"):
-                self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
-            if hasattr(self.obj, "PostProcessorArgs"):
-                self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText())
-            if hasattr(self.obj, "Label"):
-                self.obj.Label = str(self.form.leLabel.text())
-            if hasattr(self.obj, "OutputFile"):
-                self.obj.OutputFile = str(self.form.leOutputFile.text())
-            if hasattr(self.obj, "OutputPolicy"):
-                self.obj.OutputPolicy = str(self.form.cboOutputPolicy.currentText())
+            self.obj.PostProcessor = str(self.form.cboPostProcessor.currentText())
+            self.obj.PostProcessorArgs = str(self.form.cboPostProcessorArgs.displayText())
+            self.obj.Label = str(self.form.leLabel.text())
+            self.obj.OutputFile = str(self.form.leOutputFile.text())
 
             oldlist = self.obj.Group
             newlist = []
@@ -313,7 +296,6 @@ class TaskPanel:
 
         self.form.leLabel.setText(self.obj.Label)
         self.form.leOutputFile.setText(self.obj.OutputFile)
-        self.selectComboBoxText(self.form.cboOutputPolicy, self.obj.OutputPolicy)
 
         self.selectComboBoxText(self.form.cboPostProcessor, self.obj.PostProcessor)
         self.obj.Proxy.onChanged(self.obj, "PostProcessor")
@@ -347,7 +329,6 @@ class TaskPanel:
         # Connect Signals and Slots
         self.form.cboPostProcessor.currentIndexChanged.connect(self.getFields)
         self.form.leOutputFile.editingFinished.connect(self.getFields)
-        self.form.cboOutputPolicy.currentIndexChanged.connect(self.getFields)
         self.form.leLabel.editingFinished.connect(self.getFields)
         self.form.btnSelectFile.clicked.connect(self.setFile)
         self.form.PathsList.indexesMoved.connect(self.getFields)
