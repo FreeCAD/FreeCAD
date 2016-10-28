@@ -3566,6 +3566,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
         obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
         obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
         obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
+        obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
         obj.FontSize = getParam("textheight",0.20)
         obj.TextSpacing = getParam("dimspacing",0.05)
         obj.FontName = getParam("textfont","")
@@ -3749,15 +3750,18 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 su = obj.ViewObject.ShowUnit
             # set text value
             l = self.p3.sub(self.p2).Length
+            unit = None
+            if hasattr(obj.ViewObject,"UnitOverride"):
+                unit = obj.ViewObject.UnitOverride
             # special representation if "Building US" scheme
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
                 s = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
                 self.string = s.replace("' ","'- ")
                 self.string = s.replace("+"," ")
             elif hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su,unit)
             else:
-                self.string = DraftGui.displayExternal(l,None,'Length',su)
+                self.string = DraftGui.displayExternal(l,None,'Length',su,unit)
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     self.string = obj.ViewObject.Override.replace("$dim",\

@@ -134,16 +134,21 @@ def makeFormatSpec(decimals=4,dim='Length'):
         fmtSpec = "%." + str(decimals) + "f " + "??"
     return fmtSpec
 
-def displayExternal(internValue,decimals=None,dim='Length',showUnit=True):
+def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
     '''return an internal value (ie mm) Length or Angle converted for display according 
-    to Units Schema in use.'''
+    to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
     from FreeCAD import Units
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        if (decimals == None) and showUnit:
-            return q.UserString
-        conversion = q.getUserPreferred()[1]
-        uom = q.getUserPreferred()[2]
+        if not unit:
+            if (decimals == None) and showUnit:
+                return q.UserString
+            conversion = q.getUserPreferred()[1]
+            uom = q.getUserPreferred()[2]
+        else:
+            uom = unit
+            internValue = q.getValueAs(unit)
+            conversion = 1
     elif dim == 'Angle':
         return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
     else:
