@@ -147,6 +147,9 @@ App::DocumentObjectExecReturn *Groove::execute(void)
 
             // cut out groove to get one result object
             BRepAlgoAPI_Cut mkCut(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             // Let's check if the fusion has been successful
             if (!mkCut.IsDone())
                 throw Base::Exception("Cut out of base feature failed");

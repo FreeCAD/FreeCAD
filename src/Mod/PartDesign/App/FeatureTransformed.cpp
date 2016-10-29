@@ -315,6 +315,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
 
         if (fuse) {
             BRepAlgoAPI_Fuse mkFuse(current, compoundTool);
+#if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+#endif
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
             // we have to get the solids (fuse sometimes creates compounds)
@@ -326,6 +329,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
             {
               BRepAlgoAPI_Fuse mkFuse2(current, *individualIt);
+#if OCC_VERSION_HEX >= 0x060900
+              mkFuse2.SetRunParallel(true);
+#endif
               if (!mkFuse2.IsDone())
                   return new App::DocumentObjectExecReturn("Fusion with support failed", *o);
               // we have to get the solids (fuse sometimes creates compounds)
@@ -336,6 +342,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             }
         } else {
             BRepAlgoAPI_Cut mkCut(current, compoundTool);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
             current = mkCut.Shape();
@@ -343,6 +352,9 @@ App::DocumentObjectExecReturn *Transformed::execute(void)
             for (individualIt = individualTools.begin(); individualIt != individualTools.end(); ++individualIt)
             {
               BRepAlgoAPI_Cut mkCut2(current, *individualIt);
+#if OCC_VERSION_HEX >= 0x060900
+              mkCut2.SetRunParallel(true);
+#endif
               if (!mkCut2.IsDone())
                   return new App::DocumentObjectExecReturn("Cut out of support failed", *o);
               current = this->getSolid(mkCut2.Shape());

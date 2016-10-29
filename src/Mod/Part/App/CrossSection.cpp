@@ -76,6 +76,9 @@ std::list<TopoDS_Wire> CrossSection::slice(double d) const
 void CrossSection::sliceNonSolid(double d, const TopoDS_Shape& shape, std::list<TopoDS_Wire>& wires) const
 {
     BRepAlgoAPI_Section cs(shape, gp_Pln(a,b,c,-d));
+#if OCC_VERSION_HEX >= 0x060900
+    cs.SetRunParallel(true);
+#endif
     if (cs.IsDone()) {
         std::list<TopoDS_Edge> edges;
         TopExp_Explorer xp;
@@ -92,6 +95,9 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     BRepBuilderAPI_MakeFace mkFace(slicePlane);
     TopoDS_Face face = mkFace.Face();
     BRepAlgoAPI_Common mkInt(shape, face);
+#if OCC_VERSION_HEX >= 0x060900
+    mkInt.SetRunParallel(true);
+#endif
 
     if (mkInt.IsDone()) {
         // sort and repair the wires
@@ -114,7 +120,9 @@ void CrossSection::sliceSolid(double d, const TopoDS_Shape& shape, std::list<Top
     BRepPrimAPI_MakeHalfSpace mkSolid(face, refPoint);
     TopoDS_Solid solid = mkSolid.Solid();
     BRepAlgoAPI_Cut mkCut(shape, solid);
-
+#if OCC_VERSION_HEX >= 0x060900
+    mkCut.SetRunParallel(true);
+#endif
     if (mkCut.IsDone()) {
         TopTools_IndexedMapOfShape mapOfFaces;
         TopExp::MapShapes(mkCut.Shape(), TopAbs_FACE, mapOfFaces);

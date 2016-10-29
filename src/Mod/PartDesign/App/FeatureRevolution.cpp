@@ -150,6 +150,9 @@ App::DocumentObjectExecReturn *Revolution::execute(void)
             if (!base.IsNull()) {
                 // Let's call algorithm computing a fuse operation:
                 BRepAlgoAPI_Fuse mkFuse(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+                mkFuse.SetRunParallel(true);
+#endif
                 // Let's check if the fusion has been successful
                 if (!mkFuse.IsDone())
                     throw Base::Exception("Fusion with base feature failed");

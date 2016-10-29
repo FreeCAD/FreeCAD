@@ -170,6 +170,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Up to face: Could not get SubShape!");
             // FIXME: In some cases this affects the Shape property: It is set to the same shape as the SubShape!!!!
@@ -189,6 +192,9 @@ App::DocumentObjectExecReturn *Pocket::execute(void)
 
             // Cut the SubShape out of the base feature
             BRepAlgoAPI_Cut mkCut(base, prism);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Pocket: Cut out of base feature failed");
             TopoDS_Shape result = mkCut.Shape();

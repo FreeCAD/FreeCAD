@@ -293,6 +293,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         if(getAddSubType() == FeatureAddSub::Additive) {
                         
             BRepAlgoAPI_Fuse mkFuse(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+            mkFuse.SetRunParallel(true);
+#endif
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn("Adding the pipe failed");
             // we have to get the solids (fuse sometimes creates compounds)
@@ -307,6 +310,9 @@ App::DocumentObjectExecReturn *Pipe::execute(void)
         else if(getAddSubType() == FeatureAddSub::Subtractive) {
             
             BRepAlgoAPI_Cut mkCut(base, result);
+#if OCC_VERSION_HEX >= 0x060900
+            mkCut.SetRunParallel(true);
+#endif
             if (!mkCut.IsDone())
                 return new App::DocumentObjectExecReturn("Subtracting the pipe failed");
             // we have to get the solids (fuse sometimes creates compounds)
