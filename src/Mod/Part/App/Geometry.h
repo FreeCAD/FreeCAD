@@ -153,20 +153,15 @@ private:
     Handle_Geom_BezierCurve myCurve;
 };
 
-/*!
- * \brief The GeomHermiteCurve class
- * The GeomHermiteCurve describes a cubic Hermite spline.
- * @note Since OpenCascade doesn't directly support Hermite splines
- * the returned curve will be a B-Spline curve.
- */
-class PartExport GeomHermiteCurve : public GeomCurve
+class PartExport GeomBSplineCurve : public GeomCurve
 {
     TYPESYSTEM_HEADER();
 public:
-    GeomHermiteCurve();
-    GeomHermiteCurve(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
-    virtual ~GeomHermiteCurve();
+    GeomBSplineCurve();
+    GeomBSplineCurve(const Handle_Geom_BSplineCurve&);
+    virtual ~GeomBSplineCurve();
     virtual Geometry *clone(void) const;
+
     /*!
      * Set the poles and tangents for the cubic Hermite spline
      */
@@ -185,33 +180,6 @@ public:
      */
     void getCardinalSplineTangents(const std::vector<gp_Pnt>&, double,
                                    std::vector<gp_Vec>&) const;
-
-    // Persistence implementer ---------------------
-    virtual unsigned int getMemSize (void) const;
-    virtual void Save (Base::Writer &/*writer*/) const;
-    virtual void Restore(Base::XMLReader &/*reader*/);
-    // Base implementer ----------------------------
-    virtual PyObject *getPyObject(void);
-
-    const Handle_Geom_Geometry& handle() const;
-
-private:
-    void compute(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
-
-private:
-    Handle_Geom_BSplineCurve myCurve;
-    std::vector<gp_Pnt> poles;
-    std::vector<gp_Vec> tangents;
-};
-
-class PartExport GeomBSplineCurve : public GeomCurve
-{
-    TYPESYSTEM_HEADER();
-public:
-    GeomBSplineCurve();
-    GeomBSplineCurve(const Handle_Geom_BSplineCurve&);
-    virtual ~GeomBSplineCurve();
-    virtual Geometry *clone(void) const;
 
     int countPoles() const;
     void setPole(int index, const Base::Vector3d&, double weight=-1);
