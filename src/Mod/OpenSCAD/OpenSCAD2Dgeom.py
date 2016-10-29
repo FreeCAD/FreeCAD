@@ -480,7 +480,7 @@ def importDXFface(filename,layer=None,doc=None):
     importDXF.getDXFlibs()
     importDXF.dxfMakeBlocks = False
     doc = doc or FreeCAD.activeDocument()
-    layers = importDXF.processdxf(doc,filename) or importDXF.layers
+    layers = importDXF.processdxf(doc,filename,False,False) or importDXF.layers
     for l in layers:
         if FreeCAD.GuiUp:
             for o in l.Group:
