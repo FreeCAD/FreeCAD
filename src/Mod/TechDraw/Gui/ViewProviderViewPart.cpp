@@ -37,6 +37,7 @@
 #include <App/DocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 
 #include<Mod/TechDraw/App/DrawPage.h>
@@ -87,6 +88,11 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
+    TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
+    if (dvm != nullptr) {
+        sPixmap = "TechDraw_Tree_Multi";
+    }
+
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }

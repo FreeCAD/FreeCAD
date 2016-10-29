@@ -9,6 +9,7 @@
         <file>icons/TechDraw_Tree_Spreadsheet.svg</file>
         <file>icons/TechDraw_Tree_Symbol.svg</file>
         <file>icons/TechDraw_Tree_View.svg</file>
+        <file>icons/TechDraw_Tree_Multi.svg</file>
         <file>icons/TechDraw_Pages.svg</file>
         <file>icons/TechDraw_ProjBottom.svg</file>
         <file>icons/TechDraw_ProjFront.svg</file>
@@ -32,6 +33,7 @@
         <file>icons/actions/techdraw-new-default.svg</file>
         <file>icons/actions/techdraw-new-pick.svg</file>
         <file>icons/actions/techdraw-view.svg</file>
+        <file>icons/actions/techdraw-multiview.svg</file>
         <file>icons/actions/techdraw-annotation.svg</file>
         <file>icons/actions/techdraw-clip.svg</file>
         <file>icons/actions/techdraw-clipplus.svg</file>
