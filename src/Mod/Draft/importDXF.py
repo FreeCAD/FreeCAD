@@ -1006,7 +1006,8 @@ def addToBlock(obj,layer):
     else:
         layerBlocks[layer] = [obj]
 
-def processdxf(document,filename,getShapes=False):
+def processdxf(document,filename,getShapes=False,reComputeFlag=True):
+    "Recompute causes OpenSCAD import to loop, supply flag to make conditional"
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script ran
     if not dxfReader:
@@ -1487,7 +1488,10 @@ def processdxf(document,filename,getShapes=False):
 
     print("done processing")
 
-    doc.recompute()
+    if reComputeFlag :
+       doc.recompute()
+       print("recompute done")
+
     FreeCAD.Console.PrintMessage("successfully imported "+filename+"\n")
     if badobjects:
         print("dxf: ",len(badobjects)," objects were not imported")
@@ -1815,12 +1819,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             for ob in exportList:
                 print("processing "+str(ob.Name))
                 if ob.isDerivedFrom("Part::Feature"):
-                    sh = None
-                    if ob.Shape.isNull():
-                        print ("Null shape - skipping")
-                        continue
-                    elif FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
-                        writeMesh(ob,dxf)
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                        sh = None
+                        if not ob.Shape.isNull():
+                            writeMesh(ob,dxf)
                     elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
                         direction = FreeCADGui.ActiveDocument.ActiveView.\
                                 getViewDirection().multiply(-1)
@@ -1831,28 +1833,29 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         else:
                             sh = ob.Shape
                     if sh:
-                        if sh.ShapeType == 'Compound':
-                            if (len(sh.Wires) == 1):
-                                # only one wire in this compound, no lone edge -> polyline
-                                if (len(sh.Wires[0].Edges) == len(sh.Edges)):
-                                    writeShape(sh,ob,dxf,nospline,lwPoly)
+                        if not sh.isNull():
+                            if sh.ShapeType == 'Compound':
+                                if (len(sh.Wires) == 1):
+                                    # only one wire in this compound, no lone edge -> polyline
+                                    if (len(sh.Wires[0].Edges) == len(sh.Edges)):
+                                        writeShape(sh,ob,dxf,nospline,lwPoly)
+                                    else:
+                                        # 1 wire + lone edges -> block
+                                        block = getBlock(sh,ob,lwPoly)
+                                        dxf.blocks.append(block)
+                                        dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
+                                                                     color=getACI(ob),
+                                                                     layer=getGroup(ob)))
                                 else:
-                                    # 1 wire + lone edges -> block
+                                    # all other cases: block
                                     block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
-                                                                 color=getACI(ob),
-                                                                 layer=getGroup(ob)))
-                            else:
-                                # all other cases: block
-                                block = getBlock(sh,ob,lwPoly)
-                                dxf.blocks.append(block)
-                                dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
-                                                                  color=getACI(ob),
-                                                                  layer=getGroup(ob)))
+                                                                      color=getACI(ob),
+                                                                      layer=getGroup(ob)))
 
-                        else:
-                            writeShape(sh,ob,dxf,nospline,lwPoly)
+                            else:
+                                writeShape(sh,ob,dxf,nospline,lwPoly)
 
                 elif Draft.getType(ob) == "Annotation":
                     # texts
