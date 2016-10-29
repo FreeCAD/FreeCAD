@@ -63,6 +63,7 @@
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewDraft.h>
+#include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
@@ -442,6 +443,58 @@ bool CmdTechDrawProjGroup::isActive(void)
     return (havePage  && !taskInProgress);
 }
 
+//===========================================================================
+// TechDraw_NewMulti
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewMulti);
+
+CmdTechDrawNewMulti::CmdTechDrawNewMulti()
+  : Command("TechDraw_NewMulti")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert multi-part view in drawing");
+    sToolTipText    = QT_TR_NOOP("Insert a new View of a multiple Parts in the active drawing");
+    sWhatsThis      = "TechDraw_NewMulti";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-multiview";
+}
+
+void CmdTechDrawNewMulti::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    const std::vector<App::DocumentObject*>& shapes = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
+    if (shapes.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select at least 1 Part object."));
+        return;
+    }
+
+    std::string PageName = page->getNameInDocument();
+
+    Gui::WaitCursor wc;
+
+    openCommand("Create view");
+    std::string FeatName = getUniqueObjectName("MultiView");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewMulti','%s')",FeatName.c_str());
+    App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
+    auto multiView( static_cast<TechDraw::DrawViewMulti *>(docObj) );
+    multiView->Sources.setValues(shapes);
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+    updateActive();
+    commitCommand();
+}
+
+bool CmdTechDrawNewMulti::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
 
 //===========================================================================
 // TechDraw_Annotation
@@ -826,7 +879,7 @@ void CmdTechDrawArchView::activated(int iMsg)
             QObject::tr("The selected object is not an Arch Section Plane."));
         return;
     }
-    
+
     std::string PageName = page->getNameInDocument();
 
     std::string FeatName = getUniqueObjectName("ArchView");
@@ -957,6 +1010,7 @@ void CreateTechDrawCommands(void)
     rcCmdMgr.addCommand(new CmdTechDrawNewPage());
     rcCmdMgr.addCommand(new CmdTechDrawNewView());
     rcCmdMgr.addCommand(new CmdTechDrawNewViewSection());
+    rcCmdMgr.addCommand(new CmdTechDrawNewMulti());
     rcCmdMgr.addCommand(new CmdTechDrawProjGroup());
     rcCmdMgr.addCommand(new CmdTechDrawAnnotation());
     rcCmdMgr.addCommand(new CmdTechDrawClip());
