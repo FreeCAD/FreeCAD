@@ -75,6 +75,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileEdges
         from PathScripts import DogboneDressup
         from PathScripts import PathMillFace
+        from PathScripts import PathDressupHoldingTabs
         import PathCommands
 
         # build commands list
@@ -84,7 +85,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave", "Path_MillFace"]
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Dogbone_Dressup", "DragKnife_Dressup"]
+        dressupcmdlist = ["Dogbone_Dressup", "DragKnife_Dressup", "PathDressup_HoldingTabs"]
         extracmdlist = ["Path_SelectLoop"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -119,6 +120,11 @@ class PathWorkbench (Workbench):
         #     "Path", "Remote Operations")], remotecmdlist)
         self.appendMenu([translate("Path", "&Path")], extracmdlist)
 
+        # Add preferences pages
+        import os
+        FreeCADGui.addPreferencePage(FreeCAD.getHomePath(
+        ) + os.sep + "Mod" + os.sep + "Path" + os.sep + "PathScripts" + os.sep + "DlgSettingsPath.ui", "Path")
+
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):
@@ -136,7 +142,7 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
+                if "Profile" in FreeCADGui.Selection.getSelection()[0].Name:
                     self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
                     self.appendContextMenu("", ["Set_EndPoint"])
