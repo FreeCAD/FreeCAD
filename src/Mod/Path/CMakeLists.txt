@@ -38,6 +38,7 @@ SET(PathScripts_SRCS
     PathScripts/PathDrilling.py
     PathScripts/PathDressup.py
     PathScripts/DragknifeDressup.py
+    PathScripts/PathDressupHoldingTabs.py
     PathScripts/PathHop.py
     PathScripts/PathUtils.py
     PathScripts/PathSelection.py
