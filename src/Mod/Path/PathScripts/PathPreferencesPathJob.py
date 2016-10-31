@@ -58,11 +58,30 @@ class Page:
             widget.setCurrentIndex(index)
             widget.blockSignals(False)
 
-    def loadSettings(self):
+    def verifyAndUpdateDefaultPostProcessorWith(self, processor):
+        defaultIsValid = False
+        self.form.defaultPostProcessor.blockSignals(True)
+        self.form.defaultPostProcessor.clear()
         self.form.defaultPostProcessor.addItem("")
+        for i in range(0, self.form.postProcessorList.count()):
+            item = self.form.postProcessorList.item(i)
+            if item.checkState() == QtCore.Qt.CheckState.Checked:
+                self.form.defaultPostProcessor.addItem(item.text())
+                if item.text() == processor :
+                    defaultIsValid = True
+        # if we get here the default processor was disabled
+        if not defaultIsValid:
+            self.form.defaultPostProcessorArgs.setText('')
+            processor = ''
+        self.selectComboEntry(self.form.defaultPostProcessor, processor)
+        self.form.defaultPostProcessor.blockSignals(False)
+
+    def verifyAndUpdateDefaultPostProcessor(self):
+        self.verifyAndUpdateDefaultPostProcessorWith(str(self.form.defaultPostProcessor.currentText()))
+
+    def loadSettings(self):
         blacklist = PathPreferences.postProcessorBlacklist()
         for processor in PathPreferences.allAvailablePostProcessors():
-            self.form.defaultPostProcessor.addItem(processor)
             item = QtGui.QListWidgetItem(processor)
             if processor in blacklist:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -70,13 +89,14 @@ class Page:
                 item.setCheckState(QtCore.Qt.CheckState.Checked)
             item.setFlags( QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
             self.form.postProcessorList.addItem(item)
-        self.selectComboEntry(self.form.defaultPostProcessor, PathPreferences.defaultPostProcessor())
+        self.verifyAndUpdateDefaultPostProcessorWith(PathPreferences.defaultPostProcessor())
 
         self.form.defaultPostProcessorArgs.setText(PathPreferences.defaultPostProcessorArgs())
         self.form.leOutputFile.setText(PathPreferences.defaultOutputFile())
         self.selectComboEntry(self.form.cboOutputPolicy, PathPreferences.defaultOutputPolicy())
 
         self.form.postProcessorList.itemEntered.connect(self.setProcessorListTooltip)
+        self.form.postProcessorList.itemChanged.connect(self.verifyAndUpdateDefaultPostProcessor)
         self.form.defaultPostProcessor.currentIndexChanged.connect(self.updateDefaultPostProcessorToolTip)
         self.form.pbBrowseFileSystem.clicked.connect(self.browseFileSystem)
 
