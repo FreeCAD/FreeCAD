@@ -46,7 +46,8 @@ class PointsExport PointKernel : public Data::ComplexGeoData
     TYPESYSTEM_HEADER();
 
 public:
-    typedef Base::Vector3f value_type;
+    typedef float float_type;
+    typedef Base::Vector3<float_type> value_type;
     typedef std::vector<value_type>::difference_type difference_type;
     typedef std::vector<value_type>::size_type size_type;
 

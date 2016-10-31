@@ -119,7 +119,10 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
         if (!(boost::math::isnan(it->x) || 
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
-            valid.push_back(value_type(it->x, it->y, it->z));
+            valid.push_back(value_type(
+                    static_cast<float_type>(it->x),
+                    static_cast<float_type>(it->y),
+                    static_cast<float_type>(it->z)));
     }
     return valid;
 }
