@@ -865,14 +865,20 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Part::Feature* obj3D = 0;
+
+    App::DocumentObject* obj3D = 0;
+    std::vector<App::DocumentObject*> parts;
     std::vector<std::string> subs;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            obj3D = static_cast<Part::Feature*> ((*itSel).getObject());
-            subs = (*itSel).getSubNames();
+            obj3D = ((*itSel).getObject());
+            std::vector<std::string> subList = (*itSel).getSubNames();
+            for (auto& s:subList) {
+                parts.push_back(obj3D);
+                subs.push_back(s);
+            }
         }
     }
 
@@ -890,7 +896,7 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
 
 
     // dialog to select the Dimension to link
-    Gui::Control().showDialog(new TaskDlgLinkDim(obj3D,subs,page));
+    Gui::Control().showDialog(new TaskDlgLinkDim(parts,subs,page));
 
     page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }

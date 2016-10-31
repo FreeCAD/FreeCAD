@@ -35,6 +35,12 @@ class Measurement;
 }
 namespace TechDraw
 {
+class DrawViewPart;
+
+struct DimRef {
+    DrawViewPart* part;
+    std::string   sub;
+};
 
 class DrawViewPart;
 
@@ -86,6 +92,8 @@ public:
     static int getRefType1(const std::string s);
     static int getRefType2(const std::string s1, const std::string s2);
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
+    void setAll3DMeasurement();
+    void clear3DMeasurements(void);
 
 protected:
     void onChanged(const App::Property* prop);
@@ -95,8 +103,6 @@ protected:
 
 protected:
     Measure::Measurement *measurement;
-    void set3DMeasurement(DocumentObject* const &obj, const std::vector<std::string>& subElements);
-    void clear3DMeasurements(void);
     double dist2Segs(Base::Vector2D s1,
                      Base::Vector2D e1,
                      Base::Vector2D s2,

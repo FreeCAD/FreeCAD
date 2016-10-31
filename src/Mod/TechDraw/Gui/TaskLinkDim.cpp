@@ -54,9 +54,9 @@ using namespace TechDraw;
 using namespace TechDrawGui;
 
 
-TaskLinkDim::TaskLinkDim(Part::Feature* part, std::vector<std::string>& subs, TechDraw::DrawPage* page) :
+TaskLinkDim::TaskLinkDim(std::vector<App::DocumentObject*> parts, std::vector<std::string>& subs, TechDraw::DrawPage* page) :
     ui(new Ui_TaskLinkDim),
-    m_part(part),
+    m_parts(parts),
     m_subs(subs),
     m_page(page)
 {
@@ -71,11 +71,16 @@ TaskLinkDim::TaskLinkDim(Part::Feature* part, std::vector<std::string>& subs, Te
 
     loadAvailDims();
 
-    ui->leFeature->setText(QString::fromStdString(part->getNameInDocument()));
+    ui->leFeature1->setText(QString::fromStdString(parts.at(0)->getNameInDocument()));
     ui->leGeometry1->setText(QString::fromStdString(subs.at(0)));
 
     if (subs.size() > 1) {
         ui->leGeometry2->setText(QString::fromStdString(subs.at(1)));
+        if (parts.at(0)->getNameInDocument() != parts.at(1)->getNameInDocument()) {
+            ui->leFeature2->setText(QString::fromStdString(parts.at(1)->getNameInDocument()));
+        } else {
+            ui->leFeature2->clear();
+        }
     }
 }
 
@@ -149,26 +154,37 @@ bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim)
         return result;
     }
 
-    Part::Feature* refPart = static_cast<Part::Feature*>(dim->References3D.getValues().at(0));
+    //Part::Feature* refPart = static_cast<Part::Feature*>(dim->References3D.getValues().at(0));
+    std::vector<Part::Feature*> refParts;
+    std::vector<App::DocumentObject*> docObjs = dim->References3D.getValues();
+    for (auto& d: docObjs) {
+        Part::Feature* part = static_cast<Part::Feature*>(d);
+        refParts.push_back(part);
+    }
     std::vector<std::string> refSubs = dim->References3D.getSubValues();
-    if (refPart == m_part) {
-        if (refSubs.size() == m_subs.size()) {
-            if (m_subs.size() == 0) {
-                //we're done. why did we get here?
-            } else if (refSubs.size() == 1) {
-                if (refSubs[0] == m_subs[0]) {
-                    result = true;
-                }
-            } else {
-                if ( ((refSubs[0] == m_subs[0]) &&
-                      (refSubs[1] == m_subs[1]))  ||
-                     ((refSubs[0] == m_subs[1]) &&
-                      (refSubs[1] == m_subs[0])) )  {
-                    result = true;
-                }
+    if (refParts.size() == m_parts.size()) {
+        if(refParts.size() == 0) {
+            //shouldn't happen!
+        } else if (refParts.size() == 1) {
+            if ((refParts[0] == m_parts[0]) &&
+                 (refSubs[0] == m_subs[0]) ) {         //everything matches
+                result = true;
+            }
+        } else if (refParts.size() == 2) {
+            if (( (refParts[0] == m_parts[0]) &&
+                  (refParts[1] == m_parts[1]) )  &&
+                ( (refSubs[0] == m_subs[0])   &&
+                  (refSubs[1] == m_subs[1]) ) ) {
+                result = true;
+            } else if (( (refParts[0] == m_parts[1]) &&
+                         (refParts[1] == m_parts[0]) )  &&
+                       ( (refSubs[0] == m_subs[1])   &&
+                         (refSubs[1] == m_subs[0]) ) ) {
+                result = true;
             }
         }
     }
+
     return result;
 }
 
@@ -182,11 +198,11 @@ void TaskLinkDim::updateDims()
         QString name = child->data(0, Qt::UserRole).toString();
         App::DocumentObject* obj = m_page->getDocument()->getObject(name.toStdString().c_str());
         TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(obj);
-        std::vector<App::DocumentObject*> parts;
-        for (unsigned int iPart = 0; iPart < m_subs.size(); iPart++) {
-            parts.push_back(m_part);
-        }
-        dim->References3D.setValues(parts,m_subs);
+//        std::vector<App::DocumentObject*> parts;
+//        for (unsigned int iPart = 0; iPart < m_subs.size(); iPart++) {
+//            parts.push_back(m_part);
+//        }
+        dim->References3D.setValues(m_parts,m_subs);
         std::string DimName = dim->getNameInDocument();
         std::string measureType = "True";
         Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
@@ -204,8 +220,8 @@ void TaskLinkDim::updateDims()
            std::string DimName = dim->getNameInDocument();
            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",
                             DimName.c_str(),measureType.c_str());
-           dim->References3D.setValue(0,"");        //set this property to "empty"
-           //dim->MeasureType.setValue("Projected");
+           dim->References3D.setValue(0,"");            //DVD.References3D
+           dim->clear3DMeasurements();                  //DVD.measurement.References3D
         }
     }
 }
@@ -256,10 +272,10 @@ void TaskLinkDim::changeEvent(QEvent *e)
 
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-TaskDlgLinkDim::TaskDlgLinkDim(Part::Feature* part,std::vector<std::string>& subs, TechDraw::DrawPage* page) :
+TaskDlgLinkDim::TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page) :
     TaskDialog()
 {
-    widget  = new TaskLinkDim(part,subs,page);
+    widget  = new TaskLinkDim(parts,subs,page);
     taskbox = new Gui::TaskView::TaskBox(Gui::BitmapFactory().pixmap("TechDraw_Dimension_Link"),
                                          widget->windowTitle(), true, 0);
     taskbox->groupLayout()->addWidget(widget);
