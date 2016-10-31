@@ -75,7 +75,7 @@ def makeSectionView(section,name="View"):
     return view
 
 
-def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1):
+def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False):
     """getSVG(section,[allOn,renderMode,showHidden,showFill,scale,linewidth,fontsize]) : 
     returns an SVG fragment from an Arch section plane. If
     allOn is True, all cut objects are shown, regardless if they are visible or not.
@@ -91,12 +91,17 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
     if not allOn:
             objs = Draft.removeHidden(objs)
-    # separate spaces
+    # separate spaces and Draft objects
     spaces = []
     nonspaces = []
+    drafts = []
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
+        elif Draft.getType(o) in ["Dimension","Annotation"]:
+            drafts.append(o)
+        elif o.isDerivedFrom("Part::Part2DObject"):
+            drafts.append(o)
         else:
             nonspaces.append(o)
     objs = nonspaces
@@ -191,11 +196,13 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if sshapes:
             svgs = ""
             if showFill:
-                svgs += fillpattern
+                #svgs += fillpattern
                 svgs += '<g transform="rotate(180)">\n'
                 for s in sshapes:
                     if s.Edges:
-                        f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                        #f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                        # temporarily disabling fill patterns
+                        f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="#aaaaaa",color=(0,0,0))
                         svgs += f
                 svgs += "</g>\n"
             sshapes = Part.makeCompound(sshapes)
@@ -208,19 +215,28 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                 svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
                 svg += svgs
 
-    linewidth = linewidth/scale
+    scaledlinewidth = linewidth/scale
     st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
     da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
     da = da.replace(" ","")
-    svg = svg.replace('LWPlaceholder', str(linewidth) + 'px')
-    svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')
+    svg = svg.replace('LWPlaceholder', str(scaledlinewidth) + 'px')
+    svg = svg.replace('SWPlaceholder', str(scaledlinewidth*st) + 'px')
     svg = svg.replace('DAPlaceholder', str(da))
-    if spaces and round(direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
-        svg += '<g transform="scale(1,-1)">'
+    if drafts:
+        if not techdraw:
+            svg += '<g transform="scale(1,-1)">'
+        for d in drafts:
+            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw)
+        if not techdraw:
+            svg += '</g>'
+    if spaces:
+        if not techdraw:
+            svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s,scale=scale,fontsize=fontsize,direction=direction)
-        svg += '</g>'
-    # print "complete node:",svg
+            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw)
+        if not techdraw:
+            svg += '</g>'
+    #print "complete node:",svg
     return svg
 
 
