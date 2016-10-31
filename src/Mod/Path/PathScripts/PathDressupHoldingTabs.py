@@ -30,7 +30,7 @@ import math
 import Part
 import DraftGeomUtils
 
-"""Holding Tabs Dressup object and FreeCAD command"""
+"""Holding Tags Dressup object and FreeCAD command"""
 
 # Qt tanslation handling
 try:
@@ -68,6 +68,27 @@ def getAngle(v):
     if v.y < 0:
         return -a
     return a
+
+class Tag:
+    def __init__(self, x, y, width, height, angle, enabled):
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+        self.angle = angle
+        self.enabled = enabled
+
+    def toString(self):
+        return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
+
+    @classmethod
+    def FromString(cls, string):
+        try:
+            t = eval(string)
+            return Tag(t[0], t[1], t[2], t[3], t[4], t[5])
+        except:
+            return None
+
 
 class PathData:
     def __init__(self, obj):
@@ -138,17 +159,110 @@ class PathData:
                     maxZ = v.Point.z
         return (minZ, maxZ)
 
+    def longestPathEdge(self):
+        return sorted(self.base.Edges, key=lambda e: -e.Length)[0]
+
+    def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
+        print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
+        #for e in self.base.Edges:
+        #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
+
+        if spacing:
+            tabDistance = spacing
+        else:
+            if count:
+                tabDistance = self.base.Length / count
+            else:
+                tabDistance = self.base.Length / 4
+        if width:
+            W = width
+        else:
+            W = self.tagWidth()
+        if height:
+            H = height
+        else:
+            H = self.tagHeight()
+
+
+        # start assigning tabs on the longest segment
+        maxLen = self.longestPathEdge().Length
+        startIndex = 0
+        for i in range(0, len(self.base.Edges)):
+            edge = self.base.Edges[i]
+            if edge.Length == maxLen:
+                startIndex = i
+                break
+
+        startEdge = self.base.Edges[startIndex]
+        startCount = int(startEdge.Length / tabDistance) + 1
+
+        lastTabLength = (startEdge.Length + (startCount - 1) * tabDistance) / 2
+        if lastTabLength < 0 or lastTabLength > startEdge.Length:
+            lastTabLength = startEdge.Length / 2
+        currentLength = startEdge.Length
+
+        minLength = 2. * W
+
+        #print("start index=%-2d -> count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tabDistance))
+        #print("               -> lastTabLength=%.2f)" % lastTabLength)
+        #print("               -> currentLength=%.2f)" % currentLength)
+
+        tabs = { startIndex: startCount }
+
+        for i in range(startIndex + 1, len(self.base.Edges)):
+            edge = self.base.Edges[i]
+            (currentLength, lastTabLength) = self.processEdge(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
+        for i in range(0, startIndex):
+            edge = self.base.Edges[i]
+            (currentLength, lastTabLength) = self.processEdge(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
+
+        tags = []
+
+        for (i, count) in tabs.iteritems():
+            edge = self.base.Edges[i]
+            #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
+            #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
+            distance = (edge.LastParameter - edge.FirstParameter) / count
+            for j in range(0, count):
+                tab = edge.Curve.value((j+0.5) * distance)
+                tags.append(Tag(tab.x, tab.y, W, H, angle, True))
+
+        return tags
+
+    def processEdge(self, index, edge, currentLength, lastTabLength, tabDistance, minLength, tabs):
+        tabCount = 0
+        currentLength += edge.Length
+        if edge.Length > minLength:
+            while lastTabLength + tabDistance < currentLength:
+                tabCount += 1
+                lastTabLength += tabDistance
+            if tabCount > 0:
+                #print("      index=%d -> count=%d" % (index, tabCount))
+                tabs[index] = tabCount
+        #else:
+            #print("      skipping=%-2d (%.2f)" % (index, edge.Length))
+
+        return (currentLength, lastTabLength)
+
+    def tagHeight(self):
+        return self.maxZ - self.minZ
+
+    def tagWidth(self):
+        return self.longestPathEdge().Length / 10
+
+    def tagAngle(self):
+        return 90
+
+    def pathLength(self):
+        return self.base.Length
+
 class ObjectDressup:
 
     def __init__(self, obj):
         self.obj = obj
-        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "The base path to modify"))
-        obj.addProperty("App::PropertyInteger", "Count", "Tab", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "The number of holding tabs to be generated"))
-        obj.addProperty("App::PropertyFloat", "Height", "Tab", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "Height of holding tabs measured from bottom of path"))
-        obj.addProperty("App::PropertyFloat", "Width", "Tab", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "Width of each tab at its base"))
-        obj.addProperty("App::PropertyFloat", "Angle", "Tab", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "Angle of plunge used for tabs"))
-        obj.addProperty("App::PropertyIntegerList", "Blacklist", "Tab", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "IDs of disabled paths"))
-        obj.setEditorMode("Blacklist", 2)
+        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
+        obj.addProperty("App::PropertyStringList", "Tags", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_holdingTags", "Inserted tags"))
+        obj.setEditorMode("Tags", 2)
         obj.Proxy = self
 
     def __getstate__(self):
@@ -157,10 +271,8 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
-    def getFingerprint(self, obj):
-        if hasattr(self, 'pathData'):
-            return "%d-%.2f-%.2f-%.2f-%s" % (obj.Count, obj.Height, obj.Width, obj.Angle, str(obj.Blacklist))
-        return ''
+    def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
+        return self.pathData.generateTags(obj, count, width, height, angle, spacing)
 
     def execute(self, obj):
         if not obj.Base:
@@ -174,162 +286,101 @@ class ObjectDressup:
 
         pathData = self.setup(obj)
         if not pathData:
+            print("execute - no pathData")
             return
 
-        if hasattr(self, 'fingerprint') and self.fingerprint and self.fingerprint == self.getFingerprint(obj):
-            return
+        if hasattr(obj, 'Tags') and obj.Tags:
+            if self.fingerprint == obj.Tags:
+                print("execute - cache valid")
+                return
+            print("execute - tags from property")
+            tags = [Tag.FromString(tag) for tag in obj.Tags]
+        else:
+            print("execute - default tags")
+            tags = self.generateTags(obj, 4)
 
-        self.fingerprint = self.getFingerprint(obj)
-
-        #for e in pathData.base.Edges:
-        #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
-
-        if obj.Count == 0:
+        if not tags:
+            print("execute - no tags")
+            self.tags = []
             obj.Path = obj.Base.Path
             return
 
-        tabDistance = pathData.base.Length / obj.Count
-
-        # start assigning tabs on the longest segment
-        maxLen = sorted(pathData.base.Edges, key=lambda e: -e.Length)[0].Length
-        startIndex = 0
-        for i in range(0, len(pathData.base.Edges)):
-            edge = pathData.base.Edges[i]
-            if edge.Length == maxLen:
-                startIndex = i
-                break
-
-        startEdge = pathData.base.Edges[startIndex]
-        startCount = int(startEdge.Length / tabDistance) + 1
-
-        lastTabLength = (startEdge.Length + (startCount - 1) * tabDistance) / 2
-        if lastTabLength < 0 or lastTabLength > startEdge.Length:
-            lastTabLength = startEdge.Length / 2
-        currentLength = startEdge.Length
-        minLength = 2 * obj.Width
-
-        print("start index=%-2d -> count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tabDistance))
-        print("               -> lastTabLength=%.2f)" % lastTabLength)
-        print("               -> currentLength=%.2f)" % currentLength)
-
-        tabs = { startIndex: startCount }
-
-        for i in range(startIndex + 1, len(pathData.base.Edges)):
-            edge = pathData.base.Edges[i]
-            (currentLength, lastTabLength) = self.executeTabLength(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
-        for i in range(0, startIndex):
-            edge = pathData.base.Edges[i]
-            (currentLength, lastTabLength) = self.executeTabLength(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
-
-        self.tabs = tabs
-        locs = {}
-
-        tabID = 0
-        for (i, count) in tabs.iteritems():
-            edge = pathData.base.Edges[i]
-            #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
-            #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
-            distance = (edge.LastParameter - edge.FirstParameter) / count
-            for j in range(0, count):
-                tab = edge.Curve.value((j+0.5) * distance)
-                tabID += 1
-                locs[(tab.x, tab.y)] = tabID
-                if not tabID in obj.Blacklist:
-                    debugMarker(tab, "tab-%02d" % tabID , (1.0, 0.0, 1.0), 0.5)
-
-        self.tabLocations = locs
-        #debugMarker(pathData.base.CenterOfMass, 'cog', (0., 0., 0.), 0.5)
-
+        tagID = 0
+        for tag in tags:
+            tagID += 1
+            if tag.enabled:
+                print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
+                debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+        self.fingerprint = [tag.toString() for tag in tags]
+        self.tags = tags
         obj.Path = obj.Base.Path
 
-    def executeTabLength(self, index, edge, currentLength, lastTabLength, tabDistance, minLength, tabs):
-        tabCount = 0
-        currentLength += edge.Length
-        if edge.Length > minLength:
-            while lastTabLength + tabDistance < currentLength:
-                tabCount += 1
-                lastTabLength += tabDistance
-            if tabCount > 0:
-                #print("      index=%d -> count=%d" % (index, tabCount))
-                tabs[index] = tabCount
-        else:
-            print("      skipping=%-2d (%.2f)" % (index, edge.Length))
-        return (currentLength, lastTabLength)
+    def setTags(self, obj, tags):
+        obj.Tags = [tag.toString() for tag in tags]
+        self.execute(obj)
 
-    def holdingTabsLocations(self, obj):
-        if hasattr(self, "tabLocations") and self.tabLocations:
-            return self.tabLocations
-        return {}
+    def getTags(self, obj):
+        if hasattr(self, 'tags'):
+            return self.tags
+        return self.setup(obj).generateTags(obj, 4)
 
     def setup(self, obj):
         if not hasattr(self, "pathData") or not self.pathData:
             try:
                 pathData = PathData(obj)
             except ValueError:
-                FreeCAD.Console.PrintError(translate("PathDressup_HoldingTabs", "Cannot insert holding tabs for this path - please select a Profile path\n"))
+                FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tabs for this path - please select a Profile path\n"))
                 return None
 
-            # setup the object's properties, in case they're not set yet
-            obj.Count = self.tabCount(obj)
-            obj.Angle = self.tabAngle(obj)
-            obj.Blacklist = self.tabBlacklist(obj)
+            ## setup the object's properties, in case they're not set yet
+            #obj.Count = self.tabCount(obj)
+            #obj.Angle = self.tabAngle(obj)
+            #obj.Blacklist = self.tabBlacklist(obj)
 
             # if the heigt isn't set, use the height of the path
-            if not hasattr(obj, "Height") or not obj.Height:
-                obj.Height = pathData.maxZ - pathData.minZ
+            #if not hasattr(obj, "Height") or not obj.Height:
+            #    obj.Height = pathData.maxZ - pathData.minZ
             # try and take an educated guess at the width
-            if not hasattr(obj, "Width") or not obj.Width:
-                width = sorted(pathData.base.Edges, key=lambda e: -e.Length)[0].Length / 10
-                while obj.Count > len([e for e in pathData.base.Edges if e.Length > 3*width]):
-                    width = widht / 2
-                obj.Width = width
+            #if not hasattr(obj, "Width") or not obj.Width:
+            #    width = sorted(pathData.base.Edges, key=lambda e: -e.Length)[0].Length / 10
+            #    while obj.Count > len([e for e in pathData.base.Edges if e.Length > 3*width]):
+            #        width = widht / 2
+            #    obj.Width = width
 
             # and the tool radius, not sure yet if it's needed
-            self.toolRadius = 5
-            toolLoad = PathUtils.getLastToolLoad(obj)
-            if toolLoad is None or toolLoad.ToolNumber == 0:
-                self.toolRadius = 5
-            else:
-                tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-                if not tool or tool.Diameter == 0:
-                    self.toolRadius = 5
-                else:
-                    self.toolRadius = tool.Diameter / 2
+            #self.toolRadius = 5
+            #toolLoad = PathUtils.getLastToolLoad(obj)
+            #if toolLoad is None or toolLoad.ToolNumber == 0:
+            #    self.toolRadius = 5
+            #else:
+            #    tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            #    if not tool or tool.Diameter == 0:
+            #        self.toolRadius = 5
+            #    else:
+            #        self.toolRadius = tool.Diameter / 2
             self.pathData = pathData
         return self.pathData
 
-    def tabCount(self, obj):
-        if hasattr(obj, "Count") and obj.Count:
-            return obj.Count
-        return 4
+    def getHeight(self, obj):
+        return self.pathData.tagHeight()
 
-    def tabHeight(self, obj):
-        if hasattr(obj, "Height") and obj.Height:
-            return obj.Height
-        return 1
+    def getWidth(self, obj):
+        return self.pathData.tagWidth()
 
-    def tabWidth(self, obj):
-        if hasattr(obj, "Width") and obj.Width:
-            return obj.Width
-        return 3
+    def getAngle(self, obj):
+        return self.pathData.tagAngle()
 
-    def tabAngle(self, obj):
-        if hasattr(obj, "Angle") and obj.Angle:
-            return obj.Angle
-        return 90
-
-    def tabBlacklist(self, obj):
-        if hasattr(obj, "Blacklist") and obj.Blacklist:
-            return obj.Blacklist
-        return []
+    def getPathLength(self, obj):
+        return self.pathData.pathLength()
 
 class TaskPanel:
-    DataId = QtCore.Qt.ItemDataRole.UserRole
+    DataTag   = QtCore.Qt.ItemDataRole.UserRole
+    DataValue = QtCore.Qt.ItemDataRole.DisplayRole
 
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTabsEdit.ui")
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTabs", "Edit HoldingTabs Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -350,44 +401,99 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def updateTabList(self):
-        blacklist = self.obj.Proxy.tabBlacklist(self.obj)
-        itemList = []
-        for (x,y), id in self.obj.Proxy.holdingTabsLocations(self.obj).iteritems():
-            label = "%d: (x=%.2f, y=%.2f)" % (id, x, y)
-            item = QtGui.QListWidgetItem(label)
-            if id in blacklist:
-                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
-            else:
-                item.setCheckState(QtCore.Qt.CheckState.Checked)
-            item.setFlags(QtCore.Qt.ItemFlag.ItemIsSelectable | QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable)
-            item.setData(self.DataId, id)
-            itemList.append(item)
-        self.form.lwHoldingTabs.clear()
-        for item in sorted(itemList, key=lambda item: item.data(self.DataId)):
-            self.form.lwHoldingTabs.addItem(item)
+    def tableWidgetItem(self, tag, val):
+        item = QtGui.QTableWidgetItem()
+        item.setTextAlignment(QtCore.Qt.AlignRight)
+        item.setData(self.DataTag, tag)
+        item.setData(self.DataValue, val)
+        return item
 
     def getFields(self):
-        self.obj.Count = self.form.sbCount.value()
-        self.obj.Height = self.form.dsbHeight.value()
-        self.obj.Width = self.form.dsbWidth.value()
-        self.obj.Angle = self.form.dsbAngle.value()
-        blacklist = []
-        for i in range(0, self.form.lwHoldingTabs.count()):
-            item = self.form.lwHoldingTabs.item(i)
-            if item.checkState() == QtCore.Qt.CheckState.Unchecked:
-                blacklist.append(item.data(self.DataId))
-        self.obj.Blacklist = sorted(blacklist)
-        self.obj.Proxy.execute(self.obj)
+        tags = []
+        for row in range(0, self.form.twTags.rowCount()):
+            x = self.form.twTags.item(row, 0).data(self.DataValue)
+            y = self.form.twTags.item(row, 1).data(self.DataValue)
+            w = self.form.twTags.item(row, 2).data(self.DataValue)
+            h = self.form.twTags.item(row, 3).data(self.DataValue)
+            a = self.form.twTags.item(row, 4).data(self.DataValue)
+            tags.append(Tag(x, y, w, h, a, True))
+        print("getFields: %d" % (len(tags)))
+        self.obj.Proxy.setTags(self.obj, tags)
 
-    def update(self):
-        if True or debugDressup:
+    def updateTags(self):
+        self.tags = self.obj.Proxy.getTags(self.obj)
+        self.form.twTags.blockSignals(True)
+        self.form.twTags.setSortingEnabled(False)
+        self.form.twTags.clearSpans()
+        print("updateTags: %d" % (len(self.tags)))
+        self.form.twTags.setRowCount(len(self.tags))
+        for row, tag in enumerate(self.tags):
+            self.form.twTags.setItem(row, 0, self.tableWidgetItem(tag, tag.x))
+            self.form.twTags.setItem(row, 1, self.tableWidgetItem(tag, tag.y))
+            self.form.twTags.setItem(row, 2, self.tableWidgetItem(tag, tag.width))
+            self.form.twTags.setItem(row, 3, self.tableWidgetItem(tag, tag.height))
+            self.form.twTags.setItem(row, 4, self.tableWidgetItem(tag, tag.angle))
+        self.form.twTags.setSortingEnabled(True)
+        self.form.twTags.blockSignals(False)
+
+    def cleanupUI(self):
+        if debugDressup:
             for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith('tab'):
+                if obj.Name.startswith('tag'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
+
+    def updateUI(self):
+        self.cleanupUI()
         self.getFields()
-        self.updateTabList()
-        FreeCAD.ActiveDocument.recompute()
+        if debugDressup:
+            FreeCAD.ActiveDocument.recompute()
+
+
+    def whenApplyClicked(self):
+        self.cleanupUI()
+
+        count = self.form.sbCount.value()
+        spacing = self.form.dsbSpacing.value()
+        width = self.form.dsbWidth.value()
+        height = self.form.dsbHeight.value()
+        angle = self.form.dsbAngle.value()
+
+        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle, spacing)
+        self.obj.Proxy.setTags(self.obj, tags)
+        self.updateTags()
+        if debugDressup:
+            FreeCAD.ActiveDocument.recompute()
+
+    def autoApply(self):
+        if self.form.cbAutoApply.checkState() == QtCore.Qt.CheckState.Checked:
+            self.whenApplyClicked()
+
+    def updateTagSpacing(self, count):
+        if count == 0:
+            spacing = 0
+        else:
+            spacing = self.pathLength / count
+        self.form.dsbSpacing.blockSignals(True)
+        self.form.dsbSpacing.setValue(spacing)
+        self.form.dsbSpacing.blockSignals(False)
+
+    def whenCountChanged(self):
+        self.updateTagSpacing(self.form.sbCount.value())
+        self.autoApply()
+
+    def whenSpacingChanged(self):
+        if self.form.dsbSpacing.value() == 0:
+            count = 0
+        else:
+            count = int(self.pathLength / self.form.dsbSpacing.value())
+        self.form.sbCount.blockSignals(True)
+        self.form.sbCount.setValue(count)
+        self.form.sbCount.blockSignals(False)
+        self.autoApply()
+
+    def whenOkClicked(self):
+        self.whenApplyClicked()
+        self.form.toolBox.setCurrentWidget(self.form.tbpTags)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
@@ -395,21 +501,30 @@ class TaskPanel:
             widget.setDecimals(decimals)
         widget.setValue(val)
 
-
     def setFields(self):
-        self.setupSpinBox(self.form.sbCount, self.obj.Proxy.tabCount(self.obj), None)
-        self.setupSpinBox(self.form.dsbHeight, self.obj.Proxy.tabHeight(self.obj))
-        self.setupSpinBox(self.form.dsbWidth, self.obj.Proxy.tabWidth(self.obj))
-        self.setupSpinBox(self.form.dsbAngle, self.obj.Proxy.tabAngle(self.obj))
-        self.updateTabList()
+        self.pathLength = self.obj.Proxy.getPathLength(self.obj)
+        vHeader = self.form.twTags.verticalHeader()
+        vHeader.setResizeMode(QtGui.QHeaderView.Fixed)
+        vHeader.setDefaultSectionSize(20)
+        self.updateTags()
+        self.setupSpinBox(self.form.sbCount, self.form.twTags.rowCount(), None)
+        self.setupSpinBox(self.form.dsbSpacing, 0)
+        self.setupSpinBox(self.form.dsbHeight, self.obj.Proxy.getHeight(self.obj))
+        self.setupSpinBox(self.form.dsbWidth, self.obj.Proxy.getWidth(self.obj))
+        self.setupSpinBox(self.form.dsbAngle, self.obj.Proxy.getAngle(self.obj))
+        self.updateTagSpacing(self.form.twTags.rowCount())
 
     def setupUi(self):
         self.setFields()
-        self.form.sbCount.valueChanged.connect(self.update)
-        self.form.dsbHeight.valueChanged.connect(self.update)
-        self.form.dsbWidth.valueChanged.connect(self.update)
-        self.form.dsbAngle.valueChanged.connect(self.update)
-        self.form.lwHoldingTabs.itemChanged.connect(self.update)
+        self.form.sbCount.valueChanged.connect(self.whenCountChanged)
+        self.form.dsbSpacing.valueChanged.connect(self.whenSpacingChanged)
+        self.form.dsbHeight.valueChanged.connect(self.autoApply)
+        self.form.dsbWidth.valueChanged.connect(self.autoApply)
+        self.form.dsbAngle.valueChanged.connect(self.autoApply)
+        #self.form.pbAdd.clicked.connect(self.)
+        self.form.buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.whenApplyClicked)
+        self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.whenOkClicked)
+        self.form.twTags.itemChanged.connect(self.updateUI)
 
 class SelObserver:
     def __init__(self):
@@ -468,8 +583,8 @@ class CommandPathDressupHoldingTabs:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "HoldingTabs Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTabs", "Creates a HoldingTabs Dress-up object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "HoldingTags Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Creates a HoldingTags Dress-up object from a selected path")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -483,18 +598,18 @@ class CommandPathDressupHoldingTabs:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTabs", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Please select one path object\n"))
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTabs", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "The selected object is not a path\n"))
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTabs", "Please select a Profile object"))
+            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Please select a Profile object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTabs", "Create HoldingTabs Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Create HoldingTags Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupHoldingTabs")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "HoldingTabsDressup")')
@@ -509,6 +624,6 @@ class CommandPathDressupHoldingTabs:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_HoldingTabs', CommandPathDressupHoldingTabs())
+    FreeCADGui.addCommand('PathDressup_HoldingTags', CommandPathDressupHoldingTabs())
 
 FreeCAD.Console.PrintLog("Loading PathDressupHoldingTabs... done\n")
