@@ -61,7 +61,7 @@
 
 using namespace TechDrawGui;
 
-const float labelCaptionFudge = 0.2;   // temp fiddle for devel
+const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 
 QGIView::QGIView()
