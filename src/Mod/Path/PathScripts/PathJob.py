@@ -233,6 +233,7 @@ class TaskPanel:
             if hasattr(o, "Shape"):
                 self.form.cboBaseObject.addItem(o.Name)
 
+
         self.postProcessorDefaultTooltip = self.form.cboPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
@@ -308,13 +309,16 @@ class TaskPanel:
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
 
+        baseindex = -1
         if self.obj.Base is not None:
             baseindex = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
-            print baseindex
-            if baseindex >= 0:
-                self.form.cboBaseObject.blockSignals(True)
-                self.form.cboBaseObject.setCurrentIndex(baseindex)
-                self.form.cboBaseObject.blockSignals(False)
+        for o in FreeCADGui.Selection.getCompleteSelection():
+            baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
+        print baseindex
+        if baseindex >= 0:
+            self.form.cboBaseObject.blockSignals(True)
+            self.form.cboBaseObject.setCurrentIndex(baseindex)
+            self.form.cboBaseObject.blockSignals(False)
 
 
     def open(self):
