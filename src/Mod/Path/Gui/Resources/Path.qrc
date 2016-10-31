@@ -90,6 +90,6 @@
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DlgSelectPostProcessor.ui</file>
         <file>preferences/PathJob.ui</file>
-        <file>panels/HoldingTabsEdit.ui</file>
+        <file>panels/HoldingTagsEdit.ui</file>
     </qresource>
 </RCC>
