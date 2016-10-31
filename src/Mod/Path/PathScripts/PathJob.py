@@ -155,9 +155,12 @@ class ViewProviderJob:
     def __setstate__(self, state):  # mandatory
         return None
 
+    def deleteObjectsOnReject(self):
+        return hasattr(self, 'deleteOnReject') and self.deleteOnReject
+
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel(vobj.Object)
+        taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
         return True
@@ -200,7 +203,6 @@ obj = FreeCAD.ActiveDocument.addObject("Path::FeatureCompoundPython", "Job")
 PathScripts.PathJob.ObjectPathJob(obj)
 PathLoadTool.CommandPathLoadTool.Create(obj.Name)
 tl = obj.Group[0]
-obj.ViewObject.startEditing()
 tool = Path.Tool()
 tool.Diameter = 5.0
 tool.Name = "Default Tool"
@@ -209,14 +211,18 @@ tool.ToolType = "EndMill"
 tool.Material = "HighSpeedSteel"
 obj.Tooltable.addTools(tool)
 tl.ToolNumber = 1
+obj.ViewObject.Proxy.deleteOnReject = True
+obj.ViewObject.startEditing()
 '''
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
 
 
 class TaskPanel:
-    def __init__(self, obj):
+    def __init__(self, obj, deleteOnReject):
+        FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Edit Job"))
         self.obj = obj
+        self.deleteOnReject = deleteOnReject
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
@@ -241,10 +247,18 @@ class TaskPanel:
         self.getFields()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
         FreeCADGui.Control.closeDialog()
+        FreeCAD.ActiveDocument.abortTransaction()
+        if self.deleteOnReject:
+            FreeCAD.ActiveDocument.openTransaction(translate("Path_Job", "Uncreate Job"))
+            for child in self.obj.Group:
+                FreeCAD.ActiveDocument.removeObject(child.Name)
+            FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
     def updateTooltips(self):
@@ -329,9 +343,6 @@ class TaskPanel:
         if filename and filename[0]:
             self.obj.OutputFile = str(filename[0])
             self.setFields()
-
-    def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Ok)
 
     def setupUi(self):
         # Connect Signals and Slots
