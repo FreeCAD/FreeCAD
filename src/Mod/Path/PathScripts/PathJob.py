@@ -157,8 +157,7 @@ class ViewProviderJob:
 
     def setEdit(self, vobj, mode=0):
         FreeCADGui.Control.closeDialog()
-        taskd = TaskPanel()
-        taskd.obj = vobj.Object
+        taskd = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
         return True
@@ -216,13 +215,18 @@ tl.ToolNumber = 1
 
 
 class TaskPanel:
-    def __init__(self):
+    def __init__(self, obj):
+        self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/JobEdit.ui")
         #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/JobEdit.ui")
 
-        for post in PathPreferences.allEnabledPostProcessors(['']):
+        currentPostProcessor = obj.PostProcessor
+        postProcessors = PathPreferences.allEnabledPostProcessors(['', currentPostProcessor])
+        for post in postProcessors:
             self.form.cboPostProcessor.addItem(post)
-        self.updating = False
+        # update the enumeration values, just to make sure all selections are valid
+        self.obj.PostProcessor = postProcessors
+        self.obj.PostProcessor = currentPostProcessor
 
         self.form.cboBaseObject.addItem("")
         for o in FreeCAD.ActiveDocument.Objects:

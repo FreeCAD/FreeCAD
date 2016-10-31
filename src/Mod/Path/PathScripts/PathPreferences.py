@@ -50,8 +50,9 @@ class PathPreferences:
         blacklist = cls.postProcessorBlacklist()
         enabled = [processor for processor in cls.allAvailablePostProcessors() if not processor in blacklist]
         if include:
-            include.extend(enabled)
-            return include
+            l = list(set(include + enabled))
+            l.sort()
+            return l
         return enabled
 
 
