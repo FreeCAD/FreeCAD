@@ -142,7 +142,7 @@ class PathData:
         wire = Part.Wire(bottom)
         if wire.isClosed():
             return wire
-        # if we get here there are already holding tabs, or we're not looking at a profile
+        # if we get here there are already holding tags, or we're not looking at a profile
         # let's try and insert the missing pieces - another day
         raise ValueError("Selected path doesn't seem to be a Profile operation.")
 
@@ -168,12 +168,12 @@ class PathData:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
         if spacing:
-            tabDistance = spacing
+            tagDistance = spacing
         else:
             if count:
-                tabDistance = self.base.Length / count
+                tagDistance = self.base.Length / count
             else:
-                tabDistance = self.base.Length / 4
+                tagDistance = self.base.Length / 4
         if width:
             W = width
         else:
@@ -184,7 +184,7 @@ class PathData:
             H = self.tagHeight()
 
 
-        # start assigning tabs on the longest segment
+        # start assigning tags on the longest segment
         maxLen = self.longestPathEdge().Length
         startIndex = 0
         for i in range(0, len(self.base.Edges)):
@@ -194,55 +194,55 @@ class PathData:
                 break
 
         startEdge = self.base.Edges[startIndex]
-        startCount = int(startEdge.Length / tabDistance) + 1
+        startCount = int(startEdge.Length / tagDistance) + 1
 
-        lastTabLength = (startEdge.Length + (startCount - 1) * tabDistance) / 2
-        if lastTabLength < 0 or lastTabLength > startEdge.Length:
-            lastTabLength = startEdge.Length / 2
+        lastTagLength = (startEdge.Length + (startCount - 1) * tagDistance) / 2
+        if lastTagLength < 0 or lastTagLength > startEdge.Length:
+            lastTagLength = startEdge.Length / 2
         currentLength = startEdge.Length
 
         minLength = 2. * W
 
-        #print("start index=%-2d -> count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tabDistance))
-        #print("               -> lastTabLength=%.2f)" % lastTabLength)
+        #print("start index=%-2d -> count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
+        #print("               -> lastTagLength=%.2f)" % lastTagLength)
         #print("               -> currentLength=%.2f)" % currentLength)
 
-        tabs = { startIndex: startCount }
+        edgeDict = { startIndex: startCount }
 
         for i in range(startIndex + 1, len(self.base.Edges)):
             edge = self.base.Edges[i]
-            (currentLength, lastTabLength) = self.processEdge(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
+            (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
         for i in range(0, startIndex):
             edge = self.base.Edges[i]
-            (currentLength, lastTabLength) = self.processEdge(i, edge, currentLength, lastTabLength, tabDistance, minLength, tabs)
+            (currentLength, lastTagLength) = self.processEdge(i, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict)
 
         tags = []
 
-        for (i, count) in tabs.iteritems():
+        for (i, count) in edgeDict.iteritems():
             edge = self.base.Edges[i]
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
             distance = (edge.LastParameter - edge.FirstParameter) / count
             for j in range(0, count):
-                tab = edge.Curve.value((j+0.5) * distance)
-                tags.append(Tag(tab.x, tab.y, W, H, angle, True))
+                tag = edge.Curve.value((j+0.5) * distance)
+                tags.append(Tag(tag.x, tag.y, W, H, angle, True))
 
         return tags
 
-    def processEdge(self, index, edge, currentLength, lastTabLength, tabDistance, minLength, tabs):
-        tabCount = 0
+    def processEdge(self, index, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict):
+        tagCount = 0
         currentLength += edge.Length
         if edge.Length > minLength:
-            while lastTabLength + tabDistance < currentLength:
-                tabCount += 1
-                lastTabLength += tabDistance
-            if tabCount > 0:
-                #print("      index=%d -> count=%d" % (index, tabCount))
-                tabs[index] = tabCount
+            while lastTagLength + tagDistance < currentLength:
+                tagCount += 1
+                lastTagLength += tagDistance
+            if tagCount > 0:
+                #print("      index=%d -> count=%d" % (index, tagCount))
+                edgeDict[index] = tagCount
         #else:
             #print("      skipping=%-2d (%.2f)" % (index, edge.Length))
 
-        return (currentLength, lastTabLength)
+        return (currentLength, lastTagLength)
 
     def tagHeight(self):
         return self.maxZ - self.minZ
@@ -309,7 +309,7 @@ class ObjectDressup:
         for tag in tags:
             tagID += 1
             if tag.enabled:
-                print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
+                #print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
                 debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
@@ -329,13 +329,13 @@ class ObjectDressup:
             try:
                 pathData = PathData(obj)
             except ValueError:
-                FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tabs for this path - please select a Profile path\n"))
+                FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
                 return None
 
             ## setup the object's properties, in case they're not set yet
-            #obj.Count = self.tabCount(obj)
-            #obj.Angle = self.tabAngle(obj)
-            #obj.Blacklist = self.tabBlacklist(obj)
+            #obj.Count = self.tagCount(obj)
+            #obj.Angle = self.tagAngle(obj)
+            #obj.Blacklist = self.tagBlacklist(obj)
 
             # if the heigt isn't set, use the height of the path
             #if not hasattr(obj, "Height") or not obj.Height:
@@ -379,7 +379,7 @@ class TaskPanel:
 
     def __init__(self, obj):
         self.obj = obj
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTabsEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
         FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
 
     def reject(self):
@@ -437,12 +437,14 @@ class TaskPanel:
         self.form.twTags.blockSignals(False)
 
     def cleanupUI(self):
+        print("cleanupUI")
         if debugDressup:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith('tag'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
 
     def updateUI(self):
+        print("updateUI")
         self.cleanupUI()
         self.getFields()
         if debugDressup:
@@ -450,6 +452,7 @@ class TaskPanel:
 
 
     def whenApplyClicked(self):
+        print("whenApplyClicked")
         self.cleanupUI()
 
         count = self.form.sbCount.value()
@@ -459,16 +462,20 @@ class TaskPanel:
         angle = self.form.dsbAngle.value()
 
         tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle, spacing)
+
         self.obj.Proxy.setTags(self.obj, tags)
         self.updateTags()
         if debugDressup:
+            # this causes a big of an echo and a double click on the spin buttons, don't know why though
             FreeCAD.ActiveDocument.recompute()
 
     def autoApply(self):
+        print("autoApply")
         if self.form.cbAutoApply.checkState() == QtCore.Qt.CheckState.Checked:
             self.whenApplyClicked()
 
     def updateTagSpacing(self, count):
+        print("updateTagSpacing")
         if count == 0:
             spacing = 0
         else:
@@ -478,10 +485,12 @@ class TaskPanel:
         self.form.dsbSpacing.blockSignals(False)
 
     def whenCountChanged(self):
+        print("whenCountChanged")
         self.updateTagSpacing(self.form.sbCount.value())
         self.autoApply()
 
     def whenSpacingChanged(self):
+        print("whenSpacingChanged")
         if self.form.dsbSpacing.value() == 0:
             count = 0
         else:
@@ -492,6 +501,7 @@ class TaskPanel:
         self.autoApply()
 
     def whenOkClicked(self):
+        print("whenOkClicked")
         self.whenApplyClicked()
         self.form.toolBox.setCurrentWidget(self.form.tbpTags)
 
@@ -579,7 +589,7 @@ class ViewProviderDressup:
         PathUtils.addToJob(arg1.Object.Base)
         return True
 
-class CommandPathDressupHoldingTabs:
+class CommandPathDressupHoldingTags:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
@@ -610,12 +620,12 @@ class CommandPathDressupHoldingTabs:
 
         # everything ok!
         FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Create HoldingTags Dress-up"))
-        FreeCADGui.addModule("PathScripts.PathDressupHoldingTabs")
+        FreeCADGui.addModule("PathScripts.PathDressupHoldingTags")
         FreeCADGui.addModule("PathScripts.PathUtils")
-        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "HoldingTabsDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.PathDressupHoldingTabs.ObjectDressup(obj)')
+        FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "HoldingTagsDressup")')
+        FreeCADGui.doCommand('dbo = PathScripts.PathDressupHoldingTags.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.PathDressupHoldingTabs.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
@@ -624,6 +634,6 @@ class CommandPathDressupHoldingTabs:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('PathDressup_HoldingTags', CommandPathDressupHoldingTabs())
+    FreeCADGui.addCommand('PathDressup_HoldingTags', CommandPathDressupHoldingTags())
 
-FreeCAD.Console.PrintLog("Loading PathDressupHoldingTabs... done\n")
+FreeCAD.Console.PrintLog("Loading PathDressupHoldingTags... done\n")
