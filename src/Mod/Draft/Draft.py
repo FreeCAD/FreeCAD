@@ -1731,11 +1731,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
     
     # if this is a group, gather all the svg views of its children
-    if obj.isDerivedFrom("App::DocumentObjectGroup"):
-        svg = ""
-        for child in obj.Group:
-            svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
-        return svg
+    if hasattr(obj,"isDerivedFrom"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            svg = ""
+            for child in obj.Group:
+                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
+            return svg
     
     import Part, DraftGeomUtils
     pathdata = []
@@ -2019,9 +2020,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
                 svg += ','+ str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += '" freecad:skip="1"'
-                svg += '>\n' + text[i] + '</text>\n'            
+                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
+                #svg += '" freecad:skip="1"'
+                svg += '>\n' + text[i] + '</text>\n'
         else:            
             svg = '<text fill="'
             svg += color +'" font-size="'
@@ -2031,14 +2032,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'transform="rotate('+str(math.degrees(angle))
             svg += ','+ str(base.x) + ',' + str(base.y) + ') '
             if flip:
-                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ')'
             else:
-                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
             #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
             if flip and (not techdraw):
-                svg += 'scale(1,-1) '
+                svg += ' scale(1,-1) '
             else:
-                svg += 'scale(1,1) '
+                svg += ' scale(1,1) '
             svg += '" freecad:skip="1"'
             svg += '>\n'
             if len(text) == 1:
@@ -2065,7 +2066,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         pass
 
     elif isinstance(obj,Part.Shape):
-        fill = 'url(#'+fillstyle+')'
+        if "#" in fillstyle:
+            fill = fillstyle
+        elif fillstyle == "shape color":
+            fill = "#888888"
+        else:
+            fill = 'url(#'+fillstyle+')'
         lstyle = getLineStyle()
         svg += getPath(obj.Edges,pathname="")
 

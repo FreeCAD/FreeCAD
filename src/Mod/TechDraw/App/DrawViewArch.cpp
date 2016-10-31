@@ -106,8 +106,11 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",renderMode=\"" << RenderMode.getValue() << "\""
                  << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
                  << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
+                 << ",scale=" << Scale.getValue()
                  << ",linewidth=" << LineWidth.getValue()
-                 << ",fontsize=" << FontSize.getValue();
+                 << ",fontsize=" << FontSize.getValue()
+                 << ",techdraw=True";
+
         Base::Interpreter().runString("import ArchSectionPlane");
         Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
                                          SourceName.c_str(),paramStr.str().c_str());
