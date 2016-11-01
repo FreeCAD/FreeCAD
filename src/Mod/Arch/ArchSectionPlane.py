@@ -75,7 +75,7 @@ def makeSectionView(section,name="View"):
     return view
 
 
-def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False):
+def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False,rotation=0):
     """getSVG(section,[allOn,renderMode,showHidden,showFill,scale,linewidth,fontsize]) : 
     returns an SVG fragment from an Arch section plane. If
     allOn is True, all cut objects are shown, regardless if they are visible or not.
@@ -214,7 +214,6 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                 svgs = svgs.replace('stroke-width="0.35 px"','stroke-width="SWPlaceholder"')
                 svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
                 svg += svgs
-
     scaledlinewidth = linewidth/scale
     st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
     da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
@@ -226,14 +225,17 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw)
+            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
         if not techdraw:
             svg += '</g>'
+    # filter out spaces not cut by the section plane
+    if cutface and spaces:
+        spaces = [s for s in spaces if s.Shape.BoundBox.intersect(cutface.BoundBox)]
     if spaces:
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw)
+            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
         if not techdraw:
             svg += '</g>'
     #print "complete node:",svg
