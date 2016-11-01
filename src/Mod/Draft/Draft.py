@@ -1723,7 +1723,7 @@ def getDXF(obj,direction=None):
     return result
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
@@ -2253,6 +2253,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         c = getrgb(obj.ViewObject.TextColor)
         n = obj.ViewObject.FontName
         a = 0
+        if rotation != 0:
+            a = -math.radians(rotation)
         t1 = obj.ViewObject.Proxy.text1.string.getValues()
         t2 = obj.ViewObject.Proxy.text2.string.getValues()
         scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
@@ -2263,7 +2265,10 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         j = obj.ViewObject.TextAlign
         svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
         if t2:
-            svg += getText(c,fontsize,n,a,getProj(p1).add(FreeCAD.Vector(0,lspc.Length,0)),t2,linespacing,j,flip=True)
+            ofs = FreeCAD.Vector(0,lspc.Length,0)
+            if a:
+                ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
+            svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
