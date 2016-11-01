@@ -2015,6 +2015,17 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             svg = ""
             for i in range(len(text)):
+                t = text[i]
+                if not isinstance(t,unicode):
+                    t = t.decode("utf8")
+                # temporary workaround for unsupported UTF8 in techdraw
+                try:
+                    import unicodedata
+                except:
+                    t = ""
+                    print "Draft.getSVG: unicodedata not available"
+                else:
+                    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
                 svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
@@ -2022,7 +2033,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += ','+ str(base.x) + ',' + str(base.y+linespacing*i) + ') '
                 svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
                 #svg += '" freecad:skip="1"'
-                svg += '>\n' + text[i] + '</text>\n'
+                svg += '>\n' + t + '</text>\n'
         else:            
             svg = '<text fill="'
             svg += color +'" font-size="'
@@ -2247,11 +2258,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
         f1 = fontsize*scale
         p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-        p1 = p2.add(FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue()))
+        lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
+        p1 = p2.add(lspc)
         j = obj.ViewObject.TextAlign
         svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
         if t2:
-            svg += getText(c,fontsize,n,a,getProj(p2),t2,linespacing,j,flip=True)
+            svg += getText(c,fontsize,n,a,getProj(p1).add(FreeCAD.Vector(0,lspc.Length,0)),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
