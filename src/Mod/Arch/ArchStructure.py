@@ -539,7 +539,7 @@ class _Structure(ArchComponent.Component):
                 if obj.Role not in ["Slab"]:
                     if obj.Tool:
                         nodes = obj.Tool.Shape
-                    else:
+                    elif extdata[1].Length > 0:
                         import Part
                         nodes = Part.Line(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
             offset = FreeCAD.Vector()
