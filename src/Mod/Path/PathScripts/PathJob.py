@@ -163,6 +163,7 @@ class ViewProviderJob:
         taskd = TaskPanel(vobj.Object, self.deleteObjectsOnReject())
         FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        self.deleteOnReject = False
         return True
 
     def getIcon(self):
@@ -324,10 +325,11 @@ class TaskPanel:
             self.form.PathsList.addItem(child.Name)
 
         baseindex = -1
-        if self.obj.Base is not None:
+        if self.obj.Base:
             baseindex = self.form.cboBaseObject.findText(self.obj.Base.Name, QtCore.Qt.MatchFixedString)
-        for o in FreeCADGui.Selection.getCompleteSelection():
-            baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
+        else:
+            for o in FreeCADGui.Selection.getCompleteSelection():
+                baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
         print baseindex
         if baseindex >= 0:
             self.form.cboBaseObject.blockSignals(True)
