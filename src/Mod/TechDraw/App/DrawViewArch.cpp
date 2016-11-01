@@ -109,7 +109,8 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
                  << ",scale=" << Scale.getValue()
                  << ",linewidth=" << LineWidth.getValue()
                  << ",fontsize=" << FontSize.getValue()
-                 << ",techdraw=True";
+                 << ",techdraw=True"
+                 << ",rotation=" << Rotation.getValue();
 
         Base::Interpreter().runString("import ArchSectionPlane");
         Base::Interpreter().runStringArg("svgBody = ArchSectionPlane.getSVG(App.activeDocument().%s %s)",
