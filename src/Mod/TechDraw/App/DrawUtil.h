@@ -24,6 +24,9 @@
 #define _DrawUtil_h_
 
 #include <string>
+
+#include <QString>
+#include <QByteArray>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
@@ -51,6 +54,7 @@ class TechDrawExport DrawUtil {
         static void countWires(const char* label, const TopoDS_Shape& s);
         static void countEdges(const char* label, const TopoDS_Shape& s);
         static const char* printBool(bool b);
+        static QString qbaToDebug(const QByteArray& line);
 };
 
 } //end namespace TechDraw

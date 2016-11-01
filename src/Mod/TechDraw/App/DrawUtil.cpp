@@ -32,6 +32,7 @@
 # include <QString>
 # include <QStringList>
 # include <QRegExp>
+#include <QChar>
 
 
 #include <BRep_Tool.hxx>
@@ -227,4 +228,21 @@ const char* DrawUtil::printBool(bool b)
 {
     return (b ? "True" : "False");
 }
+
+QString DrawUtil::qbaToDebug(const QByteArray & line)
+{
+    QString s;
+    uchar c;
+
+    for ( int i=0 ; i < line.size() ; i++ ){
+        c = line[i];
+        if ( c >= 0x20 and c <= 126 ) {
+            s.append(QChar::fromLatin1(c));
+        } else {
+            s.append(QString::fromUtf8("<%1>").arg(c, 2, 16, QChar::fromLatin1('0')));
+        }
+    }
+    return s;
+}
+
 //==================================

@@ -123,18 +123,16 @@ void QGIViewSymbol::drawSvg()
 
     m_svgItem->setScale(viewSymbol->Scale.getValue());
 
-    QString qs(QString::fromUtf8(viewSymbol->Symbol.getValue()));
-    symbolToSvg(qs);
+    QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
+    symbolToSvg(qba);
 }
 
-void QGIViewSymbol::symbolToSvg(QString qs)
+void QGIViewSymbol::symbolToSvg(QByteArray qba)
 {
-    if (qs.isEmpty()) {
+    if (qba.isEmpty()) {
         return;
     }
 
-    QByteArray qba;
-    qba.append(qs);
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
         Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
