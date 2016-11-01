@@ -57,7 +57,7 @@ public:
 
 protected:
     virtual void drawSvg();
-    void symbolToSvg(QString qs);
+    void symbolToSvg(QByteArray qba);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     QGCustomSvg *m_svgItem;
