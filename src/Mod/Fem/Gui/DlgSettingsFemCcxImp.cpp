@@ -69,6 +69,8 @@ void DlgSettingsFemCcxImp::saveSettings()
     fc_ext_editor->onSave();
     cb_ccx_binary_std->onSave();
     fc_ccx_binary_path->onSave();
+    cb_split_inp_writer->onSave();
+    cb_split_inp_writer->onRestore();
 }
 
 void DlgSettingsFemCcxImp::loadSettings()
