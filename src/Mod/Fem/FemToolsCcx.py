@@ -97,7 +97,7 @@ class FemToolsCcx(FemTools.FemTools):
                 self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
                 self.beam_sections, self.shell_thicknesses,
                 self.analysis_type, self.working_dir)
-            self.inp_file_name = inp_writer.select_input_writer_mode()
+            self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
             raise

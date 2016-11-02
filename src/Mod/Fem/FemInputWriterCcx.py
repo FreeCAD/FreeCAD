@@ -57,19 +57,20 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             temperature_obj, heatflux_obj, initialtemperature_obj,
             beamsection_obj, shellthickness_obj,
             analysis_type, dir_name)
-        self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
+        self.main_file_name = self.mesh_object.Name + '.inp'
+        self.file_name = self.dir_name + '/' + self.main_file_name
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
+        print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
-    def select_input_writer_mode(self):
+    def write_calculix_input_file(self):
         if self.solver_obj.SplitInputWriter == True:
             self.write_calculix_splitted_input_file()
         else:
-            self.write_calculix_input_file()
-
+            self.write_calculix_one_input_file()
         return self.file_name
 
-    def write_calculix_input_file(self):
+    def write_calculix_one_input_file(self):
         timestart = time.clock()
         self.femmesh.writeABAQUS(self.file_name)
 
@@ -152,7 +153,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_footer(inpfile)
         inpfile.close()
         print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
-        return self.file_name
 
     def write_calculix_splitted_input_file(self):
         timestart = time.clock()
@@ -166,9 +166,8 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('\n\n')
 
         # write nodes and elements
-        name = ""
-        for i in range(len(self.file_name)-4):
-            name = name + self.file_name[i]
+        name = self.file_name[:-4]
+        include_name = self.main_file_name[:-4]
 
         inpfileNodesElem = open(name + "_Node_Elem_sets.inp", 'w')
         self.femmesh.writeABAQUS(name + "_Node_Elem_sets.inp")
@@ -176,7 +175,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('**Nodes and Elements\n')
         inpfileMain.write('** written by femmesh.writeABAQUS\n')
-        inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_Elem_sets.inp \n")
+        inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Elem_sets.inp \n")
 
         # create seperate inputfiles for each node set or constraint
         if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
@@ -214,19 +213,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('** written by write_node_sets_constraints_displacement\n')
         inpfileMain.write('** written by write_node_sets_constraints_planerotation\n')
         if self.fixed_objects:
-            inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_sets.inp \n")
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_sets.inp \n")
 
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('** Surfaces for contact constraint\n')
         inpfileMain.write('** written by write_surfaces_contraints_contact\n')
         if self.contact_objects:
-            inpfileMain.write('*INCLUDE,INPUT=' + name + "_Surface_Contact.inp \n")
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Surface_Contact.inp \n")
 
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('** Node sets for transform constraint\n')
         inpfileMain.write('** written by write_node_sets_constraints_transform\n')
         if self.transform_objects:
-            inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_Transform.inp \n")
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Transform.inp \n")
 
         if self.analysis_type == "thermomech" and self.temperature_objects:
             self.write_node_sets_constraints_temperature(inpfileNodeTemp)
@@ -237,7 +236,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             inpfileMain.write('**Node sets for temperature constraint\n')
             inpfileMain.write('** written by write_node_sets_constraints_temperature\n')
             if self.temperature_objects:
-                inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_Temp.inp \n")
+                inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Temp.inp \n")
 
         # materials and fem element types
         self.write_materials(inpfileMain)
@@ -296,20 +295,20 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('** Node loads\n')
         inpfileMain.write('** written by write_constraints_force\n')
         if self.force_objects:
-            inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_Force.inp \n")
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Force.inp \n")
 
         inpfileMain.write('\n***********************************************************\n')
         inpfileMain.write('** Element + CalculiX face + load in [MPa]\n')
         inpfileMain.write('** written by write_constraints_pressure\n')
         if self.pressure_objects:
-            inpfileMain.write('*INCLUDE,INPUT=' + name + "_Pressure.inp \n")
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Pressure.inp \n")
 
         if self.analysis_type == "thermomech":
             inpfileMain.write('\n***********************************************************\n')
             inpfileMain.write('** Convective heat transfer (heat flux)\n')
             inpfileMain.write('** written by write_constraints_heatflux\n')
             if self.heatflux_objects:
-                inpfileMain.write('*INCLUDE,INPUT=' + name + "_Node_Heatlfux.inp \n")
+                inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Heatlfux.inp \n")
 
         # output and step end
         self.write_outputs_types(inpfileMain)
@@ -319,7 +318,6 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         self.write_footer(inpfileMain)
         inpfileMain.close()
         print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
-#        return self.file_name
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')
