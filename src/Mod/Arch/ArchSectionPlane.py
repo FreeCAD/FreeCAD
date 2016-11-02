@@ -85,7 +85,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
 
     if not section.Objects:
         return
-    import DraftGeomUtils
+    import Part,DraftGeomUtils
     p = FreeCAD.Placement(section.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
     objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
@@ -95,6 +95,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     spaces = []
     nonspaces = []
     drafts = []
+    windows = []
     cutface = None
     for o in objs:
         if Draft.getType(o) == "Space":
@@ -105,6 +106,8 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             drafts.append(o)
         else:
             nonspaces.append(o)
+        if Draft.getType(o) == "Window":
+            windows.append(o)
     objs = nonspaces
     svg = ''
     fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
@@ -238,6 +241,32 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
         if not techdraw:
             svg += '</g>'
+    # add additional edge symbols from windows
+    if cutface and windows:
+        cutwindows = [w.Name for w in windows if w.Shape.BoundBox.intersect(cutface.BoundBox)]
+    if windows:
+        sh = []
+        for w in windows:
+            if not hasattr(w.Proxy,"sshapes"):
+                w.Proxy.execute(w)
+            if hasattr(w.Proxy,"sshapes"):
+                if w.Proxy.sshapes and (w.Name in cutwindows):
+                    c = Part.makeCompound(w.Proxy.sshapes)
+                    c.Placement = w.Placement
+                    sh.append(c)
+            if hasattr(w.Proxy,"vshapes"):
+                if w.Proxy.vshapes:
+                    c = Part.makeCompound(w.Proxy.vshapes)
+                    c.Placement = w.Placement
+                    sh.append(c)
+        if sh:
+            if not techdraw:
+                svg += '<g transform="scale(1,-1)">'
+            for s in sh:
+                svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,fillstyle="none",direction=direction,techdraw=techdraw,rotation=rotation)
+            if not techdraw:
+                svg += '</g>'
+            
     #print "complete node:",svg
     return svg
 
