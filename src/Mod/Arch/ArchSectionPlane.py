@@ -95,6 +95,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     spaces = []
     nonspaces = []
     drafts = []
+    cutface = None
     for o in objs:
         if Draft.getType(o) == "Space":
             spaces.append(o)
@@ -110,9 +111,8 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     fillpattern += ' x="0" y="0" width="10" height="10">'
     fillpattern += '<g>'
     fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
-
     # generating SVG
-    if renderMode == "Solid":
+    if renderMode in ["Solid",1]:
         # render using the Arch Vector Renderer
         import ArchVRM, WorkingPlane
         wp = WorkingPlane.plane()
