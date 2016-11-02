@@ -97,6 +97,10 @@ class _FemSolverCalculix():
         use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
         obj.IterationsControlParameterTimeUse = use_non_ccx_iterations_param
 
+        obj.addProperty("App::PropertyBool", "SplitInputWriter", "Fem", "Split writing of ccx input file")
+        split = ccx_prefs.GetBool("SplitInputWriter", False)
+        obj.SplitInputWriter = split
+
         ccx_default_time_incrementation_control_parameter = {
             # iteration parameter
             'I_0': 4,
