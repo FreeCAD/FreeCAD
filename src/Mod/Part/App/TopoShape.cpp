@@ -1325,6 +1325,9 @@ TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Stand
     }
 #else
     BRepAlgoAPI_Fuse mkFuse;
+# if OCC_VERSION_HEX >= 0x060900
+    mkFuse.SetRunParallel(true);
+# endif
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
