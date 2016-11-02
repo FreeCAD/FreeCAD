@@ -1764,8 +1764,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             stroke = getrgb(color)
     elif gui:
-        if hasattr(obj.ViewObject,"LineColor"):
-            stroke = getrgb(obj.ViewObject.LineColor)
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"LineColor"):
+                stroke = getrgb(obj.ViewObject.LineColor)
 
     def getLineStyle():
         "returns a linestyle"
@@ -1879,9 +1880,13 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     if plane: drawing_plane_normal = plane.axis
                     flag_large_arc = (((e.ParameterRange[1] - \
                             e.ParameterRange[0]) / math.pi) % 2) > 1
-                    flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                             == (e.LastParameter > e.FirstParameter)
+                    #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
+                    #         == (e.LastParameter > e.FirstParameter)
                     #        == (e.Orientation == "Forward")
+                    # other method: check the direction of the angle between tangents
+                    t1 = e.tangentAt(e.FirstParameter)
+                    t2 = e.tangentAt(e.FirstParameter + (e.LastParameter-e.FirstParameter)/10)
+                    flag_sweep = (DraftVecUtils.angle(t1,t2,drawing_plane_normal) < 0)
                     for v in endpoints:
                         edata += 'A %s %s %s %s %s %s %s ' % \
                                 (str(rx),str(ry),str(rot),\
