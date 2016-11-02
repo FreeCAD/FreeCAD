@@ -63,11 +63,23 @@ movearc = movecw + moveccw
 
 def getAngle(v):
     a = v.getAngle(FreeCAD.Vector(1,0,0))
-    if v.x < 0 and v.y < 0:
-        return a - math.pi/2
     if v.y < 0:
         return -a
     return a
+
+def testPrintAngle(v):
+    print("(%+.2f, %+.2f, %+.2f): %+.2f" % (v.x, v.y, v.z, getAngle(v)/math.pi))
+
+def testAngle(x=1, y=1):
+    testPrintAngle(FreeCAD.Vector( 1*x, 0*y, 0))
+    testPrintAngle(FreeCAD.Vector( 1*x, 1*y, 0))
+    testPrintAngle(FreeCAD.Vector( 0*x, 1*y, 0))
+    testPrintAngle(FreeCAD.Vector(-1*x, 1*y, 0))
+    testPrintAngle(FreeCAD.Vector(-1*x, 0*y, 0))
+    testPrintAngle(FreeCAD.Vector(-1*x,-1*y, 0))
+    testPrintAngle(FreeCAD.Vector( 0*x,-1*y, 0))
+    testPrintAngle(FreeCAD.Vector( 1*x,-1*y, 0))
+
 
 class Tag:
     def __init__(self, x, y, width, height, angle, enabled):
@@ -104,24 +116,21 @@ class PathData:
                     center = lastPt + self.point(cmd, FreeCAD.Vector(0,0,0), 'I', 'J', 'K')
                     A = lastPt - center
                     B = pt - center
-                    a = getAngle(A)
-                    b = getAngle(B)
-                    if cmd.Name in movecw and a < 0 and math.fabs(math.pi - b) < 0.0000001:
-                        angle = (a - b) / 2
-                    elif cmd.Name in moveccw and math.fabs(math.pi - a) < 0.0000001 and b < 0:
-                        angle = (b - a) / 2
-                    else:
-                        angle = (a + b) / 2.
                     d = -B.x * A.y + B.y * A.x
+
+                    if d == 0:
+                        # we're dealing with half an circle here
+                        angle = getAngle(A) + math.pi/2
+                        if cmd.Name in movecw:
+                            angle -= math.pi
+                    else:
+                        #print("(%.2f, %.2f) (%.2f, %.2f)" % (A.x, A.y, B.x, B.y))
+                        C = A + B
+                        angle = getAngle(C)
 
                     R = (lastPt - center).Length
                     ptm = center + FreeCAD.Vector(math.cos(angle), math.sin(angle), 0) * R
-                    #if pt.z == 2.: # and pt.x == 10. and math.fabs(pt.y) == 12.5:
-                    #    #print("%s (%.2f %.2f) -> (%.2f, %.2f): center=(%.2f, %.2f)" % (cmd, lastPt.x, lastPt.y, pt.x, pt.y, center.x, center.y))
-                    #    print("   a = %+.2f b = %+.2f) %+.2f -> angle = %+.2f   r = %.2f" % (a/math.pi, b/math.pi, d, angle/math.pi, R))
-                    #    debugMarker(lastPt, 'arc', (1.0, 1.0, 0.0), 0.3)
-                    #    debugMarker(ptm,    'arc', (1.0, 1.0, 0.0), 0.3)
-                    #    debugMarker(pt,     'arc', (1.0, 1.0, 0.0), 0.3)
+
                     self.edges.append(Part.Edge(Part.Arc(lastPt, ptm, pt)))
                 lastPt = pt
         self.base = self.findBottomWire(self.edges)
@@ -159,11 +168,12 @@ class PathData:
                     maxZ = v.Point.z
         return (minZ, maxZ)
 
-    def longestPathEdge(self):
-        return sorted(self.base.Edges, key=lambda e: -e.Length)[0]
+    def shortestAndLongestPathEdge(self):
+        edges = sorted(self.base.Edges, key=lambda e: e.Length)
+        return (edges[0], edges[-1])
 
     def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
-        print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
+        #print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
         #for e in self.base.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
@@ -185,25 +195,26 @@ class PathData:
 
 
         # start assigning tags on the longest segment
-        maxLen = self.longestPathEdge().Length
+        (shortestEdge, longestEdge) = self.shortestAndLongestPathEdge()
         startIndex = 0
         for i in range(0, len(self.base.Edges)):
             edge = self.base.Edges[i]
-            if edge.Length == maxLen:
+            if edge.Length == longestEdge.Length:
                 startIndex = i
                 break
 
         startEdge = self.base.Edges[startIndex]
-        startCount = int(startEdge.Length / tagDistance) + 1
+        startCount = int(startEdge.Length / tagDistance)
+        if (longestEdge.Length - shortestEdge.Length) > shortestEdge.Length:
+            startCount = int(startEdge.Length / tagDistance) + 1
 
         lastTagLength = (startEdge.Length + (startCount - 1) * tagDistance) / 2
-        if lastTagLength < 0 or lastTagLength > startEdge.Length:
-            lastTagLength = startEdge.Length / 2
         currentLength = startEdge.Length
 
-        minLength = 2. * W
+        minLength = min(2. * W, longestEdge.Length)
 
-        #print("start index=%-2d -> count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
+        #print("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f)" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length))
+        #print("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
         #print("               -> lastTagLength=%.2f)" % lastTagLength)
         #print("               -> currentLength=%.2f)" % currentLength)
 
@@ -220,6 +231,7 @@ class PathData:
 
         for (i, count) in edgeDict.iteritems():
             edge = self.base.Edges[i]
+            #print(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
             distance = (edge.LastParameter - edge.FirstParameter) / count
@@ -248,7 +260,7 @@ class PathData:
         return self.maxZ - self.minZ
 
     def tagWidth(self):
-        return self.longestPathEdge().Length / 10
+        return self.shortestAndLongestPathEdge()[1].Length / 10
 
     def tagAngle(self):
         return 90
@@ -297,7 +309,7 @@ class ObjectDressup:
             tags = [Tag.FromString(tag) for tag in obj.Tags]
         else:
             print("execute - default tags")
-            tags = self.generateTags(obj, 4)
+            tags = self.generateTags(obj, 4.)
 
         if not tags:
             print("execute - no tags")
@@ -461,7 +473,7 @@ class TaskPanel:
         height = self.form.dsbHeight.value()
         angle = self.form.dsbAngle.value()
 
-        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle, spacing)
+        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle, spacing * 0.99)
 
         self.obj.Proxy.setTags(self.obj, tags)
         self.updateTags()
