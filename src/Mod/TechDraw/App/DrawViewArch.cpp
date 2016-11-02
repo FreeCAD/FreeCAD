@@ -103,7 +103,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute(void)
 
         std::stringstream paramStr;
         paramStr << ",allOn=" << (AllOn.getValue() ? "True" : "False")
-                 << ",renderMode=\"" << RenderMode.getValue() << "\""
+                 << ",renderMode=" << RenderMode.getValue()
                  << ",showHidden=" << (ShowHidden.getValue() ? "True" : "False")
                  << ",showFill=" << (ShowFill.getValue() ? "True" : "False")
                  << ",scale=" << Scale.getValue()
