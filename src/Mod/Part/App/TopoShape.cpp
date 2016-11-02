@@ -1413,6 +1413,7 @@ TopoDS_Shape TopoShape::generalFuse(const std::vector<TopoDS_Shape> &sOthers, St
     throw Base::AttributeError("GFA is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_BuilderAlgo mkGFA;
+    mkGFA.SetRunParallel(true);
     TopTools_ListOfShape GFAArguments;
     GFAArguments.Append(this->_Shape);
     for (const TopoDS_Shape &it: sOthers) {
