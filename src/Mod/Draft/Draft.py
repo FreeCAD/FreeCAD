@@ -2023,14 +2023,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 t = text[i]
                 if not isinstance(t,unicode):
                     t = t.decode("utf8")
-                # temporary workaround for unsupported UTF8 in techdraw
-                try:
-                    import unicodedata
-                except:
-                    t = ""
-                    print "Draft.getSVG: unicodedata not available"
-                else:
-                    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
+                # possible workaround if UTF8 is unsupported
+                #    import unicodedata
+                #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
                 svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
