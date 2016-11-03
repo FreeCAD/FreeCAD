@@ -59,7 +59,7 @@ QGIViewSymbol::QGIViewSymbol()
 
     m_svgItem = new QGCustomSvg();
     addToGroup(m_svgItem);
-    m_svgItem->setPos(0.,0.);
+    m_svgItem->centerAt(0.,0.);
 }
 
 QGIViewSymbol::~QGIViewSymbol()
@@ -137,5 +137,5 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
     if (!m_svgItem->load(&qba)) {
         Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
     }
-    m_svgItem->setPos(0.,0.);
+    m_svgItem->centerAt(0.,0.);
 }

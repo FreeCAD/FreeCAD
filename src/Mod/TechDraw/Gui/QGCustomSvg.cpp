@@ -51,22 +51,26 @@ QGCustomSvg::~QGCustomSvg()
 
 void QGCustomSvg::centerAt(QPointF centerPos)
 {
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = centerPos.x() - width/2.;
-    double newY = centerPos.y() - height/2.;
-    setPos(newX,newY);
+    if (group()) { 
+        QRectF box = group()->boundingRect();
+        double width = box.width();
+        double height = box.height();
+        double newX = centerPos.x() - width/2.;
+        double newY = centerPos.y() - height/2.;
+        setPos(newX,newY);
+    }
 }
 
 void QGCustomSvg::centerAt(double cX, double cY)
 {
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
-    setPos(newX,newY);
+    if (group()) {
+        QRectF box = group()->boundingRect();
+        double width = box.width();
+        double height = box.height();
+        double newX = cX - width/2.;
+        double newY = cY - height/2.;
+        setPos(newX,newY);
+    }
 }
 
 bool QGCustomSvg::load(QByteArray *svgBytes)
@@ -82,7 +86,7 @@ QRectF QGCustomSvg::boundingRect() const
     QRectF box = m_svgRender->viewBoxF();
     double w = box.width();
     double h = box.height();
-    QRectF newRect(0,0,w*scale(),h*scale());
+    QRectF newRect(0,0,w,h);
     return newRect.adjusted(-1.,-1.,1.,1.);
 }
 
