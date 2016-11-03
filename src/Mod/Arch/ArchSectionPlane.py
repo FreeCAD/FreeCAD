@@ -219,6 +219,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                 svg += svgs
     scaledlinewidth = linewidth/scale
     st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
+    yt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("SymbolLineThickness",0.6)
     da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
     da = da.replace(" ","")
     svg = svg.replace('LWPlaceholder', str(scaledlinewidth) + 'px')
@@ -228,7 +229,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for d in drafts:
-            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
         if not techdraw:
             svg += '</g>'
     # filter out spaces not cut by the section plane
@@ -238,7 +239,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if not techdraw:
             svg += '<g transform="scale(1,-1)">'
         for s in spaces:
-            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
         if not techdraw:
             svg += '</g>'
     # add additional edge symbols from windows
@@ -263,7 +264,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
             for s in sh:
-                svg += Draft.getSVG(s,scale=scale,linewidth=linewidth,fontsize=fontsize,fillstyle="none",direction=direction,techdraw=techdraw,rotation=rotation)
+                svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,fillstyle="none",direction=direction,techdraw=techdraw,rotation=rotation)
             if not techdraw:
                 svg += '</g>'
             
