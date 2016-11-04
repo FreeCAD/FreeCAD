@@ -84,8 +84,26 @@ def curvetowire(obj, steps):
 # fixme set at 4 decimal places for testing
 def fmt(val): return format(val, '.4f')
 
+
+def getProjected(shape,direction):
+    "returns projected edges from a shape and a direction"
+    import Part,Drawing
+    edges = []
+    groups = Drawing.projectEx(shape,direction)
+    for g in groups[0:5]:
+        if g:
+            edges.append(g)
+    # if hasattr(obj,"Tessellation") and obj.Tessellation:
+    #     return DraftGeomUtils.cleanProjection(Part.makeCompound(edges),obj.Tessellation,obj.SegmentLength)
+    # else:
+    return Part.makeCompound(edges)
+
+
 def silhouette(obj):
-    w = TechDraw.findOuterWire(obj.Shape.Edges)
+    from FreeCAD import Vector
+    s = getProjected(obj.Shape, Vector(0,0,1))
+    print s
+    w = TechDraw.findOuterWire(s.Edges)
     return w
 
 def isSameEdge(e1, e2):
