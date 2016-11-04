@@ -1244,7 +1244,7 @@ StdCmdViewRotateLeft::StdCmdViewRotateLeft()
     sWhatsThis    = "Std_ViewXX";
     sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 counter-clockwise");
     sPixmap       = "view-rotate-left";
-    //sAccel        = "Shift Left";
+    sAccel        = "Shift+Left";
     eType         = Alter3DView;
 }
 
@@ -1269,7 +1269,7 @@ StdCmdViewRotateRight::StdCmdViewRotateRight()
     sWhatsThis    = "Std_ViewXX";
     sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 clockwise");
     sPixmap       = "view-rotate-right";
-    //sAccel        = "Shift Right";
+    sAccel        = "Shift+Right";
     eType         = Alter3DView;
 }
 
