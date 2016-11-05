@@ -250,7 +250,6 @@ void QGIViewPart::updateView(bool update)
         viewPart->isTouched() ||
         viewPart->Source.isTouched() ||
         viewPart->Direction.isTouched() ||
-        viewPart->Tolerance.isTouched() ||
         viewPart->Scale.isTouched() ||
         viewPart->HardHidden.isTouched() ||
         viewPart->SmoothVisible.isTouched() ||
@@ -288,6 +287,9 @@ void QGIViewPart::drawViewPart()
 {
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
+        return;
+    }
+    if (!viewPart->hasGeometry()) {
         return;
     }
 

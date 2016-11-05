@@ -38,10 +38,8 @@
 #include <gp_Elips.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Vec.hxx>
-//#include <HLRTopoBRep_OutLiner.hxx>
 #include <HLRBRep.hxx>
 #include <HLRBRep_Algo.hxx>
-//#include <HLRBRep_Data.hxx>
 #include <HLRBRep_HLRToShape.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <TopoDS.hxx>
@@ -69,8 +67,6 @@
 #include "GeometryObject.h"
 #include "DrawViewPart.h"
 
-//#include <QDebug>
-
 using namespace TechDrawGeometry;
 using namespace TechDraw;
 using namespace std;
@@ -80,11 +76,9 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-
-GeometryObject::GeometryObject(DrawViewPart* parent) :
-    Tolerance(0.05f),
+GeometryObject::GeometryObject(std::string parent) :
     Scale(1.f),
-    m_parent(parent),
+    m_parentName(parent),
     m_isoCount(0)
 {
 }
@@ -94,21 +88,18 @@ GeometryObject::~GeometryObject()
     clear();
 }
 
-void GeometryObject::setTolerance(double value)
-{
-    Tolerance = value;
-}
-
 void GeometryObject::setScale(double value)
 {
     Scale = value;
 }
 
-const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges() const
+
+const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
 {
     std::vector<BaseGeom *> result;
-    bool smoothOK = m_parent->SmoothVisible.getValue();
-    bool seamOK   = m_parent->SeamVisible.getValue();
+    bool smoothOK = smooth;
+    bool seamOK = seam;
+
     for (auto& e:edgeGeom) {
         if (e->visible) {
             switch (e->classOfEdge) {
@@ -184,7 +175,7 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     auto end   = chrono::high_resolution_clock::now();
     auto diff  = end - start;
     double diffOut = chrono::duration <double, milli> (diff).count();
-    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parent->getNameInDocument(),diffOut);
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
 
     try {
         HLRBRep_HLRToShape hlrToShape(brep_hlr);
@@ -297,7 +288,6 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
         //add vertices of new edge if not already in list
         if (visible) {
             BaseGeom* lastAdded = edgeGeom.back();
-            //if (edgeGeom.empty()) {horrible_death();} //back() undefined behavior (can't happen? baseFactory always returns a Base?)
             bool v1Add = true, v2Add = true;
             bool c1Add = true;
             TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
@@ -754,24 +744,22 @@ TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
     return transShape;
 }
 
-/// debug functions
-/* TODO: Clean this up when faces are actually working properly...
-
-void debugEdge(const TopoDS_Edge &e)
-
+//!scales a shape about a origin
+TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
+                                          double scale)
 {
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf scaleTransform;
+        scaleTransform.SetScale(gp_Pnt(0,0,0), scale);
 
-    gp_Pnt p0 = BRep_Tool::Pnt(TopExp::FirstVertex(e));
-
-    gp_Pnt p1 = BRep_Tool::Pnt(TopExp::LastVertex(e));
-
-    qDebug()<<p0.X()<<','<<p0.Y()<<','<<p0.Z()<<"\t - \t"<<p1.X()<<','<<p1.Y()<<','<<p1.Z();
-
-}*/
-
-
-
-const char* _printBool(bool b)
-{
-    return (b ? "True" : "False");
+        BRepBuilderAPI_Transform mkTrf(input, scaleTransform);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::scaleShape - scale failed.\n");
+        return transShape;
+    }
+    return transShape;
 }
+

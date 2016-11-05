@@ -25,7 +25,6 @@
 
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
-//#include <HLRBRep_Data.hxx>
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
@@ -33,7 +32,6 @@
 #include <vector>
 
 #include "Geometry.h"
-//#include "DrawViewPart.h"
 
 namespace TechDraw
 {
@@ -48,6 +46,8 @@ namespace TechDrawGeometry
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,
                         const gp_Pnt& inputCenter,
                         double scale);
+TopoDS_Shape TechDrawExport scaleShape(const TopoDS_Shape &input,
+                                       double scale);
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
@@ -61,12 +61,11 @@ class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
-    GeometryObject(TechDraw::DrawViewPart* parent);
+    GeometryObject(std::string parent);
     virtual ~GeometryObject();
 
     void clear();
 
-    void setTolerance(double value);
     void setScale(double value);
 
     //! Returns 2D bounding box
@@ -74,7 +73,7 @@ public:
 
     const std::vector<Vertex *>   & getVertexGeometry() const { return vertexGeom; };
     const std::vector<BaseGeom *> & getEdgeGeometry() const { return edgeGeom; };
-    const std::vector<BaseGeom *> getVisibleFaceEdges() const;
+    const std::vector<BaseGeom *> getVisibleFaceEdges(bool smooth, bool seam) const;
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; };
 
     void projectShape(const TopoDS_Shape &input,
@@ -84,6 +83,7 @@ public:
     void addFaceGeom(Face * f);
     void clearFaceGeom();
     void setIsoCount(int i) { m_isoCount = i; }
+    void setParentName(std::string n);                          //for debug messages
 
 protected:
     //HLR output
@@ -128,10 +128,9 @@ protected:
 
     bool findVertex(Base::Vector2D v);
 
-    double Tolerance;
     double Scale;
 
-    TechDraw::DrawViewPart* m_parent;
+    std::string m_parentName;
     int m_isoCount;
 };
 

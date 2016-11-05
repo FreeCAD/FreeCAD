@@ -118,7 +118,6 @@ void DrawViewCollection::rebuildViewList()
 
 short DrawViewCollection::mustExecute() const
 {
-    // If Tolerance Property is touched
     if (Views.isTouched() ||
         Source.isTouched()) {
         return 1;
