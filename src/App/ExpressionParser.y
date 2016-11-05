@@ -71,8 +71,8 @@ exp:      num                			{ $$ = $1;                                      
         | num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  }
         | STRING                                { $$ = new StringExpression(DocumentObject, $1);                                  }
         | identifier                            { $$ = new VariableExpression(DocumentObject, $1);                                }
-        | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)); }
-        | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, 1)); }
+        | MINUSSIGN exp %prec NEG               { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
+        | '+' exp %prec POS                     { $$ = new OperatorExpression(DocumentObject, $2, OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
         | exp '+' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::ADD, $3);   }
         | exp MINUSSIGN exp                     { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::SUB, $3);   }
         | exp '*' exp        			{ $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
@@ -84,10 +84,10 @@ exp:      num                			{ $$ = $1;                                      
         | cond '?' exp ':' exp                  { $$ = new ConditionalExpression(DocumentObject, $1, $3, $5);                     }
         ;
 
-num:       ONE                                  { $$ = new NumberExpression(DocumentObject, $1);                                  }
-         | NUM                                  { $$ = new NumberExpression(DocumentObject, $1);                                  }
-         | INTEGER                              { $$ = new NumberExpression(DocumentObject, (double)$1);                          }
-         | CONSTANT                             { $$ = new ConstantExpression(DocumentObject, $1.name, $1.fvalue);                }
+num:       ONE                                  { $$ = new NumberExpression(DocumentObject, Quantity($1));                        }
+         | NUM                                  { $$ = new NumberExpression(DocumentObject, Quantity($1));                        }
+         | INTEGER                              { $$ = new NumberExpression(DocumentObject, Quantity((double)$1));                }
+         | CONSTANT                             { $$ = new ConstantExpression(DocumentObject, $1.name, Quantity($1.fvalue));      }
 
 args: exp                                       { $$.push_back($1);                                                               }
     | range                                     { $$.push_back($1);                                                               }
@@ -114,8 +114,8 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
 unit_exp: UNIT                                  { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
         | unit_exp '/' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
-        | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, (double)$3));   }
-        | unit_exp '^' MINUSSIGN integer        { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, (double)$4), OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)));   }
+        | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)$3)));   }
+        | unit_exp '^' MINUSSIGN integer        { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, Quantity((double)$4)), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))));   }
         | '(' unit_exp ')'                      { $$ = $2;                                                                        }
         ;
 
