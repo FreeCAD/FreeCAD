@@ -731,10 +731,13 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
 
-    if (!PyArg_ParseTuple(args.ptr(), "s|iiss",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
         throw Py::Exception();
 
-    QFileInfo fi(QString::fromUtf8(cFileName));
+    std::string encodedName = std::string(cFileName);
+    PyMem_Free(cFileName);
+    QFileInfo fi(QString::fromUtf8(encodedName.c_str()));
+
     if (!fi.absoluteDir().exists())
         throw Py::RuntimeError("Directory where to save image doesn't exist");
 
@@ -762,7 +765,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
-    renderer.writeToImageFile(cFileName, cComment, cam->getViewVolume().getMatrix(), img);
+    renderer.writeToImageFile(encodedName.c_str(), cComment, cam->getViewVolume().getMatrix(), img);
 
     return Py::None();
 }
