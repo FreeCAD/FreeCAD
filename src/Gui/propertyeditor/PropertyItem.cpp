@@ -1761,7 +1761,7 @@ Base::Quantity PropertyPlacementItem::getAngle() const
 {
     QVariant value = data(1, Qt::EditRole);
     if (!value.canConvert<Base::Placement>())
-        return 0.0;
+        return Base::Quantity(0.0);
     const Base::Placement& val = value.value<Base::Placement>();
     double angle;
     Base::Vector3d dir;

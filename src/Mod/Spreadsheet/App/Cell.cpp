@@ -29,6 +29,7 @@
 #include "Utils.h"
 #include <boost/tokenizer.hpp>
 #include <Base/Reader.h>
+#include <Base/Quantity.h>
 #include <Base/Writer.h>
 #include <App/Expression.h>
 #include "Sheet.h"
@@ -235,7 +236,7 @@ void Cell::setContent(const char * value)
             errno = 0;
             double float_value = strtod(value, &end);
             if (!*end && errno == 0)
-                expr = new App::NumberExpression(owner->sheet(), float_value);
+                expr = new App::NumberExpression(owner->sheet(), Quantity(float_value));
             else {
                 try {
                     expr = ExpressionParser::parse(owner->sheet(), value);

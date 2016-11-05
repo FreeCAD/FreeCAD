@@ -813,7 +813,7 @@ public:
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return n; }
+    virtual Quantity getQuantity() const { return Quantity(n); }
 
 private:
     unsigned int n;
@@ -886,7 +886,7 @@ Expression * FunctionExpression::evalAggregate() const
                 if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
                     c->collect(qp->getQuantityValue());
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
-                    c->collect(fp->getValue());
+                    c->collect(Quantity(fp->getValue()));
                 else
                     throw Exception("Invalid property type for aggregate");
             } while (range.next());
@@ -1358,27 +1358,27 @@ Expression * VariableExpression::eval() const
     else if (value.type() == typeid(double)) {
         double dvalue = boost::any_cast<double>(value);
 
-        return new NumberExpression(owner, dvalue);
+        return new NumberExpression(owner, Quantity(dvalue));
     }
     else if (value.type() == typeid(float)) {
         double fvalue = boost::any_cast<float>(value);
 
-        return new NumberExpression(owner, fvalue);
+        return new NumberExpression(owner, Quantity(fvalue));
     }
     else if (value.type() == typeid(int)) {
         int ivalue = boost::any_cast<int>(value);
 
-        return new NumberExpression(owner, ivalue);
+        return new NumberExpression(owner, Quantity(ivalue));
     }
     else if (value.type() == typeid(long)) {
         long lvalue = boost::any_cast<long>(value);
 
-        return new NumberExpression(owner, lvalue);
+        return new NumberExpression(owner, Quantity(lvalue));
     }
     else if (value.type() == typeid(bool)) {
         double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
 
-        return new NumberExpression(owner, bvalue);
+        return new NumberExpression(owner, Quantity(bvalue));
     }
     else if (value.type() == typeid(std::string)) {
         std::string svalue = boost::any_cast<std::string>(value);
@@ -1619,7 +1619,7 @@ int ConstantExpression::priority() const
 TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
 
 BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
-    : NumberExpression(_owner, _value ? 1.0 : 0.0)
+    : NumberExpression(_owner, Quantity(_value ? 1.0 : 0.0))
 {
 }
 

@@ -198,7 +198,7 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         return 0;
     }
 
-    quant = getQuantityPtr()->getValueAs(quant);
+    quant = Quantity(getQuantityPtr()->getValueAs(quant));
     return new QuantityPy(new Quantity(quant));
 }
 
