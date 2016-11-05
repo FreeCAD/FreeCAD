@@ -81,6 +81,8 @@ DrawViewMulti::DrawViewMulti()
 
     //Source is replaced by Sources in Multi
     Source.setStatus(App::Property::ReadOnly,true);
+
+    geometryObject = nullptr;
 }
 
 DrawViewMulti::~DrawViewMulti()
@@ -137,9 +139,6 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
     }
     m_compound = comp;
 
-    geometryObject->setTolerance(Tolerance.getValue());
-    geometryObject->setScale(Scale.getValue());
-
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(comp,
@@ -147,7 +146,7 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
                                                     Scale.getValue());
-        buildGeometryObject(mirroredShape,inputCenter);
+        geometryObject = buildGeometryObject(mirroredShape,inputCenter);
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
