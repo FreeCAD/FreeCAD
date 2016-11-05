@@ -90,6 +90,8 @@ SET(TechDraw_SRCS
     PreCompiled.h
     EdgeWalker.cpp
     EdgeWalker.h
+    DrawProjectSplit.cpp
+    DrawProjectSplit.h
 )
 
 SET(Geometry_SRCS

@@ -32,12 +32,12 @@
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
-#include "DrawView.h"
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
 
-//#include "GeometryObject.h"
+#include "DrawView.h"
+#include "DrawProjectSplit.h"
 
 class gp_Pnt;
 
@@ -55,11 +55,7 @@ class DrawHatch;
 
 namespace TechDraw
 {
-struct splitPoint {
-    int i;
-    Base::Vector3d v;
-    double param;
-};
+
 class DrawViewSection;
 
 class TechDrawExport DrawViewPart : public DrawView
@@ -72,7 +68,6 @@ public:
 
     App::PropertyLink   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
-    //App::PropertyVector XAxisDirection;
     App::PropertyBool   SeamVisible;
     App::PropertyBool   SmoothVisible;
     //App::PropertyBool   OutlinesVisible;
@@ -90,7 +85,6 @@ public:
     App::PropertyFloat  IsoWidth;
     App::PropertyBool   ArcCenterMarks;
     App::PropertyFloat  CenterScale;
-    App::PropertyFloatConstraint  Tolerance;
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
     App::PropertyBool   ShowSectionLine;
@@ -144,13 +138,8 @@ protected:
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
-    void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
+    TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
-
-    bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
-    std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
-    std::vector<TopoDS_Edge> split1Edge(TopoDS_Edge e, std::vector<splitPoint> splitPoints);
-    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2); //const;   //probably sb static or DrawUtil
 
     //Projection parameter space
     void saveParamSpace(const Base::Vector3d& direction);
@@ -158,17 +147,12 @@ protected:
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
-    std::vector<splitPoint> sortSplits(std::vector<splitPoint>& s, bool ascend);
-    static bool splitCompare(const splitPoint& p1, const splitPoint& p2);
-    static bool splitEqual(const splitPoint& p1, const splitPoint& p2);
     void getRunControl(void);
 
-    long int m_interAlgo;
     bool m_sectionEdges;
     bool m_handleFaces;
 
 private:
-    static App::PropertyFloatConstraint::Constraints floatRange;
 
 };
 
