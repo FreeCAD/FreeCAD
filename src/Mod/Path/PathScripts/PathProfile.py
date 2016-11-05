@@ -98,6 +98,7 @@ class ObjectProfile:
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property","Extra value to stay away from final profile- good for roughing toolpath"))
         obj.addProperty("App::PropertyLength", "SegLen", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
         obj.addProperty("App::PropertyAngle", "PlungeAngle", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property","Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn"))
+        obj.addProperty("App::PropertyBool", "processHoles", "Profile", QtCore.QT_TRANSLATE_NOOP("App::Property","Handl holes as well as the outline"))
 
         obj.addProperty("App::PropertyVectorList", "locs", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of holding tag locations"))
 
@@ -189,7 +190,7 @@ class ObjectProfile:
 
         return output
 
-    def _buildPathLibarea(self, obj, edgelist):
+    def _buildPathLibarea(self, obj, edgelist, isHole):
         import PathScripts.PathKurveUtils as PathKurveUtils
         import math
         import area
@@ -210,9 +211,15 @@ class ObjectProfile:
         PathKurveUtils.output('mem')
         PathKurveUtils.feedrate_hv(self.horizFeed, self.vertFeed)
 
+        # Reverse the direction for holes
+        if isHole:
+            direction = "CW" if obj.Direction == "CCW" else "CCW"
+        else:
+            direction = obj.Direction
+
         output = ""
         output += "G0 Z" + str(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
-        curve = PathKurveUtils.makeAreaCurve(edgelist, obj.Direction, startpoint, endpoint)
+        curve = PathKurveUtils.makeAreaCurve(edgelist, direction, startpoint, endpoint)
 
         '''The following line uses a profile function written for use with FreeCAD.  It's clean but incomplete.  It doesn't handle
 print "x = " + str(point.x)
@@ -305,6 +312,7 @@ print "y - " + str(point.y)
             hfaces = []
             vfaces = []
             wires = []
+            holes = []
 
             for b in obj.Base:
                 for sub in b[1]:
@@ -319,6 +327,11 @@ print "y - " + str(point.y)
                     else:
                         FreeCAD.Console.PrintError(translate("Path", "Face doesn't appear to be parallel or perpendicular to the XY plane. No path will be generated for: \n"))
                         FreeCAD.Console.PrintError(b[0].Name + "." + sub + "\n")
+
+            if obj.processHoles:
+                for h in hfaces:
+                    holes += h.Wires[1:]
+
             for h in hfaces:
                 wires.append(h.OuterWire)
 
@@ -326,6 +339,19 @@ print "y - " + str(point.y)
             slices = tempshell.slice(FreeCAD.Base.Vector(0, 0, 1), tempshell.CenterOfMass.z )
 
             wires = wires + slices
+
+            for wire in holes:
+                if obj.Algorithm == "OCC Native":
+                    output += self._buildPathOCC(obj, wire)
+                else:
+                    try:
+                        import area
+                    except:
+                        FreeCAD.Console.PrintError(translate("Path", "libarea needs to be installed for this command to work.\n"))
+                        return
+                    edgelist = wire.Edges
+                    edgelist = Part.__sortEdges__(edgelist)
+                    output += self._buildPathLibarea(obj, edgelist, True)
 
             for wire in wires:
                 if obj.Algorithm == "OCC Native":
@@ -338,7 +364,7 @@ print "y - " + str(point.y)
                         return
                     edgelist = wire.Edges
                     edgelist = Part.__sortEdges__(edgelist)
-                    output += self._buildPathLibarea(obj, edgelist)
+                    output += self._buildPathLibarea(obj, edgelist, False)
 
         if obj.Active:
             path = Path.Path(output)
@@ -478,6 +504,8 @@ class CommandPathProfile:
 
         FreeCADGui.doCommand('obj.Active = True')
 
+        FreeCADGui.doCommand('obj.Algorithm = "libarea"')
+
         FreeCADGui.doCommand('obj.ClearanceHeight = ' + str(ztop + 10.0))
         FreeCADGui.doCommand('obj.StepDown = 1.0')
         FreeCADGui.doCommand('obj.StartDepth= ' + str(ztop))
@@ -488,6 +516,7 @@ class CommandPathProfile:
         FreeCADGui.doCommand('obj.OffsetExtra = 0.0')
         FreeCADGui.doCommand('obj.Direction = "CW"')
         FreeCADGui.doCommand('obj.UseComp = False')
+        FreeCADGui.doCommand('obj.processHoles = False')
         FreeCADGui.doCommand('obj.PlungeAngle = 90.0')
         #FreeCADGui.doCommand('obj.ActiveTC = None')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
@@ -547,6 +576,8 @@ class TaskPanel:
                 self.obj.Side = str(self.form.cutSide.currentText())
             if hasattr(self.obj, "Direction"):
                 self.obj.Direction = str(self.form.direction.currentText())
+            if hasattr(self.obj, "processHoles"):
+                self.obj.processHoles = self.form.processHoles.isChecked()
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
@@ -562,21 +593,28 @@ class TaskPanel:
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
+        self.form.processHoles.setChecked(self.obj.processHoles)
 
         index = self.form.algorithmSelect.findText(
                 self.obj.Algorithm, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.algorithmSelect.blockSignals(True)
             self.form.algorithmSelect.setCurrentIndex(index)
+            self.form.algorithmSelect.blockSignals(False)
 
         index = self.form.cutSide.findText(
                 self.obj.Side, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.cutSide.blockSignals(True)
             self.form.cutSide.setCurrentIndex(index)
+            self.form.cutSide.blockSignals(False)
 
         index = self.form.direction.findText(
                 self.obj.Direction, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.direction.blockSignals(True)
             self.form.direction.setCurrentIndex(index)
+            self.form.direction.blockSignals(False)
 
         for i in self.obj.Base:
             for sub in i[1]:
@@ -778,6 +816,7 @@ class TaskPanel:
         self.form.extraOffset.editingFinished.connect(self.getFields)
         self.form.segLen.editingFinished.connect(self.getFields)
         self.form.rollRadius.editingFinished.connect(self.getFields)
+        self.form.processHoles.clicked.connect(self.getFields)
 
         # Tag Form
         QtCore.QObject.connect(

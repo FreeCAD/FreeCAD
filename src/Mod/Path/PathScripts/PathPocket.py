@@ -588,14 +588,24 @@ class TaskPanel:
 
         index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)
         if index >= 0:
+            self.form.algorithmSelect.blockSignals(True)
             self.form.algorithmSelect.setCurrentIndex(index)
+            self.form.algorithmSelect.blockSignals(False)
+
+        index = self.form.cutMode.findText(
+                self.obj.CutMode, QtCore.Qt.MatchFixedString)
+        if index >= 0:
+            self.form.cutMode.blockSignals(True)
+            self.form.cutMode.setCurrentIndex(index)
+            self.form.cutMode.blockSignals(False)
 
         # for i in self.obj.Base:
         #     self.form.baseList.addItem(i[0].Name + "." + i[1][0])
-
+        self.form.baseList.blockSignals(True)
         for i in self.obj.Base:
             for sub in i[1]:
                 self.form.baseList.addItem(i[0].Name + "." + sub)
+        self.form.baseList.blockSignals(False)
 
     def open(self):
         self.s = SelObserver()
