@@ -1813,6 +1813,10 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             # page: special hack-export! (see below)
             exportPage(exportList[0],filename)
 
+        elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("TechDraw::DrawPage")):
+            # page: special hack-export! (see below)
+            exportPage(exportList[0],filename)
+
         else:
             # other cases, treat edges
             dxf = dxfLibrary.Drawing()
@@ -1900,7 +1904,12 @@ class dxfcounter:
 
 def exportPage(page,filename):
     "special export for pages"
-    template = os.path.splitext(page.Template)[0]+".dxf"
+    if hasattr(page.Template,"Template"): #techdraw
+        template="" # not supported for now...
+        views = page.Views
+    else: #drawing
+        template = os.path.splitext(page.Template)[0]+".dxf"
+        views = page.Group
     if os.path.exists(template):
         f = pythonopen(template,"U")
         template = f.read()
@@ -1930,7 +1939,7 @@ def exportPage(page,filename):
         # at the moment this is not used. TODO: if r12, do not print ellipses or splines
         if ver[0].upper() in ["AC1009","AC1010","AC1011","AC1012","AC1013"]:
             r12 = True
-    for view in page.Group:
+    for view in views:
         b,e = getViewDXF(view)
         blocks += b
         entities += e
@@ -1944,6 +1953,28 @@ def exportPage(page,filename):
     f = pythonopen(filename,"wb")
     f.write(template)
     f.close()
+
+def getBlock(geom,view,blockcount):
+    insert = ""
+    block = ""
+    r = view.Rotation
+    if r != 0: r = -r # fix rotation direction
+    if not isinstance(geom,list): geom = [geom]
+    for g in geom: # getDXF returns a list of entities
+        if dxfExportBlocks:
+            g = g.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n") # change layer and set color and ltype to BYBLOCK (0)
+            block += "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"+view.Name+str(blockcount)+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+str(blockcount)+"\n1\n\n"
+            block += g
+            block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
+            insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name+str(blockcount)
+            insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
+            insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
+            insert += "\n50\n"+str(r)+"\n"
+            blockcount += 1
+        else:
+            g = g.replace("sheet_layer\n","0\n5\n_handle_\n") # change layer, add handle
+            insert += g
+    return block,insert,blockcount
 
 
 def getViewDXF(view,blocks=True):
@@ -1960,26 +1991,17 @@ def getViewDXF(view,blocks=True):
 
     elif view.isDerivedFrom("Drawing::FeatureViewPython"):
         if hasattr(view.Proxy,"getDXF"):
-            r = view.Rotation
-            if r != 0: r = -r # fix rotation direction
-            block = ""
-            insert = ""
             geom = view.Proxy.getDXF(view)
-            if not isinstance(geom,list): geom = [geom]
-            for g in geom: # getDXF returns a list of entities
-                if dxfExportBlocks:
-                    g = g.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n") # change layer and set color and ltype to BYBLOCK (0)
-                    block += "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"+view.Name+str(blockcount)+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+str(blockcount)+"\n1\n\n"
-                    block += g
-                    block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
-                    insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name+str(blockcount)
-                    insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
-                    insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
-                    insert += "\n50\n"+str(r)+"\n"
-                    blockcount += 1
-                else:
-                    g = g.replace("sheet_layer\n","0\n5\n_handle_\n") # change layer, add handle
-                    insert += g
+            block,insert,blockcount = getBlock(geom,view,blockcount)
+
+    elif view.isDerivedFrom("TechDraw::DrawViewDraft"):
+        geom = Draft.getDXF(view)
+        block,insert,blockcount = getBlock(geom,view,blockcount)
+        
+    elif view.isDerivedFrom("TechDraw::DrawViewArch"):
+        import ArchSectionPlane
+        geom = ArchSectionPlane.getDXF(view)
+        block,insert,blockcount = getBlock(geom,view,blockcount)
 
     elif view.isDerivedFrom("Drawing::FeatureViewPart"):
         r = view.Rotation
@@ -2021,6 +2043,7 @@ def exportPageLegacy(page,filename):
     tempobj = tempdoc.Objects
     export(tempobj,filename,nospline=True,lwPoly=False)
     FreeCAD.closeDocument(tempdoc.Name)
+
 
 def readPreferences():
     # reading parameters

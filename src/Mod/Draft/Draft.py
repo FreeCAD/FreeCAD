@@ -1671,6 +1671,13 @@ def getDXF(obj,direction=None):
     object. If direction is given, the object is projected in 2D.'''
     plane = None
     result = ""
+    if obj.isDerivedFrom("Drawing::View") or obj.isDerivedFrom("TechDraw::DrawView"):
+        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
+            for o in obj.Source.Group:
+                result += getDXF(o,obj.Direction)
+        else:
+            result += getDXF(obj.Source,obj.Direction)
+        return result
     if direction:
         if isinstance(direction,FreeCAD.Vector):
             if direction != Vector(0,0,0):
@@ -1846,52 +1853,57 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
                 if iscircle or isellipse:
                     import math
-                    c = e.Curve
-                    if len(e.Vertexes) == 1 and iscircle: #complete curve
-                        svg = getCircle(e)
-                        return svg
-                    elif len(e.Vertexes) == 1 and isellipse:
-                        #svg = getEllipse(e)
-                        #return svg
-                        endpoints = (getProj(c.value((c.LastParameter-\
-                                c.FirstParameter)/2.0)), \
-                                getProj(vs[-1].Point))
-                    else:
-                        endpoints = (getProj(vs[-1].Point),)
-
-                    # arc
-                    if iscircle:
-                        rx = ry = c.Radius
-                        rot = 0
-                    else: #ellipse
-                        rx = c.MajorRadius
-                        ry = c.MinorRadius
-                        rot = math.degrees(c.AngleXU * (c.Axis * \
-                            FreeCAD.Vector(0,0,1)))
-                        if rot > 90:
-                            rot -=180
-                        if rot < -90:
-                            rot += 180
-                        #be carefull with the sweep flag
                     if hasattr(FreeCAD,"DraftWorkingPlane"):
                         drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
                     else:
                         drawing_plane_normal = FreeCAD.Vector(0,0,1)
                     if plane: drawing_plane_normal = plane.axis
-                    flag_large_arc = (((e.ParameterRange[1] - \
-                            e.ParameterRange[0]) / math.pi) % 2) > 1
-                    #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                    #         == (e.LastParameter > e.FirstParameter)
-                    #        == (e.Orientation == "Forward")
-                    # other method: check the direction of the angle between tangents
-                    t1 = e.tangentAt(e.FirstParameter)
-                    t2 = e.tangentAt(e.FirstParameter + (e.LastParameter-e.FirstParameter)/10)
-                    flag_sweep = (DraftVecUtils.angle(t1,t2,drawing_plane_normal) < 0)
-                    for v in endpoints:
-                        edata += 'A %s %s %s %s %s %s %s ' % \
-                                (str(rx),str(ry),str(rot),\
-                                str(int(flag_large_arc)),\
-                                str(int(flag_sweep)),str(v.x),str(v.y))
+                    c = e.Curve
+                    if round(c.Axis.getAngle(drawing_plane_normal),2) == 1.57:
+                        # arc is perpendicular to view direction: represent as a line
+                        v = getProj(vs[-1].Point)
+                        edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
+                    else:
+                        if len(e.Vertexes) == 1 and iscircle: #complete curve
+                            svg = getCircle(e)
+                            return svg
+                        elif len(e.Vertexes) == 1 and isellipse:
+                            #svg = getEllipse(e)
+                            #return svg
+                            endpoints = (getProj(c.value((c.LastParameter-\
+                                    c.FirstParameter)/2.0)), \
+                                    getProj(vs[-1].Point))
+                        else:
+                            endpoints = (getProj(vs[-1].Point),)
+    
+                        # arc
+                        if iscircle:
+                            rx = ry = c.Radius
+                            rot = 0
+                        else: #ellipse
+                            rx = c.MajorRadius
+                            ry = c.MinorRadius
+                            rot = math.degrees(c.AngleXU * (c.Axis * \
+                                FreeCAD.Vector(0,0,1)))
+                            if rot > 90:
+                                rot -=180
+                            if rot < -90:
+                                rot += 180
+                            #be carefull with the sweep flag
+                        flag_large_arc = (((e.ParameterRange[1] - \
+                                e.ParameterRange[0]) / math.pi) % 2) > 1
+                        #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
+                        #         == (e.LastParameter > e.FirstParameter)
+                        #        == (e.Orientation == "Forward")
+                        # other method: check the direction of the angle between tangents
+                        t1 = e.tangentAt(e.FirstParameter)
+                        t2 = e.tangentAt(e.FirstParameter + (e.LastParameter-e.FirstParameter)/10)
+                        flag_sweep = (DraftVecUtils.angle(t1,t2,drawing_plane_normal) < 0)
+                        for v in endpoints:
+                            edata += 'A %s %s %s %s %s %s %s ' % \
+                                    (str(rx),str(ry),str(rot),\
+                                    str(int(flag_large_arc)),\
+                                    str(int(flag_sweep)),str(v.x),str(v.y))
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -4773,14 +4785,7 @@ class _DrawingView(_DraftObject):
 
     def getDXF(self,obj):
         "returns a DXF fragment"
-        result = ""
-        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
-            for o in obj.Source.Group:
-                if o.ViewObject.isVisible():
-                    result += getDXF(o,obj.Direction)
-        else:
-            result += getDXF(obj.Source,obj.Direction)
-        return result
+        return getDXF(obj)
 
 class _BSpline(_DraftObject):
     "The BSpline object"

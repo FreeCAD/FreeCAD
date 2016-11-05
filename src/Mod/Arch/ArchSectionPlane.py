@@ -75,6 +75,50 @@ def makeSectionView(section,name="View"):
     return view
 
 
+def getCutShapes(objs,section,showHidden):
+    import Part,DraftGeomUtils
+    shapes = []
+    hshapes = []
+    sshapes = []
+    for o in objs:
+        if o.isDerivedFrom("Part::Feature"):
+            if o.Shape.isNull():
+                pass
+            elif section.OnlySolids:
+                if o.Shape.isValid():
+                    shapes.extend(o.Shape.Solids)
+                else:
+                    print section.Label,": Skipping invalid object:",o.Label
+            else:
+                shapes.append(o.Shape)
+    cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
+    if cutvolume:
+        nsh = []
+        for sh in shapes:
+            for sol in sh.Solids:
+                if sol.Volume < 0:
+                    sol.reverse()
+                c = sol.cut(cutvolume)
+                s = sol.section(cutface)
+                try:
+                    wires = DraftGeomUtils.findWires(s.Edges)
+                    for w in wires:
+                        f = Part.Face(w)
+                        sshapes.append(f)
+                    #s = Part.Wire(s.Edges)
+                    #s = Part.Face(s)
+                except Part.OCCError:
+                    #print "ArchDrawingView: unable to get a face"
+                    sshapes.append(s)
+                nsh.extend(c.Solids)
+                #sshapes.append(s)
+                if showHidden:
+                    c = sol.cut(invcutvolume)
+                    hshapes.append(c)
+        shapes = nsh
+    return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
+
+
 def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False,rotation=0):
     """getSVG(section,[allOn,renderMode,showHidden,showFill,scale,linewidth,fontsize]) : 
     returns an SVG fragment from an Arch section plane. If
@@ -140,45 +184,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     else:
         # render using the Drawing module
         import Drawing, Part
-        shapes = []
-        hshapes = []
-        sshapes = []
-        for o in objs:
-            if o.isDerivedFrom("Part::Feature"):
-                if o.Shape.isNull():
-                    pass
-                elif o.Shape.isValid():
-                    if section.OnlySolids:
-                        shapes.extend(o.Shape.Solids)
-                    else:
-                        shapes.append(o.Shape)
-                else:
-                    print section.Label,": Skipping invalid object:",o.Label
-        cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
-        if cutvolume:
-            nsh = []
-            for sh in shapes:
-                for sol in sh.Solids:
-                    if sol.Volume < 0:
-                        sol.reverse()
-                    c = sol.cut(cutvolume)
-                    s = sol.section(cutface)
-                    try:
-                        wires = DraftGeomUtils.findWires(s.Edges)
-                        for w in wires:
-                            f = Part.Face(w)
-                            sshapes.append(f)
-                        #s = Part.Wire(s.Edges)
-                        #s = Part.Face(s)
-                    except Part.OCCError:
-                        #print "ArchDrawingView: unable to get a face"
-                        sshapes.append(s)
-                    nsh.extend(c.Solids)
-                    #sshapes.append(s)
-                    if showHidden:
-                        c = sol.cut(invcutvolume)
-                        hshapes.append(c)
-            shapes = nsh
+        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
         if shapes:
             baseshape = Part.makeCompound(shapes)
             svgf = Drawing.projectToSVG(baseshape,direction)
@@ -255,11 +261,12 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
                     c = Part.makeCompound(w.Proxy.sshapes)
                     c.Placement = w.Placement
                     sh.append(c)
-            if hasattr(w.Proxy,"vshapes"):
-                if w.Proxy.vshapes:
-                    c = Part.makeCompound(w.Proxy.vshapes)
-                    c.Placement = w.Placement
-                    sh.append(c)
+            # buggy for now...
+            #if hasattr(w.Proxy,"vshapes"):
+            #    if w.Proxy.vshapes:
+            #        c = Part.makeCompound(w.Proxy.vshapes)
+            #        c.Placement = w.Placement
+            #        sh.append(c)
         if sh:
             if not techdraw:
                 svg += '<g transform="scale(1,-1)">'
@@ -270,6 +277,45 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
             
     #print "complete node:",svg
     return svg
+
+
+def getDXF(obj):
+    "returns a DXF representation from a TechDraw/Drawing view"
+    allOn = True
+    if hasattr(obj,"AllOn"):
+        allOn = obj.AllOn
+    elif hasattr(obj,"AlwaysOn"):
+        allOn = obj.AlwaysOn
+    showHidden = False
+    if hasattr(obj,"showCut"):
+        showHidden = obj.showCut
+    elif hasattr(obj,"showHidden"):
+        showHidden = obj.showHidden
+    result = []
+    import Drawing,Part
+    if not obj.Source:
+        return result
+    section = obj.Source
+    if not section.Objects:
+        return result
+    p = FreeCAD.Placement(section.Placement)
+    direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
+    if not allOn:
+            objs = Draft.removeHidden(objs)
+    # separate spaces and Draft objects
+    spaces = []
+    nonspaces = []
+    drafts = []
+    objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
+    shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+    if shapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(shapes),direction))
+    if sshapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(sshapes),direction))
+    if hshapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(hshapes),direction))
+    return result
 
 
 class _CommandSectionPlane:
