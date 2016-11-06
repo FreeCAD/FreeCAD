@@ -78,5 +78,7 @@ def isContainer(obj):
         return True
     if obj.isDerivedFrom("App::Origin"):
         return True
+    if obj.isDerivedFrom("App::Part"):
+        return True
     if obj.isDerivedFrom('App::Document'):
         return True
