@@ -638,14 +638,12 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
 
 }
 
-void TaskPrimitiveParameters::objectChanged(const App::DocumentObject& obj, const App::Property& p) {
-
-    if(&obj == cs && strcmp(p.getName(), "Placement")==0) {
-        
-        vp_prm->getObject()->recompute();
+void TaskPrimitiveParameters::objectChanged(const App::DocumentObject& obj, const App::Property& p)
+{
+    if (&obj == cs && strcmp(p.getName(), "Placement")==0) {
+        vp_prm->getObject()->recomputeFeature();
     }
 }
-
 
 bool TaskPrimitiveParameters::accept()
 {

@@ -128,7 +128,7 @@ void TaskProjGroup::viewToggled(bool toggle)
         changed = true;
     }
     if (changed) {
-        multiView->recompute();
+        multiView->recomputeFeature();
         if (multiView->ScaleType.isValue("Automatic")) {
             double scale = multiView->Scale.getValue();
             setFractionalScale(scale);
@@ -229,7 +229,7 @@ void TaskProjGroup::scaleTypeChanged(int index)
         return;
     }
 
-    multiView->recompute();
+    multiView->recomputeFeature();
     Gui::Command::updateActive();
 }
 
@@ -304,7 +304,7 @@ void TaskProjGroup::scaleManuallyChanged(int i)
     double scale = (double) a / (double) b;
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
-    multiView->recompute();
+    multiView->recomputeFeature();
     Gui::Command::updateActive();
 }
 

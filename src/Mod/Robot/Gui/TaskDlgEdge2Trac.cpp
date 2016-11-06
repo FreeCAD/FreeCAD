@@ -96,7 +96,7 @@ bool TaskDlgEdge2Trac::accept()
     try {
         if (select->isSelectionValid()){
             select->accept();
-            Edge2TaskObject->recompute();
+            Edge2TaskObject->recomputeFeature();
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if(doc) 
                 doc->resetEdit();
