@@ -36,6 +36,7 @@
 #include "DrawViewArch.h"
 #include "DrawViewSpreadsheet.h"
 #include "DrawViewMulti.h"
+#include "DrawViewImage.h"
 
 namespace TechDraw {
     extern PyObject* initModule();
@@ -82,6 +83,7 @@ PyMOD_INIT_FUNC(TechDraw)
     TechDraw::DrawHatch           ::init();
     TechDraw::DrawViewDraft       ::init();
     TechDraw::DrawViewArch        ::init();
+    TechDraw::DrawViewImage       ::init();
 
    // Python Types
     TechDraw::DrawViewPython      ::init();

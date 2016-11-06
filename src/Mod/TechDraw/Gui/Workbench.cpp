@@ -76,6 +76,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_DraftView";
     *draw << "TechDraw_ArchView";
     *draw << "TechDraw_ExportPage";
+    *draw << "TechDraw_Image";
     //*draw << "TechDraw_Open";
     //*part << "TechDraw_NewA3Landscape";
     //*part << "TechDraw_OpenBrowserView";
@@ -130,6 +131,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
     return root;
 }
@@ -177,6 +179,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 
     return root;
