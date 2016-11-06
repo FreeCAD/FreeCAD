@@ -127,6 +127,58 @@ bool CmdTechDrawNewHatch::isActive(void)
 }
 
 //===========================================================================
+// TechDraw_Image
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawImage);
+
+CmdTechDrawImage::CmdTechDrawImage()
+  : Command("TechDraw_Image")
+{
+    // setting the Gui eye-candy
+    sGroup        = QT_TR_NOOP("TechDraw");
+    sMenuText     = QT_TR_NOOP("Insert bitmap image");
+    sToolTipText  = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sWhatsThis    = "TechDraw_Image";
+    sStatusTip    = QT_TR_NOOP("Inserts a bitmap from a file in the active drawing");
+    sPixmap       = "actions/techdraw-image";
+}
+
+void CmdTechDrawImage::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+    std::string PageName = page->getNameInDocument();
+
+    // Reading an image
+    std::string defaultDir = App::Application::getResourceDir();
+    QString qDir = QString::fromUtf8(defaultDir.data(),defaultDir.size());
+    QString fileName = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
+                                                   QString::fromUtf8(QT_TR_NOOP("Select an Image File")),
+                                                   qDir,
+                                                   QString::fromUtf8(QT_TR_NOOP("Image (*.png *.jpg *.jpeg)")));
+
+    if (!fileName.isEmpty())
+    {
+        std::string FeatName = getUniqueObjectName("Image");
+        openCommand("Create Image");
+        doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewImage','%s')",FeatName.c_str());
+        doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),fileName.toUtf8().constData());
+        doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
+        updateActive();
+        commitCommand();
+    }
+}
+
+bool CmdTechDrawImage::isActive(void)
+{
+    return DrawGuiUtil::needPage(this);
+}
+
+//===========================================================================
 // TechDraw_ToggleFrame
 //===========================================================================
 
@@ -178,6 +230,7 @@ void CreateTechDrawCommandsDecorate(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 }
 
