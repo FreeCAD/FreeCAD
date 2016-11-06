@@ -711,16 +711,22 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 {
     auto base_worker = [which, cmd, func](App::DocumentObject* feature, std::string sub) {
 
-        if(!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
-        
+
+        // Related to #0002760: when an operation can't be performed due to a broken
+        // profile then make sure that it is recomputed when cancelling the operation
+        // otherwise it might be impossible to see that it's broken.
+        if (feature->isTouched())
+            feature->recomputeFeature();
+
         std::string FeatName = cmd->getUniqueObjectName(which.c_str());
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
                     which.c_str(), FeatName.c_str());
         
-        if(feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
                         FeatName.c_str(), feature->getNameInDocument());
         }
