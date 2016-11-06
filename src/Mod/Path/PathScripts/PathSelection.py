@@ -100,7 +100,7 @@ class DRILLGate:
             return False
         if obj.ShapeType == 'Vertex':
                 drillable = True
-        elif obj.ShapeType == 'Solid':
+        elif obj.ShapeType in['Solid', 'Compound']:
             if sub[0:4] == 'Face':
                 subobj = obj.getElement(sub)
                 drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
