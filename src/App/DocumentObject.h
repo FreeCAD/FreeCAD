@@ -120,8 +120,6 @@ public:
     bool isRestoring() const {return StatusBits.test(4);}
     /// returns true if this objects is currently restoring from file
     bool isDeleting() const {return StatusBits.test(5);}
-    /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
@@ -162,6 +160,9 @@ public:
      */
     virtual short mustExecute(void) const;
 
+    /// Recompute only this feature
+    bool recomputeFeature();
+
     /// get the status Message
     const char *getStatusString(void) const;
 
@@ -197,6 +198,8 @@ public:
     const std::string & getOldLabel() const { return oldLabel; }
 
 protected:
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
     /** get called by the document to recompute this feature
       * Normaly this method get called in the processing of
       * Document::recompute().

@@ -75,7 +75,7 @@ bool TaskDlgCreateNodeSet::accept()
 {
     try {
         FemSetNodesObject->Nodes.setValues(param->tempSet);
-        FemSetNodesObject->recompute();
+        FemSetNodesObject->recomputeFeature();
         //Gui::Document* doc = Gui::Application::Instance->activeDocument();
         //if(doc)
         //    doc->resetEdit();

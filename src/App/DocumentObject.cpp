@@ -102,6 +102,14 @@ DocumentObjectExecReturn *DocumentObject::execute(void)
     return StdReturn;
 }
 
+bool DocumentObject::recomputeFeature()
+{
+    Document* doc = this->getDocument();
+    if (doc)
+        doc->recomputeFeature(this);
+    return isValid();
+}
+
 short DocumentObject::mustExecute(void) const
 {
     if(isTouched())
