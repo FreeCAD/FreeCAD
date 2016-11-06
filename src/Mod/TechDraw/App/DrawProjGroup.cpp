@@ -305,7 +305,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
-        view->recompute();
+        view->recomputeFeature();
     }
 
     return view;
@@ -641,7 +641,7 @@ void DrawProjGroup::updateChildren(double scale)
             if(std::abs(view->Scale.getValue() - scale) > FLT_EPSILON) {
                 view->Scale.setValue(scale);
             }
-            view->recompute();
+            view->recomputeFeature();
         }
     }
 }

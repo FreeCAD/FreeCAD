@@ -69,14 +69,14 @@ void TaskDlgTrajectoryDressUp::clicked(int button)
         // transfert the values to the object
         param->writeValues();
         // May throw an exception which we must handle here
-        pcObject->recompute();
+        pcObject->recomputeFeature();
     }
 }
 
 bool TaskDlgTrajectoryDressUp::accept()
 {
     param->writeValues();
-    pcObject->recompute();
+    pcObject->recomputeFeature();
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if(doc) 

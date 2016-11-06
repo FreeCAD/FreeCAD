@@ -314,7 +314,7 @@ OrthoViews::~OrthoViews()
     for (int i = views.size() - 1; i >= 0; i--)
         delete views[i];
 
-    page->recompute();
+    page->recomputeFeature();
 }
 
 void OrthoViews::slotDeletedDocument(const App::Document& Obj)

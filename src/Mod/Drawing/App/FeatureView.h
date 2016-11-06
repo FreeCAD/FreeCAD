@@ -52,18 +52,18 @@ public:
     App::PropertyString ViewResult;
     App::PropertyBool Visible;
 
+    /// returns the type name of the ViewProvider
+    virtual const char* getViewProviderName(void) const {
+        return "DrawingGui::ViewProviderDrawingView";
+    }
 
+protected:
     /** @name methods overide Feature */
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *recompute(void);
     virtual App::DocumentObjectExecReturn *execute(void);
     //@}
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "DrawingGui::ViewProviderDrawingView";
-    }
 };
 
 typedef App::FeaturePythonT<FeatureView> FeatureViewPython;
