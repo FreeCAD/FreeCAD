@@ -189,15 +189,26 @@ class ObjectDrilling:
         drillable = False
         if obj.ShapeType == 'Vertex':
                 drillable = True
-        elif obj.ShapeType == 'Solid':
+        elif obj.ShapeType in['Solid', 'Compound']:
             if sub[0:4] == 'Face':
                 subobj = obj.getElement(sub)
                 if isinstance(subobj.Edges[0].Curve, Part.Circle):
                     drillable = True
                 if str(subobj.Surface) == "<Cylinder object>":
                     drillable = True
-                if len(subobj.Edges[0].Vertexes) > 1:
-                    drillable = False
+                if len(subobj.Edges) == 3:
+                    cedge = []
+                    ledge = []
+                    for e in subobj.Edges:
+                        if isinstance (e.Curve, Part.Circle):
+                            cedge.append(e)
+                        elif isinstance (e.Curve, Part.Line):
+                            ledge.append(e)
+                    if len(cedge) == 2 and len(ledge) == 1:
+                        drillable = True
+                    else:
+                #if len(subobj.Edges[0].Vertexes) > 1:
+                        drillable = False
             if sub[0:4] == 'Edge':
                 o = obj.getElement(sub)
                 if isinstance(o.Curve, Part.Circle) and len(o.Vertexes) == 1:
