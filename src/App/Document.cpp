@@ -2087,7 +2087,7 @@ void Document::remObject(const char* sName)
     breakDependency(pos->second, true);
 
     //and remove the tip if needed
-    if(Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
+    if (Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
         Tip.setValue(nullptr);
         TipName.setValue("");
     }
@@ -2145,16 +2145,15 @@ void Document::_remObject(DocumentObject* pcObject)
     }
 
     // do no transactions if we do a rollback!
-    if (!d->rollback) {
+    if (!d->rollback && d->activeUndoTransaction) {
         // Undo stuff
-        if (d->activeUndoTransaction) {
-            signalTransactionRemove(*pcObject, d->activeUndoTransaction);
-            d->activeUndoTransaction->addObjectNew(pcObject);
-        }
+        signalTransactionRemove(*pcObject, d->activeUndoTransaction);
+        d->activeUndoTransaction->addObjectNew(pcObject);
     }
     else {
         // for a rollback delete the object
         signalTransactionRemove(*pcObject, 0);
+        breakDependency(pcObject, true);
     }
 
     // remove from map
