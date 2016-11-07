@@ -1366,7 +1366,7 @@ TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Sta
             throw Base::Exception("Input shape is null");
         // Let's call algorithm computing a intersection operation:
         BRepAlgoAPI_Common mkCommon(resShape, *it);
-        // Let's check if the fusion has been successful
+        // Let's check if the intersection has been successful
         if (!mkCommon.IsDone())
             throw Base::Exception("MultiIntersection failed");
         resShape = mkCommon.Shape();
