@@ -156,7 +156,10 @@ public:
     TopoDS_Shape cut(TopoDS_Shape) const;
     TopoDS_Shape common(TopoDS_Shape) const;
     TopoDS_Shape fuse(TopoDS_Shape) const;
+    TopoDS_Shape multiCut(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape multiCommon(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
     TopoDS_Shape multiFuse(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
+    TopoDS_Shape multiSection(const std::vector<TopoDS_Shape>&, Standard_Real tolerance = 0.0) const;
     TopoDS_Shape oldFuse(TopoDS_Shape) const;
     TopoDS_Shape section(TopoDS_Shape) const;
     std::list<TopoDS_Wire> slice(const Base::Vector3d&, double) const;
