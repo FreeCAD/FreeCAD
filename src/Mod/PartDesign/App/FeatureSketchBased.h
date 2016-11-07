@@ -143,7 +143,6 @@ protected:
 
     /// Check whether the line crosses the face (line and face must be on the same plane)
     static bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
-    class Wire_Compare;
 
 
     /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
