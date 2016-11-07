@@ -143,10 +143,31 @@ This is a more detailed check as done in isValid().</UserDocu>
         <UserDocu>Union of this and a given topo shape.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="multiCut" Const="true">
+      <Documentation>
+        <UserDocu>multiCut((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Difference of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multiCommon" Const="true">
+      <Documentation>
+        <UserDocu>multiCommon((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Intersection of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="multiFuse" Const="true">
       <Documentation>
         <UserDocu>multiFuse((tool1,tool2,...),[tolerance=0.0]) -> Shape
 Union of this and a given list of topo shapes.
+Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="multiSection" Const="true">
+      <Documentation>
+        <UserDocu>multiSection((tool1,tool2,...),[tolerance=0.0]) -> Shape
+Section of this and a given list of topo shapes.
 Beginning from OCCT 6.8.1 a tolerance value can be specified</UserDocu>
       </Documentation>
     </Methode>

@@ -1303,6 +1303,101 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     return mkFuse.Shape();
 }
 
+TopoDS_Shape TopoShape::multiCut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX <= 0x060800
+    if (tolerance > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+    TopoDS_Shape resShape = this->_Shape;
+    if (resShape.IsNull())
+        throw Base::Exception("Object shape is null");
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Input shape is null");
+        // Let's call algorithm computing a difference operation:
+        BRepAlgoAPI_Cut mkCut(resShape, *it);
+        // Let's check if the difference has been successful
+        if (!mkCut.IsDone())
+            throw Base::Exception("Difference failed");
+        resShape = mkCut.Shape();
+    }
+#else
+    BRepAlgoAPI_Cut mkCut;
+# if OCC_VERSION_HEX >= 0x060900
+    mkCut.SetRunParallel(true);
+# endif
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkCut.SetArguments(shapeArguments);
+    mkCut.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkCut.SetFuzzyValue(tolerance);
+    mkCut.Build();
+    if (!mkCut.IsDone())
+        throw Base::Exception("MultiDifference failed");
+    TopoDS_Shape resShape = mkCut.Shape();
+#endif
+    return resShape;
+}
+
+TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX <= 0x060800
+    if (tolerance > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+    TopoDS_Shape resShape = this->_Shape;
+    if (resShape.IsNull())
+        throw Base::Exception("Object shape is null");
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Input shape is null");
+        // Let's call algorithm computing a intersection operation:
+        BRepAlgoAPI_Common mkCommon(resShape, *it);
+        // Let's check if the fusion has been successful
+        if (!mkCommon.IsDone())
+            throw Base::Exception("MultiIntersection failed");
+        resShape = mkCommon.Shape();
+    }
+#else
+    BRepAlgoAPI_Common mkCommon;
+# if OCC_VERSION_HEX >= 0x060900
+    mkCommon.SetRunParallel(true);
+# endif
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkCommon.SetArguments(shapeArguments);
+    mkCommon.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkCommon.SetFuzzyValue(tolerance);
+    mkCommon.Build();
+    if (!mkCommon.IsDone())
+        throw Base::Exception("MultiIntersection failed");
+    TopoDS_Shape resShape = mkCommon.Shape();
+#endif
+    return resShape;
+}
 TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1347,6 +1442,54 @@ TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Stand
     if (!mkFuse.IsDone())
         throw Base::Exception("MultiFusion failed");
     TopoDS_Shape resShape = mkFuse.Shape();
+#endif
+    return resShape;
+}
+
+TopoDS_Shape TopoShape::multiSection(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX <= 0x060800
+    if (tolerance > 0.0)
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+    TopoDS_Shape resShape = this->_Shape;
+    if (resShape.IsNull())
+        throw Base::Exception("Object shape is null");
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Input shape is null");
+        // Let's call algorithm computing a section operation:
+        BRepAlgoAPI_Section mkSection(resShape, *it);
+        // Let's check if the section has been successful
+        if (!mkSection.IsDone())
+            throw Base::Exception("Section failed");
+        resShape = mkSection.Shape();
+    }
+#else
+    BRepAlgoAPI_Section mkSection;
+# if OCC_VERSION_HEX >= 0x060900
+    mkSection.SetRunParallel(true);
+# endif
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkSection.SetArguments(shapeArguments);
+    mkSection.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkSection.SetFuzzyValue(tolerance);
+    mkSection.Build();
+    if (!mkSection.IsDone())
+        throw Base::Exception("MultiSection failed");
+    TopoDS_Shape resShape = mkSection.Shape();
 #endif
     return resShape;
 }
