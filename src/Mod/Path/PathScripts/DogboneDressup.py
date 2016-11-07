@@ -46,15 +46,18 @@ except AttributeError:
 
 movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
 movestraight = ['G1', 'G01']
+movecw =       ['G2', 'G02']
+moveccw =      ['G3', 'G03']
+movearc = movecw + moveccw
 
-debugDogbone = False
+debugDressup = False
 
 def debugPrint(msg):
-    if debugDogbone:
+    if debugDressup:
         print(msg)
 
 def debugMarker(vector, label, color = None, radius = 0.5):
-    if debugDogbone:
+    if debugDressup:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
@@ -63,7 +66,7 @@ def debugMarker(vector, label, color = None, radius = 0.5):
             obj.ViewObject.ShapeColor = color
 
 def debugCircle(vector, r, label, color = None):
-    if debugDogbone:
+    if debugDressup:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
@@ -89,6 +92,49 @@ def anglesAreParallel(a1, a2):
     if an1 == addAngle(an2, math.pi):
         return True
     return False
+
+def getAngle(v):
+    a = v.getAngle(FreeCAD.Vector(1,0,0))
+    if v.y < 0:
+        return -a
+    return a
+
+def pointFromCommand(cmd, pt, X='X', Y='Y', Z='Z'):
+    x = cmd.Parameters.get(X, pt.x)
+    y = cmd.Parameters.get(Y, pt.y)
+    z = cmd.Parameters.get(Z, pt.z)
+    return FreeCAD.Vector(x, y, z)
+
+def edgesForCommands(cmds, startPt):
+    edges = []
+    lastPt = startPt
+    for cmd in cmds:
+        if cmd.Name in movecommands:
+            pt = pointFromCommand(cmd, lastPt)
+            if cmd.Name in movestraight:
+                edges.append(Part.Edge(Part.Line(lastPt, pt)))
+            elif cmd.Name in movearc:
+                center = lastPt + pointFromCommand(cmd, FreeCAD.Vector(0,0,0), 'I', 'J', 'K')
+                A = lastPt - center
+                B = pt - center
+                d = -B.x * A.y + B.y * A.x
+
+                if d == 0:
+                    # we're dealing with half an circle here
+                    angle = getAngle(A) + math.pi/2
+                    if cmd.Name in movecw:
+                        angle -= math.pi
+                else:
+                    #print("(%.2f, %.2f) (%.2f, %.2f)" % (A.x, A.y, B.x, B.y))
+                    C = A + B
+                    angle = getAngle(C)
+
+                R = (lastPt - center).Length
+                ptm = center + FreeCAD.Vector(math.cos(angle), math.sin(angle), 0) * R
+
+                edges.append(Part.Edge(Part.Arc(lastPt, ptm, pt)))
+            lastPt = pt
+    return edges
 
 class Style:
     Dogbone = 'Dogbone'
@@ -213,15 +259,16 @@ class Chord (object):
         return Chord(self.Start, self.Start).move(length, self.getAngleXY())
 
     def g1Command(self):
-        return Path.Command("G1", {"X": self.End.x, "Y": self.End.y})
+        return Path.Command("G1", {"X": self.End.x, "Y": self.End.y, "Z": self.End.z})
 
     def arcCommand(self, cmd, center):
         d = center - self.Start
-        debugPrint("arc (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)" % (self.Start.x, self.Start.y, center.x, center.y, self.End.x, self.End.y))
-        return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "I": d.x, "J": d.y, "K": 0})
+        debugPrint("arc (%s) - (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)" % (cmd, self.Start.x, self.Start.y, center.x, center.y, self.End.x, self.End.y))
+        return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "Z": self.End.z, "I": d.x, "J": d.y, "K": 0})
 
     def g2Command(self, center):
         return self.arcCommand("G2", center)
+
     def g3Command(self, center):
         return self.arcCommand("G3", center)
 
@@ -284,6 +331,41 @@ class Chord (object):
         d = FreeCAD.Vector(dx, dy, 0)
         return Chord(self.Start + v, self.End.v)
 
+class Bone:
+    def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):
+        self.obj = obj
+        self.boneId = boneId
+        self.lastCommand = lastCommand
+        self.inChord = inChord
+        self.outChord = outChord
+        self.smooth = smooth
+
+    def angle(self):
+        if not hasattr(self, 'cAngle'):
+            baseAngle = self.inChord.getAngleXY()
+            turnAngle = self.outChord.getAngle(self.inChord)
+            angle = addAngle(baseAngle, (turnAngle - math.pi)/2)
+            if self.obj.Side == Side.Left:
+                angle = addAngle(angle, math.pi)
+            self.tAngle = turnAngle
+            self.cAngle = angle
+        return self.cAngle
+
+    def distance(self, toolRadius):
+        if not hasattr(self, 'cDist'):
+            self.angle() # make sure the angles are initialized
+            self.cDist = toolRadius / math.cos(self.tAngle/2)
+        return self.cDist
+
+    def corner(self, toolRadius):
+        if not hasattr(self, 'cPt'):
+            self.cPt = self.inChord.move(self.distance(toolRadius), self.angle()).End
+        return self.cPt
+
+    def location(self):
+        return (self.inChord.End.x, self.inChord.End.y)
+
+
 class ObjectDressup:
 
     def __init__(self, obj):
@@ -323,48 +405,37 @@ class ObjectDressup:
     def shouldInsertDogbone(self, obj, inChord, outChord):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
-    def cornerDistanceAndAngle(self, obj, inChord, outChord):
-        baseAngle = inChord.getAngleXY()
-        turnAngle = outChord.getAngle(inChord)
-        boneAngle = addAngle(baseAngle, (turnAngle - math.pi)/2)
-        if obj.Side == Side.Left:
-            boneAngle = addAngle(boneAngle, math.pi)
-        #debugPrint("base=%+3.2f turn=%+3.2f bone=%+3.2f" % (baseAngle/math.pi, turnAngle/math.pi, boneAngle/math.pi))
-        distance = self.toolRadius / math.cos(turnAngle/2)
-        return (distance, boneAngle)
-
-    def adaptiveBoneLength(self, obj, inChord, outChord, boneAngle):
-        cornerDistance, cornerAngle = self.cornerDistanceAndAngle(obj, inChord, outChord)
+    def adaptiveBoneLength(self, bone, boneAngle):
         # there is something weird happening if the boneAngle came from a horizontal/vertical t-bone
         # for some reason pi/2 is not equal to pi/2
-        if math.fabs(cornerAngle - boneAngle) < 0.00001:
+        if math.fabs(bone.angle() - boneAngle) < 0.00001:
             # moving directly towards the corner
-            debugPrint("adaptive - on target: %.2f - %.2f" % (cornerDistance, self.toolRadius))
-            return cornerDistance - self.toolRadius
-        debugPrint("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (cornerAngle/math.pi, boneAngle/math.pi, cornerAngle - boneAngle))
+            debugPrint("adaptive - on target: %.2f - %.2f" % (bone.distance(self.toolRadius), self.toolRadius))
+            return bone.distance(self.toolRadius) - self.toolRadius
+        debugPrint("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (bone.angle()/math.pi, boneAngle/math.pi, bone.angle() - boneAngle))
 
         # The bones root and end point form a triangle with the intersection of the tool path
         # with the toolRadius circle around the bone end point.
         # In case the math looks questionable, look for "triangle ssa"
-        # c = cornerDistance
+        # c = bone.distance(self.toolRadius)
         # b = self.toolRadius
-        # beta = fabs(boneAngle - cornerAngle)
-        beta = math.fabs(addAngle(boneAngle, -cornerAngle))
-        D = (cornerDistance / self.toolRadius) * math.sin(beta)
+        # beta = fabs(boneAngle - bone.angle())
+        beta = math.fabs(addAngle(boneAngle, -bone.angle()))
+        D = (bone.distance(self.toolRadius) / self.toolRadius) * math.sin(beta)
         if D > 1: # no intersection
             debugPrint("adaptive - no intersection - no bone")
             return 0
         gamma = math.asin(D)
         alpha = math.pi - beta - gamma
         boneDistance = self.toolRadius * math.sin(alpha) / math.sin(beta)
-        if D < 1 and self.toolRadius < cornerDistance: # there exists a second solution
+        if D < 1 and self.toolRadius < bone.distance(self.toolRadius): # there exists a second solution
             beta2 = beta
             gamma2 = math.pi - gamma
             alpha2 = math.pi - beta2 - gamma2
             boneDistance2 = self.toolRadius * math.sin(alpha2) / math.sin(beta2)
             boneDistance = min(boneDistance, boneDistance2)
 
-        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (cornerDistance, cornerAngle, boneDistance, boneAngle))
+        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (bone.distance(self.toolRadius), bone.angle(), boneDistance, boneAngle))
         return boneDistance
 
     def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
@@ -385,10 +456,10 @@ class ObjectDressup:
             #debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
         return ppt
 
-    def smoothChordCommands(self, obj, inChord, outChord, edge, bone, corner, smooth, color = None):
+    def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color = None):
         if smooth == 0:
             debugPrint(" No smoothing requested")
-            return [ inChord.g1Command(), outChord.g1Command() ]
+            return [ bone.lastCommand, outChord.g1Command() ]
 
         d = 'in'
         refPoint = inChord.Start
@@ -403,7 +474,7 @@ class ObjectDressup:
         pivot = None
         pivotDistance = 0
 
-        for e in bone.Edges:
+        for e in wire.Edges:
             for pt in DraftGeomUtils.findIntersection(edge, e, True):
                 if pt != corner:
                     distance = (pt - refPoint).Length
@@ -422,53 +493,58 @@ class ObjectDressup:
 
             commands = []
             if t1 != inChord.Start:
+                debugPrint("  add lead in")
                 commands.append(Chord(inChord.Start, t1).g1Command())
-            if obj.Side == Side.Left:
+            if bone.obj.Side == Side.Left:
+                debugPrint("  add g3 command")
                 commands.append(Chord(t1, t2).g3Command(pivot))
             else:
+                debugPrint("  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f" % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y))
                 commands.append(Chord(t1, t2).g2Command(pivot))
             if t2 != outChord.End:
+                debugPrint("  add lead out")
                 commands.append(Chord(t2, outChord.End).g1Command())
 
-            debugMarker(t1, "pivot.%d-%s.in" % (self.boneId, d), color, 0.2)
-            debugMarker(t2, "pivot.%d-%s.out" % (self.boneId, d), color, 0.2)
+            debugMarker(pivot, "pivot.%d-%s.in" % (self.boneId, d), color, 0.2)
+            debugMarker(t1, "pivot.%d-%s.in" % (self.boneId, d), color, 0.1)
+            debugMarker(t2, "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
 
             return commands
 
+        debugPrint(" no pivot found - straight command")
         return [ inChord.g1Command(), outChord.g1Command() ]
 
-    def inOutBoneCommands(self, obj, inChord, outChord, boneAngle, fixedLength, smooth):
-        cornerDistance, cornerAngle = self.cornerDistanceAndAngle(obj, inChord, outChord)
-        corner = inChord.move(cornerDistance, cornerAngle).End
+    def inOutBoneCommands(self, bone, boneAngle, fixedLength):
+        corner = bone.corner(self.toolRadius)
 
         debugPrint("corner = (%.2f, %.2f)" % (corner.x, corner.y))
-        #debugMarker(corner, 'corner', (1., 0., 1.))
+        debugMarker(corner, 'corner', (1., 0., 1.), 0.3)
 
         length = fixedLength
-        if obj.Incision == Incision.Custom:
+        if bone.obj.Incision == Incision.Custom:
             length = obj.Custom
-        if obj.Incision == Incision.Adaptive:
-            length = self.adaptiveBoneLength(obj, inChord, outChord, boneAngle)
+        if bone.obj.Incision == Incision.Adaptive:
+            length = self.adaptiveBoneLength(bone, boneAngle)
 
         if length == 0:
             # no bone after all ..
-            return [ inChord.g1Command(), outChord.g1Command() ]
+            return [ bone.lastCommand, bone.outChord.g1Command() ]
 
-        boneInChord = inChord.move(length, boneAngle)
-        boneOutChord = boneInChord.moveTo(outChord.Start)
+        boneInChord = bone.inChord.move(length, boneAngle)
+        boneOutChord = boneInChord.moveTo(bone.outChord.Start)
 
         bones = []
 
         #debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
         #debugCircle(boneInChord.End, self.toolRadius, 'boneEnd')
 
-        if smooth == 0:
-            return [ inChord.g1Command(), boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
+        if bone.smooth == 0:
+            return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
 
         # reconstruct the corner and convert to an edge
-        offset = corner - inChord.End
-        iChord = Chord(inChord.Start + offset, inChord.End + offset)
-        oChord = Chord(outChord.Start + offset, outChord.End + offset)
+        offset = corner - bone.inChord.End
+        iChord = Chord(bone.inChord.Start + offset, bone.inChord.End + offset)
+        oChord = Chord(bone.outChord.Start + offset, bone.outChord.End + offset)
         iLine = iChord.asLine()
         oLine = oChord.asLine()
         cornerShape = Part.Shape([iLine, oLine])
@@ -482,108 +558,118 @@ class ObjectDressup:
 
         boneBot = Part.Line(vb1, vb0)
         boneTop = Part.Line(vt0, vt1)
-        boneFlat = Part.Line(vb0, vt0)
+
         # what we actually want is an Arc - but findIntersect only returns the coincident if one exists
         # which really sucks because that's the one we're probably not interested in ....
         #boneArc = Part.Arc(vt1, vm2, vb1)
         boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
-        boneWire = Part.Shape([boneTop,boneArc,boneBot])
+        boneWire = Part.Shape([boneTop, boneArc, boneBot])
         boneWire.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), boneAngle * 180 / math.pi)
-        boneWire.translate(inChord.End)
+        boneWire.translate(bone.inChord.End)
         self.boneShapes = [cornerShape, boneWire]
 
-        bones.extend(self.smoothChordCommands(obj, inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, smooth & Smooth.In, (1., 0., 0.)))
-        bones.extend(self.smoothChordCommands(obj, boneOutChord, outChord, Part.Edge(oLine), boneWire, corner, smooth & Smooth.Out, (0., 1., 0.)))
+        bones.extend(self.smoothChordCommands(bone, bone.inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, bone.smooth & Smooth.In,  (1., 0., 0.)))
+        bones.extend(self.smoothChordCommands(bone, boneOutChord, bone.outChord, Part.Edge(oLine), boneWire, corner, bone.smooth & Smooth.Out, (0., 1., 0.)))
         return bones
 
-    def dogboneAngle(self, obj, inChord, outChord):
-        distance, angle = self.cornerDistanceAndAngle(obj, inChord, outChord)
-        return angle
-
-    def dogbone(self, obj, inChord, outChord, smooth):
-        boneAngle = self.dogboneAngle(obj, inChord, outChord)
+    def dogbone(self, bone):
+        boneAngle = bone.angle()
         length = self.toolRadius * 0.41422 # 0.41422 = 2/sqrt(2) - 1 + (a tiny bit)
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, length, smooth)
+        return self.inOutBoneCommands(bone, boneAngle, length)
 
-    def tboneHorizontal(self, obj, inChord, outChord, smooth):
-        angle = self.dogboneAngle(obj, inChord, outChord)
+    def tboneHorizontal(self, bone):
+        angle = bone.angle()
         boneAngle = 0
         if angle == math.pi or math.fabs(angle) > math.pi/2:
             boneAngle = -math.pi
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
+        return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
-    def tboneVertical(self, obj, inChord, outChord, smooth):
-        angle = self.dogboneAngle(obj, inChord, outChord)
+    def tboneVertical(self, bone):
+        angle = bone.angle()
         boneAngle = math.pi/2
         if angle == math.pi or angle < 0:
             boneAngle = -boneAngle
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
+        return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
-    def tboneEdgeCommands(self, obj, inChord, outChord, onIn, smooth):
-        boneAngle = outChord.getAngleXY()
+    def tboneEdgeCommands(self, bone, onIn):
         if onIn:
-            boneAngle = inChord.getAngleXY()
-        boneAngle = boneAngle + math.pi/2
-        if Side.Right == outChord.getDirectionOf(inChord):
+            boneAngle = bone.inChord.getAngleXY()
+        else:
+            boneAngle = bone.outChord.getAngleXY()
+        if Side.Right == bone.outChord.getDirectionOf(bone.inChord):
             boneAngle = boneAngle - math.pi
-        return self.inOutBoneCommands(obj, inChord, outChord, boneAngle, self.toolRadius, smooth)
+        else:
+            boneAngle = boneAngle + math.pi/2
+        return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
-    def tboneLongEdge(self, obj, inChord, outChord, smooth):
-        inChordIsLonger = inChord.getLength() > outChord.getLength()
-        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsLonger, smooth)
+    def tboneLongEdge(self, bone):
+        inChordIsLonger = bone.inChord.getLength() > bone.outChord.getLength()
+        return self.tboneEdgeCommands(bone, inChordIsLonger)
 
-    def tboneShortEdge(self, obj, inChord, outChord, smooth):
-        inChordIsShorter = inChord.getLength() < outChord.getLength()
-        return self.tboneEdgeCommands(obj, inChord, outChord, inChordIsShorter, smooth)
+    def tboneShortEdge(self, bone):
+        inChordIsShorter = bone.inChord.getLength() < bone.outChord.getLength()
+        return self.tboneEdgeCommands(bone, inChordIsShorter)
 
-    def boneIsBlacklisted(self, obj, boneId, loc):
+    def boneIsBlacklisted(self, bone):
         blacklisted = False
         parentConsumed = False
-        if boneId in obj.BoneBlacklist:
+        if bone.boneId in bone.obj.BoneBlacklist:
             blacklisted = True
-        elif loc in self.locationBlacklist:
-            obj.BoneBlacklist.append(boneId)
+        elif bone.location() in self.locationBlacklist:
+            bone.obj.BoneBlacklist.append(bone.boneId)
             blacklisted = True
-        elif hasattr(obj.Base, 'BoneBlacklist'):
-            parentConsumed = boneId not in obj.Base.BoneBlacklist
+        elif hasattr(bone.obj.Base, 'BoneBlacklist'):
+            parentConsumed = bone.boneId not in bone.obj.Base.BoneBlacklist
             blacklisted = parentConsumed
         if blacklisted:
-            self.locationBlacklist.add(loc)
+            self.locationBlacklist.add(bone.location())
         return (blacklisted, parentConsumed)
 
     # Generate commands necessary to execute the dogbone
-    def boneCommands(self, obj, enabled, inChord, outChord, smooth):
+    def boneCommands(self, bone, enabled):
         if enabled:
-            if obj.Style == Style.Dogbone:
-                return self.dogbone(obj, inChord, outChord, smooth)
-            if obj.Style == Style.Tbone_H:
-                return self.tboneHorizontal(obj, inChord, outChord, smooth)
-            if obj.Style == Style.Tbone_V:
-                return self.tboneVertical(obj, inChord, outChord, smooth)
-            if obj.Style == Style.Tbone_L:
-                return self.tboneLongEdge(obj, inChord, outChord, smooth)
-            if obj.Style == Style.Tbone_S:
-                return self.tboneShortEdge(obj, inChord, outChord, smooth)
+            if bone.obj.Style == Style.Dogbone:
+                return self.dogbone(bone)
+            if bone.obj.Style == Style.Tbone_H:
+                return self.tboneHorizontal(bone)
+            if bone.obj.Style == Style.Tbone_V:
+                return self.tboneVertical(bone)
+            if bone.obj.Style == Style.Tbone_L:
+                return self.tboneLongEdge(bone)
+            if bone.obj.Style == Style.Tbone_S:
+                return self.tboneShortEdge(bone)
         else:
-            return [ inChord.g1Command(), outChord.g1Command() ]
+            return [ bone.lastCommand, bone.outChord.g1Command() ]
 
-    def insertBone(self, boneId, obj, inChord, outChord, commands, smooth):
-        debugPrint(">----------------------------------- %d --------------------------------------" % boneId)
+    def insertBone(self, bone):
+        debugPrint(">----------------------------------- %d --------------------------------------" % bone.boneId)
         self.boneShapes = []
-        loc = (inChord.End.x, inChord.End.y)
-        blacklisted, inaccessible = self.boneIsBlacklisted(obj, boneId, loc)
+        blacklisted, inaccessible = self.boneIsBlacklisted(bone)
         enabled = not blacklisted
-        self.bones.append((boneId, loc, enabled, inaccessible))
+        self.bones.append((bone.boneId, bone.location(), enabled, inaccessible))
 
-        self.boneId = boneId
-        if debugDogbone and boneId != 4:
-            bones = self.boneCommands(obj, False, inChord, outChord, smooth)
+        self.boneId = bone.boneId
+        if debugDressup and bone.boneId != 11:
+            commands = self.boneCommands(bone, False)
         else:
-            bones = self.boneCommands(obj, enabled, inChord, outChord, smooth)
-        commands.extend(bones[:-1])
-        self.shapes[boneId] = self.boneShapes
-        debugPrint("<----------------------------------- %d --------------------------------------" % boneId)
-        return boneId + 1, bones[-1]
+            commands = self.boneCommands(bone, enabled)
+
+        self.shapes[bone.boneId] = self.boneShapes
+        debugPrint("<----------------------------------- %d --------------------------------------" % bone.boneId)
+        return commands
+
+    def removePathCrossing(self, commands, bones, startPt):
+        #edges = edgesForCommands(bones, startPt)
+        #for i in range(0, len(edges)):
+        #    edge = edges[i]
+        #    for j in range(i+2, len(edges)):
+        #        e = edges[j]
+        #        cutoff = DraftGeomUtils.findIntersection(e, edge)
+        #        for pt in cutoff:
+        #            b = bones[j]
+        #            print("--- %d/%d/%d (%.2f, %.2f, %.2f)--- %s %s" % (i, j, len(edges), b.Parameters['X'], b.Parameters['Y'], b.Parameters['Z'], bones[i], b))
+        #            debugMarker(pt, "it", (0.0, 1.0, 1.0))
+        return bones
 
     def execute(self, obj):
         if not obj.Base:
@@ -605,6 +691,7 @@ class ObjectDressup:
         boneId = 1
         self.bones = []
         self.locationBlacklist = set()
+        boneIserted = False
 
         for thisCommand in obj.Base.Path.Commands:
             if thisCommand.Name in movecommands:
@@ -612,22 +699,42 @@ class ObjectDressup:
                 thisIsACandidate = self.canAttachDogbone(thisCommand, thisChord)
 
                 if thisIsACandidate and lastCommand and self.shouldInsertDogbone(obj, lastChord, thisChord):
-                    boneId, lastCommand = self.insertBone(boneId, obj, lastChord, thisChord, commands, Smooth.InAndOut)
+                    bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut)
+                    bones = self.insertBone(bone)
+                    boneId += 1
+                    if boneInserted:
+                        print("This could be an issue: %s" % thisChord)
+                        #debugMarker(thisChord.Start, "it", (1.0, 0.0, 1.0))
+                        bones = self.removePathCrossing(commands, bones, lastChord.Start)
+                    commands.extend(bones[:-1])
+                    lastCommand = bones[-1]
+                    boneInserted = True
                 elif lastCommand and thisChord.isAPlungeMove():
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
-                            boneId, lastCommand = self.insertBone(boneId, obj, lastChord, chord, commands, Smooth.In)
+                            bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In)
+                            bones = self.insertBone(bone)
+                            boneId += 1
+                            if boneInserted:
+                                print("This could be another issue: %s" % chord)
+                                #debugMarker(chord.Start, "it", (0.0, 1.0, 1.0))
+                                bones = self.removePathCrossing(commands, bones, lastChord.Start)
+                            commands.extend(bones[:-1])
+                            lastCommand = bones[-1]
                     lastCommand = None
                     commands.append(thisCommand)
+                    boneInserted = False
                 elif thisIsACandidate:
                     if lastCommand:
                         commands.append(lastCommand)
                     lastCommand = thisCommand
+                    boneInserted = False
                 else:
                     if lastCommand:
                         commands.append(lastCommand)
                         lastCommand = None
                     commands.append(thisCommand)
+                    boneInserted = False
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
@@ -746,7 +853,7 @@ class TaskPanel:
         self.form.customLabel.setEnabled(customSelected)
         self.updateBoneList()
 
-        if debugDogbone:
+        if debugDressup:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith('Shape'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
