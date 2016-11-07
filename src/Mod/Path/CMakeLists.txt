@@ -73,6 +73,8 @@ SET(PathScripts_SRCS
     PathScripts/DogboneDressup.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathPreferences.py
+    PathTests/TestPathPost.py
+    TestPathApp.py
 )
 
 SET(PathScripts_NC_SRCS

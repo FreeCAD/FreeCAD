@@ -52,6 +52,7 @@ class TestCmd:
         QtUnitGui.addTest("TestPartApp")
         QtUnitGui.addTest("TestPartDesignApp")
         QtUnitGui.addTest("TestPartDesignGui")
+        QtUnitGui.addTest("TestPathApp")
         QtUnitGui.addTest("TestSpreadsheet")
         QtUnitGui.addTest("TestDraft")
         QtUnitGui.addTest("TestArch")
