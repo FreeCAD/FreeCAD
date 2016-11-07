@@ -23,9 +23,15 @@
 # ***************************************************************************
 
 import FreeCAD
+import Path
+import PathScripts
+import PathScripts.PathContour
+import PathScripts.PathJob
+import PathScripts.PathLoadTool
+import PathScripts.PathPost
+import PathScripts.PathUtils
+import difflib
 import unittest
-
-from PathScripts import PathPost
 
 class PathPostTestCases(unittest.TestCase):
     def setUp(self):
@@ -34,8 +40,58 @@ class PathPostTestCases(unittest.TestCase):
     def tearDown(self):
         FreeCAD.closeDocument("PathPostTest")
 
-    def testCommand(self):
-        self.box = self.doc.addObject("Part::Box", "Box")
-        print("Running command test")
+    def testLinuxCNC(self):
+        # first create something to generate a path for
+        box = self.doc.addObject("Part::Box", "Box")
+
+        # Create job and setup tool library + default tool
+        job = self.doc.addObject("Path::FeatureCompoundPython", "Job")
+        PathScripts.PathJob.ObjectPathJob(job)
+        job.Base = self.doc.Box
+        PathScripts.PathLoadTool.CommandPathLoadTool.Create(job.Name, False)
+        toolLib = job.Group[0]
+        tool1 = Path.Tool()
+        tool1.Diameter = 5.0
+        tool1.Name = "Default Tool"
+        tool1.CuttingEdgeHeight = 15.0
+        tool1.ToolType = "EndMill"
+        tool1.Material = "HighSpeedSteel"
+        job.Tooltable.addTools(tool1)
+        toolLib.ToolNumber = 1
         self.failUnless(True)
+
+        self.doc.getObject("TC").ToolNumber = 2
+        self.doc.recompute()
+
+        contour = self.doc.addObject("Path::FeaturePython", "Contour")
+        PathScripts.PathContour.ObjectContour(contour)
+        contour.Active = True
+        contour.ClearanceHeight = 20.0
+        contour.StepDown = 1.0
+        contour.StartDepth= 10.0
+        contour.FinalDepth=0.0
+        contour.SafeHeight = 12.0
+        contour.OffsetExtra = 0.0
+        contour.Direction = 'CW'
+        contour.UseComp = True
+        contour.PlungeAngle = 90.0
+        PathScripts.PathUtils.addToJob(contour)
+        PathScripts.PathContour.ObjectContour.setDepths(contour.Proxy, contour)
+        self.doc.recompute()
+
+        job.PostProcessor = 'linuxcnc'
+        job.PostProcessorArgs = '--no-header --no-line-numbers --no-comments --no-show-editor'
+
+        post = PathScripts.PathPost.CommandPathPost()
+        (fail, gcode) = post.exportObjectsWith([job], job, False)
+        self.assertFalse(fail)
+
+        referenceFile = FreeCAD.getHomePath() + 'Mod/Path/PathTests/test_linuxcnc_00.ngc'
+        with open(referenceFile, 'r') as fp:
+            refGCode = fp.read()
+
+        if gcode != refGCode:
+            msg = ''.join(difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True)))
+            self.fail("linuxcnc output doesn't match: " + msg)
+
 

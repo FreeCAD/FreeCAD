@@ -78,4 +78,4 @@ class PostProcessor:
         self.script = script
 
     def export(self, obj, filename, args):
-        self.script.export(obj, filename, args)
+        return self.script.export(obj, filename, args)
