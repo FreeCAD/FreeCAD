@@ -1048,7 +1048,7 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
 
    //switch (code)
    //{
-   //    case FLT_DIVIDE_BY_ZERO : 
+   //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
    //       throw Base::Exception("Devision by zero!");
    //    break;
@@ -1169,7 +1169,7 @@ void Application::initTypes(void)
     App ::GeoFeatureGroupExtensionPython::init();
     App ::OriginGroupExtension          ::init();
     App ::OriginGroupExtensionPython    ::init();
-    
+
     // Document classes
     App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
@@ -1704,7 +1704,7 @@ void Application::ParseOptions(int ac, char ** av)
     ("log-file", value<string>(), "Unlike to --write-log this allows to log to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"Systen config file to load/save system settings")
-    ("run-test,t",   value<int>()   ,"Test level")
+    ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -1913,21 +1913,14 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("run-test")) {
-        int level = vm["run-test"].as<int>();
-        switch (level) {
-        case '0':
-            // test script level 0
-            mConfig["RunMode"] = "Internal";
-            mConfig["ScriptFileName"] = "FreeCADTest";
-            //sScriptName = FreeCADTest;
-            break;
-        default:
-            //default testing level 0
-            mConfig["RunMode"] = "Internal";
-            mConfig["ScriptFileName"] = "FreeCADTest";
-            //sScriptName = FreeCADTest;
-            break;
-        };
+       string testCase = vm["run-test"].as<string>();
+        if ( "0" == testCase) {
+            testCase = "TestApp.All";
+        }
+        mConfig["TestCase"] = testCase;
+        mConfig["RunMode"] = "Internal";
+        mConfig["ScriptFileName"] = "FreeCADTest";
+        //sScriptName = FreeCADTest;
     }
 
     if (vm.count("single-instance")) {
@@ -2190,7 +2183,7 @@ std::string Application::FindHomePath(const char* sCall)
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
         char resolved[PATH_MAX];
-#if defined(FC_OS_BSD) 
+#if defined(FC_OS_BSD)
         int mib[4];
         mib[0] = CTL_KERN;
         mib[1] = KERN_PROC;
