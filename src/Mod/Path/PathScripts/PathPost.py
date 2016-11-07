@@ -79,7 +79,7 @@ class DlgSelectPostProcessor:
 class CommandPathPost:
 
     def resolveFileName(self, job):
-        print("resolveFileName(%s)" % job.Label)
+        #print("resolveFileName(%s)" % job.Label)
         path = PathPreferences.defaultOutputFile()
         if job.OutputFile:
             path = job.OutputFile
@@ -134,7 +134,7 @@ class CommandPathPost:
             else:
                 filename = None
 
-        print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
+        #print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
         return filename
 
     def resolvePostProcessor(self, job):
@@ -179,34 +179,43 @@ class CommandPathPost:
                 job = PathUtils.findParentJob(obj)
                 if job:
                     jobs.add(job)
+
+        fail = True
+        rc = ''
         if len(jobs) != 1:
             FreeCAD.Console.PrintError("Please select a single job or other path object\n")
-            FreeCAD.ActiveDocument.abortTransaction()
         else:
             job = jobs.pop()
             print("Job for selected objects = %s" % job.Name)
+            (fail, rc) = exportObjectsWith(selected, job)
 
-            # check if the user has a project and has set the default post and
-            # output filename
-            postArgs = PathPreferences.defaultPostProcessorArgs()
-            if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
-                postArgs = job.PostProcessorArgs
-            elif hasattr(job, "PostProcessor") and job.PostProcessor:
-                postArgs = ''
-
-            postname = self.resolvePostProcessor(job)
-            if postname:
-                filename = self.resolveFileName(job)
-
-            if postname and filename:
-                print("post: %s(%s, %s)" % (postname, filename, postArgs))
-                processor = PostProcessor.load(postname)
-                processor.export(selected, filename, postArgs)
-
-                FreeCAD.ActiveDocument.commitTransaction()
-            else:
-                FreeCAD.ActiveDocument.abortTransaction()
+        if fail:
+            FreeCAD.ActiveDocument.abortTransaction()
+        else:
+            FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
+    def exportObjectsWith(self, objs, job, needFilename = True):
+        # check if the user has a project and has set the default post and
+        # output filename
+        postArgs = PathPreferences.defaultPostProcessorArgs()
+        if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
+            postArgs = job.PostProcessorArgs
+        elif hasattr(job, "PostProcessor") and job.PostProcessor:
+            postArgs = ''
+
+        postname = self.resolvePostProcessor(job)
+        filename = '-'
+        if postname and needFilename:
+            filename = self.resolveFileName(job)
+
+        if postname and filename:
+            print("post: %s(%s, %s)" % (postname, filename, postArgs))
+            processor = PostProcessor.load(postname)
+            gcode = processor.export(objs, filename, postArgs)
+            return (False, gcode)
+        else:
+            return (True, '')
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command

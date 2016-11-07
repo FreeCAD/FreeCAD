@@ -28,10 +28,11 @@ from FreeCAD import Vector
 import TechDraw
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
+from PySide import QtCore
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
     # Qt tanslation handling
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
@@ -258,7 +259,8 @@ class ObjectContour:
         if obj.Active:
             path = Path.Path(output)
             obj.Path = path
-            obj.ViewObject.Visibility = True
+            if obj.ViewObject:
+                obj.ViewObject.Visibility = True
 
         else:
             path = Path.Path("(inactive operation)")
