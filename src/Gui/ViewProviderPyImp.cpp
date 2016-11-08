@@ -37,8 +37,8 @@
 #include "WidgetFactory.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
-#include "ViewProviderPy.h"
-#include "ViewProviderPy.cpp"
+#include <Gui/ViewProviderPy.h>
+#include <Gui/ViewProviderPy.cpp>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
@@ -79,6 +79,29 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
         return NULL;                       // NULL triggers exception 
     PY_TRY {
         return Py_BuildValue("O", (getViewProviderPtr()->isShow() ? Py_True : Py_False));
+    } PY_CATCH;
+}
+
+PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
+{
+    char* mode;
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args, "Os", &obj, &mode))
+        return NULL;
+
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","SoNode *", obj, &ptr, 0);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
+    }
+
+    PY_TRY {
+        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        getViewProviderPtr()->addDisplayMaskMode(node,mode);
+        Py_Return;
     } PY_CATCH;
 }
 

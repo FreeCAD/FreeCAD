@@ -28,7 +28,12 @@
 				<UserDocu>Check if the object is visible</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="listDisplayModes">
+        <Methode Name="addDisplayMode">
+            <Documentation>
+                <UserDocu>Add a new display mode to the view provider</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="listDisplayModes">
 			<Documentation>
 				<UserDocu>Show a list of all display modes</UserDocu>
 			</Documentation>
