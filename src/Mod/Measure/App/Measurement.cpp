@@ -86,7 +86,7 @@ bool Measurement::has3DReferences()
 }
 
 //add a 3D reference (obj+sub) to end of list
-int Measurement::addReference3D(App::DocumentObject *obj, const std::string subName)
+int Measurement::addReference3D(App::DocumentObject *obj, const std::string& subName)
 {
     return addReference3D(obj,subName.c_str());
 }
