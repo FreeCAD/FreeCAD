@@ -53,6 +53,71 @@ std::string ViewProviderPy::representation(void) const
     return "<View provider object>";
 }
 
+PyObject*  ViewProviderPy::addProperty(PyObject *args)
+{
+    char *sType,*sName=0,*sGroup=0,*sDoc=0;
+    short attr=0;
+    std::string sDocStr;
+    PyObject *ro = Py_False, *hd = Py_False;
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
+        &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    if (sDoc) {
+        sDocStr = sDoc;
+        PyMem_Free(sDoc);
+    }
+
+    App::Property* prop=0;
+    try {
+        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    if (!prop) {
+        std::stringstream str;
+        str << "No property found of type '" << sType << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+
+    return Py::new_reference_to(this);
+}
+
+PyObject*  ViewProviderPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return NULL;
+
+    try {
+        bool ok = getViewProviderPtr()->removeDynamicProperty(sName);
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    std::vector<Base::Type> ary;
+    Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
+    Py::List res;
+    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
+        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+        if (data) {
+            delete data;
+            res.append(Py::String(it->getName()));
+        }
+    }
+    return Py::new_reference_to(res);
+}
+
 PyObject*  ViewProviderPy::show(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 

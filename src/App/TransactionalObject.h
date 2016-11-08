@@ -45,6 +45,12 @@ public:
     virtual bool isAttachedToDocument() const;
     virtual const char* detachFromDocument();
 
+    virtual App::Property* addDynamicProperty(
+          const char*, const char* = 0,
+          const char* = 0, const char* = 0,
+          short = 0, bool = false, bool = false);
+    virtual bool removeDynamicProperty(const char*);
+
 protected:
     void onBeforeChangeProperty(Document *doc, const Property *prop);
 };
