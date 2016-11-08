@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,75 +24,69 @@
 #ifndef _PreComp_
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QtGlobal>
 #endif
 
 #include <Base/Console.h>
 
 #include <QRectF>
-#include "QGCustomSvg.h"
+#include <QPixmap>
+#include "QGCustomImage.h"
 
 using namespace TechDrawGui;
 
-QGCustomSvg::QGCustomSvg()
+QGCustomImage::QGCustomImage()
 {
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(false);
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
-
-    m_svgRender = new QSvgRenderer();
 }
 
-QGCustomSvg::~QGCustomSvg()
+QGCustomImage::~QGCustomImage()
 {
-    delete m_svgRender;
 }
 
-void QGCustomSvg::centerAt(QPointF centerPos)
+void QGCustomImage::centerAt(QPointF centerPos)
 {
-    if (group()) { 
-        QRectF box = group()->boundingRect();
-        double width = box.width();
-        double height = box.height();
-        double newX = centerPos.x() - width/2.;
-        double newY = centerPos.y() - height/2.;
-        setPos(newX,newY);
-    }
+    centerAt(centerPos.x(),centerPos.y());
 }
 
-void QGCustomSvg::centerAt(double cX, double cY)
+void QGCustomImage::centerAt(double cX, double cY)
 {
-    if (group()) {
-        QRectF box = group()->boundingRect();
-        double width = box.width();
-        double height = box.height();
-        double newX = cX - width/2.;
-        double newY = cY - height/2.;
-        setPos(newX,newY);
-    }
+//    QGraphicsItemGroup* g = group();
+//    if (g == nullptr) {
+//        return;
+//    }
+    QPointF parentPt(cX,cY);
+    QPointF myPt = mapFromParent(parentPt);
+
+    QRectF br = boundingRect();
+    double width = br.width();
+    double height = br.height();
+    double newX = width/2.0;
+    double newY = height/2.0;
+    QPointF off(myPt.x() - newX,myPt.y() - newY);
+    setOffset(off);
 }
 
-bool QGCustomSvg::load(QByteArray *svgBytes)
+bool QGCustomImage::load(QString fileSpec)
 {
-    bool success = m_svgRender->load(*svgBytes);
+    bool success = true;
+    QPixmap px(fileSpec);
+    m_px = px;
+//    if (m_px.isNull()) {
+//        Base::Console().Message("TRACE - QGCustomImage::load - pixmap no good\n");
+//    }
     prepareGeometryChange();
-    setSharedRenderer(m_svgRender);
+    setPixmap(m_px);
     return(success);
 }
 
-QRectF QGCustomSvg::boundingRect() const
-{
-    QRectF box = m_svgRender->viewBoxF();
-    double w = box.width();
-    double h = box.height();
-    QRectF newRect(0,0,w,h);
-    return newRect.adjusted(-1.,-1.,1.,1.);
-}
-
-void QGCustomSvg::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
+void QGCustomImage::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    QGraphicsSvgItem::paint (painter, &myOption, widget);
+    QGraphicsPixmapItem::paint (painter, &myOption, widget);
 }

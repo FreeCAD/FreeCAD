@@ -140,7 +140,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
 //                                    MeasureType.getValue(),measurement->has3DReferences(),has3DReferences());
             clear3DMeasurements();                                                             //Measurement object
             if (!(References3D.getValues()).empty()) {
-                set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());   //Measurement object
+                setAll3DMeasurement();
             } else {
                 if (MeasureType.isValue("True")) {                                 //empty 3dRefs, but True
                     MeasureType.touch();                                          //run MeasureType logic for this case
@@ -156,8 +156,7 @@ void DrawViewDimension::onChanged(const App::Property* prop)
 void DrawViewDimension::onDocumentRestored()
 {
     if (has3DReferences()) {
-        clear3DMeasurements();
-        set3DMeasurement(References3D.getValues().at(0),References3D.getSubValues());
+        setAll3DMeasurement();
     }
 }
 
@@ -254,6 +253,7 @@ double DrawViewDimension::getDimValue() const
         if (!measurement->has3DReferences()) {
             return result;
         }
+
         if(Type.isValue("Distance")) {
             result = measurement->delta().Length();
         } else if(Type.isValue("DistanceX")){
@@ -486,14 +486,17 @@ int DrawViewDimension::getRefType2(const std::string g1, const std::string g2)
     return refType;
 }
 
-//!add 1 3D measurement Reference
-void DrawViewDimension::set3DMeasurement(DocumentObject* const &obj, const std::vector<std::string>& subElements)
+//!add Dimension 3D references to measurement
+void DrawViewDimension::setAll3DMeasurement()
 {
-   std::vector<std::string>::const_iterator itSub = subElements.begin();
-   for (; itSub != subElements.end(); itSub++) {
-       //int rc =
-       static_cast<void> (measurement->addReference3D(obj,(*itSub).c_str()));
-   }
+    measurement->clear();
+    const std::vector<App::DocumentObject*> &Objs = References3D.getValues();
+    const std::vector<std::string> &Subs      = References3D.getSubValues();
+    int end = Objs.size();
+    int i = 0;
+    for ( ; i < end; i++) {
+        static_cast<void> (measurement->addReference3D(Objs.at(i), Subs.at(i)));
+    }
 }
 
 //delete all previous measurements

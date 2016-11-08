@@ -1,6 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                 2014 wandererfan <WandererFan@gmail.com>                *
+ *   Copyright (c) 2016 WandererFan   (wandererfan@gmail.com)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,101 +40,105 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
-#include <Mod/TechDraw/App/DrawViewSymbol.h>
+#include <Mod/TechDraw/App/DrawViewImage.h>
 
-#include "QGCustomSvg.h"
-#include "QGIViewSymbol.h"
+#include "QGCustomImage.h"
+#include "QGCustomClip.h"
+#include "QGIViewImage.h"
 
 using namespace TechDrawGui;
 
-QGIViewSymbol::QGIViewSymbol()
+QGIViewImage::QGIViewImage()
 {
     setHandlesChildEvents(false);
+    setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
     setCacheMode(QGraphicsItem::NoCache);
     setAcceptHoverEvents(true);
     setFlag(QGraphicsItem::ItemIsMovable, true);
     setFlag(QGraphicsItem::ItemIsSelectable, true);
     setFlag(QGraphicsItem::ItemSendsGeometryChanges, true);
 
-    m_svgItem = new QGCustomSvg();
-    addToGroup(m_svgItem);
-    m_svgItem->centerAt(0.,0.);
+    m_cliparea = new QGCustomClip();
+    addToGroup(m_cliparea);
+    m_cliparea->setPos(0.,0.);
+    m_cliparea->setRect(0.,0.,5.,5.);
+
+    m_imageItem = new QGCustomImage();
+    m_cliparea->addToGroup(m_imageItem);
+    m_imageItem->setPos(0.,0.);
 }
 
-QGIViewSymbol::~QGIViewSymbol()
+QGIViewImage::~QGIViewImage()
 {
-    // m_svgItem belongs to this group and will be deleted by Qt
+    // m_imageItem belongs to this group and will be deleted by Qt
 }
 
-QVariant QGIViewSymbol::itemChange(GraphicsItemChange change, const QVariant &value)
+QVariant QGIViewImage::itemChange(GraphicsItemChange change, const QVariant &value)
 {
 
     return QGIView::itemChange(change, value);
 }
 
-void QGIViewSymbol::setViewSymbolFeature(TechDraw::DrawViewSymbol *obj)
+void QGIViewImage::setViewImageFeature(TechDraw::DrawViewImage *obj)
 {
-    // called from QGVPage. (once)
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 }
 
-void QGIViewSymbol::updateView(bool update)
+void QGIViewImage::updateView(bool update)
 {
-    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
+    if( viewImage == nullptr ) {
         return;
     }
 
     if (update ||
-        viewSymbol->isTouched() ||
-        viewSymbol->Symbol.isTouched()) {
+        viewImage->isTouched() ||
+        viewImage->Width.isTouched() ||
+        viewImage->Height.isTouched() ||
+        viewImage->ImageFile.isTouched()) {
         draw();
     }
 
-    if (viewSymbol->Scale.isTouched()) {
+    if (viewImage->Scale.isTouched()) {
         draw();
     }
 
     QGIView::updateView(update);
 }
 
-void QGIViewSymbol::draw()
+void QGIViewImage::draw()
 {
     if (!isVisible()) {
         return;
     }
 
-    drawSvg();
+    auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
+    QRectF newRect(0.0,0.0,viewImage->Width.getValue(),viewImage->Height.getValue());
+    m_cliparea->setRect(newRect.adjusted(-1,-1,1,1));
+
+    drawImage();
     if (borderVisible) {
         drawBorder();
     }
 }
 
-void QGIViewSymbol::drawSvg()
+void QGIViewImage::drawImage()
 {
-    auto viewSymbol( dynamic_cast<TechDraw::DrawViewSymbol *>(getViewObject()) );
-    if( viewSymbol == nullptr ) {
+    auto viewImage( dynamic_cast<TechDraw::DrawViewImage *>(getViewObject()) );
+    if( viewImage == nullptr ) {
         return;
     }
 
-//note: svg's are overscaled by (72 pixels(pts actually) /in)*(1 in/25.4 mm) = 2.834645669   (could be 96/25.4(CSS)? 110/25.4?)
-//due to 1 sceneUnit (1mm) = 1 pixel for some QtSvg functions
-
-    m_svgItem->setScale(viewSymbol->Scale.getValue());
-
-    QByteArray qba(viewSymbol->Symbol.getValue(),strlen(viewSymbol->Symbol.getValue()));
-    symbolToSvg(qba);
+    if (!viewImage->ImageFile.isEmpty()) {
+        QString fileSpec = QString::fromUtf8(viewImage->ImageFile.getValue(),strlen(viewImage->ImageFile.getValue()));
+        m_imageItem->load(fileSpec);
+        m_imageItem->setScale(viewImage->Scale.getValue());
+        QRectF br = m_cliparea->rect();
+        double midX = br.width()/2.0;
+        double midY = br.height()/2.0;
+        m_imageItem->centerAt(midX,midY);
+        m_imageItem->show();
+    }
 }
 
-void QGIViewSymbol::symbolToSvg(QByteArray qba)
-{
-    if (qba.isEmpty()) {
-        return;
-    }
 
-    prepareGeometryChange();
-    if (!m_svgItem->load(&qba)) {
-        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
-    }
-    m_svgItem->centerAt(0.,0.);
-}

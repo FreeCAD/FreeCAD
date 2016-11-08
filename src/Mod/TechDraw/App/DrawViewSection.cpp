@@ -74,6 +74,7 @@
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "EdgeWalker.h"
+#include "DrawProjectSplit.h"
 #include "DrawViewSection.h"
 
 using namespace TechDraw;
@@ -219,9 +220,6 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         return DrawView::execute();
     }
 
-    geometryObject->setTolerance(Tolerance.getValue());
-    geometryObject->setScale(Scale.getValue());
-
     gp_Pnt inputCenter;
     try {
         inputCenter = TechDrawGeometry::findCentroid(rawShape,
@@ -229,7 +227,7 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
-        buildGeometryObject(mirroredShape,inputCenter);                         //this is original shape after cut by section prism
+        geometryObject = buildGeometryObject(mirroredShape,inputCenter);   //this is original shape after cut by section prism
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
