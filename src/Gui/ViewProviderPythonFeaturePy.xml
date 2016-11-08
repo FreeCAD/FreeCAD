@@ -13,11 +13,6 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>This is the view provider class for Python features</UserDocu>
 		</Documentation>
-		<Methode Name="addDisplayMode">
-			<Documentation>
-				<UserDocu>Add a new display mode to the view provider</UserDocu>
-			</Documentation>
-		</Methode>
 		<Methode Name="addProperty">
 			<Documentation>
 				<UserDocu>

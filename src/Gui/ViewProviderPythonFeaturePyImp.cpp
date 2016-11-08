@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/nodes/SoNode.h>
 #endif
 
 #include "Gui/ViewProviderPythonFeature.h"
@@ -38,29 +37,6 @@ using namespace Gui;
 std::string ViewProviderPythonFeaturePy::representation(void) const
 {
     return "<ViewProviderPythonFeature object>";
-}
-
-PyObject* ViewProviderPythonFeaturePy::addDisplayMode(PyObject * args)
-{
-    char* mode;
-    PyObject* obj;
-    if (!PyArg_ParseTuple(args, "Os", &obj, &mode))
-        return NULL;
-
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin","SoNode *", obj, &ptr, 0);
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_RuntimeError, e.what());
-        return 0;
-    }
-
-    PY_TRY {
-        SoNode* node = reinterpret_cast<SoNode*>(ptr);
-        getViewProviderPythonFeaturePtr()->addDisplayMaskMode(node,mode);
-        Py_Return;
-    } PY_CATCH;
 }
 
 PyObject*  ViewProviderPythonFeaturePy::addProperty(PyObject *args)
