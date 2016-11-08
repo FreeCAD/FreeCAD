@@ -116,12 +116,12 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 
-    if(getExtensionContainerPtr()->hasExtension(extension)) {
-        Py_INCREF(Py_True);
-        return Py_True;
+    bool val = false;
+    if (getExtensionContainerPtr()->hasExtension(extension)) {
+        val = true;
     }
-    Py_INCREF(Py_False);
-    return Py_False;
+
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
