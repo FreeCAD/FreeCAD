@@ -1954,7 +1954,7 @@ def exportPage(page,filename):
     f.write(template)
     f.close()
 
-def getBlock(geom,view,blockcount):
+def getViewBlock(geom,view,blockcount):
     insert = ""
     block = ""
     r = view.Rotation
@@ -1992,16 +1992,16 @@ def getViewDXF(view,blocks=True):
     elif view.isDerivedFrom("Drawing::FeatureViewPython"):
         if hasattr(view.Proxy,"getDXF"):
             geom = view.Proxy.getDXF(view)
-            block,insert,blockcount = getBlock(geom,view,blockcount)
+            block,insert,blockcount = getViewBlock(geom,view,blockcount)
 
     elif view.isDerivedFrom("TechDraw::DrawViewDraft"):
         geom = Draft.getDXF(view)
-        block,insert,blockcount = getBlock(geom,view,blockcount)
+        block,insert,blockcount = getViewBlock(geom,view,blockcount)
         
     elif view.isDerivedFrom("TechDraw::DrawViewArch"):
         import ArchSectionPlane
         geom = ArchSectionPlane.getDXF(view)
-        block,insert,blockcount = getBlock(geom,view,blockcount)
+        block,insert,blockcount = getViewBlock(geom,view,blockcount)
 
     elif view.isDerivedFrom("Drawing::FeatureViewPart"):
         r = view.Rotation
