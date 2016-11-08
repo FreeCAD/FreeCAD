@@ -272,10 +272,8 @@ std::wstring FileInfo::toStdWString() const
 #endif
 }
 
-std::string FileInfo::extension (bool complete) const
+std::string FileInfo::extension () const
 {
-    // complete not implemented
-    assert(complete==false);
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
         return std::string();

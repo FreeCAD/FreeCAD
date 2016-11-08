@@ -80,9 +80,13 @@ void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sR
 
 void MacroManager::open(MacroType eType, const char *sName)
 {
-    // check 
+    // check
+#if _DEBUG
     assert(!this->openMacro);
     assert(eType == File);
+#else
+    Q_UNUSED(eType);
+#endif
 
     // Convert from Utf-8
     this->macroName = QString::fromUtf8(sName);

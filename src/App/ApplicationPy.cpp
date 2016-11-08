@@ -148,7 +148,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args,PyObject * 
 
         std::string module = mod;
         if (module.empty()) {
-            std::string ext = fi.extension(false);
+            std::string ext = fi.extension();
             std::vector<std::string> modules = GetApplication().getImportModules(ext.c_str());
             if (modules.empty()) {
                 PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
