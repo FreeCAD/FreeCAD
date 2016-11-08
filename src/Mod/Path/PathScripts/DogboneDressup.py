@@ -50,7 +50,7 @@ movecw =       ['G2', 'G02']
 moveccw =      ['G3', 'G03']
 movearc = movecw + moveccw
 
-debugDressup = False
+debugDressup = True
 
 def debugPrint(msg):
     if debugDressup:
@@ -365,6 +365,45 @@ class Bone:
     def location(self):
         return (self.inChord.End.x, self.inChord.End.y)
 
+    def adaptiveLength(self, boneAngle, toolRadius):
+        angle = self.angle()
+        distance = self.distance(toolRadius)
+        # there is something weird happening if the boneAngle came from a horizontal/vertical t-bone
+        # for some reason pi/2 is not equal to pi/2
+        if math.fabs(angle - boneAngle) < 0.00001:
+            # moving directly towards the corner
+            debugPrint("adaptive - on target: %.2f - %.2f" % (distance, toolRadius))
+            return distance - toolRadius
+        debugPrint("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (angle/math.pi, boneAngle/math.pi, angle - boneAngle))
+
+        # The bones root and end point form a triangle with the intersection of the tool path
+        # with the toolRadius circle around the bone end point.
+        # In case the math looks questionable, look for "triangle ssa"
+        # c = distance
+        # b = self.toolRadius
+        # beta = fabs(boneAngle - angle)
+        beta = math.fabs(addAngle(boneAngle, -angle))
+        D = (distance / toolRadius) * math.sin(beta)
+        if D > 1: # no intersection
+            debugPrint("adaptive - no intersection - no bone")
+            return 0
+        gamma = math.asin(D)
+        alpha = math.pi - beta - gamma
+        length = toolRadius * math.sin(alpha) / math.sin(beta)
+        if D < 1 and toolRadius < distance: # there exists a second solution
+            beta2 = beta
+            gamma2 = math.pi - gamma
+            alpha2 = math.pi - beta2 - gamma2
+            length2 = toolRadius * math.sin(alpha2) / math.sin(beta2)
+            length = min(length, length2)
+
+        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (distance, angle, length, boneAngle))
+        return length
+
+    def edges(self):
+        if not hasattr(self, 'e'):
+            self.e = edgesForCommands(self.commands, self.inChord.Start)
+        return self.e
 
 class ObjectDressup:
 
@@ -404,39 +443,6 @@ class ObjectDressup:
 
     def shouldInsertDogbone(self, obj, inChord, outChord):
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
-
-    def adaptiveBoneLength(self, bone, boneAngle):
-        # there is something weird happening if the boneAngle came from a horizontal/vertical t-bone
-        # for some reason pi/2 is not equal to pi/2
-        if math.fabs(bone.angle() - boneAngle) < 0.00001:
-            # moving directly towards the corner
-            debugPrint("adaptive - on target: %.2f - %.2f" % (bone.distance(self.toolRadius), self.toolRadius))
-            return bone.distance(self.toolRadius) - self.toolRadius
-        debugPrint("adaptive - angles: corner=%.2f  bone=%.2f diff=%.12f" % (bone.angle()/math.pi, boneAngle/math.pi, bone.angle() - boneAngle))
-
-        # The bones root and end point form a triangle with the intersection of the tool path
-        # with the toolRadius circle around the bone end point.
-        # In case the math looks questionable, look for "triangle ssa"
-        # c = bone.distance(self.toolRadius)
-        # b = self.toolRadius
-        # beta = fabs(boneAngle - bone.angle())
-        beta = math.fabs(addAngle(boneAngle, -bone.angle()))
-        D = (bone.distance(self.toolRadius) / self.toolRadius) * math.sin(beta)
-        if D > 1: # no intersection
-            debugPrint("adaptive - no intersection - no bone")
-            return 0
-        gamma = math.asin(D)
-        alpha = math.pi - beta - gamma
-        boneDistance = self.toolRadius * math.sin(alpha) / math.sin(beta)
-        if D < 1 and self.toolRadius < bone.distance(self.toolRadius): # there exists a second solution
-            beta2 = beta
-            gamma2 = math.pi - gamma
-            alpha2 = math.pi - beta2 - gamma2
-            boneDistance2 = self.toolRadius * math.sin(alpha2) / math.sin(beta2)
-            boneDistance = min(boneDistance, boneDistance2)
-
-        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (bone.distance(self.toolRadius), bone.angle(), boneDistance, boneAngle))
-        return boneDistance
 
     def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
         ppt = None
@@ -524,7 +530,7 @@ class ObjectDressup:
         if bone.obj.Incision == Incision.Custom:
             length = obj.Custom
         if bone.obj.Incision == Incision.Adaptive:
-            length = self.adaptiveBoneLength(bone, boneAngle)
+            length = bone.adaptiveLength(boneAngle, self.toolRadius)
 
         if length == 0:
             # no bone after all ..
@@ -649,27 +655,70 @@ class ObjectDressup:
         self.bones.append((bone.boneId, bone.location(), enabled, inaccessible))
 
         self.boneId = bone.boneId
-        if debugDressup and bone.boneId != 11:
+        if debugDressup and bone.boneId < 11:
             commands = self.boneCommands(bone, False)
         else:
             commands = self.boneCommands(bone, enabled)
+        bone.commands = commands
 
         self.shapes[bone.boneId] = self.boneShapes
         debugPrint("<----------------------------------- %d --------------------------------------" % bone.boneId)
         return commands
 
-    def removePathCrossing(self, commands, bones, startPt):
-        #edges = edgesForCommands(bones, startPt)
-        #for i in range(0, len(edges)):
-        #    edge = edges[i]
-        #    for j in range(i+2, len(edges)):
-        #        e = edges[j]
-        #        cutoff = DraftGeomUtils.findIntersection(e, edge)
-        #        for pt in cutoff:
-        #            b = bones[j]
-        #            print("--- %d/%d/%d (%.2f, %.2f, %.2f)--- %s %s" % (i, j, len(edges), b.Parameters['X'], b.Parameters['Y'], b.Parameters['Z'], bones[i], b))
-        #            debugMarker(pt, "it", (0.0, 1.0, 1.0))
-        return bones
+    def removePathCrossing(self, commands, bone1, bone2):
+        commands.append(bone2.lastCommand)
+        for k, b in enumerate(commands):
+            print("  cmd %2d: %s" % (k, b))
+        for k, b in enumerate(bone2.commands):
+            print("  bone %d: %s" % (k, b))
+        for i in range(len(bone1.edges()) - 1, -1, -1):
+            e1 = bone1.edges()[i]
+            for j in range(0, len(bone2.edges())):
+                refPt = e1.valueAt(e1.FirstParameter)
+                e2 = bone2.edges()[j]
+                cutoff = sorted(DraftGeomUtils.findIntersection(e1, e2), key=lambda pt: (pt - refPt).Length)
+                for pt in cutoff:
+                    if pt == bone1.inChord.End or pt == bone2.inChord.End:
+                        continue
+                    c1 = bone1.commands[i]
+                    c2 = bone2.commands[j]
+                    debugMarker(pt, "it", (0.0, 1.0, 1.0))
+                    print("c1: %s" % c1)
+                    print("    %s %s" % (e1.Vertexes[0], e1.Vertexes[1]))
+                    print("    commands: %s" % [cmd for cmd in commands if cmd not in commands[:-(len(bone1.edges()) - i)]])
+                    commands = commands[:-(len(bone1.edges()) - i)]
+                    c1Params = c1.Parameters
+                    c1Params.update({'X': pt.x, 'Y': pt.y, 'Z': pt.z})
+                    c1 = Path.Command(c1.Name, c1Params)
+                    print("    %s" % (c1))
+                    commands.append(c1)
+                    print("c2: %s" % c2)
+                    if c2.Name in movearc:
+                        center = e2.Curve.Center
+                        print("    center = %s" % center)
+                        offset = center - pt
+                        print("    offset = %s" % offset)
+                        c2Params = c2.Parameters
+                        c2Params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
+                        c2 = Path.Command(c2.Name, c2Params)
+                        print("    params = %s" % c2Params)
+                        #return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "Z": self.End.z, "I": d.x, "J": d.y, "K": 0})
+                        print("    %s" % c2)
+                        #bones = bone2.commands[j:]
+                        bones = [c2]
+                        bones.extend(bone2.commands[j+1:])
+                        for k, b in enumerate(commands):
+                            print("  cmd %2d: %s" % (k, b))
+                        for k, b in enumerate(bones):
+                            print("  bone %d: %s" % (k, b))
+                    else:
+                        print("  j = %d", j)
+                        bones = bone2.commands[j:]
+
+                    print("bones = %s" % bones)
+                    return commands, bones
+
+        return commands, bone2.commands
 
     def execute(self, obj):
         if not obj.Base:
@@ -686,6 +735,7 @@ class ObjectDressup:
         commands = []           # the dressed commands
         lastChord = Chord()     # the last chord
         lastCommand = None      # the command that generated the last chord
+        lastBone = None         # track last bone for optimizations
         oddsAndEnds = []        # track chords that are connected to plunges - in case they form a loop
 
         boneId = 1
@@ -702,39 +752,39 @@ class ObjectDressup:
                     bone = Bone(boneId, obj, lastCommand, lastChord, thisChord, Smooth.InAndOut)
                     bones = self.insertBone(bone)
                     boneId += 1
-                    if boneInserted:
+                    if lastBone:
                         print("This could be an issue: %s" % thisChord)
                         #debugMarker(thisChord.Start, "it", (1.0, 0.0, 1.0))
-                        bones = self.removePathCrossing(commands, bones, lastChord.Start)
+                        commands, bones = self.removePathCrossing(commands, lastBone, bone)
                     commands.extend(bones[:-1])
                     lastCommand = bones[-1]
-                    boneInserted = True
+                    lastBone = bone
                 elif lastCommand and thisChord.isAPlungeMove():
                     for chord in (chord for chord in oddsAndEnds if lastChord.connectsTo(chord)):
                         if self.shouldInsertDogbone(obj, lastChord, chord):
                             bone = Bone(boneId, obj, lastCommand, lastChord, chord, Smooth.In)
                             bones = self.insertBone(bone)
                             boneId += 1
-                            if boneInserted:
+                            if lastBone:
                                 print("This could be another issue: %s" % chord)
                                 #debugMarker(chord.Start, "it", (0.0, 1.0, 1.0))
-                                bones = self.removePathCrossing(commands, bones, lastChord.Start)
+                                commands, bones = self.removePathCrossing(commands, lastBone, bone)
                             commands.extend(bones[:-1])
                             lastCommand = bones[-1]
                     lastCommand = None
                     commands.append(thisCommand)
-                    boneInserted = False
+                    lastBone = None
                 elif thisIsACandidate:
                     if lastCommand:
                         commands.append(lastCommand)
                     lastCommand = thisCommand
-                    boneInserted = False
+                    lastBone = None
                 else:
                     if lastCommand:
                         commands.append(lastCommand)
                         lastCommand = None
                     commands.append(thisCommand)
-                    boneInserted = False
+                    lastBone = None
 
                 if lastChord.isAPlungeMove() and thisIsACandidate:
                     oddsAndEnds.append(thisChord)
