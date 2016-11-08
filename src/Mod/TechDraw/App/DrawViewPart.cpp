@@ -292,7 +292,7 @@ void DrawViewPart::extractFaces()
     std::vector<splitPoint> splits;
     std::vector<TopoDS_Edge>::iterator itOuter = origEdges.begin();
     int iOuter = 0;
-    for (; itOuter != origEdges.end(); itOuter++, iOuter++) {
+    for (; itOuter != origEdges.end(); ++itOuter, iOuter++) {
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
@@ -308,7 +308,7 @@ void DrawViewPart::extractFaces()
         }
         int iInner = 0;
         std::vector<TopoDS_Edge>::iterator itInner = faceEdges.begin();
-        for (; itInner != faceEdges.end(); itInner++,iInner++) {
+        for (; itInner != faceEdges.end(); ++itInner,iInner++) {
             if (iInner == iOuter) {
                 continue;
             }

@@ -61,7 +61,7 @@ class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
-    GeometryObject(std::string parent);
+    GeometryObject(const std::string& parent);
     virtual ~GeometryObject();
 
     void clear();
