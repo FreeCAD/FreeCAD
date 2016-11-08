@@ -1811,6 +1811,18 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             ly = -ly
         return Vector(lx,ly,0)
+        
+    def getDiscretized(edge):
+        ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
+        d = int(edge.Length/ml)
+        edata = ""
+        for i in range(d+1):
+            v = getProj(edge.valueAt(edge.FirstParameter+(float(i)/d*(edge.LastParameter-edge.FirstParameter))))
+            if not edata:
+                edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
+            else:
+                edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
+        return edata
 
     def getPattern(pat):
         if pat in svgpatterns():
@@ -1859,11 +1871,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         drawing_plane_normal = FreeCAD.Vector(0,0,1)
                     if plane: drawing_plane_normal = plane.axis
                     c = e.Curve
-                    if round(c.Axis.getAngle(drawing_plane_normal),2) == 1.57:
-                        # arc is perpendicular to view direction: represent as a line
-                        v = getProj(vs[-1].Point)
-                        edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-                    else:
+                    if round(c.Axis.getAngle(drawing_plane_normal),2) == 0:
                         if len(e.Vertexes) == 1 and iscircle: #complete curve
                             svg = getCircle(e)
                             return svg
@@ -1875,7 +1883,6 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                     getProj(vs[-1].Point))
                         else:
                             endpoints = (getProj(vs[-1].Point),)
-    
                         # arc
                         if iscircle:
                             rx = ry = c.Radius
@@ -1904,6 +1911,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                                     (str(rx),str(ry),str(rot),\
                                     str(int(flag_large_arc)),\
                                     str(int(flag_sweep)),str(v.x),str(v.y))
+                    else:
+                        edata += getDiscretized(e)
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -1955,9 +1964,21 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     def getCircle(edge):
         cen = getProj(edge.Curve.Center)
         rad = edge.Curve.Radius
-        svg = '<circle cx="' + str(cen.x)
-        svg += '" cy="' + str(cen.y)
-        svg += '" r="' + str(rad)+'" '
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+        else:
+            drawing_plane_normal = FreeCAD.Vector(0,0,1)
+        if plane: drawing_plane_normal = plane.axis
+        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) == 0:
+            # perpendicular projection: circle
+            svg = '<circle cx="' + str(cen.x)
+            svg += '" cy="' + str(cen.y)
+            svg += '" r="' + str(rad)+'" '
+        else:
+            # any other projection: ellipse
+            svg = '<path d="'
+            svg += getDiscretized(edge)
+            svg += '" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
         svg += 'style="stroke-width:'+ str(linewidth)
