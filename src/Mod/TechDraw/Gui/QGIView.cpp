@@ -403,6 +403,8 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
+    //painter->drawRect(boundingRect());
+
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
 

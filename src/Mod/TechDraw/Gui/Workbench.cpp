@@ -63,6 +63,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_NewPageDef";
     *draw << "TechDraw_NewPage";
     *draw << "TechDraw_NewView";
+    *draw << "TechDraw_NewMulti";
     *draw << "TechDraw_ProjGroup";
     *draw << "TechDraw_NewViewSection";
     *draw << "TechDraw_Annotation";
@@ -75,6 +76,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_DraftView";
     *draw << "TechDraw_ArchView";
     *draw << "TechDraw_ExportPage";
+    *draw << "TechDraw_Image";
     //*draw << "TechDraw_Open";
     //*part << "TechDraw_NewA3Landscape";
     //*part << "TechDraw_OpenBrowserView";
@@ -96,6 +98,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("TechDraw Views");
     *views << "TechDraw_NewView";
+    *views << "TechDraw_NewMulti";
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_Annotation";
@@ -128,6 +131,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
     return root;
 }
@@ -143,6 +147,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *views = new Gui::ToolBarItem(root);
     views->setCommand("Views");
     *views << "TechDraw_NewView";
+    *views << "TechDraw_NewMulti";
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
     *views << "TechDraw_Annotation";
@@ -174,6 +179,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
+    *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
 
     return root;
