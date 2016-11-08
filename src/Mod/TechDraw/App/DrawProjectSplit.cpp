@@ -167,7 +167,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryOb
     std::vector<splitPoint> splits;
     std::vector<TopoDS_Edge>::iterator itOuter = origEdges.begin();
     int iOuter = 0;
-    for (; itOuter != origEdges.end(); itOuter++, iOuter++) {
+    for (; itOuter != origEdges.end(); ++itOuter, iOuter++) {
         TopoDS_Vertex v1 = TopExp::FirstVertex((*itOuter));
         TopoDS_Vertex v2 = TopExp::LastVertex((*itOuter));
         Bnd_Box sOuter;
@@ -183,7 +183,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryOb
         }
         int iInner = 0;
         std::vector<TopoDS_Edge>::iterator itInner = faceEdges.begin();
-        for (; itInner != faceEdges.end(); itInner++,iInner++) {
+        for (; itInner != faceEdges.end(); ++itInner,iInner++) {
             if (iInner == iOuter) {
                 continue;
             }
@@ -373,7 +373,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::split1Edge(TopoDS_Edge e, std::vector
     auto parms2 = parms.begin() + 1;
     std::vector<double>::iterator psecond = parms2;
     std::vector<double>::iterator pstop = parms.end();
-    for (; psecond != pstop; pfirst++,psecond++) {
+    for (; psecond != pstop; ++pfirst,++psecond) {
         try {
             BRepBuilderAPI_MakeEdge mkEdge(c, *pfirst, *psecond);
             if (mkEdge.IsDone()) {

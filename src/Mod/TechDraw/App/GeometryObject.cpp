@@ -76,7 +76,7 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-GeometryObject::GeometryObject(std::string parent) :
+GeometryObject::GeometryObject(const string& parent) :
     Scale(1.f),
     m_parentName(parent),
     m_isoCount(0)
