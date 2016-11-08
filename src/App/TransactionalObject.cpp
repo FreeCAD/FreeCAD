@@ -24,9 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <sstream>
 #endif
 
 #include <Base/Writer.h>
+#include <Base/Exception.h>
 
 #include "Document.h"
 #include "TransactionalObject.h"
@@ -57,4 +59,20 @@ const char* TransactionalObject::detachFromDocument()
 void TransactionalObject::onBeforeChangeProperty(Document *doc, const Property *prop)
 {
     doc->onBeforeChangeProperty(this, prop);
+}
+
+App::Property* TransactionalObject::addDynamicProperty(const char*, const char*,
+                                                       const char*, const char*,
+                                                       short, bool, bool)
+{
+    std::stringstream str;
+    str << "Type " << this->getTypeId().getName() << " cannot dynamically add properties";
+    throw Base::RuntimeError(str.str());
+}
+
+bool TransactionalObject::removeDynamicProperty(const char*)
+{
+    std::stringstream str;
+    str << "Type " << this->getTypeId().getName() << " cannot dynamically remove properties";
+    throw Base::RuntimeError(str.str());
 }
