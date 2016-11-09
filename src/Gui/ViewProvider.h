@@ -367,9 +367,6 @@ private:
     int viewOverrideMode;
     std::string _sCurrentMode;
     std::map<std::string, int> _sDisplayMaskModes;
-
-    // friends
-    friend class ViewProviderPythonFeaturePy;
 };
 
 } // namespace Gui
