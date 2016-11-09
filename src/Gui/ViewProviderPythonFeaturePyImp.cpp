@@ -41,43 +41,10 @@ std::string ViewProviderPythonFeaturePy::representation(void) const
 
 PyObject *ViewProviderPythonFeaturePy::getCustomAttributes(const char* attr) const
 {
-    PY_TRY{
-        if (Base::streq(attr, "__dict__")){
-            PyObject* dict = ViewProviderDocumentObjectPy::getCustomAttributes(attr);
-            if (dict){
-                std::vector<std::string> Props = getViewProviderPythonFeaturePtr()->getDynamicPropertyNames();
-                for (std::vector<std::string>::const_iterator it = Props.begin(); it != Props.end(); ++it)
-                    PyDict_SetItem(dict, PyString_FromString(it->c_str()), PyString_FromString(""));
-            }
-            return dict;
-        }
-
-        // search for dynamic property
-        App::Property* prop = getViewProviderPythonFeaturePtr()->getDynamicPropertyByName(attr);
-        if (prop) return prop->getPyObject();
-    } PY_CATCH;
-
     return 0;
 }
 
 int ViewProviderPythonFeaturePy::setCustomAttributes(const char* attr, PyObject *value)
 {
-    // search for dynamic property
-    App::Property* prop = getViewProviderPythonFeaturePtr()->getDynamicPropertyByName(attr);
-
-    if (!prop)
-        return ViewProviderDocumentObjectPy::setCustomAttributes(attr, value);
-    else {
-        try {
-            prop->setPyObject(value);
-        } catch (Base::Exception &exc) {
-            PyErr_Format(PyExc_AttributeError, "Attribute (Name: %s) error: '%s' ", attr, exc.what());
-            return -1;
-        } catch (...) {
-            PyErr_Format(PyExc_AttributeError, "Unknown error in attribute %s", attr);
-            return -1;
-        }
-
-        return 1;
-    }
+    return 0;
 }
