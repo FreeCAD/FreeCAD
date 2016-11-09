@@ -245,14 +245,35 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     return 0;
 }
 
-PyObject *ViewProviderPy::getCustomAttributes(const char*) const
+PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    // search for dynamic property
+    App::Property* prop = getViewProviderPtr()->getDynamicPropertyByName(attr);
+    if (prop)
+        return prop->getPyObject();
+    else
+        return 0;
 }
 
-int ViewProviderPy::setCustomAttributes(const char*, PyObject *)
+int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 {
-    return 0; 
+    // search for dynamic property
+    try {
+        App::Property* prop = getViewProviderPtr()->getDynamicPropertyByName(attr);
+        if (prop) {
+            prop->setPyObject(value);
+            return 1;
+        }
+        return 0;
+    }
+    catch (Base::Exception &exc) {
+        PyErr_Format(PyExc_AttributeError, "Attribute (Name: %s) error: '%s' ", attr, exc.what());
+        return -1;
+    }
+    catch (...) {
+        PyErr_Format(PyExc_AttributeError, "Unknown error in attribute %s", attr);
+        return -1;
+    }
 }
 
 Py::Object ViewProviderPy::getAnnotation(void) const
