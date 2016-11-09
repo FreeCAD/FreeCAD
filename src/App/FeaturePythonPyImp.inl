@@ -61,7 +61,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0,                                                /*tp_weaklistoffset */
     0,                                                /*tp_iter */
     0,                                                /*tp_iternext */
-    App::FeaturePythonPyT<FeaturePyT>::Methods,       /*tp_methods */
+    0,                                                /*tp_methods */
     0,                                                /*tp_members */
     0,                                                /*tp_getset */
     &FeaturePyT::Type,                                /*tp_base */
@@ -83,14 +83,8 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
     0                                                 /*tp_version_tag */
 };
 
-/// Methods structure of FeaturePythonPyT
 template<class FeaturePyT>
-PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
-    {NULL, NULL, 0, NULL}		/* Sentinel */
-};
-
-template<class FeaturePyT>
-FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T)
+FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(PropertyContainer *pcObject, PyTypeObject *T)
     : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
 {
 }
@@ -103,6 +97,8 @@ FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyObject *value)
 {
+    // This overwrites PyObjectBase::__setattr because this actively disallows to delete an attribute
+    //
     char *attr;
 #if PY_MAJOR_VERSION >= 3
     attr = PyUnicode_AsUTF8(attro);
@@ -122,80 +118,9 @@ int FeaturePythonPyT<FeaturePyT>::__setattro(PyObject *obj, PyObject *attro, PyO
 }
 
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::_getattro(PyObject *attro)
+int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 {
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
-#else
-    attr = PyString_AsString(attro);
-#endif
-    try {
-        // getter method for special Attributes (e.g. dynamic ones)
-        PyObject *r = getCustomAttributes(attr);
-        if(r) return r;
-    }
-    catch(const Base::Exception& e) {// catch the FreeCAD exceptions
-        std::string str;
-        str += "FreeCAD exception thrown (";
-        str += e.what();
-        str += ")";
-        e.ReportException();
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
-        return NULL;
-    }
-    catch(const Py::Exception&) {
-        // The exception text is already set
-        return NULL;
-    }
-
-    PyObject *rvalue = PyObject_GenericGetAttr(this, attro);
-    if (rvalue == NULL) {
-        std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-        if (it != dyn_methods.end()) {
-            Py_INCREF(it->second);
-            rvalue = it->second;
-            PyErr_Clear();
-        }
-    }
-    if (rvalue == NULL) {
-        PyErr_Clear();
-        return FeaturePyT::_getattro(attro);
-    }
-    else {
-        return rvalue;
-    }
-}
-
-template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::_setattro(PyObject *attro, PyObject *value)
-{
-    char *attr;
-#if PY_MAJOR_VERSION >= 3
-    attr = PyUnicode_AsUTF8(attro);
-#else
-    attr = PyString_AsString(attro);
-#endif
-    try {
-        // setter for  special Attributes (e.g. dynamic ones)
-        int r = setCustomAttributes(attr, value);
-        if(r==1) return 0;
-    }
-    catch(const Base::Exception& e) { // catch the FreeCAD exceptions
-        std::string str;
-        str += "FreeCAD exception thrown (";
-        str += e.what();
-        str += ")";
-        e.ReportException();
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
-        return -1;
-    }
-    catch(const Py::Exception&) {
-        // The exception text is already set
-        return -1;
-    }
-
-    int returnValue = FeaturePyT::_setattro(attro, value);
+    int returnValue = FeaturePyT::_setattr(attr, value);
     if (returnValue == -1) {
         if (value) {
             if (PyFunction_Check(value)) {
@@ -203,9 +128,6 @@ int FeaturePythonPyT<FeaturePyT>::_setattro(PyObject *attro, PyObject *value)
                 if (it != dyn_methods.end()) {
                     Py_XDECREF(it->second);
                 }
-#if PY_MAJOR_VERSION >= 3
-                dyn_methods[attr] = PyMethod_New(value, this);
-#else
                 dyn_methods[attr] = PyMethod_New(value, this, 0);
 #endif
                 returnValue = 0;
@@ -226,72 +148,57 @@ int FeaturePythonPyT<FeaturePyT>::_setattro(PyObject *attro, PyObject *value)
     return returnValue;
 }
 
-// -------------------------------------------------------------
-
 template<class FeaturePyT>
-PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) const
+PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
 {
-    PY_TRY{
-        if (Base::streq(attr, "__dict__")){
-            // Return the default dict
-            PyTypeObject *tp = this->ob_type;
-            // register type if needed
-            if (tp->tp_dict == NULL) {
-                if (PyType_Ready(tp) < 0)
-                    return 0;
-            }
-
-            PyObject* dict = PyDict_Copy(tp->tp_dict);
-            std::map<std::string,App::Property*> Map;
-            FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
-            for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
-#if PY_MAJOR_VERSION >= 3
-                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
-#else
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-#endif
-            for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
-#if PY_MAJOR_VERSION >= 3
-                PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
-#else
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-#endif
-            if (PyErr_Occurred()) {
-                Py_DECREF(dict);
-                dict = 0;
-            }
-            return dict;
-        }
-
-        // search for dynamic property
-        Property* prop = FeaturePyT::getDocumentObjectPtr()->getDynamicPropertyByName(attr);
-        if (prop)
-            return prop->getPyObject();
-        else
-            return 0;
-    } PY_CATCH
-}
-
-template<class FeaturePyT>
-int FeaturePythonPyT<FeaturePyT>::setCustomAttributes(const char* attr, PyObject *value)
-{
-    // search for dynamic property
-    Property* prop = FeaturePyT::getDocumentObjectPtr()->getDynamicPropertyByName(attr);
-
-    if (!prop)
-        return FeaturePyT::setCustomAttributes(attr, value);
-    else {
-        try {
-            prop->setPyObject(value);
-            return 1;
-        } catch (Base::Exception &exc) {
-            PyErr_Format(PyExc_AttributeError, "Attribute (Name: %s) error: '%s' ", attr, exc.what());
-            return -1;
-        } catch (...) {
-            PyErr_Format(PyExc_AttributeError, "Unknown error in attribute %s", attr);
-            return -1;
-        }
+    // See CallTipsList::extractTips
+    if (Base::streq(attr, "__fc_template__")) {
+        Py_INCREF(Py_None);
+        return Py_None;
     }
+
+    if (Base::streq(attr, "__dict__")) {
+        // Return the default dict
+        PyTypeObject *tp = this->ob_type;
+        // register type if needed
+        if (tp->tp_dict == NULL) {
+            if (PyType_Ready(tp) < 0)
+                return 0;
+        }
+
+        PyObject* dict = PyDict_Copy(tp->tp_dict);
+        std::map<std::string,App::Property*> Map;
+        FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
+        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
+#if PY_MAJOR_VERSION >= 3
+            PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+#else
+            PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+#endif
+        for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
+#if PY_MAJOR_VERSION >= 3
+            PyDict_SetItem(dict, PyUnicode_FromString(it->first.c_str()), PyUnicode_FromString(""));
+#else
+            PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+#endif
+        if (PyErr_Occurred()) {
+            Py_DECREF(dict);
+            dict = 0;
+        }
+        return dict;
+    }
+
+    PyObject *rvalue = NULL;
+    std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
+    if (it != dyn_methods.end()) {
+        Py_INCREF(it->second);
+        rvalue = it->second;
+        PyErr_Clear();
+        return rvalue;
+    }
+
+    PyErr_Clear();
+    return FeaturePyT::_getattr(attr);
 }
 
 } //namespace App

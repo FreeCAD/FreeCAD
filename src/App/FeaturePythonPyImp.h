@@ -26,7 +26,7 @@
 #include <map>
 #include <string>
 #include <Base/Console.h>
-#include <App/DocumentObjectPy.h>
+#include <App/PropertyContainerPy.h>
 
 namespace App
 {
@@ -39,21 +39,15 @@ class FeaturePythonPyT : public FeaturePyT
 {
 public:
     static PyTypeObject   Type;
-    static PyMethodDef    Methods[];
 
 public:
-    FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T = &Type);
+    FeaturePythonPyT(PropertyContainer *pcObject, PyTypeObject *T = &Type);
     virtual ~FeaturePythonPyT();
 
     /** @name callbacks and implementers for the python object methods */
     //@{
     static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
     //@}
-
-    /// getter method for special attributes (e.g. dynamic ones)
-    PyObject *getCustomAttributes(const char* attr) const;
-    /// setter for special attributes (e.g. dynamic ones)
-    int setCustomAttributes(const char* attr, PyObject *obj);
     PyObject *_getattro(PyObject *attr);              // __getattr__ function
     int _setattro(PyObject *attro, PyObject *value);        // __setattr__ function
 

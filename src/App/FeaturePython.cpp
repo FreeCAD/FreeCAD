@@ -31,6 +31,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 
+#include <App/DocumentObjectPy.h>
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
 
@@ -215,4 +216,4 @@ template<> const char* App::GeometryPython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonGeometry";
 }
 // explicit template instantiation
-template class AppExport FeaturePythonT<GeoFeature>;}
+template class AppExport FeaturePythonT<GeoFeature>;}
