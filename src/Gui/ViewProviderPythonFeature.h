@@ -25,7 +25,6 @@
 #define GUI_VIEWPROVIDERPYTHONFEATURE_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderPythonFeaturePy.h>
 #include <App/PropertyPythonObject.h>
 #include <App/DynamicProperty.h>
 
@@ -358,10 +357,7 @@ public:
     //@}
 
     PyObject* getPyObject() {
-        if (!ViewProviderT::pyViewObject)
-            ViewProviderT::pyViewObject = new ViewProviderPythonFeaturePy(this);
-        ViewProviderT::pyViewObject->IncRef();
-        return ViewProviderT::pyViewObject;
+        return ViewProviderT::getPyObject();
     }
 
 protected:
