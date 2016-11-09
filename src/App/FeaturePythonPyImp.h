@@ -26,7 +26,7 @@
 #include <map>
 #include <string>
 #include <Base/Console.h>
-#include <App/PropertyContainerPy.h>
+#include <Base/BaseClass.h>
 
 namespace App
 {
@@ -41,7 +41,7 @@ public:
     static PyTypeObject   Type;
 
 public:
-    FeaturePythonPyT(PropertyContainer *pcObject, PyTypeObject *T = &Type);
+    FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T = &Type);
     virtual ~FeaturePythonPyT();
 
     /** @name callbacks and implementers for the python object methods */
