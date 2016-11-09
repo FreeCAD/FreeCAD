@@ -81,7 +81,7 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
 };
 
 template<class FeaturePyT>
-FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(PropertyContainer *pcObject, PyTypeObject *T)
+FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T)
     : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
 {
 }
@@ -156,16 +156,18 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
                 return 0;
         }
 
-        PyObject* dict = PyDict_Copy(tp->tp_dict);
-        std::map<std::string,App::Property*> Map;
-        FeaturePyT::getPropertyContainerPtr()->getPropertyMap(Map);
-        for (std::map<std::string,App::Property*>::iterator it = Map.begin(); it != Map.end(); ++it)
-            PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-        for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
-            PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
-        if (PyErr_Occurred()) {
-            Py_DECREF(dict);
-            dict = 0;
+        PyObject* dict = FeaturePyT::_getattr(attr);
+        if (dict && PyDict_CheckExact(dict)) {
+            PyObject* dict_old = dict;
+            dict = PyDict_Copy(dict_old);
+            Py_DECREF(dict_old); // delete old dict
+
+            for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
+                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            if (PyErr_Occurred()) {
+                Py_DECREF(dict);
+                dict = 0;
+            }
         }
         return dict;
     }
