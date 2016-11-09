@@ -149,32 +149,12 @@ inline void Assert(int expr, char *msg)         // C++ assert
 #define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return NULL;}}
 
 
-/// Define the PyParent Object
-typedef PyTypeObject * PyParentObject;
-
-
 /// This must be the first line of each PyC++ class
 #define Py_Header                                           \
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
     virtual PyTypeObject *GetType(void) {return &Type;}
-
-/** This defines the _getattr_up macro
- *  which allows attribute and method calls
- *  to be properly passed up the hierarchy.
- */
-#define _getattro_up(Parent)                                 \
-{                                                            \
-    PyObject *rvalue = PyObject_GenericGetAttr(this, attro); \
-    if (rvalue == NULL)                                      \
-    {                                                        \
-        PyErr_Clear();                                       \
-        return Parent::_getattro(attro);                    \
-    }                                                        \
-    else                                                     \
-        return rvalue;                                       \
-} 
 
 /*------------------------------
  * PyObjectBase
