@@ -261,8 +261,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             // From the template Python object we don't query its type object because there we keep
             // a list of additional methods that we won't see otherwise. But to get the correct doc
             // strings we query the type's dict in the class itself.
-            // To see if we have a template Python object we check for the existence of supportedProperties
-            if (!type.hasAttr("supportedProperties")) {
+            // To see if we have a template Python object we check for the existence of '__fc_template__'
+            // See also: FeaturePythonPyT
+            if (!obj.hasAttr("__fc_template__")) {
                 obj = type;
             }
         }

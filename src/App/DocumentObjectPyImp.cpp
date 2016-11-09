@@ -257,13 +257,42 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
 }
 
 
-PyObject *DocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    // search for dynamic property
+    Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
+    if (prop)
+        return prop->getPyObject();
+    else
+        return 0;
 }
 
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
+    // explicitly search for dynamic property
+    try {
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
+        if (prop) {
+            prop->setPyObject(obj);
+            return 1;
+        }
+    }
+    catch (Base::ValueError &exc) {
+        std::stringstream s;
+        s << "Property '" << attr << "': " << exc.what();
+        throw Py::ValueError(s.str());
+    }
+    catch (Base::Exception &exc) {
+        std::stringstream s;
+        s << "Attribute (Name: " << attr << ") error: '" << exc.what() << "' ";
+        throw Py::AttributeError(s.str());
+    }
+    catch (...) {
+        std::stringstream s;
+        s << "Unknown error in attribute " << attr;
+        throw Py::AttributeError(s.str());
+    }
+
     // search in PropertyList
     Property *prop = getDocumentObjectPtr()->getPropertyByName(attr);
     if (prop) {

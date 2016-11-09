@@ -150,7 +150,7 @@ class DocumentBasicCases(unittest.TestCase):
     enumeration_choices = ["one", "two"]
     obj = self.Doc.addObject("App::FeaturePython","Label_2")
     obj.addProperty("App::PropertyEnumeration", "myEnumeration", "Enum", "mytest")
-    with self.assertRaises(FreeCAD.Base.FreeCADError):
+    with self.assertRaises(ValueError):
       obj.myEnumeration = enumeration_choices[0]
 
   def testMem(self):
