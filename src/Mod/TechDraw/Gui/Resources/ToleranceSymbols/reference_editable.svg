@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   version="1.1"
+   width="8.2535963"
+   height="8.2535963"
+   viewBox="0 0 8.2535962 8.2535959"
+   id="svg2">
+  <title
+     id="title4147">Reference</title>
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Angularity</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>bavariaSHAPE</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>bavariaSHAPE</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>bavariaSHAPE</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:date>15.10.2016</dc:date>
+        <dc:description>Geometric dimensioning and tolerancing symbols
+All symbols in this repository are licensed under CC-BY 3.0</dc:description>
+        <dc:identifier />
+        <dc:coverage />
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     transform="translate(-8.2747763,-1035.8339)"
+     id="layer1"
+     style="display:inline">
+    <g
+       transform="translate(-21.608749,-1.2183655e-5)"
+       id="g4151">
+      <g
+         id="g4146">
+        <rect
+           width="7.1852894"
+           height="7.1852894"
+           x="30.417679"
+           y="1036.368"
+           id="rect4136-4"
+           style="color:#000000;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.35964566;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <text
+           freecad:editable="reference"
+           x="33.975941"
+           y="1041.7771"
+           id="text5288"
+           xml:space="preserve"
+           style="font-size:5.07499981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:100%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Narrow;-inkscape-font-specification:'Arial Narrow, Condensed'"><tspan
+             x="33.975941"
+             y="1041.7771"
+             id="tspan5290"
+             style="font-size:5.07499981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;font-family:Arial Narrow;-inkscape-font-specification:'Arial Narrow, Condensed'">A</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g
+     transform="translate(-8.2747763,-8.2747788)"
+     id="layer2" />
+</svg>
