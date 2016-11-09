@@ -83,131 +83,8 @@ PyTypeObject FeaturePythonPyT<FeaturePyT>::Type = {
 /// Methods structure of FeaturePythonPyT
 template<class FeaturePyT>
 PyMethodDef FeaturePythonPyT<FeaturePyT>::Methods[] = {
-    {"addProperty",
-        (PyCFunction) staticCallback_addProperty,
-        METH_VARARGS,
-        "addProperty(string, string) -- Add a generic property.\nThe first argument specifies the type, the second the\nname of the property.\n"
-    },
-    {"removeProperty",
-        (PyCFunction) staticCallback_removeProperty,
-        METH_VARARGS,
-        "removeProperty(string) -- Remove a generic property.\nNote, you can only remove user-defined properties but not built-in ones.\n"
-    },
-    {"supportedProperties",
-        (PyCFunction) staticCallback_supportedProperties,
-        METH_VARARGS,
-        "A list of supported property types"
-    },
     {NULL, NULL, 0, NULL}		/* Sentinel */
 };
-
-template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_addProperty (PyObject *self, PyObject *args)
-{
-    // test if twin object not allready deleted
-    if (!static_cast<Base::PyObjectBase*>(self)->isValid()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-        return NULL;
-    }
-
-    // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
-        return NULL;
-    }
-
-    try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->addProperty(args);
-        if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
-        return ret;
-    }
-    catch(const Base::Exception& e) {
-        std::string str;
-        str += "FreeCAD exception thrown (";
-        str += e.what();
-        str += ")";
-        e.ReportException();
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
-        return NULL;
-    }
-    catch(const Py::Exception&) {
-        // The exception text is already set
-        return NULL;
-    }
-}
-
-template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_removeProperty (PyObject *self, PyObject *args)
-{
-    // test if twin object not allready deleted
-    if (!static_cast<Base::PyObjectBase*>(self)->isValid()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-        return NULL;
-    }
-
-    // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
-        return NULL;
-    }
-
-    try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->removeProperty(args);
-        if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
-        return ret;
-    }
-    catch(const Base::Exception& e) {
-        std::string str;
-        str += "FreeCAD exception thrown (";
-        str += e.what();
-        str += ")";
-        e.ReportException();
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
-        return NULL;
-    }
-    catch(const Py::Exception&) {
-        // The exception text is already set
-        return NULL;
-    }
-}
-
-template<class FeaturePyT>
-PyObject * FeaturePythonPyT<FeaturePyT>::staticCallback_supportedProperties (PyObject *self, PyObject *args)
-{
-    // test if twin object not allready deleted
-    if (!static_cast<Base::PyObjectBase*>(self)->isValid()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");
-        return NULL;
-    }
-
-    // test if object is set Const
-    if (static_cast<Base::PyObjectBase*>(self)->isConst()){
-        PyErr_SetString(PyExc_ReferenceError, "This object is immutable, you can not set any attribute or call a non const method");
-        return NULL;
-    }
-
-    try {
-        PyObject* ret = static_cast<FeaturePythonPyT*>(self)->supportedProperties(args);
-        if (ret != 0)
-            static_cast<FeaturePythonPyT*>(self)->startNotify();
-        return ret;
-    }
-    catch(const Base::Exception& e) {
-        std::string str;
-        str += "FreeCAD exception thrown (";
-        str += e.what();
-        str += ")";
-        e.ReportException();
-        PyErr_SetString(Base::BaseExceptionFreeCADError,str.c_str());
-        return NULL;
-    }
-    catch(const Py::Exception&) {
-        // The exception text is already set
-        return NULL;
-    }
-}
 
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T)
@@ -327,65 +204,6 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 // -------------------------------------------------------------
 
 template<class FeaturePyT>
-PyObject*  FeaturePythonPyT<FeaturePyT>::addProperty(PyObject *args)
-{
-    char *sType,*sName=0,*sGroup=0,*sDoc=0;
-    short attr=0;
-    std::string sDocStr;
-    PyObject *ro = Py_False, *hd = Py_False;
-    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
-        &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception 
-
-    if (sDoc) {
-        sDocStr = sDoc;
-        PyMem_Free(sDoc);
-    }
-
-    Property* prop=0;
-    prop = FeaturePyT::getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
-        PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
-    
-    if (!prop) {
-        std::stringstream str;
-        str << "No property found of type '" << sType << "'" << std::ends;
-        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
-    }
-
-    return Py::new_reference_to(this);
-}
-
-template<class FeaturePyT>
-PyObject*  FeaturePythonPyT<FeaturePyT>::removeProperty(PyObject *args)
-{
-    char *sName;
-    if (!PyArg_ParseTuple(args, "s", &sName))
-        return NULL;
-
-    bool ok = FeaturePyT::getDocumentObjectPtr()->removeDynamicProperty(sName);
-    return Py_BuildValue("O", (ok ? Py_True : Py_False));
-}
-
-template<class FeaturePyT>
-PyObject*  FeaturePythonPyT<FeaturePyT>::supportedProperties(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception
-    
-    std::vector<Base::Type> ary;
-    Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
-    Py::List res;
-    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
-        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
-        if (data) {
-            delete data;
-            res.append(Py::String(it->getName()));
-        }
-    }
-    return Py::new_reference_to(res);
-}
-
-template<class FeaturePyT>
 PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) const
 {
     PY_TRY{
@@ -414,10 +232,11 @@ PyObject *FeaturePythonPyT<FeaturePyT>::getCustomAttributes(const char* attr) co
 
         // search for dynamic property
         Property* prop = FeaturePyT::getDocumentObjectPtr()->getDynamicPropertyByName(attr);
-        if (prop) return prop->getPyObject();
-    } PY_CATCH;
-
-    return 0;
+        if (prop)
+            return prop->getPyObject();
+        else
+            return 0;
+    } PY_CATCH
 }
 
 template<class FeaturePyT>
@@ -431,6 +250,7 @@ int FeaturePythonPyT<FeaturePyT>::setCustomAttributes(const char* attr, PyObject
     else {
         try {
             prop->setPyObject(value);
+            return 1;
         } catch (Base::Exception &exc) {
             PyErr_Format(PyExc_AttributeError, "Attribute (Name: %s) error: '%s' ", attr, exc.what());
             return -1;
@@ -438,8 +258,6 @@ int FeaturePythonPyT<FeaturePyT>::setCustomAttributes(const char* attr, PyObject
             PyErr_Format(PyExc_AttributeError, "Unknown error in attribute %s", attr);
             return -1;
         }
-
-        return 1;
     }
 }
 

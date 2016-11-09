@@ -13,7 +13,29 @@
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
 			<UserDocu>This is the father of all classes handled by the document</UserDocu>
 		</Documentation>
-		<Methode Name="touch">
+        <Methode Name="addProperty">
+            <Documentation>
+                <UserDocu>
+                    addProperty(string, string) -- Add a generic property.
+                    The first argument specifies the type, the second the
+                    name of the property.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeProperty">
+            <Documentation>
+                <UserDocu>
+                    removeProperty(string) -- Remove a generic property.
+                    Note, you can only remove user-defined properties but not built-in ones.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="supportedProperties">
+            <Documentation>
+                <UserDocu>A list of supported property types</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="touch">
 			<Documentation>
 				<UserDocu>Mark the object as changed (touched)</UserDocu>
 			</Documentation>
