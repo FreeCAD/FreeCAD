@@ -24,7 +24,7 @@
 #define APP_FEATUREPYTHONPYIMP_H
 
 #include <Base/BaseClass.h>
-#include <Base/PyObjectBase.h>
+#include <App/PropertyContainerPy.h>
 
 namespace App
 {
