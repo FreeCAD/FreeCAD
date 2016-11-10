@@ -2283,6 +2283,19 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         svg += '</text>\n'
                         n += 1
 
+    elif getType(obj) == "Pipe":
+        fill = stroke
+        lstyle = getLineStyle()
+        if obj.Base and obj.Diameter:
+            svg += getPath(obj.Base.Shape.Edges)
+        for f in obj.Shape.Faces:
+            if len(f.Edges) == 1:
+                if isinstance(f.Edges[0].Curve,Part.Circle):
+                    svg += getCircle(f.Edges[0])
+
+    elif getType(obj) == "PipeConnector":
+        pass
+
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"
         c = getrgb(obj.ViewObject.TextColor)
