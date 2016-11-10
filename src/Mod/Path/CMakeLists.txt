@@ -33,6 +33,7 @@ SET(PathScripts_SRCS
     PathScripts/PathProfile.py
     PathScripts/PathProfileEdges.py
     PathScripts/PathContour.py
+    PathScripts/PathMillFace.py
     PathScripts/PathPocket.py
     PathScripts/PathDrilling.py
     PathScripts/PathDressup.py
