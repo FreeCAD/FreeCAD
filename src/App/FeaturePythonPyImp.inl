@@ -115,22 +115,22 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 {
     int returnValue = FeaturePyT::_setattr(attr, value);
     if (returnValue == -1) {
-        PyObject *s;
-        s = PyString_InternFromString(attr);
-        if (s == NULL)
-            return -1;
         PyObject* dict_item = value;
-        if (value && PyFunction_Check(value)) {
-            dict_item = PyMethod_New(value, this, 0);
-            returnValue = _PyObject_GenericSetAttrWithDict(this, s, dict_item, dict_methods);
-            Py_XDECREF(dict_item);
+        if (value) {
+            if (PyFunction_Check(value)) {
+                PyErr_Clear();
+                dict_item = PyMethod_New(value, this, 0);
+                returnValue = PyDict_SetItemString(dict_methods, attr, dict_item);
+                Py_XDECREF(dict_item);
+            }
         }
         else {
-            returnValue = _PyObject_GenericSetAttrWithDict(this, s, dict_item, dict_methods);
+            // delete
+            PyErr_Clear();
+            returnValue = PyDict_DelItemString(dict_methods, attr);
+            if (returnValue < 0 && PyErr_ExceptionMatches(PyExc_KeyError))
+                PyErr_SetString(PyExc_AttributeError, attr);
         }
-
-        Py_XDECREF(s);
-        PyErr_Clear();
     }
     return returnValue;
 }
@@ -144,6 +144,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
         return Py_None;
     }
 
+    // get only attributes of this type
     if (Base::streq(attr, "__dict__")) {
         // Return the default dict
         PyTypeObject *tp = this->ob_type;
@@ -158,26 +159,20 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
             PyObject* dict_old = dict;
             dict = PyDict_Copy(dict_old);
             Py_DECREF(dict_old); // delete old dict
-
             PyDict_Merge(dict, dict_methods, 0);
-            if (PyErr_Occurred()) {
-                Py_DECREF(dict);
-                dict = 0;
-            }
         }
         return dict;
     }
 
-    PyObject *s;
-    s = PyString_InternFromString(attr);
-    if (s == NULL)
-        return NULL;
+    // find the attribute in the dict
     PyObject *dict_item = NULL;
-    dict_item = _PyObject_GenericGetAttrWithDict(this, s, dict_methods);
-    Py_XDECREF(s);
-    if (dict_item)
+    dict_item = PyDict_GetItemString(dict_methods, attr);
+    if (dict_item) {
+        Py_INCREF(dict_item);
         return dict_item;
+    }
 
+    // search for the attribute in the base class
     PyErr_Clear();
     return FeaturePyT::_getattr(attr);
 }
