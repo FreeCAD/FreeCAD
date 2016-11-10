@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,13 +24,17 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QAbstractButton>
 # include <qapplication.h>
 # include <qdir.h>
 # include <qfileinfo.h>
+# include <QGLWidget>
+# include <QKeySequence>
 # include <qmessagebox.h>
 # include <qstatusbar.h>
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
 
@@ -39,10 +43,12 @@
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <Base/Tools.h>
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Transactions.h>
 
 #include "Application.h"
 #include "MainWindow.h"
@@ -72,7 +78,7 @@ struct DocumentP
     int        _iDocId;
     bool       _isClosing;
     bool       _isModified;
-    ViewProvider*   _pcInEdit;
+    ViewProvider*   _editViewProvider;
     Application*    _pcAppWnd;
     // the doc/Document
     App::Document*  _pcDocument;
@@ -93,6 +99,12 @@ struct DocumentP
     Connection connectRestDocument;
     Connection connectStartLoadDocument;
     Connection connectFinishLoadDocument;
+    Connection connectExportObjects;
+    Connection connectImportObjects;
+    Connection connectUndoDocument;
+    Connection connectRedoDocument;
+    Connection connectTransactionAppend;
+    Connection connectTransactionRemove;
 };
 
 } // namespace Gui
@@ -113,7 +125,7 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->_isModified = false;
     d->_pcAppWnd = app;
     d->_pcDocument = pcDocument;
-    d->_pcInEdit = 0;
+    d->_editViewProvider = 0;
 
     // Setup the connections
     d->connectNewObject = pcDocument->signalNewObject.connect
@@ -122,8 +134,8 @@ Document::Document(App::Document* pcDocument,Application * app)
         (boost::bind(&Gui::Document::slotDeletedObject, this, _1));
     d->connectCngObject = pcDocument->signalChangedObject.connect
         (boost::bind(&Gui::Document::slotChangedObject, this, _1, _2));
-    d->connectRenObject = pcDocument->signalRenamedObject.connect
-        (boost::bind(&Gui::Document::slotRenamedObject, this, _1));
+    d->connectRenObject = pcDocument->signalRelabelObject.connect
+        (boost::bind(&Gui::Document::slotRelabelObject, this, _1));
     d->connectActObject = pcDocument->signalActivatedObject.connect
         (boost::bind(&Gui::Document::slotActivatedObject, this, _1));
     d->connectSaveDocument = pcDocument->signalSaveDocument.connect
@@ -135,6 +147,20 @@ Document::Document(App::Document* pcDocument,Application * app)
     d->connectFinishLoadDocument = App::GetApplication().signalFinishRestoreDocument.connect
         (boost::bind(&Gui::Document::slotFinishRestoreDocument, this, _1));
 
+    d->connectExportObjects = pcDocument->signalExportViewObjects.connect
+        (boost::bind(&Gui::Document::exportObjects, this, _1, _2));
+    d->connectImportObjects = pcDocument->signalImportViewObjects.connect
+        (boost::bind(&Gui::Document::importObjects, this, _1, _2, _3));
+        
+    d->connectUndoDocument = pcDocument->signalUndo.connect
+        (boost::bind(&Gui::Document::slotUndoDocument, this, _1));
+    d->connectRedoDocument = pcDocument->signalRedo.connect
+        (boost::bind(&Gui::Document::slotRedoDocument, this, _1));
+
+    d->connectTransactionAppend = pcDocument->signalTransactionAppend.connect
+        (boost::bind(&Gui::Document::slotTransactionAppend, this, _1, _2));
+    d->connectTransactionRemove = pcDocument->signalTransactionRemove.connect
+        (boost::bind(&Gui::Document::slotTransactionRemove, this, _1, _2));
     // pointer to the python class
     // NOTE: As this Python object doesn't get returned to the interpreter we
     // mustn't increment it (Werner Jan-12-2006)
@@ -161,6 +187,12 @@ Document::~Document()
     d->connectRestDocument.disconnect();
     d->connectStartLoadDocument.disconnect();
     d->connectFinishLoadDocument.disconnect();
+    d->connectExportObjects.disconnect();
+    d->connectImportObjects.disconnect();
+    d->connectUndoDocument.disconnect();
+    d->connectRedoDocument.disconnect();
+    d->connectTransactionAppend.disconnect();
+    d->connectTransactionRemove.disconnect();
 
     // e.g. if document gets closed from within a Python command
     d->_isClosing = true;
@@ -188,49 +220,64 @@ Document::~Document()
 
 bool Document::setEdit(Gui::ViewProvider* p, int ModNum)
 {
-    if (d->_pcInEdit)
+    if (d->_editViewProvider)
         resetEdit();
+
     // is it really a ViewProvider of this document?
-    if (d->_ViewProviderMap.find(dynamic_cast<ViewProviderDocumentObject*>(p)->getObject()) == d->_ViewProviderMap.end())
+    ViewProviderDocumentObject* vp = dynamic_cast<ViewProviderDocumentObject*>(p);
+    if (!vp)
+        return false;
+
+    if (d->_ViewProviderMap.find(vp->getObject()) == d->_ViewProviderMap.end())
         return false;
 
     View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
+    // if the currently active view is not the 3d view search for it and activate it
+    if (!activeView) {
+        activeView = dynamic_cast<View3DInventor *>(getViewOfViewProvider(p));
+        if (activeView)
+            getMainWindow()->setActiveWindow(activeView);
+    }
+
     if (activeView && activeView->getViewer()->setEditingViewProvider(p,ModNum)) {
-        d->_pcInEdit = p;
+        d->_editViewProvider = p;
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         if (dlg)
             dlg->setDocumentName(this->getDocument()->getName());
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalInEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
     }
-    else
+    else {
         return false;
+    }
+
     return true;
 }
 
 void Document::resetEdit(void)
 {
     std::list<Gui::BaseView*>::iterator it;
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         for (it = d->baseViews.begin();it != d->baseViews.end();++it) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*it);
             if (activeView)
                 activeView->getViewer()->resetEditingViewProvider();
         }
 
-        if (d->_pcInEdit->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
-            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_pcInEdit)));
-        d->_pcInEdit = 0;
+        d->_editViewProvider->finishEditing();
+        if (d->_editViewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) 
+            signalResetEdit(*(static_cast<ViewProviderDocumentObject*>(d->_editViewProvider)));
+        d->_editViewProvider = 0;
     }
 }
 
 ViewProvider *Document::getInEdit(void) const
 {
-    if (d->_pcInEdit) {
+    if (d->_editViewProvider) {
         // there is only one 3d view which is in edit mode
         View3DInventor *activeView = dynamic_cast<View3DInventor *>(getActiveView());
         if (activeView && activeView->getViewer()->isEditingViewProvider())
-            return d->_pcInEdit;
+            return d->_editViewProvider;
     }
 
     return 0;
@@ -360,40 +407,49 @@ void Document::setPos(const char* name, const Base::Matrix4D& rclMtrx)
 //*****************************************************************************************************
 void Document::slotNewObject(const App::DocumentObject& Obj)
 {
-    //Base::Console().Log("Document::slotNewObject() called\n");
-    std::string cName = Obj.getViewProviderName();
-    if (cName.empty()) {
-        // handle document object with no view provider specified
-        Base::Console().Log("%s has no view provider specified\n", Obj.getTypeId().getName());
-        return;
-    }
-  
-    setModified(true);
-    Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(cName.c_str(),true));
-    if (base) {
-        // type not derived from ViewProviderDocumentObject!!!
-        assert(base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()));
-        ViewProviderDocumentObject *pcProvider = static_cast<ViewProviderDocumentObject*>(base);
-        d->_ViewProviderMap[&Obj] = pcProvider;
+    ViewProviderDocumentObject* pcProvider = static_cast<ViewProviderDocumentObject*>(getViewProvider(&Obj));
+    if (!pcProvider) {
+        //Base::Console().Log("Document::slotNewObject() called\n");
+        std::string cName = Obj.getViewProviderName();
+        if (cName.empty()) {
+            // handle document object with no view provider specified
+            Base::Console().Log("%s has no view provider specified\n", Obj.getTypeId().getName());
+            return;
+        }
 
-        try {
-            // if succesfully created set the right name and calculate the view
-            //FIXME: Consider to change argument of attach() to const pointer
-            pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
-            pcProvider->updateView();
-            pcProvider->setActiveMode();
-        }
-        catch(const Base::MemoryException& e){
-            Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
-        }
-        catch(Base::Exception &e){
-            e.ReportException();
-        }
+        setModified(true);
+        Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(cName.c_str(),true));
+        if (base) {
+            // type not derived from ViewProviderDocumentObject!!!
+            assert(base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId()));
+            pcProvider = static_cast<ViewProviderDocumentObject*>(base);
+            d->_ViewProviderMap[&Obj] = pcProvider;
+
+            try {
+                // if succesfully created set the right name and calculate the view
+                //FIXME: Consider to change argument of attach() to const pointer
+                pcProvider->attach(const_cast<App::DocumentObject*>(&Obj));
+                pcProvider->updateView();
+                pcProvider->setActiveMode();
+            }
+            catch(const Base::MemoryException& e){
+                Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+            }
+            catch(Base::Exception &e){
+                e.ReportException();
+            }
 #ifndef FC_DEBUG
-        catch(...){
-            Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
-        }
+            catch(...){
+                Base::Console().Error("App::Document::_RecomputeFeature(): Unknown exception in Feature \"%s\" thrown\n",Obj.getNameInDocument());
+            }
 #endif
+        }
+        else {
+            Base::Console().Warning("Gui::Document::slotNewObject() no view provider for the object %s found\n",cName.c_str());
+        }
+    }
+
+    if (pcProvider) {
         std::list<Gui::BaseView*>::iterator vIt;
         // cycling to all views of the document
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
@@ -401,12 +457,12 @@ void Document::slotNewObject(const App::DocumentObject& Obj)
             if (activeView)
                 activeView->getViewer()->addViewProvider(pcProvider);
         }
-    
+
         // adding to the tree
         signalNewObject(*pcProvider);
-    }
-    else {
-        Base::Console().Warning("Gui::Document::slotNewObject() no view provider for the object %s found\n",cName.c_str());
+
+        // it is possible that a new viewprovider already claims children
+        handleChildren3D(pcProvider);
     }
 }
 
@@ -427,7 +483,7 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
         for (vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
             View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
             if (activeView) {
-                if (d->_pcInEdit == viewProvider)
+                if (d->_editViewProvider == viewProvider)
                     resetEdit();
                 activeView->getViewer()->removeViewProvider(viewProvider);
             }
@@ -435,9 +491,6 @@ void Document::slotDeletedObject(const App::DocumentObject& Obj)
 
         // removing from tree
         signalDeletedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
-
-        delete viewProvider;
-        d->_ViewProviderMap.erase(&Obj);
     }
 }
 
@@ -448,43 +501,21 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     if (viewProvider) {
         try {
             viewProvider->update(&Prop);
-        } catch(const Base::MemoryException& e) {
+        }
+        catch(const Base::MemoryException& e) {
             Base::Console().Error("Memory exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
-        } catch(Base::Exception &e){
+        }
+        catch(Base::Exception& e){
             e.ReportException();
-        } catch (...) {
+        }
+        catch(const std::exception& e){
+            Base::Console().Error("C++ exception in '%s' thrown: %s\n",Obj.getNameInDocument(),e.what());
+        }
+        catch (...) {
             Base::Console().Error("Cannot update representation for '%s'.\n", Obj.getNameInDocument());
         }
 
-        // check for children 
-        if(viewProvider->getChildRoot()) {
-            std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
-            SoGroup* childGroup =  viewProvider->getChildRoot();
-
-            // size not the same -> build up the list new
-            if(childGroup->getNumChildren() != children.size()){
-
-                childGroup->removeAllChildren();
-            
-                for(std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it){
-                    ViewProvider* ChildViewProvider = getViewProvider(*it);
-                    if(ChildViewProvider) {
-                        SoSeparator* childRootNode =  ChildViewProvider->getRoot();
-                        childGroup->addChild(childRootNode);
-
-                        // cycling to all views of the document to remove the viewprovider from the viewer itself
-                        for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
-                            View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
-                            if (activeView && viewProvider) {
-                                if (d->_pcInEdit == ChildViewProvider)
-                                    resetEdit();
-                                activeView->getViewer()->removeViewProvider(ChildViewProvider);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        handleChildren3D(viewProvider);
 
         if (viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
             signalChangedObject(static_cast<ViewProviderDocumentObject&>(*viewProvider), Prop);
@@ -494,11 +525,35 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
     setModified(true);
 }
 
-void Document::slotRenamedObject(const App::DocumentObject& Obj)
+void Document::slotRelabelObject(const App::DocumentObject& Obj)
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
-        signalRenamedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+        signalRelabelObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
+    }
+}
+
+void Document::slotTransactionAppend(const App::DocumentObject& obj, App::Transaction* transaction)
+{
+    ViewProvider* viewProvider = getViewProvider(&obj);
+    if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        transaction->addObjectDel(viewProvider);
+    }
+}
+
+void Document::slotTransactionRemove(const App::DocumentObject& obj, App::Transaction* transaction)
+{
+    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator
+    it = d->_ViewProviderMap.find(&obj);
+    if (it != d->_ViewProviderMap.end()) {
+        ViewProvider* viewProvider = it->second;
+        d->_ViewProviderMap.erase(&obj);
+        // transaction being a nullptr indicates that undo/redo is off and the object
+        // can be safely deleted
+        if (transaction)
+            transaction->addObjectNew(viewProvider);
+        else
+            delete viewProvider;
     }
 }
 
@@ -508,6 +563,34 @@ void Document::slotActivatedObject(const App::DocumentObject& Obj)
     if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
         signalActivatedObject(*(static_cast<ViewProviderDocumentObject*>(viewProvider)));
     }
+}
+
+void Document::slotUndoDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    
+    signalUndoDocument(*this);  
+}
+
+void Document::slotRedoDocument(const App::Document& doc)
+{
+    if (d->_pcDocument != &doc)
+        return;
+    
+    signalRedoDocument(*this);   
+}
+
+void Document::addViewProvider(Gui::ViewProviderDocumentObject* vp)
+{
+    // Hint: The undo/redo first adds the view provider to the Gui
+    // document before adding the objects to the App document.
+
+    // the view provider is added by TransactionViewProvider and an
+    // object can be there only once
+    assert(d->_ViewProviderMap.find(vp->getObject()) == d->_ViewProviderMap.end());
+    vp->setStatus(Detach, false);
+    d->_ViewProviderMap[vp->getObject()] = vp;
 }
 
 void Document::setModified(bool b)
@@ -554,10 +637,16 @@ App::Document* Document::getDocument(void) const
 bool Document::save(void)
 {
     if (d->_pcDocument->isSaved()) {
-        Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
-                                       ,d->_pcDocument->getName());
-        setModified(false);
+        try {
+            Gui::WaitCursor wc;
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").save()"
+                                           ,d->_pcDocument->getName());
+            setModified(false);
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
         return true;
     }
     else {
@@ -572,6 +661,41 @@ bool Document::saveAs(void)
 
     QString exe = qApp->applicationName();
     QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
+        QString(), QString::fromLatin1("%1 %2 (*.FCStd)").arg(exe).arg(QObject::tr("Document")));
+    if (!fn.isEmpty()) {
+        QFileInfo fi;
+        fi.setFile(fn);
+
+        const char * DocName = App::GetApplication().getDocumentName(getDocument());
+
+        // save as new file name
+        try {
+            Gui::WaitCursor wc;
+            std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(fn.toUtf8());
+            Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs(u\"%s\")"
+                                           , DocName, escapedstr.c_str());
+            setModified(false);
+            getMainWindow()->appendRecentFile(fi.filePath());
+        }
+        catch (const Base::Exception& e) {
+            QMessageBox::critical(getMainWindow(), QObject::tr("Saving document failed"),
+                QString::fromLatin1(e.what()));
+        }
+        return true;
+    }
+    else {
+        getMainWindow()->showMessage(QObject::tr("Saving aborted"), 2000);
+        return false;
+    }
+}
+
+/// Save a copy of the document under a new file name
+bool Document::saveCopy(void)
+{
+    getMainWindow()->showMessage(QObject::tr("Save a copy of the document under new filename..."));
+
+    QString exe = qApp->applicationName();
+    QString fn = FileDialog::getSaveFileName(getMainWindow(), QObject::tr("Save %1 Document").arg(exe), 
                                              QString(), QObject::tr("%1 document (*.FCStd)").arg(exe));
     if (!fn.isEmpty()) {
         QFileInfo fi;
@@ -581,11 +705,9 @@ bool Document::saveAs(void)
 
         // save as new file name
         Gui::WaitCursor wc;
-        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveAs('%s')"
+        Command::doCommand(Command::Doc,"App.getDocument(\"%s\").saveCopy(\"%s\")"
                                        , DocName, (const char*)fn.toUtf8());
-        setModified(false);
 
-        getMainWindow()->appendRecentFile(fi.filePath());
         return true;
     }
     else {
@@ -641,7 +763,6 @@ void Document::Restore(Base::XMLReader &reader)
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
     for (it = d->_ViewProviderMap.begin(); it != d->_ViewProviderMap.end(); ++it) {
-        it->second->hide();
         it->second->startRestoring();
     }
 }
@@ -794,7 +915,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
         d->_pcAppWnd->sendMsgToActiveView("GetCamera",&ppReturn);
   
         // remove the first line because it's a comment like '#Inventor V2.1 ascii'
-        QStringList lines = QString(QString::fromAscii(ppReturn)).split(QLatin1String("\n"));
+        QStringList lines = QString(QString::fromLatin1(ppReturn)).split(QLatin1String("\n"));
         if (lines.size() > 1) {
             lines.pop_front();
             viewPos = lines.join(QLatin1String(" "));
@@ -803,7 +924,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
 
     writer.incInd(); // indentation for camera settings
     writer.Stream() << writer.ind() << "<Camera settings=\"" 
-                    << (const char*)viewPos.toAscii() <<"\"/>" << std::endl;
+                    << (const char*)viewPos.toLatin1() <<"\"/>" << std::endl;
     writer.decInd(); // indentation for camera settings
     writer.Stream() << "</Document>" << std::endl;
 }
@@ -852,7 +973,8 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, Base:
     writer.Stream() << "</Document>" << std::endl;
 }
 
-void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base::Reader& reader)
+void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base::Reader& reader,
+                             const std::map<std::string, std::string>& nameMapping)
 {
     // We must create an XML parser to read from the input stream
     Base::XMLReader xmlReader("GuiDocument.xml", reader);
@@ -873,15 +995,12 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
             // thus we try to match by type. This should work because the order of
             // objects should not have changed
             xmlReader.readElement("ViewProvider");
-            std::string type = xmlReader.getAttribute("type");
-            ViewProvider* pObj = getViewProvider(*it);
-            while (pObj && type != pObj->getTypeId().getName()) {
-                if (it != obj.end()) {
-                    ++it;
-                    pObj = getViewProvider(*it);
-                }
-            }
-            if (pObj && type == pObj->getTypeId().getName())
+            std::string name = xmlReader.getAttribute("name");
+            std::map<std::string, std::string>::const_iterator jt = nameMapping.find(name);
+            if (jt != nameMapping.end())
+                name = jt->second;
+            Gui::ViewProvider* pObj = this->getViewProviderByName(name.c_str());
+            if (pObj)
                 pObj->Restore(xmlReader);
             xmlReader.readEndElement("ViewProvider");
             if (it == obj.end())
@@ -891,6 +1010,10 @@ void Document::importObjects(const std::vector<App::DocumentObject*>& obj, Base:
     }
 
     xmlReader.readEndElement("Document");
+
+    // In the file GuiDocument.xml new data files might be added
+    if (!xmlReader.getFilenames().empty())
+        xmlReader.readFiles(static_cast<zipios::ZipInputStream&>(reader.getStream()));
 }
 
 void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& obj, App::DocumentObjectGroup* grp)
@@ -920,41 +1043,56 @@ void Document::addRootObjectsToGroup(const std::vector<App::DocumentObject*>& ob
     }
 }
 
-void Document::createView(const char* sType) 
+void Document::createView(const Base::Type& typeId)
 {
-    View3DInventor* view3D = new View3DInventor(this, getMainWindow());
+    if (!typeId.isDerivedFrom(MDIView::getClassTypeId()))
+        return;
 
-    //get first view override mode and copy
-    std::list<MDIView*> theViews = this->getMDIViews();
-    std::list<MDIView*>::iterator viewIt;
-    for (viewIt = theViews.begin(); viewIt != theViews.end(); ++viewIt)
-    {
-        View3DInventor *tempView = dynamic_cast<View3DInventor *>(*viewIt);
-        if (!tempView)
-            continue;
-        std::string overrideMode = tempView->getViewer()->getOverrideMode();
-        view3D->getViewer()->setOverrideMode(overrideMode);
-        break;
+    std::list<MDIView*> theViews = this->getMDIViewsOfType(typeId);
+    if (typeId == View3DInventor::getClassTypeId()) {
+        View3DInventor* firstView = 0;
+        QGLWidget* shareWidget = 0;
+        if (!theViews.empty()) {
+            firstView = static_cast<View3DInventor*>(theViews.front());
+            shareWidget = qobject_cast<QGLWidget*>(firstView->getViewer()->getGLWidget());
+        }
+
+        View3DInventor* view3D = new View3DInventor(this, getMainWindow(), shareWidget);
+        if (firstView) {
+            std::string overrideMode = firstView->getViewer()->getOverrideMode();
+            view3D->getViewer()->setOverrideMode(overrideMode);
+        }
+
+        // attach the viewproviders. we need to make sure that we only attach the toplevel ones
+        // and not viewproviders which are claimed by other providers. To ensure this we first
+        // add all providers and then remove the ones already claimed
+        std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
+        std::vector<App::DocumentObject*> child_vps;
+        for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1) {
+            view3D->getViewer()->addViewProvider(It1->second);
+            std::vector<App::DocumentObject*> children = It1->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
+        std::map<std::string,ViewProvider*>::const_iterator It2;
+        for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2) {
+            view3D->getViewer()->addViewProvider(It2->second);
+            std::vector<App::DocumentObject*> children = It2->second->claimChildren3D();
+            child_vps.insert(child_vps.end(), children.begin(), children.end());
+        }
+        
+        for(App::DocumentObject* obj : child_vps) 
+            view3D->getViewer()->removeViewProvider(getViewProvider(obj));
+
+        const char* name = getDocument()->Label.getValue();
+        QString title = QString::fromLatin1("%1 : %2[*]")
+            .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
+
+        view3D->setWindowTitle(title);
+        view3D->setWindowModified(this->isModified());
+        view3D->setWindowIcon(QApplication::windowIcon());
+        view3D->resize(400, 300);
+        getMainWindow()->addWindow(view3D);
     }
-
-    // attach the viewprovider
-    std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::const_iterator It1;
-    for (It1=d->_ViewProviderMap.begin();It1!=d->_ViewProviderMap.end();++It1)
-        view3D->getViewer()->addViewProvider(It1->second);
-    std::map<std::string,ViewProvider*>::const_iterator It2;
-    for (It2=d->_ViewProviderMapAnnotation.begin();It2!=d->_ViewProviderMapAnnotation.end();++It2)
-        view3D->getViewer()->addViewProvider(It2->second);
-
-    const char* name = getDocument()->Label.getValue();
-
-    QString title = QString::fromAscii("%1 : %2[*]")
-        .arg(QString::fromUtf8(name)).arg(d->_iWinCount++);
-
-    view3D->setWindowTitle(title);
-    view3D->setWindowModified(this->isModified());
-    view3D->setWindowIcon(QApplication::windowIcon());
-    view3D->resize(400, 300);
-    getMainWindow()->addWindow(view3D);
 }
 
 void Document::attachView(Gui::BaseView* pcView, bool bPassiv)
@@ -1046,40 +1184,71 @@ bool Document::canClose ()
             QObject::tr("The document is not closable for the moment."));
         return false;
     }
-    else if (!Gui::Control().isAllowedAlterDocument()) {
-        std::string name = Gui::Control().activeDialog()->getDocumentName();
-        if (name == this->getDocument()->getName()) {
-            QMessageBox::warning(getActiveView(),
-                QObject::tr("Document not closable"),
-                QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
-                            "You either have to finish or cancel the editing in the task panel."));
-            Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
-            if (dlg) Gui::Control().showDialog(dlg);
-            return false;
+    //else if (!Gui::Control().isAllowedAlterDocument()) {
+    //    std::string name = Gui::Control().activeDialog()->getDocumentName();
+    //    if (name == this->getDocument()->getName()) {
+    //        QMessageBox::warning(getActiveView(),
+    //            QObject::tr("Document not closable"),
+    //            QObject::tr("The document is in editing mode and thus cannot be closed for the moment.\n"
+    //                        "You either have to finish or cancel the editing in the task panel."));
+    //        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+    //        if (dlg) Gui::Control().showDialog(dlg);
+    //        return false;
+    //    }
+    //}
+
+    bool ok = true;
+    if (isModified()) {
+        QMessageBox box(getActiveView());
+        box.setIcon(QMessageBox::Question);
+        box.setWindowTitle(QObject::tr("Unsaved document"));
+        box.setText(QObject::tr("Do you want to save your changes to document '%1' before closing?")
+                    .arg(QString::fromUtf8(getDocument()->Label.getValue())));
+        box.setInformativeText(QObject::tr("If you don't save, your changes will be lost."));
+        box.setStandardButtons(QMessageBox::Discard | QMessageBox::Cancel | QMessageBox::Save);
+        box.setDefaultButton(QMessageBox::Save);
+        box.setEscapeButton(QMessageBox::Cancel);
+
+        // add shortcuts
+        QAbstractButton* saveBtn = box.button(QMessageBox::Save);
+        if (saveBtn->shortcut().isEmpty()) {
+            QString text = saveBtn->text();
+            text.prepend(QLatin1Char('&'));
+            saveBtn->setShortcut(QKeySequence::mnemonic(text));
+        }
+
+        QAbstractButton* discardBtn = box.button(QMessageBox::Discard);
+        if (discardBtn->shortcut().isEmpty()) {
+            QString text = discardBtn->text();
+            text.prepend(QLatin1Char('&'));
+            discardBtn->setShortcut(QKeySequence::mnemonic(text));
+        }
+
+        switch (box.exec())
+        {
+        case QMessageBox::Save:
+            ok = save();
+            break;
+        case QMessageBox::Discard:
+            ok = true;
+            break;
+        case QMessageBox::Cancel:
+            ok = false;
+            break;
         }
     }
 
-    if (!isModified())
-        return true;
-    bool ok = true;
-    switch(QMessageBox::question(getActiveView(),
-        QObject::tr("Unsaved document"),
-        QObject::tr("The document '%1' has been modified.\n"
-                    "Do you want to save your changes?")
-        .arg(QString::fromUtf8(getDocument()->Label.getValue())),
-        QMessageBox::Yes | QMessageBox::Default,
-        QMessageBox::No,
-        QMessageBox::Cancel | QMessageBox::Escape))
-    {
-    case QMessageBox::Yes:
-        ok = save();
-        break;
-    case QMessageBox::No:
-        ok = true;
-        break;
-    case QMessageBox::Cancel:
-        ok = false;
-        break;
+    if (ok) {
+        // If a tsk dialog is open that doesn't allow other commands to modify
+        // the document it must be closed by resetting the edit mode of the
+        // corresponding view provider.
+        if (!Gui::Control().isAllowedAlterDocument()) {
+            std::string name = Gui::Control().activeDialog()->getDocumentName();
+            if (name == this->getDocument()->getName()) {
+                if (this->getInEdit())
+                    this->resetEdit();
+            }
+        }
     }
 
     return ok;
@@ -1132,6 +1301,26 @@ bool Document::sendMsgToViews(const char* pMsg)
     return false;
 }
 
+bool Document::sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn)
+{
+    // first try the active view
+    Gui::MDIView* view = getActiveView();
+    if (view && view->isDerivedFrom(typeId)) {
+        if (view->onMsg(pMsg, ppReturn))
+            return true;
+    }
+
+    // now try the other views
+    std::list<Gui::MDIView*> views = getMDIViewsOfType(typeId);
+    for (std::list<Gui::MDIView*>::iterator it = views.begin(); it != views.end(); ++it) {
+        if ((*it != view) && (*it)->onMsg(pMsg, ppReturn)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /// Getter for the active view
 MDIView* Document::getActiveView(void) const
 {
@@ -1157,15 +1346,32 @@ MDIView* Document::getActiveView(void) const
     return active;
 }
 
+Gui::MDIView* Document::getViewOfNode(SoNode* node) const
+{
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
+    for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        if (view->getViewer()->searchNode(node))
+            return *it;
+    }
+
+    return 0;
+}
+
 Gui::MDIView* Document::getViewOfViewProvider(Gui::ViewProvider* vp) const
 {
-    std::list<MDIView*> mdis = getMDIViews();
+    return getViewOfNode(vp->getRoot());
+}
+
+Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) const
+{
+    std::list<MDIView*> mdis = getMDIViewsOfType(View3DInventor::getClassTypeId());
     for (std::list<MDIView*>::const_iterator it = mdis.begin(); it != mdis.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventor* view = static_cast<View3DInventor*>(*it);
-            if (view->getViewer()->hasViewProvider(vp))
-                return *it;
-        }
+        View3DInventor* view = static_cast<View3DInventor*>(*it);
+        View3DInventorViewer* viewer = view->getViewer();
+        // there is only one 3d view which is in edit mode
+        if (viewer->hasViewProvider(vp) && viewer->isEditingViewProvider())
+            return *it;
     }
 
     return 0;
@@ -1234,4 +1440,41 @@ PyObject* Document::getPyObject(void)
 {
     _pcDocPy->IncRef();
     return _pcDocPy;
+}
+
+void Document::handleChildren3D(ViewProvider* viewProvider)
+{
+    // check for children
+    if (viewProvider && viewProvider->getChildRoot()) {
+        std::vector<App::DocumentObject*> children = viewProvider->claimChildren3D();
+        SoGroup* childGroup =  viewProvider->getChildRoot();
+
+        // size not the same -> build up the list new
+        if (childGroup->getNumChildren() != static_cast<int>(children.size())) {
+
+            childGroup->removeAllChildren();
+
+            for (std::vector<App::DocumentObject*>::iterator it=children.begin();it!=children.end();++it) {
+                ViewProvider* ChildViewProvider = getViewProvider(*it);
+                if (ChildViewProvider) {
+                    SoSeparator* childRootNode =  ChildViewProvider->getRoot();
+                    childGroup->addChild(childRootNode);
+
+                    // cycling to all views of the document to remove the viewprovider from the viewer itself
+                    for (std::list<Gui::BaseView*>::iterator vIt = d->baseViews.begin();vIt != d->baseViews.end();++vIt) {
+                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(*vIt);
+                        if (activeView && activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                            // Note about hasViewProvider()
+                            //remove the viewprovider serves the purpose of detaching the inventor nodes from the
+                            //top level root in the viewer. However, if some of the children were grouped beneath the object
+                            //earlier they are not anymore part of the toplevel inventor node. we need to check for that.
+                            if (d->_editViewProvider == ChildViewProvider)
+                                resetEdit();
+                            activeView->getViewer()->removeViewProvider(ChildViewProvider);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

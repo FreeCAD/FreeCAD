@@ -27,56 +27,54 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <Base/Quantity.h>
 
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintFixed.h"
 
+#include <QObject>
+#include <Base/Console.h>
+#include <App/DocumentObject.h>
+#include <QListWidgetItem>
+
 class Ui_TaskFemConstraintFixed;
 
-namespace App {
-class Property;
-}
-
-namespace Gui {
-class ViewProvider;
-}
-
 namespace FemGui {
-
 class TaskFemConstraintFixed : public TaskFemConstraint
 {
     Q_OBJECT
 
 public:
     TaskFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView,QWidget *parent = 0);
-    virtual ~TaskFemConstraintFixed();
-
-    virtual const std::string getReferences() const;
+    ~TaskFemConstraintFixed();
+    const std::string getReferences() const;
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
 
+    void addToSelection();
+    void removeFromSelection();
+    void setSelection(QListWidgetItem* item);
+
 protected:
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
-
-private:
+    //void onSelectionChanged(const Gui::SelectionChanges& msg);
+    void updateUI();
     Ui_TaskFemConstraintFixed* ui;
+
 };
 
-/// simulation dialog for the TaskView
 class TaskDlgFemConstraintFixed : public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
     TaskDlgFemConstraintFixed(ViewProviderFemConstraintFixed *ConstraintView);
-
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
-
+    void open();
+    bool accept();
+    bool reject();
 };
 
 } //namespace FemGui

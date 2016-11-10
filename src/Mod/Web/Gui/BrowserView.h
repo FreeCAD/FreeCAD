@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,7 +45,18 @@ class WebGuiExport WebView : public QWebView
 
 public:
     WebView(QWidget *parent = 0);
+
+protected:
+    void mousePressEvent(QMouseEvent *event);
     void wheelEvent(QWheelEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event);
+
+private Q_SLOTS:
+    void triggerContextMenuAction(int);
+
+Q_SIGNALS:
+    void openLinkInExternalBrowser(const QUrl& url);
+    void openLinkInNewWindow(const QUrl&);
 };
 
 /**
@@ -62,7 +73,7 @@ public:
 
     void load(const char* URL);
     void load(const QUrl & url);
-    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromAscii("Browser"));
+    void setHtml(const QString& HtmlCode,const QUrl & BaseUrl,const QString& TabName=QString::fromLatin1("Browser"));
     void stop(void);
 
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
@@ -98,6 +109,8 @@ protected Q_SLOTS:
     bool chckHostAllowed(const QString& host);
     void onDownloadRequested(const QNetworkRequest& request);
     void onUnsupportedContent(QNetworkReply* reply);
+    void onOpenLinkInExternalBrowser(const QUrl& url);
+    void onOpenLinkInNewWindow(const QUrl&);
 
 private:
     WebView* view;

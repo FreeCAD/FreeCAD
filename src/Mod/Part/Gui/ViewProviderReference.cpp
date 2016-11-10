@@ -79,7 +79,6 @@
 #include <Base/Exception.h>
 #include <App/Application.h>
 #include <App/Document.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/Selection.h>
 #include <Gui/View3DInventorViewer.h>
 
@@ -99,7 +98,19 @@ PROPERTY_SOURCE(PartGui::ViewProviderPartReference, Gui::ViewProviderGeometryObj
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderPartReference::ViewProviderPartReference() : pcControlPoints(0)
+ViewProviderPartReference::ViewProviderPartReference()
+  : EdgeRoot(0)
+  , FaceRoot(0)
+  , VertexRoot(0)
+  , pcLineMaterial(0)
+  , pcPointMaterial(0)
+  , pcLineStyle(0)
+  , pcPointStyle(0)
+  , pcControlPoints(0)
+  , pShapeHints(0)
+  , meshDeviation(0.01f)
+  , noPerVertexNormals(true)
+  , qualityNormals(false)
 {
     App::Material mat;
     mat.ambientColor.set(0.2f,0.2f,0.2f);
@@ -165,7 +176,7 @@ ViewProviderPartReference::~ViewProviderPartReference()
     //pShapeHints->unref();
 }
 
-void ViewProviderPartReference::onChanged(const App::Property* prop)
+void ViewProviderPartReference::onChanged(const App::Property* /*prop*/)
 {
     //if (prop == &LineWidth) {
     //    pcLineStyle->lineWidth = LineWidth.getValue();
@@ -281,6 +292,6 @@ std::vector<std::string> ViewProviderPartReference::getDisplayModes(void) const
 }
 
 
-void ViewProviderPartReference::updateData(const App::Property* prop)
+void ViewProviderPartReference::updateData(const App::Property* )
 {
 }

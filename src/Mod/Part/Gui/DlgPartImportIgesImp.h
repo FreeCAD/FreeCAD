@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@ class DlgPartImportIgesImp : public QDialog, public Ui_DlgPartImportIges
     Q_OBJECT
 
 public:
-  DlgPartImportIgesImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+  DlgPartImportIgesImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~DlgPartImportIgesImp();
 
 public Q_SLOTS:

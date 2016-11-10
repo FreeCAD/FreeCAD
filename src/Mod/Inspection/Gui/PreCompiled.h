@@ -39,6 +39,14 @@
 # define InspectionGuiExport
 #endif
 
+#ifdef FC_OS_WIN32
+# define NOMINMAX
+#endif
+
+#ifdef _MSC_VER
+#   pragma warning(disable : 4005)
+#endif
+
 #ifdef _PreComp_
 
 // standard

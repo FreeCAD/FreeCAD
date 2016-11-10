@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -119,8 +119,98 @@ class Hydrostatics:
                 'ToolTip': ToolTip}
 
 
+class CreateWeight:
+    def Activated(self):
+        import shipCreateWeight
+        shipCreateWeight.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_weight',
+            'Create a new ship weight')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_weight',
+            'Create a new ship weight')
+        return {'Pixmap': 'Ship_Weight',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
+class CreateTank:
+    def Activated(self):
+        import shipCreateTank
+        shipCreateTank.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_tank',
+            'Create a new tank')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_tank',
+            'Create a new tank')
+        return {'Pixmap': 'Ship_Tank',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
+class TankCapacity:
+    def Activated(self):
+        import shipCapacityCurve
+        shipCapacityCurve.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_capacity',
+            'Tank capacity curve')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_capacity',
+            'Plot the tank capacity curve (level-volume curve)')
+        return {'Pixmap': 'Ship_CapacityCurve',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
+class LoadCondition:
+    def Activated(self):
+        import shipCreateLoadCondition
+        shipCreateLoadCondition.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_loadcondition',
+            'Create a new loading condition')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_loadcondition',
+            'Create a new load condition spreadsheet')
+        return {'Pixmap': 'Ship_LoadCondition',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
+class GZ:
+    def Activated(self):
+        import shipGZ
+        shipGZ.load()
+
+    def GetResources(self):
+        MenuText = QtCore.QT_TRANSLATE_NOOP(
+            'ship_gz',
+            'GZ curve computation')
+        ToolTip = QtCore.QT_TRANSLATE_NOOP(
+            'ship_gz',
+            'Plot the GZ curve')
+        return {'Pixmap': 'Ship_GZ',
+                'MenuText': MenuText,
+                'ToolTip': ToolTip}
+
+
 FreeCADGui.addCommand('Ship_LoadExample', LoadExample())
 FreeCADGui.addCommand('Ship_CreateShip', CreateShip())
 FreeCADGui.addCommand('Ship_OutlineDraw', OutlineDraw())
 FreeCADGui.addCommand('Ship_AreasCurve', AreasCurve())
 FreeCADGui.addCommand('Ship_Hydrostatics', Hydrostatics())
+FreeCADGui.addCommand('Ship_Weight', CreateWeight())
+FreeCADGui.addCommand('Ship_Tank', CreateTank())
+FreeCADGui.addCommand('Ship_Capacity', TankCapacity())
+FreeCADGui.addCommand('Ship_LoadCondition', LoadCondition())
+FreeCADGui.addCommand('Ship_GZ', GZ())

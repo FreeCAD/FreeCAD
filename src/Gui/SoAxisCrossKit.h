@@ -77,7 +77,7 @@ public:
     // Overrides default method. All the parts are shapeKits,
     // so this node will not affect the state.
     virtual SbBool affectsState() const;
-    virtual void addWriteReference(SoOutput * out, SbBool isfromfield = FALSE);
+    virtual void addWriteReference(SoOutput * out, SbBool isfromfield = false);
     virtual void getBoundingBox(SoGetBoundingBoxAction * action);
 
     static void initClass();

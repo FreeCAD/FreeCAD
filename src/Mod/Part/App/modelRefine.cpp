@@ -22,14 +22,20 @@
 
 
 #include "PreCompiled.h"
+#include <Base/Tools.h>
 #include <algorithm>
 #include <iterator>
 #include <Geom_Surface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 #include <GeomAdaptor_Surface.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_CylindricalSurface.hxx>
+#include <gp_Ax3.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Cylinder.hxx>
+#include <TColgp_Array2OfPnt.hxx>
+#include <TColStd_Array1OfReal.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Compound.hxx>
 #include <TopoDS.hxx>
@@ -52,9 +58,16 @@
 #include <Bnd_Box.hxx>
 #include <BRepBndLib.hxx>
 #include <ShapeAnalysis_Edge.hxx>
+#include <ShapeAnalysis_Curve.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <TColgp_SequenceOfPnt.hxx>
+#include <GeomAPI_ProjectPointOnSurf.hxx>
+#include <Base/Console.h>
 #include "modelRefine.h"
 
 using namespace ModelRefine;
+
+
 
 void ModelRefine::getFaceEdges(const TopoDS_Face &face, EdgeVectorType &edges)
 {
@@ -218,12 +231,6 @@ void FaceAdjacencySplitter::recursiveFind(const TopoDS_Face &face, FaceVectorTyp
     TopTools_ListIteratorOfListOfShape edgeIt;
     for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
     {
-        //don't try to join across seams.
-        // Note: BRep_Tool::IsClosed(TopoDS::Edge(edgeIt.Value()), face) is also possible?
-        ShapeAnalysis_Edge edgeCheck;
-        if(edgeCheck.IsSeam(TopoDS::Edge(edgeIt.Value()), face))
-            continue;
-
         const TopTools_ListOfShape &faces = edgeToFaceMap.FindFromKey(edgeIt.Value());
         TopTools_ListIteratorOfListOfShape faceIt;
         for (faceIt.Initialize(faces); faceIt.More(); faceIt.Next())
@@ -337,12 +344,31 @@ FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
 {
 }
 
+static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face &faceIn)
+{
+  Handle_Geom_Plane planeSurfaceOut;
+  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  if (!surface.IsNull())
+  {
+    planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
+    if (planeSurfaceOut.IsNull())
+    {
+      Handle_Geom_RectangularTrimmedSurface trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      if (!trimmedSurface.IsNull())
+        planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
+    }
+  }
+
+  return planeSurfaceOut;
+}
+
 bool FaceTypedPlane::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    Handle(Geom_Plane) planeSurfaceOne = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceOne));
-    Handle(Geom_Plane) planeSurfaceTwo = Handle(Geom_Plane)::DownCast(BRep_Tool::Surface(faceTwo));
-    if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
-        return false;//error?
+  Handle(Geom_Plane) planeSurfaceOne = getGeomPlane(faceOne);
+  Handle(Geom_Plane) planeSurfaceTwo = getGeomPlane(faceTwo);
+  if (planeSurfaceOne.IsNull() || planeSurfaceTwo.IsNull())
+      return false;//error?
+
     gp_Pln planeOne(planeSurfaceOne->Pln());
     gp_Pln planeTwo(planeSurfaceTwo->Pln());
     return (planeOne.Position().Direction().IsParallel(planeTwo.Position().Direction(), Precision::Confusion()) &&
@@ -409,19 +435,37 @@ FaceTypedCylinder::FaceTypedCylinder() : FaceTypedBase(GeomAbs_Cylinder)
 {
 }
 
+static Handle(Geom_CylindricalSurface) getGeomCylinder(const TopoDS_Face &faceIn)
+{
+  Handle_Geom_CylindricalSurface cylinderSurfaceOut;
+  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  if (!surface.IsNull())
+  {
+    cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(surface);
+    if (cylinderSurfaceOut.IsNull())
+    {
+      Handle_Geom_RectangularTrimmedSurface trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      if (!trimmedSurface.IsNull())
+        cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(trimmedSurface->BasisSurface());
+    }
+  }
+
+  return cylinderSurfaceOut;
+}
+
 bool FaceTypedCylinder::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    //check if these handles are valid?
-    Handle(Geom_CylindricalSurface) surfaceOne = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceOne));
-    Handle(Geom_CylindricalSurface) surfaceTwo = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceTwo));
+    Handle(Geom_CylindricalSurface) surfaceOne = getGeomCylinder(faceOne);
+    Handle(Geom_CylindricalSurface) surfaceTwo = getGeomCylinder(faceTwo);
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;//probably need an error
     gp_Cylinder cylinderOne = surfaceOne->Cylinder();
     gp_Cylinder cylinderTwo = surfaceTwo->Cylinder();
-
-    if (cylinderOne.Radius() != cylinderTwo.Radius())
+    
+    if (fabs(cylinderOne.Radius() - cylinderTwo.Radius()) > Precision::Confusion())
         return false;
-    if (!cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis(), Precision::Confusion(), Precision::Confusion()))
+    if (!cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis(), Precision::Angular(), Precision::Confusion()) &&
+        !cylinderOne.Axis().IsCoaxial(cylinderTwo.Axis().Reversed(), Precision::Angular(), Precision::Confusion()))
         return false;
 
     return true;
@@ -432,8 +476,143 @@ GeomAbs_SurfaceType FaceTypedCylinder::getType() const
     return GeomAbs_Cylinder;
 }
 
-TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
+// Auxiliary method
+const TopoDS_Face fixFace(const TopoDS_Face& f) {
+    static TopoDS_Face dummy;
+    // Fix the face. Orientation doesn't seem to get fixed the first call.
+    ShapeFix_Face faceFixer(f);
+    faceFixer.SetContext(new ShapeBuild_ReShape());
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return dummy;
+    faceFixer.FixMissingSeam();
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+      return dummy;
+    faceFixer.FixOrientation();
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return dummy;
+    return faceFixer.Face();
+}
+
+// Detect whether a wire encircles the cylinder axis or not. This is done by calculating the
+// wire length, oriented with respect to the cylinder axis
+bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSurface)& cylinder)
 {
+    double radius = cylinder->Radius();
+    gp_Ax1 cylAxis = cylinder->Axis();
+    gp_Vec cv(cylAxis.Location().X(), cylAxis.Location().Y(), cylAxis.Location().Z()); // center of cylinder
+    gp_Vec av(cylAxis.Direction().X(), cylAxis.Direction().Y(), cylAxis.Direction().Z()); // axis of cylinder
+    Handle_Geom_Plane plane = new Geom_Plane(gp_Ax3(cylAxis.Location(), cylAxis.Direction()));
+    double totalArc = 0.0;
+    bool firstSegment = false;
+    bool secondSegment = false;
+    gp_Pnt first, last;
+
+    for (TopExp_Explorer ex(wire, TopAbs_EDGE); ex.More(); ex.Next()) {
+        TopoDS_Edge segment(TopoDS::Edge(ex.Current()));
+        BRepAdaptor_Curve adapt(segment);
+
+        // Get curve data
+        double fp = adapt.FirstParameter();
+        double lp = adapt.LastParameter();
+        gp_Pnt segFirst, segLast;
+        gp_Vec segTangent;
+        adapt.D1(fp, segFirst, segTangent);
+        segLast = adapt.Value(lp);
+
+        double length = 0.0;
+
+        if (adapt.GetType() == GeomAbs_Line) {
+            // Any line on the cylinder must be parallel to the cylinder axis
+           length = 0.0;
+        } else if (adapt.GetType() == GeomAbs_Circle) {
+            // Arc segment
+            length = (lp - fp) * radius;
+            // Check orientation in relation to cylinder axis
+            GeomAPI_ProjectPointOnSurf proj(segFirst, plane);
+            gp_Vec bv = gp_Vec(proj.Point(1).X(), proj.Point(1).Y(), proj.Point(1).Z());
+            if ((bv - cv).Crossed(segTangent).IsOpposite(av, Precision::Confusion()))
+                length = -length;
+        } else {
+            // Linearize the edge. Idea taken from ShapeAnalysis.cxx ShapeAnalysis::TotCross2D()
+            TColgp_SequenceOfPnt SeqPnt;
+            ShapeAnalysis_Curve::GetSamplePoints(adapt.Curve().Curve(), fp, lp, SeqPnt);
+
+            // Calculate the oriented length of the edge
+            gp_Pnt begin;
+            for (Standard_Integer j=1; j <= SeqPnt.Length(); j++) {
+                gp_Pnt end = SeqPnt.Value(j);
+
+                // Project end point onto the plane
+                GeomAPI_ProjectPointOnSurf proj(end, plane);
+                if (!proj.IsDone())
+                    return false; // FIXME: What else can we do?
+                gp_Pnt pend = proj.Point(1);
+
+                if (j > 1) {
+                    // Get distance between the points, equal to (linearised) arc length
+                    gp_Vec bv = gp_Vec(begin.X(), begin.Y(), begin.Z());
+                    gp_Vec dv = gp_Vec(pend.X(), pend.Y(), pend.Z()) - bv;
+                    double dist = dv.Magnitude();
+
+                    if (dist > 0) {
+                        // Check orientation of this piece in relation to cylinder axis
+                        if ((bv - cv).Crossed(dv).IsOpposite(av, Precision::Confusion()))
+                            dist = -dist;
+
+                        length += dist;
+                    }
+                }
+
+                begin = pend;
+            }
+        }
+
+        if (!firstSegment) {
+            // First wire segment. Save the start and end point of the segment
+            firstSegment = true;
+            first = segFirst;
+            last = segLast;
+        } else if (!secondSegment) {
+            // Second wire segment. Determine whether the second segment continues from
+            // the first or from the last point of the first segment
+            secondSegment = true;
+            if (last.IsEqual(segFirst, Precision::Confusion())) {
+                last = segLast; // Third segment must begin here
+            } else if (last.IsEqual(segLast, Precision::Confusion())) {
+                last = segFirst;
+                length = -length;
+            } else if (first.IsEqual(segLast, Precision::Confusion())) {
+                last = segFirst;
+                totalArc = -totalArc;
+                length = -length;
+            } else { // first.IsEqual(segFirst)
+                last = segLast;
+                totalArc = -totalArc;
+            }
+        } else {
+            if (!last.IsEqual(segFirst, Precision::Confusion())) {
+                // The length was calculated in the opposite direction of the wire traversal
+                length = -length;
+                last = segFirst;
+            } else {
+                last = segLast;
+            }
+        }
+
+        totalArc += length;
+    }
+
+    // For an exact calculation, only two results would be possible:
+    // totalArc = 0.0: The wire does not encircle the axis
+    // totalArc = 2 * M_PI * radius: The wire encircles the axis
+    return (fabs(totalArc) > M_PI * radius);
+}
+
+TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
+{    
     static TopoDS_Face dummy;
     std::vector<EdgeVectorType> boundaries;
     boundarySplit(faces, boundaries);
@@ -441,7 +620,7 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
         return dummy;
 
     //make wires
-    std::vector<TopoDS_Wire> wires;
+    std::vector<TopoDS_Wire> allWires;
     std::vector<EdgeVectorType>::iterator boundaryIt;
     for (boundaryIt = boundaries.begin(); boundaryIt != boundaries.end(); ++boundaryIt)
     {
@@ -451,70 +630,97 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
             wireMaker.Add(*it);
         if (wireMaker.Error() != BRepLib_WireDone)
             return dummy;
-        wires.push_back(wireMaker.Wire());
+        allWires.push_back(wireMaker.Wire());
     }
-    if (wires.size() < 1)
-        return dummy;
-    std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
-
-    //make face from surface and outer wire.
-    Handle(Geom_CylindricalSurface) surface = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
-    std::vector<TopoDS_Wire>::iterator wireIt;
-    wireIt = wires.begin();
-    BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
-    if (!faceMaker.IsDone())
+    if (allWires.size() < 1)
         return dummy;
 
-    //add additional boundaries.
-    for (wireIt++; wireIt != wires.end(); ++wireIt)
-    {
-        faceMaker.Add(*wireIt);
+    // Sort wires by size, that is, the innermost wire comes last
+    std::sort(allWires.begin(), allWires.end(), ModelRefine::WireSort());
+
+    // Find outer boundary wires that cut the cylinder into segments. This will be the case f we
+    // have removed the seam edges of a complete (360 degrees) cylindrical face
+    Handle(Geom_CylindricalSurface) surface = getGeomCylinder(faces.at(0));
+    if (surface.IsNull())
+      return dummy;
+    std::vector<TopoDS_Wire> innerWires, encirclingWires;
+    std::vector<TopoDS_Wire>::iterator wireIt;    
+    for (wireIt = allWires.begin(); wireIt != allWires.end(); ++wireIt) {
+        if (wireEncirclesAxis(*wireIt, surface))
+            encirclingWires.push_back(*wireIt);
+        else
+            innerWires.push_back(*wireIt);
+    }
+
+    if (encirclingWires.empty()) {
+        // We can use the result of the bounding box sort. First wire is the outer wire
+        wireIt = allWires.begin();
+        BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
         if (!faceMaker.IsDone())
             return dummy;
+
+        // Add additional boundaries (inner wires).
+        for (wireIt++; wireIt != allWires.end(); ++wireIt)
+        {
+            faceMaker.Add(*wireIt);
+            if (!faceMaker.IsDone())
+                return dummy;
+        }
+
+        return fixFace(faceMaker.Face());
+    } else {
+        if (encirclingWires.size() != 2)
+            return dummy;
+
+        if (innerWires.empty()) {
+            // We have just two outer boundaries
+            BRepBuilderAPI_MakeFace faceMaker(surface, encirclingWires.front());
+            if (!faceMaker.IsDone())
+                return dummy;
+            faceMaker.Add(encirclingWires.back());
+            if (!faceMaker.IsDone())
+                return dummy;
+
+            return fixFace(faceMaker.Face());
+        } else {
+            // Add the inner wires first, because otherwise those that cut the seam edge will fail
+            wireIt = innerWires.begin();
+            BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt, false);
+            if (!faceMaker.IsDone())
+                return dummy;
+
+            // Add additional boundaries (inner wires).
+            for (wireIt++; wireIt != innerWires.end(); ++wireIt)
+            {
+                faceMaker.Add(*wireIt);
+                if (!faceMaker.IsDone())
+                    return dummy;
+            }
+
+            // Add outer boundaries
+            faceMaker.Add(encirclingWires.front());
+            if (!faceMaker.IsDone())
+                return dummy;
+            faceMaker.Add(encirclingWires.back());
+            if (!faceMaker.IsDone())
+                return dummy;
+
+            return fixFace(faceMaker.Face());
+        }
     }
-
-    //fix newly constructed face. Orientation doesn't seem to get fixed the first call.
-    ShapeFix_Face faceFixer(faceMaker.Face());
-    faceFixer.SetContext(new ShapeBuild_ReShape());
-    faceFixer.Perform();
-    if (faceFixer.Status(ShapeExtend_FAIL))
-        return dummy;
-    faceFixer.FixOrientation();
-    faceFixer.Perform();
-    if (faceFixer.Status(ShapeExtend_FAIL))
-        return dummy;
-
-    return faceFixer.Face();
 }
 
 void FaceTypedCylinder::boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const
 {
-    //get all the seam edges
-    EdgeVectorType seamEdges;
-    FaceVectorType::const_iterator faceIt;
-    for (faceIt = facesIn.begin(); faceIt != facesIn.end(); ++faceIt)
-    {
-        TopExp_Explorer explorer;
-        for (explorer.Init(*faceIt, TopAbs_EDGE); explorer.More(); explorer.Next())
-        {
-            ShapeAnalysis_Edge edgeCheck;
-            if(edgeCheck.IsSeam(TopoDS::Edge(explorer.Current()), *faceIt))
-                seamEdges.push_back(TopoDS::Edge(explorer.Current()));
-        }
-    }
-
     //normal edges.
     EdgeVectorType normalEdges;
     ModelRefine::boundaryEdges(facesIn, normalEdges);
 
-    //put seam edges in front.the idea is that we always want to traverse along a seam edge if possible.
     std::list<TopoDS_Edge> sortedEdges;
     std::copy(normalEdges.begin(), normalEdges.end(), back_inserter(sortedEdges));
-    std::copy(seamEdges.begin(), seamEdges.end(), front_inserter(sortedEdges));
 
     while (!sortedEdges.empty())
     {
-        //detecting closed boundary works best if we start off of the seam edges.
         TopoDS_Vertex destination = TopExp::FirstVertex(sortedEdges.back(), Standard_True);
         TopoDS_Vertex lastVertex = TopExp::LastVertex(sortedEdges.back(), Standard_True);
         bool closedSignal(false);
@@ -522,33 +728,38 @@ void FaceTypedCylinder::boundarySplit(const FaceVectorType &facesIn, std::vector
         boundary.push_back(sortedEdges.back());
         sortedEdges.pop_back();
 
-        std::list<TopoDS_Edge>::iterator sortedIt;
-        for (sortedIt = sortedEdges.begin(); sortedIt != sortedEdges.end();)
-        {
-            TopoDS_Vertex currentVertex = TopExp::FirstVertex(*sortedIt, Standard_True);
+        if (destination.IsSame(lastVertex)) {
+            // Single circular edge
+            closedSignal = true;
+        } else {
+            std::list<TopoDS_Edge>::iterator sortedIt;
+            for (sortedIt = sortedEdges.begin(); sortedIt != sortedEdges.end();)
+            {
+                TopoDS_Vertex currentVertex = TopExp::FirstVertex(*sortedIt, Standard_True);
 
-            //Seam edges lie on top of each other. i.e. same. and we remove every match from the list
-            //so we don't actually ever compare the same edge.
-            if ((*sortedIt).IsSame(boundary.back()))
-            {
-                ++sortedIt;
-                continue;
-            }
-            if (lastVertex.IsSame(currentVertex))
-            {
-                boundary.push_back(*sortedIt);
-                lastVertex = TopExp::LastVertex(*sortedIt, Standard_True);
-                if (lastVertex.IsSame(destination))
+                //Seam edges lie on top of each other. i.e. same. and we remove every match from the list
+                //so we don't actually ever compare the same edge.
+                if ((*sortedIt).IsSame(boundary.back()))
                 {
-                    closedSignal = true;
-                    sortedEdges.erase(sortedIt);
-                    break;
+                    ++sortedIt;
+                    continue;
                 }
-                sortedEdges.erase(sortedIt);
-                sortedIt = sortedEdges.begin();
-                continue;
+                if (lastVertex.IsSame(currentVertex))
+                {
+                    boundary.push_back(*sortedIt);
+                    lastVertex = TopExp::LastVertex(*sortedIt, Standard_True);
+                    if (lastVertex.IsSame(destination))
+                    {
+                        closedSignal = true;
+                        sortedEdges.erase(sortedIt);
+                        break;
+                    }
+                    sortedEdges.erase(sortedIt);
+                    sortedIt = sortedEdges.begin();
+                    continue;
+                }
+                ++sortedIt;
             }
-            ++sortedIt;
         }
         if (closedSignal)
         {
@@ -568,7 +779,7 @@ FaceTypedCylinder& ModelRefine::getCylinderObject()
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
 void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &map)
 {
   TopTools_IndexedMapOfShape edges;
@@ -590,6 +801,180 @@ void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &ma
 }
 #endif
 
+FaceTypedBSpline::FaceTypedBSpline() : FaceTypedBase(GeomAbs_BSplineSurface)
+{
+}
+
+bool FaceTypedBSpline::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
+{
+  try
+  {
+    Handle(Geom_BSplineSurface) surfaceOne = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceOne));
+    Handle(Geom_BSplineSurface) surfaceTwo = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faceTwo));
+
+    if (surfaceOne.IsNull() || surfaceTwo.IsNull())
+        return false;
+
+    if (surfaceOne->IsURational() != surfaceTwo->IsURational()) return false;
+    if (surfaceOne->IsVRational() != surfaceTwo->IsVRational()) return false;
+    if (surfaceOne->IsUPeriodic() != surfaceTwo->IsUPeriodic()) return false;
+    if (surfaceOne->IsVPeriodic() != surfaceTwo->IsVPeriodic()) return false;
+    if (surfaceOne->IsUClosed() != surfaceTwo->IsUClosed()) return false;
+    if (surfaceOne->IsVClosed() != surfaceTwo->IsVClosed()) return false;
+    if (surfaceOne->UDegree() != surfaceTwo->UDegree()) return false;
+    if (surfaceOne->VDegree() != surfaceTwo->VDegree()) return false;
+
+    //pole test
+    int uPoleCountOne(surfaceOne->NbUPoles());
+    int vPoleCountOne(surfaceOne->NbVPoles());
+    int uPoleCountTwo(surfaceTwo->NbUPoles());
+    int vPoleCountTwo(surfaceTwo->NbVPoles());
+
+    if (uPoleCountOne != uPoleCountTwo || vPoleCountOne != vPoleCountTwo)
+        return false;
+
+    TColgp_Array2OfPnt polesOne(1, uPoleCountOne, 1, vPoleCountOne);
+    TColgp_Array2OfPnt polesTwo(1, uPoleCountTwo, 1, vPoleCountTwo);
+    surfaceOne->Poles(polesOne);
+    surfaceTwo->Poles(polesTwo);
+
+    for (int indexU = 1; indexU <= uPoleCountOne; ++indexU)
+    {
+        for (int indexV = 1; indexV <= vPoleCountOne; ++indexV)
+        {
+            if (!(polesOne.Value(indexU, indexV).IsEqual(polesTwo.Value(indexU, indexV), Precision::Confusion())))
+                return false;
+        }
+    }
+
+    //knot test
+    int uKnotCountOne(surfaceOne->NbUKnots());
+    int vKnotCountOne(surfaceOne->NbVKnots());
+    int uKnotCountTwo(surfaceTwo->NbUKnots());
+    int vKnotCountTwo(surfaceTwo->NbVKnots());
+    if (uKnotCountOne != uKnotCountTwo || vKnotCountOne != vKnotCountTwo)
+        return false;
+    TColStd_Array1OfReal uKnotsOne(1, uKnotCountOne);
+    TColStd_Array1OfReal vKnotsOne(1, vKnotCountOne);
+    TColStd_Array1OfReal uKnotsTwo(1, uKnotCountTwo);
+    TColStd_Array1OfReal vKnotsTwo(1, vKnotCountTwo);
+    surfaceOne->UKnots(uKnotsOne);
+    surfaceOne->VKnots(vKnotsOne);
+    surfaceTwo->UKnots(uKnotsTwo);
+    surfaceTwo->VKnots(vKnotsTwo);
+    for (int indexU = 1; indexU <= uKnotCountOne; ++indexU)
+        if (uKnotsOne.Value(indexU) != uKnotsTwo.Value(indexU))
+            return false;
+    for (int indexV = 1; indexV <= vKnotCountOne; ++indexV)
+        if (vKnotsOne.Value(indexV) != vKnotsTwo.Value(indexV))
+            return false;
+
+    //knot sequence.
+    int uKnotSequenceOneCount(uPoleCountOne + surfaceOne->UDegree() + 1);
+    int vKnotSequenceOneCount(vPoleCountOne + surfaceOne->VDegree() + 1);
+    int uKnotSequenceTwoCount(uPoleCountTwo + surfaceTwo->UDegree() + 1);
+    int vKnotSequenceTwoCount(vPoleCountTwo + surfaceTwo->VDegree() + 1);
+    if (uKnotSequenceOneCount != uKnotSequenceTwoCount || vKnotSequenceOneCount != vKnotSequenceTwoCount)
+        return false;
+    TColStd_Array1OfReal uKnotSequenceOne(1, uKnotSequenceOneCount);
+    TColStd_Array1OfReal vKnotSequenceOne(1, vKnotSequenceOneCount);
+    TColStd_Array1OfReal uKnotSequenceTwo(1, uKnotSequenceTwoCount);
+    TColStd_Array1OfReal vKnotSequenceTwo(1, vKnotSequenceTwoCount);
+    surfaceOne->UKnotSequence(uKnotSequenceOne);
+    surfaceOne->VKnotSequence(vKnotSequenceOne);
+    surfaceTwo->UKnotSequence(uKnotSequenceTwo);
+    surfaceTwo->VKnotSequence(vKnotSequenceTwo);
+    for (int indexU = 1; indexU <= uKnotSequenceOneCount; ++indexU)
+        if (uKnotSequenceOne.Value(indexU) != uKnotSequenceTwo.Value(indexU))
+            return false;
+    for (int indexV = 1; indexV <= vKnotSequenceOneCount; ++indexV)
+        if (vKnotSequenceOne.Value(indexV) != vKnotSequenceTwo.Value(indexV))
+            return false;
+    return true;
+  }
+  catch (Standard_Failure)
+  {
+    Handle(Standard_Failure) e = Standard_Failure::Caught();
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: OCC Error: " << e->GetMessageString() << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  catch (...)
+  {
+    std::ostringstream stream;
+    stream << "FaceTypedBSpline::isEqual: Unknown Error" << std::endl;
+    Base::Console().Message(stream.str().c_str());
+  }
+  
+  return false;
+}
+
+GeomAbs_SurfaceType FaceTypedBSpline::getType() const
+{
+    return GeomAbs_BSplineSurface;
+}
+
+TopoDS_Face FaceTypedBSpline::buildFace(const FaceVectorType &faces) const
+{
+    std::vector<TopoDS_Wire> wires;
+
+    std::vector<EdgeVectorType> splitEdges;
+    this->boundarySplit(faces, splitEdges);
+    if (splitEdges.empty())
+        return TopoDS_Face();
+    std::vector<EdgeVectorType>::iterator splitIt;
+    for (splitIt = splitEdges.begin(); splitIt != splitEdges.end(); ++splitIt)
+    {
+        BRepLib_MakeWire wireMaker;
+        EdgeVectorType::iterator it;
+        for (it = (*splitIt).begin(); it != (*splitIt).end(); ++it)
+            wireMaker.Add(*it);
+        TopoDS_Wire currentWire = wireMaker.Wire();
+        wires.push_back(currentWire);
+    }
+
+    std::sort(wires.begin(), wires.end(), ModelRefine::WireSort());
+
+    //make face from surface and outer wire.
+    Handle(Geom_BSplineSurface) surface = Handle(Geom_BSplineSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
+    if (!surface)
+        return TopoDS_Face();
+    std::vector<TopoDS_Wire>::iterator wireIt;
+    wireIt = wires.begin();
+    BRepBuilderAPI_MakeFace faceMaker(surface, *wireIt);
+    if (!faceMaker.IsDone())
+        return TopoDS_Face();
+
+    //add additional boundaries.
+    for (wireIt++; wireIt != wires.end(); ++wireIt)
+    {
+        faceMaker.Add(*wireIt);
+        if (!faceMaker.IsDone())
+            return TopoDS_Face();
+    }
+
+    //fix newly constructed face. Orientation doesn't seem to get fixed the first call.
+    ShapeFix_Face faceFixer(faceMaker.Face());
+    faceFixer.SetContext(new ShapeBuild_ReShape());
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return TopoDS_Face();
+    faceFixer.FixOrientation();
+    faceFixer.Perform();
+    if (faceFixer.Status(ShapeExtend_FAIL))
+        return TopoDS_Face();
+
+    return faceFixer.Face();
+}
+
+FaceTypedBSpline& ModelRefine::getBSplineObject()
+{
+    static FaceTypedBSpline object;
+    return object;
+}
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 FaceUniter::FaceUniter(const TopoDS_Shell &shellIn) : modifiedSignal(false)
 {
     workShell = shellIn;
@@ -603,6 +988,7 @@ bool FaceUniter::process()
     deletedShapes.clear();
     typeObjects.push_back(&getPlaneObject());
     typeObjects.push_back(&getCylinderObject());
+    typeObjects.push_back(&getBSplineObject());
     //add more face types.
 
     ModelRefine::FaceTypeSplitter splitter;
@@ -698,7 +1084,7 @@ bool FaceUniter::process()
         
         BRepLib_FuseEdges edgeFuse(workShell);
 // TODO: change this version after occ fix. Freecad Mantis 1450
-#if OCC_VERSION_HEX <= 0x070000
+#if OCC_VERSION_HEX <= 0x7fffff
         TopTools_IndexedMapOfShape map;
         collectConicEdges(workShell, map);
         edgeFuse.AvoidEdges(map);
@@ -747,7 +1133,8 @@ bool FaceUniter::process()
             TopTools_ListIteratorOfListOfShape edgeIt;
             for (edgeIt.Initialize(edges); edgeIt.More(); edgeIt.Next())
             {
-                modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
+                if (newEdges.IsBound(idx))
+                    modifiedShapes.push_back(std::make_pair(edgeIt.Value(), newEdges(idx)));
             }
             // TODO: Handle vertices that have disappeared in the fusion of the edges
         }

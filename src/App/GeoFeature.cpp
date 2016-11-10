@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2002    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,7 +27,7 @@
 #endif
 
 #include "GeoFeature.h"
-#define new DEBUG_CLIENTBLOCK
+
 using namespace App;
 
 

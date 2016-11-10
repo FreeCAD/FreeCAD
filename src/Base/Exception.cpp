@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -126,8 +126,10 @@ const char* XMLParseException::what() const throw()
 FileException::FileException(const char * sMessage, const char * sFileName)
   : Exception( sMessage ),file(sFileName)
 {
-    _sErrMsg += ": ";
-    _sErrMsg += sFileName;
+    if (sFileName) {
+        _sErrMsg += ": ";
+        _sErrMsg += sFileName;
+    }
 }
 
 FileException::FileException(const char * sMessage, const FileInfo& File)
@@ -304,6 +306,74 @@ RuntimeError::RuntimeError(const RuntimeError &inst)
 
 // ---------------------------------------------------------
 
+NotImplementedError::NotImplementedError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+NotImplementedError::NotImplementedError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+NotImplementedError::NotImplementedError(const NotImplementedError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+DivisionByZeroError::DivisionByZeroError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+DivisionByZeroError::DivisionByZeroError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+DivisionByZeroError::DivisionByZeroError(const DivisionByZeroError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+ExpressionError::ExpressionError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ExpressionError::ExpressionError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ExpressionError::ExpressionError(const ExpressionError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
+ParserError::ParserError(const char * sMessage)
+  : Exception(sMessage)
+{
+}
+
+ParserError::ParserError(const std::string& sMessage)
+  : Exception(sMessage)
+{
+}
+
+ParserError::ParserError(const ParserError &inst)
+ : Exception(inst)
+{
+}
+
+// ---------------------------------------------------------
+
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
 #include <stdexcept>
 #include <iostream>
@@ -330,7 +400,7 @@ SignalException::~SignalException()
 
 void SignalException::throw_signal(int signum)
 {
-    std::cerr << "SIGSEGV signal raised" << std::endl;
+    std::cerr << "SIGSEGV signal raised: " << signum << std::endl;
     throw std::runtime_error ("throw_signal");
 }
 #endif

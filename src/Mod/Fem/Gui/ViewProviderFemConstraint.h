@@ -24,12 +24,9 @@
 #ifndef GUI_VIEWPROVIDERFEMCONSTRAINT_H
 #define GUI_VIEWPROVIDERFEMCONSTRAINT_H
 
-#include <TopoDS_Shape.hxx>
-
-#include "Gui/ViewProviderGeometryObject.h"
+#include <Gui/ViewProviderGeometryObject.h>
 #include <QObject>
 #include <QVBoxLayout>
-#include <QTableWidget>
 
 class SoFontStyle;
 class SoText2;
@@ -37,13 +34,6 @@ class SoBaseColor;
 class SoTranslation;
 class SbRotation;
 class SoMaterial;
-
-namespace Gui  {
-class View3DInventorViewer;
-    namespace TaskView {
-        class TaskDialog;
-    }
-}
 
 namespace FemGui
 {
@@ -75,6 +65,9 @@ public:
     std::vector<App::DocumentObject*> claimChildren(void)const;
     void setupContextMenu(QMenu*, QObject*, const char*);
 
+    static std::string gethideMeshShowPartStr();
+    static std::string gethideMeshShowPartStr(const std::string showConstr);
+
 protected:
     void onChanged(const App::Property* prop);
     virtual bool setEdit(int ModNum);
@@ -97,12 +90,18 @@ protected:
     static void createFixed(SoSeparator* sep, const double height, const double width, const bool gap = false);
     static SoSeparator* createFixed(const double height, const double width, const bool gap = false);
     static void updateFixed(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
+    static void createDisplacement(SoSeparator* sep, const double height, const double width, const bool gap = false);
+    static SoSeparator* createDisplacement(const double height, const double width, const bool gap = false);
+    static void updateDisplacement(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
+    static void createRotation(SoSeparator* sep, const double height, const double width, const bool gap = false);
+    static SoSeparator* createRotation(const double height, const double width, const bool gap = false);
+    static void updateRotation(const SoNode* node, const int idx, const double height, const double width, const bool gap = false);
 
 private:
     SoFontStyle      * pFont;
     SoText2          * pLabel;
     SoBaseColor      * pTextColor;
-    SoMaterial       * pMaterials;
+    SoBaseColor      * pMaterials;
 
 protected:
     SoSeparator      * pShapeSep;

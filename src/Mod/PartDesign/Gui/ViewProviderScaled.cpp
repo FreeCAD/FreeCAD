@@ -28,36 +28,11 @@
 
 #include "ViewProviderScaled.h"
 #include "TaskScaledParameters.h"
-#include <Mod/PartDesign/App/FeatureScaled.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
-#include <Gui/Command.h>
-#include <Gui/Application.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderScaled,PartDesignGui::ViewProviderTransformed)
 
-bool ViewProviderScaled::setEdit(int ModNum)
-{
-    ViewProviderTransformed::setEdit(ModNum);
-
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgScaledParameters *scaledDlg = NULL;
-
-        if (checkDlgOpen(scaledDlg)) {
-            // start the edit dialog
-            if (scaledDlg)
-                Gui::Control().showDialog(scaledDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgScaledParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters *ViewProviderScaled::getEditDialog() {
+    return new TaskDlgScaledParameters (this);
 }

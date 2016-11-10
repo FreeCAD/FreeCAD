@@ -24,24 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-class MeshPartDocument:
-	"MeshPart document"
-	def Info(self):
-		return "MeshPart document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("MeshPart")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "MeshPart/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "MeshPart")
-ParGrp.SetString("DocTemplateScript","TemplMeshPart.py")
-ParGrp.SetString("WorkBenchName",    "MeshPart Design")
-ParGrp.SetString("WorkBenchModule",  "MeshPartWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","MeshPart")
-

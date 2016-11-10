@@ -19,7 +19,6 @@
 
 namespace KDL {
 
-
 /////////////////// VectorAcc /////////////////////////////////////
 
 VectorAcc operator + (const VectorAcc& r1,const VectorAcc& r2) {
@@ -415,6 +414,7 @@ Twist FrameAcc::GetTwist() const {
 Twist FrameAcc::GetAccTwist() const {
     return Twist(p.dv,M.dw);
 }
+
 
 
 

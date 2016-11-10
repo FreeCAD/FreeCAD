@@ -26,6 +26,9 @@
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepCheck_Analyzer.hxx>
 # include <Standard_Failure.hxx>
+# include <TopoDS_Iterator.hxx>
+# include <TopTools_IndexedMapOfShape.hxx>
+# include <TopExp.hxx>
 #endif
 
 
@@ -83,9 +86,27 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
         }
     }
 
+    bool argumentsAreInCompound = false;
+    TopoDS_Shape compoundOfArguments;
+
+    //if only one source shape, and it is a compound - fuse children of the compound
+    if (s.size() == 1){
+        compoundOfArguments = s[0];
+        if (compoundOfArguments.ShapeType() == TopAbs_COMPOUND){
+            s.clear();
+            TopoDS_Iterator it(compoundOfArguments);
+            for (; it.More(); it.Next()) {
+                const TopoDS_Shape& aChild = it.Value();
+                s.push_back(aChild);
+            }
+            argumentsAreInCompound = true;
+        }
+    }
+
     if (s.size() >= 2) {
         try {
             std::vector<ShapeHistory> history;
+#if OCC_VERSION_HEX <= 0x060800
             TopoDS_Shape resShape = s.front();
             if (resShape.IsNull())
                 throw Base::Exception("Input shape is null");
@@ -112,6 +133,25 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
                     history.push_back(hist2);
                 }
             }
+#else
+            BRepAlgoAPI_Fuse mkFuse;
+            TopTools_ListOfShape shapeArguments,shapeTools;
+            shapeArguments.Append(s.front());
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin()+1; it != s.end(); ++it) {
+                if (it->IsNull())
+                    throw Base::Exception("Input shape is null");
+                shapeTools.Append(*it);
+            }
+            mkFuse.SetArguments(shapeArguments);
+            mkFuse.SetTools(shapeTools);
+            mkFuse.Build();
+            if (!mkFuse.IsDone())
+                throw Base::Exception("MultiFusion failed");
+            TopoDS_Shape resShape = mkFuse.Shape();
+            for (std::vector<TopoDS_Shape>::iterator it = s.begin(); it != s.end(); ++it) {
+                history.push_back(buildHistory(mkFuse, TopAbs_FACE, resShape, *it));
+            }
+#endif
             if (resShape.IsNull())
                 throw Base::Exception("Resulting shape is null");
 
@@ -133,6 +173,29 @@ App::DocumentObjectExecReturn *MultiFuse::execute(void)
             }
 
             this->Shape.setValue(resShape);
+
+
+            if (argumentsAreInCompound){
+                //combine histories of every child of source compound into one
+                ShapeHistory overallHist;
+                TopTools_IndexedMapOfShape facesOfCompound;
+                TopAbs_ShapeEnum type = TopAbs_FACE;
+                TopExp::MapShapes(compoundOfArguments, type, facesOfCompound);
+                for (std::size_t iChild = 0; iChild < history.size(); iChild++){ //loop over children of source compound
+                    //for each face of a child, find the inex of the face in compound, and assign the corresponding right-hand-size of the history
+                    TopTools_IndexedMapOfShape facesOfChild;
+                    TopExp::MapShapes(s[iChild], type, facesOfChild);
+                    for(std::pair<const int,ShapeHistory::List> &histitem: history[iChild].shapeMap){ //loop over elements of history - that is - over faces of the child of source compound
+                        int iFaceInChild = histitem.first;
+                        ShapeHistory::List &iFacesInResult = histitem.second;
+                        TopoDS_Shape srcFace = facesOfChild(iFaceInChild + 1); //+1 to convert our 0-based to OCC 1-bsed conventions
+                        int iFaceInCompound = facesOfCompound.FindIndex(srcFace)-1;
+                        overallHist.shapeMap[iFaceInCompound] = iFacesInResult; //this may overwrite existing info if the same face is used in several children of compound. This shouldn't be a problem, because the histories should match anyway...
+                    }
+                }
+                history.clear();
+                history.push_back(overallHist);
+            }
             this->History.setValues(history);
         }
         catch (Standard_Failure) {

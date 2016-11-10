@@ -35,6 +35,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "LinePy.h"
 #include "LinePy.cpp"
@@ -101,6 +102,30 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
+    double first, last;
+    if (PyArg_ParseTuple(args, "O!dd", &(LinePy::Type), &pLine, &first, &last)) {
+        // Copy line
+        LinePy* pcLine = static_cast<LinePy*>(pLine);
+        // get Geom_Line of line segment
+        Handle_Geom_TrimmedCurve that_curv = Handle_Geom_TrimmedCurve::DownCast
+            (pcLine->getGeomLineSegmentPtr()->handle());
+        Handle_Geom_Line that_line = Handle_Geom_Line::DownCast
+            (that_curv->BasisCurve());
+        // get Geom_Line of line segment
+        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            (this->getGeomLineSegmentPtr()->handle());
+        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+            (this_curv->BasisCurve());
+
+        Infinite = pcLine->Infinite;
+
+        // Assign the lines
+        this_line->SetLin(that_line->Lin());
+        this_curv->SetTrim(first, last);
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &pV1,
                                        &(Base::VectorPy::Type), &pV2)) {
@@ -114,7 +139,7 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
             GC_MakeSegment ms(gp_Pnt(v1.x,v1.y,v1.z),
                               gp_Pnt(v2.x,v2.y,v2.z));
             if (!ms.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(ms.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(ms.Status()));
                 return -1;
             }
 
@@ -133,11 +158,11 @@ int LinePy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of line failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of line failed");
             return -1;
         }
     }
@@ -162,7 +187,7 @@ PyObject* LinePy::setParameterRange(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return NULL;
     }
 

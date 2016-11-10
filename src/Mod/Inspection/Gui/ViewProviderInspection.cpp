@@ -51,7 +51,6 @@
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
-#include <Gui/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
@@ -261,9 +260,10 @@ void ViewProviderInspection::updateData(const App::Property* prop)
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
-            if (link) updateData(link);
+            if (link)
+                updateData(link);
+            setDistances();
         }
-        setDistances();
     }
     else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
         if (strcmp(prop->getName(), "SearchRadius") == 0) {
@@ -282,6 +282,9 @@ SoSeparator* ViewProviderInspection::getFrontRoot(void) const
 
 void ViewProviderInspection::setDistances()
 {
+    if (!pcObject)
+        return;
+
     App::Property* pDistances = pcObject->getPropertyByName("Distances");
     if (!pDistances) {
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
@@ -300,10 +303,10 @@ void ViewProviderInspection::setDistances()
         return;
     }
 
-    if (pcColorMat->diffuseColor.getNum() != (int)fValues.size())
-        pcColorMat->diffuseColor.setNum((int)fValues.size());
-    if (pcColorMat->transparency.getNum() != (int)fValues.size())
-        pcColorMat->transparency.setNum((int)fValues.size());
+    if (pcColorMat->diffuseColor.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->diffuseColor.setNum(static_cast<int>(fValues.size()));
+    if (pcColorMat->transparency.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->transparency.setNum(static_cast<int>(fValues.size()));
 
     SbColor * cols = pcColorMat->diffuseColor.startEditing();
     float   * tran = pcColorMat->transparency.startEditing();
@@ -312,10 +315,12 @@ void ViewProviderInspection::setDistances()
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
         App::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
-        if (pcColorBar->isVisible(*jt))
+        if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;
-        else
+        }
+        else {
             tran[j] = 0.8f;
+        }
     }
 
     pcColorMat->diffuseColor.finishEditing();
@@ -358,7 +363,7 @@ std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderInspection::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderInspection::OnChange(Base::Subject<int> &/*rCaller*/, int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -447,7 +452,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
-                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
+                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
@@ -472,10 +477,10 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             }
             else {
                 // the nearest picked point was not part of the view provider
-                SoRayPickAction action(view->getViewportRegion());
-                action.setPickAll(TRUE);
+                SoRayPickAction action(view->getSoRenderManager()->getViewportRegion());
+                action.setPickAll(true);
                 action.setPoint(mbe->getPosition());
-                action.apply(view->getSceneManager()->getSceneGraph());
+                action.apply(view->getSoRenderManager()->getSceneGraph());
 
                 const SoPickedPointList& pps = action.getPickedPointList();
                 for (int i=0; i<pps.getLength(); ++i) {

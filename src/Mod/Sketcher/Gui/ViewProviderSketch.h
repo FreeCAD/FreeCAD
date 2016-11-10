@@ -25,13 +25,19 @@
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
+#include <Mod/Part/App/BodyBase.h>
 #include <Inventor/SbImage.h>
 #include <Inventor/SbColor.h>
 #include <Base/Tools2D.h>
+#include <Base/Placement.h>
 #include <Gui/Selection.h>
+#include <Gui/GLPainter.h>
+#include <App/Part.h>
 #include <boost/signals.hpp>
 #include <QCoreApplication>
+#include <Gui/Document.h>
 
+#include <boost/signals.hpp>
 
 class TopoDS_Shape;
 class TopoDS_Face;
@@ -58,7 +64,6 @@ struct EditData;
 
 namespace Gui {
     class View3DInventorViewer;
-    class SoFCSelection;
 }
 
 namespace Sketcher {
@@ -94,6 +99,11 @@ public:
     virtual ~ViewProviderSketch();
 
     App::PropertyBool Autoconstraints;
+    App::PropertyPythonObject TempoVis;
+    App::PropertyBool HideDependent;
+    App::PropertyBool ShowLinks;
+    App::PropertyBool ShowSupport;
+    App::PropertyBool RestoreCamera;
 
     /// Draw all constraint icons
     /*! Except maybe the radius and lock ones? */
@@ -163,6 +173,9 @@ public:
                                            const Gui::View3DInventorViewer *viewer,
                                            const SbVec2s &cursorPos);
 
+    /*! Look at the center of the bounding of all selected items */
+    void centerSelection();
+
     /// box selection method
     void doBoxSelection(const SbVec2s &startPos, const SbVec2s &endPos,
                         const Gui::View3DInventorViewer *viewer);
@@ -204,10 +217,10 @@ public:
     /// is called when the Provider is in edit and a key event ocours. Only ESC ends edit.
     virtual bool keyPressed(bool pressed, int key);
     /// is called when the Provider is in edit and the mouse is clicked
-    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s &pos,
-                                    const Gui::View3DInventorViewer *viewer);
+    virtual bool mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos, const Gui::View3DInventorViewer* viewer);
     //@}
 
+    
     friend class DrawSketchHandler;
     friend struct ::EditData;
 
@@ -219,16 +232,15 @@ public:
     boost::signal<void (QString msg)> signalSolved;
     /// signals if the elements list has changed
     boost::signal<void ()> signalElementsChanged;
-    
-
+        
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void setEditViewer(Gui::View3DInventorViewer*, int ModNum);
     virtual void unsetEditViewer(Gui::View3DInventorViewer*);
     void deactivateHandler();
-    /// set up and solve the sketch
-    void solveSketch(void);
+    /// update solver information based on last solving at SketchObject
+    void UpdateSolverInformation(void);
     /// helper to detect whether the picked point lies on the sketch
     bool isPointOnSketch(const SoPickedPoint *pp) const;
     /// get called by the container whenever a property has been changed
@@ -243,6 +255,14 @@ protected:
     EditData *edit;
     /// build up the visual of the constraints
     void rebuildConstraintsVisual(void);
+    
+    void slotUndoDocument(const Gui::Document&);
+    void slotRedoDocument(const Gui::Document&);
+    
+protected:
+    boost::signals::connection connectUndoDocument;
+    boost::signals::connection connectRedoDocument;
+    
 
     /** @name Protected helpers for drawing constraint icons*/
     //@{
@@ -277,6 +297,9 @@ protected:
 
         /// Pointer to SoInfo object where we store the constraint IDs that the icon refers to
         SoInfo *infoPtr;
+        
+        /// Angle to rotate an icon
+        double iconRotation;
     };
 
     /// Internal type used for drawing constraint icons
@@ -299,6 +322,7 @@ protected:
                             const QColor &iconColor,
                             const QStringList &labels,
                             const QList<QColor> &labelColors,
+                            double iconRotation,
                             //! Gets populated with bounding boxes (in icon
                             //! image coordinates) for the icon at left, then
                             //! labels for different constraints.
@@ -329,6 +353,9 @@ protected:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints(void);
 
+    // handle stacked placements of App::Parts
+    Base::Placement getPlacement();
+    
     // modes while sketching
     SketchMode Mode;
 
@@ -342,6 +369,7 @@ protected:
     static SbColor FullyConstrainedColor;
     static SbColor ConstrDimColor;
     static SbColor ConstrIcoColor;
+    static SbColor NonDrivingConstrDimColor;
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
@@ -363,7 +391,12 @@ protected:
     // reference coordinates for relative operations
     double xInit,yInit;
     bool relative;
-    int antiAliasing;
+
+    std::string oldWb;
+
+    Gui::Rubberband* rubberband;
+    App::Part*          parentPart = nullptr;
+    Part::BodyBase*     parentBody = nullptr;
 };
 
 } // namespace PartGui

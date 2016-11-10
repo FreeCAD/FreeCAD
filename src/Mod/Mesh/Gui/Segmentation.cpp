@@ -41,15 +41,17 @@
 
 using namespace MeshGui;
 
-Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WFlags fl)
+Segmentation::Segmentation(Mesh::Feature* mesh, QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl), myMesh(mesh)
 {
     ui = new Ui_Segmentation;
     ui->setupUi(this);
     ui->numPln->setRange(1, INT_MAX);
     ui->numPln->setValue(100);
+    ui->radCyl->setRange(0, INT_MAX);
     ui->numCyl->setRange(1, INT_MAX);
     ui->numCyl->setValue(100);
+    ui->radSph->setRange(0, INT_MAX);
     ui->numSph->setRange(1, INT_MAX);
     ui->numSph->setValue(100);
 }
@@ -78,11 +80,11 @@ void Segmentation::accept()
     std::vector<MeshCore::MeshSurfaceSegment*> segm;
     if (ui->groupBoxCyl->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureCylindricalSegment
-            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value()));
+            (meshCurv.GetCurvature(), ui->numCyl->value(), ui->tol1Cyl->value(), ui->tol2Cyl->value(), ui->radCyl->value().getValue()));
     }
     if (ui->groupBoxSph->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvatureSphericalSegment
-            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value()));
+            (meshCurv.GetCurvature(), ui->numSph->value(), ui->tolSph->value(), ui->radSph->value().getValue()));
     }
     if (ui->groupBoxPln->isChecked()) {
         segm.push_back(new MeshCore::MeshCurvaturePlanarSegment

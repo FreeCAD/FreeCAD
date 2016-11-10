@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,12 +22,14 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QSplitter>
+#endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 
 #include "CombiView.h"
 #include "BitmapFactory.h"
-#include "iisTaskPanel/include/iisTaskPanel"
 #include "PropertyView.h"
 #include "ProjectView.h"
 #include "Application.h"

@@ -108,10 +108,44 @@ int DownloadManager::activeDownloads() const
     return count;
 }
 
+QUrl DownloadManager::redirectUrl(const QUrl& url) const
+{
+    QUrl redirectUrl = url;
+    if (url.host() == QLatin1String("www.dropbox.com")) {
+        QList< QPair<QString, QString> > query = url.queryItems();
+        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
+            if (it->first == QLatin1String("dl")) {
+                if (it->second == QLatin1String("0\r\n")) {
+                    redirectUrl.removeQueryItem(QLatin1String("dl"));
+                    redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+                }
+                else if (it->second == QLatin1String("0")) {
+                    redirectUrl.removeQueryItem(QLatin1String("dl"));
+                    redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
+                }
+                break;
+            }
+        }
+    }
+    else {
+        // When the url comes from drag and drop it may end with CR+LF. This may cause problems
+        // and thus should be removed.
+        QString str = redirectUrl.toString();
+        if (str.endsWith(QLatin1String("\r\n"))) {
+            str.chop(2);
+            redirectUrl.setUrl(str);
+        }
+    }
+
+    return redirectUrl;
+}
+
 void DownloadManager::download(const QNetworkRequest &request, bool requestFileName)
 {
     if (request.url().isEmpty())
         return;
+
+    std::cout << request.url().toString().toStdString() << std::endl;
     handleUnsupportedContent(m_manager->get(request), requestFileName);
 }
 
@@ -233,7 +267,7 @@ void DownloadManager::load()
         QString fileName = settings.value(key + QLatin1String("location")).toString();
         bool done = settings.value(key + QLatin1String("done"), true).toBool();
         if (!url.isEmpty() && !fileName.isEmpty()) {
-            DownloadItem *item = new DownloadItem(0, this);
+            DownloadItem *item = new DownloadItem(0, false, this);
             item->m_output.setFileName(fileName);
             item->fileNameLabel->setText(QFileInfo(item->m_output.fileName()).fileName());
             item->m_url = url;

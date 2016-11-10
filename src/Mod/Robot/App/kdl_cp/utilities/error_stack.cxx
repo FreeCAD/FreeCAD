@@ -26,8 +26,8 @@ namespace KDL {
 // interprete error messages from I/O
 typedef std::stack<std::string>  ErrorStack;
 
-ErrorStack errorstack;
 // should be in Thread Local Storage if this gets multithreaded one day...
+static ErrorStack errorstack;
 
 
 void IOTrace(const std::string& description) {

@@ -14,8 +14,9 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${PCL_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${QT_QTCORE_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
 
@@ -30,8 +31,6 @@ generate_from_xml(PointsPy)
 SET(Points_SRCS
     AppPoints.cpp
     AppPointsPy.cpp
-    FeaturePointsImportAscii.cpp
-    FeaturePointsImportAscii.h
     Points.cpp
     Points.h
     PointsPy.xml
@@ -48,6 +47,8 @@ SET(Points_SRCS
     Properties.h
     PropertyPointKernel.cpp
     PropertyPointKernel.h
+    Structured.cpp
+    Structured.h
 )
 
 add_library(Points SHARED ${Points_SRCS})

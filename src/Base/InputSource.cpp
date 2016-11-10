@@ -57,6 +57,8 @@ using namespace std;
 StdInputStream::StdInputStream( std::istream& Stream, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager ) 
   : stream(Stream), fMemoryManager(manager)
 {
+    state.flags |= QTextCodec::IgnoreHeader;
+    state.flags |= QTextCodec::ConvertInvalidToNull;
 }
 
 
@@ -84,37 +86,19 @@ unsigned int StdInputStream::readBytes( XMLByte* const  toFill, const unsigned i
   stream.read((char *)toFill,maxToRead);
   XMLSize_t len = stream.gcount();
 
-  // See http://de.wikipedia.org/wiki/UTF-8#Kodierung
-  for (XMLSize_t i=0; i<len; i++) {
-      XMLByte& b = toFill[i];
-      int seqlen = 0;
-
-      if ((b & 0x80) == 0) {
-          seqlen = 1;
-      }
-      else if ((b & 0xE0) == 0xC0) {
-          seqlen = 2;
-          if (b == 0xC0 || b == 0xC1)
-              b = '?'; // these both values are not allowed
-      }
-      else if ((b & 0xF0) == 0xE0) {
-          seqlen = 3;
-      }
-      else if ((b & 0xF8) == 0xF0) {
-          seqlen = 4;
-      }
-      else {
-          b = '?';
-      }
-
-      for(int j = 1; j < seqlen; ++j) {
-          i++;
-          XMLByte& c = toFill[i];
-          // range of second, third or fourth byte
-          if ((c & 0xC0) != 0x80) {
-              b = '?';
-              c = '?';
-          }
+  QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+  const QString text = codec->toUnicode((char *)toFill, len, &state);
+  if (state.invalidChars > 0) {
+      // In case invalid characters were found decode back to 'utf-8' and replace
+      // them with '?'
+      // First, Qt replaces invalid characters with '\0' (see ConvertInvalidToNull)
+      // but Xerces doesn't like this because it handles this as termination. Thus,
+      // we have to go through the array and replace '\0' with '?'.
+      XMLSize_t pos = 0;
+      QByteArray ba = codec->fromUnicode(text);
+      for (int i=0; i<ba.length(); i++, pos++) {
+          if (pos < len && ba[i] == '\0')
+              toFill[i] = '?';
       }
   }
 
@@ -136,37 +120,19 @@ XMLSize_t StdInputStream::readBytes( XMLByte* const  toFill, const XMLSize_t max
   stream.read((char *)toFill,maxToRead);
   XMLSize_t len = stream.gcount();
 
-  // See http://de.wikipedia.org/wiki/UTF-8#Kodierung
-  for (XMLSize_t i=0; i<len; i++) {
-      XMLByte& b = toFill[i];
-      int seqlen = 0;
-
-      if ((b & 0x80) == 0) {
-          seqlen = 1;
-      }
-      else if ((b & 0xE0) == 0xC0) {
-          seqlen = 2;
-          if (b == 0xC0 || b == 0xC1)
-              b = '?'; // these both values are not allowed
-      }
-      else if ((b & 0xF0) == 0xE0) {
-          seqlen = 3;
-      }
-      else if ((b & 0xF8) == 0xF0) {
-          seqlen = 4;
-      }
-      else {
-          b = '?';
-      }
-
-      for(int j = 1; j < seqlen; ++j) {
-          i++;
-          XMLByte& c = toFill[i];
-          // range of second, third or fourth byte
-          if ((c & 0xC0) != 0x80) {
-              b = '?';
-              c = '?';
-          }
+  QTextCodec *codec = QTextCodec::codecForName("UTF-8");
+  const QString text = codec->toUnicode((char *)toFill, len, &state);
+  if (state.invalidChars > 0) {
+      // In case invalid characters were found decode back to 'utf-8' and replace
+      // them with '?'
+      // First, Qt replaces invalid characters with '\0' (see ConvertInvalidToNull)
+      // but Xerces doesn't like this because it handles this as termination. Thus,
+      // we have to go through the array and replace '\0' with '?'.
+      XMLSize_t pos = 0;
+      QByteArray ba = codec->fromUnicode(text);
+      for (int i=0; i<ba.length(); i++, pos++) {
+          if (pos < len && ba[i] == '\0')
+              toFill[i] = '?';
       }
   }
 

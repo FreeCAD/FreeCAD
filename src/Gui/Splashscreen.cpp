@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
 # include <QApplication>
 # include <QClipboard>
 # include <QDialogButtonBox>
@@ -33,12 +32,14 @@
 # include <QTextStream>
 # include <QWaitCondition>
 # include <Inventor/C/basic.h>
-# include <Inventor/Qt/SoQtBasic.h>
 #endif
+
+#include <LibraryVersions.h>
 
 #include "Splashscreen.h"
 #include "ui_AboutApplication.h"
 #include <Base/Console.h>
+#include <CXX/WrapPython.h>
 #include <App/Application.h>
 #include <Gui/MainWindow.h>
 
@@ -53,7 +54,7 @@ namespace Gui {
 class SplashObserver : public Base::ConsoleObserver
 {
 public:
-    SplashObserver(QSplashScreen* splasher=0, const char* name=0)
+    SplashObserver(QSplashScreen* splasher=0)
       : splash(splasher), alignment(Qt::AlignBottom|Qt::AlignLeft), textColor(Qt::black)
     {
         Base::Console().AttachObserver(this);
@@ -62,7 +63,7 @@ public:
         const std::map<std::string,std::string>& cfg = App::GetApplication().Config();
         std::map<std::string,std::string>::const_iterator al = cfg.find("SplashAlignment");
         if (al != cfg.end()) {
-            QString alt = QString::fromAscii(al->second.c_str());
+            QString alt = QString::fromLatin1(al->second.c_str());
             int align=0;
             if (alt.startsWith(QLatin1String("VCenter")))
                 align = Qt::AlignVCenter;
@@ -84,7 +85,7 @@ public:
         // choose text color
         std::map<std::string,std::string>::const_iterator tc = cfg.find("SplashTextColor");
         if (tc != cfg.end()) {
-            QColor col; col.setNamedColor(QString::fromAscii(tc->second.c_str()));
+            QColor col; col.setNamedColor(QString::fromLatin1(tc->second.c_str()));
             if (col.isValid())
                 textColor = col;
         }
@@ -101,18 +102,24 @@ public:
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Message(const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Error  (const char * s)
     {
 #ifdef FC_DEBUG
         Log(s);
+#else
+        Q_UNUSED(s);
 #endif
     }
     void Log (const char * s)
@@ -135,7 +142,7 @@ public:
 
         splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
         QMutex mutex;
-        mutex.lock();
+        QMutexLocker ml(&mutex);
         QWaitCondition().wait(&mutex, 50);
     }
 
@@ -151,7 +158,7 @@ private:
 /**
  * Constructs a splash screen that will display the pixmap.
  */
-SplashScreen::SplashScreen(  const QPixmap & pixmap , Qt::WFlags f )
+SplashScreen::SplashScreen(  const QPixmap & pixmap , Qt::WindowFlags f )
     : QSplashScreen(pixmap, f)
 {
     // write the messages to splasher
@@ -218,11 +225,29 @@ void AboutDialogFactory::setDefaultFactory(AboutDialogFactory *f)
 AboutDialog::AboutDialog(bool showLic, QWidget* parent)
   : QDialog(parent, Qt::FramelessWindowHint), ui(new Ui_AboutApplication)
 {
+    Q_UNUSED(showLic);
+
     setModal(true);
     ui->setupUi(this);
     ui->labelSplashPicture->setPixmap(getMainWindow()->splashImage());
-    if (!showLic)
-        ui->licenseButton->hide();
+//    if (showLic) { // currently disabled. Additional license blocks are always shown.
+        QString info(QLatin1String("SUCH DAMAGES.<hr/>"));
+        // any additional piece of text to be added after the main license text goes below.
+        // Please set title in <h2> tags, license text in <p> tags 
+        // and add an <hr/> tag at the end to nicely separate license blocks
+#ifdef _USE_3DCONNEXION_SDK
+        info += QString::fromLatin1(
+            "<h2>3D Mouse Support</h2>"
+            "<p>Development tools and related technology provided under license from 3Dconnexion."
+            "(c) 1992 - 2012 3Dconnexion. All rights reserved</p>"
+            "<hr/>"
+            );
+#endif
+        QString lictext = ui->textBrowserLicense->toHtml();
+        lictext.replace(QString::fromLatin1("SUCH DAMAGES."),info);
+        ui->textBrowserLicense->setHtml(lictext);
+//    }
+    ui->tabWidget->setCurrentIndex(0); // always start on the About tab
     setupLabels();
 }
 
@@ -243,22 +268,56 @@ static QString getOperatingSystem()
     switch(QSysInfo::windowsVersion())
     {
         case QSysInfo::WV_NT:
-            return QString::fromAscii("Windows NT");
+            return QString::fromLatin1("Windows NT");
         case QSysInfo::WV_2000:
-            return QString::fromAscii("Windows 2000");
+            return QString::fromLatin1("Windows 2000");
         case QSysInfo::WV_XP:
-            return QString::fromAscii("Windows XP");
+            return QString::fromLatin1("Windows XP");
         case QSysInfo::WV_2003:
-            return QString::fromAscii("Windows Server 2003");
+            return QString::fromLatin1("Windows Server 2003");
         case QSysInfo::WV_VISTA:
-            return QString::fromAscii("Windows Vista");
+            return QString::fromLatin1("Windows Vista");
         case QSysInfo::WV_WINDOWS7:
-            return QString::fromAscii("Windows 7");
+            return QString::fromLatin1("Windows 7");
+#if QT_VERSION >= 0x040800
+        case QSysInfo::WV_WINDOWS8:
+            return QString::fromLatin1("Windows 8");
+#endif
+#if ((QT_VERSION >= 0x050200) || (QT_VERSION >= 0x040806 && QT_VERSION < 0x050000))
+        case QSysInfo::WV_WINDOWS8_1:
+            return QString::fromLatin1("Windows 8.1");
+#endif
+#if QT_VERSION >= 0x040807
+        case QSysInfo::WV_WINDOWS10:
+            return QString::fromLatin1("Windows 10");
+#endif
         default:
-            return QString::fromAscii("Windows");
+            return QString::fromLatin1("Windows");
     }
 #elif defined (Q_OS_MAC)
-    return QString::fromAscii("Mac OS X");
+    switch(QSysInfo::MacVersion())
+    {
+        case QSysInfo::MV_10_3:
+            return QString::fromLatin1("Mac OS X 10.3");
+        case QSysInfo::MV_10_4:
+            return QString::fromLatin1("Mac OS X 10.4");
+        case QSysInfo::MV_10_5:
+            return QString::fromLatin1("Mac OS X 10.5");
+#if QT_VERSION >= 0x040700
+        case QSysInfo::MV_10_6:
+            return QString::fromLatin1("Mac OS X 10.6");
+#endif
+#if QT_VERSION >= 0x040800
+        case QSysInfo::MV_10_7:
+            return QString::fromLatin1("Mac OS X 10.7");
+        case QSysInfo::MV_10_8:
+            return QString::fromLatin1("Mac OS X 10.8");
+        case QSysInfo::MV_10_9:
+            return QString::fromLatin1("Mac OS X 10.9");
+#endif
+        default:
+            return QString::fromLatin1("Mac OS X");
+    }
 #elif defined (Q_OS_LINUX)
     QString exe(QLatin1String("lsb_release"));
     QStringList args;
@@ -269,20 +328,17 @@ static QString getOperatingSystem()
     if (proc.waitForStarted() && proc.waitForFinished()) {
         QByteArray info = proc.readAll();
         info.replace('\n',"");
-        return QString::fromAscii((const char*)info);
+        return QString::fromLatin1((const char*)info);
     }
 
-    return QString::fromAscii("Linux");
+    return QString::fromLatin1("Linux");
 #elif defined (Q_OS_UNIX)
-    return QString::fromAscii("UNIX");
+    return QString::fromLatin1("UNIX");
 #else
     return QString();
 #endif
 }
 
-#if defined(Q_OS_WIN32) || defined(Q_OS_WIN64)
-typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
-#endif
 static int getWordSizeOfOS()
 {
 #if defined(Q_OS_WIN64)
@@ -291,9 +347,10 @@ static int getWordSizeOfOS()
 
     // determine if 32-bit process running on 64-bit windows in WOW64 emulation
     // or 32-bit process running on 32-bit windows
-    // default bIsWow64 to FALSE for 32-bit process on 32-bit windows
+    // default bIsWow64 to false for 32-bit process on 32-bit windows
 
-    BOOL bIsWow64 = FALSE; // must default to FALSE
+    BOOL bIsWow64 = false; // must default to false
+    typedef BOOL (WINAPI *LPFN_ISWOW64PROCESS) (HANDLE, PBOOL);
 
     LPFN_ISWOW64PROCESS fnIsWow64Process = (LPFN_ISWOW64PROCESS) GetProcAddress(
         GetModuleHandle("kernel32"), "IsWow64Process");
@@ -363,7 +420,7 @@ void AboutDialog::setupLabels()
 #endif
     //avoid overriding user set style sheet
     if (qApp->styleSheet().isEmpty()) {
-        setStyleSheet(QString::fromAscii("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize));
+        setStyleSheet(QString::fromLatin1("Gui--Dialog--AboutDialog QLabel {font-size: %1pt;}").arg(fontSize));
     }
     
     QString exeName = qApp->applicationName();
@@ -371,44 +428,44 @@ void AboutDialog::setupLabels()
     std::map<std::string,std::string>::iterator it;
     QString banner  = QString::fromUtf8(config["CopyrightInfo"].c_str());
     banner = banner.left( banner.indexOf(QLatin1Char('\n')) );
-    QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
-    QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
-    QString build  = QString::fromAscii(config["BuildRevision"].c_str());
-    QString disda  = QString::fromAscii(config["BuildRevisionDate"].c_str());
-    QString mturl  = QString::fromAscii(config["MaintainerUrl"].c_str());
+    QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
+    QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+    QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
+    QString disda  = QString::fromLatin1(config["BuildRevisionDate"].c_str());
+    QString mturl  = QString::fromLatin1(config["MaintainerUrl"].c_str());
 
     QString author = ui->labelAuthor->text();
-    author.replace(QString::fromAscii("Unknown Application"), exeName);
-    author.replace(QString::fromAscii("(c) Unknown Author"), banner);
+    author.replace(QString::fromLatin1("Unknown Application"), exeName);
+    author.replace(QString::fromLatin1("(c) Unknown Author"), banner);
     ui->labelAuthor->setText(author);
     ui->labelAuthor->setUrl(mturl);
 
     QString version = ui->labelBuildVersion->text();
-    version.replace(QString::fromAscii("Unknown"), QString::fromAscii("%1.%2").arg(major).arg(minor));
+    version.replace(QString::fromLatin1("Unknown"), QString::fromLatin1("%1.%2").arg(major).arg(minor));
     ui->labelBuildVersion->setText(version);
 
     QString revision = ui->labelBuildRevision->text();
-    revision.replace(QString::fromAscii("Unknown"), build);
+    revision.replace(QString::fromLatin1("Unknown"), build);
     ui->labelBuildRevision->setText(revision);
 
     QString date = ui->labelBuildDate->text();
-    date.replace(QString::fromAscii("Unknown"), disda);
+    date.replace(QString::fromLatin1("Unknown"), disda);
     ui->labelBuildDate->setText(date);
 
     QString os = ui->labelBuildOS->text();
-    os.replace(QString::fromAscii("Unknown"), SystemInfo::getOperatingSystem());
+    os.replace(QString::fromLatin1("Unknown"), SystemInfo::getOperatingSystem());
     ui->labelBuildOS->setText(os);
 
     QString platform = ui->labelBuildPlatform->text();
-    platform.replace(QString::fromAscii("Unknown"),
-        QString::fromAscii("%1-bit").arg(QSysInfo::WordSize));
+    platform.replace(QString::fromLatin1("Unknown"),
+        QString::fromLatin1("%1-bit").arg(QSysInfo::WordSize));
     ui->labelBuildPlatform->setText(platform);
     
     // branch name
     it = config.find("BuildRevisionBranch");
     if (it != config.end()) {
         QString branch = ui->labelBuildBranch->text();
-        branch.replace(QString::fromAscii("Unknown"), QString::fromAscii(it->second.c_str()));
+        branch.replace(QString::fromLatin1("Unknown"), QString::fromUtf8(it->second.c_str()));
         ui->labelBuildBranch->setText(branch);
     }
     else {
@@ -420,7 +477,7 @@ void AboutDialog::setupLabels()
     it = config.find("BuildRevisionHash");
     if (it != config.end()) {
         QString hash = ui->labelBuildHash->text();
-        hash.replace(QString::fromAscii("Unknown"), QString::fromAscii(it->second.c_str()));
+        hash.replace(QString::fromLatin1("Unknown"), QString::fromLatin1(it->second.c_str()));
         ui->labelBuildHash->setText(hash);
     }
     else {
@@ -429,67 +486,17 @@ void AboutDialog::setupLabels()
     }
 }
 
-namespace Gui {
-namespace Dialog {
-
-class GuiExport LicenseDialog : public QDialog
-{
-public:
-    LicenseDialog(QWidget *parent = 0) : QDialog(parent, Qt::FramelessWindowHint)
-    {
-        QString info;
-#ifdef _USE_3DCONNEXION_SDK
-        info = QString::fromAscii(
-            "3D Mouse Support:\n"
-            "Development tools and related technology provided under license from 3Dconnexion.\n"
-            "(c) 1992 - 2012 3Dconnexion. All rights reserved");
-#endif
-        statusLabel = new QLabel(info);
-        buttonBox = new QDialogButtonBox;
-        buttonBox->setStandardButtons(QDialogButtonBox::Ok);
-        connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-
-        QHBoxLayout *topLayout = new QHBoxLayout;
-        topLayout->addWidget(statusLabel);
-
-        QVBoxLayout *mainLayout = new QVBoxLayout;
-        mainLayout->addLayout(topLayout);
-        mainLayout->addWidget(buttonBox);
-        setLayout(mainLayout);
-
-        setWindowTitle(tr("Copyright"));
-    }
-    ~LicenseDialog()
-    {
-    }
-
-private:
-    QLabel *statusLabel;
-    QDialogButtonBox *buttonBox;
-};
-
-} // namespace Dialog
-} // namespace Gui
-
-void AboutDialog::on_licenseButton_clicked()
-{
-#ifdef _USE_3DCONNEXION_SDK
-    LicenseDialog dlg(this);
-    dlg.exec();
-#endif
-}
-
 void AboutDialog::on_copyButton_clicked()
 {
     QString data;
     QTextStream str(&data);
     std::map<std::string, std::string>& config = App::Application::Config();
     std::map<std::string,std::string>::iterator it;
-    QString exe = QString::fromAscii(App::GetApplication().getExecutableName());
+    QString exe = QString::fromLatin1(App::GetApplication().getExecutableName());
 
-    QString major  = QString::fromAscii(config["BuildVersionMajor"].c_str());
-    QString minor  = QString::fromAscii(config["BuildVersionMinor"].c_str());
-    QString build  = QString::fromAscii(config["BuildRevision"].c_str());
+    QString major  = QString::fromLatin1(config["BuildVersionMajor"].c_str());
+    QString minor  = QString::fromLatin1(config["BuildVersionMinor"].c_str());
+    QString build  = QString::fromLatin1(config["BuildRevision"].c_str());
     str << "OS: " << SystemInfo::getOperatingSystem() << endl;
     int wordSize = SystemInfo::getWordSizeOfOS();
     if (wordSize > 0) {
@@ -497,9 +504,18 @@ void AboutDialog::on_copyButton_clicked()
     }
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit" << endl;
     str << "Version: " << major << "." << minor << "." << build << endl;
+#if defined(_DEBUG) || defined(DEBUG)
+    str << "Build type: Debug" << endl;
+#elif defined(NDEBUG)
+    str << "Build type: Release" << endl;
+#elif defined(CMAKE_BUILD_TYPE)
+    str << "Build type: " << CMAKE_BUILD_TYPE << endl;
+#else
+    str << "Build type: Unknown" << endl;
+#endif
     it = config.find("BuildRevisionBranch");
     if (it != config.end())
-        str << "Branch: " << it->second.c_str() << endl;
+        str << "Branch: " << QString::fromUtf8(it->second.c_str()) << endl;
     it = config.find("BuildRevisionHash");
     if (it != config.end())
         str << "Hash: " << it->second.c_str() << endl;
@@ -507,10 +523,16 @@ void AboutDialog::on_copyButton_clicked()
     str << "Python version: " << PY_VERSION << endl;
     str << "Qt version: " << QT_VERSION_STR << endl;
     str << "Coin version: " << COIN_VERSION << endl;
-    str << "SoQt version: " << SOQT_VERSION << endl;
-    it = config.find("OCC_VERSION");
-    if (it != config.end())
-        str << "OCC version: " << it->second.c_str() << endl;
+#if defined(HAVE_OCC_VERSION)
+    str << "OCC version: "
+        << OCC_VERSION_MAJOR << "."
+        << OCC_VERSION_MINOR << "."
+        << OCC_VERSION_MAINTENANCE
+#ifdef OCC_VERSION_DEVELOPMENT
+        << "." OCC_VERSION_DEVELOPMENT
+#endif
+        << endl;
+#endif
 
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);

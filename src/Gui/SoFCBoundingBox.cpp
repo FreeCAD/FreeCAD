@@ -77,8 +77,8 @@ SoFCBoundingBox::SoFCBoundingBox ()
 
     SO_NODE_ADD_FIELD(minBounds, (-1.0, -1.0, -1.0));
     SO_NODE_ADD_FIELD(maxBounds, ( 1.0,  1.0,  1.0));
-    SO_NODE_ADD_FIELD(coordsOn, (TRUE));
-    SO_NODE_ADD_FIELD(dimensionsOn, (TRUE));
+    SO_NODE_ADD_FIELD(coordsOn, (true));
+    SO_NODE_ADD_FIELD(dimensionsOn, (true));
 
     root = new SoSeparator();
     SoSeparator *bboxSep = new SoSeparator();
@@ -218,11 +218,11 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
     state->pop();
 }
 
-void SoFCBoundingBox::generatePrimitives (SoAction *action)
+void SoFCBoundingBox::generatePrimitives (SoAction * /*action*/)
 {
 }
 
-void SoFCBoundingBox::computeBBox (SoAction *action, SbBox3f &box, SbVec3f &center)
+void SoFCBoundingBox::computeBBox (SoAction * /*action*/, SbBox3f &box, SbVec3f &center)
 {
     center = (minBounds.getValue() + maxBounds.getValue()) / 2.0f;
     box.setBounds(minBounds.getValue(), maxBounds.getValue());

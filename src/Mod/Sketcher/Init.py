@@ -25,20 +25,3 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
-class SketcherDocument:
-	"Sketcher document"
-	def Info(self):
-		return "Sketcher document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Sketcher")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Sketcher/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Sketcher")
-ParGrp.SetString("DocTemplateScript","TemplSketcher.py")
-ParGrp.SetString("WorkBenchName",    "Sketcher Design")
-ParGrp.SetString("WorkBenchModule",  "SketcherWorkbench.py")
-

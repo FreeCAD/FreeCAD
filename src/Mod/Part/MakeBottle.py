@@ -50,17 +50,14 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 	zMax = -1.0
 
 	for xp in myBody.Faces:
-		try:
-			surf = xp.Surface
-			if type(surf) == Part.Plane:
-				z = surf.Position.z
-				if z > zMax:
-					zMax = z
-					faceToRemove = xp
-		except:
-			continue
-	
-	# This doesn't work for any reason		
+		surf = xp.Surface
+		if type(surf) == Part.Plane:
+			z = surf.Position.z
+			if z > zMax:
+				zMax = z
+				faceToRemove = xp
+
+	# This doesn't work for any reason
 	myBody = myBody.makeThickness([faceToRemove],-myThickness/50 , 1.e-3)
 	myThreading = Part.makeThread(myNeckHeight/10, myNeckRadius*0.06, myHeight/10, myNeckRadius*0.99)
 	myThreading.translate(Base.Vector(0,0,myHeight))

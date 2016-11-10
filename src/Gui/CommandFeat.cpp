@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,6 +57,7 @@ StdCmdFeatRecompute::StdCmdFeatRecompute()
 
 void StdCmdFeatRecompute::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
 }
 
 //===========================================================================
@@ -77,6 +78,8 @@ StdCmdRandomColor::StdCmdRandomColor()
 
 void StdCmdRandomColor::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+
     // get the complete selection
     std::vector<SelectionSingleton::SelObj> sel = Selection().getCompleteSelection();
     for (std::vector<SelectionSingleton::SelObj>::iterator it = sel.begin(); it != sel.end(); ++it) {

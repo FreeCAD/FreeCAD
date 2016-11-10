@@ -64,22 +64,22 @@ unsigned long MeshPointArray::GetOrAddIndex (const MeshPoint &rclPoint)
 
 void MeshPointArray::SetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshPointArray::ResetFlag (MeshPoint::TFlagType tF) const
 {
-  for (MeshPointArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshPointArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshPointArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->SetProperty(ulVal);
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->SetProperty(ulVal);
 }
 
 void MeshPointArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pP = begin(); pP != end(); pP++) pP->ResetInvalid();
+  for (_TConstIterator pP = begin(); pP != end(); ++pP) pP->ResetInvalid();
 }
 
 MeshPointArray& MeshPointArray::operator = (const MeshPointArray &rclPAry)
@@ -134,22 +134,22 @@ void MeshFacetArray::DecrementIndices (unsigned long ulIndex)
 
 void MeshFacetArray::SetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->SetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->SetFlag(tF);
 }
 
 void MeshFacetArray::ResetFlag (MeshFacet::TFlagType tF) const
 {
-  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); i++) i->ResetFlag(tF);
+  for (MeshFacetArray::_TConstIterator i = begin(); i < end(); ++i) i->ResetFlag(tF);
 }
 
 void MeshFacetArray::SetProperty (unsigned long ulVal) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->SetProperty(ulVal);
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->SetProperty(ulVal);
 }
 
 void MeshFacetArray::ResetInvalid (void) const
 {
-  for (_TConstIterator pF = begin(); pF != end(); pF++) pF->ResetInvalid();
+  for (_TConstIterator pF = begin(); pF != end(); ++pF) pF->ResetInvalid();
 }
 
 MeshFacetArray& MeshFacetArray::operator = (const MeshFacetArray &rclFAry)
@@ -204,7 +204,7 @@ bool MeshGeomEdge::IntersectBoundingBox (const Base::BoundBox3f &rclBB) const
 
   Segment3<float> akSeg(p, n, 0.5f*len);
 
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);
@@ -252,7 +252,7 @@ bool MeshGeomFacet::IsPointOf (const Base::Vector3f &rclPoint, float fDistance) 
   float     fLP, fLE;
 
   clNorm.Normalize();
-  clProjPt.ProjToPlane(_aclPoints[0], clNorm);
+  clProjPt.ProjectToPlane(_aclPoints[0], clNorm);
 
     
   // Kante P0 --> P1
@@ -349,9 +349,9 @@ bool MeshGeomFacet::Weights(const Base::Vector3f& rclP, float& w0, float& w1, fl
   return fabs(w0+w1+w2-1.0f)<0.001f;
 }
 
-void MeshGeomFacet::ProjectPointToPlane (Base::Vector3f &rclPoint) const
+void MeshGeomFacet::ProjectPointToPlane (const Base::Vector3f &rclPoint, Base::Vector3f &rclProj) const
 {
-  rclPoint.ProjToPlane(_aclPoints[0], GetNormal());
+  rclPoint.ProjectToPlane(_aclPoints[0], GetNormal(), rclProj);
 }
 
 void MeshGeomFacet::ProjectFacetToPlane (MeshGeomFacet &rclFacet) const
@@ -388,7 +388,7 @@ void MeshGeomFacet::Enlarge (float fDist)
   _aclPoints[2] = clPNew[2];
 }
 
-bool MeshGeomFacet::IsDegenerated() const
+bool MeshGeomFacet::IsDegenerated(float epsilon) const
 {
     // The triangle has the points A,B,C where we can define the vector u and v
     // u = b-a and v = c-a. Then we define the line g: r = a+t*u and the plane
@@ -407,37 +407,45 @@ bool MeshGeomFacet::IsDegenerated() const
     // (u*u)*(v*v)-(u*v)*(u*v) < max(eps*(u*u),eps*(v*v)).
     //
     // BTW (u*u)*(v*v)-(u*v)*(u*v) is the same as (uxv)*(uxv).
-    Base::Vector3f u = _aclPoints[1] - _aclPoints[0];
-    Base::Vector3f v = _aclPoints[2] - _aclPoints[0];
-    float eps = MeshDefinitions::_fMinPointDistanceP2;
-    float uu = u*u; if (uu < eps) return true;
-    float vv = v*v; if (vv < eps) return true;
-    float uv = u*v;
-    if (uu*vv-uv*uv < eps*std::max<float>(uu,vv))
+    Base::Vector3d p1(this->_aclPoints[0].x,this->_aclPoints[0].y,this->_aclPoints[0].z);
+    Base::Vector3d p2(this->_aclPoints[1].x,this->_aclPoints[1].y,this->_aclPoints[1].z);
+    Base::Vector3d p3(this->_aclPoints[2].x,this->_aclPoints[2].y,this->_aclPoints[2].z);
+
+    Base::Vector3d u = p2 - p1;
+    Base::Vector3d v = p3 - p1;
+
+    double eps = epsilon;
+    double uu = u*u;
+    if (uu <= eps)
+        return true;
+    double vv = v*v;
+    if (vv <= eps)
+        return true;
+    double uv = u*v;
+    double crosssqr = uu*vv-uv*uv;
+    if (crosssqr <= eps*std::max<double>(uu,vv))
         return true;
     return false;
 }
 
-bool MeshGeomFacet::IsDeformed() const
+bool MeshGeomFacet::IsDeformed(float fCosOfMinAngle, float fCosOfMaxAngle) const
 {
-  float fCosAngle;
-  Base::Vector3f u,v;
+    float fCosAngle;
+    Base::Vector3f u,v;
 
-  for (int i=0; i<3; i++)
-  {
-    u = _aclPoints[(i+1)%3]-_aclPoints[i];
-    v = _aclPoints[(i+2)%3]-_aclPoints[i];
-    u.Normalize();
-    v.Normalize();
+    for (int i=0; i<3; i++) {
+        u = _aclPoints[(i+1)%3]-_aclPoints[i];
+        v = _aclPoints[(i+2)%3]-_aclPoints[i];
+        u.Normalize();
+        v.Normalize();
 
-    fCosAngle = u * v;
+        fCosAngle = u * v;
 
-    // x < 30° => cos(x) > sqrt(3)/2 or x > 120° => cos(x) < -0.5
-    if (fCosAngle > 0.86f || fCosAngle < -0.5f)
-      return true;
-  }
+        if (fCosAngle > fCosOfMinAngle || fCosAngle < fCosOfMaxAngle)
+            return true;
+    }
 
-  return false;
+    return false;
 }
 
 bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
@@ -473,7 +481,7 @@ bool MeshGeomFacet::IntersectBoundingBox ( const Base::BoundBox3f &rclBB ) const
   Segment3<float> akSeg2(p2, d2, len2/2.0f);
 
   // Build up the box
-  Base::Vector3f clCenter  = rclBB.CalcCenter();
+  Base::Vector3f clCenter  = rclBB.GetCenter();
   Vector3<float> center(clCenter.x, clCenter.y, clCenter.z);
   Vector3<float> axis0(1.0f, 0.0f, 0.0f);
   Vector3<float> axis1(0.0f, 1.0f, 0.0f);
@@ -748,7 +756,7 @@ void MeshGeomFacet::SubSample (float fStep, std::vector<Base::Vector3f> &rclPoin
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
@@ -771,7 +779,7 @@ bool MeshGeomFacet::IntersectWithFacet(const MeshGeomFacet &rclFacet) const
 }
 
 /**
- * Fast Triangle-Triangle Intersection Test by Tomas Möller
+ * Fast Triangle-Triangle Intersection Test by Tomas Moeller
  * http://www.acm.org/jgt/papers/Moller97/tritri.html
  * http://www.cs.lth.se/home/Tomas_Akenine_Moller/code/
  */
@@ -799,6 +807,18 @@ int MeshGeomFacet::IntersectWithFacet (const MeshGeomFacet& rclFacet,
 
     rclPt0.x = isectpt1[0]; rclPt0.y = isectpt1[1]; rclPt0.z = isectpt1[2];
     rclPt1.x = isectpt2[0]; rclPt1.y = isectpt2[1]; rclPt1.z = isectpt2[2];
+
+    // With extremely acute-angled triangles it may happen that the algorithm
+    // claims an intersection but the intersection points are far outside the
+    // model. So, a plausability check is to verify that the intersection points
+    // are inside the bounding boxes of both triangles.
+    Base::BoundBox3f box1 = this->GetBoundBox();
+    if (!box1.IsInBox(rclPt0) || !box1.IsInBox(rclPt1))
+        return 0;
+
+    Base::BoundBox3f box2 = rclFacet.GetBoundBox();
+    if (!box2.IsInBox(rclPt0) || !box2.IsInBox(rclPt1))
+        return 0;
 
     // Note: The algorithm delivers sometimes false-positives, i.e. it claims
     // that the two triangles intersect but they don't. It seems that this bad

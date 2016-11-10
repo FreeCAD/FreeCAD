@@ -71,7 +71,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
         for (clGridIter.Init(); clGridIter.More(); clGridIter.Next()) {
             clBBox3d = clGridIter.GetBoundBox();
             clViewBBox = clBBox3d.ProjectBox(myProj);
-            if (clViewBBox || clPolyBBox) {
+            if (clViewBBox.Intersect(clPolyBBox)) {
                 // save all elements in AllElements 
                 clGridIter.GetElements(aulAllElements);
             }
@@ -83,7 +83,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
 
         Base::SequencerLauncher seq("Check facets for intersection...", aulAllElements.size());
 
-        for (it = aulAllElements.begin(); it != aulAllElements.end(); it++) {
+        for (it = aulAllElements.begin(); it != aulAllElements.end(); ++it) {
             MeshGeomFacet clFacet = myMesh.GetFacet(*it);
             if (HasIntersection(clFacet))
                 raulFacets.push_back(*it);
@@ -618,10 +618,6 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
 
     MeshGeomFacet clFac;
 
-    Base::Vector3f pnt = myMesh._aclPointArray[facet._aulPoints[1]];
-    Base::Vector3f dir = myMesh._aclPointArray[facet._aulPoints[2]] - 
-                         myMesh._aclPointArray[facet._aulPoints[1]];
-
     float fDistEdgeP1 = clP1.DistanceToLineSegment(
         myMesh._aclPointArray[facet._aulPoints[1]],
         myMesh._aclPointArray[facet._aulPoints[2]]).Length();
@@ -727,7 +723,7 @@ void MeshTrimming::TrimFacets(const std::vector<unsigned long>& raulFacets, std:
     int iSide;
 
     Base::SequencerLauncher seq("trimming facets...", raulFacets.size());
-    for (std::vector<unsigned long>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); it++) {
+    for (std::vector<unsigned long>::const_iterator it=raulFacets.begin(); it!=raulFacets.end(); ++it) {
         clIntsct.clear();
         if (IsPolygonPointInFacet(*it, clP) == false) {
             // facet must be trimmed

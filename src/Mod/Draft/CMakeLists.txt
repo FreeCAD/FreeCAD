@@ -1,3 +1,8 @@
+add_subdirectory(App)
+
+IF (BUILD_GUI)
+    PYSIDE_WRAP_RC(Draft_QRC_SRCS Resources/Draft.qrc)
+ENDIF (BUILD_GUI)
 
 SET(Draft_SRCS
     Init.py
@@ -15,22 +20,35 @@ SET(Draft_SRCS
     importSVG.py
     importDWG.py
     importAirfoilDAT.py
-    Draft_rc.py
     TestDraft.py
 )
 SOURCE_GROUP("" FILES ${Draft_SRCS})
 
-SET(all_files ${Draft_SRCS})
-
 ADD_CUSTOM_TARGET(Draft ALL
-    SOURCES ${all_files}
+    SOURCES ${Draft_SRCS} ${Draft_QRC_SRCS}
 )
 
-fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/Mod/Draft" ${all_files})
+fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/Mod/Draft" ${Draft_SRCS})
+
+IF (BUILD_GUI)
+    fc_target_copy_resource(Draft
+        ${CMAKE_CURRENT_BINARY_DIR}
+        ${CMAKE_BINARY_DIR}/Mod/Draft
+        Draft_rc.py)
+ENDIF (BUILD_GUI)
 
 INSTALL(
     FILES
         ${Draft_SRCS}
+        ${Draft_QRC_SRCS}
     DESTINATION
         Mod/Draft
 )
+
+SET(DraftGuiIcon_SVG
+    Resources/icons/DraftWorkbench.svg
+)
+
+fc_copy_sources(Draft "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Draft" ${DraftGuiIcon_SVG})
+
+INSTALL(FILES ${DraftGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Draft/Resources/icons")

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="GeometryCurvePy" 
+      Name="ArcOfParabolaPy" 
+      Twin="GeomArcOfParabola" 
+      TwinPointer="GeomArcOfParabola" 
+      Include="Mod/Part/App/Geometry.h" 
+      Namespace="Part" 
+      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherNamespace="Part"
+      Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Abdullah Tahiri" EMail="abdullah.tahiri.yo[at]gmail.com" />
+      <UserDocu>Describes a portion of an parabola</UserDocu>
+    </Documentation>
+    <Attribute Name="Focal" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The focal length of the parabola.</UserDocu>
+      </Documentation>
+      <Parameter Name="Focal" Type="Float"/>
+    </Attribute>      
+    <Attribute Name="AngleXU" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The angle between the X axis and the major axis of the parabola.</UserDocu>
+      </Documentation>
+      <Parameter Name="AngleXU" Type="Float"/>
+    </Attribute> 
+    <Attribute Name="Center" ReadOnly="false">
+      <Documentation>
+        <UserDocu>Center of the parabola.</UserDocu>
+      </Documentation>
+      <Parameter Name="Center" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Axis" ReadOnly="false">
+      <Documentation>
+        <UserDocu>The axis direction of the parabola</UserDocu>
+      </Documentation>
+      <Parameter Name="Axis" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Parabola" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The internal parabola representation</UserDocu>
+      </Documentation>
+      <Parameter Name="Parabola" Type="Object"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>

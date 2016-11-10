@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,8 +34,6 @@
 namespace Part
 {
 
-class Property;
-
 /** The part shape property class.
  * @author Werner Mayer
  */
@@ -69,10 +67,6 @@ public:
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
     Base::BoundBox3d getBoundingBox() const;
-    /** Get faces from object with given accuracy */
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const;
     //@}
 
     /** @name Python interface */
@@ -94,11 +88,18 @@ public:
     unsigned int getMemSize (void) const;
     //@}
 
+    /// Get valid paths for this property; used by auto completer
+    virtual void getPaths(std::vector<App::ObjectIdentifier> & paths) const;
+
 private:
     TopoShape _Shape;
 };
 
 struct PartExport ShapeHistory {
+    /**
+    * @brief MapList: key is index of subshape (of type 'type') in source
+    * shape. Value is list of indexes of subshapes in result shape.
+    */
     typedef std::map<int, std::vector<int> > MapList;
     typedef std::vector<int> List;
 

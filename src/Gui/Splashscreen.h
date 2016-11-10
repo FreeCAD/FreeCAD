@@ -40,7 +40,7 @@ class SplashScreen : public QSplashScreen
     Q_OBJECT
 
 public:
-    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WFlags f = 0 );
+    SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = 0 );
     ~SplashScreen();
 
 protected:
@@ -84,7 +84,6 @@ protected:
     void setupLabels();
 
 protected Q_SLOTS:
-    virtual void on_licenseButton_clicked();
     virtual void on_copyButton_clicked();
 
 private:

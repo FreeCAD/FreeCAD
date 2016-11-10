@@ -23,6 +23,11 @@
         <UserDocu>Save the document under a new name to disk</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="saveCopy">
+      <Documentation>
+        <UserDocu>Save a copy of the document under a new name to disk</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="load">
       <Documentation>
         <UserDocu>Load the document from the given path</UserDocu>
@@ -31,6 +36,11 @@
     <Methode Name="restore">
       <Documentation>
         <UserDocu>Restore the document from disk</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="mergeProject">
+      <Documentation>
+        <UserDocu>Merges this document with another project file</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="exportGraphviz">
@@ -65,12 +75,14 @@
     </Methode>
     <Methode Name="copyObject">
       <Documentation>
-        <UserDocu>Copy an object from another document to this document</UserDocu>
+        <UserDocu>copyObject(object, bool with_dependencies = False, bool ignored_argument = False)
+        Copy an object from another document to this document. If with_dependencies is True, all objects this object depends on are copied too.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="moveObject">
       <Documentation>
-        <UserDocu>Move an object from another document to this document</UserDocu>
+        <UserDocu>moveObject(object, bool with_dependencies = False)
+        Transfers an object from another document to this document. If with_dependencies is True, all objects this object depends on are transferred too.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="undo">

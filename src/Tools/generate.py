@@ -1,6 +1,6 @@
 #! python
 # -*- coding: utf-8 -*-
-# (c) 2006 Jürgen Riegel  GPL
+# (c) 2006 JÃ¼rgen Riegel  GPL
 
 Usage = """generate - generates a FreeCAD Module out of an XML model
 

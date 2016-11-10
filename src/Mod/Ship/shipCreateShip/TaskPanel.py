@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -26,9 +26,11 @@ import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
 import Preview
+import Tools
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
+import shipUtils.Locale as Locale
 
 class TaskPanel:
     def __init__(self):
@@ -39,19 +41,16 @@ class TaskPanel:
     def accept(self):
         """Create the ship instance"""
         self.preview.clean()
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Ship")
-        ship = Instance.Ship(obj, self.solids)
-        Instance.ViewProviderShip(obj.ViewObject)
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.length = self.widget(QtGui.QLineEdit, "Length")
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        obj.Length = form.length.text()
-        obj.Breadth = form.breadth.text()
-        obj.Draft = form.draft.text()
-        App.ActiveDocument.recompute()
+        Tools.createShip(self.solids,
+                         Locale.fromString(form.length.text()),
+                         Locale.fromString(form.breadth.text()),
+                         Locale.fromString(form.draft.text()))
         return True
 
     def reject(self):
@@ -203,16 +202,16 @@ class TaskPanel:
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
         qty = Units.Quantity(self.bounds[0], Units.Length)
-        form.length.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        form.length.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         self.L = self.bounds[0] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[1], Units.Length)
-        form.breadth.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        form.breadth.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         self.B = self.bounds[1] / Units.Metre.Value
         qty = Units.Quantity(self.bounds[2], Units.Length)
-        form.draft.setText(input_format.format(
-            0.5 * qty.getValueAs(USys.getLengthUnits()).Value))
+        form.draft.setText(Locale.toString(input_format.format(
+            0.5 * qty.getValueAs(USys.getLengthUnits()).Value)))
         self.T = 0.5 * self.bounds[2] / Units.Metre.Value
         return False
 
@@ -248,8 +247,8 @@ class TaskPanel:
         input_format = USys.getLengthFormat()
         val = min(val_max, max(val_min, val))
         qty = Units.Quantity('{} m'.format(val))
-        widget.setText(input_format.format(
-            qty.getValueAs(USys.getLengthUnits()).Value))
+        widget.setText(Locale.toString(input_format.format(
+            qty.getValueAs(USys.getLengthUnits()).Value)))
         return val
 
     def onData(self, value):
@@ -265,17 +264,17 @@ class TaskPanel:
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        qty = Units.Quantity(form.length.text())
+        qty = Units.Quantity(Locale.fromString(form.length.text()))
         val_min = 0.001
         val_max = self.bounds[0] / Units.Metre.Value
         val = qty.getValueAs('m').Value
         self.L = self.clampVal(form.length, val_min, val_max, val)
-        qty = Units.Quantity(form.breadth.text())
+        qty = Units.Quantity(Locale.fromString(form.breadth.text()))
         val_min = 0.001
         val_max = self.bounds[1] / Units.Metre.Value
         val = qty.getValueAs('m').Value
         self.B = self.clampVal(form.breadth, val_min, val_max, val)
-        qty = Units.Quantity(form.draft.text())
+        qty = Units.Quantity(Locale.fromString(form.draft.text()))
         val_min = 0.001
         val_max = self.bounds[2] / Units.Metre.Value
         val = qty.getValueAs('m').Value

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,26 +26,44 @@
 
 
 #include <Base/Persistence.h>
+#include <Base/Quantity.h>
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 
 namespace Sketcher
 {
-
+/*!
+ Important note: New constraint types must be always added at the end but before 'NumConstraintTypes'.
+ This is mandatory in order to keep the handling of constraint types upward compatible which means that
+ this program version ignores later introduced constraint types when reading them from a project file.
+ */
 enum ConstraintType {
-    None,
-    Coincident,
-    Horizontal,
-    Vertical,
-    Parallel,
-    Tangent,
-    Distance,
-    DistanceX,
-    DistanceY,
-    Angle,
-    Perpendicular,
-    Radius,
-    Equal,
-    PointOnObject,
-    Symmetric
+    None = 0,
+    Coincident = 1,
+    Horizontal = 2,
+    Vertical = 3,
+    Parallel = 4,
+    Tangent = 5,
+    Distance = 6,
+    DistanceX = 7,
+    DistanceY = 8,
+    Angle = 9,
+    Perpendicular = 10,
+    Radius = 11,
+    Equal = 12,
+    PointOnObject = 13,
+    Symmetric = 14,
+    InternalAlignment = 15,
+    SnellsLaw = 16,
+    NumConstraintTypes // must be the last item!
+};
+
+enum InternalAlignmentType {
+    Undef                   = 0,
+    EllipseMajorDiameter    = 1,
+    EllipseMinorDiameter    = 2,
+    EllipseFocus1           = 3,
+    EllipseFocus2           = 4
 };
 
 /// define if you want to use the end or start point
@@ -59,7 +77,8 @@ public:
     Constraint();
     Constraint(const Constraint&);
     virtual ~Constraint();
-    virtual Constraint *clone(void) const;
+    virtual Constraint *clone(void) const; // does copy the tag, it will be treated as a rename by the expression engine.
+    virtual Constraint *copy(void) const; // does not copy the tag, but generates a new one
 
     static const int GeoUndef;
 
@@ -70,12 +89,19 @@ public:
 
     virtual PyObject *getPyObject(void);
 
-    friend class Sketch;
+    void setValue(double newValue);
+    Base::Quantity getPresentationValue() const;
+    double getValue() const;
 
+    friend class Sketch;
+    friend class PropertyConstraintList;
+
+private:
+    double Value;
 public:
     ConstraintType Type;
+    InternalAlignmentType AlignmentType;
     std::string Name;
-    double Value;
     int First;
     PointPos FirstPos;
     int Second;
@@ -84,6 +110,10 @@ public:
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
+    bool isDriving;
+
+protected:
+    boost::uuids::uuid tag;
 };
 
 } //namespace Sketcher

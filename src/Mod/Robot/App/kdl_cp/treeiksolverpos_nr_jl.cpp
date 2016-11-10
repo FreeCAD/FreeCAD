@@ -29,13 +29,10 @@ namespace KDL {
                                                  const JntArray& _q_min, const JntArray& _q_max,
                                                  TreeFkSolverPos& _fksolver, TreeIkSolverVel& _iksolver,
                                                  unsigned int _maxiter, double _eps) :
-        tree(_tree), q_min(tree.getNrOfJoints()), q_max(tree.getNrOfJoints()),
-        fksolver(_fksolver), iksolver(_iksolver), delta_q(tree.getNrOfJoints()),
-        endpoints(_endpoints), maxiter(_maxiter), eps(_eps) {
-        
-        q_min = _q_min;
-        q_max = _q_max;
-        
+        tree(_tree), q_min(_q_min), q_max(_q_max), iksolver(_iksolver),
+        fksolver(_fksolver), delta_q(tree.getNrOfJoints()),
+        endpoints(_endpoints), maxiter(_maxiter), eps(_eps)
+    {
         for (size_t i = 0; i < endpoints.size(); i++) {
             frames.insert(Frames::value_type(endpoints[i], Frame::Identity()));
             delta_twists.insert(Twists::value_type(endpoints[i], Twist::Zero()));

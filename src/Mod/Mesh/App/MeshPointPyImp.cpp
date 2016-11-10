@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,7 +57,7 @@ PyObject *MeshPointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 }
 
 // constructor method
-int MeshPointPy::PyInit(PyObject* args, PyObject*k)
+int MeshPointPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     double  x=0.0,y=0.0,z=0.0;
     if (!PyArg_ParseTuple(args, "|ddd", &x,&y,&z))
@@ -69,6 +69,8 @@ int MeshPointPy::PyInit(PyObject* args, PyObject*k)
 
 PyObject*  MeshPointPy::unbound(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
     getMeshPointPtr()->Index = UINT_MAX;
     getMeshPointPtr()->Mesh = 0;
     Py_Return;
@@ -77,7 +79,7 @@ PyObject*  MeshPointPy::unbound(PyObject *args)
 PyObject*  MeshPointPy::move(PyObject *args)
 {
     if (!getMeshPointPtr()->isBound())
-        PyErr_SetString(PyExc_Exception, "This object is not bounded to a mesh, so no topological operation is possible!");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "This object is not bounded to a mesh, so no topological operation is possible!");
 
     double  x=0.0,y=0.0,z=0.0;
     PyObject *object;
@@ -111,7 +113,7 @@ Py::Boolean MeshPointPy::getBound(void) const
 Py::Object MeshPointPy::getNormal(void) const
 {
     if (!getMeshPointPtr()->isBound())
-        PyErr_SetString(PyExc_Exception, "This object is not bounded to a mesh, so no topological operation is possible!");
+        PyErr_SetString(Base::BaseExceptionFreeCADError, "This object is not bounded to a mesh, so no topological operation is possible!");
 
     Base::Vector3d* v = new Base::Vector3d(getMeshPointPtr()->Mesh->getPointNormal(getMeshPointPtr()->Index));
     Base::VectorPy* normal = new Base::VectorPy(v);
@@ -176,12 +178,12 @@ void  MeshPointPy::setz(Py::Float arg)
     }
 }
 
-PyObject *MeshPointPy::getCustomAttributes(const char* attr) const
+PyObject *MeshPointPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int MeshPointPy::setCustomAttributes(const char* attr, PyObject *obj)
+int MeshPointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }

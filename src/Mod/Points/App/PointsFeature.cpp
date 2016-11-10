@@ -54,6 +54,11 @@ Feature::~Feature()
 {
 }
 
+short Feature::mustExecute() const
+{
+    return 0;
+}
+
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
     this->Points.touch();
@@ -89,48 +94,15 @@ void Feature::onChanged(const App::Property* prop)
     GeoFeature::onChanged(prop);
 }
 
-// ------------------------------------------------------------------
+// ---------------------------------------------------------
 
-PROPERTY_SOURCE(Points::Export, Points::Feature)
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
+/// @endcond
 
-Export::Export(void)
-{
-    ADD_PROPERTY(Sources ,(0));
-    ADD_PROPERTY(FileName,(""));
-    ADD_PROPERTY(Format  ,(""));
-}
-
-App::DocumentObjectExecReturn *Export::execute(void)
-{
-  // ask for write permission
-  Base::FileInfo fi(FileName.getValue());
-  Base::FileInfo di(fi.dirPath().c_str());
-  if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable())
-  {
-      return new App::DocumentObjectExecReturn("No write permission for file");
-  }
-
-  Base::ofstream str(fi, std::ios::out | std::ios::binary);
-
-  if (fi.hasExtension("asc"))
-  {
-    const std::vector<App::DocumentObject*>& features = Sources.getValues();
-    for ( std::vector<App::DocumentObject*>::const_iterator it = features.begin(); it != features.end(); ++it )
-    {
-      Feature *pcFeat  = dynamic_cast<Feature*>(*it);
-      const PointKernel& kernel = pcFeat->Points.getValue();
-
-      str << "# " << pcFeat->getNameInDocument() << " Number of points: " << kernel.size() << std::endl;
-      for ( PointKernel::const_iterator it = kernel.begin(); it != kernel.end(); ++it )
-        str << it->x << " " << it->y << " " << it->z << std::endl;
-    }
-  }
-  else
-  {
-      return new App::DocumentObjectExecReturn("File format not supported");
-  }
-
-  return App::DocumentObject::StdReturn;
+// explicit template instantiation
+template class PointsExport FeatureCustomT<Points::Feature>;
 }
 
 // ---------------------------------------------------------

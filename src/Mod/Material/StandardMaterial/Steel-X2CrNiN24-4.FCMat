@@ -1,0 +1,21 @@
+; X2CrNiN24-4 - 1.4362 - EN 10088
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = X2CrNiN24-4
+NameDE = -
+Father = Metal
+YoungsModulus = 200000 MPa
+UltimateTensileStrength = 600
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Stainless steel
+KindOfMaterialDE = Niro
+MaterialNumber = 1.4362
+ModulusOfShare = 81000
+Norm = EN 10088
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 25
+YieldStrength = 400

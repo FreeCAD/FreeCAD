@@ -30,6 +30,7 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "ui_ImageOrientationDialog.h"
 #include "ImageOrientationDialog.h"
@@ -39,6 +40,7 @@ using namespace ImageGui;
 ImageOrientationDialog::ImageOrientationDialog()
   : QDialog(Gui::getMainWindow()), ui(new Ui_ImageOrientationDialog)
 {
+    DirType = 0;
     ui->setupUi(this);
     onPreview();
 
@@ -55,7 +57,7 @@ ImageOrientationDialog::~ImageOrientationDialog()
 
 void ImageOrientationDialog::accept()
 {
-    double offset = ui->Offset_doubleSpinBox->value();
+    double offset = ui->Offset_doubleSpinBox->value().getValue();
     bool reverse = ui->Reverse_checkBox->isChecked();
     if (ui->XY_radioButton->isChecked()) {
         if (reverse) {

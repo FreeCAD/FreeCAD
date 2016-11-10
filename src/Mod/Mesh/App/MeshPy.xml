@@ -112,6 +112,11 @@ Example:
 				<UserDocu>Transform the mesh to its eigenbase</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getEigenSystem" Const="true">
+			<Documentation>
+				<UserDocu>Get Eigen base of the mesh</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="addFacet">
 			<Documentation>
 				<UserDocu>Add a facet to the mesh</UserDocu>
@@ -147,6 +152,14 @@ Example:
 				<UserDocu>
 					setPoint(int, Vector)
 					Sets the point at index.
+				</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="getPointNormals" Const="true">
+			<Documentation>
+				<UserDocu>
+					getPointNormals()
+					Get the normals of the points.
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -207,12 +220,22 @@ for c in mesh.getSeparatecomponents():
 				<UserDocu>Remove non-manifolds</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="removeNonManifoldPoints">
+			<Documentation>
+				<UserDocu>Remove non-manifold points</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="hasSelfIntersections" Const="true">
 			<Documentation>
 				<UserDocu>Check if the mesh intersects itself</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="fixSelfIntersections">
+        <Methode Name="getSelfIntersections" Const="true">
+            <Documentation>
+                <UserDocu>Returns a tuple of indices of intersecting triangles</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="fixSelfIntersections">
 			<Documentation>
 				<UserDocu>Repair self-intersections</UserDocu>
 			</Documentation>
@@ -230,6 +253,21 @@ for c in mesh.getSeparatecomponents():
 		<Methode Name="countNonUniformOrientedFacets" Const="true">
 			<Documentation>
 				<UserDocu>Get the number of wrong oriented facets</UserDocu>
+			</Documentation>
+		</Methode>
+        <Methode Name="getNonUniformOrientedFacets" Const="true">
+            <Documentation>
+                <UserDocu>Get a tuple of wrong oriented facets</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="hasInvalidPoints" Const="true">
+			<Documentation>
+				<UserDocu>Check if the mesh has points with invalid coordinates (NaN)</UserDocu>
+			</Documentation>
+		</Methode>
+		<Methode Name="removeInvalidPoints">
+			<Documentation>
+				<UserDocu>Remove points with invalid coordinates (NaN)</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="countComponents" Const="true">

@@ -1,0 +1,155 @@
+; Material TEMPLATE file
+; (c) 2013-2015 Juergen Riegel (CC-BY 3.0)
+; information about the content of such cards you can find here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+; General name, need to be the same as the file name
+Name =
+
+; Example of localized name. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+NameDE =
+
+; More elaborate description of this material card:
+Description =
+
+; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+DescriptionDE =
+
+; Example of localized description. 2 letter codes as per ISO-639-1 https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+DescriptionPL =
+
+; Father of the material, i.e. for PLA is Thermoplast, for Steel is Metal
+Father =
+
+; Vendor of the material. Leave blank if not required
+Vendor =
+
+; Product URL, recommended are wikipedia links
+ProductURL = http://en.wikipedia.org/wiki/
+
+; Specific price in euro / kg
+SpecificPrice =
+
+; Young's Modulus (or E-Module) in [MPa], see http://en.wikipedia.org/wiki/Young%27s_modulus for the details
+YoungsModulus = value MPa
+
+; Ultimate tensile strength in [MPa], see http://en.wikipedia.org/wiki/Ultimate_tensile_strength for the details
+UltimateTensileStrength = value MPa
+
+; Poisson's ratio [unitless], see https://en.wikipedia.org/wiki/Poisson%27s_ratio for the details
+PoissonRatio =
+
+; Descrition to be updated
+AmbientColor =
+
+; Descrition to be updated
+Color =
+
+; Compressive strength https://en.wikipedia.org/wiki/Compressive_strength
+CompressiveStrength =
+
+; Density in [kg/m^3] https://en.wikipedia.org/wiki/Density
+Density = value kg/m^3
+
+; Descrition to be updated
+DiffuseColor =
+
+; Elasticity https://en.wikipedia.org/wiki/Elasticity_%28physics%29
+Elasticity =
+
+; Descrition to be updated
+EmissiveColor =
+
+; Descrition to be updated
+Enlargen =
+
+; Descrition to be updated
+EnvironmentalEfficiencyClass =
+
+; Descrition to be updated
+ExecutionInstructions =
+
+; Descrition to be updated
+Finish =
+
+; Descrition to be updated
+FireResistanceClass =
+
+; Descrition to be updated
+FractureToughness =
+
+; Descrition to be updated
+FragmentShader =
+
+; Descrition to be updated
+KindOfMaterial =
+
+; Descrition to be updated
+KindOfMaterialDE =
+
+; Descrition to be updated
+MaterialNumber =
+
+; Descrition to be updated
+Model =
+
+; Descrition to be updated
+ModulusOfShare =
+
+; Descrition to be updated
+Norm =
+
+; Descrition to be updated
+SectionFillPattern =
+
+; Descrition to be updated
+SectionLinewidth =
+
+; Descrition to be updated
+Shininess =
+
+; Descrition to be updated
+SoundTransmissionClass =
+
+; Descrition to be updated
+SpecularColor =
+
+; Descrition to be updated
+StandardCode =
+
+; Descrition to be updated
+TexturePath =
+
+; Descrition to be updated
+TextureScaling =
+
+; Thermal conductivity https://en.wikipedia.org/wiki/Thermal_conductivity
+ThermalConductivity =
+
+; Thermal expansion coefficient (linear) in [1/K] https://en.wikipedia.org/wiki/Thermal_expansion
+ThermalExpansionCoefficient =
+
+; Descrition to be updated
+Transparency =
+
+; Descrition to be updated
+UltimateStrain =
+
+; Descrition to be updated
+UnitsPerQuantity =
+
+; Descrition to be updated
+VertexShader =
+
+; Descrition to be updated
+ViewColor =
+
+; Descrition to be updated
+ViewFillPattern =
+
+; Descrition to be updated
+ViewLinewidth =
+
+; Yield strength in [MPa] https://en.wikipedia.org/wiki/Yield_%28engineering%29
+YieldStrength = value MPa

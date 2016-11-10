@@ -74,13 +74,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* item = root->findItem("&Windows");
     Gui::MenuItem* pnts = new Gui::MenuItem;
     root->insertItem(item, pnts);
-
-    Gui::MenuItem* test = new Gui::MenuItem;
-    test->setCommand("Test");
-    *test << "Points_Transform";
  
     pnts->setCommand("&Points");
-    *pnts << test << "Separator" << "Points_Import" << "Points_Export" << "Separator" << "Points_PolyCut";
+    *pnts << "Points_Convert" << "Separator" << "Points_Import" << "Points_Export" << "Separator" << "Points_PolyCut";
     return root;
 }
 

@@ -32,7 +32,7 @@ class DlgRegularSolidImp : public QDialog, public Ui_DlgRegularSolid
     Q_OBJECT
 
 public:
-    DlgRegularSolidImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgRegularSolidImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgRegularSolidImp();
 
 public Q_SLOTS:
@@ -49,7 +49,7 @@ protected:
 class SingleDlgRegularSolidImp : public DlgRegularSolidImp
 { 
 protected:
-    SingleDlgRegularSolidImp(QWidget* parent = 0, Qt::WFlags fl = 0);
+    SingleDlgRegularSolidImp(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~SingleDlgRegularSolidImp();
 
 public:

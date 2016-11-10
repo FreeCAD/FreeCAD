@@ -28,6 +28,7 @@
 #include <Inventor/SbLinear.h>
 #include <Inventor/SbVec2f.h>
 #include <QCursor>
+#include "GLPainter.h"
 
 // forwards
 class QMouseEvent;
@@ -47,9 +48,9 @@ class View3DInventorViewer;
 /**
  * The mouse selection base class
  * In derived classes you must implement the methods @ref initialize() and @ref terminate()
- * For all drawing stuff you just have to reimplement the @ref draw() method. 
+ * For all drawing stuff you just have to reimplement the @ref draw() method.
  * In general you need not to do anything else.
- * \author Werner Mayer and Jürgen Riegel
+ * \author Werner Mayer and JÃ¼rgen Riegel
  */
 class GuiExport AbstractMouseSelection
 {
@@ -57,39 +58,47 @@ public:
     enum { Continue=0, Restart=1, Finish=2, Cancel=3 };
 
     AbstractMouseSelection();
-    virtual ~AbstractMouseSelection(void){}
+    virtual ~AbstractMouseSelection(void) {}
     /// implement this in derived classes
     virtual void initialize() = 0;
     /// implement this in derived classes
-    virtual void terminate () = 0;
+    virtual void terminate() = 0;
     void grabMouseModel(Gui::View3DInventorViewer*);
     void releaseMouseModel(void);
-    const std::vector<SbVec2s>& getPositions() const { return _clPoly; }
-    SbBool isInner() const { return m_bInner; }
+    const std::vector<SbVec2s>& getPositions() const {
+        return _clPoly;
+    }
+    SbBool isInner() const {
+        return m_bInner;
+    }
 
     void redraw();
 
     /** @name Mouse events*/
     //@{
-    int handleEvent(const SoEvent * const ev, const SbViewportRegion& vp);
+    int handleEvent(const SoEvent* const ev, const SbViewportRegion& vp);
     //@}
 
 protected:
-    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos ){ return 0; };
-    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos ){ return 0; };
-    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e )                   { return 0; };
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const, const QPoint&) {
+        return 0;
+    };
+    virtual int locationEvent(const SoLocation2Event*    const, const QPoint&) {
+        return 0;
+    };
+    virtual int keyboardEvent(const SoKeyboardEvent*     const)                   {
+        return 0;
+    };
 
     /// drawing stuff
-    virtual void draw (){};
+    virtual void draw() {};
 
 protected:
-    Gui::View3DInventorViewer*_pcView3D;
+    Gui::View3DInventorViewer* _pcView3D;
     QCursor m_cPrevCursor;
     int  m_iXold, m_iYold;
     int  m_iXnew, m_iYnew;
-    int m_antiAliasing;
     SbBool m_bInner;
-    SbBool mustRedraw;
     std::vector<SbVec2s> _clPoly;
 };
 
@@ -97,7 +106,7 @@ protected:
 
 /**
  * The standard mouse selection class
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport BaseMouseSelection : public AbstractMouseSelection
 {
@@ -119,24 +128,23 @@ public:
     PolyPickerSelection();
     virtual ~PolyPickerSelection();
 
-    /// set the new mouse cursor
+    void setLineWidth(float l);
+    void setColor(float r, float g, float b, float a = 1.0);
+
     virtual void initialize();
-    /// do nothing
     virtual void terminate();
 
 protected:
-    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
-    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
-    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
+    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
+    virtual int keyboardEvent(const SoKeyboardEvent*     const e);
 
     /// draw the polygon
-    virtual void draw ();
+    virtual void draw();
     virtual int popupMenu();
 
-protected:
-    std::vector<QPoint> _cNodeVector;
-    int  m_iRadius, m_iNodes;
-    bool m_bWorking;
+    Gui::Polyline polyline;
+    bool lastConfirmed;
 };
 
 // -----------------------------------------------------------------------------------
@@ -159,42 +167,21 @@ protected:
 // -----------------------------------------------------------------------------------
 
 /**
- * The brush selection class
+ * The freehand selection class
  * \author Werner Mayer
  */
-class GuiExport BrushSelection : public BaseMouseSelection
+class GuiExport FreehandSelection : public PolyPickerSelection
 {
 public:
-    BrushSelection();
-    virtual ~BrushSelection();
+    FreehandSelection();
+    virtual ~FreehandSelection();
 
-    /// set the new mouse cursor
-    virtual void initialize();
-    /// do nothing
-    virtual void terminate();
-
-    // Settings
-    void setColor(float r, float g, float b, float a=0);
-    void setLineWidth(float);
-    void setClosed(bool);
+    void setClosed(bool c);
 
 protected:
-    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
-    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
-    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
-
-    /// draw the polygon
-    virtual void draw ();
     virtual int popupMenu();
-
-protected:
-    std::vector<QPoint> _cNodeVector;
-    int  m_iNodes;
-    bool m_bWorking;
-    bool m_bClose;
-
-private:
-    float r,g,b,a,l;
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
+    virtual int locationEvent(const SoLocation2Event*  const e, const QPoint& pos);
 };
 
 // -----------------------------------------------------------------------------------
@@ -204,58 +191,41 @@ private:
  * Draws a rectangle for selection
  * \author Werner Mayer
  */
-class GuiExport RectangleSelection : public BaseMouseSelection 
-{
-public:
-    RectangleSelection();
-    virtual ~RectangleSelection();
-
-    /// do nothing
-    virtual void initialize();
-    /// do nothing
-    virtual void terminate();
-
-protected:
-    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
-    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
-    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
-
-    /// draw the rectangle
-    virtual void draw ();
-
-private:
-    bool m_bWorking;
-};
-
-// -----------------------------------------------------------------------------------
-
-/**
- * The selection mouse model class
- * Draws a rectangle for selection
- * \author Werner Mayer
- */
-class GuiExport RubberbandSelection : public BaseMouseSelection 
+class GuiExport RubberbandSelection : public BaseMouseSelection
 {
 public:
     RubberbandSelection();
     virtual ~RubberbandSelection();
 
-    /// do nothing
+    void setColor(float r, float g, float b, float a = 1.0);
+
     virtual void initialize();
-    /// do nothing
     virtual void terminate();
 
 protected:
-    virtual int mouseButtonEvent( const SoMouseButtonEvent * const e, const QPoint& pos );
-    virtual int locationEvent   ( const SoLocation2Event   * const e, const QPoint& pos );
-    virtual int keyboardEvent   ( const SoKeyboardEvent    * const e );
+    virtual int mouseButtonEvent(const SoMouseButtonEvent* const e, const QPoint& pos);
+    virtual int locationEvent(const SoLocation2Event*    const e, const QPoint& pos);
+    virtual int keyboardEvent(const SoKeyboardEvent*     const e);
 
     /// draw the rectangle
-    virtual void draw ();
+    virtual void draw();
 
-private:
-    class Private;
-    Private* d;
+protected:
+    Gui::Rubberband rubberband;
+};
+
+// -----------------------------------------------------------------------------------
+
+/**
+ * The selection mouse model class
+ * Draws a rectangle for selection
+ * \author Werner Mayer
+ */
+class GuiExport RectangleSelection : public RubberbandSelection
+{
+public:
+    RectangleSelection();
+    virtual ~RectangleSelection();
 };
 
 // -----------------------------------------------------------------------------------
@@ -265,7 +235,7 @@ private:
  * Draws a rectangle for box zooming
  * \author Werner Mayer
  */
-class GuiExport BoxZoomSelection : public RubberbandSelection 
+class GuiExport BoxZoomSelection : public RubberbandSelection
 {
 public:
     BoxZoomSelection();

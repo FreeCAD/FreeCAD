@@ -31,13 +31,14 @@
 
 #include "DlgProjectUtility.h"
 #include "Application.h"
+#include "Command.h"
 #include "ui_DlgProjectUtility.h"
 
 
 using namespace Gui::Dialog;
 
 // taken from the script doctools.py
-const char* doctools = 
+std::string DlgProjectUtility::doctools =
 "import os,sys,string\n"
 "import xml.sax\n"
 "import xml.sax.handler\n"
@@ -80,6 +81,10 @@ const char* doctools =
 "\n"
 "def createDocument(filename, outpath):\n"
 "	files=getFilesList(filename)\n"
+"	dirname=os.path.dirname(filename)\n"
+"	guixml=os.path.join(dirname,\"GuiDocument.xml\")\n"
+"	if os.path.exists(guixml):\n"
+"		files.extend(getFilesList(guixml))\n"
 "	compress=zipfile.ZipFile(outpath,\'w\',zipfile.ZIP_DEFLATED)\n"
 "	for i in files:\n"
 "		dirs=os.path.split(i)\n"
@@ -97,9 +102,6 @@ const char* doctools =
 "	files=[]\n"
 "	files.append(filename)\n"
 "	files.extend(iter(handler.files))\n"
-"	dirname=os.path.join(dirname,\"GuiDocument.xml\")\n"
-"	if os.path.exists(dirname):\n"
-"		files.append(dirname)\n"
 "	return files\n"
 ;
 
@@ -107,10 +109,11 @@ const char* doctools =
 
 /* TRANSLATOR Gui::Dialog::DlgProjectUtility */
 
-DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WFlags fl)
+DlgProjectUtility::DlgProjectUtility(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), ui(new Ui_DlgProjectUtility)
 {
     ui->setupUi(this);
+    ui->extractSource->setFilter(QString::fromLatin1("%1 (*.fcstd)").arg(tr("Project file")));
 }
 
 /**
@@ -138,7 +141,7 @@ void DlgProjectUtility::on_extractButton_clicked()
     str << doctools << "\n";
     str << "extractDocument(\"" << (const char*)source.toUtf8()
         << "\", \"" << (const char*)dest.toUtf8() << "\")";
-    Application::Instance->runPythonCode(str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
 }
 
 void DlgProjectUtility::on_createButton_clicked()
@@ -160,7 +163,7 @@ void DlgProjectUtility::on_createButton_clicked()
     str << doctools << "\n";
     str << "createDocument(\"" << (const char*)source.toUtf8()
         << "\", \"" << (const char*)dest.toUtf8() << "\")";
-    Application::Instance->runPythonCode(str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
 
     if (ui->checkLoadProject->isChecked())
         Application::Instance->open((const char*)dest.toUtf8(),"FreeCAD");

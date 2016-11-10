@@ -23,12 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <BRepAlgo.hxx>
 # include <BRepFilletAPI_MakeFillet.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Edge.hxx>
+# include <TopTools_ListOfShape.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
+#include <TopExp.hxx>
+#include <BRep_Tool.hxx>
 #endif
 
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Reader.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include "FeatureFillet.h"
@@ -39,11 +47,12 @@ using namespace PartDesign;
 
 PROPERTY_SOURCE(PartDesign::Fillet, PartDesign::DressUp)
 
-const App::PropertyFloatConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
+const App::PropertyQuantityConstraint::Constraints floatRadius = {0.0,FLT_MAX,0.1};
 
 Fillet::Fillet()
 {
     ADD_PROPERTY(Radius,(1.0));
+    Radius.setUnit(Base::Unit::Length);
     Radius.setConstraints(&floatRadius);
 }
 
@@ -56,30 +65,29 @@ short Fillet::mustExecute() const
 
 App::DocumentObjectExecReturn *Fillet::execute(void)
 {
-    App::DocumentObject* link = Base.getValue();
-    if (!link)
-        return new App::DocumentObjectExecReturn("No object linked");
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
-        return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    Part::Feature *base = static_cast<Part::Feature*>(Base.getValue());
-    const Part::TopoShape& TopShape = base->Shape.getShape();
-    if (TopShape._Shape.IsNull())
-        return new App::DocumentObjectExecReturn("Cannot fillet invalid shape");
+    Part::TopoShape TopShape;
+    try {
+        TopShape = getBaseShape();
+    } catch (Base::Exception& e) {
+        return new App::DocumentObjectExecReturn(e.what());
+    }
+    std::vector<std::string> SubNames = std::vector<std::string>(Base.getSubValues());
+    getContiniusEdges(TopShape, SubNames);
 
-    const std::vector<std::string>& SubVals = Base.getSubValuesStartsWith("Edge");
-    if (SubVals.size() == 0)
-        return new App::DocumentObjectExecReturn("No edges specified");
-
+    if (SubNames.size() == 0)
+        return new App::DocumentObjectExecReturn("Fillet not possible on selected shapes");
+    
     double radius = Radius.getValue();
 
-    this->positionByBase();
+    this->positionByBaseFeature();
+
     // create an untransformed copy of the base shape
     Part::TopoShape baseShape(TopShape);
     baseShape.setTransform(Base::Matrix4D());
     try {
-        BRepFilletAPI_MakeFillet mkFillet(baseShape._Shape);
+        BRepFilletAPI_MakeFillet mkFillet(baseShape.getShape());
 
-        for (std::vector<std::string>::const_iterator it=SubVals.begin(); it != SubVals.end(); ++it) {
+        for (std::vector<std::string>::const_iterator it=SubNames.begin(); it != SubNames.end(); ++it) {
             TopoDS_Edge edge = TopoDS::Edge(baseShape.getSubShape(it->c_str()));
             mkFillet.Add(radius, edge);
         }
@@ -92,11 +100,53 @@ App::DocumentObjectExecReturn *Fillet::execute(void)
         if (shape.IsNull())
             return new App::DocumentObjectExecReturn("Resulting shape is null");
 
-        this->Shape.setValue(shape);
+        TopTools_ListOfShape aLarg;
+        aLarg.Append(baseShape.getShape());
+        if (!BRepAlgo::IsValid(aLarg, shape, Standard_False, Standard_False)) {
+            return new App::DocumentObjectExecReturn("Resulting shape is invalid");
+        }
+
+        this->Shape.setValue(getSolid(shape));
         return App::DocumentObject::StdReturn;
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
+}
+
+void Fillet::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop && strcmp(TypeName,"App::PropertyFloatConstraint") == 0 &&
+                     strcmp(prop->getTypeId().getName(), "App::PropertyQuantityConstraint") == 0) {
+                App::PropertyFloatConstraint p;
+                p.Restore(reader);
+                static_cast<App::PropertyQuantityConstraint*>(prop)->setValue(p.getValue());
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }

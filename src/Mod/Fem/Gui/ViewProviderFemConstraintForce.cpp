@@ -30,6 +30,7 @@
 # include <Inventor/nodes/SoRotation.h>
 # include <Inventor/nodes/SoMultipleCopy.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintForce.h"
@@ -46,7 +47,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintForce, FemGui::ViewProviderFemC
 
 ViewProviderFemConstraintForce::ViewProviderFemConstraintForce()
 {
-    sPixmap = "Fem_ConstraintForce";
+    sPixmap = "fem-constraint-force";
 }
 
 ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()
@@ -55,8 +56,6 @@ ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce()
 
 bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 {
-    Base::Console().Error("ViewProviderFemConstraintForce::setEdit(%u)\n", ModNum);
-
     if (ModNum == ViewProvider::Default ) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
@@ -106,31 +105,40 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
     }
 }
 
-#define ARROWLENGTH 9
+#define ARROWLENGTH (4)
 #define ARROWHEADRADIUS (ARROWLENGTH/3)
+//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
 
 void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
+    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
-    /*
-    // This has a HUGE performance penalty as opposed to separate nodes for every symbol
-    // The problem seems to be SoCone
+#ifdef USE_MULTIPLE_COPY
+    //OvG: need access to cp for scaling
+    SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
-        SoMultipleCopy* cp = new SoMultipleCopy();
-        cp->ref();
         cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createArrow(ARROWLENGTH, ARROWHEADRADIUS));
+        cp->addChild((SoNode*)createArrow(scaledlength , scaledheadradius)); //OvG: Scaling
         pShapeSep->addChild(cp);
     }
-    */
+#endif
 
     if (strcmp(prop->getName(),"Points") == 0) {
+        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
+
+#ifdef USE_MULTIPLE_COPY
+        cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
+        cp->matrix.setNum(points.size());
+        SbMatrix* matrices = cp->matrix.startEditing();
+        int idx = 0;
+#else
         // Redraw all arrows
         pShapeSep->removeAllChildren();
-
+#endif
         // This should always point outside of the solid
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
 
@@ -142,29 +150,27 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
         SbRotation rot(SbVec3f(0,1,0), dir);
 
-        const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
-
-        /*
-        SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
-        cp->matrix.setNum(points.size());
-        int idx = 0;*/
-
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             if (forceDirection.GetAngle(normal) < M_PI_2) // Move arrow so it doesn't disappear inside the solid
-                base = base + dir * ARROWLENGTH;
-            /*
+                base = base + dir * scaledlength; //OvG: Scaling
+#ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
-            cp->matrix.set1Value(idx, m);
+            matrices[idx] = m;
             idx++;
-            */
+#else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
-            createArrow(sep, ARROWLENGTH, ARROWHEADRADIUS);
+            createArrow(sep, scaledlength, scaledheadradius); //OvG: Scaling
             pShapeSep->addChild(sep);
+#endif
         }
-    } else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
+#ifdef USE_MULTIPLE_COPY
+        cp->matrix.finishEditing();
+#endif
+    }
+    else if (strcmp(prop->getName(),"DirectionVector") == 0) { // Note: "Reversed" also triggers "DirectionVector"
         // Re-orient all arrows
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
         Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
@@ -176,26 +182,31 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
 
-        /*
+#ifdef USE_MULTIPLE_COPY
         SoMultipleCopy* cp = static_cast<SoMultipleCopy*>(pShapeSep->getChild(0));
         cp->matrix.setNum(points.size());
-        */
+        SbMatrix* matrices = cp->matrix.startEditing();
+#endif
         int idx = 0;
 
         for (std::vector<Base::Vector3d>::const_iterator p = points.begin(); p != points.end(); p++) {
             SbVec3f base(p->x, p->y, p->z);
             if (forceDirection.GetAngle(normal) < M_PI_2)
-                base = base + dir * ARROWLENGTH;
-            /*
+                base = base + dir * scaledlength; //OvG: Scaling
+#ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1,1,1));
-            cp->matrix.set1Value(idx, m);*/
-
+            matrices[idx] = m;
+#else
             SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(idx));
             updatePlacement(sep, 0, base, rot);
-            updateArrow(sep, 2, ARROWLENGTH, ARROWHEADRADIUS);
+            updateArrow(sep, 2, scaledlength, scaledheadradius); //OvG: Scaling
+#endif
             idx++;
         }
+#ifdef USE_MULTIPLE_COPY
+        cp->matrix.finishEditing();
+#endif
     }
 
     ViewProviderFemConstraint::updateData(prop);

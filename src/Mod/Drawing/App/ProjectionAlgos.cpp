@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,12 +62,11 @@
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRepLib.hxx>
 #include <BRepAdaptor_CompCurve.hxx>
-#include <Handle_BRepAdaptor_HCompCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
-#include <Handle_BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
-#include <Handle_Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
@@ -139,16 +138,11 @@ void ProjectionAlgos::execute(void)
     Handle( HLRBRep_Algo ) brep_hlr = new HLRBRep_Algo;
     brep_hlr->Add(Input);
 
-    try {
-        gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
-        HLRAlgo_Projector projector( transform );
-        brep_hlr->Projector(projector);
-        brep_hlr->Update();
-        brep_hlr->Hide();
-    }
-    catch (...) {
-        Standard_Failure::Raise("Fatal error occurred while projecting shape");
-    }
+    gp_Ax2 transform(gp_Pnt(0,0,0),gp_Dir(Direction.x,Direction.y,Direction.z));
+    HLRAlgo_Projector projector( transform );
+    brep_hlr->Projector(projector);
+    brep_hlr->Update();
+    brep_hlr->Hide();
 
     // extracting the result sets:
     HLRBRep_HLRToShape shapes( brep_hlr );
@@ -268,7 +262,7 @@ std::string ProjectionAlgos::getSVG(ExtractionType type, double scale, double to
 
 /* dxf output section - Dan Falck 2011/09/25  */
 
-std::string ProjectionAlgos::getDXF(ExtractionType type, double scale, double tolerance)
+std::string ProjectionAlgos::getDXF(ExtractionType type, double /*scale*/, double tolerance)
 {
     std::stringstream result;
     DXFOutput output;

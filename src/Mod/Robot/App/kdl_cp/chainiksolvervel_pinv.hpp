@@ -40,6 +40,10 @@ namespace KDL
     class ChainIkSolverVel_pinv : public ChainIkSolverVel
     {
     public:
+        static const int E_SVD_FAILED = -100; //! Child SVD failed
+        /// solution converged but (pseudo)inverse is singular
+        static const int E_CONVERGE_PINV_SINGULAR = +100;
+
         /**
          * Constructor of the solver
          *
@@ -51,15 +55,47 @@ namespace KDL
          * default: 150
          *
          */
-        ChainIkSolverVel_pinv(const Chain& chain,double eps=0.00001,int maxiter=150);
+        explicit ChainIkSolverVel_pinv(const Chain& chain,double eps=0.00001,int maxiter=150);
         ~ChainIkSolverVel_pinv();
 
+        /**
+         * Find an output joint velocity \a qdot_out, given a starting joint pose
+         * \a q_init and a desired cartesian velocity \a v_in
+         *
+         * @return
+         *  E_NOERROR=solution converged to <eps in maxiter
+         *  E_SVD_FAILED=SVD computation failed
+         *  E_CONVERGE_PINV_SINGULAR=solution converged but (pseudo)inverse is singular
+         *
+         * @note if E_CONVERGE_PINV_SINGULAR returned then converged and can
+         * continue motion, but have degraded solution
+         *
+         * @note If E_SVD_FAILED returned, then getSvdResult() returns the error code
+         * from the SVD algorithm.
+         */
         virtual int CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out);
         /**
          * not (yet) implemented.
          *
          */
-        virtual int CartToJnt(const JntArray& q_init, const FrameVel& v_in, JntArrayVel& q_out){return -1;};
+        virtual int CartToJnt(const JntArray& /*q_init*/, const FrameVel& /*v_in*/, JntArrayVel& /*q_out*/){return -1;};
+
+        /**
+         * Retrieve the number of singular values of the jacobian that are < eps;
+         * if the number of near zero singular values is > jac.col()-jac.row(),
+         * then the jacobian pseudoinverse is singular
+         */
+        unsigned int getNrZeroSigmas()const {return nrZeroSigmas;};
+
+        /**
+         * Retrieve the latest return code from the SVD algorithm
+		 * @return 0 if CartToJnt() not yet called, otherwise latest SVD result code.
+         */
+        int getSVDResult()const {return svdResult;};
+
+        /// @copydoc KDL::SolverI::strError()
+        virtual const char* strError(const int error) const;
+
     private:
         const Chain chain;
         ChainJntToJacSolver jnt2jac;
@@ -71,6 +107,8 @@ namespace KDL
         JntArray tmp;
         double eps;
         int maxiter;
+        unsigned int nrZeroSigmas;
+        int svdResult;
 
     };
 }

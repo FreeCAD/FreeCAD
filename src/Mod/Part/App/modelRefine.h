@@ -37,6 +37,7 @@
 #include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
 #include <TopTools_MapOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
+#include <BRepBuilderAPI_MakeShape.hxx>
 
 
 namespace ModelRefine
@@ -94,6 +95,18 @@ namespace ModelRefine
         virtual void boundarySplit(const FaceVectorType &facesIn, std::vector<EdgeVectorType> &boundariesOut) const;
     };
     FaceTypedCylinder& getCylinderObject();
+
+    class FaceTypedBSpline : public FaceTypedBase
+    {
+    private:
+        FaceTypedBSpline();
+    public:
+        virtual bool isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const;
+        virtual GeomAbs_SurfaceType getType() const;
+        virtual TopoDS_Face buildFace(const FaceVectorType &faces) const;
+        friend FaceTypedBSpline& getBSplineObject();
+    };
+    FaceTypedBSpline& getBSplineObject();
 
     class FaceTypeSplitter
     {

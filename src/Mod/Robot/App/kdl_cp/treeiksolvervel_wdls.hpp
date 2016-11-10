@@ -14,10 +14,12 @@
 
 namespace KDL {
 
-    USING_PART_OF_NAMESPACE_EIGEN;
+    using namespace Eigen;
 
     class TreeIkSolverVel_wdls: public TreeIkSolverVel {
     public:
+        static const int E_SVD_FAILED = -100; //! Child SVD failed
+
         TreeIkSolverVel_wdls(const Tree& tree, const std::vector<std::string>& endpoints);
         virtual ~TreeIkSolverVel_wdls();
         

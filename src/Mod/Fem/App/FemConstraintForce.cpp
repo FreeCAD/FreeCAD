@@ -52,7 +52,7 @@ ConstraintForce::ConstraintForce()
                       "Points where arrows are drawn");
     ADD_PROPERTY_TYPE(DirectionVector,(Base::Vector3d(0,0,1)),"ConstraintForce",App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector = Base::Vector3d(0,0,1);
+    naturalDirectionVector = Base::Vector3d(0,0,0); // by default use the null vector to indication an invalid value
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
@@ -70,9 +70,11 @@ void ConstraintForce::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        if (getPoints(points, normals)) {
+        int scale = 1; //OvG: Enforce use of scale
+        if (getPoints(points, normals, &scale)) {
             Points.setValues(points); // We don't use the normals because all arrows should have the same direction
-            Points.touch(); // This triggers ViewProvider::updateData()
+            Scale.setValue(scale); //OvG Scale
+            Points.touch();
         }
     } else if (prop == &Direction) {
         Base::Vector3d direction = getDirection(Direction);
@@ -82,20 +84,26 @@ void ConstraintForce::onChanged(const App::Property* prop)
         if (Reversed.getValue())
             direction = -direction;
         DirectionVector.setValue(direction);
-        DirectionVector.touch();
     } else if (prop == &Reversed) {
-        if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
-            DirectionVector.setValue(-naturalDirectionVector);
-            DirectionVector.touch();
-        } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
-            DirectionVector.setValue(naturalDirectionVector);
-            DirectionVector.touch();
+        // if the direction is invalid try to compute it again
+        if (naturalDirectionVector.Length() < Precision::Confusion()) {
+            naturalDirectionVector = getDirection(Direction);
+        }
+        if (naturalDirectionVector.Length() >= Precision::Confusion()) {
+            if (Reversed.getValue() && (DirectionVector.getValue() == naturalDirectionVector)) {
+                DirectionVector.setValue(-naturalDirectionVector);
+            } else if (!Reversed.getValue() && (DirectionVector.getValue() != naturalDirectionVector)) {
+                DirectionVector.setValue(naturalDirectionVector);
+            }
         }
     } else if (prop == &NormalDirection) {
         // Set a default direction if no direction reference has been given
         if (Direction.getValue() == NULL) {
-            DirectionVector.setValue(NormalDirection.getValue());
-            naturalDirectionVector = NormalDirection.getValue();
+            Base::Vector3d direction = NormalDirection.getValue();
+            if (Reversed.getValue())
+                direction = -direction;
+            DirectionVector.setValue(direction);
+            naturalDirectionVector = direction;
         }
     }
 }

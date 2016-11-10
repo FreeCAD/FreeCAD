@@ -224,14 +224,6 @@ void ViewProviderMeshCurvature::init(const Mesh::PropertyCurvatureList* pCurvInf
     pcColorBar->setRange( fMin, fMax, 3 );
 }
 
-void ViewProviderMeshCurvature::slotCreatedObject(const App::DocumentObject& Obj)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedObject(const App::DocumentObject& Obj)
-{
-}
-
 void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
 {
     // we get this for any object for that a property has changed. Thus, we must regard that object
@@ -246,14 +238,6 @@ void ViewProviderMeshCurvature::slotChangedObject(const App::DocumentObject& Obj
             static_cast<Mesh::Curvature*>(pcObject)->Source.touch(); // make sure to recompute the feature
         }
     }
-}
-
-void ViewProviderMeshCurvature::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
-void ViewProviderMeshCurvature::slotDeletedDocument(const App::Document& Doc)
-{
 }
 
 void ViewProviderMeshCurvature::attach(App::DocumentObject *pcFeat)
@@ -315,7 +299,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             // get the view provider of the associated mesh feature
             App::Document* rDoc = pcObject->getDocument();
             Gui::Document* pDoc = Gui::Application::Instance->getDocument(rDoc);
-            Gui::ViewProviderGeometryObject* view = static_cast<Gui::ViewProviderGeometryObject*>(pDoc->getViewProvider(object));
+            ViewProviderMesh* view = static_cast<ViewProviderMesh*>(pDoc->getViewProvider(object));
             this->pcLinkRoot->addChild(view->getHighlightNode());
         }
     }
@@ -415,7 +399,7 @@ std::vector<std::string> ViewProviderMeshCurvature::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderMeshCurvature::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderMeshCurvature::OnChange(Base::Subject<int> &/*rCaller*/,int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -466,7 +450,7 @@ public:
         QStringList lines = s.split(QLatin1String("\n"));
         std::vector<std::string> text;
         for (QStringList::Iterator it = lines.begin(); it != lines.end(); ++it)
-            text.push_back((const char*)it->toAscii());
+            text.push_back((const char*)it->toLatin1());
         anno->LabelText.setValues(text);
         std::stringstream str;
         str << "Curvature info (" << group->Group.getSize() << ")";
@@ -509,7 +493,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
                 view->setEditing(false);
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
-                view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback);
+                view->removeEventCallback(SoEvent::getClassTypeId(), curvatureInfoCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
@@ -536,7 +520,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
                 int index2 = facedetail->getPoint(1)->getCoordinateIndex();
                 int index3 = facedetail->getPoint(2)->getCoordinateIndex();
                 std::string info = self->curvatureInfo(true, index1, index2, index3);
-                QString text = QString::fromAscii(info.c_str());
+                QString text = QString::fromLatin1(info.c_str());
                 if (addflag) {
                     SbVec3f pt = point->getPoint();
                     SbVec3f nl = point->getNormal();
@@ -571,7 +555,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void * ud, SoEventCallback
             int index2 = facedetail->getPoint(1)->getCoordinateIndex();
             int index3 = facedetail->getPoint(2)->getCoordinateIndex();
             std::string info = that->curvatureInfo(false, index1, index2, index3);
-            Gui::getMainWindow()->setPaneText(1,QString::fromAscii(info.c_str()));
+            Gui::getMainWindow()->setPaneText(1,QString::fromLatin1(info.c_str()));
         }
     }
 }

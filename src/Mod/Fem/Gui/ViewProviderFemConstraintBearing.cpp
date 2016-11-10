@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintBearing.h"
@@ -46,8 +47,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintBearing, FemGui::ViewProviderFe
 
 ViewProviderFemConstraintBearing::ViewProviderFemConstraintBearing()
 {
-    sPixmap = "Fem_ConstraintBearing";
-    wizardWidget = NULL;
+    sPixmap = "fem-constraint-bearing";
 }
 
 ViewProviderFemConstraintBearing::~ViewProviderFemConstraintBearing()
@@ -119,7 +119,7 @@ void ViewProviderFemConstraintBearing::updateData(const App::Property* prop)
         pShapeSep->removeAllChildren();
 
         // This should always point outside of the cylinder
-        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();        
+        Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
         Base::Vector3d base = pcConstraint->BasePoint.getValue();
         double radius = pcConstraint->Radius.getValue();
         base = base + radius * normal;

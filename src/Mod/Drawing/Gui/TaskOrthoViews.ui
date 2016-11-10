@@ -558,14 +558,14 @@
           <bool>true</bool>
          </property>
          <property name="text">
-          <string>Show hidden</string>
+          <string>Show hidden lines</string>
          </property>
         </widget>
        </item>
        <item row="4" column="0">
         <widget class="QCheckBox" name="smooth">
          <property name="text">
-          <string>Show smooth</string>
+          <string>Show smooth lines</string>
          </property>
         </widget>
        </item>

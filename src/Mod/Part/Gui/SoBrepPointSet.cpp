@@ -50,6 +50,7 @@
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -111,6 +112,8 @@ void SoBrepPointSet::renderShape(const SoGLCoordinateElement * const coords,
                                  int numindices)
 {
     const SbVec3f * coords3d = coords->getArrayPtr3();
+    if(coords3d == nullptr)
+        return;
 
     int previ;
     const int32_t *end = cindices + numindices;
@@ -130,21 +133,25 @@ void SoBrepPointSet::renderHighlight(SoGLRenderAction *action)
     if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
 
-    this->getVertexData(state, coords, normals, FALSE);
+    this->getVertexData(state, coords, normals, false);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t id = this->highlightIndex.getValue();
-
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), &id, 1);
+    if (id < this->startIndex.getValue() || id >= coords->getNum()) {
+        SoDebugError::postWarning("SoBrepPointSet::renderHighlight", "highlightIndex out of range");
+    }
+    else {
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), &id, 1);
+    }
     state->pop();
 }
 
@@ -156,16 +163,16 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action)
     if (ps < 4.0f) SoPointSizeElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
 
     const SoCoordinateElement * coords;
     const SbVec3f * normals;
     const int32_t * cindices;
     int numcindices;
 
-    this->getVertexData(state, coords, normals, FALSE);
+    this->getVertexData(state, coords, normals, false);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
@@ -173,8 +180,24 @@ void SoBrepPointSet::renderSelection(SoGLRenderAction *action)
     cindices = this->selectionIndex.getValues(0);
     numcindices = this->selectionIndex.getNum();
 
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+    if (!validIndexes(coords, this->startIndex.getValue(), cindices, numcindices)) {
+        SoDebugError::postWarning("SoBrepPointSet::renderSelection", "selectionIndex out of range");
+    }
+    else {
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+    }
     state->pop();
+}
+
+bool SoBrepPointSet::validIndexes(const SoCoordinateElement* coords, int32_t startIndex, const int32_t * cindices, int numcindices) const
+{
+    for (int i=0; i<numcindices; i++) {
+        int32_t id = cindices[i];
+        if (id < startIndex || id >= coords->getNum()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 void SoBrepPointSet::doAction(SoAction* action)
@@ -226,14 +249,17 @@ void SoBrepPointSet::doAction(SoAction* action)
             switch (selaction->getType()) {
             case Gui::SoSelectionElementAction::Append:
                 {
-                    int start = this->selectionIndex.getNum();
-                    this->selectionIndex.set1Value(start, index);
+                    if (this->selectionIndex.find(index) < 0) {
+                        int start = this->selectionIndex.getNum();
+                        this->selectionIndex.set1Value(start, index);
+                    }
                 }
                 break;
             case Gui::SoSelectionElementAction::Remove:
                 {
                     int start = this->selectionIndex.find(index);
-                    this->selectionIndex.deleteValues(start,1);
+                    if (start >= 0)
+                        this->selectionIndex.deleteValues(start,1);
                 }
                 break;
             default:

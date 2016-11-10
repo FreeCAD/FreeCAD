@@ -27,12 +27,17 @@ __url__ = ["http://www.freecadweb.org"]
 
 "a vector math library for FreeCAD"
 
+## \defgroup DRAFTVECUTILS DraftVecUtils
+#  \ingroup DRAFT
+#
+# Vector math utilities
+
 import math,FreeCAD
 from FreeCAD import Vector, Matrix
 
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 def precision():
-    return params.GetInt("precision")
+    return params.GetInt("precision",6)
 
 def typecheck (args_and_types, name="?"):
     for v,t in args_and_types:
@@ -75,12 +80,12 @@ def equals(u,v):
 
 def scale(u,scalar):
     "scale(Vector,Float) - scales (multiplies) a vector by a factor"
-    typecheck ([(u,Vector), (scalar,(int,long,float))], "scale")
+    typecheck ([(u,Vector), (scalar,(int,float))], "scale")
     return Vector(u.x*scalar, u.y*scalar, u.z*scalar)
 
 def scaleTo(u,l):
     "scaleTo(Vector,length) - scales a vector to a given length"
-    typecheck ([(u,Vector),(l,(int,long,float))], "scaleTo")
+    typecheck ([(u,Vector),(l,(int,float))], "scaleTo")
     if u.Length == 0:
         return Vector(u)
     else:
@@ -137,7 +142,7 @@ def rotate(u,angle,axis=Vector(0,0,1)):
     '''rotate(Vector,Float,axis=Vector): rotates the first Vector
     around the given axis, at the given angle.
     If axis is omitted, the rotation is made on the xy plane.'''
-    typecheck ([(u,Vector), (angle,(int,long,float)), (axis,Vector)], "rotate")
+    typecheck ([(u,Vector), (angle,(int,float)), (axis,Vector)], "rotate")
 
     if angle == 0: 
         return u
@@ -187,6 +192,19 @@ def find(vector,vlist):
         if equals(vector,v):
             return i
     return None
+    
+def closest(vector,vlist):
+    '''closest(vector,vlist): finds the closest vector to the given vector
+    in a list of vectors'''
+    typecheck ([(vector,Vector), (vlist,list)], "closest")
+    dist = 9999999999999999
+    index = None
+    for i,v in enumerate(vlist):
+        d = vector.sub(v).Length
+        if d < dist:
+            dist = d
+            index = i
+    return index
 
 def isColinear(vlist):
     '''isColinear(list_of_vectors): checks if vectors in given list are colinear'''

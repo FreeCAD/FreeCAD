@@ -216,7 +216,7 @@
   <context>
     <name>plot_console</name>
     <message>
-      <location filename="Plot.py" line="38"/>
+      <location filename="Plot.py" line="43"/>
       <source>matplotlib not found, so Plot module can not be loaded</source>
       <translation type="unfinished">matplotlib not found, so Plot module can not be loaded</translation>
     </message>
@@ -319,7 +319,7 @@
     <message>
       <location filename="TaskPanel.py" line="126"/>
       <source>Position</source>
-      <translation type="unfinished">Posisie</translation>
+      <translation>Posisie</translation>
     </message>
     <message>
       <location filename="TaskPanel.py" line="132"/>

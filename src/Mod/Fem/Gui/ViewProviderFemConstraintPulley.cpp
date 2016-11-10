@@ -29,6 +29,7 @@
 # include <Inventor/nodes/SoTranslation.h>
 # include <Inventor/nodes/SoRotation.h>
 # include <Precision.hxx>
+# include <QMessageBox>
 #endif
 
 #include "ViewProviderFemConstraintPulley.h"
@@ -45,7 +46,7 @@ PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintPulley, FemGui::ViewProviderFem
 
 ViewProviderFemConstraintPulley::ViewProviderFemConstraintPulley()
 {
-    sPixmap = "Fem_ConstraintPulley";
+    sPixmap = "fem-constraint-pulley";
 }
 
 ViewProviderFemConstraintPulley::~ViewProviderFemConstraintPulley()

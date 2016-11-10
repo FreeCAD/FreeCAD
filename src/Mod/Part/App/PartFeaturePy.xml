@@ -13,5 +13,10 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>This is the father of all shape object classes</UserDocu>
     </Documentation>
+    <Methode Name="test">
+            <Documentation>
+                    <UserDocu>test</UserDocu>
+            </Documentation>
+    </Methode>
   </PythonExport>
 </GenerateModel>

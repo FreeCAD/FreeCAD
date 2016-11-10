@@ -25,6 +25,7 @@
 #define GUI_GLPAINTER_H
 
 #ifdef FC_OS_WIN32
+#define NOMINMAX
 #include <windows.h>
 #endif
 #ifdef FC_OS_MACOSX
@@ -34,6 +35,10 @@
 #endif
 
 #include <Base/BaseClass.h>
+#include <QPoint>
+
+class QPaintDevice;
+class QGLWidget;
 
 namespace Gui {
 class View3DInventorViewer;
@@ -43,7 +48,7 @@ public:
     GLPainter();
     virtual ~GLPainter();
 
-    bool begin(View3DInventorViewer*);
+    bool begin(QPaintDevice * device);
     bool end();
     bool isActive() const;
 
@@ -67,7 +72,7 @@ public:
     //@}
 
 private:
-    View3DInventorViewer* viewer;
+    QGLWidget* viewer;
     GLfloat depthrange[2];
     GLdouble projectionmatrix[16];
     GLint width, height;
@@ -87,6 +92,53 @@ public:
     {
     }
     virtual void paintGL() = 0;
+};
+
+class GuiExport Rubberband : public Gui::GLGraphicsItem
+{
+    View3DInventorViewer* viewer;
+    int x_old, y_old, x_new, y_new;
+    float rgb_r, rgb_g, rgb_b, rgb_a;
+    bool working, stipple;
+
+public:
+    Rubberband(View3DInventorViewer* v);
+    Rubberband();
+    ~Rubberband();
+    void setWorking(bool on);
+    void setLineStipple(bool on);
+    bool isWorking();
+    void setViewer(View3DInventorViewer* v);
+    void setCoords(int x1, int y1, int x2, int y2);
+    void setColor(float r, float g, float b, float a);
+    void paintGL();
+};
+
+class Polyline : public Gui::GLGraphicsItem
+{
+    View3DInventorViewer* viewer;
+    std::vector<QPoint> _cNodeVector;
+    int x_new, y_new;
+    float rgb_r, rgb_g, rgb_b, rgb_a, line;
+    bool working, closed, stippled;
+    GLPainter p;
+
+public:
+    Polyline(View3DInventorViewer* v);
+    Polyline();
+    ~Polyline();
+    void setWorking(bool on);
+    bool isWorking() const;
+    void setViewer(View3DInventorViewer* v);
+    void setCoords(int x, int y);
+    void setColor(int r, int g, int b, int a=0);
+    void setLineWidth(float l);
+    void setClosed(bool c);
+    void setCloseStippled(bool c);
+    void addNode(const QPoint& p);
+    void popNode();
+    void clear();
+    void paintGL();
 };
 
 } // namespace Gui

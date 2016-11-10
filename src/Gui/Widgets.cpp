@@ -29,10 +29,12 @@
 # include <QDrag>
 # include <QEventLoop>
 # include <QKeyEvent>
+# include <QMessageBox>
 # include <QMimeData>
 # include <QPainter>
 # include <QPlainTextEdit>
 # include <QStylePainter>
+# include <QTextBlock>
 # include <QTimer>
 # include <QToolTip>
 #endif
@@ -68,8 +70,9 @@ CommandIconView::~CommandIconView ()
 /**
  * Stores the name of the selected commands for drag and drop. 
  */
-void CommandIconView::startDrag ( Qt::DropActions supportedActions )
+void CommandIconView::startDrag (Qt::DropActions supportedActions)
 {
+    Q_UNUSED(supportedActions);
     QList<QListWidgetItem*> items = selectedItems();
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);
@@ -78,12 +81,12 @@ void CommandIconView::startDrag ( Qt::DropActions supportedActions )
     dataStream << items.count();
     for (QList<QListWidgetItem*>::ConstIterator it = items.begin(); it != items.end(); ++it) {
         if (it == items.begin())
-            pixmap = qVariantValue<QPixmap>((*it)->data(Qt::UserRole));
+            pixmap = ((*it)->data(Qt::UserRole)).value<QPixmap>();
         dataStream << (*it)->text();
     }
 
     QMimeData *mimeData = new QMimeData;
-    mimeData->setData(QString::fromAscii("text/x-action-items"), itemData);
+    mimeData->setData(QString::fromLatin1("text/x-action-items"), itemData);
 
     QDrag *drag = new QDrag(this);
     drag->setMimeData(mimeData);
@@ -282,6 +285,7 @@ void ActionSelector::onCurrentItemChanged(QTreeWidgetItem*, QTreeWidgetItem*)
 
 void ActionSelector::onItemDoubleClicked(QTreeWidgetItem * item, int column)
 {
+    Q_UNUSED(column);
     QTreeWidget* treeWidget = item->treeWidget();
     if (treeWidget == availableWidget) {
         int index = availableWidget->indexOfTopLevelItem(item);
@@ -378,49 +382,49 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     // If a modifier is pressed without any other key, return.
     // AltGr is not a modifier but doesn't have a QtSring representation.
     switch(key) {
-	case Qt::Key_Backspace:
-	    if (state == Qt::NoModifier){
-	        keyPressedCount = 0;
-                setText(tr("none"));
-	    }   
-	case Qt::Key_Control:
-        case Qt::Key_Shift:
-	case Qt::Key_Alt:
-	case Qt::Key_Meta:
-	case Qt::Key_AltGr:
-            return; 
-        
-
-	default:
-	     break;
+    case Qt::Key_Backspace:
+        if (state == Qt::NoModifier) {
+            keyPressedCount = 0;
+            setText(tr("none"));
+        }
+    case Qt::Key_Control:
+    case Qt::Key_Shift:
+    case Qt::Key_Alt:
+    case Qt::Key_Meta:
+    case Qt::Key_AltGr:
+        return;
+    default:
+        break;
     }
 
     // 4 keys are allowed for QShortcut
     switch(keyPressedCount) {
-	case 4:
-	    keyPressedCount = 0;
-	case 0:
-	    txtLine.clear();
-	    break;
-	default:
-            txtLine += QString::fromAscii(",");
-	    break;
+    case 4:
+        keyPressedCount = 0;
+        txtLine.clear();
+        break;
+    case 0:
+        txtLine.clear();
+        break;
+    default:
+        txtLine += QString::fromLatin1(",");
+        break;
     }
-    
+
     // Handles modifiers applying a mask.
     if ((state & Qt::ControlModifier) == Qt::ControlModifier) {
         QKeySequence ks(Qt::CTRL);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::AltModifier) == Qt::AltModifier) {
+    if ((state & Qt::AltModifier) == Qt::AltModifier) {
         QKeySequence ks(Qt::ALT);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::ShiftModifier) == Qt::ShiftModifier) {
+    if ((state & Qt::ShiftModifier) == Qt::ShiftModifier) {
         QKeySequence ks(Qt::SHIFT);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
-    if (( state & Qt::MetaModifier) == Qt::MetaModifier) {
+    if ((state & Qt::MetaModifier) == Qt::MetaModifier) {
         QKeySequence ks(Qt::META);
         txtLine += ks.toString(QKeySequence::NativeText);
     }
@@ -428,9 +432,9 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
     // Handles normal keys
     QKeySequence ks(key);
     txtLine += ks.toString(QKeySequence::NativeText);
- 
+
     setText(txtLine);
-    keyPressedCount ++ ;
+    keyPressedCount++;
 }
 
 // ------------------------------------------------------------------------------
@@ -442,9 +446,9 @@ void AccelLineEdit::keyPressEvent ( QKeyEvent * e)
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-CheckListDialog::CheckListDialog( QWidget* parent, Qt::WFlags fl )
+CheckListDialog::CheckListDialog( QWidget* parent, Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
     ui.setupUi(this);
@@ -513,10 +517,18 @@ struct ColorButtonP
     QColor old, col;
     QPointer<QColorDialog> cd;
     bool allowChange;
+    bool autoChange;
     bool drawFrame;
     bool modal;
+    bool dirty;
 
-    ColorButtonP() : cd(0), allowChange(true), drawFrame(true), modal(true)
+    ColorButtonP()
+        : cd(0)
+        , allowChange(true)
+        , autoChange(false)
+        , drawFrame(true)
+        , modal(true)
+        , dirty(true)
     {
     }
 };
@@ -531,6 +543,11 @@ ColorButton::ColorButton(QWidget* parent)
     d = new ColorButtonP();
     d->col = palette().color(QPalette::Active,QPalette::Midlight);
     connect(this, SIGNAL(clicked()), SLOT(onChooseColor()));
+
+#if 1
+    int e = style()->pixelMetric(QStyle::PM_ButtonIconSize);
+    setIconSize(QSize(2*e, e));
+#endif
 }
 
 /**
@@ -547,6 +564,7 @@ ColorButton::~ColorButton()
 void ColorButton::setColor(const QColor& c)
 {
     d->col = c;
+    d->dirty = true;
     update();
 }
 
@@ -588,11 +606,22 @@ bool ColorButton::isModal() const
     return d->modal;
 }
 
+void ColorButton::setAutoChangeColor(bool on)
+{
+    d->autoChange = on;
+}
+
+bool ColorButton::autoChangeColor() const
+{
+    return d->autoChange;
+}
+
 /**
  * Draws the button label.
  */
 void ColorButton::paintEvent (QPaintEvent * e)
 {
+#if 0
     // first paint the complete button
     QPushButton::paintEvent(e);
 
@@ -621,6 +650,31 @@ void ColorButton::paintEvent (QPaintEvent * e)
 
     QStylePainter p(this);
     p.drawControl(QStyle::CE_PushButtonLabel, opt);
+#else
+    if (d->dirty) {
+        QSize isize = iconSize();
+        QPixmap pix(isize);
+        pix.fill(palette().button().color());
+
+        QPainter p(&pix);
+
+        int w = pix.width();
+        int h = pix.height();
+        p.setPen(QPen(Qt::gray));
+        if (d->drawFrame) {
+            p.setBrush(d->col);
+            p.drawRect(2, 2, w - 5, h - 5);
+        }
+        else {
+            p.fillRect(0, 0, w, h, QBrush(d->col));
+        }
+        setIcon(QIcon(pix));
+
+        d->dirty = false;
+    }
+
+    QPushButton::paintEvent(e);
+#endif
 }
 
 /**
@@ -633,9 +687,23 @@ void ColorButton::onChooseColor()
 #if QT_VERSION >= 0x040500
     if (d->modal) {
 #endif
-        QColor c = QColorDialog::getColor(d->col, this);
-        if (c.isValid()) {
-            setColor(c);
+        QColor currentColor = d->col;
+        QColorDialog cd(d->col, this);
+
+        if (d->autoChange) {
+            connect(&cd, SIGNAL(currentColorChanged(const QColor &)),
+                    this, SLOT(onColorChosen(const QColor&)));
+        }
+
+        if (cd.exec() == QDialog::Accepted) {
+            QColor c = cd.selectedColor();
+            if (c.isValid()) {
+                setColor(c);
+                changed();
+            }
+        }
+        else if (d->autoChange) {
+            setColor(currentColor);
             changed();
         }
 #if QT_VERSION >= 0x040500
@@ -669,10 +737,10 @@ void ColorButton::onRejected()
 
 // ------------------------------------------------------------------------------
 
-UrlLabel::UrlLabel(QWidget * parent, Qt::WFlags f)
+UrlLabel::UrlLabel(QWidget * parent, Qt::WindowFlags f)
   : QLabel(parent, f)
 {
-    _url = QString::fromAscii("http://localhost");
+    _url = QString::fromLatin1("http://localhost");
     setToolTip(this->_url);
 }
 
@@ -700,7 +768,7 @@ void UrlLabel::mouseReleaseEvent (QMouseEvent *)
         PyObject* dict = PyModule_GetDict(module);
         PyObject* func = PyDict_GetItemString(dict, "open");
         if (func) {
-            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toAscii());
+            PyObject* args = Py_BuildValue("(s)", (const char*)this->_url.toLatin1());
             PyObject* result = PyEval_CallObject(func,args);
             // decrement the args and module reference
             Py_XDECREF(result);
@@ -980,9 +1048,174 @@ void StatusWidget::adjustPosition(QWidget* w)
 
 // --------------------------------------------------------------------
 
+class LineNumberArea : public QWidget
+{
+public:
+    LineNumberArea(PropertyListEditor *editor) : QWidget(editor) {
+        codeEditor = editor;
+    }
+
+    QSize sizeHint() const {
+        return QSize(codeEditor->lineNumberAreaWidth(), 0);
+    }
+
+protected:
+    void paintEvent(QPaintEvent *event) {
+        codeEditor->lineNumberAreaPaintEvent(event);
+    }
+
+private:
+    PropertyListEditor *codeEditor;
+};
+
+PropertyListEditor::PropertyListEditor(QWidget *parent) : QPlainTextEdit(parent)
+{
+    lineNumberArea = new LineNumberArea(this);
+
+    connect(this, SIGNAL(blockCountChanged(int)),
+            this, SLOT(updateLineNumberAreaWidth(int)));
+    connect(this, SIGNAL(updateRequest(QRect,int)),
+            this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(cursorPositionChanged()),
+            this, SLOT(highlightCurrentLine()));
+
+    updateLineNumberAreaWidth(0);
+    highlightCurrentLine();
+}
+
+int PropertyListEditor::lineNumberAreaWidth()
+{
+    int digits = 1;
+    int max = qMax(1, blockCount());
+    while (max >= 10) {
+        max /= 10;
+        ++digits;
+    }
+
+    int space = 3 + fontMetrics().width(QLatin1Char('9')) * digits;
+
+    return space;
+}
+
+void PropertyListEditor::updateLineNumberAreaWidth(int /* newBlockCount */)
+{
+    setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
+}
+
+void PropertyListEditor::updateLineNumberArea(const QRect &rect, int dy)
+{
+    if (dy)
+        lineNumberArea->scroll(0, dy);
+    else
+        lineNumberArea->update(0, rect.y(), lineNumberArea->width(), rect.height());
+
+    if (rect.contains(viewport()->rect()))
+        updateLineNumberAreaWidth(0);
+}
+
+void PropertyListEditor::resizeEvent(QResizeEvent *e)
+{
+    QPlainTextEdit::resizeEvent(e);
+
+    QRect cr = contentsRect();
+    lineNumberArea->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+}
+
+void PropertyListEditor::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+    if (!isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+
+        QColor lineColor = QColor(Qt::yellow).lighter(160);
+
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+
+    setExtraSelections(extraSelections);
+}
+
+void PropertyListEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
+{
+    QPainter painter(lineNumberArea);
+    painter.fillRect(event->rect(), Qt::lightGray);
+
+    QTextBlock block = firstVisibleBlock();
+    int blockNumber = block.blockNumber();
+    int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
+    int bottom = top + (int) blockBoundingRect(block).height();
+
+    while (block.isValid() && top <= event->rect().bottom()) {
+        if (block.isVisible() && bottom >= event->rect().top()) {
+            QString number = QString::number(blockNumber + 1);
+            painter.setPen(Qt::black);
+            painter.drawText(0, top, lineNumberArea->width(), fontMetrics().height(),
+                             Qt::AlignRight, number);
+        }
+
+        block = block.next();
+        top = bottom;
+        bottom = top + (int) blockBoundingRect(block).height();
+        ++blockNumber;
+    }
+}
+
+class PropertyListDialog : public QDialog
+{
+    int type;
+
+public:
+    PropertyListDialog(int type, QWidget* parent) : QDialog(parent),type(type)
+    {
+    }
+
+    void accept()
+    {
+        PropertyListEditor* edit = this->findChild<PropertyListEditor*>();
+        QStringList lines;
+        if (edit) {
+            QString inputText = edit->toPlainText();
+            if (!inputText.isEmpty()) // let pass empty input, regardless of the type, so user can void the value
+                lines = inputText.split(QString::fromLatin1("\n"));
+        }
+        if (!lines.isEmpty()) {
+            if (type == 1) { // floats
+                bool ok;
+                int line=1;
+                for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                    it->toDouble(&ok);
+                    if (!ok) {
+                        QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                        return;
+                    }
+                }
+            }
+            else if (type == 2) { // integers
+                bool ok;
+                int line=1;
+                for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
+                    it->toInt(&ok);
+                    if (!ok) {
+                        QMessageBox::critical(this, tr("Invalid input"), tr("Input in line %1 is not a number").arg(line));
+                        return;
+                    }
+                }
+            }
+        }
+        QDialog::accept();
+    }
+};
+
+// --------------------------------------------------------------------
+
 LabelEditor::LabelEditor (QWidget * parent)
   : QWidget(parent)
 {
+    type = String;
     QHBoxLayout *layout = new QHBoxLayout(this);
     layout->setMargin(0);
     layout->setSpacing(2);
@@ -992,6 +1225,8 @@ LabelEditor::LabelEditor (QWidget * parent)
 
     connect(lineEdit, SIGNAL(textChanged(const QString &)),
             this, SIGNAL(textChanged(const QString &)));
+    connect(lineEdit, SIGNAL(textChanged(const QString &)),
+            this, SLOT(validateText(const QString &)));
 
     button = new QPushButton(QLatin1String("..."), this);
     button->setFixedWidth(2*button->fontMetrics().width(QLatin1String(" ... ")));
@@ -1008,31 +1243,50 @@ LabelEditor::~LabelEditor()
 
 QString LabelEditor::text() const
 {
-    return lineEdit->text();
+    return this->plainText;
 }
 
 void LabelEditor::setText(const QString& s)
 {
-    lineEdit->setText(s);
+    this->plainText = s;
+
+    QStringList list = this->plainText.split(QString::fromLatin1("\n"));
+    QString text = QString::fromLatin1("[%1]").arg(list.join(QLatin1String(",")));
+    lineEdit->setText(text);
 }
 
 void LabelEditor::changeText()
 {
-    QDialog dlg(this);
+    PropertyListDialog dlg(static_cast<int>(type), this);
+    dlg.setWindowTitle(tr("List"));
     QVBoxLayout* hboxLayout = new QVBoxLayout(&dlg);
     QDialogButtonBox* buttonBox = new QDialogButtonBox(&dlg);
-    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Close);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
-    QPlainTextEdit *edit = new QPlainTextEdit(&dlg);
-    edit->setPlainText(this->lineEdit->text());
-    
+    PropertyListEditor *edit = new PropertyListEditor(&dlg);
+    edit->setPlainText(this->plainText);
+
     hboxLayout->addWidget(edit);
     hboxLayout->addWidget(buttonBox);
     connect(buttonBox, SIGNAL(accepted()), &dlg, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), &dlg, SLOT(reject()));
     if (dlg.exec() == QDialog::Accepted) {
-        this->lineEdit->setText(edit->toPlainText());
+        QString inputText = edit->toPlainText();
+        this->plainText = inputText;
+
+        QStringList list = this->plainText.split(QString::fromLatin1("\n"));
+        QString text = QString::fromLatin1("[%1]").arg(list.join(QLatin1String(",")));
+        lineEdit->setText(text);
     }
+}
+
+/**
+ * Validates if the input of the lineedit is a valid list.
+ */
+void LabelEditor::validateText(const QString& s)
+{
+    if ( s.startsWith(QLatin1String("[")) && s.endsWith(QLatin1String("]")) )
+        this->plainText = s.mid(1,s.size()-2).replace(QLatin1String(","),QLatin1String("\n"));
 }
 
 /**
@@ -1052,6 +1306,11 @@ void LabelEditor::setButtonText(const QString& txt)
 QString LabelEditor::buttonText() const
 {
     return button->text();
+}
+
+void LabelEditor::setInputType(InputType t)
+{
+    this->type = t;
 }
 
 #include "moc_Widgets.cpp"

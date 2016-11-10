@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -28,18 +28,22 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from pivy import coin
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-def makeAxis(num=5,size=1000,name=translate("Arch","Axes")):
+def makeAxis(num=5,size=1000,name="Axes"):
     '''makeAxis(num,size): makes an Axis System
     based on the given number of axes and interval distances'''
     obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Axis(obj)
     if FreeCAD.GuiUp:
         _ViewProviderAxis(obj.ViewObject)
@@ -58,10 +62,10 @@ class _CommandAxis:
     "the Arch Axis command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Axis',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Axis","Axis"),
                 'Accel': "A, X",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
-        
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Axis","Creates an axis system.")}
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Axis"))
         FreeCADGui.addModule("Arch")
@@ -76,19 +80,19 @@ class _CommandAxis:
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-       
+
 class _Axis:
     "The Axis object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyFloatList","Distances","Arch", translate("Arch","The intervals between axes"))
-        obj.addProperty("App::PropertyFloatList","Angles","Arch", translate("Arch","The angles of each axis"))
-        obj.addProperty("App::PropertyFloat","Length","Arch", translate("Arch","The length of the axes"))
+        obj.addProperty("App::PropertyFloatList","Distances","Arch", QT_TRANSLATE_NOOP("App::Property","The intervals between axes"))
+        obj.addProperty("App::PropertyFloatList","Angles","Arch", QT_TRANSLATE_NOOP("App::Property","The angles of each axis"))
+        obj.addProperty("App::PropertyLength","Length","Arch", QT_TRANSLATE_NOOP("App::Property","The length of the axes"))
         obj.addProperty("App::PropertyPlacement","Placement","Base","")
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
         self.Type = "Axis"
-        obj.Length=1.0
+        obj.Length=3000
         obj.Proxy = self
-        
+
     def execute(self,obj):
         import Part
         geoms = []
@@ -96,16 +100,20 @@ class _Axis:
         if obj.Distances:
             if len(obj.Distances) == len(obj.Angles):
                 for i in range(len(obj.Distances)):
+                    if hasattr(obj.Length,"Value"):
+                        l = obj.Length.Value
+                    else:
+                        l = obj.Length
                     dist += obj.Distances[i]
                     ang = math.radians(obj.Angles[i])
                     p1 = Vector(dist,0,0)
-                    p2 = Vector(dist+(obj.Length/math.cos(ang))*math.sin(ang),obj.Length,0)
+                    p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
                     geoms.append(Part.Line(p1,p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
             sh.Placement = obj.Placement
             obj.Shape = sh
-        
+
     def onChanged(self,obj,prop):
         if prop in ["Angles","Distances","Placement"]:
             self.execute(obj)
@@ -116,25 +124,33 @@ class _Axis:
     def __setstate__(self,state):
         if state:
             self.Type = state
-        
+
 class _ViewProviderAxis:
     "A View Provider for the Axis object"
 
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyFloat","BubbleSize","Arch", translate("Arch","The size of the axis bubbles"))
-        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", translate("Arch","The numbering style"))
+        vobj.addProperty("App::PropertyLength","BubbleSize","Arch", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
+        vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Arch", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
         vobj.addProperty("App::PropertyEnumeration","DrawStyle","Base","")
+        vobj.addProperty("App::PropertyEnumeration","BubblePosition","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
+        vobj.addProperty("App::PropertyInteger","StartNumber","Base","")
+        vobj.addProperty("App::PropertyString","FontName","Base","")
+        vobj.addProperty("App::PropertyLength","FontSize","Base","")
         vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
         vobj.DrawStyle = ["Solid","Dashed","Dotted","Dashdot"]
+        vobj.BubblePosition = ["Start","End","Both"]
         vobj.Proxy = self
-        vobj.BubbleSize = .1
+        vobj.BubbleSize = 500
         vobj.LineWidth = 1
         vobj.LineColor = (0.13,0.15,0.37)
         vobj.DrawStyle = "Dashdot"
         vobj.NumberingStyle = "1,2,3"
-    
+        vobj.StartNumber = 1
+        vobj.FontName = Draft.getParam("textfont","Arial,Sans")
+        vobj.FontSize = 350
+
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Axis_Tree.svg"
@@ -158,7 +174,7 @@ class _ViewProviderAxis:
         sep.addChild(self.bubbleset)
         vobj.addDisplayMode(sep,"Default")
         self.onChanged(vobj,"BubbleSize")
-        
+
     def getDisplayModes(self,vobj):
         return ["Default"]
 
@@ -201,7 +217,7 @@ class _ViewProviderAxis:
                 self.linestyle.linePattern = 0xff88
         elif prop == "LineWidth":
                 self.linestyle.lineWidth = vobj.LineWidth
-        elif prop == "BubbleSize":
+        elif prop in ["BubbleSize","BubblePosition","FontName","FontSize"]:
             if hasattr(self,"bubbleset"):
                 if self.bubbles:
                     self.bubbleset.removeChild(self.bubbles)
@@ -214,103 +230,140 @@ class _ViewProviderAxis:
                         self.bubbles.addChild(self.bubblestyle)
                         import Part,Draft
                         self.bubbletexts = []
-                        for i in range(len(vobj.Object.Shape.Edges)):
-                            verts = vobj.Object.Shape.Edges[i].Vertexes
-                            p1 = verts[0].Point
-                            p2 = verts[1].Point
-                            dv = p2.sub(p1)
-                            dv.normalize()
-                            rad = vobj.BubbleSize
-                            center = p2.add(dv.scale(rad,rad,rad))
-                            buf = Part.makeCircle(rad,center).writeInventor()
-                            try:
-                                cin = coin.SoInput()
-                                cin.setBuffer(buf)
-                                cob = coin.SoDB.readAll(cin)
-                            except:
-                                import re
-                                # workaround for pivy SoInput.setBuffer() bug
-                                buf = buf.replace("\n","")
-                                pts = re.findall("point \[(.*?)\]",buf)[0]
-                                pts = pts.split(",")
-                                pc = []
-                                for p in pts:
-                                    v = p.strip().split()
-                                    pc.append([float(v[0]),float(v[1]),float(v[2])])
-                                coords = coin.SoCoordinate3()
-                                coords.point.setValues(0,len(pc),pc)
-                                line = coin.SoLineSet()
-                                line.numVertices.setValue(-1)
+                        pos = ["Start"]
+                        if hasattr(vobj,"BubblePosition"):
+                            if vobj.BubblePosition == "Both":
+                                pos = ["Start","End"]
                             else:
-                                coords = cob.getChild(1).getChild(0).getChild(2)
-                                line = cob.getChild(1).getChild(0).getChild(3)
-                            self.bubbles.addChild(coords)
-                            self.bubbles.addChild(line)
-                            st = coin.SoSeparator()
-                            tr = coin.SoTransform()
-                            tr.translation.setValue((center.x,center.y-rad/4,center.z))
-                            fo = coin.SoFont()
-                            fo.name = Draft.getParam("textfont","Arial,Sans")
-                            fo.size = rad*100
-                            tx = coin.SoText2()
-                            tx.justification = coin.SoText2.CENTER
-                            self.bubbletexts.append(tx)
-                            st.addChild(tr)
-                            st.addChild(fo)
-                            st.addChild(tx)
-                            self.bubbles.addChild(st)
+                                pos = [vobj.BubblePosition]
+                        for i in range(len(vobj.Object.Shape.Edges)):
+                            for p in pos:
+                                verts = vobj.Object.Shape.Edges[i].Vertexes
+                                if p == "Start":
+                                    p1 = verts[0].Point
+                                    p2 = verts[1].Point
+                                else:
+                                    p1 = verts[1].Point
+                                    p2 = verts[0].Point
+                                dv = p2.sub(p1)
+                                dv.normalize()
+                                if hasattr(vobj.BubbleSize,"Value"):
+                                    rad = vobj.BubbleSize.Value/2
+                                else:
+                                    rad = vobj.BubbleSize/2
+                                center = p2.add(dv.scale(rad,rad,rad))
+                                buf = Part.makeCircle(rad,center).writeInventor()
+                                try:
+                                    cin = coin.SoInput()
+                                    cin.setBuffer(buf)
+                                    cob = coin.SoDB.readAll(cin)
+                                except:
+                                    import re
+                                    # workaround for pivy SoInput.setBuffer() bug
+                                    buf = buf.replace("\n","")
+                                    pts = re.findall("point \[(.*?)\]",buf)[0]
+                                    pts = pts.split(",")
+                                    pc = []
+                                    for p in pts:
+                                        v = p.strip().split()
+                                        pc.append([float(v[0]),float(v[1]),float(v[2])])
+                                    coords = coin.SoCoordinate3()
+                                    coords.point.setValues(0,len(pc),pc)
+                                    line = coin.SoLineSet()
+                                    line.numVertices.setValue(-1)
+                                else:
+                                    coords = cob.getChild(1).getChild(0).getChild(2)
+                                    line = cob.getChild(1).getChild(0).getChild(3)
+                                self.bubbles.addChild(coords)
+                                self.bubbles.addChild(line)
+                                st = coin.SoSeparator()
+                                tr = coin.SoTransform()
+                                fs = rad*1.5
+                                if hasattr(vobj,"FontSize"):
+                                    fs = vobj.FontSize.Value
+                                tr.translation.setValue((center.x,center.y-fs/2.5,center.z))
+                                fo = coin.SoFont()
+                                fn = Draft.getParam("textfont","Arial,Sans")
+                                if hasattr(vobj,"FontName"):
+                                    if vobj.FontName:
+                                        try:
+                                            fn = str(vobj.FontName)
+                                        except:
+                                            pass
+                                fo.name = fn
+                                fo.size = fs
+                                tx = coin.SoAsciiText()
+                                tx.justification = coin.SoText2.CENTER
+                                self.bubbletexts.append(tx)
+                                st.addChild(tr)
+                                st.addChild(fo)
+                                st.addChild(tx)
+                                self.bubbles.addChild(st)
                         self.bubbleset.addChild(self.bubbles)
                         self.onChanged(vobj,"NumberingStyle")
-        elif prop == "NumberingStyle":
+        elif prop in ["NumberingStyle","StartNumber"]:
             if hasattr(self,"bubbletexts"):
                 chars = "abcdefghijklmnopqrstuvwxyz"
                 roman=(('M',1000),('CM',900),('D',500),('CD',400),
                        ('C',100),('XC',90),('L',50),('XL',40),
                        ('X',10),('IX',9),('V',5),('IV',4),('I',1))
                 num = 0
+                if hasattr(vobj,"StartNumber"):
+                    if vobj.StartNumber > 1:
+                        num = vobj.StartNumber-1
+                alt = False
                 for t in self.bubbletexts:
-                    if vobj.NumberingStyle == "1,2,3":
+                    if hasattr(vobj,"NumberingStyle"):
+                        if vobj.NumberingStyle == "1,2,3":
+                            t.string = str(num+1)
+                        elif vobj.NumberingStyle == "01,02,03":
+                            t.string = str(num+1).zfill(2)
+                        elif vobj.NumberingStyle == "001,002,003":
+                            t.string = str(num+1).zfill(3)
+                        elif vobj.NumberingStyle == "A,B,C":
+                            result = ""
+                            base = num/26
+                            if base:
+                                result += chars[base].upper()
+                            remainder = num % 26
+                            result += chars[remainder].upper()
+                            t.string = result
+                        elif vobj.NumberingStyle == "a,b,c":
+                            result = ""
+                            base = num/26
+                            if base:
+                                result += chars[base]
+                            remainder = num % 26
+                            result += chars[remainder]
+                            t.string = result
+                        elif vobj.NumberingStyle == "I,II,III":
+                            result = ""
+                            n = num
+                            n += 1
+                            for numeral, integer in roman:
+                                while n >= integer:
+                                    result += numeral
+                                    n -= integer
+                            t.string = result
+                        elif vobj.NumberingStyle == "L0,L1,L2":
+                            t.string = "L"+str(num)
+                    else:
                         t.string = str(num+1)
-                    elif vobj.NumberingStyle == "01,02,03":
-                        t.string = str(num+1).zfill(2)
-                    elif vobj.NumberingStyle == "001,002,003":
-                        t.string = str(num+1).zfill(3)
-                    elif vobj.NumberingStyle == "A,B,C":
-                        result = ""
-                        base = num/26
-                        if base:
-                            result += chars[base].upper()
-                        remainder = num % 26
-                        result += chars[remainder].upper()
-                        t.string = result
-                    elif vobj.NumberingStyle == "a,b,c":
-                        result = ""
-                        base = num/26
-                        if base:
-                            result += chars[base]
-                        remainder = num % 26
-                        result += chars[remainder]
-                        t.string = result
-                    elif vobj.NumberingStyle == "I,II,III":
-                        result = ""
-                        num += 1
-                        for numeral, integer in roman:
-                            while num >= integer:
-                                result += numeral
-                                num -= integer
-                        t.string = result
-                    elif vobj.NumberingStyle == "L0,L1,L2":
-                        t.string = "L"+str(num)
                     num += 1
-            
-  
+                    if hasattr(vobj,"BubblePosition"):
+                        if vobj.BubblePosition == "Both":
+                            if not alt:
+                                num -= 1
+                    alt = not alt
+
+
     def setEdit(self,vobj,mode=0):
         taskd = _AxisTaskPanel()
         taskd.obj = vobj.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
-    
+
     def unsetEdit(self,vobj,mode):
         FreeCADGui.Control.closeDialog()
         return
@@ -331,7 +384,9 @@ class _AxisTaskPanel:
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
-        
+
+        self.updating = False
+
         self.obj = None
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
@@ -347,8 +402,8 @@ class _AxisTaskPanel:
         self.tree.header().resizeSection(0,50)
         self.tree.header().resizeSection(1,80)
         self.tree.header().resizeSection(2,60)
-        
-        # buttons       
+
+        # buttons
         self.addButton = QtGui.QPushButton(self.form)
         self.addButton.setObjectName("addButton")
         self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -363,6 +418,7 @@ class _AxisTaskPanel:
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
         QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        QtCore.QObject.connect(self.tree, QtCore.SIGNAL("itemChanged(QTreeWidgetItem *, int)"), self.edit)
         self.update()
 
     def isAllowedAlterSelection(self):
@@ -373,9 +429,10 @@ class _AxisTaskPanel:
 
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
-    
+
     def update(self):
         'fills the treewidget'
+        self.updating = True
         self.tree.clear()
         if self.obj:
             for i in range(len(self.obj.Distances)):
@@ -386,7 +443,8 @@ class _AxisTaskPanel:
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
                 item.setTextAlignment(0,QtCore.Qt.AlignLeft)
         self.retranslateUi(self.form)
-                
+        self.updating = False
+
     def addElement(self):
         item = QtGui.QTreeWidgetItem(self.tree)
         item.setText(0,str(self.tree.topLevelItemCount()))
@@ -402,24 +460,35 @@ class _AxisTaskPanel:
             self.resetObject(remove=nr)
             self.update()
 
+    def edit(self,item,column):
+        if not self.updating:
+            self.resetObject()
+
     def resetObject(self,remove=None):
+        "transfers the values from the widget to the object"
         d = []
         a = []
         for i in range(self.tree.topLevelItemCount()):
             it = self.tree.findItems(str(i+1),QtCore.Qt.MatchExactly,0)[0]
             if (remove == None) or (remove != i):
-                d.append(float(it.text(1)))
-                a.append(float(it.text(2)))
+                if it.text(1):
+                    d.append(float(it.text(1)))
+                else:
+                    d.append(0.0)
+                if it.text(2):
+                    a.append(float(it.text(2)))
+                else:
+                    a.append(0.0)
         self.obj.Distances = d
         self.obj.Angles = a
         self.obj.touch()
         FreeCAD.ActiveDocument.recompute()
-    
+
     def reject(self):
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
-                    
+
     def retranslateUi(self, TaskPanel):
         TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
         self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
@@ -428,6 +497,6 @@ class _AxisTaskPanel:
         self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),
                                    QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
- 
-if FreeCAD.GuiUp:          
+
+if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Axis',_CommandAxis())

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+      Father="GeoFeatureGroupExtensionPy"
+      Name="OriginGroupExtensionPy"
+      Twin="OriginGroupExtension"
+      TwinPointer="OriginGroupExtension"
+      Include="App/OriginGroupExtension.h"
+      Namespace="App"
+      FatherInclude="App/GeoFeatureGroupExtensionPy.h"
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Alexander Golubev" EMail="fatzer2@gmail.com" />
+      <UserDocu>This class handles placable group of document objects with an Origin</UserDocu>
+    </Documentation>
+
+  </PythonExport>
+</GenerateModel>
+

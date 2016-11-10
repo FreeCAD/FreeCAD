@@ -81,7 +81,7 @@ PointsGrid::PointsGrid (const PointKernel &rclM, double fGridLen)
 {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
   Rebuild(std::max<unsigned long>((unsigned long)(clBBPts.LengthX() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthY() / fGridLen), 1),
           std::max<unsigned long>((unsigned long)(clBBPts.LengthZ() / fGridLen), 1));
@@ -130,7 +130,7 @@ void PointsGrid::InitGrid (void)
 
   // Grid Laengen berechnen wenn nicht initialisiert
   //
-  if ((_ulCtGridsX == 0) || (_ulCtGridsX == 0) || (_ulCtGridsX == 0))
+  if ((_ulCtGridsX == 0) || (_ulCtGridsY == 0) || (_ulCtGridsZ == 0))
     CalculateGridLength(POINTS_CT_GRID, POINTS_MAX_GRIDS);
 
   // Grid Laengen und Offset bestimmen
@@ -138,7 +138,7 @@ void PointsGrid::InitGrid (void)
   {
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
 
   double fLengthX = clBBPts.LengthX(); 
   double fLengthY = clBBPts.LengthY();
@@ -222,7 +222,7 @@ unsigned long PointsGrid::InSide (const Base::BoundBox3d &rclBB, std::vector<uns
     {
       for (k = ulMinZ; k <= ulMaxZ; k++)
       {
-        if (Base::DistanceP2(GetBoundBox(i, j, k).CalcCenter(), rclOrg) < fMinDistP2)
+        if (Base::DistanceP2(GetBoundBox(i, j, k).GetCenter(), rclOrg) < fMinDistP2)
           raulElements.insert(raulElements.end(), _aulGrid[i][j][k].begin(), _aulGrid[i][j][k].end());
       }
     }
@@ -282,25 +282,33 @@ void PointsGrid::Position (const Base::Vector3d &rclPoint, unsigned long &rulX, 
 
 void PointsGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
 {
-  // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
-  // pro Grid sollen ca. 10 (?!?!) Facets liegen
-  // bzw. max Grids sollten 10000 nicht ueberschreiten
-  Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPtsEnlarged &= (*it);
-  double fVolElem;
+    // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
+    // pro Grid sollen ca. 10 (?!?!) Facets liegen
+    // bzw. max Grids sollten 10000 nicht ueberschreiten
+    Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
+    for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
+        clBBPtsEnlarged.Add(*it);
+    double fVolElem;
 
-  if (_ulCtElements > (ulMaxGrids * ulCtGrid))
-    fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
-  else
-    fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(_ulCtElements);
+    if (_ulCtElements > (ulMaxGrids * ulCtGrid))
+        fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
+    else
+        fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(_ulCtElements);
 
-  double fVol     = fVolElem * float(ulCtGrid);
-  double fGridLen = float(pow((float)fVol,(float) 1.0f / 3.0f));
+    double fVol     = fVolElem * float(ulCtGrid);
+    double fGridLen = float(pow((float)fVol,(float) 1.0f / 3.0f));
 
-  _ulCtGridsX = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthX() / fGridLen), 1);
-  _ulCtGridsY = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthY() / fGridLen), 1);
-  _ulCtGridsZ = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthZ() / fGridLen), 1);
+    if (fGridLen > 0) {
+        _ulCtGridsX = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthX() / fGridLen), 1);
+        _ulCtGridsY = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthY() / fGridLen), 1);
+        _ulCtGridsZ = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthZ() / fGridLen), 1);
+    }
+    else {
+        // Degenerated grid
+        _ulCtGridsX = 1;
+        _ulCtGridsY = 1;
+        _ulCtGridsZ = 1;
+    }
 }
 
 void PointsGrid::CalculateGridLength (int iCtGridPerAxis)
@@ -316,7 +324,7 @@ void PointsGrid::CalculateGridLength (int iCtGridPerAxis)
   // bzw. max Grids sollten 10000 nicht ueberschreiten
   Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
   for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPts &= (*it);
+    clBBPts.Add(*it);
 
   double fLenghtX = clBBPts.LengthX();
   double fLenghtY = clBBPts.LengthY();
@@ -464,7 +472,7 @@ void PointsGrid::SearchNearestFromPoint (const Base::Vector3d &rclPt, std::set<u
   }
   else
   { // Punkt ausserhalb
-    Base::BoundBox3d::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.CalcCenter() - rclPt);
+    Base::BoundBox3d::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
     switch (tSide)
     {
       case Base::BoundBox3d::RIGHT:
@@ -621,7 +629,7 @@ unsigned long PointsGrid::GetElements (unsigned long ulX, unsigned long ulY, uns
   return 0;
 }
 
-void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float fEpsilon)
+void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float /*fEpsilon*/)
 {
   unsigned long ulX, ulY, ulZ;
   Pos(Base::Vector3d(rclPt.x, rclPt.y, rclPt.z), ulX, ulY, ulZ);

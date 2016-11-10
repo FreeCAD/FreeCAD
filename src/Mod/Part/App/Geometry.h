@@ -24,31 +24,38 @@
 #ifndef PART_GEOMETRY_H
 #define PART_GEOMETRY_H
 
-#include <Handle_Geom_CartesianPoint.hxx>
-#include <Handle_Geom_BezierCurve.hxx>
-#include <Handle_Geom_BSplineCurve.hxx>
-#include <Handle_Geom_Circle.hxx>
-#include <Handle_Geom_Ellipse.hxx>
-#include <Handle_Geom_Hyperbola.hxx>
-#include <Handle_Geom_Parabola.hxx>
-#include <Handle_Geom_Line.hxx>
-#include <Handle_Geom_OffsetCurve.hxx>
-#include <Handle_Geom_TrimmedCurve.hxx>
-#include <Handle_Geom_Surface.hxx>
-#include <Handle_Geom_BezierSurface.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
-#include <Handle_Geom_CylindricalSurface.hxx>
-#include <Handle_Geom_ConicalSurface.hxx>
-#include <Handle_Geom_SphericalSurface.hxx>
-#include <Handle_Geom_ToroidalSurface.hxx>
-#include <Handle_Geom_Plane.hxx>
-#include <Handle_Geom_OffsetSurface.hxx>
-#include <Handle_Geom_RectangularTrimmedSurface.hxx>
-#include <Handle_Geom_SurfaceOfRevolution.hxx>
-#include <Handle_Geom_SurfaceOfLinearExtrusion.hxx>
+#include <Geom_CartesianPoint.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_Circle.hxx>
+#include <Geom_Ellipse.hxx>
+#include <Geom_Hyperbola.hxx>
+#include <Geom_Parabola.hxx>
+#include <Geom_Line.hxx>
+#include <Geom_OffsetCurve.hxx>
+#include <Geom_TrimmedCurve.hxx>
+#include <Geom_Surface.hxx>
+#include <Geom_BezierSurface.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <Geom_CylindricalSurface.hxx>
+#include <Geom_ConicalSurface.hxx>
+#include <Geom_SphericalSurface.hxx>
+#include <Geom_ToroidalSurface.hxx>
+#include <Geom_Plane.hxx>
+#include <Geom_OffsetSurface.hxx>
+#include <GeomPlate_Surface.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
+#include <Geom_SurfaceOfRevolution.hxx>
+#include <Geom_SurfaceOfLinearExtrusion.hxx>
+#include <GeomPlate_BuildPlateSurface.hxx>
+#include <Plate_Plate.hxx>
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
+#include <list>
+#include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -115,6 +122,12 @@ public:
 
     TopoDS_Shape toShape() const;
     bool tangent(double u, gp_Dir&) const;
+    Base::Vector3d pointAtParameter(double u) const;
+    Base::Vector3d firstDerivativeAtParameter(double u) const;
+    Base::Vector3d secondDerivativeAtParameter(double u) const;
+    bool normal(double u, gp_Dir& dir) const;
+    bool closestParameter(const Base::Vector3d& point, double &u) const;
+    bool closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const;
 };
 
 class PartExport GeomBezierCurve : public GeomCurve
@@ -149,11 +162,31 @@ public:
     virtual ~GeomBSplineCurve();
     virtual Geometry *clone(void) const;
 
+    /*!
+     * Set the poles and tangents for the cubic Hermite spline
+     */
+    void interpolate(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&,
+                                   const std::vector<double>&,
+                                   std::vector<gp_Vec>&) const;
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     * It uses the same parameter for each tangent.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&, double,
+                                   std::vector<gp_Vec>&) const;
+
     int countPoles() const;
     void setPole(int index, const Base::Vector3d&, double weight=-1);
     std::vector<Base::Vector3d> getPoles() const;
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
+    std::list<Geometry*> toBiArcs(double tolerance) const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -165,6 +198,13 @@ public:
     void setHandle(const Handle_Geom_BSplineCurve&);
     const Handle_Geom_Geometry& handle() const;
 
+private:
+    void createArcs(double tolerance, std::list<Geometry*>& new_spans,
+                    const gp_Pnt &p_start, const gp_Vec &v_start,
+                    double t_start, double t_end, gp_Pnt &p_end, gp_Vec &v_end) const;
+    bool calculateBiArcPoints(const gp_Pnt& p0, gp_Vec v_start,
+                              const gp_Pnt& p4, gp_Vec v_end,
+                              gp_Pnt& p1, gp_Pnt& p2, gp_Pnt& p3) const;
 private:
     Handle_Geom_BSplineCurve myCurve;
 };
@@ -182,6 +222,7 @@ public:
     double getRadius(void) const;
     void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
+    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -205,15 +246,16 @@ public:
     virtual ~GeomArcOfCircle();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint() const;
-    Base::Vector3d getEndPoint() const;
+    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
 
     Base::Vector3d getCenter(void) const;
     double getRadius(void) const;
     void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
+    void getRange(double& u, double& v, bool emulateCCWXY) const;
+    void setRange(double u, double v, bool emulateCCWXY);
+    bool isReversedInXY() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -244,6 +286,11 @@ public:
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
+    Base::Vector3d getMajorAxisDir() const;
+    void setMajorAxisDir(Base::Vector3d newdir);
+    bool isReversedInXY() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -252,11 +299,54 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_Ellipse &e);
     const Handle_Geom_Geometry& handle() const;
 
 private:
     Handle_Geom_Ellipse myCurve;
 };
+
+class PartExport GeomArcOfEllipse : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomArcOfEllipse();
+    GeomArcOfEllipse(const Handle_Geom_Ellipse&);
+    virtual ~GeomArcOfEllipse();
+    virtual Geometry *clone(void) const;
+
+    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
+
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getMajorRadius(void) const;
+    void setMajorRadius(double Radius);
+    double getMinorRadius(void) const;
+    void setMinorRadius(double Radius);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
+    Base::Vector3d getMajorAxisDir() const;
+    void setMajorAxisDir(Base::Vector3d newdir);
+    bool isReversedInXY() const;
+
+    void getRange(double& u, double& v, bool emulateCCWXY) const;
+    void setRange(double u, double v, bool emulateCCWXY);
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle_Geom_TrimmedCurve&);
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    Handle_Geom_TrimmedCurve myCurve;
+};
+
 
 class PartExport GeomHyperbola : public GeomCurve
 {
@@ -266,6 +356,15 @@ public:
     GeomHyperbola(const Handle_Geom_Hyperbola&);
     virtual ~GeomHyperbola();
     virtual Geometry *clone(void) const;
+    
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getMajorRadius(void) const;
+    void setMajorRadius(double Radius);
+    double getMinorRadius(void) const;
+    void setMinorRadius(double Radius);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);   
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -280,6 +379,44 @@ private:
     Handle_Geom_Hyperbola myCurve;
 };
 
+class PartExport GeomArcOfHyperbola : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomArcOfHyperbola();
+    GeomArcOfHyperbola(const Handle_Geom_Hyperbola&);
+    virtual ~GeomArcOfHyperbola();
+    virtual Geometry *clone(void) const;
+
+    Base::Vector3d getStartPoint() const;
+    Base::Vector3d getEndPoint() const;
+
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getMajorRadius(void) const;
+    void setMajorRadius(double Radius);
+    double getMinorRadius(void) const;
+    void setMinorRadius(double Radius);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
+    
+    void getRange(double& u, double& v) const;
+    void setRange(double u, double v);
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle_Geom_TrimmedCurve&);
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    Handle_Geom_TrimmedCurve myCurve;
+};
+
 class PartExport GeomParabola : public GeomCurve
 {
     TYPESYSTEM_HEADER();
@@ -288,6 +425,13 @@ public:
     GeomParabola(const Handle_Geom_Parabola&);
     virtual ~GeomParabola();
     virtual Geometry *clone(void) const;
+    
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getFocal(void) const;
+    void setFocal(double length);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -300,6 +444,42 @@ public:
 
 private:
     Handle_Geom_Parabola myCurve;
+};
+
+class PartExport GeomArcOfParabola : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomArcOfParabola();
+    GeomArcOfParabola(const Handle_Geom_Parabola&);
+    virtual ~GeomArcOfParabola();
+    virtual Geometry *clone(void) const;
+
+    Base::Vector3d getStartPoint() const;
+    Base::Vector3d getEndPoint() const;
+
+    Base::Vector3d getCenter(void) const;
+    void setCenter(const Base::Vector3d& Center);
+    double getFocal(void) const;
+    void setFocal(double length);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
+    
+    void getRange(double& u, double& v) const;
+    void setRange(double u, double v);
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle_Geom_TrimmedCurve&);
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    Handle_Geom_TrimmedCurve myCurve;
 };
 
 class PartExport GeomLine : public GeomCurve
@@ -467,6 +647,7 @@ class PartExport GeomCylinder : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCylinder();
+    GeomCylinder(const Handle_Geom_CylindricalSurface&);
     virtual ~GeomCylinder();
     virtual Geometry *clone(void) const;
 
@@ -477,6 +658,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_CylindricalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -488,6 +670,7 @@ class PartExport GeomCone : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCone();
+    GeomCone(const Handle_Geom_ConicalSurface&);
     virtual ~GeomCone();
     virtual Geometry *clone(void) const;
 
@@ -498,6 +681,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_ConicalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -509,6 +693,7 @@ class PartExport GeomSphere : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomSphere();
+    GeomSphere(const Handle_Geom_SphericalSurface&);
     virtual ~GeomSphere();
     virtual Geometry *clone(void) const;
 
@@ -519,6 +704,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_SphericalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -530,6 +716,7 @@ class PartExport GeomToroid : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomToroid();
+    GeomToroid(const Handle_Geom_ToroidalSurface&);
     virtual ~GeomToroid();
     virtual Geometry *clone(void) const;
 
@@ -540,6 +727,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_ToroidalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -551,6 +739,7 @@ class PartExport GeomPlane : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomPlane();
+    GeomPlane(const Handle_Geom_Plane&);
     virtual ~GeomPlane();
     virtual Geometry *clone(void) const;
 
@@ -561,6 +750,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_Plane&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -589,6 +779,31 @@ public:
 
 private:
     Handle_Geom_OffsetSurface mySurface;
+};
+
+class PartExport GeomPlateSurface : public GeomSurface
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomPlateSurface();
+    GeomPlateSurface(const Handle_Geom_Surface&, const Plate_Plate&);
+    GeomPlateSurface(const GeomPlate_BuildPlateSurface&);
+    GeomPlateSurface(const Handle_GeomPlate_Surface&);
+    virtual ~GeomPlateSurface();
+    virtual Geometry *clone(void) const;
+
+    // Persistence implementer ---------------------
+    virtual unsigned int getMemSize(void) const;
+    virtual void Save(Base::Writer &/*writer*/) const;
+    virtual void Restore(Base::XMLReader &/*reader*/);
+    // Base implementer ----------------------------
+    virtual PyObject *getPyObject(void);
+
+    void setHandle(const Handle_GeomPlate_Surface& s);
+    const Handle_Geom_Geometry& handle() const;
+
+private:
+    Handle_GeomPlate_Surface mySurface;
 };
 
 class PartExport GeomTrimmedSurface : public GeomSurface
@@ -684,6 +899,8 @@ double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegmen
 PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
+PartExport
+GeomSurface *makeFromSurface(const Handle_Geom_Surface&);
 }
 
 #endif // PART_GEOMETRY_H

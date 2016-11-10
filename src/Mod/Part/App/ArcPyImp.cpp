@@ -26,16 +26,28 @@
 # include <gp_Circ.hxx>
 # include <Geom_Circle.hxx>
 # include <gp_Elips.hxx>
+# include <gp_Parab.hxx>
 # include <Geom_Ellipse.hxx>
+# include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 # include <GC_MakeArcOfCircle.hxx>
 # include <GC_MakeArcOfEllipse.hxx>
+# include <GC_MakeArcOfParabola.hxx>
+# include <gp_Hypr.hxx>
+# include <Geom_Hyperbola.hxx>
+# include <Geom_TrimmedCurve.hxx>
+# include <GC_MakeArcOfCircle.hxx>
+# include <GC_MakeArcOfHyperbola.hxx>
 #endif
+
 
 #include "ArcPy.h"
 #include "ArcPy.cpp"
 #include "CirclePy.h"
 #include "EllipsePy.h"
+#include "ParabolaPy.h"
+#include "HyperbolaPy.h"
+#include "OCCError.h"
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
@@ -68,7 +80,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
             GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
@@ -77,11 +89,11 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of arc failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
             return -1;
         }
     }
@@ -99,7 +111,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                                gp_Pnt(v2.x,v2.y,v2.z),
                                gp_Pnt(v3.x,v3.y,v3.z));
         if (!arc.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
             return -1;
         }
 
@@ -114,7 +126,7 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
             GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
-                PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(arc.Status()));
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
@@ -123,11 +135,63 @@ int ArcPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PyExc_Exception, e->GetMessageString());
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
             return -1;
         }
         catch (...) {
-            PyErr_SetString(PyExc_Exception, "creation of arc failed");
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
+            return -1;
+        }
+    }
+
+
+    PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::ParabolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+        try {
+            Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast
+                (static_cast<ParabolaPy*>(o)->getGeomParabolaPtr()->handle());
+            GC_MakeArcOfParabola arc(parabola->Parab(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            if (!arc.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
+                return -1;
+            }
+
+            getGeomTrimmedCurvePtr()->setHandle(arc.Value());
+            return 0;
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return -1;
+        }
+        catch (...) {
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
+            return -1;
+        }
+    }
+
+    PyErr_Clear();
+
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+        try {
+            Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast
+                (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
+            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            if (!arc.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
+                return -1;
+            }
+
+            getGeomTrimmedCurvePtr()->setHandle(arc.Value());
+            return 0;
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return -1;
+        }
+        catch (...) {
+            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
             return -1;
         }
     }

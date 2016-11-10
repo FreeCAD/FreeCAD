@@ -1,12 +1,11 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${COIN3D_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(MeshGui_LIBS
@@ -18,8 +17,11 @@ set(MeshGui_LIBS
 
 set(Mesh_MOC_HDRS
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.h
     DlgRegularSolidImp.h
     DlgSettingsMeshView.h
+    DlgSettingsImportExportImp.h
+
     DlgSmoothing.h
     MeshEditor.h
     PropertyEditorMesh.h
@@ -31,8 +33,10 @@ SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
 
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
+    DlgEvaluateSettings.ui
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
+    DlgSettingsImportExport.ui
     DlgSmoothing.ui
     RemoveComponents.ui
     Segmentation.ui
@@ -44,12 +48,17 @@ SET(Dialogs_SRCS
     DlgEvaluateMesh.ui
     DlgEvaluateMeshImp.cpp
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.ui
+    DlgEvaluateSettings.cpp
+    DlgEvaluateSettings.h
     DlgRegularSolid.ui
     DlgRegularSolidImp.cpp
     DlgRegularSolidImp.h
     DlgSettingsMeshView.ui
     DlgSettingsMeshView.cpp
     DlgSettingsMeshView.h
+    DlgSettingsImportExportImp.cpp
+    DlgSettingsImportExportImp.h
     DlgSmoothing.ui
     DlgSmoothing.cpp
     DlgSmoothing.h
@@ -133,3 +142,11 @@ SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
 SET_PYTHON_PREFIX_SUFFIX(MeshGui)
 
 INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(MeshGuiIcon_SVG
+    Resources/icons/MeshWorkbench.svg
+)
+
+fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
+
+INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")

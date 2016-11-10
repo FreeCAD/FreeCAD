@@ -23,7 +23,7 @@
 
 namespace KDL
 {
-    USING_PART_OF_NAMESPACE_EIGEN
+    using namespace Eigen;
 
     JntSpaceInertiaMatrix::JntSpaceInertiaMatrix()
     {
@@ -100,7 +100,7 @@ namespace KDL
 
     void Multiply(const JntSpaceInertiaMatrix& src, const JntArray& vec, JntArray& dest)
     {
-        dest.data=(src.data*vec.data).lazy();
+        dest.data=src.data.lazyProduct(vec.data);
     }
     
     void SetToZero(JntSpaceInertiaMatrix& mat)
@@ -115,7 +115,7 @@ namespace KDL
         return src1.data.isApprox(src2.data,eps);
     }
 
-    bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2);};
+    bool operator==(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2,epsilon);};
     //bool operator!=(const JntSpaceInertiaMatrix& src1,const JntSpaceInertiaMatrix& src2){return Equal(src1,src2);};
 
 }

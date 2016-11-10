@@ -130,12 +130,14 @@ CGRP     '\,'[0-9][0-9][0-9]
 "rad"      yylval = Quantity::Radian;              return UNIT; // radian         
 "gon"      yylval = Quantity::Gon;                 return UNIT; // gon         
 
-{DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = num_change(yytext,'.',',');return NUM;  }
-{DIGIT}+","?{DIGIT}*{EXPO}?                         {  yylval = num_change(yytext,',','.');return NUM;  }
+{DIGIT}+"."?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
+"."?{DIGIT}+{EXPO}?                                 {  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
+{DIGIT}+","?{DIGIT}*{EXPO}?                         {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
+","?{DIGIT}+{EXPO}?                                 {  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 
 
-"pi"                   {yylval = M_PI          ; return NUM;} // constant pi         
-"e"                    {yylval = M_E           ; return NUM;} // constant e         
+"pi"                   {yylval = Quantity(M_PI)          ; return NUM;} // constant pi
+"e"                    {yylval = Quantity(M_E)           ; return NUM;} // constant e
                      
 "acos"                 return ACOS;
 "asin"                 return ASIN;

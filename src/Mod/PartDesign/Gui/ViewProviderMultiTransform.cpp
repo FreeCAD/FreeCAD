@@ -29,37 +29,14 @@
 #include "ViewProviderMultiTransform.h"
 #include "TaskMultiTransformParameters.h"
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
-#include <Mod/Sketcher/App/SketchObject.h>
-#include <Gui/Control.h>
 #include <Gui/Command.h>
-#include <Gui/Application.h>
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderMultiTransform,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderMultiTransform,PartDesignGui::ViewProviderTransformed)
 
-bool ViewProviderMultiTransform::setEdit(int ModNum)
-{
-    ViewProviderTransformed::setEdit(ModNum);
-
-    if (ModNum == ViewProvider::Default ) {
-        TaskDlgMultiTransformParameters *multitransformDlg = NULL;
-
-        if (checkDlgOpen(multitransformDlg)) {
-            // start the edit dialog
-            if (multitransformDlg)
-                Gui::Control().showDialog(multitransformDlg);
-            else
-                Gui::Control().showDialog(new TaskDlgMultiTransformParameters(this));
-
-            return true;
-        } else {
-            return false;
-        }
-    }
-    else {
-        return ViewProviderPart::setEdit(ModNum);
-    }
+TaskDlgFeatureParameters *ViewProviderMultiTransform::getEditDialog() {
+    return new TaskDlgMultiTransformParameters (this);
 }
 
 std::vector<App::DocumentObject*> ViewProviderMultiTransform::claimChildren(void) const
@@ -77,7 +54,7 @@ bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) 
     PartDesign::MultiTransform* pcMultiTransform = static_cast<PartDesign::MultiTransform*>(getObject());
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
-    // if abort command deleted the object the transformed features must be deleted, too
+    // if the multitransform object was deleted the transformed features must be deleted, too
     for (std::vector<App::DocumentObject*>::const_iterator it = transformFeatures.begin(); it != transformFeatures.end(); ++it)
     {
         if ((*it) != NULL)

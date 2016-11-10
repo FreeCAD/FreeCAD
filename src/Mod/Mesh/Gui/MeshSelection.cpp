@@ -30,6 +30,7 @@
 # include <Inventor/events/SoLocation2Event.h>
 # include <Inventor/events/SoMouseButtonEvent.h>
 # include <Inventor/nodes/SoCamera.h>
+# include <QBitmap>
 #endif
 
 #include "MeshSelection.h"
@@ -75,17 +76,30 @@ unsigned char MeshSelection::cross_mask_bitmap[] = {
 };
 
 MeshSelection::MeshSelection()
-  : onlyPointToUserTriangles(false), onlyVisibleTriangles(false), _activeCB(0)
+  : onlyPointToUserTriangles(false)
+  , onlyVisibleTriangles(false)
+  , addToSelection(false)
+  , addComponent(false)
+  , removeComponent(false)
+  , activeCB(0)
+  , selectionCB(0)
+  , ivViewer(0)
 {
+    setCallback(selectGLCallback);
 }
 
 MeshSelection::~MeshSelection()
 {
-    if (_activeCB) {
+    if (this->activeCB) {
         Gui::View3DInventorViewer* viewer = this->getViewer();
         if (viewer)
             stopInteractiveCallback(viewer);
     }
+}
+
+void MeshSelection::setCallback(SoEventCallbackCB *cb)
+{
+    selectionCB = cb;
 }
 
 void MeshSelection::setObjects(const std::vector<Gui::SelectionObject>& obj)
@@ -129,8 +143,17 @@ std::list<ViewProviderMesh*> MeshSelection::getViewProviders() const
     return vps;
 }
 
+void MeshSelection::setViewer(Gui::View3DInventorViewer* v)
+{
+    ivViewer = v;
+}
+
 Gui::View3DInventorViewer* MeshSelection::getViewer() const
 {
+    // if a special viewer was set from outside then use this
+    if (ivViewer)
+        return ivViewer;
+
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (!doc) return 0;
     Gui::MDIView* view = doc->getActiveView();
@@ -144,55 +167,56 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
 
 void MeshSelection::startInteractiveCallback(Gui::View3DInventorViewer* viewer,SoEventCallbackCB *cb)
 {
-    if (this->_activeCB)
+    if (this->activeCB)
         return;
     viewer->setEditing(true);
     viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), cb, this);
-    this->_activeCB = cb;
+    this->activeCB = cb;
 }
 
 void MeshSelection::stopInteractiveCallback(Gui::View3DInventorViewer* viewer)
 {
-    if (!this->_activeCB)
+    if (!this->activeCB)
         return;
-    if (viewer->isEditing()) {
-        viewer->setEditing(false);
-        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->_activeCB, this);
-        this->_activeCB = 0;
-    }
+    viewer->setEditing(false);
+    viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), this->activeCB, this);
+    this->activeCB = 0;
 }
 
-void MeshSelection::prepareBrushSelection(bool add,SoEventCallbackCB *cb)
+void MeshSelection::prepareFreehandSelection(bool add,SoEventCallbackCB *cb)
 {
     // a rubberband to select a rectangle area of the meshes
     Gui::View3DInventorViewer* viewer = this->getViewer();
     if (viewer) {
+        // Note: It is possible that the mouse selection mode can be stopped
+        // but then the callback function is still active.
         stopInteractiveCallback(viewer);
         startInteractiveCallback(viewer, cb);
+        viewer->navigationStyle()->stopSelection();
+
         // set cross cursor
-        Gui::BrushSelection* brush = new Gui::BrushSelection();
-        brush->setClosed(true);
-        brush->setColor(1.0f,0.0f,0.0f);
-        brush->setLineWidth(3.0f);
-        viewer->navigationStyle()->startSelection(brush);
-        SoQtCursor::CustomCursor custom;
-        custom.dim.setValue(CROSS_WIDTH, CROSS_HEIGHT);
-        custom.hotspot.setValue(CROSS_HOT_X, CROSS_HOT_Y);
-        custom.bitmap = cross_bitmap;
-        custom.mask = cross_mask_bitmap;
-        viewer->setComponentCursor(SoQtCursor(&custom));
+        Gui::FreehandSelection* freehand = new Gui::FreehandSelection();
+        freehand->setClosed(true);
+        freehand->setColor(1.0f, 0.0f, 0.0f);
+        freehand->setLineWidth(3.0f);
+        viewer->navigationStyle()->startSelection(freehand);
+        
+        QBitmap cursor = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_bitmap);
+        QBitmap mask = QBitmap::fromData(QSize(CROSS_WIDTH, CROSS_HEIGHT), cross_mask_bitmap);
+        QCursor custom(cursor, mask, CROSS_HOT_X, CROSS_HOT_Y);
+        viewer->setComponentCursor(custom);
         this->addToSelection = add;
     }
 }
 
 void MeshSelection::startSelection()
 {
-    prepareBrushSelection(true, selectGLCallback);
+    prepareFreehandSelection(true, selectionCB);
 }
 
 void MeshSelection::startDeselection()
 {
-    prepareBrushSelection(false, selectGLCallback);
+    prepareFreehandSelection(false, selectionCB);
 }
 
 void MeshSelection::stopSelection()
@@ -247,6 +271,58 @@ bool MeshSelection::deleteSelection()
     }
 
     return true;
+}
+
+bool MeshSelection::deleteSelectionBorder()
+{
+    // delete all selected faces
+    bool deletion = false;
+    std::list<ViewProviderMesh*> views = getViewProviders();
+    for (std::list<ViewProviderMesh*>::iterator it = views.begin(); it != views.end(); ++it) {
+        Mesh::Feature* mf = static_cast<Mesh::Feature*>((*it)->getObject());
+
+        // mark the selected facet as visited
+        std::vector<unsigned long> selection, remove;
+        std::set<unsigned long> borderPoints;
+        MeshCore::MeshAlgorithm meshAlg(mf->Mesh.getValue().getKernel());
+        meshAlg.GetFacetsFlag(selection, MeshCore::MeshFacet::SELECTED);
+        meshAlg.GetBorderPoints(selection, borderPoints);
+        std::vector<unsigned long> border;
+        border.insert(border.begin(), borderPoints.begin(), borderPoints.end());
+
+        meshAlg.ResetFacetFlag(MeshCore::MeshFacet::VISIT);
+        meshAlg.SetFacetsFlag(selection, MeshCore::MeshFacet::VISIT);
+        meshAlg.ResetPointFlag(MeshCore::MeshPoint::VISIT);
+        meshAlg.SetPointsFlag(border, MeshCore::MeshPoint::VISIT);
+
+        // collect neighbour facets that are not selected and that share a border point
+        const MeshCore::MeshPointArray& points = mf->Mesh.getValue().getKernel().GetPoints();
+        const MeshCore::MeshFacetArray& faces = mf->Mesh.getValue().getKernel().GetFacets();
+        unsigned long numFaces = faces.size();
+        for (unsigned long i = 0; i < numFaces; i++) {
+            const MeshCore::MeshFacet& face = faces[i];
+            if (!face.IsFlag(MeshCore::MeshFacet::VISIT)) {
+                for (int j=0; j<3; j++) {
+                    if (points[face._aulPoints[j]].IsFlag(MeshCore::MeshPoint::VISIT)) {
+                        remove.push_back(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!remove.empty()) {
+            deletion = true;
+            // remove duplicates
+            std::sort(remove.begin(), remove.end());
+            remove.erase(std::unique(remove.begin(), remove.end()), remove.end());
+
+            (*it)->setSelection(remove);
+            (*it)->deleteSelection();
+        }
+    }
+
+    return deletion;
 }
 
 void MeshSelection::invertSelection()
@@ -396,12 +472,12 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
         const MeshCore::MeshKernel& kernel = mesh.getKernel();
 
         // simply get all triangles under the polygon
-        SoCamera* cam = view->getCamera();
+        SoCamera* cam = view->getSoRenderManager()->getCamera();
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
         vp->getFacetsFromPolygon(polygon, proj, true, faces);
         if (self->onlyVisibleTriangles) {
-            const SbVec2s& sz = view->getViewportRegion().getWindowSize();
+            const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
             short width,height; sz.getValue(width,height);
             std::vector<SbVec2s> pixelPoly = view->getPolygon();
             SbBox2s rect;
@@ -411,7 +487,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
             }
             std::vector<unsigned long> rf; rf.swap(faces);
             std::vector<unsigned long> vf = vp->getVisibleFacetsAfterZoom
-                (rect, view->getViewportRegion(), view->getCamera());
+                (rect, view->getSoRenderManager()->getViewportRegion(), view->getSoRenderManager()->getCamera());
 
             // get common facets of the viewport and the visible one
             std::sort(vf.begin(), vf.end());
@@ -441,7 +517,7 @@ void MeshSelection::selectGLCallback(void * ud, SoEventCallback * n)
             vp->removeSelection(faces);
     }
 
-    view->render();
+    view->redraw();
 }
 
 void MeshSelection::pickFaceCallback(void * ud, SoEventCallback * n)

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,7 +44,8 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue      
+                        Blue      ,
+                        LightBlue
 };
 
 /// highlight modes for the tree items
@@ -100,6 +101,8 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSkipRecompute(bool on);
+    void onMarkRecompute();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -121,6 +124,8 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* skipRecomputeAction;
+    QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
@@ -131,9 +136,9 @@ private:
 };
 
 /** The link between the tree and a document.
- * Every document in the application gets its associated DocumentItem which controls 
+ * Every document in the application gets its associated DocumentItem which controls
  * the visibility and the functions of the document.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DocumentItem : public QTreeWidgetItem
 {
@@ -166,14 +171,26 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
+    std::vector<DocumentObjectItem*> getAllParents(DocumentObjectItem*) const;
 
 private:
     const Gui::Document* pDocument;
     std::map<std::string,DocumentObjectItem*> ObjectMap;
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectNewObject;
+    Connection connectDelObject;
+    Connection connectChgObject;
+    Connection connectRenObject;
+    Connection connectActObject;
+    Connection connectEdtObject;
+    Connection connectResObject;
+    Connection connectHltObject;
+    Connection connectExpObject;
 };
 
 /** The link between the tree and a document object.
- * Every object in the document gets its associated DocumentObjectItem which controls 
+ * Every object in the document gets its associated DocumentObjectItem which controls
  * the visibility and the functions of the object.
  * @author Werner Mayer
  */

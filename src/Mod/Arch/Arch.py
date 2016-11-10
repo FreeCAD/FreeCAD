@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -25,6 +25,15 @@ __title__="FreeCAD Arch API"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+## \defgroup ARCH Arch
+#  \ingroup WORKBENCHES
+#
+#  Architecture and BIM module
+#
+#  This module provides tools specialized in Building Information Modeling (BIM).
+
+'''The Arch module provides tools specialized in BIM modeling.'''
+
 import FreeCAD
 if FreeCAD.GuiUp:
 	import FreeCADGui
@@ -35,6 +44,7 @@ from ArchFloor import *
 from ArchSite import *
 from ArchBuilding import *
 from ArchStructure import *
+from ArchProfile import *
 from ArchCommands import *
 from ArchSectionPlane import *
 from ArchWindow import *
@@ -46,3 +56,9 @@ from ArchRebar import *
 from ArchFrame import *
 from ArchPanel import *
 from ArchEquipment import *
+from ArchCutPlane import *
+from ArchServer import *
+from ArchMaterial import *
+from ArchSchedule import *
+from ArchPrecast import *
+from ArchPipe import *

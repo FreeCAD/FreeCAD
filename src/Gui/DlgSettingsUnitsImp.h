@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2010 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@ namespace Dialog {
 /**
  * The DlgSettingsUnitsImp class implements a preference page to change settings
  * for the Unit system.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class Ui_DlgSettingsUnits;
 class DlgSettingsUnitsImp : public PreferencePage

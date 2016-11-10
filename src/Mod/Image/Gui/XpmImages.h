@@ -65,6 +65,7 @@ static const char *image_oneToOne[]={
 ".##############.",
 "................"};
 
+#if 0
 /* XPM */
 static const char *image_orig[]={
 "16 16 5 1",
@@ -114,6 +115,7 @@ static const char *image_bright[]={
 ".cccccccccccccc.",
 ".cccccccccccccc.",
 "................"};
+#endif
 
 } // namespace ImageGui
 

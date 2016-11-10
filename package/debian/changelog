@@ -1,3 +1,27 @@
+freecad (0.15-1precise3) precise; urgency=low
+
+  * control: added netgen-headers to Build Depends.
+
+ -- Normand Chamberland <gemnoc@gmail.com>  Sat, 04 Apr 2015 11:14:23 -0400
+
+freecad (0.15-1precise2) precise; urgency=low
+
+  * control: added pyside-tools to build deps, broke down python-pyside depends
+
+ -- Normand Chamberland <gemnoc@gmail.com>  Thu, 06 Nov 2014 22:10:44 -0500
+
+freecad (0.15-1precise1) precise; urgency=low
+
+  * Bumped version number as per upstream version
+
+ -- Normand Chamberland <gemnoc@gmail.com>  Thu, 07 Aug 2014 11:34:39 -0400
+
+freecad (0.14-1precise2) precise; urgency=low
+
+  * Set new version number.
+
+ -- Werner Mayer <wmayer@users.sourceforge.net>  Sat, 13 Jul 2013 12:53:55 +0200
+
 freecad (0.13-1precise2) precise; urgency=low
 
   * Fix hard dependency on libgl1-mesa-glx preventing installation on

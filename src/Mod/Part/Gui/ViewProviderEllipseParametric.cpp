@@ -26,14 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-/// Here the FreeCAD includes sorted by Base,App,Gui......
-#include <Base/Parameter.h>
-
 #include "ViewProviderEllipseParametric.h"
-
-
-//#include "Tree.h"
-
+#include <Base/Parameter.h>
 
 
 using namespace PartGui;
@@ -45,7 +39,7 @@ using namespace std;
 
 PROPERTY_SOURCE(PartGui::ViewProviderEllipseParametric, PartGui::ViewProviderPart)
 
-       
+
 ViewProviderEllipseParametric::ViewProviderEllipseParametric()
 {
   sPixmap = "Part_Ellipse_Parametric.svg";

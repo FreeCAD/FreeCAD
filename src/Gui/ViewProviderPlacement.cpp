@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2012     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2012    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -62,15 +62,15 @@ using namespace Gui;
 PROPERTY_SOURCE(Gui::ViewProviderPlacement, Gui::ViewProviderGeometryObject)
 
 
-ViewProviderPlacement::ViewProviderPlacement() 
+ViewProviderPlacement::ViewProviderPlacement()
 {
- 
+
     pMat = new SoMaterial();
     pMat->ref();
 
     const float dist = 2;
     const float size = 6;
-    const float pSize = 4; 
+    const float pSize = 4;
 
     static const SbVec3f verts[13] =
     {
@@ -161,7 +161,7 @@ void ViewProviderPlacement::attach(App::DocumentObject* pcObject)
     lineSep->addChild(pMat);
     lineSep->addChild(pCoords);
     lineSep->addChild(pLines);
- 
+
     addDisplayMaskMode(lineSep, "Base");
 }
 
@@ -194,7 +194,7 @@ std::string ViewProviderPlacement::getElement(const SoDetail* detail) const
 SoDetail* ViewProviderPlacement::getDetail(const char* subelement) const
 {
     SoLineDetail* detail = 0;
-    std::string subelem(subelement); 
+    std::string subelem(subelement);
     int edge = -1;
 
     if(subelem == "X-Axis") edge = 0;
@@ -213,7 +213,7 @@ SoDetail* ViewProviderPlacement::getDetail(const char* subelement) const
     return detail;
 }
 
-bool ViewProviderPlacement::isSelectable(void) const 
+bool ViewProviderPlacement::isSelectable(void) const
 {
     return true;
 }

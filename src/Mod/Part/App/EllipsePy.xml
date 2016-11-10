@@ -46,6 +46,12 @@
 			</Documentation>
 			<Parameter Name="MinorRadius" Type="Float"/>
 		</Attribute>
+		<Attribute Name="AngleXU" ReadOnly="false">
+		  <Documentation>
+		    <UserDocu>The angle between the X axis and the major axis of the ellipse.</UserDocu>
+		  </Documentation>
+		  <Parameter Name="AngleXU" Type="Float"/>
+		</Attribute>		
 		<Attribute Name="Eccentricity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>The eccentricity of the ellipse.</UserDocu>

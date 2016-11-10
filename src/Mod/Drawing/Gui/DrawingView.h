@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2007 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2007 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is Drawing of the FreeCAD CAx development system.           *
  *                                                                         *
@@ -26,6 +26,7 @@
 
 #include <Gui/MDIView.h>
 #include <QGraphicsView>
+#include <QPrinter>
 
 QT_BEGIN_NAMESPACE
 class QSlider;
@@ -80,6 +81,7 @@ class DrawingGuiExport DrawingView : public Gui::MDIView
 
 public:
     DrawingView(Gui::Document* doc, QWidget* parent = 0);
+    virtual ~DrawingView();
 
 public Q_SLOTS:
     void load(const QString &path = QString());
@@ -94,10 +96,14 @@ public:
     void printPdf();
     void printPreview();
     void print(QPrinter* printer);
+    void setDocumentObject(const std::string&);
     PyObject* getPyObject();
 
 protected:
     void contextMenuEvent(QContextMenuEvent *event);
+    void closeEvent(QCloseEvent*);
+    void findPrinterSettings(const QString&);
+    QPrinter::PageSize getPageSize(int w, int h) const;
 
 private:
     QAction *m_nativeAction;
@@ -108,8 +114,11 @@ private:
     QAction *m_outlineAction;
 
     SvgView *m_view;
+    std::string m_objectName;
 
     QString m_currentPath;
+    QPrinter::Orientation m_orientation;
+    QPrinter::PageSize m_pageSize;
 };
 
 } // namespace DrawingViewGui

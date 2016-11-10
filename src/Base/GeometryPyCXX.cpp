@@ -26,7 +26,7 @@
 #endif
 
 #include "GeometryPyCXX.h"
-#include "VectorPy.h"
+#include <Base/VectorPy.h>
 
 
 int Py::Vector::Vector_TypeCheck(PyObject * obj)
@@ -39,8 +39,8 @@ bool Py::Vector::accepts (PyObject *obj) const
     if (obj && Vector_TypeCheck (obj)) {
         return true;
     }
-    else if (obj && PyTuple_Check(obj)) {
-        return (PyTuple_Size(obj) == 3);
+    else if (obj && PySequence_Check(obj)) {
+        return (PySequence_Size(obj) == 3);
     }
 
     return false;

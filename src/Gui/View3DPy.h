@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2005     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2005     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,13 +48,14 @@ public:
 
     Py::Object message(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
+    Py::Object boxZoom(const Py::Tuple&, const Py::Dict&);
     Py::Object viewBottom(const Py::Tuple&);
     Py::Object viewFront(const Py::Tuple&);
     Py::Object viewLeft(const Py::Tuple&);
     Py::Object viewRear(const Py::Tuple&);
     Py::Object viewRight(const Py::Tuple&);
     Py::Object viewTop(const Py::Tuple&);
-    Py::Object viewAxometric(const Py::Tuple&);
+    Py::Object viewAxonometric(const Py::Tuple&);
     Py::Object viewPosition(const Py::Tuple&);
     Py::Object viewRotateLeft(const Py::Tuple&);
     Py::Object viewRotateRight(const Py::Tuple&);
@@ -73,6 +74,7 @@ public:
     Py::Object saveVectorGraphic(const Py::Tuple&);
     Py::Object getCamera(const Py::Tuple&);
     Py::Object getViewDirection(const Py::Tuple&);
+    Py::Object setViewDirection(const Py::Tuple&);
     Py::Object setCamera(const Py::Tuple&);
     Py::Object setCameraOrientation(const Py::Tuple&);
     Py::Object getCameraOrientation(const Py::Tuple&);
@@ -101,6 +103,8 @@ public:
     Py::Object hasAxisCross(const Py::Tuple&);
     Py::Object addDraggerCallback(const Py::Tuple&);
     Py::Object removeDraggerCallback(const Py::Tuple&);
+    Py::Object setActiveObject(const Py::Tuple&);
+    Py::Object getActiveObject(const Py::Tuple&);
 
 private:
     static void eventCallback(void * ud, SoEventCallback * n);
@@ -112,7 +116,7 @@ private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-    void createImageFromFramebuffer(int backgroundType, int width, int height, QImage&);
+    void createImageFromFramebuffer(int width, int height, const QColor&, QImage&);
 
 private:
     std::list<PyObject*> callbacks;

@@ -174,7 +174,7 @@ bool Deviation::Compute()
 		if (malg.NearestFacetOnRay(*p_it, m_nlvec[i], aFacetGrid, projPoint, facetIndex))   // gridoptimiert
 		{
 			distVec  = projPoint - *p_it;
-			m_nlvec[i] = distVec;   // überschreibt normalenvektor
+			m_nlvec[i] = distVec;   // Ã¼berschreibt normalenvektor
 		}
 		else
 		{
@@ -187,7 +187,7 @@ bool Deviation::Compute()
 			else
 			{
 				distVec  = projPoint - *p_it;
-				m_nlvec[i] = distVec;   // überschreibt normalenvektor
+				m_nlvec[i] = distVec;   // Ã¼berschreibt normalenvektor
 			}
 		}
 

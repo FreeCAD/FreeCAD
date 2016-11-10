@@ -42,8 +42,14 @@ def main():
     info=os.popen("git rev-list HEAD").read()
     revision='%04d' % (info.count('\n'))
 
+    verfile = open("%s/src/Build/Version.h" % (bindir), 'r')
+    verstream = StringIO.StringIO(verfile.read())
+    verfile.close()
+
+    version_minor = verstream.getvalue().split('FCVersionMinor "')[1][:2]
+
     PACKAGE_NAME = 'freecad'
-    version = "0.14.%s" % (revision)
+    version = "0.%s.%s" % (version_minor, revision)
 
     DIRNAME = "%(p)s-%(v)s" % {'p': PACKAGE_NAME, 'v': version}
     TARNAME = DIRNAME + '.tar'
@@ -51,9 +57,6 @@ def main():
     if dfsg:
         TGZNAME = DIRNAME + '-dfsg.tar.gz'
 
-    verfile = open("%s/src/Build/Version.h" % (bindir), 'r')
-    verstream = StringIO.StringIO(verfile.read())
-    verfile.close()
     verinfo = tarfile.TarInfo(DIRNAME + "/src/Build/Version.h")
     verinfo.mode = 0660
     verinfo.size = len(verstream.getvalue())

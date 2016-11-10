@@ -79,10 +79,10 @@ namespace KDL {
 	{
 	public:
         virtual Path*      GetPath() = 0;
-        // The underlying Path
+        // The underlying Path - FreeCAD change
 
         virtual VelocityProfile* GetProfile() = 0;
-        // The velocity profile
+        // The velocity profile - FreeCAD change
 
 		virtual double Duration() const = 0;
 		// The duration of the trajectory

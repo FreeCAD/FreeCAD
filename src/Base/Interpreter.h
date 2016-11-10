@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *   
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,6 +34,18 @@
 
 
 #include <Python.h>
+#include <CXX/Extensions.hxx>
+
+
+#ifdef FC_OS_MACOSX
+#undef toupper
+#undef tolower
+#undef isupper
+#undef islower
+#undef isspace
+#undef isalpha
+#undef isalnum
+#endif
 
 // Std. configurations
 #include <string>
@@ -77,6 +89,10 @@ public:
     SystemExitException(void);
     SystemExitException(const SystemExitException &inst);
     virtual ~SystemExitException() throw() {}
+    long getExitCode(void) const { return _exitCode;}
+
+protected:
+    long _exitCode;
 };
 
 /** If the application starts we release immediately the global interpreter lock
@@ -145,6 +161,8 @@ public:
     //@{
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     std::string runString(const char *psCmd);
+    /// Run a statement on the python interpreter and return back the result object.
+    Py::Object runStringObject(const char *sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     void runInteractiveString(const char *psCmd);
     /// Run file (script) on the python interpreter
@@ -231,6 +249,8 @@ public:
     static const std::string strToPython(const char* Str);
     static const std::string strToPython(const std::string &Str){return strToPython(Str.c_str());}
     //@}
+
+    PyObject *getValue(const char *key, const char *result_var);
 
 protected:
     // singleton

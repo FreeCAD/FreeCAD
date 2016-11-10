@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+    <PythonExport 
+        Father="PersistencePy" 
+        Name="TooltablePy" 
+        Twin="Tooltable" 
+        TwinPointer="Tooltable" 
+        Include="Mod/Path/App/Tooltable.h" 
+        Namespace="Path" 
+        FatherInclude="Base/PersistencePy.h" 
+        FatherNamespace="Base"
+        Constructor="true"
+        Delete="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Yorik van Havre" EMail="yorik@uncreated.net" />
+            <UserDocu>The Tooltable object holds a table of CNC tools</UserDocu>
+        </Documentation>
+        <Attribute Name="Tools" ReadOnly="false">
+            <Documentation>
+                <UserDocu>the dictionary of tools of this table</UserDocu>
+            </Documentation>
+            <Parameter Name="Tools" Type="Dict"/>
+        </Attribute>
+        <Methode Name="copy">
+            <Documentation>
+                <UserDocu>returns a copy of this tooltable</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="addTools">
+            <Documentation>
+                <UserDocu>adds a tool or a list of tools at the end of the table</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="getTool">
+            <Documentation>
+                <UserDocu>getTool(int):
+returns the tool found at the given position, or  None</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setTool">
+            <Documentation>
+                <UserDocu>setTool(int,tool):
+adds a tool at the given position</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="deleteTool">
+            <Documentation>
+                <UserDocu>deleteTool(int):
+deletes the tool found at the given position</UserDocu>
+            </Documentation>
+        </Methode>
+        <ClassDeclarations>
+            bool touched;
+        </ClassDeclarations>
+    </PythonExport>
+</GenerateModel>

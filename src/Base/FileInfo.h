@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2005                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -70,9 +70,9 @@ public:
     /// Convert the path name into a UCS-2 encoded wide string format.
     std::wstring toStdWString() const;
     /** Returns the file's extension name.
-     * If complete is TRUE (the default), extension() returns the string of all
+     * If complete is true (the default), extension() returns the string of all
      * characters in the file name after (but not including) the first '.' character.
-     * If complete is FALSE, extension() returns the string of all characters in
+     * If complete is false, extension() returns the string of all characters in
      * the file name after (but not including) the last '.' character.
      * Example:
      *@code
@@ -82,7 +82,7 @@ public:
      *  ext = fi.extension();   // ext = "gz"
      *@endcode
      */
-    std::string extension (bool complete = false) const;
+    std::string extension () const;
     /// Checks for a special extension, NOT case sensetive
     bool hasExtension (const char* Ext) const;
     //@}
@@ -111,7 +111,7 @@ public:
 
     /** @name Directory management*/
     //@{
-    /// Creates a directory. Returns TRUE if successful; otherwise returns FALSE.
+    /// Creates a directory. Returns true if successful; otherwise returns false.
     bool createDirectory( void ) const;
     /// Get a list of the directory content
     std::vector<Base::FileInfo> getDirectoryContent(void) const;

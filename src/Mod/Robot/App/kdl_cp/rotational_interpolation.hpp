@@ -105,7 +105,7 @@ class RotationalInterpolation
 		static RotationalInterpolation* Read(std::istream& is);
 
 		/**
-		 * virtual constructor,  construction by copying .
+		 * virtual constructor,  construction by copying.
 		 */
 		virtual RotationalInterpolation* Clone() const = 0;
 

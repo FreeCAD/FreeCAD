@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,10 +55,6 @@ public:
 
     /** @name methods override feature */
     //@{
-    /// recalculate the feature
-    /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
-    virtual App::DocumentObjectExecReturn *execute(void);
     virtual short mustExecute(void) const;
     //@}
 
@@ -68,15 +64,14 @@ public:
     virtual PyObject* getPyObject(void);
     virtual std::vector<PyObject *> getPySubObjects(const std::vector<std::string>&) const;
 
-    /**
-     * Find the origin of a reference, e.g. the vertex or edge in a sketch that
-     * produced a face
-     */
-    const TopoDS_Shape findOriginOf(const TopoDS_Shape& reference);
-
-protected:
-    void onChanged(const App::Property* prop);
     TopLoc_Location getLocation() const;
+    
+protected:
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
+    /// recalculate the feature
+    virtual App::DocumentObjectExecReturn *execute(void);
+    virtual void onChanged(const App::Property* prop);
     /**
      * Build a history of changes
      * MakeShape: The operation that created the changes, e.g. BRepAlgoAPI_Common
@@ -146,8 +141,8 @@ std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
   * If there is any error in the boolean operations, the check always returns false
   */
 PartExport
-const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                             const bool quick, const bool touch_is_intersection);
+bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                       const bool quick, const bool touch_is_intersection);
 
 } //namespace Part
 

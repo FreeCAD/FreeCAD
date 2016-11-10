@@ -1,7 +1,5 @@
 if(WIN32)
-    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT -DEIGEN2_SUPPORT)
-else (Win32)
-    add_definitions(-DEIGEN2_SUPPORT)
+    add_definitions(-DFCAppMesh -DWM4_FOUNDATION_DLL_EXPORT)
 endif(WIN32)
 
 include_directories(
@@ -9,8 +7,8 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/src/3rdParty
     ${Boost_INCLUDE_DIRS}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
@@ -20,7 +18,6 @@ include_directories(
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
     ${QT_QTCORE_LIBRARY}
-    ${QT_QTCORE_LIBRARY_DEBUG}
     FreeCADBase
     FreeCADApp
 )
@@ -90,6 +87,10 @@ SOURCE_GROUP("Core" FILES ${Core_SRCS})
 SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprCylinderFit3.cpp
     WildMagic4/Wm4ApprCylinderFit3.h
+    WildMagic4/Wm4ApprGaussPointsFit2.cpp
+    WildMagic4/Wm4ApprGaussPointsFit2.h
+    WildMagic4/Wm4ApprGaussPointsFit3.cpp
+    WildMagic4/Wm4ApprGaussPointsFit3.h
     WildMagic4/Wm4ApprLineFit3.cpp
     WildMagic4/Wm4ApprLineFit3.h
     WildMagic4/Wm4ApprPlaneFit3.cpp
@@ -102,8 +103,22 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprSphereFit3.h
     WildMagic4/Wm4BandedMatrix.h
     WildMagic4/Wm4BandedMatrix.inl
+    WildMagic4/Wm4Box2.h
+    WildMagic4/Wm4Box2.inl
     WildMagic4/Wm4Box3.h
     WildMagic4/Wm4Box3.inl
+    WildMagic4/Wm4ContBox2.cpp
+    WildMagic4/Wm4ContBox2.h
+    WildMagic4/Wm4ContBox3.cpp
+    WildMagic4/Wm4ContBox3.h
+    WildMagic4/Wm4ConvexHull.cpp
+    WildMagic4/Wm4ConvexHull.h
+    WildMagic4/Wm4ConvexHull1.cpp
+    WildMagic4/Wm4ConvexHull1.h
+    WildMagic4/Wm4ConvexHull2.cpp
+    WildMagic4/Wm4ConvexHull2.h
+    WildMagic4/Wm4ConvexHull3.cpp
+    WildMagic4/Wm4ConvexHull3.h
     WildMagic4/Wm4DelPolygonEdge.cpp
     WildMagic4/Wm4DelPolygonEdge.h
     WildMagic4/Wm4DelPolyhedronFace.cpp
@@ -210,6 +225,9 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4Polynomial1.inl
     WildMagic4/Wm4QuadricSurface.cpp
     WildMagic4/Wm4QuadricSurface.h
+    WildMagic4/Wm4Quaternion.cpp
+    WildMagic4/Wm4Quaternion.h
+    WildMagic4/Wm4Quaternion.inl
     WildMagic4/Wm4Query.h
     WildMagic4/Wm4Query.inl
     WildMagic4/Wm4Query2.h

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,6 +27,7 @@
 #define BASE_EXCEPTION_H
 
 #include <exception>
+#include <stdexcept>
 #include <string>
 #include <signal.h>
 #include "FileInfo.h"
@@ -268,6 +269,71 @@ public:
   RuntimeError(const RuntimeError &inst);
   /// Destruction
   virtual ~RuntimeError() throw() {}
+};
+
+/**
+ * The NotImplementedError can be used to indicate that an invoked function is not implemented.
+ * @author Werner Mayer
+ */
+class BaseExport NotImplementedError : public Exception
+{
+public:
+  /// Construction
+  NotImplementedError(const char * sMessage);
+  NotImplementedError(const std::string& sMessage);
+  /// Construction
+  NotImplementedError(const NotImplementedError &inst);
+  /// Destruction
+  virtual ~NotImplementedError() throw() {}
+};
+
+/**
+ * The DivisionByZeroError can be used to indicate a division by zero.
+ * @author Werner Mayer
+ */
+class BaseExport DivisionByZeroError : public Exception
+{
+public:
+  /// Construction
+  DivisionByZeroError(const char * sMessage);
+  DivisionByZeroError(const std::string& sMessage);
+  /// Construction
+  DivisionByZeroError(const DivisionByZeroError &inst);
+  /// Destruction
+  virtual ~DivisionByZeroError() throw() {}
+};
+
+/**
+ * The ExpressionError can be used to indicate erroneous.input
+ * to the expression engine.
+ * @author Werner Mayer
+ */
+class BaseExport ExpressionError : public Exception
+{
+public:
+  /// Construction
+  ExpressionError(const char * sMessage);
+  ExpressionError(const std::string& sMessage);
+  /// Construction
+  ExpressionError(const ExpressionError &inst);
+  /// Destruction
+  virtual ~ExpressionError() throw() {}
+};
+
+/**
+ * The ParserError can be used to indicate the parsing error.
+ * @author Werner Mayer
+ */
+class BaseExport ParserError : public Exception
+{
+public:
+  /// Construction
+  ParserError(const char * sMessage);
+  ParserError(const std::string& sMessage);
+  /// Construction
+  ParserError(const ParserError &inst);
+  /// Destruction
+  virtual ~ParserError() throw() {}
 };
 
 

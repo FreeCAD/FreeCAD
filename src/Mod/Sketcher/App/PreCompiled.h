@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,10 +30,12 @@
 #ifdef FC_OS_WIN32
 # define SketcherExport     __declspec(dllexport)
 # define PartExport         __declspec(dllimport)
+# define PartDesignExport   __declspec(dllimport)
 # define MeshExport         __declspec(dllimport)
 #else // for Linux
 # define SketcherExport
 # define PartExport
+# define PartDesignExport
 # define MeshExport
 #endif
 
@@ -54,6 +56,7 @@
 #include <Python.h>
 
 #elif defined(FC_OS_WIN32)
+#define NOMINMAX
 #include <windows.h>
 #endif // _PreComp_
 #endif

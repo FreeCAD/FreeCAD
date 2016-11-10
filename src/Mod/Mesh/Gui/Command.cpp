@@ -47,6 +47,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
+#include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/DocumentObject.h>
@@ -58,9 +59,11 @@
 #include <Gui/Document.h>
 #include <Gui/FileDialog.h>
 #include <Gui/Selection.h>
+#include <Gui/MouseSelection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/NavigationStyle.h>
 #include <Gui/WaitCursor.h>
 #include <CXX/Objects.hxx>
 
@@ -90,7 +93,7 @@ CmdMeshTransform::CmdMeshTransform()
   sPixmap       = "Std_Tool1";
 }
 
-void CmdMeshTransform::activated(int iMsg)
+void CmdMeshTransform::activated(int)
 {
   unsigned int n = getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId());
   if ( n!=1 ) return;
@@ -129,7 +132,7 @@ CmdMeshDemolding::CmdMeshDemolding()
   sPixmap       = "Std_Tool1";
 }
 
-void CmdMeshDemolding::activated(int iMsg)
+void CmdMeshDemolding::activated(int)
 {
   unsigned int n = getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId());
   if ( n!=1 ) return;
@@ -167,7 +170,7 @@ CmdMeshUnion::CmdMeshUnion()
     sStatusTip    = sMenuText;
 }
 
-void CmdMeshUnion::activated(int iMsg)
+void CmdMeshUnion::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     std::string name1 = obj.front()->getNameInDocument();
@@ -237,7 +240,7 @@ CmdMeshDifference::CmdMeshDifference()
     sStatusTip    = sMenuText;
 }
 
-void CmdMeshDifference::activated(int iMsg)
+void CmdMeshDifference::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     std::string name1 = obj.front()->getNameInDocument();
@@ -307,7 +310,7 @@ CmdMeshIntersection::CmdMeshIntersection()
     sStatusTip    = sMenuText;
 }
 
-void CmdMeshIntersection::activated(int iMsg)
+void CmdMeshIntersection::activated(int)
 {
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     std::string name1 = obj.front()->getNameInDocument();
@@ -378,20 +381,20 @@ CmdMeshImport::CmdMeshImport()
     sPixmap       = "Mesh_Import_Mesh";
 }
 
-void CmdMeshImport::activated(int iMsg)
+void CmdMeshImport::activated(int)
 {
     // use current path as default
     QStringList filter;
-    filter << QObject::tr("All Mesh Files (*.stl *.ast *.bms *.obj *.off *.ply)");
-    filter << QObject::tr("Binary STL (*.stl)");
-    filter << QObject::tr("ASCII STL (*.ast)");
-    filter << QObject::tr("Binary Mesh (*.bms)");
-    filter << QObject::tr("Alias Mesh (*.obj)");
-    filter << QObject::tr("Object File Format (*.off)");
-    filter << QObject::tr("Inventor V2.1 ascii (*.iv)");
-    filter << QObject::tr("Stanford Polygon (*.ply)");
+    filter << QString::fromLatin1("%1 (*.stl *.ast *.bms *.obj *.off *.ply)").arg(QObject::tr("All Mesh Files"));
+    filter << QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL"));
+    filter << QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL"));
+    filter << QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh"));
+    filter << QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh"));
+    filter << QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format"));
+    filter << QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii"));
+    filter << QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon"));
     //filter << "Nastran (*.nas *.bdf)";
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     // Allow multi selection
     QStringList fn = Gui::FileDialog::getOpenFileNames(Gui::getMainWindow(),
@@ -400,10 +403,11 @@ void CmdMeshImport::activated(int iMsg)
         QFileInfo fi;
         fi.setFile(*it);
 
+        std::string unicodepath = Base::Tools::escapedUnicodeFromUtf8((*it).toUtf8().data());
         openCommand("Import Mesh");
         doCommand(Doc,"import Mesh");
-        doCommand(Doc,"Mesh.insert(\"%s\")",
-                 (const char*)(*it).toUtf8());
+        doCommand(Doc,"Mesh.insert(u\"%s\")",
+                  unicodepath.c_str());
         commitCommand();
         updateActive();
     }
@@ -430,7 +434,7 @@ CmdMeshExport::CmdMeshExport()
     sPixmap       = "Mesh_Export_Mesh";
 }
 
-void CmdMeshExport::activated(int iMsg)
+void CmdMeshExport::activated(int)
 {
     std::vector<App::DocumentObject*> docObjs = Gui::Selection().getObjectsOfType
         (Mesh::Feature::getClassTypeId());
@@ -441,20 +445,20 @@ void CmdMeshExport::activated(int iMsg)
 
     QString dir = QString::fromUtf8(docObj->Label.getValue());
     QList<QPair<QString, QByteArray> > ext;
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary STL (*.stl)"), "STL");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.stl)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("ASCII STL (*.ast)"), "AST");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Binary Mesh (*.bms)"), "BMS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Alias Mesh (*.obj)"), "OBJ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Object File Format (*.off)"), "OFF");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Inventor V2.1 ascii (*.iv)"), "IV");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("X3D Extensible 3D (*.x3d)"), "X3D");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Stanford Polygon (*.ply)"), "PLY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("VRML V2.0 (*.wrl *.vrml)"), "VRML");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Compressed VRML 2.0 (*.wrz)"), "WRZ");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Nastran (*.nas *.bdf)"), "NAS");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("Python module def (*.py)"), "PY");
-    ext << qMakePair<QString, QByteArray>(QObject::tr("All Files (*.*)"), ""); // Undefined
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("Binary STL")), "STL");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.stl)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ast)").arg(QObject::tr("ASCII STL")), "AST");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.bms)").arg(QObject::tr("Binary Mesh")), "BMS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.obj)").arg(QObject::tr("Alias Mesh")), "OBJ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.off)").arg(QObject::tr("Object File Format")), "OFF");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.iv)").arg(QObject::tr("Inventor V2.1 ascii")), "IV");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.x3d)").arg(QObject::tr("X3D Extensible 3D")), "X3D");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.ply)").arg(QObject::tr("Stanford Polygon")), "PLY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrl *.vrml)").arg(QObject::tr("VRML V2.0")), "VRML");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.wrz)").arg(QObject::tr("Compressed VRML 2.0")), "WRZ");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.nas *.bdf)").arg(QObject::tr("Nastran")), "NAS");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.py)").arg(QObject::tr("Python module def")), "PY");
+    ext << qMakePair<QString, QByteArray>(QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files")), ""); // Undefined
     QStringList filter;
     for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it)
         filter << it->first;
@@ -464,7 +468,7 @@ void CmdMeshExport::activated(int iMsg)
         QObject::tr("Export mesh"), dir, filter.join(QLatin1String(";;")), &format);
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
-        QByteArray extension = fi.suffix().toAscii();
+        QByteArray extension = fi.suffix().toLatin1();
         for (QList<QPair<QString, QByteArray> >::iterator it = ext.begin(); it != ext.end(); ++it) {
             if (it->first == format) {
                 extension = it->second;
@@ -472,13 +476,10 @@ void CmdMeshExport::activated(int iMsg)
             }
         }
 
-        //openCommand("Export Mesh");
-        doCommand(Doc,"FreeCAD.ActiveDocument.getObject(\"%s\").Mesh.write(\"%s\",\"%s\",\"%s\")",
-                 docObj->getNameInDocument(),
-                 (const char*)fn.toUtf8(),
-                 (const char*)extension,
-                 docObj->Label.getValue());
-        //commitCommand();
+        MeshGui::ViewProviderMesh* vp = dynamic_cast<MeshGui::ViewProviderMesh*>(Gui::Application::Instance->getViewProvider(docObj));
+        if (vp) {
+            vp->exportMesh((const char*)fn.toUtf8(), (const char*)extension);
+        }
     }
 }
 
@@ -502,7 +503,7 @@ CmdMeshFromGeometry::CmdMeshFromGeometry()
     sStatusTip    = QT_TR_NOOP("Create mesh from the selected geometry");
 }
 
-void CmdMeshFromGeometry::activated(int iMsg)
+void CmdMeshFromGeometry::activated(int)
 {
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Meshing Tolerance"),
@@ -522,8 +523,11 @@ void CmdMeshFromGeometry::activated(int iMsg)
                 if (jt->first == "Shape" && jt->second->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
-                    static_cast<App::PropertyComplexGeoData*>(jt->second)->getFaces(aPoints, aTopo,(float)tol);
-                    mesh.setFacets(aTopo, aPoints);
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(jt->second)->getComplexData();
+                    if (data) {
+                        data->getFaces(aPoints, aTopo,(float)tol);
+                        mesh.setFacets(aTopo, aPoints);
+                    }
                 }
             }
 
@@ -553,12 +557,12 @@ CmdMeshFromPartShape::CmdMeshFromPartShape()
     sGroup        = QT_TR_NOOP("Mesh");
     sMenuText     = QT_TR_NOOP("Create mesh from shape...");
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Mesh_FromPartShape";
     sStatusTip    = sToolTipText;
     sPixmap       = "Mesh_Mesh_from_Shape.svg";
 }
 
-void CmdMeshFromPartShape::activated(int iMsg)
+void CmdMeshFromPartShape::activated(int)
 {
     doCommand(Doc,"import MeshPartGui, FreeCADGui\nFreeCADGui.runCommand('MeshPart_Mesher')\n");
 }
@@ -584,7 +588,7 @@ CmdMeshVertexCurvature::CmdMeshVertexCurvature()
     sPixmap       = "Mesh_Curvature_Plot";
 }
 
-void CmdMeshVertexCurvature::activated(int iMsg)
+void CmdMeshVertexCurvature::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
@@ -593,7 +597,7 @@ void CmdMeshVertexCurvature::activated(int iMsg)
         fName = getUniqueObjectName(fName.c_str());
 
         openCommand("Mesh VertexCurvature");
-        App::DocumentObjectGroup* grp = App::DocumentObjectGroup::getGroupOfObject( *it );
+        App::DocumentObject* grp = App::DocumentObjectGroup::getGroupOfObject( *it );
         if (grp)
             doCommand(Doc,"App.activeDocument().getObject(\"%s\").newObject(\"Mesh::Curvature\",\"%s\")",grp->getNameInDocument(), fName.c_str());
         else
@@ -626,7 +630,7 @@ CmdMeshVertexCurvatureInfo::CmdMeshVertexCurvatureInfo()
     sStatusTip    = QT_TR_NOOP("Information about curvature");
 }
 
-void CmdMeshVertexCurvatureInfo::activated(int iMsg)
+void CmdMeshVertexCurvatureInfo::activated(int)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -671,7 +675,7 @@ CmdMeshPolySegm::CmdMeshPolySegm()
     sPixmap       = "PolygonPick";
 }
 
-void CmdMeshPolySegm::activated(int iMsg)
+void CmdMeshPolySegm::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -725,7 +729,7 @@ CmdMeshPolySelect::CmdMeshPolySelect()
     sStatusTip    = QT_TR_NOOP("Select an area of the mesh");
 }
 
-void CmdMeshPolySelect::activated(int iMsg)
+void CmdMeshPolySelect::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -778,7 +782,7 @@ CmdMeshAddFacet::CmdMeshAddFacet()
     sStatusTip    = QT_TR_NOOP("Add triangle manually to a mesh");
 }
 
-void CmdMeshAddFacet::activated(int iMsg)
+void CmdMeshAddFacet::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -825,7 +829,7 @@ CmdMeshPolyCut::CmdMeshPolyCut()
     sPixmap       = "mesh_cut";
 }
 
-void CmdMeshPolyCut::activated(int iMsg)
+void CmdMeshPolyCut::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -835,7 +839,11 @@ void CmdMeshPolyCut::activated(int iMsg)
             if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
-                viewer->startSelection(Gui::View3DInventorViewer::Clip);
+
+                Gui::PolyClipSelection* clip = new Gui::PolyClipSelection();
+                clip->setColor(0.0f,0.0f,1.0f);
+                clip->setLineWidth(1.0f);
+                viewer->navigationStyle()->startSelection(clip);
                 viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(), MeshGui::ViewProviderMeshFaceSet::clipMeshCallback);
             }
             else {
@@ -879,7 +887,7 @@ CmdMeshPolyTrim::CmdMeshPolyTrim()
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a picked polygon");
 }
 
-void CmdMeshPolyTrim::activated(int iMsg)
+void CmdMeshPolyTrim::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -933,7 +941,7 @@ CmdMeshTrimByPlane::CmdMeshTrimByPlane()
     sStatusTip    = QT_TR_NOOP("Trims a mesh with a plane");
 }
 
-void CmdMeshTrimByPlane::activated(int iMsg)
+void CmdMeshTrimByPlane::activated(int)
 {
     Base::Type partType = Base::Type::fromName("Part::Plane");
     std::vector<App::DocumentObject*> plane = getSelection().getObjectsOfType(partType);
@@ -965,7 +973,7 @@ void CmdMeshTrimByPlane::activated(int iMsg)
         Base::BoundBox3d bbox = mesh->getBoundBox();
         double len = bbox.CalcDiagonalLength();
         // project center of bbox onto plane and use this as base point
-        Base::Vector3d cnt = bbox.CalcCenter();
+        Base::Vector3d cnt = bbox.GetCenter();
         double dist = (cnt-base)*normal;
         base = cnt - normal * dist;
 
@@ -1016,7 +1024,7 @@ CmdMeshPolySplit::CmdMeshPolySplit()
     sStatusTip    = QT_TR_NOOP("Splits a mesh into two meshes");
 }
 
-void CmdMeshPolySplit::activated(int iMsg)
+void CmdMeshPolySplit::activated(int)
 {
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
@@ -1069,7 +1077,7 @@ CmdMeshToolMesh::CmdMeshToolMesh()
   sStatusTip    = QT_TR_NOOP("Creates a segment from a given tool mesh");
 }
 
-void CmdMeshToolMesh::activated(int iMsg)
+void CmdMeshToolMesh::activated(int)
 {
   std::vector<App::DocumentObject*> fea = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
   if ( fea.size() == 2 )
@@ -1124,7 +1132,7 @@ CmdMeshEvaluation::CmdMeshEvaluation()
     sStatusTip    = QT_TR_NOOP("Opens a dialog to analyze and repair a mesh");
 }
 
-void CmdMeshEvaluation::activated(int iMsg)
+void CmdMeshEvaluation::activated(int)
 {
     if (MeshGui::DockEvaluateMeshImp::hasInstance()) {
         MeshGui::DockEvaluateMeshImp::instance()->show();
@@ -1166,7 +1174,7 @@ CmdMeshEvaluateFacet::CmdMeshEvaluateFacet()
     sPixmap       = "mesh_pipette";
 }
 
-void CmdMeshEvaluateFacet::activated(int iMsg)
+void CmdMeshEvaluateFacet::activated(int)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -1209,7 +1217,7 @@ CmdMeshRemoveComponents::CmdMeshRemoveComponents()
     sPixmap       = "Mesh_Remove_Components";
 }
 
-void CmdMeshRemoveComponents::activated(int iMsg)
+void CmdMeshRemoveComponents::activated(int)
 {
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (!dlg) {
@@ -1253,7 +1261,7 @@ CmdMeshRemoveCompByHand::CmdMeshRemoveCompByHand()
     sStatusTip    = QT_TR_NOOP("Mark a component to remove it from the mesh");
 }
 
-void CmdMeshRemoveCompByHand::activated(int iMsg)
+void CmdMeshRemoveCompByHand::activated(int)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -1295,7 +1303,7 @@ CmdMeshEvaluateSolid::CmdMeshEvaluateSolid()
     sStatusTip    = QT_TR_NOOP("Checks whether the mesh is a solid");
 }
 
-void CmdMeshEvaluateSolid::activated(int iMsg)
+void CmdMeshEvaluateSolid::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
@@ -1303,10 +1311,10 @@ void CmdMeshEvaluateSolid::activated(int iMsg)
         QString msg;
         if (mesh->Mesh.getValue().getKernel().HasOpenEdges())
             msg = QObject::tr("The mesh '%1' is not a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         else
             msg = QObject::tr("The mesh '%1' is a solid.")
-                .arg(QString::fromAscii(mesh->Label.getValue()));
+                .arg(QString::fromLatin1(mesh->Label.getValue()));
         QMessageBox::information(Gui::getMainWindow(), QObject::tr("Solid Mesh"), msg);
     }
 }
@@ -1332,7 +1340,7 @@ CmdMeshSmoothing::CmdMeshSmoothing()
     sStatusTip    = QT_TR_NOOP("Smooth the selected meshes");
 }
 
-void CmdMeshSmoothing::activated(int iMsg)
+void CmdMeshSmoothing::activated(int)
 {
 #if 0
     MeshGui::SmoothingDialog dlg(Gui::getMainWindow());
@@ -1395,7 +1403,7 @@ CmdMeshHarmonizeNormals::CmdMeshHarmonizeNormals()
     sPixmap       = "Mesh_Harmonize_Normals";
 }
 
-void CmdMeshHarmonizeNormals::activated(int iMsg)
+void CmdMeshHarmonizeNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     openCommand("Harmonize mesh normals");
@@ -1429,7 +1437,7 @@ CmdMeshFlipNormals::CmdMeshFlipNormals()
     sPixmap       = "Mesh_Flip_Normals";
 }
 
-void CmdMeshFlipNormals::activated(int iMsg)
+void CmdMeshFlipNormals::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     openCommand("Flip mesh normals");
@@ -1462,7 +1470,7 @@ CmdMeshBoundingBox::CmdMeshBoundingBox()
     sStatusTip    = QT_TR_NOOP("Shows the boundings of the selected mesh");
 }
 
-void CmdMeshBoundingBox::activated(int iMsg)
+void CmdMeshBoundingBox::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = meshes.begin(); it != meshes.end(); ++it) {
@@ -1502,7 +1510,7 @@ CmdMeshBuildRegularSolid::CmdMeshBuildRegularSolid()
     sPixmap       = "Mesh_Regular_Solid";
 }
 
-void CmdMeshBuildRegularSolid::activated(int iMsg)
+void CmdMeshBuildRegularSolid::activated(int)
 {
     MeshGui::SingleDlgRegularSolidImp::instance()->show();
 }
@@ -1528,11 +1536,11 @@ CmdMeshFillupHoles::CmdMeshFillupHoles()
     sStatusTip    = QT_TR_NOOP("Fill holes of the mesh");
 }
 
-void CmdMeshFillupHoles::activated(int iMsg)
+void CmdMeshFillupHoles::activated(int)
 {
     std::vector<App::DocumentObject*> meshes = getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
     bool ok;
-    int FillupHolesOfLength = QInputDialog::getInteger(Gui::getMainWindow(), QObject::tr("Fill holes"),
+    int FillupHolesOfLength = QInputDialog::getInt(Gui::getMainWindow(), QObject::tr("Fill holes"),
                                 QObject::tr("Fill holes with maximum number of edges:"), 3, 3, 10000, 1, &ok);
     if (!ok) return;
     openCommand("Fill up holes");
@@ -1566,7 +1574,7 @@ CmdMeshFillInteractiveHole::CmdMeshFillInteractiveHole()
     sPixmap       = "mesh_boundary";
 }
 
-void CmdMeshFillInteractiveHole::activated(int iMsg)
+void CmdMeshFillInteractiveHole::activated(int)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
@@ -1606,7 +1614,7 @@ CmdMeshSegmentation::CmdMeshSegmentation()
     sStatusTip    = QT_TR_NOOP("Create mesh segments");
 }
 
-void CmdMeshSegmentation::activated(int iMsg)
+void CmdMeshSegmentation::activated(int)
 {
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType
         (Mesh::Feature::getClassTypeId());
@@ -1625,6 +1633,50 @@ bool CmdMeshSegmentation::isActive(void)
     return Gui::Selection().countObjectsOfType
         (Mesh::Feature::getClassTypeId()) == 1;
 }
+
+
+//--------------------------------------------------------------------------------------
+
+DEF_STD_CMD_A(CmdMeshMerge);
+
+CmdMeshMerge::CmdMeshMerge()
+  :Command("Mesh_Merge")
+{
+    sAppModule    = "Mesh";
+    sGroup        = QT_TR_NOOP("Mesh");
+    sMenuText     = QT_TR_NOOP("Merge");
+    sToolTipText  = QT_TR_NOOP("Merges selected meshes into one");
+    sWhatsThis    = "Mesh_Merge";
+    sStatusTip    = sToolTipText;
+}
+
+void CmdMeshMerge::activated(int)
+{
+    App::Document *pcDoc = App::GetApplication().getActiveDocument();
+    if (!pcDoc)
+        return;
+
+    openCommand("Mesh merge");
+    Mesh::Feature *pcFeature = static_cast<Mesh::Feature*>(pcDoc->addObject("Mesh::Feature", "Mesh"));
+    Mesh::MeshObject* newMesh = pcFeature->Mesh.startEditing();
+    std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(Mesh::Feature::getClassTypeId());
+    for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
+        const MeshObject& mesh = static_cast<Mesh::Feature*>(*it)->Mesh.getValue();
+        MeshCore::MeshKernel kernel = mesh.getKernel();
+        kernel.Transform(mesh.getTransform());
+        newMesh->addMesh(kernel);
+    }
+
+    pcFeature->Mesh.finishEditing();
+    updateActive();
+    commitCommand();
+}
+
+bool CmdMeshMerge::isActive(void)
+{
+    return getSelection().countObjectsOfType(Mesh::Feature::getClassTypeId()) >= 2;
+}
+
 
 void CreateMeshCommands(void)
 {
@@ -1661,4 +1713,5 @@ void CreateMeshCommands(void)
     rcCmdMgr.addCommand(new CmdMeshFromGeometry());
     rcCmdMgr.addCommand(new CmdMeshFromPartShape());
     rcCmdMgr.addCommand(new CmdMeshSegmentation());
+    rcCmdMgr.addCommand(new CmdMeshMerge());
 }

@@ -32,12 +32,16 @@ class SoSwitch;
 class SoSensor;
 class SoDragger;
 class SbVec2s;
+class SoTransform;
+
+namespace Base { class Placement;}
 
 namespace Gui {
 
 class SoFCSelection;
 class SoFCBoundingBox;
 class View3DInventorViewer;
+class SoFCCSysDragger;
 
 /**
  * The base class for all view providers that display geometric data, like mesh, point cloudes and shapes.
@@ -67,11 +71,10 @@ public:
     void attach(App::DocumentObject *pcObject);
     void updateData(const App::Property*);
 
-    SoFCSelection* getHighlightNode() const { return pcHighlight; }
     bool isSelectable(void) const {return Selectable.getValue();}
 
     /**
-     * Returns a list of picked points from the geometry under \a pcHighlight.
+     * Returns a list of picked points from the geometry under \a getRoot().
      * If \a pickAll is false (the default) only the intersection point closest to the camera will be picked, otherwise
      * all intersection points will be picked. 
      */
@@ -87,28 +90,30 @@ public:
     //@{
     bool doubleClicked(void);
     void setupContextMenu(QMenu*, QObject*, const char*);
+    
+    /*! synchronize From FC placement to Coin placement*/
+    static void updateTransform(const Base::Placement &from, SoTransform *to);
 protected:
     bool setEdit(int ModNum);
     void unsetEdit(int ModNum);
     void setEditViewer(View3DInventorViewer*, int ModNum);
     void unsetEditViewer(View3DInventorViewer*);
     //@}
+    SoFCCSysDragger *csysDragger = nullptr;
 
 protected:
     void showBoundingBox(bool);
     /// get called by the container whenever a property has been changed
     void onChanged(const App::Property* prop);
-    SoFCSelection* createFromSettings() const;
     void setSelectable(bool Selectable=true);
 
 private:
-    static void sensorCallback(void * data, SoSensor * sensor);
     static void dragStartCallback(void * data, SoDragger * d);
     static void dragFinishCallback(void * data, SoDragger * d);
-    static void dragMotionCallback(void * data, SoDragger * d);
+    
+    static void updatePlacementFromDragger(ViewProviderGeometryObject *sudoThis, SoFCCSysDragger *draggerIn);
 
 protected:
-    SoFCSelection    * pcHighlight;
     SoMaterial       * pcShapeMaterial;
     SoFCBoundingBox  * pcBoundingBox;
     SoSwitch         * pcBoundSwitch;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -77,9 +77,8 @@ void Simulation::step(double tick)
 	Pos += tick;
 }
 
-void Simulation::setToWaypoint(unsigned int n)
+void Simulation::setToWaypoint(unsigned int)
 {
-
 
 }
 

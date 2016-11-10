@@ -24,19 +24,20 @@
 
 namespace KDL {
 std::ostream& operator <<(std::ostream& os, const Joint& joint) {
-	return os << joint.getTypeName();
+	return os << joint.getName()<<":["<<joint.getTypeName()
+              <<", axis: "<<joint.JointAxis() << ", origin"<<joint.JointOrigin()<<"]";
 }
 
-std::istream& operator >>(std::istream& is, Joint& joint) {
+std::istream& operator >>(std::istream& is, Joint& /*joint*/) {
 	return is;
 }
 
 std::ostream& operator <<(std::ostream& os, const Segment& segment) {
-	os << "[" << segment.getJoint() << ",\n" << segment.getFrameToTip() << "]";
+	os << segment.getName()<<":[" << segment.getJoint() << ",\n tip: \n" << segment.getFrameToTip() << "]";
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Segment& segment) {
+std::istream& operator >>(std::istream& is, Segment& /*segment*/) {
 	return is;
 }
 
@@ -48,25 +49,25 @@ std::ostream& operator <<(std::ostream& os, const Chain& chain) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Chain& chain) {
+std::istream& operator >>(std::istream& is, Chain& /*chain*/) {
 	return is;
 }
 
 std::ostream& operator <<(std::ostream& os, const Tree& tree) {
-	SegmentMap::const_iterator root = tree.getSegment("root");
+	SegmentMap::const_iterator root = tree.getRootSegment();
 	return os << root;
 }
 
 std::ostream& operator <<(std::ostream& os, SegmentMap::const_iterator root) {
 	//os<<root->first<<": "<<root->second.segment<<"\n";
-	os << root->first<<"(q_nr: "<<root->second.q_nr<<")"<<"\n \t";
-	for (unsigned int i = 0; i < root->second.children.size(); i++) {
-		os <<(root->second.children[i])<<"\t";
+    os << root->first<<"(q_nr: "<< GetTreeElementQNr(root->second) << ")" << "\n \t";
+    for (unsigned int i = 0; i < GetTreeElementChildren(root->second).size(); i++) {
+        os << ( GetTreeElementChildren(root->second)[i] ) << "\t";
 	}
 	return os << "\n";
 }
 
-std::istream& operator >>(std::istream& is, Tree& tree) {
+std::istream& operator >>(std::istream& is, Tree& /*tree*/) {
 	return is;
 }
 
@@ -78,7 +79,7 @@ std::ostream& operator <<(std::ostream& os, const JntArray& array) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, JntArray& array) {
+std::istream& operator >>(std::istream& is, JntArray& /*array*/) {
 	return is;
 }
 
@@ -93,7 +94,7 @@ std::ostream& operator <<(std::ostream& os, const Jacobian& jac) {
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, Jacobian& jac) {
+std::istream& operator >>(std::istream& is, Jacobian& /*jac*/) {
 	return is;
 }
 std::ostream& operator <<(std::ostream& os, const JntSpaceInertiaMatrix& jntspaceinertiamatrix) {
@@ -107,7 +108,7 @@ std::ostream& operator <<(std::ostream& os, const JntSpaceInertiaMatrix& jntspac
 	return os;
 }
 
-std::istream& operator >>(std::istream& is, JntSpaceInertiaMatrix& jntspaceinertiamatrix) {
+std::istream& operator >>(std::istream& is, JntSpaceInertiaMatrix& /*jntspaceinertiamatrix*/) {
 	return is;
 }
 }

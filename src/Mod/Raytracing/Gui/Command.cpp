@@ -1,5 +1,5 @@
  /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -82,12 +82,12 @@ CmdRaytracingWriteCamera::CmdRaytracingWriteCamera()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export camera to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Export the camera positon of the active 3D view in POV-Ray format to a file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WriteCamera";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Camera";
 }
 
-void CmdRaytracingWriteCamera::activated(int iMsg)
+void CmdRaytracingWriteCamera::activated(int)
 {
     const char* ppReturn=0;
     getGuiApplication()->sendMsgToActiveView("GetCamera",&ppReturn);
@@ -132,8 +132,8 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
         float Dist = Cam->focalDistance.getValue();
 
         QStringList filter;
-        filter << QObject::tr("POV-Ray (*.pov)");
-        filter << QObject::tr("All Files (*.*)");
+        filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+        filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
         if (fn.isEmpty()) 
             return;
@@ -150,7 +150,7 @@ void CmdRaytracingWriteCamera::activated(int iMsg)
             << "(" << upvec.getValue()[0]  <<"," << upvec.getValue()[1]  <<"," << upvec.getValue()[2]  <<") )" ;
 
         doCommand(Doc,"import Raytracing");
-        doCommand(Gui,out.str().c_str());
+        doCommand(Gui,"%s", out.str().c_str());
 
         // Bring ref-count of root-node back to zero to cause the
         // destruction of the camera.
@@ -175,16 +175,16 @@ CmdRaytracingWritePart::CmdRaytracingWritePart()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export part to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Write the selected Part (object) as a POV-Ray file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WritePart";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Part";
 }
 
-void CmdRaytracingWritePart::activated(int iMsg)
+void CmdRaytracingWritePart::activated(int)
 {
     QStringList filter;
-    filter << QObject::tr("POV-Ray (*.pov)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) 
         return;
@@ -201,7 +201,7 @@ void CmdRaytracingWritePart::activated(int iMsg)
         << Name << "\",App.ActiveDocument." << obj.front()->getNameInDocument() << ".Shape)";
 
     doCommand(Doc,"import Raytracing");
-    doCommand(Doc,out.str().c_str());
+    doCommand(Doc,"%s",out.str().c_str());
 }
 
 bool CmdRaytracingWritePart::isActive(void)
@@ -221,12 +221,12 @@ CmdRaytracingWriteView::CmdRaytracingWriteView()
     sGroup        = QT_TR_NOOP("Raytracing");
     sMenuText     = QT_TR_NOOP("Export view to POV-Ray...");
     sToolTipText  = QT_TR_NOOP("Write the active 3D view with camera and all its content to a POV-Ray file");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Raytracing_WriteView";
     sStatusTip    = sToolTipText;
     sPixmap       = "Raytrace_Export";
 }
 
-void CmdRaytracingWriteView::activated(int iMsg)
+void CmdRaytracingWriteView::activated(int)
 {
     const char* ppReturn=0;
     Gui::Application::Instance->sendMsgToActiveView("GetCamera",&ppReturn);
@@ -245,8 +245,8 @@ void CmdRaytracingWriteView::activated(int iMsg)
     }
 
     QStringList filter;
-    filter << QObject::tr("POV-Ray(*.pov)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
         QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (fn.isEmpty()) 
@@ -261,26 +261,32 @@ void CmdRaytracingWriteView::activated(int iMsg)
     openCommand("Write view");
     doCommand(Doc,"import Raytracing,RaytracingGui");
     doCommand(Doc,"OutFile = open(unicode(\"%s\",\"utf-8\"),\"w\")",cFullName.c_str());
-    doCommand(Doc,"result = open(App.getResourceDir()+'Mod/Raytracing/Templates/ProjectStd.pov').read()");
-    doCommand(Doc,"content = ''");
-    doCommand(Doc,"content += RaytracingGui.povViewCamera()");
-    // go through all document objects
-    for (std::vector<Part::Feature*>::const_iterator it=DocObjects.begin();it!=DocObjects.end();++it) {
-        Gui::ViewProvider* vp = getActiveGuiDocument()->getViewProvider(*it);
-        if (vp && vp->isVisible()) {
-            App::PropertyColor *pcColor = dynamic_cast<App::PropertyColor *>(vp->getPropertyByName("ShapeColor"));
-            App::Color col = pcColor->getValue();
-            doCommand(Doc,"content += Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f)",
-                     (*it)->getNameInDocument(),(*it)->getNameInDocument(),col.r,col.g,col.b);
+    try {
+        doCommand(Doc,"result = open(App.getResourceDir()+'Mod/Raytracing/Templates/ProjectStd.pov').read()");
+        doCommand(Doc,"content = ''");
+        doCommand(Doc,"content += RaytracingGui.povViewCamera()");
+        // go through all document objects
+        for (std::vector<Part::Feature*>::const_iterator it=DocObjects.begin();it!=DocObjects.end();++it) {
+            Gui::ViewProvider* vp = getActiveGuiDocument()->getViewProvider(*it);
+            if (vp && vp->isVisible()) {
+                App::PropertyColor *pcColor = dynamic_cast<App::PropertyColor *>(vp->getPropertyByName("ShapeColor"));
+                App::Color col = pcColor->getValue();
+                doCommand(Doc,"content += Raytracing.getPartAsPovray('%s',App.activeDocument().%s.Shape,%f,%f,%f)",
+                         (*it)->getNameInDocument(),(*it)->getNameInDocument(),col.r,col.g,col.b);
+            }
         }
+        doCommand(Doc,"result = result.replace('//RaytracingContent',content)");
+        doCommand(Doc,"OutFile.write(result)");
+        doCommand(Doc,"OutFile.close()");
+        doCommand(Doc,"del OutFile");
+        commitCommand();
     }
-    doCommand(Doc,"result = result.replace('//RaytracingContent',content)");
-    doCommand(Doc,"OutFile.write(result)");
-    doCommand(Doc,"OutFile.close()");
-    doCommand(Doc,"del OutFile");
-
-    updateActive();
-    commitCommand();
+    catch (...) {
+        doCommand(Doc,"OutFile.close()");
+        doCommand(Doc,"del OutFile");
+        abortCommand();
+        throw;
+    }
 }
 
 bool CmdRaytracingWriteView::isActive(void)
@@ -337,12 +343,18 @@ void CmdRaytracingNewPovrayProject::activated(int iMsg)
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Create POV-Ray project");
-        doCommand(Doc,"import Raytracing,RaytracingGui");
-        doCommand(Doc,"App.activeDocument().addObject('Raytracing::RayProject','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
-        doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.povViewCamera()",FeatName.c_str());
-        commitCommand();
+        try {
+            openCommand("Create POV-Ray project");
+            doCommand(Doc,"import Raytracing,RaytracingGui");
+            doCommand(Doc,"App.activeDocument().addObject('Raytracing::RayProject','%s')",FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
+            doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.povViewCamera()",FeatName.c_str());
+            commitCommand();
+        }
+        catch (...) {
+            abortCommand();
+            throw;
+        }
     }
     else {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -357,12 +369,9 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
-    int defaultId = 0;
-
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.pov"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.pov"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
         QFileInfo fi(dir[i]);
         QAction* a = pcAction->addAction(fi.baseName());
@@ -373,11 +382,7 @@ Gui::Action * CmdRaytracingNewPovrayProject::createAction(void)
 
     _pcAction = pcAction;
     languageChange();
-    if (defaultAction) {
-        pcAction->setIcon(defaultAction->icon());
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
-    }
-    else if (!pcAction->actions().isEmpty()) {
+    if (!pcAction->actions().isEmpty()) {
         pcAction->setIcon(pcAction->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
@@ -412,7 +417,7 @@ CmdRaytracingNewPartSegment::CmdRaytracingNewPartSegment()
     sPixmap         = "Raytrace_NewPartSegment";
 }
 
-void CmdRaytracingNewPartSegment::activated(int iMsg)
+void CmdRaytracingNewPartSegment::activated(int)
 {
     std::vector<Part::Feature*> parts = Gui::Selection().getObjectsOfType<Part::Feature>();
     if (parts.empty()) {
@@ -496,9 +501,9 @@ CmdRaytracingExportProject::CmdRaytracingExportProject()
     sPixmap       = "Raytrace_ExportProject";
 }
 
-void CmdRaytracingExportProject::activated(int iMsg)
+void CmdRaytracingExportProject::activated(int)
 {
-    const char *filterLabel;
+    QString filterLabel;
     unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
     if (n != 1) {
         n = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());
@@ -506,16 +511,18 @@ void CmdRaytracingExportProject::activated(int iMsg)
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select one Raytracing project object."));
             return;
-        } else {
-            filterLabel = "Luxrender Scene (*.lxs)";
         }
-    } else {
-        filterLabel = "POV-Ray Scene (*.pov)";
+        else {
+            filterLabel =  QString::fromLatin1("%1 (*.lxs)").arg(QObject::tr("Luxrender"));
+        }
+    }
+    else {
+        filterLabel = QString::fromLatin1("%1 (*.pov)").arg(QObject::tr("POV-Ray"));
     }
 
     QStringList filter;
-    filter << QObject::tr(filterLabel);
-    filter << QObject::tr("All Files (*.*)");
+    filter << filterLabel;
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
 
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export page"), QString(), filter.join(QLatin1String(";;")));
     if (!fn.isEmpty()) {
@@ -556,7 +563,7 @@ CmdRaytracingRender::CmdRaytracingRender()
     sPixmap       = "Raytrace_Render";
 }
 
-void CmdRaytracingRender::activated(int iMsg)
+void CmdRaytracingRender::activated(int)
 {
     // determining render type
     Base::Type renderType;
@@ -620,11 +627,11 @@ void CmdRaytracingRender::activated(int iMsg)
 
         QStringList filter;
 #ifdef FC_OS_WIN32
-        filter << QObject::tr("Rendered image (*.bmp)");
+        filter << QString::fromLatin1("%1 (*.bmp *.png)").arg(QObject::tr("Rendered image"));
 #else
-        filter << QObject::tr("Rendered image (*.png)");
+        filter << QString::fromLatin1("%1 (*.png)").arg(QObject::tr("Rendered image"));
 #endif
-        filter << QObject::tr("All Files (*.*)");
+        filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Rendered image"), QString(), filter.join(QLatin1String(";;")));
         if (!fn.isEmpty()) {
             fn = QDir::toNativeSeparators(fn);
@@ -641,14 +648,15 @@ void CmdRaytracingRender::activated(int iMsg)
             h << height;
             std::string par = hGrp->GetASCII("OutputParameters", "+P +A");
             doCommand(Doc,"PageFile = open(App.activeDocument().%s.PageResult,'r')",Sel[0].getFeatName());
-            doCommand(Doc,"import subprocess,tempfile");
-            doCommand(Doc,"TempFile = tempfile.mkstemp(suffix='.pov')[1]");
+            doCommand(Doc,"import os,subprocess,tempfile");
+            doCommand(Doc,"fd, TempFile = tempfile.mkstemp(suffix='.pov')");
             doCommand(Doc,"f = open(TempFile,'wb')");
             doCommand(Doc,"f.write(PageFile.read())");
             doCommand(Doc,"f.close()");
+            doCommand(Doc,"os.close(fd)");
 #ifdef FC_OS_WIN32
             // http://povray.org/documentation/view/3.6.1/603/
-            doCommand(Doc,"subprocess.call(\"%s %s +W%s +H%s +O%s /EXIT /RENDER \"+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
+            doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" /EXIT /RENDER '+TempFile)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
 #else
             doCommand(Doc,"subprocess.call('\"%s\" %s +W%s +H%s +O\"%s\" '+TempFile,shell=True)",renderer.c_str(),par.c_str(),w.str().c_str(),h.str().c_str(),fname.c_str());
 #endif
@@ -726,12 +734,18 @@ void CmdRaytracingNewLuxProject::activated(int iMsg)
     QAction* a = pcAction->actions()[iMsg];
     QFileInfo tfi(a->property("Template").toString());
     if (tfi.isReadable()) {
-        openCommand("Create LuxRender project");
-        doCommand(Doc,"import Raytracing,RaytracingGui");
-        doCommand(Doc,"App.activeDocument().addObject('Raytracing::LuxProject','%s')",FeatName.c_str());
-        doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
-        doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.luxViewCamera()",FeatName.c_str());
-        commitCommand();
+        try {
+            openCommand("Create LuxRender project");
+            doCommand(Doc,"import Raytracing,RaytracingGui");
+            doCommand(Doc,"App.activeDocument().addObject('Raytracing::LuxProject','%s')",FeatName.c_str());
+            doCommand(Doc,"App.activeDocument().%s.Template = '%s'",FeatName.c_str(), (const char*)tfi.filePath().toUtf8());
+            doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.luxViewCamera()",FeatName.c_str());
+            commitCommand();
+        }
+        catch (...) {
+            abortCommand();
+            throw;
+        }
     }
     else {
         QMessageBox::critical(Gui::getMainWindow(),
@@ -746,12 +760,9 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
     pcAction->setDropDownMenu(true);
     applyCommandData(this->className(), pcAction);
 
-    QAction* defaultAction = 0;
-    int defaultId = 0;
-
     std::string path = App::Application::getResourceDir();
     path += "Mod/Raytracing/Templates/";
-    QDir dir(QString::fromUtf8(path.c_str()), QString::fromAscii("*.lxs"));
+    QDir dir(QString::fromUtf8(path.c_str()), QString::fromLatin1("*.lxs"));
     for (unsigned int i=0; i<dir.count(); i++ ) {
         QFileInfo fi(dir[i]);
         QAction* a = pcAction->addAction(fi.baseName());
@@ -762,11 +773,7 @@ Gui::Action * CmdRaytracingNewLuxProject::createAction(void)
 
     _pcAction = pcAction;
     languageChange();
-    if (defaultAction) {
-        pcAction->setIcon(defaultAction->icon());
-        pcAction->setProperty("defaultAction", QVariant(defaultId));
-    }
-    else if (!pcAction->actions().isEmpty()) {
+    if (!pcAction->actions().isEmpty()) {
         pcAction->setIcon(pcAction->actions()[0]->icon());
         pcAction->setProperty("defaultAction", QVariant(0));
     }
@@ -801,31 +808,45 @@ CmdRaytracingResetCamera::CmdRaytracingResetCamera()
     sPixmap       = "Raytrace_ResetCamera";
 }
 
-void CmdRaytracingResetCamera::activated(int iMsg)
+void CmdRaytracingResetCamera::activated(int)
 {
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    unsigned int n = getSelection().countObjectsOfType(Raytracing::RayProject::getClassTypeId());
-    if (n != 1) {
-        n = getSelection().countObjectsOfType(Raytracing::LuxProject::getClassTypeId());
-        if (n != 1) {
+    std::vector<App::DocumentObject*> sel = getSelection().getObjectsOfType(Raytracing::RayProject::getClassTypeId());
+    if (sel.size() != 1) {
+        sel = getSelection().getObjectsOfType(Raytracing::LuxProject::getClassTypeId());
+        if (sel.size() != 1) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                 QObject::tr("Select one Raytracing project object."));
             return;
-        } else {
-            //luxrender
+        }
+    }
+
+    if (sel.front()->getTypeId().isDerivedFrom(Raytracing::RayProject::getClassTypeId())) {
+        //povray
+        try {
             openCommand("Reset Raytracing Camera");
             doCommand(Doc,"import RaytracingGui");
-            doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.luxViewCamera()",Sel[0].FeatName);
+            doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.povViewCamera()",sel.front()->getNameInDocument());
             commitCommand();
-            doCommand(Doc,"App.activeDocument().recompute()");
+            updateActive();
         }
-    } else {
-        //povray
-        openCommand("Reset Raytracing Camera");
-        doCommand(Doc,"import RaytracingGui");
-        doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.povViewCamera()",Sel[0].FeatName);
-        commitCommand();
-        doCommand(Doc,"App.activeDocument().recompute()");
+        catch (...) {
+            abortCommand();
+            throw;
+        }
+    }
+    else if (sel.front()->getTypeId().isDerivedFrom(Raytracing::LuxProject::getClassTypeId())) {
+        //luxrender
+        try {
+            openCommand("Reset Raytracing Camera");
+            doCommand(Doc,"import RaytracingGui");
+            doCommand(Doc,"App.activeDocument().%s.Camera = RaytracingGui.luxViewCamera()",sel.front()->getNameInDocument());
+            commitCommand();
+            updateActive();
+        }
+        catch (...) {
+            abortCommand();
+            throw;
+        }
     }
 }
 

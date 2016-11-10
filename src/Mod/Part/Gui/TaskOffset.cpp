@@ -45,7 +45,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <Mod/Part/App/PartFeatures.h>
+#include <Mod/Part/App/FeatureOffset.h>
 
 
 using namespace PartGui;
@@ -68,16 +68,53 @@ public:
 OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Q_UNUSED(parent);
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->offset = offset;
     d->ui.setupUi(this);
-    d->ui.spinOffset->setDecimals(Base::UnitsApi::getDecimals());
+    d->ui.spinOffset->setUnit(Base::Unit::Length);
     d->ui.spinOffset->setRange(-INT_MAX, INT_MAX);
     d->ui.spinOffset->setSingleStep(0.1);
-    d->ui.spinOffset->setValue(d->offset->Value.getValue());
     d->ui.facesButton->hide();
+
+    bool is_2d = d->offset->isDerivedFrom(Part::Offset2D::getClassTypeId());
+    d->ui.selfIntersection->setVisible(!is_2d);
+    if(is_2d)
+        d->ui.modeType->removeItem(2);//remove Recto-Verso mode, not supported by 2d offset
+
+    //block signals to fill values read out from feature...
+    bool block = true;
+    d->ui.fillOffset->blockSignals(block);
+    d->ui.intersection->blockSignals(block);
+    d->ui.selfIntersection->blockSignals(block);
+    d->ui.modeType->blockSignals(block);
+    d->ui.joinType->blockSignals(block);
+    d->ui.spinOffset->blockSignals(block);
+
+    //read values from feature
+    d->ui.spinOffset->setValue(d->offset->Value.getValue());
+    d->ui.fillOffset->setChecked(offset->Fill.getValue());
+    d->ui.intersection->setChecked(offset->Intersection.getValue());
+    d->ui.selfIntersection->setChecked(offset->SelfIntersection.getValue());
+    long mode = offset->Mode.getValue();
+    if (mode >= 0 && mode < d->ui.modeType->count())
+        d->ui.modeType->setCurrentIndex(mode);
+    long join = offset->Join.getValue();
+    if (join >= 0 && join < d->ui.joinType->count())
+        d->ui.joinType->setCurrentIndex(join);
+
+    //unblock signals
+    block = false;
+    d->ui.fillOffset->blockSignals(block);
+    d->ui.intersection->blockSignals(block);
+    d->ui.selfIntersection->blockSignals(block);
+    d->ui.modeType->blockSignals(block);
+    d->ui.joinType->blockSignals(block);
+    d->ui.spinOffset->blockSignals(block);
+
+    d->ui.spinOffset->bind(d->offset->Value);
 }
 
 OffsetWidget::~OffsetWidget()
@@ -144,8 +181,10 @@ bool OffsetWidget::accept()
     std::string name = d->offset->getNameInDocument();
 
     try {
+        double offsetValue = d->ui.spinOffset->value().getValue();
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Value = %f",
-            name.c_str(),d->ui.spinOffset->value());
+            name.c_str(),offsetValue);
+        d->ui.spinOffset->apply();
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Mode = %i",
             name.c_str(),d->ui.modeType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
@@ -162,7 +201,7 @@ bool OffsetWidget::accept()
         Gui::Command::commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 

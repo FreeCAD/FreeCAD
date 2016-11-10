@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,16 +35,19 @@
 # define PartGuiExport
 #endif
 
-#ifdef _PreComp_
+#ifdef FC_OS_WIN32
+# define NOMINMAX
+#endif
+
 // here get the warnings of too long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 # pragma warning( disable : 4251 )
 # pragma warning( disable : 4503 )
 # pragma warning( disable : 4786 )  // specifier longer then 255 chars
+# pragma warning( disable : 4273 )
 #endif
 
-
-
+#ifdef _PreComp_
 
 // standard
 #include <iostream>

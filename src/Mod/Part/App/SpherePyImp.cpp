@@ -37,6 +37,7 @@
 #include "CirclePy.h"
 #include "SpherePy.h"
 #include "SpherePy.cpp"
+#include "OCCError.h"
 
 using namespace Part;
 
@@ -194,7 +195,7 @@ PyObject *SpherePy::uIso(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -213,7 +214,7 @@ PyObject *SpherePy::vIso(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

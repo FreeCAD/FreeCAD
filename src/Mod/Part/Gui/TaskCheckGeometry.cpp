@@ -21,6 +21,14 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QBoxLayout>
+# include <QHeaderView>
+# include <QTextEdit>
+# include <QTextStream>
+# include <QTreeWidget>
+#endif
+
 #include <Standard_Version.hxx>
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_Result.hxx>
@@ -155,6 +163,7 @@ QVector<QString> buildBOPCheckResultVector()
   results.push_back(QObject::tr("BOPAlgo IncompatibilityOfFace"));      //BOPAlgo_IncompatibilityOfFace
   results.push_back(QObject::tr("BOPAlgo OperationAborted"));           //BOPAlgo_OperationAborted
   results.push_back(QObject::tr("BOPAlgo GeomAbs_C0"));                 //BOPAlgo_GeomAbs_C0
+  results.push_back(QObject::tr("BOPAlgo_InvalidCurveOnSurface"));      //BOPAlgo_InvalidCurveOnSurface
   results.push_back(QObject::tr("BOPAlgo NotValid"));                   //BOPAlgo_NotValid
   
   return results;
@@ -165,7 +174,7 @@ QString getBOPCheckString(const BOPAlgo_CheckStatus &status)
 {
   static QVector<QString> strings = buildBOPCheckResultVector();
   int index = static_cast<int>(status);
-  if (index < 0 || index > 10)
+  if (index < 0 || index > strings.size())
     index = 0;
   return strings.at(index);
 }
@@ -183,10 +192,10 @@ ResultEntry::ResultEntry()
 
 ResultEntry::~ResultEntry()
 {
-    if (boxSep)
+    if (boxSep && viewProviderRoot)
         viewProviderRoot->removeChild(boxSep);
     if (viewProviderRoot)
-      viewProviderRoot->unref();
+        viewProviderRoot->unref();
     qDeleteAll(children);
 }
 
@@ -298,6 +307,7 @@ int ResultModel::rowCount(const QModelIndex &parent) const
 
 int ResultModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return 3;
 }
 
@@ -553,7 +563,7 @@ void TaskCheckGeometryResults::buildShapeContent(const QString &baseName, const 
   std::ostringstream stream;
   if (!shapeContentString.empty())
     stream << std::endl << std::endl;
-  stream << baseName.toAscii().data() << ":" << std::endl;
+  stream << baseName.toLatin1().data() << ":" << std::endl;
   
   BRepTools_ShapeSet set;
   set.Add(shape);
@@ -583,6 +593,7 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
   //this is left for another time.
   TopoDS_Shape BOPCopy = BRepBuilderAPI_Copy(shapeIn).Shape();
   BOPAlgo_ArgumentAnalyzer BOPCheck;
+//   BOPCheck.StopOnFirstFaulty() = true; //this doesn't run any faster but gives us less results.
   BOPCheck.SetShape1(BOPCopy);
   //all settings are false by default. so only turn on what we want.
   BOPCheck.ArgumentTypeMode() = true;
@@ -592,7 +603,25 @@ int TaskCheckGeometryResults::goBOPSingleCheck(const TopoDS_Shape& shapeIn, Resu
 #if OCC_VERSION_HEX >= 0x060700
   BOPCheck.ContinuityMode() = true;
 #endif
+#if OCC_VERSION_HEX >= 0x060900
+  BOPCheck.SetParallelMode(true); //this doesn't help for speed right now(occt 6.9.1).
+  BOPCheck.TangentMode() = true; //these 4 new tests add about 5% processing time.
+  BOPCheck.MergeVertexMode() = true;
+  BOPCheck.CurveOnSurfaceMode() = true;
+  BOPCheck.MergeEdgeMode() = true;
+#endif
+  
+#ifdef FC_DEBUG
+  Base::TimeInfo start_time;
+#endif
+
   BOPCheck.Perform();
+
+#ifdef FC_DEBUG
+  float bopAlgoTime = Base::TimeInfo::diffTimeF(start_time,Base::TimeInfo());
+  std::cout << std::endl << "BopAlgo check time is: " << bopAlgoTime << std::endl << std::endl;
+#endif
+  
   if (!BOPCheck.HasFaulty())
       return 0;
 
@@ -701,7 +730,7 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
                 QString doc, object, sub;
                 if (!this->split((*stringIt), doc, object, sub))
                     continue;
-                Gui::Selection().addSelection(doc.toAscii(), object.toAscii(), sub.toAscii());
+                Gui::Selection().addSelection(doc.toLatin1(), object.toLatin1(), sub.toLatin1());
             }
         }
     }
@@ -709,7 +738,7 @@ void TaskCheckGeometryResults::currentRowChanged (const QModelIndex &current, co
 
 bool TaskCheckGeometryResults::split(QString &input, QString &doc, QString &object, QString &sub)
 {
-    QStringList strings = input.split(QString::fromAscii("."));
+    QStringList strings = input.split(QString::fromLatin1("."));
     if (strings.size() != 3)
         return false;
     doc = strings.at(0);

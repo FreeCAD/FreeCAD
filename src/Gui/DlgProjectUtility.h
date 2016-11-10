@@ -25,6 +25,7 @@
 #define GUI_DIALOG_DLGPROJECTUTILITY_H
 
 #include <QDialog>
+#include <string>
 
 namespace Gui { namespace Dialog {
 
@@ -34,7 +35,7 @@ class DlgProjectUtility : public QDialog
     Q_OBJECT
 
 public:
-    DlgProjectUtility(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DlgProjectUtility(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgProjectUtility();
 
 private Q_SLOTS:
@@ -42,6 +43,7 @@ private Q_SLOTS:
     void on_createButton_clicked();
 
 protected:
+    static std::string doctools;
     Ui_DlgProjectUtility* ui;
 };
 

@@ -885,7 +885,7 @@
    <item row="20" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Close|QDialogButtonBox::Help</set>
+      <set>QDialogButtonBox::Close|QDialogButtonBox::Open|QDialogButtonBox::Reset</set>
      </property>
     </widget>
    </item>

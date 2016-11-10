@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2007                                                    *
+ *   JÃ¼rgen Riegel 2007                                                    *
  *                                                                         *
  ***************************************************************************/
 
@@ -23,18 +23,17 @@
 #include "FeatureViewAnnotation.h"
 #include "FeatureViewSymbol.h"
 #include "FeatureProjection.h"
+#include "FeatureViewSpreadsheet.h"
 #include "FeatureClip.h"
 #include "PageGroup.h"
 
-extern struct PyMethodDef Drawing_methods[];
 
-PyDoc_STRVAR(module_drawing_doc,
-"This module is the drawing module.");
-
+namespace Drawing {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void DrawingExport initDrawing()
+PyMODINIT_FUNC initDrawing()
 {
     // load dependent module
     try {
@@ -45,7 +44,7 @@ void DrawingExport initDrawing()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("Drawing", Drawing_methods, module_drawing_doc);   /* mod name, table ptr */
+    (void)Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");
 
 
@@ -63,6 +62,5 @@ void DrawingExport initDrawing()
     Drawing::FeatureViewAnnotation  ::init();
     Drawing::FeatureViewSymbol      ::init();
     Drawing::FeatureClip            ::init();
+    Drawing::FeatureViewSpreadsheet ::init();
 }
-
-} // extern "C"

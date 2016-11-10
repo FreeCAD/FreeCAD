@@ -14,7 +14,7 @@
    height="64px"
    id="svg3364"
    sodipodi:version="0.32"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r"
    sodipodi:docname="PartDesign_Fillet.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
@@ -150,7 +150,7 @@
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="930"
-     inkscape:window-height="1028"
+     inkscape:window-height="1024"
      inkscape:window-x="60"
      inkscape:window-y="24"
      inkscape:window-maximized="0" />
@@ -175,7 +175,7 @@
        transform="matrix(0.82780005,0,0,0.83717425,-0.2499405,9.0601524)">
       <path
          style="fill:url(#linearGradient3799);fill-opacity:1;stroke:#000137;stroke-width:2.55503488;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-         d="M 7.1949157,22.558967 8.3764789,43.983419 38.969419,59.685905 68.861758,45.599851 70.730028,5.6508767 37.801749,-3.5858797 19.900343,1.6578797 z"
+         d="M 7.8538363,35.046864 8.3764789,43.983419 38.969419,59.685905 68.861758,45.599851 70.730028,5.6508767 37.801749,-3.5858797 28.356491,-0.5139284 z"
          id="path3783"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cccccccc" />
@@ -186,8 +186,8 @@
          inkscape:connector-curvature="0" />
       <path
          sodipodi:nodetypes="ccccc"
-         d="M 7.0392493,22.763793 38.602041,37.245719 C 38.454126,25.120662 41.892656,16.869463 51.814665,12.665402 L 20.442824,1.4657616 C 11.984979,3.4175083 6.4814092,11.476222 7.0392493,22.763793 z"
-         style="fill:url(#linearGradient3784);fill-opacity:1;fill-rule:evenodd;stroke:#000137;stroke-width:2.41762400000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 7.6981699,35.034509 38.492221,48.973483 C 38.563946,34.133666 41.343555,16.435101 61.369014,9.190509 L 28.789152,-0.81463691 C 12.53408,2.8745563 6.0421288,19.403322 7.6981699,35.034509 z"
+         style="fill:url(#linearGradient3784);fill-opacity:1;fill-rule:evenodd;stroke:#000137;stroke-width:2.417624;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
          id="path3347"
          inkscape:connector-curvature="0" />
     </g>

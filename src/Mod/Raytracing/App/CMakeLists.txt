@@ -10,8 +10,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${QT_QTCORE_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -69,6 +70,7 @@ SET(Raytracing_Templates
     Templates/LuxOutdoor.lxs
     Templates/ProjectStd.pov
     Templates/RadiosityNormal.pov
+    Templates/RadiosityOutdoorHQ.pov
 )
 
 add_library(Raytracing SHARED ${Raytracing_SRCS})

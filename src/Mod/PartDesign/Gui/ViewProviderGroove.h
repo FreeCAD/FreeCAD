@@ -24,14 +24,14 @@
 #ifndef PARTGUI_ViewProviderGroove_H
 #define PARTGUI_ViewProviderGroove_H
 
-#include "ViewProvider.h"
+#include "ViewProviderSketchBased.h"
 
 
 namespace PartDesignGui {
 
-class PartDesignGuiExport ViewProviderGroove : public ViewProvider
+class PartDesignGuiExport ViewProviderGroove : public ViewProviderSketchBased
 {
-    PROPERTY_HEADER(PartGui::ViewProviderGroove);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderGroove);
 
 public:
     /// constructor
@@ -39,16 +39,14 @@ public:
     /// destructor
     virtual ~ViewProviderGroove();
 
-    /// grouping handling 
-    std::vector<App::DocumentObject*> claimChildren(void)const;
-
     void setupContextMenu(QMenu*, QObject*, const char*);
 
-    virtual bool onDelete(const std::vector<std::string> &);
-
 protected:
-    virtual bool setEdit(int ModNum);
-    virtual void unsetEdit(int ModNum);
+    /**
+     * Returns a newly created TaskDlgRevolutionParameters
+     * NOTE: as for now groove and revolution share the dialog implementation
+     */
+    virtual TaskDlgFeatureParameters *getEditDialog();
 
 };
 

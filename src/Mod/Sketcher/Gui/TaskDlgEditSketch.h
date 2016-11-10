@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,6 +31,10 @@
 #include "TaskSketcherElements.h"
 #include "TaskSketcherGeneral.h"
 #include "TaskSketcherMessages.h"
+#include "TaskSketcherSolverAdvanced.h"
+#include <boost/signals.hpp>
+
+typedef boost::signals::connection Connection;
 
 namespace SketcherGui {
 
@@ -55,21 +59,26 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual void helpRequested();
     virtual bool isAllowedAlterDocument(void) const
     { return false; }
 
     /// returns for Close and Help button 
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
+    { return QDialogButtonBox::Close; }
 
 protected:
-    ViewProviderSketch   *sketchView;
+    void slotUndoDocument(const App::Document&);
+    void slotRedoDocument(const App::Document&);
+
+protected:
+    ViewProviderSketch      *sketchView;
     TaskSketcherConstrains  *Constraints;
-    TaskSketcherElements *Elements;
+    TaskSketcherElements    *Elements;
     TaskSketcherGeneral     *General;
     TaskSketcherMessages    *Messages;
+    TaskSketcherSolverAdvanced *SolverAdvanced;
+    Connection connectUndoDocument;
+    Connection connectRedoDocument;
 };
 
 

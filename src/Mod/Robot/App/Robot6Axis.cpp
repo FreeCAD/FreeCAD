@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -71,7 +71,7 @@ TYPESYSTEM_SOURCE(Robot::Robot6Axis , Base::Persistence);
 
 Robot6Axis::Robot6Axis()
 {
-    // create joint array for the min and max angel values of each joint
+    // create joint array for the min and max angle values of each joint
     Min = JntArray(6);
     Max = JntArray(6);
 

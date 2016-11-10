@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -851,7 +851,7 @@ void ParameterGrp::Clear(void)
 
     // checking on references
     std::map <std::string ,Base::Reference<ParameterGrp> >::iterator It1;
-    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();It1++)
+    for (It1 = _GroupMap.begin();It1!=_GroupMap.end();++It1)
         if (It1->second.getRefCount() > 1)
             Console().Warning("ParameterGrp::Clear(): Group clear with active references");
     // remove group handles
@@ -864,7 +864,7 @@ void ParameterGrp::Clear(void)
 
     // deleting the nodes
     DOMNode* pcTemp;
-    for (std::vector<DOMNode*>::iterator It=vecNodes.begin();It!=vecNodes.end();It++) {
+    for (std::vector<DOMNode*>::iterator It=vecNodes.begin();It!=vecNodes.end();++It) {
         pcTemp = _pGroupNode->removeChild(*It);
         //delete pcTemp;
         pcTemp->release();
@@ -933,28 +933,56 @@ void ParameterGrp::NotifyAll()
 {
     // get all ints and notify
     std::vector<std::pair<std::string,long> > IntMap = GetIntMap();
-    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); It1++)
+    for (std::vector<std::pair<std::string,long> >::iterator It1= IntMap.begin(); It1 != IntMap.end(); ++It1)
         Notify(It1->first.c_str());
 
     // get all booleans and notify
     std::vector<std::pair<std::string,bool> > BoolMap = GetBoolMap();
-    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); It2++)
+    for (std::vector<std::pair<std::string,bool> >::iterator It2= BoolMap.begin(); It2 != BoolMap.end(); ++It2)
         Notify(It2->first.c_str());
 
     // get all Floats and notify
     std::vector<std::pair<std::string,double> > FloatMap  = GetFloatMap();
-    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); It3++)
+    for (std::vector<std::pair<std::string,double> >::iterator It3= FloatMap.begin(); It3 != FloatMap.end(); ++It3)
         Notify(It3->first.c_str());
 
     // get all strings and notify
     std::vector<std::pair<std::string,std::string> > StringMap = GetASCIIMap();
-    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); It4++)
+    for (std::vector<std::pair<std::string,std::string> >::iterator It4= StringMap.begin(); It4 != StringMap.end(); ++It4)
         Notify(It4->first.c_str());
 
     // get all uints and notify
     std::vector<std::pair<std::string,unsigned long> > UIntMap = GetUnsignedMap();
-    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); It5++)
+    for (std::vector<std::pair<std::string,unsigned long> >::iterator It5= UIntMap.begin(); It5 != UIntMap.end(); ++It5)
         Notify(It5->first.c_str());
+}
+
+//**************************************************************************
+//**************************************************************************
+// ParameterSerializer
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ParameterSerializer::ParameterSerializer(const std::string& fn)
+  : filename(fn)
+{
+}
+
+ParameterSerializer::~ParameterSerializer()
+{
+}
+
+void ParameterSerializer::SaveDocument(const ParameterManager& mgr)
+{
+    mgr.SaveDocument(filename.c_str());
+}
+
+int ParameterSerializer::LoadDocument(ParameterManager& mgr)
+{
+    return mgr.LoadDocument(filename.c_str());
+}
+
+bool ParameterSerializer::LoadOrCreateDocument(ParameterManager& mgr)
+{
+    return mgr.LoadOrCreateDocument(filename.c_str());
 }
 
 //**************************************************************************
@@ -970,7 +998,7 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(0)
+  : ParameterGrp(), _pDocument(0), paramSerializer(0)
 {
     // initialize the XML system
     Init();
@@ -1036,6 +1064,7 @@ ParameterManager::ParameterManager()
 ParameterManager::~ParameterManager()
 {
     delete _pDocument;
+    delete paramSerializer;
 }
 
 void ParameterManager::Init(void)
@@ -1060,6 +1089,50 @@ void ParameterManager::Init(void)
         }
         Init = true;
     }
+}
+
+void ParameterManager::Terminate(void)
+{
+    StrXUTF8::terminate();
+    XUTF8Str::terminate();
+    XMLPlatformUtils::Terminate();
+}
+
+//**************************************************************************
+// Serializer handling
+
+void ParameterManager::SetSerializer(ParameterSerializer* ps)
+{
+    if (paramSerializer != ps)
+        delete paramSerializer;
+    paramSerializer = ps;
+}
+
+bool ParameterManager::HasSerializer() const
+{
+    return (paramSerializer != 0);
+}
+
+int ParameterManager::LoadDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadDocument(*this);
+    else
+        return -1;
+}
+
+bool ParameterManager::LoadOrCreateDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadOrCreateDocument(*this);
+    else
+        return false;
+}
+
+void ParameterManager::SaveDocument() const
+{
+    if (paramSerializer)
+        paramSerializer->SaveDocument(*this);
 }
 
 //**************************************************************************
@@ -1450,18 +1523,3 @@ bool DOMPrintErrorHandler::handleError(const DOMError &domError)
     // Instructs the serializer to continue serialization if possible.
     return true;
 }
-
-
-//**************************************************************************
-//**************************************************************************
-// XMLCh
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-static const XMLCh  element_person[]= {
-    chLatin_p, chLatin_e, chLatin_r, chLatin_s, chLatin_o, chLatin_n, chNull
-};
-
-static const XMLCh  element_link[]= {
-    chLatin_l, chLatin_i, chLatin_n, chLatin_k, chNull
-};

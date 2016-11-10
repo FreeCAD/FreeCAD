@@ -49,12 +49,13 @@ StdCmdDlgMacroRecord::StdCmdDlgMacroRecord()
     sToolTipText  = QT_TR_NOOP("Opens a dialog to record a macro");
     sWhatsThis    = "Std_DlgMacroRecord";
     sStatusTip    = QT_TR_NOOP("Opens a dialog to record a macro");
-    sPixmap       = "macro-record";
+    sPixmap       = "media-record";
     eType         = 0;
 }
 
 void StdCmdDlgMacroRecord::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgMacroRecordImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -77,12 +78,13 @@ StdCmdMacroStopRecord::StdCmdMacroStopRecord()
     sToolTipText  = QT_TR_NOOP("Stop the macro recording session");
     sWhatsThis    = "Std_MacroStopRecord";
     sStatusTip    = QT_TR_NOOP("Stop the macro recording session");
-    sPixmap       = "macro-stop";
+    sPixmap       = "media-playback-stop";
     eType         = 0;
 }
 
 void StdCmdMacroStopRecord::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getGuiApplication()->macroManager()->commit();
 }
 
@@ -110,6 +112,7 @@ StdCmdDlgMacroExecute::StdCmdDlgMacroExecute()
 
 void StdCmdDlgMacroExecute::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgMacroExecuteImp cDlg(getMainWindow());
     cDlg.exec();
 }
@@ -132,13 +135,14 @@ StdCmdDlgMacroExecuteDirect::StdCmdDlgMacroExecuteDirect()
     sToolTipText  = QT_TR_NOOP("Execute the macro in the editor");
     sWhatsThis    = "Std_DlgMacroExecuteDirect";
     sStatusTip    = QT_TR_NOOP("Execute the macro in the editor");
-    sPixmap       = "macro-execute";
+    sPixmap       = "media-playback-start";
     sAccel        = "Ctrl+F6";
     eType         = 0;
 }
 
 void StdCmdDlgMacroExecuteDirect::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"Run\")");
 }
 
@@ -164,6 +168,7 @@ StdCmdMacroStartDebug::StdCmdMacroStartDebug()
 
 void StdCmdMacroStartDebug::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     PythonDebugger* dbg = Application::Instance->macroManager()->debugger();
     if (!dbg->isRunning())
         doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"StartDebug\")");
@@ -193,6 +198,7 @@ StdCmdMacroStopDebug::StdCmdMacroStopDebug()
 
 void StdCmdMacroStopDebug::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->tryStop();
 }
 
@@ -219,6 +225,7 @@ StdCmdMacroStepOver::StdCmdMacroStepOver()
 
 void StdCmdMacroStepOver::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->stepOver();
 }
 
@@ -245,6 +252,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
 
 void StdCmdMacroStepInto::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Application::Instance->macroManager()->debugger()->stepInto();
 }
 
@@ -271,6 +279,7 @@ StdCmdToggleBreakpoint::StdCmdToggleBreakpoint()
 
 void StdCmdToggleBreakpoint::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     doCommand(Command::Gui,"Gui.SendMsgToActiveView(\"ToggleBreakpoint\")");
 }
 

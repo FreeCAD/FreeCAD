@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,7 +35,7 @@ using namespace Gui::Dialog;
 
 
 DownloadDialog::DownloadDialog(const QUrl& url, QWidget *parent)
-  : QDialog(parent), url(url)
+  : QDialog(parent), url(url), file(0), httpGetId(0), httpRequestAborted(false)
 {
     statusLabel = new QLabel(url.toString());
     progressBar = new QProgressBar(this);
@@ -116,7 +116,7 @@ void DownloadDialog::downloadFile()
     QByteArray path = QUrl::toPercentEncoding(url.path(), "!$&'()*+,;=:@/");
     if (path.isEmpty())
         path = "/";
-    httpGetId = http->get(QString::fromAscii(path), file);
+    httpGetId = http->get(QString::fromLatin1(path), file);
 
     statusLabel->setText(tr("Downloading %1.").arg(fileName));
     downloadButton->setEnabled(false);

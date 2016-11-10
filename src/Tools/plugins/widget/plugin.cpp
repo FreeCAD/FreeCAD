@@ -524,6 +524,9 @@ public:
     {
         return "<ui language=\"c++\">\n"
                " <widget class=\"Gui::InputField\" name=\"inputField\">\n"
+               "  <property name=\"unit\" stdset=\"0\">\n"
+               "   <string notr=\"true\"></string>\n"
+               "  </property>\n"
                " </widget>\n"
                "</ui>";
     }
@@ -604,6 +607,9 @@ public:
     {
         return "<ui language=\"c++\">\n"
                " <widget class=\"Gui::QuantitySpinBox\" name=\"quantitySpinBox\">\n"
+               "  <property name=\"unit\" stdset=\"0\">\n"
+               "   <string notr=\"true\"></string>\n"
+               "  </property>\n"
                " </widget>\n"
                "</ui>";
     }

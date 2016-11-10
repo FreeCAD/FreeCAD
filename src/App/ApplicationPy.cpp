@@ -45,7 +45,6 @@
 #include <Base/FileInfo.h>
 #include <Base/UnitsApi.h>
 
-#define new DEBUG_CLIENTBLOCK
 //using Base::GetConsole;
 using namespace Base;
 using namespace App;
@@ -81,6 +80,8 @@ PyMethodDef Application::Methods[] = {
      "Get the name of the module that can export the filetype"},
     {"getResourceDir", (PyCFunction) Application::sGetResourceDir  ,1,
      "Get the root directory of all resources"},
+    {"getUserAppDataDir", (PyCFunction) Application::sGetUserAppDataDir  ,1,
+     "Get the root directory of user settings"},
     {"getHomePath",    (PyCFunction) Application::sGetHomePath  ,1,
      "Get the home path, i.e. the parent directory of the executable"},
 
@@ -147,7 +148,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args,PyObject * 
 
         std::string module = mod;
         if (module.empty()) {
-            std::string ext = fi.extension(false);
+            std::string ext = fi.extension();
             std::vector<std::string> modules = GetApplication().getImportModules(ext.c_str());
             if (modules.empty()) {
                 PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
@@ -180,12 +181,14 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args,PyObject * 
 
 PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    char* Name;
+    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+    std::string EncodedName = std::string(Name);
+    PyMem_Free(Name);
     try {
         // return new document
-        return (GetApplication().openDocument(pstr)->getPyObject());
+        return (GetApplication().openDocument(EncodedName.c_str())->getPyObject());
     }
     catch (const Base::Exception& e) {
         PyErr_SetString(PyExc_IOError, e.what());
@@ -193,7 +196,7 @@ PyObject* Application::sOpenDocument(PyObject * /*self*/, PyObject *args,PyObjec
     }
     catch (const std::exception& e) {
         // might be subclass from zipios
-        PyErr_Format(PyExc_IOError, "Invalid project file %s: %s\n", pstr, e.what());
+        PyErr_Format(PyExc_IOError, "Invalid project file %s: %s\n", EncodedName.c_str(), e.what());
         return 0L;
     }
 }
@@ -202,11 +205,14 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args,PyObject
 {
     char *docName = 0;
     char *usrName = 0;
-    if (!PyArg_ParseTuple(args, "|ss", &docName, &usrName))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|etet", "utf-8", &docName, "utf-8", &usrName))
+        return NULL;
 
     PY_TRY {
-        return GetApplication().newDocument(docName, usrName)->getPyObject();
+        App::Document* doc = GetApplication().newDocument(docName, usrName);
+        PyMem_Free(docName);
+        PyMem_Free(usrName);
+        return doc->getPyObject();
     }PY_CATCH;
 }
 
@@ -220,7 +226,7 @@ PyObject* Application::sSetActiveDocument(PyObject * /*self*/, PyObject *args,Py
         GetApplication().setActiveDocument(pstr);
     }
     catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_Exception, e.what());
+        PyErr_SetString(Base::BaseExceptionFreeCADError, e.what());
         return NULL;
     }
 
@@ -260,7 +266,7 @@ PyObject* Application::sSaveDocument(PyObject * /*self*/, PyObject *args,PyObjec
     Document* doc = GetApplication().getDocument(pDoc);
     if ( doc ) {
         if ( doc->save() == false ) {
-            PyErr_Format(PyExc_Exception, "Cannot save document '%s'", pDoc);
+            PyErr_Format(Base::BaseExceptionFreeCADError, "Cannot save document '%s'", pDoc);
             return 0L;
         }
     }
@@ -357,7 +363,7 @@ PyObject* Application::sDumpConfig(PyObject * /*self*/, PyObject *args,PyObject 
 
     PyObject *dict = PyDict_New();
     for (std::map<std::string,std::string>::iterator It= GetApplication()._mConfig.begin();
-         It!=GetApplication()._mConfig.end();It++) {
+         It!=GetApplication()._mConfig.end();++It) {
         PyDict_SetItemString(dict,It->first.c_str(), PyString_FromString(It->second.c_str()));
     }
     return dict;
@@ -520,8 +526,17 @@ PyObject* Application::sGetResourceDir(PyObject * /*self*/, PyObject *args,PyObj
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Py::String datadir(Application::getResourceDir());
+    Py::String datadir(Application::getResourceDir(),"utf-8");
     return Py::new_reference_to(datadir);
+}
+
+PyObject* Application::sGetUserAppDataDir(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                       // NULL triggers exception
+
+    Py::String user_data_dir(Application::getUserAppDataDir(),"utf-8");
+    return Py::new_reference_to(user_data_dir);
 }
 
 PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
@@ -529,7 +544,7 @@ PyObject* Application::sGetHomePath(PyObject * /*self*/, PyObject *args,PyObject
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
         return NULL;                       // NULL triggers exception
 
-    Py::String homedir(GetApplication().GetHomePath());
+    Py::String homedir(GetApplication().getHomePath(),"utf-8");
     return Py::new_reference_to(homedir);
 }
 

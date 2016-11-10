@@ -24,23 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-class PartDesignDocument:
-	"PartDesign document"
-	def Info(self):
-		return "PartDesign document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("PartDesign")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "PartDesign/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "PartDesign")
-ParGrp.SetString("DocTemplateScript","TemplPartDesign.py")
-ParGrp.SetString("WorkBenchName",    "PartDesign Design")
-ParGrp.SetString("WorkBenchModule",  "PartDesignWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","PartDesign")
-

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QDir>
+# include <QFileInfo>
 # include <QLibraryInfo>
 # include <QMessageBox>
 # include <QProcess>
@@ -36,6 +37,8 @@
 #include <App/Application.h>
 
 using namespace Gui;
+
+/* TRANSLATOR Gui::Assistant */
 
 Assistant::Assistant()
     : proc(0)
@@ -56,8 +59,8 @@ void Assistant::showDocumentation(const QString &page)
         return;
     if (!page.isEmpty()) {
         QTextStream str(proc);
-        str << QLatin1String("SetSource qthelp://org.freecad.usermanual/doc/")
-            << page << QLatin1Char('\0') << endl;
+        str << QLatin1String("setSource qthelp://org.freecad.usermanual/doc/")
+            << page << QLatin1Char('\n') << endl;
     }
 }
 
@@ -70,14 +73,19 @@ bool Assistant::startAssistant()
     return false;
 #endif
 
-    if (!proc)
+    if (!proc) {
         proc = new QProcess();
+        connect(proc, SIGNAL(readyReadStandardOutput()),
+                this, SLOT(readyReadStandardOutput()));
+        connect(proc, SIGNAL(readyReadStandardError()),
+                this, SLOT(readyReadStandardError()));
+    }
 
     if (proc->state() != QProcess::Running) {
 #ifdef Q_OS_WIN
         QString app;
         app = QDir::toNativeSeparators(QString::fromUtf8
-            (App::GetApplication().GetHomePath()) + QLatin1String("bin/"));
+            (App::GetApplication().getHomePath()) + QLatin1String("bin/"));
 #else
         QString app = QLibraryInfo::location(QLibraryInfo::BinariesPath) + QDir::separator();
 #endif 
@@ -91,6 +99,13 @@ bool Assistant::startAssistant()
         QString exe = QString::fromUtf8(App::GetApplication().getExecutableName());
         QString doc = QString::fromUtf8(App::Application::getHelpDir().c_str());
         QString qhc = doc + exe.toLower() + QLatin1String(".qhc");
+
+        QFileInfo fi(qhc);
+        if (!fi.isReadable()) {
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("%1 help files not found (%2). You might need to install the %1 documentation package.").arg(exe).arg(qhc));
+            return false;
+        }
 
         static bool first = true;
         if (first) {
@@ -106,11 +121,25 @@ bool Assistant::startAssistant()
         proc->start(app, args);
 
         if (!proc->waitForStarted()) {
-            QMessageBox::critical(0, QObject::tr("%1 Help").arg(exe),
-            QObject::tr("Unable to launch Qt Assistant (%1)").arg(app));
+            QMessageBox::critical(0, tr("%1 Help").arg(exe),
+                tr("Unable to launch Qt Assistant (%1)").arg(app));
             return false;
         }
     }
 
     return true;
 }
+
+void Assistant::readyReadStandardOutput()
+{
+    QByteArray data = proc->readAllStandardOutput();
+    Base::Console().Log("Help view: %s\n", data.constData());
+}
+
+void Assistant::readyReadStandardError()
+{
+    QByteArray data = proc->readAllStandardError();
+    Base::Console().Log("Help view: %s\n", data.constData());
+}
+
+#include "moc_Assistant.cpp"

@@ -54,7 +54,7 @@ double Vector2D::GetAngle (const Vector2D &rclVect) const
     return -FLOAT_MAX; // division by zero
 }
 
-void Vector2D::ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine)
+void Vector2D::ProjectToLine (const Vector2D &rclPt, const Vector2D &rclLine)
 {
   double l  = rclLine.Length();
   double t1 = (rclPt * rclLine) / l;
@@ -67,7 +67,7 @@ void Vector2D::ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine)
 /********************************************************/
 /** BOUNDBOX2D ********************************************/
 
-bool BoundBox2D::operator|| (const Line2D &rclLine) const
+bool BoundBox2D::Intersect(const Line2D &rclLine) const
 {
   Line2D clThisLine;
   Vector2D clVct;
@@ -104,19 +104,19 @@ bool BoundBox2D::operator|| (const Line2D &rclLine) const
   return false;
 }
 
-bool BoundBox2D::operator|| (const BoundBox2D &rclBB) const
+bool BoundBox2D::Intersect(const BoundBox2D &rclBB) const
 {
 //// compare bb2-points to this
-//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMinY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMinY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMaxY))) return TRUE;
-//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMaxY))) return TRUE;
+//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMinY))) return true;
+//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMinY))) return true;
+//if (Contains (Vector2D (rclBB.fMaxX, rclBB.fMaxY))) return true;
+//if (Contains (Vector2D (rclBB.fMinX, rclBB.fMaxY))) return true;
 //
 //// compare this-points to bb2
-//if (rclBB.Contains (Vector2D (fMinX, fMinY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMaxX, fMinY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMaxX, fMaxY))) return TRUE;
-//if (rclBB.Contains (Vector2D (fMinX, fMaxY))) return TRUE;
+//if (rclBB.Contains (Vector2D (fMinX, fMinY))) return true;
+//if (rclBB.Contains (Vector2D (fMaxX, fMinY))) return true;
+//if (rclBB.Contains (Vector2D (fMaxX, fMaxY))) return true;
+//if (rclBB.Contains (Vector2D (fMinX, fMaxY))) return true;
 
   if (fMinX       < rclBB.fMaxX  &&
       rclBB.fMinX < fMaxX        &&
@@ -127,7 +127,7 @@ bool BoundBox2D::operator|| (const BoundBox2D &rclBB) const
       return false;
 }
 
-bool BoundBox2D::operator|| (const Polygon2D &rclPoly) const
+bool BoundBox2D::Intersect(const Polygon2D &rclPoly) const
 {
   unsigned long i;
   Line2D clLine;
@@ -158,7 +158,7 @@ bool BoundBox2D::operator|| (const Polygon2D &rclPoly) const
       clLine.clV1 = rclPoly[i];
       clLine.clV2 = rclPoly[i + 1];
     }
-    if (*this || clLine) 
+    if (Intersect(clLine))
       return true;    /***** RETURN INTERSECTION *********/
   }
   // no intersection
@@ -222,7 +222,7 @@ bool Line2D::Intersect (const Line2D& rclLine, Vector2D &rclV) const
     rclV.fY = m1 * rclV.fX + b1;  
   }
   
-  return true;    /*** RETURN TRUE (intersection) **********/
+  return true;    /*** RETURN true (intersection) **********/
 }
 
 bool Line2D::Intersect (const Vector2D &rclV, double eps) const
@@ -398,7 +398,7 @@ void Polygon2D::Intersect (const Polygon2D &rclPolygon, std::list<Polygon2D> &rc
 
     if (afIntersections.size() > 0)  // intersections founded
     {
-      for (std::set<double>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); pF++)
+      for (std::set<double>::iterator pF = afIntersections.begin(); pF != afIntersections.end(); ++pF)
       {
         // intersection point
         Vector2D clPtIS = clLine.FromPos(*pF);

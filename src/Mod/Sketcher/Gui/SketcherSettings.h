@@ -47,6 +47,9 @@ public:
 protected:
     void changeEvent(QEvent *e);
 
+private Q_SLOTS:
+    void onBtnTVApplyClicked(bool);
+
 private:
     Ui_SketcherSettings* ui;
     SketcherGeneralWidget* form;

@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -27,20 +27,147 @@ __title__="FreeCAD Arch Space"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+Roles = ["Space"]
+
+SpaceTypes = [
+"Undefined",
+"Exterior",
+"Exterior - Terrace",
+"Office",
+"Office - Enclosed",
+"Office - Open Plan",
+"Conference / Meeting / Multipurpose",
+"Classroom / Lecture / Training For Penitentiary",
+"Lobby",
+"Lobby - For Hotel",
+"Lobby - For Performing Arts Theater",
+"Lobby - For Motion Picture Theater",
+"Audience/Seating Area",
+"Audience/Seating Area - For Gymnasium",
+"Audience/Seating Area - For Exercise Center",
+"Audience/Seating Area - For Convention Center",
+"Audience/Seating Area - For Penitentiary",
+"Audience/Seating Area - For Religious Buildings",
+"Audience/Seating Area - For Sports Arena",
+"Audience/Seating Area - For Performing Arts Theater",
+"Audience/Seating Area - For Motion Picture Theater",
+"Audience/Seating Area - For Transportation",
+"Atrium",
+"Atrium - First Three Floors",
+"Atrium - Each Additional Floor",
+"Lounge / Recreation",
+"Lounge / Recreation - For Hospital",
+"Dining Area",
+"Dining Area - For Penitentiary",
+"Dining Area - For Hotel",
+"Dining Area - For Motel",
+"Dining Area - For Bar Lounge/Leisure Dining",
+"Dining Area - For Family Dining",
+"Food Preparation",
+"Laboratory",
+"Restrooms",
+"Dressing / Locker / Fitting",
+"Room",
+"Corridor / Transition",
+"Corridor / Transition - For Hospital",
+"Corridor / Transition - For Manufacturing Facility",
+"Stairs",
+"Active Storage",
+"Active Storage - For Hospital",
+"Inactive Storage",
+"Inactive Storage - For Museum",
+"Electrical / Mechanical",
+"Gymnasium / Exercise Center",
+"Gymnasium / Exercise Center - Playing Area",
+"Gymnasium / Exercise Center - Exercise Area",
+"Courthouse / Police Station / Penitentiary",
+"Courthouse / Police Station / Penitentiary - Courtroom",
+"Courthouse / Police Station / Penitentiary - Confinement Cells",
+"Courthouse / Police Station / Penitentiary - Judges' Chambers",
+"Fire Stations",
+"Fire Stations - Engine Room",
+"Fire Stations - Sleeping Quarters",
+"Post Office - Sorting Area",
+"Convention Center - Exhibit Space",
+"Library",
+"Library - Card File and Cataloging",
+"Library - Stacks",
+"Library - Reading Area",
+"Hospital",
+"Hospital - Emergency",
+"Hospital - Recovery",
+"Hospital - Nurses' Station",
+"Hospital - Exam / Treatment",
+"Hospital - Pharmacy",
+"Hospital - Patient Room",
+"Hospital - Operating Room",
+"Hospital - Nursery",
+"Hospital - Medical Supply",
+"Hospital - Physical Therapy",
+"Hospital - Radiology",
+"Hospital - Laundry-Washing",
+"Automotive - Service / Repair",
+"Manufacturing",
+"Manufacturing - Low Bay (< 7.5m Floor to Ceiling Height)",
+"Manufacturing - High Bay (> 7.5m Floor to Ceiling Height)",
+"Manufacturing - Detailed Manufacturing",
+"Manufacturing - Equipment Room",
+"Manufacturing - Control Room",
+"Hotel / Motel Guest Rooms",
+"Dormitory - Living Quarters",
+"Museum",
+"Museum - General Exhibition",
+"Museum - Restoration",
+"Bank / Office - Banking Activity Area",
+"Workshop",
+"Sales Area",
+"Religious Buildings",
+"Religious Buildings - Worship Pulpit, Choir",
+"Religious Buildings - Fellowship Hall",
+"Retail",
+"Retail - Sales Area",
+"Retail - Mall Concourse",
+"Sports Arena",
+"Sports Arena - Ring Sports Area",
+"Sports Arena - Court Sports Area",
+"Sports Arena - Indoor Playing Field Area",
+"Warehouse",
+"Warehouse - Fine Material Storage",
+"Warehouse - Medium / Bulky Material Storage",
+"Parking Garage - Garage Area",
+"Transportation",
+"Transportation - Airport / Concourse",
+"Transportation - Air / Train / Bus - Baggage Area",
+"Transportation - Terminal - Ticket Counter"
+]
+
+ConditioningTypes = [
+"Unconditioned",
+"Heated",
+"Cooled",
+"HeatedAndCooled",
+"Vented",
+"NaturallyVentedOnly"
+]
+
 import FreeCAD,ArchComponent,ArchCommands,math,Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
 
-def makeSpace(objects=None,baseobj=None,name=translate("Arch","Space")):
+def makeSpace(objects=None,baseobj=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
     document object, in which case it becomes the base shape of the space object, or a list of
     selection objects as got from getSelectionEx(), or a list of tuples (object, subobjectname)"""
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Space(obj)
     if FreeCAD.GuiUp:
         _ViewProviderSpace(obj.ViewObject)
@@ -55,13 +182,13 @@ def makeSpace(objects=None,baseobj=None,name=translate("Arch","Space")):
         else:
             obj.Proxy.addSubobjects(obj,objects)
     return obj
-        
+
 def addSpaceBoundaries(space,subobjects):
     """addSpaceBoundaries(space,subobjects): adds the given subobjects to the given space"""
     import Draft
     if Draft.getType(space) == "Space":
         space.Proxy.addSubobjects(space,subobjects)
-        
+
 def removeSpaceBoundaries(space,objects):
     """removeSpaceBoundaries(space,objects): removes the given objects from the given spaces boundaries"""
     import Draft
@@ -78,9 +205,9 @@ class _CommandSpace:
     "the Arch Space command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Space',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Space"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
                 'Accel': "S, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -108,24 +235,52 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkSubList","Boundaries",   "Arch",translate("Arch","The objects that make the boundaries of this space object"))
-        obj.addProperty("App::PropertyFloat",      "Area",         "Arch",translate("Arch","The computed floor area of this space"))
-        obj.addProperty("App::PropertyString",     "FinishFloor",  "Arch",translate("Arch","The finishing of the floor of this space"))
-        obj.addProperty("App::PropertyString",     "FinishWalls",  "Arch",translate("Arch","The finishing of the walls of this space"))
-        obj.addProperty("App::PropertyString",     "FinishCeiling","Arch",translate("Arch","The finishing of the ceiling of this space"))
-        obj.addProperty("App::PropertyLinkList",   "Group",        "Arch",translate("Arch","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyArea",       "Area",          "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this space"))
+        obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
+        obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the walls of this space"))
+        obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the ceiling of this space"))
+        obj.addProperty("App::PropertyLinkList",   "Group",         "Arch",QT_TRANSLATE_NOOP("App::Property","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch",QT_TRANSLATE_NOOP("App::Property","The type of this space"))
+        obj.addProperty("App::PropertyLength",     "FloorThickness","Arch",QT_TRANSLATE_NOOP("App::Property","The thickness of the floor finish"))
+        obj.addProperty("App::PropertyLink",       "Zone",          "Arch",QT_TRANSLATE_NOOP("App::Property","A zone this space is part of"))
+        obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Arch",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
+        obj.addProperty("App::PropertyFloat",      "LightingPower", "Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"))
+        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipments of this space in Watts"))
+        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipments included in this space"))
+        obj.addProperty("App::PropertyEnumeration","Conditioning",  "Arch",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
         self.Type = "Space"
+        obj.SpaceType = SpaceTypes
+        obj.Conditioning = ConditioningTypes
+        obj.Role = Roles
+        obj.setEditorMode("HorizontalArea",2)
 
     def execute(self,obj):
+        
+        if self.clone(obj):
+            return
+        
         self.getShape(obj)
 
     def onChanged(self,obj,prop):
         if prop in ["Boundaries","Base"]:
             self.getShape(obj)
-            obj.Area = self.getArea(obj)
+            if hasattr(obj.Area,"Value"):
+                a = self.getArea(obj)
+                if obj.Area.Value != a:
+                    obj.Area = a
+        elif prop == "Group":
+            if hasattr(obj,"EquipmentPower"):
+                if obj.AutoPower:
+                    p = 0
+                    for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Equipment"):
+                        if hasattr(o,"EquipmentPower"):
+                            p += o.EquipmentPower
+                    if p != obj.EquipmentPower:
+                        obj.EquipmentPower = p
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
-            
+
     def addSubobjects(self,obj,subobjects):
         "adds subobjects to this space"
         objs = obj.Boundaries
@@ -145,14 +300,14 @@ class _Space(ArchComponent.Component):
         import Part
         shape = None
         faces = []
-        
+
         #print "starting compute"
         # 1: if we have a base shape, we use it
-        
+
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.Solids:
-                    shape = obj.Base.Shape.Solids[0].copy()
+                    shape = obj.Base.Shape.copy()
                     shape = shape.removeSplitter()
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
@@ -171,7 +326,7 @@ class _Space(ArchComponent.Component):
                 return
             shape = Part.makeBox(bb.XLength,bb.YLength,bb.ZLength,FreeCAD.Vector(bb.XMin,bb.YMin,bb.ZMin))
             #print "created shape from boundbox"
-        
+
         # 3: identifing boundary faces
         goodfaces = []
         for b in obj.Boundaries:
@@ -182,7 +337,7 @@ class _Space(ArchComponent.Component):
                         #print "adding face ",fn," of object ",b[0].Name
 
         #print "total: ", len(faces), " faces"
-        
+
         # 4: get cutvolumes from faces
         cutvolumes = []
         for f in faces:
@@ -196,7 +351,7 @@ class _Space(ArchComponent.Component):
         for v in cutvolumes:
             #print "cutting"
             shape = shape.cut(v)
-            
+
         # 5: get the final shape
         if shape:
             if shape.Solids:
@@ -204,24 +359,38 @@ class _Space(ArchComponent.Component):
                 shape = shape.Solids[0]
                 obj.Shape = shape
                 return
-                
+
         print "Arch: error computing space boundary"
-        
+
     def getArea(self,obj):
         "returns the horizontal area at the center of the space"
         import Part,DraftGeomUtils
+        if not hasattr(obj.Shape,"CenterOfMass"):
+            return 0
         try:
             pl = Part.makePlane(1,1)
             pl.translate(obj.Shape.CenterOfMass)
             sh = obj.Shape.copy()
             cutplane,v1,v2 = ArchCommands.getCutVolume(pl,sh)
             e = sh.section(cutplane)
-            e = DraftGeomUtils.sortEdges(e.Edges)
+            e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
-            return f.Area
-        except:
+        except Part.OCCError:
             return 0
+        else:
+            if hasattr(obj,"PerimeterLength"):
+                if w.Length != obj.PerimeterLength.Value:
+                    obj.PerimeterLength = w.Length
+            if hasattr(obj,"VerticalArea"):
+                a = 0
+                for f in sh.Faces:
+                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                    if (ang > 1.57) and (ang < 1.571):
+                        a += f.Area
+                    if a != obj.VerticalArea.Value:
+                        obj.VerticalArea = a
+            return f.Area
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
@@ -232,16 +401,16 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
-        vobj.addProperty("App::PropertyStringList", "Text",        "Arch",translate("Arch","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
-        vobj.addProperty("App::PropertyString",     "FontName",    "Arch",translate("Arch","The name of the font"))
-        vobj.addProperty("App::PropertyColor",      "TextColor",   "Arch",translate("Arch","The color of the area text"))
-        vobj.addProperty("App::PropertyLength",     "FontSize",    "Arch",translate("Arch","The size of the text font"))
-        vobj.addProperty("App::PropertyLength",     "FirstLine",  "Arch",translate("Arch","The size of the first line of text"))
-        vobj.addProperty("App::PropertyFloat",      "LineSpacing", "Arch",translate("Arch","The space between the lines of text"))
-        vobj.addProperty("App::PropertyVector",     "TextPosition","Arch",translate("Arch","The position of the text. Leave (0,0,0) for automatic position"))
-        vobj.addProperty("App::PropertyEnumeration","TextAlign",   "Arch",translate("Arch","The justification of the text"))
-        vobj.addProperty("App::PropertyInteger",    "Decimals",    "Arch",translate("Arch","The number of decimals to use for calculated texts"))
-        vobj.addProperty("App::PropertyBool",       "ShowUnit",    "Arch",translate("Arch","Show the unit suffix")) 
+        vobj.addProperty("App::PropertyStringList",    "Text",        "Arch",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
+        vobj.addProperty("App::PropertyString",        "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+        vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
+        vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+        vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
+        vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Arch",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"))
+        vobj.addProperty("App::PropertyVectorDistance","TextPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
+        vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Arch",QT_TRANSLATE_NOOP("App::Property","The justification of the text"))
+        vobj.addProperty("App::PropertyInteger",       "Decimals",    "Arch",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"))
+        vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Arch",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
         vobj.TextColor = (0.0,0.0,0.0,1.0)
         vobj.Text = ["$label","$area"]
         vobj.TextAlign = ["Left","Center","Right"]
@@ -251,10 +420,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.Decimals = Draft.getParam("dimPrecision",2)
         vobj.ShowUnit = Draft.getParam("showUnit",True)
         vobj.LineSpacing = 1.0
-        
+
     def getDefaultDisplayMode(self):
         return "Wireframe"
-        
+
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Space_Tree.svg"
@@ -272,25 +441,28 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         self.text2.justification = coin.SoAsciiText.LEFT
         self.coords = coin.SoTransform()
         self.header = coin.SoTransform()
-        label = coin.SoSeparator()
-        label.addChild(self.coords)
-        label.addChild(self.color)
-        label.addChild(self.font)
-        label.addChild(self.text2)
-        label.addChild(self.header)
-        label.addChild(self.text1)
-        vobj.Annotation.addChild(label)
+        self.label = coin.SoSwitch()
+        sep = coin.SoSeparator()
+        self.label.whichChild = 0
+        sep.addChild(self.coords)
+        sep.addChild(self.color)
+        sep.addChild(self.font)
+        sep.addChild(self.text2)
+        sep.addChild(self.header)
+        sep.addChild(self.text1)
+        self.label.addChild(sep)
+        vobj.Annotation.addChild(self.label)
         self.onChanged(vobj,"TextColor")
         self.onChanged(vobj,"FontSize")
         self.onChanged(vobj,"FirstLine")
         self.onChanged(vobj,"LineSpacing")
         self.onChanged(vobj,"FontName")
-    
+
     def updateData(self,obj,prop):
         if prop in ["Shape","Label","Tag"]:
             self.onChanged(obj.ViewObject,"Text")
             self.onChanged(obj.ViewObject,"TextPosition")
-            
+
     def getTextPosition(self,vobj):
         pos = FreeCAD.Vector()
         if hasattr(vobj,"TextPosition"):
@@ -300,12 +472,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     pos = vobj.Object.Shape.CenterOfMass
                     z = vobj.Object.Shape.BoundBox.ZMin
                     pos = FreeCAD.Vector(pos.x,pos.y,z)
-                except:
+                except (AttributeError, RuntimeError):
                     pos = FreeCAD.Vector()
             else:
                 pos = vobj.TextPosition
         return pos
-                        
+
     def onChanged(self,vobj,prop):
         if prop in ["Text","Decimals","ShowUnit"]:
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"Text"):
@@ -330,17 +502,17 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                                 qt = str(qt)
                             if hasattr(vobj,"ShowUnit"):
                                 if vobj.ShowUnit:
-                                    qt = qt + q[2].replace("^2","²")
-                            t = t.replace("$area",qt.decode("utf8"))
-                        t = t.replace("$label",vobj.Object.Label.decode("utf8"))
+                                    qt = qt + q[2].replace("^2",u"\xb2") # square symbol
+                            t = t.replace("$area",qt)
+                        t = t.replace("$label",vobj.Object.Label)
                         if hasattr(vobj.Object,"Tag"):
-                            t = t.replace("$tag",vobj.Object.Tag.decode("utf8"))
+                            t = t.replace("$tag",vobj.Object.Tag)
                         if hasattr(vobj.Object,"FinishFloor"):
-                            t = t.replace("$floor",vobj.Object.FinishFloor.decode("utf8"))
+                            t = t.replace("$floor",vobj.Object.FinishFloor)
                         if hasattr(vobj.Object,"FinishWalls"):
-                            t = t.replace("$walls",vobj.Object.FinishWalls.decode("utf8"))
+                            t = t.replace("$walls",vobj.Object.FinishWalls)
                         if hasattr(vobj.Object,"FinishCeiling"):
-                            t = t.replace("$ceiling",vobj.Object.FinishCeiling.decode("utf8"))
+                            t = t.replace("$ceiling",vobj.Object.FinishCeiling)
                         if first:
                             text1.append(t.encode("utf8"))
                         else:
@@ -350,38 +522,38 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.text1.string.setValues(text1)
                 if text2:
                     self.text2.string.setValues(text2)
-            
+
         elif prop == "FontName":
             if hasattr(self,"font") and hasattr(vobj,"FontName"):
                 self.font.name = str(vobj.FontName)
-                
+
         elif (prop == "FontSize"):
             if hasattr(self,"font") and hasattr(vobj,"FontSize"):
                 self.font.size = vobj.FontSize.Value
-                
+
         elif (prop == "FirstLine"):
             if hasattr(self,"header") and hasattr(vobj,"FontSize") and hasattr(vobj,"FirstLine"):
                 scale = vobj.FirstLine.Value/vobj.FontSize.Value
                 self.header.scaleFactor.setValue([scale,scale,scale])
-            
+
         elif prop == "TextColor":
             if hasattr(self,"color") and hasattr(vobj,"TextColor"):
                 c = vobj.TextColor
                 self.color.rgb.setValue(c[0],c[1],c[2])
-                
+
         elif prop == "TextPosition":
             if hasattr(self,"coords") and hasattr(self,"header") and hasattr(vobj,"TextPosition") and hasattr(vobj,"FirstLine"):
                 pos = self.getTextPosition(vobj)
                 self.coords.translation.setValue([pos.x,pos.y,pos.z])
                 up = vobj.FirstLine.Value * vobj.LineSpacing
                 self.header.translation.setValue([0,up,0])
-                    
+
         elif prop == "LineSpacing":
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"LineSpacing"):
                 self.text1.spacing = vobj.LineSpacing
                 self.text2.spacing = vobj.LineSpacing
                 self.onChanged(vobj,"TextPosition")
-                
+
         elif prop == "TextAlign":
             if hasattr(self,"text1") and hasattr(self,"text2") and hasattr(vobj,"TextAlign"):
                 from pivy import coin
@@ -395,9 +567,34 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                     self.text1.justification = coin.SoAsciiText.LEFT
                     self.text2.justification = coin.SoAsciiText.LEFT
                     
+        elif prop == "Visibility":
+            if vobj.Visibility:
+                self.label.whichChild = 0
+            else:
+                self.label.whichChild = -1
+
+    def setEdit(self,vobj,mode):
+        taskd = SpaceTaskPanel()
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
 
+class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
+    "A modified version of the Arch component task panel"
 
+    def __init__(self):
+        ArchComponent.ComponentTaskPanel.__init__(self)
+        self.editButton = QtGui.QPushButton(self.form)
+        self.editButton.setObjectName("editButton")
+        self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
+        self.grid.addWidget(self.editButton, 4, 0, 1, 2)
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Set text position", None, QtGui.QApplication.UnicodeUTF8))
+        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.setTextPos)
+        
+    def setTextPos(self):
+        FreeCADGui.runCommand("Draft_Edit")
 
 
 if FreeCAD.GuiUp:

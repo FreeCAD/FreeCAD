@@ -41,7 +41,7 @@ def decodeName(name):
 		try:
 			decodedName = (name.decode("latin1"))
 		except UnicodeDecodeError:
-			print "AirfoilDAT: error: couldn't determine character encoding"
+			print("AirfoilDAT: error: couldn't determine character encoding")
 			decodedName = name
 	return decodedName
 
@@ -57,7 +57,7 @@ def insert(filename,docname):
 	groupname = os.path.splitext(os.path.basename(filename))[0]
 	try:
 		doc=FreeCAD.getDocument(docname)
-	except:
+	except NameError:
 		doc=FreeCAD.newDocument(docname)
 	importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
 	importgroup.Label = decodeName(groupname)
@@ -97,7 +97,7 @@ def process(doc,filename):
         
         
         if len(coords) < 3:
-                print 'Did not find enough coordinates\n'
+                print('Did not find enough coordinates\n')
                 return 
                 
         # sometimes coords are divided in upper an lower side

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,6 +31,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 
+#include <App/DocumentObjectPy.h>
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
 
@@ -44,7 +45,11 @@ FeaturePythonImp::~FeaturePythonImp()
 {
 }
 
-DocumentObjectExecReturn *FeaturePythonImp::execute()
+/*!
+ Calls the execute() method of the Python feature class. If the Python feature class doesn't have an execute()
+ method or if it returns False this method also return false and true otherwise.
+ */
+bool FeaturePythonImp::execute()
 {
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
@@ -52,16 +57,24 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
         Property* proxy = object->getPropertyByName("Proxy");
         if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
-            if (feature.hasAttr("__object__")) {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args;
-                method.apply(args);
-            }
-            else {
-                Py::Callable method(feature.getAttr(std::string("execute")));
-                Py::Tuple args(1);
-                args.setItem(0, Py::Object(object->getPyObject(), true));
-                method.apply(args);
+            if (feature.hasAttr(std::string("execute"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args;
+                    Py::Object res = method.apply(args);
+                    if (res.isBoolean() && !res.isTrue())
+                        return false;
+                    return true;
+                }
+                else {
+                    Py::Callable method(feature.getAttr(std::string("execute")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    Py::Object res = method.apply(args);
+                    if (res.isBoolean() && !res.isTrue())
+                        return false;
+                    return true;
+                }
             }
         }
     }
@@ -70,10 +83,43 @@ DocumentObjectExecReturn *FeaturePythonImp::execute()
         e.ReportException();
         std::stringstream str;
         str << object->Label.getValue() << ": " << e.what();
-        return new App::DocumentObjectExecReturn(str.str());
+        throw Base::RuntimeError(str.str());
     }
 
-    return DocumentObject::StdReturn;
+    return false;
+}
+
+void FeaturePythonImp::onBeforeChange(const Property* prop)
+{
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("onBeforeChange"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
+                    Py::Tuple args(1);
+                    std::string prop_name = object->getPropertyName(prop);
+                    args.setItem(0, Py::String(prop_name));
+                    method.apply(args);
+                }
+                else {
+                    Py::Callable method(feature.getAttr(std::string("onBeforeChange")));
+                    Py::Tuple args(2);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
+                    std::string prop_name = object->getPropertyName(prop);
+                    args.setItem(1, Py::String(prop_name));
+                    method.apply(args);
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
 }
 
 void FeaturePythonImp::onChanged(const Property* prop)
@@ -98,6 +144,35 @@ void FeaturePythonImp::onChanged(const Property* prop)
                     args.setItem(0, Py::Object(object->getPyObject(), true));
                     std::string prop_name = object->getPropertyName(prop);
                     args.setItem(1, Py::String(prop_name));
+                    method.apply(args);
+                }
+            }
+        }
+    }
+    catch (Py::Exception&) {
+        Base::PyException e; // extract the Python error text
+        e.ReportException();
+    }
+}
+
+void FeaturePythonImp::onDocumentRestored()
+{
+    // Run the execute method of the proxy object.
+    Base::PyGILStateLocker lock;
+    try {
+        Property* proxy = object->getPropertyByName("Proxy");
+        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {
+            Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
+            if (feature.hasAttr(std::string("onDocumentRestored"))) {
+                if (feature.hasAttr("__object__")) {
+                    Py::Callable method(feature.getAttr(std::string("onDocumentRestored")));
+                    Py::Tuple args;
+                    method.apply(args);
+                }
+                else {
+                    Py::Callable method(feature.getAttr(std::string("onDocumentRestored")));
+                    Py::Tuple args(1);
+                    args.setItem(0, Py::Object(object->getPyObject(), true));
                     method.apply(args);
                 }
             }
@@ -141,6 +216,4 @@ template<> const char* App::GeometryPython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonGeometry";
 }
 // explicit template instantiation
-template class AppExport FeaturePythonT<GeoFeature>;}
-
-
+template class AppExport FeaturePythonT<GeoFeature>;}

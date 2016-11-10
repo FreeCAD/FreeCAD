@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="DrawPagePy"
+    Twin="DrawPage"
+    TwinPointer="DrawPage"
+    Include="Mod/TechDraw/App/DrawPage.h"
+    Namespace="TechDraw"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="WandererFan" EMail="wandererfan@gmail.com" />
+      <UserDocu>Feature for creating and manipulating Technical Drawing Pages</UserDocu>
+    </Documentation>
+    <Methode Name="addView">
+      <Documentation>
+        <UserDocu>addView(DrawView) - Add a View to this Page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="removeView">
+      <Documentation>
+        <UserDocu>removeView(DrawView) - Remove a View to this Page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPageWidth">
+      <Documentation>
+        <UserDocu>Return the width of this page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPageHeight">
+      <Documentation>
+        <UserDocu>Return the height of this page</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getPageOrientation">
+      <Documentation>
+        <UserDocu>Return the orientation of this page</UserDocu>
+      </Documentation>
+    </Methode>
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

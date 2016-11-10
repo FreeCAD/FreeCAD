@@ -29,7 +29,7 @@ namespace KDL{
     
     const static bool mhi=true;
 
-    RigidBodyInertia::RigidBodyInertia(double m_,const Vector& h_,const RotationalInertia& I_,bool mhi):
+    RigidBodyInertia::RigidBodyInertia(double m_,const Vector& h_,const RotationalInertia& I_,bool /*mhi*/):
         m(m_),h(h_),I(I_)
     {
     }
@@ -37,8 +37,8 @@ namespace KDL{
     RigidBodyInertia::RigidBodyInertia(double m_, const Vector& c_, const RotationalInertia& Ic):
         m(m_),h(m*c_){
         //I=Ic-c x c x
-        Vector3d c_eig=Map<Vector3d>(c_.data);
-        Map<Matrix3d>(I.data)=Map<Matrix3d>(Ic.data)-m_*(c_eig*c_eig.transpose()-c_eig.dot(c_eig)*Matrix3d::Identity());
+        Vector3d c_eig=Map<const Vector3d>(c_.data);
+        Map<Matrix3d>(I.data)=Map<const Matrix3d>(Ic.data)-m_*(c_eig*c_eig.transpose()-c_eig.dot(c_eig)*Matrix3d::Identity());
     }
     
     RigidBodyInertia operator*(double a,const RigidBodyInertia& I){
@@ -60,13 +60,13 @@ namespace KDL{
         //Ib = R(Ia+r x h x + (h-m*r) x r x)R'
         Vector hmr = (I.h-I.m*X.p);
         Vector3d r_eig = Map<Vector3d>(X.p.data);
-        Vector3d h_eig = Map<Vector3d>(I.h.data);
+        Vector3d h_eig = Map<const Vector3d>(I.h.data);
         Vector3d hmr_eig = Map<Vector3d>(hmr.data);
         Matrix3d rcrosshcross = h_eig *r_eig.transpose()-r_eig.dot(h_eig)*Matrix3d::Identity();
         Matrix3d hmrcrossrcross = r_eig*hmr_eig.transpose()-hmr_eig.dot(r_eig)*Matrix3d::Identity();
         Matrix3d R = Map<Matrix3d>(X.M.data);
         RotationalInertia Ib;
-        Map<Matrix3d>(Ib.data) = R*((Map<Matrix3d>(I.I.data)+rcrosshcross+hmrcrossrcross)*R.transpose());
+        Map<Matrix3d>(Ib.data) = R*((Map<const Matrix3d>(I.I.data)+rcrosshcross+hmrcrossrcross)*R.transpose());
         
         return RigidBodyInertia(I.m,T.M*hmr,Ib,mhi);
     }
@@ -75,9 +75,9 @@ namespace KDL{
         //mb=ma
         //hb=R*h
         //Ib = R(Ia)R' with r=0
-        Matrix3d R = Map<Matrix3d>(M.data);
+        Matrix3d R = Map<const Matrix3d>(M.data);
         RotationalInertia Ib;
-        Map<Matrix3d>(Ib.data) = R.transpose()*(Map<Matrix3d>(I.I.data)*R);
+        Map<Matrix3d>(Ib.data) = R.transpose()*(Map<const Matrix3d>(I.I.data)*R);
         
         return RigidBodyInertia(I.m,M*I.h,Ib,mhi);
     }
@@ -87,7 +87,7 @@ namespace KDL{
         //hb=(h-m*r)
         //Ib = (Ia+r x h x + (h-m*r) x r x)
         Vector hmr = (this->h-this->m*p);
-        Vector3d r_eig = Map<Vector3d>(p.data);
+        Vector3d r_eig = Map<const Vector3d>(p.data);
         Vector3d h_eig = Map<Vector3d>(this->h.data);
         Vector3d hmr_eig = Map<Vector3d>(hmr.data);
         Matrix3d rcrosshcross = h_eig * r_eig.transpose()-r_eig.dot(h_eig)*Matrix3d::Identity();

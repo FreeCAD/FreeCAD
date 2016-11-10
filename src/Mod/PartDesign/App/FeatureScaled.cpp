@@ -29,8 +29,7 @@
 #endif
 
 #include "FeatureScaled.h"
-#include "FeatureAdditive.h"
-#include "FeatureSubtractive.h"
+#include "FeatureAddSub.h"
 #include <Mod/Part/App/TopoShape.h>
 
 #include <Base/Console.h>
@@ -73,12 +72,12 @@ const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::Docum
     Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
     TopoDS_Shape original;
 
-    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::Additive::getClassTypeId())) {
-        PartDesign::Additive* addFeature = static_cast<PartDesign::Additive*>(originalFeature);
-        original = addFeature->AddShape.getShape()._Shape;
-    } else if (originalFeature->getTypeId().isDerivedFrom(PartDesign::Subtractive::getClassTypeId())) {
-        PartDesign::Subtractive* subFeature = static_cast<PartDesign::Subtractive*>(originalFeature);
-        original = subFeature->SubShape.getShape()._Shape;
+    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+        PartDesign::FeatureAddSub* Feature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
+        //if(Feature->getAddSubType() == FeatureAddSub::Additive)
+        //    original = Feature->AddSubShape.getShape().getShape();
+        //else
+            original = Feature->AddSubShape.getShape().getShape();
     }
 
     GProp_GProps props;

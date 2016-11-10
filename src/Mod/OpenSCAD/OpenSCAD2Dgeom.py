@@ -52,6 +52,11 @@ class Overlappingfaces():
         return vertsinface(bigface,smallface.Vertexes)
 
     @staticmethod
+    def dofacesoverlapproximity(bigface,smallface):
+        l1,l2 = bigface.proximity(smallface)
+        return len(l1) > 0 or len(l2) > 0
+
+    @staticmethod
     def dofacesoverlapboolean(bigface,smallface):
         #import FreeCAD,FreeCADGui
         #FreeCAD.Console.PrintLog('intersecting %d %d\n'%(bigfacei,smallfacei))
@@ -59,17 +64,25 @@ class Overlappingfaces():
         return bigface.common(smallface).Area > 0
 
     def builddepdict(self):
+        import Part
         import itertools
         #isinsidelist = []
         self.isinsidedict = {}
         #for bigface, smallface in itertools.combinations(sortedfaces,2):
-        for bigfacei, smallfacei in itertools.combinations(range(len(self.sortedfaces)),2):
+        for bigfacei, smallfacei in\
+                itertools.combinations(range(len(self.sortedfaces)),2):
             try:
-                overlap = Overlappingfaces.dofacesoverlapboolean(\
+                overlap = Overlappingfaces.dofacesoverlapproximity(\
                         self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
-            except:
-                overlap = Overlappingfaces.dofacesoverlapallverts(\
-                        self.sortedfaces[bigfacei],self.sortedfaces[smallfacei])
+            except (NotImplementedError, Part.OCCError) as e:
+                try:
+                    overlap = Overlappingfaces.dofacesoverlapboolean(\
+                            self.sortedfaces[bigfacei],\
+                            self.sortedfaces[smallfacei])
+                except Part.OCCError:
+                    overlap = Overlappingfaces.dofacesoverlapallverts(\
+                            self.sortedfaces[bigfacei],\
+                            self.sortedfaces[smallfacei])
             if overlap:
                 #isinsidelist.append((bigfacei,smallfacei))
                 smallinbig = self.isinsidedict.get(bigfacei,[])
@@ -157,8 +170,10 @@ class Overlappingfaces():
                 if len(directchildren) == 1:
                         obj.Tool = addfeature(directchildren[0],subdict)
                 else:
-                        obj.Tool = doc.addObject("Part::MultiFuse","facesfromedges_union")
-                        obj.Tool.Shapes = [addfeature(child,subdict) for child in directchildren]
+                        obj.Tool = doc.addObject("Part::MultiFuse",\
+                                "facesfromedges_union")
+                        obj.Tool.Shapes = [addfeature(child,subdict)\
+                                for child in directchildren]
                         obj.Tool.ViewObject.hide()
             obj.ViewObject.hide()
             return obj
@@ -324,7 +339,7 @@ def edgestowires(edgelist,eps=0.001):
                 #if not close or wire.isClosed or outerd > 0.0001:
                 wirelist.append(Part.Wire(path))
                 done = True
-            except:
+            except Part.OCCError:
                 pass
             if not done:
                 comp=Part.Compound(path)
@@ -373,7 +388,7 @@ def edgestofaces(edges,algo=3,eps=0.001):
                 edges2.append(Part.Line(p1,p0).toShape())
                 w = Part.Wire(edges2)
                 #w = Part.Wire(fcgeo.sortEdges(edges2))
-            except:
+            except OCCError:
                 comp=Part.Compound(edges2)
                 w = comp.connectEdgesToWires(False,eps).Wires[0]
         facel.append(Part.Face(w))
@@ -461,8 +476,11 @@ def superWireReverse(debuglist,closed=False):
 
 def importDXFface(filename,layer=None,doc=None):
     import FreeCAD,importDXF
+    importDXF.readPreferences()
+    importDXF.getDXFlibs()
+    importDXF.dxfMakeBlocks = False
     doc = doc or FreeCAD.activeDocument()
-    layers = importDXF.processdxf(doc,filename) or importDXF.layers
+    layers = importDXF.processdxf(doc,filename,False,False) or importDXF.layers
     for l in layers:
         if FreeCAD.GuiUp:
             for o in l.Group:

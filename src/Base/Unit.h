@@ -34,16 +34,26 @@
 
 namespace Base {
 
+#define UnitSignatureLengthBits 4
+#define UnitSignatureMassBits 4
+#define UnitSignatureTimeBits 4
+#define UnitSignatureElectricCurrentBits 4
+#define UnitSignatureThermodynamicTemperatureBits 4
+#define UnitSignatureAmountOfSubstanceBits 4
+#define UnitSignatureLuminoseIntensityBits 4
+#define UnitSignatureAngleBits 4
+#define UnitSignatureDensityBits 4
 
 struct UnitSignature{
-    int32_t Length:4;
-    int32_t Mass:4;
-    int32_t Time:4;
-    int32_t ElectricCurrent:4;
-    int32_t ThermodynamicTemperature:4;
-    int32_t AmountOfSubstance:4;
-    int32_t LuminoseIntensity:4;
-    int32_t Angle:4;
+    int32_t Length:UnitSignatureLengthBits;
+    int32_t Mass:UnitSignatureMassBits;
+    int32_t Time:UnitSignatureTimeBits;
+    int32_t ElectricCurrent:UnitSignatureElectricCurrentBits;
+    int32_t ThermodynamicTemperature:UnitSignatureThermodynamicTemperatureBits;
+    int32_t AmountOfSubstance:UnitSignatureAmountOfSubstanceBits;
+    int32_t LuminoseIntensity:UnitSignatureLuminoseIntensityBits;
+    int32_t Angle:UnitSignatureAngleBits;
+    int32_t Density:UnitSignatureDensityBits;
 };
 /**
  * The Unit class.
@@ -52,10 +62,10 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0);
+    Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,int8_t ThermodynamicTemperature=0,int8_t AmountOfSubstance=0,int8_t LuminoseIntensity=0,int8_t Angle=0, int8_t Density=0);
     Unit(void);
     Unit(const Unit&);
-    Unit(const std::string& Pars);
+    Unit(const QString& expr);
     /// Destruction
     ~Unit () {}
 
@@ -75,36 +85,41 @@ public:
     const UnitSignature & getSignature(void)const {return Sig;} 
     bool isEmpty(void)const;
     
-	QString getString(void) const;
+    QString getString(void) const;
     /// get the type as an string such as "Area", "Length" or "Pressure". 
-	QString getTypeString(void) const;
+    QString getTypeString(void) const;
 
     /** Predefined Unit types. */
     //@{
-	/// Length unit 
-	static Unit Length;
-	/// Mass unit 
-	static Unit Mass;
-	/// Angle
-	static Unit Angle;
+    /// Length unit
+    static Unit Length;
+    /// Mass unit
+    static Unit Mass;
+    /// Angle
+    static Unit Angle;
+    static Unit Density;
 
-	static Unit Area;
-	static Unit Volume;
-	static Unit TimeSpan;
-	static Unit Velocity;
-	static Unit Acceleration;
-	static Unit Temperature;
-	
-	static Unit ElectricCurrent;
-	static Unit AmountOfSubstance;
-	static Unit LuminoseIntensity;
+    static Unit Area;
+    static Unit Volume;
+    static Unit TimeSpan;
+    static Unit Velocity;
+    static Unit Acceleration;
+    static Unit Temperature;
 
-	static Unit Stress;
-	static Unit Pressure;
-	static Unit Force;  
-	static Unit Work;   
-	static Unit Power;  
+    static Unit ElectricCurrent;
+    static Unit AmountOfSubstance;
+    static Unit LuminoseIntensity;
 
+    static Unit Stress;
+    static Unit Pressure;
+    static Unit Force;
+    static Unit Work;
+    static Unit Power;
+
+    static Unit ThermalConductivity;
+    static Unit ThermalExpansionCoefficient;
+    static Unit SpecificHeat;
+    static Unit ThermalTransferCoefficient;
 
     //@}
 protected:

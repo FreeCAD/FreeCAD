@@ -26,14 +26,16 @@
 #ifndef _PreComp_
 #endif
 
+#include <QGLWidget>
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
+#include <Base/Console.h>
 
 using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
 
-GLPainter::GLPainter() : viewer(0), logicOp(false), lineStipple(false)
+GLPainter::GLPainter() : viewer(0), width(0), height(0), logicOp(false), lineStipple(false)
 {
 }
 
@@ -42,18 +44,21 @@ GLPainter::~GLPainter()
     end();
 }
 
-bool GLPainter::begin(View3DInventorViewer* v)
+bool GLPainter::begin(QPaintDevice * device)
 {
     if (viewer)
         return false;
-    viewer = v;
+
+    viewer = dynamic_cast<QGLWidget*>(device);
+    if (!viewer)
+        return false;
 
     // Make current context
-    SbVec2s view = viewer->getGLSize();
-    this->width = view[0];
-    this->height = view[1];
+    QSize view = viewer->size();
+    this->width = view.width();
+    this->height = view.height();
 
-    viewer->glLockNormal();
+    viewer->makeCurrent();
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -87,10 +92,12 @@ bool GLPainter::end()
         return false;
 
     glFlush();
+
     if (this->logicOp) {
         this->logicOp = false;
         glDisable(GL_COLOR_LOGIC_OP);
     }
+
     if (this->lineStipple) {
         this->lineStipple = false;
         glDisable(GL_LINE_STIPPLE);
@@ -103,9 +110,6 @@ bool GLPainter::end()
 
     glPopAttrib();
     glPopMatrix();
-    
-    // Release the context
-    viewer->glUnlockNormal();
 
     viewer = 0;
     return true;
@@ -176,7 +180,7 @@ void GLPainter::drawRect(int x1, int y1, int x2, int y2)
     glEnd();
 }
 
-void GLPainter::drawLine (int x1, int y1, int x2, int y2)
+void GLPainter::drawLine(int x1, int y1, int x2, int y2)
 {
     if (!viewer)
         return;
@@ -195,4 +199,257 @@ void GLPainter::drawPoint(int x, int y)
     glBegin(GL_POINTS);
         glVertex3i(x, this->height-y, 0);
     glEnd();
+}
+
+//-----------------------------------------------
+
+Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
+{
+    x_old = y_old = x_new = y_new = 0;
+    working = false;
+    stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
+}
+
+Rubberband::Rubberband() : viewer(0)
+{
+    x_old = y_old = x_new = y_new = 0;
+    working = false;
+    stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
+}
+
+Rubberband::~Rubberband()
+{
+}
+
+void Rubberband::setWorking(bool on)
+{
+    working = on;
+}
+
+void Rubberband::setViewer(View3DInventorViewer* v)
+{
+    viewer = v;
+}
+
+void Rubberband::setCoords(int x1, int y1, int x2, int y2)
+{
+    x_old = x1;
+    y_old = y1;
+    x_new = x2;
+    y_new = y2;
+}
+
+void Rubberband::setLineStipple(bool on)
+{
+    stipple = on;
+}
+
+void Rubberband::setColor(float r, float g, float b, float a)
+{
+    rgb_a = a;
+    rgb_b = b;
+    rgb_g = g;
+    rgb_r = r;
+}
+
+void Rubberband::paintGL()
+{
+    if (!working)
+        return;
+
+    const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, size[0], size[1], 0, 0, 100);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glLineWidth(4.0);
+    glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+    glRecti(x_old, y_old, x_new, y_new);
+
+    glLineWidth(4.0);
+    glColor4f(rgb_r, rgb_g, rgb_b, rgb_a);
+    if (stipple) {
+        glLineStipple(3, 0xAAAA);
+        glEnable(GL_LINE_STIPPLE);
+    }
+    glBegin(GL_LINE_LOOP);
+    glVertex2i(x_old, y_old);
+    glVertex2i(x_old, y_new);
+    glVertex2i(x_new, y_new);
+    glVertex2i(x_new, y_old);
+    glEnd();
+
+    glLineWidth(1.0);
+
+    if (stipple)
+        glDisable(GL_LINE_STIPPLE);
+
+    glDisable(GL_BLEND);
+}
+
+// -----------------------------------------------------------------------------------
+
+Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
+{
+    x_new = y_new = 0;
+    working = false;
+    closed = true;
+    stippled = false;
+    line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
+}
+
+Polyline::Polyline() : viewer(0)
+{
+    x_new = y_new = 0;
+    working = false;
+    closed = true;
+    stippled = false;
+    line = 2.0;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
+}
+
+Polyline::~Polyline()
+{
+}
+
+void Polyline::setWorking(bool on)
+{
+    working = on;
+}
+
+bool Polyline::isWorking() const
+{
+    return working;
+}
+
+void Polyline::setViewer(View3DInventorViewer* v)
+{
+    viewer = v;
+}
+
+void Polyline::setCoords(int x, int y)
+{
+    x_new = x;
+    y_new = y;
+}
+
+void Polyline::setColor(int r, int g, int b, int a)
+{
+    rgb_r = r;
+    rgb_g = g;
+    rgb_b = b;
+    rgb_a = a;
+}
+
+void Polyline::setClosed(bool c)
+{
+    closed = c;
+}
+
+void Polyline::setCloseStippled(bool c)
+{
+    stippled = c;
+}
+
+void Polyline::setLineWidth(float l)
+{
+    line = l; 
+}
+
+void Polyline::addNode(const QPoint& p)
+{
+    _cNodeVector.push_back(p);
+}
+
+void Polyline::popNode()
+{
+    if (!_cNodeVector.empty())
+        _cNodeVector.pop_back();
+}
+
+void Polyline::clear()
+{
+    _cNodeVector.clear();
+}
+
+void Polyline::paintGL()
+{
+    if (!working)
+        return;
+
+    if (_cNodeVector.empty())
+        return;
+
+    const SbViewportRegion vp = viewer->getSoRenderManager()->getViewportRegion();
+    SbVec2s size = vp.getViewportSizePixels();
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0, size[0], size[1], 0, 0, 100);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glLineWidth(line);
+    glColor4f(rgb_r, rgb_g, rgb_b, rgb_a);
+
+    if (closed && !stippled) {
+        glBegin(GL_LINE_LOOP);
+
+        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+            glVertex2i(it->x(), it->y());
+        }
+
+        glEnd();
+    }
+    else {
+        glBegin(GL_LINES);
+
+        QPoint start = _cNodeVector.front();
+        for (std::vector<QPoint>::iterator it = _cNodeVector.begin(); it != _cNodeVector.end(); ++it) {
+            glVertex2i(start.x(), start.y());
+            start = *it;
+            glVertex2i(it->x(), it->y());
+        }
+
+        glEnd();
+
+        if (closed && stippled) {
+            glEnable(GL_LINE_STIPPLE);
+            glLineStipple(2, 0x3F3F);
+            glBegin(GL_LINES);
+                glVertex2i(_cNodeVector.back().x(), _cNodeVector.back().y());
+                glVertex2i(_cNodeVector.front().x(), _cNodeVector.front().y());
+            glEnd();
+            glDisable(GL_LINE_STIPPLE);
+        }
+    }
+
+    glDisable(GL_BLEND);
 }

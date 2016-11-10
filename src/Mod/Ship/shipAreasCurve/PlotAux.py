@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -89,9 +89,9 @@ class Plot(object):
         addInfo = ("$XCB = {0} \\; \\mathrm{{m}}$\n"
                    "$Area_{{max}} = {1} \\; \\mathrm{{m}}^2$\n"
                    "$\\bigtriangleup = {2} \\; \\mathrm{{tons}}$".format(
-                   xcb,
+                   xcb.getValueAs("m").Value,
                    maxArea,
-                   disp))
+                   disp.getValueAs("kg").Value / 1000.0))
         ax.text(0.0,
                 0.01 * maxArea,
                 addInfo,
@@ -115,40 +115,35 @@ class Plot(object):
         @param y Transversal areas.
         @param ship Active ship instance.
         """
-        # Create the spreadsheet
-        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
-        s = Spreadsheet.Spreadsheet(obj)
-        if FreeCAD.GuiUp:
-            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
-        FreeCAD.ActiveDocument.recompute()
-        obj.Label = 'Areas curve'
+        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                               'Areas curve')
 
         # Print the header
-        s.a1 = "x [m]"
-        s.b1 = "area [m^2]"
-        s.c1 = "FP x"
-        s.d1 = "FP y"
-        s.e1 = "AP x"
-        s.f1 = "AP y"
+        s.set("A1", "x [m]")
+        s.set("B1", "area [m^2]")
+        s.set("C1", "FP x")
+        s.set("D1", "FP y")
+        s.set("E1", "AP x")
+        s.set("F1", "AP y")
 
         # Print the perpendiculars data
         Lpp = ship.Length.getValueAs('m').Value
         FPx = 0.5 * Lpp
         APx = -0.5 * Lpp
         maxArea = max(y)
-        s.c2 = FPx
-        s.d2 = 0.0
-        s.c3 = FPx
-        s.d3 = maxArea
-        s.e2 = APx
-        s.f2 = 0.0
-        s.e3 = APx
-        s.f3 = maxArea
-
+        s.set("C2", str(FPx))
+        s.set("D2", str(0.0))
+        s.set("C3", str(FPx))
+        s.set("D3", str(maxArea))
+        s.set("E2", str(APx))
+        s.set("F2", str(0.0))
+        s.set("E3", str(APx))
+        s.set("F3", str(maxArea))
+        
         # Print the data
         for i in range(len(x)):
-            s.__setattr__("a{}".format(i + 2), x[i])
-            s.__setattr__("b{}".format(i + 2), y[i])
+            s.set("A{}".format(i + 2), str(x[i]))
+            s.set("B{}".format(i + 2), str(y[i]))
 
-        # Open the spreadsheet
-        FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
+        # Recompute
+        FreeCAD.activeDocument().recompute()

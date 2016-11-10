@@ -103,6 +103,10 @@ protected:
     virtual void removeCustomCommand(const QString&, const QByteArray&);
     virtual void moveUpCustomCommand(const QString&, const QByteArray&);
     virtual void moveDownCustomCommand(const QString&, const QByteArray&);
+
+private:
+    QList<QAction*> getActionGroup(QAction*);
+    void setActionGroup(QAction*, const QList<QAction*>& group);
 };
 
 /** This class implements the creation of user defined toolbox bars.

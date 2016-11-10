@@ -1,0 +1,13 @@
+; Glass-S2-GlassFibre
+; (c) 2015 DaviKaur (CC-BY 3.0)
+; Information about the content of such cards you can find here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = Glass-S2
+Description = Glass Fibre
+Father = Glass
+ProductURL = https://en.wikipedia.org/wiki/Glass_fiber
+UltimateTensileStrength = 4890 Mpa
+CompressiveStrength = 1600 Mpa
+Density = 2460 kg/m^3

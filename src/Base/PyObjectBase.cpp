@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,6 +32,8 @@
 #include "Console.h"
 
 using namespace Base;
+
+PyObject* Base::BaseExceptionFreeCADError = 0;
 
 // Constructor
 PyObjectBase::PyObjectBase(void* p,PyTypeObject *T)
@@ -120,7 +122,8 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_cache */
     0,                                                      /*tp_subclasses */
     0,                                                      /*tp_weaklist */
-    0                                                       /*tp_del */
+    0,                                                      /*tp_del */
+    0                                                       /*tp_version_tag */
 };
 
 /*------------------------------
@@ -129,11 +132,6 @@ PyTypeObject PyObjectBase::Type = {
 PyMethodDef PyObjectBase::Methods[] = {
     {NULL, NULL, 0, NULL}        /* Sentinel */
 };
-
-/*------------------------------
- * PyObjectBase Parents		-- Every class, even the abstract one should have parents
-------------------------------*/
-PyParentObject PyObjectBase::Parents[] = {&PyObjectBase::Type, NULL};
 
 PyObject* PyObjectBase::__getattr(PyObject * obj, char *attr)
 {

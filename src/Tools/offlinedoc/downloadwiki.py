@@ -37,7 +37,7 @@ from urllib2 import urlopen, HTTPError
 
 DEFAULTURL = "http://www.freecadweb.org/wiki" #default URL if no URL is passed
 INDEX = "Online_Help_Toc" # the start page from where to crawl the wiki
-NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site'] # pages that won't be fetched (kept online)
+NORETRIEVE = ['Manual','Developer_hub','Power_users_hub','Users_hub','Source_documentation', 'User_hub','Main_Page','About_this_site','FreeCAD:General_disclaimer','FreeCAD:About','FreeCAD:Privacy_policy','Introduction_to_python'] # pages that won't be fetched (kept online)
 GETTRANSLATIONS = False # Set true if you want to get the translations too.
 MAXFAIL = 3 # max number of retries if download fails
 VERBOSE = True # to display what's going on. Otherwise, runs totally silent.
@@ -49,38 +49,54 @@ LISTFILE = "wikifiles.txt"
 URL = DEFAULTURL
 wikiindex = "/index.php?title="
 defaultfile = "<html><head><link type='text/css' href='wiki.css' rel='stylesheet'></head><body>&nbsp;</body></html>"
-css = """
-/* Basic CSS for offline wiki rendering */
+css = """/* Basic CSS for offline wiki rendering */
 
 body {
-  font-family: Arial,Helvetica,sans-serif;
-  font-size: 13px;
+  font-family: Fira Sans,Arial,Helvetica,sans-serif;
+  font-size: 14px;
   text-align: justify;
-  background: #ffffff;
-  color: #000000;
+  background: #fff;
+  color: #000;
+  max-width: 800px;
   }
 
 h1 {
-  font-size: 2.2em;
+  font-size: 2.4em;
   font-weight: bold;
-  background: #46A4D0;
-  color: white;
   padding: 5px;
   border-radius: 5px;
   }
+  
+h2 {
+  font-weight: normal;
+  font-size: 1.6em;
+  border-bottom: 1px solid #ddd;
+  }
+  
+h3 {
+  padding-left: 20px;
+  }
+  
+img {
+  max-width: 100%;
+  }
+  
+li {
+  margin-top: 10px;
+  }
 
-pre {
-  border: 1px solid #888888;
+pre, .mw-code {
   text-align: left;
-  background: #EEEEEE;
-  padding: 5px;
-  border-radius: 5px;
+  background: #eee;
+  padding: 5px 5px 5px 20px;
+  font-family: mono;
+  border-radius: 2px;
   }
 
 a:link, a:visited {
   font-weight: bold;
   text-decoration: none;
-  color: #0084FF;
+  color: #2969C4;
   }
 
 a:hover {
@@ -90,7 +106,8 @@ a:hover {
 .printfooter {
   font-size: 0.8em;
   color: #333333;
-  border-top: 1px solid #333333;
+  border-top: 1px solid #333;
+  margin-top: 20px;
   }
 
 .wikitable #toc {
@@ -98,11 +115,22 @@ a:hover {
   }
 
 .ct, .ctTitle, .ctOdd, .ctEven th {
+  font-size: 1em;
   text-align: left;
-  width: 200px;
+  width: 190px;
   float: right;
-  background: #eeeeee;
+  background: #eee;
+  margin-top: 10px;
+  border-radius: 2px;
   }
+  
+.ct {
+  margin-left: 15px;
+  padding: 10px;
+  }
+#mw-navigation {
+  display:none; /*TODO remove on next build (included below)*/
+ }
 """
 
 def crawl():
@@ -137,9 +165,14 @@ def crawl():
 
 def get(page):
     "downloads a single page, returns the other pages it links to"
-    if page[-4:] in [".png",".jpg",".svg",".gif","jpeg"]:
+    localpage = page
+    if "Command_Reference" in localpage:
+        localpage = localpage.replace("Category:","")
+        localpage = localpage.replace("&pagefrom=","+")
+        localpage = localpage.replace("#mw-pages","")
+    if page[-4:] in [".png",".jpg",".svg",".gif","jpeg",".PNG",".JPG"]:
         fetchimage(page)
-    elif not exists(page):
+    elif not exists(localpage):
         html = fetchpage(page)
         html = cleanhtml(html)
         pages = getlinks(html)
@@ -158,14 +191,15 @@ def getlinks(html):
         rg = re.findall('href=.*?php\?title=(.*?)"',l)
         if rg:
             rg = rg[0]
-            if "#" in rg:
-                rg = rg.split('#')[0]
-            if ":" in rg:
-                NORETRIEVE.append(rg)
-            if ";" in rg:
-                NORETRIEVE.append(rg)
-            if "&" in rg:
-                NORETRIEVE.append(rg)
+            if not "Command_Reference" in rg:
+                if "#" in rg:
+                    rg = rg.split('#')[0]
+                if ":" in rg:
+                    NORETRIEVE.append(rg)
+                if ";" in rg:
+                    NORETRIEVE.append(rg)
+                if "&" in rg:
+                    NORETRIEVE.append(rg)
             if "/" in rg:
                 if not GETTRANSLATIONS:
                     NORETRIEVE.append(rg)
@@ -192,6 +226,7 @@ def cleanhtml(html):
     html = re.compile('<div class="NavHead.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavContent.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<div class="NavEnd.*?</div>').sub('',html) # removing nav stuff
+    html = re.compile('<div id="mw-navigation.*?</div>').sub('',html) # removing nav stuff
     html = re.compile('<table id="toc.*?</table>').sub('',html) # removing toc
     html = re.compile('width=\"100%\" style=\"float: right; width: 230px; margin-left: 1em\"').sub('',html) # removing command box styling
     html = re.compile('<div class="docnav.*?</div>Wlinebreak</div>').sub('',html) # removing docnav
@@ -212,6 +247,11 @@ def cleanlinks(html, pages=None):
         else:
             output = 'href="' + page.replace("/","-") + '.html"'
         html = re.compile('href="[^"]+' + page + '"').sub(output,html)
+        if "Command_Reference" in output:
+            html = html.replace("Category:","")
+            html = html.replace("&amp;pagefrom=","+")
+            html = html.replace("#mw-pages",".html")
+            html = html.replace("/wiki/index.php?title=Command_Reference","Command_Reference")
     return html
 
 def cleanimagelinks(html,links=None):
@@ -290,6 +330,11 @@ def output(html,page):
     footer = "</body></html>"
     html = header+html+footer
     filename = local(page.replace("/","-"))
+    if "Command_Reference" in filename:
+        filename = filename.replace("Category:","")
+        filename = filename.replace("&pagefrom=","+")
+        filename = filename.replace("#mw-pages","")
+        filename = filename.replace(".html.html",".html")
     print "    saving",filename
     file = open(filename,'wb')
     file.write(html)

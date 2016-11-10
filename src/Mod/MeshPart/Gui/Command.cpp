@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,11 +46,11 @@ CmdMeshPartMesher::CmdMeshPartMesher()
     sGroup        = QT_TR_NOOP("Mesh");
     sMenuText     = QT_TR_NOOP("Create mesh from shape...");
     sToolTipText  = QT_TR_NOOP("Tessellate shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "MeshPart_Mesher";
     sStatusTip    = sToolTipText;
 }
 
-void CmdMeshPartMesher::activated(int iMsg)
+void CmdMeshPartMesher::activated(int)
 {
     Gui::Control().showDialog(new MeshPartGui::TaskTessellation());
 }

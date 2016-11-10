@@ -49,6 +49,9 @@ import Part
 from OpenSCADFeatures import *
 from OpenSCADUtils import *
 
+params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD")
+printverbose = params.GetBool('printVerbose',False)
+
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
 
@@ -92,7 +95,7 @@ def insert(filename,docname):
     groupname = os.path.splitext(os.path.basename(filename))[0]
     try:
         doc=FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc=FreeCAD.newDocument(docname)
     #importgroup = doc.addObject("App::DocumentObjectGroup",groupname)
     if filename.lower().endswith('.scad'):
@@ -114,7 +117,7 @@ def insert(filename,docname):
 def processcsg(filename):
     global doc
     
-    if printverbose: print 'ImportCSG Version 0.5d'
+    if printverbose: print 'ImportCSG Version 0.6a'
     # Build the lexer
     if printverbose: print 'Start Lex'
     lex.lex(module=tokrules)
@@ -230,6 +233,7 @@ def p_part(p):
          | cube_action
          | circle_action
          | square_action
+         | text_action
          | polygon_action_nopath
          | polygon_action_plus_path
          | polyhedron_action
@@ -401,7 +405,6 @@ def p_not_supported(p):
     not_supported : glide LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | offset LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | resize LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
-                  | cut LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   | subdiv LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE
                   '''
     if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
@@ -422,6 +425,7 @@ def p_keywordargument(p):
     | ID EQ size_vector
     | ID EQ vector
     | ID EQ 2d_point
+    | text EQ stripped_string
     | ID EQ stripped_string
      '''
     p[0] = (p[1],p[3])
@@ -599,10 +603,8 @@ def process_linear_extrude(obj,h) :
     mylinear.Base = newobj #obj
     mylinear.Dir = (0,0,h)
     mylinear.Placement=FreeCAD.Placement()
-    try:
-        mylinear.Solid = True
-    except:
-        pass
+    # V17 change to False mylinear.Solid = True
+    mylinear.Solid = False
     if gui:
         newobj.ViewObject.hide()
     return(mylinear)
@@ -702,6 +704,21 @@ def process_mesh_file(fname,ext):
         obj.Shape=Part.Compound([])
     return(obj)
 
+
+def processTextCmd(t):
+    import os
+    from OpenSCADUtils import callopenscadstring
+    tmpfilename = callopenscadstring(t,'dxf')
+    from OpenSCAD2Dgeom import importDXFface 
+    face = importDXFface(tmpfilename,None,None)
+    obj=doc.addObject('Part::Feature','text')
+    obj.Shape=face
+    try:
+        os.unlink(tmpfilename)
+    except OSError:
+        pass
+    return(obj)
+
 def processDXF(fname,layer):
     global doc
     global pathName
@@ -719,8 +736,8 @@ def processDXF(fname,layer):
     obj.Shape=face
     if printverbose: print "DXF Diagnostics"
     if printverbose: print obj.Shape.ShapeType
-    if printverbose: print "Closed : "+str(f.isClosed())
-    if printverbose: print f.check()
+    if printverbose: print "Closed : "+str(obj.Shape.isClosed())
+    if printverbose: print obj.Shape.check()
     if printverbose: print [w.isClosed() for w in obj.Shape.Wires]
     return(obj)
 
@@ -881,7 +898,7 @@ def p_cylinder_action(p):
                     mycyl.Dir = (0,0,h)
                     try :
                         import Draft
-                        mycyl.Base = Draft.makePolygon(n,r1)
+                        mycyl.Base = Draft.makePolygon(n,r1,face=True)
                     except :
                         # If Draft can't import (probably due to lack of Pivy on Mac and
                         # Linux builds of FreeCAD), this is a fallback.
@@ -980,7 +997,8 @@ def p_circle_action(p) :
         mycircle = FreeCAD.ActiveDocument.addObject("Part::Part2DObjectPython",'circle')
         Draft._Circle(mycircle)
         mycircle.Radius = r
-        #mycircle = Draft.makeCircle(r) # would call doc.recompute
+        mycircle.MakeFace = True
+        #mycircle = Draft.makeCircle(r,face=True) # would call doc.recompute
         #mycircle = doc.addObject('Part::Circle',p[1]) #would not create a face
         #mycircle.Radius = r
     else :
@@ -990,6 +1008,7 @@ def p_circle_action(p) :
         mycircle.FacesNumber = n
         mycircle.Radius = r
         mycircle.DrawMode = "inscribed"
+        mycircle.MakeFace = True
     if gui:
         Draft._ViewProviderDraft(mycircle.ViewObject)
     if printverbose: print "Push Circle"
@@ -1007,6 +1026,31 @@ def p_square_action(p) :
     if p[3]['center']=='true' :
        center(mysquare,x,y,0)
     p[0] = [mysquare]
+
+def addString(t,s,p):
+    return(t + ', ' +s+' = "'+p[3][s]+'"')
+
+def addValue(t,v,p):
+    return(t + ', ' +v+' = '+p[3][v])
+
+def p_text_action(p) :
+    'text_action : text LPAREN keywordargument_list RPAREN SEMICOL'
+    t = 'text ( text="'+p[3]['text']+'"'
+    t = addValue(t,'size',p)
+    t = addString(t,'spacing',p)
+    t = addString(t,'font',p)
+    t = addString(t,'direction',p)
+    t = addString(t,'language',p)
+    t = addString(t,'script',p)
+    t = addString(t,'halign',p)
+    t = addString(t,'valign',p)
+    t = addValue(t,'$fn',p)
+    t = addValue(t,'$fa',p)
+    t = addValue(t,'$fs',p)
+    t = t+');'
+
+    FreeCAD.Console.PrintMessage("textmsg : "+t+"\n")
+    p[0] = [processTextCmd(t)]
 
 def convert_points_list_to_vector(l):
     v = []
@@ -1088,7 +1132,32 @@ def p_polyhedron_action(p) :
 def p_projection_action(p) :
     'projection_action : projection LPAREN keywordargument_list RPAREN OBRACE block_list EBRACE'
     if printverbose: print 'Projection'
-    if gui:
-        from PySide import QtGui
-        QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Projection Not yet Coded waiting for Peter Li")),unicode(translate('OpenSCAD'," Press OK")))
-
+    if p[3]['cut']=='true' :
+        planedim=1e9 # large but finite
+        #inifinite planes look bad in the GUI
+        planename='xy_plane_used_for_project_cut'
+        obj=doc.addObject('Part::MultiCommon','projection_cut')
+        plane = doc.getObject(planename)
+        if not plane:
+            plane=doc.addObject("Part::Plane",planename)
+            plane.Length=planedim*2
+            plane.Width=planedim*2
+            plane.Placement = FreeCAD.Placement(FreeCAD.Vector(\
+                     -planedim,-planedim,0),FreeCAD.Rotation())
+            if gui:
+                plane.ViewObject.hide()
+        if (len(p[6]) > 1):
+            subobj = [fuse(p[6],"projection_cut_implicit_group")]
+        else:
+            subobj = p[6]
+        obj.Shapes = [plane]+subobj
+        if gui:
+            subobj[0].ViewObject.hide()
+        p[0] = [obj]
+    else: # cut == 'false' => true projection
+        if gui and not FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/OpenSCAD").\
+                GetBool('usePlaceholderForUnsupported'):
+            from PySide import QtGui
+            QtGui.QMessageBox.critical(None, unicode(translate('OpenSCAD',"Unsupported Function"))+" : "+p[1],unicode(translate('OpenSCAD',"Press OK")))
+        else:
+            p[0] = [placeholder(p[1],p[6],p[3])]

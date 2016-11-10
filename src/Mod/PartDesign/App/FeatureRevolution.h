@@ -25,12 +25,12 @@
 #define PARTDESIGN_Revolution_H
 
 #include <App/PropertyUnits.h>
-#include "FeatureAdditive.h"
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Revolution : public Additive
+class PartDesignExport Revolution : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Revolution);
 

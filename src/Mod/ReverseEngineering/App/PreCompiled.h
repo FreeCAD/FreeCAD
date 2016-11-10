@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,6 +43,7 @@
 #   pragma warning(disable : 4181)
 #   pragma warning(disable : 4275)
 #   pragma warning(disable : 4305)
+#   pragma warning(disable : 4522)
 #endif
 
 #ifdef _PreComp_
@@ -68,7 +69,6 @@
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
 #include <Geom_BSplineSurface.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
 #include <TopoDS_Face.hxx>
 

@@ -1,43 +1,37 @@
-//  Copyright (C) 2007-2008  CEA/DEN, EDF R&D, OPEN CASCADE
+// Copyright (C) 2007-2015  CEA/DEN, EDF R&D, OPEN CASCADE
 //
-//  Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
-//  CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
+// Copyright (C) 2003-2007  OPEN CASCADE, EADS/CCR, LIP6, CEA/DEN,
+// CEDRAT, EDF R&D, LEG, PRINCIPIA R&D, BUREAU VERITAS
 //
-//  This library is free software; you can redistribute it and/or
-//  modify it under the terms of the GNU Lesser General Public
-//  License as published by the Free Software Foundation; either
-//  version 2.1 of the License.
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
 //
-//  This library is distributed in the hope that it will be useful,
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-//  Lesser General Public License for more details.
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
 //
-//  You should have received a copy of the GNU Lesser General Public
-//  License along with this library; if not, write to the Free Software
-//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
 //
-//  See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
+// See http://www.salome-platform.org/ or email : webmaster.salome@opencascade.com
 //
+
 #include "UNV2417_Structure.hxx"
 #include "UNV_Utilities.hxx"
 
-#include <fstream>	
+#include <fstream>      
 #include <iomanip>
 
 using namespace std;
 using namespace UNV;
 using namespace UNV2417;
 
-#ifdef _DEBUG_
-static int MYDEBUG = 0;
-#else
-static int MYDEBUG = 0;
-#endif
-
-
 static string _group_labels[] = {"2417", "2429", "2430", "2432",
-				 "2435", "2452", "2467", "2477"};
+                                 "2435", "2452", "2467", "2477"};
 #define NBGROUP 8
 
 static string _label_dataset = "2467";
@@ -55,7 +49,7 @@ void UNV2417::Read(std::ifstream& in_stream, TDataSet& theDataSet)
      * a "-1" followed by a number means the beginning of a dataset
      * stop combing at the end of the file
      */
-    while( ((olds != "-1") || (news == "-1") ) && !in_stream.eof() ){	  
+    while( ((olds != "-1") || (news == "-1") ) && !in_stream.eof() ){     
       olds = news;
       in_stream >> news;
     }
@@ -63,7 +57,7 @@ void UNV2417::Read(std::ifstream& in_stream, TDataSet& theDataSet)
       return;
     for (int i = 0; i < NBGROUP; i++) {
       if (news == _group_labels[i]) {
-	ReadGroup(news, in_stream, theDataSet);
+        ReadGroup(news, in_stream, theDataSet);
       }
     }
   }
@@ -102,23 +96,23 @@ void UNV2417::ReadGroup(const std::string& myGroupLabel, std::ifstream& in_strea
       in_stream>>aElType;
       in_stream>>aElId;
       if ((myGroupLabel.compare("2435") == 0) ||
-	  (myGroupLabel.compare("2452") == 0) ||
-	  (myGroupLabel.compare("2467") == 0) ||
-	  (myGroupLabel.compare("2477") == 0)) {
-	in_stream>>aTmp;
-	in_stream>>aTmp;
+          (myGroupLabel.compare("2452") == 0) ||
+          (myGroupLabel.compare("2467") == 0) ||
+          (myGroupLabel.compare("2477") == 0)) {
+        in_stream>>aTmp;
+        in_stream>>aTmp;
       }
       switch (aElType) {
       case 7: // Nodes
-	aNum = aRec.NodeList.size();
-	aRec.NodeList.resize(aNum + 1);
-	aRec.NodeList[aNum] = aElId;
-	break;
+        aNum = aRec.NodeList.size();
+        aRec.NodeList.resize(aNum + 1);
+        aRec.NodeList[aNum] = aElId;
+        break;
       case 8: // Elements
-	aNum = aRec.ElementList.size();
-	aRec.ElementList.resize(aNum + 1);
-	aRec.ElementList[aNum] = aElId;
-	break;
+        aNum = aRec.ElementList.size();
+        aRec.ElementList.resize(aNum + 1);
+        aRec.ElementList[aNum] = aElId;
+        break;
       }
     }
     theDataSet.insert(TDataSet::value_type(aId,aRec));
@@ -160,8 +154,8 @@ void UNV2417::Write(std::ofstream& out_stream, const TDataSet& theDataSet)
     int i;
     for (i = 0; i < aNbNodes; i++) {
       if (aRow == 2) {
-	out_stream<<std::endl; 
-	aRow = 0;
+        out_stream<<std::endl; 
+        aRow = 0;
       }
       out_stream<<std::setw(10)<<7;
       out_stream<<std::setw(10)<<aRec.NodeList[i];
@@ -171,8 +165,8 @@ void UNV2417::Write(std::ofstream& out_stream, const TDataSet& theDataSet)
     }
     for (i = 0; i < aNbElements; i++) {
       if (aRow == 2) {
-	out_stream<<std::endl; 
-	aRow = 0;
+        out_stream<<std::endl; 
+        aRow = 0;
       }
       out_stream<<std::setw(10)<<8;
       out_stream<<std::setw(10)<<aRec.ElementList[i];

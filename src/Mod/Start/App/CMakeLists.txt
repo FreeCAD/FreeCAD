@@ -2,8 +2,8 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(Start_LIBS
@@ -12,7 +12,6 @@ set(Start_LIBS
 
 SET(Start_SRCS
     AppStart.cpp
-    AppStartPy.cpp
     PreCompiled.cpp
     PreCompiled.h
     StartConfiguration.h

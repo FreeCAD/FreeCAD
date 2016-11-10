@@ -25,6 +25,7 @@
 #define BASE_TOOLS2D_H
 
 
+#include <algorithm>
 #include <cmath>
 #include <stdio.h>
 #include <list>
@@ -67,7 +68,7 @@ public:
   inline void Scale (double fS);
   inline void Normalize (void);
   double GetAngle (const Vector2D &rclVect) const;
-  void  ProjToLine (const Vector2D &rclPt, const Vector2D &rclLine);
+  void  ProjectToLine (const Vector2D &rclPt, const Vector2D &rclLine);
 };
 
 /** BoundBox2D ********************************************/
@@ -88,10 +89,10 @@ public:
   // operators
   inline BoundBox2D& operator= (const BoundBox2D& rclBB);
   inline bool operator== (const BoundBox2D& rclBB) const;
-  bool operator|| (const Line2D &rclLine) const;
-  bool operator|| (const BoundBox2D &rclBB) const;
-  bool operator|| (const Polygon2D &rclPoly) const;
-  inline void operator &= (const Vector2D &rclVct);
+  bool Intersect(const Line2D &rclLine) const;
+  bool Intersect(const BoundBox2D &rclBB) const;
+  bool Intersect(const Polygon2D &rclPoly) const;
+  inline void Add(const Vector2D &rclVct);
 
   void SetVoid (void) { fMinX = fMinY = DOUBLE_MAX; fMaxX = fMaxY = -DOUBLE_MAX; }
 
@@ -163,14 +164,6 @@ private:
 
 /** INLINES ********************************************/
 
-inline void BoundBox2D::operator &= (const Vector2D &rclVct)
-{
-  fMinX = std::min<double>(fMinX, rclVct.fX);
-  fMinY = std::min<double>(fMinY, rclVct.fY);
-  fMaxX = std::max<double>(fMaxX, rclVct.fX);
-  fMaxY = std::max<double>(fMaxY, rclVct.fY);
-}
-  
 inline Vector2D::Vector2D (void)
 : fX(0.0), fY(0.0)
 {
@@ -377,6 +370,14 @@ inline bool BoundBox2D::operator== (const BoundBox2D& rclBB) const
       (fMinY == rclBB.fMinY) &&
       (fMaxX == rclBB.fMaxX) &&
       (fMaxY == rclBB.fMaxY);
+}
+
+inline void BoundBox2D::Add(const Vector2D &rclVct)
+{
+  fMinX = std::min<double>(fMinX, rclVct.fX);
+  fMinY = std::min<double>(fMinY, rclVct.fY);
+  fMaxX = std::max<double>(fMaxX, rclVct.fX);
+  fMaxY = std::max<double>(fMaxY, rclVct.fY);
 }
 
 } // namespace Base

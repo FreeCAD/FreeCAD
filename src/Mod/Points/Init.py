@@ -27,15 +27,11 @@
 
 
 
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Points")
-
-# Set the needed information
-ParGrp.SetString("WorkBenchName",    "Points Design")
-
 # Append the open handler
-FreeCAD.EndingAdd("Point formats (*.asc)","Points")
-FreeCAD.EndingAdd("PLY points (*.ply)","Points")
+FreeCAD.addImportType("Point formats (*.asc)","Points")
+FreeCAD.addImportType("PLY points (*.ply)","Points")
+FreeCAD.addImportType("PCD points (*.pcd)","Points")
 
-
+FreeCAD.addExportType("Point formats (*.asc)","Points")
+FreeCAD.addExportType("PLY points (*.ply)","Points")
+FreeCAD.addExportType("PCD points (*.pcd)","Points")

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -41,11 +41,11 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgEditFileIncludePropertyExternal::
 DlgEditFileIncludePropertyExternal(App::PropertyFileIncluded& Prop,
-                                   QWidget* parent, Qt::WFlags fl)
+                                   QWidget* parent, Qt::WindowFlags fl)
     : DlgRunExternal(parent, fl), Prop(Prop)
 {
 
@@ -65,7 +65,8 @@ int DlgEditFileIncludePropertyExternal::Do(void)
     QFileInfo file = QString::fromUtf8(Prop.getValue());
     assert(file.exists());
 
-    QString TempFile = QDir::temp().absolutePath() + QString::fromAscii("/") + file.fileName();
+    QDir tmp = QString::fromUtf8(App::Application::getTempPath().c_str());
+    QString TempFile = tmp.absoluteFilePath(file.fileName());
     QFile::remove(TempFile);
 
     QFile::copy(file.absoluteFilePath(),TempFile);

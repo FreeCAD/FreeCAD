@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,7 +38,6 @@
 #pragma warning( disable : 4723 )
 #endif
 
-#define new DEBUG_CLIENTBLOCK
 using namespace App;
 
 
@@ -67,8 +66,11 @@ FeatureTest::FeatureTest()
   ConstraintFloat.setConstraints(&floatPercent);
 
   App::Color c;
+  App::Material mat(App::Material::GOLD);
   ADD_PROPERTY(Colour      ,(c) );
   ADD_PROPERTY(ColourList  ,(c) );
+  ADD_PROPERTY(Material    ,(mat));
+  ADD_PROPERTY(MaterialList,(mat));
 
   ADD_PROPERTY(Distance,(47.11f) );
   ADD_PROPERTY(Angle   ,(3.0f) );
@@ -76,9 +78,10 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(IntegerList,(4711)  );
   ADD_PROPERTY(FloatList  ,(47.11f) );
   
-  ADD_PROPERTY(Link     ,(0));
-  ADD_PROPERTY(LinkSub,  (0));
-  ADD_PROPERTY(LinkList ,(0));
+  ADD_PROPERTY(Link       ,(0));
+  ADD_PROPERTY(LinkSub    ,(0));
+  ADD_PROPERTY(LinkList   ,(0));
+  ADD_PROPERTY(LinkSubList,(0));
 
   ADD_PROPERTY(Vector    ,(1.0,2.0,3.0));
   ADD_PROPERTY(VectorList,(3.0,2.0,1.0));
@@ -104,6 +107,8 @@ FeatureTest::FeatureTest()
  
   ADD_PROPERTY(QuantityLength,(1.0));
   QuantityLength.setUnit(Base::Unit::Length);
+  ADD_PROPERTY(QuantityOther,(5.0));
+  QuantityOther.setUnit(Base::Unit(-3,1));
   //ADD_PROPERTY(QuantityMass,(1.0));
   //QuantityMass.setUnit(Base::Unit::Mass);
   //ADD_PROPERTY(QuantityAngle,(1.0));

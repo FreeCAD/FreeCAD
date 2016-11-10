@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,6 +52,7 @@ MacroManager::MacroManager()
     recordGui(true),
     guiAsComment(true),
     scriptToPyConsole(true),
+    localEnv(true),
     pyConsole(0),
     pyDebugger(new PythonDebugger())
 {
@@ -69,17 +70,23 @@ MacroManager::~MacroManager()
 
 void MacroManager::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+    (void)rCaller;
+    (void)sReason;
     this->recordGui         = this->params->GetBool("RecordGui", true);
     this->guiAsComment      = this->params->GetBool("GuiAsComment", true);
     this->scriptToPyConsole = this->params->GetBool("ScriptToPyConsole", true);
     this->localEnv          = this->params->GetBool("LocalEnvironment", true);
 }
 
-void MacroManager::open(MacroType eType,const char *sName)
+void MacroManager::open(MacroType eType, const char *sName)
 {
-    // check 
+    // check
+#if _DEBUG
     assert(!this->openMacro);
     assert(eType == File);
+#else
+    Q_UNUSED(eType);
+#endif
 
     // Convert from Utf-8
     this->macroName = QString::fromUtf8(sName);
@@ -100,7 +107,7 @@ void MacroManager::commit(void)
         // sort import lines and avoid duplicates
         QTextStream str(&file);
         QStringList import;
-        import << QString::fromAscii("import FreeCAD");
+        import << QString::fromLatin1("import FreeCAD");
         QStringList body;
 
         QStringList::Iterator it;
@@ -118,13 +125,15 @@ void MacroManager::commit(void)
             }
         }
 
-        QString header = QString::fromAscii("# Macro Begin: ");
+        QString header;
+        header += QString::fromLatin1("# -*- coding: utf-8 -*-\n\n");
+        header += QString::fromLatin1("# Macro Begin: ");
         header += this->macroName;
-        header += QString::fromAscii(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
+        header += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
-        QString footer = QString::fromAscii("# Macro End: ");
+        QString footer = QString::fromLatin1("# Macro End: ");
         footer += this->macroName;
-        footer += QString::fromAscii(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
+        footer += QString::fromLatin1(" +++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
         // write the data to the text file
         str << header;
@@ -171,7 +180,7 @@ void MacroManager::addLine(LineType Type, const char* sLine)
             comment = true;
         }
 
-        QStringList lines = QString::fromAscii(sLine).split(QLatin1String("\n"));
+        QStringList lines = QString::fromLatin1(sLine).split(QLatin1String("\n"));
         if (comment) {
             for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it)
                 it->prepend(QLatin1String("#"));
@@ -193,7 +202,7 @@ void MacroManager::setModule(const char* sModule)
 {
     if (this->openMacro && sModule && *sModule != '\0')
     {
-        this->macroInProgress.append(QString::fromAscii("import %1").arg(QString::fromAscii(sModule)));
+        this->macroInProgress.append(QString::fromLatin1("import %1").arg(QString::fromLatin1(sModule)));
     }
 }
 
@@ -201,7 +210,7 @@ namespace Gui {
     class PythonRedirector
     {
     public:
-        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj)
+        PythonRedirector(const char* type, PyObject* obj) : std_out(type), out(obj), old(0)
         {
             if (out) {
                 Base::PyGILStateLocker lock;
@@ -224,13 +233,15 @@ namespace Gui {
     };
 }
 
-void MacroManager::run(MacroType eType,const char *sName)
+void MacroManager::run(MacroType eType, const char *sName)
 {
+    Q_UNUSED(eType); 
+
     try {
         ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter()
             .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("OutputWindow");
-        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput") ? new OutputStdout : 0;
-        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors") ? new OutputStderr : 0;
+        PyObject* pyout = hGrp->GetBool("RedirectPythonOutput",true) ? new OutputStdout : 0;
+        PyObject* pyerr = hGrp->GetBool("RedirectPythonErrors",true) ? new OutputStderr : 0;
         PythonRedirector std_out("stdout",pyout);
         PythonRedirector std_err("stderr",pyerr);
         //The given path name is expected to be Utf-8

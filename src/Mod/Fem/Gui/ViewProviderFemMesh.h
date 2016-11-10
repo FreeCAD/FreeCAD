@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,9 +30,9 @@
 #include <CXX/Objects.hxx>
 
 class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
+class SoDrawStyle;
+class SoIndexedFaceSet;
+class SoIndexedLineSet;
 class SoShapeHints;
 class SoMaterialBinding;
 
@@ -43,16 +43,17 @@ class ViewProviderFEMMeshBuilder : public Gui::ViewProviderBuilder
 {
 public:
     ViewProviderFEMMeshBuilder(){}
-    ~ViewProviderFEMMeshBuilder(){}
+    virtual ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, 
-                    SoCoordinate3*, 
+    void createMesh(const App::Property*,
+                    SoCoordinate3*,
                     SoIndexedFaceSet*,
                     SoIndexedLineSet*,
                     std::vector<unsigned long>&,
                     std::vector<unsigned long>&,
-                    bool ShowInner=false
-                    ) const;
+                    bool &edgeOnly,
+                    bool ShowInner
+                   ) const;
 };
 
 class FemGuiExport ViewProviderFemMesh : public Gui::ViewProviderGeometryObject
@@ -64,7 +65,7 @@ public:
     ViewProviderFemMesh();
 
     /// destructor.
-    ~ViewProviderFemMesh();
+    virtual ~ViewProviderFemMesh();
 
     // Display properties
     App::PropertyColor PointColor;
@@ -81,7 +82,7 @@ public:
       /** @name Selection handling
       * This group of methodes do the selection handling.
       * Here you can define how the selection for your ViewProvider
-      * works. 
+      * works.
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
@@ -93,39 +94,37 @@ public:
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     //@}
 
-    // interface methodes 
+    // interface methodes
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
-    
-	/** @name Postprocessing
+
+    /** @name Postprocessing
       * this interfaces apply post processing stuff to the View-
-	  * Provider. They can override the positioning and the color
-	  * color or certain elements.
+      * Provider. They can override the positioning and the color
+      * color or certain elements.
      */
     //@{
 
-	/// set the color for each node
-	void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
+    /// set the color for each node
+    void setColorByNodeId(const std::map<long,App::Color> &NodeColorMap);
     void setColorByNodeId(const std::vector<long> &NodeIds,const std::vector<App::Color>  &NodeColors);
 
-	/// reset the view of the node colors
-	void resetColorByNodeId(void);
-	/// set the displacement for each node
+    /// reset the view of the node colors
+    void resetColorByNodeId(void);
+    /// set the displacement for each node
     void setDisplacementByNodeId(const std::map<long,Base::Vector3d> &NodeDispMap);
     void setDisplacementByNodeId(const std::vector<long> &NodeIds,const std::vector<Base::Vector3d> &NodeDisps);
-	/// reset the view of the node displacement
-	void resetDisplacementByNodeId(void);
+    /// reset the view of the node displacement
+    void resetDisplacementByNodeId(void);
     /// reaply the node displacement with a certain factor and do a redraw
-    void animateNodes(double factor);
-	/// set the color for each element
-	void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
-	/// reset the view of the element colors
-	void resetColorByElementId(void);
-
-	//@}
+    void applyDisplacementToNodes(double factor);
+    /// set the color for each element
+    void setColorByElementId(const std::map<long,App::Color> &ElementColorMap);
+    /// reset the view of the element colors
+    void resetColorByElementId(void);
+    //@}
 
     const std::vector<unsigned long> &getVisibleElementFaces(void)const{return vFaceElementIdx;}
-
 
     PyObject *getPyObject();
 
@@ -157,6 +156,11 @@ protected:
     SoCoordinate3         * pcAnoCoords;
     SoIndexedFaceSet      * pcFaces;
     SoIndexedLineSet      * pcLines;
+
+    bool onlyEdges;
+
+private:
+    class Private;
 };
 
 } //namespace FemGui

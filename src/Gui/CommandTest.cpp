@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,12 +27,15 @@
 # include <QEventLoop>
 # include <QFileDialog>
 # include <QMutex>
+# include <QMutexLocker>
 # include <QThread>
 # include <QTimer>
 # include <QMdiArea>
 # include <QMdiSubWindow>
 # include <QWaitCondition>
 # include <QTranslator>
+# include <QRunnable>
+# include <QThreadPool>
 #endif
 
 #include <Base/Console.h>
@@ -60,15 +63,16 @@ Std_TestQM::Std_TestQM()
     sGroup        = "Standard-Test";
     sMenuText     = "Test translation files...";
     sToolTipText  = "Test function to check .qm translation files";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_TestQM";
     sStatusTip    = sToolTipText;
 }
 
 void Std_TestQM::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QStringList files = QFileDialog::getOpenFileNames(getMainWindow(),
-        QString::fromAscii("Test translation"), QString(),
-        QString::fromAscii("Translation (*.qm)"));
+        QString::fromLatin1("Test translation"), QString(),
+        QString::fromLatin1("Translation (*.qm)"));
     if (!files.empty()) {
         Translator::instance()->activateLanguage("English");
         QList<QTranslator*> i18n = qApp->findChildren<QTranslator*>();
@@ -97,12 +101,13 @@ Std_TestReloadQM::Std_TestReloadQM()
     sGroup        = "Standard-Test";
     sMenuText     = "Reload translation files";
     sToolTipText  = "Test function to check .qm translation files";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_TestReloadQM";
     sStatusTip    = sToolTipText;
 }
 
 void Std_TestReloadQM::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Translator::instance()->activateLanguage(Translator::instance()->activeLanguage().c_str());
 }
 
@@ -117,7 +122,7 @@ FCCmdTest1::FCCmdTest1()
     sGroup        = "Standard-Test";
     sMenuText     = "Test1";
     sToolTipText  = "Test function 1";
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Std_Test1";
     sStatusTip    = sToolTipText;
     sPixmap       = "Std_Tool1";
     sAccel        = "Ctrl+T";
@@ -125,7 +130,7 @@ FCCmdTest1::FCCmdTest1()
 
 void FCCmdTest1::activated(int iMsg)
 {
-
+    Q_UNUSED(iMsg); 
 }
 
 bool FCCmdTest1::isActive(void)
@@ -153,8 +158,7 @@ FCCmdTest2::FCCmdTest2()
 
 void FCCmdTest2::activated(int iMsg)
 {
-
-
+    Q_UNUSED(iMsg); 
 }
 
 bool FCCmdTest2::isActive(void)
@@ -180,6 +184,7 @@ FCCmdTest3::FCCmdTest3()
 
 void FCCmdTest3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if (!pcDoc) return;
 }
@@ -209,6 +214,7 @@ FCCmdTest4::FCCmdTest4()
 
 void FCCmdTest4::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -237,6 +243,7 @@ FCCmdTest5::FCCmdTest5()
 
 void FCCmdTest5::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -265,6 +272,7 @@ FCCmdTest6::FCCmdTest6()
 
 void FCCmdTest6::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -292,10 +300,11 @@ CmdTestProgress1::CmdTestProgress1()
 
 void CmdTestProgress1::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
@@ -304,8 +313,6 @@ void CmdTestProgress1::activated(int iMsg)
             seq.next(true);
             QWaitCondition().wait(&mutex, 30);
         }
-
-        mutex.unlock();
     }
     catch (...)
     {
@@ -335,10 +342,12 @@ CmdTestProgress2::CmdTestProgress2()
 
 void CmdTestProgress2::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 1000;
         Base::SequencerLauncher seq("Starting progress bar", steps);
 
@@ -376,11 +385,13 @@ CmdTestProgress3::CmdTestProgress3()
 
 void CmdTestProgress3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+    
     try
     {
         // level 1
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 5;
         Base::SequencerLauncher seq1("Starting progress bar", steps);
         for (unsigned long i=0; i<steps;i++)
@@ -444,10 +455,12 @@ CmdTestProgress4::CmdTestProgress4()
 
 void CmdTestProgress4::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+    QMutex mutex;
+    QMutexLocker ml(&mutex);
+
     try
     {
-        QMutex mutex;
-        mutex.lock();
         unsigned long steps = 50;
         Base::SequencerLauncher* seq = new Base::SequencerLauncher("Starting progress bar", steps);
 
@@ -506,10 +519,11 @@ public:
     }
     void run()
     {
+        QMutex mutex;
+        QMutexLocker ml(&mutex);
+	
         try
         {
-            QMutex mutex;
-            mutex.lock();
             Base::SequencerLauncher seq("Starting progress bar in thread", steps);
 
             for (unsigned long i=0; i<this->steps;i++)
@@ -517,7 +531,6 @@ public:
                 seq.next(true);
                 QWaitCondition().wait(&mutex, 5);
             }
-            mutex.unlock();
         }
         catch (...)
         {
@@ -533,6 +546,7 @@ private:
 
 void CmdTestProgress5::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QEventLoop loop;
 
     BarThread* thr1 = new BarThread(2000);
@@ -575,6 +589,7 @@ CmdTestMDI1::CmdTestMDI1()
 
 void CmdTestMDI1::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
 }
@@ -598,6 +613,7 @@ CmdTestMDI2::CmdTestMDI2()
 
 void CmdTestMDI2::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMdiArea* area = getMainWindow()->findChild<QMdiArea*>();
     if (area) {
         MDIView* mdi = getMainWindow()->activeWindow();
@@ -625,6 +641,7 @@ CmdTestMDI3::CmdTestMDI3()
 
 void CmdTestMDI3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
     mdi->setParent(0, Qt::Window | Qt::WindowTitleHint |
@@ -636,6 +653,107 @@ void CmdTestMDI3::activated(int iMsg)
 bool CmdTestMDI3::isActive(void)
 {
     return getMainWindow()->activeWindow();
+}
+
+DEF_STD_CMD(CmdTestConsoleOutput);
+
+CmdTestConsoleOutput::CmdTestConsoleOutput()
+  : Command("Std_TestConsoleOutput")
+{
+    sGroup      = QT_TR_NOOP("Standard-Test");
+    sMenuText   = QT_TR_NOOP("Test console output");
+    sToolTipText= QT_TR_NOOP("Test console output");
+    sStatusTip  = QT_TR_NOOP("Test console output");
+}
+
+namespace Gui {
+class TestConsoleObserver : public Base::ConsoleObserver
+{
+    QMutex mutex;
+public:
+    int matchMsg, matchWrn, matchErr, matchLog;
+    TestConsoleObserver() : matchMsg(0), matchWrn(0), matchErr(0), matchLog(0)
+    {
+    }
+    virtual void Warning(const char * msg)
+    {
+        QMutexLocker ml(&mutex);
+        matchWrn += strcmp(msg, "Write a warning to the console output.\n");
+    }
+    virtual void Message(const char * msg)
+    {
+        QMutexLocker ml(&mutex);
+        matchMsg += strcmp(msg, "Write a message to the console output.\n");
+    }
+    virtual void Error(const char * msg)
+    {
+        QMutexLocker ml(&mutex);
+        matchErr += strcmp(msg, "Write an error to the console output.\n");
+    }
+    virtual void Log(const char * msg)
+    {
+        QMutexLocker ml(&mutex);
+        matchLog += strcmp(msg, "Write a log to the console output.\n");
+    }
+};
+
+class ConsoleMessageTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Message("Write a message to the console output.\n");
+    }
+};
+
+class ConsoleWarningTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Warning("Write a warning to the console output.\n");
+    }
+};
+
+class ConsoleErrorTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Error("Write an error to the console output.\n");
+    }
+};
+
+class ConsoleLogTask : public QRunnable
+{
+public:
+    void run()
+    {
+        for (int i=0; i<10; i++)
+            Base::Console().Log("Write a log to the console output.\n");
+    }
+};
+
+}
+
+void CmdTestConsoleOutput::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    TestConsoleObserver obs;
+    Base::Console().AttachObserver(&obs);
+    QThreadPool::globalInstance()->start(new ConsoleMessageTask);
+    QThreadPool::globalInstance()->start(new ConsoleWarningTask);
+    QThreadPool::globalInstance()->start(new ConsoleErrorTask);
+    QThreadPool::globalInstance()->start(new ConsoleLogTask);
+    QThreadPool::globalInstance()->waitForDone();
+    Base::Console().DetachObserver(&obs);
+
+    if (obs.matchMsg > 0 || obs.matchWrn > 0 || obs.matchErr > 0 || obs.matchLog > 0) {
+        Base::Console().Error("Race condition in Console class\n");
+    }
 }
 
 
@@ -661,6 +779,7 @@ void CreateTestCommands(void)
     rcCmdMgr.addCommand(new CmdTestMDI1());
     rcCmdMgr.addCommand(new CmdTestMDI2());
     rcCmdMgr.addCommand(new CmdTestMDI3());
+    rcCmdMgr.addCommand(new CmdTestConsoleOutput());
 }
 
 } // namespace Gui

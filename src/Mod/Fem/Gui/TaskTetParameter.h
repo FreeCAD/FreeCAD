@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -45,7 +45,7 @@ namespace Fem{
     class FemMeshShapeNetgenObject;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 class ViewProviderFemMeshShapeNetgen;
 
@@ -58,10 +58,8 @@ public:
     TaskTetParameter(Fem::FemMeshShapeNetgenObject *pcObject,QWidget *parent = 0);
     ~TaskTetParameter();
 
-    ViewProviderFemMeshShapeNetgen * MeshViewProvider;
     void setInfo(void);
-
-    bool touched; 
+    bool touched;
 
 private Q_SLOTS:
     void SwitchMethod(int Value);

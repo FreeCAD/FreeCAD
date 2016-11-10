@@ -73,6 +73,12 @@ namespace KDL {
 		virtual void Write(std::ostream& os);
 		static Path* Read(std::istream& is);
 		virtual Path* Clone();
+		/**
+		 * gets an identifier indicating the type of this Path object
+		 */
+		virtual IdentifierType getIdentifier() const {
+			return ID_CYCLIC_CLOSED;
+		}
 		virtual ~Path_Cyclic_Closed();
 	};
 

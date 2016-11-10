@@ -600,8 +600,6 @@ Matrix4<Real>& Matrix4<Real>::operator*= (Real fScalar)
 template <class Real>
 Matrix4<Real>& Matrix4<Real>::operator/= (Real fScalar)
 {
-    int i;
-
     if (fScalar != (Real)0.0)
     {
         Real fInvScalar = ((Real)1.0)/fScalar;

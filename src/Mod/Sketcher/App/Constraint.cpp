@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,11 +23,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <cmath>
 #endif
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
-
+#include <Base/Tools.h>
+#include <QDateTime>
 
 #include "Constraint.h"
 #include "ConstraintPy.h"
@@ -42,9 +44,10 @@ TYPESYSTEM_SOURCE(Sketcher::Constraint, Base::Persistence)
 const int Constraint::GeoUndef = -2000;
 
 Constraint::Constraint()
-: Type(None),
+: Value(0.0),
+  Type(None),
+  AlignmentType(Undef),
   Name(""),
-  Value(0.0),
   First(GeoUndef),
   FirstPos(none),
   Second(GeoUndef),
@@ -52,14 +55,27 @@ Constraint::Constraint()
   Third(GeoUndef),
   ThirdPos(none),
   LabelDistance(10.f),
-  LabelPosition(0.f)
+  LabelPosition(0.f),
+  isDriving(true)
 {
+    // Initialize a random number generator, to avoid Valgrind false positives.
+    static boost::mt19937 ran;
+    static bool seeded = false;
+
+    if (!seeded) {
+        ran.seed(QDateTime::currentMSecsSinceEpoch() & 0xffffffff);
+        seeded = true;
+    }
+    static boost::uuids::basic_random_generator<boost::mt19937> gen(&ran);
+
+    tag = gen();
 }
 
 Constraint::Constraint(const Constraint& from)
-: Type(from.Type),
+: Value(from.Value),
+  Type(from.Type),
+  AlignmentType(from.AlignmentType),
   Name(from.Name),
-  Value(from.Value),
   First(from.First),
   FirstPos(from.FirstPos),
   Second(from.Second),
@@ -67,7 +83,9 @@ Constraint::Constraint(const Constraint& from)
   Third(from.Third),
   ThirdPos(from.ThirdPos),
   LabelDistance(from.LabelDistance),
-  LabelPosition(from.LabelPosition)
+  LabelPosition(from.LabelPosition),
+  isDriving(from.isDriving),
+  tag(from.tag)
 {
 }
 
@@ -80,9 +98,70 @@ Constraint *Constraint::clone(void) const
     return new Constraint(*this);
 }
 
+Constraint *Constraint::copy(void) const
+{
+    Constraint *temp = new Constraint();
+    temp->Value = this->Value;
+    temp->Type = this->Type;
+    temp->AlignmentType = this->AlignmentType;
+    temp->Name = this->Name;
+    temp->First = this->First;
+    temp->FirstPos = this->FirstPos;
+    temp->Second = this->Second;
+    temp->SecondPos = this->SecondPos;
+    temp->Third = this->Third;
+    temp->ThirdPos = this->ThirdPos;
+    temp->LabelDistance = this->LabelDistance;
+    temp->LabelPosition = this->LabelPosition;
+    temp->isDriving = this->isDriving;
+    // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
+    return temp;
+}
+
 PyObject *Constraint::getPyObject(void)
 {
     return new ConstraintPy(new Constraint(*this));
+}
+
+void Constraint::setValue(double newValue)
+{
+    Value = newValue;
+}
+
+double Constraint::getValue() const
+{
+    return Value;
+}
+
+Quantity Constraint::getPresentationValue() const
+{
+    Quantity quantity;
+    switch (Type) {
+    case Distance:
+    case Radius:
+    case DistanceX:
+    case DistanceY:
+        quantity.setValue(Value);
+        quantity.setUnit(Unit::Length);
+        break;
+    case Angle:
+        quantity.setValue(toDegrees<double>(Value));
+        quantity.setUnit(Unit::Angle);
+        break;
+    case SnellsLaw:
+        quantity.setValue(Value);
+        break;
+    default:
+        quantity.setValue(Value);
+        break;
+    }
+
+    QuantityFormat format = quantity.getFormat();
+    format.option = QuantityFormat::None;
+    format.format = QuantityFormat::Default;
+    format.precision = 6; // QString's default
+    quantity.setFormat(format);
+    return quantity;
 }
 
 unsigned int Constraint::getMemSize (void) const
@@ -92,18 +171,23 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
-    writer.Stream() << writer.ind() << "<Constrain "
-    << "Name=\""          <<  Name            << "\" "
-    << "Type=\""          <<  (int)Type       << "\" "
-    << "Value=\""         <<  Value           << "\" "
-    << "First=\""         <<  First           << "\" "
-    << "FirstPos=\""      <<  (int)  FirstPos << "\" "
-    << "Second=\""        <<  Second          << "\" "
-    << "SecondPos=\""     <<  (int) SecondPos << "\" "
-    << "Third=\""         <<  Third           << "\" "
-    << "ThirdPos=\""      <<  (int) ThirdPos  << "\" "
-    << "LabelDistance=\"" <<  LabelDistance   << "\" "
-    << "LabelPosition=\"" <<  LabelPosition   << "\" />"
+    writer.Stream() << writer.ind()     << "<Constrain "
+    << "Name=\""                        <<  Name                << "\" "
+    << "Type=\""                        <<  (int)Type           << "\" ";
+    if(this->Type==InternalAlignment)
+        writer.Stream() 
+        << "InternalAlignmentType=\""   <<  (int)AlignmentType  << "\" ";
+    writer.Stream()     
+    << "Value=\""                       <<  Value               << "\" "
+    << "First=\""                       <<  First               << "\" "
+    << "FirstPos=\""                    <<  (int)  FirstPos     << "\" "
+    << "Second=\""                      <<  Second              << "\" "
+    << "SecondPos=\""                   <<  (int) SecondPos     << "\" "
+    << "Third=\""                       <<  Third               << "\" "
+    << "ThirdPos=\""                    <<  (int) ThirdPos      << "\" "
+    << "LabelDistance=\""               <<  LabelDistance       << "\" "
+    << "LabelPosition=\""               <<  LabelPosition       << "\" "
+    << "IsDriving=\""                   <<  (int)isDriving      << "\" />"
     << std::endl;
 }
 
@@ -118,15 +202,24 @@ void Constraint::Restore(XMLReader &reader)
     Second    = reader.getAttributeAsInteger("Second");
     SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
 
+    if(this->Type==InternalAlignment)
+        AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
+    else
+        AlignmentType = Undef;
+
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {
         Third    = reader.getAttributeAsInteger("Third");
         ThirdPos = (PointPos)  reader.getAttributeAsInteger("ThirdPos");
     }
+
     // Read the distance a constraint label has been moved
     if (reader.hasAttribute("LabelDistance"))
         LabelDistance = (float)reader.getAttributeAsFloat("LabelDistance");
 
     if (reader.hasAttribute("LabelPosition"))
         LabelPosition = (float)reader.getAttributeAsFloat("LabelPosition");
+
+    if (reader.hasAttribute("IsDriving"))
+        isDriving = reader.getAttributeAsInteger("IsDriving") ? true : false;
 }

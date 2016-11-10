@@ -49,10 +49,10 @@
 # include <Geom_CylindricalSurface.hxx>
 # include <Geom2d_Line.hxx>
 # include <Geom2d_TrimmedCurve.hxx>
-# include <Handle_Geom_Plane.hxx>
-# include <Handle_Geom_CylindricalSurface.hxx>
-# include <Handle_Geom2d_Line.hxx>
-# include <Handle_Geom2d_TrimmedCurve.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom_CylindricalSurface.hxx>
+# include <Geom2d_Line.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 # include <Precision.hxx>
 # include <Standard_Real.hxx>
 # include <TopoDS.hxx>
@@ -63,6 +63,9 @@
 
 
 #include "PrimitiveFeature.h"
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/Reader.h>
 #include <Base/Tools.h>
 
 #ifndef M_PI
@@ -71,17 +74,17 @@
 
 
 namespace Part {
-    const App::PropertyFloatConstraint::Constraints floatRange  = {0.0,FLT_MAX,0.1};
-    const App::PropertyFloatConstraint::Constraints apexRange   = {0.0,90.0,0.1};
-    const App::PropertyFloatConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
-    const App::PropertyFloatConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
-    const App::PropertyFloatConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints apexRange   = {0.0,90.0,0.1};
+    const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0,180.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
+    const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
 }
 
 using namespace Part;
 
 
-PROPERTY_SOURCE_ABSTRACT(Part::Primitive, Part::Feature)
+PROPERTY_SOURCE_ABSTRACT(Part::Primitive, Part::AttachableObject)
 
 Primitive::Primitive(void) 
 {
@@ -95,6 +98,60 @@ Primitive::~Primitive()
 short Primitive::mustExecute(void) const
 {
     return Feature::mustExecute();
+}
+
+void Primitive::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+        // For #0001652 the property types of many primitive features have changed
+        // from PropertyFloat or PropertyFloatConstraint to a more meaningful type.
+        // In order to load older project files there must be checked in case the
+        // types don't match if both inherit from PropertyFloat because all derived
+        // classes do not re-implement the Save/Restore methods.
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop) {
+                Base::Type inputType = Base::Type::fromName(TypeName);
+                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                    // Do not directly call the property's Restore method in case the implmentation
+                    // has changed. So, create a temporary PropertyFloat object and assign the value.
+                    App::PropertyFloat floatProp;
+                    floatProp.Restore(reader);
+                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 void Primitive::onChanged(const App::Property* prop)
@@ -112,7 +169,7 @@ void Primitive::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Vertex, Part::Primitive)
@@ -134,7 +191,7 @@ short Vertex::mustExecute() const
         Y.isTouched() ||
         Z.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Vertex::execute(void)
@@ -148,7 +205,7 @@ App::DocumentObjectExecReturn *Vertex::execute(void)
     const TopoDS_Vertex& vertex = MakeVertex.Vertex();
     this->Shape.setValue(vertex);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 
@@ -164,7 +221,7 @@ void Vertex::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Line, Part::Primitive)
@@ -192,7 +249,7 @@ short Line::mustExecute() const
         Y2.isTouched() ||
         Z2.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Line::execute(void)
@@ -213,7 +270,7 @@ App::DocumentObjectExecReturn *Line::execute(void)
     const TopoDS_Edge& edge = mkEdge.Edge();
     this->Shape.setValue(edge);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Line::onChanged(const App::Property* prop)
@@ -228,7 +285,7 @@ void Line::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 PROPERTY_SOURCE(Part::Plane, Part::Primitive)
@@ -299,7 +356,7 @@ App::DocumentObjectExecReturn *Plane::execute(void)
     TopoDS_Shape ResultShape = mkFace.Shape();
     this->Shape.setValue(ResultShape);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
@@ -307,7 +364,7 @@ PROPERTY_SOURCE(Part::Sphere, Part::Primitive)
 Sphere::Sphere(void)
 {
     ADD_PROPERTY_TYPE(Radius,(5.0),"Sphere",App::Prop_None,"The radius of the sphere");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Sphere",App::Prop_None,"The angle of the sphere");
@@ -347,7 +404,7 @@ App::DocumentObjectExecReturn *Sphere::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
@@ -355,9 +412,11 @@ PROPERTY_SOURCE(Part::Ellipsoid, Part::Primitive)
 Ellipsoid::Ellipsoid(void)
 {
     ADD_PROPERTY_TYPE(Radius1,(2.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius1.setConstraints(&floatRange);
+    Radius1.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius2,(4.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
-    Radius2.setConstraints(&floatRange);
+    Radius2.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(Radius3,(0.0),"Ellipsoid",App::Prop_None,"The radius of the ellipsoid");
+    Radius3.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
     Angle1.setConstraints(&angleRangeV);
     ADD_PROPERTY_TYPE(Angle2,(90.0f),"Ellipsoid",App::Prop_None,"The angle of the ellipsoid");
@@ -371,6 +430,8 @@ short Ellipsoid::mustExecute() const
     if (Radius1.isTouched())
         return 1;
     if (Radius2.isTouched())
+        return 1;
+    if (Radius3.isTouched())
         return 1;
     if (Angle1.isTouched())
         return 1;
@@ -388,6 +449,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
     if (Radius2.getValue() < Precision::Confusion())
         return new App::DocumentObjectExecReturn("Radius of ellipsoid too small");
+
     try {
         gp_Pnt pnt(0.0,0.0,0.0);
         gp_Dir dir(0.0,0.0,1.0);
@@ -397,19 +459,24 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
                                         Angle1.getValue()/180.0f*M_PI,
                                         Angle2.getValue()/180.0f*M_PI,
                                         Angle3.getValue()/180.0f*M_PI);
-        Standard_Real scale = Radius1.getValue()/Radius2.getValue();
-        gp_Dir xDir = ax2.XDirection();
-        gp_Dir yDir = ax2.YDirection();
+        Standard_Real scaleX = 1.0;
+        Standard_Real scaleZ = Radius1.getValue()/Radius2.getValue();
+        // issue #1798: A third radius has been introduced. To be backward
+        // compatible if Radius3 is 0.0 (default) it's handled to be the same
+        // as Radius2
+        Standard_Real scaleY = 1.0;
+        if (Radius3.getValue() >= Precision::Confusion())
+            scaleY = Radius3.getValue()/Radius2.getValue();
         gp_GTrsf mat;
-        mat.SetValue(1,1,xDir.X());
-        mat.SetValue(2,1,xDir.Y());
-        mat.SetValue(3,1,xDir.Z());
-        mat.SetValue(1,2,yDir.X());
-        mat.SetValue(2,2,yDir.Y());
-        mat.SetValue(3,2,yDir.Z());
-        mat.SetValue(1,3,dir.X()*scale);
-        mat.SetValue(2,3,dir.Y()*scale);
-        mat.SetValue(3,3,dir.Z()*scale);
+        mat.SetValue(1,1,scaleX);
+        mat.SetValue(2,1,0.0);
+        mat.SetValue(3,1,0.0);
+        mat.SetValue(1,2,0.0);
+        mat.SetValue(2,2,scaleY);
+        mat.SetValue(3,2,0.0);
+        mat.SetValue(1,3,0.0);
+        mat.SetValue(2,3,0.0);
+        mat.SetValue(3,3,scaleZ);
         BRepBuilderAPI_GTransform mkTrsf(mkSphere.Shape(), mat);
         TopoDS_Shape ResultShape = mkTrsf.Shape();
         this->Shape.setValue(ResultShape);
@@ -419,7 +486,7 @@ App::DocumentObjectExecReturn *Ellipsoid::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Cylinder, Part::Primitive)
@@ -462,7 +529,7 @@ App::DocumentObjectExecReturn *Cylinder::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 App::PropertyIntegerConstraint::Constraints Prism::polygonRange = {3,INT_MAX,1};
@@ -520,7 +587,7 @@ App::DocumentObjectExecReturn *Prism::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 App::PropertyIntegerConstraint::Constraints RegularPolygon::polygon = {3,INT_MAX,1};
@@ -572,7 +639,7 @@ App::DocumentObjectExecReturn *RegularPolygon::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 
@@ -622,7 +689,7 @@ App::DocumentObjectExecReturn *Cone::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Torus, Part::Primitive)
@@ -630,9 +697,9 @@ PROPERTY_SOURCE(Part::Torus, Part::Primitive)
 Torus::Torus(void)
 {
     ADD_PROPERTY_TYPE(Radius1,(10.0),"Torus",App::Prop_None,"The radius of the torus");
-    Radius1.setConstraints(&floatRange);
+    Radius1.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius2,(2.0),"Torus",App::Prop_None,"The radius of the torus");
-    Radius2.setConstraints(&floatRange);
+    Radius2.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle1,(-180.0),"Torus",App::Prop_None,"The angle of the torus");
     Angle1.setConstraints(&torusRangeV);
     ADD_PROPERTY_TYPE(Angle2,(180.0),"Torus",App::Prop_None,"The angle of the torus");
@@ -694,7 +761,7 @@ App::DocumentObjectExecReturn *Torus::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Helix, Part::Primitive)
@@ -705,11 +772,11 @@ const char* Part::Helix::StyleEnums  []= {"Old style","New style",NULL};
 Helix::Helix(void)
 {
     ADD_PROPERTY_TYPE(Pitch, (1.0),"Helix",App::Prop_None,"The pitch of the helix");
-    Pitch.setConstraints(&floatRange);
+    Pitch.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Height,(2.0),"Helix",App::Prop_None,"The height of the helix");
-    Height.setConstraints(&floatRange);
+    Height.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Helix",App::Prop_None,"The radius of the helix");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Angle,(0.0),"Helix",App::Prop_None,"If angle is > 0 a conical otherwise a cylindircal surface is used");
     Angle.setConstraints(&apexRange);
     ADD_PROPERTY_TYPE(LocalCoord,(long(0)),"Coordinate System",App::Prop_None,"Orientation of the local coordinate system of the helix");
@@ -731,7 +798,7 @@ void Helix::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 short Helix::mustExecute() const
@@ -759,19 +826,23 @@ App::DocumentObjectExecReturn *Helix::execute(void)
         Standard_Real myRadius = Radius.getValue();
         Standard_Real myAngle  = Angle.getValue();
         Standard_Boolean myLocalCS = LocalCoord.getValue() ? Standard_True : Standard_False;
-        Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
+        //Standard_Boolean myStyle = Style.getValue() ? Standard_True : Standard_False;
         TopoShape helix;
-        if (myHeight / myPitch > 50.0)
-            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
-        else
-            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
+        // work around for OCC bug #23314 (FC #0954)
+        // the exact conditions for failure are unknown.  building the helix 1 turn at a time
+        // seems to always work. 
+        this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+//        if (myHeight / myPitch > 50.0)
+//            this->Shape.setValue(helix.makeLongHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS));
+//        else
+//            this->Shape.setValue(helix.makeHelix(myPitch, myHeight, myRadius, myAngle, myLocalCS, myStyle));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
@@ -779,11 +850,11 @@ PROPERTY_SOURCE(Part::Spiral, Part::Primitive)
 Spiral::Spiral(void)
 {
     ADD_PROPERTY_TYPE(Growth, (1.0),"Spiral",App::Prop_None,"The growth of the spiral per rotation");
-    Growth.setConstraints(&floatRange);
+    Growth.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Radius,(1.0),"Spiral",App::Prop_None,"The radius of the spiral");
-    Radius.setConstraints(&floatRange);
+    Radius.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(Rotations,(2.0),"Spiral",App::Prop_None,"The number of rotations");
-    Rotations.setConstraints(&floatRange);
+    Rotations.setConstraints(&quantityRange);
 }
 
 void Spiral::onChanged(const App::Property* prop)
@@ -798,7 +869,7 @@ void Spiral::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }
 
 short Spiral::mustExecute() const
@@ -861,13 +932,17 @@ App::DocumentObjectExecReturn *Spiral::execute(void)
         );
         BRepProj_Projection proj(wire, mkFace.Face(), gp::DZ());
         this->Shape.setValue(proj.Shape());
+
+        AttachableObject::execute();
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+
+
+    return AttachableObject::execute();
 }
 
 PROPERTY_SOURCE(Part::Wedge, Part::Primitive)
@@ -952,7 +1027,7 @@ App::DocumentObjectExecReturn *Wedge::execute(void)
         return new App::DocumentObjectExecReturn(e->GetMessageString());
     }
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Wedge::onChanged(const App::Property* prop)
@@ -995,7 +1070,7 @@ short Ellipse::mustExecute() const
         MajorRadius.isTouched() ||
         MinorRadius.isTouched())
         return 1;
-    return Part::Feature::mustExecute();
+    return Part::AttachableObject::mustExecute();
 }
 
 App::DocumentObjectExecReturn *Ellipse::execute(void)
@@ -1009,7 +1084,7 @@ App::DocumentObjectExecReturn *Ellipse::execute(void)
     const TopoDS_Edge& edge = clMakeEdge.Edge();
     this->Shape.setValue(edge);
 
-    return App::DocumentObject::StdReturn;
+    return AttachableObject::execute();
 }
 
 void Ellipse::onChanged(const App::Property* prop)
@@ -1024,5 +1099,5 @@ void Ellipse::onChanged(const App::Property* prop)
             }
         }
     }
-    Part::Feature::onChanged(prop);
+    Part::AttachableObject::onChanged(prop);
 }

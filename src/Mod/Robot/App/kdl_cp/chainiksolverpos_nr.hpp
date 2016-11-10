@@ -38,6 +38,8 @@ namespace KDL {
     class ChainIkSolverPos_NR : public ChainIkSolverPos
     {
     public:
+        static const int E_IKSOLVER_FAILED = -100; //! Child IK solver failed
+
         /**
          * Constructor of the solver, it needs the chain, a forward
          * position kinematics solver and an inverse velocity
@@ -57,7 +59,21 @@ namespace KDL {
                             unsigned int maxiter=100,double eps=1e-6);
         ~ChainIkSolverPos_NR();
 
+        /**
+         * Find an output joint pose \a q_out, given a starting joint pose
+         * \a q_init and a desired cartesian pose \a p_in
+         *
+         * @return:
+         *  E_NOERROR=solution converged to <eps in maxiter
+         *  E_DEGRADED=solution converged to <eps in maxiter, but solution is
+         *  degraded in quality (e.g. pseudo-inverse in iksolver is singular)
+         *  E_IKSOLVER_FAILED=velocity solver failed
+         *  E_NO_CONVERGE=solution did not converge (e.g. large displacement, low iterations)
+         */
         virtual int CartToJnt(const JntArray& q_init, const Frame& p_in, JntArray& q_out);
+
+        /// @copydoc KDL::SolverI::strError()
+        virtual const char* strError(const int error) const;
 
     private:
         const Chain chain;

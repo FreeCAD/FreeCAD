@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,16 +27,8 @@
 #include "ViewProviderFemMeshShape.h"
 #include <Gui/ViewProviderBuilder.h>
 
-class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
-class SoShapeHints;
-class SoMaterialBinding;
-
 namespace FemGui
 {
-
 
 class FemGuiExport ViewProviderFemMeshShapeNetgen : public ViewProviderFemMeshShape
 {
@@ -47,14 +39,13 @@ public:
     ViewProviderFemMeshShapeNetgen();
 
     /// destructor.
-    ~ViewProviderFemMeshShapeNetgen();
+    virtual ~ViewProviderFemMeshShapeNetgen();
 
      virtual void updateData(const App::Property*);
 
 protected:
     virtual void setupContextMenu(QMenu* menu, QObject* receiver, const char* member);
     virtual bool setEdit(int ModNum);
-
 };
 
 } //namespace FemGui

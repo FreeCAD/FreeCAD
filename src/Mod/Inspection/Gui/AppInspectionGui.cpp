@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) YEAR YOUR NAME         <Your e-mail address>            *
+ *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Gui/Application.h>
 
@@ -36,16 +39,30 @@
 void CreateInspectionCommands(void);
 
 
-/* registration table  */
-extern struct PyMethodDef InspectionGui_methods[];
+namespace InspectionGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("InspectionGui")
+    {
+        initialize("This module is the InspectionGui module."); // register with Python
+    }
 
-PyDoc_STRVAR(module_InspectionGui_doc,
-"This module is the InspectionGui module.");
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace InspectionGui
 
 
 /* Python entry */
-extern "C" {
-void InspectionGuiExport initInspectionGui()
+PyMODINIT_FUNC initInspectionGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -62,8 +79,6 @@ void InspectionGuiExport initInspectionGui()
     //
     //
 
-    (void) Py_InitModule3("InspectionGui", InspectionGui_methods, module_InspectionGui_doc);   /* mod name, table ptr */
+    (void)InspectionGui::initModule();
     Base::Console().Log("Loading GUI of Inspection module... done\n");
 }
-
-} // extern "C"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>CmdCompleteConstraintAxle</name>
     <message>
@@ -37,7 +37,7 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>Zeic&amp;hnen</translation>
+        <translation>Zeic&amp;hnung</translation>
     </message>
     <message>
         <location line="-1"/>

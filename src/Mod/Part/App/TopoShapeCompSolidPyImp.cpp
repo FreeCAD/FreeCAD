@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,7 @@
 #include <Standard_Failure.hxx>
 #include <TopoDS_CompSolid.hxx>
 
+#include "OCCError.h"
 #include "TopoShape.h"
 
 // inclusion of the generated files (generated out of TopoShapeCompSolidPy.xml)
@@ -64,7 +65,7 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeSolidPy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 if (!sh.IsNull())
                     builder.Add(Comp, sh);
             }
@@ -72,11 +73,11 @@ int TopoShapeCompSolidPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
 
-    getTopoShapePtr()->_Shape = Comp;
+    getTopoShapePtr()->setShape(Comp);
     return 0;
 }
 
@@ -87,11 +88,11 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
         return NULL;
 
     BRep_Builder builder;
-    TopoDS_Shape& comp = getTopoShapePtr()->_Shape;
+    TopoDS_Shape comp = getTopoShapePtr()->getShape();
     
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapePy*>(obj)->
-            getTopoShapePtr()->_Shape;
+            getTopoShapePtr()->getShape();
         if (!sh.IsNull())
             builder.Add(comp, sh);
         else
@@ -99,9 +100,11 @@ PyObject*  TopoShapeCompSolidPy::add(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
+
+    getTopoShapePtr()->setShape(comp);
 
     Py_Return;
 }

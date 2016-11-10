@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -88,7 +88,7 @@ FemMeshShapeObject::~FemMeshShapeObject()
 {
 }
 
-App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void) 
+App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 {
     Fem::FemMesh newMesh;
 
@@ -102,7 +102,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 #else
     TopoDS_Shape shape = feat->Shape.getValue();
 #endif
-    
+
     newMesh.getSMesh()->ShapeToMesh(shape);
     SMESH_Gen *myGen = newMesh.getGenerator();
 
@@ -188,38 +188,38 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
     NETGENPlugin_Mesher myNetGenMesher(newMesh.getSMesh(),shape,true);
 
     //NETGENPlugin_SimpleHypothesis_2D * tet2 = new NETGENPlugin_SimpleHypothesis_2D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);    
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);    
-    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();    
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetNumberOfSegments(5);
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->SetLocalLength(0.1);
+    //static_cast<NETGENPlugin_SimpleHypothesis_2D*>(tet2.get())->LengthFromEdges();
     //myNetGenMesher.SetParameters(tet2);
 
     //NETGENPlugin_SimpleHypothesis_3D* tet= new NETGENPlugin_SimpleHypothesis_3D(hyp++,1,myGen);
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();    
-    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);    
+    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->LengthFromFaces();
+    //static_cast<NETGENPlugin_SimpleHypothesis_3D*>(tet.get())->SetMaxElementVolume(0.1);
     //myNetGenMesher.SetParameters( tet);
 
     myNetGenMesher.Compute();
-#endif 
+#endif
 
 
-    
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
-    int numNode = info.NbNodes();
-    int numTria = info.NbTriangles();
-    int numQuad = info.NbQuadrangles();
-    int numPoly = info.NbPolygons();
-    int numVolu = info.NbVolumes();
-    int numTetr = info.NbTetras();
-    int numHexa = info.NbHexas();
-    int numPyrd = info.NbPyramids();
-    int numPris = info.NbPrisms();
-    int numHedr = info.NbPolyhedrons();
+
+    //SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(newMesh.getSMesh())->GetMeshDS();
+    //const SMDS_MeshInfo& info = data->GetMeshInfo();
+    //int numNode = info.NbNodes();
+    //int numTria = info.NbTriangles();
+    //int numQuad = info.NbQuadrangles();
+    //int numPoly = info.NbPolygons();
+    //int numVolu = info.NbVolumes();
+    //int numTetr = info.NbTetras();
+    //int numHexa = info.NbHexas();
+    //int numPyrd = info.NbPyramids();
+    //int numPris = info.NbPrisms();
+    //int numHedr = info.NbPolyhedrons();
 
     // set the value to the object
     FemMesh.setValue(newMesh);
 
-    
+
     return App::DocumentObject::StdReturn;
 }
 
@@ -234,7 +234,7 @@ App::DocumentObjectExecReturn *FemMeshShapeObject::execute(void)
 //        // ref counter is set to 1
 //        PythonObject = Py::Object(new DocumentObjectPy(this),true);
 //    }
-//    return Py::new_reference_to(PythonObject); 
+//    return Py::new_reference_to(PythonObject);
 //}
 
 //void FemMeshShapeObject::onChanged(const Property* prop)

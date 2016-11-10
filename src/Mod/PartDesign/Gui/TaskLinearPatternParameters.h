@@ -57,22 +57,25 @@ public:
     TaskLinearPatternParameters(TaskMultiTransformParameters *parentTask, QLayout *layout);
     virtual ~TaskLinearPatternParameters();
 
-    const std::string getDirection(void) const;
-    const bool getReverse(void) const;
-    const double getLength(void) const;
-    const unsigned getOccurrences(void) const;
+    virtual void apply();
 
 private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
     void onLength(const double l);
-    void onOccurrences(const int n);
+    void onOccurrences(const uint n);
     virtual void onUpdateView(bool);
+    virtual void onFeatureDeleted(void);
 
 protected:
     virtual void changeEvent(QEvent *e);
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    virtual void clearButtons();
+    void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
+    bool getReverse(void) const;
+    double getLength(void) const;
+    unsigned getOccurrences(void) const;
 
 private:
     void setupUI();
@@ -82,6 +85,8 @@ private:
 private:
     Ui_TaskLinearPatternParameters* ui;
     QTimer* updateViewTimer;
+
+    ComboLinks dirLinks;
 };
 
 
@@ -93,10 +98,6 @@ class TaskDlgLinearPatternParameters : public TaskDlgTransformedParameters
 public:
     TaskDlgLinearPatternParameters(ViewProviderLinearPattern *LinearPatternView);
     virtual ~TaskDlgLinearPatternParameters() {}
-
-public:
-    /// is called by the framework if the dialog is accepted (Ok)
-    virtual bool accept();
 };
 
 } //namespace PartDesignGui

@@ -109,27 +109,60 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 		</Methode>
 		<Methode Name="increaseMultiplicity">
 			<Documentation>
-				<UserDocu>Increases the multiplicity</UserDocu>
+				<UserDocu>
+				increaseMultiplicity(int index, int mult)
+				increaseMultiplicity(int start, int end, int mult)
+				Increases multiplicity of knots up to mult.
+
+				index: the index of a knot to modify (1-based)
+				start, end: index range of knots to modify.
+				If mult is lower or equal to the current multiplicity nothing is done. If mult is higher than the degree the degree is used.
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="incrementMultiplicity">
 			<Documentation>
-				<UserDocu>Increases the multiplicity</UserDocu>
+				<UserDocu>
+				incrementMultiplicity(int start, int end, int mult)
+				Raises multiplicity of knots by mult.
+
+				start, end: index range of knots to modify.
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="insertKnot">
 			<Documentation>
-				<UserDocu>Inserts knot.</UserDocu>
+				<UserDocu>
+				insertKnot(u, mult = 1, tol = 0.0)
+				Inserts a knot value in the sequence of knots. If u is an existing knot the 
+				multiplicity is increased by mult. </UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="insertKnots">
 			<Documentation>
-				<UserDocu>Inserts knots.</UserDocu>
+				<UserDocu>
+				insertKnots(list_of_floats, list_of_ints, tol = 0.0, bool_add = True)
+				Inserts a set of knots values in the sequence of knots.
+
+				For each u = list_of_floats[i], mult = list_of_ints[i]
+
+				If u is an existing knot the multiplicity is increased by mult if bool_add is 
+				True, otherwise increased to mult.
+
+				If u is not on the parameter range nothing is done.
+
+				If the multiplicity is negative or null nothing is done. The new multiplicity 
+				is limited to the degree.
+
+				The tolerance criterion for knots equality is the max of Epsilon(U) and ParametricTolerance.
+				</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="removeKnot">
 			<Documentation>
 				<UserDocu>
+					removeKnot(Index, M, tol)
+
 					Reduces the multiplicity of the knot of index Index to M.
 					If M is equal to 0, the knot is removed.
 					With a modification of this type, the array of poles is also modified.
@@ -147,7 +180,9 @@ done if Degree is less than or equal to the current degree.</UserDocu>
 		</Methode>
 		<Methode Name="segment">
 			<Documentation>
-				<UserDocu>Modifies this B-Spline curve by segmenting it.</UserDocu>
+				<UserDocu>
+					segment(u1,u2)
+					Modifies this B-Spline curve by segmenting it.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="setKnot">
@@ -201,6 +236,11 @@ to the pole of index Index in the poles table.</UserDocu>
 				<UserDocu>Get all weights of the B-Spline curve.</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="getPolesAndWeights">
+			<Documentation>
+				<UserDocu>Returns the table of poles and weights in homogenous ccordinates.</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="getResolution" Const="true">
 			<Documentation>
 				<UserDocu>Computes for this B-Spline curve the parametric tolerance (UTolerance)
@@ -212,11 +252,14 @@ ensures that:
 		</Methode>
 		<Methode Name="movePoint">
 			<Documentation>
-				<UserDocu>Moves the point of parameter U of this B-Spline curve to P.
+				<UserDocu>
+				movePoint(U, P, Index1, Index2)
+				Moves the point of parameter U of this B-Spline curve to P.
 Index1 and Index2 are the indexes in the table of poles of this B-Spline curve
 of the first and last poles designated to be moved.
-FirstModifiedPole and LastModifiedPole are the indexes of the first and last
-poles which are effectively modified.</UserDocu>
+
+Returns: (FirstModifiedPole, LastModifiedPole). They are the indexes of the 
+first and last poles which are effectively modified.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="setNotPeriodic">
@@ -250,17 +293,78 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="approximate">
+		<Methode Name="approximate" Keyword="true">
 			<Documentation>
 				<UserDocu>
 					Replaces this B-Spline curve by approximating a set of points.
+					The function accepts keywords as arguments.
+
+					approximate2(Points = list_of_points) 
+
+					Optional arguments :
+
+					DegMin = integer (3) : Minimum degree of the curve.
+					DegMax = integer (8) : Maximum degree of the curve.
+					Tolerance = float (1e-3) : approximating tolerance.
+					Continuity = string ('C2') : Desired continuity of the curve.
+					Possible values : 'C0','G1','C1','G2','C2','C3','CN'
+
+					LengthWeight = float, CurvatureWeight = float, TorsionWeight = float
+					If one of these arguments is not null, the functions approximates the 
+					points using variational smoothing algorithm, which tries to minimize 
+					additional criterium: 
+					LengthWeight*CurveLength + CurvatureWeight*Curvature + TorsionWeight*Torsion
+					Continuity must be C0, C1 or C2, else defaults to C2.
+
+					Parameters = list of floats : knot sequence of the approximated points.
+					This argument is only used if the weights above are all null.
+
+					ParamType = string ('Uniform','Centripetal' or 'ChordLength')
+					Parameterization type. Only used if weights and Parameters above aren't specified.
+
+					Note : Continuity of the spline defaults to C2. However, it may not be applied if 
+					it conflicts with other parameters ( especially DegMax ).
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="interpolate">
+        <Methode Name="getCardinalSplineTangents" Keyword="true">
+            <Documentation>
+                <UserDocu>Compute the tangents for a Cardinal spline</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="interpolate" Keyword="true">
 			<Documentation>
 				<UserDocu>
 					Replaces this B-Spline curve by interpolating a set of points.
+					The function accepts keywords as arguments.
+
+					interpolate(Points = list_of_points) 
+
+					Optional arguments :
+
+					PeriodicFlag = bool (False) : Sets the curve closed or opened.
+					Tolerance = float (1e-6) : interpolating tolerance
+
+					Parameters : knot sequence of the interpolated points.
+					If not supplied, the function defaults to chord-length parameterization.
+					If PeriodicFlag == True, one extra parameter must be appended.
+
+					EndPoint Tangent constraints :
+
+					InitialTangent = vector, FinalTangent = vector
+					specify tangent vectors for starting and ending points 
+					of the BSpline. Either none, or both must be specified.
+
+					Full Tangent constraints :
+
+					Tangents = list_of_vectors, TangentFlags = list_of_bools
+					Both lists must have the same length as Points list.
+					Tangents specifies the tangent vector of each point in Points list.
+					TangentFlags (bool) activates or deactivates the corresponding tangent.
+					These arguments will be ignored if EndPoint Tangents (above) are also defined.
+
+					Note : Continuity of the spline defaults to C2. However, if periodic, or tangents 
+					are supplied, the continuity will drop to C1.
 				</UserDocu>
 			</Documentation>
 		</Methode>
@@ -307,6 +411,14 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
+		<Methode Name="toBiArcs">
+			<Documentation>
+				<UserDocu>
+					Build a list of arcs and lines to approximate the b-spline.
+					toBiArcs(tolerance) -> list.
+				</UserDocu>
+			</Documentation>
+		</Methode>
 		<Methode Name="join">
 			<Documentation>
 				<UserDocu>
@@ -317,7 +429,13 @@ from the knots table of this B-Spline curve.</UserDocu>
 		<Methode Name="makeC1Continuous">
 			<Documentation>
 				<UserDocu>
-					Tries to make the spline C1-continuous where possible.
+					makeC1Continuous(tol = 1e-6, ang_tol = 1e-7)
+					Reduces as far as possible the multiplicities of the knots of this BSpline 
+					(keeping the geometry). It returns a new BSpline, which could still be C0. 
+					tol is a geometrical tolerance. 
+					The tol_ang is angular tolerance, in radians. It sets tolerable angle mismatch 
+					of the tangents on the left and on the right to decide if the curve is G1 or 
+					not at a given point.
 				</UserDocu>
 			</Documentation>
 		</Methode>

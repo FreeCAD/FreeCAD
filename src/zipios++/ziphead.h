@@ -179,7 +179,7 @@ public:
   void setOffset( uint32 offset )   { cdir_offset = offset ;        }
 
   void setTotalCount( uint16 c )    { cdir_entries = c ; cdir_tot_entries = c ; }
-  int  eocdOffSetFromEnd() const { return eocd_offset_from_end ; }
+  int  eocdOffSetFromEnd() const { return static_cast<int>(eocd_offset_from_end) ; }
   bool read( vector<unsigned char> &buf, int pos ) ;
 private:
   static const uint32 signature;
@@ -224,7 +224,7 @@ inline bool operator!= ( const ZipCDirEntry &ze, const ZipLocalEntry &zlh ) {
 
 /*
   Zipios++ - a small C++ library that provides easy access to .zip files.
-  Copyright (C) 2000  Thomas Søndergaard
+  Copyright (C) 2000  Thomas SÃ¸ndergaard
   
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public

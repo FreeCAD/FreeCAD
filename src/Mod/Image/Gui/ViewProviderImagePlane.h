@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2011 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -25,7 +25,6 @@
 #define IMAGE_ViewProviderImagePlane_H
 
 #include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/SoFCSelection.h>
 
 class SoCoordinate3;
 class SoDrawStyle;

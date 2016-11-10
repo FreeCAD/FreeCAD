@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="DocumentObjectPy" 
+      Name="PartPy" 
+      Twin="Part" 
+      TwinPointer="Part" 
+      Include="App/Part.h" 
+      Namespace="App" 
+      FatherInclude="App/DocumentObjectPy.h" 
+      FatherNamespace="App">
+    <Documentation>
+      <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
+      <UserDocu>This class handles document objects in Part</UserDocu>
+    </Documentation>
+
+    <CustomAttributes />
+  </PythonExport>
+</GenerateModel>

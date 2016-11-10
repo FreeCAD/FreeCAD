@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,10 +28,9 @@
 #include "Mod/Robot/App/Trajectory.h"
 
 // inclusion of the generated files (generated out of TrajectoryPy.xml)
-#include "TrajectoryPy.h"
-#include "TrajectoryPy.cpp"
-
-#include "WaypointPy.h"
+#include <Mod/Robot/App/TrajectoryPy.h>
+#include <Mod/Robot/App/TrajectoryPy.cpp>
+#include <Mod/Robot/App/WaypointPy.h>
 
 using namespace Robot;
 
@@ -112,7 +111,7 @@ PyObject* TrajectoryPy::insertWaypoints(PyObject * args)
         return new TrajectoryPy(new Robot::Trajectory(*getTrajectoryPtr()));
     }
 
-    Py_Error(PyExc_Exception, "Wrong parameters - waypoint or placement expected");
+    Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters - waypoint or placement expected");
 
 }
 

@@ -28,7 +28,10 @@
 # include <QEvent>
 #endif
 
+#include <boost/bind.hpp>
+
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Parameter.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
@@ -73,13 +76,93 @@ PropertyView::PropertyView(QWidget *parent)
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorView->setAutomaticDocumentUpdate(false);
     tabs->addTab(propertyEditorView, tr("View"));
+
     propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
     propertyEditorData->setAutomaticDocumentUpdate(true);
     tabs->addTab(propertyEditorData, tr("Data"));
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
+    if ( hGrp ) {
+        int preferredTab = hGrp->GetInt("LastTabIndex", 1);
+
+        if ( preferredTab > 0 && preferredTab < tabs->count() )
+            tabs->setCurrentIndex(preferredTab);
+    }
+
+    // connect after adding all tabs, so adding doesn't thrash the parameter
+    connect(tabs, SIGNAL(currentChanged(int)), this, SLOT(tabChanged(int)));
+
+    this->connectPropData =
+    App::GetApplication().signalChangedObject.connect(boost::bind
+        (&PropertyView::slotChangePropertyData, this, _1, _2));
+    this->connectPropView =
+    Gui::Application::Instance->signalChangedObject.connect(boost::bind
+        (&PropertyView::slotChangePropertyView, this, _1, _2));
+    this->connectPropAppend =
+    App::GetApplication().signalAppendDynamicProperty.connect(boost::bind
+        (&PropertyView::slotAppendDynamicProperty, this, _1));
+    this->connectPropRemove =
+    App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
+        (&PropertyView::slotRemoveDynamicProperty, this, _1));
+    this->connectPropChange =
+    App::GetApplication().signalChangePropertyEditor.connect(boost::bind
+        (&PropertyView::slotChangePropertyEditor, this, _1));
 }
 
 PropertyView::~PropertyView()
 {
+    this->connectPropData.disconnect();
+    this->connectPropView.disconnect();
+    this->connectPropAppend.disconnect();
+    this->connectPropRemove.disconnect();
+    this->connectPropChange.disconnect();
+}
+
+void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
+{
+    propertyEditorData->updateProperty(prop);
+}
+
+void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::Property& prop)
+{
+    propertyEditorView->updateProperty(prop);
+}
+
+void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent->isHidden(&prop))
+        return;
+
+    if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->appendProperty(prop);
+    }
+    else if (parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->appendProperty(prop);
+    }
+}
+
+void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->removeProperty(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->removeProperty(prop);
+    }
+}
+
+void PropertyView::slotChangePropertyEditor(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->updateEditorMode(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->updateEditorMode(prop);
+    }
 }
 
 struct PropertyView::PropInfo
@@ -137,7 +220,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = ob->getPropertyName(*pt);
                 nameType.propId = (*pt)->getTypeId().getKey();
 
-                if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {
+                if (!ob->isHidden(*pt)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                     if (pi != propDataMap.end()) {
                         pi->propList.push_back(*pt);
@@ -157,7 +240,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3)) {
+                if (!vp->isHidden(pt->second)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                     if (pi != propViewMap.end()) {
                         pi->propList.push_back(pt->second);
@@ -190,6 +273,15 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
         }
     }
     propertyEditorView->buildUp(viewProps);
+}
+
+void PropertyView::tabChanged(int index)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("PropertyView");
+    if (hGrp) {
+        hGrp->SetInt("LastTabIndex", index);
+    }
 }
 
 void PropertyView::changeEvent(QEvent *e)

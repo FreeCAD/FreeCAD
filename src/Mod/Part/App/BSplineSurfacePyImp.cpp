@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Geom_BSplineCurve.hxx>
 # include <Geom_BSplineSurface.hxx>
-# include <Handle_Geom_BSplineCurve.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
@@ -39,6 +39,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "BSplineCurvePy.h"
 #include "BSplineSurfacePy.h"
@@ -90,14 +91,7 @@ PyObject* BSplineSurfacePy::isURational(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVRational(PyObject *args)
@@ -108,14 +102,7 @@ PyObject* BSplineSurfacePy::isVRational(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
@@ -126,14 +113,7 @@ PyObject* BSplineSurfacePy::isUPeriodic(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
@@ -144,14 +124,7 @@ PyObject* BSplineSurfacePy::isVPeriodic(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
@@ -162,14 +135,7 @@ PyObject* BSplineSurfacePy::isUClosed(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
@@ -180,14 +146,7 @@ PyObject* BSplineSurfacePy::isVClosed(PyObject *args)
     Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineSurfacePy::increaseDegree(PyObject *args)
@@ -255,7 +214,7 @@ PyObject* BSplineSurfacePy::incrementUMultiplicity(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -275,7 +234,7 @@ PyObject* BSplineSurfacePy::incrementVMultiplicity(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -297,7 +256,7 @@ PyObject* BSplineSurfacePy::insertUKnot(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -338,7 +297,7 @@ PyObject* BSplineSurfacePy::insertUKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -360,7 +319,7 @@ PyObject* BSplineSurfacePy::insertVKnot(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -401,7 +360,7 @@ PyObject* BSplineSurfacePy::insertVKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -419,18 +378,11 @@ PyObject* BSplineSurfacePy::removeUKnot(PyObject *args)
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveUKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -446,18 +398,11 @@ PyObject* BSplineSurfacePy::removeVKnot(PyObject *args)
         Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = surf->RemoveVKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -475,7 +420,7 @@ PyObject* BSplineSurfacePy::segment(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -565,7 +510,7 @@ PyObject* BSplineSurfacePy::setUKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -591,7 +536,7 @@ PyObject* BSplineSurfacePy::setVKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -613,7 +558,7 @@ PyObject* BSplineSurfacePy::getUKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -635,7 +580,7 @@ PyObject* BSplineSurfacePy::getVKnots(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -660,7 +605,7 @@ PyObject* BSplineSurfacePy::setPole(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -701,7 +646,7 @@ PyObject* BSplineSurfacePy::setPoleCol(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -742,7 +687,7 @@ PyObject* BSplineSurfacePy::setPoleRow(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -765,7 +710,7 @@ PyObject* BSplineSurfacePy::getPole(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -793,7 +738,7 @@ PyObject* BSplineSurfacePy::getPoles(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -812,7 +757,7 @@ PyObject* BSplineSurfacePy::setWeight(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -838,7 +783,7 @@ PyObject* BSplineSurfacePy::setWeightCol(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -864,7 +809,7 @@ PyObject* BSplineSurfacePy::setWeightRow(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -885,7 +830,7 @@ PyObject* BSplineSurfacePy::getWeight(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -911,7 +856,43 @@ PyObject* BSplineSurfacePy::getWeights(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* BSplineSurfacePy::getPolesAndWeights(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineSurface surf = Handle_Geom_BSplineSurface::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array2OfPnt p(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Poles(p);
+        TColStd_Array2OfReal w(1,surf->NbUPoles(),1,surf->NbVPoles());
+        surf->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.LowerRow(); i<=p.UpperRow(); i++) {
+            Py::List row;
+            for (Standard_Integer j=p.LowerCol(); j<=p.UpperCol(); j++) {
+                const gp_Pnt& pole = p(i,j);
+                double weight = w(i,j);
+                Py::Tuple t(4);
+                t.setItem(0, Py::Float(pole.X()));
+                t.setItem(1, Py::Float(pole.Y()));
+                t.setItem(2, Py::Float(pole.Z()));
+                t.setItem(3, Py::Float(weight));
+                row.append(t);
+            }
+            poles.append(row);
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -930,7 +911,7 @@ PyObject* BSplineSurfacePy::getResolution(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -955,7 +936,7 @@ PyObject* BSplineSurfacePy::movePoint(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -972,7 +953,7 @@ PyObject* BSplineSurfacePy::setUNotPeriodic(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -989,7 +970,7 @@ PyObject* BSplineSurfacePy::setVNotPeriodic(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1006,7 +987,7 @@ PyObject* BSplineSurfacePy::setUPeriodic(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1023,7 +1004,7 @@ PyObject* BSplineSurfacePy::setVPeriodic(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1041,7 +1022,7 @@ PyObject* BSplineSurfacePy::setUOrigin(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1059,7 +1040,7 @@ PyObject* BSplineSurfacePy::setVOrigin(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1077,7 +1058,7 @@ PyObject* BSplineSurfacePy::getUMultiplicity(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1095,7 +1076,7 @@ PyObject* BSplineSurfacePy::getVMultiplicity(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1117,7 +1098,7 @@ PyObject* BSplineSurfacePy::getUMultiplicities(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1139,7 +1120,7 @@ PyObject* BSplineSurfacePy::getVMultiplicities(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1169,7 +1150,7 @@ PyObject* BSplineSurfacePy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1188,7 +1169,7 @@ PyObject* BSplineSurfacePy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1241,7 +1222,7 @@ PyObject* BSplineSurfacePy::reparametrize(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1300,7 +1281,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAbs_Shape c;
+        GeomAbs_Shape c = GeomAbs_CN;
         switch(continuity){
         case 0:
             c = GeomAbs_C0;
@@ -1331,7 +1312,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }
@@ -1396,7 +1377,7 @@ PyObject* BSplineSurfacePy::interpolate(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }
@@ -1551,7 +1532,7 @@ PyObject* BSplineSurfacePy::buildFromPolesMultsKnots(PyObject *args, PyObject *k
     catch (const Standard_Failure & ) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         Standard_CString msg = e->GetMessageString();
-        PyErr_SetString(PyExc_Exception, msg  ? msg : "");
+        PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
         }
 }

@@ -56,48 +56,13 @@ public:
     Py::Object setErrorCount    (const Py::Tuple&);
     Py::Object setRemainCount   (const Py::Tuple&);
     Py::Object updateGUI        (const Py::Tuple&);
+    Py::Object addUnitTest      (const Py::Tuple&);
+    Py::Object clearUnitTests   (const Py::Tuple&);
 
 private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-};
-
-//===========================================================================
-// UnitTestPy - Python wrapper
-//===========================================================================
-
-class UnitTestPy :public Base::PyObjectBase
-{
-	Py_Header;
-
-protected:
-	~UnitTestPy();
-
-public:
-  UnitTestPy(PyTypeObject *T = &Type);
-	static PyObject *PyMake(PyTypeObject *, PyObject *, PyObject *);
-
-	//---------------------------------------------------------------------
-	// python exports goes here +++++++++++++++++++++++++++++++++++++++++++
-	//---------------------------------------------------------------------
-
-	virtual PyObject *_repr(void);  				// the representation
-	PyObject *_getattr(char *attr);					// __getattr__ function
-	int _setattr(char *attr, PyObject *value);		// __setattr__ function
-
-  PYFUNCDEF_D(UnitTestPy,clearErrorList)
-  PYFUNCDEF_D(UnitTestPy,insertError)
-  PYFUNCDEF_D(UnitTestPy,setUnitTest)
-  PYFUNCDEF_D(UnitTestPy,getUnitTest)
-  PYFUNCDEF_D(UnitTestPy,setStatusText)
-  PYFUNCDEF_D(UnitTestPy,setProgressFraction)
-  PYFUNCDEF_D(UnitTestPy,errorDialog)
-  PYFUNCDEF_D(UnitTestPy,setRunCount)
-  PYFUNCDEF_D(UnitTestPy,setFailCount)
-  PYFUNCDEF_D(UnitTestPy,setErrorCount)
-  PYFUNCDEF_D(UnitTestPy,setRemainCount)
-  PYFUNCDEF_D(UnitTestPy,updateGUI)
 };
 
 } //namespace TESTGUI_UNITTESTPY_H

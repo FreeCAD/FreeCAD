@@ -1,10 +1,10 @@
 # FreeCAD MakeNewBuildNbr script  
-# (c) 2002 Jürgen Riegel
+# (c) 2002 JÃ¼rgen Riegel
 #
 # Increase the Build Number in Version.h
 
 #***************************************************************************
-#*   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *   
+#*   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *   
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *

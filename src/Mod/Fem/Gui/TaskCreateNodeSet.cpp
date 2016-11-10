@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -59,11 +59,12 @@ using namespace Gui;
 
 
 TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("Fem_FemMesh_createnodebypoly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
       tr("Nodes set"),
-      true, 
+      true,
       parent),
-      pcObject(pcObject)
+      pcObject(pcObject),
+      selectionMode(none)
 {
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
@@ -77,7 +78,7 @@ TaskCreateNodeSet::TaskCreateNodeSet(Fem::FemSetNodesObject *pcObject,QWidget *p
     QObject::connect(ui->toolButton_Pick,SIGNAL(clicked()),this,SLOT(Pick()));
     QObject::connect(ui->comboBox,SIGNAL(activated  (int)),this,SLOT(SwitchMethod(int)));
 
-    // check if the Link to the FemMesh is defined 
+    // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider = dynamic_cast<ViewProviderFemMesh*>(Gui::Application::Instance->getViewProvider( pcObject->FemMesh.getValue<Fem::FemMeshObject*>()));
     assert(MeshViewProvider);
@@ -147,7 +148,7 @@ void TaskCreateNodeSet::DefineNodesCallback(void * ud, SoEventCallback * n)
     if (clPoly.front() != clPoly.back())
         clPoly.push_back(clPoly.front());
 
-    SoCamera* cam = view->getCamera();
+    SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
     Base::Polygon2D polygon;
@@ -168,16 +169,15 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
     if(! ui->checkBox_Add->isChecked())
         tempSet.clear();
 
-    for (int i=0;aNodeIter->more();) {
+    while (aNodeIter->more()) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == inner) 
+        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == inner)
             tempSet.insert(aNode->GetID());
     }
 
     MeshViewProvider->setHighlightNodes(tempSet);
-    
 }
 
 void TaskCreateNodeSet::onSelectionChanged(const Gui::SelectionChanges& msg)

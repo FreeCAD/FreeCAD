@@ -46,10 +46,17 @@ class GuiExport EditorView : public MDIView, public WindowParameter
     Q_OBJECT
 
 public:
+    enum DisplayName {
+        FullName,
+        FileName,
+        BaseName
+    };
+
     EditorView(QPlainTextEdit* editor, QWidget* parent);
     ~EditorView();
 
     QPlainTextEdit* getEditor() const;
+    void setDisplayName(DisplayName);
     void OnChange(Base::Subject<const char*> &rCaller,const char* rcReason);
 
     const char *getName(void) const {return "EditorView";}

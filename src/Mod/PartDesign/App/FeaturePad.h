@@ -27,12 +27,13 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
-#include "FeatureAdditive.h"
+
+#include "FeatureSketchBased.h"
 
 namespace PartDesign
 {
 
-class PartDesignExport Pad : public Additive
+class PartDesignExport Pad : public ProfileBased
 {
     PROPERTY_HEADER(PartDesign::Pad);
 
@@ -42,7 +43,7 @@ public:
     App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
     App::PropertyLength         Length2;
-    App::PropertyLinkSub        UpToFace;
+    App::PropertyLength         Offset;
 
     /** @name methods override feature */
     //@{

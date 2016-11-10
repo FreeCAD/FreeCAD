@@ -1,0 +1,79 @@
+libarea is a CAM-related software for profile and pocketing operation.
+
+This project provides library and associated python-modules to compute profile and pocket operations.
+
+Written by Dan Heeks <danheeks@gmail.com>
+
+libarea originally used kbool http://boolean.klaasholwerda.nl/bool.html written by Klaas Holwerda for calculating intersections. Since kbool uses a GPL license and HeeksCNC has a New BSD license, Dan rewrote some of the code to use the more liberally licensed (Boost license, which is compatible with LGPLv2) clipper library,written by Angus Johnson, to replace kbool. Clipper can be found here: http://sourceforge.net/p/polyclipping/code/HEAD/tree/trunk/. The clipper library is include with libarea for convenience. 
+
+libarea is used by HeeksCNC and FreeCAD's Path workbench. 
+
+As more evidence of the legitimate New BSD licensing of libarea, I am including an email exchange between Dan Heeks, Geoff Hawkesford, and myself. In this exchange of emails, Geoff cleared up his use of the New BSD license for the code in the 'kurve' directory. See below:
+
+Subject: question about kurve license
+Dan Falck <ddfalck@gmail.com>
+1/19/12
+
+to Dan Heeks: 
+Hi Dan,
+
+Do you know if g.j.hawkesford wanted his kurve code released under the
+'New BSD' or original BSD license? I can't find the 'COPYING' file
+that is mentioned at the beginning of all the files in /kurve .
+
+I want to get everything in line with 'New BSD' , Boost, and LGPL
+licenses before I go too far in my FreeCAD CAM module. I plan on using
+clipper instead of bool for the area code.
+
+Thanks,
+Dan
+
+Dan Heeks <danheeks@gmail.com>
+1/20/12
+
+to me 
+I can't find his email. But I am sure that he has no idea that there
+is a difference between BSD and "New BSD". I will ask him when I see
+him next Wednesday also.
+
+Dan Heeks <danheeks@gmail.com>
+1/30/12
+
+to Geoff, me 
+Geoff,
+
+My friend, Dan Falck, from Portland Oregon, is asking about your geometry code that I released in my HeeksCNC project.
+It looks like we put "BSD license", but it is more normal to put "New BSD license".
+I think the difference is the removal of a clause about having to include an acknowledgement of the original source in all advertising material.
+I presume you don't mind if we change it from "BSD" to "New BSD"?
+http://en.wikipedia.org/wiki/BSD_licenses
+
+
+Geoff Hawkesford <geoff.hawkesford@peps.de>
+1/31/12
+
+to Dan, me 
+That’s ok for me.
+Geoff
+ 
+ 
+From: Dan Heeks
+Sent: Monday, January 30, 2012 9:34 PM
+To: Geoff Hawkesford
+Cc: Dan Falck
+Subject: Re: question about kurve license
+
+
+Dan Heeks <danheeks@gmail.com>
+1/31/12
+
+to Geoff, me 
+Thanks.
+
+
+Dan Falck <ddfalck@gmail.com>
+1/31/12
+
+to Geoff, Dan 
+Thank you so much.
+

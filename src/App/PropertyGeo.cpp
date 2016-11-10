@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,13 +34,15 @@
 #include <Base/Reader.h>
 #include <Base/Stream.h>
 #include <Base/Rotation.h>
+#include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
 
 #include "Placement.h"
-
 #include "PropertyGeo.h"
+#include "ObjectIdentifier.h"
 
 using namespace App;
 using namespace Base;
@@ -172,6 +174,27 @@ void PropertyVector::Paste(const Property &from)
     aboutToSetValue();
     _cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
     hasSetValue();
+}
+
+
+//**************************************************************************
+// PropertyVectorDistance
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVectorDistance , App::PropertyVector);
+
+//**************************************************************************
+// Construction/Destruction
+
+
+PropertyVectorDistance::PropertyVectorDistance()
+{
+
+}
+
+PropertyVectorDistance::~PropertyVectorDistance()
+{
+
 }
 
 
@@ -515,6 +538,72 @@ void PropertyPlacement::setValue(const Base::Placement &pos)
 const Base::Placement & PropertyPlacement::getValue(void)const
 {
     return _cPos;
+}
+
+void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
+{
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Base"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Angle")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("x")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("y")));
+    paths.push_back(ObjectIdentifier(getContainer()) << ObjectIdentifier::Component::SimpleComponent(getName())
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Rotation"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("Axis"))
+                    << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
+}
+
+void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    if (path.getSubPathStr() == ".Rotation.Angle") {
+        double avalue;
+
+        if (value.type() == typeid(Base::Quantity))
+            avalue = boost::any_cast<Base::Quantity>(value).getValue();
+        else if (value.type() == typeid(double))
+            avalue = boost::any_cast<double>(value);
+        else if (value.type() == typeid(int))
+            avalue =  boost::any_cast<int>(value);
+        else if (value.type() == typeid(unsigned int))
+            avalue =  boost::any_cast<unsigned int >(value);
+        else if (value.type() == typeid(short))
+            avalue =  boost::any_cast<short>(value);
+        else if (value.type() == typeid(unsigned short))
+            avalue =  boost::any_cast<unsigned short>(value);
+        else
+            throw std::bad_cast();
+
+        Property::setPathValue(path, Base::toRadians(avalue));
+    }
+    else
+        Property::setPathValue(path, value);
+}
+
+const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
 }
 
 PyObject *PropertyPlacement::getPyObject(void)

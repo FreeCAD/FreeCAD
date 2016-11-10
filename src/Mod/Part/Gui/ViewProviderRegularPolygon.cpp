@@ -26,8 +26,8 @@
 #ifndef _PreComp_
 #endif
 
-#include <Base/Parameter.h>
 #include "ViewProviderRegularPolygon.h"
+#include <Base/Parameter.h>
 
 using namespace PartGui;
 using namespace std;

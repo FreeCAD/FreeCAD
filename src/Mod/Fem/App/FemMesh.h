@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2009     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2009     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,6 +37,9 @@ class SMESH_Mesh;
 class SMESH_Hypothesis;
 class TopoDS_Shape;
 class TopoDS_Face;
+class TopoDS_Edge;
+class TopoDS_Vertex;
+class TopoDS_Solid;
 
 namespace Fem
 {
@@ -57,9 +60,9 @@ public:
     FemMesh &operator=(const FemMesh&);
     const SMESH_Mesh* getSMesh() const;
     SMESH_Mesh* getSMesh();
-    SMESH_Gen * getGenerator();
+    static SMESH_Gen * getGenerator();
     void addHypothesis(const TopoDS_Shape & aSubShape, SMESH_HypothesisPtr hyp);
-    void setStanardHypotheses();
+    void setStandardHypotheses();
     void compute();
 
     // from base class
@@ -81,19 +84,33 @@ public:
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
     //@}
 
-    /** @name search and retraivel */
+    /** @name search and retrieval */
     //@{
-    /// retriving by region growing
-    std::set<long> getSurfaceNodes(long ElemId,short FaceId, float Angle=360)const;
-    /// retrivinb by face
-    std::set<long> getSurfaceNodes(const TopoDS_Face &face)const;
+    /// retrieving by region growing
+    std::set<long> getSurfaceNodes(long ElemId, short FaceId, float Angle=360)const;
+    /// retrieving by solid
+    std::set<int> getNodesBySolid(const TopoDS_Solid &solid) const;
+    /// retrieving by face
+    std::set<int> getNodesByFace(const TopoDS_Face &face) const;
+    /// retrieving by edge
+    std::set<int> getNodesByEdge(const TopoDS_Edge &edge) const;
+    /// retrieving by vertex
+    std::set<int> getNodesByVertex(const TopoDS_Vertex &vertex) const;
+    /// retrieving node IDs by element ID
+    std::list<int> getElementNodes(int id) const;
+    /// retrieving face IDs number by face
+    std::list<int> getFacesByFace(const TopoDS_Face &face) const;
+    /// retrieving volume IDs and face IDs number by face
+    std::list<std::pair<int, int> > getVolumesByFace(const TopoDS_Face &face) const;
+    /// retrieving volume IDs and CalculiX face number by face
+    std::map<int, int> getccxVolumesByFace(const TopoDS_Face &face) const;
     //@}
 
     /** @name Placement control */
     //@{
-    /// set the transformation 
+    /// set the transformation
     void setTransform(const Base::Matrix4D& rclTrf);
-    /// get the transformation 
+    /// get the transformation
     Base::Matrix4D getTransform(void) const;
     /// Bound box from the shape
     Base::BoundBox3d getBoundBox(void)const;
@@ -108,7 +125,7 @@ public:
     //@}
 
     struct FemMeshInfo {
-	    int numFaces; 
+        int numFaces;
         int numNode;
         int numTria;
         int numQuad;
@@ -136,7 +153,6 @@ private:
 private:
     /// positioning matrix
     Base::Matrix4D _Mtrx;
-    SMESH_Gen  *myGen;
     SMESH_Mesh *myMesh;
 
     std::list<SMESH_HypothesisPtr> hypoth;

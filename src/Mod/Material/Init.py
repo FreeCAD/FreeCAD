@@ -20,12 +20,6 @@
 #*                                                                         *
 #***************************************************************************
 
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Material")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "http://www.freecadweb.org")
-
 # import for the FreeCAD Material card
 FreeCAD.addImportType("FreeCAD Material Card (*.FCMat)","importFCMat")
 

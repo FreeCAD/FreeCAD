@@ -159,6 +159,8 @@ void Flag::paintGL()
 
 void Flag::resizeGL(int width, int height)
 {
+    Q_UNUSED(width); 
+    Q_UNUSED(height); 
     return;
     //int side = qMin(width, height);
     //glViewport((width - side) / 2, (height - side) / 2, side, side);
@@ -207,7 +209,7 @@ void Flag::drawLine (View3DInventorViewer* v, int tox, int toy)
     if (false) fromx += width();
 
     GLPainter p;
-    p.begin(v);
+    p.begin(v->getGLWidget());
     p.setDrawBuffer(GL_BACK);
 
     // the line
@@ -224,7 +226,7 @@ void Flag::setText(const QString& t)
     this->text = t;
 }
 
-void Flag::resizeEvent(QResizeEvent * e)
+void Flag::resizeEvent(QResizeEvent * )
 {
 #if 0
     image = QImage(this->size(), QImage::Format_ARGB32);
@@ -487,13 +489,13 @@ void GLFlagWindow::addFlag(Flag* item, FlagLayout::Position pos)
 {
     if (!_flagLayout) {
         _flagLayout = new FlagLayout(3);
-        _viewer->getGLWidget()->setLayout(_flagLayout);
+        _viewer->setLayout(_flagLayout);
     }
 
-    item->setParent(_viewer->getGLWidget());
+    item->setParent(_viewer);
     _flagLayout->addWidget(item, pos);
     item->show();
-    _viewer->scheduleRedraw();
+    _viewer->getSoRenderManager()->scheduleRedraw();
 }
 
 void GLFlagWindow::removeFlag(Flag* item)
@@ -525,13 +527,13 @@ void GLFlagWindow::paintGL()
 {
     // draw lines for the flags
     if (_flagLayout) {
-        // it can happen that the GL widget gets replaced internally by SoQt which
+        // it can happen that the GL widget gets replaced internally (SoQt only, not with quarter) which
         // causes to destroy the FlagLayout instance
         int ct = _flagLayout->count();
-        const SbViewportRegion vp = _viewer->getViewportRegion();
+        const SbViewportRegion vp = _viewer->getSoRenderManager()->getViewportRegion();
         SbVec2s size = vp.getViewportSizePixels();
         float aspectratio = float(size[0])/float(size[1]);
-        SbViewVolume vv = _viewer->getCamera()->getViewVolume(aspectratio);
+        SbViewVolume vv = _viewer->getSoRenderManager()->getCamera()->getViewVolume(aspectratio);
         for (int i=0; i<ct;i++) {
             Flag* flag = qobject_cast<Flag*>(_flagLayout->itemAt(i)->widget());
             if (flag) {

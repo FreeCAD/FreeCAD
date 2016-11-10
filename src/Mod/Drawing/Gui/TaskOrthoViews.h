@@ -30,13 +30,13 @@
 
 #include <gp_Ax2.hxx>
 #include <vector>
+#include <boost/signals.hpp>
 
 #include <Mod/Drawing/App/FeatureViewPart.h>
 
 
 
 class Ui_TaskOrthoViews;
-using namespace std;
 
 namespace DrawingGui {
 
@@ -56,6 +56,10 @@ public:
     void    hidden(bool);
     void    smooth(bool);
 
+    App::DocumentObject* getViewPart() {
+        return this_view;
+    }
+
 private:
     void    calcCentre();
 
@@ -71,7 +75,7 @@ private:
     App::Document *             parent_doc;
     Drawing::FeatureViewPart *  this_view;
 
-    string  myname;
+    std::string  myname;
     float   x, y;                   // 2D projection coords of bbox centre relative to origin
     float   cx, cy, cz;             // coords of bbox centre in 3D space
     float   pageX, pageY;           // required coords of centre of bbox projection on page
@@ -80,12 +84,10 @@ private:
 };
 
 
-
-
 class OrthoViews
 {
 public:
-    OrthoViews(const char * pagename, const char * partname);
+    OrthoViews(App::Document*, const char * pagename, const char * partname);
     ~OrthoViews();
 
     void    set_primary(gp_Dir facing, gp_Dir right);
@@ -116,15 +118,15 @@ private:
     void    calc_scale();
     void    process_views();
     int     index(int rel_x, int rel_y);
+    void    slotDeletedObject(const App::DocumentObject& Obj);
+    void    slotDeletedDocument(const App::Document& Obj);
 
 private:
-    vector<orthoview *>     views;
+    std::vector<orthoview *>     views;
     Base::BoundBox3d        bbox;
     App::Document *         parent_doc;
     App::DocumentObject *   part;
     App::DocumentObject *   page;
-
-    string  page_name, part_name;
 
     int     large[4];                       // arrays containing page size info [margin_x, margin_y, size_x, size_y] = [x1, y1, x2-x1, y2-y1]
     int     small_h[4], small_v[4];         // page size avoiding title block, using maximum horizontal / vertical space
@@ -146,6 +148,8 @@ private:
 
     bool    hidden, smooth;
     bool    autodims;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection connectDocumentDeletedObject;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection connectApplicationDeletedDocument;
 };
 
 

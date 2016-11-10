@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,20 +24,23 @@
 #ifndef APP_DOCUMENTOBJECT_H
 #define APP_DOCUMENTOBJECT_H
 
-#include <App/PropertyContainer.h>
+#include <App/TransactionalObject.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyLinks.h>
+#include <App/PropertyExpressionEngine.h>
 
 #include <Base/TimeInfo.h>
 #include <CXX/Objects.hxx>
 
 #include <bitset>
-
+#include <boost/signals.hpp>
 
 namespace App
 {
 class Document;
 class DocumentObjectGroup;
 class DocumentObjectPy;
+class Expression;
 
 enum ObjectStatus {
     Touch = 0,
@@ -45,6 +48,7 @@ enum ObjectStatus {
     New = 2,
     Recompute = 3,
     Restore = 4,
+    Delete = 5,
     Expand = 16
 };
 
@@ -72,13 +76,14 @@ public:
 
 /** Base class of all Classes handled in the Document
  */
-class AppExport DocumentObject: public App::PropertyContainer
+class AppExport DocumentObject: public App::TransactionalObject
 {
     PROPERTY_HEADER(App::DocumentObject);
 
 public:
 
     PropertyString Label;
+    PropertyExpressionEngine ExpressionEngine;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -90,6 +95,8 @@ public:
 
     /// returns the name which is set in the document for this object (not the name property!)
     const char *getNameInDocument(void) const;
+    virtual bool isAttachedToDocument() const;
+    virtual const char* detachFromDocument();
     /// gets the document in which this Object is handled
     App::Document *getDocument(void) const;
 
@@ -99,7 +106,7 @@ public:
     /// set this feature touched (cause recomputation on depndend features)
     void touch(void);
     /// test if this feature is touched
-    bool isTouched(void) const {return StatusBits.test(0);}
+    bool isTouched(void) const;
     /// reset this feature touched
     void purgeTouched(void){StatusBits.reset(0);setPropertyStatus(0,false);}
     /// set this feature to error
@@ -111,8 +118,8 @@ public:
     bool isRecomputing() const {return StatusBits.test(3);}
     /// returns true if this objects is currently restoring from file
     bool isRestoring() const {return StatusBits.test(4);}
-    /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
+    /// returns true if this objects is currently restoring from file
+    bool isDeleting() const {return StatusBits.test(5);}
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
@@ -126,6 +133,21 @@ public:
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
 
+    /**
+     * @brief testIfLinkIsDAG tests a link that is about to be created for
+     * circular references.
+     * @param objToLinkIn (input). The object this object is to depend on after
+     * the link is going to be created.
+     * @return true if link can be created (no cycles will be made). False if
+     * the link will cause a circular dependency and break recomputes. Throws an
+     * error if the document already has a circular dependency.
+     * That is, if the return is true, the link is allowed.
+     */
+    bool testIfLinkDAGCompatible(DocumentObject* linkTo) const;
+    bool testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
+    bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
+
 
 public:
     /** mustExecute
@@ -137,6 +159,9 @@ public:
      * -1: the document examine all links of this object and if one is touched -> recompute
      */
     virtual short mustExecute(void) const;
+
+    /// Recompute only this feature
+    bool recomputeFeature();
 
     /// get the status Message
     const char *getStatusString(void) const;
@@ -160,7 +185,21 @@ public:
 
     virtual void Save (Base::Writer &writer) const;
 
+    /* Expression support */
+
+    virtual void setExpression(const ObjectIdentifier & path, boost::shared_ptr<App::Expression> expr, const char *comment = 0);
+
+    virtual const PropertyExpressionEngine::ExpressionInfo getExpression(const ObjectIdentifier &path) const;
+
+    virtual void renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> & paths);
+
+    virtual void connectRelabelSignals();
+
+    const std::string & getOldLabel() const { return oldLabel; }
+
 protected:
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
     /** get called by the document to recompute this feature
       * Normaly this method get called in the processing of
       * Document::recompute().
@@ -179,7 +218,7 @@ protected:
      *  2 - object is marked as 'new'
      *  3 - object is marked as 'recompute', i.e. the object gets recomputed now
      *  4 - object is marked as 'restoring', i.e. the object gets loaded at the moment
-     *  5 - reserved
+     *  5 - object is marked as 'deleting', i.e. the object gets deleted at the moment
      *  6 - reserved
      *  7 - reserved
      * 16 - object is marked as 'expanded' in the tree view
@@ -196,10 +235,12 @@ protected:
     virtual void onChanged(const Property* prop);
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
-    /// get called after duplicating an object
-    virtual void onFinishDuplicating() {}
     /// get called after setting the document
-    virtual void onSettingDocument() {}
+    virtual void onSettingDocument();
+    /// get called after a brand new object was created
+    virtual void setupObject();
+    /// get called when object is going to be removed from the document
+    virtual void unsetupObject();
 
      /// python object of this class and all descendend
 protected: // attributes
@@ -207,11 +248,18 @@ protected: // attributes
     /// pointer to the document this object belongs to
     App::Document* _pDoc;
 
+    // Connections to track relabeling of document and document objects
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledDocumentConnection;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onRelabledObjectConnection;
+    boost::BOOST_SIGNALS_NAMESPACE::scoped_connection onDeletedObjectConnection;
+
+    /// Old label; used for renaming expressions
+    std::string oldLabel;
+
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
 };
 
 } //namespace App
-
 
 #endif // APP_DOCUMENTOBJECT_H

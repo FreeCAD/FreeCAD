@@ -27,18 +27,24 @@
 # include <GeomAPI_PointsToBSpline.hxx>
 # include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert_BSplineCurveToBezierCurve.hxx>
+# include <Standard_PrimitiveTypes.hxx>
 # include <gp_Pnt.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
+# include <TColgp_Array1OfVec.hxx>
 # include <TColgp_HArray1OfPnt.hxx>
 # include <TColStd_Array1OfInteger.hxx>
-# include <Handle_TColgp_HArray1OfPnt.hxx>
+# include <TColStd_HArray1OfReal.hxx>
+# include <TColStd_Array1OfReal.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
+
 # include <Precision.hxx>
 #endif
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "BSplineCurvePy.h"
 #include "BSplineCurvePy.cpp"
@@ -77,14 +83,7 @@ PyObject* BSplineCurvePy::isRational(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
@@ -94,14 +93,7 @@ PyObject* BSplineCurvePy::isPeriodic(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::isClosed(PyObject *args)
@@ -111,14 +103,7 @@ PyObject* BSplineCurvePy::isClosed(PyObject *args)
     Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = curve->IsClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::increaseDegree(PyObject * args)
@@ -126,10 +111,12 @@ PyObject* BSplineCurvePy::increaseDegree(PyObject * args)
     int degree;
     if (!PyArg_ParseTuple(args, "i", &degree))
         return 0;
-    Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
-        (getGeometryPtr()->handle());
-    curve->IncreaseDegree(degree);
-    Py_Return;
+    PY_TRY {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+            (getGeometryPtr()->handle());
+        curve->IncreaseDegree(degree);
+        Py_Return;
+    } PY_CATCH_OCC ;
 }
 
 PyObject* BSplineCurvePy::increaseMultiplicity(PyObject * args)
@@ -165,7 +152,7 @@ PyObject* BSplineCurvePy::incrementMultiplicity(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -187,7 +174,7 @@ PyObject* BSplineCurvePy::insertKnot(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -228,7 +215,7 @@ PyObject* BSplineCurvePy::insertKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 
@@ -246,18 +233,11 @@ PyObject* BSplineCurvePy::removeKnot(PyObject * args)
         Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
             (getGeometryPtr()->handle());
         Standard_Boolean ok = curve->RemoveKnot(Index,M,tol);
-        if (ok) {
-            Py_INCREF(Py_True);
-            return Py_True;
-        }
-        else {
-            Py_INCREF(Py_False);
-            return Py_False;
-        }
+        return PyBool_FromLong(ok ? 1 : 0);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -275,7 +255,7 @@ PyObject* BSplineCurvePy::segment(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -333,7 +313,7 @@ PyObject* BSplineCurvePy::setKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -355,7 +335,7 @@ PyObject* BSplineCurvePy::getKnots(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -380,7 +360,7 @@ PyObject* BSplineCurvePy::setPole(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -402,7 +382,7 @@ PyObject* BSplineCurvePy::getPole(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -427,7 +407,39 @@ PyObject* BSplineCurvePy::getPoles(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* BSplineCurvePy::getPolesAndWeights(PyObject * args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    try {
+        Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast
+            (getGeometryPtr()->handle());
+        TColgp_Array1OfPnt p(1,curve->NbPoles());
+        curve->Poles(p);
+        TColStd_Array1OfReal w(1,curve->NbPoles());
+        curve->Weights(w);
+
+        Py::List poles;
+        for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
+            gp_Pnt pnt = p(i);
+            double weight = w(i);
+            Py::Tuple t(4);
+            t.setItem(0, Py::Float(pnt.X()));
+            t.setItem(1, Py::Float(pnt.Y()));
+            t.setItem(2, Py::Float(pnt.Z()));
+            t.setItem(3, Py::Float(weight));
+            poles.append(t);
+        }
+        return Py::new_reference_to(poles);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -446,7 +458,7 @@ PyObject* BSplineCurvePy::setWeight(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -466,7 +478,7 @@ PyObject* BSplineCurvePy::getWeight(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -488,7 +500,7 @@ PyObject* BSplineCurvePy::getWeights(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -507,7 +519,7 @@ PyObject* BSplineCurvePy::getResolution(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -529,7 +541,7 @@ PyObject* BSplineCurvePy::movePoint(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -546,7 +558,7 @@ PyObject* BSplineCurvePy::setNotPeriodic(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -563,7 +575,7 @@ PyObject* BSplineCurvePy::setPeriodic(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -581,7 +593,7 @@ PyObject* BSplineCurvePy::setOrigin(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -599,7 +611,7 @@ PyObject* BSplineCurvePy::getMultiplicity(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -621,7 +633,7 @@ PyObject* BSplineCurvePy::getMultiplicities(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -708,11 +720,54 @@ Py::List BSplineCurvePy::getKnotSequence(void) const
     return list;
 }
 
-PyObject* BSplineCurvePy::approximate(PyObject *args)
+PyObject* BSplineCurvePy::toBiArcs(PyObject * args)
+{
+    double tolerance = 0.001;
+    if (!PyArg_ParseTuple(args, "d", &tolerance))
+        return 0;
+    try {
+        GeomBSplineCurve* curve = getGeomBSplineCurvePtr();
+        std::list<Geometry*> arcs;
+        arcs = curve->toBiArcs(tolerance);
+
+        Py::List list;
+        for (std::list<Geometry*>::iterator it = arcs.begin(); it != arcs.end(); ++it) {
+            list.append(Py::asObject((*it)->getPyObject()));
+            delete (*it);
+        }
+
+        return Py::new_reference_to(list);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
-    if (!PyArg_ParseTuple(args, "O", &obj))
+    Standard_Integer degMin=3;
+    Standard_Integer degMax=8;
+    char* continuity = "C2";
+    double tol3d = 1e-3;
+    char* parType = "ChordLength";
+    PyObject* par = 0;
+    double weight1 = 0;
+    double weight2 = 0;
+    double weight3 = 0;
+    
+    static char* kwds_interp[] = {"Points", "DegMax", "Continuity", "Tolerance", "DegMin", "ParamType", "Parameters",
+                                  "LengthWeight", "CurvatureWeight", "TorsionWeight", NULL};
+    
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|isdisOddd",kwds_interp,
+                                     &obj, &degMax,
+                                     &continuity, &tol3d, &degMin, 
+                                     &parType, &par,
+                                     &weight1, &weight2, &weight3))
         return 0;
+    
     try {
         Py::Sequence list(obj);
         TColgp_Array1OfPnt pnts(1,list.size());
@@ -722,7 +777,77 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
             pnts(index++) = gp_Pnt(vec.x,vec.y,vec.z);
         }
 
-        GeomAPI_PointsToBSpline fit(pnts);
+        if (degMin > degMax) {
+            Standard_Failure::Raise("DegMin must be lower or equal to DegMax");
+        }
+        
+        GeomAbs_Shape c;
+        std::string str = continuity;
+        if (str == "C0")
+            c = GeomAbs_C0;
+        else if (str == "G1")
+            c = GeomAbs_G1;
+        else if (str == "C1")
+            c = GeomAbs_C1;
+        else if (str == "G2")
+            c = GeomAbs_G2;
+        else if (str == "C2")
+            c = GeomAbs_C2;
+        else if (str == "C3")
+            c = GeomAbs_C3;
+        else if (str == "CN")
+            c = GeomAbs_CN;
+        else
+            c = GeomAbs_C2;
+        
+        if (weight1 || weight2 || weight3) {
+            // It seems that this function only works with Continuity = C0, C1 or C2
+            if (!(c == GeomAbs_C0 || c == GeomAbs_C1 || c == GeomAbs_C2)) {
+                c = GeomAbs_C2;
+            }
+            GeomAPI_PointsToBSpline fit(pnts, weight1, weight2, weight3, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Smoothing approximation failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        if (par) {
+            Py::Sequence plist(par);
+            TColStd_Array1OfReal parameters(1,plist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = plist.begin(); it != plist.end(); ++it) {
+                Py::Float f(*it);
+                parameters(index++) = static_cast<double>(f);
+            }
+            
+            GeomAPI_PointsToBSpline fit(pnts, parameters, degMin, degMax, c, tol3d);
+            Handle_Geom_BSplineCurve spline = fit.Curve();
+            if (!spline.IsNull()) {
+                this->getGeomBSplineCurvePtr()->setHandle(spline);
+                Py_Return;
+            }
+            else {
+                Standard_Failure::Raise("Approximation with parameters failed");
+                return 0; // goes to the catch block
+            }
+        }
+        
+        Approx_ParametrizationType pt;
+        std::string pstr = parType;
+        if (pstr == "Uniform")
+            pt = Approx_IsoParametric;
+        else if (pstr == "Centripetal")
+            pt = Approx_Centripetal;
+        else
+            pt = Approx_ChordLength;
+
+        GeomAPI_PointsToBSpline fit(pnts, pt, degMin, degMax, c, tol3d);
         Handle_Geom_BSplineCurve spline = fit.Curve();
         if (!spline.IsNull()) {
             this->getGeomBSplineCurvePtr()->setHandle(spline);
@@ -735,20 +860,91 @@ PyObject* BSplineCurvePy::approximate(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
 
-PyObject* BSplineCurvePy::interpolate(PyObject *args)
+PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kwds)
+{
+    PyObject* pts;
+    PyObject* tgs;
+    double parameter;
+
+    static char* kwds_interp1[] = {"Points", "Parameter", NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "Od",kwds_interp1, &pts, &parameter)) {
+        Py::Sequence list(pts);
+        std::vector<gp_Pnt> interpPoints;
+        interpPoints.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+        }
+
+        GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
+        std::vector<gp_Vec> tangents;
+        bspline->getCardinalSplineTangents(interpPoints, parameter, tangents);
+
+        Py::List vec;
+        for (gp_Vec it : tangents)
+            vec.append(Py::Vector(Base::Vector3d(it.X(), it.Y(), it.Z())));
+        return Py::new_reference_to(vec);
+    }
+
+    PyErr_Clear();
+    static char* kwds_interp2[] = {"Points", "Parameters", NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "OO",kwds_interp2, &pts, &tgs)) {
+        Py::Sequence list(pts);
+        std::vector<gp_Pnt> interpPoints;
+        interpPoints.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+        }
+
+        Py::Sequence list2(tgs);
+        std::vector<double> parameters;
+        parameters.reserve(list2.size());
+        for (Py::Sequence::iterator it = list2.begin(); it != list2.end(); ++it) {
+            Py::Float p(*it);
+            parameters.push_back(static_cast<double>(p));
+        }
+
+        GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
+        std::vector<gp_Vec> tangents;
+        bspline->getCardinalSplineTangents(interpPoints, parameters, tangents);
+
+        Py::List vec;
+        for (gp_Vec it : tangents)
+            vec.append(Py::Vector(Base::Vector3d(it.X(), it.Y(), it.Z())));
+        return Py::new_reference_to(vec);
+    }
+
+    return 0;
+}
+
+PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;
+    PyObject* par = 0;
     double tol3d = Precision::Approximation();
     PyObject* periodic = Py_False;
-    PyObject* t1=0; PyObject* t2=0;
-    if (!PyArg_ParseTuple(args, "O|O!dO!O!",&obj, &PyBool_Type, &periodic, &tol3d,
-                                            &Base::VectorPy::Type, &t1, &Base::VectorPy::Type, &t2))
+    PyObject* t1 = 0; PyObject* t2 = 0;
+    PyObject* ts = 0; PyObject* fl = 0;
+    PyObject* scale = Py_True;
+
+    static char* kwds_interp[] = {"Points", "PeriodicFlag", "Tolerance", "InitialTangent", "FinalTangent",
+                                  "Tangents", "TangentFlags", "Parameters", "Scale", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "O|O!dO!O!OOOO!",kwds_interp,
+                                     &obj, &PyBool_Type, &periodic, &tol3d,
+                                     &Base::VectorPy::Type, &t1,
+                                     &Base::VectorPy::Type, &t2,
+                                     &ts, &fl, &par, &PyBool_Type, &scale))
         return 0;
+
     try {
         Py::Sequence list(obj);
         Handle_TColgp_HArray1OfPnt interpolationPoints = new TColgp_HArray1OfPnt(1, list.size());
@@ -763,17 +959,59 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
             Standard_Failure::Raise("not enough points given");
         }
 
-        GeomAPI_Interpolate aBSplineInterpolation(interpolationPoints,
-            PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d);
+        Handle_TColStd_HArray1OfReal parameters;
+        if (par) {
+            Py::Sequence plist(par);
+            parameters = new TColStd_HArray1OfReal(1, plist.size());
+            Standard_Integer pindex = 1;
+            for (Py::Sequence::iterator it = plist.begin(); it != plist.end(); ++it) {
+                Py::Float f(*it);
+                parameters->SetValue(pindex++, static_cast<double>(f));
+            }
+        }
+
+        std::unique_ptr<GeomAPI_Interpolate> aBSplineInterpolation;
+        if (parameters.IsNull()) {
+            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints,
+                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+        }
+        else {
+            aBSplineInterpolation.reset(new GeomAPI_Interpolate(interpolationPoints, parameters,
+                PyObject_IsTrue(periodic) ? Standard_True : Standard_False, tol3d));
+        }
+
         if (t1 && t2) {
             Base::Vector3d v1 = Py::Vector(t1,false).toVector();
             Base::Vector3d v2 = Py::Vector(t2,false).toVector();
             gp_Vec initTangent(v1.x,v1.y,v1.z), finalTangent(v2.x,v2.y,v2.z);
-            aBSplineInterpolation.Load(initTangent, finalTangent);
+            aBSplineInterpolation->Load(initTangent, finalTangent, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
         }
-        aBSplineInterpolation.Perform();
-        if (aBSplineInterpolation.IsDone()) {
-            Handle_Geom_BSplineCurve aBSplineCurve(aBSplineInterpolation.Curve());
+        else if (ts && fl) {
+            Py::Sequence tlist(ts);
+            TColgp_Array1OfVec tangents(1, tlist.size());
+            Standard_Integer index = 1;
+            for (Py::Sequence::iterator it = tlist.begin(); it != tlist.end(); ++it) {
+                Py::Vector v(*it);
+                Base::Vector3d vec = v.toVector();
+                tangents.SetValue(index++, gp_Vec(vec.x,vec.y,vec.z));
+            }
+
+            Py::Sequence flist(fl);
+            Handle_TColStd_HArray1OfBoolean tangentFlags = new TColStd_HArray1OfBoolean(1, flist.size());
+            Standard_Integer findex = 1;
+            for (Py::Sequence::iterator it = flist.begin(); it != flist.end(); ++it) {
+                Py::Boolean flag(*it);
+                tangentFlags->SetValue(findex++, static_cast<bool>(flag) ? Standard_True : Standard_False);
+            }
+
+            aBSplineInterpolation->Load(tangents, tangentFlags, PyObject_IsTrue(scale)
+                                        ? Standard_True : Standard_False);
+        }
+
+        aBSplineInterpolation->Perform();
+        if (aBSplineInterpolation->IsDone()) {
+            Handle_Geom_BSplineCurve aBSplineCurve(aBSplineInterpolation->Curve());
             this->getGeomBSplineCurvePtr()->setHandle(aBSplineCurve);
             Py_Return;
         }
@@ -786,7 +1024,7 @@ PyObject* BSplineCurvePy::interpolate(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }
@@ -865,7 +1103,7 @@ PyObject* BSplineCurvePy::buildFromPoles(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -1008,7 +1246,7 @@ PyObject* BSplineCurvePy::buildFromPolesMultsKnots(PyObject *args, PyObject *key
     catch (const Standard_Failure & ) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         Standard_CString msg = e->GetMessageString();
-        PyErr_SetString(PyExc_Exception, msg  ? msg : "");
+        PyErr_SetString(PartExceptionOCCError, msg  ? msg : "");
         return 0;
     }
 }
@@ -1046,14 +1284,7 @@ PyObject* BSplineCurvePy::join(PyObject *args)
 
     bool ok = curve1->join(spline);
 
-    if (ok) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(ok ? 1 : 0);
 }
 
 PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)
@@ -1072,7 +1303,7 @@ PyObject* BSplineCurvePy::makeC1Continuous(PyObject *args)
         Handle_Standard_Failure e = Standard_Failure::Caught();
         std::string err = e->GetMessageString();
         if (err.empty()) err = e->DynamicType()->Name();
-        PyErr_SetString(PyExc_Exception, err.c_str());
+        PyErr_SetString(PartExceptionOCCError, err.c_str());
         return 0;
     }
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -172,25 +172,6 @@ typedef unsigned __int64    uint64_t;
 
 #endif
 
-//**************************************************************************
-// Crt Memory debugging
-
-/** Memory Crt debugging on
-  * This switches the debug CRT on Windows on. This is mostly located in
-  * MemDebug.cpp and .h in src/Base. With this on a file (MemLog.txt) is 
-  * written on exit which reports e.g. unfreed memory.
-  */
-#if defined(_DEBUG) && defined(_MSC_VER)
-//# define MemDebugOn
-#endif
-
-#if defined(MemDebugOn) && defined(FC_OS_WIN32)
-# define DEBUG_CLIENTBLOCK   new( _CLIENT_BLOCK, __FILE__, __LINE__)
-#else
-# define DEBUG_CLIENTBLOCK   new
-#endif // MemDebugOn
-
-
 
 //FIXME: Move to modules where OCC is needed
 //**************************************************************************
@@ -260,8 +241,10 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // Coin3D
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-# ifndef COIN_DLL
-#	 define COIN_DLL
+# ifndef FCGui //COIN_DLL is defined in the FreeCADGui target
+#  ifndef COIN_DLL
+#    define COIN_DLL
+#  endif
 # endif
 #endif
 
@@ -270,6 +253,16 @@ typedef unsigned __int64    uint64_t;
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
 # ifndef SOQT_DLL
 #   define SOQT_DLL
+# endif
+#endif
+
+//**************************************************************************
+// Quarter
+#if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
+# ifndef QUARTER_INTERNAL
+#  ifndef QUARTER_DLL
+#   define QUARTER_DLL
+#  endif
 # endif
 #endif
 

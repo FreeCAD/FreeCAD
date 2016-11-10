@@ -76,8 +76,6 @@ namespace KDL {
 		 */
 		Trajectory_Segment(Path* _geom, VelocityProfile* _motprof, double duration, bool _aggregate=true);
 
-		virtual Path* GetPath();
-		virtual VelocityProfile* GetProfile();
 		virtual double Duration() const;
 		// The duration of the trajectory
 
@@ -97,6 +95,11 @@ namespace KDL {
 			}
 
 		virtual void Write(std::ostream& os) const;
+
+	    virtual Path* GetPath();
+
+	    virtual VelocityProfile* GetProfile();
+
 
 		virtual ~Trajectory_Segment();
 	};

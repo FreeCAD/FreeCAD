@@ -62,7 +62,7 @@ void UndoDialog::onFetchInfo()
     if (pcDoc)
     {
         std::vector<std::string> vecUndos = pcDoc->getUndoVector();
-        for (std::vector<std::string>::iterator i=vecUndos.begin(); i!=vecUndos.end(); i++)
+        for (std::vector<std::string>::iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
             addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
     }
     else
@@ -70,7 +70,7 @@ void UndoDialog::onFetchInfo()
         EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
         if (view) {
             QStringList vecUndos = view->undoActions();
-            for (QStringList::Iterator i=vecUndos.begin(); i!=vecUndos.end(); i++)
+            for (QStringList::Iterator i=vecUndos.begin(); i!=vecUndos.end(); ++i)
                 addAction(*i, this, SLOT(onSelected()));
         }
     }
@@ -116,10 +116,10 @@ void RedoDialog::onFetchInfo()
 {
     clear(); // Remove first all items
     Gui::Document* pcDoc = Application::Instance->activeDocument();
-    if ( pcDoc )
+    if (pcDoc)
     {
         std::vector<std::string> vecRedos = pcDoc->getRedoVector();
-        for (std::vector<std::string>::iterator i=vecRedos.begin(); i!=vecRedos.end(); i++)
+        for (std::vector<std::string>::iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
             addAction(QString::fromUtf8((*i).c_str()), this, SLOT(onSelected()));
     }
     else
@@ -127,7 +127,7 @@ void RedoDialog::onFetchInfo()
         EditorView* view = qobject_cast<EditorView*>(getMainWindow()->activeWindow());
         if (view) {
             QStringList vecRedos = view->redoActions();
-            for (QStringList::Iterator i=vecRedos.begin(); i!=vecRedos.end(); i++)
+            for (QStringList::Iterator i=vecRedos.begin(); i!=vecRedos.end(); ++i)
                 addAction(*i, this, SLOT(onSelected()));
         }
     }

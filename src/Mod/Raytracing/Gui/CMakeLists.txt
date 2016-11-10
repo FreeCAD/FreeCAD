@@ -10,13 +10,12 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -89,3 +88,11 @@ SET_BIN_DIR(RaytracingGui RaytracingGui /Mod/Raytracing)
 SET_PYTHON_PREFIX_SUFFIX(RaytracingGui)
 
 INSTALL(TARGETS RaytracingGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(RaytracingGuiIcon_SVG
+    Resources/icons/RaytracingWorkbench.svg
+)
+
+fc_copy_sources(RaytracingGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Raytracing" ${RaytracingGuiIcon_SVG})
+
+INSTALL(FILES ${RaytracingGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Raytracing/Resources/icons")

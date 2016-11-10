@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/version.hpp>
 # include <boost/filesystem/path.hpp>
+# include <cfloat>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -40,13 +41,12 @@
 #include <Base/PyObjectBase.h>
 #include <Base/QuantityPy.h>
 
-#define new DEBUG_CLIENTBLOCK
 using namespace App;
 using namespace Base;
 using namespace std;
 
 
-const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,(double)INT_MAX,1.0};
+const PropertyQuantityConstraint::Constraints LengthStandard = {0.0,DBL_MAX,1.0};
 const PropertyQuantityConstraint::Constraints AngleStandard = {-360,360,1.0};
 
 //**************************************************************************
@@ -116,6 +116,21 @@ void PropertyQuantity::setPyObject(PyObject *value)
         throw Base::Exception("Not matching Unit!");
 
     PropertyFloat::setValue(quant.getValue());
+}
+
+void PropertyQuantity::setPathValue(const ObjectIdentifier & /*path*/, const boost::any &value)
+{
+    if (value.type() == typeid(double))
+        setValue(boost::any_cast<double>(value));
+    else if (value.type() == typeid(Base::Quantity))
+        setValue((boost::any_cast<Quantity>(value)).getValue());
+    else
+        throw bad_cast();
+}
+
+const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier & /*path*/) const
+{
+    return Quantity(_dValue, _Unit);
 }
 
 //**************************************************************************
@@ -214,6 +229,32 @@ TYPESYSTEM_SOURCE(App::PropertyLength, App::PropertyQuantityConstraint);
 PropertyLength::PropertyLength()
 {
     setUnit(Base::Unit::Length);
+    setConstraints(&LengthStandard);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyArea
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyArea, App::PropertyQuantityConstraint);
+
+PropertyArea::PropertyArea()
+{
+    setUnit(Base::Unit::Area);
+    setConstraints(&LengthStandard);
+}
+
+//**************************************************************************
+//**************************************************************************
+// PropertyVolume
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyVolume, App::PropertyQuantityConstraint);
+
+PropertyVolume::PropertyVolume()
+{
+    setUnit(Base::Unit::Volume);
     setConstraints(&LengthStandard);
 }
 

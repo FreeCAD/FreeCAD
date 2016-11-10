@@ -1,0 +1,6 @@
+debian/freecad.desktop usr/share/applications
+debian/menu usr/share/menu/freecad
+usr/share/freecad
+usr/lib/freecad/bin
+usr/lib/freecad/Mod
+usr/lib/freecad/lib

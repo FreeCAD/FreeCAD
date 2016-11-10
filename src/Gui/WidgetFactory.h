@@ -49,6 +49,11 @@ public:
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);
     Py::Object fromQWidget(QWidget*, const char* className=0);
+    /*!
+      Create a Python wrapper for the icon. The icon must be created on the heap
+      and the Python wrapper takes ownership of it.
+     */
+    Py::Object fromQIcon(const QIcon*);
     static void createChildrenNameAttributes(PyObject* root, QObject* object);
     static void setParent(PyObject* pyWdg, QObject* parent);
 };
@@ -231,6 +236,28 @@ private:
     QString fn;
 };
 
+/**
+ * The PrefPagePyProducer class provides the ability to create preference pages
+ * dynamically from a Python class.
+ * @author Werner Mayer
+ */
+class GuiExport PrefPagePyProducer : public Base::AbstractProducer
+{
+public:
+    /** 
+     * Register a special type of preference page to the WidgetFactoryInst.
+     */
+    PrefPagePyProducer (const Py::Object&, const char* group);
+    virtual ~PrefPagePyProducer ();
+    /**
+     * Creates an instance of the specified widget.
+     */
+    virtual void* Produce () const;
+
+private:
+    Py::Object type;
+};
+
 // --------------------------------------------------------------------
 
 /**
@@ -324,7 +351,7 @@ private:
  * The PyResource class provides an interface to create widgets or to load .ui files from Python.
  * With
  * \code
- * d = Gui.CreateDialog("test.ui")
+ * d = Gui.createDialog("test.ui")
  * \endcode
  *
  * you can create a PyResource object containing the widget. If a relative file name 
@@ -347,12 +374,12 @@ private:
  * # define a callback function with one argument
  * def TestCall(obj):
  *      # sets the value from lineedit if "Button_Name" was pressed
- *      obj.SetValue("lineedit", "text", "Show this text here!")
+ *      obj.setValue("lineedit", "text", "Show this text here!")
  *      print "Button clicked"
  *
- * d = Gui.CreateDialog("test.ui")
- * d.Connect("Button_Name", "clicked()", TestCall)
- * d.Show()
+ * d = Gui.createDialog("test.ui")
+ * d.connect("Button_Name", "clicked()", TestCall)
+ * d.show()
  * \endcode
  *
  * If the button with the name "Button_Name" is clicked the message "Button clicked" is
@@ -360,47 +387,36 @@ private:
  * For example if you have a QLineEdit inside your widget you can set the text with
  * \code
  * # sets "Show this text here!" to the text property
- * d.SetValue("lineedit", "text", "Show this text here!")
- * d.Show()
+ * d.setValue("lineedit", "text", "Show this text here!")
+ * d.show()
  * \endcode
  *
  * or retrieve the entered text with
  * \code
- * f = d.GetValue("lineedit", "text")
+ * f = d.getValue("lineedit", "text")
  * print f
  * \endcode
  *
  * \author Werner Mayer
  */
-class PyResource : public Base::PyObjectBase
+
+class PyResource : public Py::PythonExtension<PyResource>
 {
-    // always start with Py_Header
-    Py_Header;
-
-protected:
-    ~PyResource();
-
 public:
-    PyResource(PyTypeObject *T = &Type);
+    static void init_type(void);    // announce properties and methods
+
+    PyResource();
+    ~PyResource();
 
     void load(const char* name);
     bool connect(const char* sender, const char* signal, PyObject* cb);
 
-    /// for construction in Python
-    static PyObject *PyMake(PyObject *, PyObject *);
+    Py::Object repr();
 
-    //---------------------------------------------------------------------
-    // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
-    //---------------------------------------------------------------------
-    PyObject *_getattr(char *attr);             // __getattr__ function
-    // getter setter
-    int _setattr(char *attr, PyObject *value);  // __setattr__ function
-
-    // methods
-    PYFUNCDEF_D(PyResource, value);
-    PYFUNCDEF_D(PyResource, setValue);
-    PYFUNCDEF_D(PyResource, show);
-    PYFUNCDEF_D(PyResource, connect);
+    Py::Object value(const Py::Tuple&);
+    Py::Object setValue(const Py::Tuple&);
+    Py::Object show(const Py::Tuple&);
+    Py::Object connect(const Py::Tuple&);
 
 private:
     std::vector<class SignalConnect*> mySingals;
@@ -418,7 +434,7 @@ class SignalConnect : public QObject
     Q_OBJECT
 
 public:
-    SignalConnect( Base::PyObjectBase* res, PyObject* cb, QObject* sender);
+    SignalConnect(PyObject* res, PyObject* cb);
     ~SignalConnect();
 
 public Q_SLOTS:
@@ -427,8 +443,33 @@ public Q_SLOTS:
 private:
     PyObject* myResource;
     PyObject* myCallback;
-    QObject*  mySender;
 };
+
+// ----------------------------------------------------
+namespace Dialog {
+
+/** Subclass that embeds a form from a Python class.
+ * \author Werner Mayer
+ */
+class GuiExport PreferencePagePython : public PreferencePage
+{
+    Q_OBJECT
+
+public:
+    PreferencePagePython(const Py::Object& dlg, QWidget* parent = 0);
+    virtual ~PreferencePagePython();
+
+    void loadSettings();
+    void saveSettings();
+
+protected:
+    void changeEvent(QEvent *e);
+
+private:
+    Py::Object page;
+};
+
+} // namespace Dialog
 
 } // namespace Gui
 

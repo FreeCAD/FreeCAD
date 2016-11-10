@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,7 +32,7 @@ namespace Gui {
 
 /** Adapter class to the parameter of FreeCAD for all windows
  * Retrieve the parameter group of the specific window by the windowname.
- * @author Jürgen Riegel
+ * @author JÃ¼rgen Riegel
  */
 class GuiExport WindowParameter : public ParameterGrp::ObserverType
 {

@@ -34,6 +34,8 @@
 #include "LuxFeature.h"
 #include "LuxTools.h"
 
+#include <ShapeAnalysis_ShapeContents.hxx>
+
 
 using namespace Raytracing;
 
@@ -47,6 +49,7 @@ LuxFeature::LuxFeature(void)
 {
     ADD_PROPERTY(Source,(0));
     ADD_PROPERTY(Color,(App::Color(0.5f,0.5f,0.5f)));
+    ADD_PROPERTY(Transparency,(0));
 }
 
 App::DocumentObjectExecReturn *LuxFeature::execute(void)
@@ -59,18 +62,39 @@ App::DocumentObjectExecReturn *LuxFeature::execute(void)
         return new App::DocumentObjectExecReturn("No object linked");
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
-    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+    TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     std::string Name(std::string("Lux_")+static_cast<Part::Feature*>(link)->getNameInDocument());
     if (shape.IsNull())
         return new App::DocumentObjectExecReturn("Linked shape object is empty");
-        
+    ShapeAnalysis_ShapeContents test;
+    test.Clear();
+    test.Perform(shape);
+    if (test.NbFaces() < 1)
+        return new App::DocumentObjectExecReturn("Shape contains no face to render");
+
     // write a material entry
     // This must not be done in LuxTools::writeShape!
     const App::Color& c = Color.getValue();
-    result << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
-           << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
-           << "    \"float sigma\" [0.000000000000000]" << endl
-           << "    \"string type\" [\"matte\"]" << endl << endl;
+    long t = Transparency.getValue();
+    if (t == 0) {
+        result << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
+               << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
+               << "    \"float sigma\" [0.000000000000000]" << endl
+               << "    \"string type\" [\"matte\"]" << endl << endl;
+    } else {
+        float trans = t/100.0f;
+        result << "MakeNamedMaterial \"FreeCADMaterial_Base_" << Name << "\"" << endl
+               << "    \"color Kd\" [" << c.r << " " << c.g << " " << c.b << "]" << endl
+               << "    \"float sigma\" [0.000000000000000]" << endl
+               << "    \"string type\" [\"matte\"]" << endl << endl
+               << "MakeNamedMaterial \"FreeCADMaterial_Null_" << Name << "\"" << endl
+               << "    \"string type\" [\"null\"]" << endl << endl
+               << "MakeNamedMaterial \"FreeCADMaterial_" << Name << "\"" << endl
+               << "    \"string namedmaterial1\" [\"FreeCADMaterial_Null_" << Name << "\"]" << endl
+               << "    \"string namedmaterial2\" [\"FreeCADMaterial_Base_" << Name << "\"]" << endl
+               << "    \"float amount\" [" << trans << "]" << endl
+               << "    \"string type\" [\"mix\"]" << endl << endl;
+    }
     
     LuxTools::writeShape(result,Name.c_str(),shape);
     

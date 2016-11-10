@@ -75,7 +75,7 @@ ReportView::ReportView( QWidget* parent )
     tabPython = new PythonConsole();
     tabPython->setWordWrapMode(QTextOption::NoWrap);
     tabPython->setWindowTitle(trUtf8("Python console"));
-    tabPython->setWindowIcon(BitmapFactory().pixmap("applications-python"));
+    tabPython->setWindowIcon(BitmapFactory().iconFromTheme("applications-python"));
     int python = tabWidget->addTab(tabPython, tabPython->windowTitle());
     tabWidget->setTabIcon(python, tabPython->windowIcon());
     tabWidget->setCurrentIndex(0);
@@ -433,7 +433,8 @@ void ReportOutput::contextMenuEvent ( QContextMenuEvent * e )
 
 void ReportOutput::onSaveAs()
 {
-    QString fn = QFileDialog::getSaveFileName(this, tr("Save Report Output"), QString(), tr("Plain Text Files (*.txt *.log)"));
+    QString fn = QFileDialog::getSaveFileName(this, tr("Save Report Output"), QString(),
+        QString::fromLatin1("%1 (*.txt *.log)").arg(tr("Plain Text Files")));
     if (!fn.isEmpty()) {
         QFileInfo fi(fn);
         if (fi.completeSuffix().isEmpty())
@@ -551,7 +552,7 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
     }
     else if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = rclGrp.GetInt("FontSize", 10);
-        QString fontFamily = QString::fromAscii(rclGrp.GetASCII("Font", "Courier").c_str());
+        QString fontFamily = QString::fromLatin1(rclGrp.GetASCII("Font", "Courier").c_str());
         
         QFont font(fontFamily, fontSize);
         setFont(font);
@@ -560,12 +561,12 @@ void ReportOutput::OnChange(Base::Subject<const char*> &rCaller, const char * sR
         setTabStopWidth(width);
     }
     else if (strcmp(sReason, "RedirectPythonOutput") == 0) {
-        bool checked = rclGrp.GetBool(sReason);
+        bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stdout)
             onToggleRedirectPythonStdout();
     }
     else if (strcmp(sReason, "RedirectPythonErrors") == 0) {
-        bool checked = rclGrp.GetBool(sReason);
+        bool checked = rclGrp.GetBool(sReason, true);
         if (checked != d->redirected_stderr)
             onToggleRedirectPythonStderr();
     }

@@ -53,7 +53,8 @@ namespace KDL {
 // you propably want to use the cached_index variable
 double Path_Composite::Lookup(double s) const
 {
-
+	assert(s>=-1e-12);
+	assert(s<=pathlength+1e-12);
 	if ( (cached_starts <=s) && ( s <= cached_ends) ) {
 		return s - cached_starts;
 	}
@@ -83,14 +84,14 @@ void Path_Composite::Add(Path* geom, bool aggregate ) {
 	gv.insert( gv.end(),std::make_pair(geom,aggregate) );
 }
 
-double Path_Composite::LengthToS(double length) {
+double Path_Composite::LengthToS(double /*length*/) {
 	throw Error_MotionPlanning_Not_Applicable();
-	return 0;
 }
 
 double Path_Composite::PathLength() {
 	return pathlength;
 }
+
 
 Frame Path_Composite::Pos(double s) const {
 	s = Lookup(s);
@@ -108,7 +109,7 @@ Twist Path_Composite::Acc(double s,double sd,double sdd) const {
 }
 
 Path* Path_Composite::Clone()  {
-	std::auto_ptr<Path_Composite> comp( new Path_Composite() );
+	std::unique_ptr<Path_Composite> comp( new Path_Composite() );
 	for (unsigned int i = 0; i < dv.size(); ++i) {
 		comp->Add(gv[i].first->Clone(), gv[i].second);
 	}
@@ -124,6 +125,29 @@ void Path_Composite::Write(std::ostream& os)  {
 	os << "]" << std::endl;
 }
 
+int Path_Composite::GetNrOfSegments() {
+	return dv.size();
+}
+
+Path* Path_Composite::GetSegment(int i) {
+	assert(i>=0);
+	assert(i<static_cast<int>(dv.size()));
+	return gv[i].first;
+}
+
+double Path_Composite::GetLengthToEndOfSegment(int i) {
+	assert(i>=0);
+	assert(i<static_cast<int>(dv.size()));
+	return dv[i];
+}
+
+void Path_Composite::GetCurrentSegmentLocation(double s, int& segment_number,
+		double& inner_s)
+{
+	inner_s = Lookup(s);
+	segment_number= cached_index;
+}
+
 Path_Composite::~Path_Composite() {
 	PathVector::iterator it;
 	for (it=gv.begin();it!=gv.end();++it) {
@@ -132,4 +156,4 @@ Path_Composite::~Path_Composite() {
 	}
 }
 
-}
+} // namespace KDL

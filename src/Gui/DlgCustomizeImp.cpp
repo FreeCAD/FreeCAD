@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <QEvent>
 # include <QGridLayout>
+# include <QSizePolicy>
 # include <QPushButton>
 #endif
 
@@ -43,13 +44,14 @@ QList<QByteArray> DlgCustomizeImp::_pages;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WFlags fl)
+DlgCustomizeImp::DlgCustomizeImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     setModal(false);
-    resize( 434, 365 ); 
+    setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    resize( 690, 365 ); 
 
     setWindowTitle(tr("Customize"));
     setSizeGripEnabled( true );

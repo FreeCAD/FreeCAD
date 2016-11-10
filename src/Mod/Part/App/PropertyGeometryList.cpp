@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,6 +37,7 @@
 #include "GeometryPy.h"
 
 #include "PropertyGeometryList.h"
+#include "Part2DObject.h"
 
 using namespace App;
 using namespace Base;
@@ -113,6 +114,9 @@ PyObject *PropertyGeometryList::getPyObject(void)
 
 void PropertyGeometryList::setPyObject(PyObject *value)
 {
+    // check container of this property to notify about changes
+    Part2DObject* part2d = dynamic_cast<Part2DObject*>(this->getContainer());
+
     if (PyList_Check(value)) {
         Py_ssize_t nSize = PyList_Size(value);
         std::vector<Geometry*> values;
@@ -130,10 +134,14 @@ void PropertyGeometryList::setPyObject(PyObject *value)
         }
 
         setValues(values);
+        if (part2d)
+            part2d->acceptGeometry();
     }
     else if (PyObject_TypeCheck(value, &(GeometryPy::Type))) {
         GeometryPy  *pcObject = static_cast<GeometryPy*>(value);
         setValue(pcObject->getGeometryPtr());
+        if (part2d)
+            part2d->acceptGeometry();
     }
     else {
         std::string error = std::string("type must be 'Geometry' or list of 'Geometry', not ");
@@ -182,7 +190,7 @@ void PropertyGeometryList::Restore(Base::XMLReader &reader)
     setValues(values);
 }
 
-Property *PropertyGeometryList::Copy(void) const
+App::Property *PropertyGeometryList::Copy(void) const
 {
     PropertyGeometryList *p = new PropertyGeometryList();
     p->setValues(_lValueList);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,7 +29,10 @@
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
 #include "Property.h"
+#include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include <Base/Exception.h>
+#include "Application.h"
 
 using namespace App;
 
@@ -81,11 +84,39 @@ void Property::setContainer(PropertyContainer *Father)
     father = Father;
 }
 
+void Property::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    path.setValue(value);
+}
+
+const boost::any Property::getPathValue(const ObjectIdentifier &path) const
+{
+    return path.getValue();
+}
+
+void Property::getPaths(std::vector<ObjectIdentifier> &paths) const
+{
+    paths.push_back(App::ObjectIdentifier(getContainer(), getName()));
+}
+
+const ObjectIdentifier Property::canonicalPath(const ObjectIdentifier &p) const
+{
+    return p;
+}
+
 void Property::touch()
 {
     if (father)
         father->onChanged(this);
     StatusBits.set(0);
+}
+
+void Property::setReadOnly(bool readOnly)
+{
+    unsigned long status = this->getStatus();
+    this->setStatus(App::Property::ReadOnly, readOnly);
+    if (status != this->getStatus())
+        App::GetApplication().signalChangePropertyEditor(*this);
 }
 
 void Property::hasSetValue(void)
@@ -101,6 +132,16 @@ void Property::aboutToSetValue(void)
         father->onBeforeChange(this);
 }
 
+void Property::verifyPath(const ObjectIdentifier &p) const
+{
+    if (p.numSubComponents() != 1)
+        throw Base::Exception("Invalid property path: single component expected");
+    if (!p.getPropertyComponent(0).isSimple())
+        throw Base::Exception("Invalid property path: simple component expected");
+    if (p.getPropertyComponent(0).getName() != getName())
+        throw Base::Exception("Invalid property path: name mismatch");
+}
+
 Property *Property::Copy(void) const 
 {
     // have to be reimplemented by a subclass!
@@ -114,7 +155,7 @@ void Property::Paste(const Property& /*from*/)
     assert(0);
 }
 
-std::string Property::encodeAttribute(const std::string& str) const
+std::string Property::encodeAttribute(const std::string& str)
 {
     std::string tmp;
     for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
@@ -122,6 +163,8 @@ std::string Property::encodeAttribute(const std::string& str) const
             tmp += "&lt;";
         else if (*it == '"')
             tmp += "&quot;";
+        else if (*it == '\'')
+            tmp += "&apos;";
         else if (*it == '&')
             tmp += "&amp;";
         else if (*it == '>')

@@ -1,0 +1,47 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/Spreadsheet.svg</file>
+        <file>icons/SpreadsheetController.svg</file>
+        <file>icons/SpreadsheetImport.svg</file>
+        <file>icons/SpreadsheetExport.svg</file>
+        <file>icons/SpreadsheetSplitCell.svg</file>
+        <file>icons/SpreadsheetMergeCells.svg</file>
+        <file>icons/SpreadsheetAlignRight.svg</file>
+        <file>icons/SpreadsheetAlignLeft.svg</file>
+        <file>icons/SpreadsheetAlignCenter.svg</file>
+        <file>icons/SpreadsheetAlignVCenter.svg</file>
+        <file>icons/SpreadsheetAlignTop.svg</file>
+        <file>icons/SpreadsheetAlignBottom.svg</file>
+        <file>icons/SpreadsheetStyleUnderline.svg</file>
+        <file>icons/SpreadsheetStyleItalic.svg</file>
+        <file>icons/SpreadsheetStyleBold.svg</file>
+        <file>icons/SpreadsheetWorkbench.svg</file>
+        <file>translations/Spreadsheet_de.qm</file>
+        <file>translations/Spreadsheet_af.qm</file>
+        <file>translations/Spreadsheet_zh-CN.qm</file>
+        <file>translations/Spreadsheet_zh-TW.qm</file>
+        <file>translations/Spreadsheet_hr.qm</file>
+        <file>translations/Spreadsheet_cs.qm</file>
+        <file>translations/Spreadsheet_nl.qm</file>
+        <file>translations/Spreadsheet_fi.qm</file>
+        <file>translations/Spreadsheet_fr.qm</file>
+        <file>translations/Spreadsheet_hu.qm</file>
+        <file>translations/Spreadsheet_ja.qm</file>
+        <file>translations/Spreadsheet_no.qm</file>
+        <file>translations/Spreadsheet_pl.qm</file>
+        <file>translations/Spreadsheet_pt-PT.qm</file>
+        <file>translations/Spreadsheet_ro.qm</file>
+        <file>translations/Spreadsheet_ru.qm</file>
+        <file>translations/Spreadsheet_sr.qm</file>
+        <file>translations/Spreadsheet_es-ES.qm</file>
+        <file>translations/Spreadsheet_sv-SE.qm</file>
+        <file>translations/Spreadsheet_uk.qm</file>
+        <file>translations/Spreadsheet_it.qm</file>
+        <file>translations/Spreadsheet_pt-BR.qm</file>
+        <file>translations/Spreadsheet_el.qm</file>
+        <file>translations/Spreadsheet_sk.qm</file>
+        <file>translations/Spreadsheet_tr.qm</file>
+        <file>translations/Spreadsheet_sl.qm</file>
+        <file>icons/SpreadsheetAlias.svg</file>
+    </qresource>
+</RCC>

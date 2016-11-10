@@ -130,46 +130,148 @@ class GitControl(VersionControl):
     #http://cworth.org/hgbook-git/tour/
     #http://git.or.cz/course/svn.html
     #git help log
+    def getremotes(self):
+        """return a mapping of remotes and their fetch urls"""
+        rr=os.popen("git remote -v")
+        rrstr=rr.read().strip()
+        if rr.close() is None: # exit code == 0
+            self.remotes=dict(l[:-8].split('\t') for l in rrstr.splitlines() \
+                    if l.endswith(' (fetch)'))
+            self.branchlst=os.popen("git show -s --pretty=%d HEAD").read()\
+            .strip(" ()\n").split(', ') #used for possible remotes
+    def geturl(self):
+        urls=[]
+        for ref in self.branchlst:
+            if '/' in ref:
+                remote,branch = ref.split('/',1)
+                if remote in self.remotes:
+                    url=self.remotes[remote]
+                    #rewrite github to public url
+                    import re
+                    match = re.match('git@github\.com:(\S+?)/(\S+\.git)',url) \
+                            or re.match('https://github\.com/(\S+)/(\S+\.git)'\
+                            ,url)
+                    if match is not None:
+                        url = 'git://github.com/%s/%s' % match.groups()
+                    match = re.match('ssh://\S+?@(\S+)',url)
+                    if match is not None:
+                        url = 'git://%s' % match.group(1)
+                    entryscore=(url == "git://github.com/FreeCAD/FreeCAD.git",\
+                            'github.com' in url,branch==self.branch,\
+                            branch=='master', '@' not in url)
+                            #used for sorting the list
+                    if branch==self.branch: #add branch name
+                        url = '%s %s' % (url,branch)
+                    urls.append((entryscore,url))
+        if len(urls) > 0:
+            self.url = sorted(urls)[-1][1]
+        else:
+            self.url = "Unknown"
+
+    def revisionNumber(self, srcdir,origin=None):
+        """sets the revision number
+for master and release branches all commits are counted
+for other branches the version numver is split in two parts
+the first number reflects the number of commits in common with the
+blessed master repository.
+the second part, seperated by " +"reflects the number of commits that are
+different form the master repository"""
+        #referencecommit="f119e740c87918b103140b66b2316ae96f136b0e"
+        #referencerevision=4138
+        referencecommit="6b3d7b17a749e03bcbf2cf79bbbb903137298c44"
+        referencerevision=5235
+
+        result = None
+        countallfh=os.popen("git rev-list --count %s..HEAD" % \
+                referencecommit)
+        countallstr=countallfh.read().strip()
+        if countallfh.close() is not None: #reference commit not present
+            self.rev = '%04d (Git shallow)' % referencerevision
+            return
+        else:
+            countall = int(countallstr)
+
+        if origin is not None and self.branch.lower() != 'master' and \
+                'release' not in self.branch.lower():
+            mbfh=os.popen("git merge-base %s/master HEAD" % origin)
+            mergebase = mbfh.read().strip()
+            if mbfh.close() is None: # exit code == 0
+                try:
+                    countmergebase=int(os.popen("git rev-list --count %s..%s"\
+                        % (referencecommit,mergebase)).read().strip())
+                    if countall > countmergebase:
+                        result = '%04d +%d (Git)' % (countmergebase +\
+                            referencerevision,countall-countmergebase)
+                except ValueError:
+                    pass
+        self.rev = result or ('%04d (Git)' % (countall+referencerevision))
+
+    def namebranchbyparents(self):
+        """name multiple branches in case that the last commit was a merge
+a merge is identified by having two or more parents
+if the describe does not return a ref name (the hash is added)
+if one parent is the master and the second one has no ref name, one branch was
+merged."""
+        parents=os.popen("git log -n1 --pretty=%P").read()\
+                .strip().split(' ')
+        if len(parents) >= 2: #merge commit
+            parentrefs=[]
+            names=[]
+            hasnames=0
+            for p in parents:
+                refs=os.popen("git show -s --pretty=%%d %s" % p).read()\
+                        .strip(" ()\n").split(', ')
+                if refs[0] != '': #has a ref name
+                    parentrefs.append(refs)
+                    names.append(refs[-1])
+                    hasnames += 1
+                else:
+                    parentrefs.append(p)
+                    names.append(p[:7])
+            if hasnames >=2: # merging master into dev is not enough
+                self.branch=','.join(names)
+
     def extractInfo(self, srcdir):
-        # revision number
-        info=os.popen("git rev-list HEAD").read()
-        if len(info) == 0:
-            return False
-        self.rev='%04d (Git)' % (info.count('\n'))
+        self.hash=os.popen("git log -1 --pretty=format:%H").read().strip()
+        if self.hash == "":
+            return False # not a git repo
         # date/time
-        info=os.popen("git log -1 --date=iso").read()
-        info=info.split("\n")
-        for i in info:
-            r = re.match("^Date:\\W+(\\d+-\\d+-\\d+\\W+\\d+:\\d+:\\d+)", i)
-            if r != None:
-                self.date = r.groups()[0].replace('-','/')
-                break
-        self.hash=os.popen("git log -1 --pretty=format:%H").read()
-        for self.branch in os.popen("git branch").read().split('\n'):
+        import time
+        info=os.popen("git log -1 --date=raw --pretty=format:%cd").read()
+        # commit time is more meaningfull than author time
+        # use UTC
+        self.date = time.strftime("%Y/%m/%d %H:%M:%S",time.gmtime(\
+                float(info.strip().split(' ',1)[0])))
+        for self.branch in os.popen("git branch --no-color").read().split('\n'):
             if re.match( "\*", self.branch ) != None:
                 break 
         self.branch=self.branch[2:]
+        self.getremotes() #setup self.remotes and branchlst
+
         remote='origin' #used to determine the url
+        self.geturl()
+        origin = None #remote for the blessed master
+        for fetchurl in ("git@github.com:FreeCAD/FreeCAD.git",\
+            "https://github.com/FreeCAD/FreeCAD.git"):
+            for key,url in self.remotes.iteritems():
+                if fetchurl in url:
+                    origin = key
+                    break
+            if origin is not None:
+                break
+
+        self.revisionNumber(srcdir,origin)
+        if self.branch.lower() != 'master' and \
+                'release' not in self.branch.lower():
+            self.namebranchbyparents()
         if self.branch == '(no branch)': #check for remote branches
-            branchlst=os.popen("git show -s --pretty=%d HEAD").read()\
-                .strip(" ()\n").split(', ')
-            if len(branchlst) >= 2:
-                self.branch = branchlst[1]
+            if len(self.branchlst) >= 2:
+                self.branch = self.branchlst[1]
                 if '/' in self.branch:
                     remote=self.branch.split('/',1)[0]
             else: # guess
                 self.branch = '(%s)' % \
                     os.popen("git describe --all --dirty").read().strip()
-        self.url = "Unknown"
-        info=os.popen("git remote -v").read()
-        info=info.split("\n")
-        for i in info:
-            r = re.match("%s\\W+(\\S+)"%remote,i)
-            if r != None:
-                url=r.groups()[0]
-                if '@' not in url:#ignore urls with usernames, as might as well include a password
-                    self.url=url
-                    break
         #if the branch name conainted any slashes but was not a remote
         #there might be not result by now. Hence we assume origin
         if self.url == "Unknown":
@@ -275,9 +377,9 @@ def main():
     for i in vcs:
         if i.extractInfo(srcdir):
             # Open the template file and the version file
-            file = open("%s/src/Build/Version.h.in" % (srcdir))
-            lines = file.readlines()
-            file.close()
+            inp = open("%s/src/Build/Version.h.in" % (bindir))
+            lines = inp.readlines()
+            inp.close()
             lines = i.writeVersion(lines)
             out  = open("%s/src/Build/Version.h" % (bindir),"w");
             out.writelines(lines)

@@ -65,6 +65,7 @@ public:
     RemovePolicy removePolicy() const;
     void setRemovePolicy(RemovePolicy policy);
     void closeEvent(QCloseEvent* e);
+    QUrl redirectUrl(const QUrl&) const;
 
 public Q_SLOTS:
     void download(const QNetworkRequest &request, bool requestFileName = false);

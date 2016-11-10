@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -46,13 +49,24 @@ void loadStartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef StartGui_Import_methods[];
+namespace StartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("StartGui")
+    {
+        initialize("This module is the StartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+} // namespace StartGui
 
 
 /* Python entry */
-extern "C" {
-void StartGuiExport initStartGui()
+PyMODINIT_FUNC initStartGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -71,17 +85,17 @@ void StartGuiExport initStartGui()
         Py::Object o = Py::type(e);
         if (o.isString()) {
             Py::String s(o);
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         else {
             Py::String s(o.repr());
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
+            Base::Console().Error("%s\n", s.as_std_string("utf-8").c_str());
         }
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
 
-    (void) Py_InitModule("StartGui", StartGui_Import_methods);   /* mod name, table ptr */
+    new StartGui::Module();
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // instantiating the commands
@@ -91,5 +105,3 @@ void StartGuiExport initStartGui()
      // add resources and reloads the translators
     loadStartResource();
 }
-
-} // extern "C" {

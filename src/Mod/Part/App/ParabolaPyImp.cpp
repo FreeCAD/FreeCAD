@@ -29,6 +29,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "ParabolaPy.h"
 #include "ParabolaPy.cpp"
@@ -74,7 +75,7 @@ PyObject* ParabolaPy::compute(PyObject *args)
     Base::Vector3d c = (v1-v2) % (v3-v2);
     double zValue = v1.z;
     if (fabs(c.Length()) < 0.0001) {
-        PyErr_SetString(PyExc_Exception, "Points are collinear");
+        PyErr_SetString(PartExceptionOCCError, "Points are collinear");
         return 0;
     }
 

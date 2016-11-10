@@ -434,7 +434,7 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
   assert((rulX < _ulCtGridsX) && (rulY < _ulCtGridsY) && (rulZ < _ulCtGridsZ));
 }
 
-inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float fEpsilon)
+inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float /*fEpsilon*/)
 {
 #if 0
   unsigned long  i, ulX, ulY, ulZ, ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;
@@ -459,7 +459,7 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
       {
         for (ulZ = ulZ1; ulZ <= ulZ2; ulZ++)
         {
-          if (CMeshFacetFunc::BBoxContainFacet(GetBoundBox(ulX, ulY, ulZ), rclFacet) == TRUE)
+          if (CMeshFacetFunc::BBoxContainFacet(GetBoundBox(ulX, ulY, ulZ), rclFacet) == true)
             _aulGrid[ulX][ulY][ulZ].insert(ulFacetIndex);
         }
       }
@@ -472,9 +472,9 @@ inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned lon
 
   Base::BoundBox3f clBB;
 
-  clBB &= rclFacet._aclPoints[0];
-  clBB &= rclFacet._aclPoints[1];
-  clBB &= rclFacet._aclPoints[2];
+  clBB.Add(rclFacet._aclPoints[0]);
+  clBB.Add(rclFacet._aclPoints[1]);
+  clBB.Add(rclFacet._aclPoints[2]);
 
   //float fDiagonalLength = clBB.CalcDiagonalLength();
 

@@ -25,23 +25,3 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
-class CompleteDocument:
-	"Complete document"
-	def Info(self):
-		return "Complete document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Complete")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Complete/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Complete")
-ParGrp.SetString("DocTemplateScript","TemplComplete.py")
-ParGrp.SetString("WorkBenchName",    "Complete Design")
-ParGrp.SetString("WorkBenchModule",  "CompleteWorkbench.py")
-
-
-#FreeCAD.EndingAdd("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Complete")
-

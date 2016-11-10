@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,24 +24,16 @@
 #ifndef FEM_ViewProviderAnalysis_H
 #define FEM_ViewProviderAnalysis_H
 
-#include <Gui/ViewProviderGeometryObject.h>
-#include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/ViewProviderPythonFeature.h>
-
-class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
-class SoShapeHints;
-class SoMaterialBinding;
+#include <QCoreApplication>
 
 namespace FemGui
 {
 
-
-
 class FemGuiExport ViewProviderFemAnalysis : public Gui::ViewProviderDocumentObject
 {
+    Q_DECLARE_TR_FUNCTIONS(FemGui::ViewProviderFemAnalysis)
     PROPERTY_HEADER(FemGui::ViewProviderAnalysis);
 
 public:
@@ -49,7 +41,7 @@ public:
     ViewProviderFemAnalysis();
 
     /// destructor.
-    ~ViewProviderFemAnalysis();
+    virtual ~ViewProviderFemAnalysis();
 
     virtual bool doubleClicked(void);
 
@@ -62,6 +54,22 @@ public:
 
     // shows solid in the tree
     virtual bool isShow(void) const{return true;}
+
+    /** @name Drag and drop */
+    //@{
+    /// Returns true if the view provider generally supports dragging objects
+    bool canDragObjects() const;
+    /// Check whether the object can be removed from the view provider by drag and drop
+    bool canDragObject(App::DocumentObject*) const;
+    /// Starts to drag the object
+    void dragObject(App::DocumentObject*);
+    /// Returns true if the view provider generally accepts dropping of objects
+    bool canDropObjects() const;
+    /// Check whether the object can be dropped to the view provider by drag and drop
+    bool canDropObject(App::DocumentObject*) const;
+    /// If the dropped object type is accepted the object will be added as child
+    void dropObject(App::DocumentObject*);
+    //@}
 
 protected:
     virtual bool setEdit(int ModNum);

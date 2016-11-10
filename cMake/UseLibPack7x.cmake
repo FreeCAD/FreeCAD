@@ -11,17 +11,17 @@ include_directories(${FREECAD_LIBPACK_DIR}/include)
 set(OPENGL_gl_LIBRARY opengl32 glu32)
 
 # Python
-set(PYTHON_DEBUG_LIBRARY python26_d.lib)
-set(PYTHON_LIBRARY python26.lib)
+set(PYTHON_LIBRARIES optimized python26.lib debug python26_d.lib)
 set(PYTHON_INCLUDE_PATH ${FREECAD_LIBPACK_DIR}/include/python)
+set(PYTHON_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/python)
 set(PYTHON_EXECUTABLE   ${FREECAD_LIBPACK_DIR}/bin/python.exe)
 set(PYTHONLIBS_FOUND TRUE) 
 	
 # XercesC
-set(XERCESC_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/xercesc)
-set(XERCESC_LIBRARIES       xerces-c_2.lib)
-set(XERCESC_DEBUG_LIBRARIES xerces-c_2D.lib)
-set(XERCESC_FOUND TRUE) 
+set(XercesC_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/xercesc)
+set(XercesC_LIBRARIES       xerces-c_2.lib)
+set(XercesC_DEBUG_LIBRARIES xerces-c_2D.lib)
+set(XercesC_FOUND TRUE) 
 	
 # Boost
 set(Boost_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/boost)
@@ -30,11 +30,10 @@ set(Boost_LIBRARIES
     optimized boost_system-vc90-mt-1_39.lib 
 	optimized boost_graph-vc90-mt-1_39.lib 
 	optimized boost_program_options-vc90-mt-1_39.lib
+	optimized boost_python-vc90-mt-1_39.lib
 	optimized boost_regex-vc90-mt-1_39.lib
 	optimized boost_signals-vc90-mt-1_39.lib
 	optimized boost_thread-vc90-mt-1_39.lib
-)
-set(Boost_DEBUG_LIBRARIES 
 	debug boost_filesystem-vc90-mt-gd-1_39.lib 
 	debug boost_date_time-vc90-mt-gd-1_39.lib
 	debug boost_filesystem-vc90-mt-gd-1_39.lib
@@ -45,6 +44,7 @@ set(Boost_DEBUG_LIBRARIES
 	debug boost_system-vc90-mt-gd-1_39.lib
 	debug boost_graph-vc90-mt-gd-1_39.lib 
 	debug boost_program_options-vc90-mt-gd-1_39.lib
+	debug boost_python-vc90-mt-gd-1_39.lib
 	debug boost_regex-vc90-mt-gd-1_39.lib
 	debug boost_signals-vc90-mt-gd-1_39.lib
 )
@@ -72,9 +72,11 @@ set(SMESH_LIBRARIES
 set(SMESH_FOUND TRUE) 
 	
 # Coin3D
-set(COIN3D_INCLUDE_DIR ${FREECAD_LIBPACK_DIR}/include/coin)
+set(COIN3D_INCLUDE_DIRS ${FREECAD_LIBPACK_DIR}/include/coin)
 set(COIN3D_LIBRARY_DEBUG  coin3d.lib)
 set(COIN3D_LIBRARY_RELEASE  coin3.lib)
+set(COIN3D_LIBRARIES optimized ${COIN3D_LIBRARY_RELEASE}
+                     debug ${COIN3D_LIBRARY_DEBUG})
 set(COIN3D_FOUND TRUE) 
 
 
@@ -111,8 +113,6 @@ set(QT_LIBRARIES
     optimized QtXml4.lib
     optimized QtOpenGl4.lib
     optimized QtWebKit4.lib
-)
-set(QT_DEBUG_LIBRARIES 
     debug QtCored4.lib
     debug QtGuid4.lib
     debug QtDesignerd4.lib
@@ -125,12 +125,24 @@ set(QT_DEBUG_LIBRARIES
     debug QtWebKitd4.lib
 )
 
-set(QT_QTCORE_LIBRARY_DEBUG 
-    debug QtCored4.lib
- )
- 
 set(QT_QTCORE_LIBRARY 
     optimized QtCore4.lib
+    debug QtCored4.lib
+)
+
+set(QT_QTXML_LIBRARY 
+    optimized QtXml4.lib
+    debug QtXmld4.lib
+)
+
+set(QT_QTUITOOLS_LIBRARY 
+    optimized QtUiTools.lib
+    debug QtUiToolsd.lib
+)
+
+set(QT_QTMAIN_LIBRARY 
+    debug qtmaind.lib
+    optimized qtmain.lib
 )
 
 set(QT_UIC_EXECUTABLE ${FREECAD_LIBPACK_DIR}/bin/uic.exe)
@@ -299,6 +311,7 @@ set(OCC_LIBRARIES
     TKSTL
     TKShHealing
     TKXSBase
+    TKBin
     TKBool
     TKBO
     TKBRep

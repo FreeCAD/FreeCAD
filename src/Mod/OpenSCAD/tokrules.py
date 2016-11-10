@@ -41,6 +41,7 @@ reserved = (
     'false',
     'circle',
     'square',
+    'text',
     'polygon',
     'paths',
     'points',
@@ -57,7 +58,6 @@ reserved = (
     'projection',
     'import',
     'color',
-    'cut',
     'offset',
     'resize',
     )

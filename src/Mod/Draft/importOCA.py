@@ -44,7 +44,7 @@ params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 def getpoint(data):
     "turns an OCA point definition into a FreeCAD Vector"
-    print "found point ",data
+    print("found point ",data)
     if (len(data) == 3):
         return Vector(float(data[0]),float(data[1]),float(data[2]))
     elif (data[0] == "P") and (len(data) == 4):
@@ -69,7 +69,7 @@ def getpoint(data):
               
 def getarea(data):
     "turns an OCA area definition into a FreeCAD Part Wire"
-    print "found area ",data
+    print("found area ",data)
     if (data[0] == "S"):
         if (data[1] == "POL"):
             pts = data[2:]
@@ -82,7 +82,7 @@ def getarea(data):
 
 def getarc(data):
     "turns an OCA arc definition into a FreeCAD Part Edge"
-    print "found arc ", data
+    print("found arc ", data)
     c = None
     if (data[0] == "ARC"):
         # 3-points arc
@@ -126,7 +126,7 @@ def getarc(data):
     if c: return c.toShape()
 
 def getline(data):
-    print "found line ", data
+    print("found line ", data)
     "turns an OCA line definition into a FreeCAD Part Edge"
     verts = []
     for p in range(len(data)):
@@ -139,7 +139,7 @@ def getline(data):
 
 def gettranslation(data):
     "retrieves a transformation vector"
-    print "found translation ",data
+    print("found translation ",data)
     if (data[0] == "Z"):
         return Vector(0,0,float(data[1]))
     elif (data[0] == "Y"):
@@ -214,22 +214,22 @@ def decodeName(name):
         try:
             decodedName = (name.decode("latin1"))
         except UnicodeDecodeError:
-            print "oca: error: couldn't determine character encoding"
+            print("oca: error: couldn't determine character encoding")
             decodedName = name
     return decodedName
     
 def open(filename):
     docname=os.path.split(filename)[1]
     doc=FreeCAD.newDocument(docname)
-    if (docname[-4:] == "gcad"): doc.Label = decodeName(docname[:-5])
-    else: doc.Label = decodeName(docname[:-4])
+    if (docname[-4:] == "gcad"): doc.Label = docname[:-5]
+    else: doc.Label = docname[:-4]
     parse(filename,doc)
     doc.recompute()
 
 def insert(filename,docname):
     try:
         doc=FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc=FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     parse(filename,doc)
@@ -249,7 +249,7 @@ def export(exportList,filename):
             for e in ob.Shape.Edges:
                 edges.append(e)
     if not (edges or faces):
-        print "oca: found no data to export"
+        print("oca: found no data to export")
         return
     
     # writing file

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,7 +39,7 @@ DlgSettingsMacroImp::DlgSettingsMacroImp( QWidget* parent )
 {
     this->setupUi(this);
     if (MacroPath->fileName().isEmpty()) {
-        QDir d(QString::fromUtf8(App::GetApplication().getUserAppDataDir().c_str()));
+        QDir d(QString::fromUtf8(App::GetApplication().getUserMacroDir().c_str()));
         MacroPath->setFileName(d.path());
     }
 }

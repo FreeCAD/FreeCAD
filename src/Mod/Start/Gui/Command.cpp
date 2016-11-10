@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,9 +50,9 @@ CmdStartConstraintAxle::CmdStartConstraintAxle()
 
 void CmdStartConstraintAxle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // load the file with the module
     //Command::doCommand(Command::Gui, "import Start, StartGui");
-      
 }
 
 

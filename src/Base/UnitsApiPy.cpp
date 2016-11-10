@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Python.h>
 #endif
 
 #include <CXX/Objects.hxx>
@@ -129,13 +128,15 @@ PyMethodDef UnitsApi::Methods[] = {
 PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
     char *pstr;
-    if (!PyArg_ParseTuple(args, "s", &pstr))     // convert args: Python->C
+    if (!PyArg_ParseTuple(args, "et", "utf-8", &pstr))     // convert args: Python->C
         return NULL;                             // NULL triggers exception
 
-	Quantity rtn;
+    Quantity rtn;
+    QString qstr = QString::fromUtf8(pstr);
+    PyMem_Free(pstr);
     try {
-        rtn = Quantity::parse(QString::fromLatin1(pstr));
-	}
+        rtn = Quantity::parse(qstr);
+    }
     catch (const Base::Exception&) {
         PyErr_Format(PyExc_IOError, "invalid unit expression \n");
         return 0L;
@@ -145,6 +146,5 @@ PyObject* UnitsApi::sParseQuantity(PyObject * /*self*/, PyObject *args,PyObject 
         return 0L;
     }
 
-	return new QuantityPy(new Quantity(rtn));
-
+    return new QuantityPy(new Quantity(rtn));
 }

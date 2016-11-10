@@ -32,7 +32,7 @@ def compute():
         c = float(l5.text())*m     #standard value 0,1*m - 0,3*m
         j = float(l6.text())*m     #standard value 0,015 - 0,04*m
         width = float(l7.text())   #gear width           
-    except:
+    except ValueError:
         FreeCAD.Console.PrintError("Wrong input! Only numbers allowed...\n")
     
     

@@ -733,7 +733,7 @@ best_fit_mesh2_button->setEnabled(true);
         break;
 
     case Approx:
-        /*MeshCore::MeshPointArray pnts   = m_Mesh.GetPoints();  // file "kleines.stl" hat spitze über der ebene ... nicht kompatibel mit diesem Algo
+        /*MeshCore::MeshPointArray pnts   = m_Mesh.GetPoints();  // file "kleines.stl" hat spitze Ã¼ber der ebene ... nicht kompatibel mit diesem Algo
         MeshCore::MeshFacetArray facets = m_Mesh.GetFacets();
 
         for(int i=0; i<pnts.size(); ++i)

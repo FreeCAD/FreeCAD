@@ -1,7 +1,7 @@
 if(MSVC)
-    add_definitions(-DFCGuiRobot -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH -DEIGEN2_SUPPORT)
+    add_definitions(-DFCGuiRobot -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
 else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H -DEIGEN2_SUPPORT)
+    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
 
@@ -11,14 +11,13 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
@@ -63,7 +62,6 @@ SOURCE_GROUP("Qt" FILES ${PartDesignGui_MOC_SRCS})
 
 SET(RobotGui_SRCS_Module
     AppRobotGui.cpp
-    AppRobotGuiPy.cpp
     Resources/Robot.qrc
     PreCompiled.cpp
     PreCompiled.h
@@ -95,7 +93,7 @@ SET(RobotGui_SRCS_ViewProvider
 SOURCE_GROUP("ViewProvider" FILES ${RobotGui_SRCS_ViewProvider})
 
 SET(RobotGui_SRCS_TaskBoxes
-	TaskRobot6Axis.ui
+    TaskRobot6Axis.ui
     TaskRobot6Axis.cpp
     TaskRobot6Axis.h
     TaskTrajectory.ui
@@ -126,21 +124,21 @@ SET(RobotGui_SRCS_TaskDlg
     TaskDlgSimulate.cpp
     TaskDlgEdge2Trac.h
     TaskDlgEdge2Trac.cpp
-	TaskDlgTrajectoryCompound.h
-	TaskDlgTrajectoryCompound.cpp
-	TaskDlgTrajectoryDressUp.h
-	TaskDlgTrajectoryDressUp.cpp
+    TaskDlgTrajectoryCompound.h
+    TaskDlgTrajectoryCompound.cpp
+    TaskDlgTrajectoryDressUp.h
+    TaskDlgTrajectoryDressUp.cpp
 )
 SOURCE_GROUP("Task_Dialogs" FILES ${RobotGui_SRCS_TaskDlg})
 
 SET(RobotGui_SRCS
     ${RobotGui_UIC_HDRS}
     ${RobotResource_SRCS}
-	${RobotGui_SRCS_Module}
-	${RobotGui_SRCS_ViewProvider}
-	${RobotGui_SRCS_Commands}
-	${RobotGui_SRCS_TaskBoxes}
-	${RobotGui_SRCS_TaskDlg}
+    ${RobotGui_SRCS_Module}
+    ${RobotGui_SRCS_ViewProvider}
+    ${RobotGui_SRCS_Commands}
+    ${RobotGui_SRCS_TaskBoxes}
+    ${RobotGui_SRCS_TaskDlg}
 )
 
 
@@ -158,3 +156,11 @@ SET_BIN_DIR(RobotGui RobotGui /Mod/Robot)
 SET_PYTHON_PREFIX_SUFFIX(RobotGui)
 
 INSTALL(TARGETS RobotGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(RobotGuiIcon_SVG
+    Resources/icons/RobotWorkbench.svg
+)
+
+fc_copy_sources(RobotGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Robot" ${RobotGuiIcon_SVG})
+
+INSTALL(FILES ${RobotGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Robot/Resources/icons")

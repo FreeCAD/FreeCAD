@@ -22,6 +22,9 @@
 
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <cfloat>
+#endif
 #include "VisualInspection.h"
 #include "ui_VisualInspection.h"
 
@@ -29,6 +32,7 @@
 #include <App/Document.h>
 #include <App/DocumentObject.h>
 #include <App/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Application.h>
@@ -76,7 +80,7 @@ private:
  *  Constructs a VisualInspection as a child of 'parent', with the
  *  name 'name' and widget flags set to 'f'.
  */
-VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
+VisualInspection::VisualInspection(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl), ui(new Ui_VisualInspection)
 {
     ui->setupUi(this);
@@ -89,9 +93,11 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
 
     //FIXME: Not used yet
     ui->textLabel2->hide();
-    ui->prefFloatSpinBox2->hide();
-    ui->prefFloatSpinBox1->setDecimals(Base::UnitsApi::getDecimals());
-    ui->prefFloatSpinBox2->setDecimals(Base::UnitsApi::getDecimals());
+    ui->thickness->hide();
+    ui->searchRadius->setUnit(Base::Unit::Length);
+    ui->searchRadius->setRange(0, DBL_MAX);
+    ui->thickness->setUnit(Base::Unit::Length);
+    ui->thickness->setRange(0, DBL_MAX);
 
     App::Document* doc = App::GetApplication().getActiveDocument();
     // disable Ok button and enable of at least one item in each view is on
@@ -118,13 +124,13 @@ VisualInspection::VisualInspection(QWidget* parent, Qt::WFlags fl)
             QIcon px = view->getIcon();
             SingleSelectionItem* item1 = new SingleSelectionItem(ui->treeWidgetActual);
             item1->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item1->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item1->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item1->setCheckState(0, Qt::Unchecked);
             item1->setIcon(0, px);
 
             SingleSelectionItem* item2 = new SingleSelectionItem(ui->treeWidgetNominal);
             item2->setText(0, QString::fromUtf8((*it)->Label.getValue()));
-            item2->setData(0, Qt::UserRole, QString::fromAscii((*it)->getNameInDocument()));
+            item2->setData(0, Qt::UserRole, QString::fromLatin1((*it)->getNameInDocument()));
             item2->setCheckState(0, Qt::Unchecked);
             item2->setIcon(0, px);
 
@@ -147,14 +153,27 @@ VisualInspection::~VisualInspection()
 
 void VisualInspection::loadSettings()
 {
-    ui->prefFloatSpinBox1->onRestore();
-    ui->prefFloatSpinBox2->onRestore();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+
+    double searchDistance = ui->searchRadius->value().getValue();
+    searchDistance = handle->GetFloat("SearchDistance", searchDistance);
+    ui->searchRadius->setValue(searchDistance);
+
+    double thickness = ui->thickness->value().getValue();
+    thickness = handle->GetFloat("Thickness", thickness);
+    ui->thickness->setValue(thickness);
 }
 
 void VisualInspection::saveSettings()
 {
-    ui->prefFloatSpinBox1->onSave();
-    ui->prefFloatSpinBox2->onSave();
+    ParameterGrp::handle handle = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Mod/Inspection/Inspection");
+    double searchDistance = ui->searchRadius->value().getValue();
+    handle->SetFloat("SearchDistance", searchDistance);
+
+    double thickness = ui->thickness->value().getValue();
+    handle->SetFloat("Thickness", thickness);
 }
 
 void VisualInspection::onActivateItem(QTreeWidgetItem* item)
@@ -204,41 +223,41 @@ void VisualInspection::accept()
                 nominalNames << sel->data(0, Qt::UserRole).toString();
         }
 
-        float searchRadius = ui->prefFloatSpinBox1->value();
-        float thickness = ui->prefFloatSpinBox2->value();
+        double searchRadius = ui->searchRadius->value().getValue();
+        double thickness = ui->thickness->value().getValue();
 
         // open a new command
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         doc->openCommand("Visual Inspection");
 
         // create a group
-        Gui::Application::Instance->runCommand(
-            true, "App_activeDocument___InspectionGroup=App.ActiveDocument.addObject(\"Inspection::Group\",\"Inspection\")");
+        Gui::Command::runCommand(
+            Gui::Command::App, "App_activeDocument___InspectionGroup=App.ActiveDocument.addObject(\"Inspection::Group\",\"Inspection\")");
     
         // for each actual geometry create an inspection feature
         for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
                 QString actualName = sel->data(0, Qt::UserRole).toString();
-                Gui::Application::Instance->runCommand(
-                    true, "App_activeDocument___InspectionGroup.newObject(\"Inspection::Feature\",\"%s_Inspect\")", (const char*)actualName.toAscii());
-                Gui::Application::Instance->runCommand(
-                    true, "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
-                          "App_activeDocument___activeObject___Nominals=list()\n"
-                          "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
-                          "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toAscii(), searchRadius, thickness);
+                Gui::Command::doCommand(Gui::Command::App,
+                    "App_activeDocument___InspectionGroup.newObject(\"Inspection::Feature\",\"%s_Inspect\")", (const char*)actualName.toLatin1());
+                Gui::Command::doCommand(Gui::Command::App,
+                    "App.ActiveDocument.ActiveObject.Actual=App.ActiveDocument.%s\n"
+                    "App_activeDocument___activeObject___Nominals=list()\n"
+                    "App.ActiveDocument.ActiveObject.SearchRadius=%.3f\n"
+                    "App.ActiveDocument.ActiveObject.Thickness=%.3f\n", (const char*)actualName.toLatin1(), searchRadius, thickness);
                 for (QStringList::Iterator it = nominalNames.begin(); it != nominalNames.end(); ++it) {
-                    Gui::Application::Instance->runCommand(
-                        true, "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)(*it).toAscii());
+                    Gui::Command::doCommand(Gui::Command::App,
+                        "App_activeDocument___activeObject___Nominals.append(App.ActiveDocument.%s)\n", (const char*)(*it).toLatin1());
                 }
-                Gui::Application::Instance->runCommand(
-                    true, "App.ActiveDocument.ActiveObject.Nominals=App_activeDocument___activeObject___Nominals\n"
-                          "del App_activeDocument___activeObject___Nominals\n");
+                Gui::Command::doCommand(Gui::Command::App,
+                    "App.ActiveDocument.ActiveObject.Nominals=App_activeDocument___activeObject___Nominals\n"
+                    "del App_activeDocument___activeObject___Nominals\n");
             }
         }
 
-        Gui::Application::Instance->runCommand(
-            true, "del App_activeDocument___InspectionGroup\n");
+        Gui::Command::runCommand(Gui::Command::App,
+            "del App_activeDocument___InspectionGroup\n");
 
         doc->commitCommand();
         doc->getDocument()->recompute();
@@ -247,18 +266,18 @@ void VisualInspection::accept()
         for (QTreeWidgetItemIterator it(ui->treeWidgetActual); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
-                Gui::Application::Instance->runCommand(
-                    true, "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                        , (const char*)sel->data(0, Qt::UserRole).toString().toAscii());
+                Gui::Command::doCommand(Gui::Command::App
+                    , "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
+                    , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
 
         for (QTreeWidgetItemIterator it(ui->treeWidgetNominal); *it; it++) {
             SingleSelectionItem* sel = (SingleSelectionItem*)*it;
             if (sel->checkState(0) == Qt::Checked) {
-                Gui::Application::Instance->runCommand(
-                    true, "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
-                        , (const char*)sel->data(0, Qt::UserRole).toString().toAscii());
+                Gui::Command::doCommand(Gui::Command::App
+                    , "Gui.ActiveDocument.getObject(\"%s\").Visibility=False"
+                    , (const char*)sel->data(0, Qt::UserRole).toString().toLatin1());
             }
         }
     }

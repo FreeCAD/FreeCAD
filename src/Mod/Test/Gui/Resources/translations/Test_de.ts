@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
 <context>
     <name>TestGui::UnitTest</name>
     <message>
@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Remaining:</source>

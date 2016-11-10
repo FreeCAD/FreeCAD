@@ -27,6 +27,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <boost/signals.hpp>
+#include <QListWidget>
 
 namespace App {
 class Property;

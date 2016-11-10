@@ -57,17 +57,15 @@ namespace Py
         PythonType &doc( const char *d );
 
         PythonType &supportClass( void );
-#if !defined( PY3 )
         PythonType &dealloc( void (*f)( PyObject* ) );
-#endif
-#if defined( PYCXX_PYTHON_2TO3 ) || !defined( PY3 )
+#if defined( PYCXX_PYTHON_2TO3 )
         PythonType &supportPrint( void );
 #endif
         PythonType &supportGetattr( void );
         PythonType &supportSetattr( void );
         PythonType &supportGetattro( void );
         PythonType &supportSetattro( void );
-#if defined( PYCXX_PYTHON_2TO3 ) || !defined( PY3 )
+#if defined( PYCXX_PYTHON_2TO3 )
         PythonType &supportCompare( void );
 #endif
         PythonType &supportRichCompare( void );

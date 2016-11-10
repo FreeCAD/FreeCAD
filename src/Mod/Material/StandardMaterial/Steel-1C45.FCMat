@@ -1,0 +1,23 @@
+; 1C45 - 1.0503 - EN 10083-1
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = 1C45
+NameDE = C45
+Description = Non-alloy quality steel
+DescriptionPL = Wysokogatunkowa stal niestopowa
+Father = Metal
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 580
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Heat-treatable steel
+KindOfMaterialDE = Vergütungsstahl
+MaterialNumber = 1.0503
+ModulusOfShare = 81000
+Norm = EN 10083-1
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 14
+YieldStrength = 340

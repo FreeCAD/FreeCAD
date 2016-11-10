@@ -358,7 +358,7 @@ protected:
 inline Color ColorLegend::getColor (float fVal) const
 {
   std::deque<float>::const_iterator pI;
-  for (pI = _aclValues.begin(); pI != _aclValues.end(); pI++)
+  for (pI = _aclValues.begin(); pI != _aclValues.end(); ++pI)
   {
     if (fVal < *pI)
       break;
@@ -383,7 +383,7 @@ inline Color ColorLegend::getColor (float fVal) const
 inline unsigned short ColorLegend::getColorIndex (float fVal) const
 {
   std::deque<float>::const_iterator pI;
-  for (pI = _aclValues.begin(); pI != _aclValues.end(); pI++)
+  for (pI = _aclValues.begin(); pI != _aclValues.end(); ++pI)
   {
     if (fVal < *pI)
       break;

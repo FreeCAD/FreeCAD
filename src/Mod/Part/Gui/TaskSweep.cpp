@@ -24,9 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QEventLoop>
 # include <QMessageBox>
 # include <QTextStream>
+# include <QTimer>
 # include <BRepBuilderAPI_MakeWire.hxx>
 # include <Precision.hxx>
 # include <ShapeAnalysis_FreeBounds.hxx>
@@ -41,6 +43,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -78,7 +81,7 @@ public:
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0)
         {
         }
-        bool allow(App::Document*pDoc, App::DocumentObject*pObj, const char*sSubName)
+        bool allow(App::Document* /*pDoc*/, App::DocumentObject*pObj, const char*sSubName)
         {
             if (pObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
                 if (!sSubName) {
@@ -125,8 +128,9 @@ public:
 SweepWidget::SweepWidget(QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
+    Q_UNUSED(parent);
+    Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+    Gui::Command::runCommand(Gui::Command::App, "import Part");
 
     d->ui.setupUi(this);
     d->ui.selector->setAvailableLabel(tr("Vertex/Edge/Wire/Face"));
@@ -178,7 +182,7 @@ void SweepWidget::findShapes()
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);
@@ -214,16 +218,16 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             return false;
         }
     }
-    else if (shape._Shape.ShapeType() == TopAbs_EDGE) {
-        pathShape = shape._Shape;
+    else if (shape.getShape().ShapeType() == TopAbs_EDGE) {
+        pathShape = shape.getShape();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_WIRE) {
-        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape._Shape));
+    else if (shape.getShape().ShapeType() == TopAbs_WIRE) {
+        BRepBuilderAPI_MakeWire mkWire(TopoDS::Wire(shape.getShape()));
         pathShape = mkWire.Wire();
     }
-    else if (shape._Shape.ShapeType() == TopAbs_COMPOUND) {
+    else if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         try {
-            TopoDS_Iterator it(shape._Shape);
+            TopoDS_Iterator it(shape.getShape());
             for (; it.More(); it.Next()) {
                 if ((it.Value().ShapeType() != TopAbs_EDGE) &&
                     (it.Value().ShapeType() != TopAbs_WIRE)) {
@@ -232,7 +236,7 @@ bool SweepWidget::isPathValid(const Gui::SelectionObject& sel) const
             }
             Handle(TopTools_HSequenceOfShape) hEdges = new TopTools_HSequenceOfShape();
             Handle(TopTools_HSequenceOfShape) hWires = new TopTools_HSequenceOfShape();
-            for (TopExp_Explorer xp(shape._Shape, TopAbs_EDGE); xp.More(); xp.Next())
+            for (TopExp_Explorer xp(shape.getShape(), TopAbs_EDGE); xp.More(); xp.Next())
                 hEdges->Append(xp.Current());
 
             ShapeAnalysis_FreeBounds::ConnectEdgesToWires(hEdges, Precision::Confusion(), Standard_True, hWires);
@@ -273,14 +277,14 @@ bool SweepWidget::accept()
 
     QString list, solid, frenet;
     if (d->ui.checkSolid->isChecked())
-        solid = QString::fromAscii("True");
+        solid = QString::fromLatin1("True");
     else
-        solid = QString::fromAscii("False");
+        solid = QString::fromLatin1("False");
 
     if (d->ui.checkFrenet->isChecked())
-        frenet = QString::fromAscii("True");
+        frenet = QString::fromLatin1("True");
     else
-        frenet = QString::fromAscii("False");
+        frenet = QString::fromLatin1("False");
 
     QTextStream str(&list);
 
@@ -303,7 +307,7 @@ bool SweepWidget::accept()
     try {
         Gui::WaitCursor wc;
         QString cmd;
-        cmd = QString::fromAscii(
+        cmd = QString::fromLatin1(
             "App.getDocument('%5').addObject('Part::Sweep','Sweep')\n"
             "App.getDocument('%5').ActiveObject.Sections=[%1]\n"
             "App.getDocument('%5').ActiveObject.Spine=%2\n"
@@ -314,12 +318,12 @@ bool SweepWidget::accept()
             .arg(QLatin1String(selection.c_str()))
             .arg(solid)
             .arg(frenet)
-            .arg(QString::fromAscii(d->document.c_str()));
+            .arg(QString::fromLatin1(d->document.c_str()));
 
         Gui::Document* doc = Gui::Application::Instance->getDocument(d->document.c_str());
         if (!doc) throw Base::Exception("Document doesn't exist anymore");
         doc->openCommand("Sweep");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toAscii(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         doc->getDocument()->recompute();
         App::DocumentObject* obj = doc->getDocument()->getActiveObject();
         if (obj && !obj->isValid()) {
@@ -330,7 +334,7 @@ bool SweepWidget::accept()
         doc->commitCommand();
     }
     catch (const Base::Exception& e) {
-        QMessageBox::warning(this, tr("Input error"), QString::fromAscii(e.what()));
+        QMessageBox::warning(this, tr("Input error"), QString::fromLatin1(e.what()));
         return false;
     }
 
@@ -417,7 +421,7 @@ void SweepWidget::changeEvent(QEvent *e)
 
 /* TRANSLATOR PartGui::TaskSweep */
 
-TaskSweep::TaskSweep()
+TaskSweep::TaskSweep() : label(0)
 {
     widget = new SweepWidget();
     taskbox = new Gui::TaskView::TaskBox(
@@ -429,14 +433,27 @@ TaskSweep::TaskSweep()
 
 TaskSweep::~TaskSweep()
 {
+    delete label;
 }
 
 void TaskSweep::open()
 {
 }
 
-void TaskSweep::clicked(int)
+void TaskSweep::clicked(int id)
 {
+    if (id == QDialogButtonBox::Help) {
+        QString help = QApplication::translate("PartGui::TaskSweep",
+            "Select one or more profiles and select an edge or wire\n"
+            "in the 3D view for the sweep path.");
+        if (!label) {
+            label = new Gui::StatusWidget(widget);
+            label->setStatusText(help);
+        }
+
+        label->show();
+        QTimer::singleShot(3000, label, SLOT(hide()));
+    }
 }
 
 bool TaskSweep::accept()

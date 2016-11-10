@@ -6,6 +6,7 @@ endif(MSVC)
 
 if (BUILD_SMESH)
     add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
+    include(${VTK_USE_FILE})
 endif(BUILD_SMESH)
 
 if(BUILD_FEM_NETGEN)
@@ -14,12 +15,11 @@ endif(BUILD_FEM_NETGEN)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/src
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/salomesmesh/inc
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
 )
 
@@ -34,13 +34,20 @@ if(BUILD_FEM_NETGEN)
         StdMeshers
         NETGENPlugin
         SMESH
+        SMDS
     )
-else(BUILD_FEM_NETGEN)
+elseif(BUILD_SMESH)
     set(MeshPart_LIBS
         Part
         Mesh
         StdMeshers
         SMESH
+        SMDS
+    )
+else(BUILD_FEM_NETGEN)
+    set(MeshPart_LIBS
+        Part
+        Mesh
     )
 endif(BUILD_FEM_NETGEN)
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,7 +26,6 @@
 # include <BRepPrimAPI_MakeBox.hxx>
 # include <TopoDS_Face.hxx>
 # include <Geom_Plane.hxx>
-# include <Handle_Geom_Plane.hxx>
 #endif
 
 #include <Base/Console.h>
@@ -36,99 +35,95 @@
 #include <App/Application.h>
 #include <App/Document.h>
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 // Things from the part module
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapePy.h>
 
 #include "SketchObjectSF.h"
 
-using Base::Console;
-using namespace Part;
-using namespace std;
 
-
-/* module functions */
-static PyObject * open(PyObject *self, PyObject *args)
+namespace Sketcher {
+class Module : public Py::ExtensionModule<Module>
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL;
+public:
+    Module() : Py::ExtensionModule<Module>("Sketcher")
+    {
+        add_varargs_method("open",&Module::open
+        );
+        add_varargs_method("insert",&Module::insert
+        );
+        initialize("This module is the Sketcher module."); // register with Python
+    }
 
-    PY_TRY {
-    } PY_CATCH;
+    virtual ~Module() {}
+
+private:
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
+            throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
         //Base::Console().Log("Open in Part with %s",Name);
-        Base::FileInfo file(Name);
+        Base::FileInfo file(EncodedName.c_str());
 
-        // extract ending
-        if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
+        // extract extension
+        if (file.extension().empty())
+            throw Py::RuntimeError("No file extension");
 
-        //if (file.hasExtension("igs") || file.hasExtension("iges")) {
-        //    // create new document and add Import feature
-        //    App::Document *pcDoc = App::GetApplication().newDocument(file.fileNamePure().c_str());
-        //    Part::ImportIges *pcFeature = (Part::ImportIges*) pcDoc->addObject("Part::ImportIges",file.fileNamePure().c_str());
-        //    pcFeature->FileName.setValue(Name);
-        //    pcDoc->recompute();
-        //}
-        // else {
-            Py_Error(PyExc_Exception,"unknown file ending");
-        //}
+        throw Py::RuntimeError("Unknown file extension");
+      //return Py::None();
+    }
 
-    Py_Return;
-}
+    Py::Object insert(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* DocName;
+        if (!PyArg_ParseTuple(args.ptr(), "ets","utf-8",&Name,&DocName))
+            throw Py::Exception();
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-/* module functions */
-static PyObject * insert(PyObject *self, PyObject *args)
-{
-    const char* Name;
-    const char* DocName;
-    if (!PyArg_ParseTuple(args, "ss",&Name,&DocName))
-        return NULL;
+        try {
+            //Base::Console().Log("Insert in Part with %s",Name);
+            Base::FileInfo file(EncodedName.c_str());
 
-    PY_TRY {
-        //Base::Console().Log("Insert in Part with %s",Name);
-        Base::FileInfo file(Name);
+            // extract extension
+            if (file.extension().empty())
+                throw Py::RuntimeError("No file extension");
 
-        // extract ending
-        if (file.extension() == "")
-            Py_Error(PyExc_Exception,"no file ending");
-        App::Document *pcDoc = App::GetApplication().getDocument(DocName);
-        if (!pcDoc) {
-            pcDoc = App::GetApplication().newDocument(DocName);
+            App::Document *pcDoc = App::GetApplication().getDocument(DocName);
+            if (!pcDoc) {
+                pcDoc = App::GetApplication().newDocument(DocName);
+            }
+
+            if (file.hasExtension("skf")) {
+                Sketcher::SketchObjectSF *pcFeature = (Sketcher::SketchObjectSF *)pcDoc->addObject("Sketcher::SketchObjectSF",file.fileNamePure().c_str());
+                pcFeature->SketchFlatFile.setValue(EncodedName.c_str());
+
+                pcDoc->recompute();
+            }
+            else {
+                throw Py::RuntimeError("Unknown file extension");
+            }
         }
-
-        if (file.hasExtension("skf")) {
-
-            Sketcher::SketchObjectSF *pcFeature = (Sketcher::SketchObjectSF *)pcDoc->addObject("Sketcher::SketchObjectSF",file.fileNamePure().c_str());
-            pcFeature->SketchFlatFile.setValue(Name);
-
-            pcDoc->recompute();
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
         }
-        else {
-            Py_Error(PyExc_Exception,"unknown file ending");
-        }
-
-    } PY_CATCH;
-
-    Py_Return;
-}
-
-/* module functions */
-//static PyObject * read(PyObject *self, PyObject *args)
-//{
-//    const char* Name;
-//    if (!PyArg_ParseTuple(args, "s",&Name))
-//        return NULL;
-//    PY_TRY {
-//    } PY_CATCH;
-//  
-//    Py_Return;
-//}
-
-/* registration table  */
-struct PyMethodDef Sketcher_methods[] = {
-    {"open"   , open,    1},
-    {"insert" , insert,  1},
-//    {"read"   , read,  1},
-    {NULL, NULL}        /* end of table marker */
+        return Py::None();
+    }
 };
+
+/// @cond DOXERR
+PyObject* initModule()
+{
+    return (new Module())->module().ptr();
+}
+/// @endcond
+
+} // namespace Sketcher

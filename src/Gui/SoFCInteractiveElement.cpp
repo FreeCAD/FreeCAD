@@ -35,7 +35,7 @@ void SoFCInteractiveElement::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoFCInteractiveElement);
 }
 
-void SoFCInteractiveElement::init(SoState * state)
+void SoFCInteractiveElement::init(SoState * /*state*/)
 {
   this->interactiveMode = false;
 }
@@ -111,9 +111,9 @@ void SoGLWidgetElement::pop(SoState * state, const SoElement * prevTopElement)
     inherited::pop(state, prevTopElement);
 }
 
-SbBool SoGLWidgetElement::matches(const SoElement * element) const
+SbBool SoGLWidgetElement::matches(const SoElement * /*element*/) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLWidgetElement::copyMatchInfo(void) const
@@ -166,9 +166,9 @@ void SoGLRenderActionElement::pop(SoState * state, const SoElement * prevTopElem
     inherited::pop(state, prevTopElement);
 }
 
-SbBool SoGLRenderActionElement::matches(const SoElement * element) const
+SbBool SoGLRenderActionElement::matches(const SoElement * /*element*/) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLRenderActionElement::copyMatchInfo(void) const

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -50,13 +50,13 @@ CmdRobotExportKukaCompact::CmdRobotExportKukaCompact()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka compact subroutine...");
     sToolTipText    = QT_TR_NOOP("Export the trajectory as a compact KRL subroutine.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_ExportKukaCompact";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Export";
 }
 
 
-void CmdRobotExportKukaCompact::activated(int iMsg)
+void CmdRobotExportKukaCompact::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
@@ -70,32 +70,29 @@ void CmdRobotExportKukaCompact::activated(int iMsg)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject;
+    Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject;
+    Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
-    std::string TrakName = pcTrajectoryObject->getNameInDocument();
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
+    //std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QObject::tr("KRL file(*.src)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export program"), QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) 
+    if (fn.isEmpty())
         return;
-
 
     doCommand(Doc,"from KukaExporter import ExportCompactSub");
     doCommand(Doc,"ExportCompactSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
-     
-      
 }
 
 bool CmdRobotExportKukaCompact::isActive(void)
@@ -115,13 +112,13 @@ CmdRobotExportKukaFull::CmdRobotExportKukaFull()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Kuka full subroutine...");
     sToolTipText    = QT_TR_NOOP("Export the trajectory as a full KRL subroutine.");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_ExportKukaFull";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Export";
 }
 
 
-void CmdRobotExportKukaFull::activated(int iMsg)
+void CmdRobotExportKukaFull::activated(int)
 {
     unsigned int n1 = getSelection().countObjectsOfType(Robot::RobotObject::getClassTypeId());
     unsigned int n2 = getSelection().countObjectsOfType(Robot::TrajectoryObject::getClassTypeId());
@@ -135,32 +132,29 @@ void CmdRobotExportKukaFull::activated(int iMsg)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
 
-    Robot::RobotObject *pcRobotObject;
+    Robot::RobotObject *pcRobotObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[0].pObject);
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId())
-        pcRobotObject = dynamic_cast<Robot::RobotObject*>(Sel[1].pObject);
-    std::string RoboName = pcRobotObject->getNameInDocument();
+        pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
+    //std::string RoboName = pcRobotObject->getNameInDocument();
 
-    Robot::TrajectoryObject *pcTrajectoryObject;
+    Robot::TrajectoryObject *pcTrajectoryObject=0;
     if(Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     else if(Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId())
-        pcTrajectoryObject = dynamic_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
-    std::string TrakName = pcTrajectoryObject->getNameInDocument();
+        pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
+    //std::string TrakName = pcTrajectoryObject->getNameInDocument();
 
     QStringList filter;
-    filter << QObject::tr("KRL file(*.src)");
-    filter << QObject::tr("All Files (*.*)");
+    filter << QString::fromLatin1("%1 (*.src)").arg(QObject::tr("KRL file"));
+    filter << QString::fromLatin1("%1 (*.*)").arg(QObject::tr("All Files"));
     QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), QObject::tr("Export program"), QString(), filter.join(QLatin1String(";;")));
-    if (fn.isEmpty()) 
+    if (fn.isEmpty())
         return;
- 
+
     doCommand(Doc,"from KukaExporter import ExportFullSub");
     doCommand(Doc,"ExportFullSub(App.activeDocument().%s,App.activeDocument().%s,'%s')",pcRobotObject->getNameInDocument(),pcTrajectoryObject->getNameInDocument(),(const char*)fn.toLatin1());
-     
-      
-      
 }
 
 bool CmdRobotExportKukaFull::isActive(void)

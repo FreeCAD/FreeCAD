@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,6 @@
 #ifndef GUI_DIALOG_DLGPARAMETER_H
 #define GUI_DIALOG_DLGPARAMETER_H
 
-#include "ui_DlgParameter.h"
 #include <Base/Parameter.h>
 
 #include <QTreeWidgetItem>
@@ -33,20 +32,24 @@
 namespace Gui {
 namespace Dialog {
 
+class Ui_DlgParameter;
+
 /**
  * The DlgParameterImp class implements a dialog showing all parameters in a list view.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
-class DlgParameterImp : public QDialog, public Ui_DlgParameter
+class GuiExport DlgParameterImp : public QDialog
 { 
     Q_OBJECT
 
 public:
-    DlgParameterImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgParameterImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     ~DlgParameterImp();
 
     void accept();
     void reject();
+
+    void activateParameterSet(const char*);
 
 protected Q_SLOTS:
     void onChangeParameterSet(int);
@@ -63,6 +66,7 @@ protected:
 protected:
     QTreeWidget* paramGroup;
     QTreeWidget* paramValue;
+    Ui_DlgParameter* ui;
 };
 
 // --------------------------------------------------------------------
@@ -186,7 +190,7 @@ private:
  * associated FCTreeLabel which controls the visibility 
  * and the functions of the Label.
  *
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class ParameterGroupItem : public QTreeWidgetItem
 {

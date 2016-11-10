@@ -47,7 +47,7 @@ namespace KDL {
     {
     public:
         ChainDynParam(const Chain& chain, Vector _grav);
-        ~ChainDynParam();
+        virtual ~ChainDynParam();
 
         virtual int JntToCoriolis(const JntArray &q, const JntArray &q_dot, JntArray &coriolis);
 	virtual int JntToMass(const JntArray &q, JntSpaceInertiaMatrix& H);
@@ -57,7 +57,7 @@ namespace KDL {
         const Chain chain;
 	int nr;
 	unsigned int nj;
-        unsigned int ns;	
+        unsigned int ns;
 	Vector grav;
 	Vector vectornull;
 	JntArray jntarraynull;

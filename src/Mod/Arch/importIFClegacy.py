@@ -73,7 +73,7 @@ def insert(filename,docname,skip=None):
     "called when freecad wants to import a file"
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     getConfig()
@@ -108,10 +108,10 @@ def getIfcOpenShell():
     IFCOPENSHELL5 = False
     try:
         import IfcImport
-    except:
+    except ImportError:
         try:
             import ifc_wrapper as IfcImport
-        except:
+        except ImportError:
             FreeCAD.Console.PrintMessage(translate("Arch","Couldn't locate IfcOpenShell\n"))
             return False
         else:
@@ -691,10 +691,11 @@ def getShape(obj,objid):
         try:
             if MAKETEMPFILES:
                 import tempfile
-                tf = tempfile.mkstemp(suffix=".brp")[1]
+                th,tf = tempfile.mkstemp(suffix=".brp")
                 of = pyopen(tf,"wb")
                 of.write(brep_data)
                 of.close()
+                os.close(th)
                 sh = Part.read(tf)
                 os.remove(tf)
             else:
@@ -937,10 +938,10 @@ def export(exportList,filename):
     ifcw = None
     try:
         import IfcImport as ifcw
-    except:
+    except ImportError:
         try:
             import ifc_wrapper as ifcw
-        except:
+        except ImportError:
             FreeCAD.Console.PrintError(translate("Arch","Error: IfcOpenShell is not installed\n"))
             print """importIFC: ifcOpenShell is not installed. IFC export is unavailable.
                     Note: IFC export currently requires an experimental version of IfcOpenShell
@@ -1198,7 +1199,7 @@ def getTuples(data,scale=1,placement=None,normal=None,close=True):
         t = []
         if len(data.Wires) == 1:
             import Part,DraftGeomUtils
-            data = Part.Wire(DraftGeomUtils.sortEdges(data.Wires[0].Edges))
+            data = Part.Wire(Part.__sortEdges__(data.Wires[0].Edges))
             verts = data.Vertexes
             try:
                 c = data.CenterOfMass
@@ -1274,7 +1275,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                     ecurves = []
                     last = None
                     import DraftGeomUtils
-                    edges = DraftGeomUtils.sortEdges(p.Edges)
+                    edges = Part.__sortEdges__(p.Edges)
                     for e in edges:
                         if isinstance(e.Curve,Part.Circle):
                             import math
@@ -1407,8 +1408,12 @@ class IfcSchema:
     def __init__(self, filename):
         self.filename = filename
         if not os.path.exists(filename):
-            raise ImportError("no IFCSchema file found!")
-        else:
+            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
+            p = p.GetString("MacroPath","")
+            filename = p + os.sep + filename
+            if not os.path.exists(filename):
+                raise ImportError("no IFCSchema file found!")
+
             self.file = open(self.filename)
             self.data = self.file.read()
             self.types = self.readTypes()
@@ -1861,6 +1866,7 @@ def explorer(filename,schema="IFC2X3_TC1.exp"):
                                 t = "        " + str(t)
                                 item = QtGui.QTreeWidgetItem(tree)
                                 item.setText(2,str(t))
+
     d = QtGui.QDialog()
     d.setObjectName("IfcExplorer")
     d.setWindowTitle("Ifc Explorer")

@@ -59,6 +59,8 @@ public:
     const char* getViewProviderName(void) const {
         return "RaytracingGui::ViewProviderLux";
     }
+    /// get called after a document has been fully restored
+    virtual void onDocumentRestored();
     //@}
 
 

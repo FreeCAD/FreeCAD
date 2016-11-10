@@ -46,8 +46,8 @@
 #define ERROR_H_84822
 
 #include "utility.h"
+#include <string.h>
 #include <string>
-
 namespace KDL {
 
 /** 
@@ -70,7 +70,7 @@ class Error_IO : public Error {
 	std::string msg;
 	int typenr;
 public:
-	Error_IO(const std::string& _msg="Unspecified I/O Error",int typenr=0):msg(_msg) {}
+	Error_IO(const std::string& _msg="Unspecified I/O Error",int /*typenr*/=0):msg(_msg) {}
     virtual const char* Description() const {return msg.c_str();}
     virtual int GetType() const {return typenr;}
 };
@@ -180,9 +180,13 @@ public:
 };
 
 class Error_MotionPlanning_Not_Feasible: public Error_MotionPlanning {
+	int reason;
 public:
-    virtual const char* Description() const { return "Motion Profile with requested parameters is not feasible";}
-    virtual int GetType() const {return 3004;}
+	Error_MotionPlanning_Not_Feasible(int _reason):reason(_reason) {}
+    virtual const char* Description() const {
+    	return "Motion Profile with requested parameters is not feasible";
+    }
+    virtual int GetType() const {return 3100+reason;}
 };
 
 class Error_MotionPlanning_Not_Applicable: public Error_MotionPlanning {

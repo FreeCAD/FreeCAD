@@ -328,7 +328,6 @@ void PythonStdin::init_type()
 PythonStdin::PythonStdin(PythonConsole *pc)
   : pyConsole(pc)
 {
-    console = getMainWindow()->findChild<PythonConsole*>();
 }
 
 PythonStdin::~PythonStdin()
@@ -343,7 +342,7 @@ Py::Object PythonStdin::repr()
     return Py::String(s_out.str());
 }
 
-Py::Object PythonStdin::readline(const Py::Tuple& args)
+Py::Object PythonStdin::readline(const Py::Tuple& /*args*/)
 {
-    return Py::String( (const char *)console->readline().toAscii() );
+    return Py::String( (const char *)pyConsole->readline().toLatin1() );
 }

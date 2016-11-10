@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,16 +53,16 @@ public:
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
     virtual bool reject();
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     virtual void helpRequested();
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
     { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
 
 protected:
-    TaskCreateNodeSet             *param; 
-    TaskObjectName                *name; 
+    TaskCreateNodeSet             *param;
+    TaskObjectName                *name;
 
     Fem::FemSetNodesObject        *FemSetNodesObject;
 };

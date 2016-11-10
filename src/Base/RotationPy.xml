@@ -10,6 +10,7 @@
 		  Namespace="Base"
 		  Constructor="true"
 		  Delete="true"
+          RichCompare="true"
 		  FatherNamespace="Base">
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
@@ -21,7 +22,7 @@
 				-- a Rotation object
 				-- a Vector (axis) and a float (angle)
 				-- two Vectors (rotation from/to vector)
-				-- three floats (Euler angles) as yaw-pitch-roll
+				-- three floats (Euler angles) as yaw-pitch-roll in XY'Z'' convention
 				-- four floats (Quaternion) where the quaternion is specified as:
 				   q=xi+yj+zk+w, i.e. the last parameter is the real part
 			</UserDocu>
@@ -29,12 +30,28 @@
 		<Methode Name="invert">
 			<Documentation>
 				<UserDocu>
-					move(Vector)
-					Move the matrix along the vector
+                    invert() -> None
+                    Sets the rotation to its inverse
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="multiply" Const="true">
+        <Methode Name="inverted">
+            <Documentation>
+                <UserDocu>
+                    inverted() -> Rotation
+                    Returns the inverse of the rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="isSame">
+            <Documentation>
+                <UserDocu>
+                    isSame(Rotation)
+                    Checks if the two quaternions perform the same rotation
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="multiply" Const="true">
 			<Documentation>
 				<UserDocu>
 					multiply(Rotation)
@@ -55,10 +72,11 @@
 				<UserDocu>
 					toEuler(Vector) -> list
 					Get the Euler angles of this rotation
+					as yaw-pitch-roll in XY'Z'' convention
 				</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="isNull" Const="true">
+        <Methode Name="isNull" Const="true">
 			<Documentation>
 				<UserDocu>
 					isNull() -> Bool
@@ -66,19 +84,19 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Q" ReadOnly="false">
+        <Attribute Name="Q" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation elements (as quaternion)</UserDocu>
 			</Documentation>
 			<Parameter Name="Q" Type="Tuple" />
 		</Attribute>
-		<Attribute Name="Axis" ReadOnly="true">
+		<Attribute Name="Axis" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation axis of the quaternion</UserDocu>
 			</Documentation>
 			<Parameter Name="Axis" Type="Object" />
 		</Attribute>
-		<Attribute Name="Angle" ReadOnly="true">
+		<Attribute Name="Angle" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The rotation angle of the quaternion</UserDocu>
 			</Documentation>

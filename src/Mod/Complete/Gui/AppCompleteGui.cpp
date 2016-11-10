@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -35,6 +38,8 @@
 
 #include <Mod/Complete/App/CompleteConfiguration.h>
 
+
+QList<QString> mods;
 
 // use a different name to CreateCommand()
 void CreateCompleteCommands(void);
@@ -46,43 +51,55 @@ void loadCompleteResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef CompleteGui_Import_methods[];
+namespace CompleteGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("CompleteGui")
+    {
+        initialize("This module is the CompleteGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace CompleteGui
 
 
 /* Python entry */
-extern "C" {
-void CompleteGuiExport initCompleteGui()
+PyMODINIT_FUNC initCompleteGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-    // load dependent module
-    try {
-        Base::Interpreter().loadModule("PartGui");
-        Base::Interpreter().loadModule("MeshGui");
+    // try to load dependent modules, currently not (AssemblyGui, CamGui)
+    char *modules[] = {"PartGui", "MeshGui", "MeshPartGui", "PointsGui", "DrawingGui", "RaytracingGui", "SketcherGui", "PartDesignGui", "ImageGui", "TestGui"};
+    size_t nModules = sizeof(modules) / sizeof(char*);
+    for (size_t i = 0; i < nModules; i++) {
         try {
-            Base::Interpreter().loadModule("MeshPartGui");
+            Base::Interpreter().loadModule(modules[i]);
         }
         catch (const Base::Exception& e) {
-            Base::Console().Error("Failed to load MeshPartGui: %s\n", e.what());
-            PyErr_Clear();
+            Base::Console().Error("%s\n", e.what());
+            // Prints message to console window if we are in interactive mode
+            PyErr_Print();
+            continue;
         }
-        Base::Interpreter().loadModule("PointsGui");
-        //Base::Interpreter().loadModule("MeshPartGui");
-        //Base::Interpreter().loadModule("AssemblyGui");
-        Base::Interpreter().loadModule("DrawingGui");
-        Base::Interpreter().loadModule("RaytracingGui");
-#       ifdef COMPLETE_SHOW_SKETCHER
-        Base::Interpreter().loadModule("SketcherGui");
-#       endif
-        Base::Interpreter().loadModule("PartDesignGui");
-        Base::Interpreter().loadModule("ImageGui");
-        //Base::Interpreter().loadModule("CamGui");
-        Base::Interpreter().loadModule("TestGui");
-#       ifdef COMPLETE_USE_DRAFTING
+        mods.append(QSTRING(modules[i]));
+    }
+
+#   ifdef COMPLETE_USE_DRAFTING
+    mods.append(QSTRING("DraftGui"));
+    try {
         Py::Module module(PyImport_ImportModule("FreeCADGui"),true);
         Py::Callable method(module.getAttr(std::string("getWorkbench")));
 
@@ -97,7 +114,7 @@ void CompleteGuiExport initCompleteGui()
             Py::Callable method(handler.getAttr(std::string("GetClassName")));
             Py::Tuple args;
             Py::String result(method.apply(args));
-            type = result.as_std_string();
+            type = result.as_std_string("ascii");
             if (type == "Gui::PythonWorkbench") {
                 Gui::Workbench* wb = Gui::WorkbenchManager::instance()->createWorkbench("DraftWorkbench", type);
                 handler.setAttr(std::string("__Workbench__"), Py::Object(wb->getPyObject(), true));
@@ -110,27 +127,16 @@ void CompleteGuiExport initCompleteGui()
 
         // Get the CompleteWorkbench handler
         args.setItem(0,Py::String("CompleteWorkbench"));
-#       endif
     }
-    catch(const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        return;
-    }
-    catch (Py::Exception& e) {
-        Py::Object o = Py::type(e);
-        if (o.isString()) {
-            Py::String s(o);
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
-        }
-        else {
-            Py::String s(o.repr());
-            Base::Console().Error("%s\n", s.as_std_string().c_str());
-        }
+    catch (const Base::Exception& e) {
+        Base::Console().Error("%s\n", e.what());
+        mods.removeAt(mods.size());
         // Prints message to console window if we are in interactive mode
         PyErr_Print();
     }
+#   endif
 
-    (void) Py_InitModule("CompleteGui", CompleteGui_Import_methods);   /* mod name, table ptr */
+    (void) CompleteGui::initModule();
     Base::Console().Log("Loading GUI of Complete module... done\n");
 
     // instantiating the commands
@@ -140,5 +146,3 @@ void CompleteGuiExport initCompleteGui()
      // add resources and reloads the translators
     loadCompleteResource();
 }
-
-} // extern "C" {

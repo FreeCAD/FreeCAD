@@ -21,7 +21,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, Mesh, os, numpy
+import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -40,17 +40,38 @@ def checkCollada():
     COLLADA = None
     try:
         import collada
-    except:
+    except ImportError:
         FreeCAD.Console.PrintError(translate("Arch","pycollada not found, collada support is disabled.\n"))
         return False
     else:
         return True
+        
+def triangulate(shape):
+    "triangulates the given face"
+    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    mesher = p.GetInt("ColladaMesher",0)
+    tessellation = p.GetFloat("ColladaTessellation",1.0)
+    grading = p.GetFloat("ColladaGrading",0.3)
+    segsperedge = p.GetInt("ColladaSegsPerEdge",1)
+    segsperradius = p.GetInt("ColladaSegsPerRadius",2)
+    secondorder = p.GetBool("ColladaSecondOrder",False)
+    optimize = p.GetBool("ColladaOptimize",True)
+    allowquads = p.GetBool("ColladaAllowQuads",False)
+    if mesher == 0:
+        return shape.tessellate(tessellation)
+    elif mesher == 1:
+        return MeshPart.meshFromShape(Shape=shape,MaxLength=tessellation).Topology
+    else:
+        return MeshPart.meshFromShape(Shape=shape,GrowthRate=grading,SegPerEdge=segsperedge,
+               SegPerRadius=segsperradius,SecondOrder=secondorder,Optimize=optimize,
+               AllowQuad=allowquads).Topology
+
     
 def open(filename):
     "called when freecad wants to open a file"
     if not checkCollada(): 
         return
-    docname = os.path.splitext(os.path.basename(filename))[0]
+    docname = (os.path.splitext(os.path.basename(filename))[0]).encode("utf8")
     doc = FreeCAD.newDocument(docname)
     doc.Label = decode(docname)
     FreeCAD.ActiveDocument = doc
@@ -63,7 +84,7 @@ def insert(filename,docname):
         return
     try:
         doc = FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc = FreeCAD.newDocument(docname)
     FreeCAD.ActiveDocument = doc
     read(filename)
@@ -97,6 +118,8 @@ def read(filename):
                 tset = prim.triangles()
             elif hasattr(prim,"triangleset"):
                 tset = prim.triangleset()
+            else:
+                tset = []
             for tri in tset:
                 face = []
                 for v in tri.vertices:
@@ -109,7 +132,7 @@ def read(filename):
             obj = FreeCAD.ActiveDocument.addObject("Mesh::Feature","Mesh")
             obj.Mesh = newmesh
 
-def export(exportList,filename):
+def export(exportList,filename,tessellation=1):
     "called when freecad exports a file"
     if not checkCollada(): return
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
@@ -122,31 +145,20 @@ def export(exportList,filename):
     colmesh.materials.append(mat)
     objind = 0
     scenenodes = []
-    for obj in exportList:
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    for obj in objectslist:
+        vindex = []
+        nindex = []
+        findex = []
+        m = None
         if obj.isDerivedFrom("Part::Feature"):
             print "exporting object ",obj.Name, obj.Shape
-            m = obj.Shape.tessellate(1)
-            vindex = []
-            nindex = []
-            findex = []
-            # vertex indices
-            for v in m[0]:
-                vindex.extend([v.x*scale,v.y*scale,v.z*scale])
-            # normals
-            for f in obj.Shape.Faces:
-                n = f.normalAt(0,0)
-                for i in range(len(f.tessellate(1)[1])):
-                    nindex.extend([n.x,n.y,n.z])
-            # face indices
-            for i in range(len(m[1])):
-                f = m[1][i]
-                findex.extend([f[0],i,f[1],i,f[2],i])
+            m = Mesh.Mesh(triangulate(obj.Shape))
         elif obj.isDerivedFrom("Mesh::Feature"):
             print "exporting object ",obj.Name, obj.Mesh
             m = obj.Mesh
-            vindex = []
-            nindex = []
-            findex = []
+        if m:
             # vertex indices
             for v in m.Topology[0]:
                 vindex.extend([v.x*scale,v.y*scale,v.z*scale])

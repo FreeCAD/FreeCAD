@@ -180,7 +180,7 @@ class Renderer:
         norm = face[0].normalAt(0,0)
         for w in face[0].Wires:
             verts = []
-            edges = DraftGeomUtils.sortEdges(w.Edges)
+            edges = Part.__sortEdges__(w.Edges)
             #print len(edges)," edges after sorting"
             for e in edges:
                 v = e.Vertexes[0].Point
@@ -217,7 +217,7 @@ class Renderer:
         wires = []
         for w in face[0].Wires:
             verts = []
-            edges = DraftGeomUtils.sortEdges(w.Edges)
+            edges = Part.__sortEdges__(w.Edges)
             for e in edges:
                 v = e.Vertexes[0].Point
                 verts.append(FreeCAD.Vector(v.x,v.y,0))
@@ -225,7 +225,7 @@ class Renderer:
             wires.append(Part.makePolygon(verts))
         try:
             sh = Part.Face(wires)
-        except:
+        except Part.OCCError:
             if DEBUG: print "Error: Unable to flatten face"
             return None
         else:
@@ -274,6 +274,9 @@ class Renderer:
 
     def isInside(self,vert,face):
         "Returns True if the vert is inside the face in Z projection"
+        
+        if not face:
+            return False
     
         # http://paulbourke.net/geometry/insidepoly/
         count = 0
@@ -297,6 +300,9 @@ class Renderer:
         "Checks if face1 overlaps face2 in Z direction"
         face1 = self.flattenFace(face1)
         face2 = self.flattenFace(face2)
+        
+        if (not face1) or (not face2):
+            return False
         
         # first we check if one of the verts is inside the other face
         for v in face1[0].Vertexes:
@@ -408,6 +414,7 @@ class Renderer:
 
     def join(self,otype):
         "joins the objects of same type"
+        import Part
         walls = []
         structs = []
         objs = []
@@ -428,7 +435,7 @@ class Renderer:
                     try:
                         fs = s.fuse(o.Shape)
                         fs = fs.removeSplitter()
-                    except:
+                    except Part.OCCError:
                         print "shape fusion failed"
                         objs.append([o.Shape,o.ViewObject.DiffuseColor[0]])
                     else:
@@ -514,13 +521,16 @@ class Renderer:
                         notfoundstack = 0
                         break
                     elif r == 31:
-                        faces.remove(f1)
+                        if f1 in faces:
+                            faces.remove(f1)
                     elif r == 32:
-                        faces.remove(f2)
+                        if f2 in faces:
+                            faces.remove(f2)
                 else:
                     # nothing found, move the face to the end of the pile
-                    faces.remove(f1)
-                    faces.append(f1)
+                    if f1 in faces:
+                        faces.remove(f1)
+                        faces.append(f1)
             loopcount += 1
             if loopcount == MAXLOOP * len(self.faces):
                 if DEBUG: print "Too many loops, aborting."
@@ -558,7 +568,7 @@ class Renderer:
         "Returns a SVG path data string from a 2D wire"
         def tostr(val):
             return str(round(val,DraftVecUtils.precision()))
-        edges = DraftGeomUtils.sortEdges(w.Edges)
+        edges = Part.__sortEdges__(w.Edges)
         v = edges[0].Vertexes[0].Point
         svg = 'M '+ tostr(v.x) +' '+ tostr(v.y) + ' '
         for e in edges:
@@ -579,50 +589,42 @@ class Renderer:
         if DEBUG: print "Printing ", len(self.faces), " faces"
         if not self.sorted:
             self.sort()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:none;">\n'
         for f in self.faces:
             if f:
                 fill = self.getFill(f[1])
-                svg +='<path '
+                svg +='    <path '
                 svg += 'd="'
                 for w in f[0].Wires:
                     svg += self.getPathData(w)
-                svg += '" '
-                svg += 'stroke="#000000" '
-                svg += 'stroke-width="' + str(linewidth) + '" '
-                svg += 'style="stroke-width:' + str(linewidth) + ';'
-                svg += 'stroke-miterlimit:1;'
-                svg += 'stroke-linejoin:round;'
-                svg += 'stroke-dasharray:none;'
-                svg += 'fill:' + fill + ';'
-                svg += 'fill-rule: evenodd'
-                svg += '"/>\n'
+                svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
+        svg += '</g>\n'
         return svg
 
-    def getSectionSVG(self,linewidth=0.02):
+    def getSectionSVG(self,linewidth=0.02,fillpattern=None):
         "Returns a SVG fragment from cut faces"
         if DEBUG: print "Printing ", len(self.sections), " sections"
         if not self.oriented:
             self.reorient()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:none;">\n'
         for f in self.sections:
             if f:
-                fill = self.getFill(f[1])
+                if fillpattern:
+                    if "#" in fillpattern: # color
+                        fill = fillpattern
+                    else:
+                        fill="url(#"+fillpattern+")" # pattern name
+                else:
+                    fill = 'none' # none
                 svg +='<path '
                 svg += 'd="'
                 for w in f[0].Wires:
                     #print "wire with ",len(w.Vertexes)," verts"
                     svg += self.getPathData(w)
-                svg += '" '
-                svg += 'stroke="#000000" '
-                svg += 'stroke-width="' + str(linewidth) + '" '
-                svg += 'style="stroke-width:' + str(linewidth) + ';'
-                svg += 'stroke-miterlimit:1;'
-                svg += 'stroke-linejoin:round;'
-                svg += 'stroke-dasharray:none;'
-                svg += 'fill:' + fill + ';'
-                svg += 'fill-rule: evenodd'
-                svg += '"/>\n'
+                svg += '" style="fill:' + fill + ';fill-rule: evenodd;"/>\n'
+        svg += '</g>\n'
         return svg
 
     def getHiddenSVG(self,linewidth=0.02):
@@ -630,19 +632,13 @@ class Renderer:
         if DEBUG: print "Printing ", len(self.sections), " hidden faces"
         if not self.oriented:
             self.reorient()
-        svg = ''
+        svg =  '<g stroke="#000000" stroke-width="' + str(linewidth) + '" style="stroke-width:' + str(linewidth)
+        svg += ';stroke-miterlimit:1;stroke-linejoin:round;stroke-dasharray:0.09,0.05;fill:none;">\n'
         for e in self.hiddenEdges:
             svg +='<path '
             svg += 'd="'
             svg += self.getPathData(e)
-            svg += '" '
-            svg += 'stroke="#000000" '
-            svg += 'stroke-width="' + str(linewidth) + '" '
-            svg += 'style="stroke-width:' + str(linewidth) + ';'
-            svg += 'stroke-miterlimit:1;'
-            svg += 'stroke-linejoin:round;'
-            svg += 'stroke-dasharray:0.09,0.05;'
-            svg += 'fill:none;'
             svg += '"/>\n'
+        svg += '</g>\n'
         return svg
         

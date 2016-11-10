@@ -25,6 +25,7 @@
 #define PARTDESIGN_FeaturePolarPattern_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
 
 
@@ -40,7 +41,7 @@ public:
 
     App::PropertyLinkSub Axis;
     App::PropertyBool    Reversed;
-    App::PropertyFloat   Angle;
+    App::PropertyAngle   Angle;
     App::PropertyInteger Occurrences;
 
    /** @name methods override feature */

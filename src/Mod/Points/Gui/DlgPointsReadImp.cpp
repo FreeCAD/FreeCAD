@@ -1,6 +1,6 @@
 
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,7 +31,7 @@ using namespace PointsGui;
 
 
 
-DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WFlags fl )
+DlgPointsReadImp::DlgPointsReadImp(const char *FileName, QWidget* parent,  Qt::WindowFlags fl )
     : QDialog( parent, fl )
 {
   _FileName = FileName;

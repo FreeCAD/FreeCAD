@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,29 +29,28 @@
 #include "ViewProviderSetNodes.h"
 #include <Gui/Control.h>
 #include <Mod/Fem/Gui/TaskDlgCreateNodeSet.h>
+#include <Mod/Fem/App/FemSetNodesObject.h>
 
-using namespace Gui;
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetNodes, Gui::ViewProviderGeometryObject)
 
 bool ViewProviderSetNodes::doubleClicked(void)
 {
-    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(static_cast<Fem::FemSetNodesObject *>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
 
 
-bool ViewProviderSetNodes::setEdit(int ModNum)
+bool ViewProviderSetNodes::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(static_cast<Fem::FemSetNodesObject *>(getObject()));
     Gui::Control().showDialog(dlg);
     return true;
 }
 
-void ViewProviderSetNodes::unsetEdit(int ModNum)
+void ViewProviderSetNodes::unsetEdit(int)
 {
-
 
 }

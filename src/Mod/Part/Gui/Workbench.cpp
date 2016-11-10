@@ -66,7 +66,14 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* bop = new Gui::MenuItem;
     bop->setCommand("Boolean");
     *bop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common";
-    
+
+    Gui::MenuItem* join = new Gui::MenuItem;
+    join->setCommand("Join");
+    *join << "Part_JoinConnect" << "Part_JoinEmbed" << "Part_JoinCutout";
+
+    Gui::MenuItem* split = new Gui::MenuItem;
+    split->setCommand("Split");
+    *split << "Part_BooleanFragments" << "Part_Slice" << "Part_XOR";
 
     Gui::MenuItem* part = new Gui::MenuItem;
     root->insertItem(item, part);
@@ -75,11 +82,11 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << prim << "Part_Primitives" << "Part_Builder" << "Separator"
           << "Part_ShapeFromMesh" << "Part_MakeSolid" << "Part_ReverseShape"
           << "Part_SimpleCopy" << "Part_RefineShape" << "Part_CheckGeometry"
-	      << "Separator" << bop << "Separator"
-          << "Part_CrossSections" << "Part_Compound" << "Part_Extrude"
+          << "Separator" << bop << join << split << "Separator"
+          << "Part_CrossSections" << "Part_Compound" << "Part_MakeFace" << "Part_Extrude"
           << "Part_Revolve" << "Part_Mirror" << "Part_Fillet" << "Part_Chamfer"
           << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
-          << "Part_Offset" << "Part_Thickness";
+          << "Part_Offset" << "Part_Offset2D" << "Part_Thickness" << "Separator" << "Part_EditAttachment";
 
     Gui::MenuItem* measure = new Gui::MenuItem;
     root->insertItem(item,measure);
@@ -115,12 +122,13 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     tool->setCommand("Part tools");
     *tool << "Part_Extrude" << "Part_Revolve" << "Part_Mirror" << "Part_Fillet"
           << "Part_Chamfer" << "Part_RuledSurface" << "Part_Loft" << "Part_Sweep"
-          << "Part_Offset" << "Part_Thickness";
+          << "Part_CompOffset" << "Part_Thickness";
 
     Gui::ToolBarItem* boolop = new Gui::ToolBarItem(root);
     boolop->setCommand("Boolean");
     *boolop << "Part_Boolean" << "Part_Cut" << "Part_Fuse" << "Part_Common"
-             << "Part_CheckGeometry" << "Part_Section" << "Part_CrossSections";
+            << "Part_CompJoinFeatures" << "Part_CompSplitFeatures" << "Part_CheckGeometry" << "Part_Section"
+            << "Part_CrossSections";
 	     
     Gui::ToolBarItem* measure = new Gui::ToolBarItem(root);
     measure->setCommand("Measure");

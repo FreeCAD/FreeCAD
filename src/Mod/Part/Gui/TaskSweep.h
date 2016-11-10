@@ -31,6 +31,7 @@ class QTreeWidgetItem;
 
 namespace Gui {
 class SelectionObject;
+class StatusWidget;
 }
 namespace PartGui { 
 
@@ -74,10 +75,11 @@ public:
     void clicked(int);
 
     QDialogButtonBox::StandardButtons getStandardButtons() const
-    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel; }
+    { return QDialogButtonBox::Ok|QDialogButtonBox::Cancel|QDialogButtonBox::Help; }
 
 private:
     SweepWidget* widget;
+    Gui::StatusWidget* label;
     Gui::TaskView::TaskBox* taskbox;
 };
 

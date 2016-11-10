@@ -254,27 +254,11 @@ void DocumentProtector::init()
         moveToThread(QCoreApplication::instance()->thread());
 }
 
-void DocumentProtector::slotCreatedDocument(const App::Document& Doc)
-{
-}
-
 void DocumentProtector::slotDeletedDocument(const App::Document& Doc)
 {
     if (&Doc == getDocument()) {
         this->detachDocument();
     }
-}
-
-void DocumentProtector::slotCreatedObject(const App::DocumentObject& Obj)
-{
-}
-
-void DocumentProtector::slotDeletedObject(const App::DocumentObject& Obj)
-{
-}
-
-void DocumentProtector::slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
-{
 }
 
 void DocumentProtector::validate()

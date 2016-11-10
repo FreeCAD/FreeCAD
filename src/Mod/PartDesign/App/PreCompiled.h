@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -35,6 +35,13 @@
 # define PartDesignExport
 # define PartExport 
 # define MeshExport   
+#endif
+
+#ifdef _MSC_VER
+// disable warning triggered by use of Part::FaceMaker
+// see forum thread "Warning C4275 non-dll class used as base for dll class"
+// http://forum.freecadweb.org/viewtopic.php?f=10&t=17542
+#   pragma warning( disable : 4275)
 #endif
 
 #ifdef _PreComp_

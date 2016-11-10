@@ -31,20 +31,31 @@
 
 #include "Workbench.h"
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 // use a different name to CreateCommand()
 void Create_TEMPLATE_Commands(void);
 
 
-/* registration table  */
-extern struct PyMethodDef _TEMPLATE_Gui_methods[];
+namespace _TEMPLATE_Gui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("_TEMPLATE_Gui")
+    {
+        initialize("This module is the _TEMPLATE_Gui module."); // register with Python
+    }
 
-PyDoc_STRVAR(module__TEMPLATE_Gui_doc,
-"This module is the _TEMPLATE_Gui module.");
+    virtual ~Module() {}
+
+private:
+};
+} // namespace _TEMPLATE_Gui
 
 
 /* Python entry */
-extern "C" {
-void _TEMPLATE_GuiExport init_TEMPLATE_Gui()
+PyMODINIT_FUNC init_TEMPLATE_Gui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -58,9 +69,6 @@ void _TEMPLATE_GuiExport init_TEMPLATE_Gui()
     // ADD YOUR CODE HERE
     //
     //
-
-    (void) Py_InitModule3("_TEMPLATE_Gui", _TEMPLATE_Gui_methods, module__TEMPLATE_Gui_doc);   /* mod name, table ptr */
+    new _TEMPLATE_Gui::Module();
     Base::Console().Log("Loading GUI of _TEMPLATE_ module... done\n");
 }
-
-} // extern "C"

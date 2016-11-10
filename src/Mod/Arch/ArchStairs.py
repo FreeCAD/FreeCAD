@@ -1,7 +1,7 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2013                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2013                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -31,16 +31,20 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
 
 
-def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=translate("Arch","Stairs")):
+def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="Stairs"):
     """makeStairs([baseobj,length,width,height,steps]): creates a Stairs
     objects with given attributes."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    obj.Label = translate("Arch",name)
     _Stairs(obj)
     if FreeCAD.GuiUp:
         _ViewProviderStairs(obj.ViewObject)
@@ -67,9 +71,9 @@ class _CommandStairs:
     "the Arch Stairs command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Stairs',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Stairs","Stairs"),
                 'Accel': "S, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a stairs object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -91,31 +95,31 @@ class _Stairs(ArchComponent.Component):
     "A stairs object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        
+
         # http://en.wikipedia.org/wiki/Stairs
-        
+
         # base properties
-        obj.addProperty("App::PropertyLength","Length","Arch",translate("Arch","The length of these stairs, if no baseline is defined"))
-        obj.addProperty("App::PropertyLength","Width","Arch",translate("Arch","The width of these stairs"))
-        obj.addProperty("App::PropertyLength","Height","Arch",translate("Arch","The total height of these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Align","Arch",translate("Arch","The alignment of these stairs on their baseline, if applicable"))
-                        
+        obj.addProperty("App::PropertyLength","Length","Arch",QT_TRANSLATE_NOOP("App::Property","The length of these stairs, if no baseline is defined"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of these stairs"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The total height of these stairs"))
+        obj.addProperty("App::PropertyEnumeration","Align","Arch",QT_TRANSLATE_NOOP("App::Property","The alignment of these stairs on their baseline, if applicable"))
+
         # steps properties
-        obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",translate("Arch","The number of risers in these stairs"))
-        obj.addProperty("App::PropertyLength","TreadDepth","Steps",translate("Arch","The depth of the treads of these stairs"))
-        obj.addProperty("App::PropertyLength","RiserHeight","Steps",translate("Arch","The height of the risers of these stairs"))
-        obj.addProperty("App::PropertyLength","Nosing","Steps",translate("Arch","The size of the nosing"))
-        obj.addProperty("App::PropertyLength","TreadThickness","Steps",translate("Arch","The thickness of the treads"))
-        obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",translate("Arch","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
-                        
+        obj.addProperty("App::PropertyInteger","NumberOfSteps","Steps",QT_TRANSLATE_NOOP("App::Property","The number of risers in these stairs"))
+        obj.addProperty("App::PropertyLength","TreadDepth","Steps",QT_TRANSLATE_NOOP("App::Property","The depth of the treads of these stairs"))
+        obj.addProperty("App::PropertyLength","RiserHeight","Steps",QT_TRANSLATE_NOOP("App::Property","The height of the risers of these stairs"))
+        obj.addProperty("App::PropertyLength","Nosing","Steps",QT_TRANSLATE_NOOP("App::Property","The size of the nosing"))
+        obj.addProperty("App::PropertyLength","TreadThickness","Steps",QT_TRANSLATE_NOOP("App::Property","The thickness of the treads"))
+        obj.addProperty("App::PropertyFloat","BlondelRatio","Steps",QT_TRANSLATE_NOOP("App::Property","The Blondel ratio, must be between 62 and 64cm or 24.5 and 25.5in"))
+
         # structural properties
-        obj.addProperty("App::PropertyEnumeration","Landings","Structure",translate("Arch","The type of landings of these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Winders","Structure",translate("Arch","The type of winders in these stairs"))
-        obj.addProperty("App::PropertyEnumeration","Structure","Structure",translate("Arch","The type of structure of these stairs"))
-        obj.addProperty("App::PropertyLength","StructureThickness","Structure",translate("Arch","The thickness of the massive structure or of the stringers"))
-        obj.addProperty("App::PropertyLength","StringerWidth","Structure",translate("Arch","The width of the stringers"))
-        obj.addProperty("App::PropertyLength","StructureOffset","Structure",translate("Arch","The offset between the border of the stairs and the structure"))
-                        
+        obj.addProperty("App::PropertyEnumeration","Landings","Structure",QT_TRANSLATE_NOOP("App::Property","The type of landings of these stairs"))
+        obj.addProperty("App::PropertyEnumeration","Winders","Structure",QT_TRANSLATE_NOOP("App::Property","The type of winders in these stairs"))
+        obj.addProperty("App::PropertyEnumeration","Structure","Structure",QT_TRANSLATE_NOOP("App::Property","The type of structure of these stairs"))
+        obj.addProperty("App::PropertyLength","StructureThickness","Structure",QT_TRANSLATE_NOOP("App::Property","The thickness of the massive structure or of the stringers"))
+        obj.addProperty("App::PropertyLength","StringerWidth","Structure",QT_TRANSLATE_NOOP("App::Property","The width of the stringers"))
+        obj.addProperty("App::PropertyLength","StructureOffset","Structure",QT_TRANSLATE_NOOP("App::Property","The offset between the border of the stairs and the structure"))
+
         obj.Align = ['Left','Right','Center']
         obj.Landings = ["None","At center","At each corner"]
         obj.Winders = ["None","All","Corners strict","Corners relaxed"]
@@ -124,21 +128,26 @@ class _Stairs(ArchComponent.Component):
         obj.setEditorMode("RiserHeight",1)
         obj.setEditorMode("BlondelRatio",1)
         self.Type = "Stairs"
+        self.Role = ["Stair","Stair Flight"]
+        self.Role = "Stair"
 
 
     def execute(self,obj):
 
         "constructs the shape of the stairs"
-
+        
+        if self.clone(obj):
+            return
+        
         import Part
         self.steps = []
         self.pseudosteps = []
         self.structures = []
         pl = obj.Placement
         landings = 0
-        
+
         base = None
-        
+
         if obj.Base:
             if hasattr(obj.Base,"Shape"):
                 if obj.Base.Shape:
@@ -159,12 +168,12 @@ class _Stairs(ArchComponent.Component):
                     return
                 if obj.Base.Shape.Faces:
                     return
-                if (len(obj.Base.Shape.Edges) == 1): 
+                if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
                     if isinstance(edge.Curve,Part.Line):
                         if obj.Landings == "At center":
                             landings = 1
-                            self.makeStraightStairsWithLanding(obj,edge)                
+                            self.makeStraightStairsWithLanding(obj,edge)
                         else:
                             self.makeStraightStairs(obj,edge)
                     else:
@@ -190,13 +199,13 @@ class _Stairs(ArchComponent.Component):
             obj.Shape = shape
             obj.Placement = pl
             return
-            
+
         base = self.processSubShapes(obj,base,pl)
         if base:
             if not base.isNull():
                 obj.Shape = base
                 obj.Placement = pl
-            
+
         # compute step data
         if obj.NumberOfSteps > 1:
             l = obj.Length.Value
@@ -441,7 +450,7 @@ class _Stairs(ArchComponent.Component):
 
 
     def makeStraightStairsWithLanding(self,obj,edge):
-        
+
         "builds a straight staircase with a landing in the middle"
 
         if obj.NumberOfSteps < 3:
@@ -479,7 +488,7 @@ class _ViewProviderStairs(ArchComponent.ViewProviderComponent):
     "A View Provider for Stairs"
     def __init__(self,vobj):
         ArchComponent.ViewProviderComponent.__init__(self,vobj)
-        
+
     def getIcon(self):
         import Arch_rc
         return ":/icons/Arch_Stairs_Tree.svg"

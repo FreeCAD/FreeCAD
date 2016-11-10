@@ -23,8 +23,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <Inventor/actions/SoToVRML2Action.h>
+# include <Inventor/VRMLnodes/SoVRMLGroup.h>
 # include <Inventor/VRMLnodes/SoVRMLParent.h>
+# include <Inventor/SbString.h>
+# include <Inventor/nodes/SoGroup.h>
 #endif
+
+#include <Base/FileInfo.h>
+#include <Base/Stream.h>
+#include <zipios++/gzipoutputstream.h>
 
 #include "SoFCDB.h"
 #include "SoFCColorBar.h"
@@ -37,6 +45,7 @@
 #include "SoFCUnifiedSelection.h"
 #include "SoFCSelectionAction.h"
 #include "SoFCInteractiveElement.h"
+#include "SoFCUnifiedSelection.h"
 #include "SoFCVectorizeSVGAction.h"
 #include "SoFCVectorizeU3DAction.h"
 #include "SoAxisCrossKit.h"
@@ -44,16 +53,20 @@
 #include "SoNavigationDragger.h"
 #include "Inventor/SoDrawingGrid.h"
 #include "Inventor/SoAutoZoomTranslation.h"
+#include "Inventor/MarkerBitmaps.h"
+#include "SoFCCSysDragger.h"
 
 #include "propertyeditor/PropertyItem.h"
 #include "NavigationStyle.h"
 #include "Flag.h"
+#include "SelectionObject.h"
 
 using namespace Gui;
 using namespace Gui::Inventor;
 using namespace Gui::PropertyEditor;
 
-static SbBool init_done = FALSE;
+static SbBool init_done = false;
+static SoGroup *storage = nullptr;
 
 SbBool Gui::SoFCDB::isInitialized(void)
 {
@@ -62,6 +75,7 @@ SbBool Gui::SoFCDB::isInitialized(void)
 
 void Gui::SoFCDB::init()
 {
+    SoInteraction                   ::init();
     RotTransDragger                 ::initClass();
     SoGLRenderActionElement         ::initClass();
     SoFCInteractiveElement          ::initClass();
@@ -72,7 +86,6 @@ void Gui::SoFCDB::init()
     SoFCColorGradient               ::initClass();
     SoFCBackgroundGradient          ::initClass();
     SoFCBoundingBox                 ::initClass();
-    SoInteraction                   ::init();
     SoFCSelection                   ::initClass();
     SoFCUnifiedSelection            ::initClass();
     SoFCSelectionAction             ::initClass();
@@ -90,6 +103,7 @@ void Gui::SoFCDB::init()
     SoFCVectorizeU3DAction          ::initClass();
     SoHighlightElementAction        ::initClass();
     SoSelectionElementAction        ::initClass();
+    SoVRMLAction                    ::initClass();
     SoSkipBoundingGroup             ::initClass();
     SoTextLabel                     ::initClass();
     SoStringLabel                   ::initClass();
@@ -100,6 +114,8 @@ void Gui::SoFCDB::init()
     SoRegPoint                      ::initClass();
     SoDrawingGrid                   ::initClass();
     SoAutoZoomTranslation           ::initClass();
+    MarkerBitmaps                   ::initClass();
+    SoFCCSysDragger                 ::initClass();
 
     PropertyItem                    ::init();
     PropertySeparatorItem           ::init();
@@ -119,7 +135,11 @@ void Gui::SoFCDB::init()
     PropertyPlacementItem           ::init();
     PropertyEnumItem                ::init();
     PropertyStringListItem          ::init();
+    PropertyFloatListItem           ::init();
+    PropertyIntegerListItem         ::init();
     PropertyColorItem               ::init();
+    PropertyMaterialItem            ::init();
+    PropertyMaterialListItem        ::init();
     PropertyFileItem                ::init();
     PropertyPathItem                ::init();
     PropertyTransientFileItem       ::init();
@@ -130,16 +150,25 @@ void Gui::SoFCDB::init()
     InventorNavigationStyle         ::init();
     CADNavigationStyle              ::init();
     BlenderNavigationStyle          ::init();
+    MayaGestureNavigationStyle      ::init();
     TouchpadNavigationStyle         ::init();
+    GestureNavigationStyle          ::init();
+    OpenCascadeNavigationStyle      ::init();
 
     GLGraphicsItem                  ::init();
     GLFlagWindow                    ::init();
+
+    SelectionObject                 ::init();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
     qRegisterMetaType<Base::Quantity>("Base::Quantity");
     qRegisterMetaType<QList<Base::Quantity> >("Base::QuantityList");
-    init_done = TRUE;
+    init_done = true;
+    
+    assert(!storage);
+    storage = new SoGroup();
+    storage->ref();
 }
 
 void Gui::SoFCDB::finish()
@@ -161,6 +190,9 @@ void Gui::SoFCDB::finish()
     SoFCEnableHighlightAction       ::finish();
     SoFCSelectionColorAction        ::finish();
     SoFCHighlightColorAction        ::finish();
+    
+    storage->unref();
+    storage = nullptr;
 }
 
 // buffer acrobatics for inventor ****************************************************
@@ -191,4 +223,85 @@ const std::string& Gui::SoFCDB::writeNodesToString(SoNode * root)
     cReturnString = buffer;
     free(buffer);
     return cReturnString;
+}
+
+bool Gui::SoFCDB::writeToVRML(SoNode* node, const char* filename, bool binary)
+{
+    SoVRMLAction vrml2;
+    vrml2.setOverrideMode(true);
+    vrml2.apply(node);
+    SoToVRML2Action tovrml2;
+    tovrml2.apply(node);
+    SoVRMLGroup* vrmlRoot = tovrml2.getVRML2SceneGraph();
+    vrmlRoot->setInstancePrefix(SbString("o"));
+    vrmlRoot->ref();
+    std::string buffer = SoFCDB::writeNodesToString(vrmlRoot);
+    vrmlRoot->unref(); // release the memory as soon as possible
+
+    // restore old settings
+    vrml2.setOverrideMode(false);
+    vrml2.apply(node);
+
+    Base::FileInfo fi(filename);
+    if (binary) {
+        // We want to write compressed VRML but Coin 2.4.3 doesn't do it even though
+        // SoOutput::getAvailableCompressionMethods() delivers a string list that
+        // contains 'GZIP'. setCompression() was called directly after opening the file,
+        // returned true and no error message appeared but anyway it didn't work.
+        // Strange is that reading GZIPped VRML files works.
+        // So, we do the compression on our own.
+        Base::ofstream str(fi, std::ios::out | std::ios::binary);
+        zipios::GZIPOutputStream gzip(str);
+
+        if (gzip) {
+            gzip << buffer;
+            gzip.close();
+            return true;
+        }
+    }
+    else {
+        Base::ofstream str(fi, std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool Gui::SoFCDB::writeToFile(SoNode* node, const char* filename, bool binary)
+{
+    bool ret = false;
+    Base::FileInfo fi(filename);
+
+    // Write VRML V2.0
+    if (fi.hasExtension("wrl") || fi.hasExtension("vrml") || fi.hasExtension("wrz")) {
+        // If 'wrz' is set then force compression
+        if (fi.hasExtension("wrz"))
+            binary = true;
+
+        ret = SoFCDB::writeToVRML(node, filename, binary);
+    }
+    else if (fi.hasExtension("iv")) {
+        // Write Inventor in ASCII
+        std::string buffer = SoFCDB::writeNodesToString(node);
+        Base::ofstream str(Base::FileInfo(filename), std::ios::out);
+
+        if (str) {
+            str << buffer;
+            str.close();
+            ret = true;
+        }
+    }
+
+    return ret;
+}
+
+SoGroup* Gui::SoFCDB::getStorage()
+{
+  assert(storage); //call init first.
+  return storage;
 }

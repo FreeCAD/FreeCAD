@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -84,11 +84,11 @@ class Plot(object):
         t1cm = []
         xcb = []
         for i in range(len(self.points)):
-            disp.append(self.points[i].disp)
-            draft.append(self.points[i].draft)
-            warea.append(self.points[i].wet)
-            t1cm.append(self.points[i].mom)
-            xcb.append(self.points[i].xcb)
+            disp.append(self.points[i].disp.getValueAs("kg").Value / 1000.0)
+            draft.append(self.points[i].draft.getValueAs("m").Value)
+            warea.append(self.points[i].wet.getValueAs("m^2").Value)
+            t1cm.append(self.points[i].mom.getValueAs("kg*m").Value / 1000.0)
+            xcb.append(self.points[i].xcb.getValueAs("m").Value)
 
         axes = Plot.axesList()
         for ax in axes:
@@ -166,11 +166,11 @@ class Plot(object):
         kbt = []
         bmt = []
         for i in range(len(self.points)):
-            disp.append(self.points[i].disp)
-            draft.append(self.points[i].draft)
-            farea.append(self.points[i].farea)
-            kbt.append(self.points[i].KBt)
-            bmt.append(self.points[i].BMt)
+            disp.append(self.points[i].disp.getValueAs("kg").Value / 1000.0)
+            draft.append(self.points[i].draft.getValueAs("m").Value)
+            farea.append(self.points[i].farea.getValueAs("m^2").Value)
+            kbt.append(self.points[i].KBt.getValueAs("m").Value)
+            bmt.append(self.points[i].BMt.getValueAs("m").Value)
 
         axes = Plot.axesList()
         for ax in axes:
@@ -248,8 +248,8 @@ class Plot(object):
         cf = []
         cm = []
         for i in range(len(self.points)):
-            disp.append(self.points[i].disp)
-            draft.append(self.points[i].draft)
+            disp.append(self.points[i].disp.getValueAs("kg").Value / 1000.0)
+            draft.append(self.points[i].draft.getValueAs("m").Value)
             cb.append(self.points[i].Cb)
             cf.append(self.points[i].Cf)
             cm.append(self.points[i].Cm)
@@ -303,41 +303,47 @@ class Plot(object):
         @param trim Trim in degrees.
         @return True if error happens.
         """
-        # Create the spreadsheet
-        obj = FreeCAD.ActiveDocument.addObject("App::FeaturePython", "Spreadsheet")
-        s = Spreadsheet.Spreadsheet(obj)
-        if FreeCAD.GuiUp:
-            Spreadsheet.ViewProviderSpreadsheet(obj.ViewObject)
-        FreeCAD.ActiveDocument.recompute()
-        obj.Label = 'Hydrostatics'
-
+        s = FreeCAD.activeDocument().addObject('Spreadsheet::Sheet',
+                                               'Hydrostatics')
 
         # Print the header
-        s.a1 = "displacement [ton]"
-        s.b1 = "draft [m]"
-        s.c1 = "wetted surface [m^2]"
-        s.d1 = "1cm triming ship moment [ton*m]"
-        s.e1 = "Floating area [m^2]"
-        s.f1 = "KBl [m]"
-        s.g1 = "KBt [m]"
-        s.h1 = "BMt [m]"
-        s.i1 = "Cb"
-        s.j1 = "Cf"
-        s.k1 = "Cm"
+        s.set("A1", "displacement [ton]")
+        s.set("B1", "draft [m]")
+        s.set("C1", "wetted surface [m^2]")
+        s.set("D1", "1cm triming ship moment [ton*m]")
+        s.set("E1", "Floating area [m^2]")
+        s.set("F1", "KBl [m]")
+        s.set("G1", "KBt [m]")
+        s.set("H1", "BMt [m]")
+        s.set("I1", "Cb")
+        s.set("J1", "Cf")
+        s.set("K1", "Cm")
 
+        # Print the data
         for i in range(len(self.points)):
             point = self.points[i]
-            s.__setattr__("a{}".format(i + 2), point.disp)
-            s.__setattr__("b{}".format(i + 2), point.draft)
-            s.__setattr__("c{}".format(i + 2), point.wet)
-            s.__setattr__("d{}".format(i + 2), point.mom)
-            s.__setattr__("e{}".format(i + 2), point.farea)
-            s.__setattr__("f{}".format(i + 2), point.xcb)
-            s.__setattr__("g{}".format(i + 2), point.KBt)
-            s.__setattr__("h{}".format(i + 2), point.BMt)
-            s.__setattr__("i{}".format(i + 2), point.Cb)
-            s.__setattr__("j{}".format(i + 2), point.Cf)
-            s.__setattr__("k{}".format(i + 2), point.Cm)
+            s.set("A{}".format(i + 2),
+                  str(point.disp.getValueAs("kg").Value / 1000.0))
+            s.set("B{}".format(i + 2),
+                  str(point.draft.getValueAs("m").Value))
+            s.set("C{}".format(i + 2),
+                  str(point.wet.getValueAs("m^2").Value))
+            s.set("D{}".format(i + 2),
+                  str(point.mom.getValueAs("kg*m").Value / 1000.0))
+            s.set("E{}".format(i + 2),
+                  str(point.farea.getValueAs("m^2").Value))
+            s.set("F{}".format(i + 2),
+                  str(point.xcb.getValueAs("m").Value))
+            s.set("G{}".format(i + 2),
+                  str(point.KBt.getValueAs("m").Value))
+            s.set("H{}".format(i + 2),
+                  str(point.BMt.getValueAs("m").Value))
+            s.set("I{}".format(i + 2),
+                  str(point.Cb))
+            s.set("J{}".format(i + 2),
+                  str(point.Cf))
+            s.set("K{}".format(i + 2),
+                  str(point.Cm))
 
-        # Open the spreadsheet
-        FreeCADGui.ActiveDocument.setEdit(obj.Name,0)
+        # Recompute
+        FreeCAD.activeDocument().recompute()

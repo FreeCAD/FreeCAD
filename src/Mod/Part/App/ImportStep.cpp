@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2008     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2008     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -38,8 +38,9 @@
 # include <sstream>
 #endif
 
-#include <Handle_XSControl_WorkSession.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
+#include <Standard_Version.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <Transfer_TransientProcess.hxx>
@@ -48,8 +49,8 @@
 #include <TColStd_HSequenceOfTransient.hxx>
 #include <STEPConstruct.hxx>
 #include <StepVisual_StyledItem.hxx>
-#include <Handle_StepShape_ShapeRepresentation.hxx>
-#include <Handle_StepVisual_PresentationStyleByContext.hxx>
+#include <StepShape_ShapeRepresentation.hxx>
+#include <StepVisual_PresentationStyleByContext.hxx>
 #include <StepVisual_StyleContextSelect.hxx>
 #include <StepVisual_PresentationStyleByContext.hxx>
 #include <Interface_EntityIterator.hxx>
@@ -57,15 +58,15 @@
 #include <StepShape_ShapeDefinitionRepresentation.hxx>
 #include <StepRepr_CharacterizedDefinition.hxx>
 #include <StepRepr_ProductDefinitionShape.hxx>
-#include <Handle_StepRepr_AssemblyComponentUsage.hxx>
+#include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
 #include <Quantity_Color.hxx>
 #include <TCollection_ExtendedString.hxx>
 #include <StepBasic_Product.hxx>
-#include <Handle_StepBasic_Product.hxx>
+#include <StepBasic_Product.hxx>
 #include <StepBasic_ProductDefinition.hxx>
-#include <Handle_StepBasic_ProductDefinition.hxx>
+#include <StepBasic_ProductDefinition.hxx>
 #include <StepBasic_ProductDefinitionFormation.hxx>
 
 #include <Base/Console.h>
@@ -76,6 +77,7 @@
 #include "ImportStep.h"
 #include "PartFeature.h"
 #include "ProgressIndicator.h"
+#include "encodeFilename.h"
 
 using namespace Part;
 
@@ -95,8 +97,11 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         str << "File '" << Name << "' does not exist!";
         throw Base::Exception(str.str().c_str());
     }
+    std::string encodednamestr = encodeFilename(std::string(Name));
+    const char * encodedname = encodednamestr.c_str();
 
-    if (aReader.ReadFile((Standard_CString)Name) != IFSelect_RetDone) {
+    if (aReader.ReadFile((Standard_CString)encodedname) != 
+            IFSelect_RetDone) {
         throw Base::Exception("Cannot open STEP file");
     }
 
@@ -249,6 +254,9 @@ static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
 
 bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    return Standard_False;
+#else
     STEPConstruct_Styles Styles (WS);
     if (!Styles.LoadStyles()) {
 #ifdef FC_DEBUG
@@ -307,8 +315,8 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                 if (aSDR.IsNull())
                     continue;
                 StepRepr_RepresentedDefinition aPDSselect = aSDR->Definition();
-                Handle_StepRepr_ProductDefinitionShape PDS = 
-                    Handle_StepRepr_ProductDefinitionShape::DownCast(aPDSselect.PropertyDefinition());
+                Handle(StepRepr_ProductDefinitionShape) PDS =
+                    Handle(StepRepr_ProductDefinitionShape)::DownCast(aPDSselect.PropertyDefinition());
                 if (PDS.IsNull())
                     continue;
                 StepRepr_CharacterizedDefinition aCharDef = PDS->Definition();
@@ -320,8 +328,8 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                     isSkipSHUOstyle = Standard_True;
                     break;
                 }
-                Handle_StepRepr_NextAssemblyUsageOccurrence NAUO =
-                    Handle_StepRepr_NextAssemblyUsageOccurrence::DownCast(ACU);
+                Handle(StepRepr_NextAssemblyUsageOccurrence) NAUO =
+                    Handle(StepRepr_NextAssemblyUsageOccurrence)::DownCast(ACU);
                 if (NAUO.IsNull())
                     continue;
         
@@ -373,10 +381,14 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
     }
   
     return Standard_True;
+#endif
 }
 
 bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    return Standard_False;
+#else
     // get starting data
     Handle(Interface_InterfaceModel) Model = WS->Model();
     Handle(XSControl_TransferReader) TR = WS->TransferReader();
@@ -433,4 +445,5 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
     }
 
     return Standard_True;
+#endif
 }

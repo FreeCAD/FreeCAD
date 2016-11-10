@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,7 +24,9 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 # include <QRegExp>
+# include <QMessageBox>
 # include <memory>
 #endif
 
@@ -41,6 +43,8 @@
 using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DlgSettings3DViewImp */
+
+bool DlgSettings3DViewImp::showMsg = true;
 
 /**
  *  Constructs a DlgSettings3DViewImp which is a child of 'parent', with the 
@@ -118,6 +122,9 @@ void DlgSettings3DViewImp::loadSettings()
     index = hGrp->GetInt("AntiAliasing", int(Gui::View3DInventorViewer::None));
     index = Base::clamp(index, 0, comboAliasing->count()-1);
     comboAliasing->setCurrentIndex(index);
+    // connect after setting current item of the combo box
+    connect(comboAliasing, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(onAliasingChanged(int)));
 }
 
 void DlgSettings3DViewImp::on_mouseButton_clicked()
@@ -128,21 +135,21 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 
     QVariant data = comboNavigationStyle->itemData(comboNavigationStyle->currentIndex(), Qt::UserRole);
     void* instance = Base::Type::createInstanceByName((const char*)data.toByteArray());
-    std::auto_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
-    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromAscii(" ")+comboNavigationStyle->currentText());
+    std::unique_ptr<UserNavigationStyle> ns(static_cast<UserNavigationStyle*>(instance));
+    ui.groupBox->setTitle(ui.groupBox->title()+QString::fromLatin1(" ")+comboNavigationStyle->currentText());
     QString descr;
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::SELECTION));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.selectionLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.selectionLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::PANNING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.panningLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.panningLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::DRAGGING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.rotationLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.rotationLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     descr = qApp->translate((const char*)data.toByteArray(),ns->mouseButtons(NavigationStyle::ZOOMING));
     descr.replace(QLatin1String("\n"), QLatin1String("<p>"));
-    ui.zoomingLabel->setText(QString::fromAscii("<b>%1</b>").arg(descr));
+    ui.zoomingLabel->setText(QString::fromLatin1("<b>%1</b>").arg(descr));
     dlg.exec();
 }
 
@@ -152,14 +159,16 @@ void DlgSettings3DViewImp::on_mouseButton_clicked()
 void DlgSettings3DViewImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
+        comboAliasing->blockSignals(true);
         int navigation = comboNavigationStyle->currentIndex();
         int orbit = comboOrbitStyle->currentIndex();
-	int aliasing = comboAliasing->currentIndex();
+        int aliasing = comboAliasing->currentIndex();
         retranslateUi(this);
         retranslate();
         comboNavigationStyle->setCurrentIndex(navigation);
         comboOrbitStyle->setCurrentIndex(orbit);
-	comboAliasing->setCurrentIndex(aliasing);
+        comboAliasing->setCurrentIndex(aliasing);
+        comboAliasing->blockSignals(false);
     }
     else {
         QWidget::changeEvent(e);
@@ -168,20 +177,28 @@ void DlgSettings3DViewImp::changeEvent(QEvent *e)
 
 void DlgSettings3DViewImp::retranslate()
 {
-    std::vector<Base::Type> types;
-    Base::Type::getAllDerivedFrom(UserNavigationStyle::getClassTypeId(), types);
     comboNavigationStyle->clear();
 
-    QRegExp rx(QString::fromAscii("^\\w+::(\\w+)Navigation\\w+$"));
-    for (std::vector<Base::Type>::iterator it = types.begin(); it != types.end(); ++it) {
-        if (*it != UserNavigationStyle::getClassTypeId()) {
-            QString data = QString::fromAscii(it->getName());
-            QString name = data.mid(data.indexOf(QLatin1String("::"))+2);
-            if (rx.indexIn(data) > -1) {
-                name = tr("%1 navigation").arg(rx.cap(1));
-            }
-            comboNavigationStyle->addItem(name, data);
-        }
+    // add submenu at the end to select navigation style
+    std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
+    for (std::map<Base::Type, std::string>::iterator it = styles.begin(); it != styles.end(); ++it) {
+        QByteArray data(it->first.getName());
+        QString name = QApplication::translate(it->first.getName(), it->second.c_str());
+
+        comboNavigationStyle->addItem(name, data);
+    }
+}
+
+void DlgSettings3DViewImp::onAliasingChanged(int index)
+{
+    if (index < 0 || !isVisible())
+        return;
+    // Show this message only once per application session to reduce
+    // annoyance when showing it too often.
+    if (showMsg) {
+        showMsg = false;
+        QMessageBox::information(this, tr("Anti-aliasing"),
+            tr("Open a new viewer or restart %1 to apply anti-aliasing changes.").arg(qApp->applicationName()));
     }
 }
 

@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QGLWidget>
+# include <QGridLayout>
 # include <Inventor/actions/SoAction.h>
 # include <Inventor/elements/SoModelMatrixElement.h>
 # include <Inventor/elements/SoViewVolumeElement.h>
@@ -50,7 +51,7 @@ Workbench::Workbench()
 {
     // Tree view
     Gui::DockWindow* tree = new Gui::DockWindow(0, Gui::getMainWindow());
-    tree->setWindowTitle(QString::fromAscii("Tree view"));
+    tree->setWindowTitle(QString::fromLatin1("Tree view"));
     Gui::TreeView* treeWidget = new Gui::TreeView(tree);
     treeWidget->setRootIsDecorated(false);
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/TreeView");
@@ -62,7 +63,7 @@ Workbench::Workbench()
     pLayout->addWidget(treeWidget, 0, 0);
 
     tree->setObjectName
-        (QString::fromAscii(QT_TRANSLATE_NOOP("QDockWidget","Tree view (MVC)")));
+        (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tree view (MVC)")));
     tree->setMinimumWidth(210);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     pDockMgr->registerDockWindow("Std_TreeViewMVC", tree);
@@ -83,7 +84,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *threads << "Sandbox_PythonLockThread" << "Sandbox_NolockPython"
              << "Sandbox_PyQtThread" << "Sandbox_PythonThread" << "Sandbox_PythonMainThread";
     test->setCommand("Threads");
-    *test << "Sandbox_Thread" << "Sandbox_TestThread" << "Sandbox_WorkerThread" << "Sandbox_SeqThread"
+    *test << "Sandbox_Thread" << "Sandbox_TestThread" << "Sandbox_SaveThread"
+          << "Sandbox_WorkerThread" << "Sandbox_SeqThread"
           << "Sandbox_BlockThread" << "Sandbox_NoThread" << threads << "Separator"
           << "Sandbox_Dialog" << "Sandbox_FileDialog";
     Gui::MenuItem* misc = new Gui::MenuItem;
@@ -105,14 +107,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
           << "Sandbox_WidgetShape"
           << "Sandbox_GDIWidget"
           << "Sandbox_RedirectPaint"
-          << "Std_TestGraphicsView";
-
-    Gui::MenuItem* viewer = new Gui::MenuItem;
-    root->insertItem(item, viewer);
-    viewer->setCommand("Viewer");
-    *viewer << "Sandbox_PlaneViewer"
-            << "Sandbox_ExaminerViewer"
-            << "Sandbox_FlyViewer";
+          << "Std_TestGraphicsView"
+          << "Std_TestTaskBox";
     return root;
 }
 
@@ -155,7 +151,7 @@ SoWidgetShape::SoWidgetShape()
     SO_NODE_CONSTRUCTOR(SoWidgetShape);
 }
 
-void SoWidgetShape::GLRender(SoGLRenderAction *action)
+void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 {
 #if 1
     this->image = QPixmap::grabWidget(w, w->rect()).toImage();

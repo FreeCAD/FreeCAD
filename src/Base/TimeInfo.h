@@ -28,11 +28,23 @@
 
 
 #include <stdio.h>
+#if defined(FC_OS_BSD)
+#include <sys/time.h>
+#else
 #include <sys/timeb.h>
+#endif
 #include <time.h>
 
 #ifdef __GNUC__
 # include <stdint.h>
+#endif
+
+#if defined(FC_OS_BSD)
+struct timeb
+{
+    int64_t time;
+    unsigned short millitm;
+};
 #endif
 
 namespace Base
@@ -63,7 +75,7 @@ public:
     bool operator >= (const TimeInfo &time) const;
     bool operator >  (const TimeInfo &time) const;
 
-    static const char* currentDateTimeString();
+    static std::string currentDateTimeString();
     static std::string diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd = TimeInfo());
     static float diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd  = TimeInfo());
     bool isNull() const;

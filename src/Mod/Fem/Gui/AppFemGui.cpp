@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,11 +30,17 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
+#include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
+#include "PropertyFemMeshItem.h"
+#include "DlgSettingsFemGeneralImp.h"
+#include "DlgSettingsFemCcxImp.h"
+#include "DlgSettingsFemZ88Imp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderAnalysis.h"
+#include "ViewProviderSolver.h"
 #include "ViewProviderSetNodes.h"
 #include "ViewProviderSetElements.h"
 #include "ViewProviderSetFaces.h"
@@ -43,11 +49,31 @@
 #include "ViewProviderFemConstraintBearing.h"
 #include "ViewProviderFemConstraintFixed.h"
 #include "ViewProviderFemConstraintForce.h"
+#include "ViewProviderFemConstraintFluidBoundary.h"
+#include "ViewProviderFemConstraintPressure.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
+#include "ViewProviderFemConstraintDisplacement.h"
+#include "ViewProviderFemConstraintTemperature.h"
+#include "ViewProviderFemConstraintHeatflux.h"
+#include "ViewProviderFemConstraintInitialTemperature.h"
+#include "ViewProviderFemConstraintPlaneRotation.h"
+#include "ViewProviderFemConstraintContact.h"
+#include "ViewProviderFemConstraintTransform.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
-//#include "resources/qrc_Fem.cpp"
+
+#ifdef FC_USE_VTK
+#include "ViewProviderFemPostObject.h"
+#include "ViewProviderFemPostPipeline.h"
+#include "ViewProviderFemPostFunction.h"
+#include "ViewProviderFemPostFilter.h"
+#endif
+
+#ifdef FC_USE_VTK
+#include "ViewProviderFemPostObject.h"
+#endif
+
 
 // use a different name to CreateCommand()
 void CreateFemCommands(void);
@@ -59,53 +85,76 @@ void loadFemResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef FemGui_Import_methods[];
+namespace FemGui {
+extern PyObject* initModule();
+}
 
 
 /* Python entry */
-extern "C" {
-void FemGuiExport initFemGui()  
+PyMODINIT_FUNC initFemGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
         return;
     }
 
-    (void) Py_InitModule("FemGui", FemGui_Import_methods);   /* mod name, table ptr */
+    (void) FemGui::initModule();
     Base::Console().Log("Loading GUI of Fem module... done\n");
 
     // instantiating the commands
     CreateFemCommands();
 
     // addition objects
-    FemGui::Workbench                          ::init();
-    FemGui::ViewProviderFemAnalysis            ::init();
-    FemGui::ViewProviderFemAnalysisPython      ::init();
-    FemGui::ViewProviderFemMesh                ::init();
-    FemGui::ViewProviderFemMeshShape           ::init();
-    FemGui::ViewProviderFemMeshShapeNetgen     ::init();
-    FemGui::ViewProviderSetNodes               ::init();
-    FemGui::ViewProviderSetElements            ::init();
-    FemGui::ViewProviderSetFaces               ::init();
-    FemGui::ViewProviderSetGeometry            ::init();
-    FemGui::ViewProviderFemConstraint          ::init();
-    FemGui::ViewProviderFemConstraintBearing   ::init();
-    FemGui::ViewProviderFemConstraintFixed     ::init();
-    FemGui::ViewProviderFemConstraintForce     ::init();
-    FemGui::ViewProviderFemConstraintGear      ::init();
-    FemGui::ViewProviderFemConstraintPulley    ::init();
-    FemGui::ViewProviderResult                 ::init();
-    FemGui::ViewProviderResultPython           ::init();
+    FemGui::Workbench                             ::init();
+    FemGui::ViewProviderFemAnalysis               ::init();
+    FemGui::ViewProviderFemAnalysisPython         ::init();
+    FemGui::ViewProviderFemMesh                   ::init();
+    FemGui::ViewProviderFemMeshShape              ::init();
+    FemGui::ViewProviderFemMeshShapeNetgen        ::init();
+    FemGui::ViewProviderSolver                    ::init();
+    FemGui::ViewProviderSolverPython              ::init();
+    FemGui::ViewProviderSetNodes                  ::init();
+    FemGui::ViewProviderSetElements               ::init();
+    FemGui::ViewProviderSetFaces                  ::init();
+    FemGui::ViewProviderSetGeometry               ::init();
+    FemGui::ViewProviderFemConstraint             ::init();
+    FemGui::ViewProviderFemConstraintBearing      ::init();
+    FemGui::ViewProviderFemConstraintFixed        ::init();
+    FemGui::ViewProviderFemConstraintForce        ::init();
+    FemGui::ViewProviderFemConstraintFluidBoundary          ::init();
+    FemGui::ViewProviderFemConstraintPressure     ::init();
+    FemGui::ViewProviderFemConstraintGear         ::init();
+    FemGui::ViewProviderFemConstraintPulley       ::init();
+    FemGui::ViewProviderFemConstraintDisplacement ::init();
+    FemGui::ViewProviderFemConstraintHeatflux     ::init();
+    FemGui::ViewProviderFemConstraintTemperature  ::init();
+    FemGui::ViewProviderFemConstraintInitialTemperature  ::init();
+    FemGui::ViewProviderFemConstraintPlaneRotation::init();
+    FemGui::ViewProviderFemConstraintContact      ::init();
+    FemGui::ViewProviderFemConstraintTransform    ::init();
+    FemGui::ViewProviderResult                    ::init();
+    FemGui::ViewProviderResultPython              ::init();
+    FemGui::PropertyFemMeshItem                   ::init();
 
-    Base::Interpreter().loadModule("MechanicalAnalysis");
-    Base::Interpreter().loadModule("MechanicalMaterial");
+#ifdef FC_USE_VTK
+    FemGui::ViewProviderFemPostObject          ::init();
+    FemGui::ViewProviderFemPostPipeline        ::init();
+    FemGui::ViewProviderFemPostFunction        ::init();
+    FemGui::ViewProviderFemPostFunctionProvider::init();
+    FemGui::ViewProviderFemPostPlaneFunction   ::init();
+    FemGui::ViewProviderFemPostSphereFunction  ::init();
+    FemGui::ViewProviderFemPostClip            ::init();
+    FemGui::ViewProviderFemPostScalarClip      ::init();
+    FemGui::ViewProviderFemPostWarpVector      ::init();
+    FemGui::ViewProviderFemPostCut             ::init();
+#endif
 
-    Base::Interpreter().loadModule("FemLib");
 
+    // register preferences pages
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
      // add resources and reloads the translators
     loadFemResource();
 }
-
-} // extern "C" {

@@ -29,13 +29,13 @@ namespace KDL
         jnt2jac(chain),
         jac(chain.getNrOfJoints()),
         transpose(chain.getNrOfJoints()>6),toggle(true),
-        m((int)max(6,chain.getNrOfJoints())),
-        n((int)min(6,chain.getNrOfJoints())),
+        m(max(6,chain.getNrOfJoints())),
+        n(min(6,chain.getNrOfJoints())),
         jac_eigen(m,n),
         U(MatrixXd::Identity(m,m)),
         V(MatrixXd::Identity(n,n)),
-        S(n),
         B(m,n),
+        S(n),
         tempi(m),
         tempj(m),
         UY(VectorXd::Zero(6)),
@@ -52,7 +52,7 @@ namespace KDL
 
     int ChainIkSolverVel_pinv_givens::CartToJnt(const JntArray& q_in, const Twist& v_in, JntArray& qdot_out)
     {
-        toggle!=toggle;
+        toggle=!toggle;
 
         jnt2jac.JntToJac(q_in,jac);
 
@@ -70,9 +70,9 @@ namespace KDL
         //std::cout<<"# sweeps: "<<ret<<std::endl;
 
         if(transpose)
-            UY = (V.transpose() * v_in_eigen).lazy();
+            UY.noalias() = V.transpose() * v_in_eigen;
         else
-            UY = (U.transpose() * v_in_eigen).lazy();
+            UY.noalias() = U.transpose() * v_in_eigen;
 
         for (unsigned int i = 0; i < n; i++){
             double wi = UY(i);
@@ -85,9 +85,9 @@ namespace KDL
             SUY(i)= alpha * wi;
         }
         if(transpose)
-            qdot_eigen = (U * SUY).lazy();
+            qdot_eigen.noalias() = U * SUY;
         else
-            qdot_eigen = (V * SUY).lazy();
+            qdot_eigen.noalias() = V * SUY;
 
         for (unsigned int j=0;j<chain.getNrOfJoints();j++)
             qdot_out(j)=qdot_eigen(j);

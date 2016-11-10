@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -46,7 +46,7 @@ class ViewProvider;
 
 /** The Applcation main class
  * This is the central class of the GUI 
- * @author Jürgen Riegel, Werner Mayer
+ * @author JÃ¼rgen Riegel, Werner Mayer
  */
 class GuiExport Application 
 {
@@ -104,7 +104,7 @@ public:
     /// signal on changed object property
     boost::signal<void (const Gui::ViewProvider&, const App::Property&)> signalChangedObject;
     /// signal on renamed Object
-    boost::signal<void (const Gui::ViewProvider&)> signalRenamedObject;
+    boost::signal<void (const Gui::ViewProvider&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const Gui::ViewProvider&)> signalActivatedObject;
     /// signal on activated workbench
@@ -129,7 +129,7 @@ protected:
     void slotNewObject(const ViewProvider&);
     void slotDeletedObject(const ViewProvider&);
     void slotChangedObject(const ViewProvider&, const App::Property& Prop);
-    void slotRenamedObject(const ViewProvider&);
+    void slotRelabelObject(const ViewProvider&);
     void slotActivatedObject(const ViewProvider&);
 
 public:
@@ -147,7 +147,9 @@ public:
     * If no such document exists 0 is returned.
     */
     Gui::Document* getDocument(const App::Document* pDoc) const;
-    /// Shows the associated view provider of the given object
+	/// Getter for the active view of the active document or null
+	Gui::MDIView* activeView(void) const;
+	/// Shows the associated view provider of the given object
     void showViewProvider(const App::DocumentObject*);
     /// Hides the associated view provider of the given object
     void hideViewProvider(const App::DocumentObject*);
@@ -176,9 +178,6 @@ public:
     Gui::MacroManager *macroManager(void);
     /// Reference to the command manager
     Gui::CommandManager &commandManager(void);
-    /// Run a Python command
-    void runCommand(bool bForce, const char* sCmd,...);
-    bool runPythonCode(const char* cmd, bool gui=false, bool pyexc=true);
     /// helper which create the commands
     void createStandardOperations();
     //@}
@@ -220,6 +219,7 @@ public:
 
     PYFUNCDEF_S(sRunCommand);
     PYFUNCDEF_S(sAddCommand);
+    PYFUNCDEF_S(sListCommands);
 
     PYFUNCDEF_S(sHide);                     // deprecated
     PYFUNCDEF_S(sShow);                     // deprecated
@@ -231,13 +231,18 @@ public:
     PYFUNCDEF_S(sExport);
 
     PYFUNCDEF_S(sActiveDocument);
+    PYFUNCDEF_S(sSetActiveDocument);
+    PYFUNCDEF_S(sActiveView);
     PYFUNCDEF_S(sGetDocument);
 
     PYFUNCDEF_S(sDoCommand);
     PYFUNCDEF_S(sDoCommandGui);
     PYFUNCDEF_S(sAddModule);
-    
+
     PYFUNCDEF_S(sShowDownloads);
+    PYFUNCDEF_S(sShowPreferences);
+
+    PYFUNCDEF_S(sCreateViewer);
 
     static PyMethodDef    Methods[]; 
 

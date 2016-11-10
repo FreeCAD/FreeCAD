@@ -39,7 +39,7 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgInputDialogImp::DlgInputDialogImp( const QString& labelTxt, QWidget* parent, bool modal, Type type )
   : QDialog( parent )
@@ -66,7 +66,7 @@ DlgInputDialogImp::~DlgInputDialogImp()
 
 void DlgInputDialogImp::textChanged( const QString &s )
 {
-    bool on = TRUE;
+    bool on = true;
 
     if (lineEdit->validator()) {
         QString str = lineEdit->text();

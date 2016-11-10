@@ -28,7 +28,7 @@
 # include <climits>
 # include <QCursor>
 # include <QTimer>
-#include <Inventor/nodes/SoCamera.h>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include "DemoMode.h"
@@ -45,7 +45,7 @@ using namespace Gui::Dialog;
 
 /* TRANSLATOR Gui::Dialog::DemoMode */
 
-DemoMode::DemoMode(QWidget* parent, Qt::WFlags fl)
+DemoMode::DemoMode(QWidget* /*parent*/, Qt::WindowFlags fl)
   : QDialog(0, fl|Qt::WindowStaysOnTopHint), viewAxis(0,0,-1), ui(new Ui_DemoMode)
 {
     // create widgets
@@ -138,7 +138,7 @@ float DemoMode::getSpeed(int v) const
 
 SbVec3f DemoMode::getDirection(Gui::View3DInventor* view) const
 {
-    SoCamera* cam = view->getViewer()->getCamera();
+    SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
     if (!cam) return this->viewAxis;
     SbRotation rot = cam->orientation.getValue();
     SbRotation inv = rot.inverse();
@@ -154,7 +154,7 @@ void DemoMode::on_angleSlider_valueChanged(int v)
 {
     Gui::View3DInventor* view = activeView();
     if (view) {
-        SoCamera* cam = view->getViewer()->getCamera();
+        SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
         if (!cam) return;
         float angle = Base::toRadians<float>(/*90-v*/v-this->oldvalue);
         SbRotation rot(SbVec3f(-1,0,0),angle);
@@ -184,6 +184,7 @@ void DemoMode::reorientCamera(SoCamera * cam, const SbRotation & rot)
 
 void DemoMode::on_speedSlider_valueChanged(int v)
 {
+    Q_UNUSED(v); 
     Gui::View3DInventor* view = activeView();
     if (view && view->getViewer()->isAnimating()) {
         startAnimation(view);
@@ -195,7 +196,7 @@ void DemoMode::on_playButton_clicked()
     Gui::View3DInventor* view = activeView();
     if (view) {
         if (!view->getViewer()->isAnimating()) {
-            SoCamera* cam = view->getViewer()->getCamera();
+            SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
             if (cam) {
                 SbRotation rot = cam->orientation.getValue();
                 SbVec3f vec(0,-1,0);

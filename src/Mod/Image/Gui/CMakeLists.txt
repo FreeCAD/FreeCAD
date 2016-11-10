@@ -7,13 +7,12 @@ endif(OPENCV2_FOUND)
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OPENCV2_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(ImageGui_LIBS
@@ -79,3 +78,11 @@ SET_BIN_DIR(ImageGui ImageGui /Mod/Image)
 SET_PYTHON_PREFIX_SUFFIX(ImageGui)
 
 INSTALL(TARGETS ImageGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(ImageGuiIcon_SVG
+    Resources/icons/ImageWorkbench.svg
+)
+
+fc_copy_sources(ImageGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Image" ${ImageGuiIcon_SVG})
+
+INSTALL(FILES ${ImageGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Image/Resources/icons")

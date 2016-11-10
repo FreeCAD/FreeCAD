@@ -112,7 +112,7 @@ void DlgSmoothing::on_checkBoxSelection_toggled(bool on)
 
 // ------------------------------------------------
 
-SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WFlags fl)
+SmoothingDialog::SmoothingDialog(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     widget = new DlgSmoothing(this);
@@ -149,7 +149,11 @@ TaskSmoothing::TaskSmoothing()
 
     selection = new Selection();
     selection->setObjects(Gui::Selection().getSelectionEx(0, Mesh::Feature::getClassTypeId()));
+#if !defined (QSINT_ACTIONPANEL)
     Gui::TaskView::TaskGroup* tasksel = new Gui::TaskView::TaskGroup();
+#else
+    Gui::TaskView::TaskBox* tasksel = new Gui::TaskView::TaskBox();
+#endif
     tasksel->groupLayout()->addWidget(selection);
     tasksel->hide();
     Content.push_back(tasksel);

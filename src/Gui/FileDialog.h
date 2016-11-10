@@ -26,6 +26,8 @@
 
 #include <QFileDialog>
 #include <QFileIconProvider>
+#include <QFileSystemModel>
+#include <QCompleter>
 
 class QButtonGroup;
 class QGridLayout;
@@ -54,8 +56,12 @@ public:
     static QStringList getOpenFileNames( QWidget * parent = 0, const QString & caption = QString(), const QString & dir = QString(),
                                          const QString & filter = QString(), QString * selectedFilter = 0, Options options = 0 );
 
+    /*! Return the last directory a file was read from or saved to. */
     static QString getWorkingDirectory();
+    /*! Set the directory a file was read from or saved to. */
     static void setWorkingDirectory( const QString& );
+    static QString restoreLocation();
+    static void saveLocation(const QString&);
 
     FileDialog(QWidget * parent = 0);
     ~FileDialog();
@@ -64,6 +70,10 @@ public:
 
 private Q_SLOTS:
     void onSelectedFilter(const QString&);
+
+private:
+    bool hasSuffix(const QString&) const;
+    static QString workingDirectory;
 };
 
 // ----------------------------------------------------------------------
@@ -83,7 +93,7 @@ public:
         ExtensionBottom   = 1
     };
 
-    FileOptionsDialog ( QWidget* parent, Qt::WFlags );
+    FileOptionsDialog ( QWidget* parent, Qt::WindowFlags );
     virtual ~FileOptionsDialog();
 
     void accept();
@@ -93,9 +103,6 @@ public:
 
 protected Q_SLOTS:
     void toggleExtension();
-
-Q_SIGNALS:
-    void filterSelected(const QString&);
 
 private:
     QPushButton* extensionButton;
@@ -174,9 +181,12 @@ Q_SIGNALS:
 
 private Q_SLOTS:
     void chooseFile();
+    void editingFinished();
 
 private:
     QLineEdit *lineEdit;
+    QCompleter *completer;
+    QFileSystemModel *fs_model;
     QPushButton *button;
     Mode md;
     QString _filter;

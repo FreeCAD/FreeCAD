@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.0">
+<TS version="2.0" language="de" sourcelanguage="en">
+<context>
+    <name>CmdPointsConvert</name>
+    <message>
+        <location filename="../../Command.cpp" line="+184"/>
+        <source>Points</source>
+        <translation>Punkte</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert to points...</source>
+        <translation>Zu Punkten konvertieren...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Convert to points</source>
+        <translation>Zu Punkten konvertieren</translation>
+    </message>
+</context>
 <context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+104"/>
+        <location line="-78"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -24,7 +44,7 @@
 <context>
     <name>CmdPointsImport</name>
     <message>
-        <location line="-47"/>
+        <location line="-51"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -44,7 +64,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+122"/>
+        <location line="+203"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -64,7 +84,7 @@
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-39"/>
+        <location line="-125"/>
         <source>Points</source>
         <translation>Punkte</translation>
     </message>
@@ -229,10 +249,30 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-84"/>
-        <location line="+43"/>
         <source>Ascii Points (*.asc);;All Files (*.*)</source>
-        <translation>ASCII-Punkte (*.asc);;Alle Dateien (*.*)</translation>
+        <translation type="obsolete">ASCII-Punkte (.asc); Alle Dateien (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="-78"/>
+        <location line="+49"/>
+        <source>Ascii Points</source>
+        <translation>ASCII-Punkte</translation>
+    </message>
+    <message>
+        <location line="-49"/>
+        <location line="+49"/>
+        <source>All Files</source>
+        <translation>Alle Dateien</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>Distance</source>
+        <translation>Abstand</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter maximum distance:</source>
+        <translation>Eingabe der maximalen Entfernung:</translation>
     </message>
 </context>
 <context>

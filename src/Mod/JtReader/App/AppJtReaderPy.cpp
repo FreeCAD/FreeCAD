@@ -36,11 +36,9 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Elements.h>
 #include <Mod/Mesh/App/MeshPy.h>
-#include <Mod/Mesh/App/MeshPy.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
-#include "JtReader.h"
-
+#include "TestJtReader.h"
 using std::vector;
 using namespace MeshCore;
 
@@ -48,124 +46,135 @@ using namespace MeshCore;
 //using namespace JtReader;
 
 /* module functions */
-static PyObject * read(PyObject *self, PyObject *args)     
-{                                        
-  const char* Name;
-  if (! PyArg_ParseTuple(args, "s",&Name))			 
-    return NULL;                         
-    
+static PyObject * read(PyObject * /*self*/, PyObject *args)
+{
+  char* Name;
+  if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
-    
-    std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
+    //std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
 
-    readFile(Name,0);
+    //vector<MeshGeomFacet> facets;
+    //facets.resize(0 /* some size*/);
 
-    vector<MeshGeomFacet> facets;
-    facets.resize(iterSize());
+    //const SimpleMeshFacet* It=iterStart();
+    //int i=0;
+    //while(It=iterGetNext())
+    //{
+    //    facets[i]._aclPoints[0].x = It->p1[0];
+    //    facets[i]._aclPoints[0].y = It->p1[1];
+    //    facets[i]._aclPoints[0].z = It->p1[2];
+    //    facets[i]._aclPoints[1].x = It->p2[0];
+    //    facets[i]._aclPoints[1].y = It->p2[1];
+    //    facets[i]._aclPoints[1].z = It->p2[2];
+    //    facets[i]._aclPoints[2].x = It->p3[0];
+    //    facets[i]._aclPoints[2].y = It->p3[1];
+    //    facets[i]._aclPoints[2].z = It->p3[2];
+    //}
+   
+    //(*apcKernel) = facets;  
 
-    const SimpleMeshFacet* It=iterStart();
-    int i=0;
-    while(It=iterGetNext())
-    {
-        facets[i]._aclPoints[0].x = It->p1[0];
-        facets[i]._aclPoints[0].y = It->p1[1];
-        facets[i]._aclPoints[0].z = It->p1[2];
-        facets[i]._aclPoints[1].x = It->p2[0];
-        facets[i]._aclPoints[1].y = It->p2[1];
-        facets[i]._aclPoints[1].z = It->p2[2];
-        facets[i]._aclPoints[2].x = It->p3[0];
-        facets[i]._aclPoints[2].y = It->p3[1];
-        facets[i]._aclPoints[2].z = It->p3[2];
-    }
-    clearData();
-    (*apcKernel) = facets;  
-
-    return new Mesh::MeshPy(new Mesh::MeshObject(*(apcKernel.release())));
+    //return new Mesh::MeshPy(new Mesh::MeshObject(*(apcKernel.release())));
 
   } PY_CATCH;
 
 	Py_Return;    
 }
 
-static PyObject *                        
-open(PyObject *self, PyObject *args)     
-{                                        
-  const char* Name;
-  if (! PyArg_ParseTuple(args, "s",&Name))			 
-    return NULL;                         
-    
+static PyObject *
+open(PyObject * /*self*/, PyObject *args)
+{
+  char* Name;
+  if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
 
     //Base::Console().Log("Open in Mesh with %s",Name);
-    Base::FileInfo file(Name);
+    Base::FileInfo file(EncodedName.c_str());
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(PyExc_Exception,"no file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
     if(file.hasExtension("jt"))
     {
+
+		TestJtReader reader;
+
+		reader.setFile(EncodedName.c_str());
+
+		reader.read();
+
+
         // create new document and add Import feature
-        App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
-        Mesh::Feature *pcFeature = (Mesh::Feature*)pcDoc->addObject("Mesh::Feature",file.fileNamePure().c_str());
-          
-        std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
+       // App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
+       // Mesh::Feature *pcFeature = (Mesh::Feature*)pcDoc->addObject("Mesh::Feature",file.fileNamePure().c_str());
+       //   
+       // std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
 
-        readFile(Name,0);
+       // readFile(EncodedName.c_str(),0);
 
-        vector<MeshGeomFacet> facets;
-        facets.resize(iterSize());
+       // vector<MeshGeomFacet> facets;
+       // facets.resize(iterSize());
 
-        const SimpleMeshFacet* It=iterStart();
-        int i=0;
-        while(It=iterGetNext())
-        {
-            facets[i]._aclPoints[0].x = It->p1[0];
-            facets[i]._aclPoints[0].y = It->p1[1];
-            facets[i]._aclPoints[0].z = It->p1[2];
-            facets[i]._aclPoints[1].x = It->p2[0];
-            facets[i]._aclPoints[1].y = It->p2[1];
-            facets[i]._aclPoints[1].z = It->p2[2];
-            facets[i]._aclPoints[2].x = It->p3[0];
-            facets[i]._aclPoints[2].y = It->p3[1];
-            facets[i]._aclPoints[2].z = It->p3[2];
-            i++;
-        }
-        clearData();
-        (*apcKernel) = facets; 
-        pcFeature->Mesh.setValue(*(apcKernel.get()));
+       // const SimpleMeshFacet* It=iterStart();
+       // int i=0;
+       // while(It=iterGetNext())
+       // {
+       //     facets[i]._aclPoints[0].x = It->p1[0];
+       //     facets[i]._aclPoints[0].y = It->p1[1];
+       //     facets[i]._aclPoints[0].z = It->p1[2];
+       //     facets[i]._aclPoints[1].x = It->p2[0];
+       //     facets[i]._aclPoints[1].y = It->p2[1];
+       //     facets[i]._aclPoints[1].z = It->p2[2];
+       //     facets[i]._aclPoints[2].x = It->p3[0];
+       //     facets[i]._aclPoints[2].y = It->p3[1];
+       //     facets[i]._aclPoints[2].z = It->p3[2];
+       //     i++;
+       // }
+       // clearData();
+       // (*apcKernel) = facets; 
+       // pcFeature->Mesh.setValue(*(apcKernel.get()));
 
-       //pcFeature->FileName.setValue( Name );
-        pcDoc->recompute();
+       ////pcFeature->FileName.setValue( Name );
+       // pcDoc->recompute();
     }
     else
     {
-      Py_Error(PyExc_Exception,"unknown file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
     }
 
 
   } PY_CATCH;
 
-	Py_Return;    
+  Py_Return;    
 }
 
 
 /* module functions */
-static PyObject *                        
-insert(PyObject *self, PyObject *args)     
+static PyObject *
+insert(PyObject * /*self*/, PyObject *args)
 {
-  const char* Name;
+  char* Name;
   const char* DocName;
-  if (! PyArg_ParseTuple(args, "ss",&Name,&DocName))	 		 
-    return NULL;                         
-    
+  if (!PyArg_ParseTuple(args, "ets","utf-8",&Name,&DocName))
+        return NULL;
+  std::string EncodedName = std::string(Name);
+  PyMem_Free(Name);
+
   PY_TRY {
 
-    Base::FileInfo file(Name);
+    Base::FileInfo file(EncodedName.c_str());
 
     // extract ending
     if(file.extension() == "")
-      Py_Error(PyExc_Exception,"no file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"no file ending");
 
     if(file.hasExtension("jt") )
     {
@@ -175,54 +184,54 @@ insert(PyObject *self, PyObject *args)
         {
             char szBuf[200];
             snprintf(szBuf, 200, "Import called to the non-existing document '%s'", DocName);
-            Py_Error(PyExc_Exception,szBuf);
+            Py_Error(Base::BaseExceptionFreeCADError,szBuf);
         }
 
-        readFile(Name,0);
+        //readFile(EncodedName.c_str(),0);
 
-        vector<MeshGeomFacet> facets;
+        //vector<MeshGeomFacet> facets;
 
-        if(iterSize()>0){
-            facets.resize(iterSize());
+        //if(iterSize()>0){
+        //    facets.resize(iterSize());
 
-            const SimpleMeshFacet* It=iterStart();
-            int i=0;
-            while(It=iterGetNext())
-            {
-                facets[i]._aclPoints[0].x = It->p1[0];
-                facets[i]._aclPoints[0].y = It->p1[1];
-                facets[i]._aclPoints[0].z = It->p1[2];
-                facets[i]._aclPoints[1].x = It->p2[0];
-                facets[i]._aclPoints[1].y = It->p2[1];
-                facets[i]._aclPoints[1].z = It->p2[2];
-                facets[i]._aclPoints[2].x = It->p3[0];
-                facets[i]._aclPoints[2].y = It->p3[1];
-                facets[i]._aclPoints[2].z = It->p3[2];
-                i++;
-            }
-            clearData();
-            Mesh::Feature *pcFeature = (Mesh::Feature*)pcDoc->addObject("Mesh::Feature",file.fileNamePure().c_str());
-          
-            std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
-           (*apcKernel) = facets; 
-            pcFeature->Mesh.setValue(*(apcKernel.get()));
+        //    const SimpleMeshFacet* It=iterStart();
+        //    int i=0;
+        //    while(It=iterGetNext())
+        //    {
+        //        facets[i]._aclPoints[0].x = It->p1[0];
+        //        facets[i]._aclPoints[0].y = It->p1[1];
+        //        facets[i]._aclPoints[0].z = It->p1[2];
+        //        facets[i]._aclPoints[1].x = It->p2[0];
+        //        facets[i]._aclPoints[1].y = It->p2[1];
+        //        facets[i]._aclPoints[1].z = It->p2[2];
+        //        facets[i]._aclPoints[2].x = It->p3[0];
+        //        facets[i]._aclPoints[2].y = It->p3[1];
+        //        facets[i]._aclPoints[2].z = It->p3[2];
+        //        i++;
+        //    }
+        //    clearData();
+        //    Mesh::Feature *pcFeature = (Mesh::Feature*)pcDoc->addObject("Mesh::Feature",file.fileNamePure().c_str());
+        //  
+        //    std::auto_ptr<MeshCore::MeshKernel> apcKernel(new MeshCore::MeshKernel());
+        //   (*apcKernel) = facets; 
+        //    pcFeature->Mesh.setValue(*(apcKernel.get()));
 
-            //pcDoc->recompute();
+        //    //pcDoc->recompute();
 
-        }else{
-            clearData();
-            //Py_Error(PyExc_Exception,"No Mesh in file");
-            Base::Console().Warning("No Mesh in file: %s\n",Name);
-        }
+        //}else{
+        //    clearData();
+        //    //Py_Error(Base::BaseExceptionFreeCADError,"No Mesh in file");
+        //    Base::Console().Warning("No Mesh in file: %s\n",EncodedName.c_str());
+        //}
      }
     else
     {
-      Py_Error(PyExc_Exception,"unknown file ending");
+      Py_Error(Base::BaseExceptionFreeCADError,"unknown file ending");
     }
 
   } PY_CATCH;
 
-	Py_Return;    
+  Py_Return;    
 }
 
 
@@ -231,7 +240,7 @@ struct PyMethodDef JtReader_methods[] = {
     {"open"       ,open ,       Py_NEWARGS, "open a jt file in a new Document"},				
     {"insert"     ,insert,      Py_NEWARGS, "isert a jt file in a existing document"},
     {"read"       ,read,        Py_NEWARGS, "Read a Mesh from a jt file and returns a Mesh object."},
-    {NULL, NULL}                   
+    {NULL, NULL, 0, NULL}                   
 };
 
 

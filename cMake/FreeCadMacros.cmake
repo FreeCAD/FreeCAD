@@ -222,24 +222,28 @@ MACRO(SET_BIN_DIR ProjectName OutputName)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
         set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}${ARGV2})
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}${ARGV2})
     else(${ARGC} GREATER 2)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/bin)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/bin)
         set_target_properties(${ProjectName} PROPERTIES RUNTIME_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/bin)
         set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY         ${CMAKE_BINARY_DIR}/lib)
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_RELEASE ${CMAKE_BINARY_DIR}/lib)
+        set_target_properties(${ProjectName} PROPERTIES LIBRARY_OUTPUT_DIRECTORY_DEBUG   ${CMAKE_BINARY_DIR}/lib)
     endif(${ARGC} GREATER 2)
 
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES DEBUG_OUTPUT_NAME ${OutputName}_d)
     else(WIN32)
-        # FreeCADBase, SMDS, Driver and MEFISTO2 libs don't depend on parts from CMAKE_INSTALL_LIBDIR
-        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
+        # FreeCADBase, SMDS, Driver, MEFISTO2 and area libs don't depend on parts from CMAKE_INSTALL_LIBDIR
+        if(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2|area)$")
             if(${ARGC} STREQUAL 4)
                 set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}${ARGV3})
             else(${ARGC} STREQUAL 4)
                 set_target_properties(${ProjectName} PROPERTIES INSTALL_RPATH ${CMAKE_INSTALL_LIBDIR})
-            endif(${ARGC} STREQUAL 4)
-        endif(NOT ${ProjectName} MATCHES "^(FreeCADBase|SMDS|Driver|MEFISTO2)$")
+            endif()
+        endif()
     endif(WIN32)
 ENDMACRO(SET_BIN_DIR)
 
@@ -251,63 +255,8 @@ MACRO(SET_PYTHON_PREFIX_SUFFIX ProjectName)
     
     if(WIN32)
         set_target_properties(${ProjectName} PROPERTIES SUFFIX ".pyd")
+    # 0000661: cmake build on Mac OS: dealing with dylib versus so
+    elseif(APPLE)
+        set_target_properties(${ProjectName} PROPERTIES SUFFIX ".so")
     endif(WIN32)
 ENDMACRO(SET_PYTHON_PREFIX_SUFFIX)
-
-MACRO(CHECK_MINIMUM_OCC_VERSION_HEX MinVersionHex)
-    message(STATUS "Check for OCC version >= ${MinVersionHex}")
-    set(CMAKE_REQUIRED_INCLUDES ${OCC_INCLUDE_DIR})
-    unset(OCC_MIN_VERSION CACHE)
-    CHECK_CXX_SOURCE_RUNS("
-        #include <Standard_Version.hxx>
-        int main ()
-        {
-            return OCC_VERSION_HEX >= ${MinVersionHex} ? 0 : -1;
-        }
-        "
-        OCC_MIN_VERSION)
-ENDMACRO(CHECK_MINIMUM_OCC_VERSION_HEX)
-
-MACRO(GET_OCC_VERSION_HEX)
-    # clear them to run the tests for each configure step
-    unset(OCC_MAJOR CACHE)
-    unset(OCC_MAJOR_COMPILED CACHE)
-    unset(OCC_MAJOR_EXITCODE CACHE)
-    unset(OCC_MINOR CACHE)
-    unset(OCC_MINOR_COMPILED CACHE)
-    unset(OCC_MINOR_EXITCODE CACHE)
-    unset(OCC_MICRO CACHE)
-    unset(OCC_MICRO_COMPILED CACHE)
-    unset(OCC_MICRO_EXITCODE CACHE)
-
-    set(CMAKE_REQUIRED_INCLUDES ${OCC_INCLUDE_DIR})
-    CHECK_CXX_SOURCE_RUNS("
-        #include <Standard_Version.hxx>
-        int main ()
-        {
-            return OCC_VERSION_MAJOR;
-        }
-        "
-        OCC_MAJOR)
-    CHECK_CXX_SOURCE_RUNS("
-        #include <Standard_Version.hxx>
-        int main ()
-        {
-            return OCC_VERSION_MINOR;
-        }
-        "
-        OCC_MINOR)
-    CHECK_CXX_SOURCE_RUNS("
-        #include <Standard_Version.hxx>
-        int main ()
-        {
-            return OCC_VERSION_MAINTENANCE;
-        }
-        "
-        OCC_MICRO)
-
-    unset(OCC_VERSION_HEX CACHE)
-    if (OCC_MAJOR_COMPILED AND OCC_MINOR_COMPILED AND OCC_MICRO_COMPILED)
-        set (OCC_VERSION_HEX "0x0${OCC_MAJOR_EXITCODE}0${OCC_MINOR_EXITCODE}0${OCC_MICRO_EXITCODE}")
-    endif()
-ENDMACRO(GET_OCC_VERSION_HEX)

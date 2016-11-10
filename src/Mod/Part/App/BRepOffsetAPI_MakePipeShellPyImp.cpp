@@ -37,6 +37,7 @@
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.cpp"
 #include "Tools.h"
+#include "OCCError.h"
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
@@ -48,12 +49,12 @@ PyObject *BRepOffsetAPI_MakePipeShellPy::PyMake(struct _typeobject *, PyObject *
     PyObject* obj;
     if (!PyArg_ParseTuple(args, "O!",&(TopoShapePy::Type),&obj))
         return 0;
-    const TopoDS_Shape& wire = static_cast<TopoShapePy*>(obj)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& wire = static_cast<TopoShapePy*>(obj)->getTopoShapePtr()->getShape();
     if (!wire.IsNull() && wire.ShapeType() == TopAbs_WIRE) {
         return new BRepOffsetAPI_MakePipeShellPy(new BRepOffsetAPI_MakePipeShell(TopoDS::Wire(wire)));
     }
 
-    PyErr_SetString(PyExc_Exception, "A valid wire is needed as argument");
+    PyErr_SetString(PartExceptionOCCError, "A valid wire is needed as argument");
     return 0;
 }
 
@@ -105,7 +106,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setSpineSupport(PyObject *args)
     PyObject *shape;
     if (!PyArg_ParseTuple(args, "O!",&Part::TopoShapePy::Type,&shape))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     Standard_Boolean ok = this->getBRepOffsetAPI_MakePipeShellPtr()->SetMode(s);
     return Py::new_reference_to(Py::Boolean(ok ? true : false));
 }
@@ -118,7 +119,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
                                         ,&PyBool_Type,&curv
                                         ,&PyInt_Type,&keep))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->getShape();
     if (s.IsNull() || s.ShapeType() != TopAbs_WIRE) {
         PyErr_SetString(PyExc_TypeError, "spine is not a wire");
         return 0;
@@ -147,7 +148,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setAuxiliarySpine(PyObject *args)
                                         ,&PyBool_Type,&curv
                                         ,&PyBool_Type,&keep))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(spine)->getTopoShapePtr()->getShape();
     if (s.IsNull() || s.ShapeType() != TopAbs_WIRE) {
         PyErr_SetString(PyExc_TypeError, "spine is not a wire");
         return 0;
@@ -168,7 +169,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::add(PyObject *args)
                                          ,&PyBool_Type,&curv
                                          ,&PyBool_Type,&keep))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
     this->getBRepOffsetAPI_MakePipeShellPtr()->Add(s,
         PyObject_IsTrue(curv) ? Standard_True : Standard_False,
         PyObject_IsTrue(keep) ? Standard_True : Standard_False);
@@ -180,7 +181,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::remove(PyObject *args)
     PyObject *prof;
     if (!PyArg_ParseTuple(args, "O!",&Part::TopoShapePy::Type,&prof))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(prof)->getTopoShapePtr()->getShape();
     this->getBRepOffsetAPI_MakePipeShellPtr()->Delete(s);
     Py_Return;
 }
@@ -246,7 +247,7 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::generated(PyObject *args)
     PyObject *shape;
     if (!PyArg_ParseTuple(args, "O!",&Part::TopoShapePy::Type,&shape))
         return 0;
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     const TopTools_ListOfShape& list = this->getBRepOffsetAPI_MakePipeShellPtr()->Generated(s);
 
     Py::List shapes;
@@ -276,12 +277,12 @@ PyObject* BRepOffsetAPI_MakePipeShellPy::setTransitionMode(PyObject *args)
     Py_Return;
 }
 
-PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* attr) const
+PyObject *BRepOffsetAPI_MakePipeShellPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* attr, PyObject *obj)
+int BRepOffsetAPI_MakePipeShellPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

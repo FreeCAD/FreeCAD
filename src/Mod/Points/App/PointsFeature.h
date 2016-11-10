@@ -25,6 +25,7 @@
 #define POINTS_FEATURE_H
 
 #include <App/GeoFeature.h>
+#include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyGeo.h>
@@ -61,11 +62,12 @@ public:
     //@{
     void Restore(Base::XMLReader &reader);
     void RestoreDocFile(Base::Reader &reader);
+    short mustExecute() const;
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
-        return "PointsGui::ViewProviderPoints";
+        return "PointsGui::ViewProviderScattered";
     }
 protected:
     void onChanged(const App::Property* prop);
@@ -75,28 +77,7 @@ public:
     PropertyPointKernel Points; /**< The point kernel property. */
 };
 
-/**
- * The Export class writes a point cloud to a file.
- * @author Werner Mayer
- */
-class Export : public Feature
-{
-    PROPERTY_HEADER(Points::Export);
-
-public:
-    Export();
-
-    App::PropertyLinkList   Sources;
-    App::PropertyString FileName;
-    App::PropertyString Format;
-
-    /** @name methods override Feature */
-    //@{
-    /// recalculate the Feature
-    virtual App::DocumentObjectExecReturn *execute(void);
-    //@}
-};
-
+typedef App::FeatureCustomT<Feature> FeatureCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Points

@@ -65,7 +65,7 @@ double Routines::TrapezoidIntergration(const std::vector<double> &WithRespectTo,
 
 std::vector<double> Routines::NewtonStep(std::vector<double> &F,std::vector<std::vector<double> > &DF)
 {
-    // löst folgendes Gleichungssystem: DF*x = F
+    // lÃ¶st folgendes Gleichungssystem: DF*x = F
     int siz = (int) F.size();
     std::vector<double> x_new(siz);
     std::vector<int> piv(siz);            // pivotelement
@@ -73,7 +73,7 @@ std::vector<double> Routines::NewtonStep(std::vector<double> &F,std::vector<std:
     ublas::matrix<double> A(siz, siz);
     ublas::matrix<double> b(1, siz);
 
-    // füllt blas-matrizen
+    // fÃ¼llt blas-matrizen
     for (unsigned int i=0; i<siz; ++i)
     {
         b(0,i) = -F[i];
@@ -89,8 +89,8 @@ std::vector<double> Routines::NewtonStep(std::vector<double> &F,std::vector<std:
     cout << A(2,0) << "," << A(2,1) << "," << A(2,2) << endl;*/
 
 
-    atlas::lu_factor(A,piv);              // führt LU-Zerlegung durch
-    atlas::getrs(A,piv,b);                // löst Gl.system A*x = b (b wird mit der Lösung überschrieben)
+    atlas::lu_factor(A,piv);              // fÃ¼hrt LU-Zerlegung durch
+    atlas::getrs(A,piv,b);                // lÃ¶st Gl.system A*x = b (b wird mit der LÃ¶sung Ã¼berschrieben)
 
     for (unsigned int i=0; i<siz; ++i)
     {

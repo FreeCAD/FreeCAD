@@ -37,6 +37,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
@@ -133,7 +134,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
             QString label = QString::fromUtf8(obj.Label.getValue());
-            QString name = QString::fromAscii(obj.getNameInDocument());
+            QString name = QString::fromLatin1(obj.getNameInDocument());
             
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
@@ -216,7 +217,7 @@ void DlgBooleanOperation::findShapes()
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
@@ -303,6 +304,8 @@ bool DlgBooleanOperation::indexOfCurrentItem(QTreeWidgetItem* item, int& top_ind
 
 void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem * previous)
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
 //    if (current && current->flags() & Qt::ItemIsUserCheckable)
 //        current->setCheckState(0, Qt::Checked);
     //if (previous && previous->flags() & Qt::ItemIsUserCheckable)
@@ -454,6 +457,29 @@ void DlgBooleanOperation::accept()
             "Gui.activeDocument().hide(\"%s\")",shapeOne.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.activeDocument().hide(\"%s\")",shapeTwo.c_str());
+
+        // add/remove fromgroup if needed
+        App::DocumentObjectGroup* targetGroup = 0;
+
+        App::DocumentObjectGroup* group1 = obj1->getGroup();
+        if (group1) {
+            targetGroup = group1;
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group1->getNameInDocument(), obj1->getNameInDocument());
+        }
+
+        App::DocumentObjectGroup* group2 = obj2->getGroup();
+        if (group2) {
+            targetGroup = group2;
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
+                group2->getNameInDocument(), obj2->getNameInDocument());
+        }
+
+        if (targetGroup) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.addObject(App.activeDocument().%s)",
+                targetGroup->getNameInDocument(), objName.c_str());
+        }
+
         Gui::Command::copyVisual(objName.c_str(), "ShapeColor", shapeOne.c_str());
         Gui::Command::copyVisual(objName.c_str(), "DisplayMode", shapeOne.c_str());
         activeDoc->commitTransaction();

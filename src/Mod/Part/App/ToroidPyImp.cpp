@@ -36,6 +36,7 @@
 #include "CirclePy.h"
 #include "ToroidPy.h"
 #include "ToroidPy.cpp"
+#include "OCCError.h"
 
 using namespace Part;
 
@@ -79,7 +80,7 @@ PyObject* ToroidPy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -98,7 +99,7 @@ PyObject* ToroidPy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }

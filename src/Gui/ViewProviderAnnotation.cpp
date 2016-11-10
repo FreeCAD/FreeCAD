@@ -49,7 +49,9 @@
 #include "ViewProviderAnnotation.h"
 #include <App/Annotation.h>
 #include <App/PropertyGeo.h>
+#include <App/Application.h>
 #include <App/PropertyStandard.h>
+#include <Base/Parameter.h>
 #include <Gui/BitmapFactory.h>
 #include "SoFCSelection.h"
 #include "SoTextLabel.h"
@@ -66,7 +68,11 @@ PROPERTY_SOURCE(Gui::ViewProviderAnnotation, Gui::ViewProviderDocumentObject)
 
 ViewProviderAnnotation::ViewProviderAnnotation() 
 {
-    ADD_PROPERTY(TextColor,(1.0f,1.0f,1.0f));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    unsigned long col = hGrp->GetUnsigned("AnnotationTextColor",4294967295UL); // light grey
+    float r,g,b;
+    r = ((col >> 24) & 0xff) / 255.0; g = ((col >> 16) & 0xff) / 255.0; b = ((col >> 8) & 0xff) / 255.0;
+    ADD_PROPERTY(TextColor,(r,g,b));
     ADD_PROPERTY(Justification,((long)0));
     Justification.setEnums(JustificationEnums);
     ADD_PROPERTY(FontSize,(12));
@@ -218,8 +224,18 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
         pLabel->string.setNum((int)lines.size());
         pLabel3d->string.setNum((int)lines.size());
         for (std::vector<std::string>::const_iterator it = lines.begin(); it != lines.end(); ++it) {
-            pLabel->string.set1Value(index, SbString(it->c_str()));
-            pLabel3d->string.set1Value(index, SbString(it->c_str()));
+            const char* cs = it->c_str();
+            if (it->empty())
+                cs = " "; // empty lines make coin crash, we use a space instead
+#if (COIN_MAJOR_VERSION <= 3)
+            QByteArray latin1str;
+            latin1str = (QString::fromUtf8(cs)).toLatin1();
+            pLabel->string.set1Value(index, SbString(latin1str.constData()));
+            pLabel3d->string.set1Value(index, SbString(latin1str.constData()));
+#else
+            pLabel->string.set1Value(index, SbString(cs));
+            pLabel3d->string.set1Value(index, SbString(cs));
+#endif
             index++;
         }
     }
@@ -247,7 +263,7 @@ ViewProviderAnnotationLabel::ViewProviderAnnotationLabel()
     Justification.setEnums(JustificationEnums);
     QFont fn;
     ADD_PROPERTY(FontSize,(fn.pointSize()));
-    ADD_PROPERTY(FontName,((const char*)fn.family().toAscii()));
+    ADD_PROPERTY(FontName,((const char*)fn.family().toLatin1()));
     ADD_PROPERTY(Frame,(true));
 
     pColor = new SoBaseColor();
@@ -372,13 +388,13 @@ void ViewProviderAnnotationLabel::setupContextMenu(QMenu* menu, QObject* receive
     menu->addAction(QObject::tr("Move annotation"), receiver, member);
 }
 
-void ViewProviderAnnotationLabel::dragStartCallback(void *data, SoDragger *)
+void ViewProviderAnnotationLabel::dragStartCallback(void *, SoDragger *)
 {
     // This is called when a manipulator is about to manipulating
     Gui::Application::Instance->activeDocument()->openCommand("Transform");
 }
 
-void ViewProviderAnnotationLabel::dragFinishCallback(void *data, SoDragger *)
+void ViewProviderAnnotationLabel::dragFinishCallback(void *, SoDragger *)
 {
     // This is called when a manipulator has done manipulating
     Gui::Application::Instance->activeDocument()->commitCommand();
@@ -396,9 +412,10 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag
 
 bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
-    sa.setSearchingAll(FALSE);
+    sa.setSearchingAll(false);
     sa.setNode(this->pTextTranslation);
     sa.apply(pcRoot);
     SoPath * path = sa.getPath();
@@ -416,6 +433,7 @@ bool ViewProviderAnnotationLabel::setEdit(int ModNum)
 
 void ViewProviderAnnotationLabel::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     SoSearchAction sa;
     sa.setType(TranslateManip::getClassTypeId());
     sa.setInterest(SoSearchAction::FIRST);
@@ -439,7 +457,7 @@ void ViewProviderAnnotationLabel::drawImage(const std::vector<std::string>& s)
         return;
     }
 
-    QFont font(QString::fromAscii(this->FontName.getValue()), (int)this->FontSize.getValue());
+    QFont font(QString::fromLatin1(this->FontName.getValue()), (int)this->FontSize.getValue());
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * s.size();

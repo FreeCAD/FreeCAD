@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -42,7 +42,7 @@ CmdCompleteConstraintAxle::CmdCompleteConstraintAxle()
     sGroup          = QT_TR_NOOP("Complete");
     sMenuText       = QT_TR_NOOP("Constraint Axle...");
     sToolTipText    = QT_TR_NOOP("set a axle constraint between two objects");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Complete_ConstraintAxle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/document-new";
 }
@@ -50,9 +50,9 @@ CmdCompleteConstraintAxle::CmdCompleteConstraintAxle()
 
 void CmdCompleteConstraintAxle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // load the file with the module
     //Command::doCommand(Command::Gui, "import Complete, CompleteGui");
-      
 }
 
 

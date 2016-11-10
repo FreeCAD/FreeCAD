@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -36,7 +36,7 @@ class DlgPointsReadImp : public QDialog, public Ui_DlgPointsRead
   Q_OBJECT
 
 public:
-  DlgPointsReadImp(const char *FileName, QWidget* parent = 0, Qt::WFlags fl = 0 );
+  DlgPointsReadImp(const char *FileName, QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~DlgPointsReadImp();
 
 private:

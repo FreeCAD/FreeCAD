@@ -280,7 +280,8 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDegeneratedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  MeshEvalDegeneratedFacets (const MeshKernel &rclM, float fEps)
+      : MeshEvaluation(rclM), fEpsilon(fEps) {}
   /** 
    * Destruction.
    */
@@ -297,6 +298,9 @@ public:
    * Returns the indices of all corrupt facets.
    */
   std::vector<unsigned long> GetIndices() const;
+
+private:
+  float fEpsilon;
 };
 
 /**
@@ -310,7 +314,8 @@ public:
   /**
    * Construction.
    */
-  MeshFixDegeneratedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
+  MeshFixDegeneratedFacets (MeshKernel &rclM, float fEps)
+      : MeshValidation(rclM), fEpsilon(fEps) { }
   /** 
    * Destruction.
    */
@@ -325,10 +330,13 @@ public:
    */
   unsigned long RemoveEdgeTooSmall (float fMinEdgeLength = MeshDefinitions::_fMinPointDistance,
                                     float fMinEdgeAngle  = MeshDefinitions::_fMinEdgeAngle);
+private:
+  float fEpsilon;
 };
 
 /**
- * The MeshEvalDeformedFacets class searches for deformed facets. A facet is regarded as deformed if an angle is < 30° or > 120°.
+ * The MeshEvalDeformedFacets class searches for deformed facets. A facet is regarded as deformed
+ * if an angle is < 30 deg or > 120 deg.
  * @see MeshFixDegeneratedFacets
  * @author Werner Mayer
  */
@@ -338,7 +346,8 @@ public:
   /**
    * Construction.
    */
-  MeshEvalDeformedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+  MeshEvalDeformedFacets (const MeshKernel &rclM, float fMinAngle, float fMaxAngle)
+      : MeshEvaluation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle) { }
   /** 
    * Destruction.
    */
@@ -351,6 +360,10 @@ public:
    * Returns the indices of deformed facets.
    */
   std::vector<unsigned long> GetIndices() const;
+
+private:
+  float fMinAngle;
+  float fMaxAngle;
 };
 
 /**
@@ -366,7 +379,9 @@ public:
   /**
    * Construction.
    */
-  MeshFixDeformedFacets (MeshKernel &rclM, float fAngle) : MeshValidation( rclM ), fMaxAngle(fAngle) { }
+  MeshFixDeformedFacets (MeshKernel &rclM, float fMinAngle, float fMaxAngle, float fSwapAngle, float fEps)
+      : MeshValidation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle),
+        fMaxSwapAngle(fSwapAngle), fEpsilon(fEps) { }
   /** 
    * Destruction.
    */
@@ -377,7 +392,10 @@ public:
   bool Fixup ();
 
 private:
+  float fMinAngle;
   float fMaxAngle;
+  float fMaxSwapAngle;
+  float fEpsilon;
 };
 
 /**

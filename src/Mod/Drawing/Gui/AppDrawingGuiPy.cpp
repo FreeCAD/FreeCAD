@@ -28,6 +28,9 @@
 # include <sstream>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include "DrawingView.h"
 #include <Mod/Drawing/App/FeaturePage.h>
 #include <Mod/Drawing/App/FeatureViewPart.h>
@@ -43,21 +46,48 @@
 #include <Gui/MainWindow.h>
 #include <Gui/BitmapFactory.h>
 
-using namespace DrawingGui;
-
-
-/* module functions */
-static PyObject * 
-open(PyObject *self, PyObject *args) 
+namespace DrawingGui {
+class Module : public Py::ExtensionModule<Module>
 {
-    const char* Name;
-    if (!PyArg_ParseTuple(args, "s",&Name))
-        return NULL; 
-    
-    PY_TRY {
-        Base::FileInfo file(Name);
+public:
+    Module() : Py::ExtensionModule<Module>("DrawingGui")
+    {
+        add_varargs_method("open",&Module::open
+        );
+        add_varargs_method("insert",&Module::importer
+        );
+        add_varargs_method("export",&Module::exporter
+        );
+        initialize("This module is the DrawingGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+    virtual Py::Object invoke_method_varargs(void *method_def, const Py::Tuple &args)
+    {
+        try {
+            return Py::ExtensionModule<Module>::invoke_method_varargs(method_def, args);
+        }
+        catch (const Base::Exception &e) {
+            throw Py::RuntimeError(e.what());
+        }
+        catch (const std::exception &e) {
+            throw Py::RuntimeError(e.what());
+        }
+    }
+    Py::Object open(const Py::Tuple& args)
+    {
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "et","utf-8",&Name))
+            throw Py::Exception();
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        Base::FileInfo file(EncodedName.c_str());
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
-            QString fileName = QString::fromUtf8(Name);
+            QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
@@ -68,27 +98,24 @@ open(PyObject *self, PyObject *args)
             Gui::getMainWindow()->addWindow(view);
         }
         else {
-            PyErr_SetString(PyExc_Exception, "unknown filetype");
-            return NULL;
+            throw Py::Exception(Base::BaseExceptionFreeCADError, "unknown filetype");
         }
-    } PY_CATCH;
 
-    Py_Return; 
-}
+        return Py::None();
+    }
+    Py::Object importer(const Py::Tuple& args)
+    {
+        char* Name;
+        const char* dummy;
+        if (!PyArg_ParseTuple(args.ptr(), "et|s","utf-8",&Name,&dummy))
+            throw Py::Exception();
 
-/* module functions */
-static PyObject *
-importer(PyObject *self, PyObject *args)
-{
-    const char* Name;
-    const char* dummy;
-    if (!PyArg_ParseTuple(args, "s|s",&Name,&dummy))
-        return NULL; 
-    
-    PY_TRY {
-        Base::FileInfo file(Name);
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        Base::FileInfo file(EncodedName.c_str());
         if (file.hasExtension("svg") || file.hasExtension("svgz")) {
-            QString fileName = QString::fromUtf8(Name);
+            QString fileName = QString::fromUtf8(EncodedName.c_str());
             // Displaying the image in a view
             DrawingView* view = new DrawingView(0, Gui::getMainWindow());
             view->load(fileName);
@@ -98,36 +125,33 @@ importer(PyObject *self, PyObject *args)
             view->resize( 400, 300 );
             Gui::getMainWindow()->addWindow(view);
         } else {
-            PyErr_SetString(PyExc_Exception, "unknown filetype");
-            return NULL;
+            throw Py::Exception(Base::BaseExceptionFreeCADError, "unknown filetype");
         }
-    } PY_CATCH;
 
-    Py_Return; 
-}
+        return Py::None();
+    }
+    Py::Object exporter(const Py::Tuple& args)
+    {
+        PyObject* object;
+        char* Name;
+        if (!PyArg_ParseTuple(args.ptr(), "Oet",&object,"utf-8",&Name))
+            throw Py::Exception();
 
-static PyObject * 
-exporter(PyObject *self, PyObject *args)
-{
-    PyObject* object;
-    const char* filename;
-    if (!PyArg_ParseTuple(args, "Os",&object,&filename))
-        return NULL;
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
 
-    PY_TRY {
         Py::Sequence list(object);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                 if (obj->getTypeId().isDerivedFrom(Drawing::FeaturePage::getClassTypeId())) {
-                    Base::FileInfo fi_out(filename);
+                    Base::FileInfo fi_out(EncodedName.c_str());
                     Base::ofstream str_out(fi_out, std::ios::out | std::ios::binary);
                     if (!str_out) {
                         std::stringstream str;
-                        str << "Cannot open file '" << filename << "' for writing";
-                        PyErr_SetString(PyExc_IOError, str.str().c_str());
-                        return NULL;
+                        str << "Cannot open file '" << EncodedName << "' for writing";
+                        throw Py::Exception(PyExc_IOError, str.str().c_str());
                     }
                     if (fi_out.hasExtension("svg")) {
                         std::string fn = static_cast<Drawing::FeaturePage*>(obj)->PageResult.getValue();
@@ -136,8 +160,7 @@ exporter(PyObject *self, PyObject *args)
                         if (!str_in) {
                             std::stringstream str;
                             str << "Cannot open file '" << fn << "' for reading";
-                            PyErr_SetString(PyExc_IOError, str.str().c_str());
-                            return NULL;
+                            throw Py::Exception(PyExc_IOError, str.str().c_str());
                         }
 
                         str_in >> str_out.rdbuf();
@@ -153,14 +176,12 @@ exporter(PyObject *self, PyObject *args)
                                 std::string viewName = view->Label.getValue();
                                 App::DocumentObject* link = view->Source.getValue();
                                 if (!link) {
-                                    PyErr_SetString(PyExc_Exception, "No object linked");
-                                    return 0;
+                                    throw Py::Exception(Base::BaseExceptionFreeCADError, "No object linked");
                                 }
                                 if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                                    PyErr_SetString(PyExc_TypeError, "Linked object is not a Part object");
-                                    return 0;
+                                    throw Py::TypeError("Linked object is not a Part object");
                                 }
-                                TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape()._Shape;
+                                TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
                                 if (!shape.IsNull()) {
                                     Base::Vector3d dir = view->Direction.getValue();
                                     bool hidden = view->ShowHiddenLines.getValue();
@@ -181,25 +202,22 @@ exporter(PyObject *self, PyObject *args)
                         break;
                     }
                     else {
-                        PyErr_SetString(PyExc_TypeError, "Export of page object as this file format is not supported by Drawing module");
-                        return 0;
+                        throw Py::TypeError("Export of page object as this file format is not supported by Drawing module");
                     }
                 }
                 else {
-                    PyErr_SetString(PyExc_TypeError, "Export of this object type is not supported by Drawing module");
-                    return 0;
+                    throw Py::TypeError("Export of this object type is not supported by Drawing module");
                 }
             }
         }
-    } PY_CATCH;
 
-    Py_Return;
+        return Py::None();
+    }
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
 }
 
-/* registration table  */
-struct PyMethodDef DrawingGui_Import_methods[] = {
-    {"open"     ,open ,     METH_VARARGS}, /* method name, C func ptr, always-tuple */
-    {"insert"   ,importer,  METH_VARARGS},
-    {"export"   ,exporter,  METH_VARARGS},
-    {NULL, NULL}                    /* end of table marker */
-};
+} // namespace DrawingGui

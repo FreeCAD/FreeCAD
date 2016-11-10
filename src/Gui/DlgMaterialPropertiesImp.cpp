@@ -41,9 +41,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'.
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WFlags fl)
+DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl), material(mat)
 {
     this->setupUi(this);
@@ -52,10 +52,12 @@ DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidg
         this->diffuseColor->hide();
     }
 
-    ambientColor->setModal(false);
-    diffuseColor->setModal(false);
-    emissiveColor->setModal(false);
-    specularColor->setModal(false);
+//#if !defined(Q_WS_MAC)
+    ambientColor->setAutoChangeColor(true);
+    diffuseColor->setAutoChangeColor(true);
+    emissiveColor->setAutoChangeColor(true);
+    specularColor->setAutoChangeColor(true);
+//#endif
 }
 
 /**
@@ -76,7 +78,7 @@ void DlgMaterialPropertiesImp::on_ambientColor_changed()
     float b = (float)col.blue()/255.0f;
     App::Color ambient(r,g,b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
@@ -98,7 +100,7 @@ void DlgMaterialPropertiesImp::on_diffuseColor_changed()
     float b = (float)col.blue()/255.0f;
     App::Color diffuse(r,g,b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
@@ -120,7 +122,7 @@ void DlgMaterialPropertiesImp::on_emissiveColor_changed()
     float b = (float)col.blue()/255.0f;
     App::Color emissive(r,g,b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
@@ -142,7 +144,7 @@ void DlgMaterialPropertiesImp::on_specularColor_changed()
     float b = (float)col.blue()/255.0f;
     App::Color specular(r,g,b);
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
@@ -159,7 +161,7 @@ void DlgMaterialPropertiesImp::on_specularColor_changed()
 void DlgMaterialPropertiesImp::on_shininess_valueChanged(int sh)
 {
     float shininess = (float)sh/100.0f;
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;
@@ -177,7 +179,7 @@ void DlgMaterialPropertiesImp::setViewProviders(const std::vector<Gui::ViewProvi
 {
     Objects = Obj;
 
-    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();it++) {
+    for (std::vector<ViewProvider*>::iterator it= Objects.begin();it!=Objects.end();++it) {
         App::Property* prop = (*it)->getPropertyByName(material.c_str());
         if (prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId())) {
             App::PropertyMaterial* ShapeMaterial = (App::PropertyMaterial*)prop;

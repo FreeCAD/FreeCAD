@@ -49,13 +49,21 @@ protected:
 private Q_SLOTS:
     void on_findButton_clicked();
     void on_fixButton_clicked();
+    void on_highlightButton_clicked();
+    void on_findConstraint_clicked();
+    void on_fixConstraint_clicked();
+    void on_findReversed_clicked();
+    void on_swapReversed_clicked();
+    void on_orientLockEnable_clicked();
+    void on_orientLockDisable_clicked();
+    void on_delConstrExtr_clicked();
 
 private:
     void showPoints(const std::vector<Base::Vector3d>&);
     void hidePoints();
 
 private:
-    std::auto_ptr<Ui_TaskSketcherValidation> ui;
+    std::unique_ptr<Ui_TaskSketcherValidation> ui;
     Sketcher::SketchObject* sketch;
     SoGroup* coincidenceRoot;
 
@@ -65,6 +73,7 @@ private:
     struct ConstraintIds;
     struct Constraint_Less;
     std::vector<ConstraintIds> vertexConstraints;
+
 };
 
 class TaskSketcherValidation : public Gui::TaskView::TaskDialog

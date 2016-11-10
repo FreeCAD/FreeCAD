@@ -45,7 +45,7 @@ ViewProviderHole::~ViewProviderHole()
 std::vector<App::DocumentObject*> ViewProviderHole::claimChildren(void)const
 {
     std::vector<App::DocumentObject*> temp;
-    temp.push_back(static_cast<PartDesign::Pad*>(getObject())->Sketch.getValue());
+    temp.push_back(static_cast<PartDesign::Pad*>(getObject())->Profile.getValue());
 
     return temp;
 }

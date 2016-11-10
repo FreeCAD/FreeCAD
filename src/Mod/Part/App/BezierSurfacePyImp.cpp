@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Geom_BezierCurve.hxx>
 # include <Geom_BezierSurface.hxx>
-# include <Handle_Geom_BezierCurve.hxx>
+# include <Geom_BezierCurve.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array2OfReal.hxx>
 # include <TColgp_Array1OfPnt.hxx>
@@ -35,6 +35,7 @@
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "BezierCurvePy.h"
 #include "BezierSurfacePy.h"
@@ -85,14 +86,7 @@ PyObject* BezierSurfacePy::isURational(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsURational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVRational(PyObject *args)
@@ -103,14 +97,7 @@ PyObject* BezierSurfacePy::isVRational(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVRational();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
@@ -121,14 +108,7 @@ PyObject* BezierSurfacePy::isUPeriodic(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
@@ -139,14 +119,7 @@ PyObject* BezierSurfacePy::isVPeriodic(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isUClosed(PyObject *args)
@@ -157,14 +130,7 @@ PyObject* BezierSurfacePy::isUClosed(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsUClosed();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::isVClosed(PyObject *args)
@@ -175,14 +141,7 @@ PyObject* BezierSurfacePy::isVClosed(PyObject *args)
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
     Standard_Boolean val = surf->IsVPeriodic();
-    if (val) {
-        Py_INCREF(Py_True);
-        return Py_True;
-    }
-    else {
-        Py_INCREF(Py_False);
-        return Py_False;
-    }
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* BezierSurfacePy::increase(PyObject *args)
@@ -198,7 +157,7 @@ PyObject* BezierSurfacePy::increase(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -239,7 +198,7 @@ PyObject* BezierSurfacePy::insertPoleColAfter(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -280,7 +239,7 @@ PyObject* BezierSurfacePy::insertPoleRowAfter(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -321,7 +280,7 @@ PyObject* BezierSurfacePy::insertPoleColBefore(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -362,7 +321,7 @@ PyObject* BezierSurfacePy::insertPoleRowBefore(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -380,7 +339,7 @@ PyObject* BezierSurfacePy::removePoleCol(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -398,7 +357,7 @@ PyObject* BezierSurfacePy::removePoleRow(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -416,7 +375,7 @@ PyObject* BezierSurfacePy::segment(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -440,7 +399,7 @@ PyObject* BezierSurfacePy::setPole(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -481,7 +440,7 @@ PyObject* BezierSurfacePy::setPoleCol(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -522,7 +481,7 @@ PyObject* BezierSurfacePy::setPoleRow(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -543,7 +502,7 @@ PyObject* BezierSurfacePy::getPole(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -571,7 +530,7 @@ PyObject* BezierSurfacePy::getPoles(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -590,7 +549,7 @@ PyObject* BezierSurfacePy::setWeight(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -616,7 +575,7 @@ PyObject* BezierSurfacePy::setWeightCol(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -642,7 +601,7 @@ PyObject* BezierSurfacePy::setWeightRow(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -663,7 +622,7 @@ PyObject* BezierSurfacePy::getWeight(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -689,7 +648,7 @@ PyObject* BezierSurfacePy::getWeights(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -708,7 +667,7 @@ PyObject* BezierSurfacePy::getResolution(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -727,7 +686,7 @@ PyObject* BezierSurfacePy::exchangeUV(PyObject *args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -746,7 +705,7 @@ PyObject* BezierSurfacePy::uIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -765,7 +724,7 @@ PyObject* BezierSurfacePy::vIso(PyObject * args)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return 0;
     }
 }
@@ -781,7 +740,7 @@ Py::Int BezierSurfacePy::getVDegree(void) const
 {
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->UDegree()); 
+    return Py::Int(surf->VDegree()); 
 }
 
 Py::Int BezierSurfacePy::getMaxDegree(void) const

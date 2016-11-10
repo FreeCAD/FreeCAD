@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,11 +32,15 @@
 # define ReenGuiExport __declspec(dllexport)
 # define PartExport __declspec(dllimport)
 # define MeshExport    __declspec(dllimport)
+# define PointsExport __declspec(dllimport)
+# define AppExport __declspec(dllimport)
 #else // for Linux
 # define ReenExport
 # define ReenGuiExport
 # define PartExport
 # define MeshExport
+# define PointsExport
+# define AppExport
 #endif
 
 #ifdef _MSC_VER

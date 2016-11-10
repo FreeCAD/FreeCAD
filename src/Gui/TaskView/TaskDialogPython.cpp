@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <sstream>
+# include <QFile>
 # include <QPointer>
 #endif
 
@@ -97,7 +98,7 @@ Py::Object ControlPy::showDialog(const Py::Tuple& args)
     return Py::None();
 }
 
-Py::Object ControlPy::activeDialog(const Py::Tuple& args)
+Py::Object ControlPy::activeDialog(const Py::Tuple&)
 {
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     return Py::Boolean(dlg!=0);

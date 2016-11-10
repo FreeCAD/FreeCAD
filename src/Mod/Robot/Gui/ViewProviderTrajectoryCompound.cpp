@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,7 +44,7 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 //}
 
 
-bool ViewProviderTrajectoryCompound::setEdit(int ModNum)
+bool ViewProviderTrajectoryCompound::setEdit(int)
 {
     Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryCompound(dynamic_cast<Robot::TrajectoryCompound *>(getObject()));
     Gui::Control().showDialog(dlg);
@@ -52,7 +52,7 @@ bool ViewProviderTrajectoryCompound::setEdit(int ModNum)
 
 }
 
-void ViewProviderTrajectoryCompound::unsetEdit(int ModNum)
+void ViewProviderTrajectoryCompound::unsetEdit(int)
 {
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();

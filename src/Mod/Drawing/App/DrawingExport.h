@@ -25,6 +25,7 @@
 #define DRAWING_EXPORT_H
 
 #include <string>
+#include <TopoDS_Edge.hxx>
 
 class TopoDS_Shape;
 class BRepAdaptor_Curve;
@@ -32,7 +33,16 @@ class BRepAdaptor_Curve;
 namespace Drawing
 {
 
-class DrawingExport SVGOutput
+class DrawingExport DrawingOutput
+{
+public:
+    // If the curve is approximately a circle it will be returned,
+    // otherwise a null edge is returned.
+    TopoDS_Edge asCircle(const BRepAdaptor_Curve&) const;
+    TopoDS_Edge asBSpline(const BRepAdaptor_Curve&, int maxDegree) const;
+};
+
+class DrawingExport SVGOutput : public DrawingOutput
 {
 public:
     SVGOutput();
@@ -42,11 +52,12 @@ private:
     void printCircle(const BRepAdaptor_Curve&, std::ostream&);
     void printEllipse(const BRepAdaptor_Curve&, int id, std::ostream&);
     void printBSpline(const BRepAdaptor_Curve&, int id, std::ostream&);
+    void printBezier(const BRepAdaptor_Curve&, int id, std::ostream&);
     void printGeneric(const BRepAdaptor_Curve&, int id, std::ostream&);
 };
 
 /* dxf output section - Dan Falck 2011/09/25  */
-class DrawingExport DXFOutput
+class DrawingExport DXFOutput : public DrawingOutput
 {
 public:
     DXFOutput();

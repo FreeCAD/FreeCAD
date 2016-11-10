@@ -44,7 +44,7 @@ class GuiExport DemoMode : public QDialog
     Q_OBJECT
 
 public:
-    DemoMode(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DemoMode(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DemoMode();
 
     void accept();

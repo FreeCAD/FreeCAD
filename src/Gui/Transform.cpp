@@ -301,7 +301,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
 
 /* TRANSLATOR Gui::Dialog::Transform */
 
-Transform::Transform(QWidget* parent, Qt::WFlags fl)
+Transform::Transform(QWidget* parent, Qt::WindowFlags fl)
   : Gui::LocationDialog(parent, fl), strategy(0)
 {
     ui = new Ui_TransformComp(this);

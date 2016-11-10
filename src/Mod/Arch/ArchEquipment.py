@@ -2,8 +2,8 @@
 
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2014                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2014                                                    *
+#*   Yorik van Havre <yorik@uncreated.net>                                 *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -33,24 +33,39 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
     def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
 
 # presets
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
-def makeEquipment(baseobj=None,placement=None,name=translate("Arch","Equipment"),type="Part"):
+def makeEquipment(baseobj=None,placement=None,name="Equipment",type=None):
     "makeEquipment([baseobj,placement,name,type]): creates an equipment object from the given base object"
-    if type == "Part":
-        obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    if type:
+        if type == "Part":
+            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+        else:
+            obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+        _Equipment(obj)
+        if baseobj:
+            obj.Base = baseobj
     else:
-        obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
-    obj.Label = name
-    _Equipment(obj)
-    if baseobj:
-        obj.Base = baseobj
+        if baseobj:
+            if baseobj.isDerivedFrom("Mesh::Feature"):
+                obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
+            else:
+                obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            _Equipment(obj)
+            obj.Base = baseobj
+        else:
+            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+            _Equipment(obj)
+    obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
     if FreeCAD.GuiUp:
@@ -64,12 +79,12 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     projection of the given mesh object in the given direction (default = on the XY plane). If
     outeronly is True, only the outer contour is taken into consideration, discarding the inner
     holes. If largestonly is True, only the largest segment of the given mesh will be used."""
-    
+
     import Mesh, math, Part, DraftGeomUtils
     if not obj.isDerivedFrom("Mesh::Feature"):
         return
     mesh = obj.Mesh
-    
+
     # 1. Flattening the mesh
     proj = []
     for f in mesh.Facets:
@@ -83,16 +98,16 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
             nf.append(p)
         proj.append(nf)
     flatmesh = Mesh.Mesh(proj)
-    
+
     # 2. Removing wrong faces
     facets = []
     for f in flatmesh.Facets:
         if f.Normal.getAngle(direction) < math.pi:
             facets.append(f)
     cleanmesh = Mesh.Mesh(facets)
-    
+
     #Mesh.show(cleanmesh)
-    
+
     # 3. Getting the bigger mesh from the planar segments
     if largestonly:
         c = cleanmesh.getSeparateComponents()
@@ -110,9 +125,9 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
                 a = m.Area
         #Mesh.show(boundarymesh)
         cleanmesh = boundarymesh
-    
+
     # 4. Creating a Part and getting the contour
-    
+
     shape = None
     for f in cleanmesh.Facets:
         p = Part.makePolygon(f.Points+[f.Points[0]])
@@ -123,12 +138,12 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
                 shape = shape.fuse(p)
             else:
                 shape = p
-        except:
+        except Part.OCCError:
             pass
     shape = shape.removeSplitter()
 
     # 5. Extracting the largest wire
-    
+
     if outeronly:
         count = 0
         largest = None
@@ -139,26 +154,26 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
         if largest:
             try:
                 f = Part.Face(w)
-            except:
+            except Part.OCCError:
                 print "Unable to produce a face from the outer wire."
             else:
                 shape = f
-                
+
     return shape
 
-        
+
 class _CommandEquipment:
     "the Arch Equipment command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Equipment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Equipment","Equipment"),
                 'Accel': "E, Q",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Equipment","Creates an equipment object from a selected object (Part or Mesh)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
-    def Activated(self): 
+
+    def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if not s:
             FreeCAD.Console.PrintError(translate("Arch","You must select a base object first!"))
@@ -169,20 +184,23 @@ class _CommandEquipment:
             FreeCADGui.doCommand("Arch.makeEquipment(FreeCAD.ActiveDocument." + base + ")")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
+            # get diffuse color info from base object
+            if hasattr(s[0].ViewObject,"DiffuseColor"):
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.Objects[-1].ViewObject.DiffuseColor = FreeCAD.ActiveDocument." + base + ".ViewObject.DiffuseColor")
         return
-        
-        
+
+
 class _Command3Views:
     "the Arch 3Views command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_3Views',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_3Views","3 views from mesh"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_3Views","Creates 3 views (top, front, side) from a mesh-based object")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_3Views","3 views from mesh"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_3Views","Creates 3 views (top, front, side) from a mesh-based object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
-        
-    def Activated(self): 
+
+    def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if len(s) != 1:
             FreeCAD.Console.PrintError(translate("Arch","You must select exactly one base object"))
@@ -220,20 +238,25 @@ class _Equipment(ArchComponent.Component):
     "The Equipment object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("Part::PropertyPartShape","TopView","Arch",translate("Arch","an optional 2D shape representing a top view of this equipment"))
-        obj.addProperty("Part::PropertyPartShape","FrontView","Arch",translate("Arch","an optional 2D shape representing a front view of this equipment"))
-        obj.addProperty("Part::PropertyPartShape","SideView","Arch",translate("Arch","an optional 2D shape representing a side view of this equipment"))
-        obj.addProperty("App::PropertyString","Model","Arch",translate("Arch","The model description of this equipment"))
-        obj.addProperty("App::PropertyString","Url","Arch",translate("Arch","The url of the product page of this equipment"))
-        obj.addProperty("App::PropertyEnumeration","Role","Arch",translate("Arch","The role of this equipment"))
+        obj.addProperty("App::PropertyString","Model","Arch",QT_TRANSLATE_NOOP("App::Property","The model description of this equipment"))
+        obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
+        obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
+        obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
-        
+        obj.setEditorMode("VerticalArea",2)
+        obj.setEditorMode("HorizontalArea",2)
+        obj.setEditorMode("PerimeterLength",2)
+
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
-        
+
     def execute(self,obj):
+
+        if self.clone(obj):
+            return
+
         pl = obj.Placement
         if obj.Base:
             if obj.isDerivedFrom("Mesh::Feature"):
@@ -244,7 +267,7 @@ class _Equipment(ArchComponent.Component):
                     if base:
                         import Mesh
                         m = Mesh.Mesh(base.tessellate(1))
-                        
+
                 elif obj.Base.isDerivedFrom("Mesh::Feature"):
                     m = obj.Base.Mesh.copy()
                 if m:
@@ -262,7 +285,10 @@ class _Equipment(ArchComponent.Component):
                     base = base.removeSplitteR()
                 if base:
                     base = self.processSubShapes(obj,base,pl)
-                    self.applyShape(obj,base,pl)
+                    self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
+
+    def computeAreas(self,obj):
+        return
 
 
 class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
@@ -273,8 +299,34 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Equipment_Clone.svg"
         return ":/icons/Arch_Equipment_Tree.svg"
+
+    def attach(self, vobj):
+        from pivy import coin
+        sep = coin.SoSeparator()
+        self.coords = coin.SoCoordinate3()
+        sep.addChild(self.coords)
+        self.coords.point.deleteValues(0)
+        symbol = coin.SoMarkerSet()
+        symbol.markerIndex = coin.SoMarkerSet.CIRCLE_FILLED_5_5
+        sep.addChild(symbol)
+        rn = vobj.RootNode
+        rn.addChild(sep)
+        ArchComponent.ViewProviderComponent.attach(self,vobj)
         
+        
+    def updateData(self, obj, prop):
+        if prop == "SnapPoints":
+            if obj.SnapPoints:
+                self.coords.point.setNum(len(obj.SnapPoints))
+                self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
+            else:
+                self.coords.point.deleteValues(0)
+
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Equipment',_CommandEquipment())

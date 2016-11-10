@@ -44,12 +44,14 @@
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/bundles/SoMaterialBundle.h>
 # include <Inventor/bundles/SoTextureCoordinateBundle.h>
+# include <Inventor/elements/SoLazyElement.h>
 # include <Inventor/elements/SoOverrideElement.h>
 # include <Inventor/elements/SoCoordinateElement.h>
 # include <Inventor/elements/SoGLCoordinateElement.h>
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -133,18 +135,50 @@ void SoBrepFaceSet::doAction(SoAction* action)
             switch (selaction->getType()) {
             case Gui::SoSelectionElementAction::Append:
                 {
-                    int start = this->selectionIndex.getNum();
-                    this->selectionIndex.set1Value(start, index);
+                    if (this->selectionIndex.find(index) < 0) {
+                        int start = this->selectionIndex.getNum();
+                        this->selectionIndex.set1Value(start, index);
+                    }
                 }
                 break;
             case Gui::SoSelectionElementAction::Remove:
                 {
                     int start = this->selectionIndex.find(index);
-                    this->selectionIndex.deleteValues(start,1);
+                    if (start >= 0)
+                        this->selectionIndex.deleteValues(start,1);
                 }
                 break;
             default:
                 break;
+            }
+        }
+    }
+    else if (action->getTypeId() == Gui::SoVRMLAction::getClassTypeId()) {
+        // update the materialIndex field to match with the number of triangles if needed
+        SoState * state = action->getState();
+        Binding mbind = this->findMaterialBinding(state);
+        if (mbind == PER_PART) {
+            const SoLazyElement* mat = SoLazyElement::getInstance(state);
+            int numColor = 1;
+            int numParts = partIndex.getNum();
+            if (mat) {
+                numColor = mat->getNumDiffuse();
+                if (numColor == numParts) {
+                    int count = 0;
+                    const int32_t * indices = this->partIndex.getValues(0);
+                    for (int i=0; i<numParts; i++) {
+                        count += indices[i];
+                    }
+                    this->materialIndex.setNum(count);
+                    int32_t * matind = this->materialIndex.startEditing();
+                    int32_t k = 0;
+                    for (int i=0; i<numParts; i++) {
+                        for (int j=0; j<indices[i]; j++) {
+                            matind[k++] = i;
+                        }
+                    }
+                    this->materialIndex.finishEditing();
+                }
             }
         }
     }
@@ -160,7 +194,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SoMaterialBundle mb(action);
     Binding mbind = this->findMaterialBinding(state);
 
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    SoTextureCoordinateBundle tb(action, true, false);
     SbBool doTextures = tb.needCoordinates();
 
     int32_t hl_idx = this->highlightIndex.getValue();
@@ -233,6 +267,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (num_selected > 0)
         renderSelection(action);
 //#endif
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 //****************************************************************************
@@ -286,7 +323,7 @@ void SoBrepFaceSet::renderColoredArray(SoMaterialBundle *const materials)
         int tris = partIndex[part_id];
 
         if (tris > 0) {
-            materials->send(part_id, TRUE);
+            materials->send(part_id, true);
             glDrawElements(GL_TRIANGLES, 3 * tris, GL_UNSIGNED_INT, ptr);
             ptr += 3 * tris;
         }
@@ -329,7 +366,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     SoMaterialBundle mb(action);
 
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    SoTextureCoordinateBundle tb(action, true, false);
     doTextures = tb.needCoordinates();
     SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -349,6 +386,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     // Disable caching for this node
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
+        
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
     if (this->highlightIndex.getValue() >= 0)
@@ -427,13 +467,13 @@ void SoBrepFaceSet::generatePrimitives(SoAction * action)
     SbBool sendNormals;
     SbBool normalCacheUsed;
 
-    sendNormals = TRUE; // always generate normals
+    sendNormals = true; // always generate normals
 
     this->getVertexData(state, coords, normals, cindices,
                         nindices, tindices, mindices, numindices,
                         sendNormals, normalCacheUsed);
 
-    SoTextureCoordinateBundle tb(action, FALSE, FALSE);
+    SoTextureCoordinateBundle tb(action, false, false);
     doTextures = tb.needCoordinates();
 
     if (!sendNormals) nbind = OVERALL;
@@ -640,11 +680,11 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
     state->push();
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
 #if 0 // disables shading effect
-    // sendNormals will be FALSE
+    // sendNormals will be false
     SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 #endif
 
@@ -663,7 +703,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     SoMaterialBundle mb(action);
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    SoTextureCoordinateBundle tb(action, true, false);
     doTextures = tb.needCoordinates();
     SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -674,34 +714,41 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
     mb.sendFirst(); // make sure we have the correct material
 
     int32_t id = this->highlightIndex.getValue();
+    if (id >= this->partIndex.getNum()) {
+        SoDebugError::postWarning("SoBrepFaceSet::renderHighlight", "highlightIndex out of range");
+    }
+    else {
+        // just in case someone forgot
+        if (!mindices) mindices = cindices;
+        if (!nindices) nindices = cindices;
+        pindices = this->partIndex.getValues(0);
 
-    // just in case someone forgot
-    if (!mindices) mindices = cindices;
-    if (!nindices) nindices = cindices;
-    pindices = this->partIndex.getValues(0);
+        // coords
+        int length = (int)pindices[id]*4;
+        int start=0;
+        for (int i=0;i<id;i++)
+            start+=(int)pindices[i];
+        start *= 4;
 
-    // coords
-    int length = (int)pindices[id]*4;
-    int start=0;
-    for (int i=0;i<id;i++)
-        start+=(int)pindices[i];
-    start *= 4;
+        // normals
+        if (nbind == PER_VERTEX_INDEXED)
+            nindices = &(nindices[start]);
+        else if (nbind == PER_VERTEX)
+            normals = &(normals[start]);
+        else 
+            nbind = OVERALL;
 
-    // normals
-    if (nbind == PER_VERTEX_INDEXED)
-        nindices = &(nindices[start]);
-    else if (nbind == PER_VERTEX)
-        normals = &(normals[start]);
-    else 
-        nbind = OVERALL;
+        // materials
+        mbind = OVERALL;
+        doTextures = false;
 
-    // materials
-    mbind = OVERALL;
-    doTextures = FALSE;
-
-    renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
-        &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+        renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+            &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+    }
     state->pop();
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
@@ -714,10 +761,10 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
     state->push();
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
 #if 0 // disables shading effect
     SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 #endif
 
@@ -736,7 +783,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     SoMaterialBundle mb(action);
-    SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+    SoTextureCoordinateBundle tb(action, true, false);
     doTextures = tb.needCoordinates();
     SbBool sendNormals = !mb.isColorOnly() || tb.isFunction();
 
@@ -753,10 +800,14 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
 
     // materials
     mbind = OVERALL;
-    doTextures = FALSE;
+    doTextures = false;
 
     for (int i=0; i<numSelected; i++) {
         int id = selected[i];
+        if (id >= this->partIndex.getNum()) {
+            SoDebugError::postWarning("SoBrepFaceSet::renderSelection", "selectionIndex out of range");
+            break;
+        }
 
         // coords
         int length = (int)pindices[id]*4;
@@ -779,6 +830,9 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
             &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
+    
+    if(normalCacheUsed)
+        this->readUnlockNormalCache();
 }
 
 void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
@@ -836,21 +890,22 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             break;
         }
         v4 = viptr < viendptr ? *viptr++ : -1;
+        (void)v4;
 
         /* vertex 1 *********************************************************/
         if (mbind == PER_PART) {
             if (trinr == 0)
-                materials->send(matnr++, TRUE);
+                materials->send(matnr++, true);
         }
         else if (mbind == PER_PART_INDEXED) {
             if (trinr == 0)
-                materials->send(*matindices++, TRUE);
+                materials->send(*matindices++, true);
         }
         else if (mbind == PER_VERTEX || mbind == PER_FACE) {
-            materials->send(matnr++, TRUE);
+            materials->send(matnr++, true);
         }
         else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
-            materials->send(*matindices++, TRUE);
+            materials->send(*matindices++, true);
         }
 
         if (normals) {
@@ -874,9 +929,9 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
         /* vertex 2 *********************************************************/
         if (mbind == PER_VERTEX)
-            materials->send(matnr++, TRUE);
+            materials->send(matnr++, true);
         else if (mbind == PER_VERTEX_INDEXED)
-            materials->send(*matindices++, TRUE);
+            materials->send(*matindices++, true);
 
         if (normals) {
             if (nbind == PER_VERTEX) {
@@ -899,9 +954,9 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
         /* vertex 3 *********************************************************/
         if (mbind == PER_VERTEX)
-            materials->send(matnr++, TRUE);
+            materials->send(matnr++, true);
         else if (mbind == PER_VERTEX_INDEXED)
-            materials->send(*matindices++, TRUE);
+            materials->send(*matindices++, true);
 
         if (normals) {
             if (nbind == PER_VERTEX) {

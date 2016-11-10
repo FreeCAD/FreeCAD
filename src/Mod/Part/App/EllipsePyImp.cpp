@@ -31,6 +31,7 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "EllipsePy.h"
 #include "EllipsePy.cpp"
@@ -89,7 +90,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
                           gp_Pnt(v2.x,v2.y,v2.z),
                           gp_Pnt(v3.x,v3.y,v3.z));
         if (!me.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(me.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 
@@ -109,7 +110,7 @@ int EllipsePy::PyInit(PyObject* args, PyObject* kwds)
         GC_MakeEllipse me(gp_Ax2(gp_Pnt(c.x,c.y,c.z), gp_Dir(0.0,0.0,1.0)),
                           major, minor);
         if (!me.IsDone()) {
-            PyErr_SetString(PyExc_Exception, gce_ErrorStatusText(me.Status()));
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;
         }
 
@@ -148,6 +149,38 @@ void EllipsePy::setMinorRadius(Py::Float arg)
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
     ellipse->SetMinorRadius((double)arg);
+}
+
+Py::Float EllipsePy::getAngleXU(void) const
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+    
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    gp_Dir xdir = ellipse->XAxis().Direction();
+        
+    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
+    
+    return Py::Float(-xdir.AngleWithRef(xdirref.XDirection(),normal));
+
+}
+
+void EllipsePy::setAngleXU(Py::Float arg)
+{
+    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
+
+
+    gp_Pnt center = ellipse->Axis().Location();
+    gp_Dir normal = ellipse->Axis().Direction();
+    
+    gp_Ax1 normaxis(center, normal);
+    
+    gp_Ax2 xdirref(center, normal);
+    
+    xdirref.Rotate(normaxis,arg);
+    
+    ellipse->SetPosition(xdirref);
+
 }
 
 Py::Float EllipsePy::getEccentricity(void) const

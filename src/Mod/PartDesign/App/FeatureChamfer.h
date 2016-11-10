@@ -25,6 +25,7 @@
 #define PARTDESIGN_FEATURECHAMFER_H
 
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
 #include "FeatureDressUp.h"
 
@@ -38,7 +39,7 @@ class PartDesignExport Chamfer : public DressUp
 public:
     Chamfer();
 
-    App::PropertyFloatConstraint Size;
+    App::PropertyQuantityConstraint Size;
 
     /** @name methods override feature */
     //@{
@@ -50,6 +51,10 @@ public:
         return "PartDesignGui::ViewProviderChamfer";
     }
     //@}
+
+protected:
+    void Restore(Base::XMLReader &reader);
+
 };
 
 } //namespace Part

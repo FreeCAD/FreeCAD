@@ -22,10 +22,12 @@
 
 #include "PreCompiled.h"
 
-#include "Gui/SelectionObject.h"
-#include "App/Document.h"
-#include "App/DocumentObject.h"
-#include "App/Application.h"
+#include "SelectionObject.h"
+#include "Selection.h"
+#include <Base/GeometryPyCXX.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <App/Application.h>
 
 // inclusion of the generated files (generated out of SelectionObjectPy.xml)
 #include "SelectionObjectPy.h"
@@ -39,49 +41,56 @@ std::string SelectionObjectPy::representation(void) const
     return "<SelectionObject>";
 }
 
-
-
-PyObject* SelectionObjectPy::remove(PyObject * /*args*/)
+PyObject* SelectionObjectPy::remove(PyObject * args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+    Selection().rmvSelection(getSelectionObjectPtr()->getDocName(),
+                             getSelectionObjectPtr()->getFeatName());
+    Py_Return;
 }
 
-PyObject* SelectionObjectPy::isA(PyObject * /*args*/)
+PyObject* SelectionObjectPy::isObjectTypeOf(PyObject * args)
 {
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
+    char* type;
+    if (!PyArg_ParseTuple(args, "s", &type))
+        return 0;
+    Base::Type id = Base::Type::fromName(type);
+    if (id.isBad()) {
+        PyErr_SetString(PyExc_TypeError, "Not a valid type");
+        return 0;
+    }
+
+    bool ok = getSelectionObjectPtr()->isObjectTypeOf(id);
+
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
-
-
 
 Py::String SelectionObjectPy::getObjectName(void) const
 {
     return Py::String(getSelectionObjectPtr()->getFeatName());
 }
 
-Py::List SelectionObjectPy::getSubElementNames(void) const
+Py::Tuple SelectionObjectPy::getSubElementNames(void) const
 {
-    Py::List temp;
     std::vector<std::string> objs = getSelectionObjectPtr()->getSubNames();
 
+    Py::Tuple temp(objs.size());
+    Py::sequence_index_type index = 0;
     for(std::vector<std::string>::const_iterator it= objs.begin();it!=objs.end();++it)
-        temp.append(Py::String(*it));
+        temp.setItem(index++, Py::String(*it));
 
     return temp;
 }
 
 Py::String SelectionObjectPy::getFullName(void) const
 {
-	std::string buf;
-	//buf = getSelectionObjectPtr()->getDocName();
-	//buf += ".";
-	//buf += getSelectionObjectPtr()->getFeatName();
-	//if(getSelectionObjectPtr()->getSubName()){
-	//	buf += ".";
-	//	buf += getSelectionObjectPtr()->getSubName();
-	//}
-    return Py::String(buf.c_str());
+    return Py::String(getSelectionObjectPtr()->getAsPropertyLinkSubString());
+}
+
+Py::String SelectionObjectPy::getTypeName(void) const
+{
+    return Py::String(getSelectionObjectPtr()->getTypeName());
 }
 
 Py::String SelectionObjectPy::getDocumentName(void) const
@@ -99,18 +108,33 @@ Py::Object SelectionObjectPy::getObject(void) const
     return Py::Object(getSelectionObjectPtr()->getObject()->getPyObject(), true);
 }
 
-Py::List SelectionObjectPy::getSubObjects(void) const
+Py::Tuple SelectionObjectPy::getSubObjects(void) const
 {
-    Py::List temp;
     std::vector<PyObject *> objs = getSelectionObjectPtr()->getObject()->getPySubObjects(getSelectionObjectPtr()->getSubNames());
+
+    Py::Tuple temp(objs.size());
+    Py::sequence_index_type index = 0;
     for(std::vector<PyObject *>::const_iterator it= objs.begin();it!=objs.end();++it)
-        temp.append(Py::Object(*it,true));
+        temp.setItem(index++, Py::asObject(*it));
+
     return temp;
 }
 
 Py::Boolean SelectionObjectPy::getHasSubObjects(void) const
 {
     return Py::Boolean(getSelectionObjectPtr()->hasSubNames());
+}
+
+Py::Tuple SelectionObjectPy::getPickedPoints(void) const
+{
+    const std::vector<Base::Vector3d>& points = getSelectionObjectPtr()->getPickedPoints();
+
+    Py::Tuple temp(points.size());
+    Py::sequence_index_type index = 0;
+    for(std::vector<Base::Vector3d>::const_iterator it= points.begin();it!=points.end();++it)
+        temp.setItem(index++, Py::Vector(*it));
+
+    return temp;
 }
 
 PyObject *SelectionObjectPy::getCustomAttributes(const char* /*attr*/) const
@@ -122,5 +146,3 @@ int SelectionObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj
 {
     return 0; 
 }
-
-

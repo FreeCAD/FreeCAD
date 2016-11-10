@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QApplication>
 #endif
 
 #include "TaskDlgEdge2Trac.h"
@@ -95,7 +96,7 @@ bool TaskDlgEdge2Trac::accept()
     try {
         if (select->isSelectionValid()){
             select->accept();
-            Edge2TaskObject->recompute();
+            Edge2TaskObject->recomputeFeature();
             Gui::Document* doc = Gui::Application::Instance->activeDocument();
             if(doc) 
                 doc->resetEdit();

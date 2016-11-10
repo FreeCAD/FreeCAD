@@ -34,6 +34,8 @@ namespace App {
 
 namespace Gui {
 
+class SelectionChanges;
+
 /**
  * The Selection object class
  */
@@ -44,6 +46,10 @@ class GuiExport SelectionObject : public Base::BaseClass
 public:
     /** Constructs a SelectionObject object. */
     SelectionObject();
+    /*! Constructs a SelectionObject from the SelectionChanges structure.
+     */
+    SelectionObject(const SelectionChanges& msg);
+    SelectionObject(App::DocumentObject*);
     virtual ~SelectionObject();
     /**
      * The default implementation returns an instance of @ref SelectionObjectPy.
@@ -58,8 +64,10 @@ public:
     inline const char* getDocName(void) const { return DocName.c_str(); }
     /// get the name of the Document Object of this SelectionObject
     inline const char* getFeatName(void) const { return FeatName.c_str(); }
-    /// get the Type of the selcted Object
+    /// get the Type of the selected Object
     inline const char* getTypeName(void) const { return TypeName.c_str(); }
+    /// get the selection points
+    inline const std::vector<Base::Vector3d> getPickedPoints(void) const { return SelPoses; }
 
     /// returns the selected DocumentObject or NULL if the object is already deleted
     const App::DocumentObject *getObject(void) const;

@@ -32,44 +32,17 @@
 
 
 class CompleteWorkbench ( Workbench ):
-	"Complete workbench object"
-	Icon = """
-                /* XPM */
-                static char * complete_xpm[] = {
-                "16 15 9 1",
-                " 	c None",
-                ".	c #DB7B07",
-                "+	c #DA8100",
-                "@	c #F49500",
-                "#	c #E89900",
-                "$	c #FEA200",
-                "%	c #FEAD00",
-                "&	c #FFBB00",
-                "*	c #FDC500",
-                "        +       ",
-                "       ++       ",
-                "      +##+      ",
-                "      +&*+      ",
-                "     +#&*#+     ",
-                "++.++#&&**#+.++ ",
-                " +$%%%&&&*****++",
-                "  +$%%%&&&***++ ",
-                "   +$%%%&&*&+   ",
-                "   .+%%%&&&+    ",
-                "   .@%%%%&&#    ",
-                "   .@$%$%%&#+   ",
-                "   .@@++++%%+   ",
-                "   ..+    +++   ",
-                "   .       ++   "};
-		"""
-	MenuText = "Complete"
-	ToolTip = "Complete workbench"
+    "Complete workbench object"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Complete/Resources/icons/CompleteWorkbench.svg"
+        self.__class__.MenuText = "Complete"
+        self.__class__.ToolTip = "Complete workbench"
 
-	def Initialize(self):
-		# load the module
-		import CompleteGui
-		import Complete
-	def GetClassName(self):
-		return "CompleteGui::Workbench"
+    def Initialize(self):
+        # load the module
+        import CompleteGui
+        import Complete
+    def GetClassName(self):
+        return "CompleteGui::Workbench"
 
 Gui.addWorkbench(CompleteWorkbench())

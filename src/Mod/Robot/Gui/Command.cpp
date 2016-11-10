@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,13 +55,13 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Set the home position");
     sToolTipText    = QT_TR_NOOP("Set the home position");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_SetHomePos";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_SetHomePos";
 }
 
 
-void CmdRobotSetHomePos::activated(int iMsg)
+void CmdRobotSetHomePos::activated(int)
 {
    const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
@@ -104,13 +104,13 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Move to home");
     sToolTipText    = QT_TR_NOOP("Move to home");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_RestoreHomePos";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_RestoreHomePos";
 }
 
 
-void CmdRobotRestoreHomePos::activated(int iMsg)
+void CmdRobotRestoreHomePos::activated(int)
 {
     const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
@@ -158,13 +158,13 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Place robot...");
     sToolTipText    = QT_TR_NOOP("Place a robot (experimental!)");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_Create";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_CreateRobot";
 }
 
 
-void CmdRobotConstraintAxle::activated(int iMsg)
+void CmdRobotConstraintAxle::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr500_1.wrl";
@@ -199,13 +199,13 @@ CmdRobotSimulate::CmdRobotSimulate()
     sGroup          = QT_TR_NOOP("Robot");
     sMenuText       = QT_TR_NOOP("Simulate a trajectory");
     sToolTipText    = QT_TR_NOOP("Run a simulation on a trajectory");
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Robot_Simulate";
     sStatusTip      = sToolTipText;
     sPixmap         = "Robot_Simulate";
 }
 
 
-void CmdRobotSimulate::activated(int iMsg)
+void CmdRobotSimulate::activated(int)
 {
 #if 1
     const char * SelFilter = 

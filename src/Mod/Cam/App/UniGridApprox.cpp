@@ -115,13 +115,13 @@ bool UniGridApprox::MeshOffset()
 
     MeshCore::MeshPointIterator p_it(m_Mesh);
 
-    //vorläufige Lösung bis CAD-Normalen verwendet werden können
+    //vorlÃ¤ufige LÃ¶sung bis CAD-Normalen verwendet werden kÃ¶nnen
     std::vector<Base::Vector3f> normals = best_fit::Comp_Normals(m_Mesh);
 
     double x_max=-(1e+10),y_max=-(1e+10),z_max=-(1e+10),x_min=1e+10,y_min=1e+10,st_x,st_y;
     int n = normals.size();
 
-    // führe verschiebung durch
+    // fÃ¼hre verschiebung durch
 
     //for(int i=0; i<n; ++i)
     //{
@@ -142,7 +142,7 @@ bool UniGridApprox::MeshOffset()
         if (p_it->y<y_min) y_min = p_it->y;
     }
 
-    // gittergrößen bestimmung über die bounding-box
+    // gittergrÃ¶ÃŸen bestimmung Ã¼ber die bounding-box
     n_x = int((x_max - x_min)/(y_max - y_min)*sqrt((x_max - x_min)*(y_max - y_min)));
     n_y = int((y_max - y_min)/(x_max - x_min)*sqrt((x_max - x_min)*(y_max - y_min)));
 
@@ -431,7 +431,7 @@ bool UniGridApprox::CompKnots(int u_CP, int v_CP)
 
 bool UniGridApprox::MatComp(int u_CP, int v_CP)
 {
-    // hier wird schließlich approximiert
+    // hier wird schlieÃŸlich approximiert
 
     int r = n_x;
     int s = n_y;
@@ -516,7 +516,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
     atlas::gemm(CblasTrans,CblasNoTrans, 1.0, Nv_left,Nv_left, 0.0,Nv);  // Nv_left'*Nv_left = Nv  !!! Achtung !!!
 
     std::vector<int> upiv(n - 1);   // pivotelement
-    atlas::lu_factor(Nu,upiv);      // führt LU-Zerlegung durch
+    atlas::lu_factor(Nu,upiv);      // fÃ¼hrt LU-Zerlegung durch
     std::vector<int> vpiv(m - 1);
     atlas::lu_factor(Nv,vpiv);
 
@@ -710,7 +710,7 @@ bool UniGridApprox::MatComp(int u_CP, int v_CP)
 
     ublas::matrix<double> Tmp = CPz;
 
-    //glättung des kontrollpunktnetzes
+    //glÃ¤ttung des kontrollpunktnetzes
     for (int i=1; i<n; ++i)
     {
         for (int j=1; j<m; ++j)

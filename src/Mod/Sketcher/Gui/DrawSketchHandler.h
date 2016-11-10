@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2009 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -29,11 +29,6 @@
 #include <Gui/Selection.h>
 
 class QPixmap;
-
-namespace Gui {
-    class View3DInventorViewer;
-    class SoFCSelection;
-}
 
 namespace Sketcher {
     class Sketch;
@@ -67,13 +62,13 @@ public:
     DrawSketchHandler();
     virtual ~DrawSketchHandler();
 
-    virtual void activated(ViewProviderSketch *sketchgui){};
-    virtual void deactivated(ViewProviderSketch *sketchgui){};
+    virtual void activated(ViewProviderSketch *){}
+    virtual void deactivated(ViewProviderSketch *){}
     virtual void mouseMove(Base::Vector2D onSketchPos)=0;
     virtual bool pressButton(Base::Vector2D onSketchPos)=0;
     virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
-    virtual bool onSelectionChanged(const Gui::SelectionChanges& msg) { return false; };
-    virtual void registerPressedKey(bool pressed, int key){};
+    virtual bool onSelectionChanged(const Gui::SelectionChanges&) { return false; }
+    virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
     virtual void quit(void);
 

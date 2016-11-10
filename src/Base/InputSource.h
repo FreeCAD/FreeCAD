@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de)          *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de)          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -31,6 +31,7 @@
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XercesVersion.hpp>
 #include <xercesc/sax/InputSource.hpp>
+#include <QTextCodec>
 
 
 XERCES_CPP_NAMESPACE_BEGIN
@@ -75,6 +76,7 @@ private :
   // -----------------------------------------------------------------------
   std::istream            &stream;
   XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const    fMemoryManager;
+  QTextCodec::ConverterState state;
 };
 
 

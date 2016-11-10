@@ -26,6 +26,7 @@
 # include <Geom_OffsetCurve.hxx>
 #endif
 
+#include "OCCError.h"
 #include "Geometry.h"
 #include "OffsetCurvePy.h"
 #include "OffsetCurvePy.cpp"
@@ -76,7 +77,7 @@ int OffsetCurvePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
 }

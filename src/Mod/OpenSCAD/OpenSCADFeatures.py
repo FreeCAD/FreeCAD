@@ -57,13 +57,9 @@ class ViewProviderTree:
 
     def __setstate__(self,state):
         if state is not None:
-            try:
-                import FreeCAD
-                doc = FreeCAD.ActiveDocument #crap
-                self.Object = doc.getObject(state['ObjectName'])
-            except:
-                raise
-#        return None
+            import FreeCAD
+            doc = FreeCAD.ActiveDocument #crap
+            self.Object = doc.getObject(state['ObjectName'])
 
     def claimChildren(self):
         objs = []
@@ -81,7 +77,11 @@ class ViewProviderTree:
         return objs
    
     def getIcon(self):
-        #if self.Object.Proxy.__class__ == MatrixTransform:
+        import OpenSCAD_rc
+        if isinstance(self.Object.Proxy,RefineShape):
+            return(":/icons/OpenSCAD_RefineShapeFeature.svg")
+        if isinstance(self.Object.Proxy,IncreaseTolerance):
+            return(":/icons/OpenSCAD_IncreaseToleranceFeature.svg")
         if isinstance(self.Object.Proxy,MatrixTransform):
             return """/* XPM */
 static char * matrix_xpm[] = {
@@ -105,64 +105,6 @@ static char * matrix_xpm[] = {
 " ............. .",
 "   .........   .",
 "................"};"""
-        elif False:
-            return """/* XPM */
-static char * qm_xpm[] = {
-"16 16 37 1",
-" 	c None",
-".	c #FFFFFF",
-"+	c #CBE3FF",
-"@	c #70B3FF",
-"#	c #3092FF",
-"$	c #0D7FFF",
-"%	c #047BFF",
-"&	c #1885FF",
-"*	c #56A6FF",
-"=	c #CFE5FF",
-"-	c #0079FF",
-";	c #067CFF",
-">	c #B9DAFF",
-",	c #88C0FF",
-"'	c #CAE3FF",
-")	c #F2F8FF",
-"!	c #FAFCFF",
-"~	c #CEE5FF",
-"{	c #459DFF",
-"]	c #2D90FF",
-"^	c #EEF6FF",
-"/	c #077CFF",
-"(	c #B1D6FF",
-"_	c #3494FF",
-":	c #90C4FF",
-"<	c #037AFF",
-"[	c #BCDBFF",
-"}	c #6EB2FF",
-"|	c #087DFF",
-"1	c #A8D1FF",
-"2	c #8AC1FF",
-"3	c #1C87FF",
-"4	c #CCE4FF",
-"5	c #1F89FF",
-"6	c #CDE4FF",
-"7	c #027AFF",
-"8	c #FDFDFF",
-"....+@#$%&*=....",
-"....-------;>...",
-"....#,')!~{-]...",
-"..........^-/...",
-"..........(-_...",
-".........:/<[...",
-"........}-|1....",
-".......2-34.....",
-".......5-6......",
-".......7-8......",
-".......--.......",
-"................",
-"................",
-".......--.......",
-".......--.......",
-".......--......."};
-"""
         else:
             return """/* XPM */
 static char * openscadlogo_xpm[] = {
@@ -299,21 +241,39 @@ class IncreaseTolerance:
     def __init__(self,obj,child,tolerance=0):
         obj.addProperty("App::PropertyLink","Base","Base",
                         "The base object that wire must be extracted")
-        obj.addProperty("App::PropertyDistance","Tolerance","Base","Tolerance")
+        obj.addProperty("App::PropertyDistance","Vertex","Tolerance","Vertexes tolerance (0 default)")
+        obj.addProperty("App::PropertyDistance","Edge","Tolerance","Edges tolerance (0 default)")
+        obj.addProperty("App::PropertyDistance","Face","Tolerance","Faces tolerance (0 default)")
         obj.Base = child
-        obj.Tolerance = tolerance
+        obj.Vertex = tolerance
+        obj.Edge = tolerance
+        obj.Face = tolerance
         obj.Proxy = self
+
     def onChanged(self, fp, prop):
-        if prop in ["Tolerance"]:
+        # Tolerance property left for backward compatibility
+        if prop in ["Vertex", "Edge", "Face", "Tolerance"]:
             self.createGeometry(fp)
+
     def execute(self, fp):
         self.createGeometry(fp)
 
     def createGeometry(self,fp):
         if fp.Base:
             sh=fp.Base.Shape.copy()
-            for vertex in sh.Vertexes:
-                vertex.Tolerance = max(vertex.Tolerance,fp.Tolerance.Value)
+            # Check if property Tolerance exist and preserve support for backward compatibility
+            if hasattr(fp, "Tolerance") and fp.Proxy.__module__ == "OpenSCADFeatures":
+                for vertex in sh.Vertexes:
+                    vertex.Tolerance = max(vertex.Tolerance,fp.Tolerance.Value)
+            # New properties
+            else:
+                for vertex in sh.Vertexes:
+                    vertex.Tolerance = max(vertex.Tolerance,fp.Vertex.Value)
+                for edge in sh.Edges:
+                    edge.Tolerance = max(edge.Tolerance,fp.Edge.Value)
+                for face in sh.Faces:
+                    face.Tolerance = max(face.Tolerance,fp.Face.Value)
+
             fp.Shape = sh
             fp.Placement = sh.Placement
 
@@ -448,7 +408,7 @@ class Twist:
                         solid.reverse()
                     assert(solid.Volume >= 0)
                     solids.append(solid)
-                except:
+                except Part.OCCError:
                     solids.append(Part.Compound(faces))
                 fp.Shape=Part.Compound(solids)
 

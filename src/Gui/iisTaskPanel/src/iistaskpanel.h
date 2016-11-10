@@ -20,6 +20,8 @@
 #include <QtGui>
 #include <QtCore>
 #include <QSpacerItem>
+#include <QWidget>
+#include <QPaintEvent>
 
 #include "iistaskpanel_global.h"
 

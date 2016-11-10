@@ -83,7 +83,9 @@ public:
     TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
+    virtual void open();
     virtual bool accept();
+    virtual bool reject();
 
 };
 

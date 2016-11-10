@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -43,10 +43,10 @@ public:
 
     App::PropertyFloat          MaxSize;
     App::PropertyBool           SecondOrder;
-    App::PropertyEnumeration    Fininess;
+    App::PropertyEnumeration    Fineness;
     App::PropertyFloat          GrowthRate;
     App::PropertyInteger        NbSegsPerEdge;
-    App::PropertyInteger        NbSegsPerRadius;    
+    App::PropertyInteger        NbSegsPerRadius;
     App::PropertyBool           Optimize;
 
     /// returns the type name of the ViewProvider

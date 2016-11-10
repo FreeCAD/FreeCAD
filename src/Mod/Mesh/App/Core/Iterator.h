@@ -74,11 +74,11 @@ public:
   /// Increments the iterator. It points then to the next element if the
   /// end is not reached.
   const MeshFacetIterator& operator ++ (void)
-  { _clIter++; return *this; }
+  { ++_clIter; return *this; }
   /// Decrements the iterator. It points then to the previous element if the beginning
   /// is not reached.
   const MeshFacetIterator& operator -- (void)
-  { _clIter--; return *this; }
+  { --_clIter; return *this; }
   /// Increments the iterator by \a k positions.
   const MeshFacetIterator& operator += (int k)
   { _clIter += k; return *this; }
@@ -195,11 +195,11 @@ public:
   /// Increments the iterator. It points then to the next element if the
   /// end is not reached.
   const MeshPointIterator& operator ++ (void)
-        { _clIter++; return *this; }
+  { ++_clIter; return *this; }
   /// Decrements the iterator. It points then to the previous element if the beginning
   /// is not reached.
   const MeshPointIterator& operator -- (void)
-        { _clIter--; return *this; }
+  { --_clIter; return *this; }
   /// Assignment.
   inline MeshPointIterator& operator = (const MeshPointIterator &rpI);
   /// Compares if this iterator points to a lower element than the other one.

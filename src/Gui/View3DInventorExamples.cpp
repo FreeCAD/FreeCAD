@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -47,8 +47,6 @@
 #include "View3DInventorExamples.h"
 
 #include <Inventor/SbPlane.h>
-#include <Inventor/Qt/SoQt.h>
-#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/manips/SoPointLightManip.h>
@@ -198,7 +196,7 @@ void doClipping(SbVec3f trans, SbRotation rot)
   planeTVerts->finishEditing();
 }
 
-void draggerCB(void * data, SoDragger * dragger)
+void draggerCB(void * /*data*/, SoDragger * dragger)
 {
   SoTransformerDragger * drag = (SoTransformerDragger *)dragger;
   doClipping(drag->translation.getValue(), drag->rotation.getValue());
@@ -266,24 +264,6 @@ void Texture3D(SoSeparator * root)
   root->addChild(planeTCoords);
   SoFaceSet * planeFS = new SoFaceSet;
   root->addChild(planeFS);
-
-  /*
-  SoQtExaminerViewer * renderarea = new SoQtExaminerViewer( window );
-  renderarea->setSceneGraph( root );
-  renderarea->setBackgroundColor( SbColor( 0.0f, 0.2f, 0.3f )  );
-  renderarea->setTitle(argv[0]);
-  renderarea->setIconTitle(argv[0]);
-  renderarea->viewAll();
-  renderarea->show();
-
-  SoQt::show(window);
-  SoQt::mainLoop();
-
-  delete renderarea;
-  root->unref();
-
-  return 0;
-  */
 }
 
 // *************************************************************************
@@ -310,8 +290,8 @@ void LightManip(SoSeparator * root)
   SoInput in;
   in.setBuffer((void *)scenegraph, std::strlen(scenegraph));
   SoSeparator * _root = SoDB::readAll( &in );
+  if ( _root == NULL ) return; // Shouldn't happen.
   root->addChild(_root);
-  if ( root == NULL ) return; // Shouldn't happen.
   root->ref();
 
   const char * pointlightnames[3] = { "RedLight", "GreenLight", "BlueLight" };
@@ -320,7 +300,7 @@ void LightManip(SoSeparator * root)
   for (int i = 0; i < 3; i++) {
     sa.setName( pointlightnames[i] );
     sa.setInterest( SoSearchAction::FIRST );
-    sa.setSearchingAll( FALSE );
+    sa.setSearchingAll( false );
     sa.apply( root );
     SoPath * path = sa.getPath();
     if ( path == NULL) return; // Shouldn't happen.
@@ -399,7 +379,7 @@ texture()
 static void
 timersensorcallback(void * data, SoSensor *)
 {
-  static SbBool direction = FALSE;
+  static SbBool direction = false;
 
   SoTexture2 * texnode = (SoTexture2*) data;
 

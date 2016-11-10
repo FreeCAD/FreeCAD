@@ -6,14 +6,14 @@ endif(MSVC)
 
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Gui
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${SOQT_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -47,6 +47,8 @@ SET(SandboxGui_SRCS
     Overlay.h
     PreCompiled.cpp
     PreCompiled.h
+    TaskPanelView.cpp
+    TaskPanelView.h
     Workbench.cpp
     Workbench.h
 )

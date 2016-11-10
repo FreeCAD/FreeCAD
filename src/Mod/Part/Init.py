@@ -26,23 +26,6 @@
 #***************************************************************************/
 
 
-class PartDocument:
-	"Part document"
-	def Info(self):
-		return "Part document"
-		
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Part")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Part/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "Part")
-ParGrp.SetString("DocTemplateScript","TemplPart.py")
-ParGrp.SetString("WorkBenchName",    "Part Design")
-ParGrp.SetString("WorkBenchModule",  "PartWorkbench.py")
-
-
 #FreeCAD.addImportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
 #FreeCAD.addExportType("CAD formats (*.igs *.iges *.step *.stp *.brep *.brp)","Part")
 FreeCAD.addImportType("BREP format (*.brep *.brp)","Part")

@@ -15,8 +15,9 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${FREETYPE_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
@@ -39,9 +40,13 @@ endif(FREETYPE_FOUND)
 
 generate_from_xml(ArcPy)
 generate_from_xml(ArcOfCirclePy)
+generate_from_xml(ArcOfParabolaPy)
+generate_from_xml(BodyBasePy)
 generate_from_xml(CirclePy)
+generate_from_xml(ArcOfEllipsePy)
 generate_from_xml(EllipsePy)
 generate_from_xml(HyperbolaPy)
+generate_from_xml(ArcOfHyperbolaPy)
 generate_from_xml(ParabolaPy)
 generate_from_xml(OffsetCurvePy)
 generate_from_xml(GeometryPy)
@@ -59,13 +64,14 @@ generate_from_xml(ToroidPy)
 generate_from_xml(BezierSurfacePy)
 generate_from_xml(BSplineSurfacePy)
 generate_from_xml(OffsetSurfacePy)
+generate_from_xml(PlateSurfacePy)
 generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
+generate_from_xml(AttachableObjectPy)
 generate_from_xml(Part2DObjectPy)
-generate_from_xml(OffsetSurfacePy)
-generate_from_xml(OffsetSurfacePy)
+generate_from_xml(AttachEnginePy)
 generate_from_xml(TopoShapePy)
 generate_from_xml(TopoShapeCompoundPy)
 generate_from_xml(TopoShapeCompSolidPy)
@@ -110,12 +116,16 @@ SET(Features_SRCS
     FeatureCompound.h
     FeatureExtrusion.cpp
     FeatureExtrusion.h
+    FeatureFace.cpp
+    FeatureFace.h
     FeatureFillet.cpp
     FeatureFillet.h
     FeatureMirroring.cpp
     FeatureMirroring.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureOffset.cpp
+    FeatureOffset.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
@@ -130,6 +140,12 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
+	BodyBase.h
+	BodyBase.cpp
+	DatumFeature.cpp
+	DatumFeature.h
+    AttachableObject.h
+    AttachableObject.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -146,12 +162,20 @@ SET(Python_SRCS
     ArcPyImp.cpp
     ArcOfCirclePy.xml
     ArcOfCirclePyImp.cpp
+    ArcOfParabolaPy.xml
+    ArcOfParabolaPyImp.cpp
+    BodyBasePy.xml
+    BodyBasePyImp.cpp
     CirclePy.xml
     CirclePyImp.cpp
+    ArcOfEllipsePy.xml
+    ArcOfEllipsePyImp.cpp
     EllipsePy.xml
     EllipsePyImp.cpp
     HyperbolaPy.xml
     HyperbolaPyImp.cpp
+    ArcOfHyperbolaPy.xml
+    ArcOfHyperbolaPyImp.cpp
     ParabolaPy.xml
     ParabolaPyImp.cpp
     OffsetCurvePy.xml
@@ -186,6 +210,8 @@ SET(Python_SRCS
     BSplineSurfacePyImp.cpp
     OffsetSurfacePy.xml
     OffsetSurfacePyImp.cpp
+    PlateSurfacePy.xml
+    PlateSurfacePyImp.cpp
     RectangularTrimmedSurfacePy.xml
     RectangularTrimmedSurfacePyImp.cpp
     SurfaceOfExtrusionPy.xml
@@ -194,8 +220,12 @@ SET(Python_SRCS
     SurfaceOfRevolutionPyImp.cpp
     PartFeaturePy.xml
     PartFeaturePyImp.cpp
+    AttachableObjectPy.xml
+    AttachableObjectPyImp.cpp
     Part2DObjectPy.xml
     Part2DObjectPyImp.cpp
+    AttachEnginePy.xml
+    AttachEnginePyImp.cpp
     TopoShapePy.xml
     TopoShapePyImp.cpp
     TopoShapeCompSolidPy.xml
@@ -223,8 +253,11 @@ SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    Attacher.cpp
+    Attacher.h
     AppPart.cpp
     AppPartPy.cpp
+    BSplineCurveBiArcs.cpp
     CrossSection.cpp
     CrossSection.h
     Geometry.cpp
@@ -243,15 +276,38 @@ SET(Part_SRCS
     edgecluster.h
     modelRefine.cpp
     modelRefine.h
+    Tools.cpp
     Tools.h
+    encodeFilename.h
+    OCCError.h
     FT2FC.cpp
     FT2FC.h
+    FaceMaker.cpp
+    FaceMaker.h
+    FaceMakerCheese.cpp
+    FaceMakerCheese.h
+    FaceMakerBullseye.cpp
+    FaceMakerBullseye.h
 )
 
 SET(Part_Scripts
     Init.py
     TestPartApp.py
     MakeBottle.py
+    JoinFeatures.py
+    AttachmentEditor/__init__.py
+    AttachmentEditor/Commands.py
+    AttachmentEditor/FrozenClass.py
+    AttachmentEditor/TaskAttachmentEditor.py
+    AttachmentEditor/TaskAttachmentEditor.ui
+    BOPTools/__init__.py
+    BOPTools/GeneralFuseResult.py
+    BOPTools/JoinAPI.py
+    BOPTools/JoinFeatures.py
+    BOPTools/ShapeMerge.py
+    BOPTools/SplitAPI.py
+    BOPTools/SplitFeatures.py
+    BOPTools/Utils.py
 )
 
 add_library(Part SHARED ${Part_SRCS})

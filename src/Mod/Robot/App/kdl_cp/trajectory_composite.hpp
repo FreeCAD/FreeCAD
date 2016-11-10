@@ -37,7 +37,7 @@ class Trajectory_Composite: public Trajectory
 		VectorDouble  vd;      // contains end time for each Trajectory
 		double duration;    // total duration of the composed
 				    // Trajectory
-		Path_Composite* path;
+        Path_Composite* path; // FreeCAD change
 
 	public:
 		Trajectory_Composite();
@@ -54,11 +54,11 @@ class Trajectory_Composite: public Trajectory
 		virtual void Destroy();
 		virtual void Write(std::ostream& os) const;
 		virtual Trajectory* Clone() const;
-		virtual Path*      GetPath();
-		virtual VelocityProfile* GetProfile();
-
+        virtual Path*      GetPath(); // FreeCAD change
+		virtual VelocityProfile* GetProfile(); // FreeCAD change
+        
         // access the single members
-        Trajectory *Get(unsigned int n){return vt[n];}
+        Trajectory *Get(unsigned int n){return vt[n];} // FreeCAD change
 
 		virtual ~Trajectory_Composite();
 	};

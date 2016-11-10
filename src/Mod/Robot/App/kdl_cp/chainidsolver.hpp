@@ -25,6 +25,7 @@
 #include "chain.hpp"
 #include "frames.hpp"
 #include "jntarray.hpp"
+#include "solveri.hpp"
 
 namespace KDL
 {
@@ -36,12 +37,12 @@ namespace KDL
 	 * dynamics solver for a KDL::Chain.
 	 *
 	 */
-	class ChainIdSolver
+	class ChainIdSolver : public KDL::SolverI
 	{
 		public:
 			/** 
-			 * Calculate inverse dynamics, from joint positions,  
-                         * velocity, acceleration, external forces
+			 * Calculate inverse dynamics, from joint positions, 
+             * velocity, acceleration, external forces
 			 * to joint torques/forces.
 			 * 
 			 * @param q input joint positions

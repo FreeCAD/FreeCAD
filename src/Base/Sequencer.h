@@ -228,7 +228,7 @@ protected:
     virtual void setProgress(size_t);
     /**
      * Resets internal data.
-     * If you want to reimplement this method, it is very important to call it ín
+     * If you want to reimplement this method, it is very important to call it in
      * the re-implemented method.
      */
     virtual void resetData();
@@ -397,7 +397,7 @@ private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
 private:
-    std::auto_ptr<SequencerLauncher> _seq;
+    std::unique_ptr<SequencerLauncher> _seq;
 };
 
 } // namespace Base

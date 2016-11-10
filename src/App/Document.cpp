@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -55,6 +55,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <algorithm>
 # include <sstream>
 # include <climits>
+# include <bitset>
 #endif
 
 #include <boost/graph/topological_sort.hpp>
@@ -71,10 +72,10 @@ recompute path. Also enables more complicated dependencies beyond trees.
 
 
 #include "Document.h"
-#include "DocumentPy.h"
 #include "Application.h"
 #include "DocumentObject.h"
-#include "PropertyLinks.h"
+#include "MergeDocuments.h"
+#include <App/DocumentPy.h>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -88,7 +89,9 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
 
+#ifdef _MSC_VER
 #include <zipios++/zipios-config.h>
+#endif
 #include <zipios++/zipfile.h>
 #include <zipios++/zipinputstream.h>
 #include <zipios++/zipoutputstream.h>
@@ -105,13 +108,9 @@ using namespace std;
 using namespace boost;
 using namespace zipios;
 
-#ifdef MemDebugOn
-# define new DEBUG_CLIENTBLOCK
-#endif
-
 #if FC_DEBUG
 #  define FC_LOGFEATUREUPDATE
-#endif 
+#endif
 
 // typedef boost::property<boost::vertex_root_t, DocumentObject* > VertexProperty;
 typedef boost::adjacency_list <
@@ -137,14 +136,11 @@ struct DocumentP
     std::map<std::string,DocumentObject*> objectMap;
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
-    Transaction *activeTransaction;
     int iTransactionMode;
-    int iTransactionCount;
-    std::map<int,Transaction*> mTransactions;
     std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
-    bool closable;
-    bool keepTrailingDigits;
+    bool undoing; ///< document in the middle of undo or redo
+    std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
@@ -154,12 +150,11 @@ struct DocumentP
     DocumentP() {
         activeObject = 0;
         activeUndoTransaction = 0;
-        activeTransaction = 0;
         iTransactionMode = 0;
-        iTransactionCount = 0;
         rollback = false;
-        closable = true;
-        keepTrailingDigits = true;
+        undoing = false;
+        StatusBits.set((size_t)Document::Closable, true);
+        StatusBits.set((size_t)Document::KeepTrailingDigits, true);
         iUndoMode = 0;
         UndoMemSize = 0;
         UndoMaxStackSize = 20;
@@ -169,6 +164,16 @@ struct DocumentP
 } // namespace App
 
 PROPERTY_SOURCE(App::Document, App::PropertyContainer)
+
+bool Document::testStatus(Status pos) const
+{
+    return d->StatusBits.test((size_t)pos);
+}
+
+void Document::setStatus(Status pos, bool on)
+{
+    d->StatusBits.set((size_t)pos, on);
+}
 
 void Document::writeDependencyGraphViz(std::ostream &out)
 {
@@ -201,30 +206,341 @@ void Document::writeDependencyGraphViz(std::ostream &out)
     out << "}" << endl;
 }
 
-void Document::exportGraphviz(std::ostream& out)
+void Document::exportGraphviz(std::ostream& out) const
 {
-    std::vector<std::string> names;
-    names.reserve(d->objectMap.size());
-    DependencyList DepList;
-    std::map<DocumentObject*,Vertex> VertexObjectList;
+    /* Typedefs for a graph with graphviz attributes */
+    typedef std::map<std::string, std::string> GraphvizAttributes;
+    typedef subgraph< adjacency_list<vecS, vecS, directedS,
+            property<vertex_attribute_t, GraphvizAttributes>,
+            property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
+            property<graph_name_t, std::string,
+            property<graph_graph_attribute_t,  GraphvizAttributes,
+            property<graph_vertex_attribute_t, GraphvizAttributes,
+            property<graph_edge_attribute_t,   GraphvizAttributes>
+            > > > > > Graph;
 
-    // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        // add the object as Vertex and remember the index
-        VertexObjectList[It->second] = add_vertex(DepList);
-        names.push_back(It->second->Label.getValue());
-    }
-    // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(VertexObjectList[It->second],VertexObjectList[*It2],DepList);
+    /**
+     * @brief The GraphCreator class
+     *
+     * This class creates the dependency graph for a document.
+     *
+     */
+
+    class GraphCreator {
+    public:
+
+        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0) {
+            build();
         }
-    }
 
-    if (!names.empty())
-        boost::write_graphviz(out, DepList, boost::make_label_writer(&(names[0])));
+        const Graph & getGraph() const { return DepList; }
+
+    private:
+
+        void build() {
+            // Set attribute(s) for main graph
+            get_property(DepList, graph_graph_attribute)["compound"] = "true";
+
+            addSubgraphs();
+            buildAdjacencyList();
+            addEdges();
+        }
+
+        /**
+         * @brief getId returns a canonical string for a DocumentObject.
+         * @param docObj Document object to get an ID from
+         * @return A string
+         */
+
+        std::string getId(const DocumentObject * docObj) {
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief getId returns a canonical string for an ObjectIdentifier;
+         * @param path
+         * @return A string
+         */
+
+        std::string getId(const ObjectIdentifier & path) {
+            DocumentObject * docObj = path.getDocumentObject();
+
+            return std::string((docObj)->getDocument()->getName()) + "#" + docObj->getNameInDocument() + "." + path.getPropertyName() + path.getSubPathStr();
+        }
+
+        std::string getClusterName(const DocumentObject * docObj) const {
+            return std::string("cluster") + docObj->getNameInDocument();
+        }
+
+        /**
+         * @brief setGraphAttributes Set graph attributes on a subgraph for a DocumentObject node.
+         * @param obj DocumentObject
+         */
+
+        void setGraphAttributes(const DocumentObject * obj) {
+            assert(GraphList[obj] != 0);
+            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+        }
+
+        /**
+         * @brief setPropertyVertexAttributes Set vertex attributes for a Porperty node in a graph.
+         * @param g Graph
+         * @param vertex Property node
+         * @param name Name of node
+         */
+
+        void setPropertyVertexAttributes(Graph & g, Vertex vertex, const std::string & name) {
+            get(vertex_attribute, g)[vertex]["label"] = name;
+            get(vertex_attribute, g)[vertex]["shape"] = "box";
+            get(vertex_attribute, g)[vertex]["style"] = "dashed";
+            get(vertex_attribute, g)[vertex]["fontsize"] = "8pt";
+        }
+
+        /**
+         * @brief addSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
+         *                            document object, or other objects are referencing properties in it.
+         * @param obj DocumentObject to assess.
+         */
+
+        void addSubgraphIfNeeded(DocumentObject * obj) {
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
+
+            if (expressions.size() > 0) {
+
+                // If documentObject has an expression, create a subgraph for it
+                if (!GraphList[obj]) {
+                    GraphList[obj] = &DepList.create_subgraph();
+                    setGraphAttributes(obj);
+                }
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+
+                    i->second.expression->getDeps(deps);
+
+                    std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                    while (j != deps.end()) {
+                        DocumentObject * o = j->getDocumentObject();
+
+                        // Doesn't exist already?
+                        if (!GraphList[o]) {
+                            GraphList[o] = &DepList.create_subgraph();
+                            setGraphAttributes(o);
+                        }
+                        ++j;
+                    }
+                    ++i;
+                }
+            }
+        }
+
+        /**
+         * @brief add Add @docObj to the graph, including all expressions (and dependencies) it includes.
+         * @param docObj The document object to add.
+         * @param name Name of node.
+         */
+
+        void add(DocumentObject * docObj, const std::string & name, const std::string & label) {
+            Graph * sgraph = GraphList[docObj] ? GraphList[docObj] : &DepList;
+
+            // Keep a list of all added document objects.
+            objects.insert(docObj);
+
+            // Add vertex to graph. Track global and local index
+            LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
+            GlobalVertexList[getId(docObj)] = vertex_no++;
+
+            // Set node label
+            if (name == label)
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
+
+            // If node is in main graph, style it with rounded corners. If not, remove the border as the subgraph will contain it.
+            if (sgraph == &DepList) {
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
+            }
+            else
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["color"] = "none";
+
+            // Add expressions and its dependencies
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+            // Add nodes for each property that has an expression attached to it
+            while (i != expressions.end()) {
+                std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(i->first));
+                if (k == GlobalVertexList.end()) {
+                    int vid = LocalVertexList[getId(i->first)] = add_vertex(*sgraph);
+                    GlobalVertexList[getId(i->first)] = vertex_no++;
+                    setPropertyVertexAttributes(*sgraph, vid, i->first.toString());
+                }
+
+                ++i;
+            }
+
+            // Add all dependencies
+            i = expressions.begin();
+            while (i != expressions.end()) {
+
+                // Get dependencies
+                std::set<ObjectIdentifier> deps;
+                i->second.expression->getDeps(deps);
+
+                // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                std::set<ObjectIdentifier>::const_iterator j = deps.begin();
+                while (j != deps.end()) {
+                    DocumentObject * depObjDoc = j->getDocumentObject();
+                    std::map<std::string, Vertex>::const_iterator k = GlobalVertexList.find(getId(*j));
+
+                    if (k == GlobalVertexList.end()) {
+                        Graph * depSgraph = GraphList[depObjDoc] ? GraphList[depObjDoc] : &DepList;
+
+                        LocalVertexList[getId(*j)] = add_vertex(*depSgraph);
+                        GlobalVertexList[getId(*j)] = vertex_no++;
+                        setPropertyVertexAttributes(*depSgraph, LocalVertexList[getId(*j)], j->getPropertyName() + j->getSubPathStr());
+                    }
+
+                    ++j;
+                }
+                ++i;
+            }
+
+        }
+
+        void addSubgraphs() {
+            // Internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                addSubgraphIfNeeded(It->second);
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            addSubgraphIfNeeded(*It2);
+                    }
+                }
+            }
+        }
+
+        // Filling up the adjacency List
+        void buildAdjacencyList() {
+            // Add internal document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
+                add(It->second, It->second->getNameInDocument(), It->second->Label.getValue());
+
+            // Add external document objects
+            for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
+
+                        if (item == GlobalVertexList.end())
+                            add(*It2,
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->getNameInDocument(),
+                                std::string((*It2)->getDocument()->getName()) + "#" + (*It2)->Label.getValue());
+                    }
+                }
+            }
+        }
+
+        void addEdges() {
+            // Get edge properties for main graph
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+
+            // Track edges between document objects connected by expression dependencies
+            std::set<std::pair<const DocumentObject*, const DocumentObject*> > existingEdges;
+
+            // Add edges between properties
+            std::set<const DocumentObject*>::const_iterator j = objects.begin();
+            while (j != objects.end()) {
+                const DocumentObject * docObj = *j;
+
+                // Add expressions and its dependencies
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
+                boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo>::const_iterator i = expressions.begin();
+
+                while (i != expressions.end()) {
+                    std::set<ObjectIdentifier> deps;
+                    i->second.expression->getDeps(deps);
+
+                    // Create subgraphs for all documentobjects that it depends on; it will depend on some property there
+                    std::set<ObjectIdentifier>::const_iterator k = deps.begin();
+                    while (k != deps.end()) {
+                        DocumentObject * depObjDoc = k->getDocumentObject();
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(i->first)], GlobalVertexList[getId(*k)], DepList);
+
+                        // Add this edge to the set of all expression generated edges
+                        existingEdges.insert(std::make_pair(docObj, depObjDoc));
+
+                        // Edges between properties should be a bit smaller, and dashed
+                        edgeAttrMap[edge]["arrowsize"] = "0.5";
+                        edgeAttrMap[edge]["style"] = "dashed";
+                        ++k;
+                    }
+                    ++i;
+                }
+                ++j;
+            }
+
+            // Add edges between document objects
+            for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::vector<DocumentObject*> OutList = It->second->getOutList();
+                for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+                    if (*It2) {
+                        const DocumentObject * docObj = It->second;
+
+                        // Skip duplicate edges
+                        if (edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second)
+                            continue;
+
+                        // Skip edge if an expression edge already exists
+                        if (existingEdges.find(std::make_pair(docObj, *It2)) != existingEdges.end())
+                            continue;
+
+                        // Add edge
+
+                        Edge edge;
+                        bool inserted;
+
+                        tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList);
+
+                        // Set properties to make arrows go between subgraphs if needed
+                        if (GraphList[docObj])
+                            edgeAttrMap[edge]["ltail"] = getClusterName(docObj);
+                        if (GraphList[*It2])
+                            edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
+                    }
+                }
+            }
+
+        }
+
+        const struct DocumentP* d;
+        Graph DepList;
+        int vertex_no;
+        std::map<std::string, Vertex> LocalVertexList;
+        std::map<std::string, Vertex> GlobalVertexList;
+        std::set<const DocumentObject*> objects;
+        std::map<const DocumentObject*, Graph*> GraphList;
+    };
+
+    GraphCreator g(d);
+
+    boost::write_graphviz(out, g.getGraph());
 }
 
 //bool _has_cycle_dfs(const DependencyList & g, vertex_t u, default_color_type * color)
@@ -263,9 +579,10 @@ bool Document::undo(void)
         // redo
         d->activeUndoTransaction = new Transaction();
         d->activeUndoTransaction->Name = mUndoTransactions.back()->Name;
-
+        d->undoing = true;
         // applying the undo
         mUndoTransactions.back()->apply(*this,false);
+        d->undoing = false;
 
         // save the redo
         mRedoTransactions.push_back(d->activeUndoTransaction);
@@ -294,7 +611,9 @@ bool Document::redo(void)
         d->activeUndoTransaction->Name = mRedoTransactions.back()->Name;
 
         // do the redo
+        d->undoing = true;
         mRedoTransactions.back()->apply(*this,true);
+        d->undoing = false;
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = 0;
 
@@ -511,7 +830,7 @@ void Document::onChanged(const Property* prop)
     }
 }
 
-void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property *What)
+void Document::onBeforeChangeProperty(const TransactionalObject *Who, const Property *What)
 {
     if (d->activeUndoTransaction && !d->rollback)
         d->activeUndoTransaction->addObjectChange(Who,What);
@@ -519,66 +838,13 @@ void Document::onBeforeChangeProperty(const DocumentObject *Who, const Property 
 
 void Document::onChangedProperty(const DocumentObject *Who, const Property *What)
 {
-    if (d->activeTransaction && !d->rollback)
-        d->activeTransaction->addObjectChange(Who,What);
     signalChangedObject(*Who, *What);
 }
 
 void Document::setTransactionMode(int iMode)
 {
-    /*  if(_iTransactionMode == 0 && iMode == 1)
-        beginTransaction();
-
-      if(activTransaction && iMode == 0)
-        endTransaction();
-      */
     d->iTransactionMode = iMode;
 }
-
-#if 0
-/// starts a new transaction
-int  Document::beginTransaction(void)
-{
-    if (activTransaction)
-        endTransaction();
-
-    iTransactionCount++;
-
-    activTransaction = new Transaction(iTransactionCount);
-    d->mTransactions[iTransactionCount] = activTransaction;
-
-    return iTransactionCount;
-}
-
-/// revert all changes to the document since beginTransaction()
-void Document::rollbackTransaction(void)
-{
-    // ToDo
-    assert(0);
-    endTransaction();
-}
-
-/// ends the open Transaction
-int  Document::endTransaction(void)
-{
-    activTransaction = 0;
-    return iTransactionCount;
-}
-
-/// returns the named Transaction
-const Transaction *Document::getTransaction(int pos) const
-{
-    if (pos == -1)
-        return activTransaction;
-    else {
-        std::map<int,Transaction*>::const_iterator Pos(d->mTransactions.find(pos));
-        if (Pos != d->mTransactions.end())
-            return Pos->second;
-        else
-            return 0;
-    }
-}
-#endif
 
 //--------------------------------------------------------------------------
 // constructor
@@ -597,14 +863,18 @@ Document::Document(void)
 #ifdef FC_LOGUPDATECHAIN
     Console().Log("+App::Document: %p\n",this);
 #endif
-
+    std::string CreationDateString = Base::TimeInfo::currentDateTimeString();
+    std::string Author = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+    std::string AuthorComp = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefCompany","");
     ADD_PROPERTY_TYPE(Label,("Unnamed"),0,Prop_None,"The name of the document");
-    ADD_PROPERTY_TYPE(FileName,(""),0,Prop_ReadOnly,"The path to the file where the document is saved to");
-    ADD_PROPERTY_TYPE(CreatedBy,(""),0,Prop_None,"The creator of the document");
-    ADD_PROPERTY_TYPE(CreationDate,(Base::TimeInfo::currentDateTimeString()),0,Prop_ReadOnly,"Date of creation");
+    ADD_PROPERTY_TYPE(FileName,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),"The path to the file where the document is saved to");
+    ADD_PROPERTY_TYPE(CreatedBy,(Author.c_str()),0,Prop_None,"The creator of the document");
+    ADD_PROPERTY_TYPE(CreationDate,(CreationDateString.c_str()),0,Prop_ReadOnly,"Date of creation");
     ADD_PROPERTY_TYPE(LastModifiedBy,(""),0,Prop_None,0);
     ADD_PROPERTY_TYPE(LastModifiedDate,("Unknown"),0,Prop_ReadOnly,"Date of last modification");
-    ADD_PROPERTY_TYPE(Company,(""),0,Prop_None,"Additional tag to save the the name of the company");
+    ADD_PROPERTY_TYPE(Company,(AuthorComp.c_str()),0,Prop_None,"Additional tag to save the the name of the company");
     ADD_PROPERTY_TYPE(Comment,(""),0,Prop_None,"Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta,(),0,Prop_None,"Map with additional meta information");
     ADD_PROPERTY_TYPE(Material,(),0,Prop_None,"Map with material properties");
@@ -617,9 +887,66 @@ Document::Document(void)
     ADD_PROPERTY_TYPE(License,("CC-BY 3.0"),0,Prop_None,"License string of the Item");
     ADD_PROPERTY_TYPE(LicenseURL,("http://creativecommons.org/licenses/by/3.0/"),0,Prop_None,"URL to the license text/contract");
 
+    // license stuff
+    int licenseId = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetInt("prefLicenseType",0);
+    std::string license;
+    std::string licenseUrl;
+    switch (licenseId) {
+        case 0:
+            license = "All rights reserved";
+            licenseUrl = "http://en.wikipedia.org/wiki/All_rights_reserved";
+            break;
+        case 1:
+            license = "CreativeCommons Attribution";
+            licenseUrl = "http://creativecommons.org/licenses/by/4.0/";
+            break;
+        case 2:
+            license = "CreativeCommons Attribution-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-sa/4.0/";
+            break;
+        case 3:
+            license = "CreativeCommons Attribution-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nd/4.0/";
+            break;
+        case 4:
+            license = "CreativeCommons Attribution-NonCommercial";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc/4.0/";
+            break;
+        case 5:
+            license = "CreativeCommons Attribution-NonCommercial-ShareAlike";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-sa/4.0/";
+            break;
+        case 6:
+            license = "CreativeCommons Attribution-NonCommercial-NoDerivatives";
+            licenseUrl = "http://creativecommons.org/licenses/by-nc-nd/4.0/";
+            break;
+        case 7:
+            license = "Public Domain";
+            licenseUrl = "http://en.wikipedia.org/wiki/Public_domain";
+            break;
+        case 8:
+            license = "FreeArt";
+            licenseUrl = "http://artlibre.org/licence/lal";
+            break;
+        default:
+            license = "Other";
+            break;
+    }
+
+    licenseUrl = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefLicenseUrl", licenseUrl.c_str());
+
+    ADD_PROPERTY_TYPE(License,(license.c_str()),0,Prop_None,"License string of the Item");
+    ADD_PROPERTY_TYPE(LicenseURL,(licenseUrl.c_str()),0,Prop_None,"URL to the license text/contract");
+
     // this creates and sets 'TransientDir' in onChanged()
     ADD_PROPERTY_TYPE(TransientDir,(""),0,PropertyType(Prop_Transient|Prop_ReadOnly),
         "Transient directory, where the files live while the document is open");
+    ADD_PROPERTY_TYPE(Tip,(0),0,PropertyType(Prop_Transient),
+        "Link of the tip object of the document");
+    ADD_PROPERTY_TYPE(TipName,(""),0,PropertyType(Prop_Hidden|Prop_ReadOnly),
+        "Link of the tip object of the document");
     Uid.touch();
 }
 
@@ -663,7 +990,7 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
     std::stringstream s;
     QCryptographicHash hash(QCryptographicHash::Sha1);
     hash.addData(filename.c_str(), filename.size());
-    s << Base::FileInfo::getTempPath() << GetApplication().getExecutableName()
+    s << App::Application::getTempPath() << GetApplication().getExecutableName()
       << "_Doc_" << uuid
       << "_" << hash.result().toHex().left(6).constData()
       << "_" << QCoreApplication::applicationPid();
@@ -740,7 +1067,7 @@ void Document::Restore(Base::XMLReader &reader)
             string name = reader.getAttribute("name");
 
             try {
-                addObject(type.c_str(),name.c_str());
+                addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             }
             catch ( Base::Exception& ) {
                 Base::Console().Message("Cannot create object '%s'\n", name.c_str());
@@ -767,6 +1094,10 @@ void Document::Restore(Base::XMLReader &reader)
     else if ( scheme >= 3 ) {
         // read the feature types
         readObjects(reader);
+
+		// tip object handling. First the whole document has to be read, then we
+		// can restore the Tip link out of the TipName Property:
+		Tip.setValue(getObject(TipName.getValue()));
     }
 
     reader.readEndElement("Document");
@@ -835,7 +1166,8 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 std::vector<App::DocumentObject*>
 Document::readObjects(Base::XMLReader& reader)
 {
-    d->keepTrailingDigits = !reader.doNameMapping();
+    bool keepDigits = testStatus(Document::KeepTrailingDigits);
+    setStatus(Document::KeepTrailingDigits, !reader.doNameMapping());
     std::vector<App::DocumentObject*> objs;
 
     // read the object types
@@ -851,7 +1183,7 @@ Document::readObjects(Base::XMLReader& reader)
             // otherwise we may cause a dependency to itself
             // Example: Object 'Cut001' references object 'Cut' and removing the
             // digits we make an object 'Cut' referencing itself.
-            App::DocumentObject* obj = addObject(type.c_str(),name.c_str());
+            App::DocumentObject* obj = addObject(type.c_str(), name.c_str(), /*isNew=*/ false);
             if (obj) {
                 objs.push_back(obj);
                 // use this name for the later access because an object with
@@ -863,7 +1195,9 @@ Document::readObjects(Base::XMLReader& reader)
             Base::Console().Error("Cannot create object '%s': (%s)\n", name.c_str(), e.what());
         }
     }
+
     reader.readEndElement("Objects");
+    setStatus(Document::KeepTrailingDigits, keepDigits);
 
     // read the features itself
     reader.readElement("ObjectData");
@@ -909,6 +1243,7 @@ Document::importObjects(Base::XMLReader& reader)
     // reset all touched
     for (std::vector<DocumentObject*>::iterator it= objs.begin();it!=objs.end();++it) {
         (*it)->onDocumentRestored();
+        (*it)->ExpressionEngine.onDocumentRestored();
         (*it)->purgeTouched();
     }
     return objs;
@@ -944,14 +1279,47 @@ bool Document::saveAs(const char* file)
     return save();
 }
 
+bool Document::saveCopy(const char* file)
+{
+    std::string originalFileName = this->FileName.getStrValue();
+    std::string originalLabel = this->Label.getStrValue();
+    Base::FileInfo fi(file);
+    if (this->FileName.getStrValue() != file) {
+        this->FileName.setValue(file);
+        this->Label.setValue(fi.fileNamePure());
+        this->Uid.touch(); // this forces a rename of the transient directory
+        bool result = save();
+        this->FileName.setValue(originalFileName);
+        this->Label.setValue(originalLabel);
+        this->Uid.touch();
+        return result;
+    }
+    return false;
+}
+
 // Save the document under the name it has been opened
 bool Document::save (void)
 {
     int compression = App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetInt("CompressionLevel",3);
+    compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     if (*(FileName.getValue()) != '\0') {
-        LastModifiedDate.setValue(Base::TimeInfo::currentDateTimeString());
+        // Save the name of the tip object in order to handle in Restore()
+        if(Tip.getValue()) {
+            TipName.setValue(Tip.getValue()->getNameInDocument());
+        }
+
+        std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
+        LastModifiedDate.setValue(LastModifiedDateString.c_str());
+        // set author if needed
+        bool saveAuthor = App::GetApplication().GetParameterGroupByPath
+            ("User parameter:BaseApp/Preferences/Document")->GetBool("prefSetAuthorOnSave",false);
+        if (saveAuthor) {
+            std::string Author = App::GetApplication().GetParameterGroupByPath
+                ("User parameter:BaseApp/Preferences/Document")->GetASCII("prefAuthor","");
+            LastModifiedBy.setValue(Author.c_str());
+        }
         // make a tmp. file where to save the project data first and then rename to
         // the actual file name. This may be useful if overwriting an existing file
         // fails so that the data of the work up to now isn't lost.
@@ -976,6 +1344,10 @@ bool Document::save (void)
 
             // write additional files
             writer.writeFiles();
+
+            if (writer.hasErrors()) {
+                throw Base::FileException("Failed to write all data to file", tmp);
+            }
 
             GetApplication().signalSaveDocument(*this);
         }
@@ -1027,7 +1399,8 @@ bool Document::save (void)
                     fn = str.str();
                 }
 
-                fi.renameFile(fn.c_str());
+                if (fi.renameFile(fn.c_str()) == false)
+                    Base::Console().Warning("Cannot rename project file to backup file\n");
             }
             else {
                 fi.deleteFile();
@@ -1049,8 +1422,14 @@ void Document::restore (void)
     // clean up if the document is not empty
     // !TODO mind exeptions while restoring!
     clearUndos();
+    // first notify the objects to being deleted and then delete them in a second loop (#0002521)
+    // FIXME: To delete every object individually is inefficient. Add a new signal 'signalClear'
+    // and then clear everything in one go.
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         signalDeletedObject(*(*obj));
+        signalTransactionRemove(*(*obj), 0);
+    }
+    for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
         delete *obj;
     }
     d->objectArray.clear();
@@ -1086,10 +1465,12 @@ void Document::restore (void)
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
-    
+
     // reset all touched
     for (std::map<std::string,DocumentObject*>::iterator It= d->objectMap.begin();It!=d->objectMap.end();++It) {
+        It->second->connectRelabelSignals();
         It->second->onDocumentRestored();
+        It->second->ExpressionEngine.onDocumentRestored();
         It->second->purgeTouched();
     }
 
@@ -1107,7 +1488,7 @@ bool Document::isSaved() const
  * matches with the file name where the document is stored to.
  * In contrast to Label the method getName() returns the internal name of the document that only
  * matches with Label when loading or creating a document because then both are set to the same value.
- * Since the internal name cannot be changed during runtime it must differ from the Label after saving 
+ * Since the internal name cannot be changed during runtime it must differ from the Label after saving
  * the document the first time or saving it under a new file name.
  * @ note More than one document can have the same label name.
  * @ note The internal is always guaranteed to be unique because @ref Application::newDocument() checks
@@ -1148,12 +1529,12 @@ vector<DocumentObject*> Document::getTouched(void) const
 
 void Document::setClosable(bool c)
 {
-    d->closable = c;
+    setStatus(Document::Closable, c);
 }
 
 bool Document::isClosable() const
 {
-    return d->closable;
+    return testStatus(Document::Closable);
 }
 
 int Document::countObjects(void) const
@@ -1177,6 +1558,20 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
+namespace boost {
+// recursive helper function to get all dependencies
+void out_edges_recursive(const Vertex& v, const DependencyList& g, std::set<Vertex>& out)
+{
+    DependencyList::out_edge_iterator j, jend;
+    for (boost::tie(j, jend) = boost::out_edges(v, g); j != jend; ++j) {
+        Vertex n = boost::target(*j, g);
+        std::pair<std::set<Vertex>::iterator, bool> i = out.insert(n);
+        if (i.second)
+            out_edges_recursive(n, g, out);
+    }
+}
+}
+
 std::vector<App::DocumentObject*>
 Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
 {
@@ -1185,18 +1580,36 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
     std::map<Vertex,DocumentObject*> VertexMap;
 
     // Filling up the adjacency List
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
         // add the object as Vertex and remember the index
         Vertex v = add_vertex(DepList);
-        ObjectMap[It->second] = v;
-        VertexMap[v] = It->second;
+        ObjectMap[*it] = v;
+        VertexMap[v] = *it;
     }
+
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
+        std::vector<DocumentObject*> outList = (*it)->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
+            if (*jt) {
+                std::map<DocumentObject*,Vertex>::const_iterator i = ObjectMap.find(*jt);
+
+                if (i == ObjectMap.end()) {
+                    Vertex v = add_vertex(DepList);
+
+                    ObjectMap[*jt] = v;
+                    VertexMap[v] = *jt;
+                }
+            }
+        }
+    }
+
     // add the edges
-    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-        std::vector<DocumentObject*> OutList = It->second->getOutList();
-        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
-            if (*It2)
-                add_edge(ObjectMap[It->second],ObjectMap[*It2],DepList);
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end();++it) {
+        std::vector<DocumentObject*> outList = (*it)->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator jt = outList.begin(); jt != outList.end();++jt) {
+            if (*jt) {
+                add_edge(ObjectMap[*it],ObjectMap[*jt],DepList);
+            }
         }
     }
 
@@ -1207,26 +1620,51 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         // this sort gives the execute
         boost::topological_sort(DepList, std::front_inserter(make_order));
     }
-    catch (const std::exception&) {
-        return std::vector<App::DocumentObject*>();
+    catch (const std::exception& e) {
+        std::stringstream ss;
+        ss << "Gathering all dependencies failed, probably due to circular dependencies. Error: ";
+        ss << e.what();
+        throw Base::Exception(ss.str().c_str());
     }
 
-    //std::vector<App::DocumentObject*> out;
-    boost::unordered_set<App::DocumentObject*> out;
+    std::set<Vertex> out;
     for (std::vector<App::DocumentObject*>::const_iterator it = objs.begin(); it != objs.end(); ++it) {
         std::map<DocumentObject*,Vertex>::iterator jt = ObjectMap.find(*it);
         // ok, object is part of this graph
         if (jt != ObjectMap.end()) {
-            for (boost::tie(j, jend) = boost::out_edges(jt->second, DepList); j != jend; ++j) {
-                out.insert(VertexMap[boost::target(*j, DepList)]);
-            }
-            out.insert(*it);
+            out.insert(jt->second);
+            out_edges_recursive(jt->second, DepList, out);
         }
     }
 
     std::vector<App::DocumentObject*> ary;
-    ary.insert(ary.end(), out.begin(), out.end());
+    ary.reserve(out.size());
+    for (std::set<Vertex>::iterator it = out.begin(); it != out.end(); ++it)
+        ary.push_back(VertexMap[*it]);
     return ary;
+}
+
+/**
+ * @brief Signal that object identifiers, typically a property or document object has been renamed.
+ *
+ * This function iterates through all document object in the document, and calls its
+ * renameObjectIdentifiers functions.
+ *
+ * @param paths Map with current and new names
+ */
+
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+{
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
+
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
+    while (it != paths.end()) {
+        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
+        ++it;
+    }
+
+    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
+        (*it)->renameObjectIdentifiers(extendedPaths);
 }
 
 void Document::_rebuildDependencyList(void)
@@ -1238,6 +1676,20 @@ void Document::_rebuildDependencyList(void)
         // add the object as Vertex and remember the index
         d->VertexObjectList[It->second] = add_vertex(d->DepList);
     }
+
+    // add the edges
+    for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+        std::vector<DocumentObject*> OutList = It->second->getOutList();
+        for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
+            if (*It2) {
+                std::map<DocumentObject*,Vertex>::iterator i = d->VertexObjectList.find(*It2);
+
+                if (i == d->VertexObjectList.end())
+                    d->VertexObjectList[*It2] = add_vertex(d->DepList);
+            }
+        }
+    }
+
     // add the edges
     for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
         std::vector<DocumentObject*> OutList = It->second->getOutList();
@@ -1250,8 +1702,14 @@ void Document::_rebuildDependencyList(void)
 
 void Document::recompute()
 {
+    // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
+    // time expensive recomputes
+    bool skip = testStatus(Document::SkipRecompute);
+    if (skip)
+        return;
+
     // delete recompute log
-    for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
+    for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
         delete *it;
     _RecomputeLog.clear();
 
@@ -1260,6 +1718,7 @@ void Document::recompute()
 
     std::list<Vertex> make_order;
     DependencyList::out_edge_iterator j, jend;
+
 
     try {
         // this sort gives the execute
@@ -1278,40 +1737,66 @@ void Document::recompute()
     std::clog << "make ordering: " << std::endl;
 #endif
 
+    std::set<DocumentObject*> recomputeList;
+
     for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
         DocumentObject* Cur = d->vertexMap[*i];
-        if (!Cur) continue;
+        if (!Cur || !isIn(Cur)) continue;
 #ifdef FC_LOGFEATUREUPDATE
-        std::clog << Cur->getNameInDocument() << " dep on: " ;
+        std::clog << Cur->getNameInDocument() << " dep on:" ;
 #endif
         bool NeedUpdate = false;
 
         // ask the object if it should be recomputed
-        if (Cur->mustExecute() == 1)
+        if (Cur->mustExecute() == 1 || Cur->ExpressionEngine.depsAreTouched()) {
+#ifdef FC_LOGFEATUREUPDATE
+            std::clog << "[touched]";
+#endif
             NeedUpdate = true;
+        }
         else {// if (Cur->mustExecute() == -1)
             // update if one of the dependencies is touched
             for (boost::tie(j, jend) = out_edges(*i, d->DepList); j != jend; ++j) {
                 DocumentObject* Test = d->vertexMap[target(*j, d->DepList)];
+
                 if (!Test) continue;
 #ifdef FC_LOGFEATUREUPDATE
-                std::clog << Test->getNameInDocument() << ", " ;
+                std::clog << " " << Test->getNameInDocument();
 #endif
                 if (Test->isTouched()) {
                     NeedUpdate = true;
-                    break;
+#ifdef FC_LOGFEATUREUPDATE
+                    std::clog << "[touched]";
+#endif
                 }
             }
-#ifdef FC_LOGFEATUREUPDATE
-            std::clog << std::endl;
-#endif
         }
         // if one touched recompute
         if (NeedUpdate) {
+            Cur->touch();
 #ifdef FC_LOGFEATUREUPDATE
-            std::clog << "Recompute" << std::endl;
+            std::clog << " => Recompute feature";
 #endif
-            if (_recomputeFeature(Cur)) {
+            recomputeList.insert(Cur);
+        }
+#ifdef FC_LOGFEATUREUPDATE
+        std::clog << std::endl;
+#endif
+    }
+
+#ifdef FC_LOGFEATUREUPDATE
+    std::clog << "Have to recompute the following document objects" << std::endl;
+    for (std::set<DocumentObject*>::const_iterator it = recomputeList.begin(); it != recomputeList.end(); ++it) {
+        std::clog << "  " << (*it)->getNameInDocument() << std::endl;
+    }
+#endif
+
+    for (std::list<Vertex>::reverse_iterator i = make_order.rbegin();i != make_order.rend(); ++i) {
+        DocumentObject* Cur = d->vertexMap[*i];
+
+        if (recomputeList.find(Cur) != recomputeList.end() ||
+                Cur->ExpressionEngine.depsAreTouched()) {
+            if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
                 d->vertexMap.clear();
                 return;
@@ -1321,10 +1806,12 @@ void Document::recompute()
 
     // reset all touched
     for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
-        if (it->second)
+        if ((it->second) && isIn(it->second))
             it->second->purgeTouched();
     }
     d->vertexMap.clear();
+
+    signalRecomputed(*this);
 }
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
@@ -1344,6 +1831,17 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 
     DocumentObjectExecReturn  *returnCode = 0;
     try {
+        returnCode = Feat->ExpressionEngine.execute();
+        if (returnCode != DocumentObject::StdReturn) {
+            returnCode->Which = Feat;
+            _RecomputeLog.push_back(returnCode);
+    #ifdef FC_DEBUG
+            Base::Console().Error("%s\n",returnCode->Why.c_str());
+    #endif
+            Feat->setError();
+            return true;
+        }
+
         returnCode = Feat->recompute();
     }
     catch(Base::AbortException &e){
@@ -1397,14 +1895,16 @@ bool Document::_recomputeFeature(DocumentObject* Feat)
 void Document::recomputeFeature(DocumentObject* Feat)
 {
      // delete recompute log
-    for( std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
+    for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
         delete *it;
     _RecomputeLog.clear();
 
-    _recomputeFeature(Feat);
+    // verify that the feature is (active) part of the document
+    if (Feat->getNameInDocument())
+        _recomputeFeature(Feat);
 }
 
-DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
+DocumentObject * Document::addObject(const char* sType, const char* pObjectName, bool isNew)
 {
     Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(sType,true));
 
@@ -1415,17 +1915,14 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
         delete base;
         std::stringstream str;
         str << "'" << sType << "' is not a document object type";
-        throw Base::Exception(str.str());
+        throw Base::TypeError(str.str());
     }
 
     App::DocumentObject* pcObject = static_cast<App::DocumentObject*>(base);
     pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
@@ -1451,33 +1948,96 @@ DocumentObject * Document::addObject(const char* sType, const char* pObjectName)
 
     pcObject->Label.setValue( ObjectName );
 
+    // Call the object-specific initialization
+    if (!d->undoing && !d->rollback && isNew) {
+        pcObject->setupObject ();
+    }
+
     // mark the object as new (i.e. set status bit 2) and send the signal
     pcObject->StatusBits.set(2);
     signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+
     signalActivatedObject(*pcObject);
 
     // return the Object
     return pcObject;
 }
 
-void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
+void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
 {
-    d->objectMap[pObjectName] = pcObject;
-    d->objectArray.push_back(pcObject);
-    // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
-    pcObject->pcNameInDocument = &(d->objectMap.find(pObjectName)->first);
+    if (pcObject->getDocument()) {
+        throw Base::RuntimeError("Document object is already added to a document");
+    }
+
+    pcObject->setDocument(this);
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectNew(pcObject);
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction)
             d->activeUndoTransaction->addObjectDel(pcObject);
     }
+
+    // get unique name
+    string ObjectName;
+    if (pObjectName && pObjectName[0] != '\0')
+        ObjectName = getUniqueObjectName(pObjectName);
+    else
+        ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
+
+    d->activeObject = pcObject;
+
+    // insert in the name map
+    d->objectMap[ObjectName] = pcObject;
+    // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
+    // insert in the vector
+    d->objectArray.push_back(pcObject);
+
+    pcObject->Label.setValue( ObjectName );
+
+    // mark the object as new (i.e. set status bit 2) and send the signal
+    pcObject->StatusBits.set(2);
+    signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+
+    signalActivatedObject(*pcObject);
+}
+
+void Document::_addObject(DocumentObject* pcObject, const char* pObjectName)
+{
+    std::string ObjectName = getUniqueObjectName(pObjectName);
+    d->objectMap[ObjectName] = pcObject;
+    d->objectArray.push_back(pcObject);
+    // cache the pointer to the name string in the Object (for performance of DocumentObject::getNameInDocument())
+    pcObject->pcNameInDocument = &(d->objectMap.find(ObjectName)->first);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback) {
+        // Undo stuff
+        if (d->activeUndoTransaction)
+            d->activeUndoTransaction->addObjectDel(pcObject);
+    }
+
     // send the signal
     signalNewObject(*pcObject);
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        signalTransactionAppend(*pcObject, d->activeUndoTransaction);
+    }
+
+    d->activeObject = pcObject;
+    signalActivatedObject(*pcObject);
 }
 
 /// Remove an object out of the document
@@ -1494,7 +2054,25 @@ void Document::remObject(const char* sName)
     if (d->activeObject == pos->second)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pos->second->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pos->second->unsetupObject();
+    }
+
     signalDeletedObject(*(pos->second));
+    pos->second->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+
+    // do no transactions if we do a rollback!
+    if (!d->rollback && d->activeUndoTransaction) {
+        // in this case transaction delete or save the object
+        signalTransactionRemove(*pos->second, d->activeUndoTransaction);
+    }
+    else {
+        // if not saved in undo -> delete object
+        signalTransactionRemove(*pos->second, 0);
+    }
+
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
@@ -1508,23 +2086,23 @@ void Document::remObject(const char* sName)
     // Before deleting we must nullify all dependant objects
     breakDependency(pos->second, true);
 
+    //and remove the tip if needed
+    if (Tip.getValue() && strcmp(Tip.getValue()->getNameInDocument(), sName)==0) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
+
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pos->second);
-
+    if (!d->rollback) {
         // Undo stuff
         if (d->activeUndoTransaction) {
             // in this case transaction delete or save the object
             d->activeUndoTransaction->addObjectNew(pos->second);
-            // set name cache false
-            //pos->second->pcNameInDocument = 0;
         }
-        else
+        else {
             // if not saved in undo -> delete object
             delete pos->second;
+        }
     }
 
     for (std::vector<DocumentObject*>::iterator obj = d->objectArray.begin(); obj != d->objectArray.end(); ++obj) {
@@ -1542,35 +2120,55 @@ void Document::remObject(const char* sName)
 /// Remove an object out of the document (internal)
 void Document::_remObject(DocumentObject* pcObject)
 {
+    // TODO Refactoring: share code with Document::remObject() (2015-09-01, Fat-Zer)
     _checkTransaction(pcObject);
 
     std::map<std::string,DocumentObject*>::iterator pos = d->objectMap.find(pcObject->getNameInDocument());
 
+
     if (d->activeObject == pcObject)
         d->activeObject = 0;
 
+    // Mark the object as about to be deleted
+    pcObject->StatusBits.set (ObjectStatus::Delete);
+    if (!d->undoing && !d->rollback) {
+        pcObject->unsetupObject();
+    }
     signalDeletedObject(*pcObject);
+    // TODO Check me if it's needed (2015-09-01, Fat-Zer)
+    pcObject->StatusBits.reset (ObjectStatus::Delete); // Unset the bit to be on the safe side
+
+    //remove the tip if needed
+    if (Tip.getValue() == pcObject) {
+        Tip.setValue(nullptr);
+        TipName.setValue("");
+    }
 
     // do no transactions if we do a rollback!
-    if(!d->rollback){
-        // Transaction stuff
-        if (d->activeTransaction)
-            d->activeTransaction->addObjectDel(pcObject);
-
+    if (!d->rollback && d->activeUndoTransaction) {
         // Undo stuff
-        if (d->activeUndoTransaction)
-            d->activeUndoTransaction->addObjectNew(pcObject);
+        signalTransactionRemove(*pcObject, d->activeUndoTransaction);
+        d->activeUndoTransaction->addObjectNew(pcObject);
     }
+    else {
+        // for a rollback delete the object
+        signalTransactionRemove(*pcObject, 0);
+        breakDependency(pcObject, true);
+    }
+
     // remove from map
     d->objectMap.erase(pos);
-    //// set name cache false
-    //pcObject->pcNameInDocument = 0;
 
     for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
         if (*it == pcObject) {
             d->objectArray.erase(it);
             break;
         }
+    }
+
+    // for a rollback delete the object
+    if (d->rollback) {
+        delete pcObject;
     }
 }
 
@@ -1643,92 +2241,36 @@ void Document::breakDependency(DocumentObject* pcObject, bool clear)
     }
 }
 
-DocumentObject* Document::_copyObject(DocumentObject* obj, std::map<DocumentObject*, 
-                                      DocumentObject*>& copy_map, bool recursive,
-                                      bool keepdigitsatend)
+DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive)
 {
-    if (!obj) return 0;
-    // remove number from end to avoid lengthy names
-    std::string objname = obj->getNameInDocument();
-    if (!keepdigitsatend) {
-        size_t lastpos = objname.length()-1;
-        while (objname[lastpos] >= 48 && objname[lastpos] <= 57)
-            lastpos--;
-        objname = objname.substr(0, lastpos+1);
-    }
-    DocumentObject* copy = addObject(obj->getTypeId().getName(),objname.c_str());
-    if (!copy) return 0;
-    copy->addDynamicProperties(obj);
+    std::vector<DocumentObject*> objs;
+    objs.push_back(obj);
 
-    copy_map[obj] = copy;
-
-    std::map<std::string,App::Property*> props;
-    copy->getPropertyMap(props);
-    for (std::map<std::string,App::Property*>::iterator it = props.begin(); it != props.end(); ++it) {
-        App::Property* prop = obj->getPropertyByName(it->first.c_str());
-        if (prop && prop->getTypeId() == it->second->getTypeId()) {
-            if (prop->getTypeId() == PropertyLink::getClassTypeId()) {
-                DocumentObject* link = static_cast<PropertyLink*>(prop)->getValue();
-                std::map<DocumentObject*, DocumentObject*>::iterator pt = copy_map.find(link);
-                if (pt != copy_map.end()) {
-                    // the object has already been copied
-                    static_cast<PropertyLink*>(it->second)->setValue(pt->second);
-                }
-                else if (recursive) {
-                    DocumentObject* link_copy = _copyObject(link, copy_map, recursive, keepdigitsatend);
-                    copy_map[link] = link_copy;
-                    static_cast<PropertyLink*>(it->second)->setValue(link_copy);
-                }
-                else if (link && link->getDocument() == this) {
-                    //static_cast<PropertyLink*>(it->second)->setValue(link);
-                }
-            }
-            else if (prop->getTypeId() == PropertyLinkList::getClassTypeId()) {
-                std::vector<DocumentObject*> links = static_cast<PropertyLinkList*>(prop)->getValues();
-                if (recursive) {
-                    std::vector<DocumentObject*> links_copy;
-                    for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt) {
-                        std::map<DocumentObject*, DocumentObject*>::iterator pt = copy_map.find(*jt);
-                        if (pt != copy_map.end()) {
-                            // the object has already been copied
-                            links_copy.push_back(pt->second);
-                        }
-                        else {
-                            links_copy.push_back(_copyObject(*jt, copy_map, recursive, keepdigitsatend));
-                            copy_map[*jt] = links_copy.back();
-                        }
-                    }
-                    static_cast<PropertyLinkList*>(it->second)->setValues(links_copy);
-                }
-                else {
-                    std::vector<DocumentObject*> links_ref;
-                    //for (std::vector<DocumentObject*>::iterator jt = links.begin(); jt != links.end(); ++jt) {
-                    //    if ((*jt)->getDocument() == this)
-                    //        links_ref.push_back(*jt);
-                    //}
-                    static_cast<PropertyLinkList*>(it->second)->setValues(links_ref);
-                }
-            }
-            else {
-                std::auto_ptr<Property> data(prop->Copy());
-                if (data.get()) {
-                    it->second->Paste(*data);
-                }
-            }
-        }
+    MergeDocuments md(this);
+    // if not copying recursively then suppress possible warnings
+    md.setVerbose(recursive);
+    if (recursive) {
+        objs = obj->getDocument()->getDependencyList(objs);
     }
 
-     // unmark to be not re-computed later
-    copy->onFinishDuplicating();
-    copy->purgeTouched();
-    return copy;
-}
+    unsigned int memsize=1000; // ~ for the meta-information
+    for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it != objs.end(); ++it)
+        memsize += (*it)->getMemSize();
 
-DocumentObject* Document::copyObject(DocumentObject* obj, bool recursive,  bool keepdigitsatend)
-{
-    std::map<DocumentObject*, DocumentObject*> copy_map;
-    DocumentObject* copy = _copyObject(obj, copy_map, recursive, keepdigitsatend);
-    return copy;
+    QByteArray res;
+    res.reserve(memsize);
+    Base::ByteArrayOStreambuf obuf(res);
+    std::ostream ostr(&obuf);
+    this->exportObjects(objs, ostr);
+
+    Base::ByteArrayIStreambuf ibuf(res);
+    std::istream istr(0);
+    istr.rdbuf(&ibuf);
+    std::vector<App::DocumentObject*> newObj = md.importObjects(istr);
+    if (newObj.empty())
+        return 0;
+    else
+        return newObj.back();
 }
 
 DocumentObject* Document::moveObject(DocumentObject* obj, bool recursive)
@@ -1790,13 +2332,25 @@ DocumentObject * Document::getObject(const char *Name) const
         return 0;
 }
 
+// Note: This method is only used in Tree.cpp slotChangeObject(), see explanation there
+bool Document::isIn(const DocumentObject *pFeat) const
+{
+    for (std::map<std::string,DocumentObject*>::const_iterator o = d->objectMap.begin(); o != d->objectMap.end(); ++o) {
+        if (o->second == pFeat)
+            return true;
+    }
+
+    return false;
+}
+
 const char * Document::getObjectName(DocumentObject *pFeat) const
 {
     std::map<std::string,DocumentObject*>::const_iterator pos;
 
-    for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos)
+    for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
         if (pos->second == pFeat)
             return pos->first.c_str();
+    }
 
     return 0;
 }
@@ -1806,14 +2360,6 @@ std::string Document::getUniqueObjectName(const char *Name) const
     if (!Name || *Name == '\0')
         return std::string();
     std::string CleanName = Base::Tools::getIdentifier(Name);
-    // remove also trailing digits from clean name which is to avoid to create lengthy names
-    // like 'Box001001'
-    if (!d->keepTrailingDigits) {
-        std::string::size_type index = CleanName.find_last_not_of("0123456789");
-        if (index+1 < CleanName.size()) {
-            CleanName = CleanName.substr(0,index+1);
-        }
-    }
 
     // name in use?
     std::map<std::string,DocumentObject*>::const_iterator pos;
@@ -1824,6 +2370,15 @@ std::string Document::getUniqueObjectName(const char *Name) const
         return CleanName;
     }
     else {
+        // remove also trailing digits from clean name which is to avoid to create lengthy names
+        // like 'Box001001'
+        if (!testStatus(KeepTrailingDigits)) {
+            std::string::size_type index = CleanName.find_last_not_of("0123456789");
+            if (index+1 < CleanName.size()) {
+                CleanName = CleanName.substr(0,index+1);
+            }
+        }
+
         std::vector<std::string> names;
         names.reserve(d->objectMap.size());
         for (pos = d->objectMap.begin();pos != d->objectMap.end();++pos) {
@@ -1860,6 +2415,17 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     }
     return Objects;
 }
+
+std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId) const {
+
+    std::vector<DocumentObject*> Objects;
+    for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
+        if ((*it)->hasExtension(typeId))
+            Objects.push_back(*it);
+    }
+    return Objects;
+}
+
 
 std::vector<DocumentObject*> Document::findObjects(const Base::Type& typeId, const char* objname) const
 {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2013     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2013     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -37,7 +37,7 @@ std::string QuantityPy::representation(void) const
 {
     std::stringstream ret;
     ret << getQuantityPtr()->getValue() << " "; 
-    ret << getQuantityPtr()->getUnit().getString().toLatin1().constData();
+    ret << getQuantityPtr()->getUnit().getString().toUtf8().constData();
 
     return ret.str();
 }
@@ -49,11 +49,32 @@ PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 }
 
 // constructor method
-int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
+int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     Quantity *self = getQuantityPtr();
 
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    PyObject *object;
+    if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
+        return 0;
+    }
+
+    PyErr_Clear(); // set by PyArg_ParseTuple()
     double f = DOUBLE_MAX;
+    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
+        // Note: must be static_cast, not reinterpret_cast
+        *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
+        return 0;
+    }
+
+    PyErr_Clear(); // set by PyArg_ParseTuple()
+    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::QuantityPy::Type), &object)) {
+        PyErr_SetString(PyExc_TypeError, "Second argument must be a Unit not a Quantity");
+        return -1;
+    }
+
     int i1=0;
     int i2=0;
     int i3=0;
@@ -63,31 +84,21 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     int i7=0;
     int i8=0;
     if (PyArg_ParseTuple(args, "|diiiiiiii", &f,&i1,&i2,&i3,&i4,&i5,&i6,&i7,&i8)) {
-        if(f!=DOUBLE_MAX)
+        if (f != DOUBLE_MAX) {
             *self = Quantity(f,Unit(i1,i2,i3,i4,i5,i6,i7,i8));
+        }
         return 0;
     }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
 
-    PyObject *object;
-
-    if (PyArg_ParseTuple(args,"O!",&(Base::QuantityPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
-        *self = *(static_cast<Base::QuantityPy*>(object)->getQuantityPtr());
-        return 0;
-    }
     PyErr_Clear(); // set by PyArg_ParseTuple()
-    if (PyArg_ParseTuple(args,"dO!",&f,&(Base::UnitPy::Type), &object)) {
-        // Note: must be static_cast, not reinterpret_cast
-        *self = Quantity(f,*(static_cast<Base::UnitPy*>(object)->getUnitPtr()));
-        return 0;
-    }
-    PyErr_Clear(); // set by PyArg_ParseTuple()
-    const char* string;
-    if (PyArg_ParseTuple(args,"s", &string)) {
+    char* string;
+    if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
+        QString qstr = QString::fromUtf8(string);
+        PyMem_Free(string);
         try {
-            *self = Quantity::parse(QString::fromLatin1(string));
-        }catch(const Base::Exception& e) {
+            *self = Quantity::parse(qstr);
+        }
+        catch(const Base::Exception& e) {
             PyErr_SetString(PyExc_ValueError, e.what());
             return-1;
         }
@@ -95,11 +106,11 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either three floats, tuple or Vector expected");
+    PyErr_SetString(PyExc_TypeError, "Either quantity, float with units or string expected");
     return -1;
 }
 
-PyObject* QuantityPy::getUserPreferred(PyObject *args)
+PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
 {
     QString uus;
     double factor;
@@ -107,9 +118,9 @@ PyObject* QuantityPy::getUserPreferred(PyObject *args)
 
     QString uss = getQuantityPtr()->getUserString(factor,uus);
 
-    res[0] = Py::String(uss.toLatin1());
+    res[0] = Py::String(uss.toUtf8(),"utf-8");
     res[1] = Py::Float(factor);
-    res[2] = Py::String(uus.toLatin1());
+    res[2] = Py::String(uus.toUtf8(),"utf-8");
 
     return Py::new_reference_to(res);
 }
@@ -169,9 +180,11 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
 
     if (!quant.isValid()) {
         PyErr_Clear();
-        const char* string;
-        if (PyArg_ParseTuple(args,"s", &string)) {
-            quant = Quantity::parse(QString::fromLatin1(string));
+        char* string;
+        if (PyArg_ParseTuple(args,"et", "utf-8", &string)) {
+        QString qstr = QString::fromUtf8(string);
+        PyMem_Free(string);
+        quant = Quantity::parse(qstr);
         }
     }
 
@@ -185,7 +198,7 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         return 0;
     }
 
-    quant = getQuantityPtr()->getValueAs(quant);
+    quant = Quantity(getQuantityPtr()->getValueAs(quant));
     return new QuantityPy(new Quantity(quant));
 }
 
@@ -405,14 +418,14 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     return new QuantityPy(new Quantity(q,a->getUnit()));
 }
 
-PyObject * QuantityPy::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     //PyNumber_Divmod();
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject *modulo)
+PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject * /*modulo*/)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
@@ -559,7 +572,7 @@ void QuantityPy::setUnit(Py::Object arg)
 
 Py::String QuantityPy::getUserString(void) const
 {
-    return Py::String(getQuantityPtr()->getUserString().toLatin1());
+    return Py::String(getQuantityPtr()->getUserString().toUtf8(),"utf-8");
 }
 
 PyObject *QuantityPy::getCustomAttributes(const char* /*attr*/) const
@@ -572,54 +585,54 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * QuantityPy::number_invert_handler (PyObject *self)
+PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "bad operand type for unary ~");
     return 0;
 }
 
-PyObject * QuantityPy::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for <<");
     return 0;
 }
 
-PyObject * QuantityPy::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for >>");
     return 0;
 }
 
-PyObject * QuantityPy::number_and_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for &");
     return 0;
 }
 
-PyObject * QuantityPy::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for ^");
     return 0;
 }
 
-PyObject * QuantityPy::number_or_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for |");
     return 0;
 }
 
-int QuantityPy::number_coerce_handler (PyObject **self, PyObject **other)
+int QuantityPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
 {
     return 1;
 }
 
-PyObject * QuantityPy::number_oct_handler (PyObject *self)
+PyObject * QuantityPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
     return 0;
 }
 
-PyObject * QuantityPy::number_hex_handler (PyObject *self)
+PyObject * QuantityPy::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
     return 0;

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -33,7 +33,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE(App::Placement, App::DocumentObject)
+PROPERTY_SOURCE(App::Placement, App::GeoFeature)
 
 
 //===========================================================================

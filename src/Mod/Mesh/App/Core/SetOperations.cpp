@@ -146,7 +146,7 @@ void SetOperations::Do ()
   std::vector<MeshGeomFacet> facets;
 
   std::vector<MeshGeomFacet>::iterator itf;
-  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); itf++)
+  for (itf = _facetsOf[0].begin(); itf != _facetsOf[0].end(); ++itf)
   {
     if (_operationType == Difference)
     { // toggle normal
@@ -157,7 +157,7 @@ void SetOperations::Do ()
     facets.push_back(*itf);
   }
 
-  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); itf++)
+  for (itf = _facetsOf[1].begin(); itf != _facetsOf[1].end(); ++itf)
   {
     facets.push_back(*itf);
   }
@@ -198,13 +198,13 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
             grid1.GetElements(gx1, gy1, gz1, vecFacets1);
             
             std::set<unsigned long>::iterator it1;
-            for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); it1++)
+            for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
             {
               unsigned long fidx1 = *it1;
               MeshGeomFacet f1 = _cutMesh0.GetFacet(*it1);
               
               std::vector<unsigned long>::iterator it2;
-              for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); it2++)
+              for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
               {
                 unsigned long fidx2 = *it2;
                 MeshGeomFacet f2 = _cutMesh1.GetFacet(fidx2);
@@ -292,8 +292,8 @@ void SetOperations::Cut (std::set<unsigned long>& facetsCuttingEdge0, std::set<u
                   }
 
                  } // if (f1.IntersectWithFacet(f2, p0, p1))
-              } // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); it2++)
-            } // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); it1++)
+              } // for (it2 = vecFacets2.begin(); it2 != vecFacets2.end(); ++it2)
+            } // for (it1 = vecFacets1.begin(); it1 != vecFacets1.end(); ++it1)
           } // if (vecFacets2.size() > 0)
         } // if (grid1.GetCtElements(gx1, gy1, gz1) > 0)
       } // for (gz1 = 0; gz1 < ctGz1; gz1++)
@@ -305,7 +305,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
 {
   // Triangulate Mesh 
   std::map<unsigned long, std::list<std::set<MeshPoint>::iterator> >::iterator it1;
-  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); it1++)
+  for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
   {
     std::vector<Vector3f> points;
     std::set<MeshPoint>   pointsSet;
@@ -327,7 +327,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     
     // triangulated facets
     std::list<std::set<MeshPoint>::iterator>::iterator it2;
-    for (it2 = it1->second.begin(); it2 != it1->second.end(); it2++)
+    for (it2 = it1->second.begin(); it2 != it1->second.end(); ++it2)
     {
       if (pointsSet.find(*(*it2)) == pointsSet.end())
       {
@@ -346,7 +346,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
     // project points to 2D plane
     std::vector<Vector3f>::iterator it;
     std::vector<Vector3f> vertices;
-    for (it = points.begin(); it != points.end(); it++)
+    for (it = points.begin(); it != points.end(); ++it)
     {
       Vector3f pv = *it;
       pv.TransformToCoordinateSystem(base, dirX, dirY);
@@ -435,7 +435,7 @@ void SetOperations::TriangulateMesh (const MeshKernel &cutMesh, int side)
       _newMeshFacets[side].push_back(facet);
 
     } // for (i = 0; i < (out->numberoftriangles * 3); i += 3)
-  } // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); it1++)
+  } // for (it1 = _facet2points[side].begin(); it1 != _facet2points[side].end(); ++it1)
 }
 
 void SetOperations::CollectFacets (int side, float mult)
@@ -447,7 +447,7 @@ void SetOperations::CollectFacets (int side, float mult)
   MeshBuilder mb(mesh);
   mb.Initialize(_newMeshFacets[side].size());
   std::vector<MeshGeomFacet>::iterator it;
-  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); it++)
+  for (it = _newMeshFacets[side].begin(); it != _newMeshFacets[side].end(); ++it)
   {
     //if (it->IsFlag(MeshFacet::MARKED))
     //{
@@ -464,7 +464,7 @@ void SetOperations::CollectFacets (int side, float mult)
   // search for facet not visited
   MeshFacetArray::_TConstIterator itf;
   const MeshFacetArray& rFacets = mesh.GetFacets();
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (!itf->IsFlag(MeshFacet::VISIT))
     { // Facet found, visit neighbours
@@ -481,7 +481,7 @@ void SetOperations::CollectFacets (int side, float mult)
   }
 
   // add all facets to the result vector
-  for (itf = rFacets.begin(); itf != rFacets.end(); itf++)
+  for (itf = rFacets.begin(); itf != rFacets.end(); ++itf)
   {
     if (itf->IsFlag(MeshFacet::TMP0))
     {
@@ -492,121 +492,129 @@ void SetOperations::CollectFacets (int side, float mult)
   // MeshDefinitions::SetMinPointDistance(distSave);
 }
 
-SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<unsigned long>& facets, std::map<Edge, EdgeInfo>& edges, int side, float mult , Base::Builder3D& builder )
-: _facets(facets),
-  _mesh(mesh),
-  _edges(edges),
-  _side(side),
-  _mult(mult),
-  _addFacets(-1)
+SetOperations::CollectFacetVisitor::CollectFacetVisitor (const MeshKernel& mesh, std::vector<unsigned long>& facets,
+                                                         std::map<Edge, EdgeInfo>& edges, int side, float mult,
+                                                         Base::Builder3D& builder)
+  : _facets(facets)
+  , _mesh(mesh)
+  , _edges(edges)
+  , _side(side)
+  , _mult(mult)
+  , _addFacets(-1)
   ,_builder(builder)
 {
 }
 
-bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom, unsigned long ulFInd, unsigned long ulLevel)
+bool SetOperations::CollectFacetVisitor::Visit (const MeshFacet &rclFacet, const MeshFacet &rclFrom,
+                                                unsigned long ulFInd, unsigned long ulLevel)
 {
-  _facets.push_back(ulFInd);
-  return true;
+    (void)rclFacet;
+    (void)rclFrom;
+    (void)ulLevel;
+    _facets.push_back(ulFInd);
+    return true;
 }
 
 //static int matchCounter = 0;
-bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom, unsigned long ulFInd, unsigned long ulLevel, unsigned short neighbourIndex)
+bool SetOperations::CollectFacetVisitor::AllowVisit (const MeshFacet& rclFacet, const MeshFacet& rclFrom,
+                                                     unsigned long ulFInd, unsigned long ulLevel,
+                                                     unsigned short neighbourIndex)
 {
-  if (rclFacet.IsFlag(MeshFacet::MARKED) && rclFrom.IsFlag(MeshFacet::MARKED))
-  { // facet connected to an edge
-    unsigned long pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
-    Edge edge(_mesh.GetPoint(pt0), _mesh.GetPoint(pt1));
+    (void)ulFInd;
+    (void)ulLevel;
+    if (rclFacet.IsFlag(MeshFacet::MARKED) && rclFrom.IsFlag(MeshFacet::MARKED)) {
+        // facet connected to an edge
+        unsigned long pt0 = rclFrom._aulPoints[neighbourIndex], pt1 = rclFrom._aulPoints[(neighbourIndex+1)%3];
+        Edge edge(_mesh.GetPoint(pt0), _mesh.GetPoint(pt1));
 
-    std::map<Edge, EdgeInfo>::iterator it = _edges.find(edge);
+        std::map<Edge, EdgeInfo>::iterator it = _edges.find(edge);
 
-    if (it != _edges.end())
-    {
-      if (_addFacets == -1)
-      { // detemine if the facets shoud add or not only once
-        MeshGeomFacet facet = _mesh.GetFacet(rclFrom); // triangulated facet
-        MeshGeomFacet facetOther = it->second.facets[1-_side][0]; // triangulated facet from same edge and other mesh
-        Vector3f normalOther = facetOther.GetNormal();
-        //Vector3f normal = facet.GetNormal();
+        if (it != _edges.end()) {
+            if (_addFacets == -1) {
+                // detemine if the facets shoud add or not only once
+                MeshGeomFacet facet = _mesh.GetFacet(rclFrom); // triangulated facet
+                MeshGeomFacet facetOther = it->second.facets[1-_side][0]; // triangulated facet from same edge and other mesh
+                Vector3f normalOther = facetOther.GetNormal();
+                //Vector3f normal = facet.GetNormal();
 
-        Vector3f edgeDir = it->first.pt1 - it->first.pt2;
-        Vector3f ocDir = (edgeDir % (facet.GetGravityPoint() - it->first.pt1)) % edgeDir;
-        ocDir.Normalize();
-        Vector3f ocDirOther = (edgeDir % (facetOther.GetGravityPoint() - it->first.pt1)) % edgeDir;
-        ocDirOther.Normalize();
+                Vector3f edgeDir = it->first.pt1 - it->first.pt2;
+                Vector3f ocDir = (edgeDir % (facet.GetGravityPoint() - it->first.pt1)) % edgeDir;
+                ocDir.Normalize();
+                Vector3f ocDirOther = (edgeDir % (facetOther.GetGravityPoint() - it->first.pt1)) % edgeDir;
+                ocDirOther.Normalize();
 
-        //Vector3f dir = ocDir % normal;
-        //Vector3f dirOther = ocDirOther % normalOther;
+                //Vector3f dir = ocDir % normal;
+                //Vector3f dirOther = ocDirOther % normalOther;
 
-        bool match = ((ocDir * normalOther) * _mult) < 0.0f;
+                bool match = ((ocDir * normalOther) * _mult) < 0.0f;
 
-        //if (matchCounter == 1)
-        //{
-        //  // _builder.addSingleArrow(it->second.pt1, it->second.pt1 + edgeDir, 3, 0.0, 1.0, 0.0);
+                //if (matchCounter == 1)
+                //{
+                //  // _builder.addSingleArrow(it->second.pt1, it->second.pt1 + edgeDir, 3, 0.0, 1.0, 0.0);
 
-        //  _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1], facet._aclPoints[2], true, 3.0, 1.0, 0.0, 0.0);
-        //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + ocDir, 3, 1.0, 0.0, 0.0);
-        //  _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + normal, 3, 1.0, 0.5, 0.0);
-        //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + dir, 3, 1.0, 1.0, 0.0);
+                //  _builder.addSingleTriangle(facet._aclPoints[0], facet._aclPoints[1], facet._aclPoints[2], true, 3.0, 1.0, 0.0, 0.0);
+                //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + ocDir, 3, 1.0, 0.0, 0.0);
+                //  _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + normal, 3, 1.0, 0.5, 0.0);
+                //  // _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + dir, 3, 1.0, 1.0, 0.0);
 
-        //  _builder.addSingleTriangle(facetOther._aclPoints[0], facetOther._aclPoints[1], facetOther._aclPoints[2], true, 3.0, 0.0, 0.0, 1.0);
-        //  // _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + ocDirOther, 3, 0.0, 0.0, 1.0);
-        //  _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + normalOther, 3, 0.0, 0.5, 1.0);
-        //  // _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + dirOther, 3, 0.0, 1.0, 1.0);
+                //  _builder.addSingleTriangle(facetOther._aclPoints[0], facetOther._aclPoints[1], facetOther._aclPoints[2], true, 3.0, 0.0, 0.0, 1.0);
+                //  // _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + ocDirOther, 3, 0.0, 0.0, 1.0);
+                //  _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + normalOther, 3, 0.0, 0.5, 1.0);
+                //  // _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + dirOther, 3, 0.0, 1.0, 1.0);
 
-        //}
+                //}
 
-       // float scalar = dir * dirOther * _mult;
-       // bool match = scalar > 0.0f;
+                // float scalar = dir * dirOther * _mult;
+                // bool match = scalar > 0.0f;
 
 
-        //MeshPoint pt0 = it->first.pt1;
-        //MeshPoint pt1 = it->first.pt2;
+                //MeshPoint pt0 = it->first.pt1;
+                //MeshPoint pt1 = it->first.pt2;
 
-        //int i, n0 = -1, n1 = -1, m0 = -1, m1 = -1;
-        //for (i = 0; i < 3; i++)
-        //{
-        //  if ((n0 == -1) && (facet._aclPoints[i] == pt0))
-        //    n0 = i;
-        //  if ((n1 == -1) && (facet._aclPoints[i] == pt1))
-        //    n1 = i;
-        //  if ((m0 == -1) && (facetOther._aclPoints[i] == pt0))
-        //    m0 = i;
-        //  if ((m1 == -1) && (facetOther._aclPoints[i] == pt1))
-        //    m1 = i;
-        //}
+                //int i, n0 = -1, n1 = -1, m0 = -1, m1 = -1;
+                //for (i = 0; i < 3; i++)
+                //{
+                //  if ((n0 == -1) && (facet._aclPoints[i] == pt0))
+                //    n0 = i;
+                //  if ((n1 == -1) && (facet._aclPoints[i] == pt1))
+                //    n1 = i;
+                //  if ((m0 == -1) && (facetOther._aclPoints[i] == pt0))
+                //    m0 = i;
+                //  if ((m1 == -1) && (facetOther._aclPoints[i] == pt1))
+                //    m1 = i;
+                //}
 
-        //if ((n0 != -1) && (n1 != -1) && (m0 != -1) && (m1 != -1))
-        //{
-        //  bool orient_n = n1 > n0;
-        //  bool orient_m = m1 > m0;
+                //if ((n0 != -1) && (n1 != -1) && (m0 != -1) && (m1 != -1))
+                //{
+                //  bool orient_n = n1 > n0;
+                //  bool orient_m = m1 > m0;
 
-        //  Vector3f dirN = facet._aclPoints[n1] - facet._aclPoints[n0];
-        //  Vector3f dirM = facetOther._aclPoints[m1] - facetOther._aclPoints[m0];
+                //  Vector3f dirN = facet._aclPoints[n1] - facet._aclPoints[n0];
+                //  Vector3f dirM = facetOther._aclPoints[m1] - facetOther._aclPoints[m0];
 
-        //  if (matchCounter == 1)
-        //  {
-        //    _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + dirN, 3, 1.0, 1.0, 0.0);
-        //    _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + dirM, 3, 0.0, 1.0, 1.0);
-        //  }
+                //  if (matchCounter == 1)
+                //  {
+                //    _builder.addSingleArrow(facet.GetGravityPoint(), facet.GetGravityPoint() + dirN, 3, 1.0, 1.0, 0.0);
+                //    _builder.addSingleArrow(facetOther.GetGravityPoint(), facetOther.GetGravityPoint() + dirM, 3, 0.0, 1.0, 1.0);
+                //  }
 
-        //  if (_mult > 0.0)
-        //    match = orient_n == orient_m;
-        //  else
-        //    match = orient_n != orient_m;
-        //}
-  
-        if (match)
-          _addFacets = 0;
-        else
-          _addFacets = 1;
+                //  if (_mult > 0.0)
+                //    match = orient_n == orient_m;
+                //  else
+                //    match = orient_n != orient_m;
+                //}
 
-        //matchCounter++;
-      }
+                if (match)
+                    _addFacets = 0;
+                else
+                    _addFacets = 1;
 
-      return false;
-    }    
-  }
+                //matchCounter++;
+            }
 
-  return true;
+            return false;
+        }
+    }
+
+    return true;
 }
-

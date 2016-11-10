@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -75,9 +75,9 @@ bool TaskDlgCreateNodeSet::accept()
 {
     try {
         FemSetNodesObject->Nodes.setValues(param->tempSet);
-        FemSetNodesObject->recompute();
+        FemSetNodesObject->recomputeFeature();
         //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        //if(doc) 
+        //if(doc)
         //    doc->resetEdit();
         param->MeshViewProvider->resetHighlightNodes();
         FemSetNodesObject->Label.setValue(name->name);
@@ -96,7 +96,7 @@ bool TaskDlgCreateNodeSet::reject()
 {
     FemSetNodesObject->execute();
         //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        //if(doc) 
+        //if(doc)
         //    doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();

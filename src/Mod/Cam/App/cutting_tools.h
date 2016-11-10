@@ -148,7 +148,7 @@ public:
     //Die Abfolge der flachen Bereiche wird hier festgelegt(der Input kommt von der GUI)
     bool SetMachiningOrder(const TopoDS_Face &aFace, float x,float y,float z);
     /*
-    Dient zum checken wieviele Faces wir haben und hier wird auch gleich ein vector gefüllt
+    Dient zum checken wieviele Faces wir haben und hier wird auch gleich ein vector gefÃ¼llt
     wo alle flachen bereiche drin sind
     */
 
@@ -219,7 +219,7 @@ private:
 
     //Zustellungswert
     float m_pitch;
-    //Der höchste und niedrigste Z-Wert vom Shape
+    //Der hÃ¶chste und niedrigste Z-Wert vom Shape
     float m_minlevel,m_maxlevel;
     //Der Radius der Werkzeuge
     float m_radius,m_radius_slave;

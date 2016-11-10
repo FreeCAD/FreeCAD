@@ -1,12 +1,11 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${SOQT_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(CompleteGui_LIBS
@@ -19,7 +18,6 @@ qt4_add_resources(Complete_QRC_SRCS Resources/Complete.qrc)
 SET(CompleteGui_SRCS
     ${Complete_QRC_SRCS}
     AppCompleteGui.cpp
-    AppCompleteGuiPy.cpp
     Command.cpp
     PreCompiled.cpp
     PreCompiled.h
@@ -40,3 +38,11 @@ SET_BIN_DIR(CompleteGui CompleteGui /Mod/Complete)
 SET_PYTHON_PREFIX_SUFFIX(CompleteGui)
 
 install(TARGETS CompleteGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(CompleteGuiIcon_SVG
+    Resources/icons/CompleteWorkbench.svg
+)
+
+fc_copy_sources(CompleteGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Complete" ${CompleteGuiIcon_SVG})
+
+INSTALL(FILES ${CompleteGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Complete/Resources/icons")

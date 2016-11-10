@@ -23,14 +23,17 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QDialogButtonBox>
 # include <QDir>
 # include <QFileDialog>
 # include <QFileInfo>
 # include <QHeaderView>
 # include <QImageReader>
 # include <QKeySequence>
+# include <QLineEdit>
 # include <QMessageBox>
 # include <QTextStream>
+# include <QVBoxLayout>
 #endif
 
 #include "DlgActionsImp.h"
@@ -50,7 +53,7 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
   : CustomizeActionPage(parent), bShown( false )
@@ -59,10 +62,22 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     // search for all macros
     std::string cMacroPath = App::GetApplication().
         GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
-        ->GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str());
+        ->GetASCII("MacroPath",App::Application::getUserMacroDir().c_str());
 
-    QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro"));
-    actionMacros->insertItems(0, d.entryList());
+    QDir d(QString::fromUtf8(cMacroPath.c_str()), QLatin1String("*.FCMacro *.py"));
+    
+    for (unsigned int i=0; i<d.count(); i++ )
+	actionMacros->insertItem(0,d[i],QVariant(false));
+    
+    QString systemMacroDirStr = QString::fromUtf8(App::GetApplication().getHomePath()) + QString::fromUtf8("Macro");
+    
+    d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
+    
+    if(d.exists()) {
+	for (unsigned int i=0; i<d.count(); i++ ) {
+	    actionMacros->insertItem(0,d[i],QVariant(true));
+	}
+    }
 
     QStringList labels; labels << tr("Icons") << tr("Macros");
     actionListWidget->setHeaderLabels(labels);
@@ -195,7 +210,7 @@ void DlgCustomActionsImp::on_actionListWidget_itemActivated(QTreeWidgetItem *ite
         actionMenu      -> setText(QString::fromUtf8(pScript->getMenuText()));
         actionToolTip   -> setText(QString::fromUtf8(pScript->getToolTipText()));
         actionStatus    -> setText(QString::fromUtf8(pScript->getStatusTip()));
-        actionAccel     -> setText(QString::fromAscii(pScript->getAccel()));
+        actionAccel     -> setText(QString::fromLatin1(pScript->getAccel()));
         pixmapLabel->clear();
         m_sPixmap = QString::null;
         const char* name = pScript->getPixmap();
@@ -223,9 +238,9 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     }
 
     // search for the command in the manager
-    QByteArray actionName = newActionName().toAscii();
+    QByteArray actionName = newActionName().toLatin1();
     CommandManager& rclMan = Application::Instance->commandManager();
-    MacroCommand* macro = new MacroCommand(actionName);
+    MacroCommand* macro = new MacroCommand(actionName, actionMacros->itemData(actionMacros->currentIndex()).toBool());
     rclMan.addCommand( macro );
 
     // add new action
@@ -257,12 +272,12 @@ void DlgCustomActionsImp::on_buttonAddAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
@@ -291,6 +306,8 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     CommandManager& rclMan = Application::Instance->commandManager();
     Command* pCmd = rclMan.getCommandByName(actionName.constData());
     MacroCommand* macro = dynamic_cast<MacroCommand*>(pCmd);
+    if (!macro)
+        return;
 
     if (!actionWhatsThis->text().isEmpty())
         macro->setWhatsThis(actionWhatsThis->text().toUtf8());
@@ -312,12 +329,12 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     actionStatus->clear();
 
     if (!m_sPixmap.isEmpty())
-        macro->setPixmap(m_sPixmap.toAscii());
+        macro->setPixmap(m_sPixmap.toLatin1());
     pixmapLabel->clear();
     m_sPixmap = QString::null;
 
     if (!actionAccel->text().isEmpty()) {
-        macro->setAccel(actionAccel->text().toAscii());
+        macro->setAccel(actionAccel->text().toLatin1());
     }
     actionAccel->clear();
 
@@ -332,7 +349,7 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
         action->setStatusTip(QString::fromUtf8(macro->getStatusTip()));
         if (macro->getPixmap())
             action->setIcon(Gui::BitmapFactory().pixmap(macro->getPixmap()));
-        action->setShortcut(QString::fromAscii(macro->getAccel()));
+        action->setShortcut(QString::fromLatin1(macro->getAccel()));
 
         QString accel = action->shortcut().toString(QKeySequence::NativeText);
         if (!accel.isEmpty()) {
@@ -422,26 +439,53 @@ void IconDialog::resizeEvent(QResizeEvent*)
 
 void IconDialog::onAddIconPath()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, IconDialog::tr("Add icon"), QString());
-    if (!dir.isEmpty()) {
-        QStringList filters;
-        QList<QByteArray> formats = QImageReader::supportedImageFormats();
-        for (QList<QByteArray>::iterator it = formats.begin(); it != formats.end(); ++it)
-            filters << QString::fromAscii("*.%1").arg(QString::fromAscii(*it).toLower());
-        QDir d(dir);
-        d.setNameFilters(filters);
-        QFileInfoList fi = d.entryInfoList();
-        for (QFileInfoList::iterator it = fi.begin(); it != fi.end(); ++it) {
-            QListWidgetItem* item;
-            QString file = it->absoluteFilePath();
-            item = new QListWidgetItem(ui->listWidget);
-            item->setIcon(QIcon(file));
-            item->setText(it->baseName());
-            item->setToolTip(file);
+    // Add the user defined paths
+    Base::Reference<ParameterGrp> group = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Bitmaps");
+    std::vector<std::string> paths = group->GetASCIIs("CustomPath");
+    QStringList pathList;
+    for (std::vector<std::string>::iterator it = paths.begin(); it != paths.end(); ++it)
+        pathList << QString::fromUtf8(it->c_str());
+
+    IconFolders dlg(pathList, this);
+    dlg.setWindowTitle(tr("Icon folders"));
+    if (dlg.exec()) {
+        QStringList paths = dlg.getPaths();
+
+        // Write to user config
+        group->Clear();
+        int index=0;
+        for (QStringList::iterator it = paths.begin(); it != paths.end(); ++it, ++index) {
+            std::stringstream str;
+            str << "CustomPath" << index;
+            group->SetASCII(str.str().c_str(), (const char*)it->toUtf8());
         }
 
-        BitmapFactory().addPath(dir);
-        BitmapFactory().addCustomPath(dir);
+        QStringList search = BitmapFactory().getPaths();
+        for (QStringList::iterator it = search.begin(); it != search.end(); ++it) {
+            *it = QDir::toNativeSeparators(*it);
+        }
+        for (QStringList::iterator it = paths.begin(); it != paths.end(); ++it) {
+            if (search.indexOf(*it) < 0) {
+                QStringList filters;
+                QList<QByteArray> formats = QImageReader::supportedImageFormats();
+                for (QList<QByteArray>::iterator jt = formats.begin(); jt != formats.end(); ++jt)
+                    filters << QString::fromLatin1("*.%1").arg(QString::fromLatin1(*jt).toLower());
+                QDir d(*it);
+                d.setNameFilters(filters);
+                QFileInfoList fi = d.entryInfoList();
+                for (QFileInfoList::iterator jt = fi.begin(); jt != fi.end(); ++jt) {
+                    QListWidgetItem* item;
+                    QString file = jt->absoluteFilePath();
+                    item = new QListWidgetItem(ui->listWidget);
+                    item->setIcon(QIcon(file));
+                    item->setText(jt->baseName());
+                    item->setToolTip(file);
+                }
+
+                BitmapFactory().addPath(*it);
+            }
+        }
     }
 }
 
@@ -475,7 +519,7 @@ QString DlgCustomActionsImp::newActionName()
     do
     {
         bUsed = false;
-        sName = QString::fromAscii("Std_Macro_%1").arg( id++ );
+        sName = QString::fromLatin1("Std_Macro_%1").arg( id++ );
 
         std::vector<Command*>::iterator it;
         for ( it = aclCurMacros.begin(); it!= aclCurMacros.end(); ++it )
@@ -502,5 +546,137 @@ void DlgCustomActionsImp::changeEvent(QEvent *e)
     QWidget::changeEvent(e);
 }
 
+IconFolders::IconFolders(const QStringList& paths, QWidget* parent)
+  : QDialog(parent), restart(false), maxLines(10)
+{
+    resize(600,400);
+    QDialogButtonBox* buttonBox = new QDialogButtonBox(this);
+    buttonBox->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    connect(buttonBox, SIGNAL(accepted()),
+            this, SLOT(accept()));
+    connect(buttonBox, SIGNAL(rejected()),
+            this, SLOT(reject()));
+
+    gridLayout = new QGridLayout();
+    QGridLayout* mainLayout = new QGridLayout(this);
+    mainLayout->addLayout(gridLayout, 0, 0, 1, 1);
+
+    QSpacerItem* verticalSpacer = new QSpacerItem(20, 108, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    mainLayout->addItem(verticalSpacer, 1, 0, 1, 1);
+    mainLayout->addWidget(buttonBox, 2, 0, 1, 1);
+
+    // Add the user defined paths
+    int numPaths = static_cast<int>(paths.size());
+    int maxRow = this->maxLines;
+    for (int row=0; row<maxRow; row++) {
+        QLineEdit* edit = new QLineEdit(this);
+        edit->setReadOnly(true);
+        gridLayout->addWidget(edit, row, 0, 1, 1);
+        QPushButton* removeButton = new QPushButton(this);
+        removeButton->setIcon(BitmapFactory().iconFromTheme("list-remove"));
+        gridLayout->addWidget(removeButton, row, 1, 1, 1);
+
+        if (row < numPaths) {
+            edit->setText(paths[row]);
+        }
+        else {
+            edit->hide();
+            removeButton->hide();
+        }
+
+        buttonMap.append(qMakePair<QLineEdit*, QPushButton*>(edit, removeButton));
+        connect(removeButton, SIGNAL(clicked()), this, SLOT(removeFolder()));
+    }
+
+    textLabel = new QLabel(this);
+    textLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    textLabel->setText(tr("Add or remove custom icon folders"));
+    addButton = new QPushButton(this);
+    addButton->setIcon(BitmapFactory().iconFromTheme("list-add"));
+    gridLayout->addWidget(textLabel, maxRow, 0, 1, 1);
+    gridLayout->addWidget(addButton, maxRow, 1, 1, 1);
+
+    connect(addButton, SIGNAL(clicked()), this, SLOT(addFolder()));
+    if (numPaths >= this->maxLines)
+        addButton->setDisabled(true);
+}
+
+IconFolders::~IconFolders()
+{
+}
+
+void IconFolders::addFolder()
+{
+    int countHidden = -1;
+    QStringList paths;
+    for (QList< QPair<QLineEdit*, QPushButton*> >::iterator it = buttonMap.begin(); it != buttonMap.end(); ++it) {
+        if (it->first->isHidden()) {
+            countHidden++;
+            if (countHidden == 0) {
+                QString dir = QFileDialog::getExistingDirectory(this, IconDialog::tr("Add icon folder"), QString());
+                if (!dir.isEmpty() && paths.indexOf(dir) < 0) {
+                    QLineEdit* edit = it->first;
+                    edit->setVisible(true);
+                    edit->setText(dir);
+                    QPushButton* removeButton = it->second;
+                    removeButton->setVisible(true);
+                }
+            }
+        }
+        else {
+            paths << QDir::toNativeSeparators(it->first->text());
+        }
+    }
+
+    if (countHidden <= 0) {
+        addButton->setDisabled(true);
+    }
+}
+
+void IconFolders::removeFolder()
+{
+    if (!restart) {
+        restart = true;
+        QMessageBox::information(this, tr("Remove folder"),
+            tr("Removing a folder only takes effect after an application restart."));
+    }
+
+    addButton->setEnabled(true);
+    QPushButton* remove = static_cast<QPushButton*>(sender());
+    QLineEdit* edit = 0;
+    for (QList< QPair<QLineEdit*, QPushButton*> >::iterator it = buttonMap.begin(); it != buttonMap.end(); ++it) {
+        if (it->second == remove) {
+            edit = it->first;
+        }
+        else if (edit) {
+            // move up the text of the line edits
+            edit->setText(it->first->text());
+
+            if (it->first->isVisible()) {
+                edit = it->first;
+                remove = it->second;
+            }
+            else {
+                edit->hide();
+                remove->hide();
+                break;
+            }
+        }
+    }
+}
+
+QStringList IconFolders::getPaths() const
+{
+    QStringList paths;
+    for (QList< QPair<QLineEdit*, QPushButton*> >::const_iterator it = buttonMap.begin(); it != buttonMap.end(); ++it) {
+        if (!it->first->isHidden()) {
+            paths << QDir::toNativeSeparators(it->first->text());
+        }
+        else {
+            break;
+        }
+    }
+    return paths;
+}
 
 #include "moc_DlgActionsImp.cpp" 

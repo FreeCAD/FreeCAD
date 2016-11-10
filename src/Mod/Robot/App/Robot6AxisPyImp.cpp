@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2010 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2010 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -169,7 +169,7 @@ Py::Object Robot6AxisPy::getBase(void) const
     return Py::Object();
 }
 
-void Robot6AxisPy::setBase(Py::Object arg)
+void Robot6AxisPy::setBase(Py::Object /*arg*/)
 {
 
 }

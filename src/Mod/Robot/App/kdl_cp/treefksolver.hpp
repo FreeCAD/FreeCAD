@@ -50,8 +50,7 @@ namespace KDL {
          *
          * @param q_in input joint coordinates
          * @param p_out reference to output cartesian pose
-         * @param segmentName 
-         *
+         * @param segmentName
          * @return if < 0 something went wrong
          */
         virtual int JntToCart(const JntArray& q_in, Frame& p_out, std::string segmentName)=0;

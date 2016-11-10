@@ -10,12 +10,11 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${SOQT_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
@@ -60,6 +59,8 @@ set(PartGui_UIC_SRCS
     DlgBooleanOperation.ui
     DlgExtrusion.ui
     DlgFilletEdges.ui
+    DlgImportExportIges.ui
+    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartCylinder.ui
     DlgPartImportIges.ui
@@ -82,6 +83,8 @@ SET(PartGui_SRCS
     ${PartGui_QRC_SRCS}
     ${PartGui_UIC_HDRS}
     AppPartGui.cpp
+    AttacherTexts.h
+    AttacherTexts.cpp
     Command.cpp
     CommandSimple.cpp
     CommandParametric.cpp
@@ -100,6 +103,8 @@ SET(PartGui_SRCS
     DlgFilletEdges.cpp
     DlgFilletEdges.h
     DlgFilletEdges.ui
+    DlgImportExportIges.ui
+    DlgImportExportStep.ui
     DlgPartBox.ui
     DlgPartBoxImp.cpp
     DlgPartBoxImp.h
@@ -235,3 +240,11 @@ SET_BIN_DIR(PartGui PartGui /Mod/Part)
 SET_PYTHON_PREFIX_SUFFIX(PartGui)
 
 INSTALL(TARGETS PartGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PartGuiIcon_SVG
+    Resources/icons/PartWorkbench.svg
+)
+
+fc_copy_sources(PartGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Part" ${PartGuiIcon_SVG})
+
+INSTALL(FILES ${PartGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Part/Resources/icons")

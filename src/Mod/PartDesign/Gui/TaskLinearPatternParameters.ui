@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>260</width>
-    <height>402</height>
+    <width>270</width>
+    <height>366</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,18 +15,31 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayoutOriginal">
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
      <item>
-      <widget class="QLabel" name="labelOriginal">
+      <widget class="QPushButton" name="buttonAddFeature">
        <property name="text">
-        <string>Original feature</string>
+        <string>Add feature</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineOriginal"/>
+      <widget class="QPushButton" name="buttonRemoveFeature">
+       <property name="text">
+        <string>Remove feature</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="listWidgetFeatures"/>
    </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -38,23 +51,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboDirection">
-       <item>
-        <property name="text">
-         <string>Horizontal sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Vertical sketch axis</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Select reference...</string>
-        </property>
-       </item>
-      </widget>
+      <widget class="QComboBox" name="comboDirection"/>
      </item>
     </layout>
    </item>
@@ -75,11 +72,11 @@
       </widget>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="spinLength">
+      <widget class="Gui::QuantitySpinBox" name="spinLength" native="true">
        <property name="unit" stdset="0">
-        <string>mm</string>
+        <string notr="true">mm</string>
        </property>
-       <property name="value">
+       <property name="value" stdset="0">
         <double>100.000000000000000</double>
        </property>
       </widget>
@@ -96,14 +93,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QSpinBox" name="spinOccurrences">
-       <property name="minimum">
-        <number>2</number>
-       </property>
-       <property name="maximum">
-        <number>99999</number>
-       </property>
-      </widget>
+      <widget class="Gui::UIntSpinBox" name="spinOccurrences" native="true"/>
      </item>
     </layout>
    </item>
@@ -148,6 +138,12 @@
    <class>Gui::QuantitySpinBox</class>
    <extends>QWidget</extends>
    <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::UIntSpinBox</class>
+   <extends>QWidget</extends>
+   <header location="global">Gui/SpinBox.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources/>

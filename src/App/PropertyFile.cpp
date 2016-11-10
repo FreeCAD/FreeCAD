@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2008                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2008                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -90,7 +90,7 @@ std::string PropertyFileIncluded::getDocTransientPath(void) const
     std::string path;
     PropertyContainer *co = getContainer();
     if (co->isDerivedFrom(DocumentObject::getClassTypeId())) {
-        path = dynamic_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
+        path = static_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
         std::replace(path.begin(), path.end(), '\\', '/');
     }
     return path;
@@ -113,11 +113,19 @@ std::string PropertyFileIncluded::getExchangeTempFile(void) const
         (getValue()).fileName().c_str(), getDocTransientPath().c_str());
 }
 
+std::string PropertyFileIncluded::getOriginalFileName(void) const
+{
+    return _OriginalName;
+}
+
 void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
     if (sFile && sFile[0] != '\0') {
         if (_cValue == sFile)
             throw Base::Exception("Not possible to set the same file!");
+
+        // keep the path to the original file
+        _OriginalName = sFile;
 
         std::string pathTrans = getDocTransientPath();
         Base::FileInfo file(sFile);
@@ -145,7 +153,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
                 // if a file with this name already exists search for a new one
                 std::string dir = pathTrans;
                 std::string fnp = fi.fileNamePure();
-                std::string ext = fi.extension(false);
+                std::string ext = fi.extension();
                 int i=0;
                 do {
                     i++;
@@ -199,7 +207,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
                 // if a file with this name already exists search for a new one
                 std::string dir = fi.dirPath();
                 std::string fnp = fi.fileNamePure();
-                std::string ext = fi.extension(false);
+                std::string ext = fi.extension();
                 int i=0;
                 do {
                     i++;
@@ -279,8 +287,8 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             fileStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("First item in tuple must be a file or string");
-            error += value->ob_type->tp_name;
+            std::string error = std::string("First item in tuple must be a file or string, not ");
+            error += file->ob_type->tp_name;
             throw Base::TypeError(error);
         }
 
@@ -294,8 +302,8 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
             nameStr = PyString_AsString(FileName);
         }
         else {
-            std::string error = std::string("Second item in tuple must be a string");
-            error += value->ob_type->tp_name;
+            std::string error = std::string("Second item in tuple must be a string, not ");
+            error += name->ob_type->tp_name;
             throw Base::TypeError(error);
         }
 
@@ -303,7 +311,7 @@ void PropertyFileIncluded::setPyObject(PyObject *value)
         return;
     }
     else {
-        std::string error = std::string("Type must be string or file");
+        std::string error = std::string("Type must be string or file, not ");
         error += value->ob_type->tp_name;
         throw Base::TypeError(error);
     }
@@ -404,11 +412,16 @@ void PropertyFileIncluded::SaveDocFile (Base::Writer &writer) const
 void PropertyFileIncluded::RestoreDocFile(Base::Reader &reader)
 {
     Base::FileInfo fi(_cValue.c_str());
+    if (fi.exists() && !fi.isWritable()) {
+        // This happens when an object is being restored and tries to reference the
+        // same file of another object (e.g. for copy&paste of objects inside the same document).
+        return;
+    }
     Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
-            << "File '" << _cValue << "' in transient directory doesn't exist.";
+            << "File '" << _cValue << "' in transient directory cannot be created.";
         throw Base::Exception(str.str());
     }
 

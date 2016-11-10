@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2004 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -39,7 +39,7 @@ class PythonDebugger;
 /** Macro recording and play back management
  * The purpos of this class is to handle record function calls from a command and save it in
  * a macro file (so far).
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class GuiExport MacroManager : public Base::Observer<const char*> 
 {

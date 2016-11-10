@@ -128,7 +128,7 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::MeshObject* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop)->getValuePtr();
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *
+ *   Copyright (c) 2013 JÃ¼rgen Riegel (FreeCAD@juergen-riegel.net)         *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -27,9 +27,8 @@
 #endif
 
 #include "ViewProviderSetElements.h"
-#include <Gui/Control.h>
+//#include <Gui/Control.h>
 
-using namespace Gui;
 using namespace FemGui;
 
 PROPERTY_SOURCE(FemGui::ViewProviderSetElements, Gui::ViewProviderGeometryObject)
@@ -42,15 +41,14 @@ bool ViewProviderSetElements::doubleClicked(void)
 }
 
 
-bool ViewProviderSetElements::setEdit(int ModNum)
+bool ViewProviderSetElements::setEdit(int)
 {
     //Gui::TaskView::TaskDialog* dlg = new TaskDlgCreateNodeSet(dynamic_cast<Fem::FemSetNodesObject *>(getObject()));
     //Gui::Control().showDialog(dlg);
     return true;
 }
 
-void ViewProviderSetElements::unsetEdit(int ModNum)
+void ViewProviderSetElements::unsetEdit(int)
 {
-
 
 }

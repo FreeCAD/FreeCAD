@@ -1,0 +1,127 @@
+#!/usr/bin/python
+
+# -*- coding: utf8 -*-
+
+#***************************************************************************
+#*                                                                         *
+#*   Copyright (c) 2015 Yorik van Havre <yorik@uncreated.net>              *
+#*                                                                         *
+#*   This program is free software; you can redistribute it and/or modify  *
+#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
+#*   as published by the Free Software Foundation; either version 2 of     *
+#*   the License, or (at your option) any later version.                   *
+#*   for detail see the LICENCE text file.                                 *
+#*                                                                         *
+#*   This program is distributed in the hope that it will be useful,       *
+#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+#*   GNU Library General Public License for more details.                  *
+#*                                                                         *
+#*   You should have received a copy of the GNU Library General Public     *
+#*   License along with this program; if not, write to the Free Software   *
+#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+#*   USA                                                                   *
+#*                                                                         *
+#***************************************************************************
+
+__title__="FreeCAD File info utility"
+__author__ = "Yorik van Havre"
+__url__ = ["http://www.freecadweb.org"]
+__doc__ = '''This utility prints information about a given FreeCAD file (*.FCStd)
+on screen, including document properties, number of included objects 
+and object sizes. 
+
+It can be used as a textconv tool for git diff by configuring your git folder as follows:
+ 1) add to .gitattributes: 
+     *.fcstd diff=fcinfo
+ 2) add to .git/config (or .gitconfig for user-wide):
+     [diff "fcinfo"]
+         textconv = /path/to/fcinfo
+
+Usage: fcinfo myfile.FCStd'''
+
+
+import sys, zipfile, xml.sax, os, hashlib
+
+
+class FreeCADFileHandler(xml.sax.ContentHandler):
+
+    def __init__(self,zfile):
+        xml.sax.ContentHandler.__init__(self)
+        self.zfile = zfile
+        self.obj = None
+        self.prop = None
+        self.count = "0"
+        self.contents = {}
+
+    def startElement(self, tag, attributes):
+        if tag == "Document":
+            self.obj = tag
+            self.contents["ProgramVersion"] = attributes["ProgramVersion"]
+            self.contents["FileVersion"] = attributes["FileVersion"]
+        elif tag == "Object":
+            if not (attributes["name"] in self.contents):
+                self.contents[attributes["name"]] = ""
+            if "type" in attributes:
+                self.contents[attributes["name"]] += attributes["type"]
+            self.obj = attributes["name"]
+        elif tag == "Part":
+            if self.obj:
+                s = self.zfile.read(attributes["file"]).__sizeof__()
+                if s < 1024:
+                    s = str(s)+"B"
+                elif s > 1048576:
+                    s = str(s/1048576)+"M"
+                else:
+                    s = str(s/1024)+"K"
+                self.contents[self.obj] += " (" + s + ")"
+        elif tag == "Property":
+            self.prop = attributes["name"]
+        elif tag in ["String","Uuid"]:
+            if (self.obj == "Document") and self.prop:
+                self.contents[self.prop] = attributes["value"]
+        elif tag == "Objects":
+            self.count = attributes["Count"]
+            self.obj = None
+            items = self.contents.items()
+            items.sort()
+            for key,val in items:
+                print ("   " + key + " : " + val)
+            self.contents = {}
+            print ("   Objects: ("+self.count+")")
+            
+    def endElement(self,tag):
+        if tag == "Document":
+            if self.contents:
+                items = self.contents.items()
+                items.sort()
+                for key,val in items:
+                    print ("       " + key + " : " + val)
+
+
+if __name__ == '__main__':
+
+    if len(sys.argv) != 2:
+        print __doc__
+        sys.exit(1)
+
+    zfile=zipfile.ZipFile(sys.argv[1])
+    files=zfile.namelist()
+
+    if files[0] != "Document.xml":
+        sys.exit(1)
+    doc = zfile.read("Document.xml")
+    s = os.path.getsize(sys.argv[1])
+    if s < 1024:
+        s = str(s)+"B"
+    elif s > 1048576:
+        s = str(s/1048576)+"M"
+    else:
+        s = str(s/1024)+"K"
+    print("Document: "+sys.argv[1]+" ("+s+")")
+    print ("   SHA1: "+str(hashlib.sha1(open(sys.argv[1],'rb').read()).hexdigest()))
+    xml.sax.parseString(doc,FreeCADFileHandler(zfile))
+
+
+
+

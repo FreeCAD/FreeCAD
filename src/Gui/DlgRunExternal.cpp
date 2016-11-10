@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -44,9 +44,9 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
-DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WFlags fl )
+DlgRunExternal::DlgRunExternal( QWidget* parent, Qt::WindowFlags fl )
     : QDialog(parent, fl),process(this),advancedHidden(true)
 {
     ui = new Ui_DlgRunExternal();
@@ -114,6 +114,8 @@ void DlgRunExternal::advanced (void)
 
 void DlgRunExternal::finished (int exitCode, QProcess::ExitStatus exitStatus)
 {
+    Q_UNUSED(exitCode); 
+    Q_UNUSED(exitStatus); 
     ui->buttonAccept->setEnabled(true);
     ui->buttonDiscard->setEnabled(true);
     ui->buttonAbort->setEnabled(false);

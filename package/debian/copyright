@@ -1,5 +1,5 @@
-Format-Specification: http://dep.debian.net/deps/dep5/
-Maintainer: Werner Mayer <wmayer@users.sourceforge.net>
+Format: http://dep.debian.net/deps/dep5/
+Upstream-Contact: Werner Mayer <wmayer@users.sourceforge.net>
 X-Packaged-By: Werner Mayer <wmayer@users.sourceforge.net>
 X-Packaged-Date: 2006-09-26_16:55:15+02:00
 Source: http://sourceforge.net/projects/free-cad

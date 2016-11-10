@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2005                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2005                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -169,31 +169,31 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
     return std::string(ConvertFromWideString(std::wstring(buf)));
 #else
-    char buf[PATH_MAX+1];
+    std::string buf;
 
     // Path where the file is located
     if (Path)
-        std::strncpy(buf, Path, PATH_MAX);
+        buf = Path;
     else
-        std::strncpy(buf, getTempPath().c_str(), PATH_MAX);
-
-    buf[PATH_MAX] = 0; // null termination needed
+        buf = getTempPath();
 
     // File name in the path 
     if (FileName) {
-        std::strcat(buf, "/");
-        std::strcat(buf, FileName);
-        std::strcat(buf, "XXXXXX");
+        buf += "/";
+        buf += FileName;
+        buf += "XXXXXX";
     }
-    else
-        std::strcat(buf, "/fileXXXXXX");
+    else {
+        buf += "/fileXXXXXX";
+    }
 
-    int id = mkstemp(buf);
+    int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
         fclose(file);
+        unlink(buf.c_str());
     }
-    return std::string(buf);
+    return buf;
 #endif
 }
 
@@ -205,7 +205,12 @@ void FileInfo::setFile(const char* name)
     }
 
     FileName = name;
-    std::replace(FileName.begin(), FileName.end(), '\\', '/');
+
+    // keep the UNC paths intact
+    if (FileName.substr(0,2) == std::string("\\\\"))
+        std::replace(FileName.begin()+2, FileName.end(), '\\', '/');
+    else
+        std::replace(FileName.begin(), FileName.end(), '\\', '/');
 }
 
 std::string FileInfo::filePath () const
@@ -220,7 +225,24 @@ std::string FileInfo::fileName () const
 
 std::string FileInfo::dirPath () const
 {
-    return FileName.substr(0,FileName.find_last_of('/'));
+    std::size_t last_pos;
+    std::string retval;
+    last_pos = FileName.find_last_of('/');
+    if (last_pos != std::string::npos) {
+        retval = FileName.substr(0, last_pos);
+    }
+    else {
+#ifdef FC_OS_WIN32
+        wchar_t buf[MAX_PATH+1];
+        GetCurrentDirectoryW(MAX_PATH, buf);
+        retval = std::string(ConvertFromWideString(std::wstring(buf)));
+#else
+        char buf[PATH_MAX+1];
+        const char* cwd = getcwd(buf, PATH_MAX);
+        retval = std::string(cwd ? cwd : ".");
+#endif
+    }
+    return retval;
 }
 
 std::string FileInfo::fileNamePure () const
@@ -250,10 +272,8 @@ std::wstring FileInfo::toStdWString() const
 #endif
 }
 
-std::string FileInfo::extension (bool complete) const
+std::string FileInfo::extension () const
 {
-    // complete not implemented
-    assert(complete==false);
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
         return std::string();
@@ -325,7 +345,7 @@ bool FileInfo::isFile () const
         std::wstring wstr = toStdWString();
         FILE* fd = _wfopen(wstr.c_str(), L"rb");
         bool ok = (fd != 0);
-        fclose(fd);
+        if (fd) fclose(fd);
         return ok;
     }
 #else
@@ -511,7 +531,7 @@ bool FileInfo::deleteDirectoryRecursive(void) const
             It->deleteFile();
         }
         else {
-            Base::Exception("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
+            throw Base::FileException("FileInfo::deleteDirectoryRecursive(): Unknown object Type in directory!");
         }
     }
     return deleteDirectory();

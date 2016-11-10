@@ -1,0 +1,22 @@
+; G200 - 1.0420 - DIN 1681
+; (c) 2014 M. Münch - GNU Lesser General Public License (LGPL)
+; information about the content of this card can be found here:
+; http://www.freecadweb.org/wiki/index.php?title=Material
+
+[FCMat]
+Name = G200
+NameDE = GS 38
+DescriptionDE = mittlere dynamische und stoßartige Belastung, gut schweißbar
+Father = Metal
+YoungsModulus = 210000 MPa
+UltimateTensileStrength = 380
+PoissonRatio = 0.3
+Density = 7800 kg/m^3
+KindOfMaterial = Cast steel
+KindOfMaterialDE = Stahlguss
+MaterialNumber = 1.042
+ModulusOfShare = 81000
+Norm = DIN 1681
+ThermalExpansionCoefficient = 1.10E-005
+UltimateStrain = 25
+YieldStrength = 200

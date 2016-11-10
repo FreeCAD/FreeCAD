@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   Jürgen Riegel 2002                                                    *
+ *   JÃ¼rgen Riegel 2002                                                    *
  *                                                                         *
  ***************************************************************************/
 
@@ -15,6 +15,7 @@
 # include <Interface_Static.hxx>
 # include <IGESControl_Controller.hxx>
 # include <STEPControl_Controller.hxx>
+# include <Standard_Version.hxx>
 # include <OSD.hxx>
 # include <sstream>
 #endif
@@ -25,6 +26,7 @@
 
 #include <App/Application.h>
 
+#include "OCCError.h"
 #include "TopoShape.h"
 #include "FeaturePartBox.h"
 #include "FeaturePartBoolean.h"
@@ -42,11 +44,14 @@
 #include "FeatureGeometrySet.h"
 #include "FeatureChamfer.h"
 #include "FeatureCompound.h"
+#include "FeatureFace.h"
 #include "FeatureExtrusion.h"
 #include "FeatureFillet.h"
 #include "FeatureMirroring.h"
 #include "FeatureRevolution.h"
+#include "FeatureOffset.h"
 #include "PartFeatures.h"
+#include "BodyBase.h"
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
@@ -65,6 +70,9 @@
 #include "EllipsePy.h"
 #include "ArcPy.h"
 #include "ArcOfCirclePy.h"
+#include "ArcOfEllipsePy.h"
+#include "ArcOfParabolaPy.h"
+#include "ArcOfHyperbolaPy.h"
 #include "BezierCurvePy.h"
 #include "BSplineCurvePy.h"
 #include "HyperbolaPy.h"
@@ -75,6 +83,7 @@
 #include "ConePy.h"
 #include "CylinderPy.h"
 #include "OffsetSurfacePy.h"
+#include "PlateSurfacePy.h"
 #include "PlanePy.h"
 #include "RectangularTrimmedSurfacePy.h"
 #include "SpherePy.h"
@@ -83,36 +92,90 @@
 #include "ToroidPy.h"
 #include "BRepOffsetAPI_MakePipeShellPy.h"
 #include "PartFeaturePy.h"
+#include "AttachEnginePy.h"
 #include "PropertyGeometryList.h"
+#include "DatumFeature.h"
+#include "Attacher.h"
+#include "AttachableObject.h"
+#include "FaceMaker.h"
+#include "FaceMakerCheese.h"
+#include "FaceMakerBullseye.h"
 
-extern struct PyMethodDef Part_methods[];
+namespace Part {
+extern PyObject* initModule();
+}
 
-PyDoc_STRVAR(module_part_doc,
-"This is a module working with shapes.");
+using namespace Part;
 
-extern "C" {
-void PartExport initPart()
+PyObject* Part::PartExceptionOCCError;
+PyObject* Part::PartExceptionOCCDomainError;
+PyObject* Part::PartExceptionOCCRangeError;
+PyObject* Part::PartExceptionOCCConstructionError;
+PyObject* Part::PartExceptionOCCDimensionError;
+
+
+PyMODINIT_FUNC initPart()
 {
-    std::stringstream str;
-    str << OCC_VERSION_MAJOR << "." << OCC_VERSION_MINOR << "." << OCC_VERSION_MAINTENANCE;
-#ifdef OCC_VERSION_DEVELOPMENT
-    str << "." OCC_VERSION_DEVELOPMENT;
-#endif
-    App::Application::Config()["OCC_VERSION"] = str.str();
-
     Base::Console().Log("Module: Part\n");
 
     // This is highly experimental and we should keep an eye on it
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by
     // Python's cmath module.
-//#if defined(FC_OS_LINUX)
+#if !defined(_DEBUG)
     OSD::SetSignal(Standard_False);
-//#endif
+#endif
 
-    PyObject* partModule = Py_InitModule3("Part", Part_methods, module_part_doc);   /* mod name, table ptr */
+    PyObject* partModule = Part::initModule();
     Base::Console().Log("Loading Part module... done\n");
 
+    Py::Object module(partModule);
+    module.setAttr("OCC_VERSION", Py::String(OCC_VERSION_STRING_EXT));
+
+    // Python exceptions
+    //
+    PyObject* OCCError = 0;
+    if (PyObject_IsSubclass(Base::BaseExceptionFreeCADError, PyExc_RuntimeError)) {
+        OCCError = PyErr_NewException("Part.OCCError", Base::BaseExceptionFreeCADError, NULL);
+    }
+    else {
+        Base::Console().Error("Can not inherit Part.OCCError form BaseFreeCADError.\n");
+        OCCError = PyErr_NewException("Part.OCCError", PyExc_RuntimeError, NULL);
+    }
+    Py_INCREF(OCCError);
+    PyModule_AddObject(partModule, "OCCError", OCCError);
+    PartExceptionOCCError = OCCError; //set global variable ;(
+
+    // domain error
+    PartExceptionOCCDomainError = PyErr_NewException("Part.OCCDomainError", PartExceptionOCCError, NULL);
+    Py_INCREF(PartExceptionOCCDomainError);
+    PyModule_AddObject(partModule, "OCCDomainError", PartExceptionOCCDomainError);
+
+    // range error
+    PartExceptionOCCRangeError = PyErr_NewException("Part.OCCRangeError", PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCRangeError);
+    PyModule_AddObject(partModule, "OCCRangeError", PartExceptionOCCRangeError);
+
+    // construction error
+    PartExceptionOCCConstructionError = PyErr_NewException("Part.OCCConstructionError", PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCConstructionError);
+    PyModule_AddObject(partModule, "OCCConstructionError", PartExceptionOCCConstructionError);
+
+    // dimension error
+    PartExceptionOCCDimensionError = PyErr_NewException("Part.OCCDimensionError", PartExceptionOCCDomainError, NULL);
+    Py_INCREF(PartExceptionOCCConstructionError);
+    PyModule_AddObject(partModule, "OCCDimensionError", PartExceptionOCCDimensionError);
+
+    //rename the types properly to pickle and unpickle them
+    Part::TopoShapePy         ::Type.tp_name = "Part.Shape";
+    Part::TopoShapeVertexPy   ::Type.tp_name = "Part.Vertex";
+    Part::TopoShapeWirePy     ::Type.tp_name = "Part.Wire";
+    Part::TopoShapeEdgePy     ::Type.tp_name = "Part.Edge";
+    Part::TopoShapeSolidPy    ::Type.tp_name = "Part.Solid";
+    Part::TopoShapeFacePy     ::Type.tp_name = "Part.Face";
+    Part::TopoShapeCompoundPy ::Type.tp_name = "Part.Compound";
+    Part::TopoShapeCompSolidPy::Type.tp_name = "Part.CompSolid";
+    Part::TopoShapeShellPy    ::Type.tp_name = "Part.Shell";
     // Add Types to module
     Base::Interpreter().addType(&Part::TopoShapePy          ::Type,partModule,"Shape");
     Base::Interpreter().addType(&Part::TopoShapeVertexPy    ::Type,partModule,"Vertex");
@@ -132,6 +195,9 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::ParabolaPy           ::Type,partModule,"Parabola");
     Base::Interpreter().addType(&Part::ArcPy                ::Type,partModule,"Arc");
     Base::Interpreter().addType(&Part::ArcOfCirclePy        ::Type,partModule,"ArcOfCircle");
+    Base::Interpreter().addType(&Part::ArcOfEllipsePy       ::Type,partModule,"ArcOfEllipse");
+    Base::Interpreter().addType(&Part::ArcOfParabolaPy      ::Type,partModule,"ArcOfParabola");    
+    Base::Interpreter().addType(&Part::ArcOfHyperbolaPy     ::Type,partModule,"ArcOfHyperbola");    
     Base::Interpreter().addType(&Part::BezierCurvePy        ::Type,partModule,"BezierCurve");
     Base::Interpreter().addType(&Part::BSplineCurvePy       ::Type,partModule,"BSplineCurve");
     Base::Interpreter().addType(&Part::OffsetCurvePy        ::Type,partModule,"OffsetCurve");
@@ -144,6 +210,7 @@ void PartExport initPart()
     Base::Interpreter().addType(&Part::BezierSurfacePy      ::Type,partModule,"BezierSurface");
     Base::Interpreter().addType(&Part::BSplineSurfacePy     ::Type,partModule,"BSplineSurface");
     Base::Interpreter().addType(&Part::OffsetSurfacePy      ::Type,partModule,"OffsetSurface");
+    Base::Interpreter().addType(&Part::PlateSurfacePy       ::Type,partModule,"PlateSurface");
     Base::Interpreter().addType(&Part::SurfaceOfExtrusionPy ::Type,partModule,"SurfaceOfExtrusion");
     Base::Interpreter().addType(&Part::SurfaceOfRevolutionPy::Type,partModule,"SurfaceOfRevolution");
     Base::Interpreter().addType(&Part::RectangularTrimmedSurfacePy
@@ -151,10 +218,25 @@ void PartExport initPart()
 
     Base::Interpreter().addType(&Part::PartFeaturePy        ::Type,partModule,"Feature");
 
+    Base::Interpreter().addType(&Attacher::AttachEnginePy   ::Type,partModule,"AttachEngine");
+
     PyObject* brepModule = Py_InitModule3("BRepOffsetAPI", 0, "BrepOffsetAPI");
     Py_INCREF(brepModule);
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
+
+    try{
+        //import all submodules of BOPTools, to make them easy to browse in Py console.
+        //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
+        //because the latter crashed when importAll failed with exception.
+        Base::Interpreter().runString("__import__('BOPTools').importAll()");
+
+        Py::Object bt = Base::Interpreter().runStringObject("__import__('BOPTools')");
+        module.setAttr(std::string("BOPTools"),bt);
+    } catch (Base::PyException &err){
+        Base::Console().Error("Failed to import BOPTools package:\n");
+        err.ReportException();
+    }
 
     Part::TopoShape             ::init();
     Part::PropertyPartShape     ::init();
@@ -162,8 +244,24 @@ void PartExport initPart()
     Part::PropertyShapeHistory  ::init();
     Part::PropertyFilletEdges   ::init();
 
+    Part::FaceMaker             ::init();
+    Part::FaceMakerPublic       ::init();
+    Part::FaceMakerSimple       ::init();
+    Part::FaceMakerCheese       ::init();
+    Part::FaceMakerExtrusion    ::init();
+    Part::FaceMakerBullseye     ::init();
+
+    Attacher::AttachEngine        ::init();
+    Attacher::AttachEngine3D      ::init();
+    Attacher::AttachEnginePlane   ::init();
+    Attacher::AttachEngineLine    ::init();
+    Attacher::AttachEnginePoint   ::init();
+
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
+    Part::AttachableObject      ::init();
+    Part::AttachableObjectPython::init();
+    Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();
     Part::CustomFeature         ::init();
@@ -205,12 +303,15 @@ void PartExport initPart()
     Part::Helix                 ::init();
     Part::Spiral                ::init();
     Part::Wedge                 ::init();
+
     Part::Part2DObject          ::init();
     Part::Part2DObjectPython    ::init();
+    Part::Face                  ::init();
     Part::RuledSurface          ::init();
     Part::Loft                  ::init();
     Part::Sweep                 ::init();
     Part::Offset                ::init();
+    Part::Offset2D              ::init();
     Part::Thickness             ::init();
 
     // Geometry types
@@ -221,6 +322,9 @@ void PartExport initPart()
     Part::GeomBSplineCurve        ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
+    Part::GeomArcOfEllipse        ::init();
+    Part::GeomArcOfParabola       ::init();
+    Part::GeomArcOfHyperbola      ::init();
     Part::GeomEllipse             ::init();
     Part::GeomHyperbola           ::init();
     Part::GeomParabola            ::init();
@@ -237,31 +341,84 @@ void PartExport initPart()
     Part::GeomToroid              ::init();
     Part::GeomPlane               ::init();
     Part::GeomOffsetSurface       ::init();
+    Part::GeomPlateSurface        ::init();
     Part::GeomTrimmedSurface      ::init();
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
-
+    Part::Datum                   ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
-    // set the user-defined units
+    // set the user-defined settings
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
-    int unit = hGrp->GetInt("Unit", 0);
-    switch (unit) {
+
+    // General
+    Base::Reference<ParameterGrp> hGenGrp = hGrp->GetGroup("General");
+    // http://www.opencascade.org/org/forum/thread_20801/
+    // read.surfacecurve.mode:
+    // A preference for the computation of curves in an entity which has both 2D and 3D representation.
+    // Each TopoDS_Edge in TopoDS_Face must have a 3D and 2D curve that references the surface.
+    // If both 2D and 3D representation of the entity are present, the computation of these curves depends on
+    // the following values of parameter:
+    // 0: "Default" - no preference, both curves are taken
+    // 3: "3DUse_Preferred" - 3D curves are used to rebuild 2D ones
+    // Additional modes for IGES
+    //  2: "2DUse_Preferred" - the 2D is used to rebuild the 3D in case of their inconsistency
+    // -2: "2DUse_Forced" - the 2D is always used to rebuild the 3D (even if 2D is present in the file)
+    // -3: "3DUse_Forced" - the 3D is always used to rebuild the 2D (even if 2D is present in the file)
+    int readsurfacecurve = hGenGrp->GetInt("ReadSurfaceCurveMode", 0);
+    Interface_Static::SetIVal("read.surfacecurve.mode", readsurfacecurve);
+
+    // write.surfacecurve.mode (STEP-only):
+    // This parameter indicates whether parametric curves (curves in parametric space of surface) should be
+    // written into the STEP file. This parameter can be set to Off in order to minimize the size of the resulting
+    // STEP file.
+    // Off (0) : writes STEP files without pcurves. This mode decreases the size of the resulting file.
+    // On (1) : (default) writes pcurves to STEP file
+    int writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", 1);
+    Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
+
+    //IGES handling
+    Base::Reference<ParameterGrp> hIgesGrp = hGrp->GetGroup("IGES");
+    int value = Interface_Static::IVal("write.iges.brep.mode");
+    bool brep = hIgesGrp->GetBool("BrepMode", value > 0);
+    Interface_Static::SetIVal("write.iges.brep.mode",brep ? 1 : 0);
+    Interface_Static::SetCVal("write.iges.header.company", hIgesGrp->GetASCII("Company").c_str());
+    Interface_Static::SetCVal("write.iges.header.author", hIgesGrp->GetASCII("Author").c_str());
+    Interface_Static::SetCVal("write.iges.header.product", hIgesGrp->GetASCII("Product",
+       Interface_Static::CVal("write.iges.header.product")).c_str());
+
+    int unitIges = hIgesGrp->GetInt("Unit", 0);
+    switch (unitIges) {
         case 1:
             Interface_Static::SetCVal("write.iges.unit","M");
-            Interface_Static::SetCVal("write.step.unit","M");
             break;
         case 2:
             Interface_Static::SetCVal("write.iges.unit","IN");
-            Interface_Static::SetCVal("write.step.unit","IN");
             break;
         default:
             Interface_Static::SetCVal("write.iges.unit","MM");
+            break;
+    }
+
+    //STEP handling
+    Base::Reference<ParameterGrp> hStepGrp = hGrp->GetGroup("STEP");
+    int unitStep = hStepGrp->GetInt("Unit", 0);
+    switch (unitStep) {
+        case 1:
+            Interface_Static::SetCVal("write.step.unit","M");
+            break;
+        case 2:
+            Interface_Static::SetCVal("write.step.unit","IN");
+            break;
+        default:
             Interface_Static::SetCVal("write.step.unit","MM");
             break;
     }
-}
 
-} // extern "C"
+    std::string ap = hStepGrp->GetASCII("Scheme", Interface_Static::CVal("write.step.schema"));
+    Interface_Static::SetCVal("write.step.schema", ap.c_str());
+    Interface_Static::SetCVal("write.step.product.name", hStepGrp->GetASCII("Product",
+       Interface_Static::CVal("write.step.product.name")).c_str());
+}

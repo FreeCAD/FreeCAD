@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,17 +52,26 @@ PROPERTY_SOURCE(Drawing::FeaturePage, App::DocumentObjectGroup)
 
 const char *group = "Drawing view";
 
-FeaturePage::FeaturePage(void) 
+FeaturePage::FeaturePage(void) : numChildren(0)
 {
     static const char *group = "Drawing view";
 
-    ADD_PROPERTY_TYPE(PageResult ,(0),group,App::Prop_Output,"Resulting SVG document of that page");
-    ADD_PROPERTY_TYPE(Template   ,(""),group,App::Prop_None  ,"Template for the page");
-    ADD_PROPERTY_TYPE(EditableTexts,(""),group,App::Prop_None,"Substitution values for the editable strings in the template");
+    ADD_PROPERTY_TYPE(PageResult, (0), group, App::Prop_Output, "Resulting SVG document of that page");
+    ADD_PROPERTY_TYPE(Template, (""), group, App::Prop_None, "Template for the page");
+    ADD_PROPERTY_TYPE(EditableTexts, (""), group, App::Prop_None, "Substitution values for the editable strings in the template");
 }
 
 FeaturePage::~FeaturePage()
 {
+}
+
+void FeaturePage::onBeforeChange(const App::Property* prop)
+{
+    if (prop == &Group) {
+        numChildren = Group.getSize();
+    }
+
+    App::DocumentObjectGroup::onBeforeChange(prop);
 }
 
 /// get called by the container when a Property was changed
@@ -85,8 +94,35 @@ void FeaturePage::onChanged(const App::Property* prop)
         if (!this->isRestoring()) {
             EditableTexts.setValues(getEditableTextsFromTemplate());
         }
+    } else if (prop == &Group) {
+        if (Group.getSize() != numChildren) {
+            numChildren = Group.getSize();
+            touch();
+        }
     }
+
     App::DocumentObjectGroup::onChanged(prop);
+}
+
+void FeaturePage::onDocumentRestored()
+{
+    // Needs to be tmp. set because otherwise the custom text gets overridden (#0002064)
+    this->StatusBits.set(App::Restore); // the 'Restore' flag
+
+    Base::FileInfo templateInfo(Template.getValue());
+    if (!templateInfo.exists()) {
+        Base::FileInfo fi(Template.getValue());
+        if (fi.fileName().empty())
+            fi.setFile(PageResult.getValue());
+        std::string path = App::Application::getResourceDir() + "Mod/Drawing/Templates/" + fi.fileName();
+        // try to find the template in user dir/Templates first
+        Base::FileInfo tempfi(App::Application::getUserAppDataDir() + "Templates/" + fi.fileName());
+        if (tempfi.exists())
+            path = tempfi.filePath();
+        Template.setValue(path);
+    }
+
+    this->StatusBits.reset(App::Restore); // the 'Restore' flag
 }
 
 App::DocumentObjectExecReturn *FeaturePage::execute(void)
@@ -132,22 +168,28 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             const std::vector<App::DocumentObject*> &Grp = Group.getValues();
             for (std::vector<App::DocumentObject*>::const_iterator It= Grp.begin();It!=Grp.end();++It) {
                 if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
-                    Drawing::FeatureView *View = dynamic_cast<Drawing::FeatureView *>(*It);
-                    ofile << View->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    Drawing::FeatureView *View = static_cast<Drawing::FeatureView *>(*It);
+                    if (View->Visible.getValue()) {
+                        ofile << View->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId()) ) {
-                    Drawing::FeatureClip *Clip = dynamic_cast<Drawing::FeatureClip *>(*It);
-                    ofile << Clip->ViewResult.getValue();
-                    ofile << tempendl << tempendl << tempendl;
+                    Drawing::FeatureClip *Clip = static_cast<Drawing::FeatureClip *>(*It);
+                    if (Clip->Visible.getValue()) {
+                        ofile << Clip->ViewResult.getValue();
+                        ofile << tempendl << tempendl << tempendl;
+                    }
                 } else if ( (*It)->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId()) ) {
                     // getting children inside subgroups too
-                    App::DocumentObjectGroup *SubGroup = dynamic_cast<App::DocumentObjectGroup *>(*It);
+                    App::DocumentObjectGroup *SubGroup = static_cast<App::DocumentObjectGroup *>(*It);
                     const std::vector<App::DocumentObject*> &SubGrp = SubGroup->Group.getValues();
                     for (std::vector<App::DocumentObject*>::const_iterator Grit= SubGrp.begin();Grit!=SubGrp.end();++Grit) {
                         if ( (*Grit)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId()) ) {
-                            Drawing::FeatureView *SView = dynamic_cast<Drawing::FeatureView *>(*Grit);
-                            ofile << SView->ViewResult.getValue();
-                            ofile << tempendl << tempendl << tempendl;
+                            Drawing::FeatureView *SView = static_cast<Drawing::FeatureView *>(*Grit);
+                            if (SView->Visible.getValue()) {
+                                ofile << SView->ViewResult.getValue();
+                                ofile << tempendl << tempendl << tempendl;
+                            }
                         }
                     }
                 }
@@ -174,7 +216,7 @@ App::DocumentObjectExecReturn *FeaturePage::execute(void)
             if (count < editText.size()) {
                 // change values of editable texts
                 boost::regex e2 ("(<text.*?freecad:editable=\""+what[1].str()+"\".*?<tspan.*?)>(.*?)(</tspan>)");
-                boost::re_detail::string_out_iterator<std::string > out(newfragment);
+                std::back_insert_iterator<std::string> out(newfragment);
                 boost::regex_replace(out, begin, what[0].second, e2, "$1>"+editText[count]+"$3");
             }
             count++;

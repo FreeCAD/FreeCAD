@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -71,7 +71,7 @@ protected:
     SoGroup               * pcOffRoot;
 
     SoGroup               * pcTcpRoot;
-    SoTransform           * pcTcpTransform;
+  //SoTransform           * pcTcpTransform;
 
     //SoTrackballDragger    * pcDragger;
     SoJackDragger         * pcDragger;

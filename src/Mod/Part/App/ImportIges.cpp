@@ -36,15 +36,15 @@
 # include <TopoDS_Compound.hxx>
 # include <TopExp_Explorer.hxx>
 # include <Message_MsgFile.hxx>
-# include <Handle_TColStd_HSequenceOfTransient.hxx>
+# include <TColStd_HSequenceOfTransient.hxx>
 # include <TColStd_HSequenceOfTransient.hxx>
 # include <IGESBasic_Group.hxx>
 # include <IGESSolid_ManifoldSolid.hxx>
 # include <IGESBasic_SingularSubfigure.hxx>
 #endif
 
-#include <Handle_XSControl_WorkSession.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <Transfer_TransientProcess.hxx>
@@ -69,9 +69,7 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
     try {
         Base::FileInfo fi(FileName);
         // read iges file
-        // http://www.opencascade.org/org/forum/thread_20801/
         IGESControl_Controller::Init();
-        Interface_Static::SetIVal("read.surfacecurve.mode",3);
 
         // load data exchange message files
         Message_MsgFile::LoadFromEnv("CSF_XSMessage","IGES");
@@ -82,6 +80,10 @@ int Part::ImportIgesParts(App::Document *pcDoc, const char* FileName)
         IGESControl_Reader aReader;
         if (aReader.ReadFile((const Standard_CString)FileName) != IFSelect_RetDone)
             throw Base::Exception("Error in reading IGES");
+
+        // Ignore construction elements
+        // http://www.opencascade.org/org/forum/thread_20603/?forum=3
+        aReader.SetReadVisible(Standard_True);
 
         // check file conformity and output stats
         aReader.PrintCheckLoad(Standard_True,IFSelect_GeneralInfo);

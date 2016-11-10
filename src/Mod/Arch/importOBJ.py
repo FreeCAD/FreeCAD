@@ -21,8 +21,12 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft
-from DraftTools import translate
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch
+if FreeCAD.GuiUp:
+    from DraftTools import translate
+else:
+    def translate(context,text):
+        return text
 
 p = Draft.precision()
 
@@ -36,6 +40,7 @@ def findVert(aVertex,aList):
             if ( round(aVertex.Y,p) == round(aList[i].Y,p) ):
                 if ( round(aVertex.Z,p) == round(aList[i].Z,p) ):
                     return i
+    return None
 
 def getIndices(shape,offset):
     "returns a list with 2 lists: vertices and face indexes, offsetted with the given amount"
@@ -44,10 +49,16 @@ def getIndices(shape,offset):
     flist = []
     curves = None
     for e in shape.Edges:
-        if not isinstance(e.Curve,Part.Line):
-            if not curves:
-                curves = shape.tessellate(1)
-                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n"))
+        try:
+            if not isinstance(e.Curve,Part.Line):
+                if not curves:
+                    curves = shape.tessellate(1)
+                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+                    break
+        except: # unimplemented curve type
+            curves = shape.tessellate(1)
+            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+            break
     if curves:
         for v in curves[0]:
             vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
@@ -78,12 +89,15 @@ def getIndices(shape,offset):
             else:
                 fi = ""
                 # OCC vertices are unsorted. We need to sort in the right order...
-                edges = DraftGeomUtils.sortEdges(f.OuterWire.Edges)
+                edges = Part.__sortEdges__(f.OuterWire.Edges)
                 #print edges
                 for e in edges:
                     #print e.Vertexes[0].Point,e.Vertexes[1].Point
                     v = e.Vertexes[0]
-                    fi += " " + str(findVert(v,shape.Vertexes) + offset)
+                    ind = findVert(v,shape.Vertexes)
+                    if ind == None:
+                        return None,None,None
+                    fi += " " + str(ind + offset)
                 flist.append(fi)
     return vlist,elist,flist
 
@@ -94,20 +108,25 @@ def export(exportList,filename):
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
     outfile.write("# http://www.freecadweb.org\n")
     offset = 1
-    for obj in exportList:
+    objectslist = Draft.getGroupContents(exportList,walls=True,addgroups=True)
+    objectslist = Arch.pruneIncluded(objectslist)
+    for obj in objectslist:
         if obj.isDerivedFrom("Part::Feature"):
             if obj.ViewObject.isVisible():
                 vlist,elist,flist = getIndices(obj.Shape,offset)
-                offset += len(vlist)
-                outfile.write("o " + obj.Name + "\n")
-                for v in vlist:
-                    outfile.write("v" + v + "\n")
-                for e in elist:
-                    outfile.write("l" + e + "\n")
-                for f in flist:
-                    outfile.write("f" + f + "\n")
+                if vlist == None:
+                    FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
+                else:
+                    offset += len(vlist)
+                    outfile.write("o " + obj.Name + "\n")
+                    for v in vlist:
+                        outfile.write("v" + v + "\n")
+                    for e in elist:
+                        outfile.write("l" + e + "\n")
+                    for f in flist:
+                        outfile.write("f" + f + "\n")
     outfile.close()
-    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ")+filename+"\n")
+    FreeCAD.Console.PrintMessage(translate("Arch","successfully written ").decode('utf8')+filename+"\n")
             
             
             

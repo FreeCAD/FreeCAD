@@ -65,6 +65,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *part << "Drawing_Annotation";
     *part << "Drawing_Clip";
     *part << "Drawing_Symbol";
+    *part << "Drawing_DraftView";
+    *part << "Drawing_SpreadsheetView";
     *part << "Drawing_ExportPage";
     *part << "Separator";
     *part << "Drawing_ProjectShape";
@@ -86,6 +88,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *part << "Drawing_Annotation";
     *part << "Drawing_Clip";
     *part << "Drawing_Symbol";
+    *part << "Drawing_DraftView";
+    *part << "Drawing_SpreadsheetView";
     *part << "Drawing_ExportPage";
     return root;
 }
@@ -105,6 +109,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *img << "Drawing_OpenBrowserView";
     *img << "Drawing_Annotation";
     *img << "Drawing_Clip";
+    *img << "Drawing_DraftView";
     img = new Gui::ToolBarItem(root);
     img->setCommand("Views");
     *img << "Drawing_NewView";

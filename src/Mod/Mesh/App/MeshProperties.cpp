@@ -192,7 +192,7 @@ unsigned int PropertyNormalList::getMemSize (void) const
     return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3f));
 }
 
-void PropertyNormalList::transform(const Base::Matrix4D &mat)
+void PropertyNormalList::transformGeometry(const Base::Matrix4D &mat)
 {
     // A normal vector is only a direction with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -222,7 +222,6 @@ void PropertyNormalList::transform(const Base::Matrix4D &mat)
     }
 
     hasSetValue();
-
 }
 
 // ----------------------------------------------------------------------------
@@ -300,7 +299,7 @@ std::vector<float> PropertyCurvatureList::getCurvature( int mode ) const
     return fValues;
 }
 
-void PropertyCurvatureList::transform(const Base::Matrix4D &mat)
+void PropertyCurvatureList::transformGeometry(const Base::Matrix4D &mat)
 {
     // The principal direction is only a vector with unit length, so we only need to rotate it
     // (no translations or scaling)
@@ -405,7 +404,7 @@ PyObject* PropertyCurvatureList::getPyObject(void)
     return Py::new_reference_to(list);
 }
 
-void PropertyCurvatureList::setPyObject(PyObject *value)
+void PropertyCurvatureList::setPyObject(PyObject* /*value*/)
 {
     throw Base::AttributeError(std::string("This attribute is read-only"));
 }
@@ -501,13 +500,6 @@ const Data::ComplexGeoData* PropertyMeshKernel::getComplexData() const
 Base::BoundBox3d PropertyMeshKernel::getBoundingBox() const
 {
     return _meshObject->getBoundBox();
-}
-
-void PropertyMeshKernel::getFaces(std::vector<Base::Vector3d> &aPoints,
-                                  std::vector<Data::ComplexGeoData::Facet> &aTopo,
-                                  float accuracy, uint16_t flags) const
-{
-    _meshObject->getFaces(aPoints, aTopo, accuracy, flags);
 }
 
 unsigned int PropertyMeshKernel::getMemSize (void) const

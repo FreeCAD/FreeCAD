@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_math.hxx>
 # include <Python.h>
+# include <Standard_math.hxx>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -34,6 +34,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/Reader.h>
 #include <Base/VectorPy.h>
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -61,18 +62,6 @@ public:
     {
     }
 private:
-    void slotCreatedDocument(const App::Document& Doc)
-    {
-    }
-    void slotDeletedDocument(const App::Document& Doc)
-    {
-    }
-    void slotCreatedObject(const App::DocumentObject& Obj)
-    {
-    }
-    void slotDeletedObject(const App::DocumentObject& Obj)
-    {
-    }
     void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop)
     {
         if (object == &Obj && Prop.getTypeId() == Part::PropertyGeometryList::getClassTypeId()) {
@@ -92,8 +81,8 @@ private:
             try {
                 Base::Vector3d m1 = arc->getCenter();
               //Base::Vector3d a3 = arc->getStartPoint();
-                Base::Vector3d a3 = arc->getEndPoint();
-                Base::Vector3d l1 = seg->getStartPoint();
+                Base::Vector3d a3 = arc->getEndPoint(true);
+              //Base::Vector3d l1 = seg->getStartPoint();
                 Base::Vector3d l2 = seg->getEndPoint();
 #if 0
                 Py::Module pd("FilletArc");
@@ -198,21 +187,24 @@ private:
     double radius;
 };
 
-class SandboxModuleGui : public Py::ExtensionModule<SandboxModuleGui>
+namespace SandboxGui {
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    SandboxModuleGui() : Py::ExtensionModule<SandboxModuleGui>("SandboxGui")
+    Module() : Py::ExtensionModule<Module>("SandboxGui")
     {
-        add_varargs_method("interactiveFilletArc",&SandboxModuleGui::interactiveFilletArc,
+        add_varargs_method("interactiveFilletArc",&Module::interactiveFilletArc,
             "Interactive fillet arc");
+        add_varargs_method("xmlReader",&Module::xmlReader,
+            "Read XML");
         initialize("This module is the SandboxGui module"); // register with Python
     }
     
-    virtual ~SandboxModuleGui() {}
+    virtual ~Module() {}
 
 private:
-    Py::Object interactiveFilletArc(const Py::Tuple& args)
+    Py::Object interactiveFilletArc(const Py::Tuple& /*args*/)
     {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
@@ -235,12 +227,22 @@ private:
         }
         return Py::None();
     }
+    Py::Object xmlReader(const Py::Tuple& args)
+    {
+        std::string file = static_cast<std::string>(Py::String(args[0]));
+        App::Document* doc = App::GetApplication().newDocument();
+
+        std::ifstream str(file.c_str(), std::ios::in);
+        Base::XMLReader reader(file.c_str(), str);
+        doc->Restore(reader);
+        return Py::None();
+    }
 };
 
+} // namespace SandboxGui
 
 /* Python entry */
-extern "C" {
-void SandboxGuiExport initSandboxGui()
+PyMODINIT_FUNC initSandboxGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -263,8 +265,6 @@ void SandboxGuiExport initSandboxGui()
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxModuleGui;
+    (void)new SandboxGui::Module;
     Base::Console().Log("Loading GUI of Sandbox module... done\n");
 }
-
-} // extern "C"

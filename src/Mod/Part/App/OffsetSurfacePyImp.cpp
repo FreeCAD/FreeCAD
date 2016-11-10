@@ -24,14 +24,16 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_OffsetSurface.hxx>
+# include <memory>
 #endif
 
 #include <Base/VectorPy.h>
 #include <Base/Vector3D.h>
 
+#include "OCCError.h"
 #include "Geometry.h"
-#include "OffsetSurfacePy.h"
-#include "OffsetSurfacePy.cpp"
+#include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/OffsetSurfacePy.cpp>
 
 using namespace Part;
 
@@ -72,21 +74,9 @@ int OffsetSurfacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PyExc_Exception, e->GetMessageString());
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
         return -1;
     }
-}
-
-PyObject* OffsetSurfacePy::uIso(PyObject *args)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
-}
-
-PyObject* OffsetSurfacePy::vIso(PyObject *args)
-{
-    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
-    return 0;
 }
 
 Py::Float OffsetSurfacePy::getOffsetValue(void) const
@@ -103,7 +93,14 @@ void  OffsetSurfacePy::setOffsetValue(Py::Float arg)
 
 Py::Object OffsetSurfacePy::getBasisSurface(void) const
 {
-    throw Py::Exception(PyExc_NotImplementedError, "Not yet implemented");
+    Handle_Geom_OffsetSurface surf = Handle_Geom_OffsetSurface::DownCast
+        (getGeometryPtr()->handle());
+    if (surf.IsNull()) {
+        throw Py::TypeError("geometry is not a surface");
+    }
+
+    std::unique_ptr<GeomSurface> geo(makeFromSurface(surf->BasisSurface()));
+    return Py::asObject(geo->getPyObject());
 }
 
 void  OffsetSurfacePy::setBasisSurface(Py::Object arg)

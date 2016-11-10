@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -48,13 +48,14 @@ FCCmdImportReadBREP::FCCmdImportReadBREP()
     sGroup          = "Import";
     sMenuText       = "Read BREP";
     sToolTipText    = "Read a BREP file";
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Import_ReadBREP";
     sStatusTip      = sToolTipText;
     sPixmap         = "Std_Tool1";
 }
 
 void FCCmdImportReadBREP::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     openCommand("Read BREP");
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("BREP (*.brep *.rle)"));
     if (fn.isEmpty()) {
@@ -83,7 +84,7 @@ ImportStep::ImportStep()
     sGroup          = "Part";
     sMenuText       = "Import STEP";
     sToolTipText    = "Create or change a Import STEP feature";
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Part_ImportStep";
     sStatusTip      = sToolTipText;
     sPixmap         = "Save";
 }
@@ -91,6 +92,7 @@ ImportStep::ImportStep()
 
 void ImportStep::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("STEP (*.stp *.step)"));
     if (!fn.isEmpty()) {
         openCommand("Part ImportSTEP Create");
@@ -122,13 +124,14 @@ ImportIges::ImportIges()
     sGroup          = "Part";
     sMenuText       = "Import IGES";
     sToolTipText    = "Create or change a Import IGES feature";
-    sWhatsThis      = sToolTipText;
+    sWhatsThis      = "Import_Iges";
     sStatusTip      = sToolTipText;
     sPixmap         = "Save";
 }
 
 void ImportIges::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(), QString(), QString(), QLatin1String("IGES (*.igs *.iges)"));
     if (!fn.isEmpty()) {
         openCommand("ImportIGES Create");
@@ -153,6 +156,3 @@ void CreateImportCommands(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
     rcCmdMgr.addCommand(new FCCmdImportReadBREP());
 }
-
-
-

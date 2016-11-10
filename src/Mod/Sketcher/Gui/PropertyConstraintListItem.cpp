@@ -40,7 +40,8 @@ TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {
-
+    blockEvent = false;
+    onlyUnnamed = false;
 }
 
 QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
@@ -60,8 +61,8 @@ QVariant PropertyConstraintListItem::toString(const QVariant& prop) const
 
 void PropertyConstraintListItem::initialize()
 {
-    const Sketcher::PropertyConstraintList* item = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
-    const std::vector< Sketcher::Constraint * > &vals = item->getValues();
+    const Sketcher::PropertyConstraintList* list = static_cast<const Sketcher::PropertyConstraintList*>(getPropertyData()[0]);
+    const std::vector< Sketcher::Constraint * > &vals = list->getValues();
 
     int id = 1;
     int iNamed = 0;
@@ -73,7 +74,7 @@ void PropertyConstraintListItem::initialize()
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             PropertyUnitItem* item = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
 
@@ -101,6 +102,9 @@ void PropertyConstraintListItem::initialize()
                 item->setObjectName(internalName);
                 this->appendChild(item);
             }
+            
+            item->bind(list->createPath(id-1));
+            item->setAutoApply(false);
         }
     }
 
@@ -146,17 +150,17 @@ QVariant PropertyConstraintListItem::value(const App::Property* prop) const
             (*it)->Type == Sketcher::DistanceX ||
             (*it)->Type == Sketcher::DistanceY ||
             (*it)->Type == Sketcher::Radius ||
-            (*it)->Type == Sketcher::Angle) {
+            (*it)->Type == Sketcher::Angle ) {
 
             Base::Quantity quant;
-            if ((*it)->Type == Sketcher::Angle) {
-                double datum = Base::toDegrees<double>((*it)->Value);
+            if ((*it)->Type == Sketcher::Angle ) {
+                double datum = Base::toDegrees<double>((*it)->getValue());
                 quant.setUnit(Base::Unit::Angle);
                 quant.setValue(datum);
             }
             else {
                 quant.setUnit(Base::Unit::Length);
-                quant.setValue((*it)->Value);
+                quant.setValue((*it)->getValue());
             }
 
             quantities.append(quant);
@@ -220,7 +224,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                     (*it)->Type == Sketcher::DistanceX ||
                     (*it)->Type == Sketcher::DistanceY ||
                     (*it)->Type == Sketcher::Radius ||
-                    (*it)->Type == Sketcher::Angle) {
+                    (*it)->Type == Sketcher::Angle ) {
 
                     // Get the internal name
                     QString internalName = QString::fromLatin1("Constraint%1").arg(id+1);
@@ -228,7 +232,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
                         double datum = quant.getValue();
                         if ((*it)->Type == Sketcher::Angle)
                             datum = Base::toRadians<double>(datum);
-                        const_cast<Sketcher::Constraint *>((*it))->Value = datum;
+                        const_cast<Sketcher::Constraint *>((*it))->setValue(datum);
                         item->set1Value(id,(*it));
                         break;
                     }
@@ -243,10 +247,13 @@ bool PropertyConstraintListItem::event (QEvent* ev)
 void PropertyConstraintListItem::setValue(const QVariant& value)
 {
     // see PropertyConstraintListItem::event
+    Q_UNUSED(value);
 }
 
 QWidget* PropertyConstraintListItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
+    Q_UNUSED(receiver);
+    Q_UNUSED(method);
     QLineEdit *le = new QLineEdit(parent);
     le->setFrame(false);
     le->setReadOnly(true);

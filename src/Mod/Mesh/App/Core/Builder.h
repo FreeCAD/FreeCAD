@@ -105,7 +105,7 @@ private:
     // keep an array of iterators pointing to the vertex inside the set to save memory
     typedef std::pair<std::set<MeshPoint>::iterator, bool> MeshPointIterator;
     std::vector<MeshPointIterator> _pointsIterator;
-    unsigned long				_ptIdx; 
+    unsigned long _ptIdx;
 
     void SetNeighbourhood  ();
     // As it's forbidden to insert a degenerated facet but insert its vertices anyway we must remove them 

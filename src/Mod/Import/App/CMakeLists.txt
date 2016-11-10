@@ -11,14 +11,16 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${XERCESC_INCLUDE_DIR}
+    ${PYTHON_INCLUDE_DIRS}
+    ${XercesC_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Import_LIBS
     Part
+    #Assembly
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -28,6 +30,8 @@ SET(Import_SRCS
     AppImportPy.cpp
     ImportOCAF.cpp
     ImportOCAF.h
+    #ImportOCAFAssembly.cpp
+    #ImportOCAFAssembly.h
     StepShapePy.xml
     StepShape.h
     StepShape.cpp
@@ -50,9 +54,14 @@ SET(SCL_Resources
     SCL/SimpleDataTypes.py
     SCL/TypeChecker.py
     SCL/Utils.py
+    SCL/SimpleReader.py
+    SCL/Aufspannung.stp
+    SCL/gasket1.p21
+    SCL/Product1.stp
     automotive_design.py     # AP214e3
     ifc2x3.py                # IFC
     ifc4.py                  # IFC 4
+    PlmXmlParser.py
 )
 SOURCE_GROUP("SCL" FILES ${SCL_Resources})
 

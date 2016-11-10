@@ -50,6 +50,7 @@
 # include <Inventor/elements/SoGLCacheContextElement.h>
 # include <Inventor/elements/SoLineWidthElement.h>
 # include <Inventor/elements/SoPointSizeElement.h>
+# include <Inventor/errors/SoDebugError.h>
 # include <Inventor/errors/SoReadError.h>
 # include <Inventor/details/SoFaceDetail.h>
 # include <Inventor/details/SoLineDetail.h>
@@ -130,9 +131,9 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
   //SoLineWidthElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->highlightColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->highlightColor,&this->colorpacker1);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
     const SoCoordinateElement * coords;
@@ -145,7 +146,7 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     this->getVertexData(state, coords, normals, cindices, nindices,
-        tindices, mindices, numcindices, FALSE, normalCacheUsed);
+        tindices, mindices, numcindices, false, normalCacheUsed);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
@@ -153,7 +154,12 @@ void SoBrepEdgeSet::renderHighlight(SoGLRenderAction *action)
     int num = (int)this->hl.size();
     if (num > 0) {
         const int32_t* id = &(this->hl[0]);
-        renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+        if (!validIndexes(coords, this->hl)) {
+            SoDebugError::postWarning("SoBrepEdgeSet::renderHighlight", "highlightIndex out of range");
+        }
+        else {
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), id, num);
+        }
     }
     state->pop();
 }
@@ -168,9 +174,9 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
   //SoLineWidthElement::set(state, this, 4.0f);
 
     SoLazyElement::setEmissive(state, &this->selectionColor);
-    SoOverrideElement::setEmissiveColorOverride(state, this, TRUE);
+    SoOverrideElement::setEmissiveColorOverride(state, this, true);
     SoLazyElement::setDiffuse(state, this,1, &this->selectionColor,&this->colorpacker2);
-    SoOverrideElement::setDiffuseColorOverride(state, this, TRUE);
+    SoOverrideElement::setDiffuseColorOverride(state, this, true);
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
 
     const SoCoordinateElement * coords;
@@ -183,7 +189,7 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
     SbBool normalCacheUsed;
 
     this->getVertexData(state, coords, normals, cindices, nindices,
-        tindices, mindices, numcindices, FALSE, normalCacheUsed);
+        tindices, mindices, numcindices, false, normalCacheUsed);
 
     SoMaterialBundle mb(action);
     mb.sendFirst(); // make sure we have the correct material
@@ -192,10 +198,24 @@ void SoBrepEdgeSet::renderSelection(SoGLRenderAction *action)
     if (num > 0) {
         cindices = &(this->sl[0]);
         numcindices = (int)this->sl.size();
-
-        renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+        if (!validIndexes(coords, this->sl)) {
+            SoDebugError::postWarning("SoBrepEdgeSet::renderSelection", "selectionIndex out of range");
+        }
+        else {
+            renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numcindices);
+        }
     }
     state->pop();
+}
+
+bool SoBrepEdgeSet::validIndexes(const SoCoordinateElement* coords, const std::vector<int32_t>& pts) const
+{
+    for (std::vector<int32_t>::const_iterator it = pts.begin(); it != pts.end(); ++it) {
+        if (*it >= coords->getNum()) {
+            return false;
+        }
+    }
+    return true;
 }
 
 static void createIndexArray(const int32_t* segm, int numsegm,
@@ -292,14 +312,17 @@ void SoBrepEdgeSet::doAction(SoAction* action)
             switch (selaction->getType()) {
             case Gui::SoSelectionElementAction::Append:
                 {
-                    int start = this->selectionIndex.getNum();
-                    this->selectionIndex.set1Value(start, index);
+                    if (this->selectionIndex.find(index) < 0) {
+                        int start = this->selectionIndex.getNum();
+                        this->selectionIndex.set1Value(start, index);
+                    }
                 }
                 break;
             case Gui::SoSelectionElementAction::Remove:
                 {
                     int start = this->selectionIndex.find(index);
-                    this->selectionIndex.deleteValues(start,1);
+                    if (start >= 0)
+                        this->selectionIndex.deleteValues(start,1);
                 }
                 break;
             default:

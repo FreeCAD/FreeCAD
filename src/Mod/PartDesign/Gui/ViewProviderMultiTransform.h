@@ -30,7 +30,7 @@ namespace PartDesignGui {
 
 class PartDesignGuiExport ViewProviderMultiTransform : public ViewProviderTransformed
 {
-    PROPERTY_HEADER(PartGui::ViewProviderMultiTransform);
+    PROPERTY_HEADER(PartDesignGui::ViewProviderMultiTransform);
 public:
     ViewProviderMultiTransform()
         { featureName = std::string("MultiTransform");
@@ -41,7 +41,9 @@ public:
     virtual bool onDelete(const std::vector<std::string> &);
 
 protected:
-    virtual bool setEdit(int ModNum);
+    /// Returns a newly create dialog for the part to be placed in the task view
+    virtual TaskDlgFeatureParameters *getEditDialog();
+
 
 };
 

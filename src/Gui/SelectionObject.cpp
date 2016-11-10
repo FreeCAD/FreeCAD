@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include <strstream>
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -31,8 +31,9 @@
 #include <Base/Interpreter.h>
 
 #include "SelectionObject.h"
-#include "SelectionObjectPy.h"
+#include "Selection.h"
 #include "Application.h"
+#include <Gui/SelectionObjectPy.h>
 
 using namespace Gui;
 
@@ -43,15 +44,33 @@ SelectionObject::SelectionObject()
 {
 }
 
+SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
+{
+    FeatName = msg.pObjectName ? msg.pObjectName : "";
+    DocName = msg.pDocName ? msg.pDocName : "";
+    TypeName = msg.pTypeName ? msg.pTypeName : "";
+    if (msg.pSubName) {
+        SubNames.push_back(msg.pSubName);
+        SelPoses.push_back(Base::Vector3d(msg.x, msg.y, msg.z));
+    }
+}
+
+SelectionObject::SelectionObject(App::DocumentObject* obj)
+{
+    FeatName = obj->getNameInDocument();
+    DocName = obj->getDocument()->getName();
+    TypeName = obj->getTypeId().getName();
+}
+
 SelectionObject::~SelectionObject()
 {
 }
 
 const App::DocumentObject * SelectionObject::getObject(void) const
 {
-    if (DocName != "") {
+    if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && FeatName != "")
+        if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
     return 0;
@@ -59,9 +78,9 @@ const App::DocumentObject * SelectionObject::getObject(void) const
 
 App::DocumentObject * SelectionObject::getObject(void) 
 {
-    if (DocName != "") {
+    if (!DocName.empty()) {
         App::Document *doc = App::GetApplication().getDocument(DocName.c_str());
-        if (doc && FeatName != "")
+        if (doc && !FeatName.empty())
             return doc->getObject(FeatName.c_str());
     }
     return 0;
@@ -93,9 +112,7 @@ std::string SelectionObject::getAsPropertyLinkSubString(void)const
     return buf;
 }
 
-
 PyObject* SelectionObject::getPyObject()
 {
     return new SelectionObjectPy(new SelectionObject(*this));
 }
-

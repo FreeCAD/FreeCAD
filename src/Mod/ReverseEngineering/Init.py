@@ -24,14 +24,3 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-            
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("ReverseEngineering")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "ReverseEngineering/Help/index.html")
-ParGrp.SetString("DocTemplateName",  "ReverseEngineering")
-ParGrp.SetString("DocTemplateScript","TemplReverseEngineering.py")
-ParGrp.SetString("WorkBenchName",    "ReverseEngineering Design")
-ParGrp.SetString("WorkBenchModule",  "ReverseEngineeringWorkbench.py")

@@ -1,4 +1,4 @@
-# FreeCAD Part module  
+﻿# FreeCAD Part module
 # (c) 2001 Juergen Riegel
 #
 # Part design module
@@ -31,6 +31,7 @@
 import FreeCAD,FreeCADGui
 # import the App Test module
 import TestApp               #Test as Module name not possible
+import sys
 
 #---------------------------------------------------------------------------
 # define the Commands of the Test Application module
@@ -46,9 +47,15 @@ class TestCmd:
         QtUnitGui.addTest("Document")
         QtUnitGui.addTest("UnicodeTests")
         QtUnitGui.addTest("MeshTestsApp")
+        QtUnitGui.addTest("TestFem")
         QtUnitGui.addTest("TestSketcherApp")
         QtUnitGui.addTest("TestPartApp")
         QtUnitGui.addTest("TestPartDesignApp")
+        QtUnitGui.addTest("TestPartDesignGui")
+        QtUnitGui.addTest("TestSpreadsheet")
+        QtUnitGui.addTest("TestDraft")
+        QtUnitGui.addTest("TestArch")
+        QtUnitGui.addTest("TestTechDrawApp")
         QtUnitGui.addTest("Workbench")
         QtUnitGui.addTest("Menu")
         QtUnitGui.addTest("Menu.MenuDeleteCases")
@@ -97,11 +104,11 @@ class TestAllTextCmd:
     "Test all commando object"
     def Activated(self):
         import unittest, TestApp
-        unittest.TextTestRunner().run(unittest.defaultTestLoader.loadTestsFromName("TestApp.All"))
+        unittest.TextTestRunner(stream=sys.stdout,verbosity=2).run(unittest.defaultTestLoader.loadTestsFromName("TestApp.All"))
 
     def GetResources(self):
-        return {'Pixmap'  : 'Std_Tool1', 
-                'MenuText': 'Test all', 
+        return {'Pixmap'  : 'Std_Tool1',
+                'MenuText': 'Test all',
                 'ToolTip' : 'Runs all tests at once (can take very long!)'
                 }
 
@@ -192,4 +199,3 @@ FreeCADGui.addCommand('Test_TestWork'    ,TestWorkbenchCmd())
 FreeCADGui.addCommand('Test_TestCreateMenu'    ,TestCreateMenuCmd())
 FreeCADGui.addCommand('Test_TestDeleteMenu'    ,TestDeleteMenuCmd())
 FreeCADGui.addCommand('Test_InsertFeature'    ,TestInsertFeatureCmd())
-

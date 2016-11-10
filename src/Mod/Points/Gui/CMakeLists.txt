@@ -6,12 +6,11 @@ endif(PCL_FOUND)
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}
-    ${COIN3D_INCLUDE_DIR}
-    ${PYTHON_INCLUDE_PATH}
-    ${SOQT_INCLUDE_DIR}
+    ${COIN3D_INCLUDE_DIRS}
+    ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${QT_INCLUDE_DIR}
-    ${XERCESC_INCLUDE_DIR}
+    ${XercesC_INCLUDE_DIRS}
 )
 
 set(PointsGui_LIBS
@@ -70,3 +69,11 @@ SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
 INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PointsGuiIcon_SVG
+    Resources/icons/PointsWorkbench.svg
+)
+
+fc_copy_sources(PointsGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Points" ${PointsGuiIcon_SVG})
+
+INSTALL(FILES ${PointsGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Points/Resources/icons")

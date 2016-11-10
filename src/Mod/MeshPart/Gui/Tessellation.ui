@@ -60,6 +60,19 @@
         </property>
         <widget class="QWidget" name="pageStandard">
          <layout class="QGridLayout" name="gridLayout_8">
+          <item row="3" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>189</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -70,9 +83,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spinSurfaceDeviation">
-              <property name="decimals">
-               <number>3</number>
+             <widget class="Gui::QuantitySpinBox" name="spinSurfaceDeviation">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
               </property>
               <property name="minimum">
                <double>0.001000000000000</double>
@@ -87,18 +100,19 @@
             </item>
            </layout>
           </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="groupsFaceColors">
+            <property name="text">
+             <string>Define segments by face colors</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+           <widget class="QCheckBox" name="meshShapeColors">
+            <property name="text">
+             <string>Apply face colors to mesh</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>189</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -117,9 +131,9 @@
              </widget>
             </item>
             <item>
-             <widget class="QDoubleSpinBox" name="spinMaximumEdgeLength">
-              <property name="decimals">
-               <number>3</number>
+             <widget class="Gui::QuantitySpinBox" name="spinMaximumEdgeLength">
+              <property name="unit" stdset="0">
+               <string notr="true">mm</string>
               </property>
               <property name="singleStep">
                <double>0.100000000000000</double>
@@ -339,6 +353,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeWidget</tabstop>
  </tabstops>

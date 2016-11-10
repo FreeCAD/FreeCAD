@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2002 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,14 +34,14 @@ namespace Dialog {
 
 /**
  * The DlgMacroRecordImp class implements a dialog to record a macro.
- * \author Jürgen Riegel
+ * \author JÃ¼rgen Riegel
  */
 class DlgMacroRecordImp : public QDialog, public Ui_DlgMacroRecord, public Gui::WindowParameter
 { 
     Q_OBJECT
 
 public:
-    DlgMacroRecordImp( QWidget* parent = 0, Qt::WFlags fl = 0 );
+    DlgMacroRecordImp( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
     virtual ~DlgMacroRecordImp();
 
 protected Q_SLOTS:

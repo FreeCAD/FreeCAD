@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
+ *   Copyright (c) 2011 JÃ¼rgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -34,8 +34,11 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 #include <Gui/Selection.h>
+#include <Gui/Command.h>
 
 #include <boost/bind.hpp>
+
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ViewProviderSketch.h"
 
@@ -56,6 +59,28 @@ TaskSketcherMessages::TaskSketcherMessages(ViewProviderSketch *sketchView)
 
     connectionSetUp = sketchView->signalSetUp.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSetUp, this,_1));
     connectionSolved = sketchView->signalSolved.connect(boost::bind(&SketcherGui::TaskSketcherMessages::slotSolved, this,_1));
+    
+    ui->labelConstrainStatus->setOpenExternalLinks(false);
+    
+    ui->autoUpdate->onRestore();
+    
+    if(ui->autoUpdate->isChecked())
+        sketchView->getSketchObject()->noRecomputes=false;
+    else
+        sketchView->getSketchObject()->noRecomputes=true;
+    
+    /*QObject::connect(
+        ui->labelConstrainStatus, SIGNAL(linkActivated(const QString &)),
+        this                     , SLOT  (on_labelConstrainStatus_linkActivated(const QString &))
+       );
+    QObject::connect(
+        ui->autoUpdate, SIGNAL(stateChanged(int)),
+        this                     , SLOT  (on_autoUpdate_stateChanged(int))
+       );
+    QObject::connect(
+        ui->manualUpdate, SIGNAL(clicked(bool)),
+        this                     , SLOT  (on_manualUpdate_clicked(bool))
+       );*/   
 }
 
 TaskSketcherMessages::~TaskSketcherMessages()
@@ -73,6 +98,33 @@ void TaskSketcherMessages::slotSetUp(QString msg)
 void TaskSketcherMessages::slotSolved(QString msg)
 {
     ui->labelSolverStatus->setText(msg);
+}
+
+void TaskSketcherMessages::on_labelConstrainStatus_linkActivated(const QString &str)
+{
+    if( str == QString::fromLatin1("#conflicting"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectConflictingConstraints");
+    
+    if( str == QString::fromLatin1("#redundant"))
+        Gui::Application::Instance->commandManager().runCommandByName("Sketcher_SelectRedundantConstraints");            
+}
+
+void TaskSketcherMessages::on_autoUpdate_stateChanged(int state)
+{
+    if(state==Qt::Checked) {
+        sketchView->getSketchObject()->noRecomputes=false;
+        ui->autoUpdate->onSave();
+    }
+    else if (state==Qt::Unchecked) {
+        sketchView->getSketchObject()->noRecomputes=true;
+        ui->autoUpdate->onSave();
+    }
+}
+
+void TaskSketcherMessages::on_manualUpdate_clicked(bool checked)
+{
+    Q_UNUSED(checked);
+    Gui::Command::updateActive();
 }
 
 #include "moc_TaskSketcherMessages.cpp"

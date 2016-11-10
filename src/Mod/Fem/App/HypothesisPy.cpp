@@ -83,7 +83,7 @@ void SMESH_HypothesisPy<T>::init_type(PyObject* module)
     SMESH_HypothesisPy<T>::behaviors().supportRepr();
     SMESH_HypothesisPy<T>::behaviors().supportGetattr();
     SMESH_HypothesisPy<T>::behaviors().supportSetattr();
-    SMESH_HypothesisPy<T>::behaviors().type_object()->tp_new = &PyMake;
+    SMESH_HypothesisPy<T>::behaviors().set_tp_new(PyMake);
 
     SMESH_HypothesisPy::add_varargs_method("setLibName", &SMESH_HypothesisPy<T>::setLibName, "setLibName(String)");
     SMESH_HypothesisPy::add_varargs_method("getLibName", &SMESH_HypothesisPy<T>::getLibName, "String getLibName()");
@@ -135,6 +135,8 @@ Py::Object SMESH_HypothesisPy<T>::setLibName(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getLibName(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetLibName());
 }
 
@@ -149,12 +151,16 @@ Py::Object SMESH_HypothesisPy<T>::setParameters(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getParameters(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetParameters());
 }
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     std::string paramName = (std::string)Py::String(args[0]);
     hypothesis<SMESH_Hypothesis>()->SetLastParameters(paramName.c_str());
     return Py::None();
@@ -163,12 +169,16 @@ Py::Object SMESH_HypothesisPy<T>::setLastParameters(const Py::Tuple& args)
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::getLastParameters(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::String(hypothesis<SMESH_Hypothesis>()->GetLastParameters());
 }
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::clearParameters(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     hypothesis<SMESH_Hypothesis>()->ClearParameters();
     return Py::None();
 }
@@ -182,18 +192,20 @@ Py::Object SMESH_HypothesisPy<T>::setParametersByMesh(const Py::Tuple& args)
         &(Part::TopoShapePy::Type), &shape))
         throw Py::Exception();
     Fem::FemMesh* m = static_cast<Fem::FemMeshPy*>(mesh)->getFemMeshPtr();
-    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->_Shape;
+    const TopoDS_Shape& s = static_cast<Part::TopoShapePy*>(shape)->getTopoShapePtr()->getShape();
     return Py::Boolean(hypothesis<SMESH_Hypothesis>()->SetParametersByMesh(m->getSMesh(), s));
 }
 
 template<class T>
 Py::Object SMESH_HypothesisPy<T>::isAuxiliary(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Boolean(hypothesis<SMESH_Hypothesis>()->IsAuxiliary());
 }
 
 template<class T>
-PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject *type, PyObject * args, PyObject * kwds)
+PyObject *SMESH_HypothesisPy<T>::PyMake(struct _typeobject * /*type*/, PyObject * args, PyObject * /*kwds*/)
 {
     int hypId;
     PyObject* obj;
@@ -253,7 +265,7 @@ void StdMeshers_AutomaticLengthPy::init_type(PyObject* module)
     SMESH_HypothesisPyBase::init_type(module);
 }
 
-StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int hypId, int studyId, SMESH_Gen* gen)
+StdMeshers_AutomaticLengthPy::StdMeshers_AutomaticLengthPy(int /*hypId*/, int /*studyId*/, SMESH_Gen* /*gen*/)
   : SMESH_HypothesisPyBase(0)
 {
 }
@@ -271,6 +283,8 @@ Py::Object StdMeshers_AutomaticLengthPy::setFineness(const Py::Tuple& args)
 
 Py::Object StdMeshers_AutomaticLengthPy::getFineness(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_AutomaticLength>()->GetFineness());
 }
 
@@ -299,11 +313,9 @@ Py::Object StdMeshers_AutomaticLengthPy::getLength(const Py::Tuple& args)
     }
     else {
         Py::TopoShape shape(shape_or_double);
-        const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& s = shape.extensionObject()->getTopoShapePtr()->getShape();
         return Py::Float(hypothesis<StdMeshers_AutomaticLength>()->GetLength(m->getSMesh(),s));
     }
-
-    throw Py::Exception();
 }
 
 // ----------------------------------------------------------------------------
@@ -358,16 +370,22 @@ Py::Object StdMeshers_MaxLengthPy::setLength(const Py::Tuple& args)
 
 Py::Object StdMeshers_MaxLengthPy::getLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_MaxLength>()->GetLength());
 }
 
 Py::Object StdMeshers_MaxLengthPy::havePreestimatedLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Boolean(hypothesis<StdMeshers_MaxLength>()->HavePreestimatedLength());
 }
 
 Py::Object StdMeshers_MaxLengthPy::getPreestimatedLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_MaxLength>()->GetPreestimatedLength());
 }
 
@@ -385,6 +403,8 @@ Py::Object StdMeshers_MaxLengthPy::setUsePreestimatedLength(const Py::Tuple& arg
 
 Py::Object StdMeshers_MaxLengthPy::getUsePreestimatedLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Boolean(hypothesis<StdMeshers_MaxLength>()->GetUsePreestimatedLength());
 }
 
@@ -419,6 +439,8 @@ Py::Object StdMeshers_LocalLengthPy::setLength(const Py::Tuple& args)
 
 Py::Object StdMeshers_LocalLengthPy::getLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_LocalLength>()->GetLength());
 }
 
@@ -430,6 +452,8 @@ Py::Object StdMeshers_LocalLengthPy::setPrecision(const Py::Tuple& args)
 
 Py::Object StdMeshers_LocalLengthPy::getPrecision(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_LocalLength>()->GetPrecision());
 }
 
@@ -462,6 +486,8 @@ Py::Object StdMeshers_MaxElementAreaPy::setMaxArea(const Py::Tuple& args)
 
 Py::Object StdMeshers_MaxElementAreaPy::getMaxArea(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_MaxElementArea>()->GetMaxArea());
 }
 
@@ -695,6 +721,8 @@ Py::Object StdMeshers_SegmentLengthAroundVertexPy::setLength(const Py::Tuple& ar
 
 Py::Object StdMeshers_SegmentLengthAroundVertexPy::getLength(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_SegmentLengthAroundVertex>()->GetLength());
 }
 
@@ -906,6 +934,8 @@ Py::Object StdMeshers_NumberOfSegmentsPy::setNumSegm(const Py::Tuple& args)
 
 Py::Object StdMeshers_NumberOfSegmentsPy::getNumSegm(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Int(hypothesis<StdMeshers_NumberOfSegments>()->GetNumberOfSegments());
 }
 
@@ -937,6 +967,8 @@ Py::Object StdMeshers_NumberOfLayersPy::setNumLayers(const Py::Tuple& args)
 
 Py::Object StdMeshers_NumberOfLayersPy::getNumLayers(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Int(hypothesis<StdMeshers_NumberOfLayers>()->GetNumberOfLayers());
 }
 
@@ -986,6 +1018,8 @@ Py::Object StdMeshers_MaxElementVolumePy::setMaxVolume(const Py::Tuple& args)
 
 Py::Object StdMeshers_MaxElementVolumePy::getMaxVolume(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Float(hypothesis<StdMeshers_MaxElementVolume>()->GetMaxVolume());
 }
 
@@ -1017,6 +1051,8 @@ Py::Object StdMeshers_LengthFromEdgesPy::setMode(const Py::Tuple& args)
 
 Py::Object StdMeshers_LengthFromEdgesPy::getMode(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::Int(hypothesis<StdMeshers_LengthFromEdges>()->GetMode());
 }
 
@@ -1046,11 +1082,15 @@ StdMeshers_LayerDistributionPy::~StdMeshers_LayerDistributionPy()
 
 Py::Object StdMeshers_LayerDistributionPy::setLayerDistribution(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     return Py::None();
 }
 
 Py::Object StdMeshers_LayerDistributionPy::getLayerDistribution(const Py::Tuple& args)
 {
+    if (!PyArg_ParseTuple(args.ptr(), ""))
+        throw Py::Exception();
     //return hypothesis<StdMeshers_LayerDistribution>()->GetLayerDistribution();
     return Py::None();
 }

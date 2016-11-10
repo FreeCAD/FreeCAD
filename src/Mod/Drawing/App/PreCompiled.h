@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -28,13 +28,15 @@
 
 // Exporting of App classes
 #ifdef FC_OS_WIN32
-# define DrawingExport  __declspec(dllexport)
-# define PartExport     __declspec(dllimport)
-# define MeshExport     __declspec(dllimport)
+# define DrawingExport         __declspec(dllexport)
+# define PartExport            __declspec(dllimport)
+# define MeshExport            __declspec(dllimport)
+# define SpreadsheetExport     __declspec(dllimport)
 #else // for Linux
 # define DrawingExport
-# define PartExport 
-# define MeshExport   
+# define PartExport
+# define MeshExport
+# define SpreadsheetExport
 #endif
 
 #ifdef _PreComp_
@@ -53,17 +55,16 @@
 
 // OpenCasCade =====================================================================================
 // Base
+#include <Standard_Version.hxx>
 #include <Standard_Failure.hxx>
 #include <Standard_GUID.hxx>
 #include <Standard_AbortiveTransaction.hxx>
 #include <Standard_Address.hxx>
-#include <Standard_AncestorIterator.hxx>
 #include <Standard_Boolean.hxx>
 #include <Standard_Byte.hxx>
 #include <Standard_Character.hxx>
 #include <Standard_ConstructionError.hxx>
 #include <Standard_CString.hxx>
-#include <Standard_ctype.hxx>
 #include <Standard_DefineHandle.hxx>
 #include <Standard_DimensionError.hxx>
 #include <Standard_DimensionMismatch.hxx>
@@ -91,7 +92,6 @@
 #include <Standard_NullObject.hxx>
 #include <Standard_NullValue.hxx>
 #include <Standard_NumericError.hxx>
-#include <Standard_OId.hxx>
 #include <Standard_OStream.hxx>
 #include <Standard_OutOfMemory.hxx>
 #include <Standard_OutOfRange.hxx>
@@ -115,6 +115,10 @@
 #include <Standard_Underflow.hxx>
 #include <Standard_UUID.hxx>
 #include <Standard_WayOfLife.hxx>
+#if OCC_VERSION_HEX < 0x060700
+#include <Standard_ctype.hxx>
+#include <Standard_OId.hxx>
+#endif
 
  
 #include <TCollection_ExtendedString.hxx>

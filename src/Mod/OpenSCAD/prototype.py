@@ -340,8 +340,7 @@ class Node:
                     try:
                         global lastimportpath
                         filename=os.path.join(lastimportpath,filename)
-                    except:
-                        raise #no path given
+                    except: raise #no path given
                 # Check for a mesh fileformat support by the Mesh mddule
                 if extension.lower() in reverseimporttypes()['Mesh']:
                     import Mesh
@@ -372,10 +371,7 @@ class Node:
                     global dxfcache
                     layers=dxfcache.get(id(doc),[])
                     if layers:
-                        try:
-                            groupobj=[go for go in layers if (not layera) or go.Label == layera]
-                        except:
-                            groupobj= None
+                        groupobj=[go for go in layers if (not layera) or go.Label == layera]
                     else:
                         groupobj= None
                     if not groupobj:
@@ -392,7 +388,7 @@ class Node:
                         edges.extend(shapeobj.Shape.Edges)
                     try:
                         f=edgestofaces(edges)
-                    except:
+                    except Part.OCCError:
                         FreeCAD.Console.PrintError(\
  'processing of dxf import faild\nPlease rework \'%s\' manualy\n' % layera)
                         f=Part.Shape() #empty Shape
@@ -507,8 +503,7 @@ class Node:
         if fcpar:
             try:
                 obj.ViewObject.hide()
-            except:
-                raise
+            except: raise
             if True: #never refine the Shape, as it itroduces crashes
                 return obj
             else: #refine Shape
@@ -684,7 +679,7 @@ def open(filename):
 def insert(filename,docname):
     try:
         doc=FreeCAD.getDocument(docname)
-    except:
+    except NameError:
         doc=FreeCAD.newDocument(docname)
     readfile(filename).addtofreecad(doc)
     #doc.recompute()

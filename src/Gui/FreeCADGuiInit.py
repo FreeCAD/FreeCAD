@@ -1,12 +1,12 @@
 # FreeCAD gui init module
-# (c) 2003 Jürgen Riegel
+# (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
 #***************************************************************************
-#*   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -98,22 +98,27 @@ class NoneWorkbench ( Workbench ):
 		return "Gui::NoneWorkbench"
 
 def InitApplications():
-	import sys,os
+	import sys,os,traceback,cStringIO
 	# Searching modules dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
 	# (additional module paths are already cached)
 	ModDirs = FreeCAD.__path__
 	#print ModDirs
 	Log('Init:   Searching modules...\n')
-	ModPar = FreeCAD.ParamGet("System parameter:Modules")
 	for Dir in ModDirs:
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			InstallFile = os.path.join(Dir,"InitGui.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					execfile(InstallFile)
+					#execfile(InstallFile)
+					exec open(InstallFile).read()
 				except Exception, inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
-					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Log('-'*100+'\n')
+					output=cStringIO.StringIO()
+					traceback.print_exc(file=output)
+					Log(output.getvalue())
+					Log('-'*100+'\n')
+					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
@@ -127,6 +132,7 @@ Log ('Init: Running FreeCADGuiInit.py start script...\n')
 # signal that the gui is up
 App.GuiUp = 1
 App.Gui = FreeCADGui
+FreeCADGui.Workbench = Workbench
 
 Gui.addWorkbench(NoneWorkbench())
 
@@ -143,7 +149,7 @@ FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 #FreeCAD.addExportType("IDTF (for 3D PDF) (*.idtf)","FreeCADGui")
-FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
+#FreeCAD.addExportType("3D View (*.svg)","FreeCADGui")
 FreeCAD.addExportType("Portable Document Format (*.pdf)","FreeCADGui")
 
 del(InitApplications)

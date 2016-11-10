@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -201,79 +201,79 @@ void ViewProviderRobotObject::updateData(const App::Property* prop)
 		// Axis 1
 		searchAction.setName("FREECAD_AXIS1");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis1Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 2
 		searchAction.setName("FREECAD_AXIS2");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis2Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 3
 		searchAction.setName("FREECAD_AXIS3");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis3Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 4
 		searchAction.setName("FREECAD_AXIS4");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis4Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 5
 		searchAction.setName("FREECAD_AXIS5");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis5Node = static_cast<SoVRMLTransform *>(node);
 		}
 		// Axis 6
 		searchAction.setName("FREECAD_AXIS6");
 		searchAction.setInterest(SoSearchAction::FIRST);
-		searchAction.setSearchingAll(FALSE);
+		searchAction.setSearchingAll(false);
 		searchAction.apply(pcRobotRoot);
 		path = searchAction.getPath();
 		if(path){
 			SoNode* node = path->getTail();
-			std::string typeName = (const char*)node->getTypeId().getName();
 			if (!node || node->getTypeId() != SoVRMLTransform::getClassTypeId())
 				throw; // should not happen
+			std::string typeName = (const char*)node->getTypeId().getName();
 			Axis6Node = static_cast<SoVRMLTransform *>(node);
 		}
 		if(Axis1Node)

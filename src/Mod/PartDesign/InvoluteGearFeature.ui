@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>195</width>
-    <height>136</height>
+    <height>142</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -62,7 +62,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="unit" stdset="0">
-      <string>mm</string>
+      <string notr="true">mm</string>
      </property>
      <property name="decimals" stdset="0">
       <number>3</number>
@@ -103,7 +103,7 @@
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
      </property>
      <property name="unit" stdset="0">
-      <string>deg</string>
+      <string notr="true">deg</string>
      </property>
      <property name="decimals" stdset="0">
       <number>3</number>

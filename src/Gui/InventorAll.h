@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2006     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2006     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -75,6 +75,7 @@
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/errors/SoDebugError.h> 
 #include <Inventor/errors/SoReadError.h>
 #include <Inventor/events/SoEvent.h>
@@ -129,6 +130,7 @@
 #include <Inventor/nodes/SoProfileCoordinate2.h>
 #include <Inventor/nodes/SoProfileCoordinate3.h>
 #include <Inventor/nodes/SoQuadMesh.h>
+#include <Inventor/nodes/SoRotation.h>
 #include <Inventor/nodes/SoRotationXYZ.h>
 #include <Inventor/nodes/SoSelection.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -151,9 +153,6 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <Inventor/VRMLnodes/SoVRMLGroup.h>
 
-#include <Inventor/Qt/SoQt.h>
-#include <Inventor/Qt/SoQtCursor.h>
-#include <Inventor/Qt/viewers/SoQtExaminerViewer.h>
 
 
 #endif

@@ -59,6 +59,7 @@ void ButtonView::selectButton(int number)
 
 void ButtonView::goSelectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
+    Q_UNUSED(deselected); 
     if (selected.indexes().isEmpty())
         return;
     QModelIndex select(selected.indexes().at(0));
@@ -82,6 +83,7 @@ ButtonModel::ButtonModel(QObject *parent) : QAbstractListModel(parent)
 
 int ButtonModel::rowCount (const QModelIndex &parent) const
 {
+    Q_UNUSED(parent); 
     return spaceballButtonGroup()->GetGroups().size();
 }
 
@@ -116,7 +118,7 @@ void ButtonModel::insertButtonRows(int number)
     {
         QString groupName;
         groupName.setNum(index);
-        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toAscii());//builds the group.
+        Base::Reference<ParameterGrp> newGroup = spaceballButtonGroup()->GetGroup(groupName.toLatin1());//builds the group.
         newGroup->SetASCII("Command", "");
     }
     endInsertRows();
@@ -126,14 +128,14 @@ void ButtonModel::insertButtonRows(int number)
 void ButtonModel::setCommand(int row, QString command)
 {
     GroupVector groupVector = spaceballButtonGroup()->GetGroups();
-    groupVector.at(row)->SetASCII("Command", command.toAscii());
+    groupVector.at(row)->SetASCII("Command", command.toLatin1());
 }
 
 void ButtonModel::goButtonPress(int number)
 {
     QString numberString;
     numberString.setNum(number);
-    if (!spaceballButtonGroup()->HasGroup(numberString.toAscii()))
+    if (!spaceballButtonGroup()->HasGroup(numberString.toLatin1()))
         insertButtonRows(number);
 }
 
@@ -278,6 +280,7 @@ int CommandModel::rowCount(const QModelIndex &parent) const
 
 int CommandModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent); 
     return 1;
 }
 
@@ -314,19 +317,19 @@ QVariant CommandModel::data(const QModelIndex &index, int role) const
     if (role == Qt::UserRole)
     {
         if (node->nodeType == CommandNode::CommandType)
-            return QVariant(QString::fromAscii(node->aCommand->getName()));
+            return QVariant(QString::fromLatin1(node->aCommand->getName()));
         if (node->nodeType == CommandNode::GroupType)
         {
             if (node->children.size() < 1)
                 return QVariant();
             CommandNode *childNode = node->children.at(0);
-            return QVariant(QString::fromAscii(childNode->aCommand->getGroupName()));
+            return QVariant(QString::fromLatin1(childNode->aCommand->getGroupName()));
         }
         return QVariant();
     }
     if (role == Qt::ToolTipRole)
         if (node->nodeType == CommandNode::CommandType)
-            return QVariant(QString::fromAscii(node->aCommand->getToolTipText()));
+            return QVariant(QString::fromLatin1(node->aCommand->getToolTipText()));
     return QVariant();
 }
 
@@ -358,7 +361,7 @@ CommandNode* CommandModel::nodeFromIndex(const QModelIndex &index) const
 
 void CommandModel::goAddMacro(const QByteArray &macroName)
 {
-    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromAscii("Macros")),
+    QModelIndexList indexList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromLatin1("Macros")),
                                           1, Qt::MatchWrap | Qt::MatchRecursive));
     QModelIndex macrosIndex;
     if (indexList.size() < 1)
@@ -366,7 +369,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
         //this is the first macro and we have to add the Macros item.
         //figure out where to insert it. Should be in the command groups now.
         QStringList groups = orderedGroups();
-        int location(groups.indexOf(QString::fromAscii("Macros")));
+        int location(groups.indexOf(QString::fromLatin1("Macros")));
         if (location == -1)
             location = groups.size();
         //add row
@@ -399,7 +402,7 @@ void CommandModel::goAddMacro(const QByteArray &macroName)
 
 void CommandModel::goRemoveMacro(const QByteArray &macroName)
 {
-    QModelIndexList macroList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromAscii(macroName.data())),
+    QModelIndexList macroList(this->match(this->index(0,0), Qt::UserRole, QVariant(QString::fromLatin1(macroName.data())),
                                           1, Qt::MatchWrap | Qt::MatchRecursive));
     if (macroList.isEmpty())
         return;
@@ -439,7 +442,7 @@ void CommandModel::groupCommands(const QString& groupName)
     CommandNode *parentNode = new CommandNode(CommandNode::GroupType);
     parentNode->parent = rootNode;
     rootNode->children.push_back(parentNode);
-    std::vector <Command*> commands = Application::Instance->commandManager().getGroupCommands(groupName.toAscii());
+    std::vector <Command*> commands = Application::Instance->commandManager().getGroupCommands(groupName.toLatin1());
     for (std::vector <Command*>::iterator it = commands.begin(); it != commands.end(); ++it)
     {
         CommandNode *childNode = new CommandNode(CommandNode::CommandType);
@@ -455,7 +458,7 @@ QStringList CommandModel::orderedGroups()
     std::vector <Command*> commands = Application::Instance->commandManager().getAllCommands();
     for (std::vector <Command*>::iterator it = commands.begin(); it != commands.end(); ++it)
     {
-        QString groupName(QString::fromAscii((*it)->getGroupName()));
+        QString groupName(QString::fromLatin1((*it)->getGroupName()));
         if (!groups.contains(groupName))
             groups << groupName;
     }
@@ -474,11 +477,13 @@ PrintModel::PrintModel(QObject *parent, ButtonModel *buttonModelIn, CommandModel
 
 int PrintModel::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent); 
     return buttonModel->rowCount();
 }
 
 int PrintModel::columnCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent); 
     return 2;
 }
 
@@ -712,6 +717,7 @@ void DlgCustomizeSpaceball::onRemoveMacroAction(const QByteArray &macroName)
 void DlgCustomizeSpaceball::onModifyMacroAction(const QByteArray &macroName)
 {
     //don't think I need to do anything here.
+    Q_UNUSED(macroName); 
 }
 
 #include "moc_DlgCustomizeSpaceball.cpp"

@@ -42,14 +42,14 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgOnlineHelpImp::DlgOnlineHelpImp( QWidget* parent )
   : PreferencePage(parent)
 {
     this->setupUi(this);
 
-    prefStartPage->setFilter( tr("HTML files (*.html *.htm)") );
+    prefStartPage->setFilter(QString::fromLatin1("%1 (*.html *.htm)").arg(tr("HTML files")));
     if (prefStartPage->fileName().isEmpty()) {
         prefStartPage->setFileName(getStartpage());
     }

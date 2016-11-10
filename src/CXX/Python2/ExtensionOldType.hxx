@@ -178,7 +178,7 @@ namespace Py
             Tuple self( 2 );
 
             self[0] = Object( this );
-            self[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ) );
+            self[1] = Object( PyCObject_FromVoidPtr( method_def, do_not_dealloc ), true );
 
             PyObject *func = PyCFunction_New( &method_def->ext_meth_def, self.ptr() );
 

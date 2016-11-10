@@ -85,7 +85,7 @@ int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_Exception, "matrix or up to 16 floats expected");
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "matrix or up to 16 floats expected");
     return -1;
 }
 
@@ -331,7 +331,7 @@ PyObject* MatrixPy::multiply(PyObject * args)
         return new VectorPy(new Vector3d(vec));
     }
 
-    PyErr_SetString(PyExc_Exception, "either vector or matrix expected");
+    PyErr_SetString(Base::BaseExceptionFreeCADError, "either vector or matrix expected");
     return 0;
 }
 
@@ -344,7 +344,7 @@ PyObject* MatrixPy::invert(PyObject * args)
         if (fabs(getMatrixPtr()->determinant()) > DBL_EPSILON)
             getMatrixPtr()->inverseGauss();
         else {
-            PyErr_SetString(PyExc_Exception, "Cannot invert singular matrix");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
             return 0;
         }
     }
@@ -365,7 +365,7 @@ PyObject* MatrixPy::inverse(PyObject * args)
             return new MatrixPy(m);
         }
         else {
-            PyErr_SetString(PyExc_Exception, "Cannot invert singular matrix");
+            PyErr_SetString(Base::BaseExceptionFreeCADError, "Cannot invert singular matrix");
             return 0;
         }
     }
@@ -620,7 +620,7 @@ void  MatrixPy::setA34(Py::Float arg)
 
 Py::Float MatrixPy::getA41(void) const
 {
-    double val = (*this->getMatrixPtr())[2][0];
+    double val = (*this->getMatrixPtr())[3][0];
     return Py::Float(val);
 }
 
@@ -696,119 +696,119 @@ int MatrixPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * MatrixPy::number_divide_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_remainder_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
+PyObject * MatrixPy::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*arg*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_negative_handler (PyObject *self)
+PyObject * MatrixPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_positive_handler (PyObject *self)
+PyObject * MatrixPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_absolute_handler (PyObject *self)
+PyObject * MatrixPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int MatrixPy::number_nonzero_handler (PyObject *self)
+int MatrixPy::number_nonzero_handler (PyObject* /*self*/)
 {
     return 1;
 }
 
-PyObject * MatrixPy::number_invert_handler (PyObject *self)
+PyObject * MatrixPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_and_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_or_handler (PyObject *self, PyObject *other)
+PyObject * MatrixPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int MatrixPy::number_coerce_handler (PyObject **self, PyObject **other)
+int MatrixPy::number_coerce_handler (PyObject ** /*self*/, PyObject ** /*other*/)
 {
     return 1;
 }
 
-PyObject * MatrixPy::number_int_handler (PyObject *self)
+PyObject * MatrixPy::number_int_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_long_handler (PyObject *self)
+PyObject * MatrixPy::number_long_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_float_handler (PyObject *self)
+PyObject * MatrixPy::number_float_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_oct_handler (PyObject *self)
+PyObject * MatrixPy::number_oct_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * MatrixPy::number_hex_handler (PyObject *self)
+PyObject * MatrixPy::number_hex_handler (PyObject * /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;

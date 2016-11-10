@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <boost/signals.hpp>
 # include <boost/bind.hpp>
+# include <QAbstractItemView>
 # include <QActionEvent>
 # include <QApplication>
 # include <QDesktopWidget>
@@ -40,6 +41,7 @@
 #include "Application.h"
 #include "Command.h"
 #include "DlgUndoRedo.h"
+#include "DlgWorkbenchesImp.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "WhatsThis.h"
@@ -59,7 +61,7 @@ using namespace Gui::Dialog;
 Action::Action (Command* pcCmd, QObject * parent)
   : QObject(parent), _action(new QAction( this )), _pcCmd(pcCmd)
 {
-    _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
+    _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
     connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
 }
 
@@ -67,7 +69,7 @@ Action::Action (Command* pcCmd, QAction* action, QObject * parent)
   : QObject(parent), _action(action), _pcCmd(pcCmd)
 {
     _action->setParent(this);
-    _action->setObjectName(QString::fromAscii(_pcCmd->getName()));
+    _action->setObjectName(QString::fromLatin1(_pcCmd->getName()));
     connect(_action, SIGNAL(triggered(bool)), this, SLOT(onActivated()));
 }
 
@@ -233,6 +235,7 @@ void ActionGroup::addTo(QWidget *w)
             w->addAction(_action);
             QToolButton* tb = w->findChildren<QToolButton*>().last();
             tb->setPopupMode(QToolButton::MenuButtonPopup);
+            tb->setObjectName(QString::fromLatin1("qt_toolbutton_menubutton"));
             QList<QAction*> acts = _group->actions();
             QMenu* menu = new QMenu(tb);
             menu->addActions(acts);
@@ -263,6 +266,11 @@ void ActionGroup::setDisabled (bool b)
 void ActionGroup::setExclusive (bool b)
 {
     _group->setExclusive(b);
+}
+
+bool ActionGroup::isExclusive() const
+{
+    return _group->isExclusive();
 }
 
 void ActionGroup::setVisible( bool b )
@@ -501,6 +509,7 @@ void WorkbenchGroup::addTo(QWidget *w)
     if (w->inherits("QToolBar")) {
         QToolBar* bar = qobject_cast<QToolBar*>(w);
         QComboBox* box = new WorkbenchComboBox(this, w);
+        box->setIconSize(QSize(16, 16));
         box->setToolTip(_action->toolTip());
         box->setStatusTip(_action->statusTip());
         box->setWhatsThis(_action->whatsThis());
@@ -515,44 +524,53 @@ void WorkbenchGroup::addTo(QWidget *w)
     }
 }
 
+void WorkbenchGroup::setWorkbenchData(int i, const QString& wb)
+{
+    QList<QAction*> workbenches = _group->actions();
+    QString name = Application::Instance->workbenchMenuText(wb);
+    QPixmap px = Application::Instance->workbenchIcon(wb);
+    QString tip = Application::Instance->workbenchToolTip(wb);
+
+    workbenches[i]->setObjectName(wb);
+    workbenches[i]->setIcon(px);
+    workbenches[i]->setText(name);
+    workbenches[i]->setToolTip(tip);
+    workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(name));
+    workbenches[i]->setVisible(true);
+    if (i < 9)
+        workbenches[i]->setShortcut(QKeySequence(QString::fromUtf8("W,%1").arg(i+1)));
+}
+
 void WorkbenchGroup::refreshWorkbenchList()
 {
-    QString active = QString::fromAscii(WorkbenchManager::instance()->active()->name().c_str());
     QStringList items = Application::Instance->workbenches();
-    
-    QList<QAction*> workbenches = _group->actions();
-    int numWorkbenches = std::min<int>(workbenches.count(), items.count());
-
-    // sort by workbench menu text
-    QMap<QString, QString> menuText;
-    for (int index = 0; index < numWorkbenches; index++) {
-        QString text = Application::Instance->workbenchMenuText(items[index]);
-        menuText[text] = items[index];
-    }
-
+    QStringList enabled_wbs_list = DlgWorkbenchesImp::load_enabled_workbenches();
+    QStringList disabled_wbs_list = DlgWorkbenchesImp::load_disabled_workbenches();
     int i=0;
-    for (QMap<QString, QString>::Iterator it = menuText.begin(); it != menuText.end(); ++it, i++) {
-        QPixmap px = Application::Instance->workbenchIcon(it.value());
-        QString tip = Application::Instance->workbenchToolTip(it.value());
-        workbenches[i]->setObjectName(it.value());
-        workbenches[i]->setIcon(px);
-        workbenches[i]->setText(it.key());
-        workbenches[i]->setToolTip(tip);
-        workbenches[i]->setStatusTip(tr("Select the '%1' workbench").arg(it.key()));
-        workbenches[i]->setVisible(true);
-        // Note: See remark at WorkbenchComboBox::onWorkbenchActivated
-        // Calling setChecked() here causes to uncheck the current item
-        // item in comboboxes these action were added to.
-        //if (items[i] == active)
-        //workbenches[i]->setChecked(true);
+
+    // Go through the list of enabled workbenches and verify that they really exist because
+    // it might be possible that a workbench has been removed after setting up the list of
+    // enabled workbenches.
+    for (QStringList::Iterator it = enabled_wbs_list.begin(); it != enabled_wbs_list.end(); ++it) {
+        int index = items.indexOf(*it);
+        if (index >= 0) {
+            setWorkbenchData(i++, *it);
+            items.removeAt(index);
+        }
     }
 
-    // if less workbenches than actions
-    for (int index = numWorkbenches; index < workbenches.count(); index++) {
-        workbenches[i]->setObjectName(QString());
-        workbenches[i]->setIcon(QIcon());
-        workbenches[i]->setText(QString());
-        workbenches[index]->setVisible(false);
+    // Filter out the actively disabled workbenches
+    for (QStringList::Iterator it = disabled_wbs_list.begin(); it != disabled_wbs_list.end(); ++it) {
+        int index = items.indexOf(*it);
+        if (index >= 0) {
+            items.removeAt(index);
+        }
+    }
+
+    // Now add the remaining workbenches of 'items'. They have been added to the application
+    // after setting up the list of enabled workbenches.
+    for (QStringList::Iterator it = items.begin(); it != items.end(); ++it) {
+        setWorkbenchData(i++, *it);
     }
 }
 
@@ -573,7 +591,7 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
     QList<QAction*> workbenches = _group->actions();
     for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if (!(*it)->isVisible()) {
-            QString wb = QString::fromAscii(name);
+            QString wb = QString::fromLatin1(name);
             QPixmap px = Application::Instance->workbenchIcon(wb);
             QString text = Application::Instance->workbenchMenuText(wb);
             QString tip = Application::Instance->workbenchToolTip(wb);
@@ -590,7 +608,7 @@ void WorkbenchGroup::slotAddWorkbench(const char* name)
 
 void WorkbenchGroup::slotRemoveWorkbench(const char* name)
 {
-    QString workbench = QString::fromAscii(name);
+    QString workbench = QString::fromLatin1(name);
     QList<QAction*> workbenches = _group->actions();
     for (QList<QAction*>::Iterator it = workbenches.begin(); it != workbenches.end(); ++it) {
         if ((*it)->objectName() == workbench) {
@@ -630,6 +648,15 @@ void RecentFilesAction::appendFile(const QString& filename)
     files.removeAll(filename);
     files.prepend(filename);
     setFiles(files);
+
+    // update the XML structure and save the user paramter to disk (#0001989)
+    bool saveParameter = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/General")->GetBool("SaveUserParameter", true);
+    if (saveParameter) {
+        save();
+        ParameterManager* parmgr = App::GetApplication().GetParameterSet("User parameter");
+        parmgr->SaveDocument(App::Application::Config()["UserParameter"].c_str());
+    }
 }
 
 /**
@@ -643,7 +670,7 @@ void RecentFilesAction::setFiles(const QStringList& files)
     int numRecentFiles = std::min<int>(recentFiles.count(), files.count());
     for (int index = 0; index < numRecentFiles; index++) {
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QString::fromAscii("&%1 %2").arg(index+1).arg(fi.fileName()));
+        recentFiles[index]->setText(QString::fromLatin1("%1 %2").arg(index+1).arg(fi.fileName()));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]); // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));
@@ -694,7 +721,7 @@ void RecentFilesAction::activateFile(int id)
         // invokes appendFile()
         SelectModule::Dict dict = SelectModule::importHandler(filename);
         for (SelectModule::Dict::iterator it = dict.begin(); it != dict.end(); ++it) {
-            Application::Instance->open(it.key().toUtf8(), it.value().toAscii());
+            Application::Instance->open(it.key().toUtf8(), it.value().toLatin1());
             break;
         }
     }
@@ -744,11 +771,11 @@ void RecentFilesAction::save()
     QList<QAction*> recentFiles = _group->actions();
     int num = std::min<int>(count, recentFiles.count());
     for (int index = 0; index < num; index++) {
-        QString key = QString::fromAscii("MRU%1").arg(index);
+        QString key = QString::fromLatin1("MRU%1").arg(index);
         QString value = recentFiles[index]->toolTip();
         if (value.isEmpty())
             break;
-        hGrp->SetASCII(key.toAscii(), value.toUtf8());
+        hGrp->SetASCII(key.toLatin1(), value.toUtf8());
     }
 }
 

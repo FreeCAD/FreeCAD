@@ -27,19 +27,65 @@ App.BoundBox(Vector, Vector)
 App.BoundBox(BoundBox)
 	  </UserDocu>
     </Documentation>
+    <Methode Name="setVoid">
+      <Documentation>
+        <UserDocu>method setVoid()
+Invalidate the bounding box</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isValid">
+      <Documentation>
+        <UserDocu>method isValid()
+Checks if the bounding box is valid</UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="add">
       <Documentation>
         <UserDocu>method add(BoundBox)
 Add (enlarge) the given BoundBox</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isIntersection">
+    <Methode Name="getPoint">
       <Documentation>
-        <UserDocu>method isIntersection(Vector|BoundBox|Vector Base, Vector Dir)
+        <UserDocu>method getPoint(Int)
+Get the point of the given index. The index must be in the range of [0,7]
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getEdge">
+      <Documentation>
+        <UserDocu>method getEdge(Int)
+Get the edge points of the given index. The index must be in the range of [0,11]
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="closestPoint">
+      <Documentation>
+        <UserDocu>method closestPoint(Vector)
+Get the closest point of the bounding box to the given point
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="intersect">
+      <Documentation>
+        <UserDocu>method intersect(BoundBox|Vector Base, Vector Dir)
 Checks if the given object intersects with the BoundBox. That can be:
-- A Vector (Point)
 - Another BoundBox
 - A line, specified by Base and Dir
+		</UserDocu>
+      </Documentation>
+	</Methode>
+    <Methode Name="intersected">
+      <Documentation>
+        <UserDocu>method intersected(BoundBox)
+Returns the intersection of this and the given bounding box.
+		</UserDocu>
+      </Documentation>
+	</Methode>
+    <Methode Name="united">
+      <Documentation>
+        <UserDocu>method united(BoundBox)
+Returns the union of this and the given bounding box.
 		</UserDocu>
       </Documentation>
 	</Methode>
@@ -62,8 +108,22 @@ exception is thrown.
 	  </Methode>
 	  <Methode Name="move">
 		  <Documentation>
-			  <UserDocu> method getIntersectionPoint(Vector)
+			  <UserDocu> method move(Vector)
 Move the BoundBox by the given vector
+			  </UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="scale">
+		  <Documentation>
+			  <UserDocu> method scale(x,y,z)
+Scale the BoundBox by the given values in x, y and z
+			  </UserDocu>
+		  </Documentation>
+	  </Methode>
+	  <Methode Name="transformed">
+		  <Documentation>
+			  <UserDocu> method transformed(Matrix)
+Return a new bounding box with the transformed corner of this bounding box
 			  </UserDocu>
 		  </Documentation>
 	  </Methode>

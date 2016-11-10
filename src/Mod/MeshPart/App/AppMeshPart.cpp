@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2008 JÃ¼rgen Riegel (juergen.riegel@web.de)              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -30,15 +30,12 @@
 #include <Base/Interpreter.h>
  
 
-extern struct PyMethodDef MeshPart_methods[];
-
-PyDoc_STRVAR(module_MeshPart_doc,
-"This module is the MeshPart module.");
-
+namespace MeshPart {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void MeshPartExport initMeshPart()
+PyMODINIT_FUNC initMeshPart()
 {
     // load dependent module
     try {
@@ -49,15 +46,6 @@ void MeshPartExport initMeshPart()
         PyErr_SetString(PyExc_ImportError, e.what());
         return;
     }
-    Py_InitModule3("MeshPart", MeshPart_methods, module_MeshPart_doc);   /* mod name, table ptr */
+    (void)MeshPart::initModule();
     Base::Console().Log("Loading MeshPart module... done\n");
-
-
-    // NOTE: To finish the initialization of our own type objects we must
-    // call PyType_Ready, otherwise we run into a segmentation fault, later on.
-    // This function is responsible for adding inherited slots from a type's base class.
- 
-    //MeshPart::FeatureViewPart        ::init();
 }
-
-} // extern "C"

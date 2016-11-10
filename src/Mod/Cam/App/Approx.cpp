@@ -402,7 +402,7 @@ void Approximate::ParameterBoundary()
         g++;
     }
 
-    //Secure the counters and reinitialize´the things we needed
+    //Secure the counters and reinitializeÂ´the things we needed
     g = temp1;
     temp2 = g;
     Pointdistance.clear();
@@ -437,7 +437,7 @@ void Approximate::ParameterBoundary()
         g++;
     }
 
-    //Secure the counters and reinitialize´the things we needed
+    //Secure the counters and reinitializeÂ´the things we needed
     g = temp1;
     temp2 = g;
     Pointdistance.clear();
@@ -480,7 +480,7 @@ void Approximate::ParameterBoundary()
         g++;
     }
 
-    //Secure the counters and reinitialize´the things we needed
+    //Secure the counters and reinitializeÂ´the things we needed
     g = temp1;
     temp2 = g;
     Pointdistance.clear();

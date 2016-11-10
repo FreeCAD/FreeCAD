@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -125,7 +125,7 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// some basic python macros
 #define Py_NEWARGS 1
 /// return with no return value if nothing happens
-#define Py_Return Py_INCREF(Py_None); return Py_None;
+#define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
 #define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
 /// checks on a condition and returns an error on failure
@@ -134,34 +134,12 @@ inline void Assert(int expr, char *msg)         // C++ assert
 #define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return NULL;}}
 
 
-/// Define the PyParent Object
-typedef PyTypeObject * PyParentObject;
-
-
 /// This must be the first line of each PyC++ class
 #define Py_Header                                           \
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
-    static PyParentObject Parents[];                        \
-    virtual PyTypeObject *GetType(void) {return &Type;}     \
-    virtual PyParentObject *GetParents(void) {return Parents;}
-
-/** This defines the _getattr_up macro
- *  which allows attribute and method calls
- *  to be properly passed up the hierarchy.
- */
-#define _getattr_up(Parent)                                 \
-{                                                           \
-    PyObject *rvalue = Py_FindMethod(Methods, this, attr);  \
-    if (rvalue == NULL)                                     \
-    {                                                       \
-        PyErr_Clear();                                      \
-        return Parent::_getattr(attr);                      \
-    }                                                       \
-    else                                                    \
-        return rvalue;                                      \
-} 
+    virtual PyTypeObject *GetType(void) {return &Type;}
 
 /*------------------------------
  * PyObjectBase
@@ -377,6 +355,9 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  */
 #define PYMETHODEDEF(FUNC)	{"" #FUNC "",(PyCFunction) s##FUNC,Py_NEWARGS},
 
+BaseExport extern PyObject* BaseExceptionFreeCADError;
+#define PY_FCERROR (Base::BaseExceptionFreeCADError ? \
+ BaseExceptionFreeCADError : PyExc_RuntimeError)
 
 
 /** Exception handling for python callback functions
@@ -394,7 +375,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
  *     Feature *pcFtr = _pcDocTypeStd->AddFeature(pstr);
  *   }catch(...)                                                        \
  *   {                                                                 \
- * 	 	Py_Error(PyExc_Exception,"Unknown C++ exception");          \
+ * 	 	Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception");          \
  *   }catch(FCException e) ..... // and so on....                                                               \
  * }
  * \endcode
@@ -427,7 +408,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -436,7 +417,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -444,11 +425,11 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(PyExc_Exception,e);                                \
+        Py_Error(Base::BaseExceptionFreeCADError,e);                \
     }                                                               \
     catch(...)                                                      \
     {                                                               \
-        Py_Error(PyExc_Exception,"Unknown C++ exception");          \
+        Py_Error(Base::BaseExceptionFreeCADError,"Unknown C++ exception"); \
     }
 
 #else
@@ -460,7 +441,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         e.ReportException();                                        \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(std::exception &e)                                        \
     {                                                               \
@@ -469,7 +450,7 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
         str += e.what();                                            \
         str += ")";                                                 \
         Base::Console().Error(str.c_str());                         \
-        Py_Error(PyExc_Exception,str.c_str());                      \
+        Py_Error(Base::BaseExceptionFreeCADError,str.c_str());      \
     }                                                               \
     catch(const Py::Exception&)                                     \
     {                                                               \
@@ -477,13 +458,10 @@ static PyObject * s##DFUNC (PyObject *self, PyObject *args, PyObject * /*kwd*/){
     }                                                               \
     catch(const char *e)                                            \
     {                                                               \
-        Py_Error(PyExc_Exception,e);                                \
+        Py_Error(Base::BaseExceptionFreeCADError,e);                \
     }
 
 #endif  // DONT_CATCH_CXX_EXCEPTIONS
-
-/// Root definition of the inheritance tree of the FreeCAD python objects
-#define PARENTSBasePyObjectBase &Base::PyObjectBase::Type,NULL
 
 /** Python helper class 
  *  This class encapsulate the Decoding of UTF8 to a python object.

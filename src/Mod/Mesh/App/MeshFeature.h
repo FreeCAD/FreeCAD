@@ -25,6 +25,7 @@
 #define MESH_FEATURE_H
 
 #include <App/GeoFeature.h>
+#include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 
 #include "Core/MeshKernel.h"
@@ -81,6 +82,7 @@ public:
     virtual PyObject* getPyObject(void);
 };
 
+typedef App::FeatureCustomT<Feature> FeatureCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Mesh

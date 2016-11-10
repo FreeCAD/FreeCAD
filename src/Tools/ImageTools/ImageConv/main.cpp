@@ -68,7 +68,7 @@ int main( int argc, char **argv )
         // convert all given/found image files to XPM and write the result into a text file
         else if (cCmdP.HasSwitch("-a") || cCmdP.HasSwitch("--append"))
         {
-            // search for input fíles
+            // search for input fÃ­les
             if (cCmdP.GetArgumentCount("-i") > 0)
             {
                 cICApp.SetUpdateBmpFactory(cCmdP.HasSwitch("-a") || cCmdP.HasSwitch("--update"));
@@ -136,7 +136,7 @@ int main( int argc, char **argv )
     }
     catch(const CICException& e)
     {
-        cerr << (const char*)e.what().toAscii() << endl;
+        cerr << (const char*)e.what().toLatin1() << endl;
         CImageConvApp::Error();
     }
     catch(...)

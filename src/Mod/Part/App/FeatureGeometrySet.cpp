@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -53,10 +53,10 @@ App::DocumentObjectExecReturn *FeatureGeometrySet::execute(void)
         TopoDS_Shape sh = (*it)->toShape();
         if (first) {
             first = false;
-            result._Shape = sh;
+            result.setShape(sh);
         }
         else {
-            result._Shape = result.fuse(sh);
+            result.setShape(result.fuse(sh));
         }
     }
     

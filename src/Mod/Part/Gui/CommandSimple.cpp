@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2002     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -57,13 +57,14 @@ CmdPartSimpleCylinder::CmdPartSimpleCylinder()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create Cylinder...");
     sToolTipText  = QT_TR_NOOP("Create a Cylinder");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_SimpleCylinder";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Cylinder";
 }
 
 void CmdPartSimpleCylinder::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     PartGui::DlgPartCylinderImp dlg(Gui::getMainWindow());
     if (dlg.exec()== QDialog::Accepted) {
         Base::Vector3d dir = dlg.getDirection();
@@ -74,11 +75,11 @@ void CmdPartSimpleCylinder::activated(int iMsg)
                       ".Shape=Part.makeCylinder(%f,%f,"
                       "Base.Vector(%f,%f,%f),"
                       "Base.Vector(%f,%f,%f))"
-                     ,dlg.radius->value()
-                     ,dlg.length->value()
-                     ,dlg.xPos->value()
-                     ,dlg.yPos->value()
-                     ,dlg.zPos->value()
+                     ,dlg.radius->value().getValue()
+                     ,dlg.length->value().getValue()
+                     ,dlg.xPos->value().getValue()
+                     ,dlg.yPos->value().getValue()
+                     ,dlg.zPos->value().getValue()
                      ,dir.x,dir.y,dir.z);
         commitCommand();
         updateActive();
@@ -107,13 +108,14 @@ CmdPartShapeFromMesh::CmdPartShapeFromMesh()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create shape from mesh...");
     sToolTipText  = QT_TR_NOOP("Create shape from selected mesh object");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_ShapeFromMesh";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Shape_from_Mesh.svg";
 }
 
 void CmdPartShapeFromMesh::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Sewing Tolerance"),
         QObject::tr("Enter tolerance for sewing shape:"), 0.1, 0.01,10.0,2,&ok);
@@ -170,12 +172,13 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Create simple copy");
     sToolTipText  = QT_TR_NOOP("Create a simple non-parametric copy");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_SimpleCopy";
     sStatusTip    = sToolTipText;
 }
 
 void CmdPartSimpleCopy::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);
     openCommand("Create Copy");
@@ -190,6 +193,7 @@ void CmdPartSimpleCopy::activated(int iMsg)
         copyVisual("ActiveObject", "ShapeColor", (*it)->getNameInDocument());
         copyVisual("ActiveObject", "LineColor", (*it)->getNameInDocument());
         copyVisual("ActiveObject", "PointColor", (*it)->getNameInDocument());
+        copyVisual("ActiveObject", "DiffuseColor", (*it)->getNameInDocument());
     }
     commitCommand();
     updateActive();
@@ -213,13 +217,14 @@ CmdPartRefineShape::CmdPartRefineShape()
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Refine shape");
     sToolTipText  = QT_TR_NOOP("Refine the copy of a shape");
-    sWhatsThis    = sToolTipText;
+    sWhatsThis    = "Part_RefineShape";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Refine_Shape";
 }
 
 void CmdPartRefineShape::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::WaitCursor wc;
     Base::Type partid = Base::Type::fromName("Part::Feature");
     std::vector<App::DocumentObject*> objs = Gui::Selection().getObjectsOfType(partid);

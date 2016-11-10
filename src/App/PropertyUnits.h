@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2010     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2010     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -64,6 +64,12 @@ public:
 
     void setUnit(const Base::Unit &u) {_Unit = u;}
     const Base::Unit &getUnit(void) const {return _Unit;}
+
+    void setValue(double lValue) { PropertyFloat::setValue(lValue); }
+    double getValue(void) const { return PropertyFloat::getValue(); }
+
+    virtual void setPathValue(const App::ObjectIdentifier &path, const boost::any &value);
+    virtual const boost::any getPathValue(const App::ObjectIdentifier &path) const;
 
 protected:
     Base::Quantity createQuantityFromPy(PyObject *value);
@@ -130,6 +136,30 @@ class AppExport PropertyLength : public PropertyQuantityConstraint
 public:
     PropertyLength(void);
     virtual ~PropertyLength(){}
+};
+
+/** Area property
+ * This is a property for representing areas. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^2 or mm^2.
+ */
+class AppExport PropertyArea : public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyArea(void);
+    virtual ~PropertyArea(){}
+};
+
+/** Volume property
+ * This is a property for representing volumes. It is basically a float
+ * property which must not be negative. On the Gui it has a quantity like m^3 or mm^3.
+ */
+class AppExport PropertyVolume : public PropertyQuantityConstraint
+{
+    TYPESYSTEM_HEADER();
+public:
+    PropertyVolume(void);
+    virtual ~PropertyVolume(){}
 };
 
 /** Angle property

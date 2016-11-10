@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2007     *
+ *   Copyright (c) JÃ¼rgen Riegel          (juergen.riegel@web.de) 2007     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -32,12 +32,17 @@
 # define DrawingExport      __declspec(dllimport)
 # define PartExport         __declspec(dllimport)
 # define DrawingGuiExport   __declspec(dllexport)
+# define SpreadsheetExport  __declspec(dllimport)
 #else // for Linux
 # define DrawingExport
 # define PartExport
 # define DrawingGuiExport
+# define SpreadsheetExport
 #endif
 
+#ifdef _MSC_VER
+#   pragma warning(disable : 4005)
+#endif
 
 #ifdef _PreComp_
 

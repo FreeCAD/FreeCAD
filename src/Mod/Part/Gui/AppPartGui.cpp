@@ -5,7 +5,7 @@
  *   published by the Free Software Foundation; either version 2 of the    *
  *   License, or (at your option) any later version.                       *
  *   for detail see the LICENCE text file.                                 *
- *   J�rgen Riegel 2002                                                    *
+ *   Juergen Riegel 2002                                                   *
  *                                                                         *
  ***************************************************************************/
 
@@ -13,7 +13,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Inventor/system/inttypes.h>
 #endif
+
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -24,6 +28,7 @@
 
 #include <Mod/Part/App/PropertyTopoShape.h>
 
+#include "AttacherTexts.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepPointSet.h"
@@ -76,13 +81,28 @@ void loadPartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-static struct PyMethodDef PartGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+namespace PartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PartGui")
+    {
+        initialize("This module is the PartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
-extern "C" {
-void PartGuiExport initPartGui()
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace PartGui
+
+PyMODINIT_FUNC initPartGui()
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
@@ -98,14 +118,18 @@ void PartGuiExport initPartGui()
         return;
     }
 
-    (void) Py_InitModule("PartGui", PartGui_methods);   /* mod name, table ptr */
+    PyObject* partGuiModule = PartGui::initModule();
     Base::Console().Log("Loading GUI of Part module... done\n");
+
+    PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
+        "AttachEngine Gui resources");
+    Py_INCREF(pAttachEngineTextsModule);
+    PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
     PartGui::SoBrepFaceSet                  ::initClass();
     PartGui::SoBrepEdgeSet                  ::initClass();
     PartGui::SoBrepPointSet                 ::initClass();
     PartGui::SoFCControlPoints              ::initClass();
-    PartGui::ViewProviderPartBase           ::init();
     PartGui::ViewProviderPartExt            ::init();
     PartGui::ViewProviderPart               ::init();
     PartGui::ViewProviderEllipsoid          ::init();
@@ -126,6 +150,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderLoft               ::init();
     PartGui::ViewProviderSweep              ::init();
     PartGui::ViewProviderOffset             ::init();
+    PartGui::ViewProviderOffset2D           ::init();
     PartGui::ViewProviderThickness          ::init();
     PartGui::ViewProviderCustom             ::init();
     PartGui::ViewProviderCustomPython       ::init();
@@ -146,6 +171,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderConeParametric     ::init();
     PartGui::ViewProviderTorusParametric    ::init();
     PartGui::ViewProviderRuledSurface       ::init();
+    PartGui::ViewProviderFace               ::init();
     PartGui::DimensionLinear                ::initClass();
     PartGui::DimensionAngular               ::initClass();
     PartGui::ArcEngine                      ::initClass();
@@ -156,10 +182,19 @@ void PartGuiExport initPartGui()
     CreatePartCommands();
     CreateSimplePartCommands();
     CreateParamPartCommands();
+    try{
+        Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
+        Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
+    } catch (Base::PyException &err){
+        err.ReportException();
+    }
+
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettings3DViewPart>   ( QT_TRANSLATE_NOOP("QObject","Part design") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportIges>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
+    (void)new Gui::PrefPageProducer<PartGui::DlgImportExportStep>     ( QT_TRANSLATE_NOOP("QObject","Import-Export") );
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsObjectColor>  ( QT_TRANSLATE_NOOP("QObject","Display") );
     Gui::ViewProviderBuilder::add(
         Part::PropertyPartShape::getClassTypeId(),
@@ -173,4 +208,3 @@ void PartGuiExport initPartGui()
     rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
     rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
 }
-} // extern "C"

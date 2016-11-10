@@ -33,6 +33,7 @@
 
 class SoSeparator;
 class SoSwitch;
+class QTextEdit;
 
 namespace PartGui {
 

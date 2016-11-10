@@ -1,5 +1,5 @@
 /***************************************************************************
- *   (c) Jürgen Riegel (juergen.riegel@web.de) 2002                        *
+ *   (c) JÃ¼rgen Riegel (juergen.riegel@web.de) 2002                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -58,7 +58,7 @@ void Handled::ref() const
 
 void Handled::unref() const
 {
-    assert(_lRefCount > 0);
+    assert(*_lRefCount > 0);
     if (!_lRefCount->deref()) {
         delete this;
     }

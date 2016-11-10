@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <QApplication>
 # include <QPixmap>
+# include <QMessageBox>
 #endif
 
 #include <App/DocumentObjectGroup.h>
@@ -40,108 +41,28 @@
 #include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
+#include <Base/Console.h>
 
 
 using namespace Gui;
 
 
-PROPERTY_SOURCE(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Gui::ViewProviderDocumentObjectGroup, Gui::ViewProviderDocumentObject)
 
 
 /**
  * Creates the view provider for an object group.
  */
-ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup() : visible(false)
+ViewProviderDocumentObjectGroup::ViewProviderDocumentObjectGroup()
 {
 #if 0
     setDefaultMode(SO_SWITCH_ALL);
 #endif
+    ViewProviderGroupExtension::initExtension(this);
 }
 
 ViewProviderDocumentObjectGroup::~ViewProviderDocumentObjectGroup()
 {
-}
-
-/**
- * Whenever a property of the group gets changed then the same property of all
- * associated view providers of the objects of the object group get changed as well.
- */
-void ViewProviderDocumentObjectGroup::onChanged(const App::Property* prop)
-{
-    ViewProviderDocumentObject::onChanged(prop);
-}
-
-void ViewProviderDocumentObjectGroup::attach(App::DocumentObject *pcObj)
-{
-    ViewProviderDocumentObject::attach(pcObj);
-}
-
-void ViewProviderDocumentObjectGroup::updateData(const App::Property* prop)
-{
-#if 0
-    if (prop->getTypeId() == App::PropertyLinkList::getClassTypeId()) {
-        std::vector<App::DocumentObject*> obj =
-            static_cast<const App::PropertyLinkList*>(prop)->getValues();
-        Gui::Document* doc = Gui::Application::Instance->getDocument
-            (&this->getObject()->getDocument());
-        MDIView* mdi = doc->getActiveView();
-        if (mdi && mdi->isDerivedFrom(View3DInventor::getClassTypeId())) {
-            View3DInventorViewer* view = static_cast<View3DInventor*>(mdi)->getViewer();
-            SoSeparator* scene_graph = static_cast<SoSeparator*>(view->getSceneGraph());
-            std::vector<ViewProvider*> current_nodes;
-            for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
-                current_nodes.push_back(doc->getViewProvider(*it));
-            std::sort(current_nodes.begin(), current_nodes.end());
-            std::sort(this->nodes.begin(), this->nodes.end());
-            // get the removed views
-            std::vector<ViewProvider*> diff_1, diff_2;
-            std::back_insert_iterator<std::vector<ViewProvider*> > biit(diff_2);
-            std::set_difference(this->nodes.begin(), this->nodes.end(), 
-                                current_nodes.begin(), current_nodes.end(), biit);
-            diff_1 = diff_2;
-            diff_2.clear();
-            // get the added views
-            std::set_difference(current_nodes.begin(), current_nodes.end(),
-                                this->nodes.begin(), this->nodes.end(), biit);
-            this->nodes = current_nodes;
-            // move from root node to switch
-            for (std::vector<ViewProvider*>::iterator it = diff_1.begin(); it != diff_1.end(); ++it) {
-                view->addViewProviderToGroup(*it, scene_graph);
-                view->removeViewProviderFromGroup(*it, this->pcModeSwitch);
-            }
-            // move from switch node to root node
-            for (std::vector<ViewProvider*>::iterator it = diff_2.begin(); it != diff_2.end(); ++it) {
-                view->addViewProviderToGroup(*it, this->pcModeSwitch);
-                view->removeViewProviderFromGroup(*it, scene_graph);
-            }
-        }
-    }
-#endif
-}
-
-std::vector<App::DocumentObject*> ViewProviderDocumentObjectGroup::claimChildren(void)const
-{
-    return std::vector<App::DocumentObject*>(static_cast<App::DocumentObjectGroup*>(getObject())->Group.getValues());
-}
-
-bool ViewProviderDocumentObjectGroup::canDragObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dragObject(App::DocumentObject* obj)
-{
-    static_cast<App::DocumentObjectGroup*>(getObject())->removeObject(obj);
-}
-
-bool ViewProviderDocumentObjectGroup::canDropObjects() const
-{
-    return true;
-}
-
-void ViewProviderDocumentObjectGroup::dropObject(App::DocumentObject* obj)
-{
-    static_cast<App::DocumentObjectGroup*>(getObject())->addObject(obj);
 }
 
 std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) const
@@ -150,66 +71,9 @@ std::vector<std::string> ViewProviderDocumentObjectGroup::getDisplayModes(void) 
     return std::vector<std::string>();
 }
 
-bool ViewProviderDocumentObjectGroup::onDelete(const std::vector<std::string> &)
-{
-    Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
-                                     ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
-    return true;
-}
-
-
-void ViewProviderDocumentObjectGroup::hide(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.StatusBits.test(9) && this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->hide();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::hide();
-    this->visible = false;
-}
-
-void ViewProviderDocumentObjectGroup::show(void)
-{
-    // when reading the Visibility property from file then do not hide the
-    // objects of this group because they have stored their visibility status, too
-    if (!Visibility.StatusBits.test(9) && !this->visible) {
-        App::DocumentObject * group = getObject();
-        if (group && group->getTypeId().isDerivedFrom(App::DocumentObjectGroup::getClassTypeId())) {
-            const std::vector<App::DocumentObject*> & links = static_cast<App::DocumentObjectGroup*>
-                (group)->Group.getValues();
-            Gui::Document* doc = Application::Instance->getDocument(group->getDocument());
-            for (std::vector<App::DocumentObject*>::const_iterator it = links.begin(); it != links.end(); ++it) {
-                ViewProvider* view = doc->getViewProvider(*it);
-                if (view) view->show();
-            }
-        }
-    }
-
-    ViewProviderDocumentObject::show();
-    this->visible = true;
-}
-
 bool ViewProviderDocumentObjectGroup::isShow(void) const
 {
     return Visibility.getValue();
-}
-
-void ViewProviderDocumentObjectGroup::Restore(Base::XMLReader &reader)
-{
-    Visibility.StatusBits.set(9); // tmp. set
-    ViewProviderDocumentObject::Restore(reader);
-    Visibility.StatusBits.reset(9); // unset
 }
 
 /**
