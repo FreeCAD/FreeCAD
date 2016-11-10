@@ -52,8 +52,8 @@ DynamicProperty::~DynamicProperty()
 void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
 {
     // get the properties of the base class first and insert the dynamic properties afterwards
-    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
-        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyList(List);
+    if (this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyList(List);
     else
         this->pc->PropertyContainer::getPropertyList(List);
     
@@ -64,8 +64,8 @@ void DynamicProperty::getPropertyList(std::vector<Property*> &List) const
 void DynamicProperty::getPropertyMap(std::map<std::string,Property*> &Map) const
 {
     // get the properties of the base class first and insert the dynamic properties afterwards
-    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
-        return static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyMap(Map);
+    if (this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        static_cast<App::ExtensionContainer*>(this->pc)->ExtensionContainer::getPropertyMap(Map);
     else
         this->pc->PropertyContainer::getPropertyMap(Map);
     
