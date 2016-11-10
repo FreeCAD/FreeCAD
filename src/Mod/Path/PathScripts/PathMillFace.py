@@ -29,6 +29,11 @@ from PathScripts import PathUtils
 import Part
 import PathScripts.PathKurveUtils
 import area
+import TechDraw
+import Drawing
+import DraftGeomUtils
+from FreeCAD import Vector
+import Arch
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -74,7 +79,7 @@ class ObjectFace:
         # Face Properties
         obj.addProperty("App::PropertyEnumeration", "CutMode", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","The direction that the toolpath should go around the part ClockWise CW or CounterClockWise CCW"))
         obj.CutMode = ['Climb', 'Conventional']
-        obj.addProperty("App::PropertyDistance", "MaterialAllowance", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Amount of material to leave"))
+        obj.addProperty("App::PropertyDistance", "PassExtension", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","How far the cutter should extend past the boundary"))
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Start Faceing at center or boundary"))
         obj.StartAt = ['Center', 'Edge']
         obj.addProperty("App::PropertyPercent", "StepOver", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Percent of cutter diameter to step over on each pass"))
@@ -83,6 +88,8 @@ class ObjectFace:
         obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Lifts tool at the end of each pass to respect cut mode."))
         obj.addProperty("App::PropertyBool", "UseZigZag", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Use Zig Zag pattern to clear area."))
         obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Angle of the zigzag pattern"))
+        obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Shape to use for calculating Boundary"))
+        obj.BoundaryShape = ['Perimeter', 'BoundBox']
 
 
         # Start Point Properties
@@ -170,7 +177,7 @@ class ObjectFace:
                 obj.FinishDepth.Value,
                 obj.FinalDepth.Value)
 
-        extraoffset = obj.MaterialAllowance.Value
+        extraoffset = 1 - obj.PassExtension.Value
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
         use_zig_zag = obj.UseZigZag
         zig_angle = obj.ZigZagAngle
@@ -246,15 +253,22 @@ class ObjectFace:
 
         #Facing is done either against base object
         if obj.Base:
+            faces = []
             for b in obj.Base:
-                print (b)
                 for sub in b[1]:
-                    if "Face" in sub:
-                        shape = getattr(b[0].Shape, sub)
-                        wire = shape.OuterWire
-                        edgelist = wire.Edges
+                    shape = getattr(b[0].Shape, sub)
+                    if isinstance (shape, Part.Face):
+                        groups = Drawing.project(shape, Vector(0,0,1))
+                        if len(groups[0].Edges) > 0:
+                            p = DraftGeomUtils.superWire(groups[0].Edges, closed=True)
+                            w = []
+                            w.append(p)
+                            faces.append(Arch.makeFace(w))
                     else:
+                        print ('falling out')
                         return
+            contourwire = TechDraw.findShapeOutline(faces[0].multiFuse(faces[1:]).removeSplitter(), 1, Vector(0,0,1))
+            print ('269: contourwire', contourwire)
 
         #If no base object, do planing of top surface of entire model
         else:
@@ -264,10 +278,20 @@ class ObjectFace:
             baseobject = parentJob.Base
             if baseobject is None:
                 return
-            print "Plane base object: " + baseobject.Name
-            contourwire = PathUtils.silhouette(baseobject)
-            edgelist = contourwire.Edges
-            edgelist = Part.__sortEdges__(edgelist)
+            # print "Plane base object: " + baseobject.Name
+            contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0,0,1))
+            print ('281: contourwire', contourwire)
+
+        if obj.BoundaryShape == 'BoundBox':
+            print 'boundbox'
+            bb = contourwire.BoundBox
+            bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0,0,1))
+            contourwire = TechDraw.findShapeOutline(bbperim, 1, Vector(0,0,1))
+
+        else:
+            print 'perimeter'
+        edgelist = contourwire.Edges
+        edgelist = Part.__sortEdges__(edgelist)
 
         #use libarea to build the pattern
         a = area.Area()
@@ -312,8 +336,8 @@ class ViewProviderFace:
         FreeCADGui.Control.closeDialog()
         taskd = TaskPanel()
         taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
         taskd.setupUi()
+        FreeCADGui.Control.showDialog(taskd)
         return True
 
     def getIcon(self):
@@ -385,8 +409,8 @@ else:
 
 class TaskPanel:
     def __init__(self):
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/MillFaceEdit.ui")
-        #self.form = FreeCADGui.PySideUic.loadUi(":/panels/MillFaceEdit.ui")
+        #self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Path/MillFaceEdit.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(":/panels/MillFaceEdit.ui")
         self.updating = False
 
     def accept(self):
@@ -408,14 +432,16 @@ class TaskPanel:
                 self.obj.StartDepth = self.form.startDepth.text()
             if hasattr(self.obj, "FinalDepth"):
                 self.obj.FinalDepth = self.form.finalDepth.text()
+            if hasattr(self.obj, "FinishDepth"):
+                self.obj.FinishDepth = self.form.finishDepth.text()
             if hasattr(self.obj, "SafeHeight"):
                 self.obj.SafeHeight = self.form.safeHeight.text()
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = self.form.clearanceHeight.text()
             if hasattr(self.obj, "StepDown"):
                 self.obj.StepDown = self.form.stepDown.value()
-            if hasattr(self.obj, "MaterialAllowance"):
-                self.obj.MaterialAllowance = self.form.extraOffset.value()
+            if hasattr(self.obj, "PassExtensioon"):
+                self.obj.PassExtension = self.form.extraOffset.value()
             if hasattr(self.obj, "UseStartPoint"):
                 self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "CutMode"):
@@ -434,10 +460,11 @@ class TaskPanel:
     def setFields(self):
         self.form.startDepth.setText(str(self.obj.StartDepth.Value))
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
+        self.form.finishDepth.setText(str(self.obj.FinishDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
         self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.MaterialAllowance.Value)
+        self.form.extraOffset.setValue(self.obj.PassExtension.Value)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useZigZag.setChecked(self.obj.UseZigZag)
         self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
@@ -523,6 +550,12 @@ class TaskPanel:
         if not self.updating:
             self.resetObject()
 
+    def resetObject(self, remove=None):
+        "transfers the values from the widget to the object"
+
+        self.obj.touch()
+        FreeCAD.ActiveDocument.recompute()
+
     def setupUi(self):
 
         # Connect Signals and Slots
@@ -535,6 +568,7 @@ class TaskPanel:
         # Depths
         self.form.startDepth.editingFinished.connect(self.getFields)
         self.form.finalDepth.editingFinished.connect(self.getFields)
+        self.form.finishDepth.editingFinished.connect(self.getFields)
         self.form.stepDown.editingFinished.connect(self.getFields)
 
         # Heights
@@ -545,6 +579,7 @@ class TaskPanel:
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
+        self.form.boundaryShape.currentIndexChanged.connect(self.getFields)
 
         # Pattern
         self.form.stepOverPercent.editingFinished.connect(self.getFields)

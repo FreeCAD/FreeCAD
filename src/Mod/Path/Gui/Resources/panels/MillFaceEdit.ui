@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>525</height>
+    <width>351</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,12 +33,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>329</height>
+        <width>333</width>
+        <height>353</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
       </attribute>
       <attribute name="label">
@@ -111,12 +111,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>329</height>
+        <width>333</width>
+        <height>324</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
       </attribute>
       <attribute name="label">
@@ -192,12 +192,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>329</height>
+        <width>333</width>
+        <height>324</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
       </attribute>
       <attribute name="label">
@@ -237,27 +237,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Entry">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>334</width>
-        <height>329</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Entry</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3"/>
-     </widget>
      <widget class="QWidget" name="Pattern">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>329</height>
+        <width>333</width>
+        <height>353</height>
        </rect>
       </property>
       <attribute name="label">
@@ -330,22 +316,19 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>329</height>
+        <width>333</width>
+        <height>353</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-OperationB.svg</normaloff>:/icons/Path-OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="3" column="0" colspan="2">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
@@ -372,7 +355,7 @@
          </layout>
         </widget>
        </item>
-       <item row="4" column="0" colspan="2">
+       <item>
         <widget class="QWidget" name="widget_2" native="true">
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
@@ -385,21 +368,68 @@
          </layout>
         </widget>
        </item>
-       <item row="5" column="0" colspan="2">
+       <item>
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
-             <string>Material Allowance</string>
+             <string>Pass Extension</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="extraOffset"/>
+           <widget class="QDoubleSpinBox" name="extraOffset">
+            <property name="minimum">
+             <double>-99.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_5" native="true">
+         <layout class="QGridLayout" name="gridLayout_7">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_12">
+            <property name="text">
+             <string>Boundary Shape</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QComboBox" name="boundaryShape">
+            <item>
+             <property name="text">
+              <string>Model Perimeter</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Model Boundbox</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>116</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -415,8 +445,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc"/>
-  <include location="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc"/>
+  <include location="../Path.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>
