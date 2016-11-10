@@ -113,6 +113,12 @@ int FeaturePythonPyT<FeaturePyT>::__setattr(PyObject *obj, char *attr, PyObject 
 template<class FeaturePyT>
 int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 {
+    App::Property *prop = FeaturePyT::getPropertyContainerPtr()->getPropertyByName(attr);
+    if (prop && !value) {
+        PyErr_Format(PyExc_AttributeError, "Cannot delete attribute: '%s'", attr);
+        return -1;
+    }
+
     int returnValue = FeaturePyT::_setattr(attr, value);
     if (returnValue == -1) {
         PyObject* dict_item = value;
