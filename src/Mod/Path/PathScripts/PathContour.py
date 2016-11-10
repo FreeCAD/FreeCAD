@@ -25,6 +25,7 @@
 import FreeCAD
 import Path
 from FreeCAD import Vector
+import TechDraw
 from PathScripts import PathUtils
 from PathScripts.PathUtils import depth_params
 
@@ -246,8 +247,7 @@ class ObjectContour:
         baseobject = parentJob.Base
         if baseobject is None:
             return
-        print "base object: " + baseobject.Name
-        contourwire = PathUtils.silhouette(baseobject)
+        contourwire = TechDraw.findShapeOutline(baseobject.Shape,1, Vector(0,0,1))
 
         edgelist = contourwire.Edges
         edgelist = Part.__sortEdges__(edgelist)
