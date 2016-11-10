@@ -23,10 +23,8 @@
 #ifndef APP_FEATUREPYTHONPYIMP_H
 #define APP_FEATUREPYTHONPYIMP_H
 
-#include <map>
-#include <string>
-#include <Base/Console.h>
 #include <Base/BaseClass.h>
+#include <Base/PyObjectBase.h>
 
 namespace App
 {
@@ -52,7 +50,7 @@ public:
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
 
 protected:
-    std::map<std::string, PyObject*> dyn_methods;
+    PyObject * dict_methods;
 
 private:
 };

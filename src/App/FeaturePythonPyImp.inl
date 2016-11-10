@@ -84,11 +84,13 @@ template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T)
     : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
 {
+    dict_methods = PyDict_New();
 }
 
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 {
+    Py_DECREF(dict_methods);
 }
 
 template<class FeaturePyT>
@@ -113,27 +115,22 @@ int FeaturePythonPyT<FeaturePyT>::_setattr(char *attr, PyObject *value)
 {
     int returnValue = FeaturePyT::_setattr(attr, value);
     if (returnValue == -1) {
-        if (value) {
-            if (PyFunction_Check(value)) {
-                std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-                if (it != dyn_methods.end()) {
-                    Py_XDECREF(it->second);
-                }
-                dyn_methods[attr] = PyMethod_New(value, this, 0);
-                returnValue = 0;
-                PyErr_Clear();
-            }
+        PyObject *s;
+        s = PyString_InternFromString(attr);
+        if (s == NULL)
+            return -1;
+        PyObject* dict_item = value;
+        if (value && PyFunction_Check(value)) {
+            dict_item = PyMethod_New(value, this, 0);
+            returnValue = _PyObject_GenericSetAttrWithDict(this, s, dict_item, dict_methods);
+            Py_XDECREF(dict_item);
         }
         else {
-            // delete
-            std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-            if (it != dyn_methods.end()) {
-                Py_XDECREF(it->second);
-                dyn_methods.erase(it);
-                returnValue = 0;
-                PyErr_Clear();
-            }
+            returnValue = _PyObject_GenericSetAttrWithDict(this, s, dict_item, dict_methods);
         }
+
+        Py_XDECREF(s);
+        PyErr_Clear();
     }
     return returnValue;
 }
@@ -162,8 +159,7 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
             dict = PyDict_Copy(dict_old);
             Py_DECREF(dict_old); // delete old dict
 
-            for (std::map<std::string, PyObject*>::const_iterator it = dyn_methods.begin(); it != dyn_methods.end(); ++it)
-                PyDict_SetItem(dict, PyString_FromString(it->first.c_str()), PyString_FromString(""));
+            PyDict_Merge(dict, dict_methods, 0);
             if (PyErr_Occurred()) {
                 Py_DECREF(dict);
                 dict = 0;
@@ -172,14 +168,15 @@ PyObject *FeaturePythonPyT<FeaturePyT>::_getattr(char *attr)
         return dict;
     }
 
-    PyObject *rvalue = NULL;
-    std::map<std::string, PyObject*>::iterator it = dyn_methods.find(attr);
-    if (it != dyn_methods.end()) {
-        Py_INCREF(it->second);
-        rvalue = it->second;
-        PyErr_Clear();
-        return rvalue;
-    }
+    PyObject *s;
+    s = PyString_InternFromString(attr);
+    if (s == NULL)
+        return NULL;
+    PyObject *dict_item = NULL;
+    dict_item = _PyObject_GenericGetAttrWithDict(this, s, dict_methods);
+    Py_XDECREF(s);
+    if (dict_item)
+        return dict_item;
 
     PyErr_Clear();
     return FeaturePyT::_getattr(attr);
