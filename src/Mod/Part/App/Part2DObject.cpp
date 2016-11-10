@@ -44,6 +44,7 @@
 #endif
 
 
+#include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <App/Property.h>
@@ -53,7 +54,7 @@
 #include "DatumFeature.h"
 
 #include <App/FeaturePythonPyImp.h>
-#include "Part2DObjectPy.h"
+#include <Mod/Part/App/Part2DObjectPy.h>
 
 using namespace Part;
 
