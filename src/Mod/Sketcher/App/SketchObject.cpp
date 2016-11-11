@@ -311,10 +311,10 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 int SketchObject::setDriving(int ConstrId, bool isdriving)
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
-    
+
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
     
     if (type != Distance &&
@@ -324,7 +324,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
         type != Angle &&
         type != SnellsLaw)
         return -2;
-    
+
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
 
@@ -335,10 +335,10 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     constNew->isDriving = isdriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (isdriving)
+    if (!isdriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
-    
+
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
 
@@ -351,9 +351,9 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
     
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
-    
+
     if (type != Distance &&
         type != DistanceX &&
         type != DistanceY &&
@@ -372,7 +372,7 @@ int SketchObject::toggleDriving(int ConstrId)
     
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
     
     if (type != Distance &&
@@ -382,10 +382,10 @@ int SketchObject::toggleDriving(int ConstrId)
         type != Angle &&
         type != SnellsLaw)
         return -2;
-    
+
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && vals[ConstrId]->isDriving==false)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
-        
+
     // copy the list
     std::vector<Constraint *> newVals(vals);
     // clone the changed Constraint
@@ -393,10 +393,10 @@ int SketchObject::toggleDriving(int ConstrId)
     constNew->isDriving = !constNew->isDriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (constNew->isDriving)
+    if (!constNew->isDriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
-    
+
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
 
