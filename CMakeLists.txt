@@ -578,8 +578,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             vtkFiltersSources
             vtkFiltersGeometry
         )
-        # On Windows there might be no vtkParallelMPI package
-        if (NOT WIN32)
+        # On Linux vtkParallelMPI package is required
+        if (UNIX AND NOT APPLE)
             set (VTK_COMPONENTS
                 ${VTK_COMPONENTS}
                 vtkParallelMPI)
