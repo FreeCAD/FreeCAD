@@ -310,7 +310,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     constNew->isDriving = isdriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (isdriving)
+    if (!isdriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
     
@@ -368,7 +368,7 @@ int SketchObject::toggleDriving(int ConstrId)
     constNew->isDriving = !constNew->isDriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (constNew->isDriving)
+    if (!constNew->isDriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
     
