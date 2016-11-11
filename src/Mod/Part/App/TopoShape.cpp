@@ -1333,8 +1333,8 @@ TopoDS_Shape TopoShape::multiCut(const std::vector<TopoDS_Shape>& shapes, Standa
     if (!mkCut.IsDone())
         throw Base::Exception("MultiCut failed");
     TopoDS_Shape resShape = mkCut.Shape();
-#endif
     return resShape;
+#endif
 }
 
 TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
@@ -1367,9 +1367,10 @@ TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Sta
     if (!mkCommon.IsDone())
         throw Base::Exception("MultiCommon failed");
     TopoDS_Shape resShape = mkCommon.Shape();
-#endif
     return resShape;
+#endif
 }
+
 TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1448,8 +1449,8 @@ TopoDS_Shape TopoShape::multiSection(const std::vector<TopoDS_Shape>& shapes, St
     if (!mkSection.IsDone())
         throw Base::Exception("MultiSection failed");
     TopoDS_Shape resShape = mkSection.Shape();
-#endif
     return resShape;
+#endif
 }
 
 TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const

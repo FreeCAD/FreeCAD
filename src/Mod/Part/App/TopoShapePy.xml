@@ -177,7 +177,7 @@ OCC 6.9.0 or later is required.</UserDocu>
 
 Union of this and a given list of topo shapes.
 
-Supports:
+Supports (OCCT 6.9.0 and above):
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
 - Support of multiple arguments for a single Boolean operation
 - Parallelization of Boolean Operations algorithm
