@@ -1307,27 +1307,13 @@ TopoDS_Shape TopoShape::multiCut(const std::vector<TopoDS_Shape>& shapes, Standa
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX <= 0x060800
-    if (tolerance > 0.0)
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-    TopoDS_Shape resShape = this->_Shape;
-    if (resShape.IsNull())
-        throw Base::Exception("Object shape is null");
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
-            throw Base::Exception("Input shape is null");
-        // Let's call algorithm computing a difference operation:
-        BRepAlgoAPI_Cut mkCut(resShape, *it);
-        // Let's check if the difference has been successful
-        if (!mkCut.IsDone())
-            throw Base::Exception("Difference failed");
-        resShape = mkCut.Shape();
-    }
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiCut is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_Cut mkCut;
-# if OCC_VERSION_HEX >= 0x060900
     mkCut.SetRunParallel(true);
-# endif
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
@@ -1345,7 +1331,7 @@ TopoDS_Shape TopoShape::multiCut(const std::vector<TopoDS_Shape>& shapes, Standa
         mkCut.SetFuzzyValue(tolerance);
     mkCut.Build();
     if (!mkCut.IsDone())
-        throw Base::Exception("MultiDifference failed");
+        throw Base::Exception("MultiCut failed");
     TopoDS_Shape resShape = mkCut.Shape();
 #endif
     return resShape;
@@ -1355,27 +1341,13 @@ TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Sta
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX <= 0x060800
-    if (tolerance > 0.0)
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-    TopoDS_Shape resShape = this->_Shape;
-    if (resShape.IsNull())
-        throw Base::Exception("Object shape is null");
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
-            throw Base::Exception("Input shape is null");
-        // Let's call algorithm computing a intersection operation:
-        BRepAlgoAPI_Common mkCommon(resShape, *it);
-        // Let's check if the intersection has been successful
-        if (!mkCommon.IsDone())
-            throw Base::Exception("MultiIntersection failed");
-        resShape = mkCommon.Shape();
-    }
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiCommon is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_Common mkCommon;
-# if OCC_VERSION_HEX >= 0x060900
     mkCommon.SetRunParallel(true);
-# endif
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
@@ -1393,7 +1365,7 @@ TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Sta
         mkCommon.SetFuzzyValue(tolerance);
     mkCommon.Build();
     if (!mkCommon.IsDone())
-        throw Base::Exception("MultiIntersection failed");
+        throw Base::Exception("MultiCommon failed");
     TopoDS_Shape resShape = mkCommon.Shape();
 #endif
     return resShape;
@@ -1450,27 +1422,13 @@ TopoDS_Shape TopoShape::multiSection(const std::vector<TopoDS_Shape>& shapes, St
 {
     if (this->_Shape.IsNull())
         Standard_Failure::Raise("Base shape is null");
-#if OCC_VERSION_HEX <= 0x060800
-    if (tolerance > 0.0)
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-    TopoDS_Shape resShape = this->_Shape;
-    if (resShape.IsNull())
-        throw Base::Exception("Object shape is null");
-    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
-        if (it->IsNull())
-            throw Base::Exception("Input shape is null");
-        // Let's call algorithm computing a section operation:
-        BRepAlgoAPI_Section mkSection(resShape, *it);
-        // Let's check if the section has been successful
-        if (!mkSection.IsDone())
-            throw Base::Exception("Section failed");
-        resShape = mkSection.Shape();
-    }
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiSection is available only in OCC 6.9.0 and up.");
 #else
     BRepAlgoAPI_Section mkSection;
-# if OCC_VERSION_HEX >= 0x060900
     mkSection.SetRunParallel(true);
-# endif
     TopTools_ListOfShape shapeArguments,shapeTools;
     shapeArguments.Append(this->_Shape);
     for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
