@@ -227,7 +227,7 @@ def findEdge(anEdge,aList):
     return None
 
 
-def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False,dts=True) :
+def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=False,dts=True,findAll=False) :
     '''findIntersection(edge1,edge2,infinite1=False,infinite2=False,dts=True):
     returns a list containing the intersection point(s) of 2 edges.
     You can also feed 4 points instead of edge1 and edge2. If dts is used,
@@ -330,10 +330,17 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
         pt4    = arc.Vertexes[-1].Point
         center = arc.Curve.Center
 
+        int = []
         # first check for coincident endpoints
         if (pt1 in [pt3,pt4]):
+            if findAll:
+                int.append(pt1)
+            else:
                 return [pt1]
         elif (pt2 in [pt3,pt4]):
+            if findAll:
+                int.append(pt2)
+            else:
                 return [pt2]
 
         if DraftVecUtils.isNull(pt1.sub(center).cross(pt2.sub(center)).cross(arc.Curve.Axis)) :
@@ -348,7 +355,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
                 dOnLine = (arc.Curve.Radius**2 - toLine.Length**2)**(0.5)
                 onLine  = Vector(dirVec)
                 onLine.scale(dOnLine,dOnLine,dOnLine)
-                int = [center.add(toLine).add(onLine)]
+                int += [center.add(toLine).add(onLine)]
                 onLine  = Vector(dirVec)
                 onLine.scale(-dOnLine,-dOnLine,-dOnLine)
                 int += [center.add(toLine).add(onLine)]
