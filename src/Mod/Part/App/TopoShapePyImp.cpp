@@ -1934,7 +1934,7 @@ PyObject* TopoShapePy::overTolerance(PyObject *args)
         Handle(TopTools_HSequenceOfShape) seq = analysis.OverTolerance(shape, value, shapetype);
         Py::Tuple tuple(seq->Length());
         std::size_t index=0;
-        for (int i=seq->Lower(); i<= seq->Upper(); i++) {
+        for (int i=1; i <= seq->Length(); i++) {
             TopoDS_Shape item = seq->Value(i);
             tuple.setItem(index++, shape2pyshape(item));
         }
@@ -1985,7 +1985,7 @@ PyObject* TopoShapePy::inTolerance(PyObject *args)
         Handle(TopTools_HSequenceOfShape) seq = analysis.InTolerance(shape, valmin, valmax, shapetype);
         Py::Tuple tuple(seq->Length());
         std::size_t index=0;
-        for (int i=seq->Lower(); i<= seq->Upper(); i++) {
+        for (int i=1; i <= seq->Length(); i++) {
             TopoDS_Shape item = seq->Value(i);
             tuple.setItem(index++, shape2pyshape(item));
         }
