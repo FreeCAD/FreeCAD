@@ -33,7 +33,7 @@
        </property>
        <item>
         <property name="text">
-         <string>Standart</string>
+         <string>Standard</string>
         </property>
        </item>
        <item>
@@ -65,7 +65,7 @@
      <property name="currentIndex">
       <number>0</number>
      </property>
-     <widget class="QWidget" name="standart"/>
+     <widget class="QWidget" name="standard"/>
      <widget class="QWidget" name="fixed"/>
      <widget class="QWidget" name="frenet"/>
      <widget class="QWidget" name="auxillery">

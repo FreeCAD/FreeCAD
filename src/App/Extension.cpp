@@ -34,7 +34,7 @@
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
  
-/* We do not use a standart property macro for type initiation. The reason is that we have the first
+/* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data. 
  */
 EXTENSION_TYPESYSTEM_SOURCE_P(App::Extension);
