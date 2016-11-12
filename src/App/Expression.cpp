@@ -733,7 +733,7 @@ public:
     Collector() : first(true) { }
     virtual void collect(Quantity value) {
         if (first)
-            value.setUnit(value.getUnit());
+            q.setUnit(value.getUnit());
     }
     virtual Quantity getQuantity() const {
         return q;
@@ -779,7 +779,7 @@ public:
     void collect(Quantity value) {
         Collector::collect(value);
         if (first) {
-            M2 = Quantity(0, value.getUnit());
+            M2 = Quantity(0, value.getUnit() * value.getUnit());
             mean = Quantity(0, value.getUnit());
             n = 0;
         }
@@ -795,7 +795,7 @@ public:
         if (n < 2)
             throw ExpressionError("Invalid number of entries: at least two required.");
         else
-            return (M2 / (n - 1.0)).pow(Quantity(0.5));
+            return Quantity((M2 / (n - 1.0)).pow(Quantity(0.5)).getValue(), mean.getUnit());
     }
 
 private:
