@@ -681,9 +681,6 @@ FunctionExpression::FunctionExpression(const DocumentObject *_owner, Function _f
             throw ExpressionError("Invalid number of arguments: eaxctly two required.");
         break;
     case STDDEV:
-        if (args.size() < 2)
-            throw ExpressionError("Invalid number of arguments: at least two required.");
-        break;
     case SUM:
     case AVERAGE:
     case COUNT:
@@ -796,7 +793,7 @@ public:
 
     virtual Quantity getQuantity() const {
         if (n < 2)
-            return Quantity();
+            throw ExpressionError("Invalid number of entries: at least two required.");
         else
             return (M2 / (n - 1.0)).pow(Quantity(0.5));
     }
