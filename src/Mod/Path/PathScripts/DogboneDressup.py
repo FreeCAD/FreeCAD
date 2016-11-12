@@ -32,6 +32,8 @@ import DraftGeomUtils
 
 """Dogbone Dressup object and FreeCAD command"""
 
+debugDressup = False
+
 # Qt tanslation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -49,8 +51,6 @@ movestraight = ['G1', 'G01']
 movecw =       ['G2', 'G02']
 moveccw =      ['G3', 'G03']
 movearc = movecw + moveccw
-
-debugDressup = True
 
 def debugPrint(msg):
     if debugDressup:
@@ -120,12 +120,11 @@ def edgesForCommands(cmds, startPt):
                 d = -B.x * A.y + B.y * A.x
 
                 if d == 0:
-                    # we're dealing with half an circle here
+                    # we're dealing with half a circle here
                     angle = getAngle(A) + math.pi/2
                     if cmd.Name in movecw:
                         angle -= math.pi
                 else:
-                    #print("(%.2f, %.2f) (%.2f, %.2f)" % (A.x, A.y, B.x, B.y))
                     C = A + B
                     angle = getAngle(C)
 
@@ -191,7 +190,6 @@ class Chord (object):
         return "Chord([%g, %g, %g] -> [%g, %g, %g])" % (self.Start.x, self.Start.y, self.Start.z, self.End.x, self.End.y, self.End.z)
 
     def moveTo(self, newEnd):
-        #debugPrint("Chord(%s -> %s)" % (self.End, newEnd))
         return Chord(self.End, newEnd)
 
     def moveToParameters(self, params):
@@ -255,15 +253,11 @@ class Chord (object):
     def getAngleXY(self):
         return self.getAngle(FreeCAD.Vector(1,0,0))
 
-    def withLength(self, length):
-        return Chord(self.Start, self.Start).move(length, self.getAngleXY())
-
     def g1Command(self):
         return Path.Command("G1", {"X": self.End.x, "Y": self.End.y, "Z": self.End.z})
 
     def arcCommand(self, cmd, center):
         d = center - self.Start
-        debugPrint("arc (%s) - (%.2f, %.2f) (%.2f, %.2f) (%.2f, %.2f)" % (cmd, self.Start.x, self.Start.y, center.x, center.y, self.End.x, self.End.y))
         return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "Z": self.End.z, "I": d.x, "J": d.y, "K": 0})
 
     def g2Command(self, center):
@@ -281,55 +275,6 @@ class Chord (object):
 
     def connectsTo(self, chord):
         return self.End == chord.Start
-
-    def lineEquation(self):
-        if self.End.x != self.Start.x:
-            slope = (self.End.y - self.Start.y) / (self.End.x - self.Start.x)
-            offset = self.Start.y - self.Start.x * slope
-            return (offset, slope)
-        return (None, None)
-
-    def intersection(self, chord, emergencyOffset = 0):
-        itsOffset, itsSlope = chord.lineEquation()
-        myOffset, mySlope = self.lineEquation()
-        x = 0
-        y = 0
-        if itsSlope is not None and mySlope is not None:
-            if itsSlope == mySlope:
-                # Now this is wierd, but it happens when the path folds onto itself
-                angle = self.getAngleXY()
-                x = self.End.x + emergencyOffset * math.cos(angle)
-                y = self.End.y + emergencyOffset * math.sin(angle)
-            else:
-                x = (myOffset - itsOffset) / (itsSlope - mySlope)
-                y = myOffset + mySlope * x
-        elif itsSlope is not None:
-            x = self.Start.x
-            y = itsOffset + x * itsSlope
-        elif mySlope is not None:
-            x = chord.Start.x
-            y = myOffset + x * mySlope
-        else:
-            print("Now this really sucks")
-
-        return FreeCAD.Vector(x, y, self.End.z)
-
-    def perpendicular(self):
-        v = self.asVector()
-        return FreeCAD.Vector(-v.y, v.x, 0)
-
-    def footOfPerpendicularFrom(self, vector):
-        return self.intersection(Chord(vector, vector + self.perpendicular()))
-
-    def offsetBy(self, distance, direction):
-        if direction == Side.Left:
-            angle = addAngle(self.getAngleXY(),  math.pi/2)
-        else:
-            angle = addAngle(self.getAngleXY(), -math.pi/2)
-        dx = distance * math.cos(angle)
-        dy = distance * math.sin(angle)
-        d = FreeCAD.Vector(dx, dy, 0)
-        return Chord(self.Start + v, self.End.v)
 
 class Bone:
     def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):
@@ -397,7 +342,7 @@ class Bone:
             length2 = toolRadius * math.sin(alpha2) / math.sin(beta2)
             length = min(length, length2)
 
-        debugPrint("adaptive corner=%.2f * %.2f -> bone=%.2f * %.2f" % (distance, angle, length, boneAngle))
+        debugPrint("adaptive corner=%.2f * %.2f˚ -> bone=%.2f * %.2f˚" % (distance, angle, length, boneAngle))
         return length
 
     def edges(self):
@@ -425,6 +370,7 @@ class ObjectDressup:
         obj.Custom = 0.0
         obj.Proxy = self
         self.shapes = {}
+        self.dbg = []
 
     def __getstate__(self):
         return None
@@ -445,21 +391,26 @@ class ObjectDressup:
         return outChord.foldsBackOrTurns(inChord, self.theOtherSideOf(obj.Side))
 
     def findPivotIntersection(self, pivot, pivotEdge, edge, refPt, d, color):
+        debugPrint("Intersection (%.2f, %.2f)^%.2f  - [(%.2f, %.2f), (%.2f, %.2f)]" % (pivotEdge.Curve.Center.x, pivotEdge.Curve.Center.y, pivotEdge.Curve.Radius, edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
         ppt = None
         pptDistance = 0
-        for pt in DraftGeomUtils.findIntersection(edge, pivotEdge):
+        for pt in DraftGeomUtils.findIntersection(edge, pivotEdge, dts=False):
             #debugMarker(pt, "pti.%d-%s.in" % (self.boneId, d), color, 0.2)
             distance = (pt - refPt).Length
+            debugPrint("        -->  (%.2f, %.2f): %.2f" % (pt.x, pt.y, distance))
             if not ppt or pptDistance < distance:
                 ppt = pt
                 pptDistance = distance
         if not ppt:
             tangent = DraftGeomUtils.findDistance(pivot, edge)
             if tangent:
+                debugPrint("Taking tangent as intersect %s" % tangent)
                 ppt = pivot + tangent
             else:
+                debugPrint("Taking chord start as intersect %s" % inChordStart)
                 ppt = inChord.Start
             #debugMarker(ppt, "ptt.%d-%s.in" % (self.boneId, d), color, 0.2)
+            debugPrint("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
         return ppt
 
     def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color = None):
@@ -480,15 +431,22 @@ class ObjectDressup:
         pivot = None
         pivotDistance = 0
 
+        debugPrint("smooth:  (%.2f, %.2f)-(%.2f, %.2f)" % (edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
         for e in wire.Edges:
-            for pt in DraftGeomUtils.findIntersection(edge, e, True):
+            self.dbg.append(e)
+            if type(e.Curve) == Part.Line:
+                debugPrint("         (%.2f, %.2f)-(%.2f, %.2f)" % (e.Vertexes[0].Point.x, e.Vertexes[0].Point.y, e.Vertexes[1].Point.x, e.Vertexes[1].Point.y))
+            else:
+                debugPrint("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
+            for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
                 if pt != corner:
+                    debugPrint("         -> candidate")
                     distance = (pt - refPoint).Length
                     if not pivot or pivotDistance > distance:
                         pivot = pt
                         pivotDistance = distance
                 else:
-                    debugPrint(" corner intersect %s (%.2f, %.2f) (%.2f, %.2f)" % (d, corner.x, corner.y, pt.x, pt.y))
+                    debugPrint("         -> corner intersect")
 
         if pivot:
             debugCircle(pivot, self.toolRadius, "pivot.%d-%s" % (self.boneId, d), color)
@@ -511,9 +469,9 @@ class ObjectDressup:
                 debugPrint("  add lead out")
                 commands.append(Chord(t2, outChord.End).g1Command())
 
-            debugMarker(pivot, "pivot.%d-%s.in" % (self.boneId, d), color, 0.2)
-            debugMarker(t1, "pivot.%d-%s.in" % (self.boneId, d), color, 0.1)
-            debugMarker(t2, "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
+            debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
+            debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
+            debugMarker(t2,    "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
 
             return commands
 
@@ -522,6 +480,8 @@ class ObjectDressup:
 
     def inOutBoneCommands(self, bone, boneAngle, fixedLength):
         corner = bone.corner(self.toolRadius)
+
+        bone.tip = bone.inChord.End # in case there is no bone
 
         debugPrint("corner = (%.2f, %.2f)" % (corner.x, corner.y))
         debugMarker(corner, 'corner', (1., 0., 1.), 0.3)
@@ -539,10 +499,10 @@ class ObjectDressup:
         boneInChord = bone.inChord.move(length, boneAngle)
         boneOutChord = boneInChord.moveTo(bone.outChord.Start)
 
-        bones = []
-
         #debugCircle(boneInChord.Start, self.toolRadius, 'boneStart')
         #debugCircle(boneInChord.End, self.toolRadius, 'boneEnd')
+
+        bone.tip = boneInChord.End
 
         if bone.smooth == 0:
             return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
@@ -563,20 +523,21 @@ class ObjectDressup:
         vm2 = FreeCAD.Vector(length + self.toolRadius, 0, 0)
 
         boneBot = Part.Line(vb1, vb0)
+        boneLid = Part.Line(vb0, vt0)
         boneTop = Part.Line(vt0, vt1)
 
         # what we actually want is an Arc - but findIntersect only returns the coincident if one exists
         # which really sucks because that's the one we're probably not interested in ....
-        #boneArc = Part.Arc(vt1, vm2, vb1)
-        boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
-        boneWire = Part.Shape([boneTop, boneArc, boneBot])
+        boneArc = Part.Arc(vt1, vm2, vb1)
+        #boneArc = Part.Circle(FreeCAD.Vector(length, 0, 0), FreeCAD.Vector(0,0,1), self.toolRadius)
+        boneWire = Part.Shape([boneTop, boneArc, boneBot, boneLid])
         boneWire.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), boneAngle * 180 / math.pi)
         boneWire.translate(bone.inChord.End)
         self.boneShapes = [cornerShape, boneWire]
 
-        bones.extend(self.smoothChordCommands(bone, bone.inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, bone.smooth & Smooth.In,  (1., 0., 0.)))
-        bones.extend(self.smoothChordCommands(bone, boneOutChord, bone.outChord, Part.Edge(oLine), boneWire, corner, bone.smooth & Smooth.Out, (0., 1., 0.)))
-        return bones
+        bone.inCommands  = self.smoothChordCommands(bone, bone.inChord,   boneInChord, Part.Edge(iLine), boneWire, corner, bone.smooth & Smooth.In,  (1., 0., 0.))
+        bone.outCommands = self.smoothChordCommands(bone, boneOutChord, bone.outChord, Part.Edge(oLine), boneWire, corner, bone.smooth & Smooth.Out, (0., 1., 0.))
+        return bone.inCommands + bone.outCommands
 
     def dogbone(self, bone):
         boneAngle = bone.angle()
@@ -602,10 +563,16 @@ class ObjectDressup:
             boneAngle = bone.inChord.getAngleXY()
         else:
             boneAngle = bone.outChord.getAngleXY()
+
         if Side.Right == bone.outChord.getDirectionOf(bone.inChord):
-            boneAngle = boneAngle - math.pi
+            boneAngle = boneAngle - math.pi/2
         else:
             boneAngle = boneAngle + math.pi/2
+
+        onInString = 'out'
+        if onIn:
+            onInString = 'in'
+        debugPrint("tboneEdge boneAngle[%s]=%.2f   (in=%.2f, out=%.2f)" % (onInString, boneAngle/math.pi, bone.inChord.getAngleXY()/math.pi, bone.outChord.getAngleXY()/math.pi))
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
     def tboneLongEdge(self, bone):
@@ -667,58 +634,45 @@ class ObjectDressup:
 
     def removePathCrossing(self, commands, bone1, bone2):
         commands.append(bone2.lastCommand)
-        for k, b in enumerate(commands):
-            print("  cmd %2d: %s" % (k, b))
-        for k, b in enumerate(bone2.commands):
-            print("  bone %d: %s" % (k, b))
-        for i in range(len(bone1.edges()) - 1, -1, -1):
-            e1 = bone1.edges()[i]
-            for j in range(0, len(bone2.edges())):
-                refPt = e1.valueAt(e1.FirstParameter)
-                e2 = bone2.edges()[j]
-                cutoff = sorted(DraftGeomUtils.findIntersection(e1, e2), key=lambda pt: (pt - refPt).Length)
-                for pt in cutoff:
-                    if pt == bone1.inChord.End or pt == bone2.inChord.End:
-                        continue
-                    c1 = bone1.commands[i]
-                    c2 = bone2.commands[j]
-                    debugMarker(pt, "it", (0.0, 1.0, 1.0))
-                    print("c1: %s" % c1)
-                    print("    %s %s" % (e1.Vertexes[0], e1.Vertexes[1]))
-                    print("    commands: %s" % [cmd for cmd in commands if cmd not in commands[:-(len(bone1.edges()) - i)]])
-                    commands = commands[:-(len(bone1.edges()) - i)]
-                    c1Params = c1.Parameters
-                    c1Params.update({'X': pt.x, 'Y': pt.y, 'Z': pt.z})
-                    c1 = Path.Command(c1.Name, c1Params)
-                    print("    %s" % (c1))
-                    commands.append(c1)
-                    print("c2: %s" % c2)
-                    if c2.Name in movearc:
-                        center = e2.Curve.Center
-                        print("    center = %s" % center)
-                        offset = center - pt
-                        print("    offset = %s" % offset)
-                        c2Params = c2.Parameters
-                        c2Params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
-                        c2 = Path.Command(c2.Name, c2Params)
-                        print("    params = %s" % c2Params)
-                        #return Path.Command(cmd, {"X": self.End.x, "Y": self.End.y, "Z": self.End.z, "I": d.x, "J": d.y, "K": 0})
-                        print("    %s" % c2)
-                        #bones = bone2.commands[j:]
-                        bones = [c2]
-                        bones.extend(bone2.commands[j+1:])
-                        for k, b in enumerate(commands):
-                            print("  cmd %2d: %s" % (k, b))
-                        for k, b in enumerate(bones):
-                            print("  bone %d: %s" % (k, b))
-                    else:
-                        print("  j = %d", j)
-                        bones = bone2.commands[j:]
+        bones = bone2.commands
+        if True and hasattr(bone1, "outCommands") and hasattr(bone2, "inCommands"):
+            inEdges  = edgesForCommands(bone1.outCommands, bone1.tip)
+            outEdges = edgesForCommands(bone2.inCommands,  bone2.inChord.Start)
+            for i in range(len(inEdges)):
+                e1 = inEdges[i]
+                for j in range(len(outEdges) -1, -1, -1):
+                    e2 = outEdges[j]
+                    cutoff = DraftGeomUtils.findIntersection(e1, e2)
+                    for pt in cutoff:
+                        #debugCircle(e1.Curve.Center, e1.Curve.Radius, "bone.%d-1" % (self.boneId), (1.,0.,0.))
+                        #debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
+                        if pt == e1.valueAt(e1.LastParameter) or pt == e2.valueAt(e2.FirstParameter):
+                            continue
+                        debugMarker(pt, "it", (0.0, 1.0, 1.0))
+                        # 1. remove all redundant commands
+                        commands = commands[:-(len(inEdges) - i)]
+                        # 2., correct where c1 ends
+                        c1 = bone1.outCommands[i]
+                        c1Params = c1.Parameters
+                        c1Params.update({'X': pt.x, 'Y': pt.y, 'Z': pt.z})
+                        c1 = Path.Command(c1.Name, c1Params)
+                        commands.append(c1)
+                        # 3. change where c2 starts, this depends on the command itself
+                        c2 = bone2.inCommands[j]
+                        if c2.Name in movearc:
+                            center = e2.Curve.Center
+                            offset = center - pt
+                            c2Params = c2.Parameters
+                            c2Params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
+                            c2 = Path.Command(c2.Name, c2Params)
+                            bones = [c2]
+                            bones.extend(bone2.commands[j+1:])
+                        else:
+                            bones = bone2.commands[j:]
+                        # there can only be the one ...
+                        return commands, bones
 
-                    print("bones = %s" % bones)
-                    return commands, bones
-
-        return commands, bone2.commands
+        return commands, bones
 
     def execute(self, obj):
         if not obj.Base:
@@ -753,7 +707,6 @@ class ObjectDressup:
                     bones = self.insertBone(bone)
                     boneId += 1
                     if lastBone:
-                        print("This could be an issue: %s" % thisChord)
                         #debugMarker(thisChord.Start, "it", (1.0, 0.0, 1.0))
                         commands, bones = self.removePathCrossing(commands, lastBone, bone)
                     commands.extend(bones[:-1])
@@ -766,7 +719,6 @@ class ObjectDressup:
                             bones = self.insertBone(bone)
                             boneId += 1
                             if lastBone:
-                                print("This could be another issue: %s" % chord)
                                 #debugMarker(chord.Start, "it", (0.0, 1.0, 1.0))
                                 commands, bones = self.removePathCrossing(commands, lastBone, bone)
                             commands.extend(bones[:-1])
@@ -908,12 +860,12 @@ class TaskPanel:
                 if obj.Name.startswith('Shape'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
-                print("showing shapes attribute")
+                debugPrint("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
                     for shape in shapes:
                         Part.show(shape)
             else:
-                print("no shapes attribute found")
+                debugPrint("no shapes attribute found")
 
 
     def updateModel(self):
