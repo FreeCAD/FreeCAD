@@ -73,7 +73,7 @@ using namespace PartDesign;
 
 const char* Pipe::TypeEnums[] = {"FullPath","UpToFace",NULL};
 const char* Pipe::TransitionEnums[] = {"Transformed","Right corner", "Round corner",NULL};
-const char* Pipe::ModeEnums[] = {"Standart", "Fixed", "Frenet", "Auxillery", "Binormal", NULL};
+const char* Pipe::ModeEnums[] = {"Standard", "Fixed", "Frenet", "Auxillery", "Binormal", NULL};
 const char* Pipe::TransformEnums[] = {"Constant", "Multisection", "Linear", "S-shape", "Interpolation", NULL};
 
 
