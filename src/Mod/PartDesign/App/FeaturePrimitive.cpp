@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         else 
             Placement.setValue(Base::Placement());
         
-        //if we have no base we just add the standart primitive shape
+        //if we have no base we just add the standard primitive shape
         TopoDS_Shape base;
         try{
              //if we have a base shape we need to make sure that it does not get our transformation to
