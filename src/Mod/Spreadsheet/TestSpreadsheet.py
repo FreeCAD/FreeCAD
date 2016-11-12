@@ -42,6 +42,8 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A8',  '=count(1;2;3)')
         sheet.set('A9',  '=min(1;2;3)')
         sheet.set('A10', '=max(1;2;3)')
+        sheet.set('A11', '=stddev(B3)')
+        sheet.set('A12', '=stddev(B3:B5)')
         self.doc.recompute()
         self.assertEqual(sheet.A1, 1)
         self.assertEqual(sheet.A2, 3)
@@ -53,6 +55,8 @@ class SpreadsheetCases(unittest.TestCase):
         self.assertEqual(sheet.A8, 3)
         self.assertEqual(sheet.A9, 1)
         self.assertEqual(sheet.A10, 3)
+        self.assertEqual(sheet.A11, u'ERR: Invalid number of entries: at least two required.')
+        self.assertEqual(sheet.A12, 1)
 
     def assertMostlyEqual(self, a, b):
         if type(a) is Quantity:
