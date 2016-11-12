@@ -582,10 +582,15 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         if (UNIX AND NOT APPLE)
             set (VTK_COMPONENTS
                 ${VTK_COMPONENTS}
+                vtkIOMPIParallel
                 vtkParallelMPI)
         endif()
 
-        find_package(VTK COMPONENTS ${VTK_COMPONENTS} REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        # For Debian testing you may have to only allow a certain list of components:
+        # http://forum.freecadweb.org/viewtopic.php?f=4&t=15646&start=10#p141693
+        #
+        #find_package(VTK COMPONENTS ${VTK_COMPONENTS} REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
 
         set(BUILD_FEM_VTK ON)
         if(${VTK_MAJOR_VERSION} LESS 6)
