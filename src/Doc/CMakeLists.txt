@@ -1,13 +1,13 @@
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
 
-    #IF (DOXYGEN_DOT_EXECUTABLE)
-    #    SET(HAVE_DOT YES)
-    #ELSE (DOXYGEN_DOT_EXECUTABLE)
-    #    message(STATUS "Note: Doxygen docs will look better with graphviz's dot installed.")
-    #    SET(HAVE_DOT NO)
-    #ENDIF (DOXYGEN_DOT_EXECUTABLE)
-    SET(HAVE_DOT NO)
+    IF (DOXYGEN_DOT_EXECUTABLE)
+        SET(HAVE_DOT YES)
+    ELSE (DOXYGEN_DOT_EXECUTABLE)
+        message(STATUS "Note: Doxygen docs will look better with graphviz's dot installed.")
+        SET(HAVE_DOT NO)
+    ENDIF (DOXYGEN_DOT_EXECUTABLE)
+
 
     SET(DOXYGEN_LANGUAGE "English" CACHE STRING "Language used by doxygen")
     MARK_AS_ADVANCED(DOXYGEN_LANGUAGE)
@@ -102,6 +102,7 @@ if(DOXYGEN_FOUND)
         )
         # lightweight version for the web
         ADD_CUSTOM_TARGET(WebDoc
+            SET(HAVE_DOT NO)
             ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/Doc/templates ${CMAKE_CURRENT_BINARY_DIR}/templates
             COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg
