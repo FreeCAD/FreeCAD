@@ -3750,7 +3750,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     sToolTipText    = QT_TR_NOOP("Create an arc of hyperbola in the sketch");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
-    sPixmap         = "Sketcher_hyperbolic_Arc";
+    sPixmap         = "Sketcher_Hyperbolic_Arc";
     eType           = ForEdit;
 }
 
