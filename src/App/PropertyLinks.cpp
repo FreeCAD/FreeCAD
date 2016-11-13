@@ -588,6 +588,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<str
     aboutToSetValue();
     std::size_t size = SubList.size();
     this->_lValueList.clear();
+    this->_lSubList.clear();
     if (size == 0) {
         if (lValue) {
             this->_lValueList.push_back(lValue);
