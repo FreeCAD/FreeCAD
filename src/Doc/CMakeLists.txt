@@ -1,12 +1,13 @@
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
 
-    IF (DOXYGEN_DOT_EXECUTABLE)
-        SET(HAVE_DOT YES)
-    ELSE (DOXYGEN_DOT_EXECUTABLE)
-        message(STATUS "Note: Doxygen docs will look better with graphviz's dot installed.")
-        SET(HAVE_DOT NO)
-    ENDIF (DOXYGEN_DOT_EXECUTABLE)
+    #IF (DOXYGEN_DOT_EXECUTABLE)
+    #    SET(HAVE_DOT YES)
+    #ELSE (DOXYGEN_DOT_EXECUTABLE)
+    #    message(STATUS "Note: Doxygen docs will look better with graphviz's dot installed.")
+    #    SET(HAVE_DOT NO)
+    #ENDIF (DOXYGEN_DOT_EXECUTABLE)
+    SET(HAVE_DOT NO)
 
     SET(DOXYGEN_LANGUAGE "English" CACHE STRING "Language used by doxygen")
     MARK_AS_ADVANCED(DOXYGEN_LANGUAGE)
@@ -58,7 +59,9 @@ if(DOXYGEN_FOUND)
 
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
-
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
+                   ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg @ONLY)
+                
     if( FREECAD_MAINTAINERS_BUILD )
         if (WIN32)
         ADD_CUSTOM_TARGET(SourceDocu 
@@ -94,6 +97,14 @@ if(DOXYGEN_FOUND)
         ADD_CUSTOM_TARGET(DevDoc
             ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
             COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg
+            COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
+            WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        )
+        # lightweight version for the web
+        ADD_CUSTOM_TARGET(WebDoc
+            ${CMAKE_COMMAND} -D BUILD_GUI:BOOL=ON -D BUILD_FEM:BOOL=ON ${CMAKE_SOURCE_DIR}
+            COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/src/Doc/templates ${CMAKE_CURRENT_BINARY_DIR}/templates
+            COMMAND ${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/BuildWebDoc.cfg
             COMMAND ${CMAKE_COMMAND} -E remove ${CMAKE_BINARY_DIR}/CMakeCache.txt
             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
         )
