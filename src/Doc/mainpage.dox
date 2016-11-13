@@ -21,27 +21,63 @@
  ***************************************************************************/
 
 /**
+
+  \if WEB_DOCUMENTATION
+
+    \mainpage FreeCAD source documentation
+
+    This is the source documentation of <a href=http//www.freecadweb.org>FreeCAD</a>. 
+    It is automatically generated from the source code, and describes the different 
+    components of the FreeCAD source code, for both the parts written in C++ and Python. 
+    
+    For general help and documentation about the FreeCAD application and how to use it, head
+    to the <a href=http//www.freecadweb.org/wiki>Wiki Documentation</a> instead.
+    
+    Refer to the
+    <a href=http://www.freecadweb.org/wiki/index.php?title=The_FreeCAD_source_code>general 
+    introduction to the FreeCAD source code</a> page for a broad view of how the source
+    code is organized, and browse the modules, classes and namespaces from the menu above.
+    
+    The <a href=http://www.freecadweb.org/wiki/index.php?title=Developer_hub>Developers section</a>
+    of the wiki also contains additional information for developers, and the 
+    <a href=http://www.freecadweb.org/wiki/index.php?title=Power_users_hub>Powerusers / python scripting
+    section</a> contains coding documentation that is specifically aimed at python scripting, but
+    that will also be useful to C++ coders, as most of the APIs are identical or very similar.
+    
+    For space reasons, this on-line version doesn't include the source code headers nor the full
+    inheritance graphics. But you can build a full version yourself with everything included, 
+    as explained in <a href=http://freecadweb.org/wiki/index.php?title=Source_documentation>building
+    the source code documentation</a>. You can also browse through the <a href=https://github.com/FreeCAD/FreeCAD>source
+    code on github</a>.
+
+  \endif
+
+  \if DEV_DOCUMENTATION
+
   \mainpage FreeCAD source documentation
 
-  \image html freecadsplash.png
-
-  <b>Welcome to FreeCAD source documentation!</b>
-
-  We hope you'll find it a convenient tool to explore, understand and
-  experiment with the internals of the program.
-
-  Being generated from the actual state of the code, this documentation
-  is by no means a well structured corpus or a textbook, but more an
-  utility to browse through the sources.
-
-  If you seek informations on FreeCAD at large, please consult our
-  <a href="http://www.freecadweb.org/wiki/index.php?title=Main_Page">Wiki</a>
-
-  FreeCAD being a fast moving target, don't hesitate to rebuild an up to
-  date doc from source as often as needed (\ref makingdocs "more info"). CPU cycles are cheap
-  nowadays! 
-
-  The homepage of FreeCAD is <a href="http://www.freecadweb.org">here</a>.
+    \image html freecadsplash.png
+    
+    <b>Welcome to FreeCAD source documentation!</b>
+    
+    We hope you'll find it a convenient tool to explore, understand and
+    experiment with the internals of the program.
+    
+    Being generated from the actual state of the code, this documentation
+    is by no means a well structured corpus or a textbook, but more an
+    utility to browse through the sources.
+    
+    If you seek informations on FreeCAD at large, please consult our
+    <a href="http://www.freecadweb.org/wiki/index.php?title=Main_Page">Wiki</a>
+    
+    FreeCAD being a fast moving target, don't hesitate to rebuild an up to
+    date doc from source as often as needed (\ref makingdocs "more info"). CPU cycles are cheap
+    nowadays! 
+    
+    The homepage of FreeCAD is <a href="http://www.freecadweb.org">here</a>.
+  
+  \endif
+  
  */
 
 /** \namespace std
