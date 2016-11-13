@@ -52,19 +52,37 @@ int  ExtensionContainerPy::initialization() {
     ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
     for(; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
 
+        // The PyTypeObject is shared by all instances of this type and therefore
+        // we have to add new methods only once.
         PyObject* obj = (*it).second->getExtensionPyObject();
-        PyMethodDef* tmpptr = (PyMethodDef*)obj->ob_type->tp_methods;
-        while(tmpptr->ml_name) {
-            //Note: to add methods the call to PyMethod_New is required. However, than the PyObject 
-            //      self is added to the functions arguments list. FreeCAD py implementations are not 
-            //      made to handle this, the do not accept self as argument. Hence we only use function
-            PyObject *func = PyCFunction_New(tmpptr,obj);
-            //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));  
-            PyDict_SetItem(this->ob_type->tp_dict, PyString_FromString(tmpptr->ml_name), func);
-            Py_DECREF(func);
-            //Py_DECREF(method);
-            ++tmpptr;
+        PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+        PyTypeObject *type = this->ob_type;
+        PyObject *dict = type->tp_dict;
+
+        // make sure to do the initialization only once
+        if (meth->ml_name) {
+            PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
+            if (item == NULL) {
+                // Note: this adds the methods to the type object to make sure
+                // it appears in the call tips. The function will not be bound
+                // to an instance
+                Py_INCREF(dict);
+                while (meth->ml_name) {
+                    PyObject *func;
+                    func = PyCFunction_New(meth, 0);
+                    if (func == NULL)
+                        break;
+                    if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
+                        break;
+                    Py_DECREF(func);
+                    ++meth;
+                }
+
+                Py_DECREF(dict);
+            }
         }
+
+        Py_DECREF(obj);
     }
     return 1;
 }
@@ -92,9 +110,27 @@ int ExtensionContainerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject *ExtensionContainerPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    // Search for the method called 'attr' in the extensions. If the search with
+    // Py_FindMethod is successful then a PyCFunction_New instance is returned
+    // with the PyObject pointer of the extension to make sure the method will
+    // be called for the correct instance.
+    PyObject *func = 0;
+    ExtensionContainer::ExtensionIterator it = this->getExtensionContainerPtr()->extensionBegin();
+    for (; it != this->getExtensionContainerPtr()->extensionEnd(); ++it) {
+        // The PyTypeObject is shared by all instances of this type and therefore
+        // we have to add new methods only once.
+        PyObject* obj = (*it).second->getExtensionPyObject();
+        PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+        func = Py_FindMethod(meth, obj, attr);
+        Py_DECREF(obj);
+        if (func)
+            break;
+        PyErr_Clear(); // clear the error set inside Py_FindMethod
+    }
+
+    return func;
 }
 
 int ExtensionContainerPy::setCustomAttributes(const char* /*attr*/, PyObject * /*obj*/)
@@ -126,26 +162,26 @@ PyObject* ExtensionContainerPy::hasExtension(PyObject *args) {
 
 PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
-    char *type;
+    char *typeId;
     PyObject* proxy;
-    if (!PyArg_ParseTuple(args, "sO", &type, &proxy)) 
-        return NULL;                                         // NULL triggers exception 
+    if (!PyArg_ParseTuple(args, "sO", &typeId, &proxy))
+        return NULL;
 
     //get the extension type asked for
-    Base::Type extension =  Base::Type::fromName(type);
-    if(extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
+    Base::Type extension =  Base::Type::fromName(typeId);
+    if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
         std::stringstream str;
-        str << "No extension found of type '" << type << "'" << std::ends;
+        str << "No extension found of type '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 
     //register the extension
     App::Extension* ext = static_cast<App::Extension*>(extension.createInstance());
     //check if this really is a python extension!
-    if(!ext->isPythonExtension()) {
+    if (!ext->isPythonExtension()) {
         delete ext;
         std::stringstream str;
-        str << "Extension is not a python addable version: '" << type << "'" << std::ends;
+        str << "Extension is not a python addable version: '" << typeId << "'" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
 
@@ -153,26 +189,44 @@ PyObject* ExtensionContainerPy::addExtension(PyObject *args) {
 
     //set the proxy to allow python overrides
     App::Property* pp = ext->extensionGetPropertyByName("ExtensionProxy");
-    if(!pp) {
+    if (!pp) {
         std::stringstream str;
         str << "Accessing the proxy property failed!" << std::ends;
         throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
     }
     static_cast<PropertyPythonObject*>(pp)->setPyObject(proxy);
 
-    //make sure all functions of the extension are acessible through this object
-    PyMethodDef* tmpptr = (PyMethodDef*)ext->getExtensionPyObject()->ob_type->tp_methods;
-    while(tmpptr->ml_name) {
-        //Note: to add methods the call to PyMethod_New is required. However, than the PyObject 
-        //      self is added to the functions arguments list. FreeCAD py implementations are not 
-        //      made to handle this, the do not accept self as argument. Hence we only use function
-        PyObject *func = PyCFunction_New(tmpptr, ext->getExtensionPyObject());
-        //PyObject *method = PyMethod_New(func, (PyObject*)this, PyObject_Type((PyObject*)this));
-        PyDict_SetItem(this->ob_type->tp_dict, PyString_FromString(tmpptr->ml_name), func);
-        Py_DECREF(func);
-        //Py_DECREF(method);
-        ++tmpptr;
+    // The PyTypeObject is shared by all instances of this type and therefore
+    // we have to add new methods only once.
+    PyObject* obj = ext->getExtensionPyObject();
+    PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+    PyTypeObject *type = this->ob_type;
+    PyObject *dict = type->tp_dict;
+
+    // make sure to do the initialization only once
+    if (meth->ml_name) {
+        PyObject* item = PyDict_GetItemString(dict, meth->ml_name);
+        if (item == NULL) {
+            // Note: this adds the methods to the type object to make sure
+            // it appears in the call tips. The function will not be bound
+            // to an instance
+            Py_INCREF(dict);
+            while (meth->ml_name) {
+                PyObject *func;
+                func = PyCFunction_New(meth, 0);
+                if (func == NULL)
+                    break;
+                if (PyDict_SetItemString(dict, meth->ml_name, func) < 0)
+                    break;
+                Py_DECREF(func);
+                ++meth;
+            }
+
+            Py_DECREF(dict);
+        }
     }
+
+    Py_DECREF(obj);
 
     Py_Return;
 }
