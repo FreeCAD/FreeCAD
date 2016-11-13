@@ -119,12 +119,13 @@ private:
     {
         PyObject *pcObj;
         PyObject *inclBig = Py_True;
-        if (!PyArg_ParseTuple(args.ptr(), "O|O", &pcObj,&inclBig)) {
-                throw Py::Exception();
+        if (!PyArg_ParseTuple(args.ptr(), "O!|O", &(PyList_Type), &pcObj, &inclBig)) {
+            std::string error = std::string("expected List, not ");
+            error += pcObj->ob_type->tp_name;
+            throw Base::TypeError(error);
         }
 
         std::vector<TopoDS_Edge> edgeList;
-
         try {
             Py::Sequence list(pcObj);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
@@ -177,8 +178,10 @@ private:
     Py::Object findOuterWire(const Py::Tuple& args)
     {
         PyObject *pcObj;
-        if (!PyArg_ParseTuple(args.ptr(), "O", &pcObj)) {
-                throw Py::Exception();
+        if (!PyArg_ParseTuple(args.ptr(), "O!", &(PyList_Type), &pcObj)) {
+            std::string error = std::string("expected List, not ");
+            error += pcObj->ob_type->tp_name;
+            throw Base::TypeError(error);
         }
 
         std::vector<TopoDS_Edge> edgeList;
@@ -232,10 +235,22 @@ private:
         PyObject *pcObjShape;
         double scale;
         PyObject *pcObjDir;
-        if (!PyArg_ParseTuple(args.ptr(), "OdO", &pcObjShape, 
+        if (!PyArg_ParseTuple(args.ptr(), "OdO", &pcObjShape,
                                                  &scale,
                                                  &pcObjDir)) {
-                throw Py::Exception();
+            throw Py::Exception();
+        }
+
+        if (!PyObject_TypeCheck(pcObjShape, &(TopoShapePy::Type))) {
+            std::string error = std::string("type(1) must be 'Shape', not ");
+            error += pcObjShape->ob_type->tp_name;
+            throw Base::TypeError(error);
+        }
+
+        if (!PyObject_TypeCheck(pcObjDir, &(Base::VectorPy::Type))) {
+            std::string error = std::string("type(3) must be 'Vector', not ");
+            error += pcObjDir->ob_type->tp_name;
+            throw Py::TypeError(error);
         }
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
