@@ -488,7 +488,7 @@ class ObjectDressup:
 
         length = fixedLength
         if bone.obj.Incision == Incision.Custom:
-            length = obj.Custom
+            length = bone.obj.Custom
         if bone.obj.Incision == Incision.Adaptive:
             length = bone.adaptiveLength(boneAngle, self.toolRadius)
 
@@ -856,9 +856,9 @@ class TaskPanel:
         self.updateBoneList()
 
         if debugDressup:
-            for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith('Shape'):
-                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            for self.obj in FreeCAD.ActiveDocument.Objects:
+                if self.obj.Name.startswith('Shape'):
+                    FreeCAD.ActiveDocument.removeObject(self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 debugPrint("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
@@ -1001,7 +1001,7 @@ class CommandDogboneDressup:
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + baseObject.Name)
         FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
-        FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
+        FreeCADGui.doCommand('obj.Base.ViewObject.Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
