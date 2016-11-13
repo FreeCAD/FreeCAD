@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>319</height>
+        <width>168</width>
+        <height>99</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -178,8 +178,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>319</height>
+        <width>165</width>
+        <height>70</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -250,7 +250,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" rowspan="2" colspan="2">
+       <item row="0" column="0" colspan="2">
         <widget class="QTreeWidget" name="tagTree">
          <column>
           <property name="text">
@@ -286,8 +286,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>319</height>
+        <width>322</width>
+        <height>306</height>
        </rect>
       </property>
       <attribute name="icon">
