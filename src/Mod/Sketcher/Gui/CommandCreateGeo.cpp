@@ -3605,6 +3605,15 @@ public:
                                          (((endPoint.fX-centerPoint.fX)*cos(phi)+(endPoint.fY-centerPoint.fY)*sin(phi))*b)  );
             
             
+            bool isOriginalArcCCW=true;
+            
+            if (arcAngle > 0)
+                endAngle = startAngle + arcAngle;
+            else {
+                endAngle = startAngle;
+                startAngle += arcAngle;
+                isOriginalArcCCW=false;
+            }
             
             Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
             // We always create a CCW hyperbola, because we want our XY reference system to be in the +X +Y direction
@@ -3691,13 +3700,13 @@ public:
 
             // add suggested constraints for start of arc
             if (sugConstr3.size() > 0) {
-                //createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
                 sugConstr3.clear();
             }
 
             // add suggested constraints for start of arc
             if (sugConstr4.size() > 0) {
-                //createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
                 sugConstr4.clear();
             }
 
