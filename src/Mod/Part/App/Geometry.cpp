@@ -2160,26 +2160,36 @@ bool GeomArcOfHyperbola::isReversedInXY() const
 
 void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
 {
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
-    if(emulateCCWXY){
-        if(isReversedInXY()){
-            std::swap(u,v);
-            u = -u; v = -v;
+    try {
+        if(emulateCCWXY){
+            if(isReversedInXY()){
+                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+                assert(!c.IsNull());
+                c->Reverse();
+            }
         }
     }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+
+    u = myCurve->FirstParameter();
+    v = myCurve->LastParameter();
 }
 
 void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
 {
     try {
+        myCurve->SetTrim(u, v);
+
         if(emulateCCWXY){
             if(isReversedInXY()){
-                std::swap(u,v);
-                u = -u; v = -v;
+                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+                assert(!c.IsNull());
+                c->Reverse();
             }
         }
-        myCurve->SetTrim(u, v);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
