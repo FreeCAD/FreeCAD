@@ -419,7 +419,6 @@ class TaskPanel:
         self.updating = False
 
     def accept(self):
-        print "removed"
         self.getFields()
 
         FreeCADGui.ActiveDocument.resetEdit()
@@ -428,7 +427,6 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def reject(self):
-        print "removed1" 
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Selection.removeObserver(self.s)
         FreeCAD.ActiveDocument.recompute()
@@ -482,6 +480,7 @@ class TaskPanel:
         if index >= 0:
             self.form.direction.setCurrentIndex(index)
 
+        self.form.tagTree.blockSignals(True)
         for i in range(len(self.obj.locs)):
             item = QtGui.QTreeWidgetItem(self.form.tagTree)
             item.setText(0, str(i+1))
@@ -492,6 +491,7 @@ class TaskPanel:
             item.setText(4, str(self.obj.angles[i]))
             item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
             item.setTextAlignment(0, QtCore.Qt.AlignLeft)
+        self.form.tagTree.blockSignals(False)
 
     def open(self):
         self.s = SelObserver()

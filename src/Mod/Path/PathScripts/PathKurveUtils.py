@@ -302,26 +302,26 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
              extend_at_start=0.0, extend_at_end=0.0, lead_in_line_len=0.0,
              lead_out_line_len=0.0):
 
-    print "direction: " + str(direction)
-    print "radius: " + str(radius)
-    print "vertfeed: " + str(vertfeed)
-    print "horizfeed: " + str(horizfeed)
-    print "offset_extra: " + str(offset_extra)
-    print "roll_radius: " + str(roll_radius)
-    print "roll_on: " + str(roll_on)
-    print "roll_off: " + str(roll_off)
-    print "depthparams: " + str(depthparams)
-    print "extend_at_start: " + str(extend_at_start)
-    print "extend_at_end: " + str(extend_at_end)
-    print "lead_in_line_len: " + str(lead_in_line_len)
-    print "lead_out_line_len: " + str(lead_out_line_len)
-    print "in profile2: 318"
+    # print "direction: " + str(direction)
+    # print "radius: " + str(radius)
+    # print "vertfeed: " + str(vertfeed)
+    # print "horizfeed: " + str(horizfeed)
+    # print "offset_extra: " + str(offset_extra)
+    # print "roll_radius: " + str(roll_radius)
+    # print "roll_on: " + str(roll_on)
+    # print "roll_off: " + str(roll_off)
+    # print "depthparams: " + str(depthparams)
+    # print "extend_at_start: " + str(extend_at_start)
+    # print "extend_at_end: " + str(extend_at_end)
+    # print "lead_in_line_len: " + str(lead_in_line_len)
+    # print "lead_out_line_len: " + str(lead_out_line_len)
+    # print "in profile2: 318"
 
     global tags
     direction = direction.lower()
     offset_curve = area.Curve(curve)
-    print "curve: " , str(curve) 
-    print "result curve: ", offset_curve.__dict__
+    # print "curve: " , str(curve) 
+    # print "result curve: ", offset_curve.__dict__
 
     if direction == "on":
         use_CRC() == False
