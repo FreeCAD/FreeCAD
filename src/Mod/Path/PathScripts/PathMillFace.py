@@ -30,10 +30,7 @@ import Part
 import PathScripts.PathKurveUtils
 import area
 import TechDraw
-import Drawing
-import DraftGeomUtils
 from FreeCAD import Vector
-import Arch
 
 FreeCADGui = None
 if FreeCAD.GuiUp:
@@ -83,13 +80,13 @@ class ObjectFace:
         obj.addProperty("App::PropertyEnumeration", "StartAt", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Start Faceing at center or boundary"))
         obj.StartAt = ['Center', 'Edge']
         obj.addProperty("App::PropertyPercent", "StepOver", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Percent of cutter diameter to step over on each pass"))
-        # obj.StepOver = (0.0, 0.01, 100.0, 0.5)
+        #obj.StepOver = (1, 1, 100, 1)
         obj.addProperty("App::PropertyBool", "KeepToolDown", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Attempts to avoid unnecessary retractions."))
         obj.addProperty("App::PropertyBool", "ZigUnidirectional", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Lifts tool at the end of each pass to respect cut mode."))
         obj.addProperty("App::PropertyBool", "UseZigZag", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Use Zig Zag pattern to clear area."))
         obj.addProperty("App::PropertyFloat", "ZigZagAngle", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Angle of the zigzag pattern"))
         obj.addProperty("App::PropertyEnumeration", "BoundaryShape", "Face", QtCore.QT_TRANSLATE_NOOP("App::Property","Shape to use for calculating Boundary"))
-        obj.BoundaryShape = ['Perimeter', 'BoundBox']
+        obj.BoundaryShape = ['Perimeter', 'Boundbox']
 
 
         # Start Point Properties
@@ -102,6 +99,9 @@ class ObjectFace:
 
         if prop == "UserLabel":
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        if prop == "StepOver":
+            if obj.StepOver == 0:
+                obj.StepOver = 1
 
     def __getstate__(self):
         return None
@@ -144,10 +144,11 @@ class ObjectFace:
         item = (ss, sub)
         if item in baselist:
             FreeCAD.Console.PrintWarning(translate("Path", "this object already in the list" + "\n"))
+        elif  PathUtils.findParentJob(obj).Base.Name != ss.Name:
+            FreeCAD.Console.PrintWarning(translate("Path", "Please select features from the Job model object" +"\n"))
         else:
             baselist.append(item)
         obj.Base = baselist
-        print "this base is: " + str(baselist)
         self.execute(obj)
 
     def getStock(self, obj):
@@ -192,8 +193,6 @@ class ObjectFace:
         PathAreaUtils.feedrate_hv(self.horizFeed, self.vertFeed)
         if obj.UseStartPoint:
             start_point = (obj.StartPoint.x, obj.StartPoint.y)
-
-        # print "a," + str(self.radius) + "," + str(extraoffset) + "," + str(stepover) + ",depthparams, " + str(from_center) + "," + str(keep_tool_down) + "," + str(use_zig_zag) + "," + str(zig_angle) + "," + str(zig_unidirectional) + "," + str(start_point) + "," + str(cut_mode)
 
         PathAreaUtils.pocket(
                 a,
@@ -251,24 +250,18 @@ class ObjectFace:
         else:
             obj.Label = obj.UserLabel + " :" + obj.ToolDescription
 
-        #Facing is done either against base object
+        #Facing is done either against base objects
         if obj.Base:
             faces = []
             for b in obj.Base:
                 for sub in b[1]:
                     shape = getattr(b[0].Shape, sub)
                     if isinstance (shape, Part.Face):
-                        groups = Drawing.project(shape, Vector(0,0,1))
-                        if len(groups[0].Edges) > 0:
-                            p = DraftGeomUtils.superWire(groups[0].Edges, closed=True)
-                            w = []
-                            w.append(p)
-                            faces.append(Arch.makeFace(w))
+                        faces.append(shape)
                     else:
                         print ('falling out')
                         return
-            contourwire = TechDraw.findShapeOutline(faces[0].multiFuse(faces[1:]).removeSplitter(), 1, Vector(0,0,1))
-            print ('269: contourwire', contourwire)
+            planeshape = Part.makeCompound(faces)
 
         #If no base object, do planing of top surface of entire model
         else:
@@ -278,18 +271,16 @@ class ObjectFace:
             baseobject = parentJob.Base
             if baseobject is None:
                 return
-            # print "Plane base object: " + baseobject.Name
-            contourwire = TechDraw.findShapeOutline(baseobject.Shape, 1, Vector(0,0,1))
-            print ('281: contourwire', contourwire)
+            planeshape = baseobject.Shape
 
-        if obj.BoundaryShape == 'BoundBox':
-            print 'boundbox'
-            bb = contourwire.BoundBox
+        #if user wants the boundbox, calculate that
+        if obj.BoundaryShape == 'Boundbox':
+            bb = planeshape.BoundBox
             bbperim = Part.makeBox(bb.XLength, bb.YLength, 1, Vector(bb.XMin, bb.YMin, bb.ZMin), Vector(0,0,1))
             contourwire = TechDraw.findShapeOutline(bbperim, 1, Vector(0,0,1))
-
         else:
-            print 'perimeter'
+            contourwire = TechDraw.findShapeOutline(planeshape, 1, Vector(0,0,1))
+
         edgelist = contourwire.Edges
         edgelist = Part.__sortEdges__(edgelist)
 
@@ -378,7 +369,6 @@ class CommandPathMillFace:
         FreeCADGui.doCommand('obj.Active = True')
         FreeCADGui.doCommand('PathScripts.PathMillFace.ViewProviderFace(obj.ViewObject)')
         FreeCADGui.doCommand('from PathScripts import PathUtils')
-        #FreeCADGui.doCommand('obj.Algorithm = "libarea"')
         FreeCADGui.doCommand('obj.StepOver = 50')
         FreeCADGui.doCommand('obj.ClearanceHeight = 10')  # + str(bb.ZMax + 2.0))
         FreeCADGui.doCommand('obj.StepDown = 1.0')
@@ -440,10 +430,10 @@ class TaskPanel:
                 self.obj.ClearanceHeight = self.form.clearanceHeight.text()
             if hasattr(self.obj, "StepDown"):
                 self.obj.StepDown = self.form.stepDown.value()
-            if hasattr(self.obj, "PassExtensioon"):
+            if hasattr(self.obj, "PassExtension"):
                 self.obj.PassExtension = self.form.extraOffset.value()
-            if hasattr(self.obj, "UseStartPoint"):
-                self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
+            # if hasattr(self.obj, "UseStartPoint"):
+            #     self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "CutMode"):
                 self.obj.CutMode = str(self.form.cutMode.currentText())
             if hasattr(self.obj, "UseZigZag"):
@@ -454,6 +444,8 @@ class TaskPanel:
                 self.obj.ZigZagAngle = self.form.zigZagAngle.value()
             if hasattr(self.obj, "StepOver"):
                 self.obj.StepOver = self.form.stepOverPercent.value()
+            if hasattr(self.obj, "BoundaryShape"):
+                self.obj.BoundaryShape = str(self.form.boundaryShape.currentText())
 
         self.obj.Proxy.execute(self.obj)
 
@@ -461,15 +453,31 @@ class TaskPanel:
         self.form.startDepth.setText(str(self.obj.StartDepth.Value))
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.finishDepth.setText(str(self.obj.FinishDepth.Value))
+        self.form.stepDown.setValue(self.obj.StepDown)
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.PassExtension.Value)
-        self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.stepOverPercent.setValue(self.obj.StepOver)
         self.form.useZigZag.setChecked(self.obj.UseZigZag)
         self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
         self.form.zigZagAngle.setValue(self.obj.ZigZagAngle)
-        self.form.stepOverPercent.setValue(self.obj.StepOver)
+        #self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
+        self.form.extraOffset.setValue(self.obj.PassExtension.Value)
+
+        index = self.form.cutMode.findText(
+                self.obj.CutMode, QtCore.Qt.MatchFixedString)
+        if index >=0:
+
+            self.form.cutMode.blockSignals(True)
+            self.form.cutMode.setCurrentIndex(index)
+            self.form.cutMode.blockSignals(False)
+
+        index = self.form.boundaryShape.findText(
+                self.obj.BoundaryShape, QtCore.Qt.MatchFixedString)
+        if index >=0:
+            self.form.boundaryShape.blockSignals(True)
+            self.form.boundaryShape.setCurrentIndex(index)
+            self.form.boundaryShape.blockSignals(False)
+
 
         for i in self.obj.Base:
             for sub in i[1]:
@@ -508,8 +516,20 @@ class TaskPanel:
         dlist = self.form.baseList.selectedItems()
         newlist = []
         for d in dlist:
+            deletebase = d.text().partition(".")[0]
+            deletesub = d.text().partition(".")[2]
+
             for i in self.obj.Base:
-                if i[0].Name != d.text().partition(".")[0] or i[1] != d.text().partition(".")[2]:
+                sublist = []
+                #baseobj = i[0]
+                basesubs = i[1]
+                for sub in basesubs:
+                    if sub != deletesub:
+                        sublist.append(sub)
+                if len(sublist) >= 1:
+                    newlist.append ((deletebase, tuple(sublist)))
+
+                if i[0].Name != d.text().partition(".")[0] and d.text().partition(".")[2] not in i[1]:
                     newlist.append(i)
             self.form.baseList.takeItem(self.form.baseList.row(d))
         self.obj.Base = newlist
@@ -517,6 +537,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def itemActivated(self):
+        print self.form.baseList.selectedItems()[0].text()
         FreeCADGui.Selection.clearSelection()
         slist = self.form.baseList.selectedItems()
         for i in slist:
@@ -577,11 +598,9 @@ class TaskPanel:
 
         # operation
         self.form.cutMode.currentIndexChanged.connect(self.getFields)
-        self.form.useStartPoint.clicked.connect(self.getFields)
+        #self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
         self.form.boundaryShape.currentIndexChanged.connect(self.getFields)
-
-        # Pattern
         self.form.stepOverPercent.editingFinished.connect(self.getFields)
         self.form.useZigZag.clicked.connect(self.getFields)
         self.form.zigZagUnidirectional.clicked.connect(self.getFields)
