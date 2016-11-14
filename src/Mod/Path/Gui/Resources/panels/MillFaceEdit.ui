@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>486</height>
+    <width>374</width>
+    <height>453</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Profile Edges</string>
+   <string>Mill Facing</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>319</height>
+        <width>340</width>
+        <height>277</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>168</width>
-        <height>99</height>
+        <width>356</width>
+        <height>124</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -152,6 +152,20 @@
         </widget>
        </item>
        <item row="2" column="0">
+        <widget class="Gui::InputField" name="finishDepth">
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Finish Depth</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
         <widget class="QDoubleSpinBox" name="stepDown">
          <property name="decimals">
           <number>3</number>
@@ -164,7 +178,7 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
@@ -178,8 +192,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>165</width>
-        <height>70</height>
+        <width>356</width>
+        <height>95</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -223,71 +237,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Holding">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>334</width>
-        <height>319</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Holding</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="addTag">
-         <property name="text">
-          <string>Add New</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="deleteTag">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QTreeWidget" name="tagTree">
-         <column>
-          <property name="text">
-           <string>Tag</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Height</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Length</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Angle</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>322</width>
-        <height>306</height>
+        <width>356</width>
+        <height>296</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -297,132 +253,130 @@
       <attribute name="label">
        <string>Operation</string>
       </attribute>
-      <layout class="QFormLayout" name="formLayout_2">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-       </property>
-       <item row="2" column="1">
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="useStartPoint">
-            <property name="text">
-             <string>Use Start Point</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="useCompensation">
-            <property name="text">
-             <string>Use Compensation</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="useEndPoint">
-            <property name="text">
-             <string>Use End Point</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="1">
+      <layout class="QGridLayout" name="gridLayout_3">
+       <item row="1" column="0">
         <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QGridLayout" name="gridLayout_6">
+         <layout class="QGridLayout" name="gridLayout_5">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="text">
+             <string>Pass Extension</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="extraOffset"/>
+           <widget class="QDoubleSpinBox" name="extraOffset">
+            <property name="minimum">
+             <double>-99.000000000000000</double>
+            </property>
+            <property name="maximum">
+             <double>99.000000000000000</double>
+            </property>
+           </widget>
           </item>
           <item row="1" column="0">
-           <widget class="QLabel" name="label_10">
+           <widget class="QLabel" name="label_11">
             <property name="text">
-             <string>Segment Length</string>
+             <string>Step Over Percent</string>
             </property>
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QDoubleSpinBox" name="segLen"/>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Roll Radius</string>
+           <widget class="QSpinBox" name="stepOverPercent">
+            <property name="minimum">
+             <number>1</number>
             </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QDoubleSpinBox" name="rollRadius"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Plunge Angle</string>
+            <property name="maximum">
+             <number>100</number>
             </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QDoubleSpinBox" name="plungeAngle"/>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Extra Offset</string>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>100</number>
             </property>
            </widget>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QWidget" name="widget_3" native="true">
-         <layout class="QGridLayout" name="gridLayout_5">
+       <item row="2" column="0">
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
-           <widget class="QLabel" name="label_9">
+           <widget class="QCheckBox" name="useZigZag">
             <property name="text">
-             <string>Cut Side</string>
+             <string>Use ZigZag</string>
             </property>
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QComboBox" name="cutSide">
-            <property name="currentIndex">
-             <number>2</number>
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>ZigZag Angle</string>
             </property>
-            <item>
-             <property name="text">
-              <string>Left</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>Right</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
-              <string>On</string>
-             </property>
-            </item>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QSpinBox" name="zigZagAngle"/>
+          </item>
+          <item row="1" column="0" colspan="2">
+           <widget class="QCheckBox" name="zigZagUnidirectional">
+            <property name="text">
+             <string>ZigZag Unidirectional</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Cut Mode</string>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
            <widget class="QLabel" name="label_12">
             <property name="text">
-             <string>Direction</string>
+             <string>Boundary Shape</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
-           <widget class="QComboBox" name="direction">
+          <item row="1" column="2">
+           <widget class="QComboBox" name="boundaryShape">
             <item>
              <property name="text">
-              <string>CW</string>
+              <string>Perimeter</string>
              </property>
             </item>
             <item>
              <property name="text">
-              <string>CCW</string>
+              <string>Boundbox</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <widget class="QComboBox" name="cutMode">
+            <item>
+             <property name="text">
+              <string>Climb</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Conventional</string>
              </property>
             </item>
            </widget>
@@ -433,6 +387,19 @@
       </layout>
      </widget>
     </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

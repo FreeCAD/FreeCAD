@@ -26,6 +26,7 @@
 import FreeCAD
 import FreeCADGui
 import PathUtils
+import Path
 import Part
 import PathScripts
 from PySide import QtCore, QtGui
@@ -73,6 +74,15 @@ class LoadTool():
 
         else:
             commands += 'M4S' + str(obj.SpindleSpeed) + '\n'
+
+        # print output
+        if commands == "":
+            commands += "(No commands processed)"
+
+
+        path = Path.Path(commands)
+        obj.Path = path
+        obj.ViewObject.Visibility = True
 
     def onChanged(self, obj, prop):
         mode = 2
