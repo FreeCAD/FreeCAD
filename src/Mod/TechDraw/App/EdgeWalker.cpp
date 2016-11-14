@@ -536,6 +536,14 @@ bool WalkerEdge::isEqual(WalkerEdge w)
     return (i.idx < j.idx);
 }
 
+std::string WalkerEdge::dump(void)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << "WalkerEdge - v1: " << v1  << " v2: " << v2 << " idx: " << idx << " ed: " << ed;
+    result = builder.str();
+    return result;
+}
 
 //*****************************************
 // ewWire Methods
@@ -615,24 +623,37 @@ std::string embedItem::dump(void)
     std::stringstream builder;
     builder << "embedItem - vertex: " << iVertex  << " incidenceList: ";
     for (auto& ii : incidenceList) {
-        builder << "e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed: " << ii.eDesc;
+        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed:" << ii.eDesc;
     }
     result = builder.str();
     return result;
-}
-
-/*static*/  bool embedItem::iiCompare(incidenceItem i1, incidenceItem i2)
-{
-    return (i1.angle > i2.angle);
 }
 
 std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceItem> &list, bool ascend)
 {
     //Base::Console().Message("TRACE - eI::sortIncidenceList()\n");
     std::vector< incidenceItem > tempList = list;
-    std::sort(tempList.begin(), tempList.end(), embedItem::iiCompare);
+    std::sort(tempList.begin(), tempList.end(), incidenceItem::iiCompare);
     if (ascend) {
         std::reverse(tempList.begin(),tempList.end());
     }
     return tempList;
+}
+
+//*************************************
+//* incidenceItem Methods
+//*************************************
+
+/*static*/  bool incidenceItem::iiCompare(const incidenceItem& i1, const incidenceItem& i2)
+{
+    return (i1.angle > i2.angle);
+}
+
+/*static*/bool incidenceItem::iiEqual(const incidenceItem& i1, const incidenceItem& i2)
+{
+    //TODO: this should compare edges also but eDesc comparision is by address
+    bool result = false;
+    if (i1.angle == i2.angle) {
+    }
+    return result;
 }

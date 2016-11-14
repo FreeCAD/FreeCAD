@@ -266,7 +266,7 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
 void DrawViewPart::extractFaces()
 {
     geometryObject->clearFaceGeom();
-    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges = 
+    const std::vector<TechDrawGeometry::BaseGeom*>& goEdges =
                        geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
     std::vector<TechDrawGeometry::BaseGeom*>::const_iterator itEdge = goEdges.begin();
     std::vector<TopoDS_Edge> origEdges;
@@ -349,13 +349,15 @@ void DrawViewPart::extractFaces()
 
     std::vector<splitPoint> sorted = DrawProjectSplit::sortSplits(splits,true);
     auto last = std::unique(sorted.begin(), sorted.end(), DrawProjectSplit::splitEqual);  //duplicates to back
-    sorted.erase(last, sorted.end());                         //remove dupls
+    sorted.erase(last, sorted.end());                         //remove dupl splits
     std::vector<TopoDS_Edge> newEdges = DrawProjectSplit::splitEdges(faceEdges,sorted);
 
     if (newEdges.empty()) {
         Base::Console().Log("LOG - DVP::extractFaces - no newEdges\n");
         return;
     }
+
+    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
 
 //find all the wires in the pile of faceEdges
     EdgeWalker ew;

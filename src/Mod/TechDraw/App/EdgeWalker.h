@@ -79,6 +79,7 @@ class WalkerEdge
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
     bool isEqual(WalkerEdge w);
+    std::string dump(void);
 
     std::size_t v1;
     std::size_t v2;
@@ -131,7 +132,8 @@ public:
     incidenceItem() {}
     incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
     ~incidenceItem() {}
-
+    static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);
+    static bool iiEqual(const incidenceItem& i1, const incidenceItem& i2);
     int iEdge;
     double angle;
     edge_t eDesc;
@@ -149,7 +151,6 @@ public:
     std::vector<incidenceItem> incidenceList;
     std::string dump(void);
     static std::vector<incidenceItem> sortIncidenceList (std::vector<incidenceItem> &list, bool ascend);
-    static bool iiCompare(incidenceItem i1, incidenceItem i2);
 };
 
 
