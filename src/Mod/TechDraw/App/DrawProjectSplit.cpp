@@ -124,8 +124,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 
 
 TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(
-                                           TopoDS_Shape shape, 
-                                           gp_Pnt& inputCenter, 
+                                           TopoDS_Shape shape,
+                                           gp_Pnt& inputCenter,
                                            Base::Vector3d direction)
 {
     TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit");
@@ -156,7 +156,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryOb
         if (!DrawUtil::isZeroEdge(e)) {
             nonZero.push_back(e);
         } else {
-            Base::Console().Message("INFO - DPS::extractFaces found ZeroEdge!\n");
+            Base::Console().Message("INFO - DPS::getEdges found ZeroEdge!\n");
         }
     }
     faceEdges = nonZero;
@@ -230,6 +230,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryOb
     if (newEdges.empty()) {
         Base::Console().Log("LOG - DPS::extractFaces - no newEdges\n");
     }
+    newEdges = removeDuplicateEdges(newEdges);
+
     return newEdges;
 }
 
@@ -426,3 +428,103 @@ std::vector<splitPoint> DrawProjectSplit::sortSplits(std::vector<splitPoint>& s,
 }
 
 
+std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges)
+{
+    std::vector<TopoDS_Edge> result;
+    std::vector<edgeSortItem> temp;
+
+    unsigned int idx = 0;
+    for (auto& e: inEdges) {
+        edgeSortItem item;
+        TopoDS_Vertex v1 = TopExp::FirstVertex(e);
+        TopoDS_Vertex v2 = TopExp::LastVertex(e);
+        item.start = DrawUtil::vertex2Vector(v1);
+        item.end   = DrawUtil::vertex2Vector(v2);
+        item.startAngle = DrawUtil::angleWithX(e,v1);
+        item.endAngle = DrawUtil::angleWithX(e,v2);
+        //catch reverse-duplicates
+        if (DrawUtil::vectorCompare(item.start,item.end) > 0) {
+             Base::Vector3d vTemp = item.start;
+             item.start  = item.end;
+             item.end    = vTemp;
+             double aTemp = item.startAngle;
+             item.startAngle = item.endAngle;
+             item.endAngle = aTemp;
+        }
+        item.idx = idx;
+        temp.push_back(item);
+        idx++;
+    }
+
+    std::vector<edgeSortItem> sorted = sortEdges(temp,true);
+    auto last = std::unique(sorted.begin(), sorted.end(), edgeSortItem::edgeEqual);  //duplicates to back
+    sorted.erase(last, sorted.end());                         //remove dupls
+
+    for (auto& e: sorted) {
+        result.push_back(inEdges.at(e.idx));
+    }
+
+    return result;
+}
+
+std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>& e, bool ascend)
+{
+    std::vector<edgeSortItem> sorted = e;
+    std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeCompare);
+    if (ascend) {
+        std::reverse(sorted.begin(),sorted.end());
+    }
+    return sorted;
+}
+
+
+//*************************
+//* edgeSortItem Methods
+//*************************
+std::string edgeSortItem::dump(void)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << "edgeSortItem - s: " << DrawUtil::formatVector(start)  << " e: " << DrawUtil::formatVector(end) <<
+                              " sa: " << startAngle * 180.0/M_PI << " ea: " << endAngle* 180.0/M_PI << " idx: " << idx;
+    result = builder.str();
+    return result;
+}
+
+
+//true if "e1 < e2" - for sorting
+/*static*/bool edgeSortItem::edgeCompare(const edgeSortItem& e1, const edgeSortItem& e2)
+{
+    bool result = false;
+    int vCompare = DrawUtil::vectorCompare(e1.start, e2.start);
+    if ( vCompare == -1) {
+        result = true;
+    } else if (vCompare == 0) {
+        if (e1.startAngle < e2.startAngle) {
+                result = true;
+        } else if (DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
+            if (e1.endAngle < e2.startAngle) {
+                result = true;
+            } else if (DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
+                if (e1.idx < e2.idx) {
+                    result = true;
+                }
+            }
+        }
+    }
+    return result;
+}
+
+//true if "e1 = e2" - for sorting/unique test
+/*static*/bool edgeSortItem::edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2)
+{
+    bool result = false;
+    if ( (e1.start == e2.start) &&
+         (e1.end   == e2.end)   &&
+         (DrawUtil::fpCompare(e1.startAngle,e2.startAngle)) &&
+         (DrawUtil::fpCompare(e1.endAngle,e2.endAngle)) ) {
+        result = true;
+    }
+    return result;
+}
+//
