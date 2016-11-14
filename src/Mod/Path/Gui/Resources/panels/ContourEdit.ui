@@ -23,56 +23,28 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
-     <widget class="QWidget" name="Geometry">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>334</width>
-        <height>288</height>
-       </rect>
-      </property>
-      <property name="toolTip">
-       <string>Contour works on shape outer loop but maybe could work on something else</string>
-      </property>
-      <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
-        <normaloff>:/icons/Path-BaseGeometry.svg</normaloff>:/icons/Path-BaseGeometry.svg</iconset>
-      </attribute>
-      <attribute name="label">
-       <string>Base Geometry</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_2"/>
-     </widget>
      <widget class="QWidget" name="Depths">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>288</height>
+        <height>318</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-Depths.svg</normaloff>:/icons/Path-Depths.svg</iconset>
       </attribute>
       <attribute name="label">
        <string>Depths</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_3">
-       <item row="0" column="0">
-        <widget class="Gui::InputField" name="startDepth">
-         <property name="unit" stdset="0">
-          <string notr="true">mm</string>
-         </property>
-        </widget>
-       </item>
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+       </property>
        <item row="0" column="1">
         <widget class="QLabel" name="label_3">
          <property name="text">
@@ -114,6 +86,13 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="0">
+        <widget class="Gui::InputField" name="startDepth">
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Heights">
@@ -122,11 +101,11 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>288</height>
+        <height>318</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-Heights.svg</normaloff>:/icons/Path-Heights.svg</iconset>
       </attribute>
       <attribute name="label">
@@ -172,7 +151,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>288</height>
+        <height>318</height>
        </rect>
       </property>
       <attribute name="label">
@@ -193,7 +172,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" rowspan="2" colspan="2">
+       <item row="0" column="0" colspan="2">
         <widget class="QTreeWidget" name="tagTree">
          <column>
           <property name="text">
@@ -230,11 +209,11 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>288</height>
+        <height>318</height>
        </rect>
       </property>
       <attribute name="icon">
-       <iconset resource="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc">
+       <iconset resource="../Path.qrc">
         <normaloff>:/icons/Path-OperationB.svg</normaloff>:/icons/Path-OperationB.svg</iconset>
       </attribute>
       <attribute name="label">
@@ -358,8 +337,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc"/>
-  <include location="../../../FreeCAD/src/Mod/Path/Gui/Resources/Path.qrc"/>
+  <include location="../Path.qrc"/>
+  <include location="../Path.qrc"/>
  </resources>
  <connections/>
 </ui>
