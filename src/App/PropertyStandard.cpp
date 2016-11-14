@@ -485,13 +485,28 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         }
 #endif
     }
-    else if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    else if (PyUnicode_Check(value)) {
+        PyObject* unicode = PyUnicode_AsUTF8String(value);
+        std::string str = PyString_AsString(unicode);
+        Py_DECREF(unicode);
+        if (_enum.contains(str.c_str())) {
+            aboutToSetValue();
+            _enum.setValue(str);
+            hasSetValue();
+        }
+        else {
+            std::stringstream out;
+            out << "'" << str << "' is not part of the enumeration";
+            throw Base::ValueError(out.str());
+        }
+    }
+    else if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<std::string> values;
         values.resize(nSize);
 
         for (Py_ssize_t i = 0; i < nSize; ++i) {
-            PyObject *item = PyList_GetItem(value, i);
+            PyObject *item = PySequence_GetItem(value, i);
             if ( PyUnicode_Check(item) ) {
 #if PY_MAJOR_VERSION >= 3
                 values[i] = PyUnicode_AsUTF8(item);
@@ -499,6 +514,10 @@ void PropertyEnumeration::setPyObject(PyObject *value)
                 PyObject* unicode = PyUnicode_AsUTF8String(item);
                 values[i] = PyString_AsString(unicode);
                 Py_DECREF(unicode);
+            }
+            else {
+                std::string error = std::string("type in list must be str or unicode, not ");
+                throw Base::TypeError(error + item->ob_type->tp_name);
             }
             else if ( PyString_Check(item) ) {
                 values[i] = PyString_AsString(item);
@@ -513,7 +532,7 @@ void PropertyEnumeration::setPyObject(PyObject *value)
         setValue((long)0);
     }
     else {
-        std::string error = std::string("type must be int or str or unicode, not ");
+        std::string error = std::string("type must be int, str or unicode not ");
         throw Base::TypeError(error + value->ob_type->tp_name);
     }
 }

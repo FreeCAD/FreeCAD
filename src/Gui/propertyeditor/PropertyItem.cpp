@@ -1977,8 +1977,9 @@ void PropertyEnumItem::setValue(const QVariant& value)
         return;
     QStringList items = value.toStringList();
     if (!items.isEmpty()) {
-        QString val = items.front();
-        QString data = QString::fromLatin1("\"%1\"").arg(val);
+        QByteArray val = items.front().toUtf8();
+        std::string str = Base::Tools::escapedUnicodeFromUtf8(val);
+        QString data = QString::fromLatin1("u\"%1\"").arg(QString::fromStdString(str));
         setPropertyValue(data);
     }
 }
@@ -2007,12 +2008,12 @@ void PropertyEnumItem::setEditorData(QWidget *editor, const QVariant& data) cons
             const std::vector<std::string>& value = prop->getEnumVector();
             if (it == items.begin()) {
                 for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt)
-                    commonModes << QLatin1String(jt->c_str());
+                    commonModes << QString::fromUtf8(jt->c_str());
             }
             else {
                 for (std::vector<std::string>::const_iterator jt = value.begin(); jt != value.end(); ++jt) {
-                    if (commonModes.contains(QLatin1String(jt->c_str())))
-                        modes << QLatin1String(jt->c_str());
+                    if (commonModes.contains(QString::fromUtf8(jt->c_str())))
+                        modes << QString::fromUtf8(jt->c_str());
                 }
 
                 commonModes = modes;
