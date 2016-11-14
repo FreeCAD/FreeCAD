@@ -66,7 +66,7 @@ protected:
     void blockButtons(bool b);
     void changeEvent(QEvent *e);
     void resetValues();
-    void calcValues();
+    bool calcValues();
     void saveInitialValues();
     void updateValues();
     QString formatVector(Base::Vector3d v);
