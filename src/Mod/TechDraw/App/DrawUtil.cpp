@@ -27,6 +27,7 @@
 # include <sstream>
 # include <cstring>
 # include <cstdlib>
+#include <cmath>
 # include <exception>
 # include <boost/regex.hpp>
 # include <QString>
@@ -155,6 +156,10 @@ double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
         u = end - start;
     }
     result = atan2(u.y,u.x);
+    if (result < 0) {
+         result += 2.0 * M_PI;
+    }
+
     return result;
 }
 
@@ -200,6 +205,9 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
         }
     }
     result = atan2(uVec.y,uVec.x);
+    if (result < 0) {                               //map from [-PI:PI] to [0:2PI]
+         result += 2.0 * M_PI;
+    }
     return result;
 }
 
@@ -220,6 +228,59 @@ bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v)
     TopoDS_Vertex last = TopExp::LastVertex(e);
     if (isSamePoint(last,v)) {
         result = true;
+    }
+    return result;
+}
+
+bool DrawUtil::fpCompare(const double& d1, const double& d2)
+{
+    bool result = false;
+    if (std::fabs(d1 - d2) < FLT_EPSILON) {
+        result = true;
+    }
+    return result;
+}
+
+Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
+{
+    gp_Pnt gp  = BRep_Tool::Pnt(v);
+    Base::Vector3d result(gp.X(),gp.Y(),gp.Z());
+    return result;
+}
+
+std::string DrawUtil::formatVector(const Base::Vector3d& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << " (" << v.x  << "," << v.y << "," << v.z << ") ";
+    result = builder.str();
+    return result;
+}
+
+//! compare 2 vectors for sorting purposes ( -1 -> v1<v2, 0 -> v1 == v2, 1 -> v1 > v2)
+int DrawUtil::vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2)
+{
+    int result = 0;
+    if (v1 == v2) {
+        return result;
+    }
+
+    if (v1.x < v2.x) {
+        result = -1;
+    } else if (DrawUtil::fpCompare(v1.x, v2.x)) {
+        if (v1.y < v2.y) {
+            result = -1;
+        } else if (DrawUtil::fpCompare(v1.y, v2.y)) {
+            if (v1.z < v2.z) {
+                result = -1;
+            } else {
+                result = 1;
+            }
+        } else {
+            result = 1;  //v2y > v1y
+        }
+    } else {
+        result = 1; //v1x > v2x
     }
     return result;
 }
