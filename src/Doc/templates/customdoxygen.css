@@ -336,9 +336,9 @@ span.SRScope {
 
 }
 
-.memItemLeft, .memTemplItemLeft {
+/*.memItemLeft, .memTemplItemLeft {
   white-space: normal;
-}
+} */
 
 /* enumerations */
 .panel-body thead > tr {

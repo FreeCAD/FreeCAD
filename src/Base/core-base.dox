@@ -1,28 +1,23 @@
-/** \defgroup BASE Base classes
- * \ingroup CORE */
+/** \defgroup BASE Base
+ *  \ingroup CORE
+    \brief Basic structures used by other FreeCAD components
+    
+    The Base module includes most of the basic functions of FreeCAD, such as:
+    - Console services: printing different kinds of messages to the FreeCAD report view or the terminal
+    - Python interpreter: handles the execution of Python code in FreeCAD
+    - Parameter handling: Management, saving and restoring of user preferences settings
+    - Units: Management and conversion of different units
 
-/*! \namespace Base
-    \brief The namespace of the FreeCAD Base library
-
-    This namespace includes most of the basic functions of FreeCAD like
-	- Console srvices
-	- Interpreter (Python binding)
-	- Parameter handling
-
-  and so on......
 */
 
-/** \defgroup BASE Base classes
- * \ingroup CORE */
-
 /*! \namespace Base
-    \brief The namespace of the FreeCAD Base library
+    \ingroup BASE
+    \brief Basic structures used by other FreeCAD components
 
-    This namespace includes most of the basic functions of FreeCAD like
-	- Console srvices
-	- Interpreter (Python binding)
-	- Parameter handling
-
-  and so on......
+    The Base module includes most of the basic functions of FreeCAD, such as:
+    - Console services: printing different kinds of messages to the FreeCAD report view or the terminal
+    - Python interpreter: handles the execution of Python code in FreeCAD
+    - Parameter handling: Management, saving and restoring of user preferences settings
+    - Units: Management and conversion of different units
 */
 

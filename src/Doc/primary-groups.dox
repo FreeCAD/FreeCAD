@@ -8,6 +8,6 @@
 /** \defgroup WORKBENCHES Workbenches
  */
 
-/** \defgroup EMBEDDED Embedded 3rd party material
+/** \defgroup EMBEDDED Embedded 3rd party libraries
     Important tools and libraries incorporated to FreeCAD.
  */
