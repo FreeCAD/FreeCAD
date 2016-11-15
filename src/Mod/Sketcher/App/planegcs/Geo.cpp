@@ -23,10 +23,12 @@
 
 #define DEBUG_DERIVS 0
 #if DEBUG_DERIVS
-#include <cassert>
 #endif
 
 #include "Geo.h"
+
+#include <cassert>
+
 namespace GCS{
 
 DeriVector2::DeriVector2(const Point &p, double *derivparam)
@@ -87,7 +89,15 @@ DeriVector2 DeriVector2::divD(double val, double dval) const
                        );
 }
 
-DeriVector2 Line::CalculateNormal(Point & /*p*/, double* derivparam)
+DeriVector2 Curve::Value(double u, double du, double* derivparam)
+{
+    assert(false /*Value() is not implemented*/);
+    return DeriVector2();
+}
+
+//----------------Line
+
+DeriVector2 Line::CalculateNormal(Point &p, double* derivparam)
 {
     DeriVector2 p1v(p1, derivparam);
     DeriVector2 p2v(p2, derivparam);
@@ -345,6 +355,39 @@ DeriVector2 Hyperbola::CalculateNormal(Point &p, double* derivparam)
     //return sum of normalized pf2, pf2
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
     
+    return ret;
+}
+
+DeriVector2 Hyperbola::Value(double u, double du, double* derivparam)
+{
+
+    //In local coordinate system, value() of hyperbola is:
+    //(a*cosh(u), b*sinh(u))
+    //In global, it is (vector formula):
+    //center + a_vec*cosh(u) + b_vec*sinh(u).
+    //That's what is being computed here.
+
+    // <construct a_vec, b_vec>
+    DeriVector2 c(this->center, derivparam);
+    DeriVector2 f1(this->focus1, derivparam);
+
+    DeriVector2 emaj = f1.subtr(c).getNormalized();
+    DeriVector2 emin = emaj.rotate90ccw();
+    double b, db;
+    b = *(this->radmin); db = this->radmin==derivparam ? 1.0 : 0.0;
+    double a, da;
+    a = this->getRadMaj(c,f1,b,db,da);
+    DeriVector2 a_vec = emaj.multD(a,da);
+    DeriVector2 b_vec = emin.multD(b,db);
+    // </construct a_vec, b_vec>
+
+    // sinh, cosh with derivatives:
+    double co, dco, si, dsi;
+    co = std::cosh(u); dco = std::sinh(u)*du;
+    si = std::sinh(u); dsi = std::cosh(u)*du;
+
+    DeriVector2 ret; //point of hyperbola at parameter value of u, in global coordinates
+    ret = a_vec.multD(co,dco).sum(b_vec.multD(si,dsi)).sum(c);
     return ret;
 }
 
