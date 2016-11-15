@@ -99,6 +99,15 @@ namespace GCS
         // fields of DeriVector2.
         virtual DeriVector2 CalculateNormal(Point &p, double* derivparam = 0) = 0;
 
+        /**
+         * @brief Value: returns point (vector) given the value of parameter
+         * @param u: value of parameter
+         * @param du: derivative of parameter by derivparam
+         * @param derivparam: pointer to sketch parameter to calculate the derivative for
+         * @return
+         */
+        virtual DeriVector2 Value(double u, double du, double* derivparam = 0);
+
         //adds curve's parameters to pvec (used by constraints)
         virtual int PushOwnParams(VEC_pD &pvec) = 0;
         //recunstruct curve's parameters reading them from pvec starting from index cnt.
@@ -206,6 +215,7 @@ namespace GCS
         virtual double getRadMaj(double* derivparam, double &ret_dRadMaj);
         virtual double getRadMaj();
         DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        virtual DeriVector2 Value(double u, double du, double* derivparam = 0);
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual Hyperbola* Copy();
