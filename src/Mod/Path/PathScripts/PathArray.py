@@ -65,7 +65,7 @@ class ObjectArray:
 
             # build copies
             basepath = obj.Base.Path
-            output = basepath.toGCode()
+            output = ""
             pl = FreeCAD.Placement()
             if obj.Offset != FreeCAD.Vector():
                 for i in range(obj.Copies):
