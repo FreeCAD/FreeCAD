@@ -321,6 +321,7 @@ class TaskPanel:
         self.obj.Proxy.onChanged(self.obj, "PostProcessor")
         self.updateTooltips()
 
+        self.form.PathsList.clear()
         for child in self.obj.Group:
             self.form.PathsList.addItem(child.Name)
 

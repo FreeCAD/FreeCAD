@@ -178,7 +178,7 @@ class ObjectFace:
                 obj.FinishDepth.Value,
                 obj.FinalDepth.Value)
 
-        extraoffset = 1 - obj.PassExtension.Value
+        extraoffset = - obj.PassExtension.Value
         stepover = (self.radius * 2) * (float(obj.StepOver)/100)
         use_zig_zag = obj.UseZigZag
         zig_angle = obj.ZigZagAngle
