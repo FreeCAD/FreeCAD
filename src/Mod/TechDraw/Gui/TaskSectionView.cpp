@@ -159,6 +159,7 @@ bool TaskSectionView::calcValues()
             sectionNormal  = stdX;
         }
     } else if (ui->pb_Right->isChecked()) {
+        sectionDir = "Right";
         sectionProjDir = Base::Vector3d(view.y,-view.x,view.z);
         sectionNormal  = Base::Vector3d(view.y,-view.x,0.0);
         if (view == stdZ) {
@@ -177,7 +178,7 @@ bool TaskSectionView::calcValues()
         ui->leNormal->setText(formatVector(sectionNormal));
         ui->leProjDir->setText(formatVector(sectionProjDir));
 
-        Base::Console().Message("Press Reset, OK or Cancel to continue\n");
+        Base::Console().Message("Press Reset, OK or Cancel to continue \n");
     }
     return result;
 }
@@ -316,13 +317,13 @@ void TaskSectionView::onResetClicked(bool b)
 
 bool TaskSectionView::accept()
 {
-    if (strcmp(sectionDir,"unset") != 0) {
-        updateValues();
-        return true;
-    } else {
+    if (strcmp(sectionDir,"unset") == 0) {
         Base::Console().Message("No direction selected!\n");
         reject();
         return false;
+    } else {
+        updateValues();
+        return true;
     }
 }
 
