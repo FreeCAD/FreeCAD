@@ -224,7 +224,7 @@ class ObjectFace:
             self.vertFeed = 100
             self.horizFeed = 100
             self.vertRapid = 100
-            self.horiRrapid = 100
+            self.horizRrapid = 100
             self.radius = 0.25
             obj.ToolNumber = 0
             obj.ToolDescription = "UNDEFINED"

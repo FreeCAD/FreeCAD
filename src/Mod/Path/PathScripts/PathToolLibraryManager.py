@@ -139,7 +139,7 @@ class ToolLibraryManager():
     '''
 
     def __init__(self):
-        self.ToolLibrary = []
+        # self.ToolLibrary = []
         self.prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
         return
 
@@ -311,20 +311,20 @@ class ToolLibraryManager():
             self.saveMainLibrary(tt)
         return True
 
-    def createToolController(self, job, tool):
-        pass
+    # def createToolController(self, job, tool):
+    #     pass
 
-    def exportListHeeks(self, tooltable):
-        '''exports one or more Lists as a HeeksCNC tooltable'''
-        pass
+    # def exportListHeeks(self, tooltable):
+    #     '''exports one or more Lists as a HeeksCNC tooltable'''
+    #     pass
 
-    def exportListLinuxCNC(self, tooltable):
-        '''exports one or more Lists as a LinuxCNC tooltable'''
-        pass
+    # def exportListLinuxCNC(self, tooltable):
+    #     '''exports one or more Lists as a LinuxCNC tooltable'''
+    #     pass
 
-    def exportListXML(self, tooltable):
-        '''exports one or more Lists as an XML file'''
-        pass
+    # def exportListXML(self, tooltable):
+    #     '''exports one or more Lists as an XML file'''
+    #     pass
 
 class EditorPanel():
     def __init__(self):
