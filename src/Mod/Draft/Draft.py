@@ -1736,7 +1736,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
-    
+
     # if this is a group, gather all the svg views of its children
     if hasattr(obj,"isDerivedFrom"):
         if obj.isDerivedFrom("App::DocumentObjectGroup"):
@@ -1744,7 +1744,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             for child in obj.Group:
                 svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
             return svg
-    
+
     import Part, DraftGeomUtils
     pathdata = []
     svg = ""
@@ -1811,7 +1811,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             ly = -ly
         return Vector(lx,ly,0)
-        
+
     def getDiscretized(edge):
         ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
         d = int(edge.Length/ml)
@@ -1944,7 +1944,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         for linepoint in bspline.discretize(0.1)[1:]:
                             v = getProj(linepoint)
                             edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            if fill != 'none': 
+            if fill != 'none':
                 edata += 'Z '
             if edata in pathdata:
                 # do not draw a path on another identical path
@@ -2069,7 +2069,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
                 #svg += '" freecad:skip="1"'
                 svg += '>\n' + t + '</text>\n'
-        else:            
+        else:
             svg = '<text fill="'
             svg += color +'" font-size="'
             svg += str(fontsize) + '" '
@@ -5286,7 +5286,7 @@ class _PathArray(_DraftObject):
         _DraftObject.__init__(self,obj,"PathArray")
         obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
         obj.addProperty("App::PropertyLink","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
-        obj.addProperty("App::PropertyLinkSubList","PathSubs",QT_TRANSLATE_NOOP("App::Property","Draft","Selected subobjects (edges) of PathObj"))
+        obj.addProperty("App::PropertyLinkSubList","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
         obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
         obj.addProperty("App::PropertyVectorDistance","Xlate","Draft",QT_TRANSLATE_NOOP("App::Property","Optional translation vector"))
         obj.addProperty("App::PropertyBool","Align","Draft",QT_TRANSLATE_NOOP("App::Property","Orientation of Base along path"))
@@ -5319,8 +5319,10 @@ class _PathArray(_DraftObject):
         import Part
         sl = []
         for sub in obj.PathSubs:
-            e = sub[0].Shape.getElement(sub[1])
-            sl.append(e)
+            edgeNames = sub[1]
+            for n in edgeNames:
+                e = sub[0].Shape.getElement(n)
+                sl.append(e)
         return Part.Wire(sl)
 
     def getParameterFromV0(self, edge, offset):
