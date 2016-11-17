@@ -27,6 +27,7 @@
 # include <sstream>
 # include <cstring>
 # include <cstdlib>
+#include <cmath>
 # include <exception>
 # include <boost/regex.hpp>
 # include <QString>
@@ -54,6 +55,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Parameter.h>
+#include <Base/Vector3D.h>
 
 #include "DrawUtil.h"
 
@@ -137,6 +139,152 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e)
     }
     return result;
 }
+
+//! assumes 2d on XY
+//! quick angle for straight edges
+double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
+{
+    double result = 0;
+    gp_Pnt gstart  = BRep_Tool::Pnt(TopExp::FirstVertex(e));
+    Base::Vector3d start(gstart.X(),gstart.Y(),gstart.Z());
+    gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
+    Base::Vector3d end(gend.X(),gend.Y(),gend.Z());
+    Base::Vector3d u;
+    if (reverse) {
+        u = start - end;
+    } else {
+        u = end - start;
+    }
+    result = atan2(u.y,u.x);
+    if (result < 0) {
+         result += 2.0 * M_PI;
+    }
+
+    return result;
+}
+
+double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
+{
+    double result = 0;
+    double param = 0;
+
+    //find tangent @ v
+    double adjust = 1.0;            //occ tangent points in direction of curve. at lastVert we need to reverse it.
+    BRepAdaptor_Curve adapt(e);
+    if (isFirstVert(e,v)) {
+        param = adapt.FirstParameter();
+    } else if (isLastVert(e,v)) {
+        param = adapt.LastParameter();
+        adjust = -1;
+    } else {
+        //TARFU
+        Base::Console().Message("Error: DU::angleWithX - v is neither first nor last \n");
+        //must be able to get non-terminal point parm from curve/
+    }
+
+    Base::Vector3d uVec(0.0,0.0,0.0);
+    gp_Dir uDir;
+    BRepLProp_CLProps prop(adapt,param,2,Precision::Confusion());
+    if (prop.IsTangentDefined()) {
+        prop.Tangent(uDir);
+        uVec = Base::Vector3d(uDir.X(),uDir.Y(),uDir.Z()) * adjust;
+    } else {
+        //this bit is a little sketchy
+        gp_Pnt gstart  = BRep_Tool::Pnt(TopExp::FirstVertex(e));
+        Base::Vector3d start(gstart.X(),gstart.Y(),gstart.Z());
+        gp_Pnt gend    = BRep_Tool::Pnt(TopExp::LastVertex(e));
+        Base::Vector3d end(gend.X(),gend.Y(),gend.Z());
+        if (isFirstVert(e,v)) {
+            uVec = end - start;
+        } else if (isLastVert(e,v)) {
+            uVec = end - start;
+        } else {
+          gp_Pnt errPnt = BRep_Tool::Pnt(v);
+          Base::Console().Warning("angleWithX: Tangent not defined at (%.3f,%.3f,%.3f)\n",errPnt.X(),errPnt.Y(),errPnt.Z());
+          //throw ??????
+        }
+    }
+    result = atan2(uVec.y,uVec.x);
+    if (result < 0) {                               //map from [-PI:PI] to [0:2PI]
+         result += 2.0 * M_PI;
+    }
+    return result;
+}
+
+
+bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v)
+{
+    bool result = false;
+    TopoDS_Vertex first = TopExp::FirstVertex(e);
+    if (isSamePoint(first,v)) {
+        result = true;
+    }
+    return result;
+}
+
+bool DrawUtil::isLastVert(TopoDS_Edge e, TopoDS_Vertex v)
+{
+    bool result = false;
+    TopoDS_Vertex last = TopExp::LastVertex(e);
+    if (isSamePoint(last,v)) {
+        result = true;
+    }
+    return result;
+}
+
+bool DrawUtil::fpCompare(const double& d1, const double& d2)
+{
+    bool result = false;
+    if (std::fabs(d1 - d2) < FLT_EPSILON) {
+        result = true;
+    }
+    return result;
+}
+
+Base::Vector3d DrawUtil::vertex2Vector(const TopoDS_Vertex& v)
+{
+    gp_Pnt gp  = BRep_Tool::Pnt(v);
+    Base::Vector3d result(gp.X(),gp.Y(),gp.Z());
+    return result;
+}
+
+std::string DrawUtil::formatVector(const Base::Vector3d& v)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << " (" << v.x  << "," << v.y << "," << v.z << ") ";
+    result = builder.str();
+    return result;
+}
+
+//! compare 2 vectors for sorting purposes ( -1 -> v1<v2, 0 -> v1 == v2, 1 -> v1 > v2)
+int DrawUtil::vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2)
+{
+    int result = 0;
+    if (v1 == v2) {
+        return result;
+    }
+
+    if (v1.x < v2.x) {
+        result = -1;
+    } else if (DrawUtil::fpCompare(v1.x, v2.x)) {
+        if (v1.y < v2.y) {
+            result = -1;
+        } else if (DrawUtil::fpCompare(v1.y, v2.y)) {
+            if (v1.z < v2.z) {
+                result = -1;
+            } else {
+                result = 1;
+            }
+        } else {
+            result = 1;  //v2y > v1y
+        }
+    } else {
+        result = 1; //v1x > v2x
+    }
+    return result;
+}
+
 
 //based on Function provided by Joe Dowsett, 2014
 double DrawUtil::sensibleScale(double working_scale)

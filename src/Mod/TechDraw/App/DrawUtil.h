@@ -34,6 +34,8 @@
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
 
+#include <Base/Vector3D.h>
+
 namespace TechDraw
 {
 
@@ -46,6 +48,16 @@ class TechDrawExport DrawUtil {
         static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
         static bool isZeroEdge(TopoDS_Edge e);
         static double sensibleScale(double working_scale);
+        static double angleWithX(TopoDS_Edge e, bool reverse);
+        static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool fpCompare(const double& d1, const double& d2);
+        static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
+        static std::string formatVector(const Base::Vector3d& v);
+        static int vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2);
+
+
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
         static void dumpEdge(char* label, int i, TopoDS_Edge e);

@@ -70,6 +70,7 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base, TechDraw::DrawVie
     connect(ui->pbReset, SIGNAL(clicked(bool)),
             this, SLOT(onResetClicked(bool)));
 
+    sectionDir = "unset";
     saveInitialValues();
     resetValues();
 }
@@ -97,6 +98,7 @@ void TaskSectionView::resetValues()
     checkAll(false);
     enableAll(true);
 
+    sectionDir = "unset";
     sectionProjDir = saveSectionProjDir;
     sectionNormal = saveSectionNormal;
 
@@ -114,8 +116,9 @@ void TaskSectionView::resetValues()
 }
 
 //calculate good starting points from base view and push buttons
-void TaskSectionView::calcValues()
+bool TaskSectionView::calcValues()
 {
+    bool result = true;
     Base::Vector3d stdX(1.0,0.0,0.0);
     Base::Vector3d stdY(0.0,1.0,0.0);
     Base::Vector3d stdZ(0.0,0.0,1.0);
@@ -156,6 +159,7 @@ void TaskSectionView::calcValues()
             sectionNormal  = stdX;
         }
     } else if (ui->pb_Right->isChecked()) {
+        sectionDir = "Right";
         sectionProjDir = Base::Vector3d(view.y,-view.x,view.z);
         sectionNormal  = Base::Vector3d(view.y,-view.x,0.0);
         if (view == stdZ) {
@@ -165,25 +169,32 @@ void TaskSectionView::calcValues()
             sectionProjDir = -1.0 * stdX;
             sectionNormal  = -1.0 * stdX;
         }
+    } else {
+        Base::Console().Message("Select a direction\n");
+        result = false;
     }
 
-    ui->leNormal->setText(formatVector(sectionNormal));
-    ui->leProjDir->setText(formatVector(sectionProjDir));
+    if (result) {
+        ui->leNormal->setText(formatVector(sectionNormal));
+        ui->leProjDir->setText(formatVector(sectionProjDir));
 
-    Base::Console().Message("Press Reset, OK or Cancel to continue\n");
+        Base::Console().Message("Press Reset, OK or Cancel to continue \n");
+    }
+    return result;
 }
 
 //move values from screen to DocObjs
 void TaskSectionView::updateValues()
 {
-    m_section->SectionDirection.setValue(sectionDir);
+    if (strcmp(sectionDir,"unset") != 0) {
+        m_section->SectionDirection.setValue(sectionDir);
+    }
     m_section->Direction.setValue(sectionProjDir);
     m_section->SectionNormal.setValue(sectionNormal);
     Base::Vector3d origin(ui->sb_OrgX->value().getValue(),
                           ui->sb_OrgY->value().getValue(),
                           ui->sb_OrgZ->value().getValue());
     m_section->SectionOrigin.setValue(origin);
-    m_section->SectionDirection.setValue(sectionDir);
     m_section->SectionSymbol.setValue(ui->leSymbol->text().toUtf8().constData());
 
     m_base->touch();
@@ -206,8 +217,9 @@ void TaskSectionView::turnOnUp()
     ui->pb_Up->setChecked(true);
     ui->pb_Up->setEnabled(true);
     blockButtons(false);
-    calcValues();
-    updateValues();
+    if (calcValues()) {
+        updateValues();
+    }
 }
 
 void TaskSectionView::turnOnDown()
@@ -218,8 +230,9 @@ void TaskSectionView::turnOnDown()
     ui->pb_Down->setChecked(true);
     ui->pb_Down->setEnabled(true);
     blockButtons(false);
-    calcValues();
-    updateValues();
+    if (calcValues()) {
+        updateValues();
+    }
 }
 
 void TaskSectionView::turnOnLeft()
@@ -230,8 +243,9 @@ void TaskSectionView::turnOnLeft()
     ui->pb_Left->setChecked(true);
     ui->pb_Left->setEnabled(true);
     blockButtons(false);
-    calcValues();
-    updateValues();
+    if (calcValues()) {
+        updateValues();
+    }
 }
 
 void TaskSectionView::turnOnRight()
@@ -242,8 +256,9 @@ void TaskSectionView::turnOnRight()
     ui->pb_Right->setChecked(true);
     ui->pb_Right->setEnabled(true);
     blockButtons(false);
-    calcValues();
-    updateValues();
+    if (calcValues()) {
+        updateValues();
+    }
 }
 
 void TaskSectionView::checkAll(bool b)
@@ -302,8 +317,14 @@ void TaskSectionView::onResetClicked(bool b)
 
 bool TaskSectionView::accept()
 {
-    updateValues();
-    return true;
+    if (strcmp(sectionDir,"unset") == 0) {
+        Base::Console().Message("No direction selected!\n");
+        reject();
+        return false;
+    } else {
+        updateValues();
+        return true;
+    }
 }
 
 bool TaskSectionView::reject()

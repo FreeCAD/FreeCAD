@@ -47,23 +47,43 @@
 namespace TechDraw {
 using namespace boost;
 
-typedef adjacency_list
-    < vecS,
-      vecS,
-      undirectedS,
-      property<vertex_index_t, int>,
-      property<edge_index_t, int>
-    >
-    graph;
+typedef
+    adjacency_list
+        < vecS,
+          vecS,
+          undirectedS,
+          property<vertex_index_t, int>,
+          property<edge_index_t, int>
+        >
+        graph;
+
+typedef
+    graph_traits < graph >::vertex_descriptor
+        vertex_t;
+typedef
+    graph_traits < graph >::edge_descriptor
+        edge_t;
+
+typedef
+    std::vector< std::vector<edge_t> >
+        planar_embedding_storage_t;
+
+typedef
+    boost::iterator_property_map< planar_embedding_storage_t::iterator,
+                                  property_map<graph, vertex_index_t>::type
+                                >
+        planar_embedding_t;
 
 class WalkerEdge
 {
 public:
     static bool weCompare(WalkerEdge i, WalkerEdge j);
     bool isEqual(WalkerEdge w);
+    std::string dump(void);
 
     std::size_t v1;
     std::size_t v2;
+    edge_t ed;
     int idx;
 };
 
@@ -75,6 +95,7 @@ public:
     std::vector<WalkerEdge>  wedges;      //[WE] representing 1 wire
     void push_back(WalkerEdge w);
     void clear() {wedges.clear();};
+    int size(void);
 };
 
 class ewWireList
@@ -84,6 +105,7 @@ public:
 
     std::vector<ewWire> wires;
     void push_back(ewWire e);
+    int size(void);
 };
 
 
@@ -104,13 +126,41 @@ private:
     TechDraw::graph m_g;
 };
 
+class incidenceItem
+{
+public:
+    incidenceItem() {}
+    incidenceItem(int idx, double a, edge_t ed)  {iEdge = idx; angle = a; eDesc = ed;}
+    ~incidenceItem() {}
+    static bool iiCompare(const incidenceItem& i1, const incidenceItem& i2);
+    static bool iiEqual(const incidenceItem& i1, const incidenceItem& i2);
+    int iEdge;
+    double angle;
+    edge_t eDesc;
+};
+
+class embedItem
+{
+public:
+    embedItem();
+    embedItem(int i,
+              std::vector<incidenceItem> list) { iVertex = i; incidenceList = list;}
+    ~embedItem() {}
+
+    int iVertex;
+    std::vector<incidenceItem> incidenceList;
+    std::string dump(void);
+    static std::vector<incidenceItem> sortIncidenceList (std::vector<incidenceItem> &list, bool ascend);
+};
+
+
 class EdgeWalker
 {
 public:
     EdgeWalker(void);
     virtual ~EdgeWalker();
 
-    bool loadEdges(std::vector<TechDraw::WalkerEdge> edges);
+    bool loadEdges(std::vector<TechDraw::WalkerEdge>& edges);
     bool loadEdges(std::vector<TopoDS_Edge> edges);
     bool setSize(int size);
     bool perform();
@@ -127,10 +177,16 @@ public:
     std::vector<TopoDS_Wire> sortWiresBySize(std::vector<TopoDS_Wire>& w, bool reverse = false);
     TopoDS_Wire makeCleanWire(std::vector<TopoDS_Edge> edges, double tol = 0.10);
 
+    std::vector<int> getEmbeddingRowIx(int v);
+    std::vector<edge_t> getEmbeddingRow(int v);
+    std::vector<embedItem> makeEmbedding(const std::vector<TopoDS_Edge> edges,
+                                                 const std::vector<TopoDS_Vertex> uniqueVList);
 
 protected:
     static bool wireCompare(const TopoDS_Wire& w1, const TopoDS_Wire& w2);
-    std::vector<TopoDS_Edge> saveInEdges;
+    std::vector<TechDraw::WalkerEdge> m_saveWalkerEdges;
+    std::vector<TopoDS_Edge> m_saveInEdges;
+    std::vector<embedItem> m_embedding;
 
 private:
     edgeVisitor m_eV;
