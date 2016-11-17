@@ -120,9 +120,7 @@ private:
         PyObject *pcObj;
         PyObject *inclBig = Py_True;
         if (!PyArg_ParseTuple(args.ptr(), "O!|O", &(PyList_Type), &pcObj, &inclBig)) {
-            std::string error = std::string("expected List, not ");
-            error += pcObj->ob_type->tp_name;
-            throw Base::TypeError(error);
+            throw Py::Exception("expected (listofedges,boolean");
         }
 
         std::vector<TopoDS_Edge> edgeList;
@@ -179,9 +177,7 @@ private:
     {
         PyObject *pcObj;
         if (!PyArg_ParseTuple(args.ptr(), "O!", &(PyList_Type), &pcObj)) {
-            std::string error = std::string("expected List, not ");
-            error += pcObj->ob_type->tp_name;
-            throw Base::TypeError(error);
+            throw Py::Exception("expected (listofedges)");
         }
 
         std::vector<TopoDS_Edge> edgeList;
@@ -238,19 +234,15 @@ private:
         if (!PyArg_ParseTuple(args.ptr(), "OdO", &pcObjShape,
                                                  &scale,
                                                  &pcObjDir)) {
-            throw Py::Exception();
+            throw Py::Exception("expected (shape,scale,direction");
         }
 
         if (!PyObject_TypeCheck(pcObjShape, &(TopoShapePy::Type))) {
-            std::string error = std::string("type(1) must be 'Shape', not ");
-            error += pcObjShape->ob_type->tp_name;
-            throw Base::TypeError(error);
+            throw Py::TypeError("expected arg1 to be 'Shape'");
         }
 
         if (!PyObject_TypeCheck(pcObjDir, &(Base::VectorPy::Type))) {
-            std::string error = std::string("type(3) must be 'Vector', not ");
-            error += pcObjDir->ob_type->tp_name;
-            throw Py::TypeError(error);
+            throw Py::TypeError("expected arg3 to be 'Vector'");
         }
 
         TopoShapePy* pShape = static_cast<TopoShapePy*>(pcObjShape);
