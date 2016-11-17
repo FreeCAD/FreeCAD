@@ -911,9 +911,10 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         cShape.Location(aLoc);
 
         // count triangles and nodes in the mesh
-        TopExp_Explorer Ex;
-        for (Ex.Init(cShape,TopAbs_FACE);Ex.More();Ex.Next()) {
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
+        TopTools_IndexedMapOfShape faceMap;
+        TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
+        for (int i=1; i <= faceMap.Extent(); i++) {
+            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
@@ -922,7 +923,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             }
 
             TopExp_Explorer xp;
-            for (xp.Init(Ex.Current(),TopAbs_EDGE);xp.More();xp.Next())
+            for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next())
                 faceEdges.insert(xp.Current().HashCode(INT_MAX));
             numFaces++;
         }
@@ -982,9 +983,9 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             norms[i]= SbVec3f(0.0,0.0,0.0);
 
         int ii = 0,faceNodeOffset=0,faceTriaOffset=0;
-        for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next(),ii++) {
+        for (int i=1; i <= faceMap.Extent(); i++, ii++) {
             TopLoc_Location aLoc;
-            const TopoDS_Face &actFace = TopoDS::Face(Ex.Current());
+            const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
             if (mesh.IsNull()) continue;
