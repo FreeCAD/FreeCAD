@@ -28,8 +28,6 @@ from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
 import Draft
-import os
-import glob
 
 
 FreeCADGui = None

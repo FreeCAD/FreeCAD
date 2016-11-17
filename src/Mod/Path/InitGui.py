@@ -67,7 +67,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathSimpleCopy
         from PathScripts import PathEngrave
         from PathScripts import PathSurface
-        from PathScripts import PathRemote
         from PathScripts import PathSanity
         from PathScripts import DragknifeDressup
         from PathScripts import PathContour
