@@ -24,6 +24,9 @@ __title__ = "Command Purge Fem Results"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandPurgeResults
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
 import FemTools

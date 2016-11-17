@@ -29,10 +29,19 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchServer
+#  \ingroup ARCH
+#  \brief The Server object and tools
+#
+#  This module provides utility functions to connect with
+#  online or local servers like BimServer or GIT
 
 __title__="FreeCAD Arch Server commands"
 __author__ = "Yorik van Havre"

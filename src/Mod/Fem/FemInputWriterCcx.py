@@ -34,6 +34,8 @@ import time
 import FemMeshTools
 import FemInputWriter
 
+## \addtogroup FEM
+#  @{
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self,
@@ -1057,3 +1059,5 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name
+
+#  @}

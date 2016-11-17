@@ -32,6 +32,9 @@ __title__ = "FreeCAD Calculix library"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ccxFrdReader
+#  \ingroup FEM
+
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
 

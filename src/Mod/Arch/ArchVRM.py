@@ -25,6 +25,15 @@
 
 import FreeCAD,math,Part,ArchCommands,DraftVecUtils,DraftGeomUtils
 
+## @package ArchVRM
+#  \ingroup ARCH
+#  \brief The Arch Vector Rendering Module
+#
+#  This module provides the Renderer Class, that allows to
+#  produce SVG renderings of projected shapes, with filled faces.
+#  It is used by the "Solid" mode of Arch views in TechDraw and Drawing,
+#  and is called from ArchSectionPlane code.
+
 MAXLOOP = 10 # the max number of loop before abort
 
 # WARNING: in this module, faces are lists whose first item is the actual OCC face, the

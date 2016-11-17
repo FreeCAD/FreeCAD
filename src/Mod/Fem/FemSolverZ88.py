@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import _FemSolverZ88
 
+## \addtogroup FEM
+#  @{
 
 def makeFemSolverZ88(name="Z88"):
     '''makeSolverZ88(name): makes a Z88 solver object'''
@@ -37,3 +39,5 @@ def makeFemSolverZ88(name="Z88"):
         import _ViewProviderFemSolverZ88
         _ViewProviderFemSolverZ88._ViewProviderFemSolverZ88(obj.ViewObject)
     return obj
+
+#  @}

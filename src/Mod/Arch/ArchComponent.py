@@ -39,11 +39,19 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
 
+## @package ArchComponent
+#  \ingroup ARCH
+#  \brief The base class of all Arch objects
+#
+#  This module provides the base Arch component class, that
+#  is shared by all of the Arch BIM objects
 
 def addToComponent(compobject,addobject,mod=None):
     '''addToComponent(compobject,addobject,mod): adds addobject

@@ -27,6 +27,12 @@ __url__ =    "http://www.freecadweb.org"
 
 import os,time,tempfile,uuid,FreeCAD,Part,Draft,Arch,math,DraftVecUtils
 
+## @package importIFC
+#  \ingroup ARCH
+#  \brief IFC file format importer and exporter
+#
+#  This module provides tools to import and export IFC files.
+
 DEBUG = False
 
 if open.__module__ == '__builtin__':

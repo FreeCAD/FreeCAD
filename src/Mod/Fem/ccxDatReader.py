@@ -28,6 +28,8 @@ __title__ = "ccxDatReader"
 __author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
+## @package ccxDatReader
+#  \ingroup FEM
 
 if open.__module__ == '__builtin__':
     # because we'll redefine open below

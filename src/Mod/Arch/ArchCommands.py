@@ -30,12 +30,21 @@ if FreeCAD.GuiUp:
     from PySide import QtGui,QtCore
     from DraftTools import translate
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    # \endcond
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+
+## @package ArchCommands
+#  \ingroup ARCH
+#  \brief Utility functions for theArch Workbench
+#
+#  This module provides general functions used by Arch tools
+#  and utility commands
 
 # module functions ###############################################
 

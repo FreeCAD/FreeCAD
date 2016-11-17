@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import _MechanicalMaterial
 
+## \addtogroup FEM
+#  @{
 
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material
@@ -39,3 +41,5 @@ def makeMechanicalMaterial(name):
         _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
+
+# @}

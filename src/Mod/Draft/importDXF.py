@@ -26,6 +26,12 @@ __title__="FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+## @package importDXF
+#  \ingroup DRAFT
+#  \brief DXF file importer & exporter
+#
+# This module provides support for importing and exporting Autodesk DXF files
+
 '''
 This script uses a DXF-parsing library created by Stani,
 Kitsu and Migius for Blender
