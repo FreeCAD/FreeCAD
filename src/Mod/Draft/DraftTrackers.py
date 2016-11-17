@@ -25,10 +25,9 @@ __title__="FreeCAD Draft Trackers"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
-## \defgroup DRAFTTRACKERS DraftTrackers
+## @package DraftTrackers
 #  \ingroup DRAFT
-#
-# Custom Pivy-based objects used by the Draft workbench
+#  \brief Custom Pivy-based objects used by the Draft workbench
 #
 # This module contains a collection of Coin3D (pivy)-based objects
 # that are used by the Draft workbench to draw temporary geometry

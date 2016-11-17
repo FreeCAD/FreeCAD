@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import _FemBeamSection
 
+## \addtogroup FEM
+#  @{
 
 def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
@@ -39,3 +41,5 @@ def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
         import _ViewProviderFemBeamSection
         _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
     return obj
+
+#  @}

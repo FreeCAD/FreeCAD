@@ -29,10 +29,21 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchPanel
+#  \ingroup ARCH
+#  \brief The Panel object and tools
+#
+#  This module provides tools to build Panel objects.
+#  Panels consist of a closed shape that gets extruded to
+#  produce a flat object.
+
 
 __title__="FreeCAD Panel"
 __author__ = "Yorik van Havre"

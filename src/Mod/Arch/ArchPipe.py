@@ -29,10 +29,19 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchPipe
+#  \ingroup ARCH
+#  \brief The Pipe object and tools
+#
+#  This module provides tools to build Pipe and Pipe conector objects.
+#  Pipes are tubular objects extruded along a base line.
 
 __title__ = "Arch Pipe tools"
 __author__ = "Yorik van Havre"

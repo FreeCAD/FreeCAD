@@ -39,6 +39,8 @@ import FreeCAD
 import FemMeshTools
 import os
 
+## \addtogroup FEM
+#  @{
 
 class FemInputWriter():
     def __init__(self,
@@ -161,3 +163,5 @@ class FemInputWriter():
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces(self.femmesh, femobj)
             # print femobj['PressureFaces']
+
+#  @}

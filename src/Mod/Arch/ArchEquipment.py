@@ -35,10 +35,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+
+## @package ArchEquipment
+#  \ingroup ARCH
+#  \brief The Equipment object and tools
+#
+#  This module provides tools to build equipment objects.
+#  Equipments are used to represent furniture and all kinds of electrical
+#  or hydraulic appliances in a building
 
 # presets
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]

@@ -29,10 +29,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchRoof
+#  \ingroup ARCH
+#  \brief The Roof object and tools
+#
+#  This module provides tools to build Roof objects.
+#  Roofs are build from a closed contour and a series of
+#  slopes.
 
 __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"

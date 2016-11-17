@@ -24,6 +24,8 @@ __title__ = "_TaskPanelFemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package TaskPanelFemBeamSection
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

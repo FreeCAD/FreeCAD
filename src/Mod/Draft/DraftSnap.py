@@ -25,6 +25,12 @@ __title__="FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
+## @package DraftSnap
+#  \ingroup DRAFT
+#  \brief Snapping system used by Draft & Arch workbenches
+#
+#  This module provides tools to handle point snapping and
+#  everything that goes with it (toolbar buttons, cursor icons, etc)
 
 import FreeCAD, FreeCADGui, math, Draft, DraftGui, DraftTrackers, DraftVecUtils
 from FreeCAD import Vector

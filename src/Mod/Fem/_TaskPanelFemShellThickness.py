@@ -24,6 +24,8 @@ __title__ = "_TaskPanelFemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package TaskPanelFemShellThickness
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

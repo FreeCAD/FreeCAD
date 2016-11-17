@@ -24,6 +24,8 @@ __title__ = "_ViewProviderFemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderFemShellThickness
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

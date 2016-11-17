@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 
+## \addtogroup FEM
+#  @{
 
 def get_femnodes_by_femobj_with_references(femmesh, femobj):
     node_set = []
@@ -1260,3 +1262,5 @@ def make_femmesh(mesh_data):
     else:
         FreeCAD.Console.PrintError("No Nodes found!\n")
     return mesh
+
+#  @}

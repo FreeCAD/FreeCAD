@@ -1,3 +1,5 @@
 /** \defgroup SHIP Ship
- *  \ingroup WORKBENCHES */
+ *  \ingroup UTILITIES 
+ *  \brief Tools towork with ship hulls
+ */
 
