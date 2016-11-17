@@ -475,6 +475,7 @@ void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> 
 
 /** \defgroup PropFrame Property framework
     \ingroup APP
+    \brief System to access object properties
 \section Introduction
 The property framework introduces the ability to access attributes (member variables) of a class by name without
 knowing the class type. It's like the reflection mechanism of Java or C#.

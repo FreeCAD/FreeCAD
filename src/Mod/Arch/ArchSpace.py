@@ -157,10 +157,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchSpace
+#  \ingroup ARCH
+#  \brief The Space object and tools
+#
+#  This module provides tools to build Space objects.
+#  Spaces define an open volume inside or outside a
+#  building, ie. a room.
 
 def makeSpace(objects=None,baseobj=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one

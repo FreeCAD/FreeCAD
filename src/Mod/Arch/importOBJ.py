@@ -25,8 +25,18 @@ import FreeCAD, DraftGeomUtils, Part, Draft, Arch
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
+    # \cond
     def translate(context,text):
         return text
+    # \endcond
+
+## @package importOBJ
+#  \ingroup ARCH
+#  \brief OBJ file format importer and exporter
+#
+#  This module provides tools to import and export OBJ files.
+#  It is an alternative tothe standard Mesh OBJ importer/exporter
+#  and supports exporting faces with more than 3 vertices.
 
 p = Draft.precision()
 

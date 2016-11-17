@@ -33,6 +33,8 @@ from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
+## \addtogroup FEM
+#  @{
 
 class FemToolsCcx(FemTools.FemTools):
 
@@ -260,3 +262,5 @@ class FemToolsCcx(FemTools.FemTools):
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
+
+#  @}

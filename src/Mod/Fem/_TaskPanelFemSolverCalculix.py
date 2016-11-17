@@ -24,6 +24,9 @@ __title__ = "CalculiX Job Control Task Panel"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package TaskPanelFemSolverCalculix
+#  \ingroup FEM
+
 import FemToolsCcx
 import FreeCAD
 import os

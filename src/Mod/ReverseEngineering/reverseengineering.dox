@@ -1,3 +1,5 @@
 /** \defgroup REEN ReverseEngineering
- *  \ingroup WORKBENCHES */
+ *  \ingroup CWORKBENCHES 
+ *  \brief Generate Part shapes from Mesh and Points based objects
+ */
 

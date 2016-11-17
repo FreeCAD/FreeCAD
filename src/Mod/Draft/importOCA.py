@@ -26,6 +26,14 @@ __title__="FreeCAD Draft Workbench - OCA importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+## @package importOCA
+#  \ingroup DRAFT
+#  \brief OCA (Open CAD Format) file import & export
+#
+#  This module provides support for importing and exporting to the OCA format fron GCAD3D.
+#  Warning, this file format is today practically obsolete and this module is not
+#  maintained anymore.
+
 '''
 This script imports OCA/gcad files into FreeCAD.
 '''

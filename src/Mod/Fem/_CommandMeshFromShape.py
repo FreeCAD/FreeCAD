@@ -24,6 +24,9 @@ __title__ = "Command Mesh From Shape"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandMeshFromShape
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
 

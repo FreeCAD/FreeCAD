@@ -29,10 +29,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchFrame
+#  \ingroup ARCH
+#  \brief The Frame object and tools
+#
+#  This module provides tools to build Frame objects.
+#  Frames are objects made of a profile and an object with
+#  edges along which the profile gets extruded
 
 __title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"

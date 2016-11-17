@@ -35,8 +35,17 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
     FreeCADGui = None
+    # \cond
     def translate(ctxt,txt):
         return txt
+    # \endcond
+
+## @package importWebGL
+#  \ingroup ARCH
+#  \brief WebGL file format exporter
+#
+#  This module provides tools to export HTML files containing the 
+#  exported objects in WebGL format and a simple three.js-based viewer.
 
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None

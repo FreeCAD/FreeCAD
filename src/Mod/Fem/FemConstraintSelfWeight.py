@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import _FemConstraintSelfWeight
 
+## \addtogroup FEM
+#  @{
 
 def makeFemConstraintSelfWeight(name="FemConstraintSelfWeight"):
     '''makeFemFemConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''
@@ -37,3 +39,5 @@ def makeFemConstraintSelfWeight(name="FemConstraintSelfWeight"):
         import _ViewProviderFemConstraintSelfWeight
         _ViewProviderFemConstraintSelfWeight._ViewProviderFemConstraintSelfWeight(obj.ViewObject)
     return obj
+
+#  @}

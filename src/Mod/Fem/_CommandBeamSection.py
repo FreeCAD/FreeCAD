@@ -24,6 +24,8 @@ __title__ = "_CommandBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandBeamSection
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands

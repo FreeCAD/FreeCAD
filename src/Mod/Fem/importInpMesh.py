@@ -30,6 +30,8 @@ __author__ = "Frantisek Loeffelmann "
 __url__ = "http://www.freecadweb.org"
 __date__ = "04/08/2016"
 
+## @package importInpMesh
+#  \ingroup FEM
 
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below

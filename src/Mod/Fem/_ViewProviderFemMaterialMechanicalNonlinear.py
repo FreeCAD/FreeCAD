@@ -24,6 +24,8 @@ __title__ = "_ViewProviderFemMaterialMechanicalNonlinear"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderFemMaterialMechanicalNonLinear
+#  \ingroup FEM
 
 from pivy import coin
 

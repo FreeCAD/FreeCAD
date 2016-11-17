@@ -1,3 +1,5 @@
 /** \defgroup WEB Web
- *  \ingroup WORKBENCHES */
+ *  \ingroup CWORKBENCHES 
+ *  \brief The webkit-based web browser of FreeCAD
+ */
 

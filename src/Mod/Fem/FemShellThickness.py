@@ -28,6 +28,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import _FemShellThickness
 
+## \addtogroup FEM
+#  @{
 
 def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
     '''makeFemShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''
@@ -38,3 +40,5 @@ def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
         import _ViewProviderFemShellThickness
         _ViewProviderFemShellThickness._ViewProviderFemShellThickness(obj.ViewObject)
     return obj
+
+#  @}

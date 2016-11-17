@@ -28,6 +28,11 @@ __url__ = "http://www.freecadweb.org"
 
 DEBUG = True
 
+## @package import3DS
+#  \ingroup ARCH
+#  \brief 3DS file format importer
+#
+#  This module provides tools to import 3DS files.
 
 def check3DS():
     "checks if collada if available"

@@ -30,6 +30,9 @@ __url__ = ["http://www.freecadweb.org"]
 #
 # Shapes manipulation utilities
 
+## \addtogroup DRAFTGEOMUTILS
+#  @{
+
 "this file contains generic geometry functions for manipulating Part shapes"
 
 import FreeCAD, Part, DraftVecUtils, math, cmath
@@ -2792,3 +2795,4 @@ def circleInversion(circle, circle2):
         FreeCAD.Console.PrintMessage("debug: circleInversion bad parameters!\n")
         return None
 
+#  @}

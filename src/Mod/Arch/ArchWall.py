@@ -29,10 +29,21 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchWall
+#  \ingroup ARCH
+#  \brief The Wall object and tools
+#
+#  This module provides tools to build Wall objects.
+#  Walls are simple objects, usually vertical, obtained
+#  by giving a thickness to a base line, then extruding it
+#  vertically.
 
 __title__="FreeCAD Wall"
 __author__ = "Yorik van Havre"

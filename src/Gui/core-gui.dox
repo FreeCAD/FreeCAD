@@ -1,8 +1,10 @@
 /** \defgroup GUI Gui side
- * \ingroup CORE */
+ * \ingroup CORE 
+ * \brief The Graphical User Interface of FreeCAD and the 3D View
+ */
 
 /** \namespace Gui
-    \brief The namespace of the FreeCAD Graphical interface layer library.
+    \brief The FreeCAD Graphical interface layer
 
     This namespace includes the grafical interface of FreeCAD like:
 	- The main window

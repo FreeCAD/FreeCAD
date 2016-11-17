@@ -24,6 +24,12 @@
 __title__="FreeCAD Draft Workbench - Airfoil data importer"
 __author__ = "Heiko Jakob <heiko.jakob@gediegos.de>"
 
+## @package importAirfoilDAT
+#  \ingroup DRAFT
+#  \brief Airfoil (.dat) file importer
+#
+# This module provides support for importing airfoil .dat files
+
 import re, FreeCAD, FreeCADGui, Part, cProfile, os, string
 from FreeCAD import Vector, Base
 from Draft import makeWire

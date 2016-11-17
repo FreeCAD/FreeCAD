@@ -30,14 +30,23 @@ if FreeCAD.GuiUp:
     from pivy import coin
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
 
 __title__="FreeCAD Axis System"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+
+## @package ArchAxis
+#  \ingroup ARCH
+#  \brief Axis system for the Arch workbench
+#
+#  This module provides tools to build axis systems
+#  An axis system is a collection of planar axes with a number/tag
 
 def makeAxis(num=5,size=1000,name="Axes"):
     '''makeAxis(num,size): makes an Axis System

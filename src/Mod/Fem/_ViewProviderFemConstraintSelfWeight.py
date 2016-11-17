@@ -24,6 +24,8 @@ __title__ = "_ViewProviderFemConstraintSelfWeight"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderFemConstraintSelfWeight
+#  \ingroup FEM
 
 from pivy import coin
 

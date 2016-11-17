@@ -24,6 +24,8 @@ __title__ = "Command nonlinear mechanical material"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandMaterialMechanicalNonLinear
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands

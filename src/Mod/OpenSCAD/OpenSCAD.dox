@@ -1,3 +1,5 @@
-/** \defgroup TEMPLATE OpenSCAD
- *  \ingroup WORKBENCHES */
+/** \defgroup OPENSCAD OpenSCAD
+ *  \ingroup PYTHONWORKBENCHES 
+ *  \brief Interface with OpenSCAD
+ */
 

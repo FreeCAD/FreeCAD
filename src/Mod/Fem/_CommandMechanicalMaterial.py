@@ -24,6 +24,8 @@ __title__ = "_CommandMechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandMechanicalMaterial
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands

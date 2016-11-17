@@ -35,11 +35,19 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
-
+    # \endcond
+    
+## @package ArchPrecast
+#  \ingroup ARCH
+#  \brief Precast options for ArchStructure
+#
+#  This module provides additional presets for the Arch Structure
+#  tool, to build a series of precast concrete elements
 
 class _Precast(ArchComponent.Component):
 

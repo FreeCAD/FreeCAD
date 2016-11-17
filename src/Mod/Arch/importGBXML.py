@@ -30,9 +30,16 @@ import os,FreeCAD,Draft
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
+    # \cond
     def translate(ctx,txt):
         return txt
-
+    # \endcond
+        
+## @package importGBXML
+#  \ingroup ARCH
+#  \brief GBXML file format exporter
+#
+#  This module provides tools to export GBXML files.
     
 def export(objectslist,filename):
     

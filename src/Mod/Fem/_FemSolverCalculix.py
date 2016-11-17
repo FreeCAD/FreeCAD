@@ -24,6 +24,8 @@ __title__ = "_FemSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemSolverCalculix
+#  \ingroup FEM
 
 import FreeCAD
 import FemToolsCcx

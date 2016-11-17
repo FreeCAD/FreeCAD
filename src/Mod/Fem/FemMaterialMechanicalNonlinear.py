@@ -29,6 +29,8 @@ import FreeCAD
 import FemGui
 import _FemMaterialMechanicalNonlinear
 
+## \addtogroup FEM
+#  @{
 
 def makeFemMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonlinear"):
     '''makeFemMaterialMechanicalNonlinear(base_material, [name]): creates an nonlinear material object'''
@@ -39,3 +41,5 @@ def makeFemMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNo
         import _ViewProviderFemMaterialMechanicalNonlinear
         _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
     return obj
+
+# @}

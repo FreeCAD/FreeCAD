@@ -1,15 +1,16 @@
 /** \defgroup APP App side
- * \ingroup CORE */
+ * \ingroup CORE 
+ * \brief The part of FreeCAD that works without GUI (console or server mode)
+*/
 
 /** \namespace App
     \ingroup APP
-    \brief The namespace of the FreeCAD Aplication layer library.
+    \brief The FreeCAD Aplication layer
 
     This namespace includes Aplication services of FreeCAD like:
-	- The Application class 
-	- The Document class
+    - The Application class 
+    - The Document class
 
 
-  and so on......
 */
 

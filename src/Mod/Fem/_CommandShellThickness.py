@@ -24,6 +24,8 @@ __title__ = "_CommandShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandShellThickness
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands

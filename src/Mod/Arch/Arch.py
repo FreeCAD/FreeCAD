@@ -26,11 +26,12 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 ## \defgroup ARCH Arch
-#  \ingroup WORKBENCHES
-#
-#  Architecture and BIM module
+#  \ingroup PYTHONWORKBENCHES
+#  \brief Architecture and BIM tools
 #
 #  This module provides tools specialized in Building Information Modeling (BIM).
+#  such as convenience tools to build walls, windows or structures, and 
+#  IFC import/export capabilities.
 
 '''The Arch module provides tools specialized in BIM modeling.'''
 

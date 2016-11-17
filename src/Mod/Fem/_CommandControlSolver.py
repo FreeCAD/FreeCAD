@@ -24,6 +24,9 @@ __title__ = "Command Control Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandControlSolver
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
 

@@ -30,6 +30,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from PySide import QtCore
 
+## \addtogroup FEM
+#  @{
 
 class FemTools(QtCore.QRunnable, QtCore.QObject):
     ## The constructor
@@ -538,3 +540,5 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats
+
+#  @}

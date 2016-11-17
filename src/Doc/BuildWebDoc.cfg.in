@@ -493,7 +493,7 @@ SHOW_DIRECTORIES       = YES
 # This will remove the Files entry from the Quick Index and from the
 # Folder Tree View (if specified). The default is YES.
 
-SHOW_FILES             = YES
+SHOW_FILES             = NO
 
 # Set the SHOW_NAMESPACES tag to NO to disable the generation of the
 # Namespaces page.
@@ -962,7 +962,7 @@ TOC_EXPAND             = NO
 # that can be used as input for Qt's qhelpgenerator to generate a
 # Qt Compressed Help (.qch) of the generated HTML documentation.
 
-GENERATE_QHP           = YES
+GENERATE_QHP           = NO
 
 # If the QHG_LOCATION tag is specified, the QCH_FILE tag can
 # be used to specify the file name of the resulting .qch file.

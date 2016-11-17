@@ -24,6 +24,8 @@ __title__ = "_FemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemBeamSection
+#  \ingroup FEM
 
 class _FemBeamSection:
     "The FemBeamSection object"

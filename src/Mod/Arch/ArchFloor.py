@@ -30,10 +30,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchFloor
+#  \ingroup ARCH
+#  \brief The Floor object and tools
+#
+#  This module provides tools to build Floor objects.
+#  Floors are used to group different Arch objects situated
+#  at a same level
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"

@@ -31,6 +31,8 @@ import FemTools
 from PySide import QtCore
 from PySide.QtGui import QApplication
 
+## \addtogroup FEM
+#  @{
 
 class FemToolsZ88(FemTools.FemTools):
 
@@ -200,3 +202,5 @@ class FemToolsZ88(FemTools.FemTools):
                     self.results_present = True
         else:
             raise Exception('FEM: No results found at {}!'.format(disp_result_file))
+
+#  @}

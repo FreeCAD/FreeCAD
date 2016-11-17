@@ -24,6 +24,8 @@ __title__ = "Result Control Task Panel"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package TaskPanelShowResult
+#  \ingroup FEM
 
 import FreeCAD
 import FemTools

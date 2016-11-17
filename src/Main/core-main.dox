@@ -1,2 +1,4 @@
 /** \defgroup MAIN Global application level 
- * \ingroup CORE */
+ * \ingroup CORE 
+ * \brief The Main classes define general application settings
+ */

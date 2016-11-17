@@ -24,6 +24,9 @@ __title__ = "Command New Analysis"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandAnalysis
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
 

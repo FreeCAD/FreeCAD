@@ -31,6 +31,8 @@ import FemMeshTools
 import importZ88Mesh
 import FemInputWriter
 
+## \addtogroup FEM
+#  @{
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
     def __init__(self,
@@ -317,3 +319,5 @@ Entries for Cuthill-McKee Z88H         Daten fuer Cuthill- McKee Programm
 
 DYNAMIC END
 '''
+
+#  @}

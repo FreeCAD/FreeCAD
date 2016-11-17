@@ -1,3 +1,5 @@
 /** \defgroup DRAFT Draft
- *  \ingroup WORKBENCHES */
+ *  \ingroup PYTHONWORKBENCHES 
+ *  \brief Basic 2D drawing tools and other generic tools 
+ */
 

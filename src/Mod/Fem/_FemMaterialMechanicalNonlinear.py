@@ -24,6 +24,8 @@ __title__ = "the fem nonlinear mechanical material object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemMaterialMechanicalNonLinear
+#  \ingroup FEM
 
 class _FemMaterialMechanicalNonlinear:
     "The FemMaterialMechanicalNonlinear object"

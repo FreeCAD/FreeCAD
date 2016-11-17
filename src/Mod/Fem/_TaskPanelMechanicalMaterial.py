@@ -24,6 +24,8 @@ __title__ = "_TaskPanelMechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package TaskPanelMechanicalMaterial
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

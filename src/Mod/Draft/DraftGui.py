@@ -26,10 +26,13 @@ __title__="FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
-## \defgroup DRAFTGUI DraftGui
+## @package DraftGui
 #  \ingroup DRAFT
+#  \brief GUI elements and utilities of the Draft workbench
 #
-# GUI elements and utilities of the Draft workbench
+#  This module provides GUI tools for the Draft workbench, such as
+#  toolbars and task panels, and Qt-dependent utilities such as 
+#  a delayed (todo) commit system
 
 '''
 This is the GUI part of the Draft module.
