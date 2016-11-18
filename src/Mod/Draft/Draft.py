@@ -42,6 +42,7 @@ __url__ = "http://www.freecadweb.org"
 #  FreeCAD interface, and corresponding python functions, that can perform the same
 #  operation programmatically.
 #
+#  @{
 
 '''The Draft module offers a range of tools to create and manipulate basic 2D objects'''
 
@@ -5864,3 +5865,5 @@ class _ViewProviderVisGroup:
                                     # touch the page if something was changed
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
                                         vobj.Object.InList[0].touch()
+
+# @}

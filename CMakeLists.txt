@@ -158,6 +158,13 @@ OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the 
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
+# https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
+set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
+set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
+             "Official Version"
+             "Community Edition"
+)
+
 if(APPLE)
     OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
 

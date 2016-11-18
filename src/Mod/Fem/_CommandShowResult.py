@@ -24,6 +24,9 @@ __title__ = "Command Show Result"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandShowResult
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
 

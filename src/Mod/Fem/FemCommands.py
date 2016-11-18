@@ -32,6 +32,8 @@ if FreeCAD.GuiUp:
     import FemGui
     from PySide import QtCore
 
+## \addtogroup FEM
+#  @{
 
 class FemCommands(object):
         def __init__(self):
@@ -135,3 +137,5 @@ class FemCommands(object):
                             if aparttoshow == apart.Name:
                                 apart.ViewObject.Visibility = True
                         acnstrmesh.ViewObject.Visibility = False  # OvG: Hide meshes and show constraints and meshed part e.g. on purging results
+
+#  @}

@@ -29,10 +29,20 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchSchedule
+#  \ingroup ARCH
+#  \brief The Schedule object and tools
+#
+#  This module provides tools to build Schedule objects.
+#  Schedules are objects that can count and gather information
+#  about objects in the document, and fill a spreadsheet with the result
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"

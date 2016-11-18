@@ -26,6 +26,12 @@ __url__ =    "http://www.freecadweb.org"
 
 import os,zipfile,xml.sax,FreeCAD,Part,Draft,Arch,Mesh,tempfile,math,Sketcher
 
+## @package importSH3D
+#  \ingroup ARCH
+#  \brief SH3D (SweetHome3D) file format importer
+#
+#  This module provides tools to import SH3D files created from Sweet Home 3D.
+
 DEBUG = True
 
 if open.__module__ == '__builtin__':

@@ -29,10 +29,21 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchWindow
+#  \ingroup ARCH
+#  \brief The Window object and tools
+#
+#  This module provides tools to build Window objects.
+#  Windows are Arch objects obtained by extruding a series
+#  of wires, and that can be inserted into other Arch objects,
+#  by defining a volume that gets subtracted from them.
 
 __title__="FreeCAD Window"
 __author__ = "Yorik van Havre"

@@ -30,6 +30,8 @@ __title__ = "FreeCAD Z88 Disp Reader"
 __author__ = "Bernd Hahnebach "
 __url__ = "http://www.freecadweb.org"
 
+## @package z88DispReader
+#  \ingroup FEM
 
 Debug = False
 

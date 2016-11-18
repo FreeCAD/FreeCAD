@@ -31,10 +31,19 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+
+## @package ArchProfile
+#  \ingroup ARCH
+#  \brief Profile tools for ArchStructure
+#
+#  This module provides tools to build base profiles
+#  for Arch Strucutre elements
 
 __title__="FreeCAD Profile"
 __author__ = "Yorik van Havre"

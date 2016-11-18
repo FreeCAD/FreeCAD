@@ -30,11 +30,20 @@ if FreeCAD.GuiUp:
     from pivy import coin
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
-
+    # \endcond
+    
+## @package ArchSectionPlane
+#  \ingroup ARCH
+#  \brief The Section plane object and tools
+#
+#  This module provides tools to build Section plane objects.
+#  It also contains functionality to produce SVG rendering of
+#  section planes, to be used in TechDraw and Drawing modules
 
 def makeSectionPlane(objectslist=None,name="Section"):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the

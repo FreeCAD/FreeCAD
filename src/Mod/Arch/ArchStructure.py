@@ -32,10 +32,21 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
+    # \endcond
+    
+## @package ArchStructure
+#  \ingroup ARCH
+#  \brief The Structure object and tools
+#
+#  This module provides tools to build Structure objects.
+#  Structure elements are beams, columns, slabs, and other
+#  elements that have a structural function, that is, that
+#  support other parts of the building.
 
 __title__="FreeCAD Structure"
 __author__ = "Yorik van Havre"

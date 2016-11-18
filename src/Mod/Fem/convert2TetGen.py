@@ -5,6 +5,9 @@ import FreeCAD, FreeCADGui, Part, Mesh
 App = FreeCAD # shortcut
 Gui = FreeCADGui # shortcut
 
+## \addtogroup FEM
+#  @{
+
 def exportMeshToTetGenPoly(meshToExport,filePath,beVerbose=1):
     """Export mesh to  TetGen *.poly file format"""
     ## Part 1 - write node list to output file
@@ -260,3 +263,5 @@ def createMesh():
     Gui.SendMsgToActiveView("ViewFit")
     if beVerbose == 1:
         FreeCAD.Console.PrintMessage("\nScript finished without errors.") 
+
+#  @}

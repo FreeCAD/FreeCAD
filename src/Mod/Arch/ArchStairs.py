@@ -33,11 +33,18 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
     from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
     def QT_TRANSLATE_NOOP(ctxt,txt):
         return txt
-
+    # \endcond
+    
+## @package ArchStairs
+#  \ingroup ARCH
+#  \brief The Stairs object and tools
+#
+#  This module provides tools to build Stairs objects.
 
 def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name="Stairs"):
     """makeStairs([baseobj,length,width,height,steps]): creates a Stairs
