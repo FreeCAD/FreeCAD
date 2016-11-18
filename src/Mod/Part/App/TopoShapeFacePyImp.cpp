@@ -142,7 +142,73 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
-    PyObject *surf, *bound=0;
+    PyObject *face, *wire;
+    if (PyArg_ParseTuple(args, "O!O!", &(Part::TopoShapeFacePy::Type), &face,
+                                       &(Part::TopoShapeWirePy::Type), &wire)) {
+        try {
+            const TopoDS_Shape& f = static_cast<Part::TopoShapePy*>(face)->getTopoShapePtr()->getShape();
+            if (f.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "cannot create face out of empty support face");
+                return -1;
+            }
+            const TopoDS_Shape& w = static_cast<Part::TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
+            if (w.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "cannot create face out of empty boundary wire");
+                return -1;
+            }
+
+            const TopoDS_Face& supportFace = TopoDS::Face(f);
+            const TopoDS_Wire& boundaryWire = TopoDS::Wire(w);
+            BRepBuilderAPI_MakeFace mkFace(supportFace, boundaryWire);
+            if (!mkFace.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, "Failed to create face from wire");
+                return -1;
+            }
+            getTopoShapePtr()->setShape(mkFace.Face());
+            return 0;
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return -1;
+        }
+    }
+
+    PyErr_Clear();
+    PyObject *surf;
+    if (PyArg_ParseTuple(args, "O!O!", &(Part::GeometrySurfacePy::Type), &surf,
+                                       &(Part::TopoShapeWirePy::Type), &wire)) {
+        try {
+            Handle_Geom_Surface S = Handle_Geom_Surface::DownCast
+                (static_cast<GeometryPy*>(surf)->getGeometryPtr()->handle());
+            if (S.IsNull()) {
+                PyErr_SetString(PyExc_TypeError, "geometry is not a valid surface");
+                return -1;
+            }
+            const TopoDS_Shape& w = static_cast<Part::TopoShapePy*>(wire)->getTopoShapePtr()->getShape();
+            if (w.IsNull()) {
+                PyErr_SetString(PartExceptionOCCError, "cannot create face out of empty boundary wire");
+                return -1;
+            }
+
+            const TopoDS_Wire& boundaryWire = TopoDS::Wire(w);
+            BRepBuilderAPI_MakeFace mkFace(S, boundaryWire);
+            if (!mkFace.IsDone()) {
+                PyErr_SetString(PartExceptionOCCError, "Failed to create face from wire");
+                return -1;
+            }
+            getTopoShapePtr()->setShape(mkFace.Face());
+            return 0;
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return -1;
+        }
+    }
+
+    PyErr_Clear();
+    PyObject *bound=0;
     if (PyArg_ParseTuple(args, "O!|O!", &(GeometryPy::Type), &surf, &(PyList_Type), &bound)) {
         try {
             Handle_Geom_Surface S = Handle_Geom_Surface::DownCast
@@ -298,6 +364,8 @@ int TopoShapeFacePy::PyInit(PyObject* args, PyObject* /*kwd*/)
       "Argument list signature is incorrect.\n\nSupported signatures:\n"
       "(face)\n"
       "(wire)\n"
+      "(face, wire)\n"
+      "(surface, wire)\n"
       "(list_of_wires)\n"
       "(wire, facemaker_class_name)\n"
       "(list_of_wires, facemaker_class_name)\n"
