@@ -147,11 +147,11 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
-          //double x = geom->center.fX - geom->radius;
-          //double y = geom->center.fY - geom->radius;
           pathArc(path, geom->radius, geom->radius, 0., geom->largeArc, geom->cw,
                   geom->endPnt.fX, geom->endPnt.fY,
                   geom->startPnt.fX, geom->startPnt.fY);
+//          double x = geom->center.fX - geom->radius;
+//          double y = geom->center.fY - geom->radius;
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFCIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
         case TechDrawGeometry::ELLIPSE: {
@@ -169,7 +169,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           pathArc(path, geom->major, geom->minor, geom->angle, false, false,
                   startX, startY, endX, endY);
 
-          //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",x, y, geom->major, geom->minor);
+          //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",geom->center.fX,geom->center.fY, geom->major, geom->minor);
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
@@ -179,6 +179,33 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                         geom->startPnt.fX, geom->startPnt.fY);
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.fX, geom->startPnt.fY,geom->endPnt.fX, geom->endPnt.fY);
 
+        } break;
+        case TechDrawGeometry::BEZIER: {
+          TechDrawGeometry::BezierSegment *geom = static_cast<TechDrawGeometry::BezierSegment *>(baseGeom);
+
+          // Move painter to the beginning
+          path.moveTo(geom->pnts[0].fX, geom->pnts[0].fY);
+          //Base::Console().Message("TRACE -drawPainterPath - making an BEZIER From: (%.3f,%.3f)\n",geom->pnts[0].fX,geom->pnts[0].fY);
+
+          if ( geom->poles == 2 ) {
+              // Degree 1 bezier = straight line...
+              path.lineTo(geom->pnts[1].fX, geom->pnts[1].fY);
+
+          } else if ( geom->poles == 3 ) {
+              path.quadTo(geom->pnts[1].fX, geom->pnts[1].fY,
+                          geom->pnts[2].fX, geom->pnts[2].fY);
+
+          } else if ( geom->poles == 4 ) {
+              path.cubicTo(geom->pnts[1].fX, geom->pnts[1].fY,
+                           geom->pnts[2].fX, geom->pnts[2].fY,
+                           geom->pnts[3].fX, geom->pnts[3].fY);
+          } else {                                                 //can only handle lines,quads,cubes
+              Base::Console().Error("Bad pole count (%d) for BezierSegment\n",geom->poles);
+              auto itBez = geom->pnts.begin() + 1;
+              for (; itBez != geom->pnts.end();itBez++)  {
+                path.lineTo((*itBez).fX, (*itBez).fY);         //show something for debugging
+              }
+          }
         } break;
         case TechDrawGeometry::BSPLINE: {
           TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(baseGeom);
@@ -364,10 +391,10 @@ void QGIViewPart::drawViewPart()
             }
             item->setPrettyNormal();
             //debug a path
-            //QPainterPath edgePath=drawPainterPath(*itEdge);
-            //std::stringstream edgeId;
-            //edgeId << "QGIVP.edgePath" << i;
-            //dumpPath(edgeId.str().c_str(),edgePath);
+//            QPainterPath edgePath=drawPainterPath(*itEdge);
+//            std::stringstream edgeId;
+//            edgeId << "QGIVP.edgePath" << i;
+//            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
 
@@ -760,7 +787,7 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
             } else if (elem.isCurveTo()) {
                 typeName = "CurveTo";
             } else {
-                typeName = "Unknown";
+                typeName = "CurveData";
             }
             Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f,%.3f) M:%d L:%d C:%d\n",iElem,
                                     elem.type,typeName,elem.x,elem.y,elem.isMoveTo(),elem.isLineTo(),elem.isCurveTo());

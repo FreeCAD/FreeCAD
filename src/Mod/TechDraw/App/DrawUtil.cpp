@@ -39,14 +39,15 @@
 #include <BRep_Tool.hxx>
 #include <gp_Pnt.hxx>
 #include <Precision.hxx>
-#include <BRepLProp_CLProps.hxx>
-#include <TopExp_Explorer.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepExtrema_DistShapeShape.hxx>
+#include <BRepGProp.hxx>
+#include <BRepLProp_CLProps.hxx>
 #include <BRepLProp_CurveTool.hxx>
+#include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
-#include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 
 #endif
@@ -139,6 +140,23 @@ bool DrawUtil::isZeroEdge(TopoDS_Edge e)
     }
     return result;
 }
+double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
+{
+    Standard_Real minDist = -1;
+
+    BRepExtrema_DistShapeShape extss(s1, s2);
+    if (!extss.IsDone()) {
+        Base::Console().Message("DU::simpleMinDist - BRepExtrema_DistShapeShape failed");
+        return -1;
+    }
+    int count = extss.NbSolution();
+    if (count != 0) {
+        minDist = extss.Value();
+    } else {
+        minDist = -1;
+    }
+    return minDist;
+}
 
 //! assumes 2d on XY
 //! quick angle for straight edges
@@ -210,7 +228,6 @@ double DrawUtil::angleWithX(TopoDS_Edge e, TopoDS_Vertex v)
     }
     return result;
 }
-
 
 bool DrawUtil::isFirstVert(TopoDS_Edge e, TopoDS_Vertex v)
 {
@@ -284,6 +301,7 @@ int DrawUtil::vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2)
     }
     return result;
 }
+
 
 
 //based on Function provided by Joe Dowsett, 2014
