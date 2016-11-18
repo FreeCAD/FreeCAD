@@ -67,6 +67,29 @@ def getAngle(v):
         return -a
     return a
 
+class Side:
+    Left  = +1
+    Right = -1
+    Straight = 0
+    On = 0
+
+    @classmethod
+    def toString(cls, side):
+        if side == cls.Left:
+            return 'Left'
+        if side == cls.Right:
+            return 'Right'
+        return 'On'
+
+    @classmethod
+    def of(cls, ptRef, pt):
+        d = -ptRef.x*pt.y + ptRef.y*pt.x
+        if d < 0:
+            return cls.Left
+        if d > 0:
+            return cls.Right
+        return cls.Straight
+
 def testPrintAngle(v):
     print("(%+.2f, %+.2f, %+.2f): %+.2f" % (v.x, v.y, v.z, getAngle(v)/math.pi))
 
@@ -81,17 +104,72 @@ def testAngle(x=1, y=1):
     testPrintAngle(FreeCAD.Vector( 1*x,-1*y, 0))
 
 
+def testPrintSide(pt1, pt2):
+    print('(%.2f, %.2f) - (%.2f, %.2f) -> %s' % (pt1.x, pt1.y, pt2.x, pt2.y, Side.toString(Side.of(pt1, pt2))))
+
+def testSide():
+    testPrintSide(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 1, 0, 0))
+    testPrintSide(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector(-1, 0, 0))
+    testPrintSide(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 0, 1, 0))
+    testPrintSide(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 0,-1, 0))
+
+def pathCommandForEdge(edge):
+    pt = edge.valueAt(edge.LastParameter)
+    params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
+    if type(edge.Curve) == Part.Line:
+        return Part.Command('G1', params)
+
+    p1 = edge.valueAt(edge.FirstParameter)
+    p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+    p3 = pt
+    if Side.Left == Side.of(p2 - p1, p3 - p2):
+        cmd = 'G3'
+    else:
+        cmd = 'G2'
+    offset = pt1 - edge.Curve.Center
+    params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
+    return Part.Command(cmd, params)
+
+
 class Tag:
     def __init__(self, x, y, width, height, angle, enabled):
         self.x = x
         self.y = y
-        self.width = width
-        self.height = height
-        self.angle = angle
+        self.width = math.fabs(width)
+        self.height = math.fabs(height)
+        self.angle = math.fabs(angle)
         self.enabled = enabled
 
     def toString(self):
         return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
+
+    def originAt(self, z):
+        return FreeCAD.Vector(self.x, self.y, z)
+
+    def createSolidsAt(self, z):
+        r1 = self.width / 2
+        height = self.height
+        if self.angle == 90 and height > 0:
+            self.solid = Part.makeCylinder(r1, height)
+            self.core  = self.solid
+        elif self.angle > 0.0 and height > 0.0:
+            tangens = math.tan(math.radians(self.angle))
+            dr = height / tangens
+            if dr < r1:
+                r2 = r1 - dr
+                self.core = Part.makeCylinder(r2, height)
+            else:
+                r2 = 0
+                height = r1 * tangens
+                self.core = None
+            self.solid = Part.makeCone(r1, r2, height)
+        else:
+            # degenerated case - no tag
+            self.solid = Part.makeSphere(r1 / 10000)
+            self.core = None
+        self.solid.translate(self.originAt(z))
+        if self.core:
+            self.core.translate(self.originAt(z))
 
     @classmethod
     def FromString(cls, string):
@@ -150,10 +228,24 @@ class PathData:
         bottom = [e for e in edges if e.Vertexes[0].Point.z == minZ and e.Vertexes[1].Point.z == minZ]
         wire = Part.Wire(bottom)
         if wire.isClosed():
-            return wire
+            return Part.Wire(self.sortedBase(bottom))
         # if we get here there are already holding tags, or we're not looking at a profile
         # let's try and insert the missing pieces - another day
         raise ValueError("Selected path doesn't seem to be a Profile operation.")
+
+    def sortedBase(self, base):
+        # first find the exit point, where base wire is closed
+        edges = [e for e in self.edges if e.valueAt(e.FirstParameter).z == self.minZ and e.valueAt(e.LastParameter).z != self.maxZ]
+        exit = sorted(edges, key=lambda e: -e.valueAt(e.LastParameter).z)[0]
+        pt = exit.valueAt(exit.FirstParameter)
+        # then find the first base edge, and sort them until done
+        ordered = []
+        while base:
+            edge = [e for e in base if e.valueAt(e.FirstParameter) == pt][0]
+            ordered.append(edge)
+            base.remove(edge)
+            pt = edge.valueAt(edge.LastParameter)
+        return ordered
 
 
     def findZLimits(self, edges):
@@ -268,6 +360,18 @@ class PathData:
     def pathLength(self):
         return self.base.Length
 
+    def sortedTags(self, tags):
+        ordered = []
+        for edge in self.base.Edges:
+            ts = [t for t in tags if DraftGeomUtils.isPtOnEdge(t.originAt(self.minZ), edge)]
+            for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
+                tags.remove(t)
+                ordered.append(t)
+        if tags:
+            raise ValueError("There's something really wrong here")
+        return ordered
+
+
 class ObjectDressup:
 
     def __init__(self, obj):
@@ -285,6 +389,46 @@ class ObjectDressup:
 
     def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
         return self.pathData.generateTags(obj, count, width, height, angle, spacing)
+
+
+    def tagIntersection(self, face, edge):
+        p1 = edge.valueAt(edge.FirstParameter)
+        pts = edge.Curve.intersect(face.Surface)
+        if pts[0]:
+            closest = sorted(pts[0], key=lambda pt: (pt - p1).Length)[0]
+            return closest
+        return None
+
+    def createPath(self, edges, tagSolids):
+        commands = []
+        i = 0
+        while i != len(edges):
+            edge = edges[i]
+            while edge:
+                for solid in tagSolids:
+                    for face in solid.Faces:
+                        pt = self.tagIntersection(face, edge)
+                        if pt:
+                            if pt == edge.valueAt(edge.FirstParameter):
+                                pt
+                            elif pt != edge.valueAt(edge.LastParameter):
+                                parameter = edge.Curve.parameter(pt)
+                                wire = edge.split(parameter)
+                                commands.append(pathCommandForEdge(wire.Edges[0]))
+                                edge = wire.Edges[1]
+                                break;
+                            else:
+                                commands.append(pathCommandForEdge(edge))
+                                edge = None
+                                i += 1
+                                break
+                    if not edge:
+                        break
+                if edge:
+                    commands.append(pathCommandForEdge(edge))
+                    edge = None
+        return self.obj.Path
+
 
     def execute(self, obj):
         if not obj.Base:
@@ -323,9 +467,16 @@ class ObjectDressup:
             if tag.enabled:
                 #print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
                 debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+
+        tags = pathData.sortedTags(tags)
+        for tag in tags:
+            tag.createSolidsAt(pathData.minZ)
+
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
-        obj.Path = obj.Base.Path
+
+        #obj.Path = self.createPath(pathData.edges, tags)
+        obj.Path = self.Base.Path
 
     def setTags(self, obj, tags):
         obj.Tags = [tag.toString() for tag in tags]
