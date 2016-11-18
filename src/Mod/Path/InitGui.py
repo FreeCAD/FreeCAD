@@ -25,8 +25,7 @@ class PathWorkbench (Workbench):
     "Path workbench"
 
     def __init__(self):
-        self.__class__.Icon = FreeCAD.getResourceDir(
-        ) + "Mod/Path/Resources/icons/PathWorkbench.svg"
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Path/Resources/icons/PathWorkbench.svg"
         self.__class__.MenuText = "Path"
         self.__class__.ToolTip = "Path workbench"
 
@@ -120,11 +119,6 @@ class PathWorkbench (Workbench):
         #     "Path", "Remote Operations")], remotecmdlist)
         self.appendMenu([translate("Path", "&Path")], extracmdlist)
 
-        # Add preferences pages
-        import os
-        FreeCADGui.addPreferencePage(FreeCAD.getHomePath(
-        ) + os.sep + "Mod" + os.sep + "Path" + os.sep + "PathScripts" + os.sep + "DlgSettingsPath.ui", "Path")
-
         Log('Loading Path workbench... done\n')
 
     def GetClassName(self):
@@ -142,7 +136,7 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if "Profile" in FreeCADGui.Selection.getSelection()[0].Name:
+                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
                     self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
                     self.appendContextMenu("", ["Set_EndPoint"])
