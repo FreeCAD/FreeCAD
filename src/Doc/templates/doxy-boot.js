@@ -65,6 +65,16 @@ $( document ).ready(function() {
 		$(this).find('td > span.danger').parent().addClass('danger');
 	});
 
+    // source code github links
+    console.log("links:");
+    console.log($('li:contains("FreeCAD/src/")'));
+    $('li:contains("FreeCAD/src/")').each(function(){
+        var lk = '<a href="https://github.com/FreeCAD/FreeCAD/blob/master' + $(this).html().substr(7) + '">';
+        lk += $(this).html();
+        lk += '</a>';
+        $(this).html(lk);
+    });
+
     $(".memdoc pre.fragment").contents().unwrap();
 
     if($('div.fragment.well div.ttc').length > 0)
