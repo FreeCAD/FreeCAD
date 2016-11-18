@@ -124,8 +124,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 
 
 TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(
-                                           TopoDS_Shape shape,
-                                           gp_Pnt& inputCenter,
+                                           TopoDS_Shape shape, 
+                                           gp_Pnt& inputCenter, 
                                            Base::Vector3d direction)
 {
     TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit");
@@ -231,27 +231,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdges(TechDrawGeometry::GeometryOb
         Base::Console().Log("LOG - DPS::extractFaces - no newEdges\n");
     }
     newEdges = removeDuplicateEdges(newEdges);
-
     return newEdges;
-}
-
-
-double DrawProjectSplit::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
-{
-    Standard_Real minDist = -1;
-
-    BRepExtrema_DistShapeShape extss(s1, s2);
-    if (!extss.IsDone()) {
-        Base::Console().Message("FE - BRepExtrema_DistShapeShape failed");
-        return -1;
-    }
-    int count = extss.NbSolution();
-    if (count != 0) {
-        minDist = extss.Value();
-    } else {
-        minDist = -1;
-    }
-    return minDist;
 }
 
 
@@ -276,7 +256,7 @@ bool DrawProjectSplit::isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, b
         }
     }
     if (!outOfBox) {
-            double dist = simpleMinDist(v,e);
+            double dist = DrawUtil::simpleMinDist(v,e);
             if (dist < 0.0) {
                 Base::Console().Error("DPS::isOnEdge - simpleMinDist failed: %.3f\n",dist);
                 result = false;

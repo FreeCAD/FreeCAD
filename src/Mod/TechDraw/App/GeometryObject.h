@@ -100,21 +100,8 @@ protected:
 
     void addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible);
 
-    /// Helper for calcBoundingBox()
-    /*! Note that the name of this function isn't totally accurate due to
-     *  TechDraw::Bsplines being composed of BezierSegments.
-     */
-    Base::BoundBox3d boundingBoxOfBspline(const BSpline *spline) const;
 
-    /// Helper for calcBoundingBox()
-    /*!
-     * AOE = arc of ellipse.  Defaults allow this to be used for regular
-     * ellipses as well as arcs.
-     */
-    Base::BoundBox3d boundingBoxOfAoe(const Ellipse *aoe, double start = 0,
-                                      double end = 2 * M_PI, bool cw = false) const;
-
-    /// Helper for boundingBoxOf(Aoc|Aoe)()
+    //similar function in Geometry?
     /*!
      * Returns true iff angle theta is in [first, last], where the arc goes
      * clockwise (cw=true) or counterclockwise (cw=false) from first to last.

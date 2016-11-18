@@ -47,6 +47,7 @@ class TechDrawExport DrawUtil {
         static std::string makeGeomName(std::string geomType, int index);
         static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
         static bool isZeroEdge(TopoDS_Edge e);
+        static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
         static double sensibleScale(double working_scale);
         static double angleWithX(TopoDS_Edge e, bool reverse);
         static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v);

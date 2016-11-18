@@ -33,7 +33,7 @@
 
 namespace TechDrawGeometry {
 
-enum ExtractionType {               //obs sb vis/hid + hard/smooth/seam/out(edgeClass?)
+enum ExtractionType {               //obs
     Plain,
     WithHidden,
     WithSmooth
@@ -54,6 +54,7 @@ enum GeomType {
     ARCOFCIRCLE,
     ELLIPSE,
     ARCOFELLIPSE,
+    BEZIER,
     BSPLINE,
     GENERIC
 };
@@ -70,7 +71,7 @@ class TechDrawExport BaseGeom
         edgeClass classOfEdge;
         bool visible;
         bool reversed;
-        int ref3D;
+        int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
 
         std::vector<Base::Vector2D> findEndPoints();
@@ -80,6 +81,7 @@ class TechDrawExport BaseGeom
         Base::Vector2D nearPoint(Base::Vector2D p);
         Base::Vector2D nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
+        std::string dump();
 };
 
 typedef std::vector<BaseGeom *> BaseGeomPtrVector;
@@ -158,23 +160,18 @@ class TechDrawExport AOC: public Circle
         double distToArc(Base::Vector3d p);
 };
 
-/// Handles degree 1 to 3 Bezier segments
-/*!
- * \todo extend this to higher orders if necessary
- */
-struct BezierSegment
+class TechDrawExport BezierSegment: public BaseGeom
 {
-    /// Number of entries in pnts that are valid
-    int poles;
+public:
+    BezierSegment(const TopoDS_Edge &e);
+    BezierSegment() {}
+    ~BezierSegment() = default;
 
-    /// Control points for this segment
-    /*!
-     * Note that first and last used points define the endpoints for this
-     * segment, so when we know that a sequence of BezierSegment objects are
-     * going to be strung together, then we only need to know the start of
-     * the first element (or the end of the last element).
-     */
-    Base::Vector2D pnts[4];
+    int poles;
+    int degree;
+
+    //Base::Vector2D pnts[4];
+    std::vector<Base::Vector2D> pnts;
 };
 
 class TechDrawExport BSpline: public BaseGeom
