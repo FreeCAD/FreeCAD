@@ -46,8 +46,7 @@ class BaseGeom;
 
 namespace TechDraw
 {
-struct splitPoint
-{
+struct splitPoint {
     int i;
     Base::Vector3d v;
     double param;
@@ -69,8 +68,6 @@ public:
     static bool edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2);
     std::string dump(void);
 };
-
-
 class TechDrawExport DrawProjectSplit
 {
 public:
@@ -84,15 +81,12 @@ public:
     static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
     static std::vector<TopoDS_Edge> split1Edge(TopoDS_Edge e, std::vector<splitPoint> splitPoints);
-    static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
 
     static std::vector<splitPoint> sortSplits(std::vector<splitPoint>& s, bool ascend);
     static bool splitCompare(const splitPoint& p1, const splitPoint& p2);
     static bool splitEqual(const splitPoint& p1, const splitPoint& p2);
-
     static std::vector<TopoDS_Edge> removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges);
     static std::vector<edgeSortItem> sortEdges(std::vector<edgeSortItem>& e, bool ascend);
-
 
 protected:
     static std::vector<TopoDS_Edge> getEdges(TechDrawGeometry::GeometryObject* geometryObject);
