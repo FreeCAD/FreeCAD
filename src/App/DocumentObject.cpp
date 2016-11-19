@@ -71,23 +71,10 @@ DocumentObject::~DocumentObject(void)
     }
 }
 
-namespace App {
-class ObjectExecution
-{
-public:
-    ObjectExecution(DocumentObject* o) : obj(o)
-    { obj->StatusBits.set(3); }
-    ~ObjectExecution()
-    { obj->StatusBits.reset(3); }
-private:
-    DocumentObject* obj;
-};
-}
-
 App::DocumentObjectExecReturn *DocumentObject::recompute(void)
 {
     // set/unset the execution bit
-    ObjectExecution exe(this);
+    ObjectStatusLocker exe(App::Recompute, this);
     return this->execute();
 }
 
