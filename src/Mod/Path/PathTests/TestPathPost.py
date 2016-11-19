@@ -90,8 +90,13 @@ class PathPostTestCases(unittest.TestCase):
         with open(referenceFile, 'r') as fp:
             refGCode = fp.read()
 
+        # Use if this test fails in order to have a real good look at the changes
+        if False:
+            with open('tab.tmp', 'w') as fp:
+                fp.write(gcode)
+
+
         if gcode != refGCode:
             msg = ''.join(difflib.ndiff(gcode.splitlines(True), refGCode.splitlines(True)))
             self.fail("linuxcnc output doesn't match: " + msg)
-
 
