@@ -75,6 +75,8 @@ namespace SketcherGui {
             this->setMessage(ErrMsg);
         }
 
+        virtual ~ExceptionWrongInput() throw() {}
+
         QString ErrMsg;
     };
 
