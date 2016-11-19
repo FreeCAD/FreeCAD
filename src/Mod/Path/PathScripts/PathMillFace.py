@@ -27,6 +27,7 @@ import Path
 from PySide import QtCore, QtGui
 from PathScripts import PathUtils
 import Part
+import PathScripts.PathUtils
 import PathScripts.PathKurveUtils
 import area
 import TechDraw
@@ -135,6 +136,10 @@ class ObjectFace:
 
 
     def addFacebase(self, obj, ss, sub=""):
+        parent = PathScripts.PathUtils.findParentJob(obj)
+        if parent.Base is None:
+            return
+
         baselist = obj.Base
         if baselist is None:
             baselist = []
