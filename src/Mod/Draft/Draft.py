@@ -2150,12 +2150,19 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
                     #    tangle = tangle+math.pi
                     #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                    if rotation != 0:
+                        #print "dim: tangle:",tangle," rot: ",rotation," text: ",prx.string
+                        if abs(tangle+math.radians(rotation)) < 0.0001:
+                            tangle += math.pi
+                            tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
                     svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
                     svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
                 else:
                     tangle = 0
+                    if rotation != 0:
+                        tangle = -math.radians(rotation)
                     tbase = tbase.add(Vector(0,-2.0/scale,0))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
@@ -2303,7 +2310,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         n = obj.ViewObject.FontName
         a = 0
         if rotation != 0:
-            a = -math.radians(rotation)
+            a = math.radians(rotation)
         t1 = obj.ViewObject.Proxy.text1.string.getValues()
         t2 = obj.ViewObject.Proxy.text2.string.getValues()
         scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
