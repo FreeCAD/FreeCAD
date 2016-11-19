@@ -132,7 +132,7 @@ def pathCommandForEdge(edge):
 
 
 class Tag:
-    def __init__(self, x, y, width, height, angle, enabled):
+    def __init__(self, x, y, width, height, angle, enabled=True):
         self.x = x
         self.y = y
         self.width = math.fabs(width)
@@ -151,7 +151,7 @@ class Tag:
         height = self.height
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
-            self.core  = self.solid
+            self.core  = self.solid.copy()
         elif self.angle > 0.0 and height > 0.0:
             tangens = math.tan(math.radians(self.angle))
             dr = height / tangens
