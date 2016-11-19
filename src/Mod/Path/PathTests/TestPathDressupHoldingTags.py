@@ -29,6 +29,7 @@ import PathScripts
 import math
 import unittest
 
+from FreeCAD import Vector
 from PathScripts.PathDressupHoldingTags import Tag
 
 slack = 0.0000001
@@ -49,7 +50,7 @@ class PathDressupHoldingTagsTestCases(unittest.TestCase):
     def testTagBasics(self):
         """Check Tag origin, serialization and de-serialization."""
         tag = Tag(77, 13, 4, 5, 90, True)
-        self.assertTrue(pointsCoincide(tag.originAt(3), FreeCAD.Vector(77, 13, 3)))
+        self.assertCoincide(tag.originAt(3), Vector(77, 13, 3))
         s = tag.toString()
         tagCopy = Tag.FromString(s)
         self.assertEqual(tag.x, tagCopy.x)
@@ -63,26 +64,87 @@ class PathDressupHoldingTagsTestCases(unittest.TestCase):
         """For a 90 degree tag the core and solid are both defined and identical cylinders."""
         tag = Tag(100, 200, 4, 5, 90, True)
         tag.createSolidsAt(17)
-        self.assertIsNotNone(tag.solid)
-        self.assertIsNotNone(tag.core)
 
-        self.assertCylinderAt(tag.solid, FreeCAD.Vector(100, 200, 17), 2, 5)
-        self.assertCylinderAt(tag.core, FreeCAD.Vector(100, 200, 17), 2, 5)
+        self.assertIsNotNone(tag.solid)
+        self.assertCylinderAt(tag.solid, Vector(100, 200, 17), 2, 5)
+
+        self.assertIsNotNone(tag.core)
+        self.assertCylinderAt(tag.core, Vector(100, 200, 17), 2, 5)
+
+    def testTagSolidFlatCone(self):
+        """Tests a Tag that has an angle leaving a flat face on top of the cone."""
+        tag = Tag(0, 0, 18, 5, 45, True)
+        tag.createSolidsAt(0)
+
+        self.assertIsNotNone(tag.solid)
+        self.assertConeAt(tag.solid, Vector(0,0,0), 9, 4, 5)
+
+        self.assertIsNotNone(tag.core)
+        self.assertCylinderAt(tag.core, Vector(0,0,0), 4, 5)
+
+    def testTagSolidCone(self):
+        """Tests a Tag who's angled sides coincide at the tag's height."""
+        tag = Tag(0, 0, 10, 5, 45, True)
+        tag.createSolidsAt(0)
+        self.assertIsNotNone(tag.solid)
+        self.assertConeAt(tag.solid, Vector(0,0,0), 5, 0, 5)
+
+        self.assertIsNone(tag.core)
+
+    def testTagSolidShortCone(self):
+        """Tests a Tag that's not wide enough to reach full height."""
+        tag = Tag(0, 0, 5, 17, 60, True)
+        tag.createSolidsAt(0)
+        self.assertIsNotNone(tag.solid)
+        self.assertConeAt(tag.solid, Vector(0,0,0), 2.5, 0, 2.5 * math.tan((60/180.0)*math.pi))
+
+        self.assertIsNone(tag.core)
 
     def assertCylinderAt(self, solid, pt, r, h):
-        """Verify that the argument is a cylinder at the specified location."""
-        lid = solid.Edges[0].Curve
-        self.assertTrue(type(lid), Part.Circle)
-        self.assertEqual(lid.Center, FreeCAD.Vector(pt.x, pt.y, pt.z+h))
-        self.assertEqual(lid.Radius, r)
+        """Verify that solid is a cylinder at the specified location."""
+        self.assertEqual(len(solid.Edges), 3)
 
-        hull = solid.Edges[1].Curve
-        self.assertTrue(type(hull), Part.Line)
-        self.assertTrue(pointsCoincide(hull.StartPoint, FreeCAD.Vector(pt.x+r, pt.y, pt.z)))
-        self.assertTrue(pointsCoincide(hull.EndPoint, FreeCAD.Vector(pt.x+r, pt.y, pt.z+h)))
+        lid  = solid.Edges[0]
+        hull = solid.Edges[1]
+        base = solid.Edges[2]
 
-        base = solid.Edges[2].Curve
-        self.assertTrue(type(base), Part.Circle)
-        self.assertEqual(base.Center, FreeCAD.Vector(pt.x, pt.y, pt.z))
-        self.assertEqual(base.Radius, r)
+        self.assertCircle(lid, Vector(pt.x, pt.y, pt.z+h), r)
+        self.assertLine(hull, Vector(pt.x+r, pt.y, pt.z), Vector(pt.x+r, pt.y, pt.z+h))
+        self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r)
 
+    def assertConeAt(self, solid, pt, r1, r2, h):
+        """Verify that solid is a cone at the specified location."""
+        self.assertEqual(len(solid.Edges), 3)
+
+        lid  = solid.Edges[0]
+        hull = solid.Edges[1]
+        base = solid.Edges[2]
+
+        self.assertCircle(lid, Vector(pt.x, pt.y, pt.z+h), r2)
+        self.assertLine(hull, Vector(pt.x+r1, pt.y, pt.z), Vector(pt.x+r2, pt.y, pt.z+h))
+        self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r1)
+
+    def assertCircle(self, edge, pt, r):
+        """Verivy that edge is a circle at given location."""
+        curve = edge.Curve
+        self.assertTrue(type(curve), Part.Circle)
+        self.assertCoincide(curve.Center, Vector(pt.x, pt.y, pt.z))
+        self.assertAbout(curve.Radius, r)
+
+    def assertLine(self, edge, pt1, pt2):
+        """Verify that edge is a line from pt1 to pt2."""
+        curve = edge.Curve
+        self.assertTrue(type(curve), Part.Line)
+        self.assertCoincide(curve.StartPoint, pt1)
+        self.assertCoincide(curve.EndPoint, pt2)
+
+    def assertCoincide(self, pt1, pt2):
+        """Verify that 2 points coincide (with tolerance)."""
+        self.assertAbout(pt1.x, pt2.x)
+        self.assertAbout(pt1.y, pt2.y)
+        self.assertAbout(pt1.z, pt2.z)
+
+    def assertAbout(self, v1, v2):
+        """Verify that 2 values are the same (accounting for float imprecision)."""
+        #print("assertAbout(%f, %f)" % (v1, v2))
+        self.assertTrue(math.fabs(v1 - v2) < slack)
