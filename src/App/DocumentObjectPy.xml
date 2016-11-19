@@ -45,11 +45,16 @@
 				<UserDocu>Mark the object as unchanged</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="setExpression">
-                        <Documentation>
-                                <UserDocu>Register an expression for a property</UserDocu>
-                        </Documentation>
-                </Methode>
+        <Methode Name="setExpression">
+            <Documentation>
+                <UserDocu>Register an expression for a property</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="recompute">
+            <Documentation>
+                <UserDocu>Recomputes this object</UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>
