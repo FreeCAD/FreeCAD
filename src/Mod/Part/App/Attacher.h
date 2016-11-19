@@ -456,7 +456,7 @@ class ExceptionCancel : public Base::Exception
 public:
     ExceptionCancel(){}
     ExceptionCancel(char* msg){this->setMessage(msg);}
-    ~ExceptionCancel(){}
+    virtual ~ExceptionCancel() throw() {}
 };
 
 } // namespace Attacher
