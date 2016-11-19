@@ -256,6 +256,19 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
+PyObject*  DocumentObjectPy::recompute(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        bool ok = getDocumentObjectPtr()->recomputeFeature();
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
 
 PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
 {

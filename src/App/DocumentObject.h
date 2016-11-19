@@ -49,6 +49,7 @@ enum ObjectStatus {
     Recompute = 3,
     Restore = 4,
     Delete = 5,
+    PythonCall = 6,
     Expand = 16
 };
 
@@ -258,6 +259,18 @@ protected: // attributes
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
+};
+
+class AppExport ObjectStatusLocker
+{
+public:
+    ObjectStatusLocker(ObjectStatus s, DocumentObject* o) : status(s), obj(o)
+    { obj->setStatus(status, true); }
+    ~ObjectStatusLocker()
+    { obj->setStatus(status, false); }
+private:
+    ObjectStatus status;
+    DocumentObject* obj;
 };
 
 } //namespace App
