@@ -82,7 +82,8 @@ class LoadTool():
 
         path = Path.Path(commands)
         obj.Path = path
-        obj.ViewObject.Visibility = True
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = True
 
     def onChanged(self, obj, prop):
         mode = 2
