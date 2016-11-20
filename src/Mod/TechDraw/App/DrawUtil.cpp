@@ -37,6 +37,7 @@
 
 
 #include <BRep_Tool.hxx>
+#include <gp_Ax3.hxx>
 #include <gp_Pnt.hxx>
 #include <Precision.hxx>
 #include <BRepAdaptor_Curve.hxx>
@@ -302,7 +303,32 @@ int DrawUtil::vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2)
     return result;
 }
 
+//!convert fromPoint in coordinate system fromSystem to reference coordinate system
+Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)
+{
+    gp_Pnt gFromPoint(fromPoint.x,fromPoint.y,fromPoint.z);
+    gp_Pnt gToPoint;
+    gp_Trsf T;
+    gp_Ax3 gRef;
+    gp_Ax3 gFrom(fromSystem);
+    T.SetTransformation (gFrom, gRef);
+    gToPoint = gFromPoint.Transformed(T);
+    Base::Vector3d toPoint(gToPoint.X(),gToPoint.Y(),gToPoint.Z());
+    return toPoint;
+}
 
+//! check if direction is parallel to stdZ
+bool DrawUtil::checkZParallel(const Base::Vector3d direction)
+{
+    bool result = false;
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    double dot = fabs(direction.Dot(stdZ));
+    double mag = direction.Length() * 1;   //stdZ.Length() == 1
+    if (DrawUtil::fpCompare(dot,mag)) {
+        result = true;
+    }
+    return result;
+}
 
 //based on Function provided by Joe Dowsett, 2014
 double DrawUtil::sensibleScale(double working_scale)

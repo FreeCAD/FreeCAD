@@ -82,7 +82,9 @@ SET(Draw_SRCS
     DrawViewMulti.cpp
     DrawViewMulti.h
     DrawViewImage.cpp
-    DrawViewImage.h)
+    DrawViewImage.h
+    DrawViewDetail.cpp
+    DrawViewDetail.h)
 
 SET(TechDraw_SRCS
     AppTechDraw.cpp
