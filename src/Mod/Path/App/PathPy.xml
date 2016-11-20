@@ -66,9 +66,9 @@ deletes the command found at the given position or from the end of the path</Use
                 <UserDocu>returns a copy of this path</UserDocu>
             </Documentation>
         </Methode>
-        <ClassDeclarations>
+        <!--<ClassDeclarations>
             bool touched;
-        </ClassDeclarations>
+        </ClassDeclarations>-->
 
   </PythonExport>
 </GenerateModel>
