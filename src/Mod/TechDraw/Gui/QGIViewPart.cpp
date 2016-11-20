@@ -51,6 +51,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 
 #include "ZVALUE.h"
 #include "QGIFace.h"
@@ -61,6 +62,8 @@
 #include "QGICenterLine.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
+#include "QGCustomRect.h"
+#include "QGIMatting.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -308,6 +311,7 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawBorder();
+    drawMatting();
 }
 
 void QGIViewPart::drawViewPart()
@@ -486,11 +490,14 @@ void QGIViewPart::removeDecorations()
     QList<QGraphicsItem*> children = childItems();
     for (auto& c:children) {
          QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
+         QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
-            removeFromGroup(decor);
-            scene()->removeItem(decor);
-            delete decor;
+         } else if (mat) {
+            removeFromGroup(mat);
+            scene()->removeItem(mat);
+            delete mat;
          }
+
      }
 }
 
@@ -599,6 +606,29 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->draw();
         }
     }
+}
+
+void QGIViewPart::drawMatting()
+{
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    TechDraw::DrawViewDetail* dvd = nullptr;
+    if (viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+        dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
+    } else {
+        return;
+    }
+
+    double scale = dvd->Scale.getValue();
+    double radius = dvd->Radius.getValue() * scale;
+    QGIMatting* mat = new QGIMatting();
+    addToGroup(mat);
+    mat->setPos(0.0,0.0);
+    mat->setRadius(radius);
+    QRectF displayArea = customChildrenBoundingRect();
+    mat->setSize(displayArea.width(),displayArea.height());
+    mat->setHoleStyle(dvd->getMattingStyle());
+    mat->draw();
+    mat->show();
 }
 
 // As called by arc of ellipse case:

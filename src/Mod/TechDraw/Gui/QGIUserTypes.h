@@ -37,6 +37,7 @@ QGICenterLine: 174
 QGICaption: 180
 QGIViewImage: 200
 QGCustomImage: 201
+QGIMatting: 205
 */
 
 /*
