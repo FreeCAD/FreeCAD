@@ -25,4 +25,5 @@
 import TestApp
 
 from PathTests.TestPathPost import PathPostTestCases
-from PathTests.TestPathDressupHoldingTags import PathDressupHoldingTagsTestCases
+from PathTests.TestPathDressupHoldingTags import TagTestCases
+from PathTests.TestPathDressupHoldingTags import SquareTagTestCases
