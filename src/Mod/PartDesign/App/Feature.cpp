@@ -68,7 +68,7 @@ TopoDS_Shape Feature::getSolid(const TopoDS_Shape& shape)
         Standard_Failure::Raise("Shape is null");
     TopExp_Explorer xp;
     xp.Init(shape,TopAbs_SOLID);
-    for (;xp.More(); xp.Next()) {
+    if (xp.More()) {
         return xp.Current();
     }
 
