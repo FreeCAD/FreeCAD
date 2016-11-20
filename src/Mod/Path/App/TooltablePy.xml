@@ -49,8 +49,8 @@ adds a tool at the given position</UserDocu>
 deletes the tool found at the given position</UserDocu>
             </Documentation>
         </Methode>
-        <ClassDeclarations>
+        <!--<ClassDeclarations>
             bool touched;
-        </ClassDeclarations>
+        </ClassDeclarations>-->
     </PythonExport>
 </GenerateModel>
