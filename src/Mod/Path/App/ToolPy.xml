@@ -86,8 +86,8 @@ HighCarbonToolSteel CastAlloy, Ceramics, Diamond, Sialon or Undefined</UserDocu>
                 <UserDocu>returns a copy of this tool</UserDocu>
             </Documentation>
         </Methode>
-        <ClassDeclarations>
+        <!--<ClassDeclarations>
             bool touched;
-        </ClassDeclarations>
+        </ClassDeclarations>-->
     </PythonExport>
 </GenerateModel>
