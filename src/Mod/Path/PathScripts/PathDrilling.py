@@ -195,7 +195,7 @@ class ObjectDrilling:
                 if isinstance(subobj.Edges[0].Curve, Part.Circle):
                     drillable = True
                 if str(subobj.Surface) == "<Cylinder object>":
-                    drillable = True
+                    drillable = subobj.isClosed()
                 if len(subobj.Edges) == 3:
                     cedge = []
                     ledge = []
@@ -211,7 +211,7 @@ class ObjectDrilling:
                         drillable = False
             if sub[0:4] == 'Edge':
                 o = obj.getElement(sub)
-                if isinstance(o.Curve, Part.Circle) and len(o.Vertexes) == 1:
+                if isinstance(o.Curve, Part.Circle):
                     drillable = True
 
         return drillable
@@ -266,9 +266,37 @@ class ObjectDrilling:
                         FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
                     else:
                         baselist.append(item)
-            print baselist
-            obj.Base = baselist
-            self.execute(obj)
+
+        if sub[0:4] == 'Edge':
+            drillableEdges = []
+            o = ss.Shape.getElement(sub)
+
+            for i in range(len(ss.Shape.Edges)):
+                candidateedge = ss.Shape.getElement("Edge" + str(i+1))
+                if self.checkdrillable(ss.Shape, "Edge" + str(i+1)):
+                    if candidateedge.Curve.Radius == o.Curve.Radius and candidateedge.Curve.Center.z == o.Curve.Center.z:
+                        drillableEdges.append("Edge" + str(i+1))
+            if len(drillableEdges) > 1:
+                reply = QtGui.QMessageBox.question(None,"","Multiple drillable faces found.  Drill them all?",
+                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+                if reply == QtGui.QMessageBox.Yes:
+                    for i in drillableEdges:
+                        if i in baselist:
+                            FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
+                            continue
+                        else:
+                            newitem = (ss, i)
+                            baselist.append(newitem)
+                else:
+                    if item in baselist:
+                        FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
+                    else:
+                        baselist.append(item)
+
+        print baselist
+        obj.Base = baselist
+        self.execute(obj)
+
 
 class _ViewProviderDrill:
     def __init__(self, obj):
