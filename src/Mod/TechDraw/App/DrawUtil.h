@@ -27,6 +27,8 @@
 
 #include <QString>
 #include <QByteArray>
+
+#include <gp_Ax2.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
@@ -57,6 +59,8 @@ class TechDrawExport DrawUtil {
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
         static int vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2);
+        static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
+        static bool checkZParallel(const Base::Vector3d direction);
 
 
         //debugging routines

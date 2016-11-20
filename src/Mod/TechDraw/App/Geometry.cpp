@@ -500,7 +500,7 @@ bool BSpline::isLine()
     bool result = false;
     BRepAdaptor_Curve c(occEdge);
     Handle_Geom_BSplineCurve spline = c.BSpline();
-    if (spline->Degree() == 1) {
+    if (spline->NbPoles() == 2) {
         result = true;
     }
     return result;

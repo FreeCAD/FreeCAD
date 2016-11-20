@@ -32,6 +32,7 @@
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Transform.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <Geom_BSplineCurve.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Circ.hxx>
 #include <gp_Dir.hxx>
@@ -280,6 +281,7 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
             Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
             continue;
         }
+
         base = BaseGeom::baseFactory(edge);
         if (base == nullptr) {
             Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);

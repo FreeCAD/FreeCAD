@@ -66,6 +66,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *draw << "TechDraw_NewMulti";
     *draw << "TechDraw_ProjGroup";
     *draw << "TechDraw_NewViewSection";
+    *draw << "TechDraw_NewViewDetail";
     *draw << "TechDraw_Annotation";
     *draw << "TechDraw_Symbol";
     *draw << "TechDraw_Spreadsheet";
@@ -101,6 +102,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *views << "TechDraw_NewMulti";
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
+    *views << "TechDraw_NewViewDetail";
     *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_ArchView";
@@ -150,6 +152,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *views << "TechDraw_NewMulti";
     *views << "TechDraw_ProjGroup";
     *views << "TechDraw_NewViewSection";
+    *views << "TechDraw_NewViewDetail";
     *views << "TechDraw_Annotation";
     *views << "TechDraw_DraftView";
     *views << "TechDraw_Spreadsheet";

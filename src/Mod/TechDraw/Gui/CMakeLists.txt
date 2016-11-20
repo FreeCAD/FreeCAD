@@ -117,6 +117,8 @@ SET(TechDrawGuiView_SRCS
     QGISVGTemplate.h
     QGIVertex.cpp
     QGIVertex.h
+    QGIMatting.cpp
+    QGIMatting.h
     QGIDrawingTemplate.cpp
     QGIDrawingTemplate.h
     QGITemplate.cpp
