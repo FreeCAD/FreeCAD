@@ -114,12 +114,12 @@ def testSide():
     testPrintSide(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 0,-1, 0))
 
 def pathCommandForEdge(edge):
-    pt = edge.valueAt(edge.LastParameter)
+    pt = edge.Curve.EndPoint
     params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
     if type(edge.Curve) == Part.Line:
         return Part.Command('G1', params)
 
-    p1 = edge.valueAt(edge.FirstParameter)
+    p1 = edge.Curve.StartPoint
     p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
     p3 = pt
     if Side.Left == Side.of(p2 - p1, p3 - p2):
@@ -132,13 +132,25 @@ def pathCommandForEdge(edge):
 
 
 class Tag:
-    def __init__(self, x, y, width, height, angle, enabled=True):
+
+    @classmethod
+    def FromString(cls, string):
+        try:
+            t = eval(string)
+            return Tag(t[0], t[1], t[2], t[3], t[4], t[5])
+        except:
+            return None
+
+    def __init__(self, x, y, width, height, angle, enabled=True, z=None):
         self.x = x
         self.y = y
         self.width = math.fabs(width)
         self.height = math.fabs(height)
+        self.actualHeight = self.height
         self.angle = math.fabs(angle)
         self.enabled = enabled
+        if z is not None:
+            self.createSolidsAt(z)
 
     def toString(self):
         return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
@@ -146,7 +158,14 @@ class Tag:
     def originAt(self, z):
         return FreeCAD.Vector(self.x, self.y, z)
 
+    def bottom(self):
+        return self.z
+
+    def top(self):
+        return self.z + self.actualHeight
+
     def createSolidsAt(self, z):
+        self.z = z
         r1 = self.width / 2
         height = self.height
         if self.angle == 90 and height > 0:
@@ -162,6 +181,7 @@ class Tag:
                 r2 = 0
                 height = r1 * tangens
                 self.core = None
+                self.actualHeight = height
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
@@ -171,14 +191,144 @@ class Tag:
         if self.core:
             self.core.translate(self.originAt(z))
 
-    @classmethod
-    def FromString(cls, string):
-        try:
-            t = eval(string)
-            return Tag(t[0], t[1], t[2], t[3], t[4], t[5])
-        except:
-            return None
+    class Intersection:
+        # An intersection with a tag has 4 markant points, where one might be optional.
+        #       P1---P2               P2
+        #       /     \               /\
+        #      /       \             /  \
+        #     /         \           /    \
+        # ---P0         P3---   ---P0    P3---
+        # If no intersection occured the Intersection can be viewed as being
+        # at P3 with no additional edges.
+        P0 = 2
+        P1 = 3
+        P2 = 4
+        P3 = 5
 
+        def __init__(self, tag):
+            self.tag = tag
+            self.state = self.P3
+            self.edges = []
+            self.tail = None
+
+        def isComplete(self):
+            return self.state == self.P3
+
+        def moveEdgeToPlateau(self, edge):
+            if type(edge.Curve) is Part.Line:
+                pt1 = edge.Curve.StartPoint
+                pt2 = edge.Curve.EndPoint
+                pt1.z = self.tag.top()
+                pt2.z = self.tag.top()
+                #print("\nplateau= %s - %s" %(pt1, pt2))
+                return Part.Edge(Part.Line(pt1, pt2))
+
+
+        def intersect(self, edge):
+            #print("")
+            if self.state == self.P0:
+                #print("----- P0")
+                if self.tag.core:
+                    self.state = self.P1
+                    i = self.tag.nextIntersectionClosestTo(edge, self.tag.core, edge.Curve.StartPoint)
+                    if i:
+                        if i == edge.Curve.StartPoint:
+                            self.edges.append(Part.Edge(Part.Line(i, FreeCAD.Vector(i.x, i.y, self.tag.top()))))
+                        else:
+                            e, tail = self.tag.splitEdgeAt(edge, i)
+                            self.edges.append(self.mapEdgeTo(e, self.tag.solid))
+                            edge = tail
+                    else:
+                        self.edges.append(self.mapEdgeTo(e, self.tag.solid))
+                        # we're done with this edge
+                        return self
+                else:
+                    p = self.tag.originAt(self.tag.bottom() + self.tag.actualHeight)
+                    if DraftGeomUtils.isPtOnEdge(p, edge):
+                        e, tail = self.tag.splitEdgeAt(edge, p)
+                        self.edges.append(self.mapEdgeTo(e, self.tag.solid))
+                        edge = tail
+                        self.state = self.P2
+                    else:
+                        self.edges.append(self.mapEdgeTo(e, self.tag.solid))
+                        # we're done with this edge
+                        return self
+                    
+            if self.state == self.P1:
+                #print("----- P1")
+                # must have core, find end of plateau
+                i = self.tag.nextIntersectionClosestTo(edge, self.tag.core, edge.Curve.EndPoint)
+                if i and i != edge.Curve.StartPoint:
+                    self.state = self.P2
+                    if i == edge.Curve.EndPoint:
+                        self.edges.append(self.moveEdgeToPlateau(edge))
+                        # edge fully consumed
+                        return self
+                    else:
+                        e, tail = self.tag.splitEdgeAt(edge, i)
+                        self.edges.append(self.moveEdgeToPlateau(e))
+                        edge = tail
+                else:
+                    self.edges.append(self.moveEdgeToPlateau(edge))
+                    # edge fully consumed, we're still in P1
+                    return self
+
+            if self.state == self.P2:
+                #print("----- P2")
+                i = self.tag.nextIntersectionClosestTo(edge, self.tag.solid, edge.Curve.EndPoint)
+                if i:
+                    self.state = self.P3
+                    #print("----- P3")
+                    if i == edge.Curve.StartPoint:
+                        self.edges.append(Part.Edge(Part.Line(FreeCAD.Vector(i.x, i.y, self.tag.top()), i)))
+                        self.tail = edge
+                    elif i == edge.Curve.EndPoint:
+                        self.edges.append(self.mapEdgeTo(edge, self.tag.solid))
+                        self.tail = None
+                    else:
+                        e, tail = self.tag.splitEdgeAt(edge, i)
+                        self.edges.append(self.mapEdgeTo(e, self.tag.solid))
+                        self.tail = tail
+
+            return self
+
+
+
+    def splitEdgeAt(self, edge, pt):
+        p = edge.Curve.parameter(pt)
+        wire = edge.split(p)
+        return wire.Edges
+
+
+    def nextIntersectionClosestTo(self, edge, solid, refPt):
+        pts = []
+        for face in solid.Faces:
+            i = edge.Curve.intersect(face.Surface)[0]
+            pts.extend([FreeCAD.Vector(p.X, p.Y, p.Z) for p in i])
+        if pts:
+            closest = sorted(pts, key=lambda pt: (pt - refPt).Length)[0]
+            return closest
+        return None
+
+    def intersect(self, edge):
+        inters = self.Intersection(self)
+        if edge.Curve.StartPoint.z < self.top() or edge.Curve.EndPoint.z < self.top():
+            i = self.nextIntersectionClosestTo(edge, self.solid, edge.Curve.StartPoint)
+            if i:
+                inters.state = self.Intersection.P0
+                if i == edge.Curve.EndPoint:
+                    inters.edges.append(edge)
+                    return inters
+                if i == edge.Curve.StartPoint:
+                    tail = edge
+                else:
+                    e,tail = self.splitEdgeAt(edge, i)
+                    inters.edges.append(e)
+                return inters.intersect(tail)
+        # if we get here there is no intersection with the tag
+        inters.state = self.Intersection.P3
+        inters.tail = edge
+        return inters
 
 class PathData:
     def __init__(self, obj):
@@ -235,16 +385,16 @@ class PathData:
 
     def sortedBase(self, base):
         # first find the exit point, where base wire is closed
-        edges = [e for e in self.edges if e.valueAt(e.FirstParameter).z == self.minZ and e.valueAt(e.LastParameter).z != self.maxZ]
-        exit = sorted(edges, key=lambda e: -e.valueAt(e.LastParameter).z)[0]
-        pt = exit.valueAt(exit.FirstParameter)
+        edges = [e for e in self.edges if e.Curve.StartPoint.z == self.minZ and e.Curve.EndPoint.z != self.maxZ]
+        exit = sorted(edges, key=lambda e: -e.Curve.EndPoint.z)[0]
+        pt = exit.Curve.StartPoint
         # then find the first base edge, and sort them until done
         ordered = []
         while base:
-            edge = [e for e in base if e.valueAt(e.FirstParameter) == pt][0]
+            edge = [e for e in base if e.Curve.StartPoint == pt][0]
             ordered.append(edge)
             base.remove(edge)
-            pt = edge.valueAt(edge.LastParameter)
+            pt = edge.Curve.EndPoint
         return ordered
 
 
@@ -364,7 +514,7 @@ class PathData:
         ordered = []
         for edge in self.base.Edges:
             ts = [t for t in tags if DraftGeomUtils.isPtOnEdge(t.originAt(self.minZ), edge)]
-            for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
+            for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.Curve.StartPoint).Length):
                 tags.remove(t)
                 ordered.append(t)
         if tags:
@@ -392,7 +542,7 @@ class ObjectDressup:
 
 
     def tagIntersection(self, face, edge):
-        p1 = edge.valueAt(edge.FirstParameter)
+        p1 = edge.Curve.StartPoint
         pts = edge.Curve.intersect(face.Surface)
         if pts[0]:
             closest = sorted(pts[0], key=lambda pt: (pt - p1).Length)[0]
@@ -409,9 +559,9 @@ class ObjectDressup:
                     for face in solid.Faces:
                         pt = self.tagIntersection(face, edge)
                         if pt:
-                            if pt == edge.valueAt(edge.FirstParameter):
+                            if pt == edge.Curve.StartPoint:
                                 pt
-                            elif pt != edge.valueAt(edge.LastParameter):
+                            elif pt != edge.Curve.EndPoint:
                                 parameter = edge.Curve.parameter(pt)
                                 wire = edge.split(parameter)
                                 commands.append(pathCommandForEdge(wire.Edges[0]))
