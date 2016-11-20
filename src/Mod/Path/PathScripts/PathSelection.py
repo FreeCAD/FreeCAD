@@ -105,7 +105,7 @@ class DRILLGate:
                 subobj = obj.getElement(sub)
                 drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
                 if str(subobj.Surface) == "<Cylinder object>":
-                    drillable = True
+                    drillable = subobj.isClosed()
 
             if sub[0:4] == 'Edge':
                 o = obj.getElement(sub)
