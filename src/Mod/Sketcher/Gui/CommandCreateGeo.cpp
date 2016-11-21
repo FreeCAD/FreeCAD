@@ -3438,7 +3438,7 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch *sketchgui)
+    virtual void activated(ViewProviderSketch */*sketchgui*/)
     {
         setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
     }
@@ -3582,7 +3582,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2D /*onSketchPos*/)
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -3763,7 +3763,7 @@ CmdSketcherCreateArcOfHyperbola::CmdSketcherCreateArcOfHyperbola()
     eType           = ForEdit;
 }
 
-void CmdSketcherCreateArcOfHyperbola::activated(int iMsg)
+void CmdSketcherCreateArcOfHyperbola::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArcOfHyperbola() );
 }

@@ -1511,7 +1511,7 @@ double ConstraintCurveValue::grad(double *param)
     return deriv*scale;
 }    
 
-double ConstraintCurveValue::maxStep(MAP_pD_D &dir, double lim)
+double ConstraintCurveValue::maxStep(MAP_pD_D &/*dir*/, double lim)
 {
     // step(angle()) <= pi/18 = 10°
     /* TODO: curve-dependent parameter change limiting??
