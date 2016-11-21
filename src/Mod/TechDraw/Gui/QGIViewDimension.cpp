@@ -324,10 +324,10 @@ void QGIViewDimension::draw()
             }
             if (geom->geomType == TechDrawGeometry::GENERIC) {
                 TechDrawGeometry::Generic *gen = static_cast<TechDrawGeometry::Generic *>(geom);
-                Base::Vector2D pnt1 = gen->points.at(0);
-                Base::Vector2D pnt2 = gen->points.at(1);
-                distStart = Base::Vector3d(pnt1.fX, pnt1.fY, 0.);
-                distEnd = Base::Vector3d(pnt2.fX, pnt2.fY, 0.);
+                Base::Vector2d pnt1 = gen->points.at(0);
+                Base::Vector2d pnt2 = gen->points.at(1);
+                distStart = Base::Vector3d(pnt1.x, pnt1.y, 0.);
+                distEnd = Base::Vector3d(pnt2.x, pnt2.y, 0.);
             } else {
                 throw Base::Exception("QGIVD::draw - Original edge not found or is invalid type (1)");
             }
@@ -344,8 +344,8 @@ void QGIViewDimension::draw()
                                     idx0,idx1,refObj->getEdgeGeometry().size());
                 return;
             }
-            distStart = Base::Vector3d (v0->pnt.fX, v0->pnt.fY, 0.);
-            distEnd = Base::Vector3d (v1->pnt.fX, v1->pnt.fY, 0.);
+            distStart = Base::Vector3d (v0->pnt.x, v0->pnt.y, 0.);
+            distEnd = Base::Vector3d (v1->pnt.x, v1->pnt.y, 0.);
         } else if(dim->References2D.getValues().size() == 2 &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]) == "Edge" &&
             TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]) == "Edge") {
@@ -360,25 +360,25 @@ void QGIViewDimension::draw()
             }
             if (strcmp(dimType, "DistanceX") == 0 ||
                 strcmp(dimType, "DistanceY") == 0) {
-                Base::Vector2D p1,p2;
+                Base::Vector2d p1,p2;
                 p1 = geom0->nearPoint(geom1);
                 p2 = geom1->nearPoint(geom0);
-                distStart = Base::Vector3d(p1.fX,p1.fY,0.0);
-                distEnd   = Base::Vector3d(p2.fX,p2.fY,0.0);
+                distStart = Base::Vector3d(p1.x,p1.y,0.0);
+                distEnd   = Base::Vector3d(p2.x,p2.y,0.0);
             } else if ( (geom0->geomType == TechDrawGeometry::GENERIC) &&
                  (geom1->geomType == TechDrawGeometry::GENERIC) ){
                 TechDrawGeometry::Generic *gen0 = static_cast<TechDrawGeometry::Generic *>(geom0);
                 TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
-                Base::Vector2D pnt1, pnt2;
+                Base::Vector2d pnt1, pnt2;
                 Base::Vector3d edge1Start, edge1End, edge2Start, edge2End;
                 pnt1 = gen0->points.at(0);
                 pnt2 = gen0->points.at(1);
-                edge1Start = Base::Vector3d(pnt1.fX, pnt1.fY, 0);
-                edge1End = Base::Vector3d(pnt2.fX, pnt2.fY, 0);
+                edge1Start = Base::Vector3d(pnt1.x, pnt1.y, 0);
+                edge1End = Base::Vector3d(pnt2.x, pnt2.y, 0);
                 pnt1 = gen1->points.at(0);
                 pnt2 = gen1->points.at(1);
-                edge2Start = Base::Vector3d(pnt1.fX, pnt1.fY, 0);
-                edge2End = Base::Vector3d(pnt2.fX, pnt2.fY, 0);
+                edge2Start = Base::Vector3d(pnt1.x, pnt1.y, 0);
+                edge2End = Base::Vector3d(pnt2.x, pnt2.y, 0);
 
                 // figure out which end of each edge to use for drawing
                 Base::Vector3d lin1 = edge1End - edge1Start;                    //vector from edge1Start to edge2End
@@ -423,9 +423,9 @@ void QGIViewDimension::draw()
                                     ex,vx,refObj->getEdgeGeometry().size());
                 return;
             }
-            Base::Vector3d pnt(v->pnt.fX,v->pnt.fY, 0.0);
-            Base::Vector3d edgeStart(e->getStartPoint().fX,e->getStartPoint().fY,0.0);
-            Base::Vector3d edgeEnd(e->getEndPoint().fX,e->getEndPoint().fY,0.0);
+            Base::Vector3d pnt(v->pnt.x,v->pnt.y, 0.0);
+            Base::Vector3d edgeStart(e->getStartPoint().x,e->getStartPoint().y,0.0);
+            Base::Vector3d edgeEnd(e->getEndPoint().x,e->getEndPoint().y,0.0);
             Base::Vector3d displace;
             displace.ProjectToLine(pnt - edgeStart, edgeEnd - edgeStart);
             Base::Vector3d ptOnLine = pnt + displace;
@@ -626,7 +626,7 @@ void QGIViewDimension::draw()
                 (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) ) {
                 TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
                 radius = circ->radius;
-                centre = Base::Vector3d (circ->center.fX, circ->center.fY, 0);
+                centre = Base::Vector3d (circ->center.x, circ->center.y, 0);
             } else {
                 throw Base::Exception("FVD::draw - Original edge not found or is invalid type (2)");
             }
@@ -842,15 +842,15 @@ void QGIViewDimension::draw()
             if (geom->geomType == TechDrawGeometry::CIRCLE) {
                 TechDrawGeometry::Circle *circ = static_cast<TechDrawGeometry::Circle *>(geom);
                 radius = circ->radius;
-                curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
+                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
                 pointOnCurve = Base::Vector3d(curveCenter.x + radius, curveCenter.y,0.0);
             } else if (geom->geomType == TechDrawGeometry::ARCOFCIRCLE) {
                 isArc = true;
                 TechDrawGeometry::AOC *circ = static_cast<TechDrawGeometry::AOC *>(geom);
                 geomArc = circ;
                 radius = circ->radius;
-                curveCenter = Base::Vector3d(circ->center.fX,circ->center.fY,0.0);
-                pointOnCurve = Base::Vector3d(circ->midPnt.fX, circ->midPnt.fY,0.0);
+                curveCenter = Base::Vector3d(circ->center.x,circ->center.y,0.0);
+                pointOnCurve = Base::Vector3d(circ->midPnt.x, circ->midPnt.y,0.0);
             } else {
                 throw Base::Exception("FVD::draw - Original edge not found or is invalid type (3)");
             }
@@ -904,9 +904,9 @@ void QGIViewDimension::draw()
 
         //handle partial arc weird cases
         if (isArc) {
-            Base::Vector3d midPt(geomArc->midPnt.fX, geomArc->midPnt.fY,0.0);
-            Base::Vector3d startPt(geomArc->startPnt.fX, geomArc->startPnt.fY,0.0);
-            Base::Vector3d endPt(geomArc->endPnt.fX, geomArc->endPnt.fY,0.0);
+            Base::Vector3d midPt(geomArc->midPnt.x, geomArc->midPnt.y,0.0);
+            Base::Vector3d startPt(geomArc->startPnt.x, geomArc->startPnt.y,0.0);
+            Base::Vector3d endPt(geomArc->endPnt.x, geomArc->endPnt.y,0.0);
             if (outerPlacement &&
                 !geomArc->intersectsArc(curveCenter,kinkPoint) ) {
                 pointOnCurve = midPt;
@@ -979,19 +979,19 @@ void QGIViewDimension::draw()
                 TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(geom1);
 
                 // Get Points for line
-                Base::Vector2D pnt1, pnt2;
+                Base::Vector2d pnt1, pnt2;
                 Base::Vector3d p1S, p1E, p2S, p2E;
                 pnt1 = gen0->points.at(0);
                 pnt2 = gen0->points.at(1);
 
-                p1S = Base::Vector3d(pnt1.fX, pnt1.fY, 0);
-                p1E = Base::Vector3d(pnt2.fX, pnt2.fY, 0);
+                p1S = Base::Vector3d(pnt1.x, pnt1.y, 0);
+                p1E = Base::Vector3d(pnt2.x, pnt2.y, 0);
 
                 pnt1 = gen1->points.at(0);
                 pnt2 = gen1->points.at(1);
 
-                p2S = Base::Vector3d(pnt1.fX, pnt1.fY, 0);
-                p2E = Base::Vector3d(pnt2.fX, pnt2.fY, 0);
+                p2S = Base::Vector3d(pnt1.x, pnt1.y, 0);
+                p2E = Base::Vector3d(pnt2.x, pnt2.y, 0);
 
                 Base::Vector3d dir1 = p1E - p1S;
                 Base::Vector3d dir2 = p2E - p2S;

@@ -163,7 +163,7 @@ public:
     }
     void addFacesToSelection(Gui::View3DInventorViewer* /*viewer*/,
                              const Gui::ViewVolumeProjection& proj,
-                             const Base::Polygon2D& polygon,
+                             const Base::Polygon2d& polygon,
                              const TopoDS_Shape& shape)
     {
         try {
@@ -184,7 +184,7 @@ public:
                     gp_Pnt p = BRep_Tool::Pnt(TopoDS::Vertex(xp_vertex.Current()));
                     Base::Vector3d pt2d;
                     pt2d = proj(Base::Vector3d(p.X(), p.Y(), p.Z()));
-                    if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                    if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
 #if 0
                         // TODO
                         if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer))
@@ -204,7 +204,7 @@ public:
                 //gp_Pnt c = props.CentreOfMass();
                 //Base::Vector3d pt2d;
                 //pt2d = proj(Base::Vector3d(c.X(), c.Y(), c.Z()));
-                //if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                //if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
                 //    if (isVisibleFace(k-1, SbVec2f(pt2d.x, pt2d.y), viewer)) {
                 //        std::stringstream str;
                 //        str << "Face" << k;
@@ -227,18 +227,18 @@ public:
         SoCamera* cam = view->getSoRenderManager()->getCamera();
         SbViewVolume vv = cam->getViewVolume();
         Gui::ViewVolumeProjection proj(vv);
-        Base::Polygon2D polygon;
+        Base::Polygon2d polygon;
         if (picked.size() == 2) {
             SbVec2f pt1 = picked[0];
             SbVec2f pt2 = picked[1];
-            polygon.Add(Base::Vector2D(pt1[0], pt1[1]));
-            polygon.Add(Base::Vector2D(pt1[0], pt2[1]));
-            polygon.Add(Base::Vector2D(pt2[0], pt2[1]));
-            polygon.Add(Base::Vector2D(pt2[0], pt1[1]));
+            polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
+            polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
+            polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
+            polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
         }
         else {
             for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-                polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+                polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
         }
 
         FaceColors* self = reinterpret_cast<FaceColors*>(ud);

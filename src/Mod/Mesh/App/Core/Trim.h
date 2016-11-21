@@ -39,7 +39,7 @@ public:
     enum TMode {INNER, OUTER};
 
 public:
-    MeshTrimming(MeshKernel& mesh, const Base::ViewProjMethod* pclProj, const Base::Polygon2D& rclPoly);
+    MeshTrimming(MeshKernel& mesh, const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly);
     ~MeshTrimming();
 
 public:
@@ -100,7 +100,7 @@ private:
     bool myInner;
     std::vector<MeshGeomFacet> myTriangles;
     const Base::ViewProjMethod* myProj;
-    const Base::Polygon2D& myPoly;
+    const Base::Polygon2d& myPoly;
 };
 
 } //namespace MeshCore

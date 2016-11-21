@@ -71,10 +71,10 @@ GeometryCreationMode geometryCreationMode=Normal;
 /* helper functions ======================================================*/
 
 // Return counter-clockwise angle from horizontal out of p1 to p2 in radians.
-double GetPointAngle (const Base::Vector2D &p1, const Base::Vector2D &p2)
+double GetPointAngle (const Base::Vector2d &p1, const Base::Vector2d &p2)
 {
-  double dX = p2.fX - p1.fX;
-  double dY = p2.fY - p1.fY;
+  double dX = p2.x - p1.x;
+  double dY = p2.y - p1.y;
   return dY >= 0 ? atan2(dY, dX) : atan2(dY, dX) + 2*M_PI;
 }
 
@@ -91,16 +91,16 @@ be solved for using the midpoint of the line.  This can be done for both lines. 
 both S12p and S23p cross at the centerpoint, solving the two equations together will give
 the location of the centerpoint.
 */
-Base::Vector2D GetCircleCenter (const Base::Vector2D &p1, const Base::Vector2D &p2, const Base::Vector2D &p3)
+Base::Vector2d GetCircleCenter (const Base::Vector2d &p1, const Base::Vector2d &p2, const Base::Vector2d &p3)
 {
-  double m12p = (p1.fX - p2.fX) / (p2.fY - p1.fY);
-  double m23p = (p2.fX - p3.fX) / (p3.fY - p2.fY);
-  double x = 1/( 2*(m12p - m23p) ) * ( m12p*(p1.fX + p2.fX) -
-                                       m23p*(p2.fX + p3.fX) +
-                                       p3.fY - p1.fY );
-  double y = m12p * ( x - (p1.fX + p2.fX)/2 ) + (p1.fY + p2.fY)/2;
+  double m12p = (p1.x - p2.x) / (p2.y - p1.y);
+  double m23p = (p2.x - p3.x) / (p3.y - p2.y);
+  double x = 1/( 2*(m12p - m23p) ) * ( m12p*(p1.x + p2.x) -
+                                       m23p*(p2.x + p3.x) +
+                                       p3.y - p1.y );
+  double y = m12p * ( x - (p1.x + p2.x)/2 ) + (p1.y + p2.y)/2;
 
-  return Base::Vector2D(x, y);
+  return Base::Vector2d(x, y);
 }
 
 void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler)
@@ -198,18 +198,18 @@ public:
         setCursor(QPixmap(cursor_createline),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second){
             float length = (onSketchPos - EditCurve[0]).Length();
-            float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+            float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
             SbString text;
             text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
             setPositionText(onSketchPos, text);
@@ -224,7 +224,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -238,7 +238,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -249,7 +249,7 @@ public:
                 Gui::Command::openCommand("Add sketch line");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           sketchgui->getObject()->getNameInDocument(),
-                          EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY,
+                          EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
 
                 Gui::Command::commitCommand();
@@ -303,7 +303,7 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
+    std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
@@ -407,28 +407,28 @@ public:
         setCursor(QPixmap(cursor_createbox),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
 
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float dx = onSketchPos.fX - EditCurve[0].fX;
-            float dy = onSketchPos.fY - EditCurve[0].fY;
+            float dx = onSketchPos.x - EditCurve[0].x;
+            float dy = onSketchPos.y - EditCurve[0].y;
             SbString text;
             text.sprintf(" (%.1f x %.1f)", dx, dy);
             setPositionText(onSketchPos, text);
 
             EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
-            EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
+            EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
+            EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.0,0.0))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -436,7 +436,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -445,15 +445,15 @@ public:
         }
         else {
             EditCurve[2] = onSketchPos;
-            EditCurve[1] = Base::Vector2D(onSketchPos.fX ,EditCurve[0].fY);
-            EditCurve[3] = Base::Vector2D(EditCurve[0].fX,onSketchPos.fY);
+            EditCurve[1] = Base::Vector2d(onSketchPos.x ,EditCurve[0].y);
+            EditCurve[3] = Base::Vector2d(EditCurve[0].x,onSketchPos.y);
             sketchgui->drawEdit(EditCurve);
             Mode = STATUS_End;
         }
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -480,10 +480,10 @@ public:
                     "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                     "conList.append(Sketcher.Constraint('Vertical',%i))\n"
                     "App.ActiveDocument.%s.addConstraint(conList)\n",
-                    EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY, // line 1
-                    EditCurve[1].fX,EditCurve[1].fY,EditCurve[2].fX,EditCurve[2].fY, // line 2
-                    EditCurve[2].fX,EditCurve[2].fY,EditCurve[3].fX,EditCurve[3].fY, // line 3
-                    EditCurve[3].fX,EditCurve[3].fY,EditCurve[0].fX,EditCurve[0].fY, // line 4
+                    EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y, // line 1
+                    EditCurve[1].x,EditCurve[1].y,EditCurve[2].x,EditCurve[2].y, // line 2
+                    EditCurve[2].x,EditCurve[2].y,EditCurve[3].x,EditCurve[3].y, // line 3
+                    EditCurve[3].x,EditCurve[3].y,EditCurve[0].x,EditCurve[0].y, // line 4
                     sketchgui->getObject()->getNameInDocument(), // the sketch
                     geometryCreationMode==Construction?"True":"False", // geometry as construction or not
                     firstCurve,firstCurve+1, // coincident1
@@ -548,7 +548,7 @@ public:
     }
 protected:
     BoxMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
+    std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
@@ -689,7 +689,7 @@ public:
             // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_L
             // SEGMENT_MODE_Arc, TRANSITION_MODE_Perpendicular_R
 
-            Base::Vector2D onSketchPos;
+            Base::Vector2d onSketchPos;
             if (SegmentMode == SEGMENT_MODE_Line)
                 onSketchPos = EditCurve[EditCurve.size()-1];
             else
@@ -757,12 +757,12 @@ public:
         setCursor(QPixmap(cursor_createlineset),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         suppressTransition = false;
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -771,7 +771,7 @@ public:
             if (SegmentMode == SEGMENT_MODE_Line) {
                 EditCurve[EditCurve.size()-1] = onSketchPos;
                 if (TransitionMode == TRANSITION_MODE_Tangent) {
-                    Base::Vector2D Tangent(dirVec.x,dirVec.y);
+                    Base::Vector2d Tangent(dirVec.x,dirVec.y);
                     EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Tangent);
                     if (EditCurve[1] * Tangent < 0) {
                         EditCurve[1] = EditCurve[2];
@@ -782,7 +782,7 @@ public:
                 }
                 else if (TransitionMode == TRANSITION_MODE_Perpendicular_L ||
                          TransitionMode == TRANSITION_MODE_Perpendicular_R) {
-                    Base::Vector2D Perpendicular(-dirVec.y,dirVec.x);
+                    Base::Vector2d Perpendicular(-dirVec.y,dirVec.x);
                     EditCurve[1].ProjectToLine(EditCurve[2] - EditCurve[0], Perpendicular);
                     EditCurve[1] = EditCurve[0] + EditCurve[1];
                 }
@@ -790,7 +790,7 @@ public:
                 sketchgui->drawEdit(EditCurve);
 
                 float length = (EditCurve[1] - EditCurve[0]).Length();
-                float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+                float angle = (EditCurve[1] - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
 
                 SbString text;
                 text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
@@ -804,39 +804,39 @@ public:
                 }
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) {
-                Base::Vector2D Tangent;
+                Base::Vector2d Tangent;
                 if  (TransitionMode == TRANSITION_MODE_Tangent)
-                    Tangent = Base::Vector2D(dirVec.x,dirVec.y);
+                    Tangent = Base::Vector2d(dirVec.x,dirVec.y);
                 else if  (TransitionMode == TRANSITION_MODE_Perpendicular_L)
-                    Tangent = Base::Vector2D(-dirVec.y,dirVec.x);
+                    Tangent = Base::Vector2d(-dirVec.y,dirVec.x);
                 else if  (TransitionMode == TRANSITION_MODE_Perpendicular_R)
-                    Tangent = Base::Vector2D(dirVec.y,-dirVec.x);
+                    Tangent = Base::Vector2d(dirVec.y,-dirVec.x);
 
                 double theta = Tangent.GetAngle(onSketchPos - EditCurve[0]);
                 arcRadius = (onSketchPos - EditCurve[0]).Length()/(2.0*sin(theta));
                 // At this point we need a unit normal vector pointing torwards
                 // the center of the arc we are drawing. Derivation of the formula
                 // used here can be found at http://people.richland.edu/james/lecture/m116/matrices/area.html
-                double x1 = EditCurve[0].fX;
-                double y1 = EditCurve[0].fY;
-                double x2 = x1 + Tangent.fX;
-                double y2 = y1 + Tangent.fY;
-                double x3 = onSketchPos.fX;
-                double y3 = onSketchPos.fY;
+                double x1 = EditCurve[0].x;
+                double y1 = EditCurve[0].y;
+                double x2 = x1 + Tangent.x;
+                double y2 = y1 + Tangent.y;
+                double x3 = onSketchPos.x;
+                double y3 = onSketchPos.y;
                 if ((x2*y3-x3*y2)-(x1*y3-x3*y1)+(x1*y2-x2*y1) > 0)
                     arcRadius *= -1;
                 if (boost::math::isnan(arcRadius) || boost::math::isinf(arcRadius))
                     arcRadius = 0.f;
 
-                CenterPoint = EditCurve[0] + Base::Vector2D(arcRadius * Tangent.fY, -arcRadius * Tangent.fX);
+                CenterPoint = EditCurve[0] + Base::Vector2d(arcRadius * Tangent.y, -arcRadius * Tangent.x);
 
-                double rx = EditCurve[0].fX - CenterPoint.fX;
-                double ry = EditCurve[0].fY - CenterPoint.fY;
+                double rx = EditCurve[0].x - CenterPoint.x;
+                double ry = EditCurve[0].y - CenterPoint.y;
 
                 startAngle = atan2(ry,rx);
 
-                double rxe = onSketchPos.fX - CenterPoint.fX;
-                double rye = onSketchPos.fY - CenterPoint.fY;
+                double rxe = onSketchPos.x - CenterPoint.x;
+                double rye = onSketchPos.y - CenterPoint.y;
                 double arcAngle = atan2(-rxe*ry + rye*rx, rxe*rx + rye*ry);
                 if (boost::math::isnan(arcAngle) || boost::math::isinf(arcAngle))
                     arcAngle = 0.f;
@@ -850,7 +850,7 @@ public:
                     double angle = i*arcAngle/29.0;
                     double dx = rx * cos(angle) - ry * sin(angle);
                     double dy = rx * sin(angle) + ry * cos(angle);
-                    EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
+                    EditCurve[i] = Base::Vector2d(CenterPoint.x + dx, CenterPoint.y + dy);
                 }
 
                 EditCurve[30] = CenterPoint;
@@ -862,7 +862,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fdeg)", std::abs(arcRadius), arcAngle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
 
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
@@ -871,7 +871,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
 
@@ -959,7 +959,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_Do || Mode == STATUS_Close) {
             bool addedGeometry = true;
@@ -971,7 +971,7 @@ public:
                     Gui::Command::doCommand(Gui::Command::Doc,
                         "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         sketchgui->getObject()->getNameInDocument(),
-                        EditCurve[0].fX,EditCurve[0].fY,EditCurve[1].fX,EditCurve[1].fY,
+                        EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
                 }
                 catch (const Base::Exception& e) {
@@ -992,7 +992,7 @@ public:
                         "App.ActiveDocument.%s.addGeometry(Part.ArcOfCircle"
                         "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
                         sketchgui->getObject()->getNameInDocument(),
-                        CenterPoint.fX, CenterPoint.fY, std::abs(arcRadius),
+                        CenterPoint.x, CenterPoint.y, std::abs(arcRadius),
                         std::min(startAngle,endAngle), std::max(startAngle,endAngle),
                         geometryCreationMode==Construction?"True":"False");
                 }
@@ -1138,14 +1138,14 @@ protected:
     TRANSITION_MODE TransitionMode;
     bool suppressTransition;
 
-    std::vector<Base::Vector2D> EditCurve;
+    std::vector<Base::Vector2d> EditCurve;
     int firstCurve;
     int previousCurve;
     Sketcher::PointPos firstPosId;
     Sketcher::PointPos previousPosId;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 
-    Base::Vector2D CenterPoint;
+    Base::Vector2d CenterPoint;
     Base::Vector3d dirVec;
     double startAngle, endAngle, arcRadius;
 
@@ -1160,19 +1160,19 @@ protected:
                        0.f);
             if (PosId == Sketcher::start) {
                 dirVec *= -1;
-                EditCurve[0] = Base::Vector2D(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
+                EditCurve[0] = Base::Vector2d(lineSeg->getStartPoint().x, lineSeg->getStartPoint().y);
             }
             else
-                EditCurve[0] = Base::Vector2D(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
+                EditCurve[0] = Base::Vector2d(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
         }
         else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *arcSeg = static_cast<const Part::GeomArcOfCircle *>(geom);
             if (PosId == Sketcher::start) {
-                EditCurve[0] = Base::Vector2D(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
+                EditCurve[0] = Base::Vector2d(arcSeg->getStartPoint(/*emulateCCW=*/true).x,arcSeg->getStartPoint(/*emulateCCW=*/true).y);
                 dirVec = Base::Vector3d(0.f,0.f,-1.0) % (arcSeg->getStartPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
             }
             else {
-                EditCurve[0] = Base::Vector2D(arcSeg->getEndPoint(/*emulateCCW=*/true).x,arcSeg->getEndPoint(/*emulateCCW=*/true).y);
+                EditCurve[0] = Base::Vector2d(arcSeg->getEndPoint(/*emulateCCW=*/true).x,arcSeg->getEndPoint(/*emulateCCW=*/true).y);
                 dirVec = Base::Vector3d(0.f,0.f,1.0) % (arcSeg->getEndPoint(/*emulateCCW=*/true)-arcSeg->getCenter());
             }
         }
@@ -1288,24 +1288,24 @@ public:
         setCursor(QPixmap(cursor_createarc),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            double dx_ = onSketchPos.fX - EditCurve[0].fX;
-            double dy_ = onSketchPos.fY - EditCurve[0].fY;
+            double dx_ = onSketchPos.x - EditCurve[0].x;
+            double dy_ = onSketchPos.y - EditCurve[0].y;
             for (int i=0; i < 16; i++) {
                 double angle = i*M_PI/16.0;
                 double dx = dx_ * cos(angle) + dy_ * sin(angle);
                 double dy = -dx_ * sin(angle) + dy_ * cos(angle);
-                EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + dx, EditCurve[0].fY + dy);
-                EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - dx, EditCurve[0].fY - dy);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + dx, EditCurve[0].y + dy);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - dx, EditCurve[0].y - dy);
             }
             EditCurve[33] = EditCurve[1];
 
@@ -1318,21 +1318,21 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Third) {
-            double angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
-                                 onSketchPos.fX - CenterPoint.fX) - startAngle;
+            double angle1 = atan2(onSketchPos.y - CenterPoint.y,
+                                 onSketchPos.x - CenterPoint.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
             for (int i=1; i <= 29; i++) {
                 double angle = i*arcAngle/29.0;
                 double dx = rx * cos(angle) - ry * sin(angle);
                 double dy = rx * sin(angle) + ry * cos(angle);
-                EditCurve[i] = Base::Vector2D(CenterPoint.fX + dx, CenterPoint.fY + dy);
+                EditCurve[i] = Base::Vector2d(CenterPoint.x + dx, CenterPoint.y + dy);
             }
 
             // Display radius and arc angle
@@ -1343,7 +1343,7 @@ public:
             setPositionText(onSketchPos, text);
             
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0))) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -1352,7 +1352,7 @@ public:
 
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             CenterPoint = onSketchPos;
@@ -1364,16 +1364,16 @@ public:
             EditCurve.resize(31);
             EditCurve[0] = onSketchPos;
             EditCurve[30] = CenterPoint;
-            rx = EditCurve[0].fX - CenterPoint.fX;
-            ry = EditCurve[0].fY - CenterPoint.fY;
+            rx = EditCurve[0].x - CenterPoint.x;
+            ry = EditCurve[0].y - CenterPoint.y;
             startAngle = atan2(ry, rx);
             arcAngle = 0.;
             Mode = STATUS_SEEK_Third;
         }
         else {
             EditCurve.resize(30);
-            double angle1 = atan2(onSketchPos.fY - CenterPoint.fY,
-                                 onSketchPos.fX - CenterPoint.fX) - startAngle;
+            double angle1 = atan2(onSketchPos.y - CenterPoint.y,
+                                 onSketchPos.x - CenterPoint.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
             if (arcAngle > 0)
@@ -1391,7 +1391,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End) {
@@ -1405,7 +1405,7 @@ public:
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),"
                     "%f,%f),%s)",
                           sketchgui->getObject()->getNameInDocument(),
-                          CenterPoint.fX, CenterPoint.fY, sqrt(rx*rx + ry*ry),
+                          CenterPoint.x, CenterPoint.y, sqrt(rx*rx + ry*ry),
                           startAngle, endAngle,
                           geometryCreationMode==Construction?"True":"False"); //arcAngle > 0 ? 0 : 1);
 
@@ -1465,8 +1465,8 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D CenterPoint;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d CenterPoint;
     double rx, ry, startAngle, endAngle, arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
@@ -1564,11 +1564,11 @@ public:
         setCursor(QPixmap(cursor_create3pointarc),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -1584,8 +1584,8 @@ public:
                 // Start at current angle
                 double angle = (i-1)*2*M_PI/32.0 + lineAngle; // N point closed circle has N segments
                 if (i != 1 && i != 17 ) {
-                    EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
-                                                  CenterPoint.fY + radius*sin(angle));
+                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
+                                                  CenterPoint.y + radius*sin(angle));
                 }
             }
 
@@ -1596,7 +1596,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -1655,8 +1655,8 @@ public:
             // Build a 30 point circle ignoring already constructed points
             for (int i=1; i <= 28; i++) {
                 double angle = startAngle + i*arcAngle/29.0; // N point arc has N-1 segments
-                EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
-                                              CenterPoint.fY + radius*sin(angle));
+                EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
+                                              CenterPoint.y + radius*sin(angle));
             }
 
             SbString text;
@@ -1664,7 +1664,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0),
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -1673,7 +1673,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             // 32 point curve + center + endpoint
@@ -1701,7 +1701,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -1716,7 +1716,7 @@ public:
                     "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),"
                     "%f,%f),%s)",
                           sketchgui->getObject()->getNameInDocument(),
-                          CenterPoint.fX, CenterPoint.fY, radius,
+                          CenterPoint.x, CenterPoint.y, radius,
                           startAngle, endAngle,
                           geometryCreationMode==Construction?"True":"False");
 
@@ -1776,8 +1776,8 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D CenterPoint, FirstPoint, SecondPoint;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
     double radius, startAngle, endAngle, arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
     Sketcher::PointPos arcPos1, arcPos2;
@@ -1968,24 +1968,24 @@ public:
         setCursor(QPixmap(cursor_createcircle),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            double rx0 = onSketchPos.fX - EditCurve[0].fX;
-            double ry0 = onSketchPos.fY - EditCurve[0].fY;
+            double rx0 = onSketchPos.x - EditCurve[0].x;
+            double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i=0; i < 16; i++) {
                 double angle = i*M_PI/16.0;
                 double rx = rx0 * cos(angle) + ry0 * sin(angle);
                 double ry = -rx0 * sin(angle) + ry0 * cos(angle);
-                EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + rx, EditCurve[0].fY + ry);
-                EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - rx, EditCurve[0].fY - ry);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
             }
             EditCurve[33] = EditCurve[1];
 
@@ -2006,7 +2006,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -2018,12 +2018,12 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
-            double rx = EditCurve[1].fX - EditCurve[0].fX;
-            double ry = EditCurve[1].fY - EditCurve[0].fY;
+            double rx = EditCurve[1].x - EditCurve[0].x;
+            double ry = EditCurve[1].y - EditCurve[0].y;
             unsetCursor();
             resetPositionText();
 
@@ -2033,7 +2033,7 @@ public:
                     "App.ActiveDocument.%s.addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           sketchgui->getObject()->getNameInDocument(),
-                          EditCurve[0].fX, EditCurve[0].fY,
+                          EditCurve[0].x, EditCurve[0].y,
                           sqrt(rx*rx + ry*ry),
                           geometryCreationMode==Construction?"True":"False");
 
@@ -2087,7 +2087,7 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
+    std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 
 };
@@ -2247,12 +2247,12 @@ public:
      * @brief Updates the ellipse when the cursor moves
      * @param onSketchPos the position of the cursor on the sketch
      */
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f),
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                     AutoConstraint::CURVE)) { 
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
@@ -2270,7 +2270,7 @@ public:
                 sketchgui->drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
@@ -2285,7 +2285,7 @@ public:
                 setPositionText(onSketchPos, text);
 
                 sketchgui->drawEdit(editCurve);
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f),
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f),
                     AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
@@ -2294,7 +2294,7 @@ public:
         } else { // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) { // TODO: ellipse prio 1
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) { // TODO: ellipse prio 1
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -2339,7 +2339,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
@@ -2374,7 +2374,7 @@ public:
      * @param onSketchPos the position of the cursor on the sketch
      * @return
      */
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (mode == STATUS_Close) {
@@ -2402,11 +2402,11 @@ private:
     ConstructionMethod method;
     int constrMethod;
     /// periapsis position vector, in standard position in sketch coordinate system
-    Base::Vector2D periapsis;
+    Base::Vector2d periapsis;
     /// apoapsis position vector, in standard position in sketch coordinate system
-    Base::Vector2D apoapsis;
+    Base::Vector2d apoapsis;
     /// centroid position vector, in standard position in sketch coordinate system
-    Base::Vector2D centroid;
+    Base::Vector2d centroid;
     /**
      * @brief position vector of positive b point, in standard position in sketch coordinate system
      * I.E. in polar perifocal system, the first intersection of the semiminor axis with the ellipse
@@ -2418,15 +2418,15 @@ private:
      * In a rotated R^3 cartesian system, centered at the centroid, +X towards periapsis, and
      * +Z coming out of the sketch, this b position is in the +Y direction from the centroid.
      */
-    Base::Vector2D positiveB;
+    Base::Vector2d positiveB;
     /// the other b position
-    Base::Vector2D negativeB;
+    Base::Vector2d negativeB;
     /// cart. position vector for primary focus
-    Base::Vector2D f;
+    Base::Vector2d f;
     /// cart. position vector for other focus
-    Base::Vector2D fPrime;
+    Base::Vector2d fPrime;
     /// Unit vector for apse line
-    Base::Vector2D apseHat;
+    Base::Vector2d apseHat;
     /// length of semimajor axis, i.e. 'radius' colloquially
     double a;
     /// length of semiminor axis, i.e. 'radius' colloquially
@@ -2446,11 +2446,11 @@ private:
     /// angle of apse line relative to sketch coordinate system
     double phi;
     /// holds a position vector for a point on the ellipse from f
-    Base::Vector2D pos;
+    Base::Vector2d pos;
     /// holds a position vector for a point on the ellipse from fPrime
-    Base::Vector2D posPrime;
+    Base::Vector2d posPrime;
     /// holds position vectors for a points on the ellipse
-    std::vector<Base::Vector2D> editCurve;
+    std::vector<Base::Vector2d> editCurve;
     /// local i_hat vector for ellipse, from centroid to periapsis
     Base::Vector3d iPrime;
     /// local j_hat vector for ellipse, from centroid to b point
@@ -2458,13 +2458,13 @@ private:
     /// length (radius) of the fixed axis
     double fixedAxisLength;
     /// position vector of fixed axis point in sketch coordinates
-    Base::Vector2D fixedAxis;
+    Base::Vector2d fixedAxis;
 
     /**
      * @brief Computes a vector of 2D points representing an ellipse
      * @param onSketchPos Current position of the cursor on the sketch
      */
-    void solveEllipse(Base::Vector2D onSketchPos)
+    void solveEllipse(Base::Vector2d onSketchPos)
     {
         const double GOLDEN_RATIO = 1.6180339887;
         Base::Vector3d k(0,0,1);
@@ -2487,11 +2487,11 @@ private:
             }
             else if (mode == STATUS_SEEK_B) {
                 // Get the closest distance from onSketchPos to apse line, as a 'requested' value for b
-                Base::Vector2D cursor = Base::Vector2D(onSketchPos - f); // vector from f to cursor pos
+                Base::Vector2d cursor = Base::Vector2d(onSketchPos - f); // vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
-                Base::Vector2D w_1 = cursor;
+                Base::Vector2d w_1 = cursor;
                 w_1.ProjectToLine(cursor, (periapsis - apoapsis)); // projection of cursor line onto apse line
-                Base::Vector2D w_2 = (cursor - w_1);
+                Base::Vector2d w_2 = (cursor - w_1);
                 b = w_2.Length();
 
                 // limit us to ellipse or circles
@@ -2509,7 +2509,7 @@ private:
             fPrime = apseHat;
             fPrime.Scale(-1 * ae);
             fPrime = centroid + fPrime;
-            phi = atan2(apseHat.fY, apseHat.fX);
+            phi = atan2(apseHat.y, apseHat.x);
             num = a * (1 - (e * e));
             // The ellipse is now solved
         } else { // method == CENTER_PERIAPSIS_B
@@ -2517,8 +2517,8 @@ private:
                 // solve the ellipse inscribed in a golden rectangle
                 periapsis = onSketchPos;
                 a = (centroid - periapsis).Length();
-                iPrime.x = periapsis.fX - centroid.fX;
-                iPrime.y = periapsis.fY - centroid.fY;
+                iPrime.x = periapsis.x - centroid.x;
+                iPrime.y = periapsis.y - centroid.y;
                 iPrime.z = 0;
                 jPrime = k % iPrime;   // j = k cross i
 
@@ -2539,7 +2539,7 @@ private:
                 apoapsis = apseHat;
                 apoapsis.Scale(-1 * a);
                 apoapsis = centroid + apoapsis;
-                phi = atan2(apseHat.fY, apseHat.fX);
+                phi = atan2(apseHat.y, apseHat.x);
                 num = a * (1 - (e * e));
                 fixedAxisLength = a;
                 fixedAxis = periapsis;
@@ -2547,16 +2547,16 @@ private:
                 // while looking for the last click, we may switch back and forth
                 // between looking for a b point and looking for periapsis, so ensure
                 // we are in the right mode
-                Base::Vector2D cursor = Base::Vector2D(onSketchPos - centroid); // vector from centroid to cursor pos
+                Base::Vector2d cursor = Base::Vector2d(onSketchPos - centroid); // vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
-                Base::Vector2D w_1 = cursor;
+                Base::Vector2d w_1 = cursor;
                 w_1.ProjectToLine(cursor, (fixedAxis - centroid)); // projection of cursor line onto fixed axis line
-                Base::Vector2D w_2 = (cursor - w_1);
+                Base::Vector2d w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
                     mode = STATUS_SEEK_A;
-                    jPrime.x = (fixedAxis - centroid).fX;
-                    jPrime.y = (fixedAxis - centroid).fY;
+                    jPrime.x = (fixedAxis - centroid).x;
+                    jPrime.y = (fixedAxis - centroid).y;
                     jPrime.Normalize();
                     iPrime = jPrime % k;    // cross
                     b = fixedAxisLength;
@@ -2564,16 +2564,16 @@ private:
                 } else {
                     // a is fixed, we are seeking b
                     mode = STATUS_SEEK_B;
-                    iPrime.x = (fixedAxis - centroid).fX;
-                    iPrime.y = (fixedAxis - centroid).fY;
+                    iPrime.x = (fixedAxis - centroid).x;
+                    iPrime.y = (fixedAxis - centroid).y;
                     iPrime.Normalize();
                     jPrime = k % iPrime;    // cross
                     a = fixedAxisLength;
                     b = w_2.Length();
                 }
                 // now finish solving the ellipse
-                periapsis.fX = centroid.fX + (iPrime * a).x;
-                periapsis.fY = centroid.fY + (iPrime * a).y;
+                periapsis.x = centroid.x + (iPrime * a).x;
+                periapsis.y = centroid.y + (iPrime * a).y;
                 e = sqrt(1 - ((b * b) / (a * a)));
                 ratio = sqrt(1 - (e*e));
                 ae = a * e;
@@ -2588,7 +2588,7 @@ private:
                 apoapsis = apseHat;
                 apoapsis.Scale(-1 * a);
                 apoapsis = centroid + apoapsis;
-                phi = atan2(apseHat.fY, apseHat.fX);
+                phi = atan2(apseHat.y, apseHat.x);
                 num = a * (1 - (e * e));
             }
         }
@@ -2616,11 +2616,11 @@ private:
             if (i > 0) {theta = theta + radianShift;}
             r = num / (1 + (e * cos(theta)));
             // r(pi/2) is semi-latus rectum, if we need it
-            pos.fX = r*cos(theta+phi);  // phi rotates, sin/cos translate
-            pos.fY = r*sin(theta+phi);
+            pos.x = r*cos(theta+phi);  // phi rotates, sin/cos translate
+            pos.y = r*sin(theta+phi);
             pos = pos + f;
-            posPrime.fX = r*cos(theta+phi+M_PI);
-            posPrime.fY = r*sin(theta+phi+M_PI);
+            posPrime.x = r*cos(theta+phi+M_PI);
+            posPrime.y = r*sin(theta+phi+M_PI);
             posPrime = posPrime + fPrime;
             // over the loop, loads Quadrant I points, by using f as origin
             editCurve[i] = pos;
@@ -2628,13 +2628,13 @@ private:
             editCurve[(2*n) + i] = posPrime;
             // load points with negative theta angles (i.e. cw)
             if (i>0) {
-                pos.fX = r*cos(-1*theta+phi);
-                pos.fY = r*sin(-1*theta+phi);
+                pos.x = r*cos(-1*theta+phi);
+                pos.y = r*sin(-1*theta+phi);
                 pos = pos + f;
                 // loads Quadrant IV points
                 editCurve[(4*n) - i] = pos;
-                posPrime.fX = r*cos(-1*theta+phi+M_PI);
-                posPrime.fY = r*sin(-1*theta+phi+M_PI);
+                posPrime.x = r*cos(-1*theta+phi+M_PI);
+                posPrime.y = r*sin(-1*theta+phi+M_PI);
                 posPrime = posPrime + fPrime;
                 // loads Quadrant II points
                 editCurve[(2*n) - i] = posPrime;
@@ -2643,12 +2643,12 @@ private:
         // load pos & neg b points
         theta = M_PI - atan2(b, ae);        // the angle from f to the positive b point
         r = num / (1 + (e * cos(theta)));
-        pos.fX = r*cos(theta+phi);
-        pos.fY = r*sin(theta+phi);
+        pos.x = r*cos(theta+phi);
+        pos.y = r*sin(theta+phi);
         pos = pos + f;
         editCurve[n] = pos; // positive
-        pos.fX = r*cos(-1*theta+phi);
-        pos.fY = r*sin(-1*theta+phi);
+        pos.x = r*cos(-1*theta+phi);
+        pos.y = r*sin(-1*theta+phi);
         pos = pos + f;
         editCurve[(3*n)] = pos; // negative
         // force the curve to be a closed shape
@@ -2659,7 +2659,7 @@ private:
      * @brief Prints the ellipse data to STDOUT as an GNU Octave script
      * @param onSketchPos position of the cursor on the sketch
      */
-    void ellipseToOctave(Base::Vector2D /*onSketchPos*/)
+    void ellipseToOctave(Base::Vector2d /*onSketchPos*/)
     {
         int n = static_cast<int>((editCurve.size() - 1) / 4);
 
@@ -2667,20 +2667,20 @@ private:
         std::ostringstream octave;
         octave << std::fixed << std::setprecision(12);
         octave << "\nclear all;\nclose all;\nclc;\n\n";
-        octave << "periapsis = [" << periapsis.fX << ", " << periapsis.fY << "];\n";
-        octave << "apoapsis = [" << apoapsis.fX << ", " << apoapsis.fY << "];\n";
-        octave << "positiveB = [" << editCurve[n].fX << ", " << editCurve[n].fY << "];\n";
-        octave << "apseHat = [" << apseHat.fX << ", " << apseHat.fY << "];\n";
+        octave << "periapsis = [" << periapsis.x << ", " << periapsis.y << "];\n";
+        octave << "apoapsis = [" << apoapsis.x << ", " << apoapsis.y << "];\n";
+        octave << "positiveB = [" << editCurve[n].x << ", " << editCurve[n].y << "];\n";
+        octave << "apseHat = [" << apseHat.x << ", " << apseHat.y << "];\n";
         octave << "a = " << a << ";\n";
         octave << "b = " << b << ";\n";
         octave << "eccentricity = " << e << ";\n";
-        octave << "centroid = [" << centroid.fX << ", " << centroid.fY << "];\n";
-        octave << "f = [" << f.fX << ", " << f.fY << "];\n";
-        octave << "fPrime = [" << fPrime.fX << ", " << fPrime.fY << "];\n";
+        octave << "centroid = [" << centroid.x << ", " << centroid.y << "];\n";
+        octave << "f = [" << f.x << ", " << f.y << "];\n";
+        octave << "fPrime = [" << fPrime.x << ", " << fPrime.y << "];\n";
         octave << "phi = " << phi << ";\n\n";
         octave << "x = [";
         for (int i=0; i < 4*n + 1; i++) {
-            octave << editCurve[i].fX;
+            octave << editCurve[i].x;
             if (i < 4*n) {
                 octave << ", ";
             }
@@ -2688,7 +2688,7 @@ private:
         octave << "];\n";
         octave << "y = [";
         for (int i=0; i < 4*n + 1; i++) {
-            octave << editCurve[i].fY;
+            octave << editCurve[i].y;
             if (i < 4*n) {
                 octave << ", ";
             }
@@ -2762,18 +2762,18 @@ private:
         char py[64];
         char ax[64];
         char ay[64];
-        sprintf(cx, "%.6lf\n", centroid.fX);
-        sprintf(cy, "%.6lf\n", centroid.fY);
-        sprintf(px, "%.6lf\n", periapsis.fX);
-        sprintf(py, "%.6lf\n", periapsis.fY);
-        sprintf(ax, "%.6lf\n", apoapsis.fX);
-        sprintf(ay, "%.6lf\n", apoapsis.fY);
-        centroid.fX = atof(cx);
-        centroid.fY = atof(cy);
-        periapsis.fX = atof(px);
-        periapsis.fY = atof(py);
-        apoapsis.fX = atof(ax);
-        apoapsis.fY = atof(ay);
+        sprintf(cx, "%.6lf\n", centroid.x);
+        sprintf(cy, "%.6lf\n", centroid.y);
+        sprintf(px, "%.6lf\n", periapsis.x);
+        sprintf(py, "%.6lf\n", periapsis.y);
+        sprintf(ax, "%.6lf\n", apoapsis.x);
+        sprintf(ay, "%.6lf\n", apoapsis.y);
+        centroid.x = atof(cx);
+        centroid.y = atof(cy);
+        periapsis.x = atof(px);
+        periapsis.y = atof(py);
+        apoapsis.x = atof(ax);
+        apoapsis.y = atof(ay);
         double majorLength = (periapsis - apoapsis).Length();
         double minorLength = 0;
 
@@ -2781,7 +2781,7 @@ private:
          * from centroid to periapsis, +Z out of the page.
          */
         Base::Vector3d k(0,0,1);
-        Base::Vector3d i(periapsis.fX - centroid.fX, periapsis.fY - centroid.fY, 0);
+        Base::Vector3d i(periapsis.x - centroid.x, periapsis.y - centroid.y, 0);
         Base::Vector3d j = k % i;   // j = k cross i
         double beta = 1e-7;
         int count = 0;
@@ -2795,25 +2795,25 @@ private:
         do {
             tempB = b - double(count * beta);
             j = j.Normalize() * tempB;
-            positiveB.fX = centroid.fX + j.x;
-            positiveB.fY = centroid.fY + j.y;
-            negativeB.fX = centroid.fX + (j.x * -1);
-            negativeB.fY = centroid.fY + (j.y * -1);
+            positiveB.x = centroid.x + j.x;
+            positiveB.y = centroid.y + j.y;
+            negativeB.x = centroid.x + (j.x * -1);
+            negativeB.y = centroid.y + (j.y * -1);
             char bpx[64];
             char bpy[64];
             char bnx[64];
             char bny[64];
-            sprintf(bpx, "%.6lf\n", positiveB.fX);
-            sprintf(bpy, "%.6lf\n", positiveB.fY);
-            sprintf(bnx, "%.6lf\n", negativeB.fX);
-            sprintf(bny, "%.6lf\n", negativeB.fY);
-            positiveB.fX = atof(bpx);
-            positiveB.fY = atof(bpy);
-            negativeB.fX = atof(bnx);
-            negativeB.fY = atof(bny);
-            GC_MakeEllipse me(gp_Pnt(periapsis.fX,periapsis.fY,0),
-                              gp_Pnt(positiveB.fX,positiveB.fY,0),
-                              gp_Pnt(centroid.fX,centroid.fY,0));
+            sprintf(bpx, "%.6lf\n", positiveB.x);
+            sprintf(bpy, "%.6lf\n", positiveB.y);
+            sprintf(bnx, "%.6lf\n", negativeB.x);
+            sprintf(bny, "%.6lf\n", negativeB.y);
+            positiveB.x = atof(bpx);
+            positiveB.y = atof(bpy);
+            negativeB.x = atof(bnx);
+            negativeB.y = atof(bny);
+            GC_MakeEllipse me(gp_Pnt(periapsis.x,periapsis.y,0),
+                              gp_Pnt(positiveB.x,positiveB.y,0),
+                              gp_Pnt(centroid.x,centroid.y,0));
             minorLength = (negativeB - positiveB).Length();
             count++;
             success = me.IsDone() && (minorLength + beta < majorLength);
@@ -2841,9 +2841,9 @@ private:
                                     "App.ActiveDocument.%s.addGeometry(Part.Ellipse"
                                     "(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                                     sketchgui->getObject()->getNameInDocument(),
-                                    periapsis.fX, periapsis.fY,
-                                    positiveB.fX, positiveB.fY,
-                                    centroid.fX, centroid.fY,
+                                    periapsis.x, periapsis.y,
+                                    positiveB.x, positiveB.y,
+                                    centroid.x, centroid.y,
                                     geometryCreationMode==Construction?"True":"False");
 
             currentgeoid++;
@@ -3063,24 +3063,24 @@ public:
         setCursor(QPixmap(cursor_createarcofellipse),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) { // TODO: ellipse prio 1
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) { // TODO: ellipse prio 1
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            double rx0 = onSketchPos.fX - EditCurve[0].fX;
-            double ry0 = onSketchPos.fY - EditCurve[0].fY;
+            double rx0 = onSketchPos.x - EditCurve[0].x;
+            double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i=0; i < 16; i++) {
                 double angle = i*M_PI/16.0;
                 double rx = rx0 * cos(angle) + ry0 * sin(angle);
                 double ry = -rx0 * sin(angle) + ry0 * cos(angle);
-                EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + rx, EditCurve[0].fY + ry);
-                EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - rx, EditCurve[0].fY - ry);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
             }
             EditCurve[33] = EditCurve[1];
 
@@ -3101,18 +3101,18 @@ public:
         else if (Mode==STATUS_SEEK_Third) {                       
             // angle between the major axis of the ellipse and the X axis
             double a = (EditCurve[1]-EditCurve[0]).Length();
-            double phi = atan2(EditCurve[1].fY-EditCurve[0].fY,EditCurve[1].fX-EditCurve[0].fX);
+            double phi = atan2(EditCurve[1].y-EditCurve[0].y,EditCurve[1].x-EditCurve[0].x);
             
             // This is the angle at cursor point
-            double angleatpoint = acos((onSketchPos.fX-EditCurve[0].fX+(onSketchPos.fY-EditCurve[0].fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
-            double b=(onSketchPos.fY-EditCurve[0].fY-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi));
+            double angleatpoint = acos((onSketchPos.x-EditCurve[0].x+(onSketchPos.y-EditCurve[0].y)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
+            double b=(onSketchPos.y-EditCurve[0].y-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi));
                         
             for (int i=1; i < 16; i++) {
                 double angle = i*M_PI/16.0;
                 double rx = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi); 
                 double ry = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
-                EditCurve[1+i] = Base::Vector2D(EditCurve[0].fX + rx, EditCurve[0].fY + ry);
-                EditCurve[17+i] = Base::Vector2D(EditCurve[0].fX - rx, EditCurve[0].fY - ry);
+                EditCurve[1+i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
+                EditCurve[17+i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
             }
             EditCurve[33] = EditCurve[1];
             EditCurve[17] = EditCurve[16];
@@ -3123,7 +3123,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -3131,18 +3131,18 @@ public:
         else if (Mode==STATUS_SEEK_Fourth) { // here we differ from ellipse creation
             // angle between the major axis of the ellipse and the X axis
             double a = (axisPoint-centerPoint).Length();
-            double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
+            double phi = atan2(axisPoint.y-centerPoint.y,axisPoint.x-centerPoint.x);
             
             // This is the angle at cursor point
-            double angleatpoint = acos((startingPoint.fX-centerPoint.fX+(startingPoint.fY-centerPoint.fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
-            double b=abs((startingPoint.fY-centerPoint.fY-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi)));
+            double angleatpoint = acos((startingPoint.x-centerPoint.x+(startingPoint.y-centerPoint.y)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
+            double b=abs((startingPoint.y-centerPoint.y-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi)));
             
-            double rxs = startingPoint.fX - centerPoint.fX;
-            double rys = startingPoint.fY - centerPoint.fY;
+            double rxs = startingPoint.x - centerPoint.x;
+            double rys = startingPoint.y - centerPoint.y;
             startAngle = atan2(a*(rys*cos(phi)-rxs*sin(phi)), b*(rxs*cos(phi)+rys*sin(phi))); // eccentric anomaly angle
             
-            double angle1 = atan2(a*((onSketchPos.fY - centerPoint.fY)*cos(phi)-(onSketchPos.fX - centerPoint.fX)*sin(phi)), 
-                                  b*((onSketchPos.fX - centerPoint.fX)*cos(phi)+(onSketchPos.fY - centerPoint.fY)*sin(phi)))- startAngle;
+            double angle1 = atan2(a*((onSketchPos.y - centerPoint.y)*cos(phi)-(onSketchPos.x - centerPoint.x)*sin(phi)),
+                                  b*((onSketchPos.x - centerPoint.x)*cos(phi)+(onSketchPos.y - centerPoint.y)*sin(phi)))- startAngle;
             
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
@@ -3151,7 +3151,7 @@ public:
                 double angle = startAngle+i*arcAngle/34.0;
                 double rx = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi); 
                 double ry = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
-                EditCurve[i] = Base::Vector2D(centerPoint.fX + rx, centerPoint.fY + ry);
+                EditCurve[i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
             }
 //             EditCurve[33] = EditCurve[1];
 //             EditCurve[17] = EditCurve[16];
@@ -3162,7 +3162,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
             }
@@ -3173,7 +3173,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3199,7 +3199,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_Close) {
@@ -3208,14 +3208,14 @@ public:
             
             // angle between the major axis of the ellipse and the X axisEllipse
             double a = (axisPoint-centerPoint).Length();
-            double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
+            double phi = atan2(axisPoint.y-centerPoint.y,axisPoint.x-centerPoint.x);
             
             // This is the angle at cursor point
-            double angleatpoint = acos((startingPoint.fX-centerPoint.fX+(startingPoint.fY-centerPoint.fY)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
-            double b=abs((startingPoint.fY-centerPoint.fY-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi)));
+            double angleatpoint = acos((startingPoint.x-centerPoint.x+(startingPoint.y-centerPoint.y)*tan(phi))/(a*(cos(phi)+tan(phi)*sin(phi))));
+            double b=abs((startingPoint.y-centerPoint.y-a*cos(angleatpoint)*sin(phi))/(sin(angleatpoint)*cos(phi)));
             
-            double angle1 = atan2(a*((endPoint.fY - centerPoint.fY)*cos(phi)-(endPoint.fX - centerPoint.fX)*sin(phi)), 
-                                  b*((endPoint.fX - centerPoint.fX)*cos(phi)+(endPoint.fY - centerPoint.fY)*sin(phi)))- startAngle;
+            double angle1 = atan2(a*((endPoint.y - centerPoint.y)*cos(phi)-(endPoint.x - centerPoint.x)*sin(phi)),
+                                  b*((endPoint.x - centerPoint.x)*cos(phi)+(endPoint.y - centerPoint.y)*sin(phi)))- startAngle;
             
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI ;
             arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;
@@ -3230,7 +3230,7 @@ public:
                 isOriginalArcCCW=false;
             }
             
-            Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
+            Base::Vector2d majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
             // We always create a CCW ellipse, because we want our XY reference system to be in the +X +Y direction
             // Our normal will then always be in the +Z axis (local +Z axis of the sketcher)
             
@@ -3238,7 +3238,7 @@ public:
             {
                 // force second semidiameter to be perpendicular to first semidiamater
                 majAxisDir = axisPoint - centerPoint;
-                Base::Vector2D perp(-majAxisDir.fY,majAxisDir.fX);
+                Base::Vector2d perp(-majAxisDir.y,majAxisDir.x);
                 perp.Normalize();
                 perp.Scale(abs(b));
                 minAxisPoint = centerPoint+perp;
@@ -3247,7 +3247,7 @@ public:
             else {
                 // force second semidiameter to be perpendicular to first semidiamater
                 minAxisDir = axisPoint - centerPoint;
-                Base::Vector2D perp(minAxisDir.fY,-minAxisDir.fX);
+                Base::Vector2d perp(minAxisDir.y,-minAxisDir.x);
                 perp.Normalize();
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint+perp; 
@@ -3268,9 +3268,9 @@ public:
                     "(Part.Ellipse(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
                     "%f,%f),%s)",
                         sketchgui->getObject()->getNameInDocument(),
-                        majAxisPoint.fX, majAxisPoint.fY,
-                        minAxisPoint.fX, minAxisPoint.fY,
-                        centerPoint.fX, centerPoint.fY,
+                        majAxisPoint.x, majAxisPoint.y,
+                        minAxisPoint.x, minAxisPoint.y,
+                        centerPoint.x, centerPoint.y,
                         startAngle, endAngle,
                         geometryCreationMode==Construction?"True":"False");
 
@@ -3353,8 +3353,8 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D centerPoint, axisPoint, startingPoint, endPoint;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
@@ -3566,11 +3566,11 @@ public:
         setCursor(QPixmap(cursor_create3pointcircle),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f), 
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
                 // Disable tangent snap on 1st point
                 if (sugConstr1.back().Type == Sketcher::Tangent)
@@ -3592,8 +3592,8 @@ public:
             for (int i=1; i < N; i++) {
                 // Start at current angle
                 double angle = i*2*M_PI/N + lineAngle; // N point closed circle has N segments
-                EditCurve[i] = Base::Vector2D(CenterPoint.fX + radius*cos(angle),
-                                              CenterPoint.fY + radius*sin(angle));
+                EditCurve[i] = Base::Vector2d(CenterPoint.x + radius*cos(angle),
+                                              CenterPoint.y + radius*sin(angle));
             }
             // Beginning and end of curve should be exact
             EditCurve[0] = EditCurve[N] = onSketchPos;
@@ -3606,7 +3606,7 @@ public:
 
             sketchgui->drawEdit(EditCurve);
             if (Mode == STATUS_SEEK_Second) {
-                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f), 
+                if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                        AutoConstraint::CURVE)) {
                     // Disable tangent snap on 2nd point
                     if (sugConstr2.back().Type == Sketcher::Tangent)
@@ -3617,7 +3617,7 @@ public:
                 }
             }
             else {
-                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.0,0.0), 
+                if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0,0.0),
                                        AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
@@ -3627,7 +3627,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode == STATUS_SEEK_First) {
             // N point curve + center + endpoint
@@ -3652,7 +3652,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         // Need to look at.  rx might need fixing.
@@ -3666,7 +3666,7 @@ public:
                     "App.ActiveDocument.%s.addGeometry(Part.Circle"
                     "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
                           sketchgui->getObject()->getNameInDocument(),
-                          CenterPoint.fX, CenterPoint.fY,
+                          CenterPoint.x, CenterPoint.y,
                           radius,
                           geometryCreationMode==Construction?"True":"False");
 
@@ -3726,8 +3726,8 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D CenterPoint, FirstPoint, SecondPoint;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
     double radius, N; // N should be even
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
@@ -3911,24 +3911,24 @@ public:
         setCursor(QPixmap(cursor_createpoint),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         setPositionText(onSketchPos);
-        if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2D(0.f,0.f))) {
+        if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
             renderSuggestConstraintsCursor(sugConstr);
             return;
         }
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         EditPoint = onSketchPos;
         selectionDone = true;
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (selectionDone){
@@ -3939,7 +3939,7 @@ public:
                 Gui::Command::openCommand("Add sketch point");
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
                           sketchgui->getObject()->getNameInDocument(),
-                          EditPoint.fX,EditPoint.fY);
+                          EditPoint.x,EditPoint.y);
 
                 Gui::Command::commitCommand();
             }
@@ -3981,7 +3981,7 @@ public:
     }
 protected:
     bool selectionDone;
-    Base::Vector2D EditPoint;
+    Base::Vector2d EditPoint;
     std::vector<AutoConstraint> sugConstr;
 };
 
@@ -4172,18 +4172,18 @@ public:
         setCursor(QPixmap(cursor_createfillet),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         bool construction=false;
         int VtId = sketchgui->getPreselectPoint();
@@ -4270,21 +4270,21 @@ public:
                     Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName()
                                                  ,sketchgui->getSketchObject()->getNameInDocument()
                                                  ,ss.str().c_str()
-                                                 ,onSketchPos.fX
-                                                 ,onSketchPos.fY
+                                                 ,onSketchPos.x
+                                                 ,onSketchPos.y
                                                  ,0.f);
                 }
                 else if (Mode==STATUS_SEEK_Second) {
                     int secondCurve = GeoId;
-                    Base::Vector2D secondPos = onSketchPos;
+                    Base::Vector2d secondPos = onSketchPos;
 
                     // guess fillet radius
                     const Part::GeomLineSegment *lineSeg1 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(firstCurve));
                     const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment *>
                                                             (sketchgui->getSketchObject()->getGeometry(secondCurve));
-                    Base::Vector3d refPnt1(firstPos.fX, firstPos.fY, 0.f);
-                    Base::Vector3d refPnt2(secondPos.fX, secondPos.fY, 0.f);
+                    Base::Vector3d refPnt1(firstPos.x, firstPos.y, 0.f);
+                    Base::Vector3d refPnt2(secondPos.x, secondPos.y, 0.f);
                     double radius = Part::suggestFilletRadius(lineSeg1, lineSeg2, refPnt1, refPnt2);
                     if (radius < 0)
                         return false;
@@ -4298,8 +4298,8 @@ public:
                         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.fillet(%d,%d,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%f)",
                                   sketchgui->getObject()->getNameInDocument(),
                                   firstCurve, secondCurve,
-                                  firstPos.fX, firstPos.fY,
-                                  secondPos.fX, secondPos.fY, radius);
+                                  firstPos.x, firstPos.y,
+                                  secondPos.x, secondPos.y, radius);
                         Gui::Command::commitCommand();
                     }
                     catch (const Base::Exception& e) {
@@ -4336,7 +4336,7 @@ public:
 protected:
     SelectMode Mode;
     int firstCurve;
-    Base::Vector2D firstPos;
+    Base::Vector2d firstPos;
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateFillet);
@@ -4459,18 +4459,18 @@ public:
         setCursor(QPixmap(cursor_trimming),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         int GeoId = sketchgui->getPreselectCurve();
         if (GeoId > -1) {
@@ -4484,7 +4484,7 @@ public:
                     Gui::Command::openCommand("Trim edge");
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.trim(%d,App.Vector(%f,%f,0))",
                               sketchgui->getObject()->getNameInDocument(),
-                              GeoId, onSketchPos.fX, onSketchPos.fY);
+                              GeoId, onSketchPos.x, onSketchPos.y);
                     Gui::Command::commitCommand();
                     
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
@@ -4667,20 +4667,20 @@ public:
         sketchgui->setAxisPickStyle(true);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Gui::Selection().getPreselection().pObjectName)
             applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         /* this is ok not to call to purgeHandler
@@ -4830,19 +4830,19 @@ public:
         setCursor(QPixmap(cursor_creatslot),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
 
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            float dx = onSketchPos.fX - StartPos.fX;
-            float dy = onSketchPos.fY - StartPos.fY;
+            float dx = onSketchPos.x - StartPos.x;
+            float dy = onSketchPos.y - StartPos.y;
 
             lx=0;ly=0;a=0;
             double rev = 0;
@@ -4862,10 +4862,10 @@ public:
                 double angle = (i+a)*M_PI/16.0;
                 double rx = -fabs(r)* rev * sin(angle) ;
                 double ry = fabs(r) * rev *cos(angle) ;
-                EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
-                EditCurve[18+i] = Base::Vector2D(StartPos.fX - rx+lx, StartPos.fY - ry+ly);
+                EditCurve[i] = Base::Vector2d(StartPos.x + rx, StartPos.y + ry);
+                EditCurve[18+i] = Base::Vector2d(StartPos.x - rx+lx, StartPos.y - ry+ly);
             }
-            EditCurve[17] = EditCurve[16] + Base::Vector2D(lx,ly);
+            EditCurve[17] = EditCurve[16] + Base::Vector2d(lx,ly);
             EditCurve[35] = EditCurve[0] ;
             //EditCurve[34] = EditCurve[0];
 
@@ -4874,7 +4874,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -4883,7 +4883,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             StartPos = onSketchPos;
@@ -4895,7 +4895,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -4935,14 +4935,14 @@ public:
                     "conList.append(Sketcher.Constraint('%s',%i))\n"
                     "conList.append(Sketcher.Constraint('Equal',%i,%i))\n"
                     "App.ActiveDocument.%s.addConstraint(conList)\n",
-                    StartPos.fX,StartPos.fY,  // center of the  arc1
+                    StartPos.x,StartPos.y,  // center of the  arc1
                     fabs(r),                  // radius arc1
                     start,end,                 // start and end angle of arc1
-                    StartPos.fX+lx,StartPos.fY+ly,    // center of the  arc2
+                    StartPos.x+lx,StartPos.y+ly,    // center of the  arc2
                     fabs(r),                          // radius arc2
                     end,start,                         // start and end angle of arc2
-                    EditCurve[16].fX,EditCurve[16].fY,EditCurve[17].fX,EditCurve[17].fY, // line1
-                    EditCurve[0].fX,EditCurve[0].fY,EditCurve[34].fX,EditCurve[34].fY, // line2
+                    EditCurve[16].x,EditCurve[16].y,EditCurve[17].x,EditCurve[17].y, // line1
+                    EditCurve[0].x,EditCurve[0].y,EditCurve[34].x,EditCurve[34].y, // line2
                     sketchgui->getObject()->getNameInDocument(), // the sketch
                     geometryCreationMode==Construction?"True":"False", // geometry as construction or not                                        
                     firstCurve,firstCurve+3, // tangent1
@@ -5007,9 +5007,9 @@ public:
     }
 protected:
     BoxMode Mode;
-    Base::Vector2D StartPos;
+    Base::Vector2d StartPos;
     double lx,ly,r,a;
-    std::vector<Base::Vector2D> EditCurve;
+    std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 
@@ -5121,33 +5121,33 @@ public:
         setCursor(QPixmap(cursor_createregularpolygon),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
 
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode==STATUS_SEEK_Second) {
-            EditCurve[0]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
-            EditCurve[Corners]= Base::Vector2D(onSketchPos.fX, onSketchPos.fY);
+            EditCurve[0]= Base::Vector2d(onSketchPos.x, onSketchPos.y);
+            EditCurve[Corners]= Base::Vector2d(onSketchPos.x, onSketchPos.y);
 
-            Base::Vector2D dV = onSketchPos - StartPos;
-            double rx = dV.fX;
-            double ry = dV.fY;
+            Base::Vector2d dV = onSketchPos - StartPos;
+            double rx = dV.x;
+            double ry = dV.y;
             for (int i=1; i < static_cast<int>(Corners); i++) {
                 const double old_rx = rx;
                 rx = cos_v * rx - sin_v * ry;
                 ry = cos_v * ry + sin_v * old_rx;
-                EditCurve[i] = Base::Vector2D(StartPos.fX + rx, StartPos.fY + ry);
+                EditCurve[i] = Base::Vector2d(StartPos.x + rx, StartPos.y + ry);
             }
 
             // Display radius for user
             const float radius = dV.Length();
-            const float angle = ( 180.0 / M_PI ) * atan2( dV.fY, dV.fX );
+            const float angle = ( 180.0 / M_PI ) * atan2( dV.y, dV.x );
 
             SbString text;
             text.sprintf(" (%.1fR %.1fdeg)", radius, angle );
@@ -5162,7 +5162,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             StartPos = onSketchPos;
@@ -5174,7 +5174,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D onSketchPos)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         Q_UNUSED(onSketchPos);
         if (Mode==STATUS_End){
@@ -5188,7 +5188,7 @@ public:
                         "ProfileLib.RegularPolygon.makeRegularPolygon('%s',%i,App.Vector(%f,%f,0),App.Vector(%f,%f,0),%s)",
                                             sketchgui->getObject()->getNameInDocument(),
                                             Corners,
-                                            StartPos.fX,StartPos.fY,EditCurve[0].fX,EditCurve[0].fY,
+                                            StartPos.x,StartPos.y,EditCurve[0].x,EditCurve[0].y,
                                             geometryCreationMode==Construction?"True":"False");
                 
                 Gui::Command::commitCommand();
@@ -5250,8 +5250,8 @@ protected:
     const double AngleOfSeparation;
     const double cos_v, sin_v;
     SelectMode Mode;
-    Base::Vector2D StartPos;
-    std::vector<Base::Vector2D> EditCurve;
+    Base::Vector2d StartPos;
+    std::vector<Base::Vector2d> EditCurve;
     std::vector<AutoConstraint> sugConstr1, sugConstr2;
 };
 

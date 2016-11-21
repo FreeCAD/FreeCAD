@@ -1059,9 +1059,9 @@ void ViewProviderMesh::getFacetsFromPolygon(const std::vector<SbVec2f>& picked,
 {
 #if 1
     const bool ok = true;
-    Base::Polygon2D polygon;
+    Base::Polygon2d polygon;
     for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-        polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+        polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
 
     // Get the attached mesh property
     Mesh::PropertyMeshKernel& meshProp = static_cast<Mesh::Feature*>(pcObject)->Mesh;
@@ -1289,9 +1289,9 @@ void ViewProviderMesh::trimMesh(const std::vector<SbVec2f>& polygon,
 {
     Mesh::MeshObject* mesh = static_cast<Mesh::Feature*>(pcObject)->Mesh.startEditing();
 
-    Base::Polygon2D polygon2d;
+    Base::Polygon2d polygon2d;
     for (std::vector<SbVec2f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
-        polygon2d.Add(Base::Vector2D((*it)[0],(*it)[1]));
+        polygon2d.Add(Base::Vector2d((*it)[0],(*it)[1]));
 
     Mesh::MeshObject::CutType type = inner ?
         Mesh::MeshObject::INNER :

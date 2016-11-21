@@ -34,7 +34,7 @@ class Ui_TaskCreateNodeSet;
 class SoEventCallback;
 
 namespace Base {
-class Polygon2D;
+class Polygon2d;
 }
 namespace App {
 class Property;
@@ -69,7 +69,7 @@ private Q_SLOTS:
 protected:
     Fem::FemSetNodesObject *pcObject;
     static void DefineNodesCallback(void * ud, SoEventCallback * n);
-    void DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj,bool);
+    void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool);
 
 protected:
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);

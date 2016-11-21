@@ -986,11 +986,11 @@ void CmdMeshTrimByPlane::activated(int)
         p3 = mat * p3;
         p4 = mat * p4;
 
-        Base::Polygon2D polygon2d;
-        polygon2d.Add(Base::Vector2D(p1.x, p1.y));
-        polygon2d.Add(Base::Vector2D(p2.x, p2.y));
-        polygon2d.Add(Base::Vector2D(p3.x, p3.y));
-        polygon2d.Add(Base::Vector2D(p4.x, p4.y));
+        Base::Polygon2d polygon2d;
+        polygon2d.Add(Base::Vector2d(p1.x, p1.y));
+        polygon2d.Add(Base::Vector2d(p2.x, p2.y));
+        polygon2d.Add(Base::Vector2d(p3.x, p3.y));
+        polygon2d.Add(Base::Vector2d(p4.x, p4.y));
 
         Mesh::MeshObject::CutType type = Mesh::MeshObject::INNER;
         mesh->trim(polygon2d, proj, type);

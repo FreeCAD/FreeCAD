@@ -1524,9 +1524,9 @@ PyObject*  MeshPy::cut(PyObject *args)
     polygon = tria.ProjectToFitPlane();
 
     Base::ViewProjMatrix proj(mat);
-    Base::Polygon2D polygon2d;
+    Base::Polygon2d polygon2d;
     for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
-        polygon2d.Add(Base::Vector2D(it->x, it->y));
+        polygon2d.Add(Base::Vector2d(it->x, it->y));
     getMeshObjectPtr()->cut(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return; 
@@ -1558,9 +1558,9 @@ PyObject*  MeshPy::trim(PyObject *args)
     polygon = tria.ProjectToFitPlane();
 
     Base::ViewProjMatrix proj(mat);
-    Base::Polygon2D polygon2d;
+    Base::Polygon2d polygon2d;
     for (std::vector<Base::Vector3f>::const_iterator it = polygon.begin(); it != polygon.end(); ++it)
-        polygon2d.Add(Base::Vector2D(it->x, it->y));
+        polygon2d.Add(Base::Vector2d(it->x, it->y));
     getMeshObjectPtr()->trim(polygon2d, proj, MeshObject::CutType(mode));
 
     Py_Return; 

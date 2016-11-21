@@ -119,8 +119,8 @@ int DrawParametricTemplate::drawLine(double x1, double y1, double x2, double y2)
 {
     TechDrawGeometry::Generic *line = new TechDrawGeometry::Generic();
 
-    line->points.push_back(Base::Vector2D(x1, y1));
-    line->points.push_back(Base::Vector2D(x2, y2));
+    line->points.push_back(Base::Vector2d(x1, y1));
+    line->points.push_back(Base::Vector2d(x2, y2));
 
     geom.push_back(line); // Push onto geometry stack
     return geom.size() -1;

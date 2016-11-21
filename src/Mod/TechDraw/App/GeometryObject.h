@@ -113,7 +113,7 @@ protected:
     std::vector<Vertex *> vertexGeom;
     std::vector<Face *> faceGeom;
 
-    bool findVertex(Base::Vector2D v);
+    bool findVertex(Base::Vector2d v);
 
     double Scale;
 

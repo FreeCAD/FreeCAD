@@ -103,10 +103,10 @@ protected:
 
 protected:
     Measure::Measurement *measurement;
-    double dist2Segs(Base::Vector2D s1,
-                     Base::Vector2D e1,
-                     Base::Vector2D s2,
-                     Base::Vector2D e2) const;
+    double dist2Segs(Base::Vector2d s1,
+                     Base::Vector2d e1,
+                     Base::Vector2d s2,
+                     Base::Vector2d e2) const;
 private:
     static const char* TypeEnums[];
     static const char* MeasureTypeEnums[];
