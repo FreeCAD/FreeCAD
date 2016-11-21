@@ -2451,8 +2451,8 @@ Base::Vector3d GeomArcOfParabola::getEndPoint() const
 
 Base::Vector3d GeomArcOfParabola::getCenter(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
-    gp_Ax1 axis = h->Axis();
+    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    gp_Ax1 axis = p->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
 }
@@ -2460,10 +2460,10 @@ Base::Vector3d GeomArcOfParabola::getCenter(void) const
 void GeomArcOfParabola::setCenter(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
 
     try {
-        h->SetLocation(p1);
+        p->SetLocation(p1);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();

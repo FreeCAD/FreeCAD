@@ -262,6 +262,8 @@ SET(Part_SRCS
     CrossSection.h
     Geometry.cpp
     Geometry.h
+    Geometry2d.cpp
+    Geometry2d.h
     ImportIges.cpp
     ImportIges.h
     ImportStep.cpp
