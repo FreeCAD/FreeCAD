@@ -101,46 +101,46 @@ BaseGeom::BaseGeom() :
 }
 
 
-std::vector<Base::Vector2D> BaseGeom::findEndPoints()
+std::vector<Base::Vector2d> BaseGeom::findEndPoints()
 {
-    std::vector<Base::Vector2D> result;
+    std::vector<Base::Vector2d> result;
 
     gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-    result.push_back(Base::Vector2D(p.X(),p.Y()));
+    result.push_back(Base::Vector2d(p.X(),p.Y()));
     p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-    result.push_back(Base::Vector2D(p.X(),p.Y()));
+    result.push_back(Base::Vector2d(p.X(),p.Y()));
 
     return result;
 }
 
 
-Base::Vector2D BaseGeom::getStartPoint()
+Base::Vector2d BaseGeom::getStartPoint()
 {
-    std::vector<Base::Vector2D> verts = findEndPoints();
+    std::vector<Base::Vector2d> verts = findEndPoints();
     return verts[0];
 }
 
 
-Base::Vector2D BaseGeom::getEndPoint()
+Base::Vector2d BaseGeom::getEndPoint()
 {
-    std::vector<Base::Vector2D> verts = findEndPoints();
+    std::vector<Base::Vector2d> verts = findEndPoints();
     return verts[1];
 }
 
 
-double BaseGeom::minDist(Base::Vector2D p)
+double BaseGeom::minDist(Base::Vector2d p)
 {
     double minDist = -1.0;
-    gp_Pnt pnt(p.fX,p.fY,0.0);
+    gp_Pnt pnt(p.x,p.y,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     minDist = TechDraw::DrawUtil::simpleMinDist(occEdge,v);
     return minDist;
 }
 
 //!find point on me nearest to p
-Base::Vector2D BaseGeom::nearPoint(const BaseGeom* p)
+Base::Vector2d BaseGeom::nearPoint(const BaseGeom* p)
 {
-    Base::Vector2D result(0.0,0.0);
+    Base::Vector2d result(0.0,0.0);
     TopoDS_Edge pEdge = p->occEdge;
     BRepExtrema_DistShapeShape extss(occEdge, pEdge);
     if (extss.IsDone()) {
@@ -148,16 +148,16 @@ Base::Vector2D BaseGeom::nearPoint(const BaseGeom* p)
         if (count != 0) {
             gp_Pnt p1;
             p1 = extss.PointOnShape1(1);
-            result =  Base::Vector2D(p1.X(),p1.Y());
+            result =  Base::Vector2d(p1.X(),p1.Y());
         }
     }
     return result;
 }
 
-Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
+Base::Vector2d BaseGeom::nearPoint(Base::Vector2d p)
 {
-    gp_Pnt pnt(p.fX,p.fY,0.0);
-    Base::Vector2D result(0.0,0.0);
+    gp_Pnt pnt(p.x,p.y,0.0);
+    Base::Vector2d result(0.0,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     BRepExtrema_DistShapeShape extss(occEdge, v);
     if (extss.IsDone()) {
@@ -165,7 +165,7 @@ Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
         if (count != 0) {
             gp_Pnt p1;
             p1 = extss.PointOnShape1(1);
-            result =  Base::Vector2D(p1.X(),p1.Y());
+            result =  Base::Vector2d(p1.X(),p1.Y());
         }
     }
     return result;
@@ -173,10 +173,10 @@ Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
 
 std::string BaseGeom::dump()
 {
-    Base::Vector2D start = getStartPoint();
-    Base::Vector2D end   = getEndPoint();
+    Base::Vector2d start = getStartPoint();
+    Base::Vector2d end   = getEndPoint();
     std::stringstream ss;
-    ss << "BaseGeom: s:(" << start.fX << "," << start.fY << ") e:(" << end.fX << "," << end.fY << ") ";
+    ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
     ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << visible << " rev: " << reversed;
     return ss.str();
 }
@@ -265,7 +265,7 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt &p = ellp.Location();
 
-    center = Base::Vector2D(p.X(), p.Y());
+    center = Base::Vector2d(p.X(), p.Y());
 
     major = ellp.MajorRadius();
     minor = ellp.MinorRadius();
@@ -296,9 +296,9 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
-    startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
-    midPnt = Base::Vector2D(m.X(), m.Y());
+    startPnt = Base::Vector2d(s.X(), s.Y());
+    endPnt = Base::Vector2d(ePt.X(), ePt.Y());
+    midPnt = Base::Vector2d(m.X(), m.Y());
 }
 
 
@@ -312,7 +312,7 @@ Circle::Circle(const TopoDS_Edge &e)
     const gp_Pnt& p = circ.Location();
 
     radius = circ.Radius();
-    center = Base::Vector2D(p.X(), p.Y());
+    center = Base::Vector2d(p.X(), p.Y());
 }
 
 
@@ -337,9 +337,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
-    startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
-    midPnt = Base::Vector2D(m.X(), m.Y());
+    startPnt = Base::Vector2d(s.X(), s.Y());
+    endPnt = Base::Vector2d(ePt.X(), ePt.Y());
+    midPnt = Base::Vector2d(m.X(), m.Y());
 }
 
 bool AOC::isOnArc(Base::Vector3d p)
@@ -363,7 +363,7 @@ bool AOC::isOnArc(Base::Vector3d p)
 
 double AOC::distToArc(Base::Vector3d p)
 {
-    Base::Vector2D p2(p.x,p.y);
+    Base::Vector2d p2(p.x,p.y);
     double result = minDist(p2);
     return result;
 }
@@ -406,14 +406,14 @@ Generic::Generic(const TopoDS_Edge &e)
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt &nodes = polygon->Nodes();
         for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
-            points.push_back(Base::Vector2D(nodes(i).X(), nodes(i).Y()));
+            points.push_back(Base::Vector2d(nodes(i).X(), nodes(i).Y()));
         }
     } else {
         //no polygon representation? approximate with line
         gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        points.push_back(Base::Vector2D(p.X(), p.Y()));
+        points.push_back(Base::Vector2d(p.X(), p.Y()));
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        points.push_back(Base::Vector2D(p.X(), p.Y()));
+        points.push_back(Base::Vector2d(p.X(), p.Y()));
     }
 }
 
@@ -471,9 +471,9 @@ BSpline::BSpline(const TopoDS_Edge &e)
         BezierSegment tempSegment;
         tempSegment.poles = 3;
         tempSegment.degree = 2;
-        tempSegment.pnts.push_back(Base::Vector2D(s.X(),s.Y()));
-        tempSegment.pnts.push_back(Base::Vector2D(m.X(),m.Y()));
-        tempSegment.pnts.push_back(Base::Vector2D(ePt.X(),ePt.Y()));
+        tempSegment.pnts.push_back(Base::Vector2d(s.X(),s.Y()));
+        tempSegment.pnts.push_back(Base::Vector2d(m.X(),m.Y()));
+        tempSegment.pnts.push_back(Base::Vector2d(ePt.X(),ePt.Y()));
         segments.push_back(tempSegment);
     } else {
         for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
@@ -486,7 +486,7 @@ BSpline::BSpline(const TopoDS_Edge &e)
             tempSegment.degree = bezier->Degree();
             for (int pole = 1; pole <= tempSegment.poles; ++pole) {
                 controlPoint = bezier->Pole(pole);
-                tempSegment.pnts.push_back(Base::Vector2D(controlPoint.X(), controlPoint.Y()));
+                tempSegment.pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
             }
             segments.push_back(tempSegment);
         }
@@ -519,7 +519,7 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
     }
     for (int i = 1; i <= poles; ++i) {
         gp_Pnt controlPoint = bez->Pole(i);
-        pnts.push_back(Base::Vector2D(controlPoint.X(), controlPoint.Y()));
+        pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
     }
 }
 
@@ -527,7 +527,7 @@ BezierSegment::BezierSegment(const TopoDS_Edge &e)
 //**** Vertex
 Vertex::Vertex(double x, double y)
 {
-    pnt = Base::Vector2D(x, y);
+    pnt = Base::Vector2d(x, y);
     extractType = ExtractionType::Plain;       //obs?
     visible = false;
     ref3D = -1;                        //obs. never used.
@@ -561,7 +561,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     } else {
         //start with first edge
         result.push_back(geoms[0]);
-        Base::Vector2D atPoint = (geoms[0])->getEndPoint();
+        Base::Vector2d atPoint = (geoms[0])->getEndPoint();
         used[0] = true;
         for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
             auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
@@ -586,7 +586,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 
 
 /*static*/ GeometryUtils::ReturnType GeometryUtils::nextGeom(
-        Base::Vector2D atPoint,
+        Base::Vector2d atPoint,
         BaseGeomPtrVector geoms,
         std::vector<bool> used,
         double tolerance )

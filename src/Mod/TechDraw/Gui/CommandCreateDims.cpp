@@ -1009,10 +1009,10 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2D line = gen1->points.at(1) - gen1->points.at(0);
-                if(fabs(line.fY) < FLT_EPSILON ) {
+                Base::Vector2d line = gen1->points.at(1) - gen1->points.at(0);
+                if(fabs(line.y) < FLT_EPSILON ) {
                     edgeType = isHorizontal;
-                } else if(fabs(line.fX) < FLT_EPSILON) {
+                } else if(fabs(line.x) < FLT_EPSILON) {
                     edgeType = isVertical;
                 } else {
                     edgeType = isDiagonal;
@@ -1079,15 +1079,15 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2D line0 = gen0->points.at(1) - gen0->points.at(0);
-                Base::Vector2D line1 = gen1->points.at(1) - gen1->points.at(0);
-                double xprod = fabs(line0.fX * line1.fY - line0.fY * line1.fX);
+                Base::Vector2d line0 = gen0->points.at(1) - gen0->points.at(0);
+                Base::Vector2d line1 = gen1->points.at(1) - gen1->points.at(0);
+                double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
                 if(xprod > FLT_EPSILON) {                              //edges are not parallel
                     return isAngle;
                 }
-                if(fabs(line0.fX) < FLT_EPSILON && fabs(line1.fX) < FLT_EPSILON) {   //both horizontal
+                if(fabs(line0.x) < FLT_EPSILON && fabs(line1.x) < FLT_EPSILON) {   //both horizontal
                     edgeType = isHorizontal;
-                } else if(fabs(line0.fY) < FLT_EPSILON && fabs(line1.fY) < FLT_EPSILON) {  //both vertical
+                } else if(fabs(line0.y) < FLT_EPSILON && fabs(line1.y) < FLT_EPSILON) {  //both vertical
                     edgeType = isVertical;
                 } else {
                     edgeType = isDiagonal;

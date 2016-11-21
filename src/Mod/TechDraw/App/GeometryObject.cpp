@@ -414,7 +414,7 @@ Base::BoundBox3d GeometryObject::calcBoundingBox() const
 }
 
 //! does this GeometryObject already have this vertex
-bool GeometryObject::findVertex(Base::Vector2D v)
+bool GeometryObject::findVertex(Base::Vector2d v)
 {
     bool found = false;
     std::vector<Vertex*>::iterator it = vertexGeom.begin();
