@@ -306,6 +306,11 @@ namespace Py
             return p == other.p;
         }
 
+        bool isNull() const
+        {
+            return p == NULL;
+        }
+
         bool isNone() const
         {
             return p == _None();

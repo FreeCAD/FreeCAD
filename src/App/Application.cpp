@@ -107,6 +107,7 @@
 #include "Expression.h"
 #include "Transactions.h"
 #include <App/MaterialPy.h>
+#include <Base/GeometryPyCXX.h>
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -245,6 +246,10 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::ProgressIndicatorPy::init_type();
     Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
         pBaseModule,"ProgressIndicator");
+
+    Base::Vector2dPy::init_type();
+    Base::Interpreter().addType(Base::Vector2dPy::type_object(),
+        pBaseModule,"Vector2d");
 }
 
 Application::~Application()
