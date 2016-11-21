@@ -89,7 +89,7 @@ DeriVector2 DeriVector2::divD(double val, double dval) const
                        );
 }
 
-DeriVector2 Curve::Value(double u, double du, double* derivparam)
+DeriVector2 Curve::Value(double /*u*/, double /*du*/, double* /*derivparam*/)
 {
     assert(false /*Value() is not implemented*/);
     return DeriVector2();
@@ -97,7 +97,7 @@ DeriVector2 Curve::Value(double u, double du, double* derivparam)
 
 //----------------Line
 
-DeriVector2 Line::CalculateNormal(Point &p, double* derivparam)
+DeriVector2 Line::CalculateNormal(Point &/*p*/, double* derivparam)
 {
     DeriVector2 p1v(p1, derivparam);
     DeriVector2 p2v(p2, derivparam);
