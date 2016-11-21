@@ -286,15 +286,15 @@ double DrawViewDimension::getDimValue() const
                 int idx = DrawUtil::getIndexFromName(subElements[0]);
                 TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
                 TechDrawGeometry::Generic* gen = static_cast<TechDrawGeometry::Generic*>(geom);
-                Base::Vector2D start = gen->points[0];
-                Base::Vector2D end = gen->points[1];
-                Base::Vector2D line = end - start;
+                Base::Vector2d start = gen->points[0];
+                Base::Vector2d end = gen->points[1];
+                Base::Vector2d line = end - start;
                 if (Type.isValue("Distance")) {
                     result = line.Length() / getViewPart()->Scale.getValue();
                 } else if (Type.isValue("DistanceX")) {
-                    return fabs(line.fX) / getViewPart()->Scale.getValue();
+                    return fabs(line.x) / getViewPart()->Scale.getValue();
                 } else {
-                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->Scale.getValue();
                 }
             }else if (getRefType() == twoEdge) {
                 //only works for straight line edges
@@ -304,35 +304,35 @@ double DrawViewDimension::getDimValue() const
                 TechDrawGeometry::BaseGeom* geom1 = getViewPart()->getProjEdgeByIndex(idx1);
                 TechDrawGeometry::Generic* gen0 = static_cast<TechDrawGeometry::Generic*>(geom0);
                 TechDrawGeometry::Generic* gen1 = static_cast<TechDrawGeometry::Generic*>(geom1);
-                Base::Vector2D s0 = gen0->points[0];
-                Base::Vector2D e0 = gen0->points[1];
-                Base::Vector2D s1 = gen1->points[0];
-                Base::Vector2D e1 = gen1->points[1];
+                Base::Vector2d s0 = gen0->points[0];
+                Base::Vector2d e0 = gen0->points[1];
+                Base::Vector2d s1 = gen1->points[0];
+                Base::Vector2d e1 = gen1->points[1];
                 if (Type.isValue("Distance")) {
                     result = dist2Segs(s0,e0,s1,e1) / getViewPart()->Scale.getValue();
                 } else if (Type.isValue("DistanceX")) {
-                    Base::Vector2D p1 = geom0->nearPoint(geom1);
-                    Base::Vector2D p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.fX - p2.fX) / getViewPart()->Scale.getValue();
+                    Base::Vector2d p1 = geom0->nearPoint(geom1);
+                    Base::Vector2d p2 = geom1->nearPoint(geom0);
+                    result = fabs(p1.x - p2.x) / getViewPart()->Scale.getValue();
                 } else if (Type.isValue("DistanceY")) {
-                    Base::Vector2D p1 = geom0->nearPoint(geom1);
-                    Base::Vector2D p2 = geom1->nearPoint(geom0);
-                    result = fabs(p1.fY - p2.fY) / getViewPart()->Scale.getValue();
+                    Base::Vector2d p1 = geom0->nearPoint(geom1);
+                    Base::Vector2d p2 = geom1->nearPoint(geom0);
+                    result = fabs(p1.y - p2.y) / getViewPart()->Scale.getValue();
                 }
             } else if (getRefType() == twoVertex) {
                 int idx0 = DrawUtil::getIndexFromName(subElements[0]);
                 int idx1 = DrawUtil::getIndexFromName(subElements[1]);
                 TechDrawGeometry::Vertex* v0 = getViewPart()->getProjVertexByIndex(idx0);
                 TechDrawGeometry::Vertex* v1 = getViewPart()->getProjVertexByIndex(idx1);
-                Base::Vector2D start = v0->pnt;
-                Base::Vector2D end = v1->pnt;
-                Base::Vector2D line = end - start;
+                Base::Vector2d start = v0->pnt;
+                Base::Vector2d end = v1->pnt;
+                Base::Vector2d line = end - start;
                 if (Type.isValue("Distance")) {
                     result = line.Length() / getViewPart()->Scale.getValue();
                 } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.fX) / getViewPart()->Scale.getValue();
+                    result = fabs(line.x) / getViewPart()->Scale.getValue();
                 } else {
-                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->Scale.getValue();
                 }
             } else if (getRefType() == vertexEdge) {
                 int idx0 = DrawUtil::getIndexFromName(subElements[0]);
@@ -346,14 +346,14 @@ double DrawViewDimension::getDimValue() const
                     e = getViewPart()->getProjEdgeByIndex(idx1);
                     v = getViewPart()->getProjVertexByIndex(idx0);
                 }
-                Base::Vector2D nearPoint = e->nearPoint(v->pnt);
-                Base::Vector2D line = nearPoint - v->pnt;
+                Base::Vector2d nearPoint = e->nearPoint(v->pnt);
+                Base::Vector2d line = nearPoint - v->pnt;
                 if (Type.isValue("Distance")) {
                     result = e->minDist(v->pnt) / getViewPart()->Scale.getValue();
                 } else if (Type.isValue("DistanceX")) {
-                    result = fabs(line.fX) / getViewPart()->Scale.getValue();
+                    result = fabs(line.x) / getViewPart()->Scale.getValue();
                 } else {
-                    result = fabs(line.fY) / getViewPart()->Scale.getValue();
+                    result = fabs(line.y) / getViewPart()->Scale.getValue();
                 }
             }  //else tarfu
         } else if(Type.isValue("Radius")){
@@ -371,7 +371,7 @@ double DrawViewDimension::getDimValue() const
         } else if(Type.isValue("Angle")){
             // Must project lines to 2D so cannot use measurement framework this time
             //Relcalculate the measurement based on references stored.
-            //WF: why not use projected geom in GeomObject and Vector2D.GetAngle? intersection pt & direction issues?
+            //WF: why not use projected geom in GeomObject and Vector2d.GetAngle? intersection pt & direction issues?
             //TODO: do we need to distinguish inner vs outer angle? -wf
 //            if(subElements.size() != 2) {
 //                throw Base::Exception("FVD - Two references required for angle measurement");
@@ -395,11 +395,11 @@ double DrawViewDimension::getDimValue() const
                 TechDrawGeometry::Generic *gen1 = static_cast<TechDrawGeometry::Generic *>(edge0);
                 TechDrawGeometry::Generic *gen2 = static_cast<TechDrawGeometry::Generic *>(edge1);
 
-                Base::Vector3d p1S(gen1->points.at(0).fX, gen1->points.at(0).fY, 0.);
-                Base::Vector3d p1E(gen1->points.at(1).fX, gen1->points.at(1).fY, 0.);
+                Base::Vector3d p1S(gen1->points.at(0).x, gen1->points.at(0).y, 0.);
+                Base::Vector3d p1E(gen1->points.at(1).x, gen1->points.at(1).y, 0.);
 
-                Base::Vector3d p2S(gen2->points.at(0).fX, gen2->points.at(0).fY, 0.);
-                Base::Vector3d p2E(gen2->points.at(1).fX, gen2->points.at(1).fY, 0.);
+                Base::Vector3d p2S(gen2->points.at(0).x, gen2->points.at(0).y, 0.);
+                Base::Vector3d p2E(gen2->points.at(1).x, gen2->points.at(1).y, 0.);
 
                 Base::Vector3d dir1 = p1E - p1S;
                 Base::Vector3d dir2 = p2E - p2S;
@@ -409,8 +409,8 @@ double DrawViewDimension::getDimValue() const
                 if ((det > 0 ? det : -det) < 1e-10)
                     throw Base::Exception("Invalid selection - Det = 0");
 
-                double c1 = dir1.y*gen1->points.at(0).fX - dir1.x*gen1->points.at(0).fY;
-                double c2 = dir2.y*gen2->points.at(1).fX - dir2.x*gen2->points.at(1).fY;
+                double c1 = dir1.y*gen1->points.at(0).x - dir1.x*gen1->points.at(0).y;
+                double c2 = dir2.y*gen2->points.at(1).x - dir2.x*gen2->points.at(1).y;
                 double x = (dir1.x*c2 - dir2.x*c1)/det;
                 double y = (dir1.y*c2 - dir2.y*c1)/det;
 
@@ -519,20 +519,20 @@ void DrawViewDimension::dumpRefs2D(char* text) const
     }
 }
 
-double DrawViewDimension::dist2Segs(Base::Vector2D s1,
-                                       Base::Vector2D e1,
-                                       Base::Vector2D s2,
-                                       Base::Vector2D e2) const
+double DrawViewDimension::dist2Segs(Base::Vector2d s1,
+                                       Base::Vector2d e1,
+                                       Base::Vector2d s2,
+                                       Base::Vector2d e2) const
 {
-    gp_Pnt start(s1.fX,s1.fY,0.0);
-    gp_Pnt end(e1.fX,e1.fY,0.0);
+    gp_Pnt start(s1.x,s1.y,0.0);
+    gp_Pnt end(e1.x,e1.y,0.0);
     TopoDS_Vertex v1 = BRepBuilderAPI_MakeVertex(start);
     TopoDS_Vertex v2 = BRepBuilderAPI_MakeVertex(end);
     BRepBuilderAPI_MakeEdge makeEdge1(v1,v2);
     TopoDS_Edge edge1 = makeEdge1.Edge();
 
-    start = gp_Pnt(s2.fX,s2.fY,0.0);
-    end = gp_Pnt(e2.fX,e2.fY,0.0);
+    start = gp_Pnt(s2.x,s2.y,0.0);
+    end = gp_Pnt(e2.x,e2.y,0.0);
     v1 = BRepBuilderAPI_MakeVertex(start);
     v2 = BRepBuilderAPI_MakeVertex(end);
     BRepBuilderAPI_MakeEdge makeEdge2(v1,v2);

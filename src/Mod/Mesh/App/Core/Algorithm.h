@@ -36,7 +36,7 @@
 
 namespace Base{
   class ViewProjMethod;
-  class Polygon2D;
+  class Polygon2d;
 }
 
 namespace MeshCore {
@@ -225,12 +225,12 @@ public:
    * bInner is \a false then all facets with at least one corner outside the polygon get deleted.
    * This algorithm is optimized by using a grid.
    */
-  void CheckFacets (const MeshFacetGrid &rclGrid, const Base::ViewProjMethod* pclProj, const Base::Polygon2D& rclPoly,
+  void CheckFacets (const MeshFacetGrid &rclGrid, const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly,
                     bool bInner, std::vector<unsigned long> &rclRes) const;
   /**
    * Does the same as the above method unless that it doesn't use a grid.
    */
-  void CheckFacets (const Base::ViewProjMethod* pclProj, const Base::Polygon2D& rclPoly,
+  void CheckFacets (const Base::ViewProjMethod* pclProj, const Base::Polygon2d& rclPoly,
                     bool bInner, std::vector<unsigned long> &rclRes) const;
   /**
    * Determines all facets of the given array \a raclFacetIndices that lie at the edge or that

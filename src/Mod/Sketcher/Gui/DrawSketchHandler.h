@@ -64,9 +64,9 @@ public:
 
     virtual void activated(ViewProviderSketch *){}
     virtual void deactivated(ViewProviderSketch *){}
-    virtual void mouseMove(Base::Vector2D onSketchPos)=0;
-    virtual bool pressButton(Base::Vector2D onSketchPos)=0;
-    virtual bool releaseButton(Base::Vector2D onSketchPos)=0;
+    virtual void mouseMove(Base::Vector2d onSketchPos)=0;
+    virtual bool pressButton(Base::Vector2d onSketchPos)=0;
+    virtual bool releaseButton(Base::Vector2d onSketchPos)=0;
     virtual bool onSelectionChanged(const Gui::SelectionChanges&) { return false; }
     virtual void registerPressedKey(bool /*pressed*/, int /*key*/){}
 
@@ -80,13 +80,13 @@ public:
     int getHighestCurveIndex(void);
 
     int seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
-                           const Base::Vector2D &Pos, const Base::Vector2D &Dir,
+                           const Base::Vector2d &Pos, const Base::Vector2d &Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
     void createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
                                int geoId, Sketcher::PointPos pointPos=Sketcher::none);
 
-    void setPositionText(const Base::Vector2D &Pos, const SbString &text);
-    void setPositionText(const Base::Vector2D &Pos);
+    void setPositionText(const Base::Vector2d &Pos, const SbString &text);
+    void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint> &suggestedConstraints);
 

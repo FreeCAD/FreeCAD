@@ -2272,14 +2272,14 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2D polygon;
+    Base::Polygon2d polygon;
     if (picked.size() == 2) {
         SbVec2f pt1 = picked[0];
         SbVec2f pt2 = picked[1];
-        polygon.Add(Base::Vector2D(pt1[0], pt1[1]));
-        polygon.Add(Base::Vector2D(pt1[0], pt2[1]));
-        polygon.Add(Base::Vector2D(pt2[0], pt2[1]));
-        polygon.Add(Base::Vector2D(pt2[0], pt1[1]));
+        polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
+        polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
+        polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
+        polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
 
         // when selecting from right to left then select by intersection
         // oterwise if the center is inside the rectangle
@@ -2288,7 +2288,7 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     }
     else {
         for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-            polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+            polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
     }
 
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -2315,12 +2315,12 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                     if (selectionMode == CENTER) {
                         Base::Vector3d pt2d;
                         pt2d = proj(bbox.GetCenter());
-                        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
+                        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
                             Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                         }
                     }
                     else {
-                        Base::BoundBox2D bbox2 = bbox.ProjectBox(&proj);
+                        Base::BoundBox2d bbox2 = bbox.ProjectBox(&proj);
                         if (bbox2.Intersect(polygon)) {
                             Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
                         }

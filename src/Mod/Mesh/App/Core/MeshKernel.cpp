@@ -698,7 +698,7 @@ void MeshKernel::RemoveInvalids ()
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj, 
-                           const Base::Polygon2D& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets) 
+                           const Base::Polygon2d& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets)
 {
     std::vector<unsigned long> aulFacets;
 
@@ -711,7 +711,7 @@ void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMet
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj,
-                           const Base::Polygon2D& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
+                           const Base::Polygon2d& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
 {
     MeshAlgorithm(*this).CheckFacets(rclGrid, pclProj, rclPoly, bInner, raclCutted);
     DeleteFacets(raclCutted);

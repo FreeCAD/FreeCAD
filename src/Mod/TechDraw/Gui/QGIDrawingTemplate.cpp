@@ -110,11 +110,11 @@ void QGIDrawingTemplate::draw()
 
             TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(*it);
 
-            path.moveTo(geom->points[0].fX, geom->points[0].fY);
-            std::vector<Base::Vector2D>::const_iterator it = geom->points.begin();
+            path.moveTo(geom->points[0].x, geom->points[0].y);
+            std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
 
             for(++it; it != geom->points.end(); ++it) {
-                path.lineTo((*it).fX, (*it).fY);
+                path.lineTo((*it).x, (*it).y);
             }
             break;
           }

@@ -345,7 +345,7 @@ void ViewProviderSketch::deactivateHandler()
 {
     assert(edit);
     if(edit->sketchHandler != 0){
-        std::vector<Base::Vector2D> editCurve;
+        std::vector<Base::Vector2d> editCurve;
         editCurve.clear();
         drawEdit(editCurve); // erase any line
         edit->sketchHandler->deactivated(this);
@@ -612,7 +612,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     return done;
                 }
                 case STATUS_SKETCH_UseHandler:
-                    return edit->sketchHandler->pressButton(Base::Vector2D(x,y));
+                    return edit->sketchHandler->pressButton(Base::Vector2d(x,y));
                 default:
                     return false;
             }
@@ -799,7 +799,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                         Gui::Command::openCommand("Drag Constraint");
                         for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
                             it != edit->DragConstraintSet.end(); ++it) {
-                            moveConstraint(*it, Base::Vector2D(x, y));
+                            moveConstraint(*it, Base::Vector2d(x, y));
                             //updateColor();
                         }
                         edit->PreselectConstraintSet = edit->DragConstraintSet;
@@ -823,7 +823,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler:
-                    return edit->sketchHandler->releaseButton(Base::Vector2D(x,y));
+                    return edit->sketchHandler->releaseButton(Base::Vector2d(x,y));
                 case STATUS_NONE:
                 default:
                     return false;
@@ -1108,7 +1108,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 Base::Vector3d vec(x-xInit,y-yInit,0);
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
                     if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, relative) == 0) {
-                        setPositionText(Base::Vector2D(x,y));
+                        setPositionText(Base::Vector2d(x,y));
                         draw(true);
                         signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
                     } else {
@@ -1122,7 +1122,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             if (edit->DragCurve != -1) {
                 Base::Vector3d vec(x-xInit,y-yInit,0);
                 if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
-                    setPositionText(Base::Vector2D(x,y));
+                    setPositionText(Base::Vector2d(x,y));
                     draw(true);
                     signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
                 } else {
@@ -1134,11 +1134,11 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
             if (edit->DragConstraintSet.empty() == false) {
                 for(std::set<int>::iterator it = edit->DragConstraintSet.begin();
                     it != edit->DragConstraintSet.end(); ++it)
-                    moveConstraint(*it, Base::Vector2D(x,y));
+                    moveConstraint(*it, Base::Vector2d(x,y));
             }
             return true;
         case STATUS_SKETCH_UseHandler:
-            edit->sketchHandler->mouseMove(Base::Vector2D(x,y));
+            edit->sketchHandler->mouseMove(Base::Vector2d(x,y));
             if (preselectChanged) {
                 this->drawConstraintIcons();
                 this->updateColor();
@@ -1166,7 +1166,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
     return false;
 }
 
-void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPos)
+void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPos)
 {
     // are we in edit?
     if (!edit)
@@ -1227,7 +1227,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                     angle = (startangle + endangle)/2;
                 }
                 else {
-                    Base::Vector3d tmpDir =  Base::Vector3d(toPos.fX, toPos.fY, 0) - p1;
+                    Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                     angle = atan2(tmpDir.y, tmpDir.x);
                 }
                 p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
@@ -1236,7 +1236,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
                 const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(geo);
                 double radius = circle->getRadius();
                 p1 = circle->getCenter();
-                Base::Vector3d tmpDir =  Base::Vector3d(toPos.fX, toPos.fY, 0) - p1;
+                Base::Vector3d tmpDir =  Base::Vector3d(toPos.x, toPos.y, 0) - p1;
                 double angle = atan2(tmpDir.y, tmpDir.x);
                 p2 = p1 + radius * Base::Vector3d(cos(angle),sin(angle),0.);
             }
@@ -1245,7 +1245,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         } else
             return;
 
-        Base::Vector3d vec = Base::Vector3d(toPos.fX, toPos.fY, 0) - p2;
+        Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p2;
 
         Base::Vector3d dir;
         if (Constr->Type == Distance || Constr->Type == Radius)
@@ -1263,7 +1263,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
             Constr->LabelDistance = vec.x * norm.x + vec.y * norm.y;
             if (Constr->Type == Distance ||
                 Constr->Type == DistanceX || Constr->Type == DistanceY) {
-                vec = Base::Vector3d(toPos.fX, toPos.fY, 0) - (p2 + p1) / 2;
+                vec = Base::Vector3d(toPos.x, toPos.y, 0) - (p2 + p1) / 2;
                 Constr->LabelPosition = vec.x * dir.x + vec.y * dir.y;
             }
         }
@@ -1325,7 +1325,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2D &toPo
         } else
             return;
 
-        Base::Vector3d vec = Base::Vector3d(toPos.fX, toPos.fY, 0) - p0;
+        Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
         Constr->LabelDistance = vec.Length()/2;
     }
 
@@ -1872,11 +1872,11 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     std::vector<SbVec2f> corners = viewer->getGLPolygon(corners0);
 
     // all calculations with polygon and proj are in dimensionless [0 1] screen coordinates
-    Base::Polygon2D polygon;
-    polygon.Add(Base::Vector2D(corners[0].getValue()[0], corners[0].getValue()[1]));
-    polygon.Add(Base::Vector2D(corners[0].getValue()[0], corners[1].getValue()[1]));
-    polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[1].getValue()[1]));
-    polygon.Add(Base::Vector2D(corners[1].getValue()[0], corners[0].getValue()[1]));
+    Base::Polygon2d polygon;
+    polygon.Add(Base::Vector2d(corners[0].getValue()[0], corners[0].getValue()[1]));
+    polygon.Add(Base::Vector2d(corners[0].getValue()[0], corners[1].getValue()[1]));
+    polygon.Add(Base::Vector2d(corners[1].getValue()[0], corners[1].getValue()[1]));
+    polygon.Add(Base::Vector2d(corners[1].getValue()[0], corners[0].getValue()[1]));
 
     Gui::ViewVolumeProjection proj(viewer->getSoRenderManager()->getCamera()->getViewVolume());
 
@@ -1908,7 +1908,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt0 = proj(pnt0);
             VertexId += 1;
 
-            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -1923,8 +1923,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt2 = proj(pnt2);
             VertexId += 2;
 
-            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
-            bool pnt2Inside = polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y));
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
+            bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
             if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
@@ -1952,7 +1952,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             Plm.multVec(pnt0, pnt0);
             pnt0 = proj(pnt0);
 
-            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -1972,7 +1972,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                                          0.f);
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
                         break;
                     }
@@ -1994,7 +1994,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             Plm.multVec(pnt0, pnt0);
             pnt0 = proj(pnt0);
 
-            if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2015,7 +2015,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = pnt0 + (cos(angle)*a)*majdir + sin(angle)*b*mindir;
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
                         break;
                     }
@@ -2045,21 +2045,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt1 = proj(pnt1);
             pnt2 = proj(pnt2);
 
-            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
             if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2087,7 +2087,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                                          0.f);
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
                         break;
                     }
@@ -2116,21 +2116,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt1 = proj(pnt1);
             pnt2 = proj(pnt2);
 
-            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
             if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
@@ -2159,7 +2159,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                     pnt = pnt0 + cos(angle)*a*majdir + sin(angle)*b*mindir;
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
                         break;
                     }
@@ -2181,7 +2181,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     }
 
     pnt0 = proj(Plm.getPosition());
-    if (polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y)))
+    if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y)))
         Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), "RootPoint");
 }
 
@@ -4108,7 +4108,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
     }
 }
 
-void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2D> &EditCurve)
+void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2d> &EditCurve)
 {
     assert(edit);
 
@@ -4118,8 +4118,8 @@ void ViewProviderSketch::drawEdit(const std::vector<Base::Vector2D> &EditCurve)
     int32_t *index = edit->EditCurveSet->numVertices.startEditing();
 
     int i=0; // setting up the line set
-    for (std::vector<Base::Vector2D>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++)
-        verts[i].setValue(it->fX,it->fY,zEdit);
+    for (std::vector<Base::Vector2d>::const_iterator it = EditCurve.begin(); it != EditCurve.end(); ++it,i++)
+        verts[i].setValue(it->x,it->y,zEdit);
 
     index[0] = EditCurve.size();
     edit->EditCurvesCoordinate->point.finishEditing();
@@ -4720,18 +4720,18 @@ void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 }
 
-void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos, const SbString &text)
+void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
     edit->textX->string = text;
-    edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
+    edit->textPos->translation = SbVec3f(Pos.x,Pos.y,zText);
 }
 
-void ViewProviderSketch::setPositionText(const Base::Vector2D &Pos)
+void ViewProviderSketch::setPositionText(const Base::Vector2d &Pos)
 {
     SbString text;
-    text.sprintf(" (%.1f,%.1f)", Pos.fX, Pos.fY);
+    text.sprintf(" (%.1f,%.1f)", Pos.x, Pos.y);
     edit->textX->string = text;
-    edit->textPos->translation = SbVec3f(Pos.fX,Pos.fY,zText);
+    edit->textPos->translation = SbVec3f(Pos.x,Pos.y,zText);
 }
 
 void ViewProviderSketch::resetPositionText(void)

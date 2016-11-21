@@ -35,7 +35,7 @@
 #include <Base/Matrix.h>
 
 namespace Base{
-  class Polygon2D;
+  class Polygon2d;
   class ViewProjMethod;
 }
 
@@ -408,13 +408,13 @@ public:
      * The facets to be deleted are returned with their geometric reprsentation.
      * @see CheckFacets().
      */
-    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod *pclP, const Base::Polygon2D& rclPoly, 
+    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod *pclP, const Base::Polygon2d& rclPoly,
                     bool bCutInner, std::vector<MeshGeomFacet> &raclFacets);
     /**
      * Does basically the same as method above unless that the facets to be deleted are returned with their
      * index number in the facet array of the mesh structure.
      */
-    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclP, const Base::Polygon2D& rclPoly, 
+    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclP, const Base::Polygon2d& rclPoly,
                     bool bCutInner, std::vector<unsigned long> &raclCutted);
     //@}
 

@@ -630,37 +630,37 @@ bool ParameterCorrection::GetUVParameters(double fSizeFactor)
         }
     }
 
-    std::vector<Base::Vector2D> vcProjPts;
-    Base::BoundBox2D clBBox;
+    std::vector<Base::Vector2d> vcProjPts;
+    Base::BoundBox2d clBBox;
 
     // Berechne die Koordinaten der transf. Punkte und projiz. diese auf die x,y-Ebene des neuen
     // Koordinatensystems
     for (int ii=_pvcPoints->Lower(); ii<=_pvcPoints->Upper(); ii++) {
         const gp_Pnt& pnt = (*_pvcPoints)(ii);
         Wm4::Vector3d clProjPnt = clRotMatTrans * Wm4::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
-        vcProjPts.push_back(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
-        clBBox.Add(Base::Vector2D(clProjPnt.X(), clProjPnt.Y()));
+        vcProjPts.push_back(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
+        clBBox.Add(Base::Vector2d(clProjPnt.X(), clProjPnt.Y()));
     }
 
-    if ((clBBox.fMaxX == clBBox.fMinX) || (clBBox.fMaxY == clBBox.fMinY))
+    if ((clBBox.MaxX == clBBox.MinX) || (clBBox.MaxY == clBBox.MinY))
         return false;
-    double tx = fSizeFactor*clBBox.fMinX-(fSizeFactor-1.0)*clBBox.fMaxX;
-    double ty = fSizeFactor*clBBox.fMinY-(fSizeFactor-1.0)*clBBox.fMaxY;
-    double fDeltaX = (2*fSizeFactor-1.0)*(clBBox.fMaxX - clBBox.fMinX);
-    double fDeltaY = (2*fSizeFactor-1.0)*(clBBox.fMaxY - clBBox.fMinY);
+    double tx = fSizeFactor*clBBox.MinX-(fSizeFactor-1.0)*clBBox.MaxX;
+    double ty = fSizeFactor*clBBox.MinY-(fSizeFactor-1.0)*clBBox.MaxY;
+    double fDeltaX = (2*fSizeFactor-1.0)*(clBBox.MaxX - clBBox.MinX);
+    double fDeltaY = (2*fSizeFactor-1.0)*(clBBox.MaxY - clBBox.MinY);
 
     // Berechne die u,v-Parameter mit u,v aus [0,1]
     _pvcUVParam->Init(gp_Pnt2d(0.0, 0.0));
     int ii=0;
-    if (clBBox.fMaxX - clBBox.fMinX >= clBBox.fMaxY - clBBox.fMinY) {
-        for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->fX-tx)/fDeltaX, (It2->fY-ty)/fDeltaY);
+    if (clBBox.MaxX - clBBox.MinX >= clBBox.MaxY - clBBox.MinY) {
+        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->x-tx)/fDeltaX, (It2->y-ty)/fDeltaY);
             ii++;
         }
     }
     else {
-        for (std::vector<Base::Vector2D>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
-            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->fY-ty)/fDeltaY, (It2->fX-tx)/fDeltaX);
+        for (std::vector<Base::Vector2d>::iterator It2=vcProjPts.begin(); It2!=vcProjPts.end(); ++It2) {
+            (*_pvcUVParam)(ii) = gp_Pnt2d((It2->y-ty)/fDeltaY, (It2->x-tx)/fDeltaX);
             ii++;
         }
     }

@@ -74,12 +74,12 @@ class TechDrawExport BaseGeom
         int ref3D;                      //obs?
         TopoDS_Edge occEdge;            //projected Edge
 
-        std::vector<Base::Vector2D> findEndPoints();
-        Base::Vector2D getStartPoint();
-        Base::Vector2D getEndPoint();
-        double minDist(Base::Vector2D p);
-        Base::Vector2D nearPoint(Base::Vector2D p);
-        Base::Vector2D nearPoint(const BaseGeom* p);
+        std::vector<Base::Vector2d> findEndPoints();
+        Base::Vector2d getStartPoint();
+        Base::Vector2d getEndPoint();
+        double minDist(Base::Vector2d p);
+        Base::Vector2d nearPoint(Base::Vector2d p);
+        Base::Vector2d nearPoint(const BaseGeom* p);
         static BaseGeom* baseFactory(TopoDS_Edge edge);
         std::string dump();
 };
@@ -93,7 +93,7 @@ class TechDrawExport Circle: public BaseGeom
         ~Circle() = default;
 
     public:
-        Base::Vector2D center;
+        Base::Vector2d center;
         double radius;
 };
 
@@ -104,7 +104,7 @@ class TechDrawExport Ellipse: public BaseGeom
         ~Ellipse() = default;
 
     public:
-        Base::Vector2D center;
+        Base::Vector2d center;
         double minor;
         double major;
 
@@ -119,9 +119,9 @@ class TechDrawExport AOE: public Ellipse
         ~AOE() = default;
 
     public:
-        Base::Vector2D startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
-        Base::Vector2D endPnt;
-        Base::Vector2D midPnt;
+        Base::Vector2d startPnt;  //TODO: The points are used for drawing, the angles for bounding box calcs - seems redundant
+        Base::Vector2d endPnt;
+        Base::Vector2d midPnt;
 
         /// Angle in radian
         double startAngle;
@@ -141,9 +141,9 @@ class TechDrawExport AOC: public Circle
         ~AOC() = default;
 
     public:
-        Base::Vector2D startPnt;
-        Base::Vector2D endPnt;
-        Base::Vector2D midPnt;
+        Base::Vector2d startPnt;
+        Base::Vector2d endPnt;
+        Base::Vector2d midPnt;
 
         /// Angle in radian  ??angle with horizontal?
         double startAngle;
@@ -170,8 +170,8 @@ public:
     int poles;
     int degree;
 
-    //Base::Vector2D pnts[4];
-    std::vector<Base::Vector2D> pnts;
+    //Base::Vector2d pnts[4];
+    std::vector<Base::Vector2d> pnts;
 };
 
 class TechDrawExport BSpline: public BaseGeom
@@ -192,7 +192,7 @@ class TechDrawExport Generic: public BaseGeom
         Generic();
         ~Generic() = default;
 
-       std::vector<Base::Vector2D> points;
+       std::vector<Base::Vector2d> points;
 };
 
 
@@ -222,19 +222,19 @@ class TechDrawExport Vertex
 {
     public:
         Vertex(double x, double y);
-        Vertex(Base::Vector2D v) : Vertex(v.fX,v.fY) {}
+        Vertex(Base::Vector2d v) : Vertex(v.x,v.y) {}
         ~Vertex() = default;
 
-        Base::Vector2D pnt;
+        Base::Vector2d pnt;
         ExtractionType extractType;       //obs?
         bool visible;
         int ref3D;                        //obs. never used.
         bool isCenter;
         TopoDS_Vertex occVertex;
         bool isEqual(Vertex* v, double tol);
-        Base::Vector3d getAs3D(void) {return Base::Vector3d(pnt.fX,pnt.fY,0.0);}
-        double x() {return pnt.fX;}
-        double y() {return pnt.fY;}
+        Base::Vector3d getAs3D(void) {return Base::Vector3d(pnt.x,pnt.y,0.0);}
+        double x() {return pnt.x;}
+        double y() {return pnt.y;}
 };
 
 /// Encapsulates some useful static methods
@@ -255,7 +255,7 @@ class TechDrawExport GeometryUtils
         /*!
          * returns index[1:geoms.size()),reversed [true,false]
          */
-        static ReturnType nextGeom( Base::Vector2D atPoint,
+        static ReturnType nextGeom( Base::Vector2d atPoint,
                                     std::vector<TechDrawGeometry::BaseGeom*> geoms,
                                     std::vector<bool> used,
                                     double tolerance );
