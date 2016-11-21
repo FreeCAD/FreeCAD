@@ -36,10 +36,11 @@ class DlgProcessorChooser : public QDialog
     Q_OBJECT
 
 public:
-    DlgProcessorChooser(std::vector<std::string> &scriptnames);
+    DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments = false);
     ~DlgProcessorChooser();
 
-    std::string getSelected();
+    std::string getProcessor();
+    std::string getArguments();
 
     void accept();
 
@@ -47,7 +48,7 @@ protected Q_SLOTS:
 
 private:
     Ui_DlgProcessorChooser* ui;
-    std::string entry;
+    std::string processor, arguments;
 };
 
 }

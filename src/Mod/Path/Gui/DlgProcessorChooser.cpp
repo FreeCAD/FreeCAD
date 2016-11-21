@@ -42,7 +42,7 @@ using namespace PathGui;
 
 /* TRANSLATOR PathGui::DlgProcessorChooser */
 
-DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames)
+DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames, bool withArguments)
   : QDialog(Gui::getMainWindow()), ui(new Ui_DlgProcessorChooser)
 {
     ui->setupUi(this);
@@ -50,23 +50,35 @@ DlgProcessorChooser::DlgProcessorChooser(std::vector<std::string> &scriptnames)
     for (std::vector<std::string>::const_iterator it = scriptnames.begin(); it != scriptnames.end(); ++it)
         ui->comboBox->addItem(QString::fromUtf8((*it).c_str()));
     QMetaObject::connectSlotsByName(this);
+    if (withArguments) {
+      ui->argsLabel->setEnabled(true);
+      ui->argsLineEdit->setEnabled(true);
+    }
 }
 
 DlgProcessorChooser::~DlgProcessorChooser()
 {
 }
 
-std::string DlgProcessorChooser::getSelected() 
+std::string DlgProcessorChooser::getProcessor()
 {
-    return entry;
+    return processor;
+}
+
+std::string DlgProcessorChooser::getArguments()
+{
+  return arguments;
 }
 
 void DlgProcessorChooser::accept()
 {
-    if (ui->comboBox->currentText() == tr("None"))
-        entry = "";
-    else
-        entry = ui->comboBox->currentText().toUtf8().data();
+    if (ui->comboBox->currentText() == tr("None")) {
+        processor = "";
+        arguments = "";
+    } else {
+        processor = ui->comboBox->currentText().toUtf8().data();
+        arguments = ui->argsLineEdit->text().toUtf8().data();
+    }
     QDialog::accept();
 }
 #include "moc_DlgProcessorChooser.cpp"

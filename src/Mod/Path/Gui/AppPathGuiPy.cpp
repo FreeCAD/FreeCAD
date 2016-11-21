@@ -95,16 +95,16 @@ private:
                 QFileInfo fileInfo = list.at(i);
                 scripts.push_back(fileInfo.baseName().toStdString());
             }
-            std::string selected;
+            std::string processor;
             PathGui::DlgProcessorChooser Dlg(scripts);
             if (Dlg.exec() != QDialog::Accepted) {
                 return Py::None();
             }
-            selected = Dlg.getSelected();
-        
+            processor = Dlg.getProcessor();
+
             std::ostringstream pre;
             std::ostringstream cmd;
-            if (selected.empty()) {
+            if (processor.empty()) {
                 App::Document *pcDoc = App::GetApplication().newDocument("Unnamed");
                 Gui::Command::runCommand(Gui::Command::Gui,"import Path");
                 cmd << "Path.read(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
@@ -112,14 +112,14 @@ private:
             } else {
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
-                    if (fileInfo.baseName().toStdString() == selected) {
+                    if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << selected;
+                            pre << "from PathScripts import " << processor;
                         } else {
-                            pre << "import " << selected;
+                            pre << "import " << processor;
                         }
                         Gui::Command::runCommand(Gui::Command::Gui,pre.str().c_str());
-                        cmd << selected << ".open(\"" << EncodedName << "\")";
+                        cmd << processor << ".open(\"" << EncodedName << "\")";
                         Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());
                     }
                 }
@@ -162,12 +162,12 @@ private:
                 QFileInfo fileInfo = list.at(i);
                 scripts.push_back(fileInfo.baseName().toStdString());
             }
-            std::string selected;
+            std::string processor;
             PathGui::DlgProcessorChooser Dlg(scripts);
             if (Dlg.exec() != QDialog::Accepted) {
                 return Py::None();
             }
-            selected = Dlg.getSelected();
+            processor = Dlg.getProcessor();
 
             App::Document *pcDoc = 0;
             if (DocName)
@@ -181,21 +181,21 @@ private:
 
             std::ostringstream pre;
             std::ostringstream cmd;
-            if (selected.empty()) {
+            if (processor.empty()) {
                 Gui::Command::runCommand(Gui::Command::Gui,"import Path");
                 cmd << "Path.read(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
                 Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());
             } else {
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
-                    if (fileInfo.baseName().toStdString() == selected) {
+                    if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << selected;
+                            pre << "from PathScripts import " << processor;
                         } else {
-                            pre << "import " << selected;
+                            pre << "import " << processor;
                         }
                         Gui::Command::runCommand(Gui::Command::Gui,pre.str().c_str());
-                        cmd << selected << ".insert(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
+                        cmd << processor << ".insert(\"" << EncodedName << "\",\"" << pcDoc->getName() << "\")";
                         Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());
                     }
                 }
@@ -238,16 +238,16 @@ private:
                 QFileInfo fileInfo = list.at(i);
                 scripts.push_back(fileInfo.baseName().toStdString());
             }
-            std::string selected;
-            PathGui::DlgProcessorChooser Dlg(scripts);
+            PathGui::DlgProcessorChooser Dlg(scripts, true);
             if (Dlg.exec() != QDialog::Accepted) {
                 return Py::None();
             }
-            selected = Dlg.getSelected();
+            std::string processor = Dlg.getProcessor();
+            std::string arguments = Dlg.getArguments();
 
             std::ostringstream pre;
             std::ostringstream cmd;
-            if (selected.empty()) {
+            if (processor.empty()) {
                 if (objlist.size() > 1) {
                     throw Py::RuntimeError("Cannot export more than one object without using a post script");
                 }
@@ -256,7 +256,7 @@ private:
                     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
                     App::Document* doc = obj->getDocument();
                     Gui::Command::runCommand(Gui::Command::Gui,"import Path");
-                    cmd << "Path.write(FreeCAD.getDocument(\"" << doc->getName() << "\").getObject(\"" << obj->getNameInDocument() << "\"),\"" << EncodedName << "\")";            
+                    cmd << "Path.write(FreeCAD.getDocument(\"" << doc->getName() << "\").getObject(\"" << obj->getNameInDocument() << "\"),\"" << EncodedName << "\")";
                     Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());
                 } else {
                     return Py::None();
@@ -264,14 +264,14 @@ private:
             } else {
                 for (int i = 0; i < list.size(); ++i) {
                     QFileInfo fileInfo = list.at(i);
-                    if (fileInfo.baseName().toStdString() == selected) {
+                    if (fileInfo.baseName().toStdString() == processor) {
                         if (fileInfo.absoluteFilePath().contains(QString::fromLatin1("PathScripts"))) {
-                            pre << "from PathScripts import " << selected;
+                            pre << "from PathScripts import " << processor;
                         } else {
-                            pre << "import " << selected;
+                            pre << "import " << processor;
                         }
                         Gui::Command::runCommand(Gui::Command::Gui,pre.str().c_str());
-                        cmd << selected << ".export(__objs__,\"" << EncodedName << "\")";
+                        cmd << processor << ".export(__objs__,\"" << EncodedName << "\",\"" << arguments << "\")";
                         Gui::Command::runCommand(Gui::Command::Gui,cmd.str().c_str());
                     }
                 }
