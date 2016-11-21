@@ -55,6 +55,8 @@
 #include "PrimitiveFeature.h"
 #include "Part2DObject.h"
 #include "CustomFeature.h"
+#include "Geometry.h"
+#include "Geometry2d.h"
 #include "TopoShapePy.h"
 #include "TopoShapeVertexPy.h"
 #include "TopoShapeFacePy.h"
@@ -346,6 +348,25 @@ PyMODINIT_FUNC initPart()
     Part::GeomSurfaceOfRevolution ::init();
     Part::GeomSurfaceOfExtrusion  ::init();
     Part::Datum                   ::init();
+
+    // Geometry2d types
+    Part::Geometry2d              ::init();
+    Part::Geom2dPoint             ::init();
+    Part::Geom2dCurve             ::init();
+    Part::Geom2dBezierCurve       ::init();
+    Part::Geom2dBSplineCurve      ::init();
+    Part::Geom2dCircle            ::init();
+    Part::Geom2dArcOfCircle       ::init();
+    Part::Geom2dEllipse           ::init();
+    Part::Geom2dArcOfEllipse      ::init();
+    Part::Geom2dHyperbola         ::init();
+    Part::Geom2dArcOfHyperbola    ::init();
+    Part::Geom2dParabola          ::init();
+    Part::Geom2dArcOfParabola     ::init();
+    Part::Geom2dLine              ::init();
+    Part::Geom2dLineSegment       ::init();
+    Part::Geom2dOffsetCurve       ::init();
+    Part::Geom2dTrimmedCurve      ::init();
 
     IGESControl_Controller::Init();
     STEPControl_Controller::Init();
