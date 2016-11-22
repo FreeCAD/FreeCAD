@@ -26,6 +26,7 @@
 
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderPythonFeature.h>
 
 #include <CXX/Objects.hxx>
 
@@ -162,6 +163,9 @@ protected:
 private:
     class Private;
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh> ViewProviderFemMeshPython;
+
 
 } //namespace FemGui
 

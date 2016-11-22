@@ -24,6 +24,7 @@
 #ifndef Fem_FemMeshObject_H
 #define Fem_FemMeshObject_H
 
+#include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
@@ -59,6 +60,9 @@ protected:
     /// get called by the container when a property has changed
     virtual void onChanged (const App::Property* prop);
 };
+
+typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;
+
 
 } //namespace Fem
 
