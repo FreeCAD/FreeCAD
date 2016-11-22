@@ -44,6 +44,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
     DlgSettingsFemGeneralImp.h
+    DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88Imp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
@@ -83,6 +84,7 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemGeneral.ui
+    DlgSettingsFemGmsh.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -125,6 +127,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGeneralImp.cpp
     DlgSettingsFemGeneralImp.h
+    DlgSettingsFemGmsh.ui
+    DlgSettingsFemGmshImp.cpp
+    DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
