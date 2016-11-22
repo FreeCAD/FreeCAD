@@ -109,6 +109,7 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderFemAnalysis               ::init();
     FemGui::ViewProviderFemAnalysisPython         ::init();
     FemGui::ViewProviderFemMesh                   ::init();
+    FemGui::ViewProviderFemMeshPython                   ::init();
     FemGui::ViewProviderFemMeshShape              ::init();
     FemGui::ViewProviderFemMeshShapeNetgen        ::init();
     FemGui::ViewProviderSolver                    ::init();

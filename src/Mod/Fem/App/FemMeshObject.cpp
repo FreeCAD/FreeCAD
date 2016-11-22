@@ -29,6 +29,7 @@
 #include "FemMeshObject.h"
 #include "FemMesh.h"
 #include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Placement.h>
 
 using namespace Fem;
@@ -68,5 +69,27 @@ void FemMeshObject::onChanged(const Property* prop)
     if (prop == &this->Placement) {
         const_cast<Fem::FemMesh&>(this->FemMesh.getValue()).setTransform(this->Placement.getValue().toMatrix());
     }
+
+}
+
+// Python feature ---------------------------------------------------------
+
+namespace App {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(Fem::FemMeshObjectPython, Fem::FemMeshObject)
+template<> const char* Fem::FemMeshObjectPython::getViewProviderName(void) const {
+    return "FemGui::ViewProviderFemMeshPython";
+}
+
+template<> PyObject* Fem::FemMeshObjectPython::getPyObject(void) {
+    if (PythonObject.is(Py::_None())) {
+        // ref counter is set to 1
+        PythonObject = Py::Object(new App::FeaturePythonPyT<App::DocumentObjectPy>(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
+// explicit template instantiation
+template class AppFemExport FeaturePythonT<Fem::FemMeshObject>;
 
 }
