@@ -331,6 +331,8 @@ def readResult(frd_input):
             elements_found = False
 
     frd_file.close()
+    if not nodes:
+        FreeCAD.Console.PrintError('FEM: No nodes found in Frd file.\n')
     return {'Nodes': nodes,
             'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
             'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
