@@ -70,7 +70,7 @@ SET(FemScripts_SRCS
     _CommandConstraintSelfWeight.py
     _CommandMaterialMechanicalNonlinear.py
     _CommandMechanicalMaterial.py
-    _CommandMeshFromShape.py
+    _CommandMeshNetgenFromShape.py
     _CommandPurgeResults.py
     _CommandRunSolver.py
     _CommandShellThickness.py
