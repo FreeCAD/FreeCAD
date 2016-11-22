@@ -1003,13 +1003,13 @@ def get_analysis_group_elements(aAnalysis, aPart):
     {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
     aShape = aPart.Shape
-    group_elements = {}
+    group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
     for m in aAnalysis.Member:
         if hasattr(m, "References"):
             # print(m.Name)
             key = m.Name
-            indexes = []
+            elements = []
             stype = None
             if m.References:
                 for r in m.References:
@@ -1031,117 +1031,134 @@ def get_analysis_group_elements(aAnalysis, aPart):
                         # print(ref_shape)
                         found_element = find_element_in_shape(aShape, ref_shape)
                         if found_element is not None:
-                            indexes.append(found_element)
+                            elements.append(found_element)
                         else:
                             FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
                             print('    ' + m.Name)
                             print('    ' + str(m.References))
                             print('    ' + r[0].Name)
-                group_elements[key] = [stype, sorted(indexes)]
+                group_elements[key] = sorted(elements)
             else:
-                print('Empty reference: ' + m.Name)
+                print('  Empty reference: ' + m.Name)
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
         else:
-            FreeCAD.Console.PrintError('Error: more than one object with empty references!\n')
-            print(empty_references)
+            FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
+            print('We gone try to get the empty material references anyway.\n')
+            # ShellThickness and BeamSection could have empty references, but on solid meshes only materials should have empty references
+            for er in empty_references:
+                print(er.Name)
+            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
     # check if all groups have elements:
     for g in group_elements:
-        # print(group_elements[g][1])
-        if len(group_elements[g][1]) == 0:
+        # print(group_elements[g])
+        if len(group_elements[g]) == 0:
             FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
     return group_elements
 
 
 def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):
     '''get the elementIDs if the Reference shape is empty
-    see get_analysis_group_elements()
+    see get_analysis_group_elements() for more informatations
+    on solid meshes only material objects could have an empty reference without beeing something wrong!
+    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection
     '''
+    # print(group_elements)
     material_ref_shapes = []
     material_shape_type = ''
     missed_material_refshapes = []
     empty_reference_material = None
     for m in aAnalysis.Member:
-        # only materials could have an empty reference without beeing something wrong!
         if m.isDerivedFrom("App::MaterialObjectPython"):
-            if hasattr(m, "References") and m.References:
-                if not material_shape_type:
-                    material_shape_type = group_elements[m.Name][0]
-                elif material_shape_type != group_elements[m.Name][0]:
-                    print('Problem, material shape type does not match get_anlysis_empty_references_group_elements')
-                for i in group_elements[m.Name][1]:
-                    material_ref_shapes.append(i)
-            elif hasattr(m, "References") and not m.References:
+            if hasattr(m, "References") and not m.References:
                 if not empty_reference_material:
                     empty_reference_material = m.Name
                 else:
-                    print('Problem in get_anlysis_empty_references_group_elements, we seams to have two materials with empty referneces')
+                    FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seams to have two or more materials with empty referneces')
                     return {}
+            elif hasattr(m, "References") and m.References:
+                # ShapeType ot the group elements, strip the number of the first group element
+                # http://stackoverflow.com/questions/12851791/removing-numbers-from-string
+                group_shape_type = ''.join(i for i in group_elements[m.Name][0] if not i.isdigit())
+                if not material_shape_type:
+                    material_shape_type = group_shape_type
+                elif material_shape_type != group_shape_type:
+                    FreeCAD.Console.PrintError('Problem, material shape type does not match get_anlysis_empty_references_group_elements')
+                for ele in group_elements[m.Name]:
+                    material_ref_shapes.append(ele)
     if material_shape_type == 'Solid':
         # print(len(aShape.Solids))
         for i in range(len(aShape.Solids)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Solid' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     elif material_shape_type == 'Face':
         # print(len(aShape.Faces))
         for i in range(len(aShape.Faces)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Face' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     elif material_shape_type == 'Edge':
         # print(len(aShape.Edges))
         for i in range(len(aShape.Edges)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Edge' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     else:
-        print('It seams we only have one material with no reference shapes. Means the whole solid is one material. Since we only support material groups for Solids at the moment this should be Solid')
-        material_shape_type = 'Solid'
-        missed_material_refshapes.append(0)
+        print('  One material with no reference shapes. No need to make a group for materials.')
+        # make no changes group_elements
+        return group_elements
     # print(sorted(material_ref_shapes))
     # print(sorted(missed_material_refshapes))
     # print(group_elements)
-    group_elements[empty_reference_material] = [material_shape_type, sorted(missed_material_refshapes)]
+    group_elements[empty_reference_material] = sorted(missed_material_refshapes)
     # print(group_elements)
     return group_elements
 
 
 def find_element_in_shape(aShape, anElement):
     # import Part
-    if anElement.ShapeType == 'Solid' or anElement.ShapeType == 'CompSolid':
+    ele_st = anElement.ShapeType
+    if ele_st == 'Solid' or ele_st == 'CompSolid':
         for index, solid in enumerate(aShape.Solids):
             # print(is_same_geometry(solid, anElement))
             if is_same_geometry(solid, anElement):
                 # print(index)
                 # Part.show(aShape.Solids[index])
-                return index
+                ele = ele_st + str(index + 1)
+                return ele
         FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
-        if anElement.ShapeType == 'Solid' and aShape.ShapeType == 'Solid':
+        if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
             print('We have been searching for a Solid in a Solid and we have not found it. In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.')
         # Part.show(anElement)
         # Part.show(aShape)
-    elif anElement.ShapeType == 'Face' or anElement.ShapeType == 'Shell':
+    elif ele_st == 'Face' or ele_st == 'Shell':
         for index, face in enumerate(aShape.Faces):
             # print(is_same_geometry(face, anElement))
             if is_same_geometry(face, anElement):
                 # print(index)
                 # Part.show(aShape.Faces[index])
-                return index
-    elif anElement.ShapeType == 'Edge' or anElement.ShapeType == 'Wire':
-        for index, face in enumerate(aShape.Edges):
-            # print(is_same_geometry(face, anElement))
-            if is_same_geometry(face, anElement):
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Edge' or ele_st == 'Wire':
+        for index, edge in enumerate(aShape.Edges):
+            # print(is_same_geometry(edge, anElement))
+            if is_same_geometry(edge, anElement):
                 # print(index)
                 # Part.show(aShape.Edges[index])
-                return index
-    elif anElement.ShapeType == 'Vertex':
-        for index, face in enumerate(aShape.Vertexes):
-            # print(is_same_geometry(face, anElement))
-            if is_same_geometry(face, anElement):
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Vertex':
+        for index, vertex in enumerate(aShape.Vertexes):
+            # print(is_same_geometry(vertex, anElement))
+            if is_same_geometry(vertex, anElement):
                 # print(index)
                 # Part.show(aShape.Vertexes[index])
-                return index
-    elif anElement.ShapeType == 'Compound':
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Compound':
         FreeCAD.Console.PrintError('Compound is not supported.\n')
 
 
