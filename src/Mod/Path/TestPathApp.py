@@ -29,5 +29,6 @@ from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathDressupHoldingTags import TestTag00BasicHolding
 from PathTests.TestPathDressupHoldingTags import TestTag01BasicTag
 from PathTests.TestPathDressupHoldingTags import TestTag02SquareTag
-from PathTests.TestPathDressupHoldingTags import TestTag03AngledTag
+from PathTests.TestPathDressupHoldingTags import TestTag03TrapezoidTag
+from PathTests.TestPathDressupHoldingTags import TestTag04TriangularTag
 
