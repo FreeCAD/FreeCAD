@@ -110,8 +110,7 @@ class FemToolsZ88(FemTools.FemTools):
                 self.z88_binary = z88_path
         else:
             if not z88_binary:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88")
-                z88_binary = self.fem_prefs.GetString("z88BinaryPath", "")
+                z88_binary = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Z88").GetString("z88BinaryPath", "")
             if not z88_binary:
                 if system() == "Linux":
                     z88_binary = "z88r"
