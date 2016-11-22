@@ -36,6 +36,7 @@
 #include <Geom2d_TrimmedCurve.hxx>
 #include <Geom_Surface.hxx>
 #include <TopoDS_Shape.hxx>
+#include <gp_Ax22d.hxx>
 #include <list>
 #include <vector>
 #include <Base/Persistence.h>
@@ -189,7 +190,61 @@ private:
     Handle_Geom2d_BSplineCurve myCurve;
 };
 
-class PartExport Geom2dCircle : public Geom2dCurve
+class PartExport Geom2dConic : public Geom2dCurve
+{
+    TYPESYSTEM_HEADER();
+protected:
+    Geom2dConic();
+
+public:
+    virtual ~Geom2dConic();
+    virtual Geometry2d *clone(void) const = 0;
+
+    Base::Vector2d getCenter(void) const;
+    void setCenter(const Base::Vector2d& Center);
+    bool isReversed() const;
+
+    virtual unsigned int getMemSize(void) const = 0;
+    virtual PyObject *getPyObject(void) = 0;
+
+    const Handle_Geom2d_Geometry& handle() const = 0;
+
+protected:
+    void SaveAxis(Base::Writer& writer, const gp_Ax22d&) const;
+    void RestoreAxis(Base::XMLReader& reader, gp_Ax22d&);
+};
+
+class PartExport Geom2dArcOfConic : public Geom2dCurve
+{
+    TYPESYSTEM_HEADER();
+protected:
+    Geom2dArcOfConic();
+
+public:
+    virtual ~Geom2dArcOfConic();
+    virtual Geometry2d *clone(void) const = 0;
+
+    Base::Vector2d getCenter(void) const;
+    void setCenter(const Base::Vector2d& Center);
+    bool isReversed() const;
+
+    Base::Vector2d getStartPoint() const;
+    Base::Vector2d getEndPoint() const;
+
+    void getRange(double& u, double& v) const;
+    void setRange(double u, double v);
+
+    virtual unsigned int getMemSize(void) const = 0;
+    virtual PyObject *getPyObject(void) = 0;
+
+    const Handle_Geom2d_Geometry& handle() const = 0;
+
+protected:
+    void SaveAxis(Base::Writer& writer, const gp_Ax22d&, double u, double v) const;
+    void RestoreAxis(Base::XMLReader& reader, gp_Ax22d&, double& u, double& v);
+};
+
+class PartExport Geom2dCircle : public Geom2dConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -198,11 +253,8 @@ public:
     virtual ~Geom2dCircle();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getCenter(void) const;
     double getRadius(void) const;
-    void setCenter(const Base::Vector2d& Center);
     void setRadius(double Radius);
-    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -217,7 +269,7 @@ private:
     Handle_Geom2d_Circle myCurve;
 };
 
-class PartExport Geom2dArcOfCircle : public Geom2dCurve
+class PartExport Geom2dArcOfCircle : public Geom2dArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -226,16 +278,8 @@ public:
     virtual ~Geom2dArcOfCircle();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getStartPoint() const;
-    Base::Vector2d getEndPoint() const;
-
-    Base::Vector2d getCenter(void) const;
     double getRadius(void) const;
-    void setCenter(const Base::Vector2d& Center);
     void setRadius(double Radius);
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
-    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -251,7 +295,7 @@ private:
     Handle_Geom2d_TrimmedCurve myCurve;
 };
 
-class PartExport Geom2dEllipse : public Geom2dCurve
+class PartExport Geom2dEllipse : public Geom2dConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -260,15 +304,12 @@ public:
     virtual ~Geom2dEllipse();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
     Base::Vector2d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector2d newdir);
-    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -284,7 +325,7 @@ private:
     Handle_Geom2d_Ellipse myCurve;
 };
 
-class PartExport Geom2dArcOfEllipse : public Geom2dCurve
+class PartExport Geom2dArcOfEllipse : public Geom2dArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -293,21 +334,12 @@ public:
     virtual ~Geom2dArcOfEllipse();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getStartPoint() const;
-    Base::Vector2d getEndPoint() const;
-
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
     Base::Vector2d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector2d newdir);
-    bool isReversed() const;
-
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -323,7 +355,7 @@ private:
     Handle_Geom2d_TrimmedCurve myCurve;
 };
 
-class PartExport Geom2dHyperbola : public Geom2dCurve
+class PartExport Geom2dHyperbola : public Geom2dConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -332,8 +364,6 @@ public:
     virtual ~Geom2dHyperbola();
     virtual Geometry2d *clone(void) const;
     
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
@@ -352,7 +382,7 @@ private:
     Handle_Geom2d_Hyperbola myCurve;
 };
 
-class PartExport Geom2dArcOfHyperbola : public Geom2dCurve
+class PartExport Geom2dArcOfHyperbola : public Geom2dArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -361,18 +391,10 @@ public:
     virtual ~Geom2dArcOfHyperbola();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getStartPoint() const;
-    Base::Vector2d getEndPoint() const;
-
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
-    
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -388,7 +410,7 @@ private:
     Handle_Geom2d_TrimmedCurve myCurve;
 };
 
-class PartExport Geom2dParabola : public Geom2dCurve
+class PartExport Geom2dParabola : public Geom2dConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -397,8 +419,6 @@ public:
     virtual ~Geom2dParabola();
     virtual Geometry2d *clone(void) const;
     
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getFocal(void) const;
     void setFocal(double length);
 
@@ -415,7 +435,7 @@ private:
     Handle_Geom2d_Parabola myCurve;
 };
 
-class PartExport Geom2dArcOfParabola : public Geom2dCurve
+class PartExport Geom2dArcOfParabola : public Geom2dArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -424,16 +444,8 @@ public:
     virtual ~Geom2dArcOfParabola();
     virtual Geometry2d *clone(void) const;
 
-    Base::Vector2d getStartPoint() const;
-    Base::Vector2d getEndPoint() const;
-
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
     double getFocal(void) const;
     void setFocal(double length);
-    
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

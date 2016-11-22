@@ -94,6 +94,22 @@ Vector2dPy::Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict 
 {
 }
 
+Vector2dPy::Vector2dPy()
+    : Py::PythonClass<Vector2dPy>::PythonClass
+      (reinterpret_cast<Py::PythonClassInstance *>
+       (Vector2dPy::type_object()), Py::Tuple(), Py::Dict())
+{
+}
+
+Vector2dPy::Vector2dPy(double x, double y)
+    : Py::PythonClass<Vector2dPy>::PythonClass
+      (reinterpret_cast<Py::PythonClassInstance *>
+       (Vector2dPy::type_object()), Py::Tuple(), Py::Dict())
+{
+    v.x = x;
+    v.y = y;
+}
+
 Vector2dPy::~Vector2dPy()
 {
 }

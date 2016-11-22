@@ -51,6 +51,8 @@ class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
 {
 public:
     Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
+    Vector2dPy();
+    Vector2dPy(double, double);
     virtual ~Vector2dPy();
 
     static void init_type(void);
