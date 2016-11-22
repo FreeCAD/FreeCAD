@@ -42,13 +42,18 @@ def get_femnodes_by_femobj_with_references(femmesh, femobj):
     return node_set
 
 
-def get_femelements_by_references(femmesh, femelement_table, references):
+def get_femelements_by_references(femmesh, femelement_table, references, femnodes_ele_table=None):
     '''get the femelements for a list of references
     '''
     references_femelements = []
     for ref in references:
         ref_femnodes = get_femnodes_by_refshape(femmesh, ref)  # femnodes for the current ref
-        references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
+        if femnodes_ele_table:
+            # blind fast binary search, works for volumes only
+            references_femelements += get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, ref_femnodes)  # femelements for all references
+        else:
+            # standars search
+            references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
     return references_femelements
 
 
@@ -324,7 +329,7 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
     return e
 
 
-def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects = FreeCAD FEM document objects
+def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_table=None):  # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
     referenced_femelements = []
@@ -334,7 +339,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         if obj.References:
             ref_shape_femelements = []
-            ref_shape_femelements = get_femelements_by_references(femmesh, femelement_table, obj.References)
+            ref_shape_femelements = get_femelements_by_references(femmesh, femelement_table, obj.References, femnodes_ele_table)
             referenced_femelements += ref_shape_femelements
             count_femelements += len(ref_shape_femelements)
             fem_object['FEMElements'] = ref_shape_femelements
