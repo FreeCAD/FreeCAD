@@ -35,10 +35,10 @@ def get_femnodes_by_femobj_with_references(femmesh, femobj):
     node_set = []
     if femmesh.GroupCount:
         node_set = get_femnode_set_from_group_data(femmesh, femobj)
-        # print 'node_set_group: ', node_set
+        # print('node_set_group: ', node_set)
     if not node_set:
         node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
-        # print 'node_set_nogroup: ', node_set
+        # print('node_set_nogroup: ', node_set)
     return node_set
 
 
@@ -325,7 +325,7 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
                 e.append(elementID)
         else:
             FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): not known volume element: ' + el_nd_ct + '\n')
-    # print sorted(e)
+    # print(sorted(e))
     return e
 
 
@@ -737,7 +737,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
         ref_face_elements = get_femelements_by_femnodes_std(femelement_table, ref_face_nodes)
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
-    # print face_table
+    # print(face_table)
     return face_table
 
 
@@ -751,10 +751,10 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             index = femelement_table[veID].index(n)
             # print(index)
             face_nodenumber_table[veID].append(index + 1)  # lokale node number = index + 1
-        # print 'VolElement:', veID
-        # print '  --> ', femelement_table[veID]
-        # print '  --> ', face_table[veID]
-        # print '  --> ', face_nodenumber_table[veID]
+        # print('VolElement:', veID)
+        # print('  --> ', femelement_table[veID])
+        # print('  --> ', face_table[veID])
+        # print('  --> ', face_nodenumber_table[veID])
     for veID in face_nodenumber_table:
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
@@ -844,7 +844,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
             face_nodes.append(femelement_table[veID][i])
         face_table[veID] = face_nodes  # reset the entry in face_table
-        # print '  --> ', face_table[veID]
+        # print('  --> ', face_table[veID])
     return face_table
 
 
@@ -1049,7 +1049,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
             print(empty_references)
     # check if all groups have elements:
     for g in group_elements:
-        # print group_elements[g][1]
+        # print(group_elements[g][1])
         if len(group_elements[g][1]) == 0:
             FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
     return group_elements
