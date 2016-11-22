@@ -149,6 +149,9 @@ class Tag:
     def top(self):
         return self.z + self.actualHeight
 
+    def centerLine(self):
+        return Part.Line(self.originAt(self.bottom()), self.originAt(self.top()))
+
     def createSolidsAt(self, z):
         self.z = z
         r1 = self.width / 2
@@ -210,29 +213,56 @@ class Tag:
                 #print("\nplateau= %s - %s" %(pt1, pt2))
                 return Part.Edge(Part.Line(pt1, pt2))
 
-        def intersectP0(self, edge):
+        def intersectP0Core(self, edge):
             #print("----- P0 (%s - %s)" % (edge.Curve.StartPoint, edge.Curve.EndPoint))
 
             i = self.tag.nextIntersectionClosestTo(edge, self.tag.core, edge.Curve.StartPoint)
             if i:
                 if pointsCoincide(i, edge.Curve.StartPoint):
                     # if P0 and P1 are the same, we need to insert a segment for the rise
+                    #print("-------  insert vertical rise (%s)" % i)
                     self.edges.append(Part.Edge(Part.Line(i, FreeCAD.Vector(i.x, i.y, self.tag.top()))))
                     self.p1 = i
                     self.state = self.P1
                     return edge
                 if pointsCoincide(i, edge.Curve.EndPoint):
+                    #print("-------  consumed (%s)" % i)
                     e = edge
                     tail = None
                 else:
+                    #print("-------  split at (%s)" % i)
                     e, tail = self.tag.splitEdgeAt(edge, i)
                 self.p1 = e.Curve.EndPoint
                 self.edges.append(self.tag.mapEdgeToSolid(e))
                 self.state = self.P1
                 return tail
             # no intersection, the entire edge fits between P0 and P1
+            #print("-------  no intersection")
             self.edges.append(self.tag.mapEdgeToSolid(edge))
             return None
+
+        def intersectP0(self, edge):
+            if self.tag.core:
+                return self.intersectP0Core(edge)
+            # if we have no core the tip is the origin of the Tag
+            line = Part.Edge(self.tag.centerLine())
+            i = DraftGeomUtils.findIntersection(line, edge)
+            if i:
+                if pointsCoincide(i[0], edge.Curve.EndPoint):
+                    e = edge
+                    tail = None
+                else:
+                    e, tail = self.tag.splitEdgeAt(edge, i[0])
+                self.state = self.P2 # P1 and P2 are identical for triangular tags
+                self.p1 = i[0]
+                self.p2 = i[0]
+            else:
+                e = edge
+                tail = None
+            self.edges.append(self.tag.mapEdgeToSolid(e))
+            return tail
+
+
 
         def intersectP1(self, edge):
             #print("----- P1 (%s - %s)" % (edge.Curve.StartPoint, edge.Curve.EndPoint))
