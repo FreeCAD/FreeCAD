@@ -85,6 +85,7 @@ class FemInputWriter():
         self.femnodes_mesh = {}
         self.femelement_table = {}
         self.constraint_conflict_nodes = []
+        self.femnodes_ele_table = {}
 
     def get_constraints_fixed_nodes(self):
         # get nodes
@@ -159,9 +160,25 @@ class FemInputWriter():
     def get_constraints_pressure_faces(self):
         # TODO see comments in get_constraints_force_nodeloads(), it applies here too. Mhh it applies to all constraints ...
 
+        '''
+        # depreciated version
         # get the faces and face numbers
         for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces(self.femmesh, femobj)
-            # print femobj['PressureFaces']
+            femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces_depreciated(self.femmesh, femobj)
+            # print(femobj['PressureFaces'])
+        '''
+
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
+            # print(len(pressure_faces))
+            femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
+            # print(femobj['PressureFaces'])
 
 #  @}
