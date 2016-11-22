@@ -491,7 +491,7 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
     return force_obj_node_load_table
 
 
-def get_pressure_obj_faces(femmesh, femobj):
+def get_pressure_obj_faces_depreciated(femmesh, femobj):
     pressure_faces = []
     for o, elem_tup in femobj['Object'].References:
         for elem in elem_tup:
@@ -500,6 +500,16 @@ def get_pressure_obj_faces(femmesh, femobj):
             print(elem_info_string)
             if ref_shape.ShapeType == 'Face':
                 pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
+    return pressure_faces
+
+
+def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
+    # get the nodes
+    prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
+    # print('prs_face_node_set: ', prs_face_node_set)
+    # fill the bit_pattern_dict and search for the faces
+    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
+    pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
     return pressure_faces
 
 
