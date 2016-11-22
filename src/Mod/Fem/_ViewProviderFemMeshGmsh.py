@@ -72,8 +72,7 @@ class _ViewProviderFemMeshGmsh:
                 if FemGui.getActiveAnalysis().Document is FreeCAD.ActiveDocument:
                     if self.Object in FemGui.getActiveAnalysis().Member:
                         if not gui_doc.getInEdit():
-                            FreeCAD.Console.PrintError('TaskPanel test not yet implemented\n')
-                            # gui_doc.setEdit(vobj.Object.Name)
+                            gui_doc.setEdit(vobj.Object.Name)
                         else:
                             FreeCAD.Console.PrintError('Activate the analysis this mesh belongs to!\n')
                     else:
@@ -84,8 +83,7 @@ class _ViewProviderFemMeshGmsh:
                                     if m == self.Object:
                                         FemGui.setActiveAnalysis(o)
                                         print('Analysis the Mesh belongs too was activated.')
-                                        FreeCAD.Console.PrintError('TaskPanel test not yet implemented\n')
-                                        # gui_doc.setEdit(vobj.Object.Name)
+                                        gui_doc.setEdit(vobj.Object.Name)
                                         break
                 else:
                     FreeCAD.Console.PrintError('Active Analysis is not in active Document!\n')
@@ -97,8 +95,7 @@ class _ViewProviderFemMeshGmsh:
                             if m == self.Object:
                                 FemGui.setActiveAnalysis(o)
                                 print('Analysis the Mesh belongs too was activated.')
-                                FreeCAD.Console.PrintError('TaskPanel test not yet implemented\n')
-                                # gui_doc.setEdit(vobj.Object.Name)
+                                gui_doc.setEdit(vobj.Object.Name)
                                 break
                 else:
                     print('Mesh GMSH object does not belong to an analysis. Group meshing will is deactivated.')
