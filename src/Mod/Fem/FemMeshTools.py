@@ -48,7 +48,7 @@ def get_femelements_by_references(femmesh, femelement_table, references):
     references_femelements = []
     for ref in references:
         ref_femnodes = get_femnodes_by_refshape(femmesh, ref)  # femnodes for the current ref
-        references_femelements += get_femelements_by_femnodes(femelement_table, ref_femnodes)  # femelements for all references
+        references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
     return references_femelements
 
 
@@ -222,12 +222,41 @@ def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
     return faces
 
 
-def get_femelements_by_femnodes(femelement_table, node_list):
+def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_list):
+    '''for every femelement of femelement_table
+    if all nodes of the femelement are in node_list,
+    the femelement is added to the list which is returned
+    blind fast binary search, but workd for volumes only
+    '''
+    print('binary search: get_femelements_by_femnodes_bin')
+    vol_masks = {
+        4: 15,
+        6: 63,
+        8: 255,
+        10: 1023,
+        15: 32767,
+        20: 1048575}
+    # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
+    # search
+    ele_list = []  # The ele_list contains the result of the search.
+    for ele in bit_pattern_dict:
+        # print('bit_pattern_dict[ele][0]: ', bit_pattern_dict[ele][0])
+        if bit_pattern_dict[ele][1] == vol_masks[bit_pattern_dict[ele][0]]:
+            ele_list.append(ele)
+    print('found Volumes: ', len(ele_list))
+    print('   volumes: ', len(ele_list))
+    return ele_list
+
+
+def get_femelements_by_femnodes_std(femelement_table, node_list):
     '''for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
     the femelement is added to the list which is returned
     e: elementlist
     nodes: nodelist '''
+    print('std search: get_femelements_by_femnodes_std')
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
@@ -612,7 +641,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
         #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_edge_femmesh(femmesh):
-        refedge_fem_edgeelements = get_femelements_by_femnodes(femelement_table, refedge_nodes)
+        refedge_fem_edgeelements = get_femelements_by_femnodes_std(femelement_table, refedge_nodes)
         for elem in refedge_fem_edgeelements:
             edge_table[elem] = femelement_table[elem]  # { edgeID : ( nodeID, ... , nodeID  )} # all nodes off this femedgeelement
     return edge_table
@@ -700,7 +729,7 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                 face_table[mf] = femmesh.getElementNodes(mf)
     elif is_face_femmesh(femmesh):
         ref_face_nodes = femmesh.getNodesByFace(ref_face)
-        ref_face_elements = get_femelements_by_femnodes(femelement_table, ref_face_nodes)
+        ref_face_elements = get_femelements_by_femnodes_std(femelement_table, ref_face_nodes)
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
     # print face_table
