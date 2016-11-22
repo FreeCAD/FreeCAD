@@ -2464,3 +2464,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
 
 }
+
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemMeshPython, FemGui::ViewProviderFemMesh)
+/// @endcond
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemMesh>;
+}
