@@ -365,10 +365,11 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
     # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
     obj = fem_object['Object']
+    group_nodes = None
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name + '_'):
+            if grp_name.startswith(obj.Name):
                 if femmesh.getGroupElementType(g) == "Node":
                     print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                     group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -387,7 +388,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         if femmesh.GroupCount:
             for g in femmesh.Groups:
                 grp_name = femmesh.getGroupName(g)
-                if grp_name.startswith(obj.Name + '_'):
+                if grp_name.startswith(obj.Name):
                     if femmesh.getGroupElementType(g) == "Volume":
                         print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                         group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
