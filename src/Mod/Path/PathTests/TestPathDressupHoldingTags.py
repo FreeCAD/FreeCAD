@@ -30,9 +30,7 @@ import math
 import unittest
 
 from FreeCAD import Vector
-from PathScripts.PathDressupHoldingTags import Tag
-
-slack = 0.0000001
+from PathScripts.PathDressupHoldingTags import *
 
 def pointsCoincide(pt1, pt2):
     pt = pt1 - pt2
@@ -93,36 +91,49 @@ class TagTestCaseBase(unittest.TestCase):
 
     def assertAbout(self, v1, v2):
         """Verify that 2 values are the same (accounting for float imprecision)."""
-        #print("assertAbout(%f, %f)" % (v1, v2))
         if math.fabs(v1 - v2) > slack:
             self.fail("%f != %f" % (v1, v2))
 
-    def assertTrapezoid(self, edgs, tail, spec):
+    def assertTrapezoid(self, edgs, tail, points):
         """Check that there are 5 edges forming a trapezoid."""
         edges = list(edgs)
         if tail:
             edges.append(tail)
         self.assertEqual(len(edges), 5)
 
-        p0 = spec[0]
-        p1 = Vector(spec[1], p0.y, p0.z)
-        p2 = Vector(p1.x, p1.y, spec[2])
-        p3 = Vector(-p2.x, p2.y, p2.z)
-        p4 = Vector(p3.x, p3.y, p0.z)
-        p5 = spec[3]
+        self.assertLine(edges[0], points[0], points[1])
+        self.assertLine(edges[1], points[1], points[2])
+        self.assertLine(edges[2], points[2], points[3])
+        self.assertLine(edges[3], points[3], points[4])
+        self.assertLine(edges[4], points[4], points[5])
 
-        self.assertLine(edges[0], p0, p1)
-        self.assertLine(edges[1], p1, p2)
-        self.assertLine(edges[2], p2, p3)
-        self.assertLine(edges[3], p3, p4)
-        self.assertLine(edges[4], p4, p5)
+class TestTag00BasicHolding(TagTestCaseBase):
+    """Some basid test cases."""
+
+    def test00(self,x=1, y=1):
+        """Test getAngle."""
+        self.assertAbout(getAngle(FreeCAD.Vector( 1*x, 0*y, 0)), 0)
+        self.assertAbout(getAngle(FreeCAD.Vector( 1*x, 1*y, 0)), math.pi/4)
+        self.assertAbout(getAngle(FreeCAD.Vector( 0*x, 1*y, 0)), math.pi/2)
+        self.assertAbout(getAngle(FreeCAD.Vector(-1*x, 1*y, 0)), 3*math.pi/4)
+        self.assertAbout(getAngle(FreeCAD.Vector(-1*x, 0*y, 0)), math.pi)
+        self.assertAbout(getAngle(FreeCAD.Vector(-1*x,-1*y, 0)), -3*math.pi/4)
+        self.assertAbout(getAngle(FreeCAD.Vector( 0*x,-1*y, 0)), -math.pi/2)
+        self.assertAbout(getAngle(FreeCAD.Vector( 1*x,-1*y, 0)), -math.pi/4)
+
+    def test01(self):
+        """Test class Side."""
+        self.assertEqual(Side.of(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 1, 0, 0)), Side.On)
+        self.assertEqual(Side.of(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector(-1, 0, 0)), Side.On)
+        self.assertEqual(Side.of(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 0, 1, 0)), Side.Left)
+        self.assertEqual(Side.of(FreeCAD.Vector( 1, 0, 0), FreeCAD.Vector( 0,-1, 0)), Side.Right)
 
 
-class TagTestCases(TagTestCaseBase): # ============= 
+class TestTag01BasicTag(TagTestCaseBase): # ============= 
     """Unit tests for the HoldingTags dressup."""
 
-    def testTagBasics(self):
-        #"""Check Tag origin, serialization and de-serialization."""
+    def test00(self):
+        """Check Tag origin, serialization and de-serialization."""
         tag = Tag(77, 13, 4, 5, 90, True)
         self.assertCoincide(tag.originAt(3), Vector(77, 13, 3))
         s = tag.toString()
@@ -134,8 +145,8 @@ class TagTestCases(TagTestCaseBase): # =============
         self.assertEqual(tag.enabled, tagCopy.enabled)
 
 
-    def testTagSolidBasic(self):
-        #"""For a 90 degree tag the core and solid are both defined and identical cylinders."""
+    def test01(self):
+        """Verify solid and core for a 90 degree tag are identical cylinders."""
         tag = Tag(100, 200, 4, 5, 90, True)
         tag.createSolidsAt(17)
 
@@ -145,8 +156,8 @@ class TagTestCases(TagTestCaseBase): # =============
         self.assertIsNotNone(tag.core)
         self.assertCylinderAt(tag.core, Vector(100, 200, 17), 2, 5)
 
-    def testTagSolidFlatCone(self):
-        #"""Tests a Tag that has an angle leaving a flat face on top of the cone."""
+    def test02(self):
+        """Verify an angled tag has a cone shape with a lid, and cylinder core."""
         tag = Tag(0, 0, 18, 5, 45, True)
         tag.createSolidsAt(0)
 
@@ -156,8 +167,8 @@ class TagTestCases(TagTestCaseBase): # =============
         self.assertIsNotNone(tag.core)
         self.assertCylinderAt(tag.core, Vector(0,0,0), 4, 5)
 
-    def testTagSolidCone(self):
-        #"""Tests a Tag who's angled sides coincide at the tag's height."""
+    def test03(self):
+        """Verify pointy cone shape of tag with pointy end if width, angle and height match up."""
         tag = Tag(0, 0, 10, 5, 45, True)
         tag.createSolidsAt(0)
         self.assertIsNotNone(tag.solid)
@@ -165,8 +176,8 @@ class TagTestCases(TagTestCaseBase): # =============
 
         self.assertIsNone(tag.core)
 
-    def testTagSolidShortCone(self):
-        #"""Tests a Tag that's not wide enough to reach full height."""
+    def test04(self):
+        """Verify height adjustment if tag isn't wide eough for angle."""
         tag = Tag(0, 0, 5, 17, 60, True)
         tag.createSolidsAt(0)
         self.assertIsNotNone(tag.solid)
@@ -174,14 +185,267 @@ class TagTestCases(TagTestCaseBase): # =============
 
         self.assertIsNone(tag.core)
 
-class SquareTagTestCases(TagTestCaseBase): # ============= 
+    def test10(self):
+        """Verify intersection of square tag with line ending at tag start."""
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P0)
+        self.assertEqual(len(i.edges), 1)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertIsNone(i.tail)
+
+    def test11(self):
+        """Verify intersection of square tag with line ending between P1 and P2."""
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P1)
+        self.assertEqual(len(i.edges), 3)
+        p1 = Vector(4, 0, 0)
+        p2 = Vector(4, 0, 3)
+        p3 = Vector(1, 0, 3)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+        # verify we stay in P1 if we add another segment
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(0, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P1)
+        self.assertEqual(len(i.edges), 4)
+        p4 = Vector(0, 0, 3)
+        self.assertLine(i.edges[3], p3, p4)
+        self.assertIsNone(i.tail)
+
+    def test12(self):
+        """Verify intesection of square tag with line ending on P2."""
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-4, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 3)
+        p0 = edge.Curve.StartPoint
+        p1 = Vector( 4, 0, 0)
+        p2 = Vector( 4, 0, 3)
+        p3 = Vector(-4, 0, 3)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+        # make sure it also works if we get there not directly
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(0, 0, 0)))
+        i = tag.intersect(edge)
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-4, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 4)
+        p2a = Vector( 0, 0, 3)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p2a)
+        self.assertLine(i.edges[3], p2a, p3)
+        self.assertIsNone(i.tail)
+
+    def test13(self):
+        """Verify plunge down is inserted for square tag on exit."""
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-5, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P3)
+        self.assertTrue(i.isComplete())
+        self.assertEqual(len(i.edges), 4)
+        p0 = edge.Curve.StartPoint
+        p1 = Vector( 4, 0, 0)
+        p2 = Vector( 4, 0, 3)
+        p3 = Vector(-4, 0, 3)
+        p4 = Vector(-4, 0, 0)
+        p5 = edge.Curve.EndPoint
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertLine(i.edges[3], p3, p4)
+        self.assertIsNotNone(i.tail)
+        self.assertLine(i.tail, p4, p5)
+
+    def test20(self):
+        """Veify intersection of angled tag with line ending before P1."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P0)
+        self.assertEqual(len(i.edges), 1)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertIsNone(i.tail)
+
+        # now add another segment that doesn't reach the top of the cone
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(3, 0, 0)))
+        i = i.intersect(edge)
+        # still a P0 and edge fully consumed
+        p1 = Vector(edge.Curve.StartPoint)
+        p1.z = 0
+        p2 = Vector(edge.Curve.EndPoint)
+        p2.z = 1  # height of cone @ (3,0)
+        self.assertEqual(i.state, Tag.Intersection.P0)
+        self.assertEqual(len(i.edges), 2)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertIsNone(i.tail)
+
+        # add another segment to verify starting point offset
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(2, 0, 0)))
+        i = i.intersect(edge)
+        # still a P0 and edge fully consumed
+        p3 = Vector(edge.Curve.EndPoint)
+        p3.z = 2  # height of cone @ (2,0)
+        self.assertEqual(i.state, Tag.Intersection.P0)
+        self.assertEqual(len(i.edges), 3)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+    def test21(self):
+        """Verify intersection of angled tag with line ending between P1 and P2"""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P1)
+        self.assertEqual(len(i.edges), 2)
+        p1 = Vector(4, 0, 0)
+        p2 = Vector(1, 0, 3)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertIsNone(i.tail)
+
+        # verify we stay in P1 if we add another segment
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(0, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P1)
+        self.assertEqual(len(i.edges), 3)
+        p3 = Vector(0, 0, 3)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+    def test22(self):
+        """Verify intersection of angled tag with edge ending on P2."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-1, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 3)
+        p0 = Vector(edge.Curve.StartPoint)
+        p1 = Vector(4, 0, 0)
+        p2 = Vector(1, 0, 3)
+        p3 = Vector(-1, 0, 3)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+        # make sure we get the same result if there's another edge
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+        i = tag.intersect(edge)
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-1, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 3)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertIsNone(i.tail)
+
+        # and also if the last segment doesn't cross the entire plateau
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(0.5, 0, 0)))
+        i = tag.intersect(edge)
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-1, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 4)
+        p2a = Vector(0.5, 0, 3)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p2a)
+        self.assertLine(i.edges[3], p2a, p3)
+        self.assertIsNone(i.tail)
+
+    def test23(self):
+        """Verify proper down plunge on angled tag exit."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-2, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 4)
+        p0 = Vector(5, 0, 0)
+        p1 = Vector(4, 0, 0)
+        p2 = Vector(1, 0, 3)
+        p3 = Vector(-1, 0, 3)
+        p4 = Vector(-2, 0, 2)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertLine(i.edges[3], p3, p4)
+        self.assertIsNone(i.tail)
+
+        # make sure adding another segment doesn't change the state
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-3, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P2)
+        self.assertEqual(len(i.edges), 5)
+        p5 = Vector(-3, 0, 1)
+        self.assertLine(i.edges[4], p4, p5)
+        self.assertIsNone(i.tail)
+
+        # now if we complete to P3 ....
+        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-4, 0, 0)))
+        i = i.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P3)
+        self.assertTrue(i.isComplete())
+        self.assertEqual(len(i.edges), 6)
+        p6 = Vector(-4, 0, 0)
+        self.assertLine(i.edges[5], p5, p6)
+        self.assertIsNone(i.tail)
+
+        # verify proper operation if there is a single edge going through all
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-4, 0, 0)))
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P3)
+        self.assertTrue(i.isComplete())
+        self.assertEqual(len(i.edges), 4)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertLine(i.edges[3], p3, p6)
+        self.assertIsNone(i.tail)
+
+        # verify tail is added as well
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-5, 0, 0)))
+        i = tag.intersect(edge)
+        self.assertEqual(i.state, Tag.Intersection.P3)
+        self.assertTrue(i.isComplete())
+        self.assertEqual(len(i.edges), 4)
+        self.assertLine(i.edges[0], p0, p1)
+        self.assertLine(i.edges[1], p1, p2)
+        self.assertLine(i.edges[2], p2, p3)
+        self.assertLine(i.edges[3], p3, p6)
+        self.assertIsNotNone(i.tail)
+        self.assertLine(i.tail, p6, edge.Curve.EndPoint)
+
+class TestTag02SquareTag(TagTestCaseBase): # ============= 
     """Unit tests for square tags."""
 
-    def testTagNoIntersect(self):
-        #"""Check that the returned tail if no intersection occurs matches the input."""
+    def test00(self):
+        """Verify no intersection."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
-        pt1 = Vector(+5, 3, 0)
-        pt2 = Vector(-5, 3, 0)
+        pt1 = Vector(+5, 5, 0)
+        pt2 = Vector(-5, 5, 0)
         edge = Part.Edge(Part.Line(pt1, pt2))
 
         i = tag.intersect(edge)
@@ -191,8 +455,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertFalse(i.edges)
         self.assertLine(i.tail, pt1, pt2)
 
-    def testTagIntersectLine(self):
-        #"""Test that a straight line passing through a cylindrical tag is split up into 5 segments."""
+    def test01(self):
+        """Verify a straight line passing through tag is split up into 5 segments."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         pt1 = Vector(+5, 0, 0)
         pt2 = Vector(-5, 0, 0)
@@ -215,8 +479,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertLine(i.tail,     pt0d, pt2)
 
 
-    def testTagIntersectPartialLineP0(self):
-        #"""Make sure line is accounted for if it reaches P0."""
+    def test02(self):
+        """Verify line is accounted for if it reaches P0."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(2, 0, 0)))
 
@@ -228,8 +492,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertIsNone(i.tail)
 
 
-    def testTagIntersectPartialLineP1(self):
-        #"""Make sure line is accounted for if it reaches beyond P1."""
+    def test03(self):
+        """Verify line is accounted for if it reaches beyond P1."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
 
@@ -247,8 +511,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertIsNone(i.tail)
 
 
-    def testTagIntersectPartialLineP2(self):
-        #"""Make sure line is accounted for if it reaches beyond P2."""
+    def test04(self):
+        """Verify line is accounted for if it reaches beyond P2."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-1, 0, 0)))
 
@@ -265,8 +529,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertLine(i.edges[2], pt0b, pt1a)
         self.assertIsNone(i.tail)
 
-    def testTagIntersectPartialLineP11(self):
-        #"""Make sure a line is accounted for if it lies entirely between P1 and P2."""
+    def test05(self):
+        """Verify line is accounted for if it lies entirely between P1 and P2."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         e1 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+1, 0, 0)))
 
@@ -288,8 +552,8 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertLine(i.edges[3], pt1a, pt1b)
         self.assertIsNone(i.tail)
 
-    def testTagIntersectPartialLinesP11223(self):
-        #"""Verify all lines between P0 and P3 are added."""
+    def test06(self):
+        """Verify all lines between P0 and P3 are added."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         e0 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+2, 0, 0)))
         e1 = Part.Edge(Part.Line(e0.Curve.EndPoint, Vector(+1, 0, 0)))
@@ -329,17 +593,203 @@ class SquareTagTestCases(TagTestCaseBase): # =============
         self.assertIsNotNone(i.tail)
         self.assertLine(i.tail, e6.Curve.StartPoint, e6.Curve.EndPoint)
 
-    def testTagIntersectLineAt(self):
+    def test07(self):
+        """Verify intersection of different z levels."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         # for all lines below 7 we get the trapezoid
         for i in range(0, 7):
-            edge = Part.Edge(Part.Line(Vector(5, 0, i), Vector(-5, 0, i)))
+            p0 = Vector(5, 0, i)
+            p1 = Vector(2, 0, i)
+            p2 = Vector(2, 0, 7)
+            p3 = Vector(-2, 0, 7)
+            p4 = Vector(-2, 0, i)
+            p5 = Vector(-5, 0, i)
+            edge = Part.Edge(Part.Line(p0, p5))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
-            self.assertTrapezoid(s.edges, s.tail, [edge.Curve.StartPoint, 2, 7, edge.Curve.EndPoint])
+            self.assertTrapezoid(s.edges, s.tail, [p0, p1, p2, p3, p4, p5])
 
         # for all edges at height or above the original line is used
         for i in range(7, 9):
+            edge = Part.Edge(Part.Line(Vector(5, 0, i), Vector(-5, 0, i)))
+            s = tag.intersect(edge)
+            self.assertTrue(s.isComplete())
+            self.assertLine(s.tail, edge.Curve.StartPoint, edge.Curve.EndPoint)
+
+class TestTag03AngledTag(TagTestCaseBase): # ============= 
+    """Unit tests for trapezoid tags."""
+
+    def test00(self):
+        """Verify no intersection."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        pt1 = Vector(+5, 5, 0)
+        pt2 = Vector(-5, 5, 0)
+        edge = Part.Edge(Part.Line(pt1, pt2))
+
+        i = tag.intersect(edge)
+        self.assertIsNotNone(i)
+        self.assertTrue(i.isComplete())
+        self.assertIsNotNone(i.edges)
+        self.assertFalse(i.edges)
+        self.assertLine(i.tail, pt1, pt2)
+
+    def test01(self):
+        """Verify a straight line passing through tag is split into 5 segments."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        pt1 = Vector(+5, 0, 0)
+        pt2 = Vector(-5, 0, 0)
+        edge = Part.Edge(Part.Line(pt1, pt2))
+
+        i = tag.intersect(edge)
+        self.assertIsNotNone(i)
+        self.assertTrue(i.isComplete())
+
+        pt0a = Vector(+4, 0, 0)
+        pt0b = Vector(+1, 0, 3)
+        pt0c = Vector(-1, 0, 3)
+        pt0d = Vector(-4, 0, 0)
+
+        self.assertEqual(len(i.edges), 4)
+        self.assertLine(i.edges[0], pt1,  pt0a)
+        self.assertLine(i.edges[1], pt0a, pt0b)
+        self.assertLine(i.edges[2], pt0b, pt0c)
+        self.assertLine(i.edges[3], pt0c, pt0d)
+        self.assertLine(i.tail,     pt0d, pt2)
+
+
+    def test02(self):
+        """Verify line is accounted for if it reaches P0."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertFalse(i.isComplete())
+
+        self.assertEqual(len(i.edges), 1)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertIsNone(i.tail)
+
+
+    def test03(self):
+        """Verify line is accounted for if it reaches beyond P1."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(0.5, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertFalse(i.isComplete())
+
+        pt0a = Vector(+4, 0, 0)
+        pt0b = Vector(+1, 0, 3)
+        pt1a = Vector(+0.5, 0, 3)
+
+        self.assertEqual(len(i.edges), 3)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, pt0a)
+        self.assertLine(i.edges[1], pt0a, pt0b)
+        self.assertLine(i.edges[2], pt0b, pt1a)
+        self.assertIsNone(i.tail)
+
+
+    def test04(self):
+        """Verify line is accounted for if it reaches beyond P2."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-1, 0, 0)))
+
+        i = tag.intersect(edge)
+        self.assertFalse(i.isComplete())
+
+        pt0a = Vector(+4, 0, 0)
+        pt0b = Vector(+1, 0, 3)
+        pt1a = Vector(-1, 0, 3)
+
+        self.assertEqual(len(i.edges), 3)
+        self.assertLine(i.edges[0], edge.Curve.StartPoint, pt0a)
+        self.assertLine(i.edges[1], pt0a, pt0b)
+        self.assertLine(i.edges[2], pt0b, pt1a)
+        self.assertIsNone(i.tail)
+
+    def test05(self):
+        """Verify a line is accounted for if it lies entirely between P1 and P2."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        e1 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+0.5, 0, 0)))
+
+        i = tag.intersect(e1)
+        self.assertFalse(i.isComplete())
+
+        e2 = Part.Edge(Part.Line(e1.Curve.EndPoint, Vector(0,0,0)))
+        i = i.intersect(e2)
+
+        pt0a = Vector(+4, 0, 0)
+        pt0b = Vector(+1, 0, 3)
+        pt1a = Vector(+0.5, 0, 3)
+        pt1b = Vector( 0, 0, 3)
+
+        self.assertEqual(len(i.edges), 4)
+        self.assertLine(i.edges[0], e1.Curve.StartPoint, pt0a)
+        self.assertLine(i.edges[1], pt0a, pt0b)
+        self.assertLine(i.edges[2], pt0b, pt1a)
+        self.assertLine(i.edges[3], pt1a, pt1b)
+        self.assertIsNone(i.tail)
+
+    def test06(self):
+        """Verify all lines between P0 and P3 are added."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        e0 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+4, 0, 0)))
+        e1 = Part.Edge(Part.Line(e0.Curve.EndPoint, Vector(+2, 0, 0)))
+        e2 = Part.Edge(Part.Line(e1.Curve.EndPoint, Vector(+0.5, 0, 0)))
+        e3 = Part.Edge(Part.Line(e2.Curve.EndPoint, Vector(-0.5, 0, 0)))
+        e4 = Part.Edge(Part.Line(e3.Curve.EndPoint, Vector(-1, 0, 0)))
+        e5 = Part.Edge(Part.Line(e4.Curve.EndPoint, Vector(-2, 0, 0)))
+        e6 = Part.Edge(Part.Line(e5.Curve.EndPoint, Vector(-5, 0, 0)))
+
+        i = tag
+        for e in [e0, e1, e2, e3, e4, e5]:
+            i = i.intersect(e)
+            self.assertFalse(i.isComplete())
+        i = i.intersect(e6)
+        self.assertTrue(i.isComplete())
+
+        pt0 = Vector(4, 0, 0)
+        pt1 = Vector(2, 0, 2)
+        pt2 = Vector(1, 0, 3)
+        pt3 = Vector(0.5, 0, 3)
+        pt4 = Vector(-0.5, 0, 3)
+        pt5 = Vector(-1, 0, 3)
+        pt6 = Vector(-2, 0, 2)
+        pt7 = Vector(-4, 0, 0)
+
+        #self.assertEqual(len(i.edges), 8)
+
+        self.assertLine(i.edges[0], e0.Curve.StartPoint, pt0)
+        self.assertLine(i.edges[1], pt0, pt1)
+        self.assertLine(i.edges[2], pt1, pt2)
+        self.assertLine(i.edges[3], pt2, pt3)
+        self.assertLine(i.edges[4], pt3, pt4)
+        self.assertLine(i.edges[5], pt4, pt5)
+        self.assertLine(i.edges[6], pt5, pt6)
+        self.assertLine(i.edges[7], pt6, pt7)
+        self.assertTrue(i.isComplete())
+
+        self.assertIsNotNone(i.tail)
+        self.assertLine(i.tail, pt7, e6.Curve.EndPoint)
+
+    def test07(self):
+        """Verify intersection for different z levels."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        # for all lines below 3 we get the trapezoid
+        for i in range(0, 3):
+            p0 = Vector(5, 0, i)
+            p1 = Vector(4-i, 0, i)
+            p2 = Vector(1, 0, 3)
+            p3 = Vector(-1, 0, 3)
+            p4 = Vector(-4+i, 0, i)
+            p5 = Vector(-5, 0, i)
+            edge = Part.Edge(Part.Line(p0, p5))
+            s = tag.intersect(edge)
+            self.assertTrue(s.isComplete())
+            self.assertTrapezoid(s.edges, s.tail, [p0, p1, p2, p3, p4, p5])
+
+        # for all edges at height or above the original line is used
+        for i in range(3, 5):
             edge = Part.Edge(Part.Line(Vector(5, 0, i), Vector(-5, 0, i)))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
