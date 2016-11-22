@@ -577,7 +577,221 @@ PyObject *Geom2dBSplineCurve::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dCircle, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE_ABSTRACT(Part::Geom2dConic, Part::Geom2dCurve)
+
+Geom2dConic::Geom2dConic()
+{
+}
+
+Geom2dConic::~Geom2dConic()
+{
+}
+
+Base::Vector2d Geom2dConic::getCenter(void) const
+{
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+    const gp_Pnt2d& loc = conic->Location();
+    return Base::Vector2d(loc.X(),loc.Y());
+}
+
+void Geom2dConic::setCenter(const Base::Vector2d& Center)
+{
+    gp_Pnt2d p1(Center.x,Center.y);
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+
+    try {
+        conic->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+bool Geom2dConic::isReversed() const
+{
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
+    gp_Dir2d xdir = conic->XAxis().Direction();
+    gp_Dir2d ydir = conic->YAxis().Direction();
+
+    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
+    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
+    Base::Vector3d zd = xd.Cross(yd);
+    return zd.z < 0;
+}
+
+void Geom2dConic::SaveAxis(Base::Writer& writer, const gp_Ax22d& axis) const
+{
+    gp_Pnt2d center = axis.Location();
+    gp_Dir2d xdir = axis.XDirection();
+    gp_Dir2d ydir = axis.YDirection();
+    writer.Stream()
+        << "CenterX=\"" << center.X() << "\" "
+        << "CenterY=\"" << center.Y() << "\" "
+        << "XAxisX=\"" << xdir.X() << "\" "
+        << "XAxisY=\"" << xdir.Y() << "\" "
+        << "YAxisX=\"" << ydir.X() << "\" "
+        << "YAxisY=\"" << ydir.Y() << "\" ";
+}
+
+void Geom2dConic::RestoreAxis(Base::XMLReader& reader, gp_Ax22d& axis)
+{
+    double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY;
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    XdirX = reader.getAttributeAsFloat("XAxisX");
+    XdirY = reader.getAttributeAsFloat("XAxisY");
+    YdirX = reader.getAttributeAsFloat("YAxisX");
+    YdirY = reader.getAttributeAsFloat("YAxisY");
+
+    // set the read geometry
+    gp_Pnt2d p1(CenterX,CenterY);
+    gp_Dir2d xdir(XdirX,XdirY);
+    gp_Dir2d ydir(YdirX,YdirY);
+    axis.SetLocation(p1);
+    axis.SetXDirection(xdir);
+    axis.SetYDirection(ydir);
+}
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE_ABSTRACT(Part::Geom2dArcOfConic, Part::Geom2dCurve)
+
+Geom2dArcOfConic::Geom2dArcOfConic()
+{
+}
+
+Geom2dArcOfConic::~Geom2dArcOfConic()
+{
+}
+
+Base::Vector2d Geom2dArcOfConic::getCenter(void) const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    const gp_Pnt2d& loc = conic->Location();
+    return Base::Vector2d(loc.X(),loc.Y());
+}
+
+void Geom2dArcOfConic::setCenter(const Base::Vector2d& Center)
+{
+    gp_Pnt2d p1(Center.x,Center.y);
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+
+    try {
+        conic->SetLocation(p1);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+bool Geom2dArcOfConic::isReversed() const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    gp_Dir2d xdir = conic->XAxis().Direction();
+    gp_Dir2d ydir = conic->YAxis().Direction();
+
+    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
+    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
+    Base::Vector3d zd = xd.Cross(yd);
+    return zd.z < 0;
+}
+
+/*!
+ * \brief Geom2dArcOfConic::getStartPoint
+ * \return XY of the arc's starting point.
+ */
+Base::Vector2d Geom2dArcOfConic::getStartPoint() const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    gp_Pnt2d pnt = curve->StartPoint();
+    return Base::Vector2d(pnt.X(), pnt.Y());
+}
+
+/*!
+ * \brief Geom2dArcOfConic::getEndPoint
+ * \return XY of the arc's ending point.
+ */
+Base::Vector2d Geom2dArcOfConic::getEndPoint() const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    gp_Pnt2d pnt = curve->EndPoint();
+    return Base::Vector2d(pnt.X(), pnt.Y());
+}
+
+/*!
+ * \brief Geom2dArcOfConic::getRange
+ * \param u [out] start angle of the arc, in radians.
+ * \param v [out] end angle of the arc, in radians.
+ */
+void Geom2dArcOfConic::getRange(double& u, double& v) const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+    u = curve->FirstParameter();
+    v = curve->LastParameter();
+}
+
+/*!
+ * \brief Geom2dArcOfConic::setRange
+ * \param u [in] start angle of the arc, in radians.
+ * \param v [in] end angle of the arc, in radians.
+ */
+void Geom2dArcOfConic::setRange(double u, double v)
+{
+    try {
+        Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
+        curve->SetTrim(u, v);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+void Geom2dArcOfConic::SaveAxis(Base::Writer& writer, const gp_Ax22d& axis, double u, double v) const
+{
+    gp_Pnt2d center = axis.Location();
+    gp_Dir2d xdir = axis.XDirection();
+    gp_Dir2d ydir = axis.YDirection();
+    writer.Stream()
+        << "CenterX=\"" << center.X() << "\" "
+        << "CenterY=\"" << center.Y() << "\" "
+        << "XAxisX=\"" << xdir.X() << "\" "
+        << "XAxisY=\"" << xdir.Y() << "\" "
+        << "YAxisX=\"" << ydir.X() << "\" "
+        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "FirstParameter=\"" << u << "\" "
+        << "LastParameter=\"" << v << "\" ";
+}
+
+void Geom2dArcOfConic::RestoreAxis(Base::XMLReader& reader, gp_Ax22d& axis, double& u, double &v)
+{
+    double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY;
+    CenterX = reader.getAttributeAsFloat("CenterX");
+    CenterY = reader.getAttributeAsFloat("CenterY");
+    XdirX = reader.getAttributeAsFloat("XAxisX");
+    XdirY = reader.getAttributeAsFloat("XAxisY");
+    YdirX = reader.getAttributeAsFloat("YAxisX");
+    YdirY = reader.getAttributeAsFloat("YAxisY");
+    u = reader.getAttributeAsFloat("FirstParameter");
+    v = reader.getAttributeAsFloat("LastParameter");
+
+    // set the read geometry
+    gp_Pnt2d p1(CenterX,CenterY);
+    gp_Dir2d xdir(XdirX,XdirY);
+    gp_Dir2d ydir(YdirX,YdirY);
+    axis.SetLocation(p1);
+    axis.SetXDirection(xdir);
+    axis.SetYDirection(ydir);
+}
+
+// -------------------------------------------------
+
+TYPESYSTEM_SOURCE(Part::Geom2dCircle, Part::Geom2dConic)
 
 Geom2dCircle::Geom2dCircle()
 {
@@ -605,31 +819,10 @@ Geometry2d *Geom2dCircle::clone(void) const
     return newCirc;
 }
 
-Base::Vector2d Geom2dCircle::getCenter(void) const
-{
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
-    const gp_Pnt2d& loc = circle->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
 double Geom2dCircle::getRadius(void) const
 {
     Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
     return circle->Radius();
-}
-
-void Geom2dCircle::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
-
-    try {
-        circle->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 void Geom2dCircle::setRadius(double Radius)
@@ -647,20 +840,6 @@ void Geom2dCircle::setRadius(double Radius)
     }
 }
 
-bool Geom2dCircle::isReversed() const
-{
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
-    gp_Circ2d c = circle->Circ2d();
-    gp_Ax22d loc = c.Axis();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
-
-    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
-    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
-    Base::Vector3d zd = xd.Cross(yd);
-    return zd.z < 0;
-}
-
 unsigned int Geom2dCircle::getMemSize (void) const
 {
     return sizeof(Geom2d_Circle);
@@ -673,20 +852,13 @@ void Geom2dCircle::Save(Base::Writer& writer) const
 
     Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(handle());
     gp_Circ2d c = circle->Circ2d();
-    gp_Ax22d loc = c.Axis();
-    gp_Pnt2d center = loc.Location();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
+    gp_Ax22d axis = c.Axis();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dCircle "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dCircle ";
+    SaveAxis(writer, axis);
+    writer.Stream()
         << "Radius=\"" << c.Radius() << "\" "
         << "/>" << endl;
 }
@@ -696,25 +868,16 @@ void Geom2dCircle::Restore(Base::XMLReader& reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY,Radius;
+    double Radius;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dCircle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XdirX = reader.getAttributeAsFloat("XAxisX");
-    XdirY = reader.getAttributeAsFloat("XAxisY");
-    YdirX = reader.getAttributeAsFloat("YAxisX");
-    YdirY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis);
     Radius = reader.getAttributeAsFloat("Radius");
 
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XdirX,XdirY);
-    gp_Dir2d ydir(YdirX,YdirY);
     try {
-        gp_Ax22d loc(p1, xdir, ydir);
-        GCE2d_MakeCircle mc(loc, Radius);
+        GCE2d_MakeCircle mc(axis, Radius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
 
@@ -734,7 +897,7 @@ PyObject *Geom2dCircle::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dArcOfCircle, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dArcOfCircle, Part::Geom2dArcOfConic)
 
 Geom2dArcOfCircle::Geom2dArcOfCircle()
 {
@@ -771,51 +934,10 @@ Geometry2d *Geom2dArcOfCircle::clone(void) const
     return copy;
 }
 
-/*!
- * \brief Geom2dArcOfCircle::getStartPoint
- * \return XY of the arc's starting point.
- */
-Base::Vector2d Geom2dArcOfCircle::getStartPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->StartPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-/*!
- * \brief Geom2dArcOfCircle::getEndPoint
- * \return XY of the arc's ending point.
- */
-Base::Vector2d Geom2dArcOfCircle::getEndPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->EndPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfCircle::getCenter(void) const
-{
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
-    const gp_Pnt2d& loc = circle->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
 double Geom2dArcOfCircle::getRadius(void) const
 {
     Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
     return circle->Radius();
-}
-
-void Geom2dArcOfCircle::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
-
-    try {
-        circle->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 void Geom2dArcOfCircle::setRadius(double Radius)
@@ -833,55 +955,6 @@ void Geom2dArcOfCircle::setRadius(double Radius)
     }
 }
 
-/*!
- * \brief Geom2dArcOfCircle::getRange
- * \param u [out] start angle of the arc, in radians.
- * \param v [out] end angle of the arc, in radians.
- */
-void Geom2dArcOfCircle::getRange(double& u, double& v) const
-{
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
-}
-
-/*!
- * \brief Geom2dArcOfCircle::setRange
- * \param u [in] start angle of the arc, in radians.
- * \param v [in] end angle of the arc, in radians.
- */
-void Geom2dArcOfCircle::setRange(double u, double v)
-{
-
-    try {
-        myCurve->SetTrim(u, v);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
-/*!
- * \brief Geom2dArcOfCircle::isReversedInXY
- * \return tests if an arc that lies in XY plane is reversed (i.e. drawn from
- * startpoint to endpoint in CW direction instead of CCW.). Returns True if the
- * arc is CW and false if CCW.
- */
-bool Geom2dArcOfCircle::isReversed() const
-{
-    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(myCurve->BasisCurve());
-    assert(!circle.IsNull());
-    gp_Circ2d c = circle->Circ2d();
-    gp_Ax22d loc = c.Axis();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
-
-    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
-    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
-    Base::Vector3d zd = xd.Cross(yd);
-    return zd.z < 0;
-}
-
 unsigned int Geom2dArcOfCircle::getMemSize (void) const
 {
     return sizeof(Geom2d_Circle) + 2 *sizeof(double);
@@ -895,23 +968,16 @@ void Geom2dArcOfCircle::Save(Base::Writer &writer) const
     Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(this->myCurve->BasisCurve());
 
     gp_Circ2d c = circle->Circ2d();
-    gp_Ax22d loc = c.Axis();
-    gp_Pnt2d center = loc.Location();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
+    gp_Ax22d axis = c.Axis();
+    double u = this->myCurve->FirstParameter();
+    double v = this->myCurve->LastParameter();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dArcOfCircle "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dArcOfCircle ";
+    SaveAxis(writer, axis, u, v);
+    writer.Stream()
         << "Radius=\"" << c.Radius() << "\" "
-        << "First=\"" << this->myCurve->FirstParameter() << "\" "
-        << "Last=\"" << this->myCurve->LastParameter() << "\" "
         << "/>" << endl;
 }
 
@@ -920,31 +986,19 @@ void Geom2dArcOfCircle::Restore(Base::XMLReader &reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XdirX,XdirY,YdirX,YdirY,Radius,First,Last;
+    double Radius,u,v;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dArcOfCircle");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XdirX = reader.getAttributeAsFloat("XAxisX");
-    XdirY = reader.getAttributeAsFloat("XAxisY");
-    YdirX = reader.getAttributeAsFloat("YAxisX");
-    YdirY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis, u, v);
     Radius = reader.getAttributeAsFloat("Radius");
-    First = reader.getAttributeAsFloat("First");
-    Last = reader.getAttributeAsFloat("Last");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XdirX,XdirY);
-    gp_Dir2d ydir(YdirX,YdirY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeCircle mc(axis, Radius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
-        GCE2d_MakeArcOfCircle ma(mc.Value()->Circ2d(), First, Last);
+        GCE2d_MakeArcOfCircle ma(mc.Value()->Circ2d(), u, v);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
 
@@ -969,7 +1023,7 @@ PyObject *Geom2dArcOfCircle::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dEllipse, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dEllipse, Part::Geom2dConic)
 
 Geom2dEllipse::Geom2dEllipse()
 {
@@ -995,27 +1049,6 @@ Geometry2d *Geom2dEllipse::clone(void) const
 {
     Geom2dEllipse *newEllipse = new Geom2dEllipse(myCurve);
     return newEllipse;
-}
-
-Base::Vector2d Geom2dEllipse::getCenter(void) const
-{
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
-    const gp_Pnt2d& loc = ellipse->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dEllipse::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
-
-    try {
-        ellipse->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 double Geom2dEllipse::getMajorRadius(void) const
@@ -1092,26 +1125,6 @@ void Geom2dEllipse::setMajorAxisDir(Base::Vector2d newdir)
     }
 }
 
-/*!
- * \brief Geom2dEllipse::isReversed tests if an ellipse is reversed
- * (i.e. drawn from startpoint to endpoint in CW direction instead
- * of CCW.)
- * \return Returns True if the arc is CW and false if CCW.
- */
-bool Geom2dEllipse::isReversed() const
-{
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(handle());
-    gp_Elips2d e = ellipse->Elips2d();
-    gp_Ax22d loc = e.Axis();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
-
-    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
-    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
-    Base::Vector3d zd = xd.Cross(yd);
-    return zd.z < 0;
-}
-
 unsigned int Geom2dEllipse::getMemSize (void) const
 {
     return sizeof(Geom2d_Ellipse);
@@ -1123,19 +1136,13 @@ void Geom2dEllipse::Save(Base::Writer& writer) const
     Geom2dCurve::Save(writer);
 
     gp_Elips2d e = this->myCurve->Elips2d();
-    gp_Pnt2d center = e.Location();
-    gp_Dir2d xdir = e.Axis().XDirection();
-    gp_Dir2d ydir = e.Axis().YDirection();
+    gp_Ax22d axis = e.Axis();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dEllipse "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dEllipse ";
+    SaveAxis(writer, axis);
+    writer.Stream()
         << "MajorRadius=\"" << e.MajorRadius() << "\" "
         << "MinorRadius=\"" << e.MinorRadius() << "\" "
         << "/>" << endl;
@@ -1146,24 +1153,14 @@ void Geom2dEllipse::Restore(Base::XMLReader& reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,MajorRadius,MinorRadius;
+    double MajorRadius,MinorRadius;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dEllipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis);
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
     
     try {
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
@@ -1191,7 +1188,7 @@ void Geom2dEllipse::setHandle(const Handle_Geom2d_Ellipse &e)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dArcOfEllipse, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dArcOfEllipse, Part::Geom2dArcOfConic)
 
 Geom2dArcOfEllipse::Geom2dArcOfEllipse()
 {
@@ -1226,39 +1223,6 @@ Geometry2d *Geom2dArcOfEllipse::clone(void) const
     Geom2dArcOfEllipse* copy = new Geom2dArcOfEllipse();
     copy->setHandle(this->myCurve);
     return copy;
-}
-
-Base::Vector2d Geom2dArcOfEllipse::getStartPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->StartPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfEllipse::getEndPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->EndPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfEllipse::getCenter(void) const
-{
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
-    const gp_Pnt2d& loc = ellipse->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dArcOfEllipse::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
-
-    try {
-        ellipse->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 double Geom2dArcOfEllipse::getMajorRadius(void) const
@@ -1339,53 +1303,6 @@ void Geom2dArcOfEllipse::setMajorAxisDir(Base::Vector2d newdir)
     }
 }
 
-/*!
- * \brief Geom2dArcOfEllipse::isReversedInXY tests if an arc that lies in XY plane is reversed
- * (i.e. drawn from startpoint to endpoint in CW direction instead of CCW.)
- * \return Returns True if the arc is CW and false if CCW.
- */
-bool Geom2dArcOfEllipse::isReversed() const
-{
-    Handle_Geom2d_Ellipse c = Handle_Geom2d_Ellipse::DownCast(myCurve->BasisCurve());
-    assert(!c.IsNull());
-    gp_Elips2d e = c->Elips2d();
-    gp_Ax22d loc = e.Axis();
-    gp_Dir2d xdir = loc.XDirection();
-    gp_Dir2d ydir = loc.YDirection();
-
-    Base::Vector3d xd(xdir.X(), xdir.Y(), 0);
-    Base::Vector3d yd(ydir.X(), ydir.Y(), 0);
-    Base::Vector3d zd = xd.Cross(yd);
-    return zd.z < 0;
-}
-
-/*!
- * \brief Geom2dArcOfEllipse::getRange
- * \param u [out] start angle of the arc, in radians.
- * \param v [out] end angle of the arc, in radians.
- */
-void Geom2dArcOfEllipse::getRange(double& u, double& v) const
-{
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
-}
-
-/*!
- * \brief Geom2dArcOfEllipse::setRange
- * \param u [in] start angle of the arc, in radians.
- * \param v [in] end angle of the arc, in radians.
- */
-void Geom2dArcOfEllipse::setRange(double u, double v)
-{
-    try {
-        myCurve->SetTrim(u, v);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
 unsigned int Geom2dArcOfEllipse::getMemSize (void) const
 {
     return sizeof(Geom2d_Ellipse) + 2 *sizeof(double);
@@ -1399,23 +1316,17 @@ void Geom2dArcOfEllipse::Save(Base::Writer &writer) const
     Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(this->myCurve->BasisCurve());
 
     gp_Elips2d e = ellipse->Elips2d();
-    gp_Pnt2d center = e.Location();
-    gp_Dir2d xdir = e.Axis().XDirection();
-    gp_Dir2d ydir = e.Axis().YDirection();
+    gp_Ax22d axis = e.Axis();
+    double u = this->myCurve->FirstParameter();
+    double v = this->myCurve->LastParameter();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dArcOfEllipse "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dArcOfEllipse ";
+    SaveAxis(writer, axis, u, v);
+    writer.Stream()
         << "MajorRadius=\"" << e.MajorRadius() << "\" "
         << "MinorRadius=\"" << e.MinorRadius() << "\" "
-        << "First=\"" <<  this->myCurve->FirstParameter() << "\" "
-        << "Last=\"" <<  this->myCurve->LastParameter() << "\" "
         << "/>" << endl;
 }
 
@@ -1424,33 +1335,21 @@ void Geom2dArcOfEllipse::Restore(Base::XMLReader &reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,MajorRadius,MinorRadius,First,Last;
+    double MajorRadius,MinorRadius,u,v;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dArcOfEllipse");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis, u, v);
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    First = reader.getAttributeAsFloat("First");
-    Last = reader.getAttributeAsFloat("Last");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeEllipse mc(axis, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
         
-        GCE2d_MakeArcOfEllipse ma(mc.Value()->Elips2d(), First, Last);
+        GCE2d_MakeArcOfEllipse ma(mc.Value()->Elips2d(), u, v);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
         
@@ -1475,7 +1374,7 @@ PyObject *Geom2dArcOfEllipse::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dHyperbola, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dHyperbola, Part::Geom2dConic)
 
 Geom2dHyperbola::Geom2dHyperbola()
 {
@@ -1501,27 +1400,6 @@ Geometry2d *Geom2dHyperbola::clone(void) const
 {
     Geom2dHyperbola *newHyp = new Geom2dHyperbola(myCurve);
     return newHyp;
-}
-
-Base::Vector2d Geom2dHyperbola::getCenter(void) const
-{
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
-    const gp_Pnt2d& loc = h->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dHyperbola::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(handle());
-
-    try {
-        h->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 double Geom2dHyperbola::getMajorRadius(void) const
@@ -1573,19 +1451,13 @@ void Geom2dHyperbola::Save(Base::Writer& writer) const
     Geom2dCurve::Save(writer);
 
     gp_Hypr2d h = this->myCurve->Hypr2d();
-    gp_Pnt2d center = h.Location();
-    gp_Dir2d xdir = h.Axis().XDirection();
-    gp_Dir2d ydir = h.Axis().YDirection();
+    gp_Ax22d axis = h.Axis();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dHyperbola "
-        << "CenterX=\"" <<  center.X() << "\" "
-        << "CenterY=\"" <<  center.Y() << "\" "
-        << "XAxisX=\"" <<  xdir.X() << "\" "
-        << "XAxisY=\"" <<  xdir.Y() << "\" "
-        << "YAxisX=\"" <<  ydir.X() << "\" "
-        << "YAxisY=\"" <<  ydir.Y() << "\" "
+        << "<Geom2dHyperbola ";
+    SaveAxis(writer, axis);
+    writer.Stream()
         << "MajorRadius=\"" <<  h.MajorRadius() << "\" "
         << "MinorRadius=\"" <<  h.MinorRadius() << "\" "
         << "/>" << endl;
@@ -1596,24 +1468,14 @@ void Geom2dHyperbola::Restore(Base::XMLReader& reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,MajorRadius,MinorRadius;
+    double MajorRadius,MinorRadius;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dHyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis);
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeHyperbola mc(axis, MajorRadius, MinorRadius);
@@ -1636,7 +1498,7 @@ PyObject *Geom2dHyperbola::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dArcOfHyperbola, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dArcOfHyperbola, Part::Geom2dArcOfConic)
 
 Geom2dArcOfHyperbola::Geom2dArcOfHyperbola()
 {
@@ -1671,39 +1533,6 @@ Geometry2d *Geom2dArcOfHyperbola::clone(void) const
     Geom2dArcOfHyperbola* copy = new Geom2dArcOfHyperbola();
     copy->setHandle(this->myCurve);
     return copy;
-}
-
-Base::Vector2d Geom2dArcOfHyperbola::getStartPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->StartPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfHyperbola::getEndPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->EndPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfHyperbola::getCenter(void) const
-{
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
-    const gp_Pnt2d& loc = h->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dArcOfHyperbola::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Hyperbola h = Handle_Geom2d_Hyperbola::DownCast(myCurve->BasisCurve());
-
-    try {
-        h->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 double Geom2dArcOfHyperbola::getMajorRadius(void) const
@@ -1744,23 +1573,6 @@ void Geom2dArcOfHyperbola::setMinorRadius(double Radius)
     }
 }
 
-void Geom2dArcOfHyperbola::getRange(double& u, double& v) const
-{
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
-}
-
-void Geom2dArcOfHyperbola::setRange(double u, double v)
-{
-    try {
-        myCurve->SetTrim(u, v);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
 unsigned int Geom2dArcOfHyperbola::getMemSize (void) const
 {
     return sizeof(Geom2d_Hyperbola) + 2 *sizeof(double);
@@ -1774,23 +1586,17 @@ void Geom2dArcOfHyperbola::Save(Base::Writer &writer) const
     Handle_Geom2d_Hyperbola hh = Handle_Geom2d_Hyperbola::DownCast(this->myCurve->BasisCurve());
 
     gp_Hypr2d h = hh->Hypr2d();
-    gp_Pnt2d center = h.Location();
-    gp_Dir2d xdir = h.Axis().XDirection();
-    gp_Dir2d ydir = h.Axis().YDirection();
+    gp_Ax22d axis = h.Axis();
+    double u = this->myCurve->FirstParameter();
+    double v = this->myCurve->LastParameter();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dHyperbola "
-        << "CenterX=\"" <<  center.X() << "\" "
-        << "CenterY=\"" <<  center.Y() << "\" "
-        << "XAxisX=\"" <<  xdir.X() << "\" "
-        << "XAxisY=\"" <<  xdir.Y() << "\" "
-        << "YAxisX=\"" <<  ydir.X() << "\" "
-        << "YAxisY=\"" <<  ydir.Y() << "\" "
+        << "<Geom2dHyperbola ";
+    SaveAxis(writer, axis, u, v);
+    writer.Stream()
         << "MajorRadius=\"" <<  h.MajorRadius() << "\" "
         << "MinorRadius=\"" <<  h.MinorRadius() << "\" "
-        << "First=\"" <<  this->myCurve->FirstParameter() << "\" "
-        << "Last=\"" <<  this->myCurve->LastParameter() << "\" "
         << "/>" << endl;
 }
 
@@ -1799,33 +1605,21 @@ void Geom2dArcOfHyperbola::Restore(Base::XMLReader &reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,MajorRadius,MinorRadius,First,Last;
+    double MajorRadius,MinorRadius,u,v;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dHyperbola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis, u, v);
     MajorRadius = reader.getAttributeAsFloat("MajorRadius");
     MinorRadius = reader.getAttributeAsFloat("MinorRadius");
-    First = reader.getAttributeAsFloat("First");
-    Last = reader.getAttributeAsFloat("Last");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeHyperbola mc(axis, MajorRadius, MinorRadius);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
         
-        GCE2d_MakeArcOfHyperbola ma(mc.Value()->Hypr2d(), First, Last);
+        GCE2d_MakeArcOfHyperbola ma(mc.Value()->Hypr2d(), u, v);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
         
@@ -1850,7 +1644,7 @@ PyObject *Geom2dArcOfHyperbola::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dParabola, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dParabola, Part::Geom2dConic)
 
 Geom2dParabola::Geom2dParabola()
 {
@@ -1876,27 +1670,6 @@ Geometry2d *Geom2dParabola::clone(void) const
 {
     Geom2dParabola *newPar = new Geom2dParabola(myCurve);
     return newPar;
-}
-
-Base::Vector2d Geom2dParabola::getCenter(void) const
-{
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(handle());
-    const gp_Pnt2d& loc = p->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dParabola::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(handle());
-
-    try {
-        p->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
 }
 
 double Geom2dParabola::getFocal(void) const
@@ -1929,20 +1702,14 @@ void Geom2dParabola::Save(Base::Writer& writer) const
     Geom2dCurve::Save(writer);
 
     gp_Parab2d p = this->myCurve->Parab2d();
-    gp_Pnt2d center = p.Location();
-    gp_Dir2d xdir = p.Axis().XDirection();
-    gp_Dir2d ydir = p.Axis().YDirection();
+    gp_Ax22d axis = p.Axis();
     double focal = p.Focal();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dParabola "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dParabola ";
+    SaveAxis(writer, axis);
+    writer.Stream()
         << "Focal=\"" << focal << "\" "
         << "/>" << endl;
 }
@@ -1952,23 +1719,13 @@ void Geom2dParabola::Restore(Base::XMLReader& reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,Focal;
+    double Focal;
     // read my Element
     reader.readElement("Geom2dParabola");
+    gp_Ax22d axis;
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis);
     Focal = reader.getAttributeAsFloat("Focal");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeParabola mc(axis, Focal);
@@ -1991,7 +1748,7 @@ PyObject *Geom2dParabola::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::Geom2dArcOfParabola, Part::Geom2dCurve)
+TYPESYSTEM_SOURCE(Part::Geom2dArcOfParabola, Part::Geom2dArcOfConic)
 
 Geom2dArcOfParabola::Geom2dArcOfParabola()
 {
@@ -2028,39 +1785,6 @@ Geometry2d *Geom2dArcOfParabola::clone(void) const
     return copy;
 }
 
-Base::Vector2d Geom2dArcOfParabola::getStartPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->StartPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfParabola::getEndPoint() const
-{
-    gp_Pnt2d pnt = this->myCurve->EndPoint();
-    return Base::Vector2d(pnt.X(), pnt.Y());
-}
-
-Base::Vector2d Geom2dArcOfParabola::getCenter(void) const
-{
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(myCurve->BasisCurve());
-    const gp_Pnt2d& loc = p->Location();
-    return Base::Vector2d(loc.X(),loc.Y());
-}
-
-void Geom2dArcOfParabola::setCenter(const Base::Vector2d& Center)
-{
-    gp_Pnt2d p1(Center.x,Center.y);
-    Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(myCurve->BasisCurve());
-
-    try {
-        p->SetLocation(p1);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
 double Geom2dArcOfParabola::getFocal(void) const
 {
     Handle_Geom2d_Parabola p = Handle_Geom2d_Parabola::DownCast(myCurve->BasisCurve());
@@ -2080,23 +1804,6 @@ void Geom2dArcOfParabola::setFocal(double length)
     }
 }
 
-void Geom2dArcOfParabola::getRange(double& u, double& v) const
-{
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
-}
-
-void Geom2dArcOfParabola::setRange(double u, double v)
-{
-    try {
-        myCurve->SetTrim(u, v);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
 unsigned int Geom2dArcOfParabola::getMemSize (void) const
 {
     return sizeof(Geom2d_Parabola) + 2 *sizeof(double);
@@ -2109,23 +1816,17 @@ void Geom2dArcOfParabola::Save(Base::Writer &writer) const
     
     Handle_Geom2d_Parabola hp = Handle_Geom2d_Parabola::DownCast(this->myCurve->BasisCurve());
     gp_Parab2d p = hp->Parab2d();
-    gp_Pnt2d center = p.Location();
-    gp_Dir2d xdir = p.Axis().XDirection();
-    gp_Dir2d ydir = p.Axis().YDirection();
+    gp_Ax22d axis = p.Axis();
+    double u = this->myCurve->FirstParameter();
+    double v = this->myCurve->LastParameter();
     double focal = p.Focal();
 
     writer.Stream()
         << writer.ind()
-        << "<Geom2dArcOfParabola "
-        << "CenterX=\"" << center.X() << "\" "
-        << "CenterY=\"" << center.Y() << "\" "
-        << "XAxisX=\"" << xdir.X() << "\" "
-        << "XAxisY=\"" << xdir.Y() << "\" "
-        << "YAxisX=\"" << ydir.X() << "\" "
-        << "YAxisY=\"" << ydir.Y() << "\" "
+        << "<Geom2dArcOfParabola ";
+    SaveAxis(writer, axis, u, v);
+    writer.Stream()
         << "Focal=\"" << focal << "\" "
-        << "First=\"" << this->myCurve->FirstParameter() << "\" "
-        << "Last=\"" << this->myCurve->LastParameter() << "\" "
         << "/>" << endl;
 }
 
@@ -2134,35 +1835,23 @@ void Geom2dArcOfParabola::Restore(Base::XMLReader &reader)
     // read the attributes of the father class
     Geom2dCurve::Restore(reader);
 
-    double CenterX,CenterY,XAxisX,XAxisY,YAxisX,YAxisY,Focal,First,Last;
+    double Focal,u,v;
+    gp_Ax22d axis;
     // read my Element
     reader.readElement("Geom2dParabola");
     // get the value of my Attribute
-    CenterX = reader.getAttributeAsFloat("CenterX");
-    CenterY = reader.getAttributeAsFloat("CenterY");
-    XAxisX = reader.getAttributeAsFloat("XAxisX");
-    XAxisY = reader.getAttributeAsFloat("XAxisY");
-    YAxisX = reader.getAttributeAsFloat("YAxisX");
-    YAxisY = reader.getAttributeAsFloat("YAxisY");
+    RestoreAxis(reader, axis, u, v);
     Focal = reader.getAttributeAsFloat("Focal");
-    First = reader.getAttributeAsFloat("First");
-    Last = reader.getAttributeAsFloat("Last");
-
-    // set the read geometry
-    gp_Pnt2d p1(CenterX,CenterY);
-    gp_Dir2d xdir(XAxisX,XAxisY);
-    gp_Dir2d ydir(YAxisX,YAxisY);
-    gp_Ax22d axis(p1, xdir, ydir);
 
     try {
         GCE2d_MakeParabola mc(axis, Focal);
         if (!mc.IsDone())
             throw Base::Exception(gce_ErrorStatusText(mc.Status()));
         
-        GCE2d_MakeArcOfParabola ma(mc.Value()->Parab2d(), First, Last);
+        GCE2d_MakeArcOfParabola ma(mc.Value()->Parab2d(), u, v);
         if (!ma.IsDone())
             throw Base::Exception(gce_ErrorStatusText(ma.Status()));
-        
+
         Handle_Geom2d_TrimmedCurve tmpcurve = ma.Value();
         Handle_Geom2d_Parabola tmpparabola = Handle_Geom2d_Parabola::DownCast(tmpcurve->BasisCurve());
         Handle_Geom2d_Parabola parabola = Handle_Geom2d_Parabola::DownCast(this->myCurve->BasisCurve());
