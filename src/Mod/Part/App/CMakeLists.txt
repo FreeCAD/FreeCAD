@@ -13,6 +13,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
@@ -82,6 +83,8 @@ generate_from_xml(TopoShapeSolidPy)
 generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
+
+add_subdirectory(Geom2d)
 
 SET(Features_SRCS
     FeaturePartBoolean.cpp
@@ -249,10 +252,48 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+# Geom2d wrappers
+SET(Geom2dPy_SRCS
+    Geom2d/ArcOfCircle2dPy.xml
+    Geom2d/ArcOfCircle2dPyImp.cpp
+    Geom2d/ArcOfConic2dPy.xml
+    Geom2d/ArcOfConic2dPyImp.cpp
+    Geom2d/ArcOfEllipse2dPy.xml
+    Geom2d/ArcOfEllipse2dPyImp.cpp
+    Geom2d/ArcOfHyperbola2dPy.xml
+    Geom2d/ArcOfHyperbola2dPyImp.cpp
+    Geom2d/ArcOfParabola2dPy.xml
+    Geom2d/ArcOfParabola2dPyImp.cpp
+    Geom2d/BezierCurve2dPy.xml
+    Geom2d/BezierCurve2dPyImp.cpp
+    Geom2d/BSplineCurve2dPy.xml
+    Geom2d/BSplineCurve2dPyImp.cpp
+    Geom2d/Circle2dPy.xml
+    Geom2d/Circle2dPyImp.cpp
+    Geom2d/Conic2dPy.xml
+    Geom2d/Conic2dPyImp.cpp
+    Geom2d/Ellipse2dPy.xml
+    Geom2d/Ellipse2dPyImp.cpp
+    Geom2d/Geometry2dPy.xml
+    Geom2d/Geometry2dPyImp.cpp
+    Geom2d/Curve2dPy.xml
+    Geom2d/Curve2dPyImp.cpp
+    Geom2d/Hyperbola2dPy.xml
+    Geom2d/Hyperbola2dPyImp.cpp
+    Geom2d/Line2dSegmentPy.xml
+    Geom2d/Line2dSegmentPyImp.cpp
+    Geom2d/OffsetCurve2dPy.xml
+    Geom2d/OffsetCurve2dPyImp.cpp
+    Geom2d/Parabola2dPy.xml
+    Geom2d/Parabola2dPyImp.cpp
+)
+SOURCE_GROUP("Geom2d" FILES ${Geom2dPy_SRCS})
+
 SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    ${Geom2dPy_SRCS}
     Attacher.cpp
     Attacher.h
     AppPart.cpp

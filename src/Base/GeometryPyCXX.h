@@ -56,7 +56,8 @@ public:
     static void init_type(void);
     Py::Object getattro(const Py::String &name_);
     int setattro(const Py::String &name_, const Py::Object &value);
-    inline const Vector2d& getValue() const {
+    virtual Py::Object repr();
+    inline const Vector2d& value() const {
         return v;
     }
     inline void setValue(const Vector2d& n) {
