@@ -57,44 +57,60 @@
 #include "CustomFeature.h"
 #include "Geometry.h"
 #include "Geometry2d.h"
-#include "TopoShapePy.h"
-#include "TopoShapeVertexPy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeCompoundPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeShellPy.h"
-#include "LinePy.h"
-#include "PointPy.h"
-#include "CirclePy.h"
-#include "EllipsePy.h"
-#include "ArcPy.h"
-#include "ArcOfCirclePy.h"
-#include "ArcOfEllipsePy.h"
-#include "ArcOfParabolaPy.h"
-#include "ArcOfHyperbolaPy.h"
-#include "BezierCurvePy.h"
-#include "BSplineCurvePy.h"
-#include "HyperbolaPy.h"
-#include "OffsetCurvePy.h"
-#include "ParabolaPy.h"
-#include "BezierSurfacePy.h"
-#include "BSplineSurfacePy.h"
-#include "ConePy.h"
-#include "CylinderPy.h"
-#include "OffsetSurfacePy.h"
-#include "PlateSurfacePy.h"
-#include "PlanePy.h"
-#include "RectangularTrimmedSurfacePy.h"
-#include "SpherePy.h"
-#include "SurfaceOfExtrusionPy.h"
-#include "SurfaceOfRevolutionPy.h"
-#include "ToroidPy.h"
-#include "BRepOffsetAPI_MakePipeShellPy.h"
-#include "PartFeaturePy.h"
-#include "AttachEnginePy.h"
+#include "Mod/Part/App/TopoShapePy.h"
+#include "Mod/Part/App/TopoShapeVertexPy.h"
+#include "Mod/Part/App/TopoShapeFacePy.h"
+#include "Mod/Part/App/TopoShapeWirePy.h"
+#include "Mod/Part/App/TopoShapeEdgePy.h"
+#include "Mod/Part/App/TopoShapeSolidPy.h"
+#include "Mod/Part/App/TopoShapeCompoundPy.h"
+#include "Mod/Part/App/TopoShapeCompSolidPy.h"
+#include "Mod/Part/App/TopoShapeShellPy.h"
+#include "Mod/Part/App/LinePy.h"
+#include "Mod/Part/App/PointPy.h"
+#include "Mod/Part/App/CirclePy.h"
+#include "Mod/Part/App/EllipsePy.h"
+#include "Mod/Part/App/ArcPy.h"
+#include "Mod/Part/App/ArcOfCirclePy.h"
+#include "Mod/Part/App/ArcOfEllipsePy.h"
+#include "Mod/Part/App/ArcOfParabolaPy.h"
+#include "Mod/Part/App/ArcOfHyperbolaPy.h"
+#include "Mod/Part/App/BezierCurvePy.h"
+#include "Mod/Part/App/BSplineCurvePy.h"
+#include "Mod/Part/App/HyperbolaPy.h"
+#include "Mod/Part/App/OffsetCurvePy.h"
+#include "Mod/Part/App/ParabolaPy.h"
+#include "Mod/Part/App/BezierSurfacePy.h"
+#include "Mod/Part/App/BSplineSurfacePy.h"
+#include "Mod/Part/App/ConePy.h"
+#include "Mod/Part/App/CylinderPy.h"
+#include "Mod/Part/App/OffsetSurfacePy.h"
+#include "Mod/Part/App/PlateSurfacePy.h"
+#include "Mod/Part/App/PlanePy.h"
+#include "Mod/Part/App/RectangularTrimmedSurfacePy.h"
+#include "Mod/Part/App/SpherePy.h"
+#include "Mod/Part/App/SurfaceOfExtrusionPy.h"
+#include "Mod/Part/App/SurfaceOfRevolutionPy.h"
+#include "Mod/Part/App/ToroidPy.h"
+#include "Mod/Part/App/BRepOffsetAPI_MakePipeShellPy.h"
+#include "Mod/Part/App/PartFeaturePy.h"
+#include "Mod/Part/App/AttachEnginePy.h"
+#include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfConic2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
+#include <Mod/Part/App/Geom2d/ArcOfParabola2dPy.h>
+#include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
+#include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
+#include <Mod/Part/App/Geom2d/Circle2dPy.h>
+#include <Mod/Part/App/Geom2d/Conic2dPy.h>
+#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
+#include <Mod/Part/App/Geom2d/Geometry2dPy.h>
+#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
+#include <Mod/Part/App/Geom2d/Curve2dPy.h>
+#include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+#include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
+#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
@@ -227,7 +243,28 @@ PyMODINIT_FUNC initPart()
     PyModule_AddObject(partModule, "BRepOffsetAPI", brepModule);
     Base::Interpreter().addType(&Part::BRepOffsetAPI_MakePipeShellPy::Type,brepModule,"MakePipeShell");
 
-    try{
+    // Geom2d package
+    PyObject* geom2dModule = Py_InitModule3("Geom2d", 0, "Geom2d");
+    Py_INCREF(geom2dModule);
+    PyModule_AddObject(partModule, "Geom2d", geom2dModule);
+    Base::Interpreter().addType(&Part::Geometry2dPy::Type,geom2dModule,"Geometry2d");
+    Base::Interpreter().addType(&Part::Curve2dPy::Type,geom2dModule,"Curve2d");
+    Base::Interpreter().addType(&Part::Conic2dPy::Type,geom2dModule,"Conic2d");
+    Base::Interpreter().addType(&Part::Circle2dPy::Type,geom2dModule,"Circle2d");
+    Base::Interpreter().addType(&Part::Ellipse2dPy::Type,geom2dModule,"Ellipse2d");
+    Base::Interpreter().addType(&Part::Hyperbola2dPy::Type,geom2dModule,"Hyperbola2d");
+    Base::Interpreter().addType(&Part::Parabola2dPy::Type,geom2dModule,"Parabola2d");
+    Base::Interpreter().addType(&Part::ArcOfConic2dPy::Type,geom2dModule,"ArcOfConic2d");
+    Base::Interpreter().addType(&Part::ArcOfCircle2dPy::Type,geom2dModule,"ArcOfCircle2d");
+    Base::Interpreter().addType(&Part::ArcOfEllipse2dPy::Type,geom2dModule,"ArcOfEllipse2d");
+    Base::Interpreter().addType(&Part::ArcOfHyperbola2dPy::Type,geom2dModule,"ArcOfHyperbola2d");
+    Base::Interpreter().addType(&Part::ArcOfParabola2dPy::Type,geom2dModule,"ArcOfParabola2d");
+    Base::Interpreter().addType(&Part::BezierCurve2dPy::Type,geom2dModule,"BezierCurve2d");
+    Base::Interpreter().addType(&Part::BSplineCurve2dPy::Type,geom2dModule,"BSplineCurve2d");
+    Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
+    Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
+
+    try {
         //import all submodules of BOPTools, to make them easy to browse in Py console.
         //It's done in this weird manner instead of bt.caMemberFunction("importAll"),
         //because the latter crashed when importAll failed with exception.
@@ -355,6 +392,8 @@ PyMODINIT_FUNC initPart()
     Part::Geom2dCurve             ::init();
     Part::Geom2dBezierCurve       ::init();
     Part::Geom2dBSplineCurve      ::init();
+    Part::Geom2dConic             ::init();
+    Part::Geom2dArcOfConic        ::init();
     Part::Geom2dCircle            ::init();
     Part::Geom2dArcOfCircle       ::init();
     Part::Geom2dEllipse           ::init();
