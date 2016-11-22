@@ -43,29 +43,7 @@ public:
     FemSolverObject(void);
     virtual ~FemSolverObject();
 
-    /*
-    /// Solver name, unique to identify solver in registered_solver dict
-    App::PropertyString SolverName;
-    /// CAE category like FEM, all capitalised letters
-    App::PropertyString Category;
-    /// python module name
-    App::PropertyString Module;
-    /// Path or program name for external case editor, empty string means using FreeCAD to view
-    App::PropertyString ExternalCaseEditor;
-    /// Path to External Result Viewer like Paraview, empty string means using FreeCAD
-    App::PropertyString ExternalResultViewer;
-
-    /// for FEM: Static, Frequency, etc
-    App::PropertyString AnalysisType;
-    /// Path of working dir for the solver
-    App::PropertyString WorkingDir;
-    /// name for the case file without suffix
-    App::PropertyString InputCaseName;
-    /// run parallel in MPI (message passing interface)/multiple cores or serial(single CPU)
-    App::PropertyBool Parallel;
-    /// result has been obtained, purge result may be needed for rerun
-    App::PropertyBool ResultObtained;
-    */
+    // Attributes are implemented in the FemSolverObjectPython
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
