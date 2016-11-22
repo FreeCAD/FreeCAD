@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## @package FemConstraintSelfWeight
 #  \ingroup FEM
 
+
 class _FemConstraintSelfWeight:
     "The FemConstraintSelfWeight object"
     def __init__(self, obj):

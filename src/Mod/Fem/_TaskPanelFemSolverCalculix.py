@@ -31,7 +31,6 @@ import FemToolsCcx
 import FreeCAD
 import os
 import time
-
 import FreeCADGui
 import FemGui
 from PySide import QtCore, QtGui

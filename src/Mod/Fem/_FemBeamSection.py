@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## @package FemBeamSection
 #  \ingroup FEM
 
+
 class _FemBeamSection:
     "The FemBeamSection object"
     def __init__(self, obj):
