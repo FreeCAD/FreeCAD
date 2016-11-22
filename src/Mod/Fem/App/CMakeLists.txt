@@ -87,6 +87,7 @@ SET(FemScripts_SRCS
     _FemSolverZ88.py
     _MechanicalMaterial.py
     _TaskPanelFemBeamSection.py
+    _TaskPanelFemMeshGmsh.py
     _TaskPanelFemShellThickness.py
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
@@ -110,6 +111,7 @@ SET(FemScripts_SRCS
     FemBeamSection.py
     FemCommands.py
     FemConstraintSelfWeight.py
+    FemGmshTools.py
     FemInputWriter.py
     FemInputWriterCcx.py
     FemInputWriterZ88.py
@@ -127,6 +129,7 @@ SET(FemScripts_SRCS
     TestFem.py
     z88DispReader.py
     TaskPanelFemBeamSection.ui
+    TaskPanelFemMeshGmsh.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
     TaskPanelMechanicalMaterial.ui
