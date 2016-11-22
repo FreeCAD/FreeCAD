@@ -25,11 +25,7 @@
 #ifndef Fem_FemSolverObject_H
 #define Fem_FemSolverObject_H
 
-#include <App/DocumentObject.h>
-#include <App/PropertyUnits.h>
-#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
-#include "FemSolverObject.h"
 
 namespace Fem
 {

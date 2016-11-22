@@ -28,8 +28,6 @@
 #endif
 
 #include "FemSolverObject.h"
-
-#include <Base/FileInfo.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
 
