@@ -40,6 +40,10 @@ INSTALL(
         _FemMeshGmsh.py
         _ViewProviderFemMeshGmsh.py
         _CommandMeshGmshFromShape.py
+        _TaskPanelFemMeshGmsh.py
+        TaskPanelFemMeshGmsh.ui
+
+        FemGmshTools.py
 
         FemBeamSection.py
         _FemBeamSection.py
