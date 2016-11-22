@@ -103,6 +103,125 @@ def get_femelement_table(femmesh):
     return femelement_table
 
 
+def get_femnodes_ele_table(femnodes_mesh, femelement_table):
+    '''the femnodes_ele_table contains for each node its membership in elements
+    {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
+    stored informatation are:
+    element number, the number of nodes per element, the position of the node in the element.
+    The position of the node in the element is coded as a set bit at that position in a bit array (integer)
+    Fixme: the number of nodes per element should be replaced by the type of the element
+    but I did not know, how to get this from the mesh.
+    Since the femelement_table contains either volume or face or edgemesh the femnodes_ele_table only
+    has either volume or face or edge elements, see get_femelement_table()
+    '''
+    femnodes_ele_table = {}  # node_dict in ulrichs class
+    for n in femnodes_mesh:  # initialize it with sorted node keys and empty lists
+        femnodes_ele_table[n] = []
+    for ele in femelement_table:
+        ele_list = femelement_table[ele]
+        # print(ele_list)
+        pos = int(1)
+        for ele_node in ele_list:
+            femnodes_ele_table[ele_node].append([ele, pos])
+            pos = pos << 1
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    # print('femnodes_ele_table: ', femnodes_ele_table)
+    return femnodes_ele_table
+
+
+def get_copy_of_empty_femelement_table(femelement_table):
+    '''{eleID : 0, eleID : 0, ...}
+    '''
+    empty_femelement_table = {}
+    for ele in femelement_table:  # initialize it with sorted element keys and empty int
+        empty_femelement_table[ele] = 0
+    return empty_femelement_table.copy()
+
+
+def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
+    '''Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
+    {eleID : [lenEleNodes, binary_position]}
+    see forumpost for a ver good explanation whats really happening
+    http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
+    The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
+    the information we are searching for:
+    Is this element part of the node list (searching for elements) or  has this element a face we are searching for?
+    The number in the ele_dict is organized as a bit array.
+    The corresponding bit is set, if the node of the node_set is contained in the element.
+    '''
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len node_set: ' + str(len(node_set)))
+    # print('node_set: ', node_set)
+    bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
+    # # initializing the bit_pattern_dict
+    for ele in femelement_table:
+        len_ele = len(femelement_table[ele])
+        bit_pattern_dict[ele] = [len_ele, 0]
+    for node in node_set:
+        for nList in femnodes_ele_table[node]:
+            bit_pattern_dict[nList[0]][1] += nList[1]
+    print('len bit_pattern_dict:' + str(len(bit_pattern_dict)))
+    # print('bit_pattern_dict: ', bit_pattern_dict)
+    return bit_pattern_dict
+
+
+def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
+    '''get the CalculiX element face numbers
+    '''
+    tet10_mask = {
+        119: 1,
+        411: 2,
+        717: 3,
+        814: 4}
+    tet4_mask = {
+        7: 1,
+        11: 2,
+        13: 3,
+        14: 4}
+    hex8_mask = {
+        240: 1,
+        15: 2,
+        102: 3,
+        204: 4,
+        153: 5,
+        51: 6}
+    hex20_mask = {
+        61680: 1,
+        3855: 2,
+        402022: 3,
+        804044: 4,
+        624793: 5,
+        201011: 6}
+    pent6_mask = {
+        56: 1,
+        7: 2,
+        54: 3,
+        45: 4,
+        27: 5}
+    pent15_mask = {
+        3640: 1,
+        455: 2,
+        25782: 3,
+        22829: 4,
+        12891: 5}
+    vol_dict = {
+        4: tet4_mask,
+        6: pent6_mask,
+        8: hex8_mask,
+        10: tet10_mask,
+        15: pent15_mask,
+        20: hex20_mask}
+    faces = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                faces.append([ele, mask_dict[key]])
+    print('found Faces: ', len(faces))
+    print('faces: ', faces)
+    return faces
+
+
 def get_femelements_by_femnodes(femelement_table, node_list):
     '''for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
