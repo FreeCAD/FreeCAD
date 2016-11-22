@@ -51,14 +51,13 @@ class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
 {
 public:
     Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
-    Vector2dPy();
-    Vector2dPy(double, double);
     virtual ~Vector2dPy();
 
     static void init_type(void);
     Py::Object getattro(const Py::String &name_);
     int setattro(const Py::String &name_, const Py::Object &value);
-    inline const Vector2d& getValue() const {
+    virtual Py::Object repr();
+    inline const Vector2d& value() const {
         return v;
     }
     inline void setValue(const Vector2d& n) {
