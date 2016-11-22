@@ -68,13 +68,13 @@ SET(FemScripts_SRCS
     _CommandBeamSection.py
     _CommandControlSolver.py
     _CommandConstraintSelfWeight.py
-    _CommandMechanicalMaterial.py
-    _CommandShowResult.py
     _CommandMaterialMechanicalNonlinear.py
+    _CommandMechanicalMaterial.py
     _CommandMeshFromShape.py
     _CommandPurgeResults.py
     _CommandRunSolver.py
     _CommandShellThickness.py
+    _CommandShowResult.py
     _CommandSolverCalculix.py
     _CommandSolverZ88.py
     _FemBeamSection.py
