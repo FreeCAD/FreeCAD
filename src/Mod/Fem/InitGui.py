@@ -49,7 +49,7 @@ class FemWorkbench (Workbench):
         import _CommandRunSolver
         import _CommandPurgeResults
         import _CommandControlSolver
-        import _CommandMeshFromShape
+        import _CommandMeshNetgenFromShape
         import _CommandAnalysis
         import _CommandShellThickness
         import _CommandBeamSection

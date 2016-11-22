@@ -24,7 +24,7 @@ INSTALL(
         TestFem.py
 
         FemCommands.py
-        _CommandMeshFromShape.py
+        _CommandMeshNetgenFromShape.py
         _CommandPurgeResults.py
         _CommandRunSolver.py
         _CommandControlSolver.py
