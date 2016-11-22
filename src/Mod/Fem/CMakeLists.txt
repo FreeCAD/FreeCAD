@@ -50,6 +50,11 @@ INSTALL(
         _TaskPanelFemShellThickness.py
         TaskPanelFemShellThickness.ui
 
+        FemConstraintSelfWeight.py
+        _FemConstraintSelfWeight.py
+        _ViewProviderFemConstraintSelfWeight.py
+        _CommandConstraintSelfWeight.py
+
         MechanicalMaterial.py
         _MechanicalMaterial.py
         _ViewProviderMechanicalMaterial.py
@@ -84,11 +89,6 @@ INSTALL(
         _FemSolverZ88.py
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
-
-        FemConstraintSelfWeight.py
-        _FemConstraintSelfWeight.py
-        _ViewProviderFemConstraintSelfWeight.py
-        _CommandConstraintSelfWeight.py
 
     DESTINATION
         Mod/Fem
