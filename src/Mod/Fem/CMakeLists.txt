@@ -36,6 +36,10 @@ INSTALL(
         FemAnalysis.py
         _CommandAnalysis.py
 
+        FemMeshGmsh.py
+        _FemMeshGmsh.py
+        _ViewProviderFemMeshGmsh.py
+
         FemBeamSection.py
         _FemBeamSection.py
         _ViewProviderFemBeamSection.py
