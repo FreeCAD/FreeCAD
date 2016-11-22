@@ -34,14 +34,6 @@ import tempfile
 from platform import system
 
 
-# CONFIGURATION - EDIT THE FOLLOWING LINE TO MATCH YOUR GMSH BINARY
-# gmsh_bin_linux = "/usr/bin/gmsh"
-gmsh_bin_linux = "/usr/local/bin/gmsh"
-gmsh_bin_windwos = "C:\\Daten\\gmsh-2.13.2-Windows\\gmsh.exe"
-gmsh_bin_other = "/usr/bin/gmsh"
-# END CONFIGURATION
-
-
 class FemGmshTools():
     def __init__(self, gmsh_mesh_obj, analysis=None):
         self.mesh_obj = gmsh_mesh_obj
@@ -150,14 +142,35 @@ class FemGmshTools():
         print('  ' + self.temp_file_geo)
 
     def get_gmsh_command(self):
-        if system() == "Linux":
-            self.gmsh_bin = gmsh_bin_linux
-        elif system() == "Windows":
-            self.gmsh_bin = gmsh_bin_windwos
+        self.gmsh_bin = None
+        gmsh_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetBool("UseStandardGmshLocation")
+        if gmsh_std_location:
+            if system() == "Windows":
+                gmsh_path = FreeCAD.getHomePath() + "bin/gmsh.exe"
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").SetString("gmshBinaryPath", gmsh_path)
+                self.gmsh_bin = gmsh_path
+            elif system() == "Linux":
+                p1 = subprocess.Popen(['which', 'gmsh'], stdout=subprocess.PIPE)
+                if p1.wait() == 0:
+                    gmsh_path = p1.stdout.read().split('\n')[0]
+                elif p1.wait() == 1:
+                    error_message = "GMSH binary gmsh not found in standard system binary path. Please install gmsh or set path to binary in FEM preferences tab GMSH.\n"
+                    # if FreeCAD.GuiUp:
+                    #     QtGui.QMessageBox.critical(None, "No GMSH binary ccx", error_message)
+                    raise Exception(error_message)
+                self.gmsh_bin = gmsh_path
         else:
-            self.gmsh_bin = gmsh_bin_other
-        self.gmsh_command = self.gmsh_bin + ' - ' + self.temp_file_geo  # gmsh - /tmp/shape2mesh.geo
-        print('  ' + self.gmsh_command)
+            if not self.gmsh_bin:
+                self.gmsh_bin = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Gmsh").GetString("gmshBinaryPath", "")
+            if not self.gmsh_bin:  # in prefs not set, we will try to use something reasonable
+                if system() == "Linux":
+                    self.gmsh_bin = "gmsh"
+                elif system() == "Windows":
+                    self.gmsh_bin = FreeCAD.getHomePath() + "bin/gmsh.exe"
+                else:
+                    self.gmsh_bin = "gmsh"
+            self.gmsh_bin = self.gmsh_bin
+        print('  ' + self.gmsh_bin)
 
     def get_group_data(self):
         if self.analysis:
