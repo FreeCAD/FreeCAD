@@ -20,11 +20,6 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FemMeshTools
-import FreeCAD
-import os
-import string
-
 __title__ = "FreeCAD .inp file reader"
 __author__ = "Frantisek Loeffelmann "
 __url__ = "http://www.freecadweb.org"
@@ -32,6 +27,12 @@ __date__ = "04/08/2016"
 
 ## @package importInpMesh
 #  \ingroup FEM
+
+import FemMeshTools
+import FreeCAD
+import os
+import string
+
 
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below

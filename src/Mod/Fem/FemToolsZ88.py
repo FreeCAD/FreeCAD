@@ -20,19 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemToolsZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemTools
 from PySide import QtCore
 from PySide.QtGui import QApplication
 
-## \addtogroup FEM
-#  @{
 
 class FemToolsZ88(FemTools.FemTools):
 

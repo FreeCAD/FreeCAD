@@ -24,13 +24,13 @@ __title__ = "FemMaterialMechanicalNonlinear"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemGui
 import _FemMaterialMechanicalNonlinear
 
-## \addtogroup FEM
-#  @{
 
 def makeFemMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNonlinear"):
     '''makeFemMaterialMechanicalNonlinear(base_material, [name]): creates an nonlinear material object'''

@@ -24,12 +24,12 @@ __title__ = "FemConstraintSelfWeight"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemConstraintSelfWeight
 
-## \addtogroup FEM
-#  @{
 
 def makeFemConstraintSelfWeight(name="FemConstraintSelfWeight"):
     '''makeFemFemConstraintSelfWeight([name]): creates an self weight object to define a gravity load'''

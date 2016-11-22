@@ -24,12 +24,12 @@ __title__ = "MechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _MechanicalMaterial
 
-## \addtogroup FEM
-#  @{
 
 def makeMechanicalMaterial(name):
     '''makeMaterial(name): makes an Material

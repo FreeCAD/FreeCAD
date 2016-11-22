@@ -22,18 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-import FreeCAD
-import os
-from math import pow, sqrt
-import numpy as np
-
 __title__ = "FreeCAD Calculix library"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ccxFrdReader
 #  \ingroup FEM
+
+import FreeCAD
+import os
+from math import pow, sqrt
+import numpy as np
+
 
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below

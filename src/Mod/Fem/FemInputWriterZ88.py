@@ -20,19 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemMeshTools
 import importZ88Mesh
 import FemInputWriter
 
-## \addtogroup FEM
-#  @{
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
     def __init__(self,

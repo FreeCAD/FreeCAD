@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemTools
@@ -33,8 +34,6 @@ from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
-## \addtogroup FEM
-#  @{
 
 class FemToolsCcx(FemTools.FemTools):
 

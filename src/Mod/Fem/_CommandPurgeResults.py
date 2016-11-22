@@ -30,10 +30,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FemCommands import FemCommands
 import FemTools
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
+import FreeCADGui
+from PySide import QtCore
 
 
 class _CommandPurgeResults(FemCommands):

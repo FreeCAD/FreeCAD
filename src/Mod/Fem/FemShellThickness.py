@@ -24,12 +24,12 @@ __title__ = "FemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemShellThickness
 
-## \addtogroup FEM
-#  @{
 
 def makeFemShellThickness(thickness=20.0, name="ShellThickness"):
     '''makeFemShellThickness([thickness], [name]): creates an shellthickness object to define a plate thickness'''

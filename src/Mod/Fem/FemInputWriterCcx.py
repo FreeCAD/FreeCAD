@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import os
@@ -34,8 +35,6 @@ import time
 import FemMeshTools
 import FemInputWriter
 
-## \addtogroup FEM
-#  @{
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self,

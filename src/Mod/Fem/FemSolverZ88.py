@@ -24,12 +24,12 @@ __title__ = "FemSolverZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemSolverZ88
 
-## \addtogroup FEM
-#  @{
 
 def makeFemSolverZ88(name="Z88"):
     '''makeSolverZ88(name): makes a Z88 solver object'''
