@@ -42,7 +42,7 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
         obj.SolverType = str(self.Type)
 
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")  # not needed ATM
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 
         obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations, will only be used it is left blank in preferences")

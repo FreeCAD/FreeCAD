@@ -66,7 +66,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
     def write_calculix_input_file(self):
-        if self.solver_obj.SplitInputWriter == True:
+        if self.solver_obj.SplitInputWriter is True:
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
