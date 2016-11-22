@@ -21,17 +21,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "Fem Tools super class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 from PySide import QtCore
 
-## \addtogroup FEM
-#  @{
 
 class FemTools(QtCore.QRunnable, QtCore.QObject):
     ## The constructor

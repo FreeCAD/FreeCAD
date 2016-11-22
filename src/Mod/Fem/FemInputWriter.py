@@ -20,27 +20,17 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-'''
-- next step would be save the constraints node and element data in the in the FreeCAD FEM Mesh Object
-  and link them to the appropriate constraint object
-- if the informations are used by the FEM Mesh file exporter FreeCAD would support writing FEM Mesh Groups
-- which is a most needed feature of FEM module
-- smesh supports mesh groups, how about pythonbinding in FreeCAD. Is there somethin implemented allready?
-'''
-
-
 __title__ = "FemInputWriter"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemMeshTools
 import os
 
-## \addtogroup FEM
-#  @{
 
 class FemInputWriter():
     def __init__(self,

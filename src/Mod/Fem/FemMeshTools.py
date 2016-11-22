@@ -20,16 +20,15 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "Tools for the work with FEM meshes"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 
-## \addtogroup FEM
-#  @{
 
 def get_femnodes_by_femobj_with_references(femmesh, femobj):
     node_set = []

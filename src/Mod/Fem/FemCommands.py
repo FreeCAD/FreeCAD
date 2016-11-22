@@ -25,15 +25,15 @@ __title__ = "Fem Commands"
 __author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD
+## \addtogroup FEM
+#  @{
 
+import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
     from PySide import QtCore
 
-## \addtogroup FEM
-#  @{
 
 class FemCommands(object):
         def __init__(self):
