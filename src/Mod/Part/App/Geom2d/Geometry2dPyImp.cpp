@@ -27,6 +27,7 @@
 # include <gp_Pnt2d.hxx>
 # include <gp_Vec2d.hxx>
 # include <gp_Trsf2d.hxx>
+# include <gp_Trsf.hxx>
 # include <Geom2d_Geometry.hxx>
 # include <Geom2d_Curve.hxx>
 # include <Precision.hxx>
@@ -140,8 +141,17 @@ PyObject* Geometry2dPy::transform(PyObject *args)
     double a21 = static_cast<double>(Py::Float(list.getItem(3)));
     double a22 = static_cast<double>(Py::Float(list.getItem(4)));
     double a23 = static_cast<double>(Py::Float(list.getItem(5)));
-    gp_Trsf2d trf;
-    trf.SetValues(a11,a12,a13,a21,a22,a23);
+
+    gp_Trsf mat;
+    mat.SetValues(a11, a12, 0, a13,
+                  a21, a22, 0, a23,
+                  0  ,   0, 1,   0
+#if OCC_VERSION_HEX < 0x060800
+                  , 0.00001,0.00001
+#endif
+                ); //precision was removed in OCCT CR0025194
+    gp_Trsf2d trf(mat);
+
     getGeometry2dPtr()->handle()->Transform(trf);
     Py_Return;
 }
