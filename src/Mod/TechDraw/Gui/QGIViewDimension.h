@@ -27,6 +27,7 @@
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsPathItem>
+#include <QColor>
 #include <Base/Vector3D.h>
 #include "QGIView.h"
 #include "QGCustomText.h"
@@ -97,6 +98,7 @@ public:
     virtual void drawBorder();
     virtual void updateView(bool update = false) override;
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
+    virtual QColor getNormalColor(void);
 
 public Q_SLOTS:
     void datumLabelDragged(void);

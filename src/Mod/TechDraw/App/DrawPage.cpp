@@ -74,7 +74,7 @@ DrawPage::DrawPage(void)
     ProjectionType.setEnums(ProjectionTypeEnums);
 
     Base::Reference<ParameterGrp> hGrp =
-                        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+                        App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
 
     // In preferences, 0 -> First Angle 1 -> Third Angle
     int projType = hGrp->GetInt("ProjectionAngle", -1);

@@ -146,6 +146,7 @@ QGIViewDimension::QGIViewDimension() :
 
     datumLabel = new QGIDatumLabel();
     addToGroup(datumLabel);
+    datumLabel->setPrettyNormal();
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
     aHead1 = new QGIArrow();
@@ -1256,5 +1257,16 @@ void QGIViewDimension::setPens(void)
 {
     dimLines->setWidth(m_lineWidth);
 }
+
+QColor QGIViewDimension::getNormalColor()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Color", 0x00000000));
+    m_colNormal = fcColor.asValue<QColor>();
+    return m_colNormal;
+}
+
 
 #include <Mod/TechDraw/Gui/moc_QGIViewDimension.cpp>

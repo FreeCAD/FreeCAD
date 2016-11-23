@@ -91,8 +91,9 @@ using namespace std;
 
 PROPERTY_SOURCE(TechDraw::DrawViewDetail, TechDraw::DrawViewPart)
 
-DrawViewDetail::DrawViewDetail() :
-    m_mattingStyle(0)
+DrawViewDetail::DrawViewDetail()
+// :
+//    m_mattingStyle(0)
 {
     static const char *dgroup = "Detail";
 
@@ -271,9 +272,9 @@ void DrawViewDetail::getParameters()
 // handleFaces
 // radiusFudge?
 
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
-    m_mattingStyle = hGrp->GetInt("MattingStyle", 0);
+//    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+//        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+//    m_mattingStyle = hGrp->GetInt("MattingStyle", 0);
 
 }
 

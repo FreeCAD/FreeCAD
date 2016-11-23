@@ -1,5 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>                *
+ *   Copyright (c) 2015 FreeCAD Developers                                 *
+ *   Author: WandererFan <wandererfan@gmail.com>                           *
+ *   Based on src/Mod/FEM/Gui/DlgSettingsFEMImp.cpp                        *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,64 +22,60 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIMATTING_H
-#define DRAWINGGUI_QGIMATTING_H
 
-#include <QGraphicsItem>
-#include <QGraphicsItemGroup>
-#include <QGraphicsRectItem>
-#include <QGraphicsPathItem>
-#include <QPainterPath>
-#include <QPointF>
+#include "PreCompiled.h"
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+#include "DlgPrefsTechDraw2Imp.h"
+#include <Gui/PrefWidgets.h>
 
-namespace TechDrawGui
+using namespace TechDrawGui;
+
+DlgPrefsTechDraw2Imp::DlgPrefsTechDraw2Imp( QWidget* parent )
+  : PreferencePage( parent )
 {
-class QGCustomRect;
+    this->setupUi(this);
+}
 
-class TechDrawGuiExport QGIMatting : public QGraphicsItemGroup
+DlgPrefsTechDraw2Imp::~DlgPrefsTechDraw2Imp()
 {
-public:
-    explicit QGIMatting(void);
-    ~QGIMatting() {}
+    // no need to delete child widgets, Qt does it all for us
+}
 
-    enum {Type = QGraphicsItem::UserType + 205};
-    int type() const { return Type;}
+void DlgPrefsTechDraw2Imp::saveSettings()
+{
+    cbShowUnits->onSave();
+    dsbFontSize->onSave();
+    colDimColor->onSave();
+    pcbMatting->onSave();
+    pcbCenterStyle->onSave();
+    colCenterLine->onSave();
+    pcbSectionStyle->onSave();
+    colSectionLine->onSave();
+}
 
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
+void DlgPrefsTechDraw2Imp::loadSettings()
+{
+    cbShowUnits->onRestore();
+    dsbFontSize->onRestore();
+    colDimColor->onRestore();
+    pcbMatting->onRestore();
+    pcbCenterStyle->onRestore();
+    colCenterLine->onRestore();
+    pcbSectionStyle->onRestore();
+    colSectionLine->onRestore();
+}
 
-    virtual void setSize(double w, double h) {m_height = h; m_width = w;}
-    //virtual void setHoleStyle(int hs) {m_holeStyle = hs;}
-    virtual void setRadius(double r)  {m_radius = r;}
-    virtual void draw(void);
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgPrefsTechDraw2Imp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
 
-protected:
-    double m_height;
-    double m_width;
-    //int    m_holeStyle;    //round or rect
-    double m_radius;
-    int getHoleStyle(void);
-
-    QGraphicsPathItem* m_mat;
-    QGraphicsPathItem* m_border;
-
-//    QPainterPath m_perimeter;
-//    QPainterPath m_cutout;
-
-private:
-    QPen m_pen;
-    QBrush m_brush;
-    QPen m_penB;
-    QBrush m_brushB;
-
-};
-
-} // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIMATTING_H
+#include <Mod/TechDraw/Gui/moc_DlgPrefsTechDraw2Imp.cpp>

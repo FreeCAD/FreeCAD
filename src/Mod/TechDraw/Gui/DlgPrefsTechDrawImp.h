@@ -1,7 +1,7 @@
  /**************************************************************************
  *   Copyright (c) 2015 FreeCAD Developers                                 *
  *   Author: WandererFan <wandererfan@gmail.com>                           *
- *   Based on src/Mod/FEM/Gui/DlgPrefsTechDrawImp.cpp                        *
+ *   Based on src/Mod/FEM/Gui/DlgPrefsTechDrawImp.cpp                      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *

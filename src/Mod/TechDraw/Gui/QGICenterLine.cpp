@@ -69,7 +69,7 @@ void QGICenterLine::setBounds(double x1,double y1,double x2,double y2)
 QColor QGICenterLine::getCenterColor()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     App::Color fcColor = App::Color((uint32_t) hGrp->GetUnsigned("CenterColor", 0x08080800));
     return fcColor.asValue<QColor>();
 }
@@ -77,7 +77,7 @@ QColor QGICenterLine::getCenterColor()
 Qt::PenStyle QGICenterLine::getCenterStyle()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+                                         GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
     Qt::PenStyle centerStyle = static_cast<Qt::PenStyle> (hGrp->GetInt("CenterLine",3));
     return centerStyle;
 }

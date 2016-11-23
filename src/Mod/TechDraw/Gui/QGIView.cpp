@@ -486,7 +486,7 @@ Base::Reference<ParameterGrp> QGIView::getParmGroupCol()
 QString QGIView::getPrefFont()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
     return QString::fromStdString(fontName);
 }
@@ -494,7 +494,7 @@ QString QGIView::getPrefFont()
 double QGIView::getPrefFontSize()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
-                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+                                         GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     double fontSize = hGrp->GetFloat("LabelSize", 5.0);
     return fontSize;
 }

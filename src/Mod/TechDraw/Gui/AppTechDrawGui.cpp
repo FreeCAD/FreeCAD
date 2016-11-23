@@ -36,6 +36,7 @@
 #include "Workbench.h"
 
 #include "DlgPrefsTechDrawImp.h"
+#include "DlgPrefsTechDraw2Imp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
@@ -124,6 +125,7 @@ PyMOD_INIT_FUNC(TechDrawGui)
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");
 
     // add resources and reloads the translators
     loadTechDrawResource();

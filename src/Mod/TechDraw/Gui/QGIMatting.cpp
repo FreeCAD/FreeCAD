@@ -46,7 +46,7 @@ using namespace TechDrawGui;
 QGIMatting::QGIMatting() :
     m_height(10.0),
     m_width(10.0),
-    m_holeStyle(0),
+    //m_holeStyle(0),
     m_radius(5.0)
 
 {
@@ -103,7 +103,7 @@ void QGIMatting::draw()
     QPainterPath ppOut;
     ppOut.addRect(outline);
     QPainterPath ppCut;
-    if (m_holeStyle == 0) {
+    if (getHoleStyle() == 0) {
         QRectF roundCutout (-m_radius,-m_radius,2.0 * m_radius,2.0 * m_radius);
         ppCut.addEllipse(roundCutout);
     } else {
@@ -114,6 +114,14 @@ void QGIMatting::draw()
     ppOut.addPath(ppCut);
     m_mat->setPath(ppOut);
     m_border->setPath(ppCut);
+}
+
+int QGIMatting::getHoleStyle()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+                                        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Decorations");
+    int style = hGrp->GetInt("MattingStyle", 1l);
+    return style;
 }
 
 void QGIMatting::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {

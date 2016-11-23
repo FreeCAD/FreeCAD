@@ -34,6 +34,7 @@ set(TechDrawGui_MOC_HDRS
     QGIViewDimension.h
     TaskProjGroup.h
     DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw2Imp.h
     TaskLinkDim.h
     DlgTemplateField.h
     TaskSectionView.h
@@ -46,6 +47,7 @@ qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
 
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDraw.ui
+    DlgPrefsTechDraw2.ui
     TaskProjGroup.ui
     TaskLinkDim.ui
     DlgTemplateField.ui
@@ -72,6 +74,9 @@ SET(TechDrawGui_SRCS
     DlgPrefsTechDraw.ui
     DlgPrefsTechDrawImp.cpp
     DlgPrefsTechDrawImp.h
+    DlgPrefsTechDraw2.ui
+    DlgPrefsTechDraw2Imp.cpp
+    DlgPrefsTechDraw2Imp.h
     TaskLinkDim.ui
     TaskLinkDim.cpp
     TaskLinkDim.h
