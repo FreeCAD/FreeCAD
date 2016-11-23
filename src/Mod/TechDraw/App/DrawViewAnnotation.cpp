@@ -59,7 +59,7 @@ DrawViewAnnotation::DrawViewAnnotation(void)
     static const char *vgroup = "Annotation";
 
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     std::string fontName = hGrp->GetASCII("LabelFont", "Sans");
 
     ADD_PROPERTY_TYPE(Text ,("Default Text"),vgroup,App::Prop_None,"The text to be displayed");

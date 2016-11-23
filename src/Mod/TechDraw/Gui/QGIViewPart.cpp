@@ -626,7 +626,7 @@ void QGIViewPart::drawMatting()
     mat->setRadius(radius);
     QRectF displayArea = customChildrenBoundingRect();
     mat->setSize(displayArea.width(),displayArea.height());
-    mat->setHoleStyle(dvd->getMattingStyle());
+    //mat->setHoleStyle(dvd->getMattingStyle());
     mat->draw();
     mat->show();
 }

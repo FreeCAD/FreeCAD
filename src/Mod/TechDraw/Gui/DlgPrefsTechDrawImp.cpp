@@ -43,33 +43,51 @@ DlgPrefsTechDrawImp::~DlgPrefsTechDrawImp()
 
 void DlgPrefsTechDrawImp::saveSettings()
 {
+    cb_HidLine->onSave();
+    cb_Angle->onSave();
+    cb_Faces->onSave();
+    cb_SectionEdges->onSave();
+
     pcb_Normal->onSave();
     pcb_Select->onSave();
     pcb_PreSelect->onSave();
     pcb_Hidden->onSave();
     pcb_Surface->onSave();
+    pcb_Background->onSave();
+    pcb_Hatch->onSave();
+
     le_LabelFont->onSave();
+    dsb_LabelSize->onSave();
+
     pfc_DefTemp->onSave();
     pfc_DefDir->onSave();
-    cb_HidLine->onSave();
-    cb_Angle->onSave();
     pfc_HatchFile->onSave();
     //pfc_HatchDir->onSave();
 }
 
 void DlgPrefsTechDrawImp::loadSettings()
 {
+    cb_HidLine->onRestore();
+    cb_Angle->onRestore();
+    cb_Faces->onRestore();
+    cb_SectionEdges->onRestore();
+
     pcb_Normal->onRestore();
     pcb_Select->onRestore();
     pcb_PreSelect->onRestore();
     pcb_Hidden->onRestore();
     pcb_Surface->onRestore();
+    pcb_Background->onRestore();
+    pcb_Hatch->onRestore();
+
     le_LabelFont->onRestore();
+    dsb_LabelSize->onRestore();
+
     pfc_DefTemp->onRestore();
     pfc_DefDir->onRestore();
-    cb_HidLine->onRestore();
-    cb_Angle->onRestore();
     pfc_HatchFile->onRestore();
+
+
     //pfc_HatchDir->onRestore();
 }
 
