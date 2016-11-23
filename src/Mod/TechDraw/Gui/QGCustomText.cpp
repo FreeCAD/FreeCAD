@@ -40,6 +40,7 @@
 
 #include <qmath.h>
 #include <QRectF>
+#include "QGIView.h"
 #include "QGCustomText.h"
 
 using namespace TechDrawGui;
@@ -156,10 +157,24 @@ void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * 
 
 QColor QGCustomText::getNormalColor()
 {
-    Base::Reference<ParameterGrp> hGrp = getParmGroup();
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
-    return fcColor.asValue<QColor>();
+    QColor result;
+    QGIView *parent;
+    QGraphicsItem* qparent = parentItem();
+    if (qparent == nullptr) {
+        parent = nullptr;
+    } else {
+        parent = dynamic_cast<QGIView *> (qparent);
+    }
+
+    if (parent != nullptr) {
+        result = parent->getNormalColor();
+    } else {
+        Base::Reference<ParameterGrp> hGrp = getParmGroup();
+        App::Color fcColor;
+        fcColor.setPackedValue(hGrp->GetUnsigned("NormalColor", 0x00000000));
+        result = fcColor.asValue<QColor>();
+    }
+    return result;
 }
 
 QColor QGCustomText::getPreColor()

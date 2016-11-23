@@ -1,7 +1,7 @@
 /*
 Derived QGraphicsItem Classes type() Values
 
-Qt First UserType = 65536
+Qt First UserType>> QGraphicsItem::UserType = 65536
 
 QGraphicsItemView : 101
 QGraphicsItemViewPart : 102

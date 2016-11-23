@@ -544,7 +544,7 @@ const std::vector<TechDrawGeometry::BaseGeom  *> DrawViewPart::getVisibleFaceEdg
 void DrawViewPart::getRunControl()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/RunControl");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
     m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 1l);
     m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
 }

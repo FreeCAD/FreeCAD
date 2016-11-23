@@ -6,32 +6,32 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>538</height>
+    <width>558</width>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>TechDraw</string>
+   <string>TechDraw 1</string>
   </property>
   <widget class="QGroupBox" name="gb_Templates">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>250</y>
+     <x>10</x>
+     <y>450</y>
      <width>531</width>
-     <height>108</height>
+     <height>151</height>
     </rect>
    </property>
    <property name="title">
-    <string>Templates</string>
+    <string>Files</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_3">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>30</y>
-      <width>501</width>
-      <height>71</height>
+      <width>491</width>
+      <height>118</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -49,7 +49,7 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="1" colspan="2">
+     <item row="1" column="1">
       <widget class="Gui::PrefFileChooser" name="pfc_DefDir">
        <property name="mode">
         <enum>Gui::FileChooser::Directory</enum>
@@ -58,17 +58,34 @@
         <cstring>TemplateDir</cstring>
        </property>
        <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw</cstring>
+        <cstring>/Mod/TechDraw/Files</cstring>
        </property>
       </widget>
      </item>
-     <item row="0" column="1" colspan="2">
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_Hatch">
+       <property name="text">
+        <string>Default Pattern File</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
       <widget class="Gui::PrefFileChooser" name="pfc_DefTemp">
        <property name="prefEntry" stdset="0">
         <cstring>TemplateFile</cstring>
        </property>
        <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw</cstring>
+        <cstring>/Mod/TechDraw/Files</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
+       <property name="prefEntry" stdset="0">
+        <cstring>PatternFile</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>/Mod/TechDraw/Files</cstring>
        </property>
       </widget>
      </item>
@@ -78,10 +95,10 @@
   <widget class="QGroupBox" name="gb_Font">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>160</y>
+     <x>10</x>
+     <y>330</y>
      <width>541</width>
-     <height>91</height>
+     <height>121</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -91,32 +108,35 @@
     </sizepolicy>
    </property>
    <property name="title">
-    <string>Font</string>
+    <string>Labels</string>
    </property>
    <widget class="QWidget" name="gridLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>10</x>
+      <x>20</x>
       <y>30</y>
-      <width>501</width>
-      <height>41</height>
+      <width>491</width>
+      <height>71</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,0,0">
+     <item row="1" column="2">
+      <widget class="Gui::PrefDoubleSpinBox" name="dsb_LabelSize">
+       <property name="minimum">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>LabelSize</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>/Mod/TechDraw/Labels</cstring>
+       </property>
+      </widget>
+     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="lbl_LabelFont">
        <property name="text">
         <string>Label Font</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="2">
-      <widget class="Gui::PrefLineEdit" name="le_LabelFont">
-       <property name="prefEntry" stdset="0">
-        <cstring>LabelFont</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/TechDraw</cstring>
        </property>
       </widget>
      </item>
@@ -136,135 +156,164 @@
        </property>
       </spacer>
      </item>
+     <item row="0" column="2">
+      <widget class="Gui::PrefLineEdit" name="le_LabelFont">
+       <property name="text">
+        <string>osifont</string>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>LabelFont</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/TechDraw/Labels</cstring>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Label Size</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
   <widget class="QGroupBox" name="gbMisc">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>380</y>
-     <width>531</width>
+     <x>10</x>
+     <y>10</y>
+     <width>521</width>
      <height>141</height>
     </rect>
    </property>
    <property name="title">
-    <string>Misc</string>
+    <string>General</string>
    </property>
-   <widget class="QWidget" name="gridLayoutWidget_4">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>30</y>
-      <width>501</width>
-      <height>95</height>
-     </rect>
-    </property>
-    <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="lbl_Angle">
-       <property name="text">
-        <string>Projection Angle</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="Gui::PrefComboBox" name="cb_Angle">
-       <property name="prefEntry" stdset="0">
-        <cstring>ProjectionAngle</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/TechDraw</cstring>
-       </property>
-       <item>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="lbl_Angle">
         <property name="text">
-         <string>First</string>
+         <string>Projection Angle</string>
         </property>
-       </item>
-       <item>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefComboBox" name="cb_Angle">
+        <property name="prefEntry" stdset="0">
+         <cstring>ProjectionAngle</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>/Mod/TechDraw/General</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>First</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Third</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="lbl_HidLine">
         <property name="text">
-         <string>Third</string>
+         <string>Hidden Line</string>
         </property>
-       </item>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="lbl_HidLine">
-       <property name="text">
-        <string>Hidden Line</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="Gui::PrefComboBox" name="cb_HidLine">
-       <property name="currentIndex">
-        <number>1</number>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>HiddenLine</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>Mod/TechDraw</cstring>
-       </property>
-       <item>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefComboBox" name="cb_HidLine">
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HiddenLine</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/TechDraw/General</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>NeverShow</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Solid</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dash</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Dot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDot</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>DashDotDot</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="Gui::PrefCheckBox" name="cb_Faces">
         <property name="text">
-         <string>NeverShow</string>
+         <string>Detect Faces</string>
         </property>
-       </item>
-       <item>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>HandleFaces</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>/Mod/TechDraw/General</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="Gui::PrefCheckBox" name="cb_SectionEdges">
         <property name="text">
-         <string>Solid</string>
+         <string>Show Section Edges</string>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dash</string>
+        <property name="prefEntry" stdset="0">
+         <cstring>ShowSectionEdges</cstring>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dot</string>
+        <property name="prefPath" stdset="0">
+         <cstring>/Mod/TechDraw/General</cstring>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDotDot</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="lbl_Hatch">
-       <property name="text">
-        <string>Default Pattern File</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
-       <property name="prefEntry" stdset="0">
-        <cstring>PatternFile</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw</cstring>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QGroupBox" name="gb_Colors">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>10</y>
-     <width>531</width>
-     <height>141</height>
+     <y>160</y>
+     <width>521</width>
+     <height>164</height>
     </rect>
    </property>
    <property name="title">
@@ -273,10 +322,34 @@
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="lbl_Select">
+      <item row="2" column="4">
+       <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Selected</string>
+         <string>Section Hatch</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="4">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Section Face</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="Gui::PrefColorButton" name="pcb_Background">
+        <property name="color">
+         <color>
+          <red>80</red>
+          <green>80</green>
+          <blue>80</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Background</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>/Mod/TechDraw/Colors</cstring>
         </property>
        </widget>
       </item>
@@ -314,6 +387,19 @@
         </property>
        </widget>
       </item>
+      <item row="0" column="1">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="2" column="2">
        <widget class="Gui::PrefColorButton" name="pcb_Select">
         <property name="color">
@@ -331,19 +417,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
       <item row="0" column="5">
        <spacer name="horizontalSpacer_4">
         <property name="orientation">
@@ -356,13 +429,6 @@
          </size>
         </property>
        </spacer>
-      </item>
-      <item row="1" column="4">
-       <widget class="QLabel" name="label_3">
-        <property name="text">
-         <string>Section Face</string>
-        </property>
-       </widget>
       </item>
       <item row="0" column="2">
        <widget class="Gui::PrefColorButton" name="pcb_Normal">
@@ -404,7 +470,7 @@
       <item row="0" column="4">
        <widget class="QLabel" name="lbl_Hidden">
         <property name="text">
-         <string>Hidden</string>
+         <string>Hidden Line</string>
         </property>
        </widget>
       </item>
@@ -422,6 +488,37 @@
         </property>
         <property name="prefPath" stdset="0">
          <cstring>Mod/TechDraw/Colors</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="lbl_Select">
+        <property name="text">
+         <string>Selected</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="6">
+       <widget class="Gui::PrefColorButton" name="pcb_Hatch">
+        <property name="color">
+         <color>
+          <red>0</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>Hatch</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>/Mod/TechDraw/Colors</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Background</string>
         </property>
        </widget>
       </item>
@@ -452,6 +549,11 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
+   <class>Gui::PrefCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -459,6 +561,11 @@
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
