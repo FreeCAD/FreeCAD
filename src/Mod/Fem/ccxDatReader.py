@@ -20,16 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-import FreeCAD
-import os
-
 __title__ = "ccxDatReader"
 __author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ccxDatReader
 #  \ingroup FEM
+
+import FreeCAD
+import os
+
 
 if open.__module__ == '__builtin__':
     # because we'll redefine open below

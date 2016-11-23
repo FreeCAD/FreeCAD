@@ -20,35 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "Tools for the work with FEM meshes"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 
-## \addtogroup FEM
-#  @{
 
 def get_femnodes_by_femobj_with_references(femmesh, femobj):
     node_set = []
     if femmesh.GroupCount:
         node_set = get_femnode_set_from_group_data(femmesh, femobj)
-        # print 'node_set_group: ', node_set
+        # print('node_set_group: ', node_set)
     if not node_set:
         node_set = get_femnodes_by_references(femmesh, femobj['Object'].References)
-        # print 'node_set_nogroup: ', node_set
+        # print('node_set_nogroup: ', node_set)
     return node_set
 
 
-def get_femelements_by_references(femmesh, femelement_table, references):
+def get_femelements_by_references(femmesh, femelement_table, references, femnodes_ele_table=None):
     '''get the femelements for a list of references
     '''
     references_femelements = []
     for ref in references:
         ref_femnodes = get_femnodes_by_refshape(femmesh, ref)  # femnodes for the current ref
-        references_femelements += get_femelements_by_femnodes(femelement_table, ref_femnodes)  # femelements for all references
+        if femnodes_ele_table:
+            # blind fast binary search, works for volumes only
+            references_femelements += get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, ref_femnodes)  # femelements for all references
+        else:
+            # standars search
+            references_femelements += get_femelements_by_femnodes_std(femelement_table, ref_femnodes)  # femelements for all references
     return references_femelements
 
 
@@ -103,12 +107,160 @@ def get_femelement_table(femmesh):
     return femelement_table
 
 
-def get_femelements_by_femnodes(femelement_table, node_list):
+def get_femnodes_ele_table(femnodes_mesh, femelement_table):
+    '''the femnodes_ele_table contains for each node its membership in elements
+    {nodeID : [[eleID, NodePosition], [], ...], nodeID : [[], [], ...], ...}
+    stored informatation are:
+    element number, the number of nodes per element, the position of the node in the element.
+    The position of the node in the element is coded as a set bit at that position in a bit array (integer)
+    Fixme: the number of nodes per element should be replaced by the type of the element
+    but I did not know, how to get this from the mesh.
+    Since the femelement_table contains either volume or face or edgemesh the femnodes_ele_table only
+    has either volume or face or edge elements, see get_femelement_table()
+    '''
+    femnodes_ele_table = {}  # node_dict in ulrichs class
+    for n in femnodes_mesh:  # initialize it with sorted node keys and empty lists
+        femnodes_ele_table[n] = []
+    for ele in femelement_table:
+        ele_list = femelement_table[ele]
+        # print(ele_list)
+        pos = int(1)
+        for ele_node in ele_list:
+            femnodes_ele_table[ele_node].append([ele, pos])
+            pos = pos << 1
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    # print('femnodes_ele_table: ', femnodes_ele_table)
+    return femnodes_ele_table
+
+
+def get_copy_of_empty_femelement_table(femelement_table):
+    '''{eleID : 0, eleID : 0, ...}
+    '''
+    empty_femelement_table = {}
+    for ele in femelement_table:  # initialize it with sorted element keys and empty int
+        empty_femelement_table[ele] = 0
+    return empty_femelement_table.copy()
+
+
+def get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_set):
+    '''Now we are looking for nodes inside of the Faces = filling the bit_pattern_dict
+    {eleID : [lenEleNodes, binary_position]}
+    see forumpost for a ver good explanation whats really happening
+    http://forum.freecadweb.org/viewtopic.php?f=18&p=141133&sid=013c93f496a63872951d2ce521702ffa#p141108
+    The bit_pattern_dict holds later an integer (bit array) for each element, which gives us
+    the information we are searching for:
+    Is this element part of the node list (searching for elements) or  has this element a face we are searching for?
+    The number in the ele_dict is organized as a bit array.
+    The corresponding bit is set, if the node of the node_set is contained in the element.
+    '''
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    print('len node_set: ' + str(len(node_set)))
+    # print('node_set: ', node_set)
+    bit_pattern_dict = get_copy_of_empty_femelement_table(femelement_table)
+    # # initializing the bit_pattern_dict
+    for ele in femelement_table:
+        len_ele = len(femelement_table[ele])
+        bit_pattern_dict[ele] = [len_ele, 0]
+    for node in node_set:
+        for nList in femnodes_ele_table[node]:
+            bit_pattern_dict[nList[0]][1] += nList[1]
+    print('len bit_pattern_dict:' + str(len(bit_pattern_dict)))
+    # print('bit_pattern_dict: ', bit_pattern_dict)
+    return bit_pattern_dict
+
+
+def get_ccxelement_faces_from_binary_search(bit_pattern_dict):
+    '''get the CalculiX element face numbers
+    '''
+    tet10_mask = {
+        119: 1,
+        411: 2,
+        717: 3,
+        814: 4}
+    tet4_mask = {
+        7: 1,
+        11: 2,
+        13: 3,
+        14: 4}
+    hex8_mask = {
+        240: 1,
+        15: 2,
+        102: 3,
+        204: 4,
+        153: 5,
+        51: 6}
+    hex20_mask = {
+        61680: 1,
+        3855: 2,
+        402022: 3,
+        804044: 4,
+        624793: 5,
+        201011: 6}
+    pent6_mask = {
+        56: 1,
+        7: 2,
+        54: 3,
+        45: 4,
+        27: 5}
+    pent15_mask = {
+        3640: 1,
+        455: 2,
+        25782: 3,
+        22829: 4,
+        12891: 5}
+    vol_dict = {
+        4: tet4_mask,
+        6: pent6_mask,
+        8: hex8_mask,
+        10: tet10_mask,
+        15: pent15_mask,
+        20: hex20_mask}
+    faces = []
+    for ele in bit_pattern_dict:
+        mask_dict = vol_dict[bit_pattern_dict[ele][0]]
+        for key in mask_dict:
+            if (key & bit_pattern_dict[ele][1]) == key:
+                faces.append([ele, mask_dict[key]])
+    print('found Faces: ', len(faces))
+    print('faces: ', faces)
+    return faces
+
+
+def get_femelements_by_femnodes_bin(femelement_table, femnodes_ele_table, node_list):
+    '''for every femelement of femelement_table
+    if all nodes of the femelement are in node_list,
+    the femelement is added to the list which is returned
+    blind fast binary search, but workd for volumes only
+    '''
+    print('binary search: get_femelements_by_femnodes_bin')
+    vol_masks = {
+        4: 15,
+        6: 63,
+        8: 255,
+        10: 1023,
+        15: 32767,
+        20: 1048575}
+    # Now we are looking for nodes inside of the Volumes = filling the bit_pattern_dict
+    print('len femnodes_ele_table:' + str(len(femnodes_ele_table)))
+    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, node_list)
+    # search
+    ele_list = []  # The ele_list contains the result of the search.
+    for ele in bit_pattern_dict:
+        # print('bit_pattern_dict[ele][0]: ', bit_pattern_dict[ele][0])
+        if bit_pattern_dict[ele][1] == vol_masks[bit_pattern_dict[ele][0]]:
+            ele_list.append(ele)
+    print('found Volumes: ', len(ele_list))
+    print('   volumes: ', len(ele_list))
+    return ele_list
+
+
+def get_femelements_by_femnodes_std(femelement_table, node_list):
     '''for every femelement of femelement_table
     if all nodes of the femelement are in node_list,
     the femelement is added to the list which is returned
     e: elementlist
     nodes: nodelist '''
+    print('std search: get_femelements_by_femnodes_std')
     e = []  # elementlist
     for elementID in sorted(femelement_table):
         nodecount = 0
@@ -172,11 +324,11 @@ def get_femvolumeelements_by_femfacenodes(femelement_table, node_list):
                 e.append(elementID)
         else:
             FreeCAD.Console.PrintError('Error in get_femvolumeelements_by_femfacenodes(): not known volume element: ' + el_nd_ct + '\n')
-    # print sorted(e)
+    # print(sorted(e))
     return e
 
 
-def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects = FreeCAD FEM document objects
+def get_femelement_sets(femmesh, femelement_table, fem_objects, femnodes_ele_table=None):  # fem_objects = FreeCAD FEM document objects
     # get femelements for reference shapes of each obj.References
     count_femelements = 0
     referenced_femelements = []
@@ -186,7 +338,7 @@ def get_femelement_sets(femmesh, femelement_table, fem_objects):  # fem_objects 
         fem_object['ShortName'] = get_elset_short_name(obj, fem_object_i)  # unique short identifier
         if obj.References:
             ref_shape_femelements = []
-            ref_shape_femelements = get_femelements_by_references(femmesh, femelement_table, obj.References)
+            ref_shape_femelements = get_femelements_by_references(femmesh, femelement_table, obj.References, femnodes_ele_table)
             referenced_femelements += ref_shape_femelements
             count_femelements += len(ref_shape_femelements)
             fem_object['FEMElements'] = ref_shape_femelements
@@ -213,10 +365,11 @@ def get_femnode_set_from_group_data(femmesh, fem_object):
     # we assume the mesh group data fits with the reference shapes, no check is done in this regard !!!
     # what happens if a reference shape was changed, but the mesh and the mesh groups were not created new !?!
     obj = fem_object['Object']
+    group_nodes = None
     if femmesh.GroupCount:
         for g in femmesh.Groups:
             grp_name = femmesh.getGroupName(g)
-            if grp_name.startswith(obj.Name + '_'):
+            if grp_name.startswith(obj.Name):
                 if femmesh.getGroupElementType(g) == "Node":
                     print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                     group_nodes = femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -235,7 +388,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
         if femmesh.GroupCount:
             for g in femmesh.Groups:
                 grp_name = femmesh.getGroupName(g)
-                if grp_name.startswith(obj.Name + '_'):
+                if grp_name.startswith(obj.Name):
                     if femmesh.getGroupElementType(g) == "Volume":
                         print("Constraint: " + obj.Name + " --> " + "mesh group: " + grp_name)
                         group_elements = femmesh.getGroupElements(g)  # == ref_shape_femelements
@@ -372,7 +525,7 @@ def get_force_obj_edge_nodeload_table(femmesh, femelement_table, femnodes_mesh, 
     return force_obj_node_load_table
 
 
-def get_pressure_obj_faces(femmesh, femobj):
+def get_pressure_obj_faces_depreciated(femmesh, femobj):
     pressure_faces = []
     for o, elem_tup in femobj['Object'].References:
         for elem in elem_tup:
@@ -381,6 +534,16 @@ def get_pressure_obj_faces(femmesh, femobj):
             print(elem_info_string)
             if ref_shape.ShapeType == 'Face':
                 pressure_faces.append((elem_info_string, femmesh.getccxVolumesByFace(ref_shape)))
+    return pressure_faces
+
+
+def get_pressure_obj_faces(femmesh, femelement_table, femnodes_ele_table, femobj):
+    # get the nodes
+    prs_face_node_set = get_femnodes_by_femobj_with_references(femmesh, femobj)  # sorted and duplicates removed
+    # print('prs_face_node_set: ', prs_face_node_set)
+    # fill the bit_pattern_dict and search for the faces
+    bit_pattern_dict = get_bit_pattern_dict(femelement_table, femnodes_ele_table, prs_face_node_set)
+    pressure_faces = get_ccxelement_faces_from_binary_search(bit_pattern_dict)
     return pressure_faces
 
 
@@ -483,7 +646,7 @@ def get_ref_edgenodes_table(femmesh, femelement_table, refedge):
         #  FIXME duplicate_mesh_elements: as soon as contact ans springs are supported the user should decide on which edge the load is applied
         edge_table = delete_duplicate_mesh_elements(edge_table)
     elif is_edge_femmesh(femmesh):
-        refedge_fem_edgeelements = get_femelements_by_femnodes(femelement_table, refedge_nodes)
+        refedge_fem_edgeelements = get_femelements_by_femnodes_std(femelement_table, refedge_nodes)
         for elem in refedge_fem_edgeelements:
             edge_table[elem] = femelement_table[elem]  # { edgeID : ( nodeID, ... , nodeID  )} # all nodes off this femedgeelement
     return edge_table
@@ -571,10 +734,10 @@ def get_ref_facenodes_table(femmesh, femelement_table, ref_face):
                 face_table[mf] = femmesh.getElementNodes(mf)
     elif is_face_femmesh(femmesh):
         ref_face_nodes = femmesh.getNodesByFace(ref_face)
-        ref_face_elements = get_femelements_by_femnodes(femelement_table, ref_face_nodes)
+        ref_face_elements = get_femelements_by_femnodes_std(femelement_table, ref_face_nodes)
         for mf in ref_face_elements:
             face_table[mf] = femelement_table[mf]
-    # print face_table
+    # print(face_table)
     return face_table
 
 
@@ -588,10 +751,10 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             index = femelement_table[veID].index(n)
             # print(index)
             face_nodenumber_table[veID].append(index + 1)  # lokale node number = index + 1
-        # print 'VolElement:', veID
-        # print '  --> ', femelement_table[veID]
-        # print '  --> ', face_table[veID]
-        # print '  --> ', face_nodenumber_table[veID]
+        # print('VolElement:', veID)
+        # print('  --> ', femelement_table[veID])
+        # print('  --> ', face_table[veID])
+        # print('  --> ', face_nodenumber_table[veID])
     for veID in face_nodenumber_table:
         vol_node_ct = len(femelement_table[veID])
         face_node_indexs = sorted(face_nodenumber_table[veID])
@@ -681,7 +844,7 @@ def build_mesh_faces_of_volume_elements(face_table, femelement_table):
             i -= 1  # node_number starts with 1, index starts with 0 --> index = node number - 1
             face_nodes.append(femelement_table[veID][i])
         face_table[veID] = face_nodes  # reset the entry in face_table
-        # print '  --> ', face_table[veID]
+        # print('  --> ', face_table[veID])
     return face_table
 
 
@@ -840,13 +1003,13 @@ def get_analysis_group_elements(aAnalysis, aPart):
     {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
     aShape = aPart.Shape
-    group_elements = {}
+    group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
     for m in aAnalysis.Member:
         if hasattr(m, "References"):
             # print(m.Name)
             key = m.Name
-            indexes = []
+            elements = []
             stype = None
             if m.References:
                 for r in m.References:
@@ -868,117 +1031,134 @@ def get_analysis_group_elements(aAnalysis, aPart):
                         # print(ref_shape)
                         found_element = find_element_in_shape(aShape, ref_shape)
                         if found_element is not None:
-                            indexes.append(found_element)
+                            elements.append(found_element)
                         else:
                             FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
                             print('    ' + m.Name)
                             print('    ' + str(m.References))
                             print('    ' + r[0].Name)
-                group_elements[key] = [stype, sorted(indexes)]
+                group_elements[key] = sorted(elements)
             else:
-                print('Empty reference: ' + m.Name)
+                print('  Empty reference: ' + m.Name)
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
             group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
         else:
-            FreeCAD.Console.PrintError('Error: more than one object with empty references!\n')
-            print(empty_references)
+            FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
+            print('We gone try to get the empty material references anyway.\n')
+            # ShellThickness and BeamSection could have empty references, but on solid meshes only materials should have empty references
+            for er in empty_references:
+                print(er.Name)
+            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
     # check if all groups have elements:
     for g in group_elements:
-        # print group_elements[g][1]
-        if len(group_elements[g][1]) == 0:
+        # print(group_elements[g])
+        if len(group_elements[g]) == 0:
             FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
     return group_elements
 
 
 def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):
     '''get the elementIDs if the Reference shape is empty
-    see get_analysis_group_elements()
+    see get_analysis_group_elements() for more informatations
+    on solid meshes only material objects could have an empty reference without beeing something wrong!
+    face meshes could have empty ShellThickness and edge meshes could have empty BeamSection
     '''
+    # print(group_elements)
     material_ref_shapes = []
     material_shape_type = ''
     missed_material_refshapes = []
     empty_reference_material = None
     for m in aAnalysis.Member:
-        # only materials could have an empty reference without beeing something wrong!
         if m.isDerivedFrom("App::MaterialObjectPython"):
-            if hasattr(m, "References") and m.References:
-                if not material_shape_type:
-                    material_shape_type = group_elements[m.Name][0]
-                elif material_shape_type != group_elements[m.Name][0]:
-                    print('Problem, material shape type does not match get_anlysis_empty_references_group_elements')
-                for i in group_elements[m.Name][1]:
-                    material_ref_shapes.append(i)
-            elif hasattr(m, "References") and not m.References:
+            if hasattr(m, "References") and not m.References:
                 if not empty_reference_material:
                     empty_reference_material = m.Name
                 else:
-                    print('Problem in get_anlysis_empty_references_group_elements, we seams to have two materials with empty referneces')
+                    FreeCAD.Console.PrintError('Problem in get_anlysis_empty_references_group_elements, we seams to have two or more materials with empty referneces')
                     return {}
+            elif hasattr(m, "References") and m.References:
+                # ShapeType ot the group elements, strip the number of the first group element
+                # http://stackoverflow.com/questions/12851791/removing-numbers-from-string
+                group_shape_type = ''.join(i for i in group_elements[m.Name][0] if not i.isdigit())
+                if not material_shape_type:
+                    material_shape_type = group_shape_type
+                elif material_shape_type != group_shape_type:
+                    FreeCAD.Console.PrintError('Problem, material shape type does not match get_anlysis_empty_references_group_elements')
+                for ele in group_elements[m.Name]:
+                    material_ref_shapes.append(ele)
     if material_shape_type == 'Solid':
         # print(len(aShape.Solids))
         for i in range(len(aShape.Solids)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Solid' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     elif material_shape_type == 'Face':
         # print(len(aShape.Faces))
         for i in range(len(aShape.Faces)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Face' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     elif material_shape_type == 'Edge':
         # print(len(aShape.Edges))
         for i in range(len(aShape.Edges)):
-            if i not in material_ref_shapes:
-                missed_material_refshapes.append(i)
+            ele = 'Edge' + str(i + 1)
+            if ele not in material_ref_shapes:
+                missed_material_refshapes.append(ele)
     else:
-        print('It seams we only have one material with no reference shapes. Means the whole solid is one material. Since we only support material groups for Solids at the moment this should be Solid')
-        material_shape_type = 'Solid'
-        missed_material_refshapes.append(0)
+        print('  One material with no reference shapes. No need to make a group for materials.')
+        # make no changes group_elements
+        return group_elements
     # print(sorted(material_ref_shapes))
     # print(sorted(missed_material_refshapes))
     # print(group_elements)
-    group_elements[empty_reference_material] = [material_shape_type, sorted(missed_material_refshapes)]
+    group_elements[empty_reference_material] = sorted(missed_material_refshapes)
     # print(group_elements)
     return group_elements
 
 
 def find_element_in_shape(aShape, anElement):
     # import Part
-    if anElement.ShapeType == 'Solid' or anElement.ShapeType == 'CompSolid':
+    ele_st = anElement.ShapeType
+    if ele_st == 'Solid' or ele_st == 'CompSolid':
         for index, solid in enumerate(aShape.Solids):
             # print(is_same_geometry(solid, anElement))
             if is_same_geometry(solid, anElement):
                 # print(index)
                 # Part.show(aShape.Solids[index])
-                return index
+                ele = ele_st + str(index + 1)
+                return ele
         FreeCAD.Console.PrintError('Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
-        if anElement.ShapeType == 'Solid' and aShape.ShapeType == 'Solid':
+        if ele_st == 'Solid' and aShape.ShapeType == 'Solid':
             print('We have been searching for a Solid in a Solid and we have not found it. In most cases this should be searching for a Solid inside a CompSolid. Check the ShapeType of your Part to mesh.')
         # Part.show(anElement)
         # Part.show(aShape)
-    elif anElement.ShapeType == 'Face' or anElement.ShapeType == 'Shell':
+    elif ele_st == 'Face' or ele_st == 'Shell':
         for index, face in enumerate(aShape.Faces):
             # print(is_same_geometry(face, anElement))
             if is_same_geometry(face, anElement):
                 # print(index)
                 # Part.show(aShape.Faces[index])
-                return index
-    elif anElement.ShapeType == 'Edge' or anElement.ShapeType == 'Wire':
-        for index, face in enumerate(aShape.Edges):
-            # print(is_same_geometry(face, anElement))
-            if is_same_geometry(face, anElement):
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Edge' or ele_st == 'Wire':
+        for index, edge in enumerate(aShape.Edges):
+            # print(is_same_geometry(edge, anElement))
+            if is_same_geometry(edge, anElement):
                 # print(index)
                 # Part.show(aShape.Edges[index])
-                return index
-    elif anElement.ShapeType == 'Vertex':
-        for index, face in enumerate(aShape.Vertexes):
-            # print(is_same_geometry(face, anElement))
-            if is_same_geometry(face, anElement):
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Vertex':
+        for index, vertex in enumerate(aShape.Vertexes):
+            # print(is_same_geometry(vertex, anElement))
+            if is_same_geometry(vertex, anElement):
                 # print(index)
                 # Part.show(aShape.Vertexes[index])
-                return index
-    elif anElement.ShapeType == 'Compound':
+                ele = ele_st + str(index + 1)
+                return ele
+    elif ele_st == 'Compound':
         FreeCAD.Console.PrintError('Compound is not supported.\n')
 
 

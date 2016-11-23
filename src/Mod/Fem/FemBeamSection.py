@@ -24,12 +24,12 @@ __title__ = "FemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemBeamSection
 
-## \addtogroup FEM
-#  @{
 
 def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''

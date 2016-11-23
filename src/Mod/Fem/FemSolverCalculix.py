@@ -24,12 +24,12 @@ __title__ = "FemSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemSolverCalculix
 
-## \addtogroup FEM
-#  @{
 
 def makeFemSolverCalculix(name="CalculiX"):
     '''makeSolverCalculix(name): makes a Calculix solver object'''

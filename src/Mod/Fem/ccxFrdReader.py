@@ -22,18 +22,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-import FreeCAD
-import os
-from math import pow, sqrt
-import numpy as np
-
 __title__ = "FreeCAD Calculix library"
 __author__ = "Juergen Riegel , Michael Hindley, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package ccxFrdReader
 #  \ingroup FEM
+
+import FreeCAD
+import os
+from math import pow, sqrt
+import numpy as np
+
 
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
@@ -331,6 +331,8 @@ def readResult(frd_input):
             elements_found = False
 
     frd_file.close()
+    if not nodes:
+        FreeCAD.Console.PrintError('FEM: No nodes found in Frd file.\n')
     return {'Nodes': nodes,
             'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
             'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,

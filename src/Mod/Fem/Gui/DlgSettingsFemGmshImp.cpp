@@ -1,5 +1,7 @@
 /***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ *   Copyright (c) 2016 FreeCAD Developers                                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcxImp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,50 +23,47 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshObject_H
-#define Fem_FemMeshObject_H
+#include "PreCompiled.h"
 
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+#include "Gui/Application.h"
+#include "DlgSettingsFemGmshImp.h"
+#include <Gui/PrefWidgets.h>
 
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
+using namespace FemGui;
 
-namespace Fem
+DlgSettingsFemGmshImp::DlgSettingsFemGmshImp( QWidget* parent )
+  : PreferencePage( parent )
 {
+    this->setupUi(this);
+}
 
-class AppFemExport FemMeshObject : public App::GeoFeature
+DlgSettingsFemGmshImp::~DlgSettingsFemGmshImp()
 {
-    PROPERTY_HEADER(Fem::FemMeshObject);
+    // no need to delete child widgets, Qt does it all for us
+}
 
-public:
-    /// Constructor
-    FemMeshObject(void);
-    virtual ~FemMeshObject();
+void DlgSettingsFemGmshImp::saveSettings()
+{
+    cb_gmsh_binary_std->onSave();
+    fc_gmsh_binary_path->onSave();
+}
 
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemMesh";
+void DlgSettingsFemGmshImp::loadSettings()
+{
+    cb_gmsh_binary_std->onRestore();
+    fc_gmsh_binary_path->onRestore();
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void DlgSettingsFemGmshImp::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
     }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
+    else {
+        QWidget::changeEvent(e);
     }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
+}
 
-    PropertyFemMesh FemMesh;
-
-protected:
-    /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
-};
-
-typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;
-
-
-} //namespace Fem
-
-
-#endif // Fem_FemMeshObject_H
+#include "moc_DlgSettingsFemGmshImp.cpp"

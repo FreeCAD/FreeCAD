@@ -25,9 +25,7 @@
 # *   Juergen Riegel 2002                                                   *
 # ***************************************************************************/
 
-
 import FreeCAD
-
 
 FreeCAD.addExportType("TetGen file (*.poly)", "convert2TetGen")
 FreeCAD.addImportType("FEM formats (*.unv *.med *.dat *.bdf)", "Fem")

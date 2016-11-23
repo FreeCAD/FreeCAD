@@ -20,32 +20,30 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "Command Mesh From Shape"
+__title__ = "Command Mesh Netgen From Shape"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMeshFromShape
+## @package CommandMeshNetgenFromShape
 #  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
+import FreeCADGui
+from PySide import QtCore
 
 
-class _CommandMeshFromShape(FemCommands):
-    # the Fem_MeshFromShape command definition
+class _CommandMeshNetgenFromShape(FemCommands):
+    # the Fem_MeshNetgenFromShape command definition
     def __init__(self):
-        super(_CommandMeshFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "FEM mesh from shape"),
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "Create a FEM volume mesh from a solid shape")}
+        super(_CommandMeshNetgenFromShape, self).__init__()
+        self.resources = {'Pixmap': 'fem-fem-mesh-netgen-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "FEM mesh from shape by Netgen"),
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshFromShape", "Create a FEM volume mesh from a solid or face shape by Netgen internal mesher")}
         self.is_active = 'with_part_feature'
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
+        FreeCAD.ActiveDocument.openTransaction("Create FEM mesh Netgen")
         FreeCADGui.addModule("FemGui")
         sel = FreeCADGui.Selection.getSelection()
         if (len(sel) == 1):
@@ -58,4 +56,4 @@ class _CommandMeshFromShape(FemCommands):
 
 
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_MeshFromShape', _CommandMeshFromShape())
+    FreeCADGui.addCommand('Fem_MeshNetgenFromShape', _CommandMeshNetgenFromShape())
