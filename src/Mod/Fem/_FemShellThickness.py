@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## @package FemShellThickness
 #  \ingroup FEM
 
+
 class _FemShellThickness:
     "The FemShellThickness object"
     def __init__(self, obj):

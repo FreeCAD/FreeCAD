@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import os
@@ -34,8 +35,6 @@ import time
 import FemMeshTools
 import FemInputWriter
 
-## \addtogroup FEM
-#  @{
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
     def __init__(self,
@@ -66,7 +65,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
     def write_calculix_input_file(self):
-        if self.solver_obj.SplitInputWriter == True:
+        if self.solver_obj.SplitInputWriter is True:
             self.write_calculix_splitted_input_file()
         else:
             self.write_calculix_one_input_file()
@@ -974,7 +973,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         if all_found is False:
             if not self.femelement_table:
                 self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
+            # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}

@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemTools
@@ -33,8 +34,6 @@ from PySide import QtCore
 if FreeCAD.GuiUp:
     from PySide import QtGui
 
-## \addtogroup FEM
-#  @{
 
 class FemToolsCcx(FemTools.FemTools):
 
@@ -242,6 +241,9 @@ class FemToolsCcx(FemTools.FemTools):
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
+                    break
+            else:
+                FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 
@@ -256,7 +258,7 @@ class FemToolsCcx(FemTools.FemTools):
         else:
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            print(mode_frequencies)
+            # print(mode_frequencies)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
                     for mf in mode_frequencies:

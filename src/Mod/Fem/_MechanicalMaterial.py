@@ -27,6 +27,7 @@ __url__ = "http://www.freecadweb.org"
 ## @package MechanicalMaterial
 #  \ingroup FEM
 
+
 class _MechanicalMaterial:
     "The Material object"
     def __init__(self, obj):

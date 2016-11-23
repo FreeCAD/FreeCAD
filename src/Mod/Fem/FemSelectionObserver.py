@@ -24,12 +24,12 @@ __title__ = "Selection Observer"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FreeCADGui
 
-## \addtogroup FEM
-#  @{
 
 class FemSelectionObserver:
     '''FemSelectionObserver'''

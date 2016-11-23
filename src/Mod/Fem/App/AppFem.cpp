@@ -136,6 +136,7 @@ PyMODINIT_FUNC initFem()
     Fem::FeaturePython              ::init();
     Fem::FemMesh                    ::init();
     Fem::FemMeshObject              ::init();
+    Fem::FemMeshObjectPython        ::init();
     Fem::FemMeshShapeObject         ::init();
     Fem::FemMeshShapeNetgenObject   ::init();
     Fem::PropertyFemMesh            ::init();

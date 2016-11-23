@@ -29,11 +29,9 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtCore
+import FreeCADGui
+import FemGui
+from PySide import QtCore
 
 
 class _CommandSolverCalculix(FemCommands):

@@ -31,12 +31,11 @@ import FreeCAD
 import FemTools
 import numpy as np
 
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtCore, QtGui
-    from PySide.QtCore import Qt
-    from PySide.QtGui import QApplication
+import FreeCADGui
+import FemGui
+from PySide import QtCore, QtGui
+from PySide.QtCore import Qt
+from PySide.QtGui import QApplication
 
 
 class _TaskPanelShowResult:
@@ -304,10 +303,6 @@ class _TaskPanelShowResult:
     def update(self):
         self.MeshObject = None
         self.result_object = get_results_object(FreeCADGui.Selection.getSelection())
-        # Disable temperature radio button if it does ot exist in results
-        if len(self.result_object.Temperature) == 1:
-                self.form.rb_temperature.setEnabled(0)
-
         for i in FemGui.getActiveAnalysis().Member:
             if i.isDerivedFrom("Fem::FemMeshObject"):
                 self.MeshObject = i
@@ -315,13 +310,21 @@ class _TaskPanelShowResult:
 
         self.suitable_results = False
         if self.result_object:
+            # Disable temperature radio button if it does ot exist in results
+            if len(self.result_object.Temperature) == 1:
+                self.form.rb_temperature.setEnabled(0)
+
             if (self.MeshObject.FemMesh.NodeCount == len(self.result_object.NodeNumbers)):
                 self.suitable_results = True
             else:
                 if not self.MeshObject.FemMesh.VolumeCount:
-                    FreeCAD.Console.PrintError('Graphical bending stress output for beam or shell FEM Meshes not yet supported!\n')
+                    FreeCAD.Console.PrintError('FEM: Graphical bending stress output for beam or shell FEM Meshes not yet supported.\n')
                 else:
-                    FreeCAD.Console.PrintError('Result node numbers are not equal to FEM Mesh NodeCount!\n')
+                    FreeCAD.Console.PrintError('FEM: Result node numbers are not equal to FEM Mesh NodeCount.\n')
+        else:
+            error_message = 'FEM: Result task panel, no result object to display results for.\n'
+            FreeCAD.Console.PrintError(error_message)
+            QtGui.QMessageBox.critical(None, 'No result object', error_message)
 
     def accept(self):
         FreeCADGui.Control.closeDialog()

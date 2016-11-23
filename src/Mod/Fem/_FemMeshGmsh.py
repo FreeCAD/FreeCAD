@@ -20,32 +20,50 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "the fem nonlinear mechanical material object"
+__title__ = "_FemMeshGmsh"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemMaterialMechanicalNonLinear
+## @package FemMeshGmsh
 #  \ingroup FEM
 
 
-class _FemMaterialMechanicalNonlinear:
-    "The FemMaterialMechanicalNonlinear object"
+class _FemMeshGmsh():
+    """The Fem::FemMeshObject's Proxy python type, add GMSH specific properties
+    """
+
+    # they will be used from the task panel too, thus they need to be outside of the __init__
+    known_element_dimensions = ['Auto', '1D', '2D', '3D']
+    known_element_orders = ['Auto', '1st', '2nd']
+
     def __init__(self, obj):
-        obj.Proxy = self
-        self.Type = "FemMaterialMechanicalNonlinear"
+        self.Type = "FemMeshGmsh"
+        self.Object = obj  # keep a ref to the DocObj for nonGui usage
+        obj.Proxy = self  # link between App::DocumentObject to  this object
 
-        obj.addProperty("App::PropertyLink", "LinearBaseMaterial", "Base", "Set the linear material the nonlinear build uppon.")
+        obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
+        obj.Part = None
 
-        choices_nonlinear_material_models = ["simple hardening"]
-        obj.addProperty("App::PropertyEnumeration", "MaterialModelNonlinearity", "Fem", "Set the type on nonlinear material model")
-        obj.MaterialModelNonlinearity = choices_nonlinear_material_models
-        obj.MaterialModelNonlinearity = choices_nonlinear_material_models[0]
+        obj.addProperty("App::PropertyFloat", "ElementSizeMax", "FEM Mesh Params", "Max mesh element size (0.0 = infinity)")
+        obj.ElementSizeMax = 0.0  # will be 1e+22
 
-        obj.addProperty("App::PropertyString", "YieldPoint1", "Fem", "Set stress and strain for yield point one, separated by a comma.")
-        obj.YieldPoint1 = "235.0, 0.0"
+        obj.addProperty("App::PropertyFloat", "ElementSizeMin", "FEM Mesh Params", "Min mesh element size")
+        obj.ElementSizeMin = 0.0
 
-        obj.addProperty("App::PropertyString", "YieldPoint2", "Fem", "Set stress and strain for yield point one, separated by a comma.")
-        obj.YieldPoint2 = "241.0, 0.025"
+        obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
+        obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
+        obj.ElementDimension = 'Auto'  # according ShapeType of Part to mesh
+
+        obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM Mesh Params", "Order of mesh elements (Auto will be 2nd)")
+        obj.ElementOrder = _FemMeshGmsh.known_element_orders
+        obj.ElementOrder = 'Auto'  # = 2nd
 
     def execute(self, obj):
         return
+
+    def __getstate__(self):
+        return self.Type
+
+    def __setstate__(self, state):
+        if state:
+            self.Type = state

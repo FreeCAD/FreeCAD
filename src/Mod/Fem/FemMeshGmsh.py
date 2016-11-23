@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2015 - Bernd Hahnebach <bernd@bimstatik.org>            *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,22 +20,24 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_FemBeamSection"
+__title__ = "FemMeshGmsh"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package FemBeamSection
-#  \ingroup FEM
+## \addtogroup FEM
+#  @{
+
+import FreeCAD
+import _FemMeshGmsh
 
 
-class _FemBeamSection:
-    "The FemBeamSection object"
-    def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "Width", "BeamSection", "set width of the beam elements")
-        obj.addProperty("App::PropertyLength", "Height", "BeamSection", "set height of the beam elements")
-        obj.addProperty("App::PropertyLinkSubList", "References", "BeamSection", "List of beam section shapes")
-        obj.Proxy = self
-        self.Type = "FemBeamSection"
+def makeFemMeshGmsh(name="FEMMeshGMSH"):
+    '''makeFemMeshGmsh(name): makes a GMSH FEM mesh object'''
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FemMeshObjectPython", name)
+    _FemMeshGmsh._FemMeshGmsh(obj)
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMeshGmsh
+        _ViewProviderFemMeshGmsh._ViewProviderFemMeshGmsh(obj.ViewObject)
+    return obj
 
-    def execute(self, obj):
-        return
+#  @}

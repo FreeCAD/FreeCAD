@@ -1,5 +1,7 @@
-/***************************************************************************
- *   Copyright (c) 2008 Jürgen Riegel (juergen.riegel@web.de)              *
+ /**************************************************************************
+ *   Copyright (c) 2016 FreeCAD Developers                                 *
+ *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
+ *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.h                          *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -21,50 +23,28 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemMeshObject_H
-#define Fem_FemMeshObject_H
+#ifndef FEMGUI_DLGSETTINGSFEMGMSHIMP_H
+#define FEMGUI_DLGSETTINGSFEMGMSHIMP_H
 
-#include <App/FeaturePython.h>
-#include <App/GeoFeature.h>
-#include <App/PropertyFile.h>
-#include <App/PropertyGeo.h>
+#include "ui_DlgSettingsFemGmsh.h"
+#include <Gui/PropertyPage.h>
 
-#include "FemMesh.h"
-#include "FemMeshProperty.h"
+namespace FemGui {
 
-namespace Fem
+class DlgSettingsFemGmshImp : public Gui::Dialog::PreferencePage, public Ui_DlgSettingsFemGmshImp
 {
-
-class AppFemExport FemMeshObject : public App::GeoFeature
-{
-    PROPERTY_HEADER(Fem::FemMeshObject);
+    Q_OBJECT
 
 public:
-    /// Constructor
-    FemMeshObject(void);
-    virtual ~FemMeshObject();
-
-    /// returns the type name of the ViewProvider
-    virtual const char* getViewProviderName(void) const {
-        return "FemGui::ViewProviderFemMesh";
-    }
-    virtual App::DocumentObjectExecReturn *execute(void) {
-        return App::DocumentObject::StdReturn;
-    }
-    virtual short mustExecute(void) const;
-    virtual PyObject *getPyObject(void);
-
-    PropertyFemMesh FemMesh;
+    DlgSettingsFemGmshImp( QWidget* parent = 0 );
+    ~DlgSettingsFemGmshImp();
 
 protected:
-    /// get called by the container when a property has changed
-    virtual void onChanged (const App::Property* prop);
+    void saveSettings();
+    void loadSettings();
+    void changeEvent(QEvent *e);
 };
 
-typedef App::FeaturePythonT<FemMeshObject> FemMeshObjectPython;
+} // namespace FemGui
 
-
-} //namespace Fem
-
-
-#endif // Fem_FemMeshObject_H
+#endif // FEMGUI_DLGSETTINGSFEMGMSHIMP_H
