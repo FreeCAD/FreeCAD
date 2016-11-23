@@ -26,7 +26,7 @@
 # include <gp_Dir2d.hxx>
 # include <gp_Pnt2d.hxx>
 # include <gp_Vec2d.hxx>
-# include <gp_Trsf.hxx>
+# include <gp_Trsf2d.hxx>
 # include <Geom2d_Geometry.hxx>
 # include <Geom2d_Curve.hxx>
 # include <Precision.hxx>
@@ -70,12 +70,12 @@ int Geometry2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
 }
-#if 0
+
 PyObject* Geometry2dPy::mirror(PyObject *args)
 {
     PyObject* o;
     if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
-        Base::Vector2d vec = static_cast<Base::Vector2dPy*>(o)->getValue();
+        Base::Vector2d vec = static_cast<Base::Vector2dPy*>(o)->value();
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Mirror(pnt);
         Py_Return;
@@ -85,8 +85,8 @@ PyObject* Geometry2dPy::mirror(PyObject *args)
     PyObject* axis;
     if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(),&o,
                                        Base::Vector2dPy::type_object(),&axis)) {
-        Base::Vector2d pnt = static_cast<Base::Vector2dPy*>(o)->getValue();
-        Base::Vector2d dir = static_cast<Base::Vector2dPy*>(axis)->getValue();
+        Base::Vector2d pnt = static_cast<Base::Vector2dPy*>(o)->value();
+        Base::Vector2d dir = static_cast<Base::Vector2dPy*>(axis)->value();
         gp_Ax2d ax1(gp_Pnt2d(pnt.x,pnt.y), gp_Dir2d(dir.x,dir.y));
         getGeometry2dPtr()->handle()->Mirror(ax1);
         Py_Return;
@@ -99,19 +99,17 @@ PyObject* Geometry2dPy::mirror(PyObject *args)
 PyObject* Geometry2dPy::rotate(PyObject *args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::PlacementPy::Type),&o))
-        return 0;
-
-    Base::Placement* plm = static_cast<Base::PlacementPy*>(o)->getPlacementPtr();
-    Base::Rotation rot(plm->getRotation());
-    Base::Vector3d pnt, dir;
     double angle;
+    Base::Vector2d vec;
+    if (PyArg_ParseTuple(args, "O!d", Base::Vector2dPy::type_object(), &o, &angle)) {
+        vec = static_cast<Base::Vector2dPy*>(o)->value();
+        gp_Pnt2d pnt(vec.x, vec.y);
+        getGeometry2dPtr()->handle()->Rotate(pnt, angle);
+        Py_Return;
+    }
 
-    rot.getValue(dir, angle);
-    pnt = plm->getPosition();
-    
-    getGeometry2dPtr()->handle()->Rotate(gp_Pnt2d(pnt.x,pnt.y), angle);
-    Py_Return;
+    PyErr_SetString(PartExceptionOCCError, "Vector2d and float expected");
+    return 0;
 }
 
 PyObject* Geometry2dPy::scale(PyObject *args)
@@ -119,31 +117,31 @@ PyObject* Geometry2dPy::scale(PyObject *args)
     PyObject* o;
     double scale;
     Base::Vector2d vec;
-    if (PyArg_ParseTuple(args, "O!d", Base::Vector2dPy::type_object(),&o, &scale)) {
-        vec = static_cast<Base::Vector2dPy*>(o)->getValue();
+    if (PyArg_ParseTuple(args, "O!d", Base::Vector2dPy::type_object(), &o, &scale)) {
+        vec = static_cast<Base::Vector2dPy*>(o)->value();
         gp_Pnt2d pnt(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Scale(pnt, scale);
         Py_Return;
     }
 
-    PyErr_SetString(PartExceptionOCCError, "either vector or tuple and float expected");
+    PyErr_SetString(PartExceptionOCCError, "Vector2d and float expected");
     return 0;
 }
 
 PyObject* Geometry2dPy::transform(PyObject *args)
 {
     PyObject* o;
-    if (!PyArg_ParseTuple(args, "O!", &(Base::MatrixPy::Type),&o))
+    if (!PyArg_ParseTuple(args, "O", &o))
         return 0;
-    Base::Matrix4D mat = static_cast<Base::MatrixPy*>(o)->value();
-    gp_Trsf trf;
-    trf.SetValues(mat[0][0],mat[0][1],mat[0][2],mat[0][3],
-                  mat[1][0],mat[1][1],mat[1][2],mat[1][3],
-                  mat[2][0],mat[2][1],mat[2][2],mat[2][3]
-#if OCC_VERSION_HEX < 0x060800
-                  , 0.00001,0.00001
-#endif
-                ); //precision was removed in OCCT CR0025194
+    Py::Sequence list(o);
+    double a11 = static_cast<double>(Py::Float(list.getItem(0)));
+    double a12 = static_cast<double>(Py::Float(list.getItem(1)));
+    double a13 = static_cast<double>(Py::Float(list.getItem(2)));
+    double a21 = static_cast<double>(Py::Float(list.getItem(3)));
+    double a22 = static_cast<double>(Py::Float(list.getItem(4)));
+    double a23 = static_cast<double>(Py::Float(list.getItem(5)));
+    gp_Trsf2d trf;
+    trf.SetValues(a11,a12,a13,a21,a22,a23);
     getGeometry2dPtr()->handle()->Transform(trf);
     Py_Return;
 }
@@ -153,13 +151,13 @@ PyObject* Geometry2dPy::translate(PyObject *args)
     PyObject* o;
     Base::Vector2d vec;
     if (PyArg_ParseTuple(args, "O!", Base::Vector2dPy::type_object(),&o)) {
-        vec = static_cast<Base::Vector2dPy*>(o)->getValue();
+        vec = static_cast<Base::Vector2dPy*>(o)->value();
         gp_Vec2d trl(vec.x, vec.y);
         getGeometry2dPtr()->handle()->Translate(trl);
         Py_Return;
     }
 
-    PyErr_SetString(PartExceptionOCCError, "either vector or tuple expected");
+    PyErr_SetString(PartExceptionOCCError, "Vector2d expected");
     return 0;
 }
 
@@ -189,7 +187,7 @@ PyObject* Geometry2dPy::copy(PyObject *args)
     geompy->_pcTwinPointer = geom->clone();
     return cpy;
 }
-#endif
+
 PyObject *Geometry2dPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
