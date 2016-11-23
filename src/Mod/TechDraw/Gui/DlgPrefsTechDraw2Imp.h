@@ -1,5 +1,7 @@
-/***************************************************************************
- *   Copyright (c) 2015 WandererFan <wandererfan@gmail.com>                *
+ /**************************************************************************
+ *   Copyright (c) 2015 FreeCAD Developers                                 *
+ *   Author: WandererFan <wandererfan@gmail.com>                           *
+ *   Based on src/Mod/FEM/Gui/DlgPrefsTechDraw2Imp.cpp                     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,58 +22,29 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMTEXT_H
-#define DRAWINGGUI_QGCUSTOMTEXT_H
 
-#include <QGraphicsItem>
-#include <QGraphicsTextItem>
-#include <QPointF>
+#ifndef DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
+#define DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
 
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+#include <Mod/TechDraw/Gui/ui_DlgPrefsTechDraw2.h>
+#include <Gui/PropertyPage.h>
 
-#include <Base/Parameter.h>
+namespace TechDrawGui {
 
-namespace TechDrawGui
+class DlgPrefsTechDraw2Imp : public Gui::Dialog::PreferencePage, public Ui_DlgPrefsTechDraw2Imp
 {
+    Q_OBJECT
 
-class TechDrawGuiExport QGCustomText : public QGraphicsTextItem
-{
 public:
-    explicit QGCustomText(void);
-    ~QGCustomText() {}
-
-    enum {Type = QGraphicsItem::UserType + 130};
-    int type() const { return Type;}
-
-    void setHighlighted(bool state);
-    void setPrettyNormal();
-    void setPrettyPre();
-    void setPrettySel();
-
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
-    virtual QColor getNormalColor(void);
-    virtual QColor getPreColor(void);
-    virtual QColor getSelectColor(void);
+    DlgPrefsTechDraw2Imp( QWidget* parent = 0 );
+    ~DlgPrefsTechDraw2Imp();
 
 protected:
-    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
-    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-
-    Base::Reference<ParameterGrp> getParmGroup(void);
-
-    bool isHighlighted;
-    QColor m_colCurrent;
-
-private:
-
+    void saveSettings();
+    void loadSettings();
+    void changeEvent(QEvent *e);
 };
 
-}
+} // namespace TechDrawGui
 
-#endif // DRAWINGGUI_QGCUSTOMTEXT_H
+#endif // DRAWINGGUI_DLGPREFSTECHDRAW2IMP_H
