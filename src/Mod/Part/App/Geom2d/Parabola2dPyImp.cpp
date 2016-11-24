@@ -60,161 +60,44 @@ int Parabola2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
     return -1;
 }
-#if 0
-PyObject* Parabola2dPy::compute(PyObject *args)
-{
-    PyObject *p1, *p2, *p3;
-    if (!PyArg_ParseTuple(args, "O!O!O!",
-        &Base::VectorPy::Type,&p1,
-        &Base::VectorPy::Type,&p2,
-        &Base::VectorPy::Type,&p3))
-        return 0;
-    Base::Vector3d v1 = Py::Vector(p1,false).toVector();
-    Base::Vector3d v2 = Py::Vector(p2,false).toVector();
-    Base::Vector3d v3 = Py::Vector(p3,false).toVector();
-    Base::Vector3d c = (v1-v2) % (v3-v2);
-    double zValue = v1.z;
-    if (fabs(c.Length()) < 0.0001) {
-        PyErr_SetString(PartExceptionOCCError, "Points are collinear");
-        return 0;
-    }
-
-    Base::Matrix4D m;
-    Base::Vector3d v;
-    m[0][0] = v1.y * v1.y;
-    m[0][1] = v1.y;
-    m[0][2] = 1;
-    m[1][0] = v2.y * v2.y;
-    m[1][1] = v2.y;
-    m[1][2] = 1;
-    m[2][0] = v3.y * v3.y;
-    m[2][1] = v3.y;
-    m[2][2] = 1.0;
-    v.x = v1.x;
-    v.y = v2.x;
-    v.z = v3.x;
-    m.inverseGauss();
-    v = m * v;
-    double a22 = v.x;
-    double a10 = -0.5;
-    double a20 = v.y/2.0;
-    double a00 = v.z;
-    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
-    curve->SetFocal(0.5*fabs(a10/a22));
-    curve->SetLocation(gp_Pnt((a20*a20-a22*a00)/(2*a22*a10), -a20/a22, zValue));
-
-    Py_Return;
-}
 
 Py::Float Parabola2dPy::getEccentricity(void) const
 {
-    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
+    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
     return Py::Float(curve->Eccentricity()); 
 }
 
 Py::Float Parabola2dPy::getFocal(void) const
 {
-    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
+    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
     return Py::Float(curve->Focal()); 
 }
 
 void Parabola2dPy::setFocal(Py::Float arg)
 {
-    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
+    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
     curve->SetFocal((double)arg); 
 }
 
 Py::Object Parabola2dPy::getFocus(void) const
 {
-    Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-        (getGeometryPtr()->handle());
-    gp_Pnt loc = c->Focus();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
+    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
+    gp_Pnt2d loc = curve->Focus();
+
+    Py::Module module("__FreeCADBase__");
+    Py::Callable method(module.getAttr("Vector2d"));
+    Py::Tuple arg(2);
+    arg.setItem(0, Py::Float(loc.X()));
+    arg.setItem(1, Py::Float(loc.Y()));
+    return method.apply(arg);
 }
 
 Py::Float Parabola2dPy::getParameter(void) const
 {
-    Handle_Geom_Parabola curve = Handle_Geom_Parabola::DownCast(getGeometryPtr()->handle());
-    return Py::Float(curve->Parameter()); 
+    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
+    return Py::Float(curve->Parameter());
 }
 
-Py::Object Parabola2dPy::getLocation(void) const
-{
-    Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-        (getGeometryPtr()->handle());
-    gp_Pnt loc = c->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-void Parabola2dPy::setLocation(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-            (getGeometryPtr()->handle());
-        c->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
-    }
-    else if (PyTuple_Check(p)) {
-        Py::Tuple tuple(arg);
-        gp_Pnt loc;
-        loc.SetX((double)Py::Float(tuple.getItem(0)));
-        loc.SetY((double)Py::Float(tuple.getItem(1)));
-        loc.SetZ((double)Py::Float(tuple.getItem(2)));
-        Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-            (getGeometryPtr()->handle());
-        c->SetLocation(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object Parabola2dPy::getAxis(void) const
-{
-    Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-        (getGeometryPtr()->handle());
-    gp_Dir dir = c->Axis().Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void Parabola2dPy::setAxis(Py::Object arg)
-{
-    Standard_Real dir_x, dir_y, dir_z;
-    PyObject *p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d v = static_cast<Base::VectorPy*>(p)->value();
-        dir_x = v.x;
-        dir_y = v.y;
-        dir_z = v.z;
-    }
-    else if (PyTuple_Check(p)) {
-        Py::Tuple tuple(arg);
-        dir_x = (double)Py::Float(tuple.getItem(0));
-        dir_y = (double)Py::Float(tuple.getItem(1));
-        dir_z = (double)Py::Float(tuple.getItem(2));
-    }
-    else {
-        std::string error = std::string("type must be 'Vector' or tuple, not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    try {
-        Handle_Geom_Parabola this_curv = Handle_Geom_Parabola::DownCast
-            (this->getGeometryPtr()->handle());
-        gp_Ax1 axis;
-        axis.SetLocation(this_curv->Location());
-        axis.SetDirection(gp_Dir(dir_x, dir_y, dir_z));
-        this_curv->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
-}
-#endif
 PyObject *Parabola2dPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
@@ -224,5 +107,3 @@ int Parabola2dPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
-
-
