@@ -108,7 +108,7 @@ Vector2dPy::~Vector2dPy()
 
 void Vector2dPy::init_type(void)
 {
-    behaviors().name( "Vector2dPy" );
+    behaviors().name( "Vector2d" );
     behaviors().doc( "Vector2d class" );
     behaviors().supportGetattro();
     behaviors().supportSetattro();

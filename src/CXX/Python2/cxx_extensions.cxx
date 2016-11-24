@@ -650,7 +650,7 @@ PythonType &PythonType::supportIter()
 //    Handlers
 //
 //--------------------------------------------------------------------------------
-PythonExtensionBase *getPythonExtensionBase( PyObject *self )
+PYCXX_EXPORT PythonExtensionBase *getPythonExtensionBase( PyObject *self )
 {
     if( self->ob_type->tp_flags&Py_TPFLAGS_BASETYPE )
     {
