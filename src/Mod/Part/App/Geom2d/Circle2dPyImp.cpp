@@ -23,9 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <GC_MakeCircle.hxx>
+# include <gp_Circ2d.hxx>
+# include <Geom2d_Circle.hxx>
+# include <GCE2d_MakeCircle.hxx>
 #endif
 
 #include <Mod/Part/App/OCCError.h>
@@ -33,7 +33,6 @@
 #include <Mod/Part/App/Geom2d/Circle2dPy.cpp>
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 
@@ -42,81 +41,53 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string Circle2dPy::representation(void) const
 {
-#if 0
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    gp_Pnt loc = axis.Location();
-    Standard_Real fRad = circle->Radius();
-
-    std::stringstream str;
-    str << "Circle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << ")"; 
-    str << ")";
-
-    return str.str();
-#else
-    return "";
-#endif
+    return "<Circle2d object>";
 }
 
 PyObject *Circle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-#if 1
-    return 0;
-#else
     // create a new instance of Circle2dPy and the Twin object
-    Handle_Geom_Circle circle = new Geom_Circle(gp_Circ());
-    return new Circle2dPy(new GeomCircle(circle));
-#endif
+    return new Circle2dPy(new Geom2dCircle());
 }
 
 // constructor method
 int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    return 0;
-#if 0
     // circle and distance for offset
     PyObject *pCirc;
     double dist;
     static char* keywords_cd[] = {"Circle","Distance",NULL};
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cd, &(Circle2dPy::Type), &pCirc, &dist)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
-            (pcCircle->getGeomCirclePtr()->handle());
-        GC_MakeCircle mc(circle->Circ(), dist);
+        Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast
+            (pcCircle->getGeom2dCirclePtr()->handle());
+        GCE2d_MakeCircle mc(circle->Circ2d(), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
-        Handle_Geom_Circle circ = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-        circ->SetCirc(mc.Value()->Circ());
+        Handle_Geom2d_Circle circ = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
+        circ->SetCirc2d(mc.Value()->Circ2d());
         return 0;
     }
 
-    // center, normal and radius
+    // center and radius
     PyObject *pV1, *pV2, *pV3;
-    static char* keywords_cnr[] = {"Center","Normal","Radius",NULL};
+    static char* keywords_cnr[] = {"Center","Radius",NULL};
     PyErr_Clear();
-    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!d", keywords_cnr,
-                                        &(Base::VectorPy::Type), &pV1,
-                                        &(Base::VectorPy::Type), &pV2,
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!d", keywords_cnr,
+                                        Base::Vector2dPy::type_object(), &pV1,
                                         &dist)) {
-        Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
-        Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
-        GC_MakeCircle mc(gp_Pnt(v1.x,v1.y,v1.z),
-                         gp_Dir(v2.x,v2.y,v2.z),
-                         dist);
+        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
+        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x,v1.y), dist);
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-        circle->SetCirc(mc.Value()->Circ());
+        Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
+        circle->SetCirc2d(mc.Value()->Circ2d());
         return 0;
     }
 
@@ -124,33 +95,33 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!", keywords_c, &(Circle2dPy::Type), &pCirc)) {
         Circle2dPy* pcCircle = static_cast<Circle2dPy*>(pCirc);
-        Handle_Geom_Circle circ1 = Handle_Geom_Circle::DownCast
-            (pcCircle->getGeomCirclePtr()->handle());
-        Handle_Geom_Circle circ2 = Handle_Geom_Circle::DownCast
-            (this->getGeomCirclePtr()->handle());
-        circ2->SetCirc(circ1->Circ());
+        Handle_Geom2d_Circle circ1 = Handle_Geom2d_Circle::DownCast
+            (pcCircle->getGeom2dCirclePtr()->handle());
+        Handle_Geom2d_Circle circ2 = Handle_Geom2d_Circle::DownCast
+            (this->getGeom2dCirclePtr()->handle());
+        circ2->SetCirc2d(circ1->Circ2d());
         return 0;
     }
 
     static char* keywords_ppp[] = {"Point1","Point2","Point3",NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ppp,
-                                         &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
-        Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
-        Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
-        Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
-        GC_MakeCircle mc(gp_Pnt(v1.x,v1.y,v1.z),
-                         gp_Pnt(v2.x,v2.y,v2.z),
-                         gp_Pnt(v3.x,v3.y,v3.z));
+                                         Base::Vector2dPy::type_object(), &pV1,
+                                         Base::Vector2dPy::type_object(), &pV2,
+                                         Base::Vector2dPy::type_object(), &pV3)) {
+        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
+        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
+        Base::Vector2d v3 = Py::Vector2d(pV3).getCxxObject()->value();
+        GCE2d_MakeCircle mc(gp_Pnt2d(v1.x,v1.y),
+                            gp_Pnt2d(v2.x,v2.y),
+                            gp_Pnt2d(v3.x,v3.y));
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;
         }
 
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-        circle->SetCirc(mc.Value()->Circ());
+        Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
+        circle->SetCirc2d(mc.Value()->Circ2d());
         return 0;
     }
 
@@ -158,7 +129,7 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
     static char* keywords_n[] = {NULL};
     PyErr_Clear();
     if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
-        Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+        Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
         circle->SetRadius(1.0);
         return 0;
     }
@@ -167,156 +138,23 @@ int Circle2dPy::PyInit(PyObject* args, PyObject* kwds)
         "-- empty parameter list\n"
         "-- Circle\n"
         "-- Circle, Distance\n"
-        "-- Center, Normal, Radius\n"
+        "-- Center, Radius\n"
         "-- Point1, Point2, Point3");
     return -1;
-#endif
 }
-#if 0
+
 Py::Float Circle2dPy::getRadius(void) const
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
     return Py::Float(circle->Radius()); 
 }
 
 void  Circle2dPy::setRadius(Py::Float arg)
 {
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
+    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(getGeom2dCirclePtr()->handle());
     circle->SetRadius((double)arg);
 }
 
-Py::Object Circle2dPy::getCenter(void) const
-{
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    gp_Pnt loc = circle->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-void  Circle2dPy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomCirclePtr()->setCenter(loc);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomCirclePtr()->setCenter(loc);
-    } else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object Circle2dPy::getAxis(void) const
-{
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  Circle2dPy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(circle->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
-}
-
-Py::Object Circle2dPy::getXAxis(void) const
-{
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    gp_Ax1 axis = circle->XAxis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  Circle2dPy::setXAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    try {
-        gp_Ax2 pos;
-        pos = circle->Position();
-        pos.SetXDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetPosition(pos);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set X axis");
-    }
-}
-
-Py::Object Circle2dPy::getYAxis(void) const
-{
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    gp_Ax1 axis = circle->YAxis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  Circle2dPy::setYAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(getGeomCirclePtr()->handle());
-    try {
-        gp_Ax2 pos;
-        pos = circle->Position();
-        pos.SetYDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetPosition(pos);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set Y axis");
-    }
-}
-#endif
 PyObject *Circle2dPy::getCustomAttributes(const char* ) const
 {
     return 0;
