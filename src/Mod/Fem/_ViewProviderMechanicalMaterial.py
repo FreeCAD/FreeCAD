@@ -24,6 +24,8 @@ __title__ = "_ViewProviderMechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderMechanicalMaterial
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

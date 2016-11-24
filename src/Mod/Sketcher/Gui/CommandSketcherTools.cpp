@@ -1101,21 +1101,21 @@ void CmdSketcherSymmetry::activated(int iMsg)
     }
     // check if last selected element is horizontal axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "H_Axis"){
-        LastGeoId = -1;
+        LastGeoId = Sketcher::GeoEnum::HAxis;
         LastPointPos = Sketcher::none;
         lastgeotype = line;
         lastvertexoraxis=true;
     }
     // check if last selected element is vertical axis
     else if(SubNames.rbegin()->size() == 6 && SubNames.rbegin()->substr(0,6) == "V_Axis"){
-        LastGeoId = -2;
+        LastGeoId = Sketcher::GeoEnum::VAxis;
         LastPointPos = Sketcher::none;
         lastgeotype = line;
         lastvertexoraxis=true;
     }
     // check if last selected element is the root point
     else if(SubNames.rbegin()->size() == 9 && SubNames.rbegin()->substr(0,9) == "RootPoint"){
-        LastGeoId = -1;
+        LastGeoId = Sketcher::GeoEnum::RtPnt;
         LastPointPos = Sketcher::start;
         lastgeotype = point;
         lastvertexoraxis=true;
@@ -1247,21 +1247,21 @@ static const char *cursor_createcopy[]={
         {
             setCursor(QPixmap(cursor_createcopy),7,7);
             Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-            EditCurve[0] = Base::Vector2D(Origin.x,Origin.y);
+            EditCurve[0] = Base::Vector2d(Origin.x,Origin.y);
         }
         
-        virtual void mouseMove(Base::Vector2D onSketchPos)
+        virtual void mouseMove(Base::Vector2d onSketchPos)
         {
             if (Mode==STATUS_SEEK_First) {
                 float length = (onSketchPos - EditCurve[0]).Length();
-                float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+                float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
                 SbString text;
                 text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
                 
                 EditCurve[1] = onSketchPos;
                 sketchgui->drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.0,0.0),AutoConstraint::VERTEX)) {
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.0,0.0),AutoConstraint::VERTEX)) {
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -1270,7 +1270,7 @@ static const char *cursor_createcopy[]={
             applyCursor();
         }
         
-        virtual bool pressButton(Base::Vector2D onSketchPos)
+        virtual bool pressButton(Base::Vector2d onSketchPos)
         {
             if (Mode==STATUS_SEEK_First){
                 EditCurve[1] = onSketchPos;
@@ -1281,12 +1281,12 @@ static const char *cursor_createcopy[]={
             return true;
         }
         
-        virtual bool releaseButton(Base::Vector2D onSketchPos)
+        virtual bool releaseButton(Base::Vector2d onSketchPos)
         {
             Q_UNUSED(onSketchPos);
             if (Mode==STATUS_End){
                 
-                Base::Vector2D vector = EditCurve[1]-EditCurve[0];
+                Base::Vector2d vector = EditCurve[1]-EditCurve[0];
                 
                 unsetCursor();
                 resetPositionText();
@@ -1300,7 +1300,7 @@ static const char *cursor_createcopy[]={
                     Gui::Command::doCommand(
                         Gui::Command::Doc, "App.ActiveDocument.%s.addCopy(%s,App.Vector(%f,%f,0),%s)",
                                             sketchgui->getObject()->getNameInDocument(), 
-                                            geoIdList.c_str(), vector.fX, vector.fY,
+                                            geoIdList.c_str(), vector.x, vector.y,
                                             (Clone?"True":"False")); 
                     
                     Gui::Command::commitCommand();
@@ -1336,7 +1336,7 @@ static const char *cursor_createcopy[]={
         Sketcher::PointPos OriginPos;
         int nElements;
         bool Clone;
-        std::vector<Base::Vector2D> EditCurve;
+        std::vector<Base::Vector2d> EditCurve;
         std::vector<AutoConstraint> sugConstr1;
     };
 
@@ -1692,21 +1692,21 @@ static const char *cursor_createrectangulararray[]={
         {
             setCursor(QPixmap(cursor_createrectangulararray),7,7);
             Origin = static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->getPoint(OriginGeoId, OriginPos);
-            EditCurve[0] = Base::Vector2D(Origin.x,Origin.y);
+            EditCurve[0] = Base::Vector2d(Origin.x,Origin.y);
         }
         
-        virtual void mouseMove(Base::Vector2D onSketchPos)
+        virtual void mouseMove(Base::Vector2d onSketchPos)
         {
             if (Mode==STATUS_SEEK_First) {
                 float length = (onSketchPos - EditCurve[0]).Length();
-                float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2D(1.f,0.f));
+                float angle = (onSketchPos - EditCurve[0]).GetAngle(Base::Vector2d(1.f,0.f));
                 SbString text;
                 text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
                 setPositionText(onSketchPos, text);
                 
                 EditCurve[1] = onSketchPos;
                 sketchgui->drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.0,0.0),AutoConstraint::VERTEX)) {
+                if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.0,0.0),AutoConstraint::VERTEX)) {
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -1715,7 +1715,7 @@ static const char *cursor_createrectangulararray[]={
             applyCursor();
         }
         
-        virtual bool pressButton(Base::Vector2D onSketchPos)
+        virtual bool pressButton(Base::Vector2d onSketchPos)
         {
             if (Mode==STATUS_SEEK_First){
                 EditCurve[1] = onSketchPos;
@@ -1726,12 +1726,12 @@ static const char *cursor_createrectangulararray[]={
             return true;
         }
         
-        virtual bool releaseButton(Base::Vector2D onSketchPos)
+        virtual bool releaseButton(Base::Vector2d onSketchPos)
         {
             Q_UNUSED(onSketchPos);
             if (Mode==STATUS_End){
                 
-                Base::Vector2D vector = EditCurve[1]-EditCurve[0];
+                Base::Vector2d vector = EditCurve[1]-EditCurve[0];
                 
                 unsetCursor();
                 resetPositionText();
@@ -1745,7 +1745,7 @@ static const char *cursor_createrectangulararray[]={
                     Gui::Command::doCommand(
                         Gui::Command::Doc, "App.ActiveDocument.%s.addRectangularArray(%s, App.Vector(%f,%f,0),%s,%d,%d,%s,%f)",
                                             sketchgui->getObject()->getNameInDocument(), 
-                                            geoIdList.c_str(), vector.fX, vector.fY,
+                                            geoIdList.c_str(), vector.x, vector.y,
                                             (Clone?"True":"False"),
                                             Cols, Rows,
                                             (ConstraintSeparation?"True":"False"),
@@ -1788,7 +1788,7 @@ static const char *cursor_createrectangulararray[]={
         int Cols;
         bool ConstraintSeparation;
         bool EqualVerticalHorizontalSpacing;        
-        std::vector<Base::Vector2D> EditCurve;
+        std::vector<Base::Vector2d> EditCurve;
         std::vector<AutoConstraint> sugConstr1;
     };
     

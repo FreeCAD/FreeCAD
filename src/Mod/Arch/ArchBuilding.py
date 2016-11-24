@@ -28,13 +28,25 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
 
 __title__="FreeCAD Building"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+
+## @package ArchBuilding
+#  \ingroup ARCH
+#  \brief Building object and tools
+#
+#  This module provides tools to build building objects.
+#  Buildings are primarily containers for Arch objects
 
 BuildingTypes = ['Undefined',
 'Agricultural - Barn',
@@ -240,7 +252,7 @@ class _Building(ArchFloor._Floor):
     "The Building object"
     def __init__(self,obj):
         ArchFloor._Floor.__init__(self,obj)
-        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch","The type of this building")
+        obj.addProperty("App::PropertyEnumeration","BuildingType","Arch",QT_TRANSLATE_NOOP("App::Property","The type of this building"))
         self.Type = "Building"
         obj.setEditorMode('Height',2)
         obj.BuildingType = BuildingTypes

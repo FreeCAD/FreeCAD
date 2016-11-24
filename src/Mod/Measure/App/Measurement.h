@@ -58,6 +58,7 @@ public:
     bool has3DReferences();
 
     /// Add a reference
+    int addReference3D(App::DocumentObject* obj, const std::string& subName);
     int addReference3D(App::DocumentObject* obj, const char *subName);
 
     MeasureType getType();

@@ -27,6 +27,21 @@ if FreeCAD.GuiUp:
     import FreeCADGui, Arch_rc, os
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchPipe
+#  \ingroup ARCH
+#  \brief The Pipe object and tools
+#
+#  This module provides tools to build Pipe and Pipe conector objects.
+#  Pipes are tubular objects extruded along a base line.
 
 __title__ = "Arch Pipe tools"
 __author__ = "Yorik van Havre"
@@ -83,9 +98,9 @@ class _CommandPipe:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_Pipe',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Pipe","Pipe"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Pipe","Pipe"),
                 'Accel': "P, I",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given Wire or Line")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a pipe object from a given Wire or Line")}
 
     def IsActive(self):
 
@@ -118,9 +133,9 @@ class _CommandPipeConnector:
     def GetResources(self):
 
         return {'Pixmap'  : 'Arch_PipeConnector',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_PipeConnector","Connector"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Pipe","Creates a connector between 2 or 3 selected pipes")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Pipe","Creates a connector between 2 or 3 selected pipes")}
 
     def IsActive(self):
 
@@ -156,11 +171,12 @@ class _ArchPipe(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.Type = "Pipe"
-        obj.addProperty("App::PropertyLength", "Diameter",    "Arch", "The diameter of this pipe, if not based on a profile")
-        obj.addProperty("App::PropertyLength", "Length",      "Arch", "The length of this pipe, if not based on an edge")
-        obj.addProperty("App::PropertyLink",   "Profile",     "Arch", "An optional closed profile to base this pipe on")
-        obj.addProperty("App::PropertyLength", "OffsetStart", "Arch", "Offset from the start point")
-        obj.addProperty("App::PropertyLength", "OffsetEnd",   "Arch", "Offset from the end point")
+        obj.Role = ["Pipe Segment"]
+        obj.addProperty("App::PropertyLength", "Diameter",    "Arch", QT_TRANSLATE_NOOP("App::Property","The diameter of this pipe, if not based on a profile"))
+        obj.addProperty("App::PropertyLength", "Length",      "Arch", QT_TRANSLATE_NOOP("App::Property","The length of this pipe, if not based on an edge"))
+        obj.addProperty("App::PropertyLink",   "Profile",     "Arch", QT_TRANSLATE_NOOP("App::Property","An optional closed profile to base this pipe on"))
+        obj.addProperty("App::PropertyLength", "OffsetStart", "Arch", QT_TRANSLATE_NOOP("App::Property","Offset from the start point"))
+        obj.addProperty("App::PropertyLength", "OffsetEnd",   "Arch", QT_TRANSLATE_NOOP("App::Property","Offset from the end point"))
 
     def execute(self,obj):
 
@@ -199,7 +215,9 @@ class _ArchPipe(ArchComponent.Component):
             FreeCAD.Console.PrintError(translate("Arch","Unable to build the pipe\n"))
         else:
             obj.Shape = sh
-            if not obj.Base:
+            if obj.Base:
+                obj.Length = w.Length
+            else:
                 obj.Placement = pl
 
     def getWire(self,obj):
@@ -267,9 +285,10 @@ class _ArchPipeConnector(ArchComponent.Component):
 
         ArchComponent.Component.__init__(self,obj)
         self.Type = "PipeConnector"
-        obj.addProperty("App::PropertyLength",      "Radius",        "Arch", "The curvature radius of this connector")
-        obj.addProperty("App::PropertyLinkList",    "Pipes",         "Arch", "The pipes linked by this connector")
-        obj.addProperty("App::PropertyEnumeration", "ConnectorType", "Arch", "The type of this connector")
+        obj.Role = ["Pipe Fitting"]
+        obj.addProperty("App::PropertyLength",      "Radius",        "Arch", QT_TRANSLATE_NOOP("App::Property","The curvature radius of this connector"))
+        obj.addProperty("App::PropertyLinkList",    "Pipes",         "Arch", QT_TRANSLATE_NOOP("App::Property","The pipes linked by this connector"))
+        obj.addProperty("App::PropertyEnumeration", "ConnectorType", "Arch", QT_TRANSLATE_NOOP("App::Property","The type of this connector"))
         obj.ConnectorType = ["Corner","Tee"]
         obj.setEditorMode("ConnectorType",1)
 
@@ -412,6 +431,10 @@ if FreeCAD.GuiUp:
         def GetCommands(self):
             return tuple(['Arch_Pipe','Arch_PipeConnector'])
         def GetResources(self):
-            return { 'MenuText': translate("Arch",'Pipe tools'), 'ToolTip': translate("Arch",'Pipe tools')}
+            return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools'),
+                     'ToolTip': QT_TRANSLATE_NOOP("Arch_PipeTools",'Pipe tools')
+                   }
+        def IsActive(self):
+            return not FreeCAD.ActiveDocument is None
 
     FreeCADGui.addCommand('Arch_PipeTools', _ArchPipeGroupCommand())

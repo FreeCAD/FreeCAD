@@ -20,15 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD Z88 Disp Reader"
+__author__ = "Bernd Hahnebach "
+__url__ = "http://www.freecadweb.org"
+
+## @package z88DispReader
+#  \ingroup FEM
 
 import FreeCAD
 import os
 from math import pow, sqrt
-
-
-__title__ = "FreeCAD Z88 Disp Reader"
-__author__ = "Bernd Hahnebach "
-__url__ = "http://www.freecadweb.org"
 
 
 Debug = False

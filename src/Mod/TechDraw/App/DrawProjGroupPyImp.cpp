@@ -24,8 +24,7 @@ PyObject* DrawProjGroupPy::addProjection(PyObject* args)
     const char* projType;
 
     if (!PyArg_ParseTuple(args, "s", &projType)) {
-        Base::Console().Error("Error: DrawProjGroupPy::addProjection - Bad Arg - not string\n");
-        return NULL;
+        throw Py::Exception();
     }
 
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
@@ -40,8 +39,7 @@ PyObject* DrawProjGroupPy::removeProjection(PyObject* args)
     const char* projType;
 
     if (!PyArg_ParseTuple(args, "s", &projType)) {
-        Base::Console().Error("Error: DrawProjGroupPy::removeProjection - Bad Arg - not string\n");
-        return NULL;
+        throw Py::Exception();
     }
 
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
@@ -63,8 +61,7 @@ PyObject* DrawProjGroupPy::getItemByLabel(PyObject* args)
     const char* projType;
 
     if (!PyArg_ParseTuple(args, "s", &projType)) {
-        Base::Console().Error("Error: DrawProjGroupPy::getItemByLabel - Bad Arg - not string\n");
-        return NULL;
+        throw Py::Exception();
     }
 
     DrawProjGroup* projGroup = getDrawProjGroupPtr();
@@ -73,6 +70,27 @@ PyObject* DrawProjGroupPy::getItemByLabel(PyObject* args)
 
     return new DrawProjGroupItemPy(newProj);
 }
+
+PyObject* DrawProjGroupPy::setViewOrientation(PyObject* args)
+{
+    const char* projType;
+    PyObject* pcObj;
+    if (!PyArg_ParseTuple(args, "Os", &pcObj,&projType))
+        throw Py::Exception();
+
+    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>(obj);
+        TechDraw::DrawProjGroup* projGroup = getDrawProjGroupPtr();
+        projGroup->setViewOrientation( view, projType );
+
+    } else {
+        Base::Console().Message("'%s' is not a DrawProjGroup Item, it will be ignored.\n", obj->Label.getValue());
+    }
+
+    return Py_None;
+}
+
 
 PyObject *DrawProjGroupPy::getCustomAttributes(const char* /*attr*/) const
 {

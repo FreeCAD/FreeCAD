@@ -35,6 +35,7 @@
 #include "Workbench.h"
 
 #include "DlgPrefsTechDrawImp.h"
+#include "DlgPrefsTechDraw2Imp.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
 #include "ViewProviderDimension.h"
@@ -48,6 +49,8 @@
 #include "ViewProviderViewClip.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderSpreadsheet.h"
+#include "ViewProviderImage.h"
+
 
 // use a different name to CreateCommand()
 void CreateTechDrawCommands(void);
@@ -97,11 +100,14 @@ void TechDrawGuiExport initTechDrawGui()
     TechDrawGui::ViewProviderAnnotation::init();
     TechDrawGui::ViewProviderSymbol::init();
     TechDrawGui::ViewProviderDraft::init();
+    TechDrawGui::ViewProviderArch::init();
     TechDrawGui::ViewProviderHatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
+    TechDrawGui::ViewProviderImage::init();
 
     // register preferences pages
     new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDrawImp> ("TechDraw");
+    new Gui::PrefPageProducer<TechDrawGui::DlgPrefsTechDraw2Imp> ("TechDraw");
 
     // add resources and reloads the translators
     loadTechDrawResource();

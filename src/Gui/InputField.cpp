@@ -106,7 +106,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
     PropertyQuantity * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
 
     if (prop)
-        actQuantity = prop->getValue();
+        actQuantity = Base::Quantity(prop->getValue());
 
     DocumentObject * docObj = getPath().getDocumentObject();
 

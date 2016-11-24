@@ -26,6 +26,12 @@ __title__="FreeCAD Draft Workbench - DXF importer/exporter"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
+## @package importDXF
+#  \ingroup DRAFT
+#  \brief DXF file importer & exporter
+#
+# This module provides support for importing and exporting Autodesk DXF files
+
 '''
 This script uses a DXF-parsing library created by Stani,
 Kitsu and Migius for Blender
@@ -1006,7 +1012,8 @@ def addToBlock(obj,layer):
     else:
         layerBlocks[layer] = [obj]
 
-def processdxf(document,filename,getShapes=False):
+def processdxf(document,filename,getShapes=False,reComputeFlag=True):
+    "Recompute causes OpenSCAD import to loop, supply flag to make conditional"
     "this does the translation of the dxf contents into FreeCAD Part objects"
     global drawing # for debugging - so drawing is still accessible to python after the script ran
     if not dxfReader:
@@ -1487,7 +1494,10 @@ def processdxf(document,filename,getShapes=False):
 
     print("done processing")
 
-    doc.recompute()
+    if reComputeFlag :
+       doc.recompute()
+       print("recompute done")
+
     FreeCAD.Console.PrintMessage("successfully imported "+filename+"\n")
     if badobjects:
         print("dxf: ",len(badobjects)," objects were not imported")
@@ -1809,18 +1819,20 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
             # page: special hack-export! (see below)
             exportPage(exportList[0],filename)
 
+        elif (len(exportList) == 1) and (exportList[0].isDerivedFrom("TechDraw::DrawPage")):
+            # page: special hack-export! (see below)
+            exportPage(exportList[0],filename)
+
         else:
             # other cases, treat edges
             dxf = dxfLibrary.Drawing()
             for ob in exportList:
                 print("processing "+str(ob.Name))
                 if ob.isDerivedFrom("Part::Feature"):
-                    sh = None
-                    if ob.Shape.isNull():
-                        print ("Null shape - skipping")
-                        continue
-                    elif FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
-                        writeMesh(ob,dxf)
+                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                        sh = None
+                        if not ob.Shape.isNull():
+                            writeMesh(ob,dxf)
                     elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
                         direction = FreeCADGui.ActiveDocument.ActiveView.\
                                 getViewDirection().multiply(-1)
@@ -1831,28 +1843,29 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                         else:
                             sh = ob.Shape
                     if sh:
-                        if sh.ShapeType == 'Compound':
-                            if (len(sh.Wires) == 1):
-                                # only one wire in this compound, no lone edge -> polyline
-                                if (len(sh.Wires[0].Edges) == len(sh.Edges)):
-                                    writeShape(sh,ob,dxf,nospline,lwPoly)
+                        if not sh.isNull():
+                            if sh.ShapeType == 'Compound':
+                                if (len(sh.Wires) == 1):
+                                    # only one wire in this compound, no lone edge -> polyline
+                                    if (len(sh.Wires[0].Edges) == len(sh.Edges)):
+                                        writeShape(sh,ob,dxf,nospline,lwPoly)
+                                    else:
+                                        # 1 wire + lone edges -> block
+                                        block = getBlock(sh,ob,lwPoly)
+                                        dxf.blocks.append(block)
+                                        dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
+                                                                     color=getACI(ob),
+                                                                     layer=getGroup(ob)))
                                 else:
-                                    # 1 wire + lone edges -> block
+                                    # all other cases: block
                                     block = getBlock(sh,ob,lwPoly)
                                     dxf.blocks.append(block)
                                     dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
-                                                                 color=getACI(ob),
-                                                                 layer=getGroup(ob)))
-                            else:
-                                # all other cases: block
-                                block = getBlock(sh,ob,lwPoly)
-                                dxf.blocks.append(block)
-                                dxf.append(dxfLibrary.Insert(name=ob.Name.upper(),
-                                                                  color=getACI(ob),
-                                                                  layer=getGroup(ob)))
+                                                                      color=getACI(ob),
+                                                                      layer=getGroup(ob)))
 
-                        else:
-                            writeShape(sh,ob,dxf,nospline,lwPoly)
+                            else:
+                                writeShape(sh,ob,dxf,nospline,lwPoly)
 
                 elif Draft.getType(ob) == "Annotation":
                     # texts
@@ -1897,7 +1910,12 @@ class dxfcounter:
 
 def exportPage(page,filename):
     "special export for pages"
-    template = os.path.splitext(page.Template)[0]+".dxf"
+    if hasattr(page.Template,"Template"): #techdraw
+        template="" # not supported for now...
+        views = page.Views
+    else: #drawing
+        template = os.path.splitext(page.Template)[0]+".dxf"
+        views = page.Group
     if os.path.exists(template):
         f = pythonopen(template,"U")
         template = f.read()
@@ -1927,7 +1945,7 @@ def exportPage(page,filename):
         # at the moment this is not used. TODO: if r12, do not print ellipses or splines
         if ver[0].upper() in ["AC1009","AC1010","AC1011","AC1012","AC1013"]:
             r12 = True
-    for view in page.Group:
+    for view in views:
         b,e = getViewDXF(view)
         blocks += b
         entities += e
@@ -1941,6 +1959,28 @@ def exportPage(page,filename):
     f = pythonopen(filename,"wb")
     f.write(template)
     f.close()
+
+def getViewBlock(geom,view,blockcount):
+    insert = ""
+    block = ""
+    r = view.Rotation
+    if r != 0: r = -r # fix rotation direction
+    if not isinstance(geom,list): geom = [geom]
+    for g in geom: # getDXF returns a list of entities
+        if dxfExportBlocks:
+            g = g.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n") # change layer and set color and ltype to BYBLOCK (0)
+            block += "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"+view.Name+str(blockcount)+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+str(blockcount)+"\n1\n\n"
+            block += g
+            block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
+            insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name+str(blockcount)
+            insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
+            insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
+            insert += "\n50\n"+str(r)+"\n"
+            blockcount += 1
+        else:
+            g = g.replace("sheet_layer\n","0\n5\n_handle_\n") # change layer, add handle
+            insert += g
+    return block,insert,blockcount
 
 
 def getViewDXF(view,blocks=True):
@@ -1957,26 +1997,17 @@ def getViewDXF(view,blocks=True):
 
     elif view.isDerivedFrom("Drawing::FeatureViewPython"):
         if hasattr(view.Proxy,"getDXF"):
-            r = view.Rotation
-            if r != 0: r = -r # fix rotation direction
-            block = ""
-            insert = ""
             geom = view.Proxy.getDXF(view)
-            if not isinstance(geom,list): geom = [geom]
-            for g in geom: # getDXF returns a list of entities
-                if dxfExportBlocks:
-                    g = g.replace("sheet_layer\n","0\n6\nBYBLOCK\n62\n0\n5\n_handle_\n") # change layer and set color and ltype to BYBLOCK (0)
-                    block += "0\nBLOCK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockBegin\n2\n"+view.Name+str(blockcount)+"\n70\n0\n10\n0\n20\n0\n3\n"+view.Name+str(blockcount)+"\n1\n\n"
-                    block += g
-                    block += "0\nENDBLK\n5\n_handle_\n100\nAcDbEntity\n8\n0\n100\nAcDbBlockEnd\n"
-                    insert += "0\nINSERT\n5\n_handle_\n8\n0\n6\nBYLAYER\n62\n256\n2\n"+view.Name+str(blockcount)
-                    insert += "\n10\n"+str(view.X)+"\n20\n"+str(-view.Y)
-                    insert += "\n30\n0\n41\n"+str(view.Scale)+"\n42\n"+str(view.Scale)+"\n43\n"+str(view.Scale)
-                    insert += "\n50\n"+str(r)+"\n"
-                    blockcount += 1
-                else:
-                    g = g.replace("sheet_layer\n","0\n5\n_handle_\n") # change layer, add handle
-                    insert += g
+            block,insert,blockcount = getViewBlock(geom,view,blockcount)
+
+    elif view.isDerivedFrom("TechDraw::DrawViewDraft"):
+        geom = Draft.getDXF(view)
+        block,insert,blockcount = getViewBlock(geom,view,blockcount)
+        
+    elif view.isDerivedFrom("TechDraw::DrawViewArch"):
+        import ArchSectionPlane
+        geom = ArchSectionPlane.getDXF(view)
+        block,insert,blockcount = getViewBlock(geom,view,blockcount)
 
     elif view.isDerivedFrom("Drawing::FeatureViewPart"):
         r = view.Rotation
@@ -2018,6 +2049,7 @@ def exportPageLegacy(page,filename):
     tempobj = tempdoc.Objects
     export(tempobj,filename,nospline=True,lwPoly=False)
     FreeCAD.closeDocument(tempdoc.Name)
+
 
 def readPreferences():
     # reading parameters

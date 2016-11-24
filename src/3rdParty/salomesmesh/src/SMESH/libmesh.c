@@ -1157,7 +1157,7 @@ static void ExpFmt(GmfMshSct *msh, int KwdCod)
 
         i = kwd->SolSiz = kwd->NmbWrd = 0;
 
-        while(i < strlen(InpFmt))
+        while(i < (int)strlen(InpFmt))
         {
                 chr = InpFmt[ i++ ];
 

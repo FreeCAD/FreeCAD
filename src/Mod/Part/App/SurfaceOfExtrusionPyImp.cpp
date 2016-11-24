@@ -24,11 +24,18 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <Geom_Curve.hxx>
+# include <Geom_Line.hxx>
+# include <gp_Lin.hxx>
 #endif
 
 #include "Geometry.h"
 #include "SurfaceOfExtrusionPy.h"
 #include "SurfaceOfExtrusionPy.cpp"
+#include "GeometryCurvePy.h"
+#include "LinePy.h"
+#include "BezierCurvePy.h"
+#include "BSplineCurvePy.h"
 
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
@@ -135,6 +142,92 @@ void  SurfaceOfExtrusionPy::setBasisCurve(Py::Object arg)
             Handle_Standard_Failure e = Standard_Failure::Caught();
             throw Py::Exception(e->GetMessageString());
         }
+    }
+}
+
+PyObject* SurfaceOfExtrusionPy::uIso(PyObject * args)
+{
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
+
+    try {
+        Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
+            (getGeometryPtr()->handle());
+        Handle_Geom_Curve c = surf->UIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle_Geom_TrimmedCurve aCurve = Handle_Geom_TrimmedCurve::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+            Handle_Geom_BezierCurve aCurve = Handle_Geom_BezierCurve::DownCast(c);
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+            Handle_Geom_BSplineCurve aCurve = Handle_Geom_BSplineCurve::DownCast(c);
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+            Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
+            GeomLineSegment* line = new GeomLineSegment();
+            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+                (line->handle());
+            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+                (this_curv->BasisCurve());
+            this_line->SetLin(aLine->Lin());
+            return new LinePy(line);
+        }
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* SurfaceOfExtrusionPy::vIso(PyObject * args)
+{
+    double v;
+    if (!PyArg_ParseTuple(args, "d", &v))
+        return 0;
+
+    try {
+        Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast
+            (getGeometryPtr()->handle());
+        Handle_Geom_Curve c = surf->VIso(v);
+        if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))) {
+            Handle_Geom_TrimmedCurve aCurve = Handle_Geom_TrimmedCurve::DownCast(c);
+            return new GeometryCurvePy(new GeomTrimmedCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
+            Handle_Geom_BezierCurve aCurve = Handle_Geom_BezierCurve::DownCast(c);
+            return new BezierCurvePy(new GeomBezierCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_BSplineCurve))) {
+            Handle_Geom_BSplineCurve aCurve = Handle_Geom_BSplineCurve::DownCast(c);
+            return new BSplineCurvePy(new GeomBSplineCurve(aCurve));
+        }
+        if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
+            Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
+            GeomLineSegment* line = new GeomLineSegment();
+            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+                (line->handle());
+            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+                (this_curv->BasisCurve());
+            this_line->SetLin(aLine->Lin());
+            return new LinePy(line);
+        }
+        PyErr_Format(PyExc_NotImplementedError, "Iso curve is of type '%s'",
+            c->DynamicType()->Name());
+        return 0;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
     }
 }
 

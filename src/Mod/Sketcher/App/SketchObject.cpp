@@ -52,7 +52,7 @@
 # include <Standard_Version.hxx>
 # include <cmath>
 # include <vector>
-#endif  // #ifndef _PreComp_
+#endif
 
 #include <boost/bind.hpp>
 
@@ -72,11 +72,16 @@
 #include <Mod/Part/App/BodyBase.h>
 
 #include "SketchObject.h"
-#include "SketchObjectPy.h"
 #include "Sketch.h"
+#include <Mod/Sketcher/App/SketchObjectPy.h>
 
 using namespace Sketcher;
 using namespace Base;
+
+const int GeoEnum::RtPnt  = -1;
+const int GeoEnum::HAxis  = -1;
+const int GeoEnum::VAxis  = -2;
+const int GeoEnum::RefExt = -3;
 
 
 PROPERTY_SOURCE(Sketcher::SketchObject, Part::Part2DObject)
@@ -306,10 +311,10 @@ int SketchObject::setDatum(int ConstrId, double Datum)
 int SketchObject::setDriving(int ConstrId, bool isdriving)
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
-    
+
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
     
     if (type != Distance &&
@@ -319,7 +324,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
         type != Angle &&
         type != SnellsLaw)
         return -2;
-    
+
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && isdriving==true)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
 
@@ -330,10 +335,10 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     constNew->isDriving = isdriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (isdriving)
+    if (!isdriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
-    
+
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
 
@@ -346,9 +351,9 @@ int SketchObject::getDriving(int ConstrId, bool &isdriving)
     
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
-    
+
     if (type != Distance &&
         type != DistanceX &&
         type != DistanceY &&
@@ -367,7 +372,7 @@ int SketchObject::toggleDriving(int ConstrId)
     
     if (ConstrId < 0 || ConstrId >= int(vals.size()))
         return -1;
-    
+
     ConstraintType type = vals[ConstrId]->Type;
     
     if (type != Distance &&
@@ -377,10 +382,10 @@ int SketchObject::toggleDriving(int ConstrId)
         type != Angle &&
         type != SnellsLaw)
         return -2;
-    
+
     if (!(vals[ConstrId]->First>=0 || vals[ConstrId]->Second>=0 || vals[ConstrId]->Third>=0) && vals[ConstrId]->isDriving==false)
         return -3; // a constraint that does not have at least one element as not-external-geometry can never be driving.
-        
+
     // copy the list
     std::vector<Constraint *> newVals(vals);
     // clone the changed Constraint
@@ -388,10 +393,10 @@ int SketchObject::toggleDriving(int ConstrId)
     constNew->isDriving = !constNew->isDriving;
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(newVals);
-    if (constNew->isDriving)
+    if (!constNew->isDriving)
         setExpression(Constraints.createPath(ConstrId), boost::shared_ptr<App::Expression>());
     delete constNew;
-    
+
     if(noRecomputes) // if we do not have a recompute, the sketch must be solved to update the DoF of the solver
         solve();
 
@@ -650,6 +655,8 @@ int SketchObject::delGeometry(int GeoId)
 
     this->Geometry.setValues(newVals);
     this->Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     this->Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     
@@ -760,8 +767,8 @@ int SketchObject::delConstraintOnPoint(int VertexId, bool onlyCoincident)
 {
     int GeoId;
     PointPos PosId;
-    if (VertexId == -1) { // RootPoint
-        GeoId = -1;
+    if (VertexId == GeoEnum::RtPnt) { // RootPoint
+        GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = start;
     } else
         getGeoVertexIndex(VertexId, GeoId, PosId);
@@ -882,6 +889,7 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
 {
     const std::vector<Constraint *> &vals = this->Constraints.getValues();
     std::vector<Constraint *> newVals(vals);
+    std::vector<Constraint *> changed;
     for (int i=0; i < int(newVals.size()); i++) {
         if (vals[i]->First == fromGeoId && vals[i]->FirstPos == fromPosId &&
             !(vals[i]->Second == toGeoId && vals[i]->SecondPos == toPosId)) {
@@ -889,15 +897,25 @@ int SketchObject::transferConstraints(int fromGeoId, PointPos fromPosId, int toG
             constNew->First = toGeoId;
             constNew->FirstPos = toPosId;
             newVals[i] = constNew;
-        } else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
-                   !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
+            changed.push_back(constNew);
+        }
+        else if (vals[i]->Second == fromGeoId && vals[i]->SecondPos == fromPosId &&
+                 !(vals[i]->First == toGeoId && vals[i]->FirstPos == toPosId)) {
             Constraint *constNew = newVals[i]->clone();
             constNew->Second = toGeoId;
             constNew->SecondPos = toPosId;
             newVals[i] = constNew;
+            changed.push_back(constNew);
         }
     }
-    this->Constraints.setValues(newVals);
+
+    // assign the new values only if something has changed
+    if (!changed.empty()) {
+        this->Constraints.setValues(newVals);
+        // free memory
+        for (Constraint* it : changed)
+            delete it;
+    }
     return 0;
 }
 
@@ -2839,7 +2857,7 @@ int SketchObject::delExternal(int ExtGeoId)
 
     const std::vector< Constraint * > &constraints = Constraints.getValues();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = -3 - ExtGeoId;
+    int GeoId = GeoEnum::RefExt - ExtGeoId;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
@@ -2866,11 +2884,15 @@ int SketchObject::delExternal(int ExtGeoId)
         Base::Console().Error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects,originalSubElements);
+        for (Constraint* it : newConstraints)
+            delete it;
         return -1;
     }
     
     solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -2893,15 +2915,15 @@ int SketchObject::delAllExternal()
     std::vector< Constraint * > newConstraints(0);
 
     for (std::vector<Constraint *>::const_iterator it = constraints.begin(); it != constraints.end(); ++it) {
-        if ((*it)->First > -3 && 
-            ((*it)->Second > -3 || (*it)->Second == Constraint::GeoUndef ) && 
-            ((*it)->Third > -3 || (*it)->Third == Constraint::GeoUndef) ) {
+        if ((*it)->First > GeoEnum::RefExt &&
+            ((*it)->Second > GeoEnum::RefExt || (*it)->Second == Constraint::GeoUndef ) &&
+            ((*it)->Third > GeoEnum::RefExt || (*it)->Third == Constraint::GeoUndef) ) {
             Constraint *copiedConstr = (*it)->clone();
             
             newConstraints.push_back(copiedConstr);
         }
     }
-         
+
     ExternalGeometry.setValues(Objects,SubElements);
     try {
         rebuildExternalGeometry();
@@ -2910,11 +2932,15 @@ int SketchObject::delAllExternal()
         Base::Console().Error("%s\n", e.what());
         // revert to original values
         ExternalGeometry.setValues(originalObjects,originalSubElements);
+        for (Constraint* it : newConstraints)
+            delete it;
         return -1;
     }
     
     solverNeedsUpdate=true;
     Constraints.setValues(newConstraints);
+    for (Constraint* it : newConstraints)
+        delete it;
     Constraints.acceptGeometry(getCompleteGeometry());
     rebuildVertexIndex();
     return 0;
@@ -2924,7 +2950,7 @@ int SketchObject::delConstraintsToExternal()
 {
     const std::vector< Constraint * > &constraints = Constraints.getValuesForce();
     std::vector< Constraint * > newConstraints(0);
-    int GeoId = -3, NullId = -2000;
+    int GeoId = GeoEnum::RefExt, NullId = Constraint::GeoUndef;
     for (std::vector<Constraint *>::const_iterator it = constraints.begin();
          it != constraints.end(); ++it) {
         if (    (*it)->First > GeoId
@@ -3021,13 +3047,13 @@ void SketchObject::validateExternalLinks(void)
 {
     std::vector<DocumentObject*> Objects     = ExternalGeometry.getValues();
     std::vector<std::string>     SubElements = ExternalGeometry.getSubValues();
-    
-    bool rebuild = false ;
+
+    bool rebuild = false;
     
     for (int i=0; i < int(Objects.size()); i++) {
         const App::DocumentObject *Obj=Objects[i];
         const std::string SubElement=SubElements[i];
-        
+
         const Part::Feature *refObj=static_cast<const Part::Feature*>(Obj);
         const Part::TopoShape& refShape=refObj->Shape.getShape();
         
@@ -3039,10 +3065,10 @@ void SketchObject::validateExternalLinks(void)
             rebuild = true ;
             Objects.erase(Objects.begin()+i);
             SubElements.erase(SubElements.begin()+i);
-                        
+
             const std::vector< Constraint * > &constraints = Constraints.getValues();
             std::vector< Constraint * > newConstraints(0);
-            int GeoId = -3 - i;
+            int GeoId = GeoEnum::RefExt - i;
             for (std::vector<Constraint *>::const_iterator it = constraints.begin();
                  it != constraints.end(); ++it) {
                 if ((*it)->First != GeoId && (*it)->Second != GeoId && (*it)->Third != GeoId) {
@@ -3060,8 +3086,10 @@ void SketchObject::validateExternalLinks(void)
                     newConstraints.push_back(copiedConstr);
                 }
             }
-            
+
             Constraints.setValues(newConstraints);
+            for (Constraint* it : newConstraints)
+                delete it;
             i--; // we deleted an item, so the next one took its place
         }  
     }
@@ -4085,7 +4113,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                 case 3: geoId=newVals[ic]->Third; posId = newVals[ic]->ThirdPos; break;
             }
 
-            if ( geoId <= -3 &&
+            if ( geoId <= GeoEnum::RefExt &&
                  (posId==Sketcher::start || posId==Sketcher::end)){
                 //we are dealing with a link to an endpoint of external geom
                 Part::Geometry* g = this->ExternalGeo[-geoId-1];

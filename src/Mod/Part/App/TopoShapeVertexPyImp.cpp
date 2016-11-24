@@ -178,7 +178,7 @@ Py::Object TopoShapeVertexPy::getPoint(void) const
 {
     const TopoDS_Vertex& v = TopoDS::Vertex(getTopoShapePtr()->getShape());
     gp_Pnt p = BRep_Tool::Pnt(v);
-    return Py::Object(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
+    return Py::asObject(new Base::VectorPy(new Base::Vector3d(p.X(),p.Y(),p.Z())));
 }
 
 PyObject *TopoShapeVertexPy::getCustomAttributes(const char* /*attr*/) const

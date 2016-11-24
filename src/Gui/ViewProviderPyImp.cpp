@@ -37,8 +37,8 @@
 #include "WidgetFactory.h"
 
 // inclusion of the generated files (generated out of ViewProviderPy2.xml)
-#include "ViewProviderPy.h"
-#include "ViewProviderPy.cpp"
+#include <Gui/ViewProviderPy.h>
+#include <Gui/ViewProviderPy.cpp>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
@@ -51,6 +51,71 @@ using namespace Gui;
 std::string ViewProviderPy::representation(void) const
 {
     return "<View provider object>";
+}
+
+PyObject*  ViewProviderPy::addProperty(PyObject *args)
+{
+    char *sType,*sName=0,*sGroup=0,*sDoc=0;
+    short attr=0;
+    std::string sDocStr;
+    PyObject *ro = Py_False, *hd = Py_False;
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
+        &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    if (sDoc) {
+        sDocStr = sDoc;
+        PyMem_Free(sDoc);
+    }
+
+    App::Property* prop=0;
+    try {
+        prop = getViewProviderPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    if (!prop) {
+        std::stringstream str;
+        str << "No property found of type '" << sType << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+
+    return Py::new_reference_to(this);
+}
+
+PyObject*  ViewProviderPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return NULL;
+
+    try {
+        bool ok = getViewProviderPtr()->removeDynamicProperty(sName);
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  ViewProviderPy::supportedProperties(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    std::vector<Base::Type> ary;
+    Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
+    Py::List res;
+    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
+        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+        if (data) {
+            delete data;
+            res.append(Py::String(it->getName()));
+        }
+    }
+    return Py::new_reference_to(res);
 }
 
 PyObject*  ViewProviderPy::show(PyObject *args)
@@ -79,6 +144,29 @@ PyObject*  ViewProviderPy::isVisible(PyObject *args)
         return NULL;                       // NULL triggers exception 
     PY_TRY {
         return Py_BuildValue("O", (getViewProviderPtr()->isShow() ? Py_True : Py_False));
+    } PY_CATCH;
+}
+
+PyObject* ViewProviderPy::addDisplayMode(PyObject * args)
+{
+    char* mode;
+    PyObject* obj;
+    if (!PyArg_ParseTuple(args, "Os", &obj, &mode))
+        return NULL;
+
+    void* ptr = 0;
+    try {
+        Base::Interpreter().convertSWIGPointerObj("pivy.coin","SoNode *", obj, &ptr, 0);
+    }
+    catch (const Base::Exception& e) {
+        PyErr_SetString(PyExc_RuntimeError, e.what());
+        return 0;
+    }
+
+    PY_TRY {
+        SoNode* node = reinterpret_cast<SoNode*>(ptr);
+        getViewProviderPtr()->addDisplayMaskMode(node,mode);
+        Py_Return;
     } PY_CATCH;
 }
 
@@ -157,14 +245,35 @@ PyObject*  ViewProviderPy::setTransformation(PyObject *args)
     return 0;
 }
 
-PyObject *ViewProviderPy::getCustomAttributes(const char*) const
+PyObject *ViewProviderPy::getCustomAttributes(const char* attr) const
 {
-    return 0;
+    // search for dynamic property
+    App::Property* prop = getViewProviderPtr()->getDynamicPropertyByName(attr);
+    if (prop)
+        return prop->getPyObject();
+    else
+        return 0;
 }
 
-int ViewProviderPy::setCustomAttributes(const char*, PyObject *)
+int ViewProviderPy::setCustomAttributes(const char* attr, PyObject* value)
 {
-    return 0; 
+    // search for dynamic property
+    try {
+        App::Property* prop = getViewProviderPtr()->getDynamicPropertyByName(attr);
+        if (prop) {
+            prop->setPyObject(value);
+            return 1;
+        }
+        return 0;
+    }
+    catch (Base::Exception &exc) {
+        PyErr_Format(PyExc_AttributeError, "Attribute (Name: %s) error: '%s' ", attr, exc.what());
+        return -1;
+    }
+    catch (...) {
+        PyErr_Format(PyExc_AttributeError, "Unknown error in attribute %s", attr);
+        return -1;
+    }
 }
 
 Py::Object ViewProviderPy::getAnnotation(void) const

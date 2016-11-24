@@ -22,7 +22,7 @@
 # ***************************************************************************/
 
 
-'''
+TOOLTIP='''
 This is an example postprocessor file for the Path workbench. It is used
 to save a list of FreeCAD Path objects to a file.
 
@@ -39,7 +39,7 @@ if open.__module__ == '__builtin__':
     pythonopen = open
 
 
-def export(objectslist, filename):
+def export(objectslist, filename,argstring):
     "called when freecad exports a list of objects"
     if len(objectslist) > 1:
         print "This script is unable to write more than one Path object"

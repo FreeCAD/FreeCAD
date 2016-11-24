@@ -20,14 +20,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FreeCAD
-
 __title__ = "FEM Analysis managment"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
+
+## \addtogroup FEM
+#  @{
+
+import FreeCAD
 
 
 def makeFemAnalysis(name):
     '''makeFemAnalysis(name): makes a Fem Analysis object'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FemAnalysisPython", name)
     return obj
+
+# @}

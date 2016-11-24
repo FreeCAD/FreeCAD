@@ -24,12 +24,19 @@
 #define _DrawUtil_h_
 
 #include <string>
+
+#include <QString>
+#include <QByteArray>
+
+#include <gp_Ax2.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Wire.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
+
+#include <Base/Vector3D.h>
 
 namespace TechDraw
 {
@@ -41,7 +48,21 @@ class TechDrawExport DrawUtil {
         static std::string getGeomTypeFromName(std::string geomName);
         static std::string makeGeomName(std::string geomType, int index);
         static bool isSamePoint(TopoDS_Vertex v1, TopoDS_Vertex v2);
-        static bool isZeroEdge(TopoDS_Edge& e);
+        static bool isZeroEdge(TopoDS_Edge e);
+        static double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2);
+        static double sensibleScale(double working_scale);
+        static double angleWithX(TopoDS_Edge e, bool reverse);
+        static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool isLastVert(TopoDS_Edge e, TopoDS_Vertex v);
+        static bool fpCompare(const double& d1, const double& d2);
+        static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
+        static std::string formatVector(const Base::Vector3d& v);
+        static int vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2);
+        static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
+        static bool checkZParallel(const Base::Vector3d direction);
+
+
         //debugging routines
         static void dumpVertexes(const char* text, const TopoDS_Shape& s);
         static void dumpEdge(char* label, int i, TopoDS_Edge e);
@@ -49,6 +70,8 @@ class TechDrawExport DrawUtil {
         static void countFaces(const char* label, const TopoDS_Shape& s);
         static void countWires(const char* label, const TopoDS_Shape& s);
         static void countEdges(const char* label, const TopoDS_Shape& s);
+        static const char* printBool(bool b);
+        static QString qbaToDebug(const QByteArray& line);
 };
 
 } //end namespace TechDraw

@@ -50,6 +50,7 @@
 # include <Geom_RectangularTrimmedSurface.hxx>
 # include <Geom_SurfaceOfRevolution.hxx>
 # include <Geom_SurfaceOfLinearExtrusion.hxx>
+# include <GeomAPI_Interpolate.hxx>
 # include <GeomConvert.hxx>
 # include <GeomConvert_CompCurveToBSplineCurve.hxx>
 # include <GeomLProp_CLProps.hxx>
@@ -70,8 +71,12 @@
 # include <gp_Torus.hxx>
 # include <Standard_Real.hxx>
 # include <Standard_Version.hxx>
+# include <Standard_ConstructionError.hxx>
 # include <TColgp_Array1OfPnt.hxx>
 # include <TColgp_Array2OfPnt.hxx>
+# include <TColgp_Array1OfVec.hxx>
+# include <TColgp_HArray1OfPnt.hxx>
+# include <TColStd_HArray1OfBoolean.hxx>
 # include <TColStd_Array1OfReal.hxx>
 # include <TColStd_Array1OfInteger.hxx>
 # include <gp.hxx>
@@ -93,32 +98,32 @@
 
 #endif
 
-#include "LinePy.h"
 #include <Base/VectorPy.h>
-#include "CirclePy.h"
-#include "EllipsePy.h"
-#include "ArcPy.h"
-#include "ArcOfCirclePy.h"
-#include "ArcOfEllipsePy.h"
-#include "ArcOfParabolaPy.h"
-#include "BezierCurvePy.h"
-#include "BSplineCurvePy.h"
-#include "HyperbolaPy.h"
-#include "ArcOfHyperbolaPy.h"
-#include "OffsetCurvePy.h"
-#include "ParabolaPy.h"
-#include "BezierSurfacePy.h"
-#include "BSplineSurfacePy.h"
-#include "ConePy.h"
-#include "CylinderPy.h"
-#include "OffsetSurfacePy.h"
-#include "PlateSurfacePy.h"
-#include "PlanePy.h"
-#include "RectangularTrimmedSurfacePy.h"
-#include "SpherePy.h"
-#include "SurfaceOfExtrusionPy.h"
-#include "SurfaceOfRevolutionPy.h"
-#include "ToroidPy.h"
+#include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/CirclePy.h>
+#include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/ArcPy.h>
+#include <Mod/Part/App/ArcOfCirclePy.h>
+#include <Mod/Part/App/ArcOfEllipsePy.h>
+#include <Mod/Part/App/ArcOfParabolaPy.h>
+#include <Mod/Part/App/BezierCurvePy.h>
+#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/ArcOfHyperbolaPy.h>
+#include <Mod/Part/App/OffsetCurvePy.h>
+#include <Mod/Part/App/ParabolaPy.h>
+#include <Mod/Part/App/BezierSurfacePy.h>
+#include <Mod/Part/App/BSplineSurfacePy.h>
+#include <Mod/Part/App/ConePy.h>
+#include <Mod/Part/App/CylinderPy.h>
+#include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/PlateSurfacePy.h>
+#include <Mod/Part/App/PlanePy.h>
+#include <Mod/Part/App/RectangularTrimmedSurfacePy.h>
+#include <Mod/Part/App/SpherePy.h>
+#include <Mod/Part/App/SurfaceOfExtrusionPy.h>
+#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
+#include <Mod/Part/App/ToroidPy.h>
 
 #include <Base/Exception.h>
 #include <Base/Writer.h>
@@ -553,6 +558,90 @@ bool GeomBSplineCurve::join(const Handle_Geom_BSplineCurve& spline)
         return false;
     this->myCurve = ccbc.BSplineCurve();
     return true;
+}
+
+void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p,
+                                   const std::vector<gp_Vec>& t)
+{
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+    if (p.size() != t.size())
+        Standard_ConstructionError::Raise();
+
+    double tol3d = Precision::Approximation();
+    Handle_TColgp_HArray1OfPnt pts = new TColgp_HArray1OfPnt(1, p.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        pts->SetValue(i+1, p[i]);
+    }
+
+    TColgp_Array1OfVec tgs(1, t.size());
+    Handle_TColStd_HArray1OfBoolean fgs = new TColStd_HArray1OfBoolean(1, t.size());
+    for (std::size_t i=0; i<p.size(); i++) {
+        tgs.SetValue(i+1, t[i]);
+        fgs->SetValue(i+1, Standard_True);
+    }
+
+    GeomAPI_Interpolate interpolate(pts, Standard_False, tol3d);
+    interpolate.Load(tgs, fgs);
+    interpolate.Perform();
+    this->myCurve = interpolate.Curve();
+}
+
+void GeomBSplineCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p,
+                                                 const std::vector<double>& c,
+                                                 std::vector<gp_Vec>& t) const
+{
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+    if (p.size() != c.size())
+        Standard_ConstructionError::Raise();
+
+    t.resize(p.size());
+    if (p.size() == 2) {
+        t[0] = gp_Vec(p[0], p[1]);
+        t[1] = gp_Vec(p[0], p[1]);
+    }
+    else {
+        std::size_t e = p.size() - 1;
+
+        for (std::size_t i = 1; i < e; i++) {
+            gp_Vec v = gp_Vec(p[i-1], p[i+1]);
+            double f = 0.5 * (1-c[i]);
+            v.Scale(f);
+            t[i] = v;
+        }
+
+        t[0] = t[1];
+        t[t.size()-1] = t[t.size()-2];
+    }
+}
+
+void GeomBSplineCurve::getCardinalSplineTangents(const std::vector<gp_Pnt>& p, double c,
+                                                 std::vector<gp_Vec>& t) const
+{
+    // https://de.wikipedia.org/wiki/Kubisch_Hermitescher_Spline#Cardinal_Spline
+    if (p.size() < 2)
+        Standard_ConstructionError::Raise();
+
+    t.resize(p.size());
+    if (p.size() == 2) {
+        t[0] = gp_Vec(p[0], p[1]);
+        t[1] = gp_Vec(p[0], p[1]);
+    }
+    else {
+        std::size_t e = p.size() - 1;
+        double f = 0.5 * (1-c);
+
+        for (std::size_t i = 1; i < e; i++) {
+            gp_Vec v = gp_Vec(p[i-1], p[i+1]);
+            v.Scale(f);
+            t[i] = v;
+        }
+
+        t[0] = t[1];
+        t[t.size()-1] = t[t.size()-2];
+    }
 }
 
 void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
@@ -2362,8 +2451,8 @@ Base::Vector3d GeomArcOfParabola::getEndPoint() const
 
 Base::Vector3d GeomArcOfParabola::getCenter(void) const
 {
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
-    gp_Ax1 axis = h->Axis();
+    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    gp_Ax1 axis = p->Axis();
     const gp_Pnt& loc = axis.Location();
     return Base::Vector3d(loc.X(),loc.Y(),loc.Z());
 }
@@ -2371,10 +2460,10 @@ Base::Vector3d GeomArcOfParabola::getCenter(void) const
 void GeomArcOfParabola::setCenter(const Base::Vector3d& Center)
 {
     gp_Pnt p1(Center.x,Center.y,Center.z);
-    Handle_Geom_Hyperbola h = Handle_Geom_Hyperbola::DownCast(myCurve->BasisCurve());
+    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
 
     try {
-        h->SetLocation(p1);
+        p->SetLocation(p1);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -3042,8 +3131,18 @@ GeomCylinder::GeomCylinder()
     this->mySurface = s;
 }
 
+GeomCylinder::GeomCylinder(const Handle_Geom_CylindricalSurface& c)
+{
+    this->mySurface = Handle_Geom_CylindricalSurface::DownCast(c->Copy());
+}
+
 GeomCylinder::~GeomCylinder()
 {
+}
+
+void GeomCylinder::setHandle(const Handle_Geom_CylindricalSurface& s)
+{
+    mySurface = Handle_Geom_CylindricalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCylinder::handle() const
@@ -3079,8 +3178,18 @@ GeomCone::GeomCone()
     this->mySurface = s;
 }
 
+GeomCone::GeomCone(const Handle_Geom_ConicalSurface& c)
+{
+    this->mySurface = Handle_Geom_ConicalSurface::DownCast(c->Copy());
+}
+
 GeomCone::~GeomCone()
 {
+}
+
+void GeomCone::setHandle(const Handle_Geom_ConicalSurface& s)
+{
+    mySurface = Handle_Geom_ConicalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomCone::handle() const
@@ -3116,8 +3225,18 @@ GeomToroid::GeomToroid()
     this->mySurface = s;
 }
 
+GeomToroid::GeomToroid(const Handle_Geom_ToroidalSurface& t)
+{
+    this->mySurface = Handle_Geom_ToroidalSurface::DownCast(t->Copy());
+}
+
 GeomToroid::~GeomToroid()
 {
+}
+
+void GeomToroid::setHandle(const Handle_Geom_ToroidalSurface& s)
+{
+    mySurface = Handle_Geom_ToroidalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomToroid::handle() const
@@ -3153,8 +3272,18 @@ GeomSphere::GeomSphere()
     this->mySurface = s;
 }
 
+GeomSphere::GeomSphere(const Handle_Geom_SphericalSurface& s)
+{
+    this->mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
+}
+
 GeomSphere::~GeomSphere()
 {
+}
+
+void GeomSphere::setHandle(const Handle_Geom_SphericalSurface& s)
+{
+    mySurface = Handle_Geom_SphericalSurface::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomSphere::handle() const
@@ -3190,8 +3319,18 @@ GeomPlane::GeomPlane()
     this->mySurface = s;
 }
 
+GeomPlane::GeomPlane(const Handle_Geom_Plane& p)
+{
+    this->mySurface = Handle_Geom_Plane::DownCast(p->Copy());
+}
+
 GeomPlane::~GeomPlane()
 {
+}
+
+void GeomPlane::setHandle(const Handle_Geom_Plane& s)
+{
+    mySurface = Handle_Geom_Plane::DownCast(s->Copy());
 }
 
 const Handle_Geom_Geometry& GeomPlane::handle() const
@@ -3644,6 +3783,62 @@ GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const Geo
     arc->setRange(startAngle, endAngle, /*emulateCCWXY=*/true);
 
     return arc;
+}
+
+GeomSurface* makeFromSurface(const Handle_Geom_Surface& s)
+{
+    if (s->IsKind(STANDARD_TYPE(Geom_ToroidalSurface))) {
+        Handle_Geom_ToroidalSurface hSurf = Handle_Geom_ToroidalSurface::DownCast(s);
+        return new GeomToroid(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_BezierSurface))) {
+        Handle_Geom_BezierSurface hSurf = Handle_Geom_BezierSurface::DownCast(s);
+        return new GeomBezierSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_BSplineSurface))) {
+        Handle_Geom_BSplineSurface hSurf = Handle_Geom_BSplineSurface::DownCast(s);
+        return new GeomBSplineSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_CylindricalSurface))) {
+        Handle_Geom_CylindricalSurface hSurf = Handle_Geom_CylindricalSurface::DownCast(s);
+        return new GeomCylinder(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_ConicalSurface))) {
+        Handle_Geom_ConicalSurface hSurf = Handle_Geom_ConicalSurface::DownCast(s);
+        return new GeomCone(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SphericalSurface))) {
+        Handle_Geom_SphericalSurface hSurf = Handle_Geom_SphericalSurface::DownCast(s);
+        return new GeomSphere(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_Plane))) {
+        Handle_Geom_Plane hSurf = Handle_Geom_Plane::DownCast(s);
+        return new GeomPlane(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_OffsetSurface))) {
+        Handle_Geom_OffsetSurface hSurf = Handle_Geom_OffsetSurface::DownCast(s);
+        return new GeomOffsetSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(GeomPlate_Surface))) {
+        Handle_GeomPlate_Surface hSurf = Handle_GeomPlate_Surface::DownCast(s);
+        return new GeomPlateSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_RectangularTrimmedSurface))) {
+        Handle_Geom_RectangularTrimmedSurface hSurf = Handle_Geom_RectangularTrimmedSurface::DownCast(s);
+        return new GeomTrimmedSurface(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfRevolution))) {
+        Handle_Geom_SurfaceOfRevolution hSurf = Handle_Geom_SurfaceOfRevolution::DownCast(s);
+        return new GeomSurfaceOfRevolution(hSurf);
+    }
+    else if (s->IsKind(STANDARD_TYPE(Geom_SurfaceOfLinearExtrusion))) {
+        Handle_Geom_SurfaceOfLinearExtrusion hSurf = Handle_Geom_SurfaceOfLinearExtrusion::DownCast(s);
+        return new GeomSurfaceOfExtrusion(hSurf);
+    }
+
+    std::string err = "Unhandled surface type ";
+    err += s->DynamicType()->Name();
+    throw Base::TypeError(err);
 }
 
 }

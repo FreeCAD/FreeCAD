@@ -86,7 +86,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     if(BUILD_ENABLE_CXX11)
        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     endif(BUILD_ENABLE_CXX11)
-    set(CMAKE_CXX_FLAGS "-Wall -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
     # get linker errors as soon as possible and not at runtime e.g. for modules
@@ -157,6 +157,13 @@ OPTION(FREECAD_USE_EXTERNAL_SMESH "Use system installed smesh instead of the bun
 OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
+
+# https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
+set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
+set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
+             "Official Version"
+             "Community Edition"
+)
 
 if(APPLE)
     OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
@@ -566,7 +573,39 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
-        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        set (VTK_COMPONENTS
+            vtkCommonCore
+            vtkCommonDataModel
+            vtkFiltersVerdict
+            vtkIOXML
+            vtkFiltersCore
+            vtkFiltersGeneral
+            vtkIOLegacy
+            vtkFiltersExtraction
+            vtkFiltersSources
+            vtkFiltersGeometry
+        )
+        # check which modules are available
+        if(UNIX AND NOT APPLE)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI)
+            foreach(_module ${VTK_COMPONENTS})
+                file(GLOB_RECURSE _module_exists /usr/lib*/cmake/*${_module}.cmake
+                                                 ${CMAKE_ROOT}/*${_module}.cmake)
+                if(_module_exists)
+                    list(APPEND AVAILABLE_VTK_COMPONENTS ${_module})
+                endif()
+            endforeach()
+        endif()
+
+        # don't check VERSION 6 as this would exlude VERSION 7
+        if(AVAILABLE_VTK_COMPONENTS)
+            message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
+            find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
+        else()
+            message(STATUS "VTK components: not found or used")
+            find_package(VTK REQUIRED NO_MODULE)
+        endif()
+
         set(BUILD_FEM_VTK ON)
         if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
@@ -576,7 +615,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 set(VTK_OPTIONS -DVTK_NO_QUAD_POLY)
             endif()
             if(${VTK_MINOR_VERSION} EQUAL 0)
-                message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
+                message(WARNING "VTK equal to 6.0 cannot be used with c++11, FEM postprocessing is disabled")
                 set(BUILD_FEM_VTK OFF)
             endif()
         endif()

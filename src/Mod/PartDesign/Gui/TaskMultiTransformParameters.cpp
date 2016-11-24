@@ -125,7 +125,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     for (std::vector<App::DocumentObject*>::const_iterator i = transformFeatures.begin(); i != transformFeatures.end(); i++)
     {
         if ((*i) != NULL)
-            ui->listTransformFeatures->addItem(QString::fromLatin1((*i)->Label.getValue()));
+            ui->listTransformFeatures->addItem(QString::fromUtf8((*i)->Label.getValue()));
     }
     if (transformFeatures.size() > 0) {
         ui->listTransformFeatures->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
@@ -139,10 +139,14 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
     std::vector<App::DocumentObject*> originals = pcMultiTransform->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++)
-    {
-        if ((*i) != NULL)
-            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); i++) {
+        const App::DocumentObject* obj = *i;
+        if (obj != NULL) {
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setText(QString::fromUtf8(obj->Label.getValue()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(item);
+        }
     }
     // ---------------------
 }
@@ -150,10 +154,22 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 void TaskMultiTransformParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (originalSelected(msg)) {
-        if (selectionMode == addFeature)
-            ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
-        else
-            removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+        Gui::SelectionObject selObj(msg);
+        App::DocumentObject* obj = selObj.getObject();
+        Q_ASSERT(obj);
+
+        QString label = QString::fromUtf8(obj->Label.getValue());
+        QString objectName = QString::fromLatin1(msg.pObjectName);
+
+        if (selectionMode == addFeature) {
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setText(label);
+            item->setData(Qt::UserRole, objectName);
+            ui->listWidgetFeatures->addItem(item);
+        }
+        else {
+            removeItemFromListWidget(ui->listWidgetFeatures, label);
+        }
         exitSelectionMode();
     }
 }

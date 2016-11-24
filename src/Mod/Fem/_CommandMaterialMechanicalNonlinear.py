@@ -24,14 +24,14 @@ __title__ = "Command nonlinear mechanical material"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandMaterialMechanicalNonLinear
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtCore
+import FreeCADGui
+import FemGui
+from PySide import QtCore
 
 
 class _CommandMaterialMechanicalNonlinear(FemCommands):

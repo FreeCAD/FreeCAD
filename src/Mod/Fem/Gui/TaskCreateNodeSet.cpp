@@ -151,15 +151,15 @@ void TaskCreateNodeSet::DefineNodesCallback(void * ud, SoEventCallback * n)
     SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2D polygon;
+    Base::Polygon2d polygon;
     for (std::vector<SbVec2f>::const_iterator it = clPoly.begin(); it != clPoly.end(); ++it)
-        polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+        polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
 
     taskBox->DefineNodes(polygon,proj,clip_inner);
 
 }
 
-void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::ViewVolumeProjection &proj,bool inner)
+void TaskCreateNodeSet::DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj,bool inner)
 {
     const SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(pcObject->FemMesh.getValue<Fem::FemMeshObject*>()->FemMesh.getValue().getSMesh())->GetMeshDS();
 
@@ -173,7 +173,7 @@ void TaskCreateNodeSet::DefineNodes(const Base::Polygon2D &polygon,const Gui::Vi
         const SMDS_MeshNode* aNode = aNodeIter->next();
         Base::Vector3f vec(aNode->X(),aNode->Y(),aNode->Z());
         pt2d = proj(vec);
-        if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y)) == inner)
+        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y)) == inner)
             tempSet.insert(aNode->GetID());
     }
 

@@ -24,6 +24,9 @@ __title__ = "_FemShellThickness"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemShellThickness
+#  \ingroup FEM
+
 
 class _FemShellThickness:
     "The FemShellThickness object"

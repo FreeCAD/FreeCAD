@@ -52,10 +52,12 @@ DlgMaterialPropertiesImp::DlgMaterialPropertiesImp(const std::string& mat, QWidg
         this->diffuseColor->hide();
     }
 
-    ambientColor->setModal(false);
-    diffuseColor->setModal(false);
-    emissiveColor->setModal(false);
-    specularColor->setModal(false);
+//#if !defined(Q_WS_MAC)
+    ambientColor->setAutoChangeColor(true);
+    diffuseColor->setAutoChangeColor(true);
+    emissiveColor->setAutoChangeColor(true);
+    specularColor->setAutoChangeColor(true);
+//#endif
 }
 
 /**

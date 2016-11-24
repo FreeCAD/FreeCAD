@@ -24,12 +24,13 @@ __title__ = "Command Control Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandControlSolver
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
+import FreeCADGui
+from PySide import QtCore
 
 
 class _CommandControlSolver(FemCommands):

@@ -1,6 +1,8 @@
 <RCC>
     <qresource> 
         <file>icons/fem-fem-mesh-from-shape.svg</file>
+        <file>icons/fem-fem-mesh-gmsh-from-shape.svg</file>
+        <file>icons/fem-fem-mesh-netgen-from-shape.svg</file>
         <file>icons/fem-fem-mesh-create-node-by-poly.svg</file>
         <file>icons/fem-analysis.svg</file>
         <file>icons/fem-cfd-analysis.svg</file>

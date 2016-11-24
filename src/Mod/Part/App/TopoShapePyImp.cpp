@@ -59,6 +59,8 @@
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepAlgo_NormalProjection.hxx>
+#include <ShapeAnalysis_ShapeTolerance.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 
 
 #include <Base/GeometryPyCXX.h>
@@ -70,19 +72,19 @@
 #include <CXX/Extensions.hxx>
 
 #include "TopoShape.h"
-#include "TopoShapePy.h"
-#include "TopoShapePy.cpp"
+#include <Mod/Part/App/TopoShapePy.h>
+#include <Mod/Part/App/TopoShapePy.cpp>
 
 #include "OCCError.h"
-#include "GeometryPy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeEdgePy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeVertexPy.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeShellPy.h"
-#include "TopoShapeCompSolidPy.h"
-#include "TopoShapeCompoundPy.h"
+#include <Mod/Part/App/GeometryPy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Part/App/TopoShapeVertexPy.h>
+#include <Mod/Part/App/TopoShapeSolidPy.h>
+#include <Mod/Part/App/TopoShapeShellPy.h>
+#include <Mod/Part/App/TopoShapeCompSolidPy.h>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 
 using namespace Part;
 
@@ -1849,6 +1851,253 @@ PyObject* TopoShapePy::getElement(PyObject *args)
         return 0;
     }
     return 0;
+}
+
+PyObject* TopoShapePy::getTolerance(PyObject *args)
+{
+    int mode;
+    PyObject* type=0;
+    if (!PyArg_ParseTuple(args, "i|O!", &mode, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        if (pyType == 0)
+            shapetype = TopAbs_SHAPE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeShellPy::Type))
+            shapetype = TopAbs_SHELL;
+        else if (PyType_IsSubtype(pyType, &TopoShapeFacePy::Type))
+            shapetype = TopAbs_FACE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeEdgePy::Type))
+            shapetype = TopAbs_EDGE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeVertexPy::Type))
+            shapetype = TopAbs_VERTEX;
+        else if (pyType != &TopoShapePy::Type) {
+            if (PyType_IsSubtype(pyType, &TopoShapePy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "shape type must be Vertex, Edge, Face or Shell");
+                return 0;
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "type must be a shape type");
+                return 0;
+            }
+        }
+
+        ShapeAnalysis_ShapeTolerance analysis;
+        double tolerance = analysis.Tolerance(shape, mode, shapetype);
+        return PyFloat_FromDouble(tolerance);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
+PyObject* TopoShapePy::overTolerance(PyObject *args)
+{
+    double value;
+    PyObject* type=0;
+    if (!PyArg_ParseTuple(args, "d|O!", &value, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        if (pyType == 0)
+            shapetype = TopAbs_SHAPE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeShellPy::Type))
+            shapetype = TopAbs_SHELL;
+        else if (PyType_IsSubtype(pyType, &TopoShapeFacePy::Type))
+            shapetype = TopAbs_FACE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeEdgePy::Type))
+            shapetype = TopAbs_EDGE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeVertexPy::Type))
+            shapetype = TopAbs_VERTEX;
+        else if (pyType != &TopoShapePy::Type) {
+            if (PyType_IsSubtype(pyType, &TopoShapePy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "shape type must be Vertex, Edge, Face or Shell");
+                return 0;
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "type must be a shape type");
+                return 0;
+            }
+        }
+
+        ShapeAnalysis_ShapeTolerance analysis;
+        Handle(TopTools_HSequenceOfShape) seq = analysis.OverTolerance(shape, value, shapetype);
+        Py::Tuple tuple(seq->Length());
+        std::size_t index=0;
+        for (int i=1; i <= seq->Length(); i++) {
+            TopoDS_Shape item = seq->Value(i);
+            tuple.setItem(index++, shape2pyshape(item));
+        }
+        return Py::new_reference_to(tuple);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
+PyObject* TopoShapePy::inTolerance(PyObject *args)
+{
+    double valmin;
+    double valmax;
+    PyObject* type=0;
+    if (!PyArg_ParseTuple(args, "dd|O!", &valmin, &valmax, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        if (pyType == 0)
+            shapetype = TopAbs_SHAPE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeShellPy::Type))
+            shapetype = TopAbs_SHELL;
+        else if (PyType_IsSubtype(pyType, &TopoShapeFacePy::Type))
+            shapetype = TopAbs_FACE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeEdgePy::Type))
+            shapetype = TopAbs_EDGE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeVertexPy::Type))
+            shapetype = TopAbs_VERTEX;
+        else if (pyType != &TopoShapePy::Type) {
+            if (PyType_IsSubtype(pyType, &TopoShapePy::Type)) {
+                PyErr_SetString(PyExc_TypeError, "shape type must be Vertex, Edge, Face or Shell");
+                return 0;
+            }
+            else {
+                PyErr_SetString(PyExc_TypeError, "type must be a shape type");
+                return 0;
+            }
+        }
+
+        ShapeAnalysis_ShapeTolerance analysis;
+        Handle(TopTools_HSequenceOfShape) seq = analysis.InTolerance(shape, valmin, valmax, shapetype);
+        Py::Tuple tuple(seq->Length());
+        std::size_t index=0;
+        for (int i=1; i <= seq->Length(); i++) {
+            TopoDS_Shape item = seq->Value(i);
+            tuple.setItem(index++, shape2pyshape(item));
+        }
+        return Py::new_reference_to(tuple);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
+PyObject* TopoShapePy::globalTolerance(PyObject *args)
+{
+    int mode;
+    if (!PyArg_ParseTuple(args, "i", &mode))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+
+        ShapeAnalysis_ShapeTolerance analysis;
+        analysis.Tolerance(shape, mode);
+        double tolerance = analysis.GlobalTolerance(mode);
+        return PyFloat_FromDouble(tolerance);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
+PyObject* TopoShapePy::fixTolerance(PyObject *args)
+{
+    double value;
+    PyObject* type=0;
+    if (!PyArg_ParseTuple(args, "d|O!", &value, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        if (pyType == 0)
+            shapetype = TopAbs_SHAPE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeWirePy::Type))
+            shapetype = TopAbs_WIRE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeFacePy::Type))
+            shapetype = TopAbs_FACE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeEdgePy::Type))
+            shapetype = TopAbs_EDGE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeVertexPy::Type))
+            shapetype = TopAbs_VERTEX;
+        else if (PyType_IsSubtype(pyType, &TopoShapePy::Type))
+            shapetype = TopAbs_SHAPE;
+        else if (pyType != &TopoShapePy::Type) {
+            PyErr_SetString(PyExc_TypeError, "type must be a shape type");
+            return 0;
+        }
+
+        ShapeFix_ShapeTolerance fix;
+        fix.SetTolerance(shape, value, shapetype);
+        Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+}
+
+PyObject* TopoShapePy::limitTolerance(PyObject *args)
+{
+    double tmin;
+    double tmax=0;
+    PyObject* type=0;
+    if (!PyArg_ParseTuple(args, "d|dO!", &tmin, &tmax, &PyType_Type, &type))
+        return NULL;
+
+    try {
+        TopoDS_Shape shape = this->getTopoShapePtr()->getShape();
+        TopAbs_ShapeEnum shapetype = TopAbs_SHAPE;
+
+        PyTypeObject* pyType = reinterpret_cast<PyTypeObject*>(type);
+        if (pyType == 0)
+            shapetype = TopAbs_SHAPE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeWirePy::Type))
+            shapetype = TopAbs_WIRE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeFacePy::Type))
+            shapetype = TopAbs_FACE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeEdgePy::Type))
+            shapetype = TopAbs_EDGE;
+        else if (PyType_IsSubtype(pyType, &TopoShapeVertexPy::Type))
+            shapetype = TopAbs_VERTEX;
+        else if (PyType_IsSubtype(pyType, &TopoShapePy::Type))
+            shapetype = TopAbs_SHAPE;
+        else if (pyType != &TopoShapePy::Type) {
+            PyErr_SetString(PyExc_TypeError, "type must be a shape type");
+            return 0;
+        }
+
+        ShapeFix_ShapeTolerance fix;
+        Standard_Boolean ok = fix.LimitTolerance(shape, tmin, tmax, shapetype);
+        return PyBool_FromLong(ok ? 1 : 0);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
 }
 
 PyObject* _getSupportIndex(char* suppStr, TopoShape* ts, TopoDS_Shape suppShape) {

@@ -1208,8 +1208,8 @@ CmdPartMakeFace::CmdPartMakeFace()
 {
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
-    sMenuText     = QT_TR_NOOP("Make face from sketch");
-    sToolTipText  = QT_TR_NOOP("Make face from selected sketches");
+    sMenuText     = QT_TR_NOOP("Make face from wires");
+    sToolTipText  = QT_TR_NOOP("Part_MakeFace: Make face from set of wires (e.g., from a sketch).");
     sWhatsThis    = "Part_MakeFace";
     sStatusTip    = sToolTipText;
 }
@@ -1217,7 +1217,7 @@ CmdPartMakeFace::CmdPartMakeFace()
 void CmdPartMakeFace::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Part::Part2DObject*> sketches = Gui::Selection().getObjectsOfType<Part::Part2DObject>();
+    std::vector<Part::Feature*> sketches = Gui::Selection().getObjectsOfType<Part::Feature>();
     openCommand("Make face");
 
     try {
@@ -1225,7 +1225,7 @@ void CmdPartMakeFace::activated(int iMsg)
         std::stringstream str;
         str << doc.getDocumentPython()
             << ".addObject(\"Part::Face\", \"Face\").Sources = (";
-        for (std::vector<Part::Part2DObject*>::iterator it = sketches.begin(); it != sketches.end(); ++it) {
+        for (std::vector<Part::Feature*>::iterator it = sketches.begin(); it != sketches.end(); ++it) {
             App::DocumentObjectT obj(*it);
             str << obj.getObjectPython() << ", ";
         }
@@ -1244,7 +1244,7 @@ void CmdPartMakeFace::activated(int iMsg)
 
 bool CmdPartMakeFace::isActive(void)
 {
-    return (Gui::Selection().countObjectsOfType(Part::Part2DObject::getClassTypeId()) > 0 &&
+    return (Gui::Selection().countObjectsOfType(Part::Feature::getClassTypeId()) > 0 &&
             !Gui::Control().activeDialog());
 }
 
@@ -1515,6 +1515,7 @@ void CmdPartOffset::activated(int iMsg)
     doCommand(Doc,"App.ActiveDocument.%s.Source = App.ActiveDocument.%s" ,offset.c_str(), shape->getNameInDocument());
     doCommand(Doc,"App.ActiveDocument.%s.Value = 1.0",offset.c_str());
     updateActive();
+    doCommand(Gui,"Gui.ActiveDocument.%s.DisplayMode = 'Wireframe'", shape->getNameInDocument());
     //if (isActiveObjectValid())
     //    doCommand(Gui,"Gui.ActiveDocument.hide(\"%s\")",shape->getNameInDocument());
     doCommand(Gui,"Gui.ActiveDocument.setEdit('%s')",offset.c_str());

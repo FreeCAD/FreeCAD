@@ -37,6 +37,7 @@
 #include <App/DocumentObject.h>
 
 #include <Mod/TechDraw/App/DrawViewDimension.h>
+#include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 
 #include<Mod/TechDraw/App/DrawPage.h>
@@ -63,12 +64,9 @@ void ViewProviderViewPart::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->LineWidth)   ||
         prop == &(getViewObject()->HiddenWidth) ||
-        prop == &(getViewObject()->ShowCenters) ||
+        prop == &(getViewObject()->ArcCenterMarks) ||
         prop == &(getViewObject()->CenterScale) ||
         prop == &(getViewObject()->ShowSectionLine)  ||
-        prop == &(getViewObject()->HorizSectionLine) ||
-        prop == &(getViewObject()->ArrowUpSection)   ||
-        prop == &(getViewObject()->SymbolSection)    ||
         prop == &(getViewObject()->HorizCenterLine)  ||
         prop == &(getViewObject()->VertCenterLine) ) {
         // redraw QGIVP
@@ -90,6 +88,11 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
 
 void ViewProviderViewPart::attach(App::DocumentObject *pcFeat)
 {
+    TechDraw::DrawViewMulti* dvm = dynamic_cast<TechDraw::DrawViewMulti*>(pcFeat);
+    if (dvm != nullptr) {
+        sPixmap = "TechDraw_Tree_Multi";
+    }
+
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }

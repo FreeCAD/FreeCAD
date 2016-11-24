@@ -42,6 +42,7 @@ __url__ = "http://www.freecadweb.org"
 #  FreeCAD interface, and corresponding python functions, that can perform the same
 #  operation programmatically.
 #
+#  @{
 
 '''The Draft module offers a range of tools to create and manipulate basic 2D objects'''
 
@@ -50,8 +51,12 @@ from FreeCAD import Vector
 
 if FreeCAD.GuiUp:
     import FreeCADGui, WorkingPlane
+    from PySide import QtCore
+    from PySide.QtCore import QT_TRANSLATE_NOOP
     gui = True
 else:
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
     #print("FreeCAD Gui not present. Draft module will have some features disabled.")
     gui = False
 
@@ -711,11 +716,13 @@ def makeDimension(p1,p2,p3=None,p4=None):
         l = []
         l.append((p1,"Edge"+str(p2+1)))
         if p3 == "radius":
-            l.append((p1,"Center"))
+            #l.append((p1,"Center"))
             obj.ViewObject.Override = "R $dim"
+            obj.Diameter = False
         elif p3 == "diameter":
-            l.append((p1,"Diameter"))
+            #l.append((p1,"Diameter"))
             obj.ViewObject.Override = "Ø $dim"
+            obj.Diameter = True
         obj.LinkedGeometry = l
         obj.Support = p1
         p3 = p4
@@ -1665,6 +1672,13 @@ def getDXF(obj,direction=None):
     object. If direction is given, the object is projected in 2D.'''
     plane = None
     result = ""
+    if obj.isDerivedFrom("Drawing::View") or obj.isDerivedFrom("TechDraw::DrawView"):
+        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
+            for o in obj.Source.Group:
+                result += getDXF(o,obj.Direction)
+        else:
+            result += getDXF(obj.Source,obj.Direction)
+        return result
     if direction:
         if isinstance(direction,FreeCAD.Vector):
             if direction != Vector(0,0,0):
@@ -1717,20 +1731,21 @@ def getDXF(obj,direction=None):
     return result
 
 
-def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False):
+def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direction=None,linestyle=None,color=None,linespacing=None,techdraw=False,rotation=0):
     '''getSVG(object,[scale], [linewidth],[fontsize],[fillstyle],[direction],[linestyle],[color],[linespacing]):
     returns a string containing a SVG representation of the given object,
     with the given linewidth and fontsize (used if the given object contains
     any text). You can also supply an arbitrary projection vector. the
     scale parameter allows to scale linewidths down, so they are resolution-independant.'''
-    
+
     # if this is a group, gather all the svg views of its children
-    if obj.isDerivedFrom("App::DocumentObjectGroup"):
-        svg = ""
-        for child in obj.Group:
-            svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
-        return svg
-    
+    if hasattr(obj,"isDerivedFrom"):
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
+            svg = ""
+            for child in obj.Group:
+                svg += getSVG(child,scale,linewidth,fontsize,fillstyle,direction,linestyle,color,linespacing,techdraw)
+            return svg
+
     import Part, DraftGeomUtils
     pathdata = []
     svg = ""
@@ -1757,8 +1772,9 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         else:
             stroke = getrgb(color)
     elif gui:
-        if hasattr(obj.ViewObject,"LineColor"):
-            stroke = getrgb(obj.ViewObject.LineColor)
+        if hasattr(obj,"ViewObject"):
+            if hasattr(obj.ViewObject,"LineColor"):
+                stroke = getrgb(obj.ViewObject.LineColor)
 
     def getLineStyle():
         "returns a linestyle"
@@ -1796,6 +1812,20 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             ly = -ly
         return Vector(lx,ly,0)
+
+    def getDiscretized(edge):
+        ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
+        d = int(edge.Length/ml)
+        if d == 0:
+            d = 1
+        edata = ""
+        for i in range(d+1):
+            v = getProj(edge.valueAt(edge.FirstParameter+((float(i)/d)*(edge.LastParameter-edge.FirstParameter))))
+            if not edata:
+                edata += 'M ' + str(v.x) +' '+ str(v.y) + ' '
+            else:
+                edata += 'L ' + str(v.x) +' '+ str(v.y) + ' '
+        return edata
 
     def getPattern(pat):
         if pat in svgpatterns():
@@ -1838,48 +1868,54 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                 isellipse = DraftGeomUtils.geomType(e) == "Ellipse"
                 if iscircle or isellipse:
                     import math
-                    c = e.Curve
-                    if len(e.Vertexes) == 1 and iscircle: #complete curve
-                        svg = getCircle(e)
-                        return svg
-                    elif len(e.Vertexes) == 1 and isellipse:
-                        #svg = getEllipse(e)
-                        #return svg
-                        endpoints = (getProj(c.value((c.LastParameter-\
-                                c.FirstParameter)/2.0)), \
-                                getProj(vs[-1].Point))
-                    else:
-                        endpoints = (getProj(vs[-1].Point),)
-
-                    # arc
-                    if iscircle:
-                        rx = ry = c.Radius
-                        rot = 0
-                    else: #ellipse
-                        rx = c.MajorRadius
-                        ry = c.MinorRadius
-                        rot = math.degrees(c.AngleXU * (c.Axis * \
-                            FreeCAD.Vector(0,0,1)))
-                        if rot > 90:
-                            rot -=180
-                        if rot < -90:
-                            rot += 180
-                        #be carefull with the sweep flag
                     if hasattr(FreeCAD,"DraftWorkingPlane"):
                         drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
                     else:
                         drawing_plane_normal = FreeCAD.Vector(0,0,1)
                     if plane: drawing_plane_normal = plane.axis
-                    flag_large_arc = (((e.ParameterRange[1] - \
-                            e.ParameterRange[0]) / math.pi) % 2) > 1
-                    flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
-                             == (e.LastParameter > e.FirstParameter)
-                    #        == (e.Orientation == "Forward")
-                    for v in endpoints:
-                        edata += 'A %s %s %s %s %s %s %s ' % \
-                                (str(rx),str(ry),str(rot),\
-                                str(int(flag_large_arc)),\
-                                str(int(flag_sweep)),str(v.x),str(v.y))
+                    c = e.Curve
+                    if round(c.Axis.getAngle(drawing_plane_normal),2) == 0:
+                        if len(e.Vertexes) == 1 and iscircle: #complete curve
+                            svg = getCircle(e)
+                            return svg
+                        elif len(e.Vertexes) == 1 and isellipse:
+                            #svg = getEllipse(e)
+                            #return svg
+                            endpoints = (getProj(c.value((c.LastParameter-\
+                                    c.FirstParameter)/2.0)), \
+                                    getProj(vs[-1].Point))
+                        else:
+                            endpoints = (getProj(vs[-1].Point),)
+                        # arc
+                        if iscircle:
+                            rx = ry = c.Radius
+                            rot = 0
+                        else: #ellipse
+                            rx = c.MajorRadius
+                            ry = c.MinorRadius
+                            rot = math.degrees(c.AngleXU * (c.Axis * \
+                                FreeCAD.Vector(0,0,1)))
+                            if rot > 90:
+                                rot -=180
+                            if rot < -90:
+                                rot += 180
+                            #be carefull with the sweep flag
+                        flag_large_arc = (((e.ParameterRange[1] - \
+                                e.ParameterRange[0]) / math.pi) % 2) > 1
+                        #flag_sweep = (c.Axis * drawing_plane_normal >= 0) \
+                        #         == (e.LastParameter > e.FirstParameter)
+                        #        == (e.Orientation == "Forward")
+                        # other method: check the direction of the angle between tangents
+                        t1 = e.tangentAt(e.FirstParameter)
+                        t2 = e.tangentAt(e.FirstParameter + (e.LastParameter-e.FirstParameter)/10)
+                        flag_sweep = (DraftVecUtils.angle(t1,t2,drawing_plane_normal) < 0)
+                        for v in endpoints:
+                            edata += 'A %s %s %s %s %s %s %s ' % \
+                                    (str(rx),str(ry),str(rot),\
+                                    str(int(flag_large_arc)),\
+                                    str(int(flag_sweep)),str(v.x),str(v.y))
+                    else:
+                        edata += getDiscretized(e)
                 elif DraftGeomUtils.geomType(e) == "Line":
                     v = getProj(vs[-1].Point)
                     edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
@@ -1909,7 +1945,7 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         for linepoint in bspline.discretize(0.1)[1:]:
                             v = getProj(linepoint)
                             edata += 'L '+ str(v.x) +' '+ str(v.y) + ' '
-            if fill != 'none': 
+            if fill != 'none':
                 edata += 'Z '
             if edata in pathdata:
                 # do not draw a path on another identical path
@@ -1931,9 +1967,21 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
     def getCircle(edge):
         cen = getProj(edge.Curve.Center)
         rad = edge.Curve.Radius
-        svg = '<circle cx="' + str(cen.x)
-        svg += '" cy="' + str(cen.y)
-        svg += '" r="' + str(rad)+'" '
+        if hasattr(FreeCAD,"DraftWorkingPlane"):
+            drawing_plane_normal = FreeCAD.DraftWorkingPlane.axis
+        else:
+            drawing_plane_normal = FreeCAD.Vector(0,0,1)
+        if plane: drawing_plane_normal = plane.axis
+        if round(edge.Curve.Axis.getAngle(drawing_plane_normal),2) == 0:
+            # perpendicular projection: circle
+            svg = '<circle cx="' + str(cen.x)
+            svg += '" cy="' + str(cen.y)
+            svg += '" r="' + str(rad)+'" '
+        else:
+            # any other projection: ellipse
+            svg = '<path d="'
+            svg += getDiscretized(edge)
+            svg += '" '
         svg += 'stroke="' + stroke + '" '
         svg += 'stroke-width="' + str(linewidth) + ' px" '
         svg += 'style="stroke-width:'+ str(linewidth)
@@ -1984,6 +2032,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'fill="'+ color +'" stroke="none" '
             svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
             svg += 'd="M 0 0 L 4 1 L 4 -1 Z"/>\n'
+        elif obj.ViewObject.ArrowType == "Tick":
+            svg += '<path transform="rotate('+str(math.degrees(angle))
+            svg += ','+ str(point.x) + ',' + str(point.y) + ') '
+            svg += 'translate(' + str(point.x) + ',' + str(point.y) + ') '
+            svg += 'scale('+str(arrowsize)+','+str(arrowsize)+')" freecad:skip="1" '
+            svg += 'fill="'+ color +'" stroke="none" '
+            svg += 'style="stroke-miterlimit:4;stroke-dasharray:none" '
+            svg += 'd="M -1 -2 L 0 2 L 1 2 L 0 -2 Z"/>\n'
         else:
             print("getSVG: arrow type not implemented")
         return svg
@@ -2000,15 +2056,21 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         if techdraw:
             svg = ""
             for i in range(len(text)):
+                t = text[i]
+                if not isinstance(t,unicode):
+                    t = t.decode("utf8")
+                # possible workaround if UTF8 is unsupported
+                #    import unicodedata
+                #    t = u"".join([c for c in unicodedata.normalize("NFKD",t) if not unicodedata.combining(c)]).encode("utf8")
                 svg += '<text fill="' + color +'" font-size="' + str(fontsize) + '" '
                 svg += 'style="text-anchor:'+anchor+';text-align:'+align.lower()+';'
                 svg += 'font-family:'+ fontname +'" '
                 svg += 'transform="rotate('+str(math.degrees(angle))
                 svg += ','+ str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ') '
-                svg += '" freecad:skip="1"'
-                svg += '>\n' + text[i] + '</text>\n'            
-        else:            
+                svg += 'translate(' + str(base.x) + ',' + str(base.y+linespacing*i) + ')" '
+                #svg += '" freecad:skip="1"'
+                svg += '>\n' + t + '</text>\n'
+        else:
             svg = '<text fill="'
             svg += color +'" font-size="'
             svg += str(fontsize) + '" '
@@ -2017,14 +2079,14 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
             svg += 'transform="rotate('+str(math.degrees(angle))
             svg += ','+ str(base.x) + ',' + str(base.y) + ') '
             if flip:
-                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(base.y) + ')'
             else:
-                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ') '
+                svg += 'translate(' + str(base.x) + ',' + str(-base.y) + ')'
             #svg += 'scale('+str(tmod/2000)+',-'+str(tmod/2000)+') '
             if flip and (not techdraw):
-                svg += 'scale(1,-1) '
+                svg += ' scale(1,-1) '
             else:
-                svg += 'scale(1,1) '
+                svg += ' scale(1,1) '
             svg += '" freecad:skip="1"'
             svg += '>\n'
             if len(text) == 1:
@@ -2051,7 +2113,12 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
         pass
 
     elif isinstance(obj,Part.Shape):
-        fill = 'url(#'+fillstyle+')'
+        if "#" in fillstyle:
+            fill = fillstyle
+        elif fillstyle == "shape color":
+            fill = "#888888"
+        else:
+            fill = 'url(#'+fillstyle+')'
         lstyle = getLineStyle()
         svg += getPath(obj.Edges,pathname="")
 
@@ -2083,12 +2150,19 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                     #elif (tangle <= -math.pi/2) or (tangle > math.pi/2):
                     #    tangle = tangle+math.pi
                     #tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
+                    if rotation != 0:
+                        #print "dim: tangle:",tangle," rot: ",rotation," text: ",prx.string
+                        if abs(tangle+math.radians(rotation)) < 0.0001:
+                            tangle += math.pi
+                            tbase = tbase.add(DraftVecUtils.rotate(Vector(0,2/scale,0),tangle))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
                     svg += 'L '+str(p3.x)+' '+str(p3.y)+' '
                     svg += 'L '+str(p4.x)+' '+str(p4.y)+'" '
                 else:
                     tangle = 0
+                    if rotation != 0:
+                        tangle = -math.radians(rotation)
                     tbase = tbase.add(Vector(0,-2.0/scale,0))
                     svg += 'd="M '+str(p1.x)+' '+str(p1.y)+' '
                     svg += 'L '+str(p2.x)+' '+str(p2.y)+' '
@@ -2217,21 +2291,40 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
                         svg += '</text>\n'
                         n += 1
 
+    elif getType(obj) == "Pipe":
+        fill = stroke
+        lstyle = getLineStyle()
+        if obj.Base and obj.Diameter:
+            svg += getPath(obj.Base.Shape.Edges)
+        for f in obj.Shape.Faces:
+            if len(f.Edges) == 1:
+                if isinstance(f.Edges[0].Curve,Part.Circle):
+                    svg += getCircle(f.Edges[0])
+
+    elif getType(obj) == "PipeConnector":
+        pass
+
     elif getType(obj) == "Space":
         "returns an SVG fragment for the text of a space"
         c = getrgb(obj.ViewObject.TextColor)
         n = obj.ViewObject.FontName
         a = 0
+        if rotation != 0:
+            a = math.radians(rotation)
         t1 = obj.ViewObject.Proxy.text1.string.getValues()
         t2 = obj.ViewObject.Proxy.text2.string.getValues()
         scale = obj.ViewObject.FirstLine.Value/obj.ViewObject.FontSize.Value
         f1 = fontsize*scale
         p2 = FreeCAD.Vector(obj.ViewObject.Proxy.coords.translation.getValue().getValue())
-        p1 = p2.add(FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue()))
+        lspc = FreeCAD.Vector(obj.ViewObject.Proxy.header.translation.getValue().getValue())
+        p1 = p2.add(lspc)
         j = obj.ViewObject.TextAlign
         svg += getText(c,f1,n,a,getProj(p1),t1,linespacing,j,flip=True)
         if t2:
-            svg += getText(c,fontsize,n,a,getProj(p2),t2,linespacing,j,flip=True)
+            ofs = FreeCAD.Vector(0,lspc.Length,0)
+            if a:
+                ofs = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),-rotation).multVec(ofs)
+            svg += getText(c,fontsize,n,a,getProj(p1).add(ofs),t2,linespacing,j,flip=True)
 
     elif obj.isDerivedFrom('Part::Feature'):
         if obj.Shape.isNull():
@@ -3330,10 +3423,8 @@ class _ViewProviderDraft:
         from DraftTools import translate
         vobj.Proxy = self
         self.Object = vobj.Object
-        vobj.addProperty("App::PropertyEnumeration","Pattern",
-                        "Draft","Defines a hatch pattern")
-        vobj.addProperty("App::PropertyFloat","PatternSize",
-                        "Draft","Sets the size of the pattern")
+        vobj.addProperty("App::PropertyEnumeration","Pattern","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a hatch pattern"))
+        vobj.addProperty("App::PropertyFloat","PatternSize","Draft",QT_TRANSLATE_NOOP("App::Property","Sets the size of the pattern"))
         vobj.Pattern = ["None"]+list(svgpatterns().keys())
         vobj.PatternSize = 1
 
@@ -3470,14 +3561,15 @@ class _Dimension(_DraftObject):
     "The Draft Dimension object"
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Dimension")
-        obj.addProperty("App::PropertyVectorDistance","Start","Draft","Startpoint of dimension")
-        obj.addProperty("App::PropertyVectorDistance","End","Draft","Endpoint of dimension")
-        obj.addProperty("App::PropertyVector","Normal","Draft","the normal direction of this dimension")
-        obj.addProperty("App::PropertyVector","Direction","Draft","the normal direction of this dimension")
-        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft","Point through which the dimension line passes")
-        obj.addProperty("App::PropertyLink","Support","Draft","The object measured by this dimension")
-        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft","The geometry this dimension is linked to")
-        obj.addProperty("App::PropertyLength","Distance","Draft","The measurement of this dimension")
+        obj.addProperty("App::PropertyVectorDistance","Start","Draft",QT_TRANSLATE_NOOP("App::Property","Startpoint of dimension"))
+        obj.addProperty("App::PropertyVectorDistance","End","Draft",QT_TRANSLATE_NOOP("App::Property","Endpoint of dimension"))
+        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","the normal direction of this dimension"))
+        obj.addProperty("App::PropertyVector","Direction","Draft",QT_TRANSLATE_NOOP("App::Property","the normal direction of this dimension"))
+        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft",QT_TRANSLATE_NOOP("App::Property","Point through which the dimension line passes"))
+        obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
+        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
+        obj.addProperty("App::PropertyLength","Distance","Draft",QT_TRANSLATE_NOOP("App::Property","The measurement of this dimension"))
+        obj.addProperty("App::PropertyBool","Diameter","Draft",QT_TRANSLATE_NOOP("App::Property","For arc/circle measurements, false = radius, true = diameter"))
         obj.Start = FreeCAD.Vector(0,0,0)
         obj.End = FreeCAD.Vector(1,0,0)
         obj.Dimline = FreeCAD.Vector(0,1,0)
@@ -3491,29 +3583,47 @@ class _Dimension(_DraftObject):
             obj.setEditorMode('Support',2)
 
     def execute(self, obj):
+        import DraftGeomUtils
+        # set start point and end point according to the linked geometry
         if obj.LinkedGeometry:
-            if "Edge" in obj.LinkedGeometry[0][1]:
-                n = int(obj.LinkedGeometry[0][1][4:])-1
-                if len(obj.LinkedGeometry) > 1:
-                    c = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Center
-                    r = obj.LinkedGeometry[0][0].Shape.Edges[n].Curve.Radius
-                    ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
-                    if "Center" in obj.LinkedGeometry[1][1]:
-                        obj.Start = c
-                        obj.End = c.add(ray)
-                    elif "Diameter" in obj.LinkedGeometry[1][1]:
-                        obj.Start = c.add(ray.negative())
-                        obj.End = c.add(ray)
-                else:
-                    obj.Start = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[0].Point
-                    obj.End = obj.LinkedGeometry[0][0].Shape.Edges[n].Vertexes[-1].Point
-            elif "Vertex" in obj.LinkedGeometry[0][1]:
-                n = int(obj.LinkedGeometry[0][1][6:])-1
-                obj.Start = obj.LinkedGeometry[0][0].Shape.Vertexes[n].Point
-                if len(obj.LinkedGeometry) > 1:
-                    if "Vertex" in obj.LinkedGeometry[1][1]:
-                        n = int(obj.LinkedGeometry[1][1][6:])-1
-                        obj.End = obj.LinkedGeometry[1][0].Shape.Vertexes[n].Point
+            if len(obj.LinkedGeometry) == 1:
+                lobj = obj.LinkedGeometry[0][0]
+                lsub = obj.LinkedGeometry[0][1]
+                if len(lsub) == 1:
+                    if "Edge" in lsub[0]:
+                        n = int(lsub[0][4:])-1
+                        edge = lobj.Shape.Edges[n]
+                        if DraftGeomUtils.geomType(edge) == "Line":
+                            obj.Start = edge.Vertexes[0].Point
+                            obj.End = edge.Vertexes[-1].Point
+                        elif DraftGeomUtils.geomType(edge) == "Circle":
+                            c = edge.Curve.Center
+                            r = edge.Curve.Radius
+                            ray = DraftVecUtils.scaleTo(obj.Dimline.sub(c),r)
+                            if hasattr(obj,"Diameter"):
+                                if obj.Diameter:
+                                    obj.Start = c.add(ray.negative())
+                                    obj.End = c.add(ray)
+                                else:
+                                    obj.Start = c
+                                    obj.End = c.add(ray)
+                elif len(lsub) == 2:
+                    if ("Vertex" in lsub[0]) and ("Vertex" in lsub[1]):
+                        n1 = int(lsub[0][6:])-1
+                        n2 = int(lsub[1][6:])-1
+                        obj.Start = lobj.Shape.Vertexes[n1].Point
+                        obj.End = lobj.Shape.Vertexes[n2].Point
+            elif len(obj.LinkedGeometry) == 2:
+                lobj1 = obj.LinkedGeometry[0][0]
+                lobj2 = obj.LinkedGeometry[1][0]
+                lsub1 = obj.LinkedGeometry[0][1]
+                lsub2 = obj.LinkedGeometry[1][1]
+                if (len(lsub1) == 1) and (len(lsub2) == 1):
+                    if ("Vertex" in lsub1[0]) and ("Vertex" in lsub2[1]):
+                        n1 = int(lsub1[0][6:])-1
+                        n2 = int(lsub2[0][6:])-1
+                        obj.Start = lobj1.Shape.Vertexes[n1].Point
+                        obj.End = lobj2.Shape.Vertexes[n2].Point
         if obj.ViewObject:
             obj.ViewObject.update()
 
@@ -3521,19 +3631,21 @@ class _Dimension(_DraftObject):
 class _ViewProviderDimension(_ViewProviderDraft):
     "A View Provider for the Draft Dimension object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
-        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
-        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
-        obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
-        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
-        obj.addProperty("App::PropertyString","FontName","Draft","Font name")
-        obj.addProperty("App::PropertyFloat","LineWidth","Draft","Line width")
-        obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
-        obj.addProperty("App::PropertyDistance","ExtLines","Draft","Length of the extension lines")
-        obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
-        obj.addProperty("App::PropertyBool","ShowUnit","Draft","Show the unit suffix")
-        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
-        obj.addProperty("App::PropertyString","Override","Draft","Text override. Use $dim to insert the dimension length")
+        obj.addProperty("App::PropertyLength","FontSize","Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+        obj.addProperty("App::PropertyInteger","Decimals","Draft",QT_TRANSLATE_NOOP("App::Property","The number of decimals to show"))
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+        obj.addProperty("App::PropertyLength","TextSpacing","Draft",QT_TRANSLATE_NOOP("App::Property","The spacing between the text and the dimension line"))
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+        obj.addProperty("App::PropertyString","FontName","Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+        obj.addProperty("App::PropertyFloat","LineWidth","Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
+        obj.addProperty("App::PropertyColor","LineColor","Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
+        obj.addProperty("App::PropertyDistance","ExtLines","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the extension lines"))
+        obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
+        obj.addProperty("App::PropertyBool","FlipText","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension text 180 degrees"))
+        obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
+        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
+        obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use $dim to insert the dimension length"))
+        obj.addProperty("App::PropertyString","UnitOverride","Draft",QT_TRANSLATE_NOOP("App::Property","A unit to express the measurement. Leave blank for system default"))
         obj.FontSize = getParam("textheight",0.20)
         obj.TextSpacing = getParam("dimspacing",0.05)
         obj.FontName = getParam("textfont","")
@@ -3629,7 +3741,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         proj = None
                     else:
                         base = Part.Line(self.p2,self.p3).toShape()
-                        proj = DraftGeomUtils.findDistance(self.p1,base)
+                        proj = DraftGeomUtils.findDistance(self.p1,base).negative()
             if not base:
                 if DraftVecUtils.equals(self.p1,self.p4):
                     base = None
@@ -3640,20 +3752,22 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
                     self.p3 = self.p4.add(proj.negative())
-                    if hasattr(obj.ViewObject,"ExtLines"):
-                        dmax = obj.ViewObject.ExtLines.Value
-                        if dmax and (proj.Length > dmax):
-                            if (dmax > 0):
-                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
-                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
-                            else:
-                                rest = proj.Length + dmax
-                                self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,rest))
-                                self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,rest))
                 else:
                     self.p2 = self.p1
                     self.p3 = self.p4
-                    proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
+            if proj:
+                if hasattr(obj.ViewObject,"ExtLines"):
+                    dmax = obj.ViewObject.ExtLines.Value
+                    if dmax and (proj.Length > dmax):
+                        if (dmax > 0):
+                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,dmax))
+                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,dmax))
+                        else:
+                            rest = proj.Length + dmax
+                            self.p1 = self.p2.add(DraftVecUtils.scaleTo(proj,rest))
+                            self.p4 = self.p3.add(DraftVecUtils.scaleTo(proj,rest))
+            else:
+                proj = (self.p3.sub(self.p2)).cross(Vector(0,0,1))
 
             # calculate the arrows positions
             self.trans1.translation.setValue((self.p2.x,self.p2.y,self.p2.z))
@@ -3669,7 +3783,7 @@ class _ViewProviderDimension(_ViewProviderDraft):
                     else:
                         norm = Vector(0,0,1)
                 else:
-                    norm = obj.Normal
+                    norm = FreeCAD.Vector(obj.Normal)
             else:
                 if proj:
                     norm = (self.p3.sub(self.p2).cross(proj)).negative()
@@ -3692,34 +3806,41 @@ class _ViewProviderDimension(_ViewProviderDraft):
                 offset = DraftVecUtils.scaleTo(v1,obj.ViewObject.TextSpacing.Value)
             else:
                 offset = DraftVecUtils.scaleTo(v1,0.05)
-
+            rott = rot1
+            if hasattr(obj.ViewObject,"FlipText"):
+                if obj.ViewObject.FlipText:
+                    rott = FreeCAD.Rotation(*rott).multiply(FreeCAD.Rotation(norm,180)).Q
+                    offset = offset.negative()
             # setting text
             try:
                 m = obj.ViewObject.DisplayMode
             except: # swallow all exceptions here since it always fails on first run (Displaymode enum no set yet)
                 m = ["2D","3D"][getParam("dimstyle",0)]
-            if m== "3D":
+            if m == "3D":
                 offset = offset.negative()
             self.tbase = (self.p2.add((self.p3.sub(self.p2).multiply(0.5)))).add(offset)
             if hasattr(obj.ViewObject,"TextPosition"):
                 if not DraftVecUtils.isNull(obj.ViewObject.TextPosition):
                     self.tbase = obj.ViewObject.TextPosition
             self.textpos.translation.setValue([self.tbase.x,self.tbase.y,self.tbase.z])
-            self.textpos.rotation = coin.SbRotation(rot1[0],rot1[1],rot1[2],rot1[3])
+            self.textpos.rotation = coin.SbRotation(rott[0],rott[1],rott[2],rott[3])
             su = True
             if hasattr(obj.ViewObject,"ShowUnit"):
                 su = obj.ViewObject.ShowUnit
             # set text value
             l = self.p3.sub(self.p2).Length
+            unit = None
+            if hasattr(obj.ViewObject,"UnitOverride"):
+                unit = obj.ViewObject.UnitOverride
             # special representation if "Building US" scheme
             if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("UserSchema",0) == 5:
                 s = FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString
                 self.string = s.replace("' ","'- ")
                 self.string = s.replace("+"," ")
             elif hasattr(obj.ViewObject,"Decimals"):
-                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su)
+                self.string = DraftGui.displayExternal(l,obj.ViewObject.Decimals,'Length',su,unit)
             else:
-                self.string = DraftGui.displayExternal(l,None,'Length',su)
+                self.string = DraftGui.displayExternal(l,None,'Length',su,unit)
             if hasattr(obj.ViewObject,"Override"):
                 if obj.ViewObject.Override:
                     self.string = obj.ViewObject.Override.replace("$dim",\
@@ -3871,14 +3992,14 @@ class _AngularDimension(_DraftObject):
     "The Draft AngularDimension object"
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"AngularDimension")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft","Start angle of the dimension")
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the dimension")
-        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft","Point through which the dimension line passes")
-        obj.addProperty("App::PropertyVectorDistance","Center","Draft","The center point of this dimension")
-        obj.addProperty("App::PropertyVector","Normal","Draft","The normal direction of this dimension")
-        obj.addProperty("App::PropertyLink","Support","Draft","The object measured by this dimension")
-        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft","The geometry this dimension is linked to")
-        obj.addProperty("App::PropertyAngle","Angle","Draft","The measurement of this dimension")
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the dimension"))
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the dimension"))
+        obj.addProperty("App::PropertyVectorDistance","Dimline","Draft",QT_TRANSLATE_NOOP("App::Property","Point through which the dimension line passes"))
+        obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","The center point of this dimension"))
+        obj.addProperty("App::PropertyVector","Normal","Draft",QT_TRANSLATE_NOOP("App::Property","The normal direction of this dimension"))
+        obj.addProperty("App::PropertyLink","Support","Draft",QT_TRANSLATE_NOOP("App::Property","The object measured by this dimension"))
+        obj.addProperty("App::PropertyLinkSubList","LinkedGeometry","Draft",QT_TRANSLATE_NOOP("App::Property","The geometry this dimension is linked to"))
+        obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","The measurement of this dimension"))
         obj.FirstAngle = 0
         obj.LastAngle = 90
         obj.Dimline = FreeCAD.Vector(0,1,0)
@@ -3899,18 +4020,18 @@ class _AngularDimension(_DraftObject):
 class _ViewProviderAngularDimension(_ViewProviderDraft):
     "A View Provider for the Draft Angular Dimension object"
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength","FontSize","Draft","Font size")
-        obj.addProperty("App::PropertyInteger","Decimals","Draft","The number of decimals to show")
-        obj.addProperty("App::PropertyString","FontName","Draft","Font name")
-        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
-        obj.addProperty("App::PropertyLength","TextSpacing","Draft","The spacing between the text and the dimension line")
-        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
-        obj.addProperty("App::PropertyFloat","LineWidth","Draft","Line width")
-        obj.addProperty("App::PropertyColor","LineColor","Draft","Line color")
-        obj.addProperty("App::PropertyBool","FlipArrows","Draft","Rotate the dimension arrows 180 degrees")
-        obj.addProperty("App::PropertyBool","ShowUnit","Draft","Show the unit suffix")
-        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft","The position of the text. Leave (0,0,0) for automatic position")
-        obj.addProperty("App::PropertyString","Override","Draft","Text override. Use 'dim' to insert the dimension length")
+        obj.addProperty("App::PropertyLength","FontSize","Draft",QT_TRANSLATE_NOOP("App::Property","Font size"))
+        obj.addProperty("App::PropertyInteger","Decimals","Draft",QT_TRANSLATE_NOOP("App::Property","The number of decimals to show"))
+        obj.addProperty("App::PropertyString","FontName","Draft",QT_TRANSLATE_NOOP("App::Property","Font name"))
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+        obj.addProperty("App::PropertyLength","TextSpacing","Draft",QT_TRANSLATE_NOOP("App::Property","The spacing between the text and the dimension line"))
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
+        obj.addProperty("App::PropertyFloat","LineWidth","Draft",QT_TRANSLATE_NOOP("App::Property","Line width"))
+        obj.addProperty("App::PropertyColor","LineColor","Draft",QT_TRANSLATE_NOOP("App::Property","Line color"))
+        obj.addProperty("App::PropertyBool","FlipArrows","Draft",QT_TRANSLATE_NOOP("App::Property","Rotate the dimension arrows 180 degrees"))
+        obj.addProperty("App::PropertyBool","ShowUnit","Draft",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
+        obj.addProperty("App::PropertyVectorDistance","TextPosition","Draft",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
+        obj.addProperty("App::PropertyString","Override","Draft",QT_TRANSLATE_NOOP("App::Property","Text override. Use 'dim' to insert the dimension length"))
         obj.FontSize = getParam("textheight",0.20)
         obj.FontName = getParam("textfont","")
         obj.TextSpacing = getParam("dimspacing",0.05)
@@ -4212,13 +4333,13 @@ class _Rectangle(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Rectangle")
-        obj.addProperty("App::PropertyDistance","Length","Draft","Length of the rectangle")
-        obj.addProperty("App::PropertyDistance","Height","Draft","Height of the rectange")
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
-        obj.addProperty("App::PropertyInteger","Rows","Draft","Horizontal subdivisions of this rectange")
-        obj.addProperty("App::PropertyInteger","Columns","Draft","Vertical subdivisions of this rectange")
+        obj.addProperty("App::PropertyDistance","Length","Draft",QT_TRANSLATE_NOOP("App::Property","Length of the rectangle"))
+        obj.addProperty("App::PropertyDistance","Height","Draft",QT_TRANSLATE_NOOP("App::Property","Height of the rectange"))
+        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
+        obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
+        obj.addProperty("App::PropertyInteger","Rows","Draft",QT_TRANSLATE_NOOP("App::Property","Horizontal subdivisions of this rectange"))
+        obj.addProperty("App::PropertyInteger","Columns","Draft",QT_TRANSLATE_NOOP("App::Property","Vertical subdivisions of this rectange"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Length=1
         obj.Height=1
@@ -4294,18 +4415,17 @@ class _Rectangle(_DraftObject):
 class _ViewProviderRectangle(_ViewProviderDraft):
     def __init__(self,vobj):
         _ViewProviderDraft.__init__(self,vobj)
-        vobj.addProperty("App::PropertyFile","TextureImage",
-                        "Draft","Defines a texture image (overrides hatch patterns)")
+        vobj.addProperty("App::PropertyFile","TextureImage","Draft",QT_TRANSLATE_NOOP("App::Property","Defines a texture image (overrides hatch patterns)"))
 
 class _Circle(_DraftObject):
     "The Circle object"
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Circle")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft","Start angle of the arc")
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the arc (for a full circle, give it same value as First Angle)")
-        obj.addProperty("App::PropertyLength","Radius","Draft","Radius of the circle")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the arc"))
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
+        obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the circle"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4328,11 +4448,11 @@ class _Ellipse(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Ellipse")
-        obj.addProperty("App::PropertyAngle","FirstAngle","Draft","Start angle of the arc")
-        obj.addProperty("App::PropertyAngle","LastAngle","Draft","End angle of the arc (for a full circle, give it same value as First Angle)")
-        obj.addProperty("App::PropertyLength","MinorRadius","Draft","The minor radius of the ellipse")
-        obj.addProperty("App::PropertyLength","MajorRadius","Draft","The major radius of the ellipse")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.addProperty("App::PropertyAngle","FirstAngle","Draft",QT_TRANSLATE_NOOP("App::Property","Start angle of the arc"))
+        obj.addProperty("App::PropertyAngle","LastAngle","Draft",QT_TRANSLATE_NOOP("App::Property","End angle of the arc (for a full circle, give it same value as First Angle)"))
+        obj.addProperty("App::PropertyLength","MinorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The minor radius of the ellipse"))
+        obj.addProperty("App::PropertyLength","MajorRadius","Draft",QT_TRANSLATE_NOOP("App::Property","The major radius of the ellipse"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
         obj.MakeFace = getParam("fillmode",True)
 
     def execute(self, obj):
@@ -4365,17 +4485,17 @@ class _Wire(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Wire")
-        obj.addProperty("App::PropertyVectorList","Points","Draft","The vertices of the wire")
-        obj.addProperty("App::PropertyBool","Closed","Draft","If the wire is closed or not")
-        obj.addProperty("App::PropertyLink","Base","Draft","The base object is the wire is formed from 2 objects")
-        obj.addProperty("App::PropertyLink","Tool","Draft","The tool object is the wire is formed from 2 objects")
-        obj.addProperty("App::PropertyVectorDistance","Start","Draft","The start point of this line")
-        obj.addProperty("App::PropertyVectorDistance","End","Draft","The end point of this line")
-        obj.addProperty("App::PropertyLength","Length","Draft","The length of this line")
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this object is closed")
-        obj.addProperty("App::PropertyInteger","Subdivisions","Draft","The number of subdivisions of each edge")
+        obj.addProperty("App::PropertyVectorList","Points","Draft",QT_TRANSLATE_NOOP("App::Property","The vertices of the wire"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the wire is closed or not"))
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object is the wire is formed from 2 objects"))
+        obj.addProperty("App::PropertyLink","Tool","Draft",QT_TRANSLATE_NOOP("App::Property","The tool object is the wire is formed from 2 objects"))
+        obj.addProperty("App::PropertyVectorDistance","Start","Draft",QT_TRANSLATE_NOOP("App::Property","The start point of this line"))
+        obj.addProperty("App::PropertyVectorDistance","End","Draft",QT_TRANSLATE_NOOP("App::Property","The end point of this line"))
+        obj.addProperty("App::PropertyLength","Length","Draft",QT_TRANSLATE_NOOP("App::Property","The length of this line"))
+        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
+        obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this object is closed"))
+        obj.addProperty("App::PropertyInteger","Subdivisions","Draft",QT_TRANSLATE_NOOP("App::Property","The number of subdivisions of each edge"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
 
@@ -4528,9 +4648,9 @@ class _ViewProviderWire(_ViewProviderDraft):
     "A View Provider for the Wire object"
     def __init__(self, obj):
         _ViewProviderDraft.__init__(self,obj)
-        obj.addProperty("App::PropertyBool","EndArrow","Draft","Displays a dim symbol at the end of the wire")
-        obj.addProperty("App::PropertyLength","ArrowSize","Draft","Arrow size")
-        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft","Arrow type")
+        obj.addProperty("App::PropertyBool","EndArrow","Draft",QT_TRANSLATE_NOOP("App::Property","Displays a dim symbol at the end of the wire"))
+        obj.addProperty("App::PropertyLength","ArrowSize","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow size"))
+        obj.addProperty("App::PropertyEnumeration","ArrowType","Draft",QT_TRANSLATE_NOOP("App::Property","Arrow type"))
         obj.ArrowSize = getParam("arrowsize",0.1)
         obj.ArrowType = arrowtypes
         obj.ArrowType = arrowtypes[getParam("dimsymbol",0)]
@@ -4603,12 +4723,12 @@ class _Polygon(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Polygon")
-        obj.addProperty("App::PropertyInteger","FacesNumber","Draft","Number of faces")
-        obj.addProperty("App::PropertyLength","Radius","Draft","Radius of the control circle")
-        obj.addProperty("App::PropertyEnumeration","DrawMode","Draft","How the polygon must be drawn from the control circle")
-        obj.addProperty("App::PropertyLength","FilletRadius","Draft","Radius to use to fillet the corners")
-        obj.addProperty("App::PropertyLength","ChamferSize","Draft","Size of the chamfer to give to the corners")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face")
+        obj.addProperty("App::PropertyInteger","FacesNumber","Draft",QT_TRANSLATE_NOOP("App::Property","Number of faces"))
+        obj.addProperty("App::PropertyLength","Radius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius of the control circle"))
+        obj.addProperty("App::PropertyEnumeration","DrawMode","Draft",QT_TRANSLATE_NOOP("App::Property","How the polygon must be drawn from the control circle"))
+        obj.addProperty("App::PropertyLength","FilletRadius","Draft",QT_TRANSLATE_NOOP("App::Property","Radius to use to fillet the corners"))
+        obj.addProperty("App::PropertyLength","ChamferSize","Draft",QT_TRANSLATE_NOOP("App::Property","Size of the chamfer to give to the corners"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face"))
         obj.MakeFace = getParam("fillmode",True)
         obj.DrawMode = ['inscribed','circumscribed']
         obj.FacesNumber = 0
@@ -4653,15 +4773,15 @@ class _DrawingView(_DraftObject):
     "The Draft DrawingView object"
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"DrawingView")
-        obj.addProperty("App::PropertyVector","Direction","Shape View","Projection direction")
-        obj.addProperty("App::PropertyFloat","LineWidth","View Style","The width of the lines inside this object")
-        obj.addProperty("App::PropertyLength","FontSize","View Style","The size of the texts inside this object")
-        obj.addProperty("App::PropertyLength","LineSpacing","View Style","The spacing between lines of text")
-        obj.addProperty("App::PropertyColor","LineColor","View Style","The color of the projected objects")
-        obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","FillStyle","View Style","Shape Fill Style")
-        obj.addProperty("App::PropertyEnumeration","LineStyle","View Style","Line Style")
-        obj.addProperty("App::PropertyBool","AlwaysOn","View Style","If checked, source objects are displayed regardless of being visible in the 3D model")
+        obj.addProperty("App::PropertyVector","Direction","Shape View",QT_TRANSLATE_NOOP("App::Property","Projection direction"))
+        obj.addProperty("App::PropertyFloat","LineWidth","View Style",QT_TRANSLATE_NOOP("App::Property","The width of the lines inside this object"))
+        obj.addProperty("App::PropertyLength","FontSize","View Style",QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
+        obj.addProperty("App::PropertyLength","LineSpacing","View Style",QT_TRANSLATE_NOOP("App::Property","The spacing between lines of text"))
+        obj.addProperty("App::PropertyColor","LineColor","View Style",QT_TRANSLATE_NOOP("App::Property","The color of the projected objects"))
+        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyEnumeration","FillStyle","View Style",QT_TRANSLATE_NOOP("App::Property","Shape Fill Style"))
+        obj.addProperty("App::PropertyEnumeration","LineStyle","View Style",QT_TRANSLATE_NOOP("App::Property","Line Style"))
+        obj.addProperty("App::PropertyBool","AlwaysOn","View Style",QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
         obj.FillStyle = ['shape color'] + list(svgpatterns().keys())
         obj.LineStyle = ['Solid','Dashed','Dotted','Dashdot']
         obj.LineWidth = 0.35
@@ -4709,23 +4829,16 @@ class _DrawingView(_DraftObject):
 
     def getDXF(self,obj):
         "returns a DXF fragment"
-        result = ""
-        if obj.Source.isDerivedFrom("App::DocumentObjectGroup"):
-            for o in obj.Source.Group:
-                if o.ViewObject.isVisible():
-                    result += getDXF(o,obj.Direction)
-        else:
-            result += getDXF(obj.Source,obj.Direction)
-        return result
+        return getDXF(obj)
 
 class _BSpline(_DraftObject):
     "The BSpline object"
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"BSpline")
-        obj.addProperty("App::PropertyVectorList","Points","Draft", "The points of the b-spline")
-        obj.addProperty("App::PropertyBool","Closed","Draft","If the b-spline is closed or not")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this spline is closed")
+        obj.addProperty("App::PropertyVectorList","Points","Draft", QT_TRANSLATE_NOOP("App::Property","The points of the b-spline"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the b-spline is closed or not"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this spline is closed"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Points = []
@@ -4733,7 +4846,7 @@ class _BSpline(_DraftObject):
 
     def assureProperties(self, obj): # for Compatibility with older versions
         if not hasattr(obj, "Parameterization"):
-            obj.addProperty("App::PropertyFloat","Parameterization","Draft","Parameterization factor")
+            obj.addProperty("App::PropertyFloat","Parameterization","Draft",QT_TRANSLATE_NOOP("App::Property","Parameterization factor"))
             obj.Parameterization = 1.0
             self.knotSeq = []
 
@@ -4798,15 +4911,11 @@ class _BezCurve(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"BezCurve")
-        obj.addProperty("App::PropertyVectorList","Points","Draft",
-                        "The points of the Bezier curve")
-        obj.addProperty("App::PropertyInteger","Degree","Draft",
-                        "The degree of the Bezier function")
-        obj.addProperty("App::PropertyIntegerList","Continuity","Draft",
-                        "Continuity")
-        obj.addProperty("App::PropertyBool","Closed","Draft",
-                        "If the Bezier curve should be closed or not")
-        obj.addProperty("App::PropertyBool","MakeFace","Draft","Create a face if this curve is closed")
+        obj.addProperty("App::PropertyVectorList","Points","Draft",QT_TRANSLATE_NOOP("App::Property","The points of the Bezier curve"))
+        obj.addProperty("App::PropertyInteger","Degree","Draft",QT_TRANSLATE_NOOP("App::Property","The degree of the Bezier function"))
+        obj.addProperty("App::PropertyIntegerList","Continuity","Draft",QT_TRANSLATE_NOOP("App::Property","Continuity"))
+        obj.addProperty("App::PropertyBool","Closed","Draft",QT_TRANSLATE_NOOP("App::Property","If the Bezier curve should be closed or not"))
+        obj.addProperty("App::PropertyBool","MakeFace","Draft",QT_TRANSLATE_NOOP("App::Property","Create a face if this curve is closed"))
         obj.MakeFace = getParam("fillmode",True)
         obj.Closed = False
         obj.Degree = 3
@@ -4926,7 +5035,7 @@ class _Block(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"Block")
-        obj.addProperty("App::PropertyLinkList","Components","Draft","The components of this block")
+        obj.addProperty("App::PropertyLinkList","Components","Draft",QT_TRANSLATE_NOOP("App::Property","The components of this block"))
 
     def execute(self, obj):
         import Part
@@ -4944,13 +5053,13 @@ class _Shape2DView(_DraftObject):
     "The Shape2DView object"
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLink","Base","Draft","The base object this 2D view must represent")
-        obj.addProperty("App::PropertyVector","Projection","Draft","The projection vector of this object")
-        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft","The way the viewed object must be projected")
-        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft","The indices of the faces to be projected in Individual Faces mode")
-        obj.addProperty("App::PropertyBool","HiddenLines","Draft","Show hidden lines")
-        obj.addProperty("App::PropertyBool","Tessellation","Draft","Tessellate Ellipses and BSplines into line segments")
-        obj.addProperty("App::PropertyFloat","SegmentLength","Draft","Length of line segments if tessellating Ellipses or BSplines into line segments")
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object this 2D view must represent"))
+        obj.addProperty("App::PropertyVector","Projection","Draft",QT_TRANSLATE_NOOP("App::Property","The projection vector of this object"))
+        obj.addProperty("App::PropertyEnumeration","ProjectionMode","Draft",QT_TRANSLATE_NOOP("App::Property","The way the viewed object must be projected"))
+        obj.addProperty("App::PropertyIntegerList","FaceNumbers","Draft",QT_TRANSLATE_NOOP("App::Property","The indices of the faces to be projected in Individual Faces mode"))
+        obj.addProperty("App::PropertyBool","HiddenLines","Draft",QT_TRANSLATE_NOOP("App::Property","Show hidden lines"))
+        obj.addProperty("App::PropertyBool","Tessellation","Draft",QT_TRANSLATE_NOOP("App::Property","Tessellate Ellipses and BSplines into line segments"))
+        obj.addProperty("App::PropertyFloat","SegmentLength","Draft",QT_TRANSLATE_NOOP("App::Property","Length of line segments if tessellating Ellipses or BSplines into line segments"))
         obj.Projection = Vector(0,0,1)
         obj.ProjectionMode = ["Solid","Individual Faces","Cutlines","Cutfaces"]
         obj.HiddenLines = False
@@ -5081,20 +5190,20 @@ class _Array(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Array")
-        obj.addProperty("App::PropertyLink","Base","Draft","The base object that must be duplicated")
-        obj.addProperty("App::PropertyEnumeration","ArrayType","Draft","The type of array to create")
-        obj.addProperty("App::PropertyVector","Axis","Draft","The axis direction")
-        obj.addProperty("App::PropertyInteger","NumberX","Draft","Number of copies in X direction")
-        obj.addProperty("App::PropertyInteger","NumberY","Draft","Number of copies in Y direction")
-        obj.addProperty("App::PropertyInteger","NumberZ","Draft","Number of copies in Z direction")
-        obj.addProperty("App::PropertyInteger","NumberPolar","Draft","Number of copies")
-        obj.addProperty("App::PropertyVectorDistance","IntervalX","Draft","Distance and orientation of intervals in X direction")
-        obj.addProperty("App::PropertyVectorDistance","IntervalY","Draft","Distance and orientation of intervals in Y direction")
-        obj.addProperty("App::PropertyVectorDistance","IntervalZ","Draft","Distance and orientation of intervals in Z direction")
-        obj.addProperty("App::PropertyVectorDistance","IntervalAxis","Draft","Distance and orientation of intervals in Axis direction")
-        obj.addProperty("App::PropertyVectorDistance","Center","Draft","Center point")
-        obj.addProperty("App::PropertyAngle","Angle","Draft","Angle to cover with copies")
-        obj.addProperty("App::PropertyBool","Fuse","Draft","Specifies if copies must be fused (slower)")
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
+        obj.addProperty("App::PropertyEnumeration","ArrayType","Draft",QT_TRANSLATE_NOOP("App::Property","The type of array to create"))
+        obj.addProperty("App::PropertyVector","Axis","Draft",QT_TRANSLATE_NOOP("App::Property","The axis direction"))
+        obj.addProperty("App::PropertyInteger","NumberX","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in X direction"))
+        obj.addProperty("App::PropertyInteger","NumberY","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Y direction"))
+        obj.addProperty("App::PropertyInteger","NumberZ","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies in Z direction"))
+        obj.addProperty("App::PropertyInteger","NumberPolar","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
+        obj.addProperty("App::PropertyVectorDistance","IntervalX","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in X direction"))
+        obj.addProperty("App::PropertyVectorDistance","IntervalY","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Y direction"))
+        obj.addProperty("App::PropertyVectorDistance","IntervalZ","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Z direction"))
+        obj.addProperty("App::PropertyVectorDistance","IntervalAxis","Draft",QT_TRANSLATE_NOOP("App::Property","Distance and orientation of intervals in Axis direction"))
+        obj.addProperty("App::PropertyVectorDistance","Center","Draft",QT_TRANSLATE_NOOP("App::Property","Center point"))
+        obj.addProperty("App::PropertyAngle","Angle","Draft",QT_TRANSLATE_NOOP("App::Property","Angle to cover with copies"))
+        obj.addProperty("App::PropertyBool","Fuse","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if copies must be fused (slower)"))
         obj.ArrayType = ['ortho','polar']
         obj.NumberX = 1
         obj.NumberY = 1
@@ -5183,12 +5292,12 @@ class _PathArray(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"PathArray")
-        obj.addProperty("App::PropertyLink","Base","Draft","The base object that must be duplicated")
-        obj.addProperty("App::PropertyLink","PathObj","Draft","The path object along which to distribute objects")
-        obj.addProperty("App::PropertyLinkSubList","PathSubs","Draft","Selected subobjects (edges) of PathObj")
-        obj.addProperty("App::PropertyInteger","Count","Draft","Number of copies")
-        obj.addProperty("App::PropertyVectorDistance","Xlate","Draft","Optional translation vector")
-        obj.addProperty("App::PropertyBool","Align","Draft","Orientation of Base along path")
+        obj.addProperty("App::PropertyLink","Base","Draft",QT_TRANSLATE_NOOP("App::Property","The base object that must be duplicated"))
+        obj.addProperty("App::PropertyLink","PathObj","Draft",QT_TRANSLATE_NOOP("App::Property","The path object along which to distribute objects"))
+        obj.addProperty("App::PropertyLinkSubList","PathSubs",QT_TRANSLATE_NOOP("App::Property","Selected subobjects (edges) of PathObj"))
+        obj.addProperty("App::PropertyInteger","Count","Draft",QT_TRANSLATE_NOOP("App::Property","Number of copies"))
+        obj.addProperty("App::PropertyVectorDistance","Xlate","Draft",QT_TRANSLATE_NOOP("App::Property","Optional translation vector"))
+        obj.addProperty("App::PropertyBool","Align","Draft",QT_TRANSLATE_NOOP("App::Property","Orientation of Base along path"))
         obj.Count = 2
         obj.PathSubs = []
         obj.Xlate = FreeCAD.Vector(0,0,0)
@@ -5218,8 +5327,10 @@ class _PathArray(_DraftObject):
         import Part
         sl = []
         for sub in obj.PathSubs:
-            e = sub[0].Shape.getElement(sub[1])
-            sl.append(e)
+            edgeNames = sub[1]
+            for n in edgeNames:
+                e = sub[0].Shape.getElement(n)
+                sl.append(e)
         return Part.Wire(sl)
 
     def getParameterFromV0(self, edge, offset):
@@ -5345,9 +5456,9 @@ class _Point(_DraftObject):
     "The Draft Point object"
     def __init__(self, obj,x=0,y=0,z=0):
         _DraftObject.__init__(self,obj,"Point")
-        obj.addProperty("App::PropertyDistance","X","Draft","Location").X = x
-        obj.addProperty("App::PropertyDistance","Y","Draft","Location").Y = y
-        obj.addProperty("App::PropertyDistance","Z","Draft","Location").Z = z
+        obj.addProperty("App::PropertyDistance","X","Draft",QT_TRANSLATE_NOOP("App::Property","X Location")).X = x
+        obj.addProperty("App::PropertyDistance","Y","Draft",QT_TRANSLATE_NOOP("App::Property","Y Location")).Y = y
+        obj.addProperty("App::PropertyDistance","Z","Draft",QT_TRANSLATE_NOOP("App::Property","Z Location")).Z = z
         mode = 2
         obj.setEditorMode('Placement',mode)
 
@@ -5383,8 +5494,8 @@ class _Clone(_DraftObject):
 
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Clone")
-        obj.addProperty("App::PropertyLinkList","Objects","Draft","The objects included in this scale object")
-        obj.addProperty("App::PropertyVector","Scale","Draft","The scale vector of this object")
+        obj.addProperty("App::PropertyLinkList","Objects","Draft",QT_TRANSLATE_NOOP("App::Property","The objects included in this scale object"))
+        obj.addProperty("App::PropertyVector","Scale","Draft",QT_TRANSLATE_NOOP("App::Property","The scale vector of this object"))
         obj.Scale = Vector(1,1,1)
 
     def execute(self,obj):
@@ -5474,11 +5585,10 @@ class _ShapeString(_DraftObject):
 
     def __init__(self, obj):
         _DraftObject.__init__(self,obj,"ShapeString")
-        obj.addProperty("App::PropertyString","String","Draft","Text string")
-        obj.addProperty("App::PropertyFile","FontFile","Draft","Font file name")
-        obj.addProperty("App::PropertyLength","Size","Draft","Height of text")
-        obj.addProperty("App::PropertyLength","Tracking","Draft",
-                        "Inter-character spacing")
+        obj.addProperty("App::PropertyString","String","Draft",QT_TRANSLATE_NOOP("App::Property","Text string"))
+        obj.addProperty("App::PropertyFile","FontFile","Draft",QT_TRANSLATE_NOOP("App::Property","Font file name"))
+        obj.addProperty("App::PropertyLength","Size","Draft",QT_TRANSLATE_NOOP("App::Property","Height of text"))
+        obj.addProperty("App::PropertyLength","Tracking","Draft",QT_TRANSLATE_NOOP("App::Property","Inter-character spacing"))
 
     def execute(self, obj):
         import Part
@@ -5607,29 +5717,46 @@ class _Facebinder(_DraftObject):
     "The Draft Facebinder object"
     def __init__(self,obj):
         _DraftObject.__init__(self,obj,"Facebinder")
-        obj.addProperty("App::PropertyLinkSubList","Faces","Draft","Linked faces")
+        obj.addProperty("App::PropertyLinkSubList","Faces","Draft",QT_TRANSLATE_NOOP("App::Property","Linked faces"))
+        obj.addProperty("App::PropertyBool","RemoveSplitter","Draft",QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed"))
+        obj.addProperty("App::PropertyDistance","Extrusion","Draft",QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces"))
 
     def execute(self,obj):
+        import Part
         pl = obj.Placement
         if not obj.Faces:
             return
         faces = []
-        for f in obj.Faces:
-            if "Face" in f[1]:
-                try:
-                    fnum = int(f[1][4:])-1
-                    faces.append(f[0].Shape.Faces[fnum])
-                except(IndexError,Part.OCCError):
-                    print("Draft: wrong face index")
-                    return
+        for sel in obj.Faces:
+            for f in sel[1]:
+                if "Face" in f:
+                    try:
+                        fnum = int(f[4:])-1
+                        faces.append(sel[0].Shape.Faces[fnum])
+                    except(IndexError,Part.OCCError):
+                        print("Draft: wrong face index")
+                        return
         if not faces:
             return
-        import Part
         try:
             if len(faces) > 1:
-                sh = faces.pop()
-                sh = sh.multiFuse(faces)
-                sh = sh.removeSplitter()
+                sh = None
+                if hasattr(obj,"Extrusion"):
+                    if obj.Extrusion.Value:
+                        for f in faces:
+                            f = f.extrude(f.normalAt(0,0).multiply(obj.Extrusion.Value))
+                            if sh:
+                                sh = sh.fuse(f)
+                            else:
+                                sh = f
+                if not sh:
+                    sh = faces.pop()
+                    sh = sh.multiFuse(faces)
+                if hasattr(obj,"RemoveSplitter"):
+                    if obj.RemoveSplitter:
+                        sh = sh.removeSplitter()
+                else:
+                    sh = sh.removeSplitter()
             else:
                 sh = faces[0]
                 sh.transformShape(sh.Matrix, True)
@@ -5745,3 +5872,5 @@ class _ViewProviderVisGroup:
                                     # touch the page if something was changed
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
                                         vobj.Object.InList[0].touch()
+
+# @}

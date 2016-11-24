@@ -22,7 +22,7 @@
 #***************************************************************************/
 
 
-'''
+TOOLTIP='''
 FreeCAD Path post-processor to output code for the Roland Modela MDX-## machines.
 
 The machine speaks RML-1, specified in 'Roland RML-1 Programming Guidelines'
@@ -44,7 +44,7 @@ if open.__module__ == '__builtin__':
 
 
 # Entrypoint used by FreeCAD
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
     "Export objects as Roland Modela code."
 
     code = ""

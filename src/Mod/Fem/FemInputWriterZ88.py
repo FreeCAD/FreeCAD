@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemMeshTools
@@ -317,3 +318,5 @@ Entries for Cuthill-McKee Z88H         Daten fuer Cuthill- McKee Programm
 
 DYNAMIC END
 '''
+
+#  @}

@@ -202,9 +202,9 @@ private:
                     Py::Float r(t[0]);
                     Py::Float g(t[1]);
                     Py::Float b(t[2]);
-                    App::Color c(static_cast<double>(r),
-                                 static_cast<double>(g),
-                                 static_cast<double>(b));
+                    App::Color c(static_cast<float>(r),
+                                 static_cast<float>(g),
+                                 static_cast<float>(b));
                     colors.push_back(c.getPackedValue());
                 }
                 mesher.setColors(colors);

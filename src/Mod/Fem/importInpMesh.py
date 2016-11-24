@@ -20,15 +20,18 @@
 # *                                                                         *
 # ***************************************************************************
 
-import FemMeshTools
-import FreeCAD
-import os
-import string
-
 __title__ = "FreeCAD .inp file reader"
 __author__ = "Frantisek Loeffelmann "
 __url__ = "http://www.freecadweb.org"
 __date__ = "04/08/2016"
+
+## @package importInpMesh
+#  \ingroup FEM
+
+import FemMeshTools
+import FreeCAD
+import os
+import string
 
 
 if open.__module__ == '__builtin__':
@@ -77,7 +80,13 @@ def read_inp(file_name):
             if line[:8].upper() == "*INCLUDE":
                 start = 1 + line.index("=")
                 include = line[start:].strip().strip('"')
-                f_include = pyopen(include, "r")
+                include_path = os.path.normpath(include)
+                if os.path.isfile(include_path) is True:
+                    f_include = pyopen(include_path, "r")
+                else:
+                    path_start = os.path.split(file_name)[0]
+                    include_full_path = os.path.join(path_start, include_path)
+                    f_include = pyopen(include_full_path, "r")
                 continue
             read_node = False
             elm_category = []

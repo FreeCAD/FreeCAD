@@ -24,6 +24,14 @@
 
 "FreeCAD Draft Workbench - DWG importer/exporter"
 
+## @package importDWG
+#  \ingroup DRAFT
+#  \brief DWG file importer & exporter
+#
+#  This module provides support for importing and exporting Autodesk DWG files.
+#  This module is only a thin layer that uses the Teigha Converter application
+#  to convert to/from DXF. Then the real work is done by importDXF
+
 if open.__module__ == '__builtin__':
     pythonopen = open # to distinguish python built-in open function from the one declared here
 

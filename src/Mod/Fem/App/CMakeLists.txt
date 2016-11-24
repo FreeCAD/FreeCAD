@@ -22,7 +22,7 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
-    ${VTK_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -43,15 +43,7 @@ if(BUILD_FEM_NETGEN)
     )
 endif(BUILD_FEM_NETGEN)
 
-if(BUILD_FEM_VTK)
-    set(Fem_LIBS
-        ${Fem_LIBS}
-        ${VTK_LIBRARIES}
-    )
-endif(BUILD_FEM_VTK)
-
 generate_from_xml(FemMeshPy)
-
 
 SET(Python_SRCS
     FemMeshPy.xml
@@ -76,23 +68,26 @@ SET(FemScripts_SRCS
     _CommandBeamSection.py
     _CommandControlSolver.py
     _CommandConstraintSelfWeight.py
-    _CommandMechanicalMaterial.py
-    _CommandShowResult.py
     _CommandMaterialMechanicalNonlinear.py
-    _CommandMeshFromShape.py
+    _CommandMechanicalMaterial.py
+    _CommandMeshGmshFromShape.py
+    _CommandMeshNetgenFromShape.py
     _CommandPurgeResults.py
     _CommandRunSolver.py
     _CommandShellThickness.py
+    _CommandShowResult.py
     _CommandSolverCalculix.py
     _CommandSolverZ88.py
     _FemBeamSection.py
     _FemConstraintSelfWeight.py
     _FemMaterialMechanicalNonlinear.py
+    _FemMeshGmsh.py
     _FemShellThickness.py
     _FemSolverCalculix.py
     _FemSolverZ88.py
     _MechanicalMaterial.py
     _TaskPanelFemBeamSection.py
+    _TaskPanelFemMeshGmsh.py
     _TaskPanelFemShellThickness.py
     _TaskPanelFemSolverCalculix.py
     _TaskPanelMechanicalMaterial.py
@@ -100,6 +95,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemBeamSection.py
     _ViewProviderFemConstraintSelfWeight.py
     _ViewProviderFemMaterialMechanicalNonlinear.py
+    _ViewProviderFemMeshGmsh.py
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
     _ViewProviderFemSolverZ88.py
@@ -115,10 +111,12 @@ SET(FemScripts_SRCS
     FemBeamSection.py
     FemCommands.py
     FemConstraintSelfWeight.py
+    FemGmshTools.py
     FemInputWriter.py
     FemInputWriterCcx.py
     FemInputWriterZ88.py
     FemMaterialMechanicalNonlinear.py
+    FemMeshGmsh.py
     FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
@@ -131,6 +129,7 @@ SET(FemScripts_SRCS
     TestFem.py
     z88DispReader.py
     TaskPanelFemBeamSection.ui
+    TaskPanelFemMeshGmsh.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui
     TaskPanelMechanicalMaterial.ui
@@ -240,6 +239,8 @@ if(BUILD_FEM_VTK)
         FemPostFilter.cpp
         FemPostFunction.h
         FemPostFunction.cpp
+        FemVTKTools.h
+        FemVTKTools.cpp
     )
     SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
 endif(BUILD_FEM_VTK)

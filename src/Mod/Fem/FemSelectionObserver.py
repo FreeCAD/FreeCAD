@@ -24,6 +24,8 @@ __title__ = "Selection Observer"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FreeCADGui
@@ -41,3 +43,5 @@ class FemSelectionObserver:
         self.added_obj = (selected_object, sub)
         # on double click on a vertex of a solid sub is None and obj is the solid
         self.parseSelectionFunction(self.added_obj)
+
+#  @}

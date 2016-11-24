@@ -31,10 +31,13 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
-#include "DrawView.h"
+#include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
 
 #include <Base/BoundBox.h>
+
+#include "DrawView.h"
+#include "DrawProjectSplit.h"
 
 class gp_Pnt;
 
@@ -52,6 +55,7 @@ class DrawHatch;
 
 namespace TechDraw
 {
+
 class DrawViewSection;
 
 class TechDrawExport DrawViewPart : public DrawView
@@ -64,22 +68,26 @@ public:
 
     App::PropertyLink   Source;                                        //Part Feature
     App::PropertyVector Direction;  //TODO: Rename to YAxisDirection or whatever this actually is  (ProjectionDirection)
-    App::PropertyVector XAxisDirection;
-    App::PropertyBool   ShowHiddenLines;
-    App::PropertyBool   ShowSmoothLines;
-    App::PropertyBool   ShowSeamLines;
+    App::PropertyBool   SeamVisible;
+    App::PropertyBool   SmoothVisible;
+    //App::PropertyBool   OutlinesVisible;
+    App::PropertyBool   IsoVisible;
+
+    App::PropertyBool   HardHidden;
+    App::PropertyBool   SmoothHidden;
+    App::PropertyBool   SeamHidden;
+    //App::PropertyBool   OutlinesHidden;
+    App::PropertyBool   IsoHidden;
+    App::PropertyInteger  IsoCount;
+
     App::PropertyFloat  LineWidth;
     App::PropertyFloat  HiddenWidth;
-    App::PropertyBool   ShowCenters;
+    App::PropertyFloat  IsoWidth;
+    App::PropertyBool   ArcCenterMarks;
     App::PropertyFloat  CenterScale;
-    App::PropertyFloatConstraint  Tolerance;
     App::PropertyBool   HorizCenterLine;
     App::PropertyBool   VertCenterLine;
-
     App::PropertyBool   ShowSectionLine;
-    App::PropertyBool   HorizSectionLine;     //true(horiz)/false(vert)
-    App::PropertyBool   ArrowUpSection;       //true(up/right)/false(down/left)
-    App::PropertyString SymbolSection;
 
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
@@ -88,6 +96,7 @@ public:
 
     const std::vector<TechDrawGeometry::Vertex *> & getVertexGeometry() const;
     const std::vector<TechDrawGeometry::BaseGeom  *> & getEdgeGeometry() const;
+    const std::vector<TechDrawGeometry::BaseGeom  *> getVisibleFaceEdges() const;
     const std::vector<TechDrawGeometry::Face *> & getFaceGeometry() const;
     bool hasGeometry(void) const;
 
@@ -99,15 +108,17 @@ public:
     double getBoxX(void) const;
     double getBoxY(void) const;
     virtual QRectF getRect() const;
-    virtual DrawViewSection* getSectionRef() const;                    //is there a ViewSection based on this ViewPart?
+    virtual std::vector<DrawViewSection*> getSectionRefs() const;                    //are there ViewSections based on this ViewPart?
     const Base::Vector3d& getUDir(void) const {return uDir;}                       //paperspace X
     const Base::Vector3d& getVDir(void) const {return vDir;}                       //paperspace Y
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
     const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
-    Base::Vector3d getValidXDir() const;
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
 
     virtual short mustExecute() const;
+
+    bool handleFaces(void);
+    bool showSectionEdges(void);
 
     /** @name methods overide Feature */
     //@{
@@ -127,24 +138,21 @@ protected:
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
-    void buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
+    TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
     void extractFaces();
 
-    bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, bool allowEnds = false);
-    std::vector<TopoDS_Edge> splitEdge(std::vector<TopoDS_Vertex> splitPoints, TopoDS_Edge e);
-    double simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2) const;   //probably sb static or DrawUtil
-
     //Projection parameter space
-    void saveParamSpace(const Base::Vector3d& direction,
-                        const Base::Vector3d& xAxis);
+    void saveParamSpace(const Base::Vector3d& direction);
     Base::Vector3d uDir;                       //paperspace X
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z
     Base::Vector3d shapeCentroid;
-    int m_interAlgo;
+    void getRunControl(void);
+
+    bool m_sectionEdges;
+    bool m_handleFaces;
 
 private:
-    static App::PropertyFloatConstraint::Constraints floatRange;
 
 };
 

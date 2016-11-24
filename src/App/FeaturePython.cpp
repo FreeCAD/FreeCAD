@@ -31,6 +31,7 @@
 #include <Base/Interpreter.h>
 #include <Base/Reader.h>
 
+#include <App/DocumentObjectPy.h>
 #include "FeaturePython.h"
 #include "FeaturePythonPyImp.h"
 
@@ -50,6 +51,10 @@ FeaturePythonImp::~FeaturePythonImp()
  */
 bool FeaturePythonImp::execute()
 {
+    // avoid recursive calls of execute()
+    if (object->testStatus(App::PythonCall))
+        return false;
+
     // Run the execute method of the proxy object.
     Base::PyGILStateLocker lock;
     try {
@@ -58,6 +63,7 @@ bool FeaturePythonImp::execute()
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr(std::string("execute"))) {
                 if (feature.hasAttr("__object__")) {
+                    ObjectStatusLocker exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args;
                     Py::Object res = method.apply(args);
@@ -66,6 +72,7 @@ bool FeaturePythonImp::execute()
                     return true;
                 }
                 else {
+                    ObjectStatusLocker exe(App::PythonCall, object);
                     Py::Callable method(feature.getAttr(std::string("execute")));
                     Py::Tuple args(1);
                     args.setItem(0, Py::Object(object->getPyObject(), true));
@@ -215,4 +222,4 @@ template<> const char* App::GeometryPython::getViewProviderName(void) const {
     return "Gui::ViewProviderPythonGeometry";
 }
 // explicit template instantiation
-template class AppExport FeaturePythonT<GeoFeature>;}
+template class AppExport FeaturePythonT<GeoFeature>;}

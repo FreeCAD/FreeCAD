@@ -21,10 +21,13 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
+TOOLTIP=''' Example Post, using Path.Commands instead of Path.toGCode strings for Path gcode output. '''
+
 import FreeCAD
 import Path, PathScripts
 from PathScripts import PostUtils
+
+SHOW_EDITOR=True
 
 def fmt(num):
     fnum = ""
@@ -71,7 +74,7 @@ def lineout(command, oldvals, modal):
         line += "F"+str(ffmt(command.Parameters['F']))
     return line
 
-def export(obj,filename):
+def export(obj,filename,argstring):
     modal=True
     commands = obj[0]
     gcode = ''
@@ -97,7 +100,8 @@ def export(obj,filename):
         gfile.close()
     else:
         FreeCAD.Console.PrintError('Select a path object and try again\n')
-    if obj[0].Editor:
+
+    if SHOW_EDITOR:
         FreeCAD.Console.PrintMessage('Editor Activated\n')
         dia = PostUtils.GCodeEditorDialog()
         dia.editor.setText(gcode)

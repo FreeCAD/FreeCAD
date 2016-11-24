@@ -1245,32 +1245,32 @@ yylval = Quantity::Gon;                 return UNIT; // gon
 case 76:
 YY_RULE_SETUP
 #line 133 "QuantityParser.l"
-{  yylval = num_change(yytext,'.',',');return NUM;  }
+{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
 #line 134 "QuantityParser.l"
-{  yylval = num_change(yytext,'.',',');return NUM;  }
+{  yylval = Quantity(num_change(yytext,'.',','));return NUM;  }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
 #line 135 "QuantityParser.l"
-{  yylval = num_change(yytext,',','.');return NUM;  }
+{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
 #line 136 "QuantityParser.l"
-{  yylval = num_change(yytext,',','.');return NUM;  }
+{  yylval = Quantity(num_change(yytext,',','.'));return NUM;  }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
 #line 139 "QuantityParser.l"
-{yylval = M_PI          ; return NUM;} // constant pi         
+{yylval = Quantity(M_PI)          ; return NUM;} // constant pi
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
 #line 140 "QuantityParser.l"
-{yylval = M_E           ; return NUM;} // constant e         
+{yylval = Quantity(M_E)           ; return NUM;} // constant e
 	YY_BREAK
 case 82:
 YY_RULE_SETUP

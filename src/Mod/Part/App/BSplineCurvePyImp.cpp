@@ -865,6 +865,66 @@ PyObject* BSplineCurvePy::approximate(PyObject *args, PyObject *kwds)
     }
 }
 
+PyObject* BSplineCurvePy::getCardinalSplineTangents(PyObject *args, PyObject *kwds)
+{
+    PyObject* pts;
+    PyObject* tgs;
+    double parameter;
+
+    static char* kwds_interp1[] = {"Points", "Parameter", NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "Od",kwds_interp1, &pts, &parameter)) {
+        Py::Sequence list(pts);
+        std::vector<gp_Pnt> interpPoints;
+        interpPoints.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+        }
+
+        GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
+        std::vector<gp_Vec> tangents;
+        bspline->getCardinalSplineTangents(interpPoints, parameter, tangents);
+
+        Py::List vec;
+        for (gp_Vec it : tangents)
+            vec.append(Py::Vector(Base::Vector3d(it.X(), it.Y(), it.Z())));
+        return Py::new_reference_to(vec);
+    }
+
+    PyErr_Clear();
+    static char* kwds_interp2[] = {"Points", "Parameters", NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "OO",kwds_interp2, &pts, &tgs)) {
+        Py::Sequence list(pts);
+        std::vector<gp_Pnt> interpPoints;
+        interpPoints.reserve(list.size());
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            Py::Vector v(*it);
+            Base::Vector3d pnt = v.toVector();
+            interpPoints.push_back(gp_Pnt(pnt.x,pnt.y,pnt.z));
+        }
+
+        Py::Sequence list2(tgs);
+        std::vector<double> parameters;
+        parameters.reserve(list2.size());
+        for (Py::Sequence::iterator it = list2.begin(); it != list2.end(); ++it) {
+            Py::Float p(*it);
+            parameters.push_back(static_cast<double>(p));
+        }
+
+        GeomBSplineCurve* bspline = this->getGeomBSplineCurvePtr();
+        std::vector<gp_Vec> tangents;
+        bspline->getCardinalSplineTangents(interpPoints, parameters, tangents);
+
+        Py::List vec;
+        for (gp_Vec it : tangents)
+            vec.append(Py::Vector(Base::Vector3d(it.X(), it.Y(), it.Z())));
+        return Py::new_reference_to(vec);
+    }
+
+    return 0;
+}
+
 PyObject* BSplineCurvePy::interpolate(PyObject *args, PyObject *kwds)
 {
     PyObject* obj;

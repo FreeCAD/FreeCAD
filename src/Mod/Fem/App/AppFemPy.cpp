@@ -67,6 +67,7 @@
 #include "FemMeshPy.h"
 #ifdef FC_USE_VTK
 #include "FemPostPipeline.h"
+#include "FemVTKTools.h"
 #endif
 
 #include <cstdlib>
@@ -93,6 +94,14 @@ public:
         add_varargs_method("read",&Module::read,
             "Read a mesh from a file and returns a Mesh object."
         );
+#ifdef FC_USE_VTK
+        add_varargs_method("readCfdResult",&Module::readCfdResult,
+            "Read a CFD result from a file (file format detected from file suffix)"
+        );
+        add_varargs_method("writeResult",&Module::writeResult,
+            "write a CFD or FEM result (auto detect) to a file (file format detected from file suffix)"
+        );
+#endif
         add_varargs_method("show",&Module::show,
             "show(shape) -- Add the shape to the active document or create one if no document exists."
         );
@@ -236,6 +245,60 @@ private:
         mesh->read(EncodedName.c_str());
         return Py::asObject(new FemMeshPy(mesh.release()));
     }
+
+#ifdef FC_USE_VTK
+    Py::Object readCfdResult(const Py::Tuple& args)
+    {
+        char* fileName = NULL; 
+        char* objName = NULL;
+
+        if (!PyArg_ParseTuple(args.ptr(), "et|et","utf-8", &fileName, "utf-8", &objName))
+            throw Py::Exception();
+        std::string EncodedName = std::string(fileName);
+        PyMem_Free(fileName);
+        std::string resName = std::string(objName);
+        PyMem_Free(objName);
+
+        if (resName.length())
+        {
+            App::Document* pcDoc = App::GetApplication().getActiveDocument();
+            App::DocumentObject* obj = pcDoc->getObject(resName.c_str());
+            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+        }
+        else
+            FemVTKTools::readFluidicResult(EncodedName.c_str());  //assuming activeObject can hold Result
+        
+        return Py::None();
+    }
+    
+    Py::Object writeResult(const Py::Tuple& args)
+    {
+        char* fileName = NULL;
+        PyObject *pcObj = NULL;
+
+        if (!PyArg_ParseTuple(args.ptr(), "et|O!","utf-8", &fileName, &(App::DocumentObjectPy::Type), &pcObj))
+            throw Py::Exception();
+        std::string EncodedName = std::string(fileName);
+        PyMem_Free(fileName);
+
+        if (!pcObj)
+        {
+            App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
+            App::DocumentObject* obj = objpy->getDocumentObjectPtr();
+            if (!obj)
+            {
+                App::Document* pcDoc = App::GetApplication().getActiveDocument();
+                obj = pcDoc->getActiveObject();
+            }
+            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
+        }
+        else
+            FemVTKTools::writeResult(EncodedName.c_str());
+        
+        return Py::None();
+    }
+#endif
+
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj;

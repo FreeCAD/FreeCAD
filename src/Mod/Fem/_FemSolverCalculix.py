@@ -24,6 +24,8 @@ __title__ = "_FemSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemSolverCalculix
+#  \ingroup FEM
 
 import FreeCAD
 import FemToolsCcx
@@ -40,11 +42,11 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
         obj.SolverType = str(self.Type)
 
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
+        # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")  # not needed ATM
         ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
 
-        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
-        obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
+        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations, will only be used it is left blank in preferences")
+        # the working directory is not set, the solver working directory is only used if the preferences working directory is left blank
 
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
         obj.AnalysisType = FemToolsCcx.FemToolsCcx.known_analysis_types
@@ -96,6 +98,10 @@ class _FemSolverCalculix():
         obj.addProperty("App::PropertyBool", "IterationsControlParameterTimeUse", "Fem", "Use the user defined time incrementation control parameter")
         use_non_ccx_iterations_param = ccx_prefs.GetInt("UseNonCcxIterationParam", False)
         obj.IterationsControlParameterTimeUse = use_non_ccx_iterations_param
+
+        obj.addProperty("App::PropertyBool", "SplitInputWriter", "Fem", "Split writing of ccx input file")
+        split = ccx_prefs.GetBool("SplitInputWriter", False)
+        obj.SplitInputWriter = split
 
         ccx_default_time_incrementation_control_parameter = {
             # iteration parameter

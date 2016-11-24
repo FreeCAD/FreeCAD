@@ -3,8 +3,6 @@ if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
 endif(BUILD_FEM_VTK)
 
-include(${VTK_USE_FILE})
-
 add_subdirectory(App)
 
 if(BUILD_GUI)
@@ -26,7 +24,7 @@ INSTALL(
         TestFem.py
 
         FemCommands.py
-        _CommandMeshFromShape.py
+        _CommandMeshNetgenFromShape.py
         _CommandPurgeResults.py
         _CommandRunSolver.py
         _CommandControlSolver.py
@@ -37,6 +35,15 @@ INSTALL(
 
         FemAnalysis.py
         _CommandAnalysis.py
+
+        FemMeshGmsh.py
+        _FemMeshGmsh.py
+        _ViewProviderFemMeshGmsh.py
+        _CommandMeshGmshFromShape.py
+        _TaskPanelFemMeshGmsh.py
+        TaskPanelFemMeshGmsh.ui
+
+        FemGmshTools.py
 
         FemBeamSection.py
         _FemBeamSection.py
@@ -51,6 +58,11 @@ INSTALL(
         _CommandShellThickness.py
         _TaskPanelFemShellThickness.py
         TaskPanelFemShellThickness.ui
+
+        FemConstraintSelfWeight.py
+        _FemConstraintSelfWeight.py
+        _ViewProviderFemConstraintSelfWeight.py
+        _CommandConstraintSelfWeight.py
 
         MechanicalMaterial.py
         _MechanicalMaterial.py
@@ -86,11 +98,6 @@ INSTALL(
         _FemSolverZ88.py
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
-
-        FemConstraintSelfWeight.py
-        _FemConstraintSelfWeight.py
-        _ViewProviderFemConstraintSelfWeight.py
-        _CommandConstraintSelfWeight.py
 
     DESTINATION
         Mod/Fem

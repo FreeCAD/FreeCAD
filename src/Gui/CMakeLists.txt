@@ -119,7 +119,6 @@ generate_from_xml(DocumentPy)
 generate_from_xml(PythonWorkbenchPy)
 generate_from_xml(ViewProviderPy)
 generate_from_xml(ViewProviderDocumentObjectPy)
-generate_from_xml(ViewProviderPythonFeaturePy)
 generate_from_xml(WorkbenchPy)
 generate_from_xml(SelectionObjectPy)
 
@@ -128,7 +127,6 @@ generate_from_py(FreeCADGuiInit GuiInitScript.h)
 # The XML files
 SET(FreeCADGui_XML_SRCS
     ViewProviderDocumentObjectPy.xml
-    ViewProviderPythonFeaturePy.xml
     ViewProviderPy.xml
     PythonWorkbenchPy.xml
     WorkbenchPy.xml
@@ -821,11 +819,14 @@ SOURCE_GROUP("Quarter" FILES ${Quarter_SRCS})
 # The view provider sources
 SET(Viewprovider_CPP_SRCS
     ViewProvider.cpp
+    ViewProviderExtension.cpp
+    ViewProviderGroupExtension.cpp
+    ViewProviderGeoFeatureGroupExtension.cpp
+    ViewProviderOriginGroupExtension.cpp
     ViewProviderAnnotation.cpp
     ViewProviderDocumentObject.cpp
     ViewProviderDocumentObjectGroup.cpp
     ViewProviderDocumentObjectPyImp.cpp
-    ViewProviderPythonFeaturePyImp.cpp
     ViewProviderExtern.cpp
     ViewProviderFeature.cpp
     ViewProviderGeometryObject.cpp
@@ -848,6 +849,10 @@ SET(Viewprovider_CPP_SRCS
 SET(Viewprovider_SRCS
     ${Viewprovider_CPP_SRCS}
     ViewProvider.h
+    ViewProviderExtension.h
+    ViewProviderGroupExtension.h
+    ViewProviderGeoFeatureGroupExtension.h
+    ViewProviderOriginGroupExtension.h
     ViewProviderAnnotation.h
     ViewProviderDocumentObject.h
     ViewProviderDocumentObjectGroup.h

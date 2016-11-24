@@ -68,6 +68,18 @@
 using namespace TechDrawGui;
 using namespace std;
 
+
+enum EdgeType{
+        isInvalid,
+        isHorizontal,
+        isVertical,
+        isDiagonal,
+        isCircle,
+        isCurve,
+        isAngle
+    };
+
+
 //===========================================================================
 // utility routines
 //===========================================================================
@@ -81,17 +93,8 @@ int _isValidSingleEdge(Gui::Command* cmd);
 bool _isValidVertexes(Gui::Command* cmd);
 int _isValidEdgeToEdge(Gui::Command* cmd);
 bool _isValidVertexToEdge(Gui::Command* cmd);
+char* _edgeTypeToText(int e);
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs);
-
-enum EdgeType{
-        isInvalid,
-        isHorizontal,
-        isVertical,
-        isDiagonal,
-        isCircle,
-        isCurve,
-        isAngle
-    };
 
 
 //===========================================================================
@@ -168,13 +171,10 @@ void CmdTechDrawNewDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
         switch (edgeCase) {
-            //TODO: This didn't have the breaks in it before 17 May, but didn't
-            // seem to crash either, so should check whether execution can even
-            // get here -Ian-
-            case isHorizontal:
+             case isHorizontal:
                 dimType = "DistanceX";
                 break;
-            case isVertical:
+             case isVertical:
                 dimType = "DistanceY";
                 break;
             case isDiagonal:
@@ -285,7 +285,7 @@ void CmdTechDrawNewRadiusDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a radius Dimension from this selection (edge type: " << edgeType << ")";
+        edgeMsg << "Can't make a radius Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -374,7 +374,7 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
         subs.push_back(SubNames[0]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a diameter Dimension from this selection (edge type: " << edgeType << ")";
+        edgeMsg << "Can't make a diameter Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -385,8 +385,8 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
 
-
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '\xe2\x8c\x80%%value%%'", FeatName.c_str()); // utf-8 encoded diameter symbol
+    const char * format = "\xe2\x8c\x80%value%";
+    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),format);
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
@@ -473,7 +473,9 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
                (_isValidEdgeToEdge(this) == isVertical) ||
-               (_isValidEdgeToEdge(this) == isVertical)) {
+               (_isValidEdgeToEdge(this) == isDiagonal) ||
+               (_isValidEdgeToEdge(this) == isAngle)) {
+        edgeType = _isValidEdgeToEdge(this);
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -485,7 +487,7 @@ void CmdTechDrawNewLengthDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a length Dimension from this selection (edge type: " << edgeType << ")";
+        edgeMsg << "Can't make a length Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -579,7 +581,11 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
-    } else if (_isValidEdgeToEdge(this) == isHorizontal) {
+    } else if ((_isValidEdgeToEdge(this) == isHorizontal) ||
+               (_isValidEdgeToEdge(this) == isVertical)   ||
+               (_isValidEdgeToEdge(this) == isDiagonal)   ||
+               (_isValidEdgeToEdge(this) == isAngle)) {
+        edgeType = _isValidEdgeToEdge(this);
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -591,7 +597,7 @@ void CmdTechDrawNewDistanceXDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a horizontal Dimension from this selection (edge type: " << edgeType << ")";
+        edgeMsg << "Can't make a horizontal Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -686,7 +692,11 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
         subs.push_back(SubNames[1]);
-    } else if (_isValidEdgeToEdge(this) == isVertical) {
+    } else if ((_isValidEdgeToEdge(this) == isVertical)   ||
+               (_isValidEdgeToEdge(this) == isHorizontal) ||
+               (_isValidEdgeToEdge(this) == isDiagonal) ||
+               (_isValidEdgeToEdge(this) == isAngle))  {
+        edgeType = _isValidEdgeToEdge(this);
         objs.push_back(objFeat);
         objs.push_back(objFeat);
         subs.push_back(SubNames[0]);
@@ -698,7 +708,7 @@ void CmdTechDrawNewDistanceYDimension::activated(int iMsg)
         subs.push_back(SubNames[1]);
     } else {
         std::stringstream edgeMsg;
-        edgeMsg << "Can't make a vertical Dimension from this selection (edge type: " << edgeType << ")";
+        edgeMsg << "Can't make a vertical Dimension from this selection (edge type: " << _edgeTypeToText(edgeType) << ")";
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
@@ -855,25 +865,38 @@ void CmdTechDrawLinkDimension::activated(int iMsg)
         return;
 
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-    Part::Feature* obj3D = 0;
+
+    App::DocumentObject* obj3D = 0;
+    std::vector<App::DocumentObject*> parts;
     std::vector<std::string> subs;
 
     std::vector<Gui::SelectionObject>::iterator itSel = selection.begin();
     for (; itSel != selection.end(); itSel++)  {
         if ((*itSel).getObject()->isDerivedFrom(Part::Feature::getClassTypeId())) {
-            obj3D = static_cast<Part::Feature*> ((*itSel).getObject());
-            subs = (*itSel).getSubNames();
+            obj3D = ((*itSel).getObject());
+            std::vector<std::string> subList = (*itSel).getSubNames();
+            for (auto& s:subList) {
+                parts.push_back(obj3D);
+                subs.push_back(s);
+            }
         }
     }
 
     if (!obj3D) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
-                                                   QObject::tr("Can't link a dimension to this selection"));
+                                                   QObject::tr("There is no 3D object in your selection"));
         return;
     }
 
+    if (subs.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Incorrect Selection"),
+                                                   QObject::tr("There are no 3D Edges or Vertices in your selection"));
+        return;
+    }
+
+
     // dialog to select the Dimension to link
-    Gui::Control().showDialog(new TaskDlgLinkDim(obj3D,subs,page));
+    Gui::Control().showDialog(new TaskDlgLinkDim(parts,subs,page));
 
     page->getDocument()->recompute();                                  //still need to recompute in Gui. why?
 }
@@ -986,10 +1009,10 @@ int _isValidSingleEdge(Gui::Command* cmd) {
                 if(gen1->points.size() > 2) {                                   //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2D line = gen1->points.at(1) - gen1->points.at(0);
-                if(fabs(line.fY) < FLT_EPSILON ) {
+                Base::Vector2d line = gen1->points.at(1) - gen1->points.at(0);
+                if(fabs(line.y) < FLT_EPSILON ) {
                     edgeType = isHorizontal;
-                } else if(fabs(line.fX) < FLT_EPSILON) {
+                } else if(fabs(line.x) < FLT_EPSILON) {
                     edgeType = isVertical;
                 } else {
                     edgeType = isDiagonal;
@@ -1056,15 +1079,15 @@ int _isValidEdgeToEdge(Gui::Command* cmd) {
                    gen1->points.size() > 2) {                          //the edge is a polyline
                     return isInvalid;
                 }
-                Base::Vector2D line0 = gen0->points.at(1) - gen0->points.at(0);
-                Base::Vector2D line1 = gen1->points.at(1) - gen1->points.at(0);
-                double xprod = fabs(line0.fX * line1.fY - line0.fY * line1.fX);
+                Base::Vector2d line0 = gen0->points.at(1) - gen0->points.at(0);
+                Base::Vector2d line1 = gen1->points.at(1) - gen1->points.at(0);
+                double xprod = fabs(line0.x * line1.y - line0.y * line1.x);
                 if(xprod > FLT_EPSILON) {                              //edges are not parallel
                     return isAngle;
                 }
-                if(fabs(line0.fX) < FLT_EPSILON && fabs(line1.fX) < FLT_EPSILON) {
+                if(fabs(line0.x) < FLT_EPSILON && fabs(line1.x) < FLT_EPSILON) {   //both horizontal
                     edgeType = isHorizontal;
-                } else if(fabs(line0.fY) < FLT_EPSILON && fabs(line1.fY) < FLT_EPSILON) {
+                } else if(fabs(line0.y) < FLT_EPSILON && fabs(line1.y) < FLT_EPSILON) {  //both vertical
                     edgeType = isVertical;
                 } else {
                     edgeType = isDiagonal;
@@ -1112,6 +1135,38 @@ bool _isValidVertexToEdge(Gui::Command* cmd) {
     }
     return result;
 }
+
+char* _edgeTypeToText(int e)
+{
+    char* result;
+    switch(e) {
+        case isInvalid:
+            result = "invalid";
+            break;
+        case isHorizontal:
+            result = "horizontal";
+            break;
+        case isVertical:
+            result = "vertical";
+            break;
+        case isDiagonal:
+            result = "diagonal";
+            break;
+        case isCircle:
+            result = "circle";
+            break;
+        case isCurve:
+            result = "curve";
+            break;
+        case isAngle:
+            result = "angle";
+            break;
+        default:
+            result = "unknown";
+    }
+    return result;
+}
+
 //bool _checkActive(Gui::Command* cmd, Base::Type classType, bool needSubs)
 //{
 //    //need a page, a selected classType and [a subelement]

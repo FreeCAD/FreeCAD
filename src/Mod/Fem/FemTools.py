@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "Fem Tools super class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 from PySide import QtCore
@@ -538,3 +539,5 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats
+
+#  @}

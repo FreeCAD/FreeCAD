@@ -31,6 +31,10 @@ class PathWorkbench (Workbench):
         self.__class__.ToolTip = "Path workbench"
 
     def Initialize(self):
+        # Add preferences pages - before loading PathGui to properly order pages of Path group
+        from PathScripts import PathPreferencesPathJob
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.Page, "Path")
+
         # load the builtin modules
         import Path
         import PathGui
@@ -46,8 +50,8 @@ class PathWorkbench (Workbench):
         from PathScripts import PathCopy
         from PathScripts import PathFixture
         from PathScripts import PathCompoundExtended
-        from PathScripts import PathProject
-        from PathScripts import PathToolTableEdit
+        from PathScripts import PathJob
+        from PathScripts import PathToolLibraryManager
         from PathScripts import PathStock
         from PathScripts import PathPlane
         from PathScripts import PathPost
@@ -55,7 +59,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathLoadTool
         from PathScripts import PathComment
         from PathScripts import PathStop
-        from PathScripts import PathMachine
         from PathScripts import PathFromShape
         from PathScripts import PathArray
         from PathScripts import PathFaceProfile
@@ -68,18 +71,23 @@ class PathWorkbench (Workbench):
         from PathScripts import PathRemote
         from PathScripts import PathSanity
         from PathScripts import DragknifeDressup
+        from PathScripts import PathContour
+        from PathScripts import PathProfileEdges
+        from PathScripts import DogboneDressup
+        from PathScripts import PathMillFace
+        import PathCommands
 
         # build commands list
-        projcmdlist = ["Path_Project", "Path_Post", "Path_Inspect", "Path_Sanity"]
-        #toolcmdlist = ["Path_ToolTableEdit", "Path_ToolLibraryEdit", "Path_LoadTool"]
-        toolcmdlist = ["Path_ToolTableEdit", "Path_LoadTool"]
-        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment",
-                       "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
-        opcmdlist = ["Path_Profile", "Path_Pocket",
-                     "Path_Drilling", "Path_Engrave", "Path_Surfacing"]
-        modcmdlist = ["Path_Copy", "Path_CompoundExtended",
-                      "Path_Dressup", "Path_Hop", "Path_Array", "Path_SimpleCopy", "DragKnife_Dressup"]
-        remotecmdlist = ["Path_Remote"]
+        projcmdlist = ["Path_Job", "Path_Post", "Path_Inspect", "Path_Sanity"]
+        toolcmdlist = ["Path_ToolLibraryEdit", "Path_LoadTool"]
+        prepcmdlist = ["Path_Plane", "Path_Fixture", "Path_ToolLenOffset", "Path_Comment", "Path_Stop", "Path_FaceProfile", "Path_FacePocket", "Path_Custom", "Path_FromShape"]
+        twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave", "Path_MillFace"]
+        threedopcmdlist = ["Path_Surfacing"]
+        modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
+        dressupcmdlist = ["Dogbone_Dressup", "DragKnife_Dressup"]
+        extracmdlist = ["Path_SelectLoop"]
+        #modcmdmore = ["Path_Hop",]
+        #remotecmdlist = ["Path_Remote"]
 
         # Add commands to menu and toolbar
         def QT_TRANSLATE_NOOP(scope, text):
@@ -90,26 +98,26 @@ class PathWorkbench (Workbench):
         self.appendToolbar(translate("Path", "Project Setup"), projcmdlist)
         self.appendToolbar(translate("Path", "Tool Commands"), toolcmdlist)
         #self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
-        self.appendToolbar(translate("Path", "New Operations"), opcmdlist)
+        self.appendToolbar(translate("Path", "New Operations"), twodopcmdlist+threedopcmdlist)
         self.appendToolbar(translate("Path", "Path Modification"), modcmdlist)
+        self.appendToolbar(translate("Path", "Helpful Tools"), extracmdlist)
 
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Project Tools")], projcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Tools")], projcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
+        self.appendMenu([translate("Path", "&Path")], projcmdlist +["Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "Tools")], toolcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
+            "Path", "Path Dressup")], dressupcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
             "Path", "Partial Commands")], prepcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "New Operations")], opcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "New Operations")], opcmdlist)
+        self.appendMenu([translate("Path", "&Path"), translate(
             "Path", "Path Modification")], modcmdlist)
-        self.appendMenu([translate("Path", "Path"), translate(
-            "Path", "Remote Operations")], remotecmdlist)
-
-        # Add preferences pages
-        import os
-        FreeCADGui.addPreferencePage(FreeCAD.getHomePath(
-        ) + os.sep + "Mod" + os.sep + "Path" + os.sep + "PathScripts" + os.sep + "DlgSettingsPath.ui", "Path")
+        #self.appendMenu([translate("Path", "Path"), translate(
+        #    "Path", "Path Modification")], modcmdmore)
+        # self.appendMenu([translate("Path", "Path"), translate(
+        #     "Path", "Remote Operations")], remotecmdlist)
+        self.appendMenu([translate("Path", "&Path")], extracmdlist)
 
         Log('Loading Path workbench... done\n')
 
@@ -128,7 +136,7 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if "Profile" in FreeCADGui.Selection.getSelection()[0].Name:
+                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
                     self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
                     self.appendContextMenu("", ["Set_EndPoint"])

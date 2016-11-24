@@ -62,7 +62,7 @@
             </property>
             <item>
              <property name="text">
-              <string>Document</string>
+              <string>Page</string>
              </property>
             </item>
             <item>
@@ -92,7 +92,7 @@
            <widget class="QComboBox" name="cmbScaleType">
             <item>
              <property name="text">
-              <string>Document</string>
+              <string>Page</string>
              </property>
             </item>
             <item>
@@ -133,6 +133,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleNum">
+            <property name="minimum">
+             <number>1</number>
+            </property>
             <property name="value">
              <number>1</number>
             </property>
@@ -147,6 +150,12 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleDen">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>999</number>
+            </property>
             <property name="value">
              <number>1</number>
             </property>
@@ -179,6 +188,9 @@
          <layout class="QGridLayout" name="gridLayout">
           <item row="2" column="2">
            <widget class="QPushButton" name="butCWRotate">
+            <property name="toolTip">
+             <string>About 3D Y</string>
+            </property>
             <property name="text">
              <string>Spin CW</string>
             </property>
@@ -186,6 +198,9 @@
           </item>
           <item row="3" column="2">
            <widget class="QPushButton" name="butRightRotate">
+            <property name="toolTip">
+             <string>About 3D Z</string>
+            </property>
             <property name="text">
              <string>&gt;</string>
             </property>
@@ -193,6 +208,9 @@
           </item>
           <item row="2" column="0">
            <widget class="QPushButton" name="butCCWRotate">
+            <property name="toolTip">
+             <string>About 3D Y</string>
+            </property>
             <property name="text">
              <string>Spin CCW</string>
             </property>
@@ -200,6 +218,9 @@
           </item>
           <item row="2" column="1">
            <widget class="QPushButton" name="butTopRotate">
+            <property name="toolTip">
+             <string>About 3D X</string>
+            </property>
             <property name="text">
              <string>/\</string>
             </property>
@@ -217,6 +238,9 @@
           </item>
           <item row="3" column="0">
            <widget class="QPushButton" name="butLeftRotate">
+            <property name="toolTip">
+             <string>About 3D Y</string>
+            </property>
             <property name="text">
              <string>&lt;</string>
             </property>
@@ -224,6 +248,9 @@
           </item>
           <item row="4" column="1">
            <widget class="QPushButton" name="butDownRotate">
+            <property name="toolTip">
+             <string>About 3D X</string>
+            </property>
             <property name="text">
              <string>\/</string>
             </property>

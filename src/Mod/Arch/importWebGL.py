@@ -35,8 +35,17 @@ if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
     FreeCADGui = None
+    # \cond
     def translate(ctxt,txt):
         return txt
+    # \endcond
+
+## @package importWebGL
+#  \ingroup ARCH
+#  \brief WebGL file format exporter
+#
+#  This module provides tools to export HTML files containing the 
+#  exported objects in WebGL format and a simple three.js-based viewer.
 
 tab = "                " # the tab size
 wireframeStyle = "faceloop" # this can be "faceloop", "multimaterial" or None
@@ -187,7 +196,8 @@ def getObjectData(obj,wireframeMode=wireframeStyle):
             result += tab+"geom.vertices.push(v"+str(p.Index)+");\n"
         # adding facets data
         for f in mesh.Facets:
-            result += tab+"geom.faces.push( new THREE.Face3"+str(f.PointIndices)+" );\n"
+            pointIndices = tuple([ int(i) for i in f.PointIndices ])
+            result += tab+"geom.faces.push( new THREE.Face3"+str(pointIndices)+" );\n"
             
     if result:
         # adding a base material

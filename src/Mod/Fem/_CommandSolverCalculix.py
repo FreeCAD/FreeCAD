@@ -24,14 +24,14 @@ __title__ = "_CommandSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandSolverCalculix
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    import FemGui
-    from PySide import QtCore
+import FreeCADGui
+import FemGui
+from PySide import QtCore
 
 
 class _CommandSolverCalculix(FemCommands):

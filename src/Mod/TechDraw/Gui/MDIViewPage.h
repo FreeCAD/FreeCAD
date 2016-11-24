@@ -37,6 +37,7 @@ QT_END_NAMESPACE
 
 namespace TechDraw {
 class DrawTemplate;
+class DrawView;
 }
 
 namespace TechDrawGui
@@ -85,6 +86,9 @@ public:
 
     QPointF getTemplateCenter(TechDraw::DrawTemplate *obj);
     void centerOnPage(void);
+
+    void redrawAllViews(void);
+    void redraw1View(TechDraw::DrawView* dv);
 
 
 public Q_SLOTS:

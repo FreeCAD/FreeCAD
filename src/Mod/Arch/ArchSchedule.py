@@ -27,6 +27,22 @@ if FreeCAD.GuiUp:
     import FreeCADGui, Arch_rc, os
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
+else:
+    # \cond
+    def translate(ctxt,txt):
+        return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchSchedule
+#  \ingroup ARCH
+#  \brief The Schedule object and tools
+#
+#  This module provides tools to build Schedule objects.
+#  Schedules are objects that can count and gather information
+#  about objects in the document, and fill a spreadsheet with the result
 
 __title__ = "Arch Schedule"
 __author__ = "Yorik van Havre"
@@ -42,8 +58,8 @@ class _CommandArchSchedule:
 
     def GetResources(self):
         return {'Pixmap': 'Arch_Schedule',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Schedule","Schedule"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Schedule","Creates a schedule to collect data from the model")}
 
     def Activated(self):
         taskd = _ArchScheduleTaskPanel()
@@ -61,12 +77,12 @@ class _ArchSchedule:
     "the Arch Schedule object"
 
     def __init__(self,obj):
-        obj.addProperty("App::PropertyStringList","Description","Arch","The description column")
-        obj.addProperty("App::PropertyStringList","Value",      "Arch","The values column")
-        obj.addProperty("App::PropertyStringList","Unit",       "Arch","The units column")
-        obj.addProperty("App::PropertyStringList","Objects",    "Arch","The objects column")
-        obj.addProperty("App::PropertyStringList","Filter",     "Arch","The filter column")
-        obj.addProperty("App::PropertyLink",      "Result",     "Arch","The spreadsheet to print the results to")
+        obj.addProperty("App::PropertyStringList","Description","Arch",QT_TRANSLATE_NOOP("App::Property","The description column"))
+        obj.addProperty("App::PropertyStringList","Value",      "Arch",QT_TRANSLATE_NOOP("App::Property","The values column"))
+        obj.addProperty("App::PropertyStringList","Unit",       "Arch",QT_TRANSLATE_NOOP("App::Property","The units column"))
+        obj.addProperty("App::PropertyStringList","Objects",    "Arch",QT_TRANSLATE_NOOP("App::Property","The objects column"))
+        obj.addProperty("App::PropertyStringList","Filter",     "Arch",QT_TRANSLATE_NOOP("App::Property","The filter column"))
+        obj.addProperty("App::PropertyLink",      "Result",     "Arch",QT_TRANSLATE_NOOP("App::Property","The spreadsheet to print the results to"))
         obj.Proxy = self
         self.Type = "Schedule"
 
@@ -93,7 +109,7 @@ class _ArchSchedule:
                 # blank line
                 continue
             # write description
-            obj.Result.set("A"+str(i+2),obj.Description[i])
+            obj.Result.set("A"+str(i+2),obj.Description[i].encode("utf8"))
             if verbose:
                 l= "OPERATION: "+obj.Description[i]
                 print l
@@ -108,8 +124,12 @@ class _ArchSchedule:
                     objs = [FreeCAD.ActiveDocument.getObject(o) for o in objs]
                 else:
                     objs = FreeCAD.ActiveDocument.Objects
+                if len(objs) == 1:
+                    # remove object itself if the object is a group
+                    if objs[0].isDerivedFrom("App::DocumentObjectGroup"):
+                        objs = objs[0].Group
                 objs = Draft.getGroupContents(objs,walls=True,addgroups=True)
-                objs = Arch.pruneIncluded(objs)
+                objs = Arch.pruneIncluded(objs,strict=True)
                 if obj.Filter[i]:
                     # apply filters
                     nobjs = []
@@ -156,7 +176,7 @@ class _ArchSchedule:
                     obj.Result.set("B"+str(i+2),str(val))
                 else:
                     vals = val.split(".")
-                    sumval = None
+                    sumval = 0
                     for o in objs:
                         if verbose:
                             l = o.Name+" ("+o.Label+"):"
@@ -167,6 +187,8 @@ class _ArchSchedule:
                                 d = getattr(d,v)
                             if verbose:
                                 print d
+                            if hasattr(d,"Value"):
+                                d = d.Value
                         except:
                             FreeCAD.Console.PrintWarning(translate("Arch","Unable to retrieve value from object")+": "+o.Name+"."+".".join(vals)+"\n")
                         else:
@@ -177,17 +199,20 @@ class _ArchSchedule:
                     val = sumval
                     # get unit
                     if obj.Unit[i]:
-                        if "2" in obj.Unit[i]:
+                        ustr = obj.Unit[i].encode("utf8")
+                        unit = ustr.replace("²","^2")
+                        unit = unit.replace("³","^3")
+                        if "2" in unit:
                             tp = FreeCAD.Units.Area
-                        elif "3" in obj.Unit[i]:
+                        elif "3" in unit:
                             tp = FreeCAD.Units.Volume
-                        elif "deg" in obj.Unit[i]:
+                        elif "deg" in unit:
                             tp = FreeCAD.Units.Angle
                         else:
                             tp = FreeCAD.Units.Length
                         q = FreeCAD.Units.Quantity(val,tp)
-                        obj.Result.set("B"+str(i+2),str(q.getValueAs(obj.Unit[i]).Value))
-                        obj.Result.set("C"+str(i+2),obj.Unit[i])
+                        obj.Result.set("B"+str(i+2),str(q.getValueAs(unit).Value))
+                        obj.Result.set("C"+str(i+2),ustr)
                     else:
                         obj.Result.set("B"+str(i+2),str(val))
                     if verbose:
@@ -261,6 +286,7 @@ class _ArchScheduleTaskPanel:
         QtCore.QObject.connect(self.form.buttonDel, QtCore.SIGNAL("clicked()"), self.remove)
         QtCore.QObject.connect(self.form.buttonClear, QtCore.SIGNAL("clicked()"), self.clear)
         QtCore.QObject.connect(self.form.buttonImport, QtCore.SIGNAL("clicked()"), self.importCSV)
+        QtCore.QObject.connect(self.form.buttonExport, QtCore.SIGNAL("clicked()"), self.exportCSV)
         QtCore.QObject.connect(self.form.buttonSelect, QtCore.SIGNAL("clicked()"), self.select)
         self.form.list.clearContents()
 
@@ -303,6 +329,26 @@ class _ArchScheduleTaskPanel:
                             t = t.replace("³","^3")
                             self.form.list.setItem(r,i,QtGui.QTableWidgetItem(t))
                     r += 1
+
+    def exportCSV(self):
+        if self.obj:
+            if self.obj.Result:
+                filename = QtGui.QFileDialog.getSaveFileName(QtGui.qApp.activeWindow(), translate("Arch","Export CSV File"), None, "CSV file (*.csv)");
+                if filename:
+                    # the following line crashes, couldn't fnid out why
+                    # self.obj.Result.exportFile(str(filename[0].encode("utf8")))
+                    import csv
+                    if not("Up-to-date" in self.obj.State):
+                        self.obj.Proxy.execute(self.obj)
+                    numrows = len(self.obj.Description)+1
+                    with open(filename[0].encode("utf8"), 'wb') as csvfile:
+                        csvfile = csv.writer(csvfile,delimiter="\t")
+                        for i in range(numrows):
+                            r = []
+                            for j in ["A","B","C"]:
+                                r.append(self.obj.Result.getContents(j+str(i+1)))
+                            csvfile.writerow(r)
+                    print "successfully exported ",filename[0]
 
     def select(self):
         if self.form.list.currentRow() >= 0:

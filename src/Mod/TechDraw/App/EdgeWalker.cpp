@@ -42,6 +42,7 @@
 
 #endif
 #include <sstream>
+#include <cmath>
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -63,17 +64,21 @@ void edgeVisitor::next_edge(Edge e)
     WalkerEdge we;
     we.v1 = s;
     we.v2 = t;
+    we.ed = e;
     we.idx = get(edge_index,m_g,e);
+    //Base::Console().Message("TRACE - EV::next_Edge - visiting (%d,%d) idx: %d\n",s,t,we.idx);
     wireEdges.push_back(we);
 }
 
 void edgeVisitor::begin_face()
 {
+    //Base::Console().Message("TRACE - EV::begin_face()\n");
     wireEdges.clear();
 }
 
 void edgeVisitor::end_face()
 {
+    //Base::Console().Message("TRACE - EV::end_face()\n");
     graphWires.push_back(wireEdges);
 }
 
@@ -100,16 +105,25 @@ EdgeWalker::~EdgeWalker()
 }
 
 //loads a list of unique edges into the traversal mechanism
-bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge> edges)
+bool EdgeWalker::loadEdges(std::vector<TechDraw::WalkerEdge>& edges)
 {
-    for (auto e: edges) {
-        add_edge(e.v1,e.v2,m_g);
+    //Base::Console().Message("TRACE -EW::loadEdges(we)\n");
+    int idx = 0;
+    for (auto& e: edges) {
+        std::pair<edge_t,bool> p;
+        p = add_edge(e.v1,e.v2,m_g);
+        e.ed = p.first;
+        e.idx = idx;
+        idx++;
+        m_saveWalkerEdges.push_back(e);
     }
+
     return true;
 }
 
 bool EdgeWalker::loadEdges(std::vector<TopoDS_Edge> edges)
 {
+    //Base::Console().Message("TRACE -EW::loadEdges(TopoDS)\n");
     if (edges.empty()) {
         throw Base::Exception("EdgeWalker has no edges to load\n");
     }
@@ -118,8 +132,11 @@ bool EdgeWalker::loadEdges(std::vector<TopoDS_Edge> edges)
     setSize(verts.size());
 
     std::vector<WalkerEdge>  we  = makeWalkerEdges(edges, verts);
+    loadEdges(we);
 
-    return loadEdges(we);
+    m_embedding = makeEmbedding(edges,verts);
+
+    return true;
 }
 bool EdgeWalker::setSize(int size)
 {
@@ -132,13 +149,23 @@ bool EdgeWalker::setSize(int size)
 
 bool EdgeWalker::perform()
 {
+    //Base::Console().Message("TRACE - EW::perform()\n");
     // Initialize the interior edge index
-    //property<edge_index_t, int>
     property_map<TechDraw::graph, edge_index_t>::type e_index = get(edge_index, m_g);
     graph_traits<TechDraw::graph>::edges_size_type edge_count = 0;
     graph_traits<TechDraw::graph>::edge_iterator ei, ei_end;
     for(boost::tie(ei, ei_end) = edges(m_g); ei != ei_end; ++ei)
       put(e_index, *ei, edge_count++);
+
+    //make planar embedding
+    planar_embedding_storage_t planar_embedding_storage(num_vertices(m_g));
+    planar_embedding_t planar_embedding(planar_embedding_storage.begin(),
+                                    get(vertex_index, m_g) );
+    for (auto& e : m_embedding) {
+        for (auto&  i: e.incidenceList) {
+            planar_embedding[e.iVertex].push_back(i.eDesc);
+        }
+    }
 
     // Test for planarity
     typedef std::vector< graph_traits<TechDraw::graph>::edge_descriptor > vec_t;
@@ -148,15 +175,15 @@ bool EdgeWalker::perform()
     kura_edges_t::iterator ki, ki_end;
     graph_traits<TechDraw::graph>::edge_descriptor e1;
 
-// Get the index associated with edge
+    // Get the index associated with edge
     graph_traits<TechDraw::graph>::edges_size_type
         get(boost::edge_index_t,
             const TechDraw::graph& m_g,
             graph_traits<TechDraw::graph>::edge_descriptor edge);
 
     bool isPlanar = boyer_myrvold_planarity_test(boyer_myrvold_params::graph = m_g,
-                                 boyer_myrvold_params::embedding = &embedding[0],
-                                 boyer_myrvold_params::kuratowski_subgraph =
+                                 boyer_myrvold_params::embedding = &embedding[0],            // this is "an" embedding but not one for finding
+                                 boyer_myrvold_params::kuratowski_subgraph =                 // closed regions in an edge pile.
                                        std::back_inserter(kEdges));
     if (!isPlanar) {
         //TODO: remove kura subgraph to make planar??
@@ -174,15 +201,14 @@ bool EdgeWalker::perform()
     }
 
     m_eV.setGraph(m_g);
-    //Base::Console().Message("TRACE - EW::perform - setGraph complete\n");
-    planar_face_traversal(m_g, &embedding[0], m_eV);
-    //Base::Console().Message("TRACE - EW::perform - traversal complete\n");
+    planar_face_traversal(m_g, &planar_embedding[0], m_eV);
 
     return true;
 }
 
 ewWireList EdgeWalker::getResult()
 {
+    //Base::Console().Message("TRACE - EW::getResult()\n");
     ewWireList result = m_eV.getResult();
     // result is a list of many wires each of which is a list of many WE
     return result;
@@ -190,6 +216,7 @@ ewWireList EdgeWalker::getResult()
 
 std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
 {
+    //Base::Console().Message("TRACE - EW::getResultWires()\n");
     std::vector<TopoDS_Wire> fw;
     ewWireList result = m_eV.getResult();
     if (result.wires.empty()) {
@@ -201,7 +228,7 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
         std::vector<WalkerEdge>::iterator iEdge = (*iWire).wedges.begin();
         std::vector<TopoDS_Edge> topoEdges;
         for (;iEdge != (*iWire).wedges.end(); iEdge++) {
-            TopoDS_Edge e = saveInEdges.at((*iEdge).idx);
+            TopoDS_Edge e = m_saveInEdges.at((*iEdge).idx);
             topoEdges.push_back(e);
         }
     TopoDS_Wire w = makeCleanWire(topoEdges);             //make 1 clean wire from its edges
@@ -212,6 +239,7 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultWires()
 
 std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
 {
+    //Base::Console().Message("TRACE - EW::getResultNoDups()\n");
     std::vector<TopoDS_Wire> fw;
     ewWireList result = m_eV.getResult();
     if (result.wires.empty()) {
@@ -225,7 +253,7 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
         std::vector<WalkerEdge>::iterator iEdge = (*iWire).wedges.begin();
         std::vector<TopoDS_Edge> topoEdges;
         for (;iEdge != (*iWire).wedges.end(); iEdge++) {
-            TopoDS_Edge e = saveInEdges.at((*iEdge).idx);
+            TopoDS_Edge e = m_saveInEdges.at((*iEdge).idx);
             topoEdges.push_back(e);
         }
     TopoDS_Wire w = makeCleanWire(topoEdges);             //make 1 clean wire from its edges
@@ -238,6 +266,7 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
 //! make a clean wire with sorted, oriented, connected, etc edges
 TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
 {
+    //Base::Console().Message("TRACE - EW::makeCleanWire()\n");
     TopoDS_Wire result;
     BRepBuilderAPI_MakeWire mkWire;
     ShapeFix_ShapeTolerance sTol;
@@ -268,6 +297,7 @@ TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol
 
 std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge> edges)
 {
+    //Base::Console().Message("TRACE - EW::makeUniqueVList()\n");
     std::vector<TopoDS_Vertex> uniqueVert;
     for(auto& e:edges) {
         TopoDS_Vertex v1 = TopExp::FirstVertex(e);
@@ -292,7 +322,8 @@ std::vector<TopoDS_Vertex> EdgeWalker:: makeUniqueVList(std::vector<TopoDS_Edge>
 std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edges,
                                                       std::vector<TopoDS_Vertex> verts)
 {
-    saveInEdges = edges;
+    //Base::Console().Message("TRACE - EW::makeWalkerEdges()\n");
+    m_saveInEdges = edges;
     std::vector<WalkerEdge> walkerEdges;
     for (auto e:edges) {
         TopoDS_Vertex ev1 = TopExp::FirstVertex(e);
@@ -305,11 +336,13 @@ std::vector<WalkerEdge> EdgeWalker::makeWalkerEdges(std::vector<TopoDS_Edge> edg
         walkerEdges.push_back(we);
     }
 
+    //Base::Console().Message("TRACE - EW::makeWalkerEdges - returns we: %d\n",walkerEdges.size());
     return walkerEdges;
 }
 
 int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uniqueVert)
 {
+    //Base::Console().Message("TRACE - EW::findUniqueVert()\n");
     int idx = 0;
     int result = 0;
     for(auto& v:uniqueVert) {                    //we're always going to find vx, right?
@@ -324,9 +357,10 @@ int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uni
 
 std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest)
 {
+    //Base::Console().Message("TRACE - EW::sortStrip()\n");
     std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);           //biggest 1st
     if (!sortedWires.size()) {
-        Base::Console().Log("INFO - DVP::extractFaces - no sorted Wires!\n");
+        Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
         return sortedWires;                                     // might happen in the middle of changes?
     }
 
@@ -395,6 +429,7 @@ std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool
 //sort wires in order of bbox diagonal.
 std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool ascend)
 {
+    //Base::Console().Message("TRACE - EW::sortWiresBySize()\n");
     std::vector<TopoDS_Wire> wires = w;
     std::sort(wires.begin(), wires.end(), EdgeWalker::wireCompare);
     if (ascend) {
@@ -421,6 +456,66 @@ std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w
     return box1.SquareExtent() > box2.SquareExtent();
 }
 
+std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> edges,
+                                                 const std::vector<TopoDS_Vertex> uniqueVList)
+{
+//    Base::Console().Message("TRACE - EW::makeEmbedding(edges: %d, verts: %d)\n",
+//                            edges.size(),uniqueVList.size());
+    std::vector<embedItem> result;
+
+    int iv = 0;
+    for (auto& v: uniqueVList) {
+        int ie = 0;
+        std::vector<incidenceItem> iiList;
+        for (auto& e: edges) {
+            double angle = 0;
+            if (DrawUtil::isFirstVert(e,v)) {
+                angle = DrawUtil::angleWithX(e,v);
+                incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
+                iiList.push_back(ii);
+            } else if (DrawUtil::isLastVert(e,v)) {
+                angle = DrawUtil::angleWithX(e,v);
+                incidenceItem ii(ie, angle, m_saveWalkerEdges[ie].ed);
+                iiList.push_back(ii);
+            } else {
+                //Base::Console().Message("TRACE - EW::makeEmbedding - neither first nor last\n");
+            }
+            ie++;
+       }
+       //sort incidenceList by angle
+       iiList = embedItem::sortIncidenceList(iiList,  false);
+       embedItem embed(iv, iiList);
+       result.push_back(embed);
+       iv++;
+    }
+    return result;
+}
+
+//! get incidence row as edge indices for v'th vertex
+std::vector<int> EdgeWalker::getEmbeddingRowIx(int v)
+{
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRowIx(%d)\n",v);
+    std::vector<int> result;
+    embedItem ei = m_embedding[v];
+    for (auto& ii: ei.incidenceList) {
+        result.push_back(ii.iEdge);
+    }
+    return result;
+}
+
+//! get incidence row as edgeDescriptors for v'th vertex
+std::vector<edge_t> EdgeWalker::getEmbeddingRow(int v)
+{
+//    //Base::Console().Message("TRACE - EW::getEmbeddingRow(%d)\n",v);
+      std::vector<edge_t> result;
+      embedItem ei = m_embedding[v];
+      for (auto& ii: ei.incidenceList) {
+          result.push_back(ii.eDesc);
+      }
+    return result;
+}
+
+
 
 //*******************************************
 // WalkerEdge Methods
@@ -441,6 +536,14 @@ bool WalkerEdge::isEqual(WalkerEdge w)
     return (i.idx < j.idx);
 }
 
+std::string WalkerEdge::dump(void)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << "WalkerEdge - v1: " << v1  << " v2: " << v2 << " idx: " << idx << " ed: " << ed;
+    result = builder.str();
+    return result;
+}
 
 //*****************************************
 // ewWire Methods
@@ -468,6 +571,10 @@ void ewWire::push_back(WalkerEdge w)
     wedges.push_back(w);
 }
 
+int ewWire::size(void)
+{
+    return wedges.size();
+}
 
 //***************************************
 // ewWireList methods
@@ -499,4 +606,54 @@ ewWireList ewWireList::removeDuplicateWires()
 void ewWireList::push_back(ewWire w)
 {
     wires.push_back(w);
+}
+
+int ewWireList::size(void)
+{
+    return wires.size();
+}
+
+//*************************************
+//* embedItem Methods
+//*************************************
+
+std::string embedItem::dump(void)
+{
+    std::string result;
+    std::stringstream builder;
+    builder << "embedItem - vertex: " << iVertex  << " incidenceList: ";
+    for (auto& ii : incidenceList) {
+        builder << " e:" << ii.iEdge << "/a:" << (ii.angle * (180.0/M_PI)) << "/ed:" << ii.eDesc;
+    }
+    result = builder.str();
+    return result;
+}
+
+std::vector<incidenceItem> embedItem::sortIncidenceList (std::vector<incidenceItem> &list, bool ascend)
+{
+    //Base::Console().Message("TRACE - eI::sortIncidenceList()\n");
+    std::vector< incidenceItem > tempList = list;
+    std::sort(tempList.begin(), tempList.end(), incidenceItem::iiCompare);
+    if (ascend) {
+        std::reverse(tempList.begin(),tempList.end());
+    }
+    return tempList;
+}
+
+//*************************************
+//* incidenceItem Methods
+//*************************************
+
+/*static*/  bool incidenceItem::iiCompare(const incidenceItem& i1, const incidenceItem& i2)
+{
+    return (i1.angle > i2.angle);
+}
+
+/*static*/bool incidenceItem::iiEqual(const incidenceItem& i1, const incidenceItem& i2)
+{
+    //TODO: this should compare edges also but eDesc comparision is by address
+    bool result = false;
+    if (i1.angle == i2.angle) {
+    }
+    return result;
 }

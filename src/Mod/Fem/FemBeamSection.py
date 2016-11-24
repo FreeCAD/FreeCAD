@@ -24,15 +24,16 @@ __title__ = "FemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
-import FemGui
 import _FemBeamSection
 
 
 def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
-    obj = FemGui.getActiveAnalysis().Document.addObject("Fem::FeaturePython", name)
+    obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     _FemBeamSection._FemBeamSection(obj)
     obj.Width = width
     obj.Height = height
@@ -40,3 +41,5 @@ def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
         import _ViewProviderFemBeamSection
         _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
     return obj
+
+#  @}

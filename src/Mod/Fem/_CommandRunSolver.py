@@ -24,12 +24,13 @@ __title__ = "Command Run Solver"
 __author__ = "Juergen Riegel"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandRunSolver
+#  \ingroup FEM
+
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore, QtGui
+import FreeCADGui
+from PySide import QtCore, QtGui
 
 
 class _CommandRunSolver(FemCommands):

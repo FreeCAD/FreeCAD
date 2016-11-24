@@ -28,12 +28,20 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    # \endcond
 
 __title__="FreeCAD CutPlane"
 __author__ = "Jonathan Wiedemann"
 __url__ = "http://www.freecadweb.org"
+
+## @package ArchCutPlane
+#  \ingroup ARCH
+#  \brief The Cut plane object and tools
+#
+#  This module handles the Cut Plane object
 
 def cutComponentwithPlane(archObject, cutPlane, sideFace):
     """cut object from a plan define by a face, Behind = 0 , front = 1"""

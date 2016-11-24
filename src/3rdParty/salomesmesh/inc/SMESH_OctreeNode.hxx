@@ -62,7 +62,7 @@ class SMESHUtils_EXPORT SMESH_OctreeNode : public SMESH_Octree
   virtual ~SMESH_OctreeNode () {};
 
   // Tells us if Node is inside the current box with the precision "precision"
-  virtual const bool isInside(const gp_XYZ& p, const double precision = 0.);
+  virtual bool isInside(const gp_XYZ& p, const double precision = 0.);
 
   // Return in Result a list of Nodes potentials to be near Node
   void               NodesAround(const SMDS_MeshNode *            node,

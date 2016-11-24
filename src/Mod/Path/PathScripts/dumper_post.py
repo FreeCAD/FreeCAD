@@ -22,7 +22,7 @@
 # ***************************************************************************/
 
 
-'''
+TOOLTIP='''
 Dumper is an extremely simple postprocessor file for the Path workbench. It is used
 to dump the command list from one or more Path objects for simple inspection. This post
 doesn't do any manipulation of the path and doesn't write anything to disk.  It just
@@ -39,7 +39,7 @@ if open.__module__ == '__builtin__':
     pythonopen = open
 
 
-def export(objectslist, filename):
+def export(objectslist, filename,argstring):
     output = '''(This ouput produced with the dump post processor)
 (Dump is useful for inspecting the raw commands in your paths)
 (but is not useful for driving machines.)

@@ -51,6 +51,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawViewDetail.h>
 
 #include "ZVALUE.h"
 #include "QGIFace.h"
@@ -61,6 +62,8 @@
 #include "QGICenterLine.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
+#include "QGCustomRect.h"
+#include "QGIMatting.h"
 #include "QGIViewPart.h"
 
 using namespace TechDrawGui;
@@ -138,8 +141,8 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
         case TechDrawGeometry::CIRCLE: {
           TechDrawGeometry::Circle *geom = static_cast<TechDrawGeometry::Circle *>(baseGeom);
 
-          double x = geom->center.fX - geom->radius;
-          double y = geom->center.fY - geom->radius;
+          double x = geom->center.x - geom->radius;
+          double y = geom->center.y - geom->radius;
 
           path.addEllipse(x, y, geom->radius * 2, geom->radius * 2);            //topleft@(x,y) radx,rady
           //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
@@ -147,21 +150,21 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
-          //double x = geom->center.fX - geom->radius;
-          //double y = geom->center.fY - geom->radius;
           pathArc(path, geom->radius, geom->radius, 0., geom->largeArc, geom->cw,
-                  geom->endPnt.fX, geom->endPnt.fY,
-                  geom->startPnt.fX, geom->startPnt.fY);
+                  geom->endPnt.x, geom->endPnt.y,
+                  geom->startPnt.x, geom->startPnt.y);
+//          double x = geom->center.x - geom->radius;
+//          double y = geom->center.y - geom->radius;
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFCIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
         case TechDrawGeometry::ELLIPSE: {
           TechDrawGeometry::Ellipse *geom = static_cast<TechDrawGeometry::Ellipse *>(baseGeom);
 
           // Calculate start and end points as ellipse with theta = 0 and pi
-          double startX = geom->center.fX + geom->major * cos(geom->angle),
-                 startY = geom->center.fY + geom->major * sin(geom->angle),
-                 endX = geom->center.fX - geom->major * cos(geom->angle),
-                 endY = geom->center.fY - geom->major * sin(geom->angle);
+          double startX = geom->center.x + geom->major * cos(geom->angle),
+                 startY = geom->center.y + geom->major * sin(geom->angle),
+                 endX = geom->center.x - geom->major * cos(geom->angle),
+                 endY = geom->center.y - geom->major * sin(geom->angle);
 
           pathArc(path, geom->major, geom->minor, geom->angle, false, false,
                   endX, endY, startX, startY);
@@ -169,16 +172,43 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           pathArc(path, geom->major, geom->minor, geom->angle, false, false,
                   startX, startY, endX, endY);
 
-          //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",x, y, geom->major, geom->minor);
+          //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",geom->center.x,geom->center.y, geom->major, geom->minor);
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
 
           pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,
-                        geom->endPnt.fX, geom->endPnt.fY,
-                        geom->startPnt.fX, geom->startPnt.fY);
-          //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.fX, geom->startPnt.fY,geom->endPnt.fX, geom->endPnt.fY);
+                        geom->endPnt.x, geom->endPnt.y,
+                        geom->startPnt.x, geom->startPnt.y);
+          //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.x, geom->startPnt.y,geom->endPnt.x, geom->endPnt.y);
 
+        } break;
+        case TechDrawGeometry::BEZIER: {
+          TechDrawGeometry::BezierSegment *geom = static_cast<TechDrawGeometry::BezierSegment *>(baseGeom);
+
+          // Move painter to the beginning
+          path.moveTo(geom->pnts[0].x, geom->pnts[0].y);
+          //Base::Console().Message("TRACE -drawPainterPath - making an BEZIER From: (%.3f,%.3f)\n",geom->pnts[0].x,geom->pnts[0].y);
+
+          if ( geom->poles == 2 ) {
+              // Degree 1 bezier = straight line...
+              path.lineTo(geom->pnts[1].x, geom->pnts[1].y);
+
+          } else if ( geom->poles == 3 ) {
+              path.quadTo(geom->pnts[1].x, geom->pnts[1].y,
+                          geom->pnts[2].x, geom->pnts[2].y);
+
+          } else if ( geom->poles == 4 ) {
+              path.cubicTo(geom->pnts[1].x, geom->pnts[1].y,
+                           geom->pnts[2].x, geom->pnts[2].y,
+                           geom->pnts[3].x, geom->pnts[3].y);
+          } else {                                                 //can only handle lines,quads,cubes
+              Base::Console().Error("Bad pole count (%d) for BezierSegment\n",geom->poles);
+              auto itBez = geom->pnts.begin() + 1;
+              for (; itBez != geom->pnts.end();itBez++)  {
+                path.lineTo((*itBez).x, (*itBez).y);         //show something for debugging
+              }
+          }
         } break;
         case TechDrawGeometry::BSPLINE: {
           TechDrawGeometry::BSpline *geom = static_cast<TechDrawGeometry::BSpline *>(baseGeom);
@@ -186,39 +216,39 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           std::vector<TechDrawGeometry::BezierSegment>::const_iterator it = geom->segments.begin();
 
           // Move painter to the beginning of our first segment
-          path.moveTo(it->pnts[0].fX, it->pnts[0].fY);
-          //Base::Console().Message("TRACE -drawPainterPath - making an BSPLINE From: (%.3f,%.3f)\n",it->pnts[0].fX,it->pnts[0].fY);
+          path.moveTo(it->pnts[0].x, it->pnts[0].y);
+          //Base::Console().Message("TRACE -drawPainterPath - making an BSPLINE From: (%.3f,%.3f)\n",it->pnts[0].x,it->pnts[0].y);
 
           for ( ; it != geom->segments.end(); ++it) {
               // At this point, the painter is either at the beginning
               // of the first segment, or end of the last
               if ( it->poles == 2 ) {
                   // Degree 1 bezier = straight line...
-                  path.lineTo(it->pnts[1].fX, it->pnts[1].fY);
+                  path.lineTo(it->pnts[1].x, it->pnts[1].y);
 
               } else if ( it->poles == 3 ) {
-                  path.quadTo(it->pnts[1].fX, it->pnts[1].fY,
-                              it->pnts[2].fX, it->pnts[2].fY);
+                  path.quadTo(it->pnts[1].x, it->pnts[1].y,
+                              it->pnts[2].x, it->pnts[2].y);
 
               } else if ( it->poles == 4 ) {
-                  path.cubicTo(it->pnts[1].fX, it->pnts[1].fY,
-                               it->pnts[2].fX, it->pnts[2].fY,
-                               it->pnts[3].fX, it->pnts[3].fY);
+                  path.cubicTo(it->pnts[1].x, it->pnts[1].y,
+                               it->pnts[2].x, it->pnts[2].y,
+                               it->pnts[3].x, it->pnts[3].y);
               } else {                                                 //can only handle lines,quads,cubes
                   Base::Console().Error("Bad pole count (%d) for BezierSegment of BSpline geometry\n",it->poles);
-                  path.lineTo(it->pnts[1].fX, it->pnts[1].fY);         //show something for debugging
+                  path.lineTo(it->pnts[1].x, it->pnts[1].y);         //show something for debugging
               }
           }
         } break;
         case TechDrawGeometry::GENERIC: {
           TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(baseGeom);
 
-          path.moveTo(geom->points[0].fX, geom->points[0].fY);
-          std::vector<Base::Vector2D>::const_iterator it = geom->points.begin();
-          //Base::Console().Message("TRACE -drawPainterPath - making an GENERIC From: (%.3f,%.3f)\n",geom->points[0].fX, geom->points[0].fY);
+          path.moveTo(geom->points[0].x, geom->points[0].y);
+          std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
+          //Base::Console().Message("TRACE -drawPainterPath - making an GENERIC From: (%.3f,%.3f)\n",geom->points[0].x, geom->points[0].y);
           for(++it; it != geom->points.end(); ++it) {
-              path.lineTo((*it).fX, (*it).fY);
-              //Base::Console().Message(">>>> To: (%.3f,%.3f)\n",(*it).fX, (*it).fY);
+              path.lineTo((*it).x, (*it).y);
+              //Base::Console().Message(">>>> To: (%.3f,%.3f)\n",(*it).x, (*it).y);
           }
         } break;
         default:
@@ -247,15 +277,18 @@ void QGIViewPart::updateView(bool update)
 
 
     if (update ||
-       viewPart->isTouched() ||
-       viewPart->Source.isTouched() ||
-       viewPart->Direction.isTouched() ||
-       viewPart->XAxisDirection.isTouched() ||
-       viewPart->Tolerance.isTouched() ||
-       viewPart->Scale.isTouched() ||
-       viewPart->ShowHiddenLines.isTouched() ||
-       viewPart->ShowSmoothLines.isTouched() ||
-       viewPart->ShowSeamLines.isTouched() ) {
+        viewPart->isTouched() ||
+        viewPart->Source.isTouched() ||
+        viewPart->Direction.isTouched() ||
+        viewPart->Scale.isTouched() ||
+        viewPart->HardHidden.isTouched() ||
+        viewPart->SmoothVisible.isTouched() ||
+        viewPart->SeamVisible.isTouched()   ||
+        viewPart->IsoVisible.isTouched()    ||
+        viewPart->SmoothHidden.isTouched()    ||
+        viewPart->SeamHidden.isTouched()      ||
+        viewPart->IsoHidden.isTouched()       ||
+        viewPart->IsoCount.isTouched()  ) {
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||
@@ -278,42 +311,47 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawBorder();
+    drawMatting();
 }
 
 void QGIViewPart::drawViewPart()
 {
-    //Base::Console().Message("TRACE - QGIVP::drawViewPart\n");
-
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     if ( viewPart == nullptr ) {
+        return;
+    }
+    if (!viewPart->hasGeometry()) {
         return;
     }
 
     float lineWidth = viewPart->LineWidth.getValue() * lineScaleFactor;
     float lineWidthHid = viewPart->HiddenWidth.getValue() * lineScaleFactor;
+    float lineWidthIso = viewPart->IsoWidth.getValue() * lineScaleFactor;
 
     prepareGeometryChange();
     removePrimitives();                      //clean the slate
     removeDecorations();
 
 #if MOD_TECHDRAW_HANDLE_FACES
-    // Draw Faces
-    std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-    const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
-    std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
-    for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
-        QGIFace* newFace = drawFace(*fit,i);
-        TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
-        if (fHatch) {
-            if (!fHatch->HatchPattern.isEmpty()) {
-                App::Color hColor = fHatch->HatchColor.getValue();
-                newFace->setHatchColor(hColor.asCSSString());
-                newFace->setHatch(fHatch->HatchPattern.getValue());
+    if (viewPart->handleFaces()) {
+        // Draw Faces
+        std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
+        const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
+        std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
+        for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
+            QGIFace* newFace = drawFace(*fit,i);
+            TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
+            if (fHatch) {
+                if (!fHatch->HatchPattern.isEmpty()) {
+                    App::Color hColor = fHatch->HatchColor.getValue();
+                    newFace->setHatchColor(hColor.asCSSString());
+                    newFace->setHatch(fHatch->HatchPattern.getValue());
+                }
             }
+            newFace->setDrawEdges(false);
+            newFace->setZValue(ZVALUE::FACE);
+            newFace->setPrettyNormal();
         }
-        newFace->setDrawEdges(false);
-        newFace->setZValue(ZVALUE::FACE);
-        newFace->setPrettyNormal();
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
@@ -326,12 +364,17 @@ void QGIViewPart::drawViewPart()
         if ((*itEdge)->visible) {
             if (((*itEdge)->classOfEdge == ecHARD) ||
                 ((*itEdge)->classOfEdge == ecOUTLINE) ||
-                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->ShowSmoothLines.getValue()) ||
-                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->ShowSeamLines.getValue())) {
+                (((*itEdge)->classOfEdge == ecSMOOTH) && viewPart->SmoothVisible.getValue()) ||
+                (((*itEdge)->classOfEdge == ecSEAM) && viewPart->SeamVisible.getValue())    ||
+                (((*itEdge)->classOfEdge == ecUVISO) && viewPart->IsoVisible.getValue())) {
                 showEdge = true;
             }
         } else {
-            if (viewPart->ShowHiddenLines.getValue()) {
+            if ( (((*itEdge)->classOfEdge == ecHARD) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecOUTLINE) && (viewPart->HardHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSMOOTH) && (viewPart->SmoothHidden.getValue())) ||
+                 (((*itEdge)->classOfEdge == ecSEAM) && (viewPart->SeamHidden.getValue()))    ||
+                 (((*itEdge)->classOfEdge == ecUVISO) && (viewPart->IsoHidden.getValue())) ) {
                 showEdge = true;
             }
         }
@@ -347,26 +390,29 @@ void QGIViewPart::drawViewPart()
                 item->setHiddenEdge(true);
                 item->setZValue(ZVALUE::HIDEDGE);
             }
+            if ((*itEdge)->classOfEdge == ecUVISO) {
+                item->setWidth(lineWidthIso);
+            }
             item->setPrettyNormal();
             //debug a path
-            //QPainterPath edgePath=drawPainterPath(*itEdge);
-            //std::stringstream edgeId;
-            //edgeId << "QGIVP.edgePath" << i;
-            //dumpPath(edgeId.str().c_str(),edgePath);
+//            QPainterPath edgePath=drawPainterPath(*itEdge);
+//            std::stringstream edgeId;
+//            edgeId << "QGIVP.edgePath" << i;
+//            dumpPath(edgeId.str().c_str(),edgePath);
          }
     }
 
     // Draw Vertexs:
     const std::vector<TechDrawGeometry::Vertex *> &verts = viewPart->getVertexGeometry();
     std::vector<TechDrawGeometry::Vertex *>::const_iterator vert = verts.begin();
-    bool showCenters = viewPart->ShowCenters.getValue();
+    bool showCenters = viewPart->ArcCenterMarks.getValue();
     double cAdjust = viewPart->CenterScale.getValue();
     for(int i = 0 ; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter) {
             if (showCenters) {
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
-                cmItem->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+                cmItem->setPos((*vert)->pnt.x, (*vert)->pnt.y);                //this is in ViewPart coords
                 cmItem->setThick(0.5 * lineWidth * lineScaleFactor);             //need minimum?
                 cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
                 cmItem->setZValue(ZVALUE::VERTEX);
@@ -374,15 +420,17 @@ void QGIViewPart::drawViewPart()
         } else {
             QGIVertex *item = new QGIVertex(i);
             addToGroup(item);
-            item->setPos((*vert)->pnt.fX, (*vert)->pnt.fY);                //this is in ViewPart coords
+            item->setPos((*vert)->pnt.x, (*vert)->pnt.y);                //this is in ViewPart coords
             item->setRadius(lineWidth * vertexScaleFactor);
             item->setZValue(ZVALUE::VERTEX);
         }
     }
     //draw section line
-    if (viewPart->ShowSectionLine.getValue() &&
-        viewPart->getSectionRef() ) {
-        drawSectionLine(true);
+    if (viewPart->ShowSectionLine.getValue()) {
+        auto refs = viewPart->getSectionRefs();
+        for (auto& r:refs) {
+            drawSectionLine(r, true);
+        }
     }
     //draw center lines
     drawCenterLines(true);
@@ -442,20 +490,20 @@ void QGIViewPart::removeDecorations()
     QList<QGraphicsItem*> children = childItems();
     for (auto& c:children) {
          QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
+         QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
-            removeFromGroup(decor);
-            scene()->removeItem(decor);
-            delete decor;
+         } else if (mat) {
+            removeFromGroup(mat);
+            scene()->removeItem(mat);
+            delete mat;
          }
+
      }
 }
 
-void QGIViewPart::drawSectionLine(bool b)
+void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
-    //Base::Console().Message("TRACE - QGIVP::drawSectionLine);
-
     TechDraw::DrawViewPart *viewPart = static_cast<TechDraw::DrawViewPart *>(getViewObject());
-    TechDraw::DrawViewSection *viewSection = viewPart->getSectionRef();
     if (!viewPart ||
         !viewSection)  {
         return;
@@ -463,32 +511,38 @@ void QGIViewPart::drawSectionLine(bool b)
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
-        sectionLine->setSymbol(const_cast<char*>(viewPart->SymbolSection.getValue()));
-        Base::Vector3d sectionDir(0,1,0);
-        Base::Vector3d up(0,1,0);
-        Base::Vector3d down(0,-1,0);
-        Base::Vector3d right(1,0,0);
-        Base::Vector3d left(-1,0,0);
-        bool horiz = viewPart->HorizSectionLine.getValue();
-        bool normal = viewPart->ArrowUpSection.getValue();
-        if (horiz && normal) {
-            sectionDir = up;
-        } else if (horiz && !normal) {
-            sectionDir = down;
-        } else if (!horiz && normal) {
-            sectionDir = right;
-        } else if (!horiz && !normal) {
-            sectionDir = left;
+        sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
+
+        //TODO: handle oblique section lines?
+        //find smallest internal angle(normalDir,get?Dir()) and use -1*get?Dir() +/- angle
+        //Base::Vector3d normalDir = viewSection->SectionNormal.getValue();
+        Base::Vector3d arrowDir(0,1,0);                //for drawing only, not geom
+        Base::Vector3d lineDir(1,0,0);
+        bool horiz = false;
+        if (viewSection->SectionDirection.isValue("Right")) {
+            arrowDir = Base::Vector3d(1,0,0);
+            lineDir = Base::Vector3d(0,1,0);
+        } else if (viewSection->SectionDirection.isValue("Left")) {
+            arrowDir = Base::Vector3d(-1,0,0);
+            lineDir = Base::Vector3d(0,-1,0);
+        } else if (viewSection->SectionDirection.isValue("Up")) {
+            arrowDir = Base::Vector3d(0,1,0);
+            lineDir = Base::Vector3d(1,0,0);
+            horiz = true;
+        } else if (viewSection->SectionDirection.isValue("Down")) {
+            arrowDir = Base::Vector3d(0,-1,0);
+            lineDir = Base::Vector3d(-1,0,0);
+            horiz = true;
         }
-        sectionLine->setDirection(sectionDir.x,sectionDir.y);
+        sectionLine->setDirection(arrowDir.x,arrowDir.y);
 
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
         double scale = viewPart->Scale.getValue();
         Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
-        pOrg.y = -1 * pOrg.y;
-        //now project pOrg onto sectionDir
+        //pOrg.y = -1 * pOrg.y;
+        //now project pOrg onto arrowDir
         Base::Vector3d displace;
-        displace.ProjectToLine(pOrg, sectionDir);
+        displace.ProjectToLine(pOrg, arrowDir);
         Base::Vector3d offset = pOrg + displace;
 
         sectionLine->setPos(offset.x,offset.y);
@@ -554,10 +608,33 @@ void QGIViewPart::drawCenterLines(bool b)
     }
 }
 
+void QGIViewPart::drawMatting()
+{
+    auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
+    TechDraw::DrawViewDetail* dvd = nullptr;
+    if (viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+        dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
+    } else {
+        return;
+    }
+
+    double scale = dvd->Scale.getValue();
+    double radius = dvd->Radius.getValue() * scale;
+    QGIMatting* mat = new QGIMatting();
+    addToGroup(mat);
+    mat->setPos(0.0,0.0);
+    mat->setRadius(radius);
+    QRectF displayArea = customChildrenBoundingRect();
+    mat->setSize(displayArea.width(),displayArea.height());
+    //mat->setHoleStyle(dvd->getMattingStyle());
+    mat->draw();
+    mat->show();
+}
+
 // As called by arc of ellipse case:
 // pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,
-//         geom->endPnt.fX, geom->endPnt.fY,
-//         geom->startPnt.fX, geom->startPnt.fY);
+//         geom->endPnt.x, geom->endPnt.y,
+//         geom->startPnt.x, geom->startPnt.y);
 void QGIViewPart::pathArc(QPainterPath &path, double rx, double ry, double x_axis_rotation,
                                     bool large_arc_flag, bool sweep_flag,
                                     double x, double y,
@@ -740,7 +817,7 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
             } else if (elem.isCurveTo()) {
                 typeName = "CurveTo";
             } else {
-                typeName = "Unknown";
+                typeName = "CurveData";
             }
             Base::Console().Message(">>>>> element %d: type:%d/%s pos(%.3f,%.3f) M:%d L:%d C:%d\n",iElem,
                                     elem.type,typeName,elem.x,elem.y,elem.isMoveTo(),elem.isLineTo(),elem.isCurveTo());

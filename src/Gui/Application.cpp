@@ -89,11 +89,12 @@
 #include "Control.h"
 #include "DocumentRecovery.h"
 #include "TransactionObject.h"
-#include "TaskView/TaskView.h"
+#include "FileDialog.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
 #include "ViewProviderPythonFeature.h"
@@ -112,12 +113,14 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
+#include "ViewProviderGroupExtension.h"
 
 #include "Language/Translator.h"
+#include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
-#include "GuiInitScript.h"
+#include <Gui/GuiInitScript.h>
 
 
 using namespace Gui;
@@ -527,7 +530,9 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
             }
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -575,7 +580,9 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
 
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -1468,6 +1475,14 @@ void Application::initTypes(void)
     Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
+    Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderExtensionPython            ::init();
+    Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGroupExtensionPython       ::init();
+    Gui::ViewProviderGeoFeatureGroupExtension   ::init();
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
+    Gui::ViewProviderOriginGroupExtension       ::init();
+    Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
@@ -1527,9 +1542,19 @@ void Application::runApplication(void)
     if (it != cfg.end() && mainApp.isRunning()) {
         // send the file names to be opened to the server application so that this
         // opens them
+        QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
         for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+            QFileInfo fi(fn);
+            // if path name is relative make it absolute because the running instance
+            // cannot determine the full path when trying to load the file
+            if (fi.isRelative()) {
+                fn = cwd.absoluteFilePath(fn);
+                fn = QDir::cleanPath(fn);
+            }
+
+            QByteArray msg = fn.toUtf8();
             msg.prepend("OpenFile:");
             if (!mainApp.sendMessage(msg)) {
                 qWarning("Failed to send message to server");
@@ -1603,6 +1628,15 @@ void Application::runApplication(void)
 #if !defined(Q_WS_X11)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#endif
+
+#if defined(FC_OS_LINUX)
+    // See #0001588
+    QString path = FileDialog::restoreLocation();
+    FileDialog::setWorkingDirectory(QDir::currentPath());
+    FileDialog::saveLocation(path);
+#else
+    FileDialog::setWorkingDirectory(FileDialog::restoreLocation());
 #endif
 
     Application app(true);

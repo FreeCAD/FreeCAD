@@ -28,8 +28,6 @@
 #endif
 
 #include "FemSolverObject.h"
-
-#include <Base/FileInfo.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
 
@@ -42,20 +40,7 @@ PROPERTY_SOURCE(Fem::FemSolverObject, App::DocumentObject)
 
 FemSolverObject::FemSolverObject()
 {
-
-    /*
-    ADD_PROPERTY_TYPE(SolverName,("Calculix"), "Data",Prop_None,"Solver program name");
-    ADD_PROPERTY_TYPE(Category,("FEM"), "Data",Prop_None,"FEM, CFD ...");
-    ADD_PROPERTY_TYPE(Module,(""), "Data",Prop_None,"Python module name");
-    ADD_PROPERTY_TYPE(ExternalCaseEditor,(""), "Data",Prop_None,"External case editor programe");
-    ADD_PROPERTY_TYPE(ExternalResultViewer,(""), "Data",Prop_None,"External result viewer name");
-
-    ADD_PROPERTY_TYPE(AnalysisType,("Static"), "Solver",Prop_None,"Specific analysis type");
-    ADD_PROPERTY_TYPE(WorkingDir,(Base::FileInfo::getTempPath()), "Solver",Prop_None,"Solver working directory");
-    ADD_PROPERTY_TYPE(InputCaseName,("TestCase"), "Solver",Prop_None,"Solver input file without suffix");
-    ADD_PROPERTY_TYPE(Parallel,(false), "Solver",Prop_None,"Run solver in parallel like MPI");
-    ADD_PROPERTY_TYPE(ResultObtained,(false), "Solver",Prop_None,"if true, result has been obtained");
-    */
+    // Attributes are implemented in the FemSolverObjectPython
 }
 
 FemSolverObject::~FemSolverObject()

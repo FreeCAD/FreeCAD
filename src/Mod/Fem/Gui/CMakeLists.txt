@@ -7,8 +7,6 @@ endif(MSVC)
 if(BUILD_FEM_NETGEN)
     add_definitions(-DFCWithNetgen)
 endif(BUILD_FEM_NETGEN)
-find_package(VTK REQUIRED)
-include(${VTK_USE_FILE})
 
 include_directories(
     ${CMAKE_BINARY_DIR}
@@ -22,7 +20,7 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
-    ${VTK_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
@@ -33,13 +31,6 @@ set(FemGui_LIBS
     Fem
     FreeCADGui
 )
-
-if(BUILD_FEM_VTK)
-    set(FemGui_LIBS
-        ${FemGui_LIBS}
-        ${VTK_LIBRARIES}
-    )
-endif(BUILD_FEM_VTK)
 
 generate_from_xml(ViewProviderFemMeshPy)
 
@@ -53,6 +44,7 @@ SOURCE_GROUP("Python" FILES ${Python_SRCS})
 set(FemGui_MOC_HDRS
     DlgSettingsFemCcxImp.h
     DlgSettingsFemGeneralImp.h
+    DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88Imp.h
     PropertyFemMeshItem.h
     TaskObjectName.h
@@ -92,6 +84,7 @@ SOURCE_GROUP("Moc" FILES ${FemGui_MOC_SRCS})
 set(FemGui_UIC_SRCS
     DlgSettingsFemCcx.ui
     DlgSettingsFemGeneral.ui
+    DlgSettingsFemGmsh.ui
     DlgSettingsFemZ88.ui
     TaskCreateNodeSet.ui
     TaskObjectName.ui
@@ -134,6 +127,9 @@ SET(FemGui_DLG_SRCS
     DlgSettingsFemGeneral.ui
     DlgSettingsFemGeneralImp.cpp
     DlgSettingsFemGeneralImp.h
+    DlgSettingsFemGmsh.ui
+    DlgSettingsFemGmshImp.cpp
+    DlgSettingsFemGmshImp.h
     DlgSettingsFemZ88.ui
     DlgSettingsFemZ88Imp.cpp
     DlgSettingsFemZ88Imp.h
@@ -331,7 +327,7 @@ SET(FemGui_SRCS
 
 
 add_library(FemGui SHARED ${FemGui_SRCS})
-target_link_libraries(FemGui ${FemGui_LIBS})
+target_link_libraries(FemGui ${FemGui_LIBS} ${VTK_LIBRARIES})
 
 
 fc_target_copy_resource(FemGui

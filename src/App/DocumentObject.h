@@ -49,6 +49,7 @@ enum ObjectStatus {
     Recompute = 3,
     Restore = 4,
     Delete = 5,
+    PythonCall = 6,
     Expand = 16
 };
 
@@ -120,8 +121,6 @@ public:
     bool isRestoring() const {return StatusBits.test(4);}
     /// returns true if this objects is currently restoring from file
     bool isDeleting() const {return StatusBits.test(5);}
-    /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
     /// return the status bits
     unsigned long getStatus() const {return StatusBits.to_ulong();}
     bool testStatus(ObjectStatus pos) const {return StatusBits.test((size_t)pos);}
@@ -162,6 +161,9 @@ public:
      */
     virtual short mustExecute(void) const;
 
+    /// Recompute only this feature
+    bool recomputeFeature();
+
     /// get the status Message
     const char *getStatusString(void) const;
 
@@ -197,6 +199,8 @@ public:
     const std::string & getOldLabel() const { return oldLabel; }
 
 protected:
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
     /** get called by the document to recompute this feature
       * Normaly this method get called in the processing of
       * Document::recompute().
@@ -233,11 +237,11 @@ protected:
     /// get called after a document has been fully restored
     virtual void onDocumentRestored() {}
     /// get called after setting the document
-    virtual void onSettingDocument() {}
+    virtual void onSettingDocument();
     /// get called after a brand new object was created
-    virtual void setupObject() {}
+    virtual void setupObject();
     /// get called when object is going to be removed from the document
-    virtual void unsetupObject() {}
+    virtual void unsetupObject();
 
      /// python object of this class and all descendend
 protected: // attributes
@@ -257,7 +261,18 @@ protected: // attributes
     const std::string *pcNameInDocument;
 };
 
-} //namespace App
+class AppExport ObjectStatusLocker
+{
+public:
+    ObjectStatusLocker(ObjectStatus s, DocumentObject* o) : status(s), obj(o)
+    { obj->setStatus(status, true); }
+    ~ObjectStatusLocker()
+    { obj->setStatus(status, false); }
+private:
+    ObjectStatus status;
+    DocumentObject* obj;
+};
 
+} //namespace App
 
 #endif // APP_DOCUMENTOBJECT_H

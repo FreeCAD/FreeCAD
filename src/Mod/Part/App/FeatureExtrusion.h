@@ -27,6 +27,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
+#include "FaceMakerCheese.h"
 #include <TopoDS_Face.hxx>
 
 namespace Part
@@ -50,6 +51,7 @@ public:
     App::PropertyBool Symmetric;
     App::PropertyAngle TaperAngle;
     App::PropertyAngle TaperAngleRev;
+    App::PropertyString FaceMakerClass;
 
 
     /**
@@ -64,6 +66,7 @@ public:
         bool solid;
         double taperAngleFwd; //in radians
         double taperAngleRev;
+        std::string faceMakerClass;
         ExtrusionParameters(): lengthFwd(0), lengthRev(0), solid(false), taperAngleFwd(0), taperAngleRev(0) {}// constructor to keep garbage out
     };
 
@@ -117,15 +120,29 @@ public: //mode enumerations
     };
     static const char* eDirModeStrings[];
 
-private:
-    static bool isInside(const TopoDS_Wire&, const TopoDS_Wire&);
-    static TopoDS_Face validateFace(const TopoDS_Face&);
-    static TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&);
-    static TopoDS_Shape makeFace(std::list<TopoDS_Wire>&); // for internal use only
+protected:
     static void makeDraft(ExtrusionParameters params, const TopoDS_Shape&, std::list<TopoDS_Shape>&);
 
-private:
-    class Wire_Compare;
+
+protected:
+    virtual void setupObject() override;
+};
+
+/**
+ * @brief FaceMakerExtrusion provides legacy compounding-structure-ignorant behavior of facemaker of Part Extrude.
+ * Strengths: makes faces with holes
+ * Weaknesses: can't make islands in holes. Ignores compounding nesting. All faces must be on same plane.
+ */
+class FaceMakerExtrusion: public FaceMakerCheese
+{
+    TYPESYSTEM_HEADER();
+public:
+    virtual std::string getUserFriendlyName() const override;
+    virtual std::string getBriefExplanation() const override;
+
+    virtual void Build() override;
+protected:
+    virtual void Build_Essence() override {}
 };
 
 } //namespace Part

@@ -22,7 +22,7 @@
 # ***************************************************************************/
 
 
-'''
+TOOLTIP='''
 This is a postprocessor file for the Path workbench. It is used to
 take a pseudo-gcode fragment outputted by a Path object, and output
 real GCode suitable for a linuxcnc 3 axis mill. This postprocessor, once placed
@@ -30,7 +30,14 @@ in the appropriate PathScripts folder, can be used directly from inside
 FreeCAD, via the GUI importer or via python scripts with:
 
 import linuxcnc_post
-linuxcnc_post.export(object,"/path/to/file.ncc")
+linuxcnc_post.export(object,"/path/to/file.ncc","")
+'''
+
+TOOLTIP_ARGS='''
+Arguments for linuxcnc:
+    --header,--no-header             ... output headers (--header)
+    --comments,--no-comments         ... output comments (--comments)
+    --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
 '''
 
 import datetime
@@ -79,8 +86,26 @@ TOOL_CHANGE = ''''''
 if open.__module__ == '__builtin__':
     pythonopen = open
 
+def processArguments(argstring):
+    global OUTPUT_HEADER
+    global OUTPUT_COMMENTS
+    global OUTPUT_LINE_NUMBERS
+    for arg in argstring.split():
+        if arg == '--header':
+            OUTPUT_HEADER = True
+        elif arg == '--no-header':
+            OUTPUT_HEADER = False
+        elif arg == '--comments':
+            OUTPUT_COMMENTS = True
+        elif arg == '--no-comments':
+            OUTPUT_COMMENTS = False
+        elif arg == '--line-numbers':
+            OUTPUT_LINE_NUMBERS = True
+        elif arg == '--no-line-numbers':
+            OUTPUT_LINE_NUMBERS = False
 
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
+    processArguments(argstring)
     global UNITS
     for obj in objectslist:
         if not hasattr(obj, "Path"):
@@ -95,17 +120,15 @@ def export(objectslist, filename):
     # sure we're using the current values in the Machine Def.
     myMachine = None
     for pathobj in objectslist:
-        if hasattr(pathobj, "Group"):  # We have a compound or project.
-            for p in pathobj.Group:
-                if p.Name == "Machine":
-                    myMachine = p
+        if hasattr(pathobj,"MachineName"):
+            myMachine = pathobj.MachineName
+        if hasattr(pathobj, "MachineUnits"):
+            if pathobj.MachineUnits == "Metric":
+               UNITS = "G21"
+            else:
+               UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this project"
-    else:
-        if myMachine.MachineUnits == "Metric":
-            UNITS = "G21"
-        else:
-            UNITS = "G20"
+        print "No machine found in this selection"
 
     # write header
     if OUTPUT_HEADER:
@@ -168,7 +191,6 @@ def linenumber():
         return "N" + str(LINENR) + " "
     return ""
 
-
 def parse(pathobj):
     out = ""
     lastcommand = None
@@ -207,8 +229,9 @@ def parse(pathobj):
             for param in params:
                 if param in c.Parameters:
                     if param == 'F':
-                        outstring.append(
-                            param + format(c.Parameters['F'], '.2f'))
+                        if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
+                            outstring.append(
+                                param + format(c.Parameters['F'], '.2f'))
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:

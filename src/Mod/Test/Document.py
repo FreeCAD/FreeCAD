@@ -150,7 +150,7 @@ class DocumentBasicCases(unittest.TestCase):
     enumeration_choices = ["one", "two"]
     obj = self.Doc.addObject("App::FeaturePython","Label_2")
     obj.addProperty("App::PropertyEnumeration", "myEnumeration", "Enum", "mytest")
-    with self.assertRaises(FreeCAD.Base.FreeCADError):
+    with self.assertRaises(ValueError):
       obj.myEnumeration = enumeration_choices[0]
 
   def testMem(self):
@@ -181,6 +181,45 @@ class DocumentBasicCases(unittest.TestCase):
     else:
       self.failUnless(False)
     del L2
+    
+  def testExtensions(self):
+    #we try to create a normal python object and add a extension to it 
+    obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
+    grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
+    #we should have all methods we need to handle extensions 
+    try:
+      self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
+      grp.addExtension("App::GroupExtensionPython", self)
+      self.failUnless(grp.hasExtension("App::GroupExtension"))
+      self.failUnless(grp.hasExtension("App::GroupExtensionPython"))
+      grp.addObject(obj)
+      self.failUnless(len(grp.Group) == 1)
+      self.failUnless(grp.Group[0] == obj)
+    except:
+      self.failUnless(True)
+      
+    #test if the method override works
+    class SpecialGroup():
+        def allowObject(self, obj):
+            return False;
+    
+    callback = SpecialGroup()
+    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")  
+    grp2.addExtension("App::GroupExtensionPython", callback)
+    
+    try:
+      self.failUnless(grp2.hasExtension("App::GroupExtension"))
+      grp2.addObject(obj)
+      self.failUnless(len(grp2.Group) == 0)
+    except:
+      self.failUnless(True)
+    
+    self.Doc.removeObject(grp.Name)
+    self.Doc.removeObject(grp2.Name)
+    self.Doc.removeObject(obj.Name)
+    del obj
+    del grp
+    del grp2
 
   def tearDown(self):
     #closing doc

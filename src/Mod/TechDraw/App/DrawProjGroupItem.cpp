@@ -29,6 +29,7 @@
 #include <Base/Console.h>
 #include <Base/Writer.h>
 
+#include "DrawProjGroup.h"
 #include "DrawProjGroupItem.h"
 
 #include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
@@ -57,7 +58,6 @@ DrawProjGroupItem::DrawProjGroupItem(void)
 
     //projection group controls these
     Direction.setStatus(App::Property::ReadOnly,true);
-    XAxisDirection.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }
@@ -88,10 +88,25 @@ DrawProjGroupItem::~DrawProjGroupItem()
 
 void DrawProjGroupItem::onDocumentRestored()
 {
-    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
-    DrawProjGroupItem::execute();
+//    setAutoPos(false);                        //if restoring from file, use X,Y from file, not auto!
+    App::DocumentObjectExecReturn* rc = DrawProjGroupItem::execute();
+    if (rc) {
+        delete rc;
+    }
 }
 
+DrawProjGroup* DrawProjGroupItem::getGroup()
+{
+    DrawProjGroup* result = nullptr;
+    std::vector<App::DocumentObject*> parent = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawProjGroup::getClassTypeId())) {
+            result = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
+            break;
+        }
+    }
+    return result;
+}
 
 PyObject *DrawProjGroupItem::getPyObject(void)
 {

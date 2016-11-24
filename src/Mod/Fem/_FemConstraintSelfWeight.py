@@ -24,6 +24,9 @@ __title__ = "the constraint self weight object"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemConstraintSelfWeight
+#  \ingroup FEM
+
 
 class _FemConstraintSelfWeight:
     "The FemConstraintSelfWeight object"

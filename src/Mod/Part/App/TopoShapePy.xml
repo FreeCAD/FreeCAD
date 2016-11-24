@@ -539,6 +539,92 @@ infos contains additional info on the solutions. It is a list of tuples:
         <UserDocu>Returns a SubElement</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="getTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        getTolerance(mode, ShapeType=Shape) -> float
+
+        Determines a tolerance from the ones stored in a shape
+        mode = 0 : returns the average value between sub-shapes,
+        mode &gt; 0 : returns the maximal found,
+        mode &lt; 0 : returns the minimal found.
+        ShapeType defines what kinds of sub-shapes to consider:
+        Shape (default) : all : Vertex, Edge, Face,
+        Vertex : only vertices,
+        Edge   : only edges,
+        Face   : only faces,
+        Shell  : combined Shell + Face, for each face (and containing
+                 shell), also checks edge and Vertex
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="overTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        overTolerance(value, ShapeType=Shape) -> float
+
+        Determines which shapes have a tolerance over the given value
+        ShapeType is interpreted as in the method getTolerance
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="inTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        inTolerance(value, ShapeType=Shape) -> float
+
+        Determines which shapes have a tolerance within a given interval
+        ShapeType is interpreted as in the method getTolerance
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="globalTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        globalTolerance(mode) -> float
+
+        Returns the computed tolerance according to the mode
+        mode = 0 : average
+        mode &gt; 0 : maximal
+        mode &lt; 0 : minimal
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="fixTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        fixTolerance(value, ShapeType=Shape)
+
+        Sets (enforces) tolerances in a shape to the given value
+        ShapeType = Vertex : only vertices are set
+        ShapeType = Edge   : only edges are set
+        ShapeType = Face   : only faces are set
+        ShapeType = Wire   : to have edges and their vertices set
+        ShapeType = other value : all (vertices,edges,faces) are set
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="limitTolerance" Const="true">
+      <Documentation>
+        <UserDocu>
+        limitTolerance(tmin, tmax=0, ShapeType=Shape)
+
+        Limits tolerances in a shape as follows :
+        tmin = tmax -> as fixTolerance (forces)
+        tmin = 0   -> maximum tolerance will be tmax
+        tmax = 0 or not given (more generally, tmax &lt; tmin) ->
+        tmax ignored, minimum will be tmin
+        else, maximum will be max and minimum will be min
+        ShapeType = Vertex : only vertices are set
+        ShapeType = Edge   : only edges are set
+        ShapeType = Face   : only faces are set
+        ShapeType = Wire   : to have edges and their vertices set
+        ShapeType = other value : all (vertices,edges,faces) are set
+        Returns True if at least one tolerance of the sub-shape has
+        been modified
+        </UserDocu>
+      </Documentation>
+    </Methode>
     <!--
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>

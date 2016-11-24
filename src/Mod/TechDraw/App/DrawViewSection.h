@@ -26,7 +26,9 @@
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
+#include <App/PropertyFile.h>
 #include <App/FeaturePython.h>
+#include <App/Material.h>
 
 #include <TopoDS_Compound.hxx>
 
@@ -58,8 +60,13 @@ public:
     App::PropertyLink   BaseView;
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
+    App::PropertyEnumeration SectionDirection;
     App::PropertyBool   ShowCutSurface;
     App::PropertyColor  CutSurfaceColor;
+    App::PropertyBool   HatchCutSurface;
+    App::PropertyFile   HatchPattern;
+    App::PropertyColor  HatchColor;
+    App::PropertyString SectionSymbol;
 
     virtual short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
@@ -67,7 +74,7 @@ public:
     //@{
     /// recalculate the Feature
     virtual App::DocumentObjectExecReturn *execute(void);
-//    virtual void onChanged(const App::Property* prop);
+    virtual void onChanged(const App::Property* prop);
     //@}
 
     /// returns the type name of the ViewProvider
@@ -77,6 +84,7 @@ public:
 
 public:
     std::vector<TechDrawGeometry::Face*> getFaceGeometry();
+    static const char* SectionDirEnums[];
 
 protected:
     TopoDS_Compound sectionFaces;
@@ -85,12 +93,11 @@ protected:
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);
     TopoDS_Face projectFace(const TopoDS_Shape &face,
                                      gp_Pnt faceCenter,
-                                     const Base::Vector3d &direction,
-                                     const Base::Vector3d &xaxis);
+                                     const Base::Vector3d &direction);
+    void getParameters(void);
 };
 
 typedef App::FeaturePythonT<DrawViewSection> DrawViewSectionPython;
-
 
 } //namespace TechDraw
 

@@ -20,15 +20,16 @@
 # *                                                                         *
 # ***************************************************************************
 
+__title__ = "FreeCAD Z88 Mesh reader and writer"
+__author__ = "Bernd Hahnebach "
+__url__ = "http://www.freecadweb.org"
+
+## @package importZ88Mesh
+#  \ingroup FEM
 
 import FreeCAD
 import os
 import FemMeshTools
-
-
-__title__ = "FreeCAD Z88 Mesh reader and writer"
-__author__ = "Bernd Hahnebach "
-__url__ = "http://www.freecadweb.org"
 
 
 Debug = False

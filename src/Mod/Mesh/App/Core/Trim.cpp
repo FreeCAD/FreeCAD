@@ -31,7 +31,7 @@
 using namespace MeshCore;
 
 MeshTrimming::MeshTrimming(MeshKernel &rclM, const Base::ViewProjMethod* pclProj, 
-                           const Base::Polygon2D& rclPoly)
+                           const Base::Polygon2d& rclPoly)
   : myMesh(rclM), myInner(true), myProj(pclProj), myPoly(rclPoly)
 {
 }
@@ -61,7 +61,7 @@ void MeshTrimming::CheckFacets(const MeshFacetGrid& rclGrid, std::vector<unsigne
     // cut inner: use grid to accelerate search
     if (myInner) {
         Base::BoundBox3f clBBox3d;
-        Base::BoundBox2D clViewBBox, clPolyBBox;
+        Base::BoundBox2d clViewBBox, clPolyBBox;
         std::vector<unsigned long> aulAllElements;
 
         // BBox of polygon
@@ -105,16 +105,16 @@ bool MeshTrimming::HasIntersection(const MeshGeomFacet& rclFacet) const
 {
     int i;
     unsigned long j;
-    Base::Polygon2D clPoly;
-    Base::Line2D clFacLine, clPolyLine;
-    Base::Vector2D S;
+    Base::Polygon2d clPoly;
+    Base::Line2d clFacLine, clPolyLine;
+    Base::Vector2d S;
     // is corner of facet inside the polygon
     for (i=0; i<3; i++) {
         Base::Vector3f clPt2d = myProj->operator ()(rclFacet._aclPoints[i]);
-        if (myPoly.Contains(Base::Vector2D(clPt2d.x, clPt2d.y)) == myInner)
+        if (myPoly.Contains(Base::Vector2d(clPt2d.x, clPt2d.y)) == myInner)
             return true;
         else
-            clPoly.Add(Base::Vector2D(clPt2d.x, clPt2d.y));
+            clPoly.Add(Base::Vector2d(clPt2d.x, clPt2d.y));
     }
 
     // is corner of polygon inside the facet
@@ -147,7 +147,7 @@ bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, unsigned long ulInd
     for (int i=0; i<3; i++) {
         const MeshPoint &rclFacPt = myMesh._aclPointArray[rclFacet._aulPoints[i]];
         Base::Vector3f clPt = (*myProj)(rclFacPt);
-        if (myPoly.Contains(Base::Vector2D(clPt.x, clPt.y)) != bInner)
+        if (myPoly.Contains(Base::Vector2d(clPt.x, clPt.y)) != bInner)
             return false;
     }
 
@@ -156,28 +156,28 @@ bool MeshTrimming::PolygonContainsCompleteFacet(bool bInner, unsigned long ulInd
 
 bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& clPoint)
 {
-    Base::Vector2D A, B, C, P;
+    Base::Vector2d A, B, C, P;
     float u,v,w, fDetPAC, fDetPBC, fDetPAB, fDetABC;
-    Base::Polygon2D clFacPoly;
+    Base::Polygon2d clFacPoly;
     const MeshGeomFacet &rclFacet = myMesh.GetFacet(ulIndex);
   
     for (int i=0; i<3; i++) {
         Base::Vector3f clPt = (*myProj)(rclFacet._aclPoints[i]);
-        clFacPoly.Add(Base::Vector2D(clPt.x, clPt.y));
+        clFacPoly.Add(Base::Vector2d(clPt.x, clPt.y));
     }
 
     A = clFacPoly[0];
     B = clFacPoly[1];
     C = clFacPoly[2];
-    fDetABC = (float)(A.fX*B.fY+A.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+A.fY*B.fX+A.fX*C.fY));
+    fDetABC = (float)(A.x*B.y+A.y*C.x+B.x*C.y-(B.y*C.x+A.y*B.x+A.x*C.y));
 
     for (unsigned long j=0; j<myPoly.GetCtVectors(); j++) {
         // facet contains a polygon point -> calculate the corresponding 3d-point
         if (clFacPoly.Contains(myPoly[j])) {
             P = myPoly[j];
-            fDetPAC = (float)(A.fX*P.fY+A.fY*C.fX+P.fX*C.fY-(P.fY*C.fX+A.fY*P.fX+A.fX*C.fY));
-            fDetPBC = (float)(P.fX*B.fY+P.fY*C.fX+B.fX*C.fY-(B.fY*C.fX+P.fY*B.fX+P.fX*C.fY));
-            fDetPAB = (float)(A.fX*B.fY+A.fY*P.fX+B.fX*P.fY-(B.fY*P.fX+A.fY*B.fX+A.fX*P.fY));
+            fDetPAC = (float)(A.x*P.y+A.y*C.x+P.x*C.y-(P.y*C.x+A.y*P.x+A.x*C.y));
+            fDetPBC = (float)(P.x*B.y+P.y*C.x+B.x*C.y-(B.y*C.x+P.y*B.x+P.x*C.y));
+            fDetPAB = (float)(A.x*B.y+A.y*P.x+B.x*P.y-(B.y*P.x+A.y*B.x+A.x*P.y));
             u = fDetPBC / fDetABC;
             v = fDetPAC / fDetABC;
             w = fDetPAB / fDetABC;
@@ -198,8 +198,8 @@ bool MeshTrimming::IsPolygonPointInFacet(unsigned long ulIndex, Base::Vector3f& 
 bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex, int& iSide, std::vector<Base::Vector3f>& raclPoints) const
 {
     MeshGeomFacet clFac(myMesh.GetFacet(ulIndex));
-    Base::Vector2D S;
-    Base::Line2D clFacLine, clPolyLine;
+    Base::Vector2d S;
+    Base::Line2d clFacLine, clPolyLine;
     int iIntersections=0;
     int iIntsctWithEdge0=0, iIntsctWithEdge1=0, iIntsctWithEdge2=0;
 
@@ -211,15 +211,15 @@ bool MeshTrimming::GetIntersectionPointsOfPolygonAndFacet(unsigned long ulIndex,
         if (iIntersections == 4)
             break;
 
-        Base::Vector2D P3(myPoly[i]), P4(myPoly[(i+1)%myPoly.GetCtVectors()]);
+        Base::Vector2d P3(myPoly[i]), P4(myPoly[(i+1)%myPoly.GetCtVectors()]);
         clPolyLine.clV1 = P3;
         clPolyLine.clV2 = P4;
 
         for (int j=0; j<3; j++) {
             Base::Vector3f clP1((*myProj)(clFac._aclPoints[j])); 
             Base::Vector3f clP2((*myProj)(clFac._aclPoints[(j+1)%3]));
-            Base::Vector2D P1(clP1.x, clP1.y);
-            Base::Vector2D P2(clP2.x, clP2.y);
+            Base::Vector2d P1(clP1.x, clP1.y);
+            Base::Vector2d P2(clP2.x, clP2.y);
             clFacLine.clV1 = P1;
             clFacLine.clV2 = P2;
 
@@ -349,10 +349,10 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
         int iCtPtsIn=0;
         int iCtPtsOn=0;
         Base::Vector3f clFacPnt;
-        Base::Vector2D clProjPnt;
+        Base::Vector2d clProjPnt;
         for (int i=0; i<3; i++) {
             clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
-            clProjPnt = Base::Vector2D(clFacPnt.x, clFacPnt.y);
+            clProjPnt = Base::Vector2d(clFacPnt.x, clFacPnt.y);
             if (myPoly.Intersect(clProjPnt, MESH_MIN_PT_DIST))
                 ++iCtPtsOn;
             else if (myPoly.Contains(clProjPnt) == myInner)
@@ -367,16 +367,16 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     else if (raclPoints.size() == 1) {
         Base::Vector3f clP(raclPoints[0]);
         clP = ((*myProj)(clP));
-        Base::Vector2D P(clP.x, clP.y);
+        Base::Vector2d P(clP.x, clP.y);
         MeshGeomFacet clFac(myMesh.GetFacet(ulFacetPos));
 
         // determine the edge containing the intersection point
-        Base::Line2D clFacLine;
+        Base::Line2d clFacLine;
         for (int j=0; j<3; j++) {
             Base::Vector3f clP1((*myProj)(clFac._aclPoints[j])); 
             Base::Vector3f clP2((*myProj)(clFac._aclPoints[(j+1)%3]));
-            Base::Vector2D P1(clP1.x, clP1.y);
-            Base::Vector2D P2(clP2.x, clP2.y);
+            Base::Vector2d P1(clP1.x, clP1.y);
+            Base::Vector2d P2(clP2.x, clP2.y);
             clFacLine.clV1 = P1;
             clFacLine.clV2 = P2;
 
@@ -415,10 +415,10 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
         // check which facets can be inserted
         int iCtPts=0;
         Base::Vector3f clFacPnt;
-        Base::Vector2D clProjPnt;
+        Base::Vector2d clProjPnt;
         for (int i=0; i<3; i++) {
             clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
-            clProjPnt = Base::Vector2D(clFacPnt.x, clFacPnt.y);
+            clProjPnt = Base::Vector2d(clFacPnt.x, clFacPnt.y);
             if (myPoly.Contains(clProjPnt) == myInner)
                 ++iCtPts;
         }
@@ -458,10 +458,10 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
         // check which facets can be inserted
         int iCtPts=0;
         Base::Vector3f clFacPnt;
-        Base::Vector2D clProjPnt;
+        Base::Vector2d clProjPnt;
         for (int i=0; i<3; i++) {
             clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
-            clProjPnt = Base::Vector2D(clFacPnt.x, clFacPnt.y);
+            clProjPnt = Base::Vector2d(clFacPnt.x, clFacPnt.y);
             if (myPoly.Contains(clProjPnt) == myInner)
                 ++iCtPts;
         }
@@ -635,10 +635,10 @@ bool MeshTrimming::CreateFacets(unsigned long ulFacetPos, int iSide, const std::
     // check which facets should be inserted
     int iCtPts=0;
     Base::Vector3f clFacPnt;
-    Base::Vector2D clProjPnt;
+    Base::Vector2d clProjPnt;
     for (int i=0; i<3; i++) {
         clFacPnt = (*myProj)(myMesh._aclPointArray[facet._aulPoints[i]]);
-        clProjPnt = Base::Vector2D(clFacPnt.x, clFacPnt.y);
+        clProjPnt = Base::Vector2d(clFacPnt.x, clFacPnt.y);
         if (myPoly.Contains(clProjPnt) == myInner)
             ++iCtPts;
     }

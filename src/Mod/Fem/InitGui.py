@@ -29,7 +29,6 @@
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
 
-
 import FreeCAD
 import FreeCADGui
 
@@ -50,8 +49,8 @@ class FemWorkbench (Workbench):
         import _CommandRunSolver
         import _CommandPurgeResults
         import _CommandControlSolver
-
-        import _CommandMeshFromShape
+        import _CommandMeshGmshFromShape
+        import _CommandMeshNetgenFromShape
         import _CommandAnalysis
         import _CommandShellThickness
         import _CommandBeamSection

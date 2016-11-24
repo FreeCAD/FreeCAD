@@ -27,9 +27,22 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchRebar
+#  \ingroup ARCH
+#  \brief The Rebar object and tools
+#
+#  This module provides tools to build Rebar objects.
+#  Rebars (or Reinforcing Bars) are metallic bars placed
+#  inside concrete strutures to reinforce them.
 
 __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"
@@ -87,9 +100,9 @@ class _CommandRebar:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -146,13 +159,13 @@ class _Rebar(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Diameter","Arch","The diameter of the bar")
-        obj.addProperty("App::PropertyLength","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
-        obj.addProperty("App::PropertyLength","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
-        obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars")
-        obj.addProperty("App::PropertyLength","Spacing","Arch","The spacing between the bars")
-        obj.addProperty("App::PropertyVector","Direction","Arch","The direction to use to spread the bars. Keep (0,0,0) for automatic direction.")
-        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
+        obj.addProperty("App::PropertyLength","Diameter","Arch",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
+        obj.addProperty("App::PropertyLength","OffsetStart","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the fist bar (concrete cover)."))
+        obj.addProperty("App::PropertyLength","OffsetEnd","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+        obj.addProperty("App::PropertyInteger","Amount","Arch",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
+        obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+        obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
+        obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 

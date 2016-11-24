@@ -24,13 +24,13 @@ __title__ = "_CommandBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandBeamSection
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
+import FreeCADGui
+from PySide import QtCore
 
 
 class _CommandBeamSection(FemCommands):

@@ -1,7 +1,7 @@
 /*
 Derived QGraphicsItem Classes type() Values
 
-Qt First UserType = 65536
+Qt First UserType>> QGraphicsItem::UserType = 65536
 
 QGraphicsItemView : 101
 QGraphicsItemViewPart : 102
@@ -34,6 +34,10 @@ QGICMark: 171
 QGISectionLine: 172
 QGIDecoration: 173
 QGICenterLine: 174
+QGICaption: 180
+QGIViewImage: 200
+QGCustomImage: 201
+QGIMatting: 205
 */
 
 /*

@@ -25,6 +25,7 @@
 #define PY_GEOMETRYPY_H
 
 #include <CXX/Objects.hxx>
+#include <CXX/Extensions.hxx>
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/MatrixPy.h>
@@ -33,6 +34,7 @@
 #include <Base/Placement.h>
 #include <Base/PlacementPy.h>
 #include <Base/BoundBoxPy.h>
+#include <Base/Tools2D.h>
 
 namespace Base {
 template <typename T>
@@ -44,9 +46,37 @@ inline Vector3<T> getVectorFromTuple(PyObject* o)
     T z = (T)Py::Float(tuple.getItem(2));
     return Vector3<T>(x,y,z);
 }
+
+class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
+{
+public:
+    Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
+    virtual ~Vector2dPy();
+
+    static void init_type(void);
+    Py::Object getattro(const Py::String &name_);
+    int setattro(const Py::String &name_, const Py::Object &value);
+    virtual Py::Object repr();
+    inline const Vector2d& value() const {
+        return v;
+    }
+    inline void setValue(const Vector2d& n) {
+        v = n;
+    }
+    inline void setValue(double x, double y) {
+        v.x = x;
+        v.y = y;
+    }
+
+private:
+    Vector2d v;
+};
+
 }
 
 namespace Py {
+
+typedef PythonClassObject<Base::Vector2dPy> Vector2d;
 
 // Implementing the vector class in the fashion of the PyCXX library.
 class BaseExport Vector : public Object

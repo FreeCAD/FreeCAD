@@ -28,6 +28,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "MDIViewPage.h"
+
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
 #include <Mod/TechDraw/App/DrawProjGroup.h>
@@ -37,11 +39,13 @@
 class Ui_TaskProjGroup;
 
 namespace TechDraw {
-  class DrawProjGroup;
+class DrawProjGroup;
+class DrawPage;
 }
 
 namespace TechDrawGui
 {
+class MDIViewPage;
 class ViewProviderProjGroup;
 
 class TaskProjGroup : public QWidget
@@ -90,9 +94,12 @@ private:
     const char * viewChkIndexToCStr(int index);
 
 protected:
-  ViewProviderProjGroup *viewProvider;
+  //ViewProviderProjGroup *viewProvider;
   TechDraw::DrawProjGroup* multiView;
   bool m_createMode;
+  TechDraw::DrawPage* m_page;
+  MDIViewPage* m_mdi;
+
 };
 
 /// Simulation dialog for the TaskView

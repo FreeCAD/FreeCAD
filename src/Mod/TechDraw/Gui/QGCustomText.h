@@ -54,15 +54,15 @@ public:
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
     virtual void centerAt(QPointF centerPos);
     virtual void centerAt(double cX, double cY);
+    virtual QColor getNormalColor(void);
+    virtual QColor getPreColor(void);
+    virtual QColor getSelectColor(void);
 
 protected:
     virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    QColor getNormalColor(void);
-    QColor getPreColor(void);
-    QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;

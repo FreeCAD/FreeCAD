@@ -60,13 +60,18 @@ public:
     static PyObject * richCompare(PyObject *v, PyObject *w, int op);
 -
     static PyGetSetDef    GetterSetter[];
-    virtual PyTypeObject *GetType(void) {return &Type;};
+    virtual PyTypeObject *GetType(void) {return &Type;}
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
     virtual int PyInit(PyObject* args, PyObject*k);
     ~@self.export.Name@();
+    
++ if (self.export.Initialization):
+    int initialization();
+    int finalization();
+-
 
     typedef @self.export.TwinPointer@* PointerType ;
 
@@ -606,6 +611,10 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 + if (self.export.Reference):
     pcObject->ref();
 -
+    
++ if (self.export.Initialization):
+    initialization();
+-
 }
 
 + if not (self.export.Constructor):
@@ -635,6 +644,9 @@ int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     // delete the handled object when the PyObject dies
     @self.export.Name@::PointerType ptr = static_cast<@self.export.Name@::PointerType>(_pcTwinPointer);
     delete ptr;
+-
++ if (self.export.Initialization):
+    finalization();
 -
 }
 
@@ -803,6 +815,17 @@ PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject 
 
 // constructor method
 int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+{
+    return 0;
+}
+-
+
++ if (self.export.Initialization):
+int @self.export.Name@::initialization()
+{
+    return 0;
+}
+int @self.export.Name@::finalization()
 {
     return 0;
 }
@@ -1114,6 +1137,18 @@ PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject 
 // constructor method
 int @self.export.Name@::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
+    return 0;
+}
+-
++ if (self.export.Initialization):
+int @self.export.Name@::initialization()
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
+    return 0;
+}
+int @self.export.Name@::finalization()
+{
+    PyErr_SetString(PyExc_NotImplementedError, "Not yet implemented");
     return 0;
 }
 -

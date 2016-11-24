@@ -24,11 +24,11 @@
 
 #include "DocumentObject.h"
 #include "Document.h"
+#include "Expression.h"
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
-#include "DocumentObjectPy.h"
-#include "DocumentObjectPy.cpp"
-#include "Expression.h"
+#include <App/DocumentObjectPy.h>
+#include <App/DocumentObjectPy.cpp>
 
 using namespace App;
 
@@ -58,6 +58,71 @@ Py::Object DocumentObjectPy::getDocument(void) const
     else {
         return Py::Object(doc->getPyObject(), true);
     }
+}
+
+PyObject*  DocumentObjectPy::addProperty(PyObject *args)
+{
+    char *sType,*sName=0,*sGroup=0,*sDoc=0;
+    short attr=0;
+    std::string sDocStr;
+    PyObject *ro = Py_False, *hd = Py_False;
+    if (!PyArg_ParseTuple(args, "s|ssethO!O!", &sType,&sName,&sGroup,"utf-8",&sDoc,&attr,
+        &PyBool_Type, &ro, &PyBool_Type, &hd))     // convert args: Python->C
+        return NULL;                             // NULL triggers exception
+
+    if (sDoc) {
+        sDocStr = sDoc;
+        PyMem_Free(sDoc);
+    }
+
+    App::Property* prop=0;
+    try {
+        prop = getDocumentObjectPtr()->addDynamicProperty(sType,sName,sGroup,sDocStr.c_str(),attr,
+            PyObject_IsTrue(ro) ? true : false, PyObject_IsTrue(hd) ? true : false);
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+    if (!prop) {
+        std::stringstream str;
+        str << "No property found of type '" << sType << "'" << std::ends;
+        throw Py::Exception(Base::BaseExceptionFreeCADError,str.str());
+    }
+
+    return Py::new_reference_to(this);
+}
+
+PyObject*  DocumentObjectPy::removeProperty(PyObject *args)
+{
+    char *sName;
+    if (!PyArg_ParseTuple(args, "s", &sName))
+        return NULL;
+
+    try {
+        bool ok = getDocumentObjectPtr()->removeDynamicProperty(sName);
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::supportedProperties(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C
+        return NULL;                    // NULL triggers exception
+
+    std::vector<Base::Type> ary;
+    Base::Type::getAllDerivedFrom(App::Property::getClassTypeId(), ary);
+    Py::List res;
+    for (std::vector<Base::Type>::iterator it = ary.begin(); it != ary.end(); ++it) {
+        Base::BaseClass *data = static_cast<Base::BaseClass*>(it->createInstance());
+        if (data) {
+            delete data;
+            res.append(Py::String(it->getName()));
+        }
+    }
+    return Py::new_reference_to(res);
 }
 
 PyObject*  DocumentObjectPy::touch(PyObject * args)
@@ -191,14 +256,56 @@ PyObject*  DocumentObjectPy::setExpression(PyObject * args)
     Py_Return;
 }
 
-
-PyObject *DocumentObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject*  DocumentObjectPy::recompute(PyObject *args)
 {
-    return 0;
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        bool ok = getDocumentObjectPtr()->recomputeFeature();
+        return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject *DocumentObjectPy::getCustomAttributes(const char* attr) const
+{
+    // search for dynamic property
+    Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
+    if (prop)
+        return prop->getPyObject();
+    else
+        return 0;
 }
 
 int DocumentObjectPy::setCustomAttributes(const char* attr, PyObject *obj)
 {
+    // explicitly search for dynamic property
+    try {
+        Property* prop = getDocumentObjectPtr()->getDynamicPropertyByName(attr);
+        if (prop) {
+            prop->setPyObject(obj);
+            return 1;
+        }
+    }
+    catch (Base::ValueError &exc) {
+        std::stringstream s;
+        s << "Property '" << attr << "': " << exc.what();
+        throw Py::ValueError(s.str());
+    }
+    catch (Base::Exception &exc) {
+        std::stringstream s;
+        s << "Attribute (Name: " << attr << ") error: '" << exc.what() << "' ";
+        throw Py::AttributeError(s.str());
+    }
+    catch (...) {
+        std::stringstream s;
+        s << "Unknown error in attribute " << attr;
+        throw Py::AttributeError(s.str());
+    }
+
     // search in PropertyList
     Property *prop = getDocumentObjectPtr()->getPropertyByName(attr);
     if (prop) {

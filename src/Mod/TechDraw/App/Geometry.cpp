@@ -54,8 +54,9 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Tools2D.h>
-//#include <Base/Vector3D.h>
+
 #include "Geometry.h"
+#include "DrawUtil.h"
 
 using namespace TechDrawGeometry;
 
@@ -64,7 +65,6 @@ Wire::Wire()
 {
 }
 
-
 Wire::Wire(const TopoDS_Wire &w)
 {
     TopExp_Explorer edges(w, TopAbs_EDGE);
@@ -72,9 +72,7 @@ Wire::Wire(const TopoDS_Wire &w)
         const auto edge( TopoDS::Edge(edges.Current()) );
         geoms.push_back( BaseGeom::baseFactory(edge) );
     }
-
 }
-
 
 Wire::~Wire()
 {
@@ -84,7 +82,6 @@ Wire::~Wire()
     geoms.clear();
 }
 
-
 Face::~Face()
 {
     for(auto it : wires) {
@@ -93,65 +90,74 @@ Face::~Face()
     wires.clear();
 }
 
-
 BaseGeom::BaseGeom() :
     geomType(NOTDEF),
-    extractType(Plain),
+    extractType(Plain),             //obs
     classOfEdge(ecNONE),
     visible(true),
     reversed(false),
-    ref3D(-1)
+    ref3D(-1)                      //obs?
 {
 }
 
 
-std::vector<Base::Vector2D> BaseGeom::findEndPoints()
+std::vector<Base::Vector2d> BaseGeom::findEndPoints()
 {
-    std::vector<Base::Vector2D> result;
+    std::vector<Base::Vector2d> result;
 
     gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-    result.push_back(Base::Vector2D(p.X(),p.Y()));
+    result.push_back(Base::Vector2d(p.X(),p.Y()));
     p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-    result.push_back(Base::Vector2D(p.X(),p.Y()));
+    result.push_back(Base::Vector2d(p.X(),p.Y()));
 
     return result;
 }
 
 
-Base::Vector2D BaseGeom::getStartPoint()
+Base::Vector2d BaseGeom::getStartPoint()
 {
-    std::vector<Base::Vector2D> verts = findEndPoints();
+    std::vector<Base::Vector2d> verts = findEndPoints();
     return verts[0];
 }
 
 
-Base::Vector2D BaseGeom::getEndPoint()
+Base::Vector2d BaseGeom::getEndPoint()
 {
-    std::vector<Base::Vector2D> verts = findEndPoints();
+    std::vector<Base::Vector2d> verts = findEndPoints();
     return verts[1];
 }
 
 
-double BaseGeom::minDist(Base::Vector2D p)
+double BaseGeom::minDist(Base::Vector2d p)
 {
     double minDist = -1.0;
-    gp_Pnt pnt(p.fX,p.fY,0.0);
+    gp_Pnt pnt(p.x,p.y,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
-    BRepExtrema_DistShapeShape extss(occEdge, v);
-    if (extss.IsDone()) {
-        int count = extss.NbSolution();
-        if (count != 0) {
-            minDist = extss.Value();
-        }
-    }
+    minDist = TechDraw::DrawUtil::simpleMinDist(occEdge,v);
     return minDist;
 }
 
 //!find point on me nearest to p
-Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
+Base::Vector2d BaseGeom::nearPoint(const BaseGeom* p)
 {
-    gp_Pnt pnt(p.fX,p.fY,0.0);
-    Base::Vector2D result(0.0,0.0);
+    Base::Vector2d result(0.0,0.0);
+    TopoDS_Edge pEdge = p->occEdge;
+    BRepExtrema_DistShapeShape extss(occEdge, pEdge);
+    if (extss.IsDone()) {
+        int count = extss.NbSolution();
+        if (count != 0) {
+            gp_Pnt p1;
+            p1 = extss.PointOnShape1(1);
+            result =  Base::Vector2d(p1.X(),p1.Y());
+        }
+    }
+    return result;
+}
+
+Base::Vector2d BaseGeom::nearPoint(Base::Vector2d p)
+{
+    gp_Pnt pnt(p.x,p.y,0.0);
+    Base::Vector2d result(0.0,0.0);
     TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
     BRepExtrema_DistShapeShape extss(occEdge, v);
     if (extss.IsDone()) {
@@ -159,18 +165,28 @@ Base::Vector2D BaseGeom::nearPoint(Base::Vector2D p)
         if (count != 0) {
             gp_Pnt p1;
             p1 = extss.PointOnShape1(1);
-            result =  Base::Vector2D(p1.X(),p1.Y());
+            result =  Base::Vector2d(p1.X(),p1.Y());
         }
     }
     return result;
 }
+
+std::string BaseGeom::dump()
+{
+    Base::Vector2d start = getStartPoint();
+    Base::Vector2d end   = getEndPoint();
+    std::stringstream ss;
+    ss << "BaseGeom: s:(" << start.x << "," << start.y << ") e:(" << end.x << "," << end.y << ") ";
+    ss << "type: " << geomType << " class: " << classOfEdge << " viz: " << visible << " rev: " << reversed;
+    return ss.str();
+}
+
 
 //! Convert 1 OCC edge into 1 BaseGeom (static factory method)
 BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 {
     BaseGeom* result = NULL;
     BRepAdaptor_Curve adapt(edge);
-
     switch(adapt.GetType()) {
       case GeomAbs_Circle: {
         double f = adapt.FirstParameter();
@@ -180,11 +196,9 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
 
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
               Circle *circle = new Circle(edge);
-              //circle->extractType = extractionType;
               result = circle;
         } else {
               AOC *aoc = new AOC(edge);
-              //aoc->extractType = extractionType;
               result = aoc;
         }
       } break;
@@ -195,40 +209,47 @@ BaseGeom* BaseGeom::baseFactory(TopoDS_Edge edge)
         gp_Pnt e = adapt.Value(l);
         if (fabs(l-f) > 1.0 && s.SquareDistance(e) < 0.001) {
               Ellipse *ellipse = new Ellipse(edge);
-              //ellipse->extractType = extractionType;
               result = ellipse;
         } else {
               AOE *aoe = new AOE(edge);
-              //aoe->extractType = extractionType;
               result = aoe;
         }
+      } break;
+      case GeomAbs_BezierCurve: {
+          Handle_Geom_BezierCurve bez = adapt.Bezier();
+          //if (bez->Degree() < 4) {
+          result = new BezierSegment(edge);
+          //}
+          //    OCC is quite happy with Degree > 3 but QtGui handles only 2,3
       } break;
       case GeomAbs_BSplineCurve: {
         BSpline *bspline = 0;
         Generic* gen = NULL;
         try {
             bspline = new BSpline(edge);
-            //bspline->extractType = extractionType;
             if (bspline->isLine()) {
                 gen = new Generic(edge);
-                //gen->extractType = extractionType;
                 result = gen;
                 delete bspline;
+                bspline = nullptr;
             } else {
                 result = bspline;
             }
             break;
         }
         catch (Standard_Failure) {
-            delete bspline;
-            delete gen;
-            bspline = 0;
-            // Move onto generating a primitive
+            if (bspline != nullptr) {
+                delete bspline;
+                bspline = nullptr;
+            }
+            if (gen != nullptr) {
+                delete gen;
+                gen = nullptr;
+            }
         }
       }
       default: {
         Generic *primitive = new Generic(edge);
-        //primitive->extractType = extractionType;
         result = primitive;
       }  break;
     }
@@ -244,7 +265,7 @@ Ellipse::Ellipse(const TopoDS_Edge &e)
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt &p = ellp.Location();
 
-    center = Base::Vector2D(p.X(), p.Y());
+    center = Base::Vector2d(p.X(), p.Y());
 
     major = ellp.MajorRadius();
     minor = ellp.MinorRadius();
@@ -275,9 +296,9 @@ AOE::AOE(const TopoDS_Edge &e) : Ellipse(e)
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
-    startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
-    midPnt = Base::Vector2D(m.X(), m.Y());
+    startPnt = Base::Vector2d(s.X(), s.Y());
+    endPnt = Base::Vector2d(ePt.X(), ePt.Y());
+    midPnt = Base::Vector2d(m.X(), m.Y());
 }
 
 
@@ -289,11 +310,9 @@ Circle::Circle(const TopoDS_Edge &e)
 
     gp_Circ circ = c.Circle();
     const gp_Pnt& p = circ.Location();
-    //const gp_Ax2& p1 = circ.Position();
-    //const gp_Pnt& l = p1.Location();
 
     radius = circ.Radius();
-    center = Base::Vector2D(p.X(), p.Y());
+    center = Base::Vector2d(p.X(), p.Y());
 }
 
 
@@ -318,9 +337,9 @@ AOC::AOC(const TopoDS_Edge &e) : Circle(e)
     cw = (a < 0) ? true: false;
     largeArc = (l-f > M_PI) ? true : false;
 
-    startPnt = Base::Vector2D(s.X(), s.Y());
-    endPnt = Base::Vector2D(ePt.X(), ePt.Y());
-    midPnt = Base::Vector2D(m.X(), m.Y());
+    startPnt = Base::Vector2d(s.X(), s.Y());
+    endPnt = Base::Vector2d(ePt.X(), ePt.Y());
+    midPnt = Base::Vector2d(m.X(), m.Y());
 }
 
 bool AOC::isOnArc(Base::Vector3d p)
@@ -344,20 +363,9 @@ bool AOC::isOnArc(Base::Vector3d p)
 
 double AOC::distToArc(Base::Vector3d p)
 {
-    Base::Vector2D p2(p.x,p.y);
+    Base::Vector2d p2(p.x,p.y);
     double result = minDist(p2);
     return result;
-//    double minDist = -1.0;
-//    gp_Pnt pnt(p.x,p.y,p.z);
-//    TopoDS_Vertex v = BRepBuilderAPI_MakeVertex(pnt);
-//    BRepExtrema_DistShapeShape extss(occEdge, v);
-//    if (extss.IsDone()) {
-//        int count = extss.NbSolution();
-//        if (count != 0) {
-//            minDist = extss.Value();
-//        }
-//    }
-//    return minDist;
 }
 
 
@@ -398,14 +406,14 @@ Generic::Generic(const TopoDS_Edge &e)
     if (!polygon.IsNull()) {
         const TColgp_Array1OfPnt &nodes = polygon->Nodes();
         for (int i = nodes.Lower(); i <= nodes.Upper(); i++){
-            points.push_back(Base::Vector2D(nodes(i).X(), nodes(i).Y()));
+            points.push_back(Base::Vector2d(nodes(i).X(), nodes(i).Y()));
         }
     } else {
         //no polygon representation? approximate with line
         gp_Pnt p = BRep_Tool::Pnt(TopExp::FirstVertex(occEdge));
-        points.push_back(Base::Vector2D(p.X(), p.Y()));
+        points.push_back(Base::Vector2d(p.X(), p.Y()));
         p = BRep_Tool::Pnt(TopExp::LastVertex(occEdge));
-        points.push_back(Base::Vector2D(p.X(), p.Y()));
+        points.push_back(Base::Vector2d(p.X(), p.Y()));
     }
 }
 
@@ -426,6 +434,8 @@ BSpline::BSpline(const TopoDS_Edge &e)
     double f,l;
     gp_Pnt s,m,ePt;
     //if startpoint == endpoint conversion to BSpline will fail
+    //Base::Console().Message("TRACE - Geometry::BSpline - start(%.3f,%.3f,%.3f) end(%.3f,%.3f,%.3f)\n",
+    //                        s.X(),s.Y(),s.Z(),ePt.X(),ePt.Y(),ePt.Z());
 
     if (spline->Degree() > 3) {                                        //if spline is too complex, approximate it
         Standard_Real tol3D = 0.001;                                   //1/1000 of a mm? screen can't resolve this
@@ -447,36 +457,36 @@ BSpline::BSpline(const TopoDS_Edge &e)
                 s = c.Value(f);
                 m = c.Value((l+f)/2.0);
                 ePt = c.Value(l);
-                Base::Console().Log("Error - Geometry::BSpline - from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
+                Base::Console().Log("Error - Geometry::BSpline - no result- from:(%.3f,%.3f) to:(%.3f,%.3f) poles: %d\n",
                                      s.X(),s.Y(),ePt.X(),ePt.Y(),spline->NbPoles());
-                //throw Base::Exception("Geometry::BSpline - could not approximate curve");
+                throw Base::Exception("Geometry::BSpline - could not approximate curve");
             }
         }
     }
 
     GeomConvert_BSplineCurveToBezierCurve crt(spline);
 
-    BezierSegment tempSegment;
     gp_Pnt controlPoint;
     if (fail) {
+        BezierSegment tempSegment;
         tempSegment.poles = 3;
-        tempSegment.pnts[0] = Base::Vector2D(s.X(),s.Y());
-        tempSegment.pnts[1] = Base::Vector2D(m.X(),m.Y());
-        tempSegment.pnts[2] = Base::Vector2D(ePt.X(),ePt.Y());
+        tempSegment.degree = 2;
+        tempSegment.pnts.push_back(Base::Vector2d(s.X(),s.Y()));
+        tempSegment.pnts.push_back(Base::Vector2d(m.X(),m.Y()));
+        tempSegment.pnts.push_back(Base::Vector2d(ePt.X(),ePt.Y()));
         segments.push_back(tempSegment);
     } else {
         for (Standard_Integer i = 1; i <= crt.NbArcs(); ++i) {
+            BezierSegment tempSegment;
             Handle_Geom_BezierCurve bezier = crt.Arc(i);
             if (bezier->Degree() > 3) {
-                throw Base::Exception("Geometry::BSpline - converted curve degree > 3");
+                Base::Console().Log("Geometry::BSpline - converted curve degree > 3\n");
             }
             tempSegment.poles = bezier->NbPoles();
-            // Note: We really only need to keep the pnts[0] for the first Bezier segment,
-            // assuming this only gets used as in QGIViewPart::drawPainterPath
-            // ...it also gets used in GeometryObject::calcBoundingBox(), similar note applies
+            tempSegment.degree = bezier->Degree();
             for (int pole = 1; pole <= tempSegment.poles; ++pole) {
                 controlPoint = bezier->Pole(pole);
-                tempSegment.pnts[pole - 1] = Base::Vector2D(controlPoint.X(), controlPoint.Y());
+                tempSegment.pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
             }
             segments.push_back(tempSegment);
         }
@@ -490,17 +500,34 @@ bool BSpline::isLine()
     bool result = false;
     BRepAdaptor_Curve c(occEdge);
     Handle_Geom_BSplineCurve spline = c.BSpline();
-    if (spline->Degree() == 1) {
+    if (spline->NbPoles() == 2) {
         result = true;
     }
     return result;
+}
+
+BezierSegment::BezierSegment(const TopoDS_Edge &e)
+{
+    geomType = BEZIER;
+    occEdge = e;
+    BRepAdaptor_Curve c(e);
+    Handle_Geom_BezierCurve bez = c.Bezier();
+    poles = bez->NbPoles();
+    degree = bez->Degree();
+    if (poles > 4)  {
+        Base::Console().Log("Warning - BezierSegment has degree > 3: %d\n",degree);
+    }
+    for (int i = 1; i <= poles; ++i) {
+        gp_Pnt controlPoint = bez->Pole(i);
+        pnts.push_back(Base::Vector2d(controlPoint.X(), controlPoint.Y()));
+    }
 }
 
 
 //**** Vertex
 Vertex::Vertex(double x, double y)
 {
-    pnt = Base::Vector2D(x, y);
+    pnt = Base::Vector2d(x, y);
     extractType = ExtractionType::Plain;       //obs?
     visible = false;
     ref3D = -1;                        //obs. never used.
@@ -534,7 +561,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
     } else {
         //start with first edge
         result.push_back(geoms[0]);
-        Base::Vector2D atPoint = (geoms[0])->getEndPoint();
+        Base::Vector2d atPoint = (geoms[0])->getEndPoint();
         used[0] = true;
         for (unsigned int i = 1; i < geoms.size(); i++) { //do size-1 more edges
             auto next( nextGeom(atPoint, geoms, used, Precision::Confusion()) );
@@ -559,7 +586,7 @@ BaseGeomPtrVector GeometryUtils::chainGeoms(BaseGeomPtrVector geoms)
 
 
 /*static*/ GeometryUtils::ReturnType GeometryUtils::nextGeom(
-        Base::Vector2D atPoint,
+        Base::Vector2d atPoint,
         BaseGeomPtrVector geoms,
         std::vector<bool> used,
         double tolerance )

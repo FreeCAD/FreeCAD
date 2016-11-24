@@ -49,10 +49,17 @@
 #include <Mod/Mesh/App/Core/Iterator.h>
 
 #include "FemMesh.h"
+#ifdef FC_USE_VTK
+    #include "FemVTKTools.h"
+#endif
 
 #include <boost/assign/list_of.hpp>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_Group.hxx>
+#include <SMDS_MeshGroup.hxx>
+#include <SMESHDS_GroupBase.hxx>
+#include <SMESHDS_Group.hxx>
 #include <SMDS_PolyhedralVolumeOfNodes.hxx>
 #include <SMDS_VolumeTool.hxx>
 #include <StdMeshers_MaxLength.hxx>
@@ -109,7 +116,7 @@ FemMesh::~FemMesh()
 FemMesh &FemMesh::operator=(const FemMesh& mesh)
 {
     if (this != &mesh) {
-    myMesh = getGenerator()->CreateMesh(0,true);
+        myMesh = getGenerator()->CreateMesh(0,true);
         copyMeshData(mesh);
     }
     return *this;
@@ -306,6 +313,46 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                 break;
         }
     }
+
+    // Copy groups
+    std::list<int> grpIds = mesh.myMesh->GetGroupIds();
+    for (auto it : grpIds) {
+        // group of source mesh
+        SMESH_Group* sourceGroup = mesh.myMesh->GetGroup(it);
+        SMESHDS_GroupBase* sourceGroupDS = sourceGroup->GetGroupDS();
+
+        int aId;
+        if (sourceGroupDS->GetType() == SMDSAbs_Node) {
+            SMESH_Group* targetGroup = this->myMesh->AddGroup(SMDSAbs_Node, sourceGroupDS->GetStoreName(), aId);
+            if (targetGroup) {
+                SMESHDS_Group* targetGroupDS = dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
+                if (targetGroupDS) {
+                    SMDS_ElemIteratorPtr aIter = sourceGroupDS->GetElements();
+                    while (aIter->more()) {
+                        const SMDS_MeshElement* aElem = aIter->next();
+                        const SMDS_MeshNode* aNode = meshds->FindNode(aElem->GetID());
+                        if (aNode)
+                            targetGroupDS->SMDSGroup().Add(aNode);
+                    }
+                }
+            }
+        }
+        else {
+            SMESH_Group* targetGroup = this->myMesh->AddGroup(sourceGroupDS->GetType(), sourceGroupDS->GetStoreName(), aId);
+            if (targetGroup) {
+                SMESHDS_Group* targetGroupDS = dynamic_cast<SMESHDS_Group*>(targetGroup->GetGroupDS());
+                if (targetGroupDS) {
+                    SMDS_ElemIteratorPtr aIter = sourceGroupDS->GetElements();
+                    while (aIter->more()) {
+                        const SMDS_MeshElement* aElem = aIter->next();
+                        const SMDS_MeshElement* aElement = meshds->FindElement(aElem->GetID());
+                        if (aElement)
+                            targetGroupDS->SMDSGroup().Add(aElement);
+                    }
+                }
+            }
+        }
+    }
 }
 
 const SMESH_Mesh* FemMesh::getSMesh() const
@@ -317,7 +364,6 @@ SMESH_Mesh* FemMesh::getSMesh()
 {
     return myMesh;
 }
-
 
 SMESH_Gen * FemMesh::getGenerator()
 {
@@ -898,6 +944,12 @@ void FemMesh::read(const char *FileName)
         // read Nastran-file
         readNastran(File.filePath());
     }
+#ifdef FC_USE_VTK
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu")) {
+        // read *.vtk legacy format or *.vtu XML unstructure Mesh
+        FemVTKTools::readVTKMesh(File.filePath().c_str(), this);
+    }
+#endif
     else{
         throw Base::Exception("Unknown extension");
     }
@@ -1185,6 +1237,12 @@ void FemMesh::write(const char *FileName) const
         // write ABAQUS Output
         writeABAQUS(File.filePath());
     }
+#ifdef FC_USE_VTK
+    else if (File.hasExtension("vtk") || File.hasExtension("vtu") ) {
+        // write unstructure mesh to VTK format *.vtk and *.vtu
+        FemVTKTools::writeVTKMesh(File.filePath().c_str(), this);
+    }
+#endif
     else{
         throw Base::Exception("Unknown extension");
     }

@@ -100,7 +100,7 @@ class DRILLGate:
             return False
         if obj.ShapeType == 'Vertex':
                 drillable = True
-        elif obj.ShapeType == 'Solid':
+        elif obj.ShapeType in['Solid', 'Compound']:
             if sub[0:4] == 'Face':
                 subobj = obj.getElement(sub)
                 drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
@@ -174,6 +174,13 @@ class POCKETGate:
 
         return pocketable
 
+class CONTOURGate:
+    def allow(self, doc, obj, sub):
+        pass
+
+def contourselect():
+    FreeCADGui.Selection.addSelectionGate(CONTOURGate())
+    FreeCAD.Console.PrintWarning("Contour Select Mode\n")
 
 def fselect():
     FreeCADGui.Selection.addSelectionGate(FGate())

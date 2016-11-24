@@ -190,6 +190,18 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
+MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
+{
+    MDIViewPage* result = nullptr;
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+    Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    if (dvp) {
+        result = dvp->getMDIViewPage();
+    }
+    return result;
+}
+
 TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 {
     return dynamic_cast<TechDraw::DrawView*>(pcObject);

@@ -28,9 +28,22 @@ if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
     from DraftTools import translate
     from pivy import coin
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchSectionPlane
+#  \ingroup ARCH
+#  \brief The Section plane object and tools
+#
+#  This module provides tools to build Section plane objects.
+#  It also contains functionality to produce SVG rendering of
+#  section planes, to be used in TechDraw and Drawing modules
 
 def makeSectionPlane(objectslist=None,name="Section"):
     """makeSectionPlane([objectslist]) : Creates a Section plane objects including the
@@ -49,6 +62,7 @@ def makeSectionPlane(objectslist=None,name="Section"):
                 g.append(o)
         obj.Objects = g
     return obj
+
 
 def makeSectionView(section,name="View"):
     """makeSectionView(section) : Creates a Drawing view of the given Section Plane
@@ -69,13 +83,257 @@ def makeSectionView(section,name="View"):
     view.Label = translate("Arch","View of")+" "+section.Name
     return view
 
+
+def getCutShapes(objs,section,showHidden):
+    import Part,DraftGeomUtils
+    shapes = []
+    hshapes = []
+    sshapes = []
+    for o in objs:
+        if o.isDerivedFrom("Part::Feature"):
+            if o.Shape.isNull():
+                pass
+            elif section.OnlySolids:
+                if o.Shape.isValid():
+                    shapes.extend(o.Shape.Solids)
+                else:
+                    print section.Label,": Skipping invalid object:",o.Label
+            else:
+                shapes.append(o.Shape)
+    cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
+    if cutvolume:
+        nsh = []
+        for sh in shapes:
+            for sol in sh.Solids:
+                if sol.Volume < 0:
+                    sol.reverse()
+                c = sol.cut(cutvolume)
+                s = sol.section(cutface)
+                try:
+                    wires = DraftGeomUtils.findWires(s.Edges)
+                    for w in wires:
+                        f = Part.Face(w)
+                        sshapes.append(f)
+                    #s = Part.Wire(s.Edges)
+                    #s = Part.Face(s)
+                except Part.OCCError:
+                    #print "ArchDrawingView: unable to get a face"
+                    sshapes.append(s)
+                nsh.extend(c.Solids)
+                #sshapes.append(s)
+                if showHidden:
+                    c = sol.cut(invcutvolume)
+                    hshapes.append(c)
+        shapes = nsh
+    return shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume
+
+
+def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=False,scale=1,linewidth=1,fontsize=1,techdraw=False,rotation=0):
+    """getSVG(section,[allOn,renderMode,showHidden,showFill,scale,linewidth,fontsize]) : 
+    returns an SVG fragment from an Arch section plane. If
+    allOn is True, all cut objects are shown, regardless if they are visible or not.
+    renderMode can be Wireframe (default) or Solid to use the Arch solid renderer. If
+    showHidden is True, the hidden geometry above the section plane is shown in dashed line.
+    If showFill is True, the cut areas get filled with a pattern"""
+
+    if not section.Objects:
+        return
+    import Part,DraftGeomUtils
+    p = FreeCAD.Placement(section.Placement)
+    direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
+    if not allOn:
+            objs = Draft.removeHidden(objs)
+    # separate spaces and Draft objects
+    spaces = []
+    nonspaces = []
+    drafts = []
+    windows = []
+    cutface = None
+    for o in objs:
+        if Draft.getType(o) == "Space":
+            spaces.append(o)
+        elif Draft.getType(o) in ["Dimension","Annotation"]:
+            drafts.append(o)
+        elif o.isDerivedFrom("Part::Part2DObject"):
+            drafts.append(o)
+        else:
+            nonspaces.append(o)
+        if Draft.getType(o) == "Window":
+            windows.append(o)
+    objs = nonspaces
+    svg = ''
+    fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
+    fillpattern += ' x="0" y="0" width="10" height="10">'
+    fillpattern += '<g>'
+    fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
+    # generating SVG
+    if renderMode in ["Solid",1]:
+        # render using the Arch Vector Renderer
+        import ArchVRM, WorkingPlane
+        wp = WorkingPlane.plane()
+        wp.setFromPlacement(section.Placement)
+        #wp.inverse()
+        render = ArchVRM.Renderer()
+        render.setWorkingPlane(wp)
+        render.addObjects(objs)
+        if showHidden:
+            render.cut(section.Shape,showHidden)
+        else:
+            render.cut(section.Shape)
+        svg += '<g transform="scale(1,-1)">\n'
+        svg += render.getViewSVG(linewidth="LWPlaceholder")
+        svg += fillpattern
+        svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
+        if showHidden:
+            svg += render.getHiddenSVG(linewidth="LWPlaceholder")
+        svg += '</g>\n'
+        # print render.info()
+
+    else:
+        # render using the Drawing module
+        import Drawing, Part
+        shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+        if shapes:
+            baseshape = Part.makeCompound(shapes)
+            svgf = Drawing.projectToSVG(baseshape,direction)
+            if svgf:
+                svgf = svgf.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
+                svgf = svgf.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
+                svgf = svgf.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
+                svg += svgf
+        if hshapes:
+            hshapes = Part.makeCompound(hshapes)
+            svgh = Drawing.projectToSVG(hshapes,direction)
+            if svgh:
+                svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
+                svgh = svgh.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
+                svgh = svgh.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
+                svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')
+                svg += svgh
+        if sshapes:
+            svgs = ""
+            if showFill:
+                #svgs += fillpattern
+                svgs += '<g transform="rotate(180)">\n'
+                for s in sshapes:
+                    if s.Edges:
+                        #f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
+                        # temporarily disabling fill patterns
+                        f = Draft.getSVG(s,direction=direction.negative(),linewidth=0,fillstyle="#aaaaaa",color=(0,0,0))
+                        svgs += f
+                svgs += "</g>\n"
+            sshapes = Part.makeCompound(sshapes)
+            svgs += Drawing.projectToSVG(sshapes,direction)
+            if svgs:
+                svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
+                svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
+                svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
+                svgs = svgs.replace('stroke-width="0.35 px"','stroke-width="SWPlaceholder"')
+                svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
+                svg += svgs
+    scaledlinewidth = linewidth/scale
+    st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
+    yt = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("SymbolLineThickness",0.6)
+    da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
+    da = da.replace(" ","")
+    svg = svg.replace('LWPlaceholder', str(scaledlinewidth) + 'px')
+    svg = svg.replace('SWPlaceholder', str(scaledlinewidth*st) + 'px')
+    svg = svg.replace('DAPlaceholder', str(da))
+    if drafts:
+        if not techdraw:
+            svg += '<g transform="scale(1,-1)">'
+        for d in drafts:
+            svg += Draft.getSVG(d,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+        if not techdraw:
+            svg += '</g>'
+    # filter out spaces not cut by the section plane
+    if cutface and spaces:
+        spaces = [s for s in spaces if s.Shape.BoundBox.intersect(cutface.BoundBox)]
+    if spaces:
+        if not techdraw:
+            svg += '<g transform="scale(1,-1)">'
+        for s in spaces:
+            svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,direction=direction,techdraw=techdraw,rotation=rotation)
+        if not techdraw:
+            svg += '</g>'
+    # add additional edge symbols from windows
+    if cutface and windows:
+        cutwindows = [w.Name for w in windows if w.Shape.BoundBox.intersect(cutface.BoundBox)]
+    if windows:
+        sh = []
+        for w in windows:
+            if not hasattr(w.Proxy,"sshapes"):
+                w.Proxy.execute(w)
+            if hasattr(w.Proxy,"sshapes"):
+                if w.Proxy.sshapes and (w.Name in cutwindows):
+                    c = Part.makeCompound(w.Proxy.sshapes)
+                    c.Placement = w.Placement
+                    sh.append(c)
+            # buggy for now...
+            #if hasattr(w.Proxy,"vshapes"):
+            #    if w.Proxy.vshapes:
+            #        c = Part.makeCompound(w.Proxy.vshapes)
+            #        c.Placement = w.Placement
+            #        sh.append(c)
+        if sh:
+            if not techdraw:
+                svg += '<g transform="scale(1,-1)">'
+            for s in sh:
+                svg += Draft.getSVG(s,scale=scale,linewidth=linewidth*yt,fontsize=fontsize,fillstyle="none",direction=direction,techdraw=techdraw,rotation=rotation)
+            if not techdraw:
+                svg += '</g>'
+            
+    #print "complete node:",svg
+    return svg
+
+
+def getDXF(obj):
+    "returns a DXF representation from a TechDraw/Drawing view"
+    allOn = True
+    if hasattr(obj,"AllOn"):
+        allOn = obj.AllOn
+    elif hasattr(obj,"AlwaysOn"):
+        allOn = obj.AlwaysOn
+    showHidden = False
+    if hasattr(obj,"showCut"):
+        showHidden = obj.showCut
+    elif hasattr(obj,"showHidden"):
+        showHidden = obj.showHidden
+    result = []
+    import Drawing,Part
+    if not obj.Source:
+        return result
+    section = obj.Source
+    if not section.Objects:
+        return result
+    p = FreeCAD.Placement(section.Placement)
+    direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
+    objs = Draft.getGroupContents(section.Objects,walls=True,addgroups=True)
+    if not allOn:
+            objs = Draft.removeHidden(objs)
+    # separate spaces and Draft objects
+    spaces = []
+    nonspaces = []
+    drafts = []
+    objs = [o for o in objs if ((not(Draft.getType(o) in ["Space","Dimension","Annotation"])) and (not (o.isDerivedFrom("Part::Part2DObject"))))]
+    shapes,hshapes,sshapes,cutface,cutvolume,invcutvolume = getCutShapes(objs,section,showHidden)
+    if shapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(shapes),direction))
+    if sshapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(sshapes),direction))
+    if hshapes:
+        result.append(Drawing.projectToDXF(Part.makeCompound(hshapes),direction))
+    return result
+
+
 class _CommandSectionPlane:
     "the Arch SectionPlane command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_SectionPlane',
                 'Accel': "S, E",
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
+                'MenuText': QT_TRANSLATE_NOOP("Arch_SectionPlane","Section Plane"),
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_SectionPlane","Creates a section plane object, including the selected objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -96,14 +354,17 @@ class _CommandSectionPlane:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
 class _SectionPlane:
+    
     "A section plane object"
+    
     def __init__(self,obj):
         obj.Proxy = self
-        obj.addProperty("App::PropertyPlacement","Placement","Base","The placement of this object")
+        obj.addProperty("App::PropertyPlacement","Placement","Base",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
         obj.addProperty("Part::PropertyPartShape","Shape","Base","")
-        obj.addProperty("App::PropertyLinkList","Objects","Arch","The objects that must be considered by this section plane. Empty means all document")
-        obj.addProperty("App::PropertyBool","OnlySolids","Arch","If false, non-solids will be cut too, with possible wrong results.")
+        obj.addProperty("App::PropertyLinkList","Objects","Arch",QT_TRANSLATE_NOOP("App::Property","The objects that must be considered by this section plane. Empty means all document"))
+        obj.addProperty("App::PropertyBool","OnlySolids","Arch",QT_TRANSLATE_NOOP("App::Property","If false, non-solids will be cut too, with possible wrong results."))
         obj.OnlySolids = True
         self.Type = "SectionPlane"
 
@@ -139,16 +400,17 @@ class _SectionPlane:
         if state:
             self.Type = state
 
+
 class _ViewProviderSectionPlane:
     "A View Provider for Section Planes"
     def __init__(self,vobj):
-        vobj.addProperty("App::PropertyLength","DisplayLength","Arch","The display length of this section plane")
-        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch","The display height of this section plane")
-        vobj.addProperty("App::PropertyLength","ArrowSize","Arch","The size of the arrows of this section plane")
+        vobj.addProperty("App::PropertyLength","DisplayLength","Arch",QT_TRANSLATE_NOOP("App::Property","The display length of this section plane"))
+        vobj.addProperty("App::PropertyLength","DisplayHeight","Arch",QT_TRANSLATE_NOOP("App::Property","The display height of this section plane"))
+        vobj.addProperty("App::PropertyLength","ArrowSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the arrows of this section plane"))
         vobj.addProperty("App::PropertyPercent","Transparency","Base","")
         vobj.addProperty("App::PropertyFloat","LineWidth","Base","")
         vobj.addProperty("App::PropertyColor","LineColor","Base","")
-        vobj.addProperty("App::PropertyBool","CutView","Arch","Show the cut in the 3D view")
+        vobj.addProperty("App::PropertyBool","CutView","Arch",QT_TRANSLATE_NOOP("App::Property","Show the cut in the 3D view"))
         vobj.DisplayLength = 1000
         vobj.DisplayHeight = 1000
         vobj.ArrowSize = 50
@@ -306,15 +568,16 @@ class _ViewProviderSectionPlane:
     def doubleClicked(self,vobj):
         self.setEdit(vobj,None)
 
+
 class _ArchDrawingView:
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink","Source","Base","The linked object")
-        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view","The rendering mode to use")
-        obj.addProperty("App::PropertyBool","ShowCut","Drawing view","If cut geometry is shown or not")
-        obj.addProperty("App::PropertyBool","ShowFill","Drawing view","If cut geometry is filled or not")
-        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view","The line width of the rendered objects")
-        obj.addProperty("App::PropertyLength","FontSize","Drawing view","The size of the texts inside this object")
-        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view","If checked, source objects are displayed regardless of being visible in the 3D model")
+        obj.addProperty("App::PropertyLink","Source","Base",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyEnumeration","RenderingMode","Drawing view",QT_TRANSLATE_NOOP("App::Property","The rendering mode to use"))
+        obj.addProperty("App::PropertyBool","ShowCut","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is shown or not"))
+        obj.addProperty("App::PropertyBool","ShowFill","Drawing view",QT_TRANSLATE_NOOP("App::Property","If cut geometry is filled or not"))
+        obj.addProperty("App::PropertyFloat","LineWidth","Drawing view",QT_TRANSLATE_NOOP("App::Property","The line width of the rendered objects"))
+        obj.addProperty("App::PropertyLength","FontSize","Drawing view",QT_TRANSLATE_NOOP("App::Property","The size of the texts inside this object"))
+        obj.addProperty("App::PropertyBool","AlwaysOn","Drawing view",QT_TRANSLATE_NOOP("App::Property","If checked, source objects are displayed regardless of being visible in the 3D model"))
         obj.RenderingMode = ["Solid","Wireframe"]
         obj.RenderingMode = "Wireframe"
         obj.LineWidth = 0.35
@@ -326,183 +589,18 @@ class _ArchDrawingView:
     def execute(self, obj):
         if hasattr(obj,"Source"):
             if obj.Source:
-                if not hasattr(self,"svg"):
-                    self.onChanged(obj,"Source")
-                else:
-                    if not self.svg:
-                        self.onChanged(obj,"Source")
-                if not hasattr(self,"svg"):
-                    return ''
-                if not hasattr(self,"direction"):
-                    p = FreeCAD.Placement(obj.Source.Placement)
-                    self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
-                linewidth = obj.LineWidth/obj.Scale
-                st = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("CutLineThickness",2)
-                da = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("archHiddenPattern","30,10")
-                da =da.replace(" ","")
-                svg = self.svg.replace('LWPlaceholder', str(linewidth) + 'px')
-                svg = svg.replace('SWPlaceholder', str(linewidth*st) + 'px')
-                svg = svg.replace('DAPlaceholder', str(da))
-                if hasattr(self,"spaces"):
-                    if self.spaces and round(self.direction.getAngle(FreeCAD.Vector(0,0,1)),Draft.precision()) in [0,round(math.pi,Draft.precision())]:
-                        svg += '<g transform="scale(1,-1)">'
-                        for s in self.spaces:
-                            svg += Draft.getSVG(s,scale=obj.Scale,fontsize=obj.FontSize.Value,direction=self.direction)
-                        svg += '</g>'
-                result = ''
-                result += '<g id="' + obj.Name + '"'
-                result += ' transform="'
-                result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
-                result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
-                result += 'scale('+str(obj.Scale)+','+str(obj.Scale)+')'
-                result += '">\n'
-                result += svg
-                result += '</g>\n'
-                # print "complete node:",result
-                obj.ViewResult = result
-
-    def onChanged(self, obj, prop):
-        if prop in ["Source","RenderingMode","ShowCut"]:
-            import Part, DraftGeomUtils
-            if hasattr(obj,"Source"):
-                if obj.Source:
-                    if hasattr(obj.Source,"Objects"):
-                        if obj.Source.Objects:
-                            objs = Draft.getGroupContents(obj.Source.Objects,walls=True,addgroups=True)
-                            if hasattr(obj,"AlwaysOn"):
-                                if not obj.AlwaysOn:
-                                    objs = Draft.removeHidden(objs)
-                            else:
-                                objs = Draft.removeHidden(objs)
-                            # separate spaces
-                            self.spaces = []
-                            os = []
-                            for o in objs:
-                                if Draft.getType(o) == "Space":
-                                    self.spaces.append(o)
-                                else:
-                                    os.append(o)
-                            objs = os
-                            self.svg = ''
-                            fillpattern = '<pattern id="sectionfill" patternUnits="userSpaceOnUse" patternTransform="matrix(5,0,0,5,0,0)"'
-                            fillpattern += ' x="0" y="0" width="10" height="10">'
-                            fillpattern += '<g>'
-                            fillpattern += '<rect width="10" height="10" style="stroke:none; fill:#ffffff" /><path style="stroke:#000000; stroke-width:1" d="M0,0 l10,10" /></g></pattern>'
-    
-                            # generating SVG
-                            if obj.RenderingMode == "Solid":
-                                # render using the Arch Vector Renderer
-                                import ArchVRM, WorkingPlane
-                                wp = WorkingPlane.plane()
-                                wp.setFromPlacement(obj.Source.Placement)
-                                #wp.inverse()
-                                render = ArchVRM.Renderer()
-                                render.setWorkingPlane(wp)
-                                render.addObjects(objs)
-                                if hasattr(obj,"ShowCut"):
-                                    render.cut(obj.Source.Shape,obj.ShowCut)
-                                else:
-                                    render.cut(obj.Source.Shape)
-                                self.svg += '<g transform="scale(1,-1)">\n'
-                                self.svg += render.getViewSVG(linewidth="LWPlaceholder")
-                                self.svg += fillpattern
-                                self.svg += render.getSectionSVG(linewidth="SWPlaceholder",fillpattern="sectionfill")
-                                if hasattr(obj,"ShowCut"):
-                                    if obj.ShowCut:
-                                        self.svg += render.getHiddenSVG(linewidth="LWPlaceholder")
-                                self.svg += '</g>\n'
-                                # print render.info()
-    
-                            else:
-                                # render using the Drawing module
-                                import Drawing, Part
-                                shapes = []
-                                hshapes = []
-                                sshapes = []
-                                p = FreeCAD.Placement(obj.Source.Placement)
-                                self.direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))
-                                for o in objs:
-                                    if o.isDerivedFrom("Part::Feature"):
-                                        if o.Shape.isNull():
-                                            pass
-                                            #FreeCAD.Console.PrintWarning(translate("Arch","Skipping empty object: ")+o.Name)
-                                        elif o.Shape.isValid():
-                                            if hasattr(obj.Source,"OnlySolids"):
-                                                if obj.Source.OnlySolids:
-                                                    shapes.extend(o.Shape.Solids)
-                                                else:
-                                                    shapes.append(o.Shape)
-                                            else:
-                                                shapes.extend(o.Shape.Solids)
-                                        else:
-                                            FreeCAD.Console.PrintWarning(translate("Arch","Skipping invalid object: ")+o.Name)
-                                cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(obj.Source.Shape.copy(),shapes)
-                                if cutvolume:
-                                    nsh = []
-                                    for sh in shapes:
-                                        for sol in sh.Solids:
-                                            if sol.Volume < 0:
-                                                sol.reverse()
-                                            c = sol.cut(cutvolume)
-                                            s = sol.section(cutface)
-                                            try:
-                                                wires = DraftGeomUtils.findWires(s.Edges)
-                                                for w in wires:
-                                                    f = Part.Face(w)
-                                                    sshapes.append(f)
-                                                #s = Part.Wire(s.Edges)
-                                                #s = Part.Face(s)
-                                            except Part.OCCError:
-                                                #print "ArchDrawingView: unable to get a face"
-                                                sshapes.append(s)
-                                            nsh.extend(c.Solids)
-                                            #sshapes.append(s)
-                                            if hasattr(obj,"ShowCut"):
-                                                if obj.ShowCut:
-                                                    c = sol.cut(invcutvolume)
-                                                    hshapes.append(c)
-                                    shapes = nsh
-                                if shapes:
-                                    self.shapes = shapes
-                                    self.baseshape = Part.makeCompound(shapes)
-                                    svgf = Drawing.projectToSVG(self.baseshape,self.direction)
-                                    if svgf:
-                                        svgf = svgf.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
-                                        svgf = svgf.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
-                                        svgf = svgf.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
-                                        self.svg += svgf
-                                if hshapes:
-                                    hshapes = Part.makeCompound(hshapes)
-                                    self.hiddenshape = hshapes
-                                    svgh = Drawing.projectToSVG(hshapes,self.direction)
-                                    if svgh:
-                                        svgh = svgh.replace('stroke-width="0.35"','stroke-width="LWPlaceholder"')
-                                        svgh = svgh.replace('stroke-width="1"','stroke-width="LWPlaceholder"')
-                                        svgh = svgh.replace('stroke-width:0.01','stroke-width:LWPlaceholder')
-                                        svgh = svgh.replace('fill="none"','fill="none"\nstroke-dasharray="DAPlaceholder"')
-                                        self.svg += svgh
-                                if sshapes:
-                                    svgs = ""
-                                    if hasattr(obj,"ShowFill"):
-                                        if obj.ShowFill:
-                                            svgs += fillpattern
-                                            svgs += '<g transform="rotate(180)">\n'
-                                            for s in sshapes:
-                                                if s.Edges:
-                                                    f = Draft.getSVG(s,direction=self.direction.negative(),linewidth=0,fillstyle="sectionfill",color=(0,0,0))
-                                                    svgs += f
-                                            svgs += "</g>\n"
-                                    sshapes = Part.makeCompound(sshapes)
-                                    self.sectionshape = sshapes
-                                    svgs += Drawing.projectToSVG(sshapes,self.direction)
-                                    if svgs:
-                                        svgs = svgs.replace('stroke-width="0.35"','stroke-width="SWPlaceholder"')
-                                        svgs = svgs.replace('stroke-width="1"','stroke-width="SWPlaceholder"')
-                                        svgs = svgs.replace('stroke-width:0.01','stroke-width:SWPlaceholder')
-                                        svgs = svgs.replace('stroke-width="0.35 px"','stroke-width="SWPlaceholder"')
-                                        svgs = svgs.replace('stroke-width:0.35','stroke-width:SWPlaceholder')
-                                        self.svg += svgs
-
+                svgbody = getSVG(obj.Source,obj.AlwaysOn,obj.RenderingMode,obj.ShowCut,obj.ShowFill,obj.Scale,obj.LineWidth,obj.FontSize)
+                if svgbody:
+                    result = '<g id="' + obj.Name + '"'
+                    result += ' transform="'
+                    result += 'rotate('+str(obj.Rotation)+','+str(obj.X)+','+str(obj.Y)+') '
+                    result += 'translate('+str(obj.X)+','+str(obj.Y)+') '
+                    result += 'scale('+str(obj.Scale)+','+str(obj.Scale)+')'
+                    result += '">\n'
+                    result += svgbody
+                    result += '</g>\n'
+                    obj.ViewResult = result
+                    
     def __getstate__(self):
         return self.Type
 
@@ -536,6 +634,7 @@ class _ArchDrawingView:
             if self.hiddenshape:
                 result.append(Drawing.projectToDXF(self.hiddenshape,self.direction))
         return result
+
 
 class SectionPlaneTaskPanel:
     '''A TaskPanel for all the section plane object'''
@@ -587,6 +686,8 @@ class SectionPlaneTaskPanel:
             return QtGui.QIcon(obj.ViewObject.Proxy.getIcon())
         elif obj.isDerivedFrom("Sketcher::SketchObject"):
             return QtGui.QIcon(":/icons/Sketcher_Sketch.svg")
+        elif obj.isDerivedFrom("App::DocumentObjectGroup"):
+            return QtGui.QApplication.style().standardIcon(QtGui.QStyle.SP_DirIcon)
         else:
             return QtGui.QIcon(":/icons/Tree_Part.svg")
 
@@ -596,7 +697,8 @@ class SectionPlaneTaskPanel:
         if self.obj:
             for o in self.obj.Objects:
                 item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,o.Name)
+                item.setText(0,o.Label)
+                item.setToolTip(0,o.Name)
                 item.setIcon(0,self.getIcon(o))
         self.retranslateUi(self.form)
 
@@ -610,7 +712,7 @@ class SectionPlaneTaskPanel:
         if self.obj:
             it = self.tree.currentItem()
             if it:
-                comp = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
+                comp = FreeCAD.ActiveDocument.getObject(str(it.toolTip(0)))
                 ArchComponent.removeFromComponent(self.obj,comp)
             self.update()
 

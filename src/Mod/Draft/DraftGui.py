@@ -26,10 +26,13 @@ __title__="FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
-## \defgroup DRAFTGUI DraftGui
+## @package DraftGui
 #  \ingroup DRAFT
+#  \brief GUI elements and utilities of the Draft workbench
 #
-# GUI elements and utilities of the Draft workbench
+#  This module provides GUI tools for the Draft workbench, such as
+#  toolbars and task panels, and Qt-dependent utilities such as 
+#  a delayed (todo) commit system
 
 '''
 This is the GUI part of the Draft module.
@@ -134,16 +137,21 @@ def makeFormatSpec(decimals=4,dim='Length'):
         fmtSpec = "%." + str(decimals) + "f " + "??"
     return fmtSpec
 
-def displayExternal(internValue,decimals=None,dim='Length',showUnit=True):
+def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
     '''return an internal value (ie mm) Length or Angle converted for display according 
-    to Units Schema in use.'''
+    to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
     from FreeCAD import Units
     if dim == 'Length':
         q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        if (decimals == None) and showUnit:
-            return q.UserString
-        conversion = q.getUserPreferred()[1]
-        uom = q.getUserPreferred()[2]
+        if not unit:
+            if (decimals == None) and showUnit:
+                return q.UserString
+            conversion = q.getUserPreferred()[1]
+            uom = q.getUserPreferred()[2]
+        else:
+            uom = unit
+            internValue = q.getValueAs(unit)
+            conversion = 1
     elif dim == 'Angle':
         return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
     else:
@@ -185,8 +193,6 @@ class DraftLineEdit(QtGui.QLineEdit):
             self.emit(QtCore.SIGNAL("up()"))
         elif event.key() == QtCore.Qt.Key_Down:
             self.emit(QtCore.SIGNAL("down()"))
-        elif (event.key() == QtCore.Qt.Key_Z) and (int(event.modifiers()) == QtCore.Qt.ControlModifier):
-            self.emit(QtCore.SIGNAL("undo()"))
         else:
             QtGui.QLineEdit.keyPressEvent(self, event)
 
@@ -534,9 +540,6 @@ class DraftToolBar:
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill) 
         QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
         QtCore.QObject.connect(self.resetPlaneButton,QtCore.SIGNAL("clicked()"),self.selectResetPlane)
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("undo()"),self.undoSegment)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
@@ -664,11 +667,11 @@ class DraftToolBar:
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
-        self.xyButton.setText(translate("draft", "XY"))
+        self.xyButton.setText(translate("draft", "XY (top)"))
         self.xyButton.setToolTip(translate("draft", "Select XY plane"))
-        self.xzButton.setText(translate("draft", "XZ"))
+        self.xzButton.setText(translate("draft", "XZ (front)"))
         self.xzButton.setToolTip(translate("draft", "Select XZ plane"))
-        self.yzButton.setText(translate("draft", "YZ"))
+        self.yzButton.setText(translate("draft", "YZ (side)"))
         self.yzButton.setToolTip(translate("draft", "Select YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
         self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))

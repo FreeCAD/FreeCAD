@@ -32,7 +32,11 @@
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
 #include "DrawViewDraft.h"
+#include "DrawViewArch.h"
 #include "DrawViewSpreadsheet.h"
+#include "DrawViewMulti.h"
+#include "DrawViewImage.h"
+#include "DrawViewDetail.h"
 
 namespace TechDraw {
 extern PyObject* initModule();
@@ -67,9 +71,13 @@ PyMODINIT_FUNC initTechDraw()
     TechDraw::DrawViewSpreadsheet ::init();
 
     TechDraw::DrawViewSection     ::init();
+    TechDraw::DrawViewMulti       ::init();
     TechDraw::DrawViewDimension   ::init();
     TechDraw::DrawProjGroup       ::init();
     TechDraw::DrawProjGroupItem   ::init();
+    TechDraw::DrawViewDetail      ::init();
+
+
     TechDraw::DrawTemplate        ::init();
     TechDraw::DrawParametricTemplate::init();
     TechDraw::DrawSVGTemplate     ::init();
@@ -77,10 +85,13 @@ PyMODINIT_FUNC initTechDraw()
     TechDraw::DrawViewClip        ::init();
     TechDraw::DrawHatch           ::init();
     TechDraw::DrawViewDraft       ::init();
+    TechDraw::DrawViewArch        ::init();
+    TechDraw::DrawViewImage       ::init();
 
    // Python Types
     TechDraw::DrawViewPython      ::init();
     TechDraw::DrawViewPartPython  ::init();
+    TechDraw::DrawViewMultiPython  ::init();
     TechDraw::DrawTemplatePython  ::init();
     TechDraw::DrawViewSymbolPython::init();
 }

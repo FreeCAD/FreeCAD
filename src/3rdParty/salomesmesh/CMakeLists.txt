@@ -7,9 +7,9 @@ SET(SMESH_VERSION_PATCH 2)
 SET(SMESH_VERSION_TWEAK 2)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-but-set-variable -Wno-comment -Wno-unused-parameter")
 elseif(CMAKE_COMPILER_IS_CLANGXX)
-    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment")
+    set(CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS} -Wno-sign-compare -Wno-reorder -Wno-switch -Wno-unused-variable -Wno-unused-private-field -Wno-unused-function -Wno-sometimes-uninitialized -Wno-overloaded-virtual -Wno-dynamic-class-memaccess -Wno-comment -Wno-unused-parameter")
 endif()
 
 if(CMAKE_COMPILER_IS_CLANGXX)
@@ -20,7 +20,6 @@ if (VTK_OPTIONS)
     add_definitions(${VTK_OPTIONS})
 endif()
 
-include(${VTK_USE_FILE})
 include_directories(
     src/SMDS
     src/Driver
@@ -37,7 +36,7 @@ include_directories(
     ${NGLIB_INCLUDE_DIR}
     ${NETGEN_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${VTK_INCLUDE_DIR}
+    ${VTK_INCLUDE_DIRS}
     ${HDF5_INCLUDE_DIR}
     ${MEDFILE_INCLUDE_DIRS}
     ${BOOST_INCLUDE_DIR}
@@ -143,7 +142,7 @@ ELSE(UNIX)
     ######### Windows ###########
     #MESSAGE("-- Windows system detected")
     IF(MSVC)
-        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4806 /wd4275 /wd4005 /wd4099 /wd4101 /wd4267 /wd4390 /wd4503 /wd4436)
+        ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DUSE_CLOCK -DMSDOS -DNO_ONEXIT -DNO_My_ctype -DNO_ISATTY -DNO_FPINIT /wd4290 /wd4251 /wd4018 /wd4800 /wd4996 /wd4244 /wd4805 /wd4806 /wd4275 /wd4005 /wd4099 /wd4101 /wd4146 /wd4267 /wd4390 /wd4503 /wd4436)
     ELSE(MSVC)
         ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
     ENDIF(MSVC)
@@ -265,7 +264,7 @@ SET_BIN_DIR(SMESHDS SMESHDS)
 #########
 FILE(GLOB SMESH_source_files src/SMESH/*.c src/SMESH/*.cpp src/Controls/*.cpp inc/SMESH_*.h*)
 ADD_LIBRARY(SMESH SHARED ${SMESH_source_files})
-TARGET_LINK_LIBRARIES(SMESH SMDS SMESHDS  Driver DriverSTL DriverDAT DriverUNV ${SMESH_LIBS} ${OPENCASCADE_LIBRARIES} ${OCC_LIBRARIES} ${OCC_DEBUG_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES} ${OCC_OCAF_LIBRARIES} ${MEDFILE_LIBRARIES})
+TARGET_LINK_LIBRARIES(SMESH SMDS SMESHDS  Driver DriverSTL DriverDAT DriverUNV ${SMESH_LIBS} ${OPENCASCADE_LIBRARIES} ${OCC_LIBRARIES} ${OCC_DEBUG_LIBRARIES} ${OCC_OCAF_DEBUG_LIBRARIES} ${OCC_OCAF_LIBRARIES} ${MEDFILE_LIBRARIES} ${VTK_LIBRARIES})
  
 SET_BIN_DIR(SMESH SMESH)
 if(WIN32)

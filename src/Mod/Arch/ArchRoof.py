@@ -27,9 +27,22 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchRoof
+#  \ingroup ARCH
+#  \brief The Roof object and tools
+#
+#  This module provides tools to build Roof objects.
+#  Roofs are build from a closed contour and a series of
+#  slopes.
 
 __title__="FreeCAD Roof"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann"
@@ -108,9 +121,9 @@ class _CommandRoof:
     "the Arch Roof command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Roof',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Roof"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Roof","Roof"),
                 'Accel': "R, F",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected wire.")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Roof","Creates a roof object from the selected wire.")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -151,15 +164,15 @@ class _Roof(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyFloatList","Angles","Arch",    "A list of angles for each roof pane")
-        obj.addProperty("App::PropertyFloatList","Runs","Arch",      "A list of horizontal length projections for each roof pane")
-        obj.addProperty("App::PropertyIntegerList","IdRel","Arch",   "A list of IDs of relative profiles for each roof pane")
-        obj.addProperty("App::PropertyFloatList","Thickness","Arch", "A list of thicknesses for each roof pane")
-        obj.addProperty("App::PropertyFloatList","Overhang","Arch",  "A list of overhangs for each roof pane")
-        obj.addProperty("App::PropertyFloatList","Heights","Arch",   "A list of calculated heights for each roof pane")
-        obj.addProperty("App::PropertyInteger","Face","Base",        "The face number of the base object used to build this roof")
-        obj.addProperty("App::PropertyLength","RidgeLength","Arch","The total length of ridges and hips of this roof")
-        obj.addProperty("App::PropertyLength","BorderLength","Arch","The total length of borders of this roof")
+        obj.addProperty("App::PropertyFloatList","Angles","Arch",    QT_TRANSLATE_NOOP("App::Property","A list of angles for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Runs","Arch",      QT_TRANSLATE_NOOP("App::Property","A list of horizontal length projections for each roof pane"))
+        obj.addProperty("App::PropertyIntegerList","IdRel","Arch",   QT_TRANSLATE_NOOP("App::Property","A list of IDs of relative profiles for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Thickness","Arch", QT_TRANSLATE_NOOP("App::Property","A list of thicknesses for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Overhang","Arch",  QT_TRANSLATE_NOOP("App::Property","A list of overhangs for each roof pane"))
+        obj.addProperty("App::PropertyFloatList","Heights","Arch",   QT_TRANSLATE_NOOP("App::Property","A list of calculated heights for each roof pane"))
+        obj.addProperty("App::PropertyInteger","Face","Base",        QT_TRANSLATE_NOOP("App::Property","The face number of the base object used to build this roof"))
+        obj.addProperty("App::PropertyLength","RidgeLength","Arch",  QT_TRANSLATE_NOOP("App::Property","The total length of ridges and hips of this roof"))
+        obj.addProperty("App::PropertyLength","BorderLength","Arch", QT_TRANSLATE_NOOP("App::Property","The total length of borders of this roof"))
         self.Type = "Roof"
         obj.Proxy = self
         obj.setEditorMode("RidgeLength",1)
@@ -611,29 +624,33 @@ class _Roof(ArchComponent.Component):
                         if f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1)) < math.pi/2:
                             fset.append(f)
                     if fset:
-                        shell = Part.Shell(fset)
-                        lut={}
-                        if shell.Faces:
-                            for f in shell.Faces:
-                                for e in f.Edges:
-                                    hc = e.hashCode()
-                                    if hc in lut:
-                                        lut[hc] = lut[hc] + 1
-                                    else:
-                                        lut[hc] = 1
-                            for e in shell.Edges:
-                                if lut[e.hashCode()] == 1:
-                                    bl += e.Length
-                                    bn += 1
-                                elif lut[e.hashCode()] == 2:
-                                    rl += e.Length
-                                    rn += 1
-                            if obj.RidgeLength.Value != rl:
-                                obj.RidgeLength = rl
-                                print str(rn)+" ridge edges in roof "+obj.Name
-                            if obj.BorderLength.Value != bl:
-                                obj.BorderLength = bl
-                                print str(bn)+" border edges in roof "+obj.Name
+                        try:
+                            shell = Part.Shell(fset)
+                        except:
+                            pass
+                        else:
+                            lut={}
+                            if shell.Faces:
+                                for f in shell.Faces:
+                                    for e in f.Edges:
+                                        hc = e.hashCode()
+                                        if hc in lut:
+                                            lut[hc] = lut[hc] + 1
+                                        else:
+                                            lut[hc] = 1
+                                for e in shell.Edges:
+                                    if lut[e.hashCode()] == 1:
+                                        bl += e.Length
+                                        bn += 1
+                                    elif lut[e.hashCode()] == 2:
+                                        rl += e.Length
+                                        rn += 1
+            if obj.RidgeLength.Value != rl:
+                obj.RidgeLength = rl
+                print str(rn)+" ridge edges in roof "+obj.Name
+            if obj.BorderLength.Value != bl:
+                obj.BorderLength = bl
+                print str(bn)+" border edges in roof "+obj.Name
         ArchComponent.Component.computeAreas(self,obj)
 
 

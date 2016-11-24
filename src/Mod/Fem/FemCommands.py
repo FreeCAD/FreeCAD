@@ -25,8 +25,10 @@ __title__ = "Fem Commands"
 __author__ = "Przemo Firszt"
 __url__ = "http://www.freecadweb.org"
 
-import FreeCAD
+## \addtogroup FEM
+#  @{
 
+import FreeCAD
 if FreeCAD.GuiUp:
     import FreeCADGui
     import FemGui
@@ -135,3 +137,5 @@ class FemCommands(object):
                             if aparttoshow == apart.Name:
                                 apart.ViewObject.Visibility = True
                         acnstrmesh.ViewObject.Visibility = False  # OvG: Hide meshes and show constraints and meshed part e.g. on purging results
+
+#  @}

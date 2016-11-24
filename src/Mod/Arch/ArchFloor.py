@@ -28,9 +28,22 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchFloor
+#  \ingroup ARCH
+#  \brief The Floor object and tools
+#
+#  This module provides tools to build Floor objects.
+#  Floors are used to group different Arch objects situated
+#  at a same level
 
 __title__="FreeCAD Arch Floor"
 __author__ = "Yorik van Havre"
@@ -52,9 +65,9 @@ class _CommandFloor:
     "the Arch Cell command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Floor',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Floor","Floor"),
                 'Accel': "F, L",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Floor","Creates a floor object including selected objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -97,8 +110,11 @@ Floor creation aborted.\n" )
 class _Floor:
     "The Floor object"
     def __init__(self,obj):
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this floor")
-        obj.addProperty("App::PropertyPlacement","Placement","Arch","The placement of this group")
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this object"))
+        obj.addProperty("App::PropertyArea","Area", "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this floor"))
+        if not hasattr(obj,"Placement"):
+            # obj can be a Part Feature and already has a placement
+            obj.addProperty("App::PropertyPlacement","Placement","Arch",QT_TRANSLATE_NOOP("App::Property","The placement of this object"))
         self.Type = "Floor"
         obj.Proxy = self
         self.Object = obj
@@ -114,6 +130,14 @@ class _Floor:
         if not hasattr(self,"Object"):
             # on restore, self.Object is not there anymore
             self.Object = obj
+        if (prop == "Group") and hasattr(obj,"Area"):
+            a = 0
+            for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Space"):
+                if hasattr(o,"Area"):
+                    if hasattr(o.Area,"Value"):
+                        a += o.Area.Value
+                        if obj.Area.Value != a:
+                            obj.Area = a
 
     def execute(self,obj):
         # move children with this floor

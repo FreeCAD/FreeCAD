@@ -31,6 +31,10 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 
 
+namespace Gui {
+class Document;
+}
+
 class Ui_TaskLinkDim;
 
 namespace TechDrawGui
@@ -41,7 +45,7 @@ class TaskLinkDim : public QWidget
     Q_OBJECT
 
 public:
-    TaskLinkDim(Part::Feature* part,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskLinkDim();
 
 public:
@@ -55,11 +59,13 @@ protected:
     void changeEvent(QEvent *e);
     void loadAvailDims();
     void updateDims();
+    void loadToTree(const TechDraw::DrawViewDimension* dim, const bool selected, Gui::Document* guiDoc);
+    bool dimReferencesSelection(const TechDraw::DrawViewDimension* dim) const;
 
 private:
     Ui_TaskLinkDim * ui;
-    Part::Feature* m_part;
-    std::vector<std::string> m_subs;
+    const std::vector<App::DocumentObject*> m_parts;
+    const std::vector<std::string> m_subs;
     TechDraw::DrawPage* m_page;
 };
 
@@ -68,7 +74,7 @@ class TaskDlgLinkDim : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgLinkDim(Part::Feature* part,std::vector<std::string>& subs, TechDraw::DrawPage* page);
+    TaskDlgLinkDim(std::vector<App::DocumentObject*> parts,std::vector<std::string>& subs, TechDraw::DrawPage* page);
     ~TaskDlgLinkDim();
 
 public:

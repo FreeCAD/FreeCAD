@@ -52,6 +52,8 @@ public:
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
+    App::PropertyBool  KeepLabel;
+    App::PropertyString Caption;
 
     /** @name methods overide Feature */
     //@{
@@ -78,6 +80,7 @@ public:
     virtual QRectF getRect() const;                       //must be overridden by derived class
     virtual double autoScale(double w, double h) const;
     virtual bool checkFit(DrawPage*) const;
+    virtual void setPosition(double x, double y);
 
 protected:
     void onChanged(const App::Property* prop);

@@ -29,7 +29,13 @@ if FreeCAD.GuiUp:
 __title__ = "Arch Material Managment"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
-
+    
+## @package ArchMaterial
+#  \ingroup ARCH
+#  \brief The Material object and tools
+#
+#  This module provides tools to add materials to
+#  Arch objects
 
 def makeMaterial(name="Material"):
     '''makeMaterial(name): makes an Material object'''

@@ -53,10 +53,10 @@ currLocation = {}
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base",  "Path", "The base path to modify")
-        obj.addProperty("App::PropertyAngle", "filterangle", "Filter Angle", "Angles less than filter angle will not receive corner actions")
-        obj.addProperty("App::PropertyFloat", "offset", "Offset", "Distance the point trails behind the spindle")
-        obj.addProperty("App::PropertyFloat", "pivotheight", "Pivot Height", "Height to raise during corner action")
+        obj.addProperty("App::PropertyLink", "Base",  "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","The base path to modify"))
+        obj.addProperty("App::PropertyAngle", "filterangle", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Angles less than filter angle will not receive corner actions"))
+        obj.addProperty("App::PropertyFloat", "offset", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Distance the point trails behind the spindle"))
+        obj.addProperty("App::PropertyFloat", "pivotheight", "Path", QtCore.QT_TRANSLATE_NOOP("App::Property","Height to raise during corner action"))
 
         obj.Proxy = self
 
@@ -472,11 +472,14 @@ class CommandDragknifeDressup:
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "DragKnife Dress-up"),
-                'Accel': "P, S",
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "Modifies a path to add dragknife corner actions")}
 
     def IsActive(self):
-        return FreeCAD.ActiveDocument is not None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
 
@@ -503,7 +506,7 @@ class CommandDragknifeDressup:
         FreeCADGui.doCommand('PathScripts.DragknifeDressup.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
         FreeCADGui.doCommand('PathScripts.DragknifeDressup.ViewProviderDressup(obj.ViewObject)')
-        FreeCADGui.doCommand('PathScripts.PathUtils.addToProject(obj)')
+        FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCADGui.doCommand('obj.filterangle = 20')
         FreeCADGui.doCommand('obj.offset = 2')

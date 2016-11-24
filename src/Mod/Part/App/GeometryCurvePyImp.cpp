@@ -72,8 +72,9 @@
 #include "TopoShapePy.h"
 #include "TopoShapeEdgePy.h"
 
-// TODO: This should be somewhere globally, but where? Currently located in GeometrySurfacePyImp.cpp
+namespace Part {
 extern const Py::Object makeGeometryCurvePy(const Handle_Geom_Curve& c);
+}
 
 using namespace Part;
 
@@ -382,13 +383,87 @@ PyObject* GeometryCurvePy::tangent(PyObject *args)
                 return 0;
             gp_Dir dir;
             Py::Tuple tuple(1);
-            GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
             if (prop.IsTangentDefined()) {
                 prop.Tangent(dir);
                 tuple.setItem(0, Py::Vector(Base::Vector3d(dir.X(),dir.Y(),dir.Z())));
             }
 
             return Py::new_reference_to(tuple);
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::normal(PyObject *args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return 0;
+            gp_Dir dir;
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+            prop.Normal(dir);
+            return new Base::VectorPy(new Base::Vector3d(dir.X(),dir.Y(),dir.Z()));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::curvature(PyObject *args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return 0;
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+            double C = prop.Curvature();
+            return Py::new_reference_to(Py::Float(C));
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+
+    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
+    return 0;
+}
+
+PyObject* GeometryCurvePy::centerOfCurvature(PyObject *args)
+{
+    Handle_Geom_Geometry g = getGeometryPtr()->handle();
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(g);
+    try {
+        if (!c.IsNull()) {
+            double u;
+            if (!PyArg_ParseTuple(args, "d", &u))
+                return 0;
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+            gp_Pnt V ;
+            prop.CentreOfCurvature(V);
+            return new Base::VectorPy(new Base::Vector3d(V.X(),V.Y(),V.Z()));
         }
     }
     catch (Standard_Failure) {

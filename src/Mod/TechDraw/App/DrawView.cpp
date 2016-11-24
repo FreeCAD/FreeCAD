@@ -40,6 +40,9 @@
 #include "DrawPage.h"
 #include "DrawViewCollection.h"
 #include "DrawViewClip.h"
+#include "DrawProjGroup.h"
+#include "DrawProjGroupItem.h"
+#include "DrawUtil.h"
 
 #include <Mod/TechDraw/App/DrawViewPy.h>  // generated from DrawViewPy.xml
 
@@ -50,7 +53,7 @@ using namespace TechDraw;
 // DrawView
 //===========================================================================
 
-const char* DrawView::ScaleTypeEnums[]= {"Document",
+const char* DrawView::ScaleTypeEnums[]= {"Page",
                                             "Automatic",
                                             "Custom",
                                              NULL};
@@ -61,7 +64,9 @@ DrawView::DrawView(void)
   : autoPos(true),
     mouseMove(false)
 {
-    static const char *group = "Drawing view";
+    static const char *group = "BaseView";
+    static const char *fgroup = "Format";
+
     ADD_PROPERTY_TYPE(X ,(0),group,App::Prop_None,"X position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Y ,(0),group,App::Prop_None,"Y position of the view on the page in modelling units (mm)");
     ADD_PROPERTY_TYPE(Rotation ,(0),group,App::Prop_None,"Rotation of the view on the page in degrees counterclockwise");
@@ -69,6 +74,9 @@ DrawView::DrawView(void)
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType,((long)0),group, App::Prop_None, "Scale Type");
     ADD_PROPERTY_TYPE(Scale ,(1.0),group,App::Prop_None,"Scale factor of the view");
+
+    ADD_PROPERTY_TYPE(KeepLabel ,(false),fgroup,App::Prop_None,"Keep Label on Page even if toggled off");
+    ADD_PROPERTY_TYPE(Caption ,(""),fgroup,App::Prop_None,"Short text about the view");
 
 }
 
@@ -80,18 +88,25 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 {
     TechDraw::DrawPage *page = findParentPage();
     if(page) {
-        if (ScaleType.isValue("Document")) {
+        if (ScaleType.isValue("Page")) {
             if(std::abs(page->Scale.getValue() - Scale.getValue()) > FLT_EPSILON) {
                 Scale.setValue(page->Scale.getValue());
             }
         } else if (ScaleType.isValue("Automatic")) {
             //check fit. if too big, rescale
-            if (!checkFit(page)) {
-                double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
-                if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
-                    Scale.setValue(newScale);
+            //if (dpg) { leave alone } else {
+            if (this->isDerivedFrom(TechDraw::DrawProjGroup::getClassTypeId()))  {
+                //do nothing
+            } else {
+                if (!checkFit(page)) {
+                    double newScale = autoScale(page->getPageWidth(),page->getPageHeight());
+                    if(std::abs(newScale - Scale.getValue()) > FLT_EPSILON) {           //stops onChanged/execute loop
+                        Scale.setValue(newScale);
+                    }
                 }
             }
+        } else if (ScaleType.isValue("Custom")) {
+            //Base::Console().Message("TRACE - DV::execute - custom %s Scale: %.3f\n",getNameInDocument(),Scale.getValue());
         }
     }
     return App::DocumentObject::StdReturn;                //DO::execute returns 0
@@ -100,8 +115,9 @@ App::DocumentObjectExecReturn *DrawView::execute(void)
 void DrawView::onChanged(const App::Property* prop)
 {
     if (!isRestoring()) {
+        //Base::Console().Message("TRACE - DV::onChanged(%s) - %s\n",prop->getName(),Label.getValue());
         if (prop == &ScaleType) {
-            if (ScaleType.isValue("Document")) {
+            if (ScaleType.isValue("Page")) {
                 Scale.setStatus(App::Property::ReadOnly,true);
                 App::GetApplication().signalChangePropertyEditor(Scale);
             } else if ( ScaleType.isValue("Custom") ) {
@@ -113,8 +129,8 @@ void DrawView::onChanged(const App::Property* prop)
             }
         } else if (prop == &X ||
                    prop == &Y) {
-            if (isMouseMove()) {
-                setAutoPos(false);         //should only be for manual changes? not programmatic changes?
+            if (isMouseMove()) {     //actually "has mouse moved this item?"
+                setAutoPos(false);
             }
         }
     }
@@ -131,10 +147,10 @@ short DrawView::mustExecute() const
                     Scale.isTouched()  ||
                     ScaleType.isTouched() );
     }
-    if (result) {
+    if ((bool) result) {
         return result;
     }
-    return App::DocumentObject::mustExecute();   return App::DocumentObject::mustExecute();
+    return App::DocumentObject::mustExecute();
 }
 
 ////you must override this in derived class
@@ -146,7 +162,6 @@ QRectF DrawView::getRect() const
 
 void DrawView::onDocumentRestored()
 {
-    // Rebuild the view
     DrawView::execute();
 }
 
@@ -188,10 +203,14 @@ double DrawView::autoScale(double w, double h) const
 {
     double fudgeFactor = 0.90;
     QRectF viewBox = getRect();
-    double xScale = w/viewBox.width();
-    double yScale = h/viewBox.height();
-    //find a standard scale that's close? 1:2, 1:10, 1:100...?
+    //have to unscale rect to determine new scale
+    double vbw = viewBox.width()/Scale.getValue();
+    double vbh = viewBox.height()/Scale.getValue();
+    double xScale = w/vbw;
+    double yScale = h/vbh;
+    //TODO: find a standard scale that's close? 1:2, 1:10, 1:100...?  Logic in TaskProjGroup
     double newScale = fudgeFactor * std::min(xScale,yScale);
+    newScale = DrawUtil::sensibleScale(newScale);
     return newScale;
 }
 
@@ -205,6 +224,14 @@ bool DrawView::checkFit(TechDraw::DrawPage* p) const
         result = false;
     }
     return result;
+}
+
+void DrawView::setPosition(double x, double y)
+{
+    //recompute.lock()
+    X.setValue(x);
+    Y.setValue(y);
+    //recompute.unlock()
 }
 
 PyObject *DrawView::getPyObject(void)

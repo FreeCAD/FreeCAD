@@ -979,7 +979,7 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
     }
 }
 
-void MeshObject::cut(const Base::Polygon2D& polygon2d,
+void MeshObject::cut(const Base::Polygon2d& polygon2d,
                      const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
     MeshCore::MeshAlgorithm meshAlg(this->_kernel);
@@ -1004,7 +1004,7 @@ void MeshObject::cut(const Base::Polygon2D& polygon2d,
         this->deleteFacets(check);
 }
 
-void MeshObject::trim(const Base::Polygon2D& polygon2d,
+void MeshObject::trim(const Base::Polygon2d& polygon2d,
                       const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
     MeshCore::MeshTrimming trim(this->_kernel, &proj, polygon2d);

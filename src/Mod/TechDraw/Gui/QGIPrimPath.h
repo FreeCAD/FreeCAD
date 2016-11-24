@@ -61,9 +61,9 @@ protected:
     virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value);
 
-    QColor getNormalColor(void);
-    QColor getPreColor(void);
-    QColor getSelectColor(void);
+    virtual QColor getNormalColor(void);
+    virtual QColor getPreColor(void);
+    virtual QColor getSelectColor(void);
     Base::Reference<ParameterGrp> getParmGroup(void);
 
     bool isHighlighted;

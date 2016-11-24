@@ -84,7 +84,7 @@ using Gui::Dialog::DlgSettingsImageImp;
 
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-DEF_STD_CMD_AC(StdOrthographicCamera);
+DEF_STD_CMD_AC(StdOrthographicCamera)
 
 StdOrthographicCamera::StdOrthographicCamera()
   : Command("Std_OrthographicCamera")
@@ -134,7 +134,7 @@ Action * StdOrthographicCamera::createAction(void)
     return pcAction;
 }
 
-DEF_STD_CMD_AC(StdPerspectiveCamera);
+DEF_STD_CMD_AC(StdPerspectiveCamera)
 
 StdPerspectiveCamera::StdPerspectiveCamera()
   : Command("Std_PerspectiveCamera")
@@ -477,7 +477,7 @@ void StdCmdFreezeViews::languageChange()
 // Std_ToggleClipPlane
 //===========================================================================
 
-DEF_STD_CMD_AC(StdCmdToggleClipPlane);
+DEF_STD_CMD_AC(StdCmdToggleClipPlane)
 
 StdCmdToggleClipPlane::StdCmdToggleClipPlane()
   : Command("Std_ToggleClipPlane")
@@ -581,18 +581,23 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a0->setCheckable(true);
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
+    a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
+    a1->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
+    a2->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
+    a3->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
+    a4->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
@@ -728,7 +733,7 @@ bool StdCmdDrawStyle::isActive(void)
 //===========================================================================
 // Std_ToggleVisibility
 //===========================================================================
-DEF_STD_CMD_A(StdCmdToggleVisibility);
+DEF_STD_CMD_A(StdCmdToggleVisibility)
 
 StdCmdToggleVisibility::StdCmdToggleVisibility()
   : Command("Std_ToggleVisibility")
@@ -795,7 +800,7 @@ bool StdCmdToggleVisibility::isActive(void)
 //===========================================================================
 // Std_ToggleSelectability
 //===========================================================================
-DEF_STD_CMD_A(StdCmdToggleSelectability);
+DEF_STD_CMD_A(StdCmdToggleSelectability)
 
 StdCmdToggleSelectability::StdCmdToggleSelectability()
   : Command("Std_ToggleSelectability")
@@ -842,7 +847,7 @@ bool StdCmdToggleSelectability::isActive(void)
 //===========================================================================
 // Std_ShowSelection
 //===========================================================================
-DEF_STD_CMD_A(StdCmdShowSelection);
+DEF_STD_CMD_A(StdCmdShowSelection)
 
 StdCmdShowSelection::StdCmdShowSelection()
   : Command("Std_ShowSelection")
@@ -878,7 +883,7 @@ bool StdCmdShowSelection::isActive(void)
 //===========================================================================
 // Std_HideSelection
 //===========================================================================
-DEF_STD_CMD_A(StdCmdHideSelection);
+DEF_STD_CMD_A(StdCmdHideSelection)
 
 StdCmdHideSelection::StdCmdHideSelection()
   : Command("Std_HideSelection")
@@ -914,7 +919,7 @@ bool StdCmdHideSelection::isActive(void)
 //===========================================================================
 // Std_ToggleObjects
 //===========================================================================
-DEF_STD_CMD_A(StdCmdToggleObjects);
+DEF_STD_CMD_A(StdCmdToggleObjects)
 
 StdCmdToggleObjects::StdCmdToggleObjects()
   : Command("Std_ToggleObjects")
@@ -954,7 +959,7 @@ bool StdCmdToggleObjects::isActive(void)
 //===========================================================================
 // Std_ShowObjects
 //===========================================================================
-DEF_STD_CMD_A(StdCmdShowObjects);
+DEF_STD_CMD_A(StdCmdShowObjects)
 
 StdCmdShowObjects::StdCmdShowObjects()
   : Command("Std_ShowObjects")
@@ -990,7 +995,7 @@ bool StdCmdShowObjects::isActive(void)
 //===========================================================================
 // Std_HideObjects
 //===========================================================================
-DEF_STD_CMD_A(StdCmdHideObjects);
+DEF_STD_CMD_A(StdCmdHideObjects)
 
 StdCmdHideObjects::StdCmdHideObjects()
   : Command("Std_HideObjects")
@@ -1026,7 +1031,7 @@ bool StdCmdHideObjects::isActive(void)
 //===========================================================================
 // Std_SetAppearance
 //===========================================================================
-DEF_STD_CMD_A(StdCmdSetAppearance);
+DEF_STD_CMD_A(StdCmdSetAppearance)
 
 StdCmdSetAppearance::StdCmdSetAppearance()
   : Command("Std_SetAppearance")
@@ -1084,7 +1089,7 @@ void StdCmdViewBottom::activated(int iMsg)
 //===========================================================================
 // Std_ViewFront
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewFront);
+DEF_3DV_CMD(StdCmdViewFront)
 
 StdCmdViewFront::StdCmdViewFront()
   : Command("Std_ViewFront")
@@ -1108,7 +1113,7 @@ void StdCmdViewFront::activated(int iMsg)
 //===========================================================================
 // Std_ViewLeft
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewLeft);
+DEF_3DV_CMD(StdCmdViewLeft)
 
 StdCmdViewLeft::StdCmdViewLeft()
   : Command("Std_ViewLeft")
@@ -1132,7 +1137,7 @@ void StdCmdViewLeft::activated(int iMsg)
 //===========================================================================
 // Std_ViewRear
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRear);
+DEF_3DV_CMD(StdCmdViewRear)
 
 StdCmdViewRear::StdCmdViewRear()
   : Command("Std_ViewRear")
@@ -1156,7 +1161,7 @@ void StdCmdViewRear::activated(int iMsg)
 //===========================================================================
 // Std_ViewRight
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRight);
+DEF_3DV_CMD(StdCmdViewRight)
 
 StdCmdViewRight::StdCmdViewRight()
   : Command("Std_ViewRight")
@@ -1180,7 +1185,7 @@ void StdCmdViewRight::activated(int iMsg)
 //===========================================================================
 // Std_ViewTop
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewTop);
+DEF_3DV_CMD(StdCmdViewTop)
 
 StdCmdViewTop::StdCmdViewTop()
   : Command("Std_ViewTop")
@@ -1204,7 +1209,7 @@ void StdCmdViewTop::activated(int iMsg)
 //===========================================================================
 // Std_ViewAxo
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewAxo);
+DEF_3DV_CMD(StdCmdViewAxo)
 
 StdCmdViewAxo::StdCmdViewAxo()
   : Command("Std_ViewAxo")
@@ -1228,7 +1233,7 @@ void StdCmdViewAxo::activated(int iMsg)
 //===========================================================================
 // Std_ViewRotateLeft
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRotateLeft);
+DEF_3DV_CMD(StdCmdViewRotateLeft)
 
 StdCmdViewRotateLeft::StdCmdViewRotateLeft()
   : Command("Std_ViewRotateLeft")
@@ -1239,7 +1244,7 @@ StdCmdViewRotateLeft::StdCmdViewRotateLeft()
     sWhatsThis    = "Std_ViewXX";
     sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 counter-clockwise");
     sPixmap       = "view-rotate-left";
-    //sAccel        = "Shift Left";
+    sAccel        = "Shift+Left";
     eType         = Alter3DView;
 }
 
@@ -1253,7 +1258,7 @@ void StdCmdViewRotateLeft::activated(int iMsg)
 //===========================================================================
 // Std_ViewRotateRight
 //===========================================================================
-DEF_3DV_CMD(StdCmdViewRotateRight);
+DEF_3DV_CMD(StdCmdViewRotateRight)
 
 StdCmdViewRotateRight::StdCmdViewRotateRight()
   : Command("Std_ViewRotateRight")
@@ -1264,7 +1269,7 @@ StdCmdViewRotateRight::StdCmdViewRotateRight()
     sWhatsThis    = "Std_ViewXX";
     sStatusTip    = QT_TR_NOOP("Rotate the view by 90\xc2\xb0 clockwise");
     sPixmap       = "view-rotate-right";
-    //sAccel        = "Shift Right";
+    sAccel        = "Shift+Right";
     eType         = Alter3DView;
 }
 
@@ -1278,7 +1283,7 @@ void StdCmdViewRotateRight::activated(int iMsg)
 //===========================================================================
 // Std_ViewFitAll
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewFitAll);
+DEF_STD_CMD_A(StdCmdViewFitAll)
 
 StdCmdViewFitAll::StdCmdViewFitAll()
   : Command("Std_ViewFitAll")
@@ -1308,7 +1313,7 @@ bool StdCmdViewFitAll::isActive(void)
 //===========================================================================
 // Std_ViewFitSelection
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewFitSelection);
+DEF_STD_CMD_A(StdCmdViewFitSelection)
 
 StdCmdViewFitSelection::StdCmdViewFitSelection()
   : Command("Std_ViewFitSelection")
@@ -1340,7 +1345,7 @@ bool StdCmdViewFitSelection::isActive(void)
 //===========================================================================
 // Std_ViewDock
 //===========================================================================
-DEF_STD_CMD_A(StdViewDock);
+DEF_STD_CMD_A(StdViewDock)
 
 StdViewDock::StdViewDock()
   : Command("Std_ViewDock")
@@ -1368,7 +1373,7 @@ bool StdViewDock::isActive(void)
 //===========================================================================
 // Std_ViewUndock
 //===========================================================================
-DEF_STD_CMD_A(StdViewUndock);
+DEF_STD_CMD_A(StdViewUndock)
 
 StdViewUndock::StdViewUndock()
   : Command("Std_ViewUndock")
@@ -1396,7 +1401,7 @@ bool StdViewUndock::isActive(void)
 //===========================================================================
 // Std_ViewFullscreen
 //===========================================================================
-DEF_STD_CMD_A(StdViewFullscreen);
+DEF_STD_CMD_A(StdViewFullscreen)
 
 StdViewFullscreen::StdViewFullscreen()
   : Command("Std_ViewFullscreen")
@@ -1425,7 +1430,7 @@ bool StdViewFullscreen::isActive(void)
 //===========================================================================
 // Std_ViewDockUndockFullscreen
 //===========================================================================
-DEF_STD_CMD_AC(StdViewDockUndockFullscreen);
+DEF_STD_CMD_AC(StdViewDockUndockFullscreen)
 
 StdViewDockUndockFullscreen::StdViewDockUndockFullscreen()
   : Command("Std_ViewDockUndockFullscreen")
@@ -1505,7 +1510,7 @@ bool StdViewDockUndockFullscreen::isActive(void)
 //===========================================================================
 // Std_ViewVR
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewVR);
+DEF_STD_CMD_A(StdCmdViewVR)
 
 StdCmdViewVR::StdCmdViewVR()
   : Command("Std_ViewVR")
@@ -1535,7 +1540,7 @@ bool StdCmdViewVR::isActive(void)
 //===========================================================================
 // Std_ViewScreenShot
 //===========================================================================
-DEF_STD_CMD_A(StdViewScreenShot);
+DEF_STD_CMD_A(StdViewScreenShot)
 
 StdViewScreenShot::StdViewScreenShot()
   : Command("Std_ViewScreenShot")
@@ -1654,7 +1659,7 @@ bool StdViewScreenShot::isActive(void)
 //===========================================================================
 // Std_ViewCreate
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewCreate);
+DEF_STD_CMD_A(StdCmdViewCreate)
 
 StdCmdViewCreate::StdCmdViewCreate()
   : Command("Std_ViewCreate")
@@ -1683,7 +1688,7 @@ bool StdCmdViewCreate::isActive(void)
 //===========================================================================
 // Std_ToggleNavigation
 //===========================================================================
-DEF_STD_CMD_A(StdCmdToggleNavigation);
+DEF_STD_CMD_A(StdCmdToggleNavigation)
 
 StdCmdToggleNavigation::StdCmdToggleNavigation()
   : Command("Std_ToggleNavigation")
@@ -1813,7 +1818,7 @@ protected:
 //===========================================================================
 // Std_ViewExample1
 //===========================================================================
-DEF_STD_CMD_A(StdCmdAxisCross);
+DEF_STD_CMD_A(StdCmdAxisCross)
 
 StdCmdAxisCross::StdCmdAxisCross()
   : Command("Std_AxisCross")
@@ -1858,7 +1863,7 @@ bool StdCmdAxisCross::isActive(void)
 //===========================================================================
 // Std_ViewExample1
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewExample1);
+DEF_STD_CMD_A(StdCmdViewExample1)
 
 StdCmdViewExample1::StdCmdViewExample1()
   : Command("Std_ViewExample1")
@@ -1886,7 +1891,7 @@ bool StdCmdViewExample1::isActive(void)
 //===========================================================================
 // Std_ViewExample2
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewExample2);
+DEF_STD_CMD_A(StdCmdViewExample2)
 
 StdCmdViewExample2::StdCmdViewExample2()
   : Command("Std_ViewExample2")
@@ -1914,7 +1919,7 @@ bool StdCmdViewExample2::isActive(void)
 //===========================================================================
 // Std_ViewExample3
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewExample3);
+DEF_STD_CMD_A(StdCmdViewExample3)
 
 StdCmdViewExample3::StdCmdViewExample3()
   : Command("Std_ViewExample3")
@@ -1943,7 +1948,7 @@ bool StdCmdViewExample3::isActive(void)
 //===========================================================================
 // Std_ViewIvStereoOff
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoOff);
+DEF_STD_CMD_A(StdCmdViewIvStereoOff)
 
 StdCmdViewIvStereoOff::StdCmdViewIvStereoOff()
   : Command("Std_ViewIvStereoOff")
@@ -1972,7 +1977,7 @@ bool StdCmdViewIvStereoOff::isActive(void)
 //===========================================================================
 // Std_ViewIvStereoRedGreen
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen);
+DEF_STD_CMD_A(StdCmdViewIvStereoRedGreen)
 
 StdCmdViewIvStereoRedGreen::StdCmdViewIvStereoRedGreen()
   : Command("Std_ViewIvStereoRedGreen")
@@ -2000,7 +2005,7 @@ bool StdCmdViewIvStereoRedGreen::isActive(void)
 //===========================================================================
 // Std_ViewIvStereoQuadBuff
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff);
+DEF_STD_CMD_A(StdCmdViewIvStereoQuadBuff)
 
 StdCmdViewIvStereoQuadBuff::StdCmdViewIvStereoQuadBuff()
   : Command("Std_ViewIvStereoQuadBuff")
@@ -2028,7 +2033,7 @@ bool StdCmdViewIvStereoQuadBuff::isActive(void)
 //===========================================================================
 // Std_ViewIvStereoInterleavedRows
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows);
+DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedRows)
 
 StdCmdViewIvStereoInterleavedRows::StdCmdViewIvStereoInterleavedRows()
   : Command("Std_ViewIvStereoInterleavedRows")
@@ -2056,7 +2061,7 @@ bool StdCmdViewIvStereoInterleavedRows::isActive(void)
 //===========================================================================
 // Std_ViewIvStereoInterleavedColumns
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns);
+DEF_STD_CMD_A(StdCmdViewIvStereoInterleavedColumns)
 
 StdCmdViewIvStereoInterleavedColumns::StdCmdViewIvStereoInterleavedColumns()
   : Command("Std_ViewIvStereoInterleavedColumns")
@@ -2085,7 +2090,7 @@ bool StdCmdViewIvStereoInterleavedColumns::isActive(void)
 //===========================================================================
 // Std_ViewIvIssueCamPos
 //===========================================================================
-DEF_STD_CMD_A(StdCmdViewIvIssueCamPos);
+DEF_STD_CMD_A(StdCmdViewIvIssueCamPos)
 
 StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
   : Command("Std_ViewIvIssueCamPos")
@@ -2135,7 +2140,7 @@ bool StdCmdViewIvIssueCamPos::isActive(void)
 //===========================================================================
 // Std_ViewZoomIn
 //===========================================================================
-DEF_STD_CMD_A(StdViewZoomIn);
+DEF_STD_CMD_A(StdViewZoomIn)
 
 StdViewZoomIn::StdViewZoomIn()
   : Command("Std_ViewZoomIn")
@@ -2170,7 +2175,7 @@ bool StdViewZoomIn::isActive(void)
 //===========================================================================
 // Std_ViewZoomOut
 //===========================================================================
-DEF_STD_CMD_A(StdViewZoomOut);
+DEF_STD_CMD_A(StdViewZoomOut)
 
 StdViewZoomOut::StdViewZoomOut()
   : Command("Std_ViewZoomOut")
@@ -2205,7 +2210,7 @@ bool StdViewZoomOut::isActive(void)
 //===========================================================================
 // Std_ViewBoxZoom
 //===========================================================================
-DEF_3DV_CMD(StdViewBoxZoom);
+DEF_3DV_CMD(StdViewBoxZoom)
 
 StdViewBoxZoom::StdViewBoxZoom()
   : Command("Std_ViewBoxZoom")
@@ -2236,7 +2241,7 @@ void StdViewBoxZoom::activated(int iMsg)
 //===========================================================================
 // Std_BoxSelection
 //===========================================================================
-DEF_3DV_CMD(StdBoxSelection);
+DEF_3DV_CMD(StdBoxSelection)
 
 StdBoxSelection::StdBoxSelection()
   : Command("Std_BoxSelection")
@@ -2260,22 +2265,30 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
     SoNode* root = view->getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(true);
 
+    typedef enum { CENTER, INTERSECT } SelectionMode;
+    SelectionMode selectionMode = CENTER;
+
     std::vector<SbVec2f> picked = view->getGLPolygon();
     SoCamera* cam = view->getSoRenderManager()->getCamera();
     SbViewVolume vv = cam->getViewVolume();
     Gui::ViewVolumeProjection proj(vv);
-    Base::Polygon2D polygon;
+    Base::Polygon2d polygon;
     if (picked.size() == 2) {
         SbVec2f pt1 = picked[0];
         SbVec2f pt2 = picked[1];
-        polygon.Add(Base::Vector2D(pt1[0], pt1[1]));
-        polygon.Add(Base::Vector2D(pt1[0], pt2[1]));
-        polygon.Add(Base::Vector2D(pt2[0], pt2[1]));
-        polygon.Add(Base::Vector2D(pt2[0], pt1[1]));
+        polygon.Add(Base::Vector2d(pt1[0], pt1[1]));
+        polygon.Add(Base::Vector2d(pt1[0], pt2[1]));
+        polygon.Add(Base::Vector2d(pt2[0], pt2[1]));
+        polygon.Add(Base::Vector2d(pt2[0], pt1[1]));
+
+        // when selecting from right to left then select by intersection
+        // oterwise if the center is inside the rectangle
+        if (picked[0][0] > picked[1][0])
+            selectionMode = INTERSECT;
     }
     else {
         for (std::vector<SbVec2f>::const_iterator it = picked.begin(); it != picked.end(); ++it)
-            polygon.Add(Base::Vector2D((*it)[0],(*it)[1]));
+            polygon.Add(Base::Vector2d((*it)[0],(*it)[1]));
     }
 
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -2298,10 +2311,19 @@ static void selectionCallback(void * ud, SoEventCallback * cb)
                 if ((*jt)->isDerivedFrom(App::PropertyGeometry::getClassTypeId())) {
                     App::PropertyGeometry* prop = static_cast<App::PropertyGeometry*>(*jt);
                     Base::BoundBox3d bbox = prop->getBoundingBox();
-                    Base::Vector3d pt2d;
-                    pt2d = proj(bbox.GetCenter());
-                    if (polygon.Contains(Base::Vector2D(pt2d.x, pt2d.y))) {
-                        Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+
+                    if (selectionMode == CENTER) {
+                        Base::Vector3d pt2d;
+                        pt2d = proj(bbox.GetCenter());
+                        if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
+                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+                        }
+                    }
+                    else {
+                        Base::BoundBox2d bbox2 = bbox.ProjectBox(&proj);
+                        if (bbox2.Intersect(polygon)) {
+                            Gui::Selection().addSelection(doc->getName(), (*it)->getNameInDocument());
+                        }
                     }
                     break;
                 }
@@ -2329,7 +2351,7 @@ void StdBoxSelection::activated(int iMsg)
 // Std_TreeSelection
 //===========================================================================
 
-DEF_STD_CMD(StdCmdTreeSelection);
+DEF_STD_CMD(StdCmdTreeSelection)
 
 StdCmdTreeSelection::StdCmdTreeSelection()
   : Command("Std_TreeSelection")
@@ -2356,7 +2378,7 @@ void StdCmdTreeSelection::activated(int iMsg)
 // Std_MeasureDistance
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdMeasureDistance);
+DEF_STD_CMD_A(StdCmdMeasureDistance)
 
 StdCmdMeasureDistance::StdCmdMeasureDistance()
   : Command("Std_MeasureDistance")
@@ -2446,7 +2468,7 @@ bool StdCmdMeasureDistance::isActive(void)
 // Std_SceneInspector
 //===========================================================================
 
-DEF_3DV_CMD(StdCmdSceneInspector);
+DEF_3DV_CMD(StdCmdSceneInspector)
 
 StdCmdSceneInspector::StdCmdSceneInspector()
   : Command("Std_SceneInspector")
@@ -2479,7 +2501,7 @@ void StdCmdSceneInspector::activated(int iMsg)
 // Std_TextureMapping
 //===========================================================================
 
-DEF_STD_CMD_A(StdCmdTextureMapping);
+DEF_STD_CMD_A(StdCmdTextureMapping)
 
 StdCmdTextureMapping::StdCmdTextureMapping()
   : Command("Std_TextureMapping")
@@ -2506,7 +2528,7 @@ bool StdCmdTextureMapping::isActive(void)
                 && (Gui::Control().activeDialog()==0);
 }
 
-DEF_STD_CMD(StdCmdDemoMode);
+DEF_STD_CMD(StdCmdDemoMode)
 
 StdCmdDemoMode::StdCmdDemoMode()
   : Command("Std_DemoMode")
@@ -2533,7 +2555,7 @@ void StdCmdDemoMode::activated(int iMsg)
 // Part_Measure_Clear_All
 //===========================================================================
 
-DEF_STD_CMD(CmdViewMeasureClearAll);
+DEF_STD_CMD(CmdViewMeasureClearAll)
 
 CmdViewMeasureClearAll::CmdViewMeasureClearAll()
   : Command("View_Measure_Clear_All")
@@ -2563,7 +2585,7 @@ void CmdViewMeasureClearAll::activated(int iMsg)
 // Part_Measure_Toggle_All
 //===========================================================================
 
-DEF_STD_CMD(CmdViewMeasureToggleAll);
+DEF_STD_CMD(CmdViewMeasureToggleAll)
 
 CmdViewMeasureToggleAll::CmdViewMeasureToggleAll()
   : Command("View_Measure_Toggle_All")

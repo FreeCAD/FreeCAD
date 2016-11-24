@@ -52,7 +52,10 @@
 #include <TopoDS_Shape.hxx>
 #include <gp_Ax1.hxx>
 #include <gp_Dir.hxx>
+#include <gp_Pnt.hxx>
+#include <gp_Vec.hxx>
 #include <list>
+#include <vector>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -158,6 +161,25 @@ public:
     GeomBSplineCurve(const Handle_Geom_BSplineCurve&);
     virtual ~GeomBSplineCurve();
     virtual Geometry *clone(void) const;
+
+    /*!
+     * Set the poles and tangents for the cubic Hermite spline
+     */
+    void interpolate(const std::vector<gp_Pnt>&, const std::vector<gp_Vec>&);
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&,
+                                   const std::vector<double>&,
+                                   std::vector<gp_Vec>&) const;
+    /*!
+     * Compute the tangents for a Cardinal spline using the
+     * the cubic Hermite spline. It uses the method for Cardinal splines.
+     * It uses the same parameter for each tangent.
+     */
+    void getCardinalSplineTangents(const std::vector<gp_Pnt>&, double,
+                                   std::vector<gp_Vec>&) const;
 
     int countPoles() const;
     void setPole(int index, const Base::Vector3d&, double weight=-1);
@@ -625,6 +647,7 @@ class PartExport GeomCylinder : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCylinder();
+    GeomCylinder(const Handle_Geom_CylindricalSurface&);
     virtual ~GeomCylinder();
     virtual Geometry *clone(void) const;
 
@@ -635,6 +658,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_CylindricalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -646,6 +670,7 @@ class PartExport GeomCone : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomCone();
+    GeomCone(const Handle_Geom_ConicalSurface&);
     virtual ~GeomCone();
     virtual Geometry *clone(void) const;
 
@@ -656,6 +681,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_ConicalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -667,6 +693,7 @@ class PartExport GeomSphere : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomSphere();
+    GeomSphere(const Handle_Geom_SphericalSurface&);
     virtual ~GeomSphere();
     virtual Geometry *clone(void) const;
 
@@ -677,6 +704,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_SphericalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -688,6 +716,7 @@ class PartExport GeomToroid : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomToroid();
+    GeomToroid(const Handle_Geom_ToroidalSurface&);
     virtual ~GeomToroid();
     virtual Geometry *clone(void) const;
 
@@ -698,6 +727,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_ToroidalSurface&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -709,6 +739,7 @@ class PartExport GeomPlane : public GeomSurface
     TYPESYSTEM_HEADER();
 public:
     GeomPlane();
+    GeomPlane(const Handle_Geom_Plane&);
     virtual ~GeomPlane();
     virtual Geometry *clone(void) const;
 
@@ -719,6 +750,7 @@ public:
     // Base implementer ----------------------------
     virtual PyObject *getPyObject(void);
 
+    void setHandle(const Handle_Geom_Plane&);
     const Handle_Geom_Geometry& handle() const;
 
 private:
@@ -867,6 +899,8 @@ double suggestFilletRadius(const GeomLineSegment *lineSeg1, const GeomLineSegmen
 PartExport
 GeomArcOfCircle *createFilletGeometry(const GeomLineSegment *lineSeg1, const GeomLineSegment *lineSeg2,
                                       const Base::Vector3d &center, double radius);
+PartExport
+GeomSurface *makeFromSurface(const Handle_Geom_Surface&);
 }
 
 #endif // PART_GEOMETRY_H

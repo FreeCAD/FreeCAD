@@ -439,7 +439,10 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         // Get a valid plane from the user
         unsigned validPlanes = 0;
 
-        App::GeoFeatureGroup* geoGroup = App::GeoFeatureGroup::getGroupOfObject ( pcActiveBody );
+        auto group = App::GeoFeatureGroupExtension::getGroupOfObject ( pcActiveBody );
+        App::GeoFeatureGroupExtension* geoGroup = nullptr;
+        if(group)
+            geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
 
         std::vector<App::DocumentObject*> planes;
         std::vector<PartDesignGui::TaskFeaturePick::featureStatus> status;
@@ -474,14 +477,14 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                 PartDesign::Body *planeBody = PartDesign::Body::findBodyOf (plane);
                 if ( planeBody ) {
                     if ( ( geoGroup && geoGroup->hasObject ( planeBody, true ) ) ||
-                           !App::GeoFeatureGroup::getGroupOfObject (planeBody) ) {
+                           !App::GeoFeatureGroupExtension::getGroupOfObject (planeBody) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherBody );
                     } else {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
                     }
                 } else {
                     if ( ( geoGroup && geoGroup->hasObject ( plane, true ) ) ||
-                           !App::GeoFeatureGroup::getGroupOfObject ( plane ) ) {
+                           !App::GeoFeatureGroupExtension::getGroupOfObject ( plane ) ) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::otherPart );
                     } else if (pcActiveBody) {
                         status.push_back ( PartDesignGui::TaskFeaturePick::notInBody );
@@ -708,16 +711,22 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
 {
     auto base_worker = [which, cmd, func](App::DocumentObject* feature, std::string sub) {
 
-        if(!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
+        if (!feature || !feature->isDerivedFrom(Part::Feature::getClassTypeId()))
             return;
-        
+
+        // Related to #0002760: when an operation can't be performed due to a broken
+        // profile then make sure that it is recomputed when cancelling the operation
+        // otherwise it might be impossible to see that it's broken.
+        if (feature->isTouched())
+            feature->recomputeFeature();
+
         std::string FeatName = cmd->getUniqueObjectName(which.c_str());
 
         Gui::Command::openCommand((std::string("Make ") + which).c_str());
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().addObject(\"PartDesign::%s\",\"%s\")",
                     which.c_str(), FeatName.c_str());
         
-        if(feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (feature->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.Profile = App.activeDocument().%s",
                         FeatName.c_str(), feature->getNameInDocument());
         }
@@ -883,7 +892,7 @@ void CmdPartDesignPad::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* profile, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* profile, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -941,7 +950,7 @@ void CmdPartDesignPocket::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -987,7 +996,7 @@ void CmdPartDesignRevolution::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1038,7 +1047,7 @@ void CmdPartDesignGroove::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1088,7 +1097,7 @@ void CmdPartDesignAdditivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1135,7 +1144,7 @@ void CmdPartDesignSubtractivePipe::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1182,7 +1191,7 @@ void CmdPartDesignAdditiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1229,7 +1238,7 @@ void CmdPartDesignSubtractiveLoft::activated(int iMsg)
         return;
 
     Gui::Command* cmd = this;
-    auto worker = [cmd](Part::Feature* sketch, std::string FeatName) {
+    auto worker = [this, cmd](Part::Feature* sketch, std::string FeatName) {
 
         if (FeatName.empty()) return;
 
@@ -1604,7 +1613,7 @@ void CmdPartDesignMirrored::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
-    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
         return;
@@ -1658,7 +1667,7 @@ void CmdPartDesignLinearPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
-    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
             return;
@@ -1714,7 +1723,7 @@ void CmdPartDesignPolarPattern::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
-    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
             return;
@@ -1771,7 +1780,7 @@ void CmdPartDesignScaled::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     Gui::Command* cmd = this;
-    auto worker = [cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
+    auto worker = [this, cmd](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
         if (features.empty())
         return;
@@ -1869,7 +1878,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     } else {
 
         Gui::Command* cmd = this;
-        auto worker = [cmd, pcActiveBody](std::string FeatName, std::vector<App::DocumentObject*> features) {
+        auto worker = [this, cmd, pcActiveBody](std::string FeatName, std::vector<App::DocumentObject*> features) {
 
             if (features.empty())
                 return;

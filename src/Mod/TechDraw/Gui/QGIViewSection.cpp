@@ -70,16 +70,25 @@ void QGIViewSection::drawSectionFace()
 
     auto sectionFaces( section->getFaceGeometry() );
     if (sectionFaces.empty()) {
-        Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
+        //Base::Console().Log("INFO - QGIViewSection::drawSectionFace - No sectionFaces available. Check Section plane.\n");
         return;
     }
     std::vector<TechDrawGeometry::Face *>::iterator fit = sectionFaces.begin();
     QColor faceColor = section->CutSurfaceColor.getValue().asValue<QColor>();
     for(; fit != sectionFaces.end(); fit++) {
-        QGIFace* newFace = drawFace(*fit,-1);  //TODO: do we need to know which sectionFace this QGIFace came from?
+        QGIFace* newFace = drawFace(*fit,-1);
         newFace->setZValue(ZVALUE::SECTIONFACE);
+        if (section->showSectionEdges()) {
+            newFace->setDrawEdges(true);
+        } else {
+            newFace->setDrawEdges(false);
+        }
+        if (section->HatchCutSurface.getValue()) {
+            App::Color hColor = section->HatchColor.getValue();
+            newFace->setHatchColor(hColor.asCSSString());
+            newFace->setHatch(section->HatchPattern.getValue());
+        }
         newFace->setFill(faceColor, Qt::SolidPattern);
-        newFace->setDrawEdges(false);
         newFace->setPrettyNormal();
         newFace->setAcceptHoverEvents(false);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, false);
@@ -102,8 +111,9 @@ void QGIViewSection::updateView(bool update)
     }
 }
 
-void QGIViewSection::drawSectionLine(bool b)
+void QGIViewSection::drawSectionLine(TechDraw::DrawViewSection* s, bool b)
 {
     Q_UNUSED(b);
+    Q_UNUSED(s);
    //override QGIVP::drawSectionLine
 }

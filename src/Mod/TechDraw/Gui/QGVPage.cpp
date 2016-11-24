@@ -58,6 +58,7 @@
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
+#include <Mod/TechDraw/App/DrawViewImage.h>
 
 
 #include "QGIDrawingTemplate.h"
@@ -73,6 +74,7 @@
 #include "QGIViewSymbol.h"
 #include "QGIViewClip.h"
 #include "QGIViewSpreadsheet.h"
+#include "QGIViewImage.h"
 #include "QGIFace.h"
 
 #include "ZVALUE.h"
@@ -280,6 +282,17 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 {
     auto qview( new QGIViewSpreadsheet );
+
+    qview->setViewFeature(view);
+
+    addView(qview);
+    return qview;
+}
+
+QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
+{
+    QPoint qp(view->X.getValue(),view->Y.getValue());
+    auto qview( new QGIViewImage );
 
     qview->setViewFeature(view);
 
@@ -519,11 +532,16 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 
+    double width  =  page->getPageWidth();
+    double height =  page->getPageHeight();
+    QRectF sourceRect(0.0,-height,width,height);
+    QRectF targetRect;
+
     Gui::Selection().clearSelection();
     QPainter p;
 
     p.begin(&svgGen);
-    scene()->render(&p);
+    scene()->render(&p, targetRect,sourceRect);
     p.end();
 
     toggleMarkers(true);
@@ -531,7 +549,6 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 }
-
 
 void QGVPage::paintEvent(QPaintEvent *event)
 {

@@ -24,6 +24,8 @@ __title__ = "FemMaterialMechanicalNonlinear"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemGui
@@ -39,3 +41,5 @@ def makeFemMaterialMechanicalNonlinear(base_material, name="MechanicalMaterialNo
         import _ViewProviderFemMaterialMechanicalNonlinear
         _ViewProviderFemMaterialMechanicalNonlinear._ViewProviderFemMaterialMechanicalNonlinear(obj.ViewObject)
     return obj
+
+# @}

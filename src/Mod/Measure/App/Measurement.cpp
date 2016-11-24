@@ -85,6 +85,12 @@ bool Measurement::has3DReferences()
     return (References3D.getSize() > 0);
 }
 
+//add a 3D reference (obj+sub) to end of list
+int Measurement::addReference3D(App::DocumentObject *obj, const std::string& subName)
+{
+    return addReference3D(obj,subName.c_str());
+}
+
 ///add a 3D reference (obj+sub) to end of list
 int Measurement::addReference3D(App::DocumentObject *obj, const char* subName)
 {

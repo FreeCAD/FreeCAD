@@ -273,6 +273,9 @@ void orthoview::set_projection(gp_Ax2 cs)
 
 OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * partname)
 {
+    horiz = 0;
+    vert = 0;
+
     parent_doc = doc;
     parent_doc->openTransaction("Create view");
 
@@ -311,7 +314,7 @@ OrthoViews::~OrthoViews()
     for (int i = views.size() - 1; i >= 0; i--)
         delete views[i];
 
-    page->recompute();
+    page->recomputeFeature();
 }
 
 void OrthoViews::slotDeletedDocument(const App::Document& Obj)

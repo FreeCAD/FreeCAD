@@ -74,24 +74,29 @@ public:
     /// default constructor
     Quantity(void);
     Quantity(const Quantity&);
-    Quantity(double Value, const Unit& unit=Unit());
+    explicit Quantity(double Value, const Unit& unit=Unit());
     /// Destruction
     ~Quantity () {}
 
     /** Operators. */
     //@{
     Quantity operator *(const Quantity &p) const;
+    Quantity operator *(double p) const;
     Quantity operator +(const Quantity &p) const;
     Quantity& operator +=(const Quantity &p);
     Quantity operator -(const Quantity &p) const;
     Quantity& operator -=(const Quantity &p);
     Quantity operator -(void) const;
     Quantity operator /(const Quantity &p) const;
+    Quantity operator /(double p) const;
     bool operator ==(const Quantity&) const;
     bool operator < (const Quantity&) const;
     bool operator > (const Quantity&) const;
+    bool operator <= (const Quantity&) const;
+    bool operator >= (const Quantity&) const;
     Quantity& operator =(const Quantity&);
     Quantity pow(const Quantity&)const;
+    Quantity pow(double)const;
     //@}
 
     const QuantityFormat& getFormat() const {

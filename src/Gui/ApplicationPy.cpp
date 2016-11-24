@@ -656,7 +656,18 @@ PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args,Py
     PyErr_Clear();
 
     PyObject* dlg;
+    // old style classes
     if (PyArg_ParseTuple(args, "O!s", &PyClass_Type, &dlg, &grp)) {
+        // add to the preferences dialog
+        new PrefPagePyProducer(Py::Object(dlg), grp);
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    PyErr_Clear();
+
+    // new style classes
+    if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
         // add to the preferences dialog
         new PrefPagePyProducer(Py::Object(dlg), grp);
 

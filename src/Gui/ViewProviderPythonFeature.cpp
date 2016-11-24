@@ -52,7 +52,6 @@
 #endif
 
 #include "ViewProviderPythonFeature.h"
-#include "ViewProviderPythonFeaturePy.h"
 #include "Tree.h"
 #include "Window.h"
 #include "Application.h"

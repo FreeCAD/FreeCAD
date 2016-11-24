@@ -20,7 +20,7 @@ class Creator(nc.Creator):
         self.a = 0
         self.b = 0
         self.c = 0
-        self.f = Address('F', fmt = Format(number_of_decimal_places = 2))
+        self.f = Address('F', fmt = Format(number_of_decimal_places = 2), modal = False)
         self.fh = None
         self.fv = None
         self.fhv = False

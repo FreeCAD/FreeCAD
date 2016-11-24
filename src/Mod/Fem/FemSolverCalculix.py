@@ -24,6 +24,8 @@ __title__ = "FemSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _FemSolverCalculix
@@ -37,3 +39,5 @@ def makeFemSolverCalculix(name="CalculiX"):
         import _ViewProviderFemSolverCalculix
         _ViewProviderFemSolverCalculix._ViewProviderFemSolverCalculix(obj.ViewObject)
     return obj
+
+#  @}

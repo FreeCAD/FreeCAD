@@ -27,9 +27,22 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchFrame
+#  \ingroup ARCH
+#  \brief The Frame object and tools
+#
+#  This module provides tools to build Frame objects.
+#  Frames are objects made of a profile and an object with
+#  edges along which the profile gets extruded
 
 __title__="FreeCAD Arch Frame"
 __author__ = "Yorik van Havre"
@@ -59,9 +72,9 @@ class _CommandFrame:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Frame',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Frame","Frame"),
                 'Accel': "F, R",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object and a profile")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Frame","Creates a frame object from a planar 2D object and a profile")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -81,11 +94,11 @@ class _Frame(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLink","Profile","Arch","The profile used to build this frame")
-        obj.addProperty("App::PropertyBool","Align","Arch","Specifies if the profile must be aligned with the extrusion wires")
-        obj.addProperty("App::PropertyVectorDistance","Offset","Arch","An offset vector between the base sketch and the frame")
-        obj.addProperty("App::PropertyInteger","BasePoint","Arch","Crossing point of the path on the profile.")
-        obj.addProperty("App::PropertyAngle","Rotation","Arch","The rotation of the profile around its extrusion axis")
+        obj.addProperty("App::PropertyLink","Profile","Arch",QT_TRANSLATE_NOOP("App::Property","The profile used to build this frame"))
+        obj.addProperty("App::PropertyBool","Align","Arch",QT_TRANSLATE_NOOP("App::Property","Specifies if the profile must be aligned with the extrusion wires"))
+        obj.addProperty("App::PropertyVectorDistance","Offset","Arch",QT_TRANSLATE_NOOP("App::Property","An offset vector between the base sketch and the frame"))
+        obj.addProperty("App::PropertyInteger","BasePoint","Arch",QT_TRANSLATE_NOOP("App::Property","Crossing point of the path on the profile."))
+        obj.addProperty("App::PropertyAngle","Rotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the profile around its extrusion axis"))
         self.Type = "Frame"
         obj.Role = Roles
 

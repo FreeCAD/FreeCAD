@@ -25,7 +25,7 @@ from PathScripts import PostUtils
 # ***************************************************************************/
 
 
-'''
+TOOLTIP='''
 This is an postprocessor file for the Path workbench. It will output path data
 in a format suitable for OpenSBP controllers like shopbot.  This postprocessor,
 once placed in the appropriate PathScripts folder, can be used directly from
@@ -74,7 +74,7 @@ if open.__module__ == '__builtin__':
 CurrentState = {}
 
 
-def export(objectslist, filename):
+def export(objectslist, filename, argstring):
     global CurrentState
 
     for obj in objectslist:

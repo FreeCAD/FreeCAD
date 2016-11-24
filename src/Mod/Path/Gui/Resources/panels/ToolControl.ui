@@ -6,18 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>503</height>
+    <width>308</width>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Tool Control</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="0" column="0">
-    <widget class="QLineEdit" name="tcoName"/>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLineEdit" name="tcoName">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="QFrame" name="frame_2">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -26,22 +30,8 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout">
-      <item row="2" column="0">
-       <widget class="QLabel" name="txtToolType">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="txtToolName">
-        <property name="text">
-         <string>Unknown</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
-       <widget class="QLabel" name="txtToolMaterial">
+       <widget class="QLabel" name="txtToolDiameter">
         <property name="text">
          <string>Unknown</string>
         </property>
@@ -50,8 +40,15 @@
       <item row="0" column="0">
        <widget class="QComboBox" name="cboToolSelect"/>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="txtToolDiameter">
+      <item row="1" column="0">
+       <widget class="QLabel" name="txtToolType">
+        <property name="text">
+         <string>Unknown</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="txtToolMaterial">
         <property name="text">
          <string>Unknown</string>
         </property>
@@ -60,7 +57,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <widget class="QFrame" name="frame">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -89,10 +86,38 @@
       <item row="1" column="1">
        <widget class="QLineEdit" name="vertFeed"/>
       </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Horiz Rapid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="horizRapid">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Vert Rapid</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="vertRapid">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
-   <item row="3" column="0">
+   <item>
     <widget class="QFrame" name="frame_3">
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
@@ -109,7 +134,11 @@
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QSpinBox" name="spindleSpeed"/>
+       <widget class="QSpinBox" name="spindleSpeed">
+        <property name="maximum">
+         <number>99999</number>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QComboBox" name="cboSpindleDirection">

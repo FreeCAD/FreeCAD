@@ -38,12 +38,15 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
 #include "ViewProviderProjGroup.h"
+#include "ViewProviderProjGroupItem.h"
+#include "ViewProviderPage.h"
 #include "TaskProjGroup.h"
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
@@ -93,6 +96,12 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
 
     // Slot for Projection Type (layout)
     connect(ui->projection, SIGNAL(currentIndexChanged(int)), this, SLOT(projectionTypeChanged(int)));
+
+    m_page = multiView->findParentPage();
+    Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
+    Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
+    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    m_mdi = dvp->getMDIViewPage();
 }
 
 TaskProjGroup::~TaskProjGroup()
@@ -102,15 +111,30 @@ TaskProjGroup::~TaskProjGroup()
 
 void TaskProjGroup::viewToggled(bool toggle)
 {
+    bool changed = false;
     // Obtain name of checkbox
     QString viewName = sender()->objectName();
     int index = viewName.mid(7).toInt();
     const char *viewNameCStr = viewChkIndexToCStr(index);
+    App::DocumentObject* newObj;
+    TechDraw::DrawView* newView;
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
-        multiView->addProjection( viewNameCStr );
+        newObj = multiView->addProjection( viewNameCStr );
+        newView = static_cast<TechDraw::DrawView*>(newObj);
+        m_mdi->redraw1View(newView);
+        changed = true;
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         multiView->removeProjection( viewNameCStr );
+        changed = true;
     }
+    if (changed) {
+        multiView->recomputeFeature();
+        if (multiView->ScaleType.isValue("Automatic")) {
+            double scale = multiView->Scale.getValue();
+            setFractionalScale(scale);
+        }
+    }
+
 }
 
 void TaskProjGroup::rotateButtonClicked(void)
@@ -152,12 +176,11 @@ void TaskProjGroup::projectionTypeChanged(int index)
     if(blockUpdate)
         return;
 
-    //Gui::Command::openCommand("Update projection type");
     if(index == 0) {
         //layout per Page (Document)
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.activeDocument().%s.ProjectionType = '%s'",
-                                multiView->getNameInDocument(), "Document");
+                                multiView->getNameInDocument(), "Default");
     } else if(index == 1) {
         // First Angle layout
         Gui::Command::doCommand(Gui::Command::Doc,
@@ -169,7 +192,6 @@ void TaskProjGroup::projectionTypeChanged(int index)
                                 "App.activeDocument().%s.ProjectionType = '%s'",
                                 multiView->getNameInDocument(), "Third Angle");
     } else {
-        //Gui::Command::abortCommand();
         Base::Console().Log("Error - TaskProjGroup::projectionTypeChanged - unknown projection layout: %d\n",
                             index);
         return;
@@ -178,8 +200,6 @@ void TaskProjGroup::projectionTypeChanged(int index)
     // Update checkboxes so checked state matches the drawing
     setupViewCheckboxes();
 
-    //Gui::Command::commitCommand();
-    //Gui::Command::updateActive();
 }
 
 void TaskProjGroup::scaleTypeChanged(int index)
@@ -187,26 +207,30 @@ void TaskProjGroup::scaleTypeChanged(int index)
     if(blockUpdate)
         return;
 
-    //Gui::Command::openCommand("Update projection scale type");
     if(index == 0) {
-        //Automatic Scale Type
-        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
-                                                                                             , "Document");
-    } else if(index == 1) {
         // Document Scale Type
+        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
+                                                                                             , "Page");
+    } else if(index == 1) {
+        // Automatic Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
                                                                                              , "Automatic");
     } else if(index == 2) {
         // Custom Scale Type
         Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.ScaleType = '%s'", multiView->getNameInDocument()
                                                                                              , "Custom");
+        int a = ui->sbScaleNum->value();
+        int b = ui->sbScaleDen->value();
+        double scale = (double) a / (double) b;
+        Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
+                                                                                     , scale);
     } else {
-        //Gui::Command::abortCommand();
         Base::Console().Log("Error - TaskProjGroup::scaleTypeChanged - unknown scale type: %d\n",index);
         return;
     }
-    //Gui::Command::commitCommand();
-    //Gui::Command::updateActive();
+
+    multiView->recomputeFeature();
+    Gui::Command::updateActive();
 }
 
 // ** David Eppstein / UC Irvine / 8 Aug 1993
@@ -268,33 +292,20 @@ void TaskProjGroup::setFractionalScale(double newScale)
 void TaskProjGroup::scaleManuallyChanged(int i)
 {
     Q_UNUSED(i);
-    //TODO: See what this is about - shouldn't be simplifying the scale ratio while it's being edited... IR
     if(blockUpdate)
         return;
+    if (!multiView->ScaleType.isValue("Custom")) {                               //ignore if not custom!
+        return;
+    }
 
     int a = ui->sbScaleNum->value();
     int b = ui->sbScaleDen->value();
 
     double scale = (double) a / (double) b;
-    // If we were not in Custom, switch to Custom in two steps
-    bool switchToCustom = (strcmp(multiView->ScaleType.getValueAsString(), "Custom") != 0);
-    if(switchToCustom) {
-        // First, send out command to put us into custom scale
-        scaleTypeChanged(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
-        switchToCustom = true;
-    }
-
-    //Gui::Command::openCommand("Update custom scale");
     Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
                                                                                      , scale);
-    //Gui::Command::commitCommand();
-    //Gui::Command::updateActive();
-
-    if(switchToCustom) {
-        // Second, update the GUI
-        ui->cmbScaleType->setCurrentIndex(ui->cmbScaleType->findText(QString::fromLatin1("Custom")));
-    }
-
+    multiView->recomputeFeature();
+    Gui::Command::updateActive();
 }
 
 void TaskProjGroup::changeEvent(QEvent *e)

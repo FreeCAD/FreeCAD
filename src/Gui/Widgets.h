@@ -191,6 +191,9 @@ public:
     void setModal(bool);
     bool isModal() const;
 
+    void setAutoChangeColor(bool);
+    bool autoChangeColor() const;
+
 public Q_SLOTS:
     void onChooseColor();
 

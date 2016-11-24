@@ -47,9 +47,13 @@ class TechDrawTestCases(unittest.TestCase):
         self.Anno = self.Doc.addObject('TechDraw::DrawViewAnnotation','TestAnno')
         rc = self.Page.addView(self.Anno)
         self.Sect = self.Doc.addObject('TechDraw::DrawViewSection','Section')
-        rc = self.Page.addView(self.Sect)
-        self.Sect.SectionOrigin = (1.0,1.0,1.0)
         self.Sect.Source = self.Box
+        self.Sect.Direction = FreeCAD.Vector(-1.0,0.0,0.0)
+        self.Sect.BaseView = self.View
+        self.Sect.SectionDirection = "Right"
+        self.Sect.SectionOrigin = FreeCAD.Vector(1.0,1.0,1.0)
+        self.Sect.SectionNormal = FreeCAD.Vector(-1.0,0.0,0.0)
+        rc = self.Page.addView(self.Sect)
         self.Doc.recompute()
         self.failUnless(len(self.Page.Views) == 3)
 

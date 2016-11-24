@@ -27,19 +27,34 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui, QtSvg
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchWindow
+#  \ingroup ARCH
+#  \brief The Window object and tools
+#
+#  This module provides tools to build Window objects.
+#  Windows are Arch objects obtained by extruding a series
+#  of wires, and that can be inserted into other Arch objects,
+#  by defining a volume that gets subtracted from them.
 
 __title__="FreeCAD Window"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 # presets
-WindowPartTypes = ["Frame","Solid panel","Glass panel"]
+WindowPartTypes = ["Frame","Solid panel","Glass panel","Louvre"]
 AllowedHosts =    ["Wall","Structure","Roof"]
 WindowPresets =   ["Fixed", "Open 1-pane", "Open 2-pane", "Sash 2-pane",
                    "Sliding 2-pane", "Simple door", "Glass door"]
+WindowOpeningModes = ["None","Arc 90","Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"]
 Roles =           ["Window","Door"]
 
 
@@ -367,6 +382,7 @@ def makeWindowPreset(windowtype,width,height,h1,h2,h3,w1,w2,o1,o2,placement=None
             obj.Placement = FreeCAD.Placement() # unable to find where this bug comes from...
             if "door" in windowtype:
                 obj.Role = "Door"
+                obj.Label = translate("Arch","Door")
             FreeCAD.ActiveDocument.recompute()
             return obj
 
@@ -383,9 +399,9 @@ class _CommandWindow:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Window',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Window"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Window","Window"),
                 'Accel': "W, N",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Window","Creates a window object from a selected object (wire, rectangle or sketch)")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -622,17 +638,21 @@ class _Window(ArchComponent.Component):
     "The Window object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyStringList","WindowParts","Arch","the components of this window")
-        obj.addProperty("App::PropertyLength","HoleDepth","Arch","The depth of the hole that this window makes in its host object. Keep 0 for automatic.")
-        obj.addProperty("App::PropertyLink","Subvolume","Arch","an optional object that defines a volume to be subtracted from hosts of this window")
-        obj.addProperty("App::PropertyLength","Width","Arch","The width of this window (for preset windows only)")
-        obj.addProperty("App::PropertyLength","Height","Arch","The height of this window (for preset windows only)")
-        obj.addProperty("App::PropertyVector","Normal","Arch","The normal direction of this window")
+        obj.addProperty("App::PropertyStringList","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","WindowParts","Arch",QT_TRANSLATE_NOOP("App::Property","the components of this window"))
+        obj.addProperty("App::PropertyLength","HoleDepth","Arch",QT_TRANSLATE_NOOP("App::Property","The depth of the hole that this window makes in its host object. Keep 0 for automatic."))
+        obj.addProperty("App::PropertyLink","Subvolume","Arch",QT_TRANSLATE_NOOP("App::Property","an optional object that defines a volume to be subtracted from hosts of this window"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of this window (for preset windows only)"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal direction of this window"))
         obj.addProperty("App::PropertyInteger","Preset","Arch","")
-        obj.addProperty("App::PropertyLink","PanelMaterial","Material","A material for this object")
-        obj.addProperty("App::PropertyLink","GlassMaterial","Material","A material for this object")
+        obj.addProperty("App::PropertyLink","PanelMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyLink","GlassMaterial","Material",QT_TRANSLATE_NOOP("App::Property","A material for this object"))
+        obj.addProperty("App::PropertyArea","Area","Arch",QT_TRANSLATE_NOOP("App::Property","The area of this window"))
+        obj.addProperty("App::PropertyLength","LouvreWidth","Louvres",QT_TRANSLATE_NOOP("App::Property","the width of louvre elements"))
+        obj.addProperty("App::PropertyLength","LouvreSpacing","Louvres",QT_TRANSLATE_NOOP("App::Property","the space between louvre elements"))
         obj.setEditorMode("Preset",2)
-
+        obj.setEditorMode("WindowParts",2)
         self.Type = "Window"
         obj.Role = Roles
         obj.Proxy = self
@@ -675,9 +695,11 @@ class _Window(ArchComponent.Component):
         if self.clone(obj):
             return
         
-        import Part, DraftGeomUtils
+        import Part,DraftGeomUtils,math
         pl = obj.Placement
         base = None
+        self.sshapes = []
+        self.vshapes = []
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if hasattr(obj,"WindowParts"):
@@ -685,12 +707,21 @@ class _Window(ArchComponent.Component):
                         shapes = []
                         for i in range(len(obj.WindowParts)/5):
                             wires = []
+                            hinge = None
+                            omode = None
+                            ssymbols = []
+                            vsymbols = []
                             wstr = obj.WindowParts[(i*5)+2].split(',')
                             for s in wstr:
-                                j = int(s[4:])
-                                if obj.Base.Shape.Wires:
-                                    if len(obj.Base.Shape.Wires) >= j:
-                                        wires.append(obj.Base.Shape.Wires[j])
+                                if "Wire" in s:
+                                    j = int(s[4:])
+                                    if obj.Base.Shape.Wires:
+                                        if len(obj.Base.Shape.Wires) >= j:
+                                            wires.append(obj.Base.Shape.Wires[j])
+                                elif "Edge" in s:
+                                    hinge = int(s[4:])-1
+                                elif "Mode" in s:
+                                    omode = int(s[-1])
                             if wires:
                                 max_length = 0
                                 for w in wires:
@@ -704,6 +735,88 @@ class _Window(ArchComponent.Component):
                                     if obj.Normal:
                                         if not DraftVecUtils.isNull(obj.Normal):
                                             norm = obj.Normal
+                                if hinge and omode:
+                                    e = obj.Base.Shape.Edges[hinge]
+                                    ev1 = e.Vertexes[0].Point
+                                    ev2 = e.Vertexes[-1].Point
+                                    if ev2.z < ev1.z:
+                                        ev1,ev2 = ev2,ev1
+                                    p = None
+                                    d = 0
+                                    for v in shape.Vertexes:
+                                        dist = v.Point.distanceToLine(ev1,ev2.sub(ev1))
+                                        if dist > d:
+                                            d = dist
+                                            p = v.Point
+                                    if p:
+                                        chord = p.sub(ev1)
+                                        enorm = ev2.sub(ev1)
+                                        proj = DraftVecUtils.project(chord,enorm)
+                                        if proj.Length > 0:
+                                            v1 = ev1.add(proj)
+                                            chord = p.sub(v1)
+                                        else:
+                                            v1 = e.Vertexes[0].Point
+                                        v4 = p.add(DraftVecUtils.scale(enorm,0.5))
+                                        if omode == 1: # Arc 90,"Arc 90 inv","Arc 45","Arc 45 inv","Arc 180","Arc 180 inv","Triangle","Triangle inv","Sliding","Sliding inv"
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 2: # Arc -90
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 3: # Arc 45
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/8,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi/4,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 4: # Arc -45
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/8,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi/4,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 5: # Arc 180
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,math.pi,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 6: # Arc -180
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                                            v3 = v1.add(DraftVecUtils.rotate(chord,-math.pi,enorm))
+                                            ssymbols.append(Part.Arc(p,v2,v3).toShape())
+                                            ssymbols.append(Part.Line(v3,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 7: # tri
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,math.pi/2,enorm))
+                                            ssymbols.append(Part.Line(p,v2).toShape())
+                                            ssymbols.append(Part.Line(v2,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 8: # -tri
+                                            v2 = v1.add(DraftVecUtils.rotate(chord,-math.pi/2,enorm))
+                                            ssymbols.append(Part.Line(p,v2).toShape())
+                                            ssymbols.append(Part.Line(v2,v1).toShape())
+                                            vsymbols.append(Part.Line(v1,v4).toShape())
+                                            vsymbols.append(Part.Line(v4,ev2).toShape())
+                                        elif omode == 9: # sliding
+                                            pass
+                                        elif omode == 10: # -sliding
+                                            pass
+                                            
                                 thk = float(obj.WindowParts[(i*5)+3])
                                 if thk:
                                     exv = DraftVecUtils.scaleTo(norm,thk)
@@ -717,7 +830,31 @@ class _Window(ArchComponent.Component):
                                     if zof:
                                         zov = DraftVecUtils.scaleTo(norm,zof)
                                         shape.translate(zov)
+                                        for symb in ssymbols:
+                                            symb.translate(zov)
+                                        for symb in vsymbols:
+                                            symb.translate(zov)
+                                if obj.WindowParts[(i*5)+1] == "Louvre":
+                                    if hasattr(obj,"LouvreWidth"):
+                                        if obj.LouvreWidth and obj.LouvreSpacing:
+                                            bb = shape.BoundBox
+                                            bb.enlarge(bb.DiagonalLength)
+                                            step = obj.LouvreWidth.Value+obj.LouvreSpacing.Value
+                                            if step < bb.YLength:
+                                                box = Part.makeBox(bb.XLength,obj.LouvreWidth.Value,bb.ZLength)
+                                                boxes = []
+                                                for i in range(int(bb.YLength/step)+1):
+                                                    b = box.copy()
+                                                    b.translate(FreeCAD.Vector(bb.XMin,bb.YMin+i*step,bb.ZMin))
+                                                    boxes.append(b)
+                                                self.boxes = Part.makeCompound(boxes)
+                                                rot = obj.Base.Placement.Rotation
+                                                self.boxes.rotate(self.boxes.BoundBox.Center,rot.Axis,math.degrees(rot.Angle))
+                                                self.boxes.translate(shape.BoundBox.Center.sub(self.boxes.BoundBox.Center))
+                                                shape = shape.common(self.boxes)
                                 shapes.append(shape)
+                                self.sshapes.extend(ssymbols)
+                                self.vshapes.extend(vsymbols)
                         if shapes:
                             base = Part.makeCompound(shapes)
                     elif not obj.WindowParts:
@@ -731,7 +868,11 @@ class _Window(ArchComponent.Component):
         base = self.processSubShapes(obj,base)
         if base:
             if not base.isNull():
+                if self.sshapes:
+                    base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
+        if hasattr(obj,"Area"):
+            obj.Area = obj.Width.Value * obj.Height.Value
 
     def getSubVolume(self,obj,plac=None):
         "returns a subvolume for cutting in a base object"
@@ -934,11 +1075,15 @@ class _ArchWindowTaskPanel:
         self.new3 = QtGui.QLabel(self.form)
         self.new4 = QtGui.QLabel(self.form)
         self.new5 = QtGui.QLabel(self.form)
+        self.new6 = QtGui.QLabel(self.form)
+        self.new7 = QtGui.QLabel(self.form)
         self.field1 = QtGui.QLineEdit(self.form)
         self.field2 = QtGui.QComboBox(self.form)
         self.field3 = QtGui.QLineEdit(self.form)
         self.field4 = ui.createWidget("Gui::InputField")
         self.field5 = ui.createWidget("Gui::InputField")
+        self.field6 = QtGui.QPushButton(self.form)
+        self.field7 = QtGui.QComboBox(self.form)
         self.createButton = QtGui.QPushButton(self.form)
         self.createButton.setObjectName("createButton")
         self.createButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
@@ -953,13 +1098,19 @@ class _ArchWindowTaskPanel:
         self.grid.addWidget(self.field4, 10, 2, 1, 5)
         self.grid.addWidget(self.new5, 11, 0, 1, 1)
         self.grid.addWidget(self.field5, 11, 2, 1, 5)
-        self.grid.addWidget(self.createButton, 12, 0, 1, 7)
+        self.grid.addWidget(self.new6, 12, 0, 1, 1)
+        self.grid.addWidget(self.field6, 12, 2, 1, 5)
+        self.grid.addWidget(self.new7, 13, 0, 1, 1)
+        self.grid.addWidget(self.field7, 13, 2, 1, 5)
+        self.grid.addWidget(self.createButton, 14, 0, 1, 7)
         self.newtitle.setVisible(False)
         self.new1.setVisible(False)
         self.new2.setVisible(False)
         self.new3.setVisible(False)
         self.new4.setVisible(False)
         self.new5.setVisible(False)
+        self.new6.setVisible(False)
+        self.new7.setVisible(False)
         self.field1.setVisible(False)
         self.field2.setVisible(False)
         for t in WindowPartTypes:
@@ -968,6 +1119,10 @@ class _ArchWindowTaskPanel:
         self.field3.setReadOnly(True)
         self.field4.setVisible(False)
         self.field5.setVisible(False)
+        self.field6.setVisible(False)
+        self.field7.setVisible(False)
+        for t in WindowOpeningModes:
+            self.field7.addItem("")
         self.createButton.setVisible(False)
 
         QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
@@ -976,6 +1131,7 @@ class _ArchWindowTaskPanel:
         QtCore.QObject.connect(self.createButton, QtCore.SIGNAL("clicked()"), self.create)
         QtCore.QObject.connect(self.comptree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.check)
         QtCore.QObject.connect(self.wiretree, QtCore.SIGNAL("itemClicked(QTreeWidgetItem*,int)"), self.select)
+        QtCore.QObject.connect(self.field6, QtCore.SIGNAL("clicked()"), self.addEdge)
         self.update()
 
         FreeCADGui.Selection.clearSelection()
@@ -1054,11 +1210,15 @@ class _ArchWindowTaskPanel:
         self.new3.setVisible(True)
         self.new4.setVisible(True)
         self.new5.setVisible(True)
+        self.new6.setVisible(True)
+        self.new7.setVisible(True)
         self.field1.setVisible(True)
         self.field2.setVisible(True)
         self.field3.setVisible(True)
         self.field4.setVisible(True)
         self.field5.setVisible(True)
+        self.field6.setVisible(True)
+        self.field7.setVisible(True)
         self.createButton.setVisible(True)
         self.addButton.setEnabled(False)
         self.editButton.setEnabled(False)
@@ -1094,6 +1254,18 @@ class _ArchWindowTaskPanel:
                                 f.setCurrentIndex(WindowPartTypes.index(t))
                             else:
                                 f.setCurrentIndex(0)
+                        elif i == 2:
+                            wires = []
+                            for l in t.split(","):
+                                if "Wire" in l:
+                                    wires.append(l)
+                                elif "Edge" in l:
+                                    self.field6.setText(l)
+                                elif "Mode" in l:
+                                    self.field7.setCurrentIndex(int(l[-1]))
+                            if wires:
+                                f.setText(",".join(wires))
+                            
                         elif i in [3,4]:
                             f.setProperty("text",FreeCAD.Units.Quantity(float(t),FreeCAD.Units.Length).UserString)
                         else:
@@ -1126,6 +1298,12 @@ class _ArchWindowTaskPanel:
                         t = str(q.Value)
                     except (ValueError,TypeError):
                         ok = False
+                if i == 2:
+                    # check additional opening parameters
+                    hinge = self.field6.property("text")
+                    n = self.field7.currentIndex()
+                    if (hinge.startswith("Edge")) and (n > 0):
+                        t += "," + hinge + ",Mode" + str(n)
             ar.append(t)
 
         if ok:
@@ -1148,13 +1326,24 @@ class _ArchWindowTaskPanel:
         self.new3.setVisible(False)
         self.new4.setVisible(False)
         self.new5.setVisible(False)
+        self.new6.setVisible(False)
+        self.new7.setVisible(False)
         self.field1.setVisible(False)
         self.field2.setVisible(False)
         self.field3.setVisible(False)
         self.field4.setVisible(False)
         self.field5.setVisible(False)
+        self.field6.setVisible(False)
+        self.field7.setVisible(False)
         self.createButton.setVisible(False)
         self.addButton.setEnabled(True)
+        
+    def addEdge(self):
+        for sel in FreeCADGui.Selection.getSelectionEx():
+            for sub in sel.SubElementNames:
+                if "Edge" in sub:
+                    self.field6.setText(sub)
+                    return
 
     def reject(self):
         FreeCAD.ActiveDocument.recompute()
@@ -1176,8 +1365,14 @@ class _ArchWindowTaskPanel:
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None, QtGui.QApplication.UnicodeUTF8))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Thickness", None, QtGui.QApplication.UnicodeUTF8))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Z offset", None, QtGui.QApplication.UnicodeUTF8))
+        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None, QtGui.QApplication.UnicodeUTF8))
+        self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None, QtGui.QApplication.UnicodeUTF8))
+        self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None, QtGui.QApplication.UnicodeUTF8))
+        self.field6.setToolTip(QtGui.QApplication.translate("Arch", "Press to retrieve the selected edge", None, QtGui.QApplication.UnicodeUTF8))
         for i in range(len(WindowPartTypes)):
             self.field2.setItemText(i, QtGui.QApplication.translate("Arch", WindowPartTypes[i], None, QtGui.QApplication.UnicodeUTF8))
+        for i in range(len(WindowOpeningModes)):
+            self.field7.setItemText(i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None, QtGui.QApplication.UnicodeUTF8))
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Window',_CommandWindow())
