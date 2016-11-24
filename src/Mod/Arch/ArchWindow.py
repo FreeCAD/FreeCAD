@@ -871,6 +871,7 @@ class _Window(ArchComponent.Component):
                 if self.sshapes:
                     base = Part.makeCompound([base]+self.sshapes+self.vshapes)
                 self.applyShape(obj,base,pl,allowinvalid=True,allownosolid=True)
+                obj.Placement = pl
         if hasattr(obj,"Area"):
             obj.Area = obj.Width.Value * obj.Height.Value
 
