@@ -104,7 +104,7 @@
 
 namespace Py
 {
-    extern PythonExtensionBase *getPythonExtensionBase( PyObject *self );
+    PYCXX_EXPORT extern PythonExtensionBase *getPythonExtensionBase( PyObject *self );
 
     struct PythonClassInstance
     {

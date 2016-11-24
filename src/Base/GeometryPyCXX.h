@@ -76,6 +76,8 @@ private:
 
 namespace Py {
 
+typedef PythonClassObject<Base::Vector2dPy> Vector2d;
+
 // Implementing the vector class in the fashion of the PyCXX library.
 class BaseExport Vector : public Object
 {
