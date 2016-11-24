@@ -54,9 +54,9 @@ int Conic2dPy::PyInit(PyObject* args, PyObject* kwds)
     return 0;
 }
 
-Py::Object Conic2dPy::getCenter(void) const
+Py::Object Conic2dPy::getLocation(void) const
 {
-    Base::Vector2d loc = getGeom2dConicPtr()->getCenter();
+    Base::Vector2d loc = getGeom2dConicPtr()->getLocation();
 
     Py::Module module("__FreeCADBase__");
     Py::Callable method(module.getAttr("Vector2d"));
@@ -66,10 +66,16 @@ Py::Object Conic2dPy::getCenter(void) const
     return method.apply(arg);
 }
 
-void  Conic2dPy::setCenter(Py::Object arg)
+void  Conic2dPy::setLocation(Py::Object arg)
 {
     Base::Vector2d loc = Py::Vector2d(arg.ptr()).getCxxObject()->value();
-    getGeom2dConicPtr()->setCenter(loc);
+    getGeom2dConicPtr()->setLocation(loc);
+}
+
+Py::Float Conic2dPy::getEccentricity(void) const
+{
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(getGeom2dConicPtr()->handle());
+    return Py::Float(conic->Eccentricity());
 }
 
 Py::Object Conic2dPy::getXAxis(void) const

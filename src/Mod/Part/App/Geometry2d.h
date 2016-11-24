@@ -200,8 +200,8 @@ public:
     virtual ~Geom2dConic();
     virtual Geometry2d *clone(void) const = 0;
 
-    Base::Vector2d getCenter(void) const;
-    void setCenter(const Base::Vector2d& Center);
+    Base::Vector2d getLocation(void) const;
+    void setLocation(const Base::Vector2d& Center);
     bool isReversed() const;
 
     virtual unsigned int getMemSize(void) const = 0;

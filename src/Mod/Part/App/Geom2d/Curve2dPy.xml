@@ -16,6 +16,11 @@
 				The abstract class GeometryCurve is the root class of all curve objects.
 			</UserDocu>
 		</Documentation>
+        <Methode Name="reverse">
+            <Documentation>
+                <UserDocu>Changes the direction of parametrization of the curve.</UserDocu>
+            </Documentation>
+        </Methode>
         <!--
 		<Methode Name="toShape" Const="true">
 			<Documentation>
@@ -70,11 +75,13 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 			</Documentation>
 		</Methode>
+        -->
 		<Methode Name="value">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>
 			</Documentation>
 		</Methode>
+        <!--
 		<Methode Name="tangent">
 			<Documentation>
 				<UserDocu>Computes the tangent of parameter u on this curve</UserDocu>
@@ -131,7 +138,8 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Attribute Name="Continuity" ReadOnly="true">
+        -->
+        <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
 					Returns the global continuity of the curve.
@@ -139,7 +147,23 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 			<Parameter Name="Continuity" Type="String"/>
 		</Attribute>
-		<Attribute Name="FirstParameter" ReadOnly="true">
+        <Attribute Name="Closed" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns true if the curve is closed.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="Closed" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="Periodic" ReadOnly="true">
+            <Documentation>
+                <UserDocu>
+                    Returns true if the curve is periodic.
+                </UserDocu>
+            </Documentation>
+            <Parameter Name="Periodic" Type="Boolean"/>
+        </Attribute>
+        <Attribute Name="FirstParameter" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
 					Returns the value of the first parameter.
@@ -155,6 +179,5 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 			<Parameter Name="LastParameter" Type="Float"/>
 		</Attribute>
-        -->
 	</PythonExport>
 </GenerateModel>

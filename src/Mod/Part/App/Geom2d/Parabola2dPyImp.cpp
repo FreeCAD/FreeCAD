@@ -61,12 +61,6 @@ int Parabola2dPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     return -1;
 }
 
-Py::Float Parabola2dPy::getEccentricity(void) const
-{
-    Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
-    return Py::Float(curve->Eccentricity()); 
-}
-
 Py::Float Parabola2dPy::getFocal(void) const
 {
     Handle_Geom2d_Parabola curve = Handle_Geom2d_Parabola::DownCast(getGeometry2dPtr()->handle());
