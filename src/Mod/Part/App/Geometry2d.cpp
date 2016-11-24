@@ -68,6 +68,7 @@
 #include <Base/Tools.h>
 
 #include "Geometry2d.h"
+#include <Mod/Part/App/Geom2d/Parabola2dPy.h>
 
 using namespace Part;
 
@@ -587,14 +588,14 @@ Geom2dConic::~Geom2dConic()
 {
 }
 
-Base::Vector2d Geom2dConic::getCenter(void) const
+Base::Vector2d Geom2dConic::getLocation(void) const
 {
     Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
     const gp_Pnt2d& loc = conic->Location();
     return Base::Vector2d(loc.X(),loc.Y());
 }
 
-void Geom2dConic::setCenter(const Base::Vector2d& Center)
+void Geom2dConic::setLocation(const Base::Vector2d& Center)
 {
     gp_Pnt2d p1(Center.x,Center.y);
     Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(handle());
@@ -1742,8 +1743,7 @@ void Geom2dParabola::Restore(Base::XMLReader& reader)
 
 PyObject *Geom2dParabola::getPyObject(void)
 {
-    return 0;
-    //return new ParabolaPy((GeomParabola*)this->clone());
+    return new Parabola2dPy(static_cast<Geom2dParabola*>(this->clone()));
 }
 
 // -------------------------------------------------
