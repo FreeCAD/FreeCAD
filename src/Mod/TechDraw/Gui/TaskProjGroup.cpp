@@ -102,6 +102,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
     ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
     m_mdi = dvp->getMDIViewPage();
+
+    setPrimaryDirection();
 }
 
 TaskProjGroup::~TaskProjGroup()
@@ -152,21 +154,22 @@ void TaskProjGroup::rotateButtonClicked(void)
 
         //TODO: Consider changing the vectors around depending on whether we're in First or Third angle mode - might be more intuitive? IR
         if ( clicked == ui->butTopRotate ) {
+            t.rotX(M_PI / 2);
+        } else if ( clicked == ui->butDownRotate) {
             t.rotX(M_PI / -2);
+        } else if ( clicked == ui->butRightRotate) {
+            t.rotZ(M_PI / -2);
+        } else if ( clicked == ui->butLeftRotate) {
+            t.rotZ(M_PI / 2);
         } else if ( clicked == ui->butCWRotate ) {
             t.rotY(M_PI / -2);
-        } else if ( clicked == ui->butRightRotate) {
-            t.rotZ(M_PI / 2);
-        } else if ( clicked == ui->butDownRotate) {
-            t.rotX(M_PI / 2);
-        } else if ( clicked == ui->butLeftRotate) {
-            t.rotZ(M_PI / -2);
         } else if ( clicked == ui->butCCWRotate) {
             t.rotY(M_PI / 2);
         }
         m *= t;
 
         multiView->setFrontViewOrientation(m);
+        setPrimaryDirection();
         Gui::Command::updateActive();
     }
 }
@@ -373,6 +376,25 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
             box->setCheckState(Qt::Unchecked);
         }
     }
+}
+
+void TaskProjGroup::setPrimaryDirection()
+{
+    App::DocumentObject* docObj = multiView->getProjObj("Front");
+    TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(docObj);
+    if (dvp != nullptr) {
+         Base::Vector3d frontDir = dvp->Direction.getValue();
+         ui->lePrimary->setText(formatVector(frontDir));
+    }
+}
+
+QString TaskProjGroup::formatVector(Base::Vector3d v)
+{
+    QString data = QString::fromLatin1("[%1 %2 %3]")
+        .arg(QLocale::system().toString(v.x, 'f', 2))
+        .arg(QLocale::system().toString(v.y, 'f', 2))
+        .arg(QLocale::system().toString(v.z, 'f', 2));
+    return data;
 }
 
 bool TaskProjGroup::accept()
