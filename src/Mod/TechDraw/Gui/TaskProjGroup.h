@@ -24,7 +24,10 @@
 #ifndef GUI_TASKVIEW_TASKVIEWGROUP_H
 #define GUI_TASKVIEW_TASKVIEWGROUP_H
 
+#include <QString>
+
 #include <Base/BoundBox.h>
+#include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -85,6 +88,9 @@ protected:
      * between checkboxes and viewToggled()
      */
     void setupViewCheckboxes(bool addConnections = false);
+
+    void setPrimaryDirection(void);
+    QString formatVector(Base::Vector3d v);
 
 private:
     //class Private;

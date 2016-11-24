@@ -53,5 +53,11 @@
         <file>icons/actions/section-down.svg</file>
         <file>icons/actions/section-left.svg</file>
         <file>icons/actions/section-right.svg</file>
+        <file>icons/arrow-right.svg</file>
+        <file>icons/arrow-left.svg</file>
+        <file>icons/arrow-up.svg</file>
+        <file>icons/arrow-down.svg</file>
+        <file>icons/arrow-ccw.svg</file>
+        <file>icons/arrow-cw.svg</file>
     </qresource>
 </RCC>
