@@ -27,6 +27,9 @@ __doc__ = """BOPTools Package (part of FreeCAD). Routines that power Connect, Em
 BooleanFragments, Slice and XOR features of Part Workbench. Useful for other custom 
 BOP-like operations"""
 
+## @package BOPTools
+#  \ingroup PART
+
 __all__ = [
 "GeneralFuseResult",
 "JoinAPI",

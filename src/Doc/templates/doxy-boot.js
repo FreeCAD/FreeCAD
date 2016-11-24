@@ -66,8 +66,6 @@ $( document ).ready(function() {
 	});
 
     // source code github links
-    console.log("links:");
-    console.log($('li:contains("FreeCAD/src/")'));
     $('li:contains("FreeCAD/src/")').each(function(){
         var lk = '<a href="https://github.com/FreeCAD/FreeCAD/blob/master' + $(this).html().substr(7) + '">';
         lk += $(this).html();
