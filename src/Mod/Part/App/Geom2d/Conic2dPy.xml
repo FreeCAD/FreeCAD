@@ -12,36 +12,14 @@
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes a circle in 3D space
-To create a circle there are several ways:
-Part.Circle()
-    Creates a default circle with center (0,0,0) and radius 1
-
-Part.Circle(Circle)
-    Creates a copy of the given circle
-
-Part.Circle(Circle, Distance)
-    Creates a circle parallel to given circle at a certain distance
-
-Part.Circle(Center,Normal,Radius)
-    Creates a circle defined by center, normal direction and radius
-
-Part.Circle(Point1,Point2,Point3)
-    Creates a circle defined by three non-linear points
+      <UserDocu>Describes an abstract conic in 2d space
    </UserDocu>
     </Documentation>
-    <!--
     <Attribute Name="Center" ReadOnly="false">
       <Documentation>
-        <UserDocu>Center of the circle.</UserDocu>
+        <UserDocu>Center of the conic.</UserDocu>
       </Documentation>
       <Parameter Name="Center" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Axis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="Axis" Type="Object"/>
     </Attribute>
     <Attribute Name="XAxis" ReadOnly="false">
       <Documentation>
@@ -55,6 +33,5 @@ Part.Circle(Point1,Point2,Point3)
       </Documentation>
       <Parameter Name="YAxis" Type="Object"/>
     </Attribute>
-    -->
   </PythonExport>
 </GenerateModel>

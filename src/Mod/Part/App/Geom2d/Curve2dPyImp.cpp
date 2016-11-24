@@ -85,7 +85,7 @@ PyObject *Curve2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'GeometryCurve'.");
+        "You cannot create an instance of the abstract class 'Curve2d'.");
     return 0;
 }
 
