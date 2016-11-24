@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>342</width>
-    <height>431</height>
+    <width>371</width>
+    <height>491</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -174,59 +174,124 @@
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <item>
            <widget class="QLabel" name="label_5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text">
-             <string>View From</string>
+             <string>Adjust Primary Direction</string>
+            </property>
+            <property name="scaledContents">
+             <bool>true</bool>
             </property>
             <property name="alignment">
-             <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="indent">
+             <number>0</number>
             </property>
            </widget>
           </item>
          </layout>
         </item>
         <item>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="2" column="2">
-           <widget class="QPushButton" name="butCWRotate">
-            <property name="toolTip">
-             <string>About 3D Y</string>
+         <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0">
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="lePrimary">
+            <property name="enabled">
+             <bool>true</bool>
             </property>
-            <property name="text">
-             <string>Spin CW</string>
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+              <weight>50</weight>
+              <italic>false</italic>
+              <bold>false</bold>
+             </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
             </property>
            </widget>
           </item>
-          <item row="3" column="2">
+          <item row="1" column="2">
            <widget class="QPushButton" name="butRightRotate">
             <property name="toolTip">
-             <string>About 3D Z</string>
+             <string>Rotate right</string>
             </property>
             <property name="text">
-             <string>&gt;</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-right.svg</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QPushButton" name="butCCWRotate">
-            <property name="toolTip">
-             <string>About 3D Y</string>
-            </property>
-            <property name="text">
-             <string>Spin CCW</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
+          <item row="0" column="1">
            <widget class="QPushButton" name="butTopRotate">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="toolTip">
-             <string>About 3D X</string>
+             <string>Rotate up</string>
             </property>
             <property name="text">
-             <string>/\</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-up.svg</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
-          <item row="4" column="2">
+          <item row="1" column="0">
+           <widget class="QPushButton" name="butLeftRotate">
+            <property name="toolTip">
+             <string>Rotate left</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-left.svg</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
            <widget class="QPushButton" name="pushButton_8">
             <property name="enabled">
              <bool>false</bool>
@@ -236,27 +301,35 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QPushButton" name="butLeftRotate">
-            <property name="toolTip">
-             <string>About 3D Y</string>
-            </property>
-            <property name="text">
-             <string>&lt;</string>
-            </property>
-           </widget>
-          </item>
-          <item row="4" column="1">
+          <item row="2" column="1">
            <widget class="QPushButton" name="butDownRotate">
             <property name="toolTip">
-             <string>About 3D X</string>
+             <string>Rotate down</string>
             </property>
             <property name="text">
-             <string>\/</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-down.svg</normalon>
+             </iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
             </property>
            </widget>
           </item>
          </layout>
+        </item>
+        <item>
+         <widget class="Line" name="line_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -264,6 +337,43 @@
            <widget class="QLabel" name="label_6">
             <property name="text">
              <string>Secondary Projections</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QPushButton" name="butCWRotate">
+            <property name="toolTip">
+             <string>Spin CW</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-cw.svg</normalon>
+             </iconset>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="butCCWRotate">
+            <property name="toolTip">
+             <string>Spin CCW</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normalon>:/icons/arrow-ccw.svg</normalon>
+             </iconset>
             </property>
            </widget>
           </item>
@@ -380,11 +490,26 @@
         </item>
        </layout>
       </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
      </layout>
     </widget>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../../../Documents/CAD/DrawingModule/Resources/TechDraw.qrc"/>
+ </resources>
  <connections/>
 </ui>
