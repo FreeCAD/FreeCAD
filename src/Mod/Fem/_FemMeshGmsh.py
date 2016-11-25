@@ -44,10 +44,10 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
         obj.Part = None
 
-        obj.addProperty("App::PropertyFloat", "ElementSizeMax", "FEM Mesh Params", "Max mesh element size (0.0 = infinity)")
+        obj.addProperty("App::PropertyLength", "ElementSizeMax", "FEM Mesh Params", "Max mesh element size (0.0 = infinity)")
         obj.ElementSizeMax = 0.0  # will be 1e+22
 
-        obj.addProperty("App::PropertyFloat", "ElementSizeMin", "FEM Mesh Params", "Min mesh element size")
+        obj.addProperty("App::PropertyLength", "ElementSizeMin", "FEM Mesh Params", "Min mesh element size")
         obj.ElementSizeMin = 0.0
 
         obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")

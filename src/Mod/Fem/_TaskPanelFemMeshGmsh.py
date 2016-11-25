@@ -48,8 +48,8 @@ class _TaskPanelFemMeshGmsh:
         self.gmsh_runs = False
         self.console_message_gmsh = ''
 
-        QtCore.QObject.connect(self.form.if_max, QtCore.SIGNAL("valueChanged(double)"), self.max_changed)
-        QtCore.QObject.connect(self.form.if_min, QtCore.SIGNAL("valueChanged(double)"), self.min_changed)
+        QtCore.QObject.connect(self.form.if_max, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.max_changed)
+        QtCore.QObject.connect(self.form.if_min, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.min_changed)
         QtCore.QObject.connect(self.form.cb_dimension, QtCore.SIGNAL("activated(int)"), self.choose_dimension)
         QtCore.QObject.connect(self.form.cb_order, QtCore.SIGNAL("activated(int)"), self.choose_order)
         QtCore.QObject.connect(self.Timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
@@ -91,8 +91,8 @@ class _TaskPanelFemMeshGmsh:
 
     def update(self):
         'fills the widgets'
-        self.form.if_max.setText("{} mm".format(self.clmax))
-        self.form.if_min.setText("{} mm".format(self.clmin))
+        self.form.if_max.setText(self.clmax.UserString)
+        self.form.if_min.setText(self.clmin.UserString)
         index_dimension = self.form.cb_dimension.findText(self.dimension)
         self.form.cb_dimension.setCurrentIndex(index_dimension)
         index_order = self.form.cb_order.findText(self.order)
@@ -111,11 +111,11 @@ class _TaskPanelFemMeshGmsh:
             # print('Time: {0:4.1f}: '.format(time.time() - self.Start))
             self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
 
-    def max_changed(self, value):
-        self.clmax = float(value)
+    def max_changed(self, base_quantity_value):
+        self.clmax = base_quantity_value
 
-    def min_changed(self, value):
-        self.clmin = float(value)
+    def min_changed(self, base_quantity_value):
+        self.clmin = base_quantity_value
 
     def choose_dimension(self, index):
         if index < 0:
