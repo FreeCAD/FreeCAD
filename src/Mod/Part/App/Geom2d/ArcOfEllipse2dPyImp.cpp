@@ -23,21 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Elips.hxx>
-# include <Geom_Ellipse.hxx>
-# include <GC_MakeArcOfEllipse.hxx>
-# include <GC_MakeEllipse.hxx>
-# include <Geom_TrimmedCurve.hxx>
+# include <gp_Elips2d.hxx>
+# include <Geom2d_Ellipse.hxx>
+# include <GCE2d_MakeArcOfEllipse.hxx>
+# include <GCE2d_MakeEllipse.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 #endif
 
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfEllipse2dPy.cpp>
-#include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/Geom2d/Ellipse2dPy.h>
 #include <Mod/Part/App/OCCError.h>
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 
@@ -46,41 +45,7 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfEllipse2dPy::representation(void) const
 {
-#if 0
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfEllipsePtr()->handle());
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
-
-    gp_Ax1 axis = ellipse->Axis();
-    gp_Dir dir = axis.Direction();
-    gp_Pnt loc = axis.Location();
-    Standard_Real fMajRad = ellipse->MajorRadius();
-    Standard_Real fMinRad = ellipse->MinorRadius();
-    Standard_Real u1 = trim->FirstParameter();
-    Standard_Real u2 = trim->LastParameter();
-    
-    gp_Dir normal = ellipse->Axis().Direction();
-    gp_Dir xdir = ellipse->XAxis().Direction();
-    
-    gp_Ax2 xdirref(loc, normal); // this is a reference XY for the ellipse
-    
-    Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
-
-    std::stringstream str;
-    str << "ArcOfEllipse (";
-    str << "MajorRadius : " << fMajRad << ", "; 
-    str << "MinorRadius : " << fMinRad << ", ";
-    str << "AngleXU : " << fAngleXU << ", ";
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
-    str << ")";
-
-    return str.str();
-#else
-    return "";
-#endif
+    return "<Arc of ellipse2d object>";
 }
 
 PyObject *ArcOfEllipse2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -92,23 +57,20 @@ PyObject *ArcOfEllipse2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
 // constructor method
 int ArcOfEllipse2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-#if 1
-    return 0;
-#else
     PyObject* o;
     double u1, u2;
     PyObject *sense=Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::EllipsePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Ellipse2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast
-                (static_cast<EllipsePy*>(o)->getGeomEllipsePtr()->handle());
-            GC_MakeArcOfEllipse arc(ellipse->Elips(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast
+                (static_cast<Ellipse2dPy*>(o)->getGeom2dEllipsePtr()->handle());
+            GCE2d_MakeArcOfEllipse arc(ellipse->Elips2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
-            getGeomArcOfEllipsePtr()->setHandle(arc.Value());
+            getGeom2dArcOfEllipsePtr()->setHandle(arc.Value());
             return 0;
         }
         catch (Standard_Failure) {
@@ -124,39 +86,37 @@ int ArcOfEllipse2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
-        "ArcOfEllipse constructor expects an ellipse curve and a parameter range");
+        "ArcOfEllipse2d constructor expects an ellipse curve and a parameter range");
     return -1;
-#endif
 }
-#if 0
+
 Py::Float ArcOfEllipse2dPy::getMajorRadius(void) const
 {
-    return Py::Float(getGeomArcOfEllipsePtr()->getMajorRadius()); 
+    return Py::Float(getGeom2dArcOfEllipsePtr()->getMajorRadius());
 }
 
 void  ArcOfEllipse2dPy::setMajorRadius(Py::Float arg)
 {
-    getGeomArcOfEllipsePtr()->setMajorRadius((double)arg);
+    getGeom2dArcOfEllipsePtr()->setMajorRadius((double)arg);
 }
 
 Py::Float ArcOfEllipse2dPy::getMinorRadius(void) const
 {
-    return Py::Float(getGeomArcOfEllipsePtr()->getMinorRadius()); 
+    return Py::Float(getGeom2dArcOfEllipsePtr()->getMinorRadius());
 }
 
 void  ArcOfEllipse2dPy::setMinorRadius(Py::Float arg)
 {
-    getGeomArcOfEllipsePtr()->setMinorRadius((double)arg);
+    getGeom2dArcOfEllipsePtr()->setMinorRadius((double)arg);
 }
 
 Py::Object ArcOfEllipse2dPy::getEllipse(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfEllipsePtr()->handle());
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(trim->BasisCurve());
-    return Py::Object(new EllipsePy(new GeomEllipse(ellipse)), true);
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Ellipse ellipse = Handle_Geom2d_Ellipse::DownCast(curve->BasisCurve());
+    return Py::asObject(new Ellipse2dPy(new Geom2dEllipse(ellipse)));
 }
-#endif
+
 PyObject *ArcOfEllipse2dPy::getCustomAttributes(const char* ) const
 {
     return 0;
