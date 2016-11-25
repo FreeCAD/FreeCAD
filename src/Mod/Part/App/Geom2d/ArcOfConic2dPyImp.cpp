@@ -23,11 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <GC_MakeArcOfCircle.hxx>
-# include <GC_MakeCircle.hxx>
-# include <Geom_TrimmedCurve.hxx>
+# include <Geom2d_Conic.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 #endif
 
 #include <Mod/Part/App/Geometry2d.h>
@@ -36,176 +33,100 @@
 #include <Mod/Part/App/OCCError.h>
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
-
-extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfConic2dPy::representation(void) const
 {
-#if 0
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    gp_Pnt loc = axis.Location();
-    Standard_Real fRad = circle->Radius();
-    Standard_Real u1 = trim->FirstParameter();
-    Standard_Real u2 = trim->LastParameter();
-
-    std::stringstream str;
-    str << "ArcOfCircle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
-    str << ")";
-
-    return str.str();
-#else
-    return "";
-#endif
+    return "<Arc of conic2d object>";
 }
 
 PyObject *ArcOfConic2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
+    // never create such objects with the constructor
+    PyErr_SetString(PyExc_RuntimeError,
+        "You cannot create an instance of the abstract class 'ArcOfConic2d'.");
     return 0;
 }
 
 // constructor method
 int ArcOfConic2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-#if 0
-    PyObject* o;
-    double u1, u2;
-    PyObject *sense=Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::CirclePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
-        try {
-            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
-                (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
-            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
-            if (!arc.IsDone()) {
-                PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
-                return -1;
-            }
-
-            getGeomArcOfCirclePtr()->setHandle(arc.Value());
-            return 0;
-        }
-        catch (Standard_Failure) {
-            Handle_Standard_Failure e = Standard_Failure::Caught();
-            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-            return -1;
-        }
-        catch (...) {
-            PyErr_SetString(PartExceptionOCCError, "creation of arc failed");
-            return -1;
-        }
-    }
-
-    PyErr_Clear();
-    PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTuple(args, "O!O!O!", &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
-        Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
-        Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
-        Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
-
-        GC_MakeArcOfCircle arc(gp_Pnt(v1.x,v1.y,v1.z),
-                               gp_Pnt(v2.x,v2.y,v2.z),
-                               gp_Pnt(v3.x,v3.y,v3.z));
-        if (!arc.IsDone()) {
-            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
-            return -1;
-        }
-
-        getGeomArcOfCirclePtr()->setHandle(arc.Value());
-        return 0;
-    }
-
-    // All checks failed
-    PyErr_SetString(PyExc_TypeError,
-        "ArcOfCircle constructor expects a circle curve and a parameter range or three points");
-#endif
     return -1;
 }
-#if 0
-Py::Object ArcOfConic2dPy::getCenter(void) const
+
+Py::Object ArcOfConic2dPy::getLocation(void) const
 {
-    return Py::Vector(getGeomArcOfCirclePtr()->getCenter());
+    Base::Vector2d loc = getGeom2dArcOfConicPtr()->getLocation();
+
+    Py::Module module("__FreeCADBase__");
+    Py::Callable method(module.getAttr("Vector2d"));
+    Py::Tuple arg(2);
+    arg.setItem(0, Py::Float(loc.x));
+    arg.setItem(1, Py::Float(loc.y));
+    return method.apply(arg);
 }
 
-void  ArcOfConic2dPy::setCenter(Py::Object arg)
+void  ArcOfConic2dPy::setLocation(Py::Object arg)
 {
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
+    Base::Vector2d loc = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    getGeom2dArcOfConicPtr()->setLocation(loc);
 }
 
-Py::Object ArcOfConic2dPy::getAxis(void) const
+Py::Float ArcOfConic2dPy::getEccentricity(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    return Py::Float(conic->Eccentricity());
 }
 
-void  ArcOfConic2dPy::setAxis(Py::Object arg)
+Py::Object ArcOfConic2dPy::getXAxis(void) const
 {
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(circle->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    gp_Dir2d xdir = conic->XAxis().Direction();
+    Py::Module module("__FreeCADBase__");
+    Py::Callable method(module.getAttr("Vector2d"));
+    Py::Tuple arg(2);
+    arg.setItem(0, Py::Float(xdir.X()));
+    arg.setItem(1, Py::Float(xdir.Y()));
+    return method.apply(arg);
 }
 
-Py::Object ArcOfConic2dPy::getCircle(void) const
+void  ArcOfConic2dPy::setXAxis(Py::Object arg)
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    return Py::Object(new CirclePy(new GeomCircle(circle)), true);
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    gp_Ax2d xaxis = conic->XAxis();
+    xaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
+    conic->SetXAxis(xaxis);
 }
-#endif
+
+Py::Object ArcOfConic2dPy::getYAxis(void) const
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    gp_Dir2d ydir = conic->YAxis().Direction();
+    Py::Module module("__FreeCADBase__");
+    Py::Callable method(module.getAttr("Vector2d"));
+    Py::Tuple arg(2);
+    arg.setItem(0, Py::Float(ydir.X()));
+    arg.setItem(1, Py::Float(ydir.Y()));
+    return method.apply(arg);
+}
+
+void  ArcOfConic2dPy::setYAxis(Py::Object arg)
+{
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
+    Base::Vector2d dir = Py::Vector2d(arg.ptr()).getCxxObject()->value();
+    gp_Ax2d yaxis = conic->YAxis();
+    yaxis.SetDirection(gp_Dir2d(dir.x, dir.y));
+    conic->SetYAxis(yaxis);
+}
+
 PyObject *ArcOfConic2dPy::getCustomAttributes(const char* ) const
 {
     return 0;

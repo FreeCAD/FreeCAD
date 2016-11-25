@@ -14,24 +14,11 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
       <UserDocu>Describes a portion of a circle</UserDocu>
     </Documentation>
-    <!--
     <Attribute Name="Radius" ReadOnly="false">
       <Documentation>
         <UserDocu>The radius of the circle.</UserDocu>
       </Documentation>
       <Parameter Name="Radius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="Center" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Center of the circle.</UserDocu>
-      </Documentation>
-      <Parameter Name="Center" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Axis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="Axis" Type="Object"/>
     </Attribute>
     <Attribute Name="Circle" ReadOnly="true">
       <Documentation>
@@ -39,6 +26,5 @@
       </Documentation>
       <Parameter Name="Circle" Type="Object"/>
     </Attribute>
-    -->
   </PythonExport>
 </GenerateModel>

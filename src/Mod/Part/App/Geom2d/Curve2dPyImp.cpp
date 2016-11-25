@@ -59,10 +59,7 @@
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/Geom2d/Curve2dPy.h>
 #include <Mod/Part/App/Geom2d/Curve2dPy.cpp>
-#include <Mod/Part/App/BSplineSurfacePy.h>
-#include <Mod/Part/App/PlanePy.h>
-#include <Mod/Part/App/PointPy.h>
-#include <Mod/Part/App/BSplineCurvePy.h>
+#include <Mod/Part/App/GeometrySurfacePy.h>
 
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShape.h>
@@ -112,12 +109,18 @@ PyObject* Curve2dPy::reverse(PyObject *args)
     return 0;
 }
 
-#if 0
+extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+
 PyObject* Curve2dPy::toShape(PyObject *args)
 {
+    PyObject* p;
+    if (!PyArg_ParseTuple(args, "O!", &(Part::GeometrySurfacePy::Type), &p))
+        return 0;
     try {
-        TopoDS_Shape sh = getGeometry2dPtr()->toShape(Handle_Geom_Surface());
-        return new TopoShapeEdgePy(new TopoShape(sh));
+        Handle_Geom_Surface surf = Handle_Geom_Surface::DownCast(
+                    static_cast<GeometrySurfacePy*>(p)->getGeomSurfacePtr()->handle());
+        TopoDS_Shape sh = getGeometry2dPtr()->toShape(surf);
+        return Py::new_reference_to(shape2pyshape(sh));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -129,6 +132,7 @@ PyObject* Curve2dPy::toShape(PyObject *args)
     return 0;
 }
 
+#if 0
 PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
 {
     try {

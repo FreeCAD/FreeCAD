@@ -12,8 +12,7 @@
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes an abstract conic in 2d space
-   </UserDocu>
+      <UserDocu>Describes an abstract conic in 2d space</UserDocu>
     </Documentation>
     <Attribute Name="Location" ReadOnly="false">
       <Documentation>
