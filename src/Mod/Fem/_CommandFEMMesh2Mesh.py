@@ -38,7 +38,7 @@ class _CommandFemMesh2Mesh(FemCommands):
     # the Fem_FemMesh2Mesh command definition
     def __init__(self):
         super(_CommandFemMesh2Mesh, self).__init__()
-        self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
+        self.resources = {'Pixmap': 'fem-femmesh-to-mesh',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "FEM mesh to mesh"),
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "Convert the surface of a FEM mesh to a mesh")}
         self.is_active = 'with_femmesh_andor_res'
