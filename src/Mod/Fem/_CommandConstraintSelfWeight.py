@@ -49,5 +49,4 @@ class _CommandConstraintSelfWeight(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemConstraintSelfWeight.makeFemConstraintSelfWeight()]")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_ConstraintSelfWeight', _CommandConstraintSelfWeight())
+FreeCADGui.addCommand('Fem_ConstraintSelfWeight', _CommandConstraintSelfWeight())
