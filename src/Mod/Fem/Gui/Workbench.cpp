@@ -55,7 +55,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* root = StdWorkbench::setupToolBars();
     Gui::ToolBarItem* fem = new Gui::ToolBarItem(root);
     fem->setCommand("FEM");
-    *fem << "Fem_Analysis"
+    *fem << "Fem_FemMesh2Mesh"
+         << "Fem_Analysis"
          << "Fem_SolverCalculix"
          // << "Fem_SolverZ88"
          << "Fem_MeshNetgenFromShape"
@@ -116,7 +117,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* fem = new Gui::MenuItem;
     root->insertItem(item, fem);
     fem->setCommand("&FEM");
-    *fem << "Fem_Analysis"
+    *fem << "Fem_FemMesh2Mesh"
+         << "Fem_Analysis"
          << "Fem_SolverCalculix"
          << "Fem_SolverZ88"
          << "Fem_MeshNetgenFromShape"
