@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,10 +23,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_Parabola.hxx>
+# include <Geom2d_Parabola.hxx>
 #endif
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
 #include <Mod/Part/App/OCCError.h>
