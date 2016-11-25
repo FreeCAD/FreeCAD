@@ -29,6 +29,7 @@
         <file>icons/fem-fem-mesh-from-shape.svg</file>
         <file>icons/fem-fem-mesh-gmsh-from-shape.svg</file>
         <file>icons/fem-fem-mesh-netgen-from-shape.svg</file>
+        <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
         <file>icons/fem-material.svg</file>
