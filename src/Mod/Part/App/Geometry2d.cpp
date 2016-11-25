@@ -666,7 +666,7 @@ Geom2dArcOfConic::~Geom2dArcOfConic()
 {
 }
 
-Base::Vector2d Geom2dArcOfConic::getCenter(void) const
+Base::Vector2d Geom2dArcOfConic::getLocation(void) const
 {
     Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());
     Handle_Geom2d_Conic conic = Handle_Geom2d_Conic::DownCast(curve->BasisCurve());
@@ -674,7 +674,7 @@ Base::Vector2d Geom2dArcOfConic::getCenter(void) const
     return Base::Vector2d(loc.X(),loc.Y());
 }
 
-void Geom2dArcOfConic::setCenter(const Base::Vector2d& Center)
+void Geom2dArcOfConic::setLocation(const Base::Vector2d& Center)
 {
     gp_Pnt2d p1(Center.x,Center.y);
     Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(handle());

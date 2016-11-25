@@ -23,21 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Circ.hxx>
-# include <Geom_Circle.hxx>
-# include <GC_MakeArcOfCircle.hxx>
-# include <GC_MakeCircle.hxx>
-# include <Geom_TrimmedCurve.hxx>
+# include <gp_Circ2d.hxx>
+# include <Geom2d_Circle.hxx>
+# include <GCE2d_MakeArcOfCircle.hxx>
+# include <GCE2d_MakeCircle.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 #endif
 
+#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfCircle2dPy.cpp>
-//#include "CirclePy.h"
-//#include "OCCError.h"
+#include <Mod/Part/App/Geom2d/Circle2dPy.h>
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 
@@ -46,30 +45,7 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfCircle2dPy::representation(void) const
 {
-#if 0
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    gp_Pnt loc = axis.Location();
-    Standard_Real fRad = circle->Radius();
-    Standard_Real u1 = trim->FirstParameter();
-    Standard_Real u2 = trim->LastParameter();
-
-    std::stringstream str;
-    str << "ArcOfCircle (";
-    str << "Radius : " << fRad << ", "; 
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
-    str << ")";
-
-    return str.str();
-#else
-    return "";
-#endif
+    return "<Arc of circle2d object>";
 }
 
 PyObject *ArcOfCircle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -81,23 +57,20 @@ PyObject *ArcOfCircle2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *) 
 // constructor method
 int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-#if 1
-    return 0;
-#else
     PyObject* o;
     double u1, u2;
     PyObject *sense=Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::CirclePy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Circle2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast
-                (static_cast<CirclePy*>(o)->getGeomCirclePtr()->handle());
-            GC_MakeArcOfCircle arc(circle->Circ(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast
+                (static_cast<Circle2dPy*>(o)->getGeom2dCirclePtr()->handle());
+            GCE2d_MakeArcOfCircle arc(circle->Circ2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
-            getGeomArcOfCirclePtr()->setHandle(arc.Value());
+            getGeom2dArcOfCirclePtr()->setHandle(arc.Value());
             return 0;
         }
         catch (Standard_Failure) {
@@ -113,113 +86,48 @@ int ArcOfCircle2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 
     PyErr_Clear();
     PyObject *pV1, *pV2, *pV3;
-    if (PyArg_ParseTuple(args, "O!O!O!", &(Base::VectorPy::Type), &pV1,
-                                         &(Base::VectorPy::Type), &pV2,
-                                         &(Base::VectorPy::Type), &pV3)) {
-        Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
-        Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
-        Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
+    if (PyArg_ParseTuple(args, "O!O!O!", Base::Vector2dPy::type_object(), &pV1,
+                                         Base::Vector2dPy::type_object(), &pV2,
+                                         Base::Vector2dPy::type_object(), &pV3)) {
+        Base::Vector2d v1 = Py::Vector2d(pV1).getCxxObject()->value();
+        Base::Vector2d v2 = Py::Vector2d(pV2).getCxxObject()->value();
+        Base::Vector2d v3 = Py::Vector2d(pV3).getCxxObject()->value();
 
-        GC_MakeArcOfCircle arc(gp_Pnt(v1.x,v1.y,v1.z),
-                               gp_Pnt(v2.x,v2.y,v2.z),
-                               gp_Pnt(v3.x,v3.y,v3.z));
+        GCE2d_MakeArcOfCircle arc(gp_Pnt2d(v1.x,v1.y),
+                                  gp_Pnt2d(v2.x,v2.y),
+                                  gp_Pnt2d(v3.x,v3.y));
         if (!arc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
             return -1;
         }
 
-        getGeomArcOfCirclePtr()->setHandle(arc.Value());
+        getGeom2dArcOfCirclePtr()->setHandle(arc.Value());
         return 0;
     }
 
     // All checks failed
     PyErr_SetString(PyExc_TypeError,
-        "ArcOfCircle constructor expects a circle curve and a parameter range or three points");
+        "ArcOfCircle2d constructor expects a circle curve and a parameter range or three points");
     return -1;
-#endif
 }
-#if 0
+
 Py::Float ArcOfCircle2dPy::getRadius(void) const
 {
-    return Py::Float(getGeomArcOfCirclePtr()->getRadius()); 
+    return Py::Float(getGeom2dArcOfCirclePtr()->getRadius());
 }
 
 void  ArcOfCircle2dPy::setRadius(Py::Float arg)
 {
-    getGeomArcOfCirclePtr()->setRadius((double)arg);
-}
-
-Py::Object ArcOfCircle2dPy::getCenter(void) const
-{
-    return Py::Vector(getGeomArcOfCirclePtr()->getCenter());
-}
-
-void  ArcOfCircle2dPy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object ArcOfCircle2dPy::getAxis(void) const
-{
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  ArcOfCircle2dPy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(circle->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
+    getGeom2dArcOfCirclePtr()->setRadius((double)arg);
 }
 
 Py::Object ArcOfCircle2dPy::getCircle(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    return Py::Object(new CirclePy(new GeomCircle(circle)), true);
+    Handle_Geom2d_TrimmedCurve curve = Handle_Geom2d_TrimmedCurve::DownCast(getGeom2dArcOfConicPtr()->handle());
+    Handle_Geom2d_Circle circle = Handle_Geom2d_Circle::DownCast(curve->BasisCurve());
+    return Py::asObject(new Circle2dPy(new Geom2dCircle(circle)));
 }
-#endif
+
 PyObject *ArcOfCircle2dPy::getCustomAttributes(const char* ) const
 {
     return 0;

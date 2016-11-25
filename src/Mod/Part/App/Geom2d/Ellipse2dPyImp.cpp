@@ -154,44 +154,6 @@ void Ellipse2dPy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
-Py::Float Ellipse2dPy::getAngleXU(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    
-    gp_Pnt center = ellipse->Axis().Location();
-    gp_Dir normal = ellipse->Axis().Direction();
-    gp_Dir xdir = ellipse->XAxis().Direction();
-        
-    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
-    
-    return Py::Float(-xdir.AngleWithRef(xdirref.XDirection(),normal));
-
-}
-
-void Ellipse2dPy::setAngleXU(Py::Float arg)
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-
-
-    gp_Pnt center = ellipse->Axis().Location();
-    gp_Dir normal = ellipse->Axis().Direction();
-    
-    gp_Ax1 normaxis(center, normal);
-    
-    gp_Ax2 xdirref(center, normal);
-    
-    xdirref.Rotate(normaxis,arg);
-    
-    ellipse->SetPosition(xdirref);
-
-}
-
-Py::Float Ellipse2dPy::getEccentricity(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->Eccentricity()); 
-}
-
 Py::Float Ellipse2dPy::getFocal(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
@@ -210,73 +172,6 @@ Py::Object Ellipse2dPy::getFocus2(void) const
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus2();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-Py::Object Ellipse2dPy::getCenter(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    gp_Pnt loc = ellipse->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-void Ellipse2dPy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-        ellipse->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
-    }
-    else if (PyTuple_Check(p)) {
-        Py::Tuple tuple(arg);
-        gp_Pnt loc;
-        loc.SetX((double)Py::Float(tuple.getItem(0)));
-        loc.SetY((double)Py::Float(tuple.getItem(1)));
-        loc.SetZ((double)Py::Float(tuple.getItem(2)));
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-        ellipse->SetLocation(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object Ellipse2dPy::getAxis(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    gp_Ax1 axis = ellipse->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void Ellipse2dPy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(ellipse->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        ellipse->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
 }
 #endif
 PyObject *Ellipse2dPy::getCustomAttributes(const char* /*attr*/) const
