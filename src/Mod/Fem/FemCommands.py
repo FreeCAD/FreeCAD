@@ -58,6 +58,10 @@ class FemCommands(object):
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.results_present()
             elif self.is_active == 'with_part_feature':
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
+            elif self.is_active == 'with_femmesh':
+                active = FreeCADGui.ActiveDocument is not None and self.femmesh_selected()
+            elif self.is_active == 'with_femmesh_andor_res':
+                active = FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
             elif self.is_active == 'with_material':
                 active = FemGui.getActiveAnalysis() is not None and self.active_analysis_in_active_doc() and self.material_selected()
             elif self.is_active == 'with_solver':
@@ -81,10 +85,37 @@ class FemCommands(object):
             else:
                 return False
 
+        def femmesh_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+                return True
+            else:
+                return False
+
         def material_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("App::MaterialObjectPython"):
                 return True
+            else:
+                return False
+
+        def with_femmesh_andor_res_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+                return True
+            elif len(sel) == 2:
+                if(sel[0].isDerivedFrom("Fem::FemMeshObject")):
+                    if(sel[1].isDerivedFrom("Fem::FemResultObject")):
+                        return True
+                    else:
+                        return False
+                elif(sel[1].isDerivedFrom("Fem::FemMeshObject")):
+                    if(sel[0].isDerivedFrom("Fem::FemResultObject")):
+                        return True
+                    else:
+                        return False
+                else:
+                    return False
             else:
                 return False
 

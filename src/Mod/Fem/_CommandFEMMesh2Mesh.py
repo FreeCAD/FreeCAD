@@ -41,7 +41,7 @@ class _CommandFemMesh2Mesh(FemCommands):
         self.resources = {'Pixmap': 'fem-fem-mesh-from-shape',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "FEM mesh to mesh"),
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_FemMesh2Mesh", "Convert the surface of a FEM mesh to a mesh")}
-        self.is_active = 'with_document'
+        self.is_active = 'with_femmesh_andor_res'
 
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction("Create FEM mesh")
