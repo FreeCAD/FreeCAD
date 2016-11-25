@@ -58,5 +58,5 @@ class _CommandSolverCalculix(FemCommands):
         else:
             FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverCalculix.makeFemSolverCalculix()]")
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())
+
+FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())

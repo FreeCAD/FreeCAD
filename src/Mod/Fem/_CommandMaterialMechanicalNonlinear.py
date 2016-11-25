@@ -74,5 +74,4 @@ class _CommandMaterialMechanicalNonlinear(FemCommands):
             if solver_object and solver_object.SolverType == 'FemSolverCalculix':
                 solver_object.MaterialNonlinearity = "nonlinear"
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())
+FreeCADGui.addCommand('Fem_MaterialMechanicalNonlinear', _CommandMaterialMechanicalNonlinear())

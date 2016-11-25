@@ -61,5 +61,4 @@ class _CommandMeshGmshFromShape(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_MeshGmshFromShape', _CommandMeshGmshFromShape())
+FreeCADGui.addCommand('Fem_MeshGmshFromShape', _CommandMeshGmshFromShape())

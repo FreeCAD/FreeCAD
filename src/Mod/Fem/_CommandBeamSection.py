@@ -49,5 +49,4 @@ class _CommandBeamSection(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemBeamSection.makeFemBeamSection()]")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())
+FreeCADGui.addCommand('Fem_BeamSection', _CommandBeamSection())

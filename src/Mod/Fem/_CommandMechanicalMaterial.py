@@ -55,5 +55,4 @@ class _CommandMechanicalMaterial(FemCommands):
         FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
+FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())

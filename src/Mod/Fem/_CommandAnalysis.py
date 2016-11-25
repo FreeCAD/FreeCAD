@@ -58,5 +58,4 @@ class _CommandAnalysis(FemCommands):
                 FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.activeDocument()." + sel[0].Name + "]")
         FreeCADGui.Selection.clearSelection()
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_Analysis', _CommandAnalysis())
+FreeCADGui.addCommand('Fem_Analysis', _CommandAnalysis())

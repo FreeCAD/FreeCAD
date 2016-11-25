@@ -55,5 +55,4 @@ class _CommandMeshNetgenFromShape(FemCommands):
         FreeCADGui.Selection.clearSelection()
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_MeshNetgenFromShape', _CommandMeshNetgenFromShape())
+FreeCADGui.addCommand('Fem_MeshNetgenFromShape', _CommandMeshNetgenFromShape())

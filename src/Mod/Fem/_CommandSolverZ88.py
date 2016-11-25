@@ -49,5 +49,4 @@ class _CommandSolverZ88(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverZ88.makeFemSolverZ88()]")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_SolverZ88', _CommandSolverZ88())
+FreeCADGui.addCommand('Fem_SolverZ88', _CommandSolverZ88())
