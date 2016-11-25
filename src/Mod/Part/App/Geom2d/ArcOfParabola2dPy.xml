@@ -12,9 +12,8 @@
       Constructor="true">
     <Documentation>
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-      <UserDocu>Describes a portion of an parabola</UserDocu>
+      <UserDocu>Describes a portion of a parabola</UserDocu>
     </Documentation>
-    <!--
     <Attribute Name="Focal" ReadOnly="false">
       <Documentation>
         <UserDocu>The focal length of the parabola.</UserDocu>
@@ -27,6 +26,5 @@
       </Documentation>
       <Parameter Name="Parabola" Type="Object"/>
     </Attribute>
-    -->
   </PythonExport>
 </GenerateModel>
