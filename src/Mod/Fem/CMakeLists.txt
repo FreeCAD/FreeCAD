@@ -46,6 +46,7 @@ INSTALL(
         FemGmshTools.py
 
         FemMesh2Mesh.py
+        _CommandFEMMesh2Mesh.py
 
         FemBeamSection.py
         _FemBeamSection.py
