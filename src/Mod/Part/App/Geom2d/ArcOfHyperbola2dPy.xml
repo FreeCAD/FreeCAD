@@ -14,7 +14,6 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>Describes a portion of an hyperbola</UserDocu>
     </Documentation>
-    <!--
     <Attribute Name="MajorRadius" ReadOnly="false">
       <Documentation>
         <UserDocu>The major radius of the hyperbola.</UserDocu>
@@ -33,6 +32,5 @@
       </Documentation>
       <Parameter Name="Hyperbola" Type="Object"/>
     </Attribute>
-    -->
   </PythonExport>
 </GenerateModel>

@@ -23,21 +23,20 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <gp_Hypr.hxx>
-# include <Geom_Hyperbola.hxx>
-# include <GC_MakeArcOfHyperbola.hxx>
-# include <GC_MakeHyperbola.hxx>
-# include <Geom_TrimmedCurve.hxx>
+# include <gp_Hypr2d.hxx>
+# include <Geom2d_Hyperbola.hxx>
+# include <GCE2d_MakeArcOfHyperbola.hxx>
+# include <GCE2d_MakeHyperbola.hxx>
+# include <Geom2d_TrimmedCurve.hxx>
 #endif
 
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.h>
 #include <Mod/Part/App/Geom2d/ArcOfHyperbola2dPy.cpp>
-#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
 #include <Mod/Part/App/OCCError.h>
 
 #include <Base/GeometryPyCXX.h>
-#include <Base/VectorPy.h>
 
 using namespace Part;
 
@@ -46,41 +45,7 @@ extern const char* gce_ErrorStatusText(gce_ErrorType et);
 // returns a string which represents the object e.g. when printed in python
 std::string ArcOfHyperbola2dPy::representation(void) const
 {
-#if 0
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
-
-    gp_Ax1 axis = hyperbola->Axis();
-    gp_Dir dir = axis.Direction();
-    gp_Pnt loc = axis.Location();
-    Standard_Real fMajRad = hyperbola->MajorRadius();
-    Standard_Real fMinRad = hyperbola->MinorRadius();
-    Standard_Real u1 = trim->FirstParameter();
-    Standard_Real u2 = trim->LastParameter();
-    
-    gp_Dir normal = hyperbola->Axis().Direction();
-    gp_Dir xdir = hyperbola->XAxis().Direction();
-    
-    gp_Ax2 xdirref(loc, normal); // this is a reference XY for the hyperbola
-    
-    Standard_Real fAngleXU = -xdir.AngleWithRef(xdirref.XDirection(),normal);
-    
-
-    std::stringstream str;
-    str << "ArcOfHyperbola (";
-    str << "MajorRadius : " << fMajRad << ", "; 
-    str << "MinorRadius : " << fMinRad << ", ";
-    str << "AngleXU : " << fAngleXU << ", ";
-    str << "Position : (" << loc.X() << ", "<< loc.Y() << ", "<< loc.Z() << "), "; 
-    str << "Direction : (" << dir.X() << ", "<< dir.Y() << ", "<< dir.Z() << "), "; 
-    str << "Parameter : (" << u1 << ", " << u2 << ")"; 
-    str << ")";
-
-    return str.str();
-#else
-    return "";
-#endif
+    return "<ArcOfHyperbola2d object>";
 }
 
 PyObject *ArcOfHyperbola2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -92,23 +57,20 @@ PyObject *ArcOfHyperbola2dPy::PyMake(struct _typeobject *, PyObject *, PyObject 
 // constructor method
 int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-#if 1
-    return 0;
-#else
     PyObject* o;
     double u1, u2;
     PyObject *sense=Py_True;
-    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::HyperbolaPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
+    if (PyArg_ParseTuple(args, "O!dd|O!", &(Part::Hyperbola2dPy::Type), &o, &u1, &u2, &PyBool_Type, &sense)) {
         try {
-            Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast
-                (static_cast<HyperbolaPy*>(o)->getGeomHyperbolaPtr()->handle());
-            GC_MakeArcOfHyperbola arc(hyperbola->Hypr(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
+            Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast
+                (static_cast<Hyperbola2dPy*>(o)->getGeom2dHyperbolaPtr()->handle());
+            GCE2d_MakeArcOfHyperbola arc(hyperbola->Hypr2d(), u1, u2, PyObject_IsTrue(sense) ? Standard_True : Standard_False);
             if (!arc.IsDone()) {
                 PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(arc.Status()));
                 return -1;
             }
 
-            getGeomArcOfHyperbolaPtr()->setHandle(arc.Value());
+            getGeom2dArcOfHyperbolaPtr()->setHandle(arc.Value());
             return 0;
         }
         catch (Standard_Failure) {
@@ -126,37 +88,36 @@ int ArcOfHyperbola2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
     PyErr_SetString(PyExc_TypeError,
         "ArcOfHyperbola constructor expects an hyperbola curve and a parameter range");
     return -1;
-#endif
 }
-#if 0
+
 Py::Float ArcOfHyperbola2dPy::getMajorRadius(void) const
 {
-    return Py::Float(getGeomArcOfHyperbolaPtr()->getMajorRadius()); 
+    return Py::Float(getGeom2dArcOfHyperbolaPtr()->getMajorRadius());
 }
 
 void  ArcOfHyperbola2dPy::setMajorRadius(Py::Float arg)
 {
-    getGeomArcOfHyperbolaPtr()->setMajorRadius((double)arg);
+    getGeom2dArcOfHyperbolaPtr()->setMajorRadius((double)arg);
 }
 
 Py::Float ArcOfHyperbola2dPy::getMinorRadius(void) const
 {
-    return Py::Float(getGeomArcOfHyperbolaPtr()->getMinorRadius()); 
+    return Py::Float(getGeom2dArcOfHyperbolaPtr()->getMinorRadius());
 }
 
 void  ArcOfHyperbola2dPy::setMinorRadius(Py::Float arg)
 {
-    getGeomArcOfHyperbolaPtr()->setMinorRadius((double)arg);
+    getGeom2dArcOfHyperbolaPtr()->setMinorRadius((double)arg);
 }
 
 Py::Object ArcOfHyperbola2dPy::getHyperbola(void) const
 {
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
-    return Py::Object(new HyperbolaPy(new GeomHyperbola(hyperbola)), true);
+    Handle_Geom2d_TrimmedCurve trim = Handle_Geom2d_TrimmedCurve::DownCast
+        (getGeom2dArcOfHyperbolaPtr()->handle());
+    Handle_Geom2d_Hyperbola hyperbola = Handle_Geom2d_Hyperbola::DownCast(trim->BasisCurve());
+    return Py::asObject(new Hyperbola2dPy(new Geom2dHyperbola(hyperbola)));
 }
-#endif
+
 PyObject *ArcOfHyperbola2dPy::getCustomAttributes(const char* ) const
 {
     return 0;
