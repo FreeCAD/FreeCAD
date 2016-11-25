@@ -49,5 +49,4 @@ class _CommandShellThickness(FemCommands):
         FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemShellThickness.makeFemShellThickness()]")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())
+FreeCADGui.addCommand('Fem_ShellThickness', _CommandShellThickness())
