@@ -55,7 +55,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string BSplineCurve2dPy::representation(void) const
 {
-    return "<BSplineCurve object>";
+    return "<BSplineCurve2d object>";
 }
 
 PyObject *BSplineCurve2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper

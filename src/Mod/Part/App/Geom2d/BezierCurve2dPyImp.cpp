@@ -42,7 +42,7 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string BezierCurve2dPy::representation(void) const
 {
-    return "<BezierCurve object>";
+    return "<BezierCurve2d object>";
 }
 
 PyObject *BezierCurve2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
