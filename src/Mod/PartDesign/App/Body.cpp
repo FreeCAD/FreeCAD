@@ -257,6 +257,9 @@ bool Body::isAllowed(const App::DocumentObject* f)
 
 Body* Body::findBodyOf(const App::DocumentObject* feature)
 {
+    if(!feature)
+        return nullptr;
+    
     return static_cast<Body*>(BodyBase::findBodyOf(feature));
 }
 
