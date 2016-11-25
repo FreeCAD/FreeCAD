@@ -21,18 +21,27 @@
 # ***************************************************************************
 
 __title__ = "FemMesh to Mesh converter"
-__author__ = "Frantisek Loeffelmann, Ulrich Brammer"
+__author__ = "Frantisek Loeffelmann, Ulrich Brammer, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
 ## @package FwmMesh2Mesh
 #  \ingroup FEM
 
-import FreeCADGui
-from PySide import QtGui
-import Mesh
 import time
+# import Mesh
 
 
+'''
+load FreeCADs 3D FEM example from Start Workbench
+
+femmesh = App.ActiveDocument.getObject("Box_Mesh").FemMesh
+result = App.ActiveDocument.getObject("CalculiX_static_results")
+import FemMesh2Mesh
+out_mesh = FemMesh2Mesh.femmesh_2_mesh(femmesh, result)
+import Mesh
+Mesh.show(Mesh.Mesh(out_mesh))
+
+'''
 # These dictionaries list the nodes, that define faces of an element.
 # The key is the face number, used internally by FreeCAD.
 # The list contains the nodes in the element for each face.
@@ -75,7 +84,7 @@ face_dicts = {
     20: hexaFaces}
 
 
-def makeSimpleMesh(myFemMesh, myResults=None):
+def femmesh_2_mesh(myFemMesh, myResults=None):
     shiftBits = 20  # allows a million nodes, needs to be higher for more nodes in a FemMesh
 
     # This code generates a dict and a faceCode for each face of all elements
@@ -128,6 +137,7 @@ def makeSimpleMesh(myFemMesh, myResults=None):
 
     output_mesh = []
     if myResults:
+        print(myResults.Name)
         for myFace in singleFaces:
             face_nodes = faceCodeDict[myFace]
             dispVec0 = myResults.DisplacementVectors[myResults.NodeNumbers.index(face_nodes[0])]
@@ -161,62 +171,6 @@ def makeSimpleMesh(myFemMesh, myResults=None):
                 output_mesh.extend(triangle)
                 # print 'my 2. triangle: ', triangle
 
-    if output_mesh:
-        obj = Mesh.Mesh(output_mesh)
-        Mesh.show(obj)
     end_time = time.clock()
     print 'Mesh by surface search method: ', end_time - start_time
-
-    '''
-    if output_mesh:
-        obj = Mesh.Mesh(output_mesh)
-        Mesh.show(obj)
-    end_time = time.clock()
-    print 'Faces by surface time: ', end_time - start_time
-    # This creates a mesh from all faces defined in the mesh structure
-    # Some meshes from Gmsh or Netgen seems to contain the surface as a list
-    # of faces.
-
-    start_time = time.clock()
-    output_mesh = []
-    for myFace in myFemMesh.Faces:
-        element_nodes = myFemMesh.getElementNodes(myFace)
-        triangle = [myFemMesh.getNodeById(element_nodes[0]),
-                    myFemMesh.getNodeById(element_nodes[1]),
-                    myFemMesh.getNodeById(element_nodes[2])]
-        output_mesh.extend(triangle)
-
-    if output_mesh:
-        obj = Mesh.Mesh(output_mesh)
-        Mesh.show(obj)
-    end_time = time.clock()
-    print 'Faces by face already in mesh time: ', end_time - start_time
-    '''
-
-
-def main():
-    selection = FreeCADGui.Selection.getSelection()
-    femResult = None
-    input_mesh = None
-
-    for theObject in selection:
-        if hasattr(theObject, "TypeId"):
-            print 'The TypeId: ', theObject.TypeId
-        if hasattr(theObject, "Name"):
-            print 'The Name: ', theObject.Name
-        if hasattr(theObject, "FemMesh"):
-            input_mesh = theObject.FemMesh
-        if theObject.TypeId == 'Fem::FemResultObject':
-            femResult = theObject  # .DisplacementVectors
-
-    if not input_mesh:
-        QtGui.QMessageBox.critical(None, "femmesh2mesh", "FemMesh object has to be selected!")
-        assert selection, "FemMesh object has to be selected!"
-    if input_mesh:
-        makeSimpleMesh(input_mesh, femResult)
-
-    return 0
-
-
-if __name__ == '__main__':
-    main()
+    return output_mesh
