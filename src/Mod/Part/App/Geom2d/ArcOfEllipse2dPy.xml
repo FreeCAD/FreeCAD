@@ -14,7 +14,6 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
       <UserDocu>Describes a portion of an ellipse</UserDocu>
     </Documentation>
-    <!--
     <Attribute Name="MajorRadius" ReadOnly="false">
       <Documentation>
         <UserDocu>The major radius of the ellipse.</UserDocu>
@@ -33,6 +32,5 @@
       </Documentation>
       <Parameter Name="Ellipse" Type="Object"/>
     </Attribute>
-    -->
   </PythonExport>
 </GenerateModel>

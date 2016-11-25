@@ -12,29 +12,26 @@
 		Constructor="true">
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu>Describes an ellipse in 3D space
+            <UserDocu>Describes an ellipse in 2D space
 				To create an ellipse there are several ways:
 				Part.Ellipse()
 					Creates an ellipse with major radius 2 and minor radius 1 with the
-					center in (0,0,0)
+                    center in (0,0)
 
 				Part.Ellipse(Ellipse)
 					Create a copy of the given ellipse
 
 				Part.Ellipse(S1,S2,Center)
-					Creates an ellipse centered on the point Center, where
-					the plane of the ellipse is defined by Center, S1 and S2,
+                    Creates an ellipse centered on the point Center,
 					its major axis is defined by Center and S1,
 					its major radius is the distance between Center and S1, and
 					its minor radius is the distance between S2 and the major axis.
 
 				Part.Ellipse(Center,MajorRadius,MinorRadius)
 					Creates an ellipse with major and minor radii MajorRadius and
-					MinorRadius, and located in the plane defined by Center and
-					the normal (0,0,1)
+                    MinorRadius
 			</UserDocu>
 		</Documentation>
-        <!--
 		<Attribute Name="MajorRadius" ReadOnly="false">
 			<Documentation>
 				<UserDocu>The major radius of the ellipse.</UserDocu>
@@ -70,6 +67,5 @@ the second focus is on the negative side.
 			</Documentation>
 			<Parameter Name="Focus2" Type="Object"/>
 		</Attribute>
-        -->
 	</PythonExport>
 </GenerateModel>
