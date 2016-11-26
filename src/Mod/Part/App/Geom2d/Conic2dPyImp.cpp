@@ -49,7 +49,7 @@ PyObject *Conic2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 }
 
 // constructor method
-int Conic2dPy::PyInit(PyObject* args, PyObject* kwds)
+int Conic2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
 {
     return 0;
 }
