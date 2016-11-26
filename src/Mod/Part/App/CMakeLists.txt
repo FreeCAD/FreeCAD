@@ -101,6 +101,7 @@ generate_from_xml(Geom2d/Geometry2dPy)
 generate_from_xml(Geom2d/Hyperbola2dPy)
 generate_from_xml(Geom2d/Curve2dPy)
 generate_from_xml(Geom2d/Line2dSegmentPy)
+generate_from_xml(Geom2d/Line2dPy)
 generate_from_xml(Geom2d/OffsetCurve2dPy)
 generate_from_xml(Geom2d/Parabola2dPy)
 
@@ -161,10 +162,10 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
-	BodyBase.h
-	BodyBase.cpp
-	DatumFeature.cpp
-	DatumFeature.h
+    BodyBase.h
+    BodyBase.cpp
+    DatumFeature.cpp
+    DatumFeature.h
     AttachableObject.h
     AttachableObject.cpp
 )
@@ -298,6 +299,8 @@ SET(Geom2dPy_SRCS
     Geom2d/Curve2dPyImp.cpp
     Geom2d/Hyperbola2dPy.xml
     Geom2d/Hyperbola2dPyImp.cpp
+    Geom2d/Line2dPy.xml
+    Geom2d/Line2dPyImp.cpp
     Geom2d/Line2dSegmentPy.xml
     Geom2d/Line2dSegmentPyImp.cpp
     Geom2d/OffsetCurve2dPy.xml

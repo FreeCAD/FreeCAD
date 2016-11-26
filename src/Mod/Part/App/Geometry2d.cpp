@@ -79,6 +79,7 @@
 #include <Mod/Part/App/Geom2d/BezierCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/BSplineCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+#include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 
 using namespace Part;
@@ -1980,7 +1981,7 @@ void Geom2dLine::Restore(Base::XMLReader &reader)
 
 PyObject *Geom2dLine::getPyObject(void)
 {
-    return 0;
+    return new Line2dPy(static_cast<Geom2dLine*>(this->clone()));
 }
 
 // -------------------------------------------------
