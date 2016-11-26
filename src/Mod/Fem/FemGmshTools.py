@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import Fem
+import Units
 import subprocess
 import tempfile
 from platform import system
@@ -48,12 +49,12 @@ class FemGmshTools():
         self.part_obj = self.mesh_obj.Part
 
         # clmax, ElementSizeMax: float, 0.0 = 1e+22
-        self.clmax = self.mesh_obj.ElementSizeMax
+        self.clmax = Units.Quantity(self.mesh_obj.ElementSizeMax).Value
         if self.clmax == 0.0:
             self.clmax = 1e+22
 
         # clmin, ElementSizeMin: float
-        self.clmin = self.mesh_obj.ElementSizeMin
+        self.clmin = Units.Quantity(self.mesh_obj.ElementSizeMin).Value
 
         # order, ElementOrder: ['Auto', '1st', '2nd']
         self.order = self.mesh_obj.ElementOrder
