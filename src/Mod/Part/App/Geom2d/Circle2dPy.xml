@@ -14,19 +14,19 @@
       <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
       <UserDocu>Describes a circle in 3D space
 To create a circle there are several ways:
-Part.Circle()
+Part.Geom2d.Circle2d()
     Creates a default circle with center (0,0) and radius 1
 
-Part.Circle(Circle)
+Part.Geom2d.Circle2d(circle)
     Creates a copy of the given circle
 
-Part.Circle(Circle, Distance)
+Part.Geom2d.Circle2d(circle, Distance)
     Creates a circle parallel to given circle at a certain distance
 
-Part.Circle(Center,Radius)
+Part.Geom2d.Circle2d(Center,Radius)
     Creates a circle defined by center and radius
 
-Part.Circle(Point1,Point2,Point3)
+Part.Geom2d.Circle2d(Point1,Point2,Point3)
     Creates a circle defined by three non-linear points
    </UserDocu>
     </Documentation>
