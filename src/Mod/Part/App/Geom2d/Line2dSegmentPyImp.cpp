@@ -36,6 +36,7 @@
 
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/Geometry2d.h>
+#include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
 #include <Mod/Part/App/Geom2d/Line2dSegmentPy.cpp>
 
@@ -108,6 +109,25 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!dd", &(Line2dPy::Type), &pLine, &first, &last)) {
+        // Copy line
+        Line2dPy* pcLine = static_cast<Line2dPy*>(pLine);
+        // get Geom_Line of line
+        Handle_Geom2d_Line that_line = Handle_Geom2d_Line::DownCast
+            (pcLine->getGeom2dLinePtr()->handle());
+        // get Geom_Line of line segment
+        Handle_Geom2d_TrimmedCurve this_curv = Handle_Geom2d_TrimmedCurve::DownCast
+            (this->getGeom2dLineSegmentPtr()->handle());
+        Handle_Geom2d_Line this_line = Handle_Geom2d_Line::DownCast
+            (this_curv->BasisCurve());
+
+        // Assign the lines
+        this_line->SetLin2d(that_line->Lin2d());
+        this_curv->SetTrim(first, last);
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", Base::Vector2dPy::type_object(), &pV1,
                                        Base::Vector2dPy::type_object(), &pV2)) {
@@ -147,10 +167,11 @@ int Line2dSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
     }
 
-    PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
+    PyErr_SetString(PyExc_TypeError, "Line2dSegment constructor accepts:\n"
         "-- empty parameter list\n"
-        "-- Line\n"
-        "-- Line, float, float\n"
+        "-- Line2dSegment\n"
+        "-- Line2dSegment, float, float\n"
+        "-- Line2d, float, float\n"
         "-- Point, Point");
     return -1;
 }
