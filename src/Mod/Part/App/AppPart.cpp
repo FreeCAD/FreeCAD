@@ -109,6 +109,7 @@
 #include <Mod/Part/App/Geom2d/Hyperbola2dPy.h>
 #include <Mod/Part/App/Geom2d/Curve2dPy.h>
 #include <Mod/Part/App/Geom2d/Line2dSegmentPy.h>
+#include <Mod/Part/App/Geom2d/Line2dPy.h>
 #include <Mod/Part/App/Geom2d/OffsetCurve2dPy.h>
 #include <Mod/Part/App/Geom2d/Parabola2dPy.h>
 #include "PropertyGeometryList.h"
@@ -262,6 +263,7 @@ PyMODINIT_FUNC initPart()
     Base::Interpreter().addType(&Part::BezierCurve2dPy::Type,geom2dModule,"BezierCurve2d");
     Base::Interpreter().addType(&Part::BSplineCurve2dPy::Type,geom2dModule,"BSplineCurve2d");
     Base::Interpreter().addType(&Part::Line2dSegmentPy::Type,geom2dModule,"Line2dSegment");
+    Base::Interpreter().addType(&Part::Line2dPy::Type,geom2dModule,"Line2d");
     Base::Interpreter().addType(&Part::OffsetCurve2dPy::Type,geom2dModule,"OffsetCurve2d");
 
     try {
