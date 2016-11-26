@@ -42,9 +42,11 @@
 # include <Geom_SphericalSurface.hxx>
 # include <Geom_ToroidalSurface.hxx>
 # include <Geom_Surface.hxx>
+# include <Geom2d_Curve.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
+# include <TopoDS_Edge.hxx>
 # include <gp_Pnt2d.hxx>
 # include <gp_Pln.hxx>
 # include <gp_Cylinder.hxx>
@@ -66,27 +68,30 @@
 #include <BRepLProp_SurfaceTool.hxx>
 #include <BRepGProp_Face.hxx>
 #include <GeomLProp_SLProps.hxx>
+#include <BRep_Tool.hxx>
 
 #include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
 
 #include "TopoShape.h"
-#include "TopoShapeSolidPy.h"
-#include "TopoShapeWirePy.h"
-#include "TopoShapeFacePy.h"
-#include "TopoShapeFacePy.cpp"
-#include "TopoShapeCompoundPy.h"
+#include "Geometry2d.h"
+#include <Mod/Part/App/TopoShapeSolidPy.h>
+#include <Mod/Part/App/TopoShapeEdgePy.h>
+#include <Mod/Part/App/TopoShapeWirePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.h>
+#include <Mod/Part/App/TopoShapeFacePy.cpp>
+#include <Mod/Part/App/TopoShapeCompoundPy.h>
 
-#include "BezierSurfacePy.h"
-#include "BSplineSurfacePy.h"
-#include "PlanePy.h"
-#include "CylinderPy.h"
-#include "ConePy.h"
-#include "SpherePy.h"
-#include "OffsetSurfacePy.h"
-#include "SurfaceOfRevolutionPy.h"
-#include "SurfaceOfExtrusionPy.h"
-#include "ToroidPy.h"
+#include <Mod/Part/App/BezierSurfacePy.h>
+#include <Mod/Part/App/BSplineSurfacePy.h>
+#include <Mod/Part/App/PlanePy.h>
+#include <Mod/Part/App/CylinderPy.h>
+#include <Mod/Part/App/ConePy.h>
+#include <Mod/Part/App/SpherePy.h>
+#include <Mod/Part/App/OffsetSurfacePy.h>
+#include <Mod/Part/App/SurfaceOfRevolutionPy.h>
+#include <Mod/Part/App/SurfaceOfExtrusionPy.h>
+#include <Mod/Part/App/ToroidPy.h>
 #include "OCCError.h"
 #include "Tools.h"
 #include "FaceMaker.h"
@@ -623,6 +628,41 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
         }
 
         Py_Return;
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return 0;
+    }
+}
+
+PyObject* TopoShapeFacePy::curveOnSurface(PyObject *args)
+{
+    PyObject* e;
+    if (!PyArg_ParseTuple(args, "O!", &(TopoShapeEdgePy::Type), &e))
+        return 0;
+
+    try {
+        TopoDS_Shape shape = static_cast<TopoShapeEdgePy*>(e)->getTopoShapePtr()->getShape();
+        if (shape.IsNull()) {
+            PyErr_SetString(PyExc_RuntimeError, "invalid shape");
+            return 0;
+        }
+
+        TopoDS_Edge edge = TopoDS::Edge(shape);
+        const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->getShape());
+
+        Standard_Real first, last;
+        Handle_Geom2d_Curve curve = BRep_Tool::CurveOnSurface(edge, face, first, last);
+        std::unique_ptr<Part::Geom2dCurve> geo2d = getCurve2dFromGeom2d(curve);
+        if (!geo2d)
+            Py_Return;
+
+        Py::Tuple tuple(3);
+        tuple.setItem(0, Py::asObject(geo2d->getPyObject()));
+        tuple.setItem(1, Py::Float(first));
+        tuple.setItem(2, Py::Float(last));
+        return Py::new_reference_to(tuple);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
