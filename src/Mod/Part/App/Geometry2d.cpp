@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <BRepBuilderAPI_MakeEdge.hxx>
+# include <BRepBuilderAPI_MakeEdge2d.hxx>
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <Geom2dConvert_CompCurveToBSplineCurve.hxx>
 # include <Geom2dAPI_Interpolate.hxx>
@@ -135,11 +135,13 @@ Geom2dPoint::~Geom2dPoint()
 {
 }
 
-TopoDS_Shape Geom2dPoint::toShape(const Handle_Geom_Surface& hSurface) const
+TopoDS_Shape Geom2dPoint::toShape() const
 {
     Handle_Geom2d_CartesianPoint c = Handle_Geom2d_CartesianPoint::DownCast(handle());
     gp_Pnt2d xy = c->Pnt2d();
-    gp_Pnt pnt = hSurface->Value(xy.X(), xy.Y());
+    gp_Pnt pnt;
+    pnt.SetX(xy.X());
+    pnt.SetY(xy.Y());
     BRepBuilderAPI_MakeVertex mkBuilder(pnt);
     return mkBuilder.Shape();
 }
@@ -223,10 +225,10 @@ Geom2dCurve::~Geom2dCurve()
 {
 }
 
-TopoDS_Shape Geom2dCurve::toShape(const Handle_Geom_Surface& hSurface) const
+TopoDS_Shape Geom2dCurve::toShape() const
 {
     Handle_Geom2d_Curve c = Handle_Geom2d_Curve::DownCast(handle());
-    BRepBuilderAPI_MakeEdge mkBuilder(c, hSurface);
+    BRepBuilderAPI_MakeEdge2d mkBuilder(c);
     return mkBuilder.Shape();
 }
 
@@ -2270,4 +2272,41 @@ PyObject *Geom2dTrimmedCurve::getPyObject(void)
 
     PyErr_SetString(PyExc_RuntimeError, "Unknown curve type");
     return 0;
+}
+
+// ------------------------------------------------------------------
+
+namespace Part {
+std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle_Geom2d_Curve curve)
+{
+    std::unique_ptr<Geom2dCurve> geo2d;
+    if (curve.IsNull())
+        return geo2d;
+    if (curve->IsKind(STANDARD_TYPE (Geom2d_Parabola))) {
+        geo2d.reset(new Geom2dParabola(Handle_Geom2d_Parabola::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_Hyperbola))) {
+        geo2d.reset(new Geom2dHyperbola(Handle_Geom2d_Hyperbola::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_Ellipse))) {
+        geo2d.reset(new Geom2dEllipse(Handle_Geom2d_Ellipse::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_Circle))) {
+        geo2d.reset(new Geom2dCircle(Handle_Geom2d_Circle::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_Line))) {
+        geo2d.reset(new Geom2dLine(Handle_Geom2d_Line::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_BSplineCurve))) {
+        geo2d.reset(new Geom2dBSplineCurve(Handle_Geom2d_BSplineCurve::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_BezierCurve))) {
+        geo2d.reset(new Geom2dBezierCurve(Handle_Geom2d_BezierCurve::DownCast(curve)));
+    }
+    else if (curve->IsKind(STANDARD_TYPE (Geom2d_TrimmedCurve))) {
+        geo2d.reset(new Geom2dTrimmedCurve(Handle_Geom2d_TrimmedCurve::DownCast(curve)));
+    }
+
+    return geo2d;
+}
 }

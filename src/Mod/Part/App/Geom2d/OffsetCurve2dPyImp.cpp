@@ -95,39 +95,10 @@ Py::Object OffsetCurve2dPy::getBasisCurve(void) const
     Handle_Geom2d_Curve basis = curve->BasisCurve();
     if (basis.IsNull())
         return Py::None();
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_Parabola))) {
-        Geom2dParabola c(Handle_Geom2d_Parabola::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_Hyperbola))) {
-        Geom2dHyperbola c(Handle_Geom2d_Hyperbola::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_Ellipse))) {
-        Geom2dEllipse c(Handle_Geom2d_Ellipse::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_Circle))) {
-        Geom2dCircle c(Handle_Geom2d_Circle::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_Line))) {
-        Geom2dLine c(Handle_Geom2d_Line::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_BSplineCurve))) {
-        Geom2dBSplineCurve c(Handle_Geom2d_BSplineCurve::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_BezierCurve))) {
-        Geom2dBezierCurve c(Handle_Geom2d_BezierCurve::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    if (basis->IsKind(STANDARD_TYPE (Geom2d_TrimmedCurve))) {
-        Geom2dTrimmedCurve c(Handle_Geom2d_TrimmedCurve::DownCast(basis));
-        return Py::asObject(c.getPyObject());
-    }
-    throw Py::RuntimeError("Unknown curve type");
+    std::unique_ptr<Geom2dCurve> geo2d = getCurve2dFromGeom2d(basis);
+    if (!geo2d)
+        throw Py::RuntimeError("Unknown curve type");
+    return Py::asObject(geo2d->getPyObject());
 }
 
 void OffsetCurve2dPy::setBasisCurve(Py::Object arg)

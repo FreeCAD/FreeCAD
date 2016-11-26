@@ -39,6 +39,7 @@
 #include <gp_Ax22d.hxx>
 #include <list>
 #include <vector>
+#include <memory>
 #include <Base/Persistence.h>
 #include <Base/Tools2D.h>
 
@@ -50,7 +51,7 @@ class PartExport Geometry2d : public Base::Persistence
 public:
     virtual ~Geometry2d();
 
-    virtual TopoDS_Shape toShape(const Handle_Geom_Surface&) const = 0;
+    virtual TopoDS_Shape toShape() const = 0;
     virtual const Handle_Geom2d_Geometry& handle() const = 0;
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -76,7 +77,7 @@ public:
     Geom2dPoint(const Base::Vector2d&);
     virtual ~Geom2dPoint();
     virtual Geometry2d *clone(void) const;
-    virtual TopoDS_Shape toShape(const Handle_Geom_Surface&) const;
+    virtual TopoDS_Shape toShape() const;
 
    // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -101,7 +102,7 @@ public:
     Geom2dCurve();
     virtual ~Geom2dCurve();
 
-    virtual TopoDS_Shape toShape(const Handle_Geom_Surface&) const;
+    virtual TopoDS_Shape toShape() const;
     bool tangent(double u, gp_Dir2d&) const;
     Base::Vector2d pointAtParameter(double u) const;
     Base::Vector2d firstDerivativeAtParameter(double u) const;
@@ -562,6 +563,8 @@ public:
 private:
     Handle_Geom2d_TrimmedCurve myCurve;
 };
+
+std::unique_ptr<Geom2dCurve> getCurve2dFromGeom2d(Handle_Geom2d_Curve);
 
 }
 
