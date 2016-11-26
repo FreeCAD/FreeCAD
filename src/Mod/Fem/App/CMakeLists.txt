@@ -68,6 +68,9 @@ SET(FemScripts_SRCS
     _CommandBeamSection.py
     _CommandControlSolver.py
     _CommandConstraintSelfWeight.py
+    _CommandFEMMesh2Mesh.py
+    _CommandMechanicalMaterial.py
+    _CommandShowResult.py
     _CommandMaterialMechanicalNonlinear.py
     _CommandMechanicalMaterial.py
     _CommandMeshGmshFromShape.py
@@ -116,6 +119,7 @@ SET(FemScripts_SRCS
     FemInputWriterCcx.py
     FemInputWriterZ88.py
     FemMaterialMechanicalNonlinear.py
+    FemMesh2Mesh.py
     FemMeshGmsh.py
     FemMeshTools.py
     FemShellThickness.py
