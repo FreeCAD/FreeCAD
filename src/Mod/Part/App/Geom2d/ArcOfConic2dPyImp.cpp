@@ -51,7 +51,7 @@ PyObject *ArcOfConic2dPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 }
 
 // constructor method
-int ArcOfConic2dPy::PyInit(PyObject* args, PyObject* /*kwds*/)
+int ArcOfConic2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
 {
     return -1;
 }

@@ -101,12 +101,12 @@ unsigned int Geometry2d::getMemSize (void) const
     return sizeof(Geometry2d);
 }
 
-void Geometry2d::Save(Base::Writer &writer) const
+void Geometry2d::Save(Base::Writer & /*writer*/) const
 {
     throw Base::NotImplementedError("Save");
 }
 
-void Geometry2d::Restore(Base::XMLReader &reader)
+void Geometry2d::Restore(Base::XMLReader & /*reader*/)
 {
     throw Base::NotImplementedError("Restore");
 }
