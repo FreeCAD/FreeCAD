@@ -161,6 +161,7 @@
 # include <XSControl_WorkSession.hxx>
 # include <Transfer_TransientProcess.hxx>
 # include <Transfer_FinderProcess.hxx>
+# include <XSControl_TransferWriter.hxx>
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
@@ -663,8 +664,10 @@ void TopoShape::exportStep(const char *filename) const
         // write step file
         STEPControl_Writer aWriter;
 
+        const Handle_XSControl_TransferWriter& hTransferWriter = aWriter.WS()->TransferWriter();
+        Handle_Transfer_FinderProcess hFinder = hTransferWriter->FinderProcess();
         Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
-        aWriter.WS()->MapWriter()->SetProgress(pi);
+        hFinder->SetProgress(pi);
         pi->NewScope(100, "Writing STEP file...");
         pi->Show();
 
