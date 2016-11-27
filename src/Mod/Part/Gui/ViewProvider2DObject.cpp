@@ -169,24 +169,42 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     vts = new SoVertexProperty;
     grid->vertexProperty = vts;
 
-    int vi=0, l=0;
+    // vertical lines
+    int vlines = static_cast<int>((MaX - MiX) / Step + 0.5f);
+
+    // horizontal lines
+    int hlines = static_cast<int>((MaY - MiY) / Step + 0.5f);
+
+    int lines = vlines + hlines;
+
+    // set the grid indices
+    grid->numVertices.setNum(lines);
+    int32_t* vertices = grid->numVertices.startEditing();
+    for (int i=0; i<lines; i++)
+        vertices[i] = 2;
+    grid->numVertices.finishEditing();
+
+    // set the grid coordinates
+    vts->vertex.setNum(2*lines);
+    SbVec3f* coords = vts->vertex.startEditing();
 
     // vertical lines
-    float i;
-    for (i=MiX; i<MaX; i+=Step) {
-        /*float h=-0.5*dx + float(i) / gridsize * dx;*/
-        vts->vertex.set1Value(vi++, i, MiY, zGrid);
-        vts->vertex.set1Value(vi++, i,  MaY, zGrid);
-        grid->numVertices.set1Value(l++, 2);
+    float vx = MiX;
+    for (int i=0; i<vlines; i++) {
+        coords[2*i].setValue(vx, MiY, zGrid);
+        coords[2*i+1].setValue(vx, MaY, zGrid);
+        vx += Step;
     }
 
     // horizontal lines
-    for (i=MiY; i<MaY; i+=Step) {
-        //float v=-0.5*dy + float(i) / gridsize * dy;
-        vts->vertex.set1Value(vi++, MiX, i, zGrid);
-        vts->vertex.set1Value(vi++,  MaX, i, zGrid);
-        grid->numVertices.set1Value(l++, 2);
+    float vy = MiY;
+    for (int i=vlines; i<lines; i++) {
+        coords[2*i].setValue(MiX, vy, zGrid);
+        coords[2*i+1].setValue(MaX, vy, zGrid);
+        vy += Step;
     }
+    vts->vertex.finishEditing();
+
     parent->addChild(vts);
     parent->addChild(grid);
 
