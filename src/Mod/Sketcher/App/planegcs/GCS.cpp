@@ -559,10 +559,8 @@ int System::addConstraintCoordinateY(Point &p, double *y, int tagId)
 
 int System::addConstraintArcRules(Arc &a, int tagId)
 {
-           addConstraintP2PAngle(a.center, a.start, a.startAngle, tagId);
-           addConstraintP2PAngle(a.center, a.end, a.endAngle, tagId);
-           addConstraintP2PDistance(a.center, a.start, a.rad, tagId);
-    return addConstraintP2PDistance(a.center, a.end, a.rad, tagId);
+           addConstraintCurveValue(a.start, a, a.startAngle, tagId);
+    return addConstraintCurveValue(a.end, a, a.endAngle, tagId);
 }
 
 int System::addConstraintPointOnCircle(Point &p, Circle &c, int tagId)
@@ -577,21 +575,33 @@ int System::addConstraintPointOnEllipse(Point &p, Ellipse &e, int tagId)
     return addConstraint(constr);
 }
 
-int System::addConstraintEllipticalArcRangeToEndPoints(Point &p, ArcOfEllipse &a, double *angle, int tagId)
+int System::addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int tagId)
 {
-    Constraint *constr = new ConstraintEllipticalArcRangeToEndPoints(p,a,angle);
+    Constraint *constr = new ConstraintPointOnHyperbola(p, e);
+    constr->setTag(tagId);
+    return addConstraint(constr);   
+}
+
+int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId)
+{
+    addConstraintCurveValue(a.start,a,a.startAngle, tagId);
+    return addConstraintCurveValue(a.end,a,a.endAngle, tagId);
+}
+
+int System::addConstraintCurveValue(Point &p, Curve &a, double *u, int tagId)
+{
+    Constraint *constr = new ConstraintCurveValue(p,p.x,a,u);
+    constr->setTag(tagId);
+    addConstraint(constr);
+    constr = new ConstraintCurveValue(p,p.y,a,u);
     constr->setTag(tagId);
     return addConstraint(constr);
 }
 
-
-int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId)
+int System::addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId)
 {
-    addConstraintEllipticalArcRangeToEndPoints(a.start,a,a.startAngle, tagId);
-    addConstraintEllipticalArcRangeToEndPoints(a.end,a,a.endAngle, tagId);
-
-    addConstraintPointOnEllipse(a.start, a, tagId);
-    return addConstraintPointOnEllipse(a.end, a, tagId);
+    addConstraintCurveValue(a.start,a,a.startAngle, tagId);
+    return addConstraintCurveValue(a.end,a,a.endAngle, tagId);
 }
 
 int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId)
@@ -727,12 +737,20 @@ int System::addConstraintEqualRadius(Circle &c1, Circle &c2, int tagId)
 
 int System::addConstraintEqualRadii(Ellipse &e1, Ellipse &e2, int tagId)
 {
-    //addConstraintEqual(e1.radmaj, e2.radmaj, tagId);
     addConstraintEqual(e1.radmin, e2.radmin, tagId);
 
-    Constraint *constr = new ConstraintEqualMajorAxesEllipse(e1,e2);
+    Constraint *constr = new ConstraintEqualMajorAxesConic(&e1,&e2);
     constr->setTag(tagId);
     return addConstraint(constr);
+}
+
+int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId)
+{
+    addConstraintEqual(a1.radmin, a2.radmin, tagId);
+    
+    Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
+    constr->setTag(tagId);
+    return addConstraint(constr);    
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId)
@@ -771,6 +789,13 @@ int System::addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
 int System::addConstraintInternalAlignmentPoint2Ellipse(Ellipse &e, Point &p1, InternalAlignmentType alignmentType, int tagId)
 {
     Constraint *constr = new ConstraintInternalAlignmentPoint2Ellipse(e, p1, alignmentType);
+    constr->setTag(tagId);
+    return addConstraint(constr);
+}
+
+int System::addConstraintInternalAlignmentPoint2Hyperbola(Hyperbola &e, Point &p1, InternalAlignmentType alignmentType, int tagId)
+{
+    Constraint *constr = new ConstraintInternalAlignmentPoint2Hyperbola(e, p1, alignmentType);
     constr->setTag(tagId);
     return addConstraint(constr);
 }
@@ -863,6 +888,97 @@ int System::addConstraintInternalAlignmentEllipseFocus2(Ellipse &e, Point &p1, i
 {
     addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2X,tagId);
     return addConstraintInternalAlignmentPoint2Ellipse(e,p1,EllipseFocus2Y,tagId);
+}
+
+int System::addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId)
+{
+    double X_1=*p1.x;
+    double Y_1=*p1.y;
+    double X_2=*p2.x;
+    double Y_2=*p2.y;
+    double X_c=*e.center.x;
+    double Y_c=*e.center.y;
+    double X_F1=*e.focus1.x;
+    double Y_F1=*e.focus1.y;
+    double b=*e.radmin;
+
+    // P1=vector([X_1,Y_1])
+    // P2=vector([X_2,Y_2])
+    // dF1= (F1-C)/sqrt((F1-C)*(F1-C))
+    // print "these are the extreme points of the major axis"
+    // PA = C + a * dF1
+    // PN = C - a * dF1
+    // print "this is a simple function to know which point is closer to the positive edge of the ellipse"
+    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
+    double closertopositivemajor= pow(-X_1 + X_c + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2)
+        + pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2)
+        - pow(-X_2 + X_c + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
+        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) +
+        pow(-Y_1 + Y_c + (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
+        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
+        pow(-Y_2 + Y_c + (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
+        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+
+    if(closertopositivemajor>0){
+        //p2 is closer to  positivemajor. Assign constraints back-to-front.
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMajorX,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMajorY,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMajorX,tagId);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMajorY,tagId);
+    }
+    else{
+        //p1 is closer to  positivemajor
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMajorX,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMajorY,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMajorX,tagId);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMajorY,tagId);
+    }
+}
+
+int System::addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId)
+{
+    double X_1=*p1.x;
+    double Y_1=*p1.y;
+    double X_2=*p2.x;
+    double Y_2=*p2.y;
+    double X_c=*e.center.x;
+    double Y_c=*e.center.y;
+    double X_F1=*e.focus1.x;
+    double Y_F1=*e.focus1.y;
+    double b=*e.radmin;
+    
+    // Same idea as for major above, but for minor
+    // DMC=(P1-PA)*(P1-PA)-(P2-PA)*(P2-PA)
+    double closertopositiveminor= pow(-X_1 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) +
+        pow(Y_F1 - Y_c, 2)) + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) +
+        pow(Y_F1 - Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) -
+        pow(-X_2 + X_c + b*(Y_F1 - Y_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 -
+        Y_c, 2)) + (X_F1 - X_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 -
+        Y_c, 2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) + pow(-Y_1 +
+        Y_c - b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) +
+        (Y_F1 - Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
+        2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2) - pow(-Y_2 + Y_c -
+        b*(X_F1 - X_c)/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)) + (Y_F1 -
+        Y_c)*(-pow(b, 2) + pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c,
+        2))/sqrt(pow(X_F1 - X_c, 2) + pow(Y_F1 - Y_c, 2)), 2);
+    
+    if(closertopositiveminor<0){
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorX,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaPositiveMinorY,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMinorX,tagId);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaNegativeMinorY,tagId);
+    } else {
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMinorX,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p1,HyperbolaPositiveMinorY,tagId);
+        addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMinorX,tagId);
+        return addConstraintInternalAlignmentPoint2Hyperbola(e,p2,HyperbolaNegativeMinorY,tagId);
+    }
+}
+
+int System::addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId)
+{
+    addConstraintEqual(e.focus1.x, p1.x, tagId);
+    return addConstraintEqual(e.focus1.y, p1.y, tagId);
 }
 
 

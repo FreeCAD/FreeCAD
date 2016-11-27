@@ -2103,22 +2103,101 @@ void GeomArcOfHyperbola::setAngleXU(double angle)
     }
 }
 
-void GeomArcOfHyperbola::getRange(double& u, double& v) const
+/*!
+ * \brief GeomArcOfHyperbola::getMajorAxisDir
+ * \return the direction vector (unit-length) of major axis of the hyperbola. The
+ * direction also points to the first focus.
+ */
+Base::Vector3d GeomArcOfHyperbola::getMajorAxisDir() const
 {
-    u = myCurve->FirstParameter();
-    v = myCurve->LastParameter();
+    Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    gp_Dir xdir = c->XAxis().Direction();
+    return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
 }
 
-void GeomArcOfHyperbola::setRange(double u, double v)
+/*!
+ * \brief GeomArcOfHyperbola::setMajorAxisDir Rotates the hyperbola in its plane, so
+ * that its major axis is as close as possible to the provided direction.
+ * \param newdir [in] is the new direction. If the vector is small, the
+ * orientation of the ellipse will be preserved. If the vector is not small,
+ * but its projection onto plane of the ellipse is small, an exception will be
+ * thrown.
+ */
+void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
 {
+    Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    #if OCC_VERSION_HEX >= 0x060504
+    if (newdir.Sqr() < Precision::SquareConfusion())
+    #else
+    if (newdir.Length() < Precision::Confusion())
+    #endif
+        return;//zero vector was passed. Keep the old orientation.
+    
     try {
-        myCurve->SetTrim(u, v);
+        gp_Ax2 pos = c->Position();
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        c->SetPosition(pos);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
 }
+
+/*!
+ * \brief GeomArcOfHyperbola::isReversedInXY tests if an arc that lies in XY plane is reversed
+ * (i.e. drawn from startpoint to endpoint in CW direction instead of CCW.)
+ * \return Returns True if the arc is CW and false if CCW.
+ */
+bool GeomArcOfHyperbola::isReversedInXY() const
+{
+    Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    return c->Axis().Direction().Z() < 0;
+}
+
+void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
+{
+    try {
+        if(emulateCCWXY){
+            if(isReversedInXY()){
+                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+                assert(!c.IsNull());
+                c->Reverse();
+            }
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+
+    u = myCurve->FirstParameter();
+    v = myCurve->LastParameter();
+}
+
+void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
+{
+    try {
+        myCurve->SetTrim(u, v);
+
+        if(emulateCCWXY){
+            if(isReversedInXY()){
+                Handle_Geom_Hyperbola c = Handle_Geom_Hyperbola::DownCast( myCurve->BasisCurve() );
+                assert(!c.IsNull());
+                c->Reverse();
+            }
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
+
 
 // Persistence implementer 
 unsigned int GeomArcOfHyperbola::getMemSize (void) const

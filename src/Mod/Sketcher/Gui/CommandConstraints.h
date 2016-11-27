@@ -53,6 +53,19 @@ void makeTangentToArcOfEllipseviaNewPoint(const Sketcher::SketchObject* Obj,
                                              int geoId2
                                             );
 
+/// Makes a tangency constraint using external construction line between
+/// geom1 => an arc of hyperbola
+/// geom2 => any of an arc of hyperbola, an arc of ellipse, a circle, or an arc (of circle)
+/// NOTE: A command must be opened before calling this function, which this function
+/// commits or aborts as appropriate. The reason is for compatibility reasons with
+/// other code e.g. "Autoconstraints" in DrawSketchHandler.cpp 
+void makeTangentToArcOfHyperbolaviaNewPoint(const Sketcher::SketchObject* Obj,
+                                          const Part::Geometry *geom1, 
+                                          const Part::Geometry *geom2,
+                                          int geoId1,
+                                          int geoId2
+);
+
 }
 #endif // SKETCHERGUI_DrawSketchHandler_H
 

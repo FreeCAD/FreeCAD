@@ -43,6 +43,8 @@
 #include <Mod/Part/App/ArcOfEllipsePy.h>
 #include <Mod/Part/App/CirclePy.h>
 #include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/ArcOfHyperbolaPy.h>
 #include <Mod/Part/App/LinePy.h>
 
 #include <TopoDS.hxx>
@@ -81,6 +83,7 @@ void Sketch::clear(void)
     Circles.clear();
     Ellipses.clear();
     ArcsOfEllipse.clear();
+    ArcsOfHyperbola.clear();
 
     // deleting the doubles allocated with new
     for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it)
@@ -172,6 +175,8 @@ const char* nameByType(Sketch::GeoType type)
         return "ellipse";
     case Sketch::ArcOfEllipse:
         return "arcofellipse";
+    case Sketch::ArcOfHyperbola:
+        return "arcofhyperbola";
     case Sketch::None:
     default:
         return "unknown";
@@ -206,6 +211,10 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomArcOfEllipse *aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
+    } else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) { // add an arc of hyperbola
+        const GeomArcOfHyperbola *aoh = dynamic_cast<const GeomArcOfHyperbola*>(geo);
+        // create the definition struct for that geom
+        return addArcOfHyperbola(*aoh, fixed);
     } else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
     }
@@ -377,8 +386,6 @@ int Sketch::addArc(const Part::GeomArcOfCircle &circleSegment, bool fixed)
     return Geoms.size()-1;
 }
 
-
-
 int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool fixed)
 {
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
@@ -435,8 +442,7 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     
     //Points.push_back(f1);
     
-
-       // add the radius parameters
+    // add the radius parameters
     params.push_back(new double(radmin));
     double *rmin = params[params.size()-1];
     params.push_back(new double(startAngle));
@@ -444,8 +450,6 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     params.push_back(new double(endAngle));
     double *a2 = params[params.size()-1];
     
-    
-
     // set the arc for later constraints
     GCS::ArcOfEllipse a;
     a.start      = p1;
@@ -465,6 +469,92 @@ int Sketch::addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool f
     // arcs require an ArcRules constraint for the end points
     if (!fixed)
         GCSsys.addConstraintArcOfEllipseRules(a);
+
+    // return the position of the newly added geometry
+    return Geoms.size()-1;
+}
+
+int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, bool fixed)
+{
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    GeomArcOfHyperbola *aoh = static_cast<GeomArcOfHyperbola*>(hyperbolaSegment.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo  = aoh;
+    def.type = ArcOfHyperbola;
+
+    Base::Vector3d center   = aoh->getCenter();
+    Base::Vector3d startPnt = aoh->getStartPoint();
+    Base::Vector3d endPnt   = aoh->getEndPoint();
+    double radmaj         = aoh->getMajorRadius();
+    double radmin         = aoh->getMinorRadius();
+    Base::Vector3d radmajdir = aoh->getMajorAxisDir();
+    
+    double dist_C_F = sqrt(radmaj*radmaj+radmin*radmin);
+    // solver parameters
+    Base::Vector3d focus1 = center+dist_C_F*radmajdir; //+x
+    
+    double startAngle, endAngle;
+    aoh->getRange(startAngle, endAngle,/*emulateCCW=*/true);
+
+    GCS::Point p1, p2, p3;
+    
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
+    
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size()-2];
+    p2.y = params[params.size()-1];
+    
+    params.push_back(new double(center.x));
+    params.push_back(new double(center.y));
+    p3.x = params[params.size()-2];
+    p3.y = params[params.size()-1];
+    
+    params.push_back(new double(focus1.x));
+    params.push_back(new double(focus1.y));
+    double *f1X = params[params.size()-2];
+    double *f1Y = params[params.size()-1];
+    
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+    def.midPointId = Points.size();
+    Points.push_back(p3);    
+    
+    // add the radius parameters
+    params.push_back(new double(radmin));
+    double *rmin = params[params.size()-1];
+    params.push_back(new double(startAngle));
+    double *a1 = params[params.size()-1];
+    params.push_back(new double(endAngle));
+    double *a2 = params[params.size()-1];
+    
+    // set the arc for later constraints
+    GCS::ArcOfHyperbola a;
+    a.start      = p1;
+    a.end        = p2;
+    a.center     = p3;
+    a.focus1.x    = f1X;
+    a.focus1.y    = f1Y;
+    a.radmin     = rmin;
+    a.startAngle = a1;
+    a.endAngle   = a2;
+    def.index = ArcsOfHyperbola.size();
+    ArcsOfHyperbola.push_back(a);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    // arcs require an ArcRules constraint for the end points
+    if (!fixed)
+        GCSsys.addConstraintArcOfHyperbolaRules(a);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;
@@ -607,8 +697,10 @@ Py::Tuple Sketch::getPyGeometry(void) const
         } else if (it->type == ArcOfEllipse) {
             GeomArcOfEllipse *ellipse = static_cast<GeomArcOfEllipse*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfEllipsePy(ellipse));
-        } 
-        else {
+        } else if (it->type == ArcOfHyperbola) {
+            GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo->clone());
+            tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
+        } else {
             // not implemented type in the sketch!
         }
     }
@@ -643,6 +735,9 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
         case ArcOfEllipse:
             return &ArcsOfEllipse[Geoms[geoId].index];
         break;
+        case ArcOfHyperbola:
+            return &ArcsOfHyperbola[Geoms[geoId].index];
+            break;        
         default:
             return 0;
     };
@@ -895,6 +990,15 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
             case EllipseFocus2: 
                 rtn = addInternalAlignmentEllipseFocus2(constraint->First,constraint->Second);
+                break;
+            case HyperbolaMajor:
+                rtn = addInternalAlignmentHyperbolaMajorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaMinor:
+                rtn = addInternalAlignmentHyperbolaMinorDiameter(constraint->First,constraint->Second);
+                break;
+            case HyperbolaFocus: 
+                rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
                 break;
             default:
                 break;
@@ -1616,6 +1720,16 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
     
+    if (Geoms[geoId2].type == ArcOfHyperbola) {
+        if (Geoms[geoId1].type == ArcOfHyperbola) {
+            GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+            GCS::ArcOfHyperbola &a2 = ArcsOfHyperbola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualRadii(a1, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
+    
     if (Geoms[geoId1].type == Ellipse) {
         GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
         if (Geoms[geoId2].type == ArcOfEllipse) {
@@ -1672,6 +1786,12 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
             GCSsys.addConstraintPointOnEllipse(p1, a, tag);
             return ConstraintsCounter;
         }
+        else if (Geoms[geoId2].type == ArcOfHyperbola) {
+            GCS::ArcOfHyperbola &a = ArcsOfHyperbola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnHyperbolicArc(p1, a, tag);
+            return ConstraintsCounter;
+        }        
     }
     return -1;
 }
@@ -1833,26 +1953,26 @@ int Sketch::addInternalAlignmentEllipseMajorDiameter(int geoId1, int geoId2)
 int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
 {
     std::swap(geoId1, geoId2);
-    
+
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
-    
+
     if (Geoms[geoId1].type != Ellipse && Geoms[geoId1].type != ArcOfEllipse)
         return -1;
     if (Geoms[geoId2].type != Line)
         return -1;
-    
+
     int pointId1 = getPointId(geoId2, start);
     int pointId2 = getPointId(geoId2, end);
-    
+
     if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
         pointId2 >= 0 && pointId2 < int(Points.size())) {
         GCS::Point &p1 = Points[pointId1];
         GCS::Point &p2 = Points[pointId2];
-    
+
         if(Geoms[geoId1].type == Ellipse) {
             GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
-            
+
             // constraints
             // 1. start point with ellipse -a
             // 2. end point with ellipse +a
@@ -1862,7 +1982,7 @@ int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
         }
         else {
             GCS::ArcOfEllipse &a1 = ArcsOfEllipse[Geoms[geoId1].index];
-            
+
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintInternalAlignmentEllipseMinorDiameter(a1, p1, p2, tag);
             return ConstraintsCounter;
@@ -1874,23 +1994,23 @@ int Sketch::addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2)
 int Sketch::addInternalAlignmentEllipseFocus1(int geoId1, int geoId2)
 {
     std::swap(geoId1, geoId2);
-    
+
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
-    
+
     if (Geoms[geoId1].type != Ellipse && Geoms[geoId1].type != ArcOfEllipse)
         return -1;
     if (Geoms[geoId2].type != Point)
         return -1;
-    
+
     int pointId1 = getPointId(geoId2, start);
-    
+
     if (pointId1 >= 0 && pointId1 < int(Points.size())) {
         GCS::Point &p1 = Points[pointId1];
-        
+
         if(Geoms[geoId1].type == Ellipse) {
             GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
-            
+
             // constraints
             // 1. start point with ellipse -a
             // 2. end point with ellipse +a
@@ -1900,7 +2020,7 @@ int Sketch::addInternalAlignmentEllipseFocus1(int geoId1, int geoId2)
         }
         else {
             GCS::ArcOfEllipse &a1 = ArcsOfEllipse[Geoms[geoId1].index];
-            
+
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintInternalAlignmentEllipseFocus1(a1, p1, tag);
             return ConstraintsCounter;
@@ -1944,6 +2064,95 @@ int Sketch::addInternalAlignmentEllipseFocus2(int geoId1, int geoId2)
             GCSsys.addConstraintInternalAlignmentEllipseFocus2(a1, p1, tag);
             return ConstraintsCounter;
         }
+    }
+    return -1;
+}
+
+
+int Sketch::addInternalAlignmentHyperbolaMajorDiameter(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Line)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+    int pointId2 = getPointId(geoId2, end);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+
+        GCS::Point &p1 = Points[pointId1];
+        GCS::Point &p2 = Points[pointId2];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaMajorDiameter(a1, p1, p2, tag);
+        return ConstraintsCounter;
+    }
+
+    return -1;
+}
+
+int Sketch::addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Line)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+    int pointId2 = getPointId(geoId2, end);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size()) &&
+        pointId2 >= 0 && pointId2 < int(Points.size())) {
+
+        GCS::Point &p1 = Points[pointId1];
+        GCS::Point &p2 = Points[pointId2];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaMinorDiameter(a1, p1, p2, tag);
+        return ConstraintsCounter;
+    }
+
+    return -1;
+}
+
+int Sketch::addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfHyperbola)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p1 = Points[pointId1];
+
+        GCS::ArcOfHyperbola &a1 = ArcsOfHyperbola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentHyperbolaFocus(a1, p1, tag);
+        return ConstraintsCounter;
     }
     return -1;
 }
@@ -2069,6 +2278,28 @@ bool Sketch::updateGeometry()
                     ellipse->setMajorRadius(radmaj);
                 }
                 ellipse->setMajorAxisDir(fd);
+            } else if (it->type == ArcOfHyperbola) {
+                GCS::ArcOfHyperbola &myArc = ArcsOfHyperbola[it->index];
+
+                GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo);
+                
+                Base::Vector3d center = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+                double radmin = *myArc.radmin;
+                
+                Base::Vector3d fd=f1-center;
+                double radmaj = sqrt(fd*fd-radmin*radmin); 
+                
+                aoh->setCenter(center);
+                if ( radmaj >= aoh->getMinorRadius() ){
+                    aoh->setMajorRadius(radmaj);
+                    aoh->setMinorRadius(radmin);
+                }  else {
+                    aoh->setMinorRadius(radmin);
+                    aoh->setMajorRadius(radmaj);
+                }
+                aoh->setMajorAxisDir(fd);
+                aoh->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             }
         } catch (Base::Exception e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
@@ -2335,6 +2566,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p0.y = &MoveParameters[1];
             *p0.x = *center.x;
             *p0.y = *center.y;
+
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
         }
     } else if (Geoms[geoId].type == ArcOfEllipse) {
@@ -2348,6 +2580,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             *p0.x = *center.x;
             *p0.y = *center.y;
             GCSsys.addConstraintP2PCoincident(p0,center,-1);
+
         } else if (pos == start || pos == end) {
 
             MoveParameters.resize(4); // x,y,cx,cy
@@ -2358,6 +2591,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
                 p0.y = &MoveParameters[1];
                 *p0.x = *p.x;
                 *p0.y = *p.y;
+
                 GCSsys.addConstraintP2PCoincident(p0,p,-1);
             }
 
@@ -2365,9 +2599,46 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             p1.y = &MoveParameters[3];
             *p1.x = *center.x;
             *p1.y = *center.y;
+
             int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
+	}
+
+    } else if (Geoms[geoId].type == ArcOfHyperbola) {
+        
+        GCS::Point &center = Points[Geoms[geoId].midPointId];
+        GCS::Point p0,p1;
+        if (pos == mid || pos == none) {
+            MoveParameters.resize(2); // cx,cy
+            p0.x = &MoveParameters[0];
+            p0.y = &MoveParameters[1];
+            *p0.x = *center.x;
+            *p0.y = *center.y;
+
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
+        } else if (pos == start || pos == end) {
+            
+            MoveParameters.resize(4); // x,y,cx,cy
+            if (pos == start || pos == end) {
+                GCS::Point &p = (pos == start) ? Points[Geoms[geoId].startPointId]
+                                            : Points[Geoms[geoId].endPointId];;
+                p0.x = &MoveParameters[0];
+                p0.y = &MoveParameters[1];
+                *p0.x = *p.x;
+                *p0.y = *p.y;
+
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
+            } 
+            p1.x = &MoveParameters[2];
+            p1.y = &MoveParameters[3];
+            *p1.x = *center.x;
+            *p1.y = *center.y;
+
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            GCSsys.rescaleConstraint(i-1, 0.01);
+            GCSsys.rescaleConstraint(i, 0.01);
+
         }
     } else if (Geoms[geoId].type == Arc) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
@@ -2466,7 +2737,12 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    }
+    } else if (Geoms[geoId].type == ArcOfHyperbola) {
+        if (pos == start || pos == end || pos == mid || pos == none) {
+            MoveParameters[0] = toPoint.x;
+            MoveParameters[1] = toPoint.y;
+        }
+    }    
 
     return solve();
 }
