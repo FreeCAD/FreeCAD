@@ -2163,7 +2163,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
                     Plm.multVec(pnt, pnt);
                     pnt = proj(pnt);
-                    if (!polygon.Contains(Base::Vector2D(pnt.x, pnt.y))) {
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
                         bpolyInside = false;
                         break;
                     }
@@ -2193,21 +2193,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
             pnt1 = proj(pnt1);
             pnt2 = proj(pnt2);
 
-            bool pnt0Inside = polygon.Contains(Base::Vector2D(pnt0.x, pnt0.y));
+            bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
             if (pnt0Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId - 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            bool pnt1Inside = polygon.Contains(Base::Vector2D(pnt1.x, pnt1.y));
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
             if (pnt1Inside) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
             }
 
-            if (polygon.Contains(Base::Vector2D(pnt2.x, pnt2.y))) {
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
                 std::stringstream ss;
                 ss << "Vertex" << VertexId + 1;
                 Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());

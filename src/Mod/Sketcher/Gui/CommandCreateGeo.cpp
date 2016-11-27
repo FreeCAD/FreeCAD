@@ -3438,16 +3438,16 @@ public:
         STATUS_Close
     };
 
-    virtual void activated(ViewProviderSketch */*sketchgui*/)
+    virtual void activated(ViewProviderSketch * /*sketchgui*/)
     {
         setCursor(QPixmap(cursor_createarcofhyperbola),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2D onSketchPos)
+    virtual void mouseMove(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
@@ -3463,7 +3463,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2D(0.f,0.f),
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
                                    AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
@@ -3472,11 +3472,11 @@ public:
         else if (Mode==STATUS_SEEK_Third) {                       
             // angle between the major axis of the hyperbola and the X axis
             double a = (axisPoint-centerPoint).Length();
-            double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
+            double phi = atan2(axisPoint.y-centerPoint.y,axisPoint.x-centerPoint.x);
             
             // This is the angle at cursor point
-            double angleatpoint = acosh(((onSketchPos.fX-centerPoint.fX)*cos(phi)+(onSketchPos.fY-centerPoint.fY)*sin(phi))/a);
-            double b=(onSketchPos.fY-centerPoint.fY-a*cosh(angleatpoint)*sin(phi))/(sinh(angleatpoint)*cos(phi));
+            double angleatpoint = acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
+            double b=(onSketchPos.y-centerPoint.y-a*cosh(angleatpoint)*sin(phi))/(sinh(angleatpoint)*cos(phi));
             
             if(!boost::math::isnan(b)){
                 for (int i=15; i >= -15; i--) {
@@ -3485,7 +3485,7 @@ public:
                     double angle=i*angleatpoint/15;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi); 
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
-                    EditCurve[15+i] = Base::Vector2D(centerPoint.fX + rx, centerPoint.fY + ry);
+                    EditCurve[15+i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
                 }
             
                 // Display radius for user
@@ -3495,7 +3495,7 @@ public:
             }
             
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
             }
@@ -3503,18 +3503,18 @@ public:
         else if (Mode==STATUS_SEEK_Fourth) {
             // angle between the major axis of the hyperbola and the X axis
             double a = (axisPoint-centerPoint).Length();
-            double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
+            double phi = atan2(axisPoint.y-centerPoint.y,axisPoint.x-centerPoint.x);
             
             // This is the angle at cursor point
-            double angleatstartingpoint = acosh(((startingPoint.fX-centerPoint.fX)*cos(phi)+(startingPoint.fY-centerPoint.fY)*sin(phi))/a);
-            double b=(startingPoint.fY-centerPoint.fY-a*cosh(angleatstartingpoint)*sin(phi))/(sinh(angleatstartingpoint)*cos(phi));
+            double angleatstartingpoint = acosh(((startingPoint.x-centerPoint.x)*cos(phi)+(startingPoint.y-centerPoint.y)*sin(phi))/a);
+            double b=(startingPoint.y-centerPoint.y-a*cosh(angleatstartingpoint)*sin(phi))/(sinh(angleatstartingpoint)*cos(phi));
             
             double startAngle = angleatstartingpoint;
             
-            //double angleatpoint = acosh(((onSketchPos.fX-centerPoint.fX)*cos(phi)+(onSketchPos.fY-centerPoint.fY)*sin(phi))/a);
+            //double angleatpoint = acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
             
-            double angleatpoint = atanh( (((onSketchPos.fY-centerPoint.fY)*cos(phi)-(onSketchPos.fX-centerPoint.fX)*sin(phi))*a) /
-                                         (((onSketchPos.fX-centerPoint.fX)*cos(phi)+(onSketchPos.fY-centerPoint.fY)*sin(phi))*b)  );
+            double angleatpoint = atanh( (((onSketchPos.y-centerPoint.y)*cos(phi)-(onSketchPos.x-centerPoint.x)*sin(phi))*a) /
+                                         (((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))*b)  );
             
             /*double angle1 = angleatpoint - startAngle;
             
@@ -3531,7 +3531,7 @@ public:
                     double angle = startAngle+i*arcAngle/32.0;
                     double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi); 
                     double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
-                    EditCurve[i] = Base::Vector2D(centerPoint.fX + rx, centerPoint.fY + ry);
+                    EditCurve[i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
                 }
 
                 // Display radius for user
@@ -3545,7 +3545,7 @@ public:
             }
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2D(0.f,0.f))) {
+            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr4);
                 return;
             }
@@ -3554,7 +3554,7 @@ public:
         applyCursor();
     }
 
-    virtual bool pressButton(Base::Vector2D onSketchPos)
+    virtual bool pressButton(Base::Vector2d onSketchPos)
     {
         if (Mode==STATUS_SEEK_First){
             EditCurve[0] = onSketchPos;
@@ -3582,7 +3582,7 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2D /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
     {
         if (Mode==STATUS_Close) {
             unsetCursor();
@@ -3591,18 +3591,18 @@ public:
             
             // angle between the major axis of the hyperbola and the X axis
             double a = (axisPoint-centerPoint).Length();
-            double phi = atan2(axisPoint.fY-centerPoint.fY,axisPoint.fX-centerPoint.fX);
+            double phi = atan2(axisPoint.y-centerPoint.y,axisPoint.x-centerPoint.x);
             
             // This is the angle at cursor point
-            double angleatstartingpoint = acosh(((startingPoint.fX-centerPoint.fX)*cos(phi)+(startingPoint.fY-centerPoint.fY)*sin(phi))/a);
-            double b=(startingPoint.fY-centerPoint.fY-a*cosh(angleatstartingpoint)*sin(phi))/(sinh(angleatstartingpoint)*cos(phi));
+            double angleatstartingpoint = acosh(((startingPoint.x-centerPoint.x)*cos(phi)+(startingPoint.y-centerPoint.y)*sin(phi))/a);
+            double b=(startingPoint.y-centerPoint.y-a*cosh(angleatstartingpoint)*sin(phi))/(sinh(angleatstartingpoint)*cos(phi));
             
             double startAngle = angleatstartingpoint;
             
-            //double angleatpoint = acosh(((onSketchPos.fX-centerPoint.fX)*cos(phi)+(onSketchPos.fY-centerPoint.fY)*sin(phi))/a);
+            //double angleatpoint = acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
             
-            double endAngle = atanh( (((endPoint.fY-centerPoint.fY)*cos(phi)-(endPoint.fX-centerPoint.fX)*sin(phi))*a) /
-                                         (((endPoint.fX-centerPoint.fX)*cos(phi)+(endPoint.fY-centerPoint.fY)*sin(phi))*b)  );
+            double endAngle = atanh( (((endPoint.y-centerPoint.y)*cos(phi)-(endPoint.x-centerPoint.x)*sin(phi))*a) /
+                                         (((endPoint.x-centerPoint.x)*cos(phi)+(endPoint.y-centerPoint.y)*sin(phi))*b)  );
             
             
             bool isOriginalArcCCW=true;
@@ -3615,7 +3615,7 @@ public:
                 isOriginalArcCCW=false;
             }
             
-            Base::Vector2D majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
+            Base::Vector2d majAxisDir,minAxisDir,minAxisPoint,majAxisPoint;
             // We always create a CCW hyperbola, because we want our XY reference system to be in the +X +Y direction
             // Our normal will then always be in the +Z axis (local +Z axis of the sketcher)
             
@@ -3623,7 +3623,7 @@ public:
             {
                 // force second semidiameter to be perpendicular to first semidiamater
                 majAxisDir = axisPoint - centerPoint;
-                Base::Vector2D perp(-majAxisDir.fY,majAxisDir.fX);
+                Base::Vector2d perp(-majAxisDir.y,majAxisDir.x);
                 perp.Normalize();
                 perp.Scale(abs(b));
                 minAxisPoint = centerPoint+perp;
@@ -3632,7 +3632,7 @@ public:
             else {
                 // force second semidiameter to be perpendicular to first semidiamater
                 minAxisDir = axisPoint - centerPoint;
-                Base::Vector2D perp(minAxisDir.fY,-minAxisDir.fX);
+                Base::Vector2d perp(minAxisDir.y,-minAxisDir.x);
                 perp.Normalize();
                 perp.Scale(abs(b));
                 majAxisPoint = centerPoint+perp; 
@@ -3655,9 +3655,9 @@ public:
                 "(Part.Hyperbola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(%f,%f,0)),"
                 "%f,%f),%s)",
                     sketchgui->getObject()->getNameInDocument(),
-                    majAxisPoint.fX, majAxisPoint.fY,                                    
-                    minAxisPoint.fX, minAxisPoint.fY,
-                    centerPoint.fX, centerPoint.fY,
+                    majAxisPoint.x, majAxisPoint.y,
+                    minAxisPoint.x, minAxisPoint.y,
+                    centerPoint.x, centerPoint.y,
                     startAngle, endAngle,
                     geometryCreationMode==Construction?"True":"False"); 
 
@@ -3741,8 +3741,8 @@ public:
     }
 protected:
     SelectMode Mode;
-    std::vector<Base::Vector2D> EditCurve;
-    Base::Vector2D centerPoint, axisPoint, startingPoint, endPoint;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
