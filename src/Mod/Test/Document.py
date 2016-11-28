@@ -220,6 +220,20 @@ class DocumentBasicCases(unittest.TestCase):
     del obj
     del grp
     del grp2
+    
+  def testExtensionBug0002785(self):
+        
+        class MyExtension():
+            def __init__(self, obj):
+                obj.addExtension("App::GroupExtensionPython", self)
+             
+        obj = self.Doc.addObject("App::DocumentObject", "myObj")
+        MyExtension(obj)
+        self.failUnless(obj.hasExtension("App::GroupExtension"))
+        self.failUnless(obj.hasExtension("App::GroupExtensionPython"))
+        self.Doc.removeObject(obj.Name)
+        del obj
+    
 
   def tearDown(self):
     #closing doc
