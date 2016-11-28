@@ -53,7 +53,6 @@
         <file>panels/DogboneEdit.ui</file>
         <file>panels/DrillingEdit.ui</file>
         <file>panels/EngraveEdit.ui</file>
-        <file>panels/HoldingTagsEdit.ui</file>
         <file>panels/JobEdit.ui</file>
         <file>panels/MillFaceEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
