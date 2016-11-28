@@ -48,31 +48,73 @@ class FemGmshTools():
         # part to mesh
         self.part_obj = self.mesh_obj.Part
 
-        # clmax, ElementSizeMax: float, 0.0 = 1e+22
-        self.clmax = Units.Quantity(self.mesh_obj.ElementSizeMax).Value
+        # clmax, CharacteristicLengthMax: float, 0.0 = 1e+22
+        self.clmax = Units.Quantity(self.mesh_obj.CharacteristicLengthMax).Value
         if self.clmax == 0.0:
             self.clmax = 1e+22
 
-        # clmin, ElementSizeMin: float
-        self.clmin = Units.Quantity(self.mesh_obj.ElementSizeMin).Value
+        # clmin, CharacteristicLengthMin: float
+        self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
-        # order, ElementOrder: ['Auto', '1st', '2nd']
+        # order
+        # known_element_orders = ['Automatic', '1st', '2nd']
         self.order = self.mesh_obj.ElementOrder
         if self.order == '1st':
             self.order = '1'
-        elif self.order == 'Auto' or self.order == '2nd':
+        elif self.order == 'Automatic' or self.order == '2nd':
             self.order = '2'
         else:
             print('Error in order')
 
-        # dimension, ElementDimension:  ['Auto', '1D', '2D', '3D']
+        # dimension
+        # known_element_dimensions = ['Automatic', '1D', '2D', '3D']
         self.dimension = self.mesh_obj.ElementDimension
+
+        # Algorithm2D
+        # known_mesh_algorithm_2D = ['Automatic', 'MeshAdapt', 'Delaunay', 'Frontal', 'BAMG', 'DelQuad']
+        algo2D = self.mesh_obj.Algorithm2D
+        if algo2D == 'Automatic':
+            self.algorithm2D = '2'
+        elif algo2D == 'MeshAdapt':
+            self.algorithm2D = '1'
+        elif algo2D == 'Delaunay':
+            self.algorithm2D = '5'
+        elif algo2D == 'Frontal':
+            self.algorithm2D = '6'
+        elif algo2D == 'BAMG':
+            self.algorithm2D = '7'
+        elif algo2D == 'DelQuad':
+            self.algorithm2D = '8'
+        else:
+            self.algorithm2D = '2'
+
+        # Algorithm3D
+        # known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
+        algo3D = self.mesh_obj.Algorithm2D
+        if algo3D == 'Automatic':
+            self.algorithm3D = '1'
+        elif algo3D == 'Delaunay':
+            self.algorithm3D = '1'
+        elif algo3D == 'New Delaunay':
+            self.algorithm3D = '2'
+        elif algo3D == 'Frontal':
+            self.algorithm3D = '4'
+        elif algo3D == 'Frontal Delaunay':
+            self.algorithm3D = '5'
+        elif algo3D == 'Frontal Hex':
+            self.algorithm3D = '6'
+        elif algo3D == 'MMG3D':
+            self.algorithm3D = '7'
+        elif algo3D == 'R-tree':
+            self.algorithm3D = '9'
+        else:
+            self.algorithm3D = '1'
 
     def create_mesh(self):
         print("\nWe gone start GMSH FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
-        print('  ElementSizeMax: ' + str(self.clmax))
-        print('  ElementSizeMin: ' + str(self.clmin))
+        print('  CharacteristicLengthMax: ' + str(self.clmax))
+        print('  CharacteristicLengthMin: ' + str(self.clmin))
         print('  ElementOrder: ' + self.order)
         self.get_dimension()
         self.get_tmp_file_paths()
@@ -88,7 +130,7 @@ class FemGmshTools():
         # Dimension
         # GMSH uses the hightest availabe.
         # A use case for not auto would be a surface (2D) mesh of a solid or other 3d shape
-        if self.dimension == 'Auto':
+        if self.dimension == 'Automatic':
             shty = self.part_obj.Shape.ShapeType
             if shty == 'Solid' or shty == 'CompSolid':
                 # print('Found: ' + shty)
@@ -181,6 +223,23 @@ class FemGmshTools():
             print(self.group_elements)
         else:
             print('  NO group meshing.')
+        self.ele_length_map = self.mesh_obj.CharacteristicLengthMap
+        self.ele_node_map = {}
+        if self.ele_length_map:
+            import FemMeshTools
+            print(self.ele_length_map)
+            self.ele_node_map = {}
+            for e in self.ele_length_map:
+                if not e.startswith('Solid'):
+                    # Face, Edge, Vertex
+                    ele_shape = self.part_obj.Shape.getElement(e)
+                else:
+                    # Solid
+                    ele_shape_index = int(e.lstrip('Solid')) - 1
+                    ele_shape = self.part_obj.Shape.Solids[ele_shape_index]
+                ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+                self.ele_node_map[e] = ele_vertexes
+            print(self.ele_node_map)
 
     def write_part_file(self):
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
@@ -190,7 +249,7 @@ class FemGmshTools():
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
         if self.analysis and self.group_elements:
-            print('  We gone have found elements to make mesh groups for!')
+            print('  We gone have found elements to make mesh groups for.')
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
             for group in self.group_elements:
@@ -214,12 +273,44 @@ class FemGmshTools():
                     # print(ele_nr)
                     geo.write('Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n')
             geo.write("\n")
+        if self.ele_length_map:
+            # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
+            geo.write("// Characteristic Length according CharacteristicLengthMap\n")
+            for e in self.ele_length_map:
+                ele_nodes = (''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])).rstrip(', ')
+                geo.write("// " + e + "\n")
+                geo.write("Characteristic Length { " + ele_nodes + " } = " + self.ele_length_map[e] + ";\n")
+            geo.write("\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
         geo.write("Mesh.ElementOrder = " + self.order + ";\n")
-        geo.write("//Mesh.HighOrderOptimize = 1;\n")  # but does not really work, in GUI it does
-        geo.write("Mesh.Algorithm3D = 1;\n")
-        geo.write("Mesh.Algorithm = 2;\n")
+        geo.write("\n")
+        geo.write("//optimize the mesh\n")
+        # GMSH tetra optimizer
+        if hasattr(self.mesh_obj, 'OptimizeStd') and self.mesh_obj.OptimizeStd is True:
+            geo.write("Mesh.Optimize = 1;\n")
+        else:
+            geo.write("Mesh.Optimize = 0;\n")
+        # Netgen optimizer in GMSH
+        if hasattr(self.mesh_obj, 'OptimizeNetgen') and self.mesh_obj.OptimizeNetgen is True:
+            geo.write("Mesh.OptimizeNetgen = 1;\n")
+        else:
+            geo.write("Mesh.OptimizeNetgen = 0;\n")
+        # hight order mesh optimizing
+        if hasattr(self.mesh_obj, 'OptimizeNetgen') and self.mesh_obj.OptimizeNetgen is True:
+            geo.write("Mesh.HighOrderOptimize = 1;  //probably needs more lines off adjustment in geo file\n")
+        else:
+            geo.write("Mesh.HighOrderOptimize = 0;  //probably needs more lines off adjustment in geo file\n")
+        geo.write("\n")
+        if hasattr(self.mesh_obj, 'RecombineAll') and self.mesh_obj.RecombineAll is True:
+            geo.write("//recombine\n")
+            geo.write("Mesh.RecombineAll = 1;\n")
+            geo.write("\n")
+        geo.write("//mesh algorithm\n")
+        geo.write("Mesh.Algorithm = " + self.algorithm2D + ";\n")
+        geo.write("Mesh.Algorithm3D = " + self.algorithm3D + ";\n")
+        geo.write("\n")
+        geo.write("//more\n")
         geo.write("Mesh  " + self.dimension + ";\n")
         geo.write("Mesh.Format = 2;\n")  # unv
         if self.analysis and self.group_elements:

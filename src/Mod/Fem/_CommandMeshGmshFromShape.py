@@ -38,7 +38,7 @@ class _CommandMeshGmshFromShape(FemCommands):
     # the Fem_MeshGmshFromShape command definition
     def __init__(self):
         super(_CommandMeshGmshFromShape, self).__init__()
-        self.resources = {'Pixmap': 'fem-fem-mesh-gmsh-from-shape',
+        self.resources = {'Pixmap': 'fem-femmesh-gmsh-from-shape',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "FEM mesh from shape by GMSH"),
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGmshFromShape", "Create a FEM mesh from a shape by GMSH mesher")}
         self.is_active = 'with_part_feature'

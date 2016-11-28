@@ -33,8 +33,10 @@ class _FemMeshGmsh():
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
-    known_element_dimensions = ['Auto', '1D', '2D', '3D']
-    known_element_orders = ['Auto', '1st', '2nd']
+    known_element_dimensions = ['Automatic', '1D', '2D', '3D']
+    known_element_orders = ['Automatic', '1st', '2nd']
+    known_mesh_algorithm_2D = ['Automatic', 'MeshAdapt', 'Delaunay', 'Frontal', 'BAMG', 'DelQuad']
+    known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
 
     def __init__(self, obj):
         self.Type = "FemMeshGmsh"
@@ -44,19 +46,41 @@ class _FemMeshGmsh():
         obj.addProperty("App::PropertyLink", "Part", "FEM Mesh", "Part object to mesh")
         obj.Part = None
 
-        obj.addProperty("App::PropertyLength", "ElementSizeMax", "FEM Mesh Params", "Max mesh element size (0.0 = infinity)")
-        obj.ElementSizeMax = 0.0  # will be 1e+22
+        obj.addProperty("App::PropertyLength", "CharacteristicLengthMax", "FEM GMSH Mesh Params", "Max mesh element size (0.0 = infinity)")
+        obj.CharacteristicLengthMax = 0.0  # will be 1e+22
 
-        obj.addProperty("App::PropertyLength", "ElementSizeMin", "FEM Mesh Params", "Min mesh element size")
-        obj.ElementSizeMin = 0.0
+        obj.addProperty("App::PropertyLength", "CharacteristicLengthMin", "FEM GMSH Mesh Params", "Min mesh element size")
+        obj.CharacteristicLengthMin = 0.0
 
-        obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
+        obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM GMSH Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
         obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
-        obj.ElementDimension = 'Auto'  # according ShapeType of Part to mesh
+        obj.ElementDimension = 'Automatic'  # according ShapeType of Part to mesh
 
-        obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM Mesh Params", "Order of mesh elements (Auto will be 2nd)")
+        obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM GMSH Mesh Params", "Order of mesh elements (Auto will be 2nd)")
         obj.ElementOrder = _FemMeshGmsh.known_element_orders
-        obj.ElementOrder = 'Auto'  # = 2nd
+        obj.ElementOrder = 'Automatic'  # = 2nd
+
+        obj.addProperty("App::PropertyBool", "OptimizeStd", "FEM GMSH Mesh Params", "Optimize tetra elements")
+        obj.OptimizeStd = False
+
+        obj.addProperty("App::PropertyBool", "OptimizeNetgen", "FEM GMSH Mesh Params", "Optimize tetra elements by use of Netgen")
+        obj.OptimizeNetgen = False
+
+        obj.addProperty("App::PropertyBool", "HighOrderOptimize", "FEM GMSH Mesh Params", "Optimize hight order meshes")
+        obj.HighOrderOptimize = False
+
+        obj.addProperty("App::PropertyBool", "RecombineAll", "FEM GMSH Mesh Params", "Apply recombination algorithm to all surfaces")
+        obj.RecombineAll = False
+
+        obj.addProperty("App::PropertyEnumeration", "Algorithm2D", "FEM GMSH Mesh Params", "mesh algorithm 2D")
+        obj.Algorithm2D = _FemMeshGmsh.known_mesh_algorithm_2D
+        obj.Algorithm2D = 'Automatic'  # ?
+
+        obj.addProperty("App::PropertyEnumeration", "Algorithm3D", "FEM GMSH Mesh Params", "mesh algorithm 3D")
+        obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
+        obj.Algorithm3D = 'Automatic'  # ?
+
+        obj.addProperty("App::PropertyMap", "CharacteristicLengthMap", "FEM GMSH Mesh Params", "Map of CharacteristicLength of Shape elements")
 
     def execute(self, obj):
         return
