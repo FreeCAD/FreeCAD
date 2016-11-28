@@ -41,7 +41,7 @@ using namespace Gui;
 
 
 TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"),
       tr("Nodes set"),
       true,
       parent),
