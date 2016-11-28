@@ -66,7 +66,7 @@ ViewProviderFemPostObject::ViewProviderFemPostObject() : m_blockPropertyChanges(
     ADD_PROPERTY_TYPE(VectorMode,((long)0), "Coloring", App::Prop_None, "Select what to show for a vector field");
     ADD_PROPERTY(Transperency, (0));
 
-    sPixmap = "fem-fem-mesh-from-shape";
+    sPixmap = "fem-femmesh-from-shape";
 
     //create the subnodes which do the visualization work
     m_shapeHints = new SoShapeHints();
