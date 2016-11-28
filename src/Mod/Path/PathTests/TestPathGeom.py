@@ -121,3 +121,27 @@ class TestPathGeom(PathTestBase):
                 PathGeom.edgeForCmd(
                     Path.Command('G3', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'I': 1, 'J': 0, 'K': -1}), p1),
                 p1, Vector(-1/math.sqrt(2), -1/math.sqrt(2), 1), p2)
+
+    def test50(self):
+        """Verify proper wire(s) aggregation from a Path."""
+        commands = []
+        commands.append(Path.Command('G1', {'X': 1}))
+        commands.append(Path.Command('G1', {'Y': 1}))
+        commands.append(Path.Command('G0', {'X': 0}))
+        commands.append(Path.Command('G1', {'Y': 0}))
+
+        wire = PathGeom.wireForPath(Path.Path(commands))
+        self.assertEqual(len(wire.Edges), 4)
+        self.assertLine(wire.Edges[0], Vector(0,0,0), Vector(1,0,0))
+        self.assertLine(wire.Edges[1], Vector(1,0,0), Vector(1,1,0))
+        self.assertLine(wire.Edges[2], Vector(1,1,0), Vector(0,1,0))
+        self.assertLine(wire.Edges[3], Vector(0,1,0), Vector(0,0,0))
+
+        wires = PathGeom.wiresForPath(Path.Path(commands))
+        self.assertEqual(len(wires), 2)
+        self.assertEqual(len(wires[0].Edges), 2)
+        self.assertLine(wires[0].Edges[0], Vector(0,0,0), Vector(1,0,0))
+        self.assertLine(wires[0].Edges[1], Vector(1,0,0), Vector(1,1,0))
+        self.assertEqual(len(wires[1].Edges), 1)
+        self.assertLine(wires[1].Edges[0], Vector(0,1,0), Vector(0,0,0))
+
