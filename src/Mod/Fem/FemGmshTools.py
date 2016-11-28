@@ -48,13 +48,13 @@ class FemGmshTools():
         # part to mesh
         self.part_obj = self.mesh_obj.Part
 
-        # clmax, ElementSizeMax: float, 0.0 = 1e+22
-        self.clmax = Units.Quantity(self.mesh_obj.ElementSizeMax).Value
+        # clmax, CharacteristicLengthMax: float, 0.0 = 1e+22
+        self.clmax = Units.Quantity(self.mesh_obj.CharacteristicLengthMax).Value
         if self.clmax == 0.0:
             self.clmax = 1e+22
 
-        # clmin, ElementSizeMin: float
-        self.clmin = Units.Quantity(self.mesh_obj.ElementSizeMin).Value
+        # clmin, CharacteristicLengthMin: float
+        self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
         # order, ElementOrder: ['Auto', '1st', '2nd']
         self.order = self.mesh_obj.ElementOrder
@@ -71,8 +71,8 @@ class FemGmshTools():
     def create_mesh(self):
         print("\nWe gone start GMSH FEM mesh run!")
         print('  Part to mesh: Name --> ' + self.part_obj.Name + ',  Label --> ' + self.part_obj.Label + ', ShapeType --> ' + self.part_obj.Shape.ShapeType)
-        print('  ElementSizeMax: ' + str(self.clmax))
-        print('  ElementSizeMin: ' + str(self.clmin))
+        print('  CharacteristicLengthMax: ' + str(self.clmax))
+        print('  CharacteristicLengthMin: ' + str(self.clmin))
         print('  ElementOrder: ' + self.order)
         self.get_dimension()
         self.get_tmp_file_paths()
