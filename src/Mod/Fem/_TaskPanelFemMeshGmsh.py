@@ -78,14 +78,14 @@ class _TaskPanelFemMeshGmsh:
             self.run_gmsh()
 
     def get_mesh_params(self):
-        self.clmax = self.mesh_obj.ElementSizeMax
-        self.clmin = self.mesh_obj.ElementSizeMin
+        self.clmax = self.mesh_obj.CharacteristicLengthMax
+        self.clmin = self.mesh_obj.CharacteristicLengthMin
         self.order = self.mesh_obj.ElementOrder
         self.dimension = self.mesh_obj.ElementDimension
 
     def set_mesh_params(self):
-        self.mesh_obj.ElementSizeMax = self.clmax
-        self.mesh_obj.ElementSizeMin = self.clmin
+        self.mesh_obj.CharacteristicLengthMax = self.clmax
+        self.mesh_obj.CharacteristicLengthMin = self.clmin
         self.mesh_obj.ElementOrder = self.order
         self.mesh_obj.ElementDimension = self.dimension
 
