@@ -223,6 +223,23 @@ class FemGmshTools():
             print(self.group_elements)
         else:
             print('  NO group meshing.')
+        self.ele_length_map = self.mesh_obj.CharacteristicLengthMap
+        self.ele_node_map = {}
+        if self.ele_length_map:
+            import FemMeshTools
+            print(self.ele_length_map)
+            self.ele_node_map = {}
+            for e in self.ele_length_map:
+                if not e.startswith('Solid'):
+                    # Face, Edge, Vertex
+                    ele_shape = self.part_obj.Shape.getElement(e)
+                else:
+                    # Solid
+                    ele_shape_index = int(e.lstrip('Solid')) - 1
+                    ele_shape = self.part_obj.Shape.Solids[ele_shape_index]
+                ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+                self.ele_node_map[e] = ele_vertexes
+            print(self.ele_node_map)
 
     def write_part_file(self):
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
@@ -232,7 +249,7 @@ class FemGmshTools():
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
         if self.analysis and self.group_elements:
-            print('  We gone have found elements to make mesh groups for!')
+            print('  We gone have found elements to make mesh groups for.')
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
             for group in self.group_elements:
@@ -255,6 +272,14 @@ class FemGmshTools():
                     ele_nr = ele_nr.rstrip(', ')
                     # print(ele_nr)
                     geo.write('Physical ' + physical_type + '("' + group + '") = {' + ele_nr + '};\n')
+            geo.write("\n")
+        if self.ele_length_map:
+            # we use the index FreeCAD which starts with 0, we need to add 1 for the index in GMSH
+            geo.write("// Characteristic Length according CharacteristicLengthMap\n")
+            for e in self.ele_length_map:
+                ele_nodes = (''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])).rstrip(', ')
+                geo.write("// " + e + "\n")
+                geo.write("Characteristic Length { " + ele_nodes + " } = " + self.ele_length_map[e] + ";\n")
             geo.write("\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")

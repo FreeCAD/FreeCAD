@@ -1162,6 +1162,49 @@ def find_element_in_shape(aShape, anElement):
         FreeCAD.Console.PrintError('Compound is not supported.\n')
 
 
+def get_vertexes_by_element(aShape, anElement):
+    # we gone extent the method find_element_in_shape and return the vertexes
+    # import Part
+    ele_vertexes = []
+    ele_st = anElement.ShapeType
+    if ele_st == 'Solid' or ele_st == 'CompSolid':
+        for index, solid in enumerate(aShape.Solids):
+            if is_same_geometry(solid, anElement):
+                for vele in aShape.Solids[index].Vertexes:
+                    for i, v in enumerate(aShape.Vertexes):
+                        if vele.isSame(v):  # use isSame, because orientation could be different
+                            ele_vertexes.append(i)
+                # print('  ' + str(sorted(ele_vertexes)))
+                return ele_vertexes
+        FreeCAD.Console.PrintError('Error, Solid ' + str(anElement) + ' not found in: ' + str(aShape) + '\n')
+    elif ele_st == 'Face' or ele_st == 'Shell':
+        for index, face in enumerate(aShape.Faces):
+            if is_same_geometry(face, anElement):
+                for vele in aShape.Faces[index].Vertexes:
+                    for i, v in enumerate(aShape.Vertexes):
+                        if vele.isSame(v):  # use isSame, because orientation could be different
+                            ele_vertexes.append(i)
+                # print('  ' + str(sorted(ele_vertexes)))
+                return ele_vertexes
+    elif ele_st == 'Edge' or ele_st == 'Wire':
+        for index, edge in enumerate(aShape.Edges):
+            if is_same_geometry(edge, anElement):
+                for vele in aShape.Edges[index].Vertexes:
+                    for i, v in enumerate(aShape.Vertexes):
+                        if vele.isSame(v):  # use isSame, because orientation could be different
+                            ele_vertexes.append(i)
+                # print('  ' + str(sorted(ele_vertexes)))
+                return ele_vertexes
+    elif ele_st == 'Vertex':
+        for index, vertex in enumerate(aShape.Vertexes):
+            if is_same_geometry(vertex, anElement):
+                ele_vertexes.append(index)
+                # print('  ' + str(sorted(ele_vertexes)))
+                return ele_vertexes
+    elif ele_st == 'Compound':
+        FreeCAD.Console.PrintError('Compound is not supported.\n')
+
+
 def is_same_geometry(shape1, shape2):
     # the vertexes and the CenterOfMass are compared
     # it is a hack, but I do not know any better !
