@@ -587,7 +587,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         )
         # check which modules are available
         if(UNIX AND NOT APPLE)
-            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
             foreach(_module ${VTK_COMPONENTS})
                 file(GLOB_RECURSE _module_exists /usr/lib*/cmake/*${_module}.cmake
                                                  ${CMAKE_ROOT}/*${_module}.cmake)
