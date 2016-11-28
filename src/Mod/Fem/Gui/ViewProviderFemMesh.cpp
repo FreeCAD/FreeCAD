@@ -183,7 +183,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0
 
 ViewProviderFemMesh::ViewProviderFemMesh()
 {
-    sPixmap = "fem-fem-mesh-from-shape";
+    sPixmap = "fem-femmesh-from-shape";
 
     ADD_PROPERTY(PointColor,(App::Color(0.7f,0.7f,0.7f)));
     ADD_PROPERTY(PointSize,(5.0f));

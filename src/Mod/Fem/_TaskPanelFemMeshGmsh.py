@@ -78,14 +78,14 @@ class _TaskPanelFemMeshGmsh:
             self.run_gmsh()
 
     def get_mesh_params(self):
-        self.clmax = self.mesh_obj.ElementSizeMax
-        self.clmin = self.mesh_obj.ElementSizeMin
+        self.clmax = self.mesh_obj.CharacteristicLengthMax
+        self.clmin = self.mesh_obj.CharacteristicLengthMin
         self.order = self.mesh_obj.ElementOrder
         self.dimension = self.mesh_obj.ElementDimension
 
     def set_mesh_params(self):
-        self.mesh_obj.ElementSizeMax = self.clmax
-        self.mesh_obj.ElementSizeMin = self.clmin
+        self.mesh_obj.CharacteristicLengthMax = self.clmax
+        self.mesh_obj.CharacteristicLengthMin = self.clmin
         self.mesh_obj.ElementOrder = self.order
         self.mesh_obj.ElementDimension = self.dimension
 
@@ -141,7 +141,12 @@ class _TaskPanelFemMeshGmsh:
         import FemGmshTools
         gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
         self.console_log("Start GMSH ...")
-        error = gmsh_mesh.create_mesh()
+        error = ''
+        try:
+            error = gmsh_mesh.create_mesh()
+        except:
+            import sys
+            print("Unexpected error when creating mesh: ", sys.exc_info()[0])
         if error:
             print(error)
             self.console_log('GMSH had warnings ...')
