@@ -25,10 +25,10 @@
         <file>icons/fem-control-solver.svg</file>
         <file>icons/fem-cylinder.svg</file>
         <file>icons/fem-data.png</file>
-        <file>icons/fem-fem-mesh-create-node-by-poly.svg</file>
-        <file>icons/fem-fem-mesh-from-shape.svg</file>
-        <file>icons/fem-fem-mesh-gmsh-from-shape.svg</file>
-        <file>icons/fem-fem-mesh-netgen-from-shape.svg</file>
+        <file>icons/fem-femmesh-create-node-by-poly.svg</file>
+        <file>icons/fem-femmesh-from-shape.svg</file>
+        <file>icons/fem-femmesh-gmsh-from-shape.svg</file>
+        <file>icons/fem-femmesh-netgen-from-shape.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
