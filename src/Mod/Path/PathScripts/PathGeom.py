@@ -65,11 +65,12 @@ class Side:
 class PathGeom:
     """Class to transform Path Commands into Edges and Wire and back again.
     The interface might eventuallly become part of Path itself."""
+    CmdMoveFast     = ['G0', 'G00']
     CmdMoveStraight = ['G1', 'G01']
-    CmdMoveCW =       ['G2', 'G02']
-    CmdMoveCCW =      ['G3', 'G03']
-    CmdMoveArc = CmdMoveCW + CmdMoveCCW
-    CmdMove = CmdMoveStraight + CmdMoveArc
+    CmdMoveCW       = ['G2', 'G02']
+    CmdMoveCCW      = ['G3', 'G03']
+    CmdMoveArc      = CmdMoveCW + CmdMoveCCW
+    CmdMove         = CmdMoveStraight + CmdMoveArc
 
     @classmethod
     def getAngle(cls, vertex):
@@ -108,11 +109,11 @@ class PathGeom:
         return Vector(pt.x, pt.y, 0)
 
     @classmethod
-    def edgeForCmd(cls, cmd, startPoint):
+    def edgeForCmd(cls, cmd, startPoint, includeFastMoves = False):
         """Returns a Curve representing the givne command, assuming a given startinPoint."""
 
         endPoint = cls.commandEndPoint(cmd, startPoint)
-        if cmd.Name in cls.CmdMoveStraight:
+        if (cmd.Name in cls.CmdMoveStraight) or (includeFastMoves and cmd.Name in cls.CmdMoveFast):
             return Part.Edge(Part.Line(startPoint, endPoint))
 
         if cmd.Name in cls.CmdMoveArc:
@@ -155,5 +156,35 @@ class PathGeom:
             e = helix.Edges[0]
             helix.translate(startPoint - e.valueAt(e.FirstParameter))
             return helix.Edges[0]
+        return None
 
+    @classmethod
+    def wireForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
+        """Returns a wire representing all move commands found in the given path."""
+        edges = []
+        if hasattr(path, "Commands"):
+            for cmd in path.Commands:
+                edge = cls.edgeForCmd(cmd, startPoint, True)
+                if edge:
+                    edges.append(edge)
+                    startPoint = cls.commandEndPoint(cmd, startPoint)
+        return Part.Wire(edges)
+
+    @classmethod
+    def wiresForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
+        """Returns a collection of wires, each representing a continuous cutting Path in path."""
+        wires = []
+        if hasattr(path, "Commands"):
+            edges = []
+            for cmd in path.Commands:
+                if cmd.Name in cls.CmdMove:
+                    edges.append(cls.edgeForCmd(cmd, startPoint, False))
+                    startPoint = cls.commandEndPoint(cmd, startPoint)
+                elif cmd.Name in cls.CmdMoveFast:
+                    wires.append(Part.Wire(edges))
+                    edges = []
+                    startPoint = cls.commandEndPoint(cmd, startPoint)
+            if edges:
+                wires.append(Part.Wire(edges))
+        return wires
 

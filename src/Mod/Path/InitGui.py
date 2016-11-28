@@ -74,7 +74,6 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileEdges
         from PathScripts import DogboneDressup
         from PathScripts import PathMillFace
-        from PathScripts import PathDressupHoldingTags
         import PathCommands
 
         # build commands list
@@ -84,7 +83,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave", "Path_MillFace"]
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["Dogbone_Dressup", "DragKnife_Dressup", "PathDressup_HoldingTags"]
+        dressupcmdlist = ["Dogbone_Dressup", "DragKnife_Dressup"]
         extracmdlist = ["Path_SelectLoop"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]

@@ -26,7 +26,6 @@ SET(PathScripts_SRCS
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
-    PathScripts/PathDressupHoldingTags.py
     PathScripts/PathDrilling.py
     PathScripts/PathEngrave.py
     PathScripts/PathFacePocket.py
@@ -73,7 +72,6 @@ SET(PathScripts_SRCS
     PathScripts/opensbp_pre.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
-    PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
     PathTests/TestPathPost.py
     PathTests/__init__.py
