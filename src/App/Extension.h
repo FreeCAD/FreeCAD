@@ -292,6 +292,7 @@ public:
     
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
+        ExtensionT::initExtension(ExtensionPythonT::getExtensionClassTypeId());
         
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }
