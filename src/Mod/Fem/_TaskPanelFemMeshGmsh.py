@@ -141,7 +141,12 @@ class _TaskPanelFemMeshGmsh:
         import FemGmshTools
         gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
         self.console_log("Start GMSH ...")
-        error = gmsh_mesh.create_mesh()
+        error = ''
+        try:
+            error = gmsh_mesh.create_mesh()
+        except:
+            import sys
+            print("Unexpected error when creating mesh: ", sys.exc_info()[0])
         if error:
             print(error)
             self.console_log('GMSH had warnings ...')
