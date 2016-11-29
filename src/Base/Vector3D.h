@@ -73,6 +73,10 @@ struct float_traits<double> {
     static inline float_type maximum() { return DBL_MAX; }
 };
 
+class Matrix4D;
+//#include <Base/Matrix.h>
+
+
 /** The Vector Base class. */
 template <class _Precision>
 class Vector3
@@ -126,6 +130,11 @@ public:
     Vector3 operator %  (const Vector3<_Precision>& rcVct) const;
     /// Cross product
     Vector3 Cross (const Vector3<_Precision>& rcVct) const;
+    /// Outer product
+    Matrix4D Outer(const Vector3<_Precision>& rcVct) const;
+    /// Hat operator (skew symmetric)
+    Matrix4D Hat(void) const;
+
     /// Comparing for inequality
     bool operator != (const Vector3<_Precision>& rcVct) const;
     /// Comparing for equality
@@ -159,8 +168,8 @@ public:
     Vector3 & Normalize (void);
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
     _Precision GetAngle (const Vector3 &rcVect) const;
-    /** Transforms this point to the coordinate system defined by origin \a rclBase, 
-    * vector \a vector rclDirX and vector \a vector rclDirY. 
+    /** Transforms this point to the coordinate system defined by origin \a rclBase,
+    * vector \a vector rclDirX and vector \a vector rclDirY.
     * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
     */
     void TransformToCoordinateSystem (const Vector3 &rclBase, const Vector3 &rclDirX, const Vector3 &rclDirY);
@@ -183,7 +192,7 @@ public:
     /// Projects this point onto the line given by the base \a rclPoint and the direction \a rclLine.
     /**
      * Projects a point \a rclPoint onto the line defined by the origin and the direction \a rclLine.
-     * The result is a vector from \a rclPoint to the point on the line. The length of this vector 
+     * The result is a vector from \a rclPoint to the point on the line. The length of this vector
      * is the distance from \a rclPoint to the line.
      * Note: The resulting vector does not depend on the current vector.
      */
@@ -286,4 +295,3 @@ inline _Vec1 convertTo(const _Vec2& v)
 } // namespace Base
 
 #endif // BASE_VECTOR3D_H
-
