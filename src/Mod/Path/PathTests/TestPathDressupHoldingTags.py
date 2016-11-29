@@ -248,6 +248,28 @@ class TestTag02SquareTag(PathTestBase): # =============
             self.assertTrue(s.isComplete())
             self.assertLine(s.tail, edge.Curve.StartPoint, edge.Curve.EndPoint)
 
+    def test10(self):
+        """Verify intersection of square tag with an arc."""
+        print
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 0)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10}), p1)
+
+        pi = Vector(0.8, -3.919184, 0)
+        pj = Vector(0.8, +3.919184, 0)
+
+        print("(%s - %s) - %s" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter), edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)))
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 4)
+        self.assertCurve(s.edges[0], p1, Vector(4.486010, -8.342417, 0), pi)
+        self.assertLine(s.edges[1], pi, pi + Vector(0, 0, 3))
+        self.assertCurve(s.edges[2], pi + Vector(0, 0, 3), Vector(0, 0, 3), pj + Vector(0, 0, 3))
+        self.assertLine(s.edges[3], pj + Vector(0, 0, 3), pj)
+        self.assertCurve(s.tail, pj, Vector(4.486010, +8.342417, 0), p2)
+
+
 class TestTag03TrapezoidTag(PathTestBase): # ============= 
     """Unit tests for trapezoid tags."""
 
