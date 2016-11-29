@@ -480,8 +480,10 @@ Application::Application(bool GUIenabled)
     // instanciate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
-    createStandardOperations();
-    MacroCommand::load();
+    if (GUIenabled) {
+        createStandardOperations();
+        MacroCommand::load();
+    }
     ObjectLabelObserver::instance();
 }
 
