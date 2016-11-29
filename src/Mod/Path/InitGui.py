@@ -73,6 +73,7 @@ class PathWorkbench (Workbench):
         from PathScripts import PathProfileEdges
         from PathScripts import PathDressupDogbone
         from PathScripts import PathMillFace
+        from PathScripts import PathDressupHoldingTags
         import PathCommands
 
         # build commands list
@@ -82,7 +83,7 @@ class PathWorkbench (Workbench):
         twodopcmdlist = ["Path_Contour", "Path_Profile", "Path_Profile_Edges", "Path_Pocket", "Path_Drilling", "Path_Engrave", "Path_MillFace"]
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
-        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife"]
+        dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_HoldingTags"]
         extracmdlist = ["Path_SelectLoop"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
@@ -134,7 +135,7 @@ class PathWorkbench (Workbench):
         if len(FreeCADGui.Selection.getSelection()) == 1:
             if FreeCADGui.Selection.getSelection()[0].isDerivedFrom("Path::Feature"):
                 self.appendContextMenu("", ["Path_Inspect"])
-                if FreeCADGui.Selection.getSelection()[0].Name in ["Profile", "Contour"]:
+                if "Profile" or "Contour" in FreeCADGui.Selection.getSelection()[0].Name:
                     self.appendContextMenu("", ["Add_Tag"])
                     self.appendContextMenu("", ["Set_StartPoint"])
                     self.appendContextMenu("", ["Set_EndPoint"])
