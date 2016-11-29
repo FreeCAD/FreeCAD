@@ -73,6 +73,7 @@ def makePipe(baseobj=None,diameter=0,length=0,placement=None,name="Pipe"):
         obj.Diameter = p.GetFloat("PipeDiameter",50)
     if placement:
         obj.Placement = placement
+    return obj
 
 
 def makePipeConnector(pipes,radius=0,name="Connector"):
@@ -88,6 +89,7 @@ def makePipeConnector(pipes,radius=0,name="Connector"):
     obj.Radius = radius
     if FreeCAD.GuiUp:
         _ViewProviderPipe(obj.ViewObject)
+    return obj
 
 
 class _CommandPipe:
