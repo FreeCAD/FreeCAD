@@ -26,6 +26,7 @@
 
 #include "PropertyContainer.h"
 #include "PropertyPythonObject.h"
+#include "ExtensionContainer.h"
 #include "Base/Interpreter.h"
 #include <CXX/Objects.hxx>
 
@@ -253,6 +254,9 @@ protected:
                              Base::Type::instantiationMethod method=0);
     //@}
 
+    virtual void extensionOnChanged(const Property* p) {(void)(p);};
+    
+    friend class App::ExtensionContainer;
 
 protected:     
     void initExtension(Base::Type type);
