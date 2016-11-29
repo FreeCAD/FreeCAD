@@ -72,6 +72,7 @@ SET(PathScripts_SRCS
     PathScripts/opensbp_pre.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
+    PathTests/PathTestUtils.py
     PathTests/TestPathGeom.py
     PathTests/TestPathPost.py
     PathTests/__init__.py

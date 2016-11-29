@@ -30,19 +30,16 @@ import Path
 from FreeCAD import Vector
 
 class Side:
-    """Class to determine and define the side a Path is on or Vectors are in relation to each other."""
+    """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
     Left  = +1
-    """Representing the left side."""
     Right = -1
-    """Representing the right side."""
     Straight = 0
-    """Used if two vectors form a line."""
     On = 0
-    """Synonym for Straight."""
 
     @classmethod
     def toString(cls, side):
-        """Returns a string representation of the enum value."""
+        """(side)
+        Returns a string representation of the enum value."""
         if side == cls.Left:
             return 'Left'
         if side == cls.Right:
@@ -51,7 +48,8 @@ class Side:
 
     @classmethod
     def of(cls, ptRef, pt):
-        """Determine the side of pt in relation to ptRef.
+        """(ptRef, pt)
+        Determine the side of pt in relation to ptRef.
         If both Points are viewed as vectors with their origin in (0,0,0)
         then the two vectors are either form a straigt line (On) or pt
         lies in the left or right hemishpere in regards to ptRef."""
@@ -74,7 +72,8 @@ class PathGeom:
 
     @classmethod
     def getAngle(cls, vertex):
-        """Returns the angle [-pi,pi] of a vertex using the X-axis as the reference.
+        """(vertex)
+        Returns the angle [-pi,pi] of a vertex using the X-axis as the reference.
         Positive angles for vertexes in the upper hemishpere (positive y values)
         and negative angles for the lower hemishpere."""
         a = vertex.getAngle(FreeCAD.Vector(1,0,0))
@@ -84,7 +83,8 @@ class PathGeom:
 
     @classmethod
     def diffAngle(cls, a1, a2, direction = 'CW'):
-        """Returns the difference between two angles (a1 -> a2) into a given direction."""
+        """(a1, a2, [direction='CW'])
+        Returns the difference between two angles (a1 -> a2) into a given direction."""
         if direction == 'CW':
             while a1 < a2:
                 a1 += 2*math.pi
@@ -97,23 +97,26 @@ class PathGeom:
 
     @classmethod
     def commandEndPoint(cls, cmd, defaultPoint = Vector(), X='X', Y='Y', Z='Z'):
-        """Extracts the end point from a Path Command."""
+        """(cmd, [defaultPoint=Vector()], [X='X'], [Y='Y'], [Z='Z'])
+        Extracts the end point from a Path Command."""
         x = cmd.Parameters.get(X, defaultPoint.x)
         y = cmd.Parameters.get(Y, defaultPoint.y)
         z = cmd.Parameters.get(Z, defaultPoint.z)
         return FreeCAD.Vector(x, y, z)
 
     @classmethod
-    def xy(cls, pt):
-        """Conveninience function to return the projection of the Vector in the XY-plane."""
-        return Vector(pt.x, pt.y, 0)
+    def xy(cls, point):
+        """(point)
+        Convenience function to return the projection of the Vector in the XY-plane."""
+        return Vector(point.x, point.y, 0)
 
     @classmethod
-    def edgeForCmd(cls, cmd, startPoint, includeFastMoves = False):
-        """Returns a Curve representing the givne command, assuming a given startinPoint."""
+    def edgeForCmd(cls, cmd, startPoint):
+        """(cmd, startPoint).
+        Returns an Edge representing the given command, assuming a given startPoint."""
 
         endPoint = cls.commandEndPoint(cmd, startPoint)
-        if (cmd.Name in cls.CmdMoveStraight) or (includeFastMoves and cmd.Name in cls.CmdMoveFast):
+        if (cmd.Name in cls.CmdMoveStraight) or (cmd.Name in cls.CmdMoveFast):
             return Part.Edge(Part.Line(startPoint, endPoint))
 
         if cmd.Name in cls.CmdMoveArc:
@@ -160,11 +163,12 @@ class PathGeom:
 
     @classmethod
     def wireForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
-        """Returns a wire representing all move commands found in the given path."""
+        """(path, [startPoint=Vector(0,0,0)])
+        Returns a wire representing all move commands found in the given path."""
         edges = []
         if hasattr(path, "Commands"):
             for cmd in path.Commands:
-                edge = cls.edgeForCmd(cmd, startPoint, True)
+                edge = cls.edgeForCmd(cmd, startPoint)
                 if edge:
                     edges.append(edge)
                     startPoint = cls.commandEndPoint(cmd, startPoint)
@@ -172,13 +176,14 @@ class PathGeom:
 
     @classmethod
     def wiresForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
-        """Returns a collection of wires, each representing a continuous cutting Path in path."""
+        """(path, [startPoint=Vector(0,0,0)])
+        Returns a collection of wires, each representing a continuous cutting Path in path."""
         wires = []
         if hasattr(path, "Commands"):
             edges = []
             for cmd in path.Commands:
                 if cmd.Name in cls.CmdMove:
-                    edges.append(cls.edgeForCmd(cmd, startPoint, False))
+                    edges.append(cls.edgeForCmd(cmd, startPoint))
                     startPoint = cls.commandEndPoint(cmd, startPoint)
                 elif cmd.Name in cls.CmdMoveFast:
                     wires.append(Part.Wire(edges))
