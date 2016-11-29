@@ -31,6 +31,7 @@
 #include <App/PropertyStandard.h>
 #include <App/PropertyLinks.h>
 #include <App/GeoFeature.h>
+#include <App/DocumentObjectExtension.h>
 #include <Base/Vector3D.h>
 #include <Base/Placement.h>
 #include <Base/Exception.h>
@@ -46,20 +47,16 @@ namespace Part
 {
 
 /**
- * @brief The AttachableObject class is the thing to be inherited by an object
+ * @brief The AttachableObject class is the thing to extend an object with
  * that should be attachable. It includes the required properties, and
  * shortcuts for accessing the attachment math class.
- *
- * Todos to make it work:
- * - call Attacher::execute() when executing derived object. Make sure to deal
- * with its return value, otherwise it will leak memory upon fails.
  */
-class PartExport AttachableObject : public Part::Feature
+class PartExport AttachExtension : public App::DocumentObjectExtension
 {
-    PROPERTY_HEADER(Part::AttachableObject);
+    EXTENSION_PROPERTY_HEADER(Part::AttachableObject);
 public:
-    AttachableObject();
-    virtual ~AttachableObject();
+    AttachExtension();
+    virtual ~AttachExtension();
 
     /**
      * @brief setAttacher sets the AttachEngine object. The class takes the
@@ -103,9 +100,11 @@ public:
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/};
 
-    App::DocumentObjectExecReturn *execute(void);
+    App::DocumentObjectExecReturn *extensionExecute(void);
 protected:
-    virtual void onChanged(const App::Property* /*prop*/);
+    virtual void extensionOnChanged(const App::Property* /*prop*/);
+    
+    App::PropertyPlacement& getPlacement();
 
 public:
     void updateAttacherVals();
@@ -115,7 +114,7 @@ private:
 };
 
 
-typedef App::FeaturePythonT<AttachableObject> AttachableObjectPython;
+typedef App::ExtensionPythonT<AttachExtension> AttachExtensionPython;
 
 } // namespace Part
 

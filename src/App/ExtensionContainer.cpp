@@ -265,17 +265,11 @@ const char* ExtensionContainer::getPropertyDocumentation(const char* name) const
 }
 
 void ExtensionContainer::onChanged(const Property* prop) {
-    /*
-    //we need to make sure that the proxy we use is always the proxy of the extended class. This 
-    //is needed as only the extended class proxy (either c++ or python) is managed and ensured to 
-    //be the python implementation class
-    //Note: this property only exist if the created object is FeaturePythonT<>, this won't work for 
-    //any default document object. But this doesnt matter much as there is a proxy object set anyway
-    //if a extension gets registered from python. This is only for synchronisation.
-    if(strcmp(prop->getName(), "Proxy")) {
-        for(auto entry : _extensions)
-            entry.second->extensionGetExtensionPyObject().setValue(static_cast<const PropertyPythonObject*>(prop)->getValue());
-    }*/
+    
+    //inform all extensions about changed property. This includes all properties from the 
+    //extended object (this) as well as all extension properties
+    for(auto entry : _extensions)
+        entry.second->extensionOnChanged(prop);
         
     App::PropertyContainer::onChanged(prop);
 }
