@@ -200,13 +200,14 @@ void TaskMirroredParameters::onSelectionChanged(const Gui::SelectionChanges& msg
             }
             exitSelectionMode();
         } else {
-            if ( selectionMode == reference) {
-                std::vector<std::string> mirrorPlanes;
-                App::DocumentObject* selObj;
-                PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
-                getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
-                if (!selObj)
+            std::vector<std::string> mirrorPlanes;
+            App::DocumentObject* selObj;
+            PartDesign::Mirrored* pcMirrored = static_cast<PartDesign::Mirrored*>(getObject());
+            getReferencedSelection(pcMirrored, msg, selObj, mirrorPlanes);
+            if (!selObj)
                     return;
+            
+            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Plane::getClassTypeId () ) ) {
                 pcMirrored->MirrorPlane.setValue(selObj, mirrorPlanes);
                 recomputeFeature();
                 updateUI();
