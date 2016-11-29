@@ -57,6 +57,9 @@
           </item>
           <item>
            <widget class="QComboBox" name="projection">
+            <property name="toolTip">
+             <string>First or Third Angle</string>
+            </property>
             <property name="editable">
              <bool>false</bool>
             </property>
@@ -90,6 +93,9 @@
           </item>
           <item>
            <widget class="QComboBox" name="cmbScaleType">
+            <property name="toolTip">
+             <string>Scale Page/Auto/Custom</string>
+            </property>
             <item>
              <property name="text">
               <string>Page</string>
@@ -133,6 +139,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleNum">
+            <property name="toolTip">
+             <string>Scale Numerator</string>
+            </property>
             <property name="minimum">
              <number>1</number>
             </property>
@@ -150,6 +159,9 @@
           </item>
           <item>
            <widget class="QSpinBox" name="sbScaleDen">
+            <property name="toolTip">
+             <string>Scale Denominator</string>
+            </property>
             <property name="minimum">
              <number>1</number>
             </property>
@@ -205,7 +217,7 @@
             </property>
             <property name="font">
              <font>
-              <pointsize>12</pointsize>
+              <pointsize>11</pointsize>
               <weight>50</weight>
               <italic>false</italic>
               <bold>false</bold>
@@ -213,6 +225,9 @@
             </property>
             <property name="focusPolicy">
              <enum>Qt::NoFocus</enum>
+            </property>
+            <property name="toolTip">
+             <string>Primary View Direction</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
@@ -292,9 +307,12 @@
            </widget>
           </item>
           <item row="2" column="2">
-           <widget class="QPushButton" name="pushButton_8">
+           <widget class="QPushButton" name="but3D">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>Set Primary Direction to match 3D</string>
             </property>
             <property name="text">
              <string>Match 3D</string>
@@ -322,6 +340,16 @@
             </property>
            </widget>
           </item>
+          <item row="2" column="0">
+           <widget class="QPushButton" name="butReset">
+            <property name="toolTip">
+             <string>Set Primary Direction to 3D Front</string>
+            </property>
+            <property name="text">
+             <string>3D Front</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -346,7 +374,235 @@
          </layout>
         </item>
         <item>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="5" column="2">
+           <widget class="QCheckBox" name="chkView8">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="toolTip">
+             <string>Bottom</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <spacer name="horizontalSpacer">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="2">
+           <widget class="QCheckBox" name="chkView4">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="toolTip">
+             <string>Primary</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QCheckBox" name="chkView5">
+            <property name="toolTip">
+             <string>Right</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="5">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="3" column="1">
+           <widget class="QCheckBox" name="chkView3">
+            <property name="toolTip">
+             <string>Left</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QCheckBox" name="chkView7">
+            <property name="toolTip">
+             <string>LeftFrontBottom</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QCheckBox" name="chkView1">
+            <property name="toolTip">
+             <string>Top</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QCheckBox" name="chkView9">
+            <property name="toolTip">
+             <string>RightFrontBottom</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QCheckBox" name="chkView2">
+            <property name="toolTip">
+             <string>RightFrontTop</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QCheckBox" name="chkView6">
+            <property name="toolTip">
+             <string>Rear</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QCheckBox" name="chkView0">
+            <property name="toolTip">
+             <string>LeftFrontTop</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QCheckBox::indicator {
+width: 24px;
+height: 24px;
+}
+</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item>
            <widget class="QPushButton" name="butCWRotate">
             <property name="toolTip">
@@ -377,22 +633,8 @@
             </property>
            </widget>
           </item>
-         </layout>
-        </item>
-        <item>
-         <layout class="QGridLayout" name="gridLayout_2">
-          <item row="5" column="2">
-           <widget class="QCheckBox" name="chkView8">
-            <property name="enabled">
-             <bool>true</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <spacer name="horizontalSpacer">
+          <item>
+           <spacer name="horizontalSpacer_5">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -403,88 +645,6 @@
              </size>
             </property>
            </spacer>
-          </item>
-          <item row="3" column="2">
-           <widget class="QCheckBox" name="chkView4">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="3">
-           <widget class="QCheckBox" name="chkView5">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="5">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="3" column="1">
-           <widget class="QCheckBox" name="chkView3">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="1">
-           <widget class="QCheckBox" name="chkView7">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QCheckBox" name="chkView1">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="3">
-           <widget class="QCheckBox" name="chkView9">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="3">
-           <widget class="QCheckBox" name="chkView2">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="4">
-           <widget class="QCheckBox" name="chkView6">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="1">
-           <widget class="QCheckBox" name="chkView0">
-            <property name="text">
-             <string/>
-            </property>
-           </widget>
           </item>
          </layout>
         </item>

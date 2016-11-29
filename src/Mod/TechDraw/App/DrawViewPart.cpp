@@ -143,6 +143,7 @@ DrawViewPart::~DrawViewPart()
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
+    //Base::Console().Message("TRACE - DVP::execute() - %s\n",getNameInDocument());
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("FVP - No Source object linked");

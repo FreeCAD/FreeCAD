@@ -481,16 +481,17 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     std::string multiViewName = getUniqueObjectName("cView");
     std::string SourceName = (*shapes.begin())->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",multiViewName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",multiViewName.c_str(),SourceName.c_str());
 
     App::DocumentObject *docObj = getDocument()->getObject(multiViewName.c_str());
     auto multiView( static_cast<TechDraw::DrawProjGroup *>(docObj) );
 
     // set the anchor
-    std::string anchor = "Front";
-    doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
+//    std::string anchor = "Front";
+//    doCommand(Doc,"App.activeDocument().%s.addProjection('%s')",multiViewName.c_str(),anchor.c_str());
     // add the multiView to the page
-    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
+//    doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
 
     // create the rest of the desired views
     Gui::Control().showDialog(new TaskDlgProjGroup(multiView,true));
