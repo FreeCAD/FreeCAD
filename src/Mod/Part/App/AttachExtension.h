@@ -21,7 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 /**
-  * AttachableObject.h, .cpp contain a class to derive other features from, to make
+  * AttachExtensionh, .cpp contain a extension class to derive other features from, to make
   * them attachable.
   */
 
@@ -100,7 +100,9 @@ public:
     virtual bool isTouched_Mapping()
     {return true; /*support.isTouched isn't true when linked objects are changed... why?..*/};
 
-    App::DocumentObjectExecReturn *extensionExecute(void);
+    virtual short int extensionMustExecute(void);
+    virtual App::DocumentObjectExecReturn *extensionExecute(void);
+    virtual PyObject* getExtensionPyObject(void);
 protected:
     virtual void extensionOnChanged(const App::Property* /*prop*/);
     

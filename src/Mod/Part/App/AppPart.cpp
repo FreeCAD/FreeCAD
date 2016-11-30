@@ -118,7 +118,7 @@
 #include "PropertyGeometryList.h"
 #include "DatumFeature.h"
 #include "Attacher.h"
-#include "AttachableObject.h"
+#include "AttachExtension.h"
 #include "FaceMaker.h"
 #include "FaceMakerCheese.h"
 #include "FaceMakerBullseye.h"
@@ -397,11 +397,12 @@ PyMODINIT_FUNC initPart()
     Attacher::AttachEnginePlane   ::init();
     Attacher::AttachEngineLine    ::init();
     Attacher::AttachEnginePoint   ::init();
+    
+    Part::AttachExtension       ::init();
+    Part::AttachExtensionPython ::init();
 
     Part::Feature               ::init();
     Part::FeatureExt            ::init();
-    Part::AttachableObject      ::init();
-    Part::AttachableObjectPython::init();
     Part::BodyBase              ::init();
     Part::FeaturePython         ::init();
     Part::FeatureGeometrySet    ::init();

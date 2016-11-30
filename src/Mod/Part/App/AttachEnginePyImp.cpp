@@ -6,7 +6,7 @@
 #include "Mod/Part/App/Attacher.h"
 #include <Base/PlacementPy.h>
 #include <App/DocumentObjectPy.h>
-#include "AttachableObjectPy.h"
+#include "AttachExtensionPy.h"
 #include "TopoShapePy.h"
 
 #include "OCCError.h"
@@ -493,12 +493,12 @@ PyObject* AttachEnginePy::readParametersFromFeature(PyObject* args)
         return NULL;    // NULL triggers exception
 
     try{
-        const App::DocumentObjectPy* dobjpy = static_cast<const App::DocumentObjectPy*>(obj);
-        const App::DocumentObject* dobj = dobjpy->getDocumentObjectPtr();
-        if (! dobj->isDerivedFrom(Part::AttachableObject::getClassTypeId())){
-            throw Py::TypeError("Supplied object isn't Part::AttachableObject");
+        App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);
+        App::DocumentObject* dobj = dobjpy->getDocumentObjectPtr();
+        if (! dobj->hasExtension(Part::AttachExtension::getExtensionClassTypeId())){
+            throw Py::TypeError("Supplied object has no Part::AttachExtension");
         }
-        const Part::AttachableObject* feat = static_cast<const Part::AttachableObject*>(dobj);
+        Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         AttachEngine &attacher = *(this->getAttachEnginePtr());
         attacher.setUp(feat->Support,
                        eMapMode(feat->MapMode.getValue()),
@@ -519,10 +519,10 @@ PyObject* AttachEnginePy::writeParametersToFeature(PyObject* args)
     try{
         App::DocumentObjectPy* dobjpy = static_cast<App::DocumentObjectPy*>(obj);
         App::DocumentObject* dobj = dobjpy->getDocumentObjectPtr();
-        if (! dobj->isDerivedFrom(Part::AttachableObject::getClassTypeId())){
-            throw Py::TypeError("Supplied object isn't Part::AttachableObject");
+        if (! dobj->hasExtension(Part::AttachExtension::getExtensionClassTypeId())){
+            throw Py::TypeError("Supplied object has no Part::AttachExtension");
         }
-        Part::AttachableObject* feat = static_cast<Part::AttachableObject*>(dobj);
+        Part::AttachExtension* feat = dobj->getExtensionByType<Part::AttachExtension>();
         const AttachEngine &attacher = *(this->getAttachEnginePtr());
         AttachEngine::verifyReferencesAreSafe(attacher.references);
         feat->Support.Paste(attacher.references);
