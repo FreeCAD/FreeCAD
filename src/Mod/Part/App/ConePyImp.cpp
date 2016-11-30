@@ -181,12 +181,10 @@ PyObject* ConePy::uIso(PyObject * args)
         Handle_Geom_ConicalSurface cone = Handle_Geom_ConicalSurface::DownCast
             (getGeomConePtr()->handle());
         Handle_Geom_Line c = Handle_Geom_Line::DownCast(cone->UIso(u));
-        GeomLineSegment* line = new GeomLineSegment();
-        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+        GeomLine* line = new GeomLine();
+        Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
             (line->handle());
-        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-            (this_curv->BasisCurve());
-        this_line->SetLin(c->Lin());
+        this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
     catch (Standard_Failure) {

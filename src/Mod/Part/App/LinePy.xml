@@ -3,8 +3,8 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="LinePy" 
-      Twin="GeomLineSegment" 
-      TwinPointer="GeomLineSegment" 
+      Twin="GeomLine"
+      TwinPointer="GeomLine"
       Include="Mod/Part/App/Geometry.h" 
       Namespace="Part" 
       FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
@@ -23,33 +23,17 @@ Part.Line(Line)
 Part.Line(Point1,Point2)
     Creates a line that goes through two given points</UserDocu>
     </Documentation>
-    <Methode Name="setParameterRange">
+    <Attribute Name="Location" ReadOnly="false">
       <Documentation>
-        <UserDocu>Set the parameter range of the underlying line geometry</UserDocu>
+        <UserDocu>Returns the location of this line.</UserDocu>
       </Documentation>
-    </Methode>
-    <Attribute Name="StartPoint" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Returns the start point of this line.</UserDocu>
-      </Documentation>
-      <Parameter Name="StartPoint" Type="Object"/>
+      <Parameter Name="Location" Type="Object"/>
     </Attribute>
-    <Attribute Name="EndPoint" ReadOnly="false">
+    <Attribute Name="Direction" ReadOnly="false">
       <Documentation>
-        <UserDocu>Returns the end point point of this line.</UserDocu>
+        <UserDocu>Returns the direction of this line.</UserDocu>
       </Documentation>
-      <Parameter Name="EndPoint" Type="Object"/>
+      <Parameter Name="Direction" Type="Object"/>
     </Attribute>
-    <Attribute Name="Infinite" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Defines the line as infinite. The StartPoint and EndPoint will be ignored as boundaries.</UserDocu>
-      </Documentation>
-      <Parameter Name="Infinite" Type="Boolean"/>
-    </Attribute>
-    <ClassDeclarations>
-      public:
-      bool Infinite;
-    </ClassDeclarations>
-
   </PythonExport>
 </GenerateModel>

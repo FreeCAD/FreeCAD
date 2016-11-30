@@ -281,12 +281,10 @@ PyObject* GeometrySurfacePy::uIso(PyObject * args)
         Handle_Geom_Curve c = surf->UIso(v);
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
-            GeomLineSegment* line = new GeomLineSegment();
-            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            GeomLine* line = new GeomLine();
+            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
                 (line->handle());
-            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-                (this_curv->BasisCurve());
-            this_line->SetLin(aLine->Lin());
+            this_curv->SetLin(aLine->Lin());
             return new LinePy(line);
         }
         else {
@@ -312,12 +310,10 @@ PyObject* GeometrySurfacePy::vIso(PyObject * args)
         Handle_Geom_Curve c = surf->VIso(v);
         if (c->IsKind(STANDARD_TYPE(Geom_Line))) {
             Handle_Geom_Line aLine = Handle_Geom_Line::DownCast(c);
-            GeomLineSegment* line = new GeomLineSegment();
-            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            GeomLine* line = new GeomLine();
+            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
                 (line->handle());
-            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-                (this_curv->BasisCurve());
-            this_line->SetLin(aLine->Lin());
+            this_curv->SetLin(aLine->Lin());
             return new LinePy(line);
         }
         else {
