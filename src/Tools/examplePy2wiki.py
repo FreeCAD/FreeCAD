@@ -11,7 +11,7 @@ Options:
  -i, --in-file=FILENAME   directory to search, default PWD
  -h, --help               print this help message
  
-This programm reads python files and generate a output suited for a Mediawiki page.
+This program reads python files and generate a output suited for a Mediawiki page.
 The python comments get translated to text and the code blocks get indended to 
 show up us code in the wiki.
 
