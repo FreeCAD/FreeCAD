@@ -86,10 +86,10 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodySource.addFeature(self.Sketch)
 
         geoList = []
-        geoList.append(Part.Line(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
-        geoList.append(Part.Line(App.Vector(8.0,8.0,0),App.Vector(8.0,2.0,0)))
-        geoList.append(Part.Line(App.Vector(8.0,2.0,0),App.Vector(2.0,2.0,0)))
-        geoList.append(Part.Line(App.Vector(2.0,2.0,0),App.Vector(2.0,8.0,0)))
+        geoList.append(Part.LineSegment(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
+        geoList.append(Part.LineSegment(App.Vector(8.0,8.0,0),App.Vector(8.0,2.0,0)))
+        geoList.append(Part.LineSegment(App.Vector(8.0,2.0,0),App.Vector(2.0,2.0,0)))
+        geoList.append(Part.LineSegment(App.Vector(2.0,2.0,0),App.Vector(2.0,8.0,0)))
         self.Sketch.addGeometry(geoList,False)
         conList = []
         conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
@@ -138,10 +138,10 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BodySource.addFeature(self.Sketch)
 
         geoList = []
-        geoList.append(Part.Line(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
-        geoList.append(Part.Line(App.Vector(10.000000,10.000000,0),App.Vector(10.000000,-10.000000,0)))
-        geoList.append(Part.Line(App.Vector(10.000000,-10.000000,0),App.Vector(-10.000000,-10.000000,0)))
-        geoList.append(Part.Line(App.Vector(-10.000000,-10.000000,0),App.Vector(-10.000000,10.000000,0)))
+        geoList.append(Part.LineSegment(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
+        geoList.append(Part.LineSegment(App.Vector(10.000000,10.000000,0),App.Vector(10.000000,-10.000000,0)))
+        geoList.append(Part.LineSegment(App.Vector(10.000000,-10.000000,0),App.Vector(-10.000000,-10.000000,0)))
+        geoList.append(Part.LineSegment(App.Vector(-10.000000,-10.000000,0),App.Vector(-10.000000,10.000000,0)))
         self.Sketch.addGeometry(geoList,False)
         conList = []
         conList.append(Sketcher.Constraint('Coincident',0,2,1,1))
@@ -192,10 +192,10 @@ class PartDesignGuiTestCases(unittest.TestCase):
 #
 #   def testBoxCase(self):
 #       self.Box = self.Doc.addObject('PartDesign::SketchObject','SketchBox')
-#       self.Box.addGeometry(Part.Line(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
-#       self.Box.addGeometry(Part.Line(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
-#       self.Box.addGeometry(Part.Line(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
-#       self.Box.addGeometry(Part.Line(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
+#       self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,36.960674,0),App.Vector(69.432587,36.960674,0)))
+#       self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,36.960674,0),App.Vector(69.432587,-53.196629,0)))
+#       self.Box.addGeometry(Part.LineSegment(App.Vector(69.432587,-53.196629,0),App.Vector(-99.230339,-53.196629,0)))
+#       self.Box.addGeometry(Part.LineSegment(App.Vector(-99.230339,-53.196629,0),App.Vector(-99.230339,36.960674,0)))
 #       
 #   def tearDown(self):
 #       #closing doc

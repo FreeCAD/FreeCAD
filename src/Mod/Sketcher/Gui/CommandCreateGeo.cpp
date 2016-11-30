@@ -247,7 +247,7 @@ public:
 
             try {
                 Gui::Command::openCommand("Add sketch line");
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                           sketchgui->getObject()->getNameInDocument(),
                           EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                           geometryCreationMode==Construction?"True":"False");
@@ -465,10 +465,10 @@ public:
                 Gui::Command::openCommand("Add sketch box");
                 Gui::Command::doCommand(Gui::Command::Doc,
                     "geoList = []\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
                     "App.ActiveDocument.%s.addGeometry(geoList,%s)\n"
                     "conList = []\n"
                     "conList.append(Sketcher.Constraint('Coincident',%i,2,%i,1))\n"
@@ -969,7 +969,7 @@ public:
                     // open the transaction
                     Gui::Command::openCommand("Add line to sketch wire");
                     Gui::Command::doCommand(Gui::Command::Doc,
-                        "App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
+                        "App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),%s)",
                         sketchgui->getObject()->getNameInDocument(),
                         EditCurve[0].x,EditCurve[0].y,EditCurve[1].x,EditCurve[1].y,
                         geometryCreationMode==Construction?"True":"False");
@@ -5324,8 +5324,8 @@ public:
                     "geoList = []\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
                     "geoList.append(Part.ArcOfCircle(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f))\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
-                    "geoList.append(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
+                    "geoList.append(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)))\n"
                     "App.ActiveDocument.%s.addGeometry(geoList,%s)\n"
                     "conList = []\n"
                     "conList.append(Sketcher.Constraint('Tangent',%i,1,%i,1))\n"

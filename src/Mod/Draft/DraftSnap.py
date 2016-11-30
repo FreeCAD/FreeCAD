@@ -479,7 +479,7 @@ class Snapper:
                                                         self.extLine.p2(np)
                                                         self.extLine.on()
                                                     self.setCursor('extension')
-                                                    ne = Part.Line(p0,np).toShape()
+                                                    ne = Part.LineSegment(p0,np).toShape()
                                                     # storing extension line for intersection calculations later
                                                     if len(self.lastExtensions) == 0:
                                                         self.lastExtensions.append(ne)
@@ -498,7 +498,7 @@ class Snapper:
                                                 if last:
                                                     ve = DraftGeomUtils.vec(e)
                                                     if not DraftVecUtils.isNull(ve):
-                                                        de = Part.Line(last,last.add(ve)).toShape()  
+                                                        de = Part.LineSegment(last,last.add(ve)).toShape()
                                                         np = self.getPerpendicular(de,point)
                                                         if (np.sub(point)).Length < self.radius:
                                                             if self.tracker and not self.selectMode:
@@ -564,7 +564,7 @@ class Snapper:
                 for v in vecs:
                     if not DraftVecUtils.isNull(v):
                         try:
-                            de = Part.Line(last,last.add(v)).toShape()
+                            de = Part.LineSegment(last,last.add(v)).toShape()
                         except Part.OCCError:
                             return point,None
                         np = self.getPerpendicular(de,point)
@@ -655,7 +655,7 @@ class Snapper:
                     if last:
                         if DraftGeomUtils.geomType(shape) == "Line":
                             if self.constraintAxis:
-                                tmpEdge = Part.Line(last,last.add(self.constraintAxis)).toShape()
+                                tmpEdge = Part.LineSegment(last,last.add(self.constraintAxis)).toShape()
                                 # get the intersection points
                                 pt = DraftGeomUtils.findIntersection(tmpEdge,shape,True,True)
                                 if pt:
@@ -667,15 +667,15 @@ class Snapper:
         "returns an ortho X extension snap location"
         if self.isEnabled("extension") and self.isEnabled("ortho"):
             if constrain and last and self.constraintAxis and self.extLine:
-                tmpEdge1 = Part.Line(last,last.add(self.constraintAxis)).toShape()
-                tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                tmpEdge1 = Part.LineSegment(last,last.add(self.constraintAxis)).toShape()
+                tmpEdge2 = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
                 # get the intersection points
                 pt = DraftGeomUtils.findIntersection(tmpEdge1,tmpEdge2,True,True)
                 if pt:
                     return [pt[0],'ortho',pt[0]]
             if eline:
                 try:
-                    tmpEdge2 = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                    tmpEdge2 = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
                     # get the intersection points
                     pt = DraftGeomUtils.findIntersection(eline,tmpEdge2,True,True)
                     if pt:
@@ -689,7 +689,7 @@ class Snapper:
         if self.isEnabled("extension") and self.isEnabled("perpendicular"):
             if last and self.extLine:
                 if self.extLine.p1() != self.extLine.p2():
-                    tmpEdge = Part.Line(self.extLine.p1(),self.extLine.p2()).toShape()
+                    tmpEdge = Part.LineSegment(self.extLine.p1(),self.extLine.p2()).toShape()
                     np = self.getPerpendicular(tmpEdge,last)
                     return [np,'perpendicular',np]
         return None

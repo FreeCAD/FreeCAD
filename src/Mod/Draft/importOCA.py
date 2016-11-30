@@ -142,7 +142,7 @@ def getline(data):
             verts.append(getpoint(data[p:p+4]))
         elif (data[p][0] == "P"):
             verts.append(getpoint([data[p]]))
-    l = Part.Line(verts[0],verts[1])
+    l = Part.LineSegment(verts[0],verts[1])
     return l.toShape()
 
 def gettranslation(data):

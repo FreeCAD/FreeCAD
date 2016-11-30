@@ -603,7 +603,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                 else:
                                                         currentvec = Vector(x,-y,0)
                                                 if not DraftVecUtils.equals(lastvec,currentvec):
-                                                        seg = Part.Line(lastvec,currentvec).toShape()
+                                                        seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                         FreeCAD.Console.PrintMessage("line %s %s\n" %(lastvec,currentvec))
                                                         lastvec = currentvec
                                                         path.append(seg)
@@ -614,7 +614,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(x,0,0))
                                                 else:
                                                         currentvec = Vector(x,lastvec.y,0)
-                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
@@ -624,7 +624,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         currentvec = lastvec.add(Vector(0,-y,0))
                                                 else:
                                                         currentvec = Vector(lastvec.x,-y,0)
-                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
@@ -692,7 +692,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                                 seg.reverse()
                                                                 #obj = self.doc.addObject("Part::Feature",'DEBUG %s'%pathname) #DEBUG
                                                                 #obj.Shape = seg #DEBUG
-                                                                #seg = Part.Line(lastvec,currentvec).toShape() #DEBUG
+                                                                #seg = Part.LineSegment(lastvec,currentvec).toShape() #DEBUG
                                                 lastvec = currentvec
                                                 lastpole = None
                                                 path.append(seg)
@@ -730,7 +730,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         pole1.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())) and \
                                                         pole2.distanceToLine(lastvec,currentvec) < 10**(-1*(2+Draft.precision())):
                                                                 #print "straight segment"
-                                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                         else:
                                                                 #print "cubic bezier segment"
                                                                 b = Part.BezierCurve()
@@ -767,7 +767,7 @@ class svgHandler(xml.sax.ContentHandler):
                                                         if True and \
                                                         pole.distanceToLine(lastvec,currentvec) < 20**(-1*(2+Draft.precision())):
                                                                 #print "straight segment"
-                                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                         else:
                                                                 #print "quadratic bezier segment"
                                                                 b = Part.BezierCurve()
@@ -780,7 +780,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 elif (d == "Z") or (d == "z"):
                                         if not DraftVecUtils.equals(lastvec,firstvec):
                                             try:
-                                                seg = Part.Line(lastvec,firstvec).toShape()
+                                                seg = Part.LineSegment(lastvec,firstvec).toShape()
                                             except Part.OCCError:
                                                 pass
                                             else:
@@ -829,10 +829,10 @@ class svgHandler(xml.sax.ContentHandler):
                                 p2 = Vector(data['x']+data['width'],-data['y'],0)
                                 p3 = Vector(data['x']+data['width'],-data['y']-data['height'],0)
                                 p4 = Vector(data['x'],-data['y']-data['height'],0)
-                                edges.append(Part.Line(p1,p2).toShape())
-                                edges.append(Part.Line(p2,p3).toShape())
-                                edges.append(Part.Line(p3,p4).toShape())
-                                edges.append(Part.Line(p4,p1).toShape())
+                                edges.append(Part.LineSegment(p1,p2).toShape())
+                                edges.append(Part.LineSegment(p2,p3).toShape())
+                                edges.append(Part.LineSegment(p3,p4).toShape())
+                                edges.append(Part.LineSegment(p4,p1).toShape())
                         else: #rounded edges
                                 #ToTo: check for ry>rx !!!!
                                 rx = data.get('rx')
@@ -880,7 +880,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 for esh1,esh2 in zip(esh[-1:]+esh[:-1],esh):
                                         p1,p2 = esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point
                                         if not DraftVecUtils.equals(p1,p2):
-                                            edges.append(Part.Line(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
+                                            edges.append(Part.LineSegment(esh1.Vertexes[-1].Point,esh2.Vertexes[0].Point).toShape()) #straight segments
                                         edges.append(esh2) # elliptical segments
                         sh = Part.Wire(edges)
                         if self.fill: sh = Part.Face(sh)
@@ -897,7 +897,7 @@ class svgHandler(xml.sax.ContentHandler):
                         if not pathname: pathname = 'Line'
                         p1 = Vector(data['x1'],-data['y1'],0)
                         p2 = Vector(data['x2'],-data['y2'],0)
-                        sh = Part.Line(p1,p2).toShape()
+                        sh = Part.LineSegment(p1,p2).toShape()
                         sh = self.applyTrans(sh)
                         obj = self.doc.addObject("Part::Feature",pathname)
                         obj.Shape = sh
@@ -922,7 +922,7 @@ class svgHandler(xml.sax.ContentHandler):
                                 for svgx,svgy in zip(points[2::2],points[3::2]):
                                         currentvec = Vector(svgx,-svgy,0)
                                         if not DraftVecUtils.equals(lastvec,currentvec):
-                                                seg = Part.Line(lastvec,currentvec).toShape()
+                                                seg = Part.LineSegment(lastvec,currentvec).toShape()
                                                 #print "polyline seg ",lastvec,currentvec
                                                 lastvec = currentvec
                                                 path.append(seg)

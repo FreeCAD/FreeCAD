@@ -133,7 +133,7 @@ class Hole():
             wire = face.OuterWire
             firstLine = None
             for e in wire.Edges:
-                if type(e.Curve) == Part.Line:
+                if type(e.Curve) == Part.LineSegment:
                     if firstLine == None:
                         firstLine = e
                         firstDirection = e.Curve.EndPoint - e.Curve.StartPoint
@@ -145,7 +145,7 @@ class Hole():
                         secondLineIndex = -1
                         for i in range(len(allEdges)):
                             try:
-                                if type(allEdges[i].Curve) != Part.Line:
+                                if type(allEdges[i].Curve) != Part.LineSegment:
                                     continue
                                 if (allEdges[i].Curve.StartPoint == firstLine.Curve.StartPoint and allEdges[i].Curve.EndPoint == firstLine.Curve.EndPoint) or (allEdges[i].Curve.EndPoint == firstLine.Curve.StartPoint and allEdges[i].Curve.StartPoint == firstLine.Curve.EndPoint):
                                     firstLineIndex = i
@@ -162,8 +162,8 @@ class Hole():
                         self.feature.PositionType = "Linear"
                         # Place the axis approximately in the center of the face
                         #p = face.CenterOfMass
-                        #l1 = Part.Line(firstLine.Curve)
-                        #l2 = Part.Line(e.Curve)
+                        #l1 = Part.LineSegment(firstLine.Curve)
+                        #l2 = Part.LineSegment(e.Curve)
                         #axis.Offset = p.distanceToLine(l1.StartPoint,  l1.EndPoint - l1.StartPoint)
                         #axis.Offset2 = p.distanceToLine(l1.StartPoint,  l2.EndPoint - l2.StartPoint)
                         # TODO: Ensure that the hole is inside the face! 
@@ -301,25 +301,25 @@ class Hole():
             # Geo -1 is the X-axis
             # Geo -2 is the Y-axis
             # First external geometry is -3
-            sketch.addExternal(axis.Name,"Line") # Geo -3: Datum axis            
+            sketch.addExternal(axis.Name,"LineSegment") # Geo -3: Datum axis            
             sketch.addExternal(support.Name,  elements[0]) # Geo -4: Support face
             # Note: Creating the sketch first with depth = 100.0 and then changing the constraint later seems to be more stable
             tempDepth = 100.0
             # Build the sketch
-            sketch.addGeometry(Part.Line(self.App.Vector(10.0,50.0,0),self.App.Vector(10.0,-50.0,0))) # Geo0: Rotation axis
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(10.0,50.0,0),self.App.Vector(10.0,-50.0,0))) # Geo0: Rotation axis
             sketch.toggleConstruction(0)
-            sketch.addGeometry(Part.Line(self.App.Vector(10.0,-10.0,0),self.App.Vector(10.0,-30.0,0))) # Geo1: Vertical axis of hole
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(10.0,-10.0,0),self.App.Vector(10.0,-30.0,0))) # Geo1: Vertical axis of hole
             sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,1,0))# Datum0
             sketch.addConstraint(Sketcher.Constraint('PointOnObject',1,2,0))# Datum1
-            sketch.addGeometry(Part.Line(self.App.Vector(10.0,-10.0,0),self.App.Vector(20.0,-10.0,0))) # Geo2: Top of hole
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(10.0,-10.0,0),self.App.Vector(20.0,-10.0,0))) # Geo2: Top of hole
             sketch.addConstraint(Sketcher.Constraint('Coincident',1,1,2,1)) # Datum2
             sketch.addConstraint(Sketcher.Constraint('Perpendicular',2, 1))  # Datum3
-            sketch.addGeometry(Part.Line(self.App.Vector(20.0,-10.0,0),self.App.Vector(20.0,-25.0,0))) # Geo3: Vertical mantle of hole      
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(20.0,-10.0,0),self.App.Vector(20.0,-25.0,0))) # Geo3: Vertical mantle of hole      
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,3,1)) # temporary      
             sketch.addConstraint(Sketcher.Constraint('Parallel',3, 1))         # Datum4
             sketch.addConstraint(Sketcher.Constraint('Distance',3,2,1, 10.0))  # Datum5: Radius
             sketch.addConstraint(Sketcher.Constraint('Distance',3,2,2, 15.0)) # Datum6: Depth
-            sketch.addGeometry(Part.Line(self.App.Vector(10.0,-30.0,0),self.App.Vector(20.0,-25.0,0))) # Geo4: 118 degree tip angle
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(10.0,-30.0,0),self.App.Vector(20.0,-25.0,0))) # Geo4: 118 degree tip angle
             sketch.addConstraint(Sketcher.Constraint('Coincident',4,1,1,2)) # Datum7
             sketch.addConstraint(Sketcher.Constraint('Coincident',4,2,3,2)) # Datum8
             # TODO: The tip angle of 118 degrees is for steel only. It should be taken from Part material data
@@ -422,12 +422,12 @@ class Hole():
             sketch.delConstraint(13)
             sketch.addConstraint(Sketcher.Constraint('Distance',2, cradius))  # Datum13
             p2 = sketch.Geometry[2].EndPoint
-            sketch.addGeometry(Part.Line(p2,self.App.Vector(p2.x,p2.y-20.0,0))) # Geo5: Vertical mantle of counterbore
+            sketch.addGeometry(Part.LineSegment(p2,self.App.Vector(p2.x,p2.y-20.0,0))) # Geo5: Vertical mantle of counterbore
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,5,1)) # Datum14
             sketch.addConstraint(Sketcher.Constraint('Distance',3, 1, 2, cdepth))  # Datum15
             sketch.addConstraint(Sketcher.Constraint('Parallel',5, 1))         # Datum16
             p3 = sketch.Geometry[3].StartPoint
-            sketch.addGeometry(Part.Line(self.App.Vector(p2.x,p2.y-20.0, 0),p3)) # Geo6: bottom of counterbore
+            sketch.addGeometry(Part.LineSegment(self.App.Vector(p2.x,p2.y-20.0, 0),p3)) # Geo6: bottom of counterbore
             sketch.addConstraint(Sketcher.Constraint('Coincident',5,2,6,1)) # Datum17
             sketch.addConstraint(Sketcher.Constraint('Perpendicular',6, -3))  # Datum18
             sketch.addConstraint(Sketcher.Constraint('Coincident',6,2,3,1)) # Datum19            
@@ -473,7 +473,7 @@ class Hole():
             sketch.delConstraint(13)
             sketch.addConstraint(Sketcher.Constraint('Distance',2, sradius))  # Datum13
             p2 = sketch.Geometry[2].EndPoint
-            sketch.addGeometry(Part.Line(p2,self.App.Vector(p2.x,p2.y-20.0,0))) # Geo5: Chamfer of countersink
+            sketch.addGeometry(Part.LineSegment(p2,self.App.Vector(p2.x,p2.y-20.0,0))) # Geo5: Chamfer of countersink
             sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,5,1)) # Datum14
             sketch.addConstraint(Sketcher.Constraint('Angle',5,2, 1,2,  sangle))  # Datum15  
             sketch.addConstraint(Sketcher.Constraint('Coincident',3,1,5,2)) # Datum16            

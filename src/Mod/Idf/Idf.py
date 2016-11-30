@@ -153,7 +153,7 @@ def Process_board_outline(doc,board_outline,drills,board_thickness):
               out_shape.append(Part.Arc(per_point,mid_point(per_point,vertex,point[3]/2),vertex))
               out_shape.append(Part.Arc(per_point,mid_point(per_point,vertex,-point[3]/2),vertex))
            else:
-              out_shape.append(Part.Line(prev_vertex,vertex))
+              out_shape.append(Part.LineSegment(prev_vertex,vertex))
        else:
           out_shape=Part.Shape(out_shape)
           out_shape=Part.Wire(out_shape.Edges)
@@ -316,7 +316,7 @@ def Process_comp_outline(doc,comp_outline,comp_height):
             out_shape.append(Part.Arc(per_point,mid_point(per_point,vertex,point[2]/2),vertex))
             out_shape.append(Part.Arc(per_point,mid_point(per_point,vertex,-point[2]/2),vertex))
          else:
-            out_shape.append(Part.Line(prev_vertex,vertex))
+            out_shape.append(Part.LineSegment(prev_vertex,vertex))
        prev_vertex=vertex
     out_shape=Part.Shape(out_shape)
     out_shape=Part.Wire(out_shape.Edges)

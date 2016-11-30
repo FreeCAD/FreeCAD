@@ -391,7 +391,7 @@ def drawLine(line,forceShape=False):
                 if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
                     return Draft.makeWire([v1,v2])
                 else:
-                    return Part.Line(v1,v2).toShape()
+                    return Part.LineSegment(v1,v2).toShape()
             except Part.OCCError:
                 warn(line)
     return None
@@ -413,13 +413,13 @@ def drawPolyline(polyline,forceShape=False,num=None):
                     curves = True
                     cv = calcBulge(v1,polyline.points[p].bulge,v2)
                     if DraftVecUtils.isColinear([v1,cv,v2]):
-                        try: edges.append(Part.Line(v1,v2).toShape())
+                        try: edges.append(Part.LineSegment(v1,v2).toShape())
                         except Part.OCCError: warn(polyline,num)
                     else:
                         try: edges.append(Part.Arc(v1,cv,v2).toShape())
                         except Part.OCCError: warn(polyline,num)
                 else:
-                    try: edges.append(Part.Line(v1,v2).toShape())
+                    try: edges.append(Part.LineSegment(v1,v2).toShape())
                     except Part.OCCError: warn(polyline,num)
         verts.append(v2)
         if polyline.closed:
@@ -431,7 +431,7 @@ def drawPolyline(polyline,forceShape=False,num=None):
             if not DraftVecUtils.equals(v1,v2):
                 if DraftVecUtils.isColinear([v1,cv,v2]):
                     try:
-                        edges.append(Part.Line(v1,v2).toShape())
+                        edges.append(Part.LineSegment(v1,v2).toShape())
                     except Part.OCCError:
                         warn(polyline,num)
                 else:
@@ -1886,7 +1886,7 @@ def export(objectslist,filename,nospline=False,lwPoly=False):
                 elif Draft.getType(ob) == "Dimension":
                     p1 = DraftVecUtils.tup(ob.Start)
                     p2 = DraftVecUtils.tup(ob.End)
-                    base = Part.Line(ob.Start,ob.End).toShape()
+                    base = Part.LineSegment(ob.Start,ob.End).toShape()
                     proj = DraftGeomUtils.findDistance(ob.Dimline,base)
                     if not proj:
                         pbase = DraftVecUtils.tup(ob.End)

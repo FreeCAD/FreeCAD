@@ -17,8 +17,8 @@ def makeBottle(myWidth=50.0, myHeight=70.0, myThickness=30.0):
 	aPnt5=Base.Vector(myWidth/2.,0,0)
 	
 	aArcOfCircle = Part.Arc(aPnt2,aPnt3,aPnt4)
-	aSegment1=Part.Line(aPnt1,aPnt2)
-	aSegment2=Part.Line(aPnt4,aPnt5)
+	aSegment1=Part.LineSegment(aPnt1,aPnt2)
+	aSegment2=Part.LineSegment(aPnt4,aPnt5)
 
 	aEdge1=aSegment1.toShape()
 	aEdge2=aArcOfCircle.toShape()
@@ -82,9 +82,9 @@ def makeBoreHole():
 	# and the second one
 	VC2 = Base.Vector(40,0,0)
 	C2 = Part.Arc(V2,VC2,V3)
-	L1 = Part.Line(V1,V2)
+	L1 = Part.LineSegment(V1,V2)
 	# and the second one
-	L2 = Part.Line(V4,V3)
+	L2 = Part.LineSegment(V4,V3)
 	S1 = Part.Shape([C1,C2,L1,L2])
 
 	W=Part.Wire(S1.Edges)

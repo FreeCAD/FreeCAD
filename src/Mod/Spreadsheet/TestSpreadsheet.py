@@ -568,7 +568,7 @@ class SpreadsheetCases(unittest.TestCase):
         InvoluteGearFeature.makeInvoluteGear('InvoluteGear')
         self.doc.recompute()
         sketch=self.doc.addObject('Sketcher::SketchObject','Sketch')
-        sketch.addGeometry(Part.Line(v(0,0,0),v(10,10,0)),False)
+        sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
         sketch.addConstraint(Sketcher.Constraint('Distance',0,65.285388)) 
         sketch.setExpression('Constraints[0]', 'InvoluteGear.NumberOfTeeth')
         self.doc.recompute()
@@ -583,7 +583,7 @@ class SpreadsheetCases(unittest.TestCase):
         sheet.set('A1', '47,11')
         self.doc.recompute()
 
-        index=sketch.addGeometry(Part.Line(v(0,0,0),v(10,10,0)),False)
+        index=sketch.addGeometry(Part.LineSegment(v(0,0,0),v(10,10,0)),False)
         sketch.addConstraint(Sketcher.Constraint('Distance',index,14.0)) 
         self.doc.recompute()
         sketch.setExpression('Constraints[0]', u'Spreadsheet.Length')

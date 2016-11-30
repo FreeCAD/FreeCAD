@@ -60,7 +60,7 @@ def getIndices(shape,offset):
     curves = None
     for e in shape.Edges:
         try:
-            if not isinstance(e.Curve,Part.Line):
+            if not isinstance(e.Curve,Part.LineSegment):
                 if not curves:
                     curves = shape.tessellate(1)
                     FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))

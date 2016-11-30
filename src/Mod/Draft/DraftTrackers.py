@@ -279,7 +279,7 @@ class dimTracker(Tracker):
                 if DraftVecUtils.equals(p1,p4):
                     proj = None
                 else:
-                    base = Part.Line(p1,p4).toShape()
+                    base = Part.LineSegment(p1,p4).toShape()
                     proj = DraftGeomUtils.findDistance(self.p3,base)
                 if not proj:
                     p2 = p1

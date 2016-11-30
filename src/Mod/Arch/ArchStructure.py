@@ -555,7 +555,7 @@ class _Structure(ArchComponent.Component):
                     elif extdata[1].Length > 0:
                         if hasattr(nodes,"CenterOfMass"):
                             import Part
-                            nodes = Part.Line(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
+                            nodes = Part.LineSegment(nodes.CenterOfMass,nodes.CenterOfMass.add(extdata[1])).toShape()
             offset = FreeCAD.Vector()
             if hasattr(obj,"NodesOffset"):
                 offset = FreeCAD.Vector(0,0,obj.NodesOffset.Value)
@@ -582,10 +582,10 @@ class _Structure(ArchComponent.Component):
         if obj.Nodes:
             import Part
             for i in range(len(obj.Nodes)-1):
-                edges.append(Part.Line(obj.Placement.multVec(obj.Nodes[i]),obj.Placement.multVec(obj.Nodes[i+1])).toShape())
+                edges.append(Part.LineSegment(obj.Placement.multVec(obj.Nodes[i]),obj.Placement.multVec(obj.Nodes[i+1])).toShape())
             if hasattr(obj.ViewObject,"NodeType"):
                 if (obj.ViewObject.NodeType == "Area") and (len(obj.Nodes) > 2):
-                    edges.append(Part.Line(obj.Placement.multVec(obj.Nodes[-1]),obj.Placement.multVec(obj.Nodes[0])).toShape())
+                    edges.append(Part.LineSegment(obj.Placement.multVec(obj.Nodes[-1]),obj.Placement.multVec(obj.Nodes[0])).toShape())
         return edges
 
 
