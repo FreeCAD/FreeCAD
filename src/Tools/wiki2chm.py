@@ -19,7 +19,7 @@ Exit:
  2      Run delivers Warnings (printed on standard error)
  10     Run stops with an error (printed on standard error)
  
-This programm reads the wiki and generates all necessary files
+This program reads the wiki and generates all necessary files
 to generate a .chm file.
 The TocPageName is a special page in the Wiki, which is used
 to generate the content for the .chm.
