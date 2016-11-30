@@ -168,12 +168,10 @@ PyObject* CylinderPy::uIso(PyObject * args)
             (getGeomCylinderPtr()->handle());
         Handle_Geom_Curve c = cyl->UIso(v);
         if (!Handle_Geom_Line::DownCast(c).IsNull()) {
-            GeomLineSegment* line = new GeomLineSegment();
-            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            GeomLine* line = new GeomLine();
+            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
                 (line->handle());
-            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-                (this_curv->BasisCurve());
-            this_line->SetLin(Handle_Geom_Line::DownCast(c)->Lin());
+            this_curv->SetLin(Handle_Geom_Line::DownCast(c)->Lin());
             return new LinePy(line);
         }
 

@@ -26,7 +26,6 @@
 
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Part/App/GeometryCurvePy.h>
-#include <Mod/Part/App/LinePy.h>
 #include <Mod/Part/App/TopoShapePy.h>
 #include <CXX/Objects.hxx>
 

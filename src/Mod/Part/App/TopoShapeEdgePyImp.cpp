@@ -104,7 +104,7 @@ std::string TopoShapeEdgePy::representation(void) const
 
 PyObject *TopoShapeEdgePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
-    // create a new instance of TopoShapeEdgePy and the Twin object 
+    // create a new instance of TopoShapeEdgePy and the Twin object
     return new TopoShapeEdgePy(new TopoShape);
 }
 
@@ -691,13 +691,10 @@ Py::Object TopoShapeEdgePy::getCurve() const
     {
     case GeomAbs_Line:
         {
-            GeomLineSegment* line = new GeomLineSegment();
-            Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            GeomLine* line = new GeomLine();
+            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
                 (line->handle());
-            Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-                (this_curv->BasisCurve());
-            this_line->SetLin(adapt.Line());
-            this_curv->SetTrim(adapt.FirstParameter(), adapt.LastParameter());
+            this_curv->SetLin(adapt.Line());
             return Py::Object(new LinePy(line),true);
         }
     case GeomAbs_Circle:
@@ -892,5 +889,5 @@ PyObject *TopoShapeEdgePy::getCustomAttributes(const char* /*attr*/) const
 
 int TopoShapeEdgePy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }

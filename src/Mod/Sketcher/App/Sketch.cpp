@@ -45,7 +45,7 @@
 #include <Mod/Part/App/EllipsePy.h>
 #include <Mod/Part/App/HyperbolaPy.h>
 #include <Mod/Part/App/ArcOfHyperbolaPy.h>
-#include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/LineSegmentPy.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -684,7 +684,7 @@ Py::Tuple Sketch::getPyGeometry(void) const
             tuple[i] = Py::asObject(new VectorPy(temp));
         } else if (it->type == Line) {
             GeomLineSegment *lineSeg = static_cast<GeomLineSegment*>(it->geo->clone());
-            tuple[i] = Py::asObject(new LinePy(lineSeg));
+            tuple[i] = Py::asObject(new LineSegmentPy(lineSeg));
         } else if (it->type == Arc) {
             GeomArcOfCircle *aoc = static_cast<GeomArcOfCircle*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfCirclePy(aoc));
