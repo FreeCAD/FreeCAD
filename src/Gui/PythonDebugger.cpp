@@ -133,22 +133,22 @@ PythonDebugModule::~PythonDebugModule()
 {
 }
 
-Py::Object PythonDebugModule::getFunctionCallCount(const Py::Tuple &a)
+Py::Object PythonDebugModule::getFunctionCallCount(const Py::Tuple &)
 {
     return Py::None();
 }
 
-Py::Object PythonDebugModule::getExceptionCount(const Py::Tuple &a)
+Py::Object PythonDebugModule::getExceptionCount(const Py::Tuple &)
 {
     return Py::None();
 }
 
-Py::Object PythonDebugModule::getLineCount(const Py::Tuple &a)
+Py::Object PythonDebugModule::getLineCount(const Py::Tuple &)
 {
     return Py::None();
 }
 
-Py::Object PythonDebugModule::getFunctionReturnCount(const Py::Tuple &a)
+Py::Object PythonDebugModule::getFunctionReturnCount(const Py::Tuple &)
 {
     return Py::None();
 }
@@ -352,6 +352,9 @@ struct PythonDebuggerP {
     PythonDebuggerP(PythonDebugger* that) :
         init(false), trystop(false), running(false)
     {
+        out_o = 0;
+        err_o = 0;
+        exc_o = 0;
         Base::PyGILStateLocker lock;
         out_n = new PythonDebugStdout();
         err_n = new PythonDebugStderr();
@@ -562,7 +565,7 @@ void PythonDebugger::hideDebugMarker(const QString& fn)
 // http://code.google.com/p/idapython/source/browse/trunk/python.cpp
 // http://www.koders.com/cpp/fid191F7B13CF73133935A7A2E18B7BF43ACC6D1784.aspx?s=PyEval_SetTrace
 // http://stuff.mit.edu/afs/sipb/project/python/src/python2.2-2.2.2/Modules/_hotshot.c
-int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg)
+int PythonDebugger::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject * /*arg*/)
 {
     PythonDebuggerPy* self = static_cast<PythonDebuggerPy*>(obj);
     PythonDebugger* dbg = self->dbg;

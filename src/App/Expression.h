@@ -92,7 +92,7 @@ public:
 
     virtual int priority() const { return 0; }
 
-    virtual void getDeps(std::set<ObjectIdentifier> &props) const { }
+    virtual void getDeps(std::set<ObjectIdentifier> &/*props*/) const { }
 
     virtual Expression * simplify() const = 0;
 
@@ -507,7 +507,7 @@ public:
   std::string string;
   FunctionExpression::Function func;
   ObjectIdentifier::String string_or_identifier;
-  semantic_type() {}
+  semantic_type() : expr(0), ivalue(0), fvalue(0), func(FunctionExpression::NONE) {}
 };
 
 #define YYSTYPE semantic_type

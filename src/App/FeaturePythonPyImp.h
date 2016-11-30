@@ -23,10 +23,8 @@
 #ifndef APP_FEATUREPYTHONPYIMP_H
 #define APP_FEATUREPYTHONPYIMP_H
 
-#include <map>
-#include <string>
-#include <Base/Console.h>
-#include <App/DocumentObjectPy.h>
+#include <Base/BaseClass.h>
+#include <App/PropertyContainerPy.h>
 
 namespace App
 {
@@ -39,38 +37,20 @@ class FeaturePythonPyT : public FeaturePyT
 {
 public:
     static PyTypeObject   Type;
-    static PyMethodDef    Methods[];
 
 public:
-    FeaturePythonPyT(DocumentObject *pcObject, PyTypeObject *T = &Type);
+    FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T = &Type);
     virtual ~FeaturePythonPyT();
 
     /** @name callbacks and implementers for the python object methods */
     //@{
     static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
-    /// callback for the addProperty() method
-    static PyObject * staticCallback_addProperty (PyObject *self, PyObject *args);
-    /// implementer for the addProperty() method
-    PyObject*  addProperty(PyObject *args);
-    /// callback for the removeProperty() method
-    static PyObject * staticCallback_removeProperty (PyObject *self, PyObject *args);
-    /// implementer for the removeProperty() method
-    PyObject*  removeProperty(PyObject *args);
-    /// callback for the supportedProperties() method
-    static PyObject * staticCallback_supportedProperties (PyObject *self, PyObject *args);
-    /// implementer for the supportedProperties() method
-    PyObject*  supportedProperties(PyObject *args);
     //@}
-
-    /// getter method for special attributes (e.g. dynamic ones)
-    PyObject *getCustomAttributes(const char* attr) const;
-    /// setter for special attributes (e.g. dynamic ones)
-    int setCustomAttributes(const char* attr, PyObject *obj);
     PyObject *_getattr(char *attr);              // __getattr__ function
     int _setattr(char *attr, PyObject *value);        // __setattr__ function
 
 protected:
-    std::map<std::string, PyObject*> dyn_methods;
+    PyObject * dict_methods;
 
 private:
 };

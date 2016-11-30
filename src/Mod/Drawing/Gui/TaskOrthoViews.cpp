@@ -142,6 +142,8 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     parent_doc = parent;
     myname = parent_doc->getUniqueObjectName("Ortho");
 
+    x = 0;
+    y = 0;
     cx = partbox->GetCenter().x;
     cy = partbox->GetCenter().y;
     cz = partbox->GetCenter().z;
@@ -158,6 +160,10 @@ orthoview::orthoview(App::Document * parent, App::DocumentObject * part, App::Do
     rel_y = 0;
     ortho = true;
     auto_scale = true;
+
+    away = false;
+    tri = false;
+    axo = 0;
 }
 
 orthoview::~orthoview()
@@ -267,6 +273,9 @@ void orthoview::set_projection(gp_Ax2 cs)
 
 OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * partname)
 {
+    horiz = 0;
+    vert = 0;
+
     parent_doc = doc;
     parent_doc->openTransaction("Create view");
 
@@ -287,6 +296,13 @@ OrthoViews::OrthoViews(App::Document* doc, const char * pagename, const char * p
     hidden = false;
     autodims = true;
 
+    width = height = depth = 0;
+    layout_width = layout_height = 0;
+    gap_x = gap_y = 0;
+    offset_x = offset_y = 0;
+    scale = 0;
+    num_gaps_x = num_gaps_y = 0;
+
     this->connectDocumentDeletedObject = doc->signalDeletedObject.connect(boost::bind
         (&OrthoViews::slotDeletedObject, this, _1));
     this->connectApplicationDeletedDocument = App::GetApplication().signalDeleteDocument.connect(boost::bind
@@ -298,7 +314,7 @@ OrthoViews::~OrthoViews()
     for (int i = views.size() - 1; i >= 0; i--)
         delete views[i];
 
-    page->recompute();
+    page->recomputeFeature();
 }
 
 void OrthoViews::slotDeletedDocument(const App::Document& Obj)
@@ -700,14 +716,7 @@ void OrthoViews::set_Axo_scale(int rel_x, int rel_y, float axo_scale)       // s
 
 void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool away, int axo, bool tri)   // set custom axonometric view
 {
-    int     num = index(rel_x, rel_y);
     double  rotations[2];
-    gp_Dir  dir;
-
-    views[num]->ortho = false;
-    views[num]->away = away;
-    views[num]->tri = tri;
-    views[num]->axo = axo;
 
     if (axo == 0)
     {
@@ -736,13 +745,22 @@ void OrthoViews::set_Axo(int rel_x, int rel_y, gp_Dir up, gp_Dir right, bool awa
     gp_Ax2  cs = gp_Ax2(gp_Pnt(0,0,0), right);
     cs.SetYDirection(up);
     cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), up), rotations[0]);
+    gp_Dir  dir;
     dir = cs.XDirection();
     cs.Rotate(gp_Ax1(gp_Pnt(0,0,0), dir), rotations[1]);
 
-    views[num]->up = up;
-    views[num]->right = right;
-    views[num]->set_projection(cs);
-    views[num]->setPos();
+    int num = index(rel_x, rel_y);
+    if (num != -1) {
+        views[num]->ortho = false;
+        views[num]->away = away;
+        views[num]->tri = tri;
+        views[num]->axo = axo;
+
+        views[num]->up = up;
+        views[num]->right = right;
+        views[num]->set_projection(cs);
+        views[num]->setPos();
+    }
 
     parent_doc->recompute();
 }
@@ -852,6 +870,7 @@ void OrthoViews::get_configs(float configs[5])              // get scale & posit
 TaskOrthoViews::TaskOrthoViews(QWidget *parent)
   : ui(new Ui_TaskOrthoViews)
 {
+    Q_UNUSED(parent);
     ui->setupUi(this);
     std::vector<App::DocumentObject*> obj = Gui::Selection().getObjectsOfType(Part::Feature::getClassTypeId());
     const char * part = obj.front()->getNameInDocument();
@@ -1059,7 +1078,7 @@ void TaskOrthoViews::projectionChanged(int index)
     set_configs();
 }
 
-void TaskOrthoViews::setPrimary(int dir)
+void TaskOrthoViews::setPrimary(int /*dir*/)
 {
     int p_sel = ui->view_from->currentIndex();      // index for entry selected for 'view from'
     int r_sel = ui->axis_right->currentIndex();     // index for entry selected for 'rightwards axis'
@@ -1214,7 +1233,7 @@ void TaskOrthoViews::setup_axo_tab()
     ui->axoScale->setText(QString::number(axo_scale));
 }
 
-void TaskOrthoViews::change_axo(int p)
+void TaskOrthoViews::change_axo(int /*p*/)
 {
     int u_sel = ui->axoUp->currentIndex();        // index for entry selected for 'view from'
     int r_sel = ui->axoRight->currentIndex();         // index for entry selected for 'rightwards axis'

@@ -68,6 +68,10 @@ protected:
     struct Node {
         Gui::SoFCSelection  *pcHighlight;
         SoTransform    *pcTransform;
+        Node() {
+            pcHighlight = 0;
+            pcTransform = 0;
+        }
     };
 
     std::list<Node> NodeList;

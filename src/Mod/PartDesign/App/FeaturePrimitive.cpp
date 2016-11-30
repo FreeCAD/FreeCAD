@@ -90,7 +90,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
         else 
             Placement.setValue(Base::Placement());
         
-        //if we have no base we just add the standart primitive shape
+        //if we have no base we just add the standard primitive shape
         TopoDS_Shape base;
         try{
              //if we have a base shape we need to make sure that it does not get our transformation to
@@ -215,7 +215,7 @@ PROPERTY_SOURCE(PartDesign::Cylinder, PartDesign::FeaturePrimitive)
 Cylinder::Cylinder()
 {
     ADD_PROPERTY_TYPE(Radius,(10.0f),"Cylinder",App::Prop_None,"The radius of the cylinder");
-    ADD_PROPERTY_TYPE(Angle,(10.0f),"Cylinder",App::Prop_None,"The closing angel of the cylinder ");
+    ADD_PROPERTY_TYPE(Angle,(360.0f),"Cylinder",App::Prop_None,"The closing angle of the cylinder ");
     ADD_PROPERTY_TYPE(Height,(10.0f),"Cylinder",App::Prop_None,"The height of the cylinder");
     Angle.setConstraints(&angleRangeU);
     Radius.setConstraints(&quantityRange);

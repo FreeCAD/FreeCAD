@@ -75,6 +75,8 @@ namespace SketcherGui {
             this->setMessage(ErrMsg);
         }
 
+        virtual ~ExceptionWrongInput() throw() {}
+
         QString ErrMsg;
     };
 
@@ -147,6 +149,7 @@ CmdSketcherNewSketch::CmdSketcherNewSketch()
 
 void CmdSketcherNewSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Attacher::eMapMode mapmode = Attacher::mmDeactivated;
     bool bAttach = false;
     if (Gui::Selection().hasSelection()){
@@ -287,6 +290,7 @@ CmdSketcherEditSketch::CmdSketcherEditSketch()
 
 void CmdSketcherEditSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::SelectionFilter SketchFilter("SELECT Sketcher::SketchObject COUNT 1");
 
     if (SketchFilter.match()) {
@@ -318,6 +322,7 @@ CmdSketcherLeaveSketch::CmdSketcherLeaveSketch()
 
 void CmdSketcherLeaveSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
     
     if (doc) {
@@ -361,6 +366,7 @@ CmdSketcherReorientSketch::CmdSketcherReorientSketch()
 
 void CmdSketcherReorientSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Sketcher::SketchObject* sketch = Gui::Selection().getObjectsOfType<Sketcher::SketchObject>().front();
     if (sketch->Support.getValue()) {
         int ret = QMessageBox::question(Gui::getMainWindow(),
@@ -444,6 +450,7 @@ CmdSketcherMapSketch::CmdSketcherMapSketch()
 
 void CmdSketcherMapSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     QString msg_str;
     try{
         Attacher::eMapMode suggMapMode;
@@ -603,10 +610,13 @@ CmdSketcherViewSketch::CmdSketcherViewSketch()
 
 void CmdSketcherViewSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     Gui::Document *doc = getActiveGuiDocument();
     SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
-                 ,vp->getObject()->getNameInDocument());
+    if (vp) {
+        doCommand(Gui,"Gui.ActiveDocument.ActiveView.setCameraOrientation(App.ActiveDocument.%s.Placement.Rotation.Q)"
+                     ,vp->getObject()->getNameInDocument());
+    }
 }
 
 bool CmdSketcherViewSketch::isActive(void)
@@ -637,6 +647,7 @@ CmdSketcherValidateSketch::CmdSketcherValidateSketch()
 
 void CmdSketcherValidateSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -671,6 +682,7 @@ CmdSketcherMirrorSketch::CmdSketcherMirrorSketch()
 
 void CmdSketcherMirrorSketch::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 1) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -737,14 +749,14 @@ void CmdSketcherMirrorSketch::activated(int iMsg)
 
         std::vector<Part::Geometry *> mirrorgeo (tempgeo.begin()+addedGeometries+1,tempgeo.end());
         std::vector<Sketcher::Constraint *> mirrorconstr (tempconstr.begin()+addedConstraints+1,tempconstr.end());
-        
-        for(std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
+
+        for (std::vector<Sketcher::Constraint *>::const_iterator itc=mirrorconstr.begin(); itc != mirrorconstr.end(); ++itc) {
  
-            if((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==-1 || (*itc)->First==-2) // not x, y axes or origin
+            if ((*itc)->First!=Sketcher::Constraint::GeoUndef || (*itc)->First==Sketcher::GeoEnum::HAxis || (*itc)->First==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->First-=(addedGeometries+1);
-            if((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==-1 || (*itc)->Second==-2) // not x, y axes or origin
+            if ((*itc)->Second!=Sketcher::Constraint::GeoUndef || (*itc)->Second==Sketcher::GeoEnum::HAxis || (*itc)->Second==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->Second-=(addedGeometries+1);
-            if((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==-1 || (*itc)->Third==-2) // not x, y axes or origin
+            if ((*itc)->Third!=Sketcher::Constraint::GeoUndef || (*itc)->Third==Sketcher::GeoEnum::HAxis || (*itc)->Third==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 (*itc)->Third-=(addedGeometries+1);
         }
         
@@ -780,6 +792,7 @@ CmdSketcherMergeSketches::CmdSketcherMergeSketches()
 
 void CmdSketcherMergeSketches::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
     if (selection.size() < 2) {
         QMessageBox::warning(Gui::getMainWindow(),
@@ -807,14 +820,14 @@ void CmdSketcherMergeSketches::activated(int iMsg)
 
         int addedConstraints=mergesketch->addConstraints(Obj->Constraints.getValues());
 
-        for(int i=0; i<=(addedConstraints-baseConstraints); i++){
+        for (int i=0; i<=(addedConstraints-baseConstraints); i++){
             Sketcher::Constraint * constraint= mergesketch->Constraints.getValues()[i+baseConstraints];
 
-            if(constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==-1 || constraint->First==-2) // not x, y axes or origin
+            if (constraint->First!=Sketcher::Constraint::GeoUndef || constraint->First==Sketcher::GeoEnum::HAxis || constraint->First==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 constraint->First+=baseGeometry;
-            if(constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==-1 || constraint->Second==-2) // not x, y axes or origin
+            if (constraint->Second!=Sketcher::Constraint::GeoUndef || constraint->Second==Sketcher::GeoEnum::HAxis || constraint->Second==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 constraint->Second+=baseGeometry;
-            if(constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==-1 || constraint->Third==-2) // not x, y axes or origin
+            if (constraint->Third!=Sketcher::Constraint::GeoUndef || constraint->Third==Sketcher::GeoEnum::HAxis || constraint->Third==Sketcher::GeoEnum::VAxis) // not x, y axes or origin
                 constraint->Third+=baseGeometry;
         }
 

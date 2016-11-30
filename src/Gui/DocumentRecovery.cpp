@@ -57,6 +57,7 @@
 #include <App/Document.h>
 
 #include <Gui/Application.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 
 #include <QDomDocument>
@@ -212,7 +213,7 @@ QString DocumentRecovery::createProjectFile(const QString& documentXml)
     str << doctools << "\n";
     str << "createDocument(\"" << (const char*)source.toUtf8()
         << "\", \"" << (const char*)dest.toUtf8() << "\")";
-    Application::Instance->runPythonCode(str.str().c_str());
+    Gui::Command::runCommand(Gui::Command::App, str.str().c_str());
 
     return dest;
 }

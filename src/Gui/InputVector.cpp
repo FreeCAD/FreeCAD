@@ -141,7 +141,7 @@ void LocationWidget::setPosition(const Base::Vector3d& v)
 
 void LocationWidget::setDirection(const Base::Vector3d& dir)
 {
-    if (dir.Length() < FLT_EPSILON) {
+    if (dir.Length() < Base::Vector3d::epsilon()) {
         return;
     }
 
@@ -207,7 +207,7 @@ void LocationWidget::on_direction_activated(int index)
         bool ok;
         Base::Vector3d dir = this->getUserDirection(&ok);
         if (ok) {
-            if (dir.Length() < FLT_EPSILON) {
+            if (dir.Length() < Base::Vector3d::epsilon()) {
                 QMessageBox::critical(this, LocationDialog::tr("Wrong direction"),
                     LocationDialog::tr("Direction must not be the null vector"));
                 return;

@@ -51,6 +51,13 @@
 #include "FemConstraintGear.h"
 #include "FemConstraintPulley.h"
 #include "FemConstraintDisplacement.h"
+#include "FemConstraintTemperature.h"
+#include "FemConstraintHeatflux.h"
+#include "FemConstraintInitialTemperature.h"
+#include "FemConstraintPlaneRotation.h"
+#include "FemConstraintContact.h"
+#include "FemConstraintFluidBoundary.h"
+#include "FemConstraintTransform.h"
 
 #include "FemResultObject.h"
 #include "FemSolverObject.h"
@@ -129,6 +136,7 @@ PyMODINIT_FUNC initFem()
     Fem::FeaturePython              ::init();
     Fem::FemMesh                    ::init();
     Fem::FemMeshObject              ::init();
+    Fem::FemMeshObjectPython        ::init();
     Fem::FemMeshShapeObject         ::init();
     Fem::FemMeshShapeNetgenObject   ::init();
     Fem::PropertyFemMesh            ::init();
@@ -147,11 +155,19 @@ PyMODINIT_FUNC initFem()
     Fem::ConstraintGear             ::init();
     Fem::ConstraintPulley           ::init();
     Fem::ConstraintDisplacement     ::init();
-
+    Fem::ConstraintTemperature      ::init();
+    Fem::ConstraintHeatflux         ::init();
+    Fem::ConstraintInitialTemperature ::init();
+    Fem::ConstraintPlaneRotation    ::init();
+    Fem::ConstraintContact          ::init();
+    Fem::ConstraintFluidBoundary              ::init();
+    Fem::ConstraintTransform        ::init();
+    
     Fem::FemResultObject            ::init();
+    Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
     Fem::FemSolverObjectPython      ::init();
-    
+
 #ifdef FC_USE_VTK
     Fem::FemPostObject              ::init();
     Fem::FemPostPipeline            ::init();

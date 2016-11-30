@@ -75,6 +75,7 @@ DEF_MSG_BUFFER << os.str() << std::endl;
 
 /* --- To print date and time of compilation of current source --- */
 
+#ifndef COMPILER
 #if defined ( __GNUC__ )
 #define COMPILER		"g++" 
 #elif defined ( __sun )
@@ -89,6 +90,7 @@ DEF_MSG_BUFFER << os.str() << std::endl;
 #define COMPILER		"bcc32"
 #else
 #define COMPILER		"undefined" 
+#endif
 #endif
 
 #ifdef INFOS_COMPILATION
@@ -132,8 +134,8 @@ DEF_MSG_BUFFER << os.str() << std::endl;
 #else  /* ifdef _DEBUG_*/
 
 #define INFOS_COMPILATION
-#define MESSAGE(msg)
-#define SCRUTE(var)
+#define MESSAGE(msg) {}
+#define SCRUTE(var) {}
 #define REPERE
 #define BEGIN_OF(msg)
 #define END_OF(msg)

@@ -46,6 +46,7 @@ void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
+    , sheet(0)
 {
     QAction * insertRows = new QAction(tr("Insert rows"), this);
     QAction * removeRows = new QAction(tr("Remove rows"), this);
@@ -79,7 +80,7 @@ SheetTableView::SheetTableView(QWidget *parent)
 
 void SheetTableView::cellProperties()
 {
-    std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
 
     if (dialog->exec() == QDialog::Accepted) {
         dialog->apply();

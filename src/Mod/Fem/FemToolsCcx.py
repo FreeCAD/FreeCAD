@@ -21,20 +21,23 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemToolsCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemTools
 from PySide import QtCore
+if FreeCAD.GuiUp:
+    from PySide import QtGui
 
 
 class FemToolsCcx(FemTools.FemTools):
 
-    known_analysis_types = ["static", "frequency"]
+    known_analysis_types = ["static", "frequency", "thermomech"]
     finished = QtCore.Signal(int)
 
     ## The constructor
@@ -69,7 +72,6 @@ class FemToolsCcx(FemTools.FemTools):
             self.results_present = False
             if self.solver:
                 self.set_analysis_type()
-                self.set_eigenmode_parameters()
                 self.setup_working_dir()
             else:
                 raise Exception('FEM: No solver found!')
@@ -87,14 +89,15 @@ class FemToolsCcx(FemTools.FemTools):
         import sys
         self.inp_file_name = ""
         try:
-            inp_writer = iw.FemInputWriterCcx(self.analysis, self.solver,
-                                              self.mesh, self.materials,
-                                              self.fixed_constraints,
-                                              self.force_constraints, self.pressure_constraints,
-                                              self.displacement_constraints,
-                                              self.beam_sections, self.shell_thicknesses,
-                                              self.analysis_type, self.eigenmode_parameters,
-                                              self.working_dir)
+            inp_writer = iw.FemInputWriterCcx(
+                self.analysis, self.solver,
+                self.mesh, self.materials_linear, self.materials_nonlinear,
+                self.fixed_constraints, self.displacement_constraints,
+                self.contact_constraints, self.planerotation_constraints, self.transform_constraints,
+                self.selfweight_constraints, self.force_constraints, self.pressure_constraints,
+                self.temperature_constraints, self.heatflux_constraints, self.initialtemperature_constraints,
+                self.beam_sections, self.shell_thicknesses,
+                self.analysis_type, self.working_dir)
             self.inp_file_name = inp_writer.write_calculix_input_file()
         except:
             print("Unexpected error when writing CalculiX input file:", sys.exc_info()[0])
@@ -105,18 +108,37 @@ class FemToolsCcx(FemTools.FemTools):
     #  @ccx_binary path to ccx binary, default is guessed: "bin/ccx" windows, "ccx" for other systems
     #  @ccx_binary_sig expected output form ccx when run empty. Default value is "CalculiX.exe -i jobname"
     def setup_ccx(self, ccx_binary=None, ccx_binary_sig="CalculiX"):
+        error_title = "No CalculiX binary ccx"
+        error_message = ""
         from platform import system
-        if not ccx_binary:
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-            ccx_binary = self.fem_prefs.GetString("ccxBinaryPath", "")
-        if not ccx_binary:
-            if system() == "Linux":
-                ccx_binary = "ccx"
-            elif system() == "Windows":
-                ccx_binary = FreeCAD.getHomePath() + "bin/ccx.exe"
-            else:
-                ccx_binary = "ccx"
-        self.ccx_binary = ccx_binary
+        ccx_std_location = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").GetBool("UseStandardCcxLocation", True)
+        if ccx_std_location:
+            if system() == "Windows":
+                ccx_path = FreeCAD.getHomePath() + "bin/ccx.exe"
+                FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetString("ccxBinaryPath", ccx_path)
+                self.ccx_binary = ccx_path
+            elif system() == "Linux":
+                import subprocess
+                p1 = subprocess.Popen(['which', 'ccx'], stdout=subprocess.PIPE)
+                if p1.wait() == 0:
+                    ccx_path = p1.stdout.read().split('\n')[0]
+                elif p1.wait() == 1:
+                    error_message = "FEM: CalculiX binary ccx not found in standard system binary path. Please install ccx or set path to binary in FEM preferences tab CalculiX.\n"
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, error_title, error_message)
+                    raise Exception(error_message)
+                self.ccx_binary = ccx_path
+        else:
+            if not ccx_binary:
+                self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+                ccx_binary = self.ccx_prefs.GetString("ccxBinaryPath", "")
+                if not ccx_binary:
+                    FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx").SetBool("UseStandardCcxLocation", True)
+                    error_message = "FEM: CalculiX binary ccx path not set at all. The use of standard path was activated in FEM preferences tab CalculiX. Please try again!\n"
+                    if FreeCAD.GuiUp:
+                        QtGui.QMessageBox.critical(None, error_title, error_message)
+                    raise Exception(error_message)
+            self.ccx_binary = ccx_binary
 
         import subprocess
         startup_info = None
@@ -133,14 +155,22 @@ class FemToolsCcx(FemTools.FemTools):
             ccx_stdout, ccx_stderr = p.communicate()
             if ccx_binary_sig in ccx_stdout:
                 self.ccx_binary_present = True
+            else:
+                raise Exception("FEM: wrong ccx binary")  # since we raise an exception the try will fail and the exception later with the error popup will be raised
+                # TODO: I'm still able to break it. If user gives not a file but a path without a file or a file which is not a binary no excetion at all is raised.
         except OSError as e:
             FreeCAD.Console.PrintError(e.message)
             if e.errno == 2:
-                raise Exception("FEM: CalculiX binary ccx \'{}\' not found. Please set it in FEM preferences.".format(ccx_binary))
+                error_message = "FEM: CalculiX binary ccx \'{}\' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.\n".format(ccx_binary)
+                if FreeCAD.GuiUp:
+                    QtGui.QMessageBox.critical(None, error_title, error_message)
+                raise Exception(error_message)
         except Exception as e:
             FreeCAD.Console.PrintError(e.message)
-            raise Exception("FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer".
-                            format(ccx_binary, ccx_stdout, ccx_binary_sig))
+            error_message = "FEM: CalculiX ccx \'{}\' output \'{}\' doesn't contain expected phrase \'{}\'. Please use ccx 2.6 or newer\n".format(ccx_binary, ccx_stdout, ccx_binary_sig)
+            if FreeCAD.GuiUp:
+                QtGui.QMessageBox.critical(None, error_title, error_message)
+            raise Exception(error_message)
 
     def start_ccx(self):
         import multiprocessing
@@ -150,9 +180,14 @@ class FemToolsCcx(FemTools.FemTools):
         self.ccx_stderr = ""
         if self.inp_file_name != "" and self.ccx_binary_present:
             ont_backup = os.environ.get('OMP_NUM_THREADS')
+            self.ccx_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Ccx")
+            num_cpu_pref = self.ccx_prefs.GetInt("AnalysisNumCPUs", 1)  # If number of CPU's specified
             if not ont_backup:
-                ont_backup = ""
-            _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
+                ont_backup = str(num_cpu_pref)
+            if num_cpu_pref > 1:
+                _env = os.putenv('OMP_NUM_THREADS', str(num_cpu_pref))  # if user picked a number use that instead
+            else:
+                _env = os.putenv('OMP_NUM_THREADS', str(multiprocessing.cpu_count()))
             # change cwd because ccx may crash if directory has no write permission
             # there is also a limit of the length of file names so jump to the document directory
             cwd = QtCore.QDir.currentPath()
@@ -206,6 +241,9 @@ class FemToolsCcx(FemTools.FemTools):
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True
+                    break
+            else:
+                FreeCAD.Console.PrintError('FEM: No result object in active Analysis.\n')
         else:
             raise Exception('FEM: No results found at {}!'.format(frd_result_file))
 
@@ -220,9 +258,11 @@ class FemToolsCcx(FemTools.FemTools):
         else:
             raise Exception('FEM: No .dat results found at {}!'.format(dat_result_file))
         if mode_frequencies:
-            print(mode_frequencies)
+            # print(mode_frequencies)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject") and m.Eigenmode > 0:
                     for mf in mode_frequencies:
                         if m.Eigenmode == mf['eigenmode']:
                             m.EigenmodeFrequency = mf['frequency']
+
+#  @}

@@ -46,6 +46,7 @@
 #include <App/DocumentObjectGroup.h>
 
 #include "Tree.h"
+#include "Command.h"
 #include "Document.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
@@ -62,7 +63,7 @@ const int TreeWidget::ObjectType = 1001;
 
 /* TRANSLATOR Gui::TreeWidget */
 TreeWidget::TreeWidget(QWidget* parent)
-    : QTreeWidget(parent), fromOutside(false)
+    : QTreeWidget(parent), contextItem(0), fromOutside(false)
 {
     this->setDragEnabled(true);
     this->setAcceptDrops(true);
@@ -74,17 +75,32 @@ TreeWidget::TreeWidget(QWidget* parent)
     this->createGroupAction->setStatusTip(tr("Create a group"));
     connect(this->createGroupAction, SIGNAL(triggered()),
             this, SLOT(onCreateGroup()));
+
     this->relabelObjectAction = new QAction(this);
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
     connect(this->relabelObjectAction, SIGNAL(triggered()),
             this, SLOT(onRelabelObject()));
+
     this->finishEditingAction = new QAction(this);
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));
     connect(this->finishEditingAction, SIGNAL(triggered()),
             this, SLOT(onFinishEditing()));
+
+    this->skipRecomputeAction = new QAction(this);
+    this->skipRecomputeAction->setCheckable(true);
+    this->skipRecomputeAction->setText(tr("Skip recomputes"));
+    this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+    connect(this->skipRecomputeAction, SIGNAL(toggled(bool)),
+            this, SLOT(onSkipRecompute(bool)));
+
+    this->markRecomputeAction = new QAction(this);
+    this->markRecomputeAction->setText(tr("Mark to recompute"));
+    this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
+    connect(this->markRecomputeAction, SIGNAL(triggered()),
+            this, SLOT(onMarkRecompute()));
 
     // Setup connections
     Application::Instance->signalNewDocument.connect(boost::bind(&TreeWidget::slotNewDocument, this, _1));
@@ -153,6 +169,11 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
     if (this->contextItem && this->contextItem->type() == DocumentType) {
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        this->skipRecomputeAction->setChecked(doc->testStatus(App::Document::SkipRecompute));
+        contextMenu.addAction(this->skipRecomputeAction);
+        contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->createGroupAction);
     }
     else if (this->contextItem && this->contextItem->type() == ObjectType) {
@@ -171,6 +192,7 @@ void TreeWidget::contextMenuEvent (QContextMenuEvent * e)
         }
         if (!contextMenu.actions().isEmpty())
             contextMenu.addSeparator();
+        contextMenu.addAction(this->markRecomputeAction);
         contextMenu.addAction(this->relabelObjectAction);
 
         // if only one item is selected setup the edit menu
@@ -226,7 +248,7 @@ void TreeWidget::onCreateGroup()
                               .arg(QString::fromLatin1(doc->getName())).arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
-        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         gui->commitCommand();
     }
     else if (this->contextItem->type() == ObjectType) {
@@ -241,7 +263,7 @@ void TreeWidget::onCreateGroup()
                               .arg(name);
         Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
         gui->openCommand("Create group");
-        Gui::Application::Instance->runPythonCode(cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
         gui->commitCommand();
     }
 }
@@ -296,6 +318,39 @@ void TreeWidget::onFinishEditing()
         doc->commitCommand();
         doc->resetEdit();
         doc->getDocument()->recompute();
+    }
+}
+
+void TreeWidget::onSkipRecompute(bool on)
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        doc->setStatus(App::Document::SkipRecompute, on);
+    }
+}
+
+void TreeWidget::onMarkRecompute()
+{
+    // if a document item is selected then touch all objects
+    if (this->contextItem && this->contextItem->type() == DocumentType) {
+        DocumentItem* docitem = static_cast<DocumentItem*>(this->contextItem);
+        App::Document* doc = docitem->document()->getDocument();
+        std::vector<App::DocumentObject*> obj = doc->getObjects();
+        for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it)
+            (*it)->touch();
+    }
+    // mark all selected objects
+    else {
+        QList<QTreeWidgetItem*> items = this->selectedItems();
+        for (QList<QTreeWidgetItem*>::iterator it = items.begin(); it != items.end(); ++it) {
+            if ((*it)->type() == ObjectType) {
+                DocumentObjectItem* objitem = static_cast<DocumentObjectItem*>(*it);
+                App::DocumentObject* obj = objitem->object()->getObject();
+                obj->touch();
+            }
+        }
     }
 }
 
@@ -563,7 +618,6 @@ void TreeWidget::dropEvent(QDropEvent *event)
             // now add the object to the target object
             vp->dropObject(obj);
         }
-        targetItemObj->drop(dropObjects,event->keyboardModifiers(),event->mouseButtons(),event->pos());
     }
     else if (targetitem->type() == TreeWidget::DocumentType) {
         // Open command
@@ -625,6 +679,7 @@ void TreeWidget::slotDeleteDocument(const Gui::Document& Doc)
 void TreeWidget::slotRenameDocument(const Gui::Document& Doc)
 {
     // do nothing here
+    Q_UNUSED(Doc); 
 }
 
 void TreeWidget::slotRelabelDocument(const Gui::Document& Doc)
@@ -666,7 +721,7 @@ void TreeWidget::onTestStatus(void)
 void TreeWidget::onItemEntered(QTreeWidgetItem * item)
 {
     // object item selected
-    if ( item && item->type() == TreeWidget::ObjectType ) {
+    if (item && item->type() == TreeWidget::ObjectType) {
         DocumentObjectItem* obj = static_cast<DocumentObjectItem*>(item);
         obj->displayStatusInfo();
     }
@@ -711,6 +766,21 @@ void TreeWidget::changeEvent(QEvent *e)
     if (e->type() == QEvent::LanguageChange) {
         this->headerItem()->setText(0, tr("Labels & Attributes"));
         this->rootItem->setText(0, tr("Application"));
+
+        this->createGroupAction->setText(tr("Create group..."));
+        this->createGroupAction->setStatusTip(tr("Create a group"));
+
+        this->relabelObjectAction->setText(tr("Rename"));
+        this->relabelObjectAction->setStatusTip(tr("Rename object"));
+
+        this->finishEditingAction->setText(tr("Finish editing"));
+        this->finishEditingAction->setStatusTip(tr("Finish editing object"));
+
+        this->skipRecomputeAction->setText(tr("Skip recomputes"));
+        this->skipRecomputeAction->setStatusTip(tr("Enable or disable recomputations of document"));
+
+        this->markRecomputeAction->setText(tr("Mark to recompute"));
+        this->markRecomputeAction->setStatusTip(tr("Mark this object to be recomputed"));
     }
 
     QTreeWidget::changeEvent(e);
@@ -872,8 +942,6 @@ DocumentItem::~DocumentItem()
     connectExpObject.disconnect();
 }
 
-
-
 void DocumentItem::slotInEdit(const Gui::ViewProviderDocumentObject& v)
 {
     std::string name (v.getObject()->getNameInDocument());
@@ -969,57 +1037,59 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
             std::vector<App::DocumentObject*> group = view.claimChildren();
                 int group_index = 0; // counter of children inserted to the tree
             for (std::vector<App::DocumentObject*>::iterator jt = group.begin(); jt != group.end(); ++jt) {
-                if ((*jt) && view.getObject()->getDocument()->isIn(*jt)){
-                    // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
-                    // were changed in a transaction and slotChangedObject() is triggered by one property being reset
-                    // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
-                    // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
-                    // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
-                    const char* internalName = (*jt)->getNameInDocument();
-                    if (internalName) {
-                        std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
-                        if (kt != ObjectMap.end()) {
-                            DocumentObjectItem* child_of_group = kt->second;
-                            children.insert(child_of_group);
-                            QTreeWidgetItem* parent_of_child = child_of_group->parent();
-
-                            if (parent_of_child) {
-                                if (parent_of_child != parent_of_group) {
-                                    if (parent_of_group != child_of_group) {
-                                        // This child's parent must be adjusted
-                                        parent_of_child->removeChild(child_of_group);
-                                        // Insert the child at the correct position according to the order of the children returned
-                                        // by claimChildren
-                                        if (group_index <= parent_of_group->childCount())
-                                            parent_of_group->insertChild(group_index, child_of_group);
-                                        else
-                                            parent_of_group->addChild(child_of_group);
-                                        group_index++;
+                if (*jt) {
+                    if (view.getObject()->getDocument()->isIn(*jt)){
+                        // Note: It is possible that we receive an invalid pointer from claimChildren(), e.g. if multiple properties
+                        // were changed in a transaction and slotChangedObject() is triggered by one property being reset
+                        // before the invalid pointer has been removed from another. Currently this happens for PartDesign::Body
+                        // when cancelling a new feature in the dialog. First the new feature is deleted, then the Tip property is
+                        // reset, but claimChildren() accesses the Model property which still contains the pointer to the deleted feature
+                        const char* internalName = (*jt)->getNameInDocument();
+                        if (internalName) {
+                            std::map<std::string, DocumentObjectItem*>::iterator kt = ObjectMap.find(internalName);
+                            if (kt != ObjectMap.end()) {
+                                DocumentObjectItem* child_of_group = kt->second;
+                                children.insert(child_of_group);
+                                QTreeWidgetItem* parent_of_child = child_of_group->parent();
+    
+                                if (parent_of_child) {
+                                    if (parent_of_child != parent_of_group) {
+                                        if (parent_of_group != child_of_group) {
+                                            // This child's parent must be adjusted
+                                            parent_of_child->removeChild(child_of_group);
+                                            // Insert the child at the correct position according to the order of the children returned
+                                            // by claimChildren
+                                            if (group_index <= parent_of_group->childCount())
+                                                parent_of_group->insertChild(group_index, child_of_group);
+                                            else
+                                                parent_of_group->addChild(child_of_group);
+                                            group_index++;
+                                        } else {
+                                            Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                        }
                                     } else {
-                                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Object references to itself.\n");
+                                        // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
+                                        int index=parent_of_group->indexOfChild (child_of_group);
+                                        if (index>group_index) {
+                                             parent_of_group->takeChild (index);
+                                             parent_of_group->insertChild (group_index, child_of_group);
+                                        }
+                                        group_index++;
                                     }
                                 } else {
-                                    // The child already in the right group, but we may need to ajust it's index to follow the order of claimChildren
-                                    int index=parent_of_group->indexOfChild (child_of_group);
-                                    if (index>group_index) {
-                                         parent_of_group->takeChild (index);
-                                         parent_of_group->insertChild (group_index, child_of_group);
-                                    }
-                                    group_index++;
+                                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
+                                        "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                                 }
-                            } else {
-                                Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): "
-                                    "'%s' claimed a top level object '%s' to be it's child.\n", objectName.c_str(), internalName);
                             }
+                        }
+                        else {
+                            Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
                         }
                     }
                     else {
-                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Cannot reparent unknown object.\n");
+                        Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
                     }
-                }
-                else {
-                    Base::Console().Warning("Gui::DocumentItem::slotChangedObject(): Group references unknown object.\n");
-                }
+                } // empty PropertyLink
             }
 
             // move all children which are not part of the group anymore to this item
@@ -1044,6 +1114,7 @@ void DocumentItem::slotChangeObject(const Gui::ViewProviderDocumentObject& view)
 void DocumentItem::slotRenameObject(const Gui::ViewProviderDocumentObject& obj)
 {
     // Do nothing here because the Label is set in slotChangeObject
+    Q_UNUSED(obj); 
 }
 
 void DocumentItem::slotActiveObject(const Gui::ViewProviderDocumentObject& obj)
@@ -1089,8 +1160,8 @@ void DocumentItem::slotHighlightObject (const Gui::ViewProviderDocumentObject& o
     default:
         break;
     }
+
     jt->second->setFont(0,f);
-        
 }
 
 void DocumentItem::slotExpandObject (const Gui::ViewProviderDocumentObject& obj,const Gui::TreeItemMode& mode)
@@ -1174,6 +1245,7 @@ void DocumentItem::setData (int column, int role, const QVariant & value)
 
 void DocumentItem::setObjectHighlighted(const char* name, bool select)
 {
+    Q_UNUSED(select); 
     std::map<std::string,DocumentObjectItem*>::iterator pos;
     pos = ObjectMap.find(name);
     if (pos != ObjectMap.end()) {
@@ -1290,7 +1362,7 @@ std::vector<DocumentObjectItem*> DocumentItem::getAllParents(DocumentObjectItem*
 
     for (std::vector<App::DocumentObject*>::iterator it = inlist.begin(); it != inlist.end(); ++it) {
         Gui::ViewProvider* vp = pDocument->getViewProvider(*it);
-        if(!vp) 
+        if (!vp) 
             continue;
         std::vector<App::DocumentObject*> child = vp->claimChildren();
         for (std::vector<App::DocumentObject*>::iterator jt = child.begin(); jt != child.end(); ++jt) {
@@ -1429,15 +1501,6 @@ void DocumentObjectItem::testStatus()
     }
 
     this->setIcon(0, icon_mod);
-}
-
-bool DocumentObjectItem::allowDrop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    return viewObject->allowDrop(objList,keys,mouseBts,pos);
-}
-void DocumentObjectItem::drop(const std::vector<const App::DocumentObject*> &objList,Qt::KeyboardModifiers keys,Qt::MouseButtons mouseBts,const QPoint &pos)
-{
-    viewObject->drop(objList,keys,mouseBts,pos);
 }
 
 void DocumentObjectItem::displayStatusInfo()

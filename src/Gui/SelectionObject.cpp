@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 
-#include <strstream>
+#include <sstream>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -31,8 +31,9 @@
 #include <Base/Interpreter.h>
 
 #include "SelectionObject.h"
-#include "SelectionObjectPy.h"
+#include "Selection.h"
 #include "Application.h"
+#include <Gui/SelectionObjectPy.h>
 
 using namespace Gui;
 
@@ -41,6 +42,17 @@ TYPESYSTEM_SOURCE_ABSTRACT(Gui::SelectionObject, Base::BaseClass)
 
 SelectionObject::SelectionObject()
 {
+}
+
+SelectionObject::SelectionObject(const Gui::SelectionChanges& msg)
+{
+    FeatName = msg.pObjectName ? msg.pObjectName : "";
+    DocName = msg.pDocName ? msg.pDocName : "";
+    TypeName = msg.pTypeName ? msg.pTypeName : "";
+    if (msg.pSubName) {
+        SubNames.push_back(msg.pSubName);
+        SelPoses.push_back(Base::Vector3d(msg.x, msg.y, msg.z));
+    }
 }
 
 SelectionObject::SelectionObject(App::DocumentObject* obj)

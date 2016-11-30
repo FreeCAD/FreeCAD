@@ -194,7 +194,7 @@ bool DlgBooleanOperation::hasSolids(const App::DocumentObject* obj) const
     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         const TopoDS_Shape& shape = static_cast<const Part::Feature*>(obj)->Shape.getValue();
         TopExp_Explorer anExp (shape, TopAbs_SOLID);
-        for (; anExp.More(); anExp.Next()) {
+        if (anExp.More()) {
             return true;
         }
     }
@@ -304,6 +304,8 @@ bool DlgBooleanOperation::indexOfCurrentItem(QTreeWidgetItem* item, int& top_ind
 
 void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem * previous)
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
 //    if (current && current->flags() & Qt::ItemIsUserCheckable)
 //        current->setCheckState(0, Qt::Checked);
     //if (previous && previous->flags() & Qt::ItemIsUserCheckable)

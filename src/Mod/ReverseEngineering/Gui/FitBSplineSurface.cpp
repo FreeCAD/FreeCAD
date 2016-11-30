@@ -65,6 +65,7 @@ public:
 FitBSplineSurfaceWidget::FitBSplineSurfaceWidget(const App::DocumentObjectT& obj, QWidget* parent)
   : d(new Private())
 {
+    Q_UNUSED(parent);
     d->ui.setupUi(this);
     d->obj = obj;
     restoreSettings();
@@ -165,7 +166,7 @@ bool FitBSplineSurfaceWidget::accept()
         Gui::WaitCursor wc;
         Gui::Command::addModule(Gui::Command::App, "ReverseEngineering");
         Gui::Command::openCommand("Fit B-Spline");
-        Gui::Command::doCommand(Gui::Command::Doc, command.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Doc, command.toLatin1());
         Gui::Command::commitCommand();
         Gui::Command::updateActive();
     }

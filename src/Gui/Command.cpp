@@ -25,6 +25,7 @@
 #ifndef _PreComp_
 # include <sstream>
 # include <QApplication>
+# include <QByteArray>
 # include <QDir>
 # include <QKeySequence>
 # include <QMessageBox>
@@ -67,6 +68,7 @@ using namespace Gui::DockWnd;
 
 /** \defgroup commands Command Framework
     \ingroup GUI
+    \brief Structure for registering commands to the FreeCAD system
  * \section Overview
  * In GUI applications many commands can be invoked via a menu item, a toolbar button or an accelerator key. The answer of Qt to master this
  * challenge is the class \a QAction. A QAction object can be added to a popup menu or a toolbar and keep the state of the menu item and
@@ -216,6 +218,7 @@ Command::Command(const char* name)
     sAppModule  = "FreeCAD";
     sGroup      = QT_TR_NOOP("Standard");
     eType       = AlterDoc | Alter3DView | AlterSelection;
+    bEnabled    = true;
 }
 
 Command::~Command()
@@ -240,6 +243,15 @@ void Command::addTo(QWidget *pcWidget)
         _pcAction = createAction();
 
     _pcAction->addTo(pcWidget);
+}
+
+void Command::addToGroup(ActionGroup* group, bool checkable)
+{
+    if (!_pcAction)
+        _pcAction = createAction();
+
+    _pcAction->setCheckable(checkable);
+    group->addAction(_pcAction->findChild<QAction*>());
 }
 
 Application *Command::getGuiApplication(void)
@@ -321,14 +333,15 @@ void Command::invoke(int i)
 
 void Command::testActive(void)
 {
-    if (!_pcAction) return;
+    if (!_pcAction)
+        return;
 
-    if (_blockCmd) {
+    if (_blockCmd || !bEnabled) {
         _pcAction->setEnabled(false);
         return;
     }
 
-    if (!(eType & ForEdit))  // special case for commands which are only in some edit modes active
+    if (!(eType & ForEdit)) { // special case for commands which are only in some edit modes active
         
         if ((!Gui::Control().isAllowedAlterDocument()  && eType & AlterDoc)    ||
             (!Gui::Control().isAllowedAlterView()      && eType & Alter3DView) ||
@@ -336,9 +349,18 @@ void Command::testActive(void)
              _pcAction->setEnabled(false);
             return;
         }
+    }
 
     bool bActive = isActive();
     _pcAction->setEnabled(bActive);
+}
+
+void Command::setEnabled(bool on)
+{
+    if (_pcAction) {
+        bEnabled = on;
+        _pcAction->setEnabled(on);
+    }
 }
 
 //--------------------------------------------------------------------------
@@ -439,7 +461,8 @@ void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
     const QString cmd = s.vsprintf(sCmd, ap);
     va_end(ap);
 
-    QByteArray format = cmd.toLatin1();
+    // 'vsprintf' expects a utf-8 string for '%s'
+    QByteArray format = cmd.toUtf8();
 
 #ifdef FC_LOGUSERACTION
     Base::Console().Log("CmdC: %s\n", format.constData());
@@ -454,13 +477,23 @@ void Command::doCommand(DoCmd_Type eType, const char* sCmd, ...)
 }
 
 /// Run a App level Action
-void Command::runCommand(DoCmd_Type eType,const char* sCmd)
+void Command::runCommand(DoCmd_Type eType, const char* sCmd)
 {
     if (eType == Gui)
         Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd);
     else
         Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd);
     Base::Interpreter().runString(sCmd);
+}
+
+/// Run a App level Action
+void Command::runCommand(DoCmd_Type eType, const QByteArray& sCmd)
+{
+    if (eType == Gui)
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::Gui,sCmd.constData());
+    else
+        Gui::Application::Instance->macroManager()->addLine(MacroManager::App,sCmd.constData());
+    Base::Interpreter().runString(sCmd.constData());
 }
 
 void Command::addModule(DoCmd_Type eType,const char* sModuleName)
@@ -707,6 +740,7 @@ MacroCommand::MacroCommand(const char* name, bool system)
 {
     sGroup = QT_TR_NOOP("Macros");
     eType  = 0;
+    sScriptName = 0;
 }
 
 MacroCommand::~MacroCommand()
@@ -717,8 +751,9 @@ MacroCommand::~MacroCommand()
 
 void MacroCommand::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
+
     QDir d;
-    
     if(!systemMacro) {
 	std::string cMacroPath;
 	
@@ -920,7 +955,7 @@ void PythonCommand::activated(int iMsg)
         }
     }
     else {
-        doCommand(Doc,Activation.c_str());
+        runCommand(Doc,Activation.c_str());
     }
 }
 

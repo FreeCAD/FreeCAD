@@ -169,31 +169,31 @@ std::string FileInfo::getTempFileName(const char* FileName, const char* Path)
 
     return std::string(ConvertFromWideString(std::wstring(buf)));
 #else
-    char buf[PATH_MAX+1];
+    std::string buf;
 
     // Path where the file is located
     if (Path)
-        std::strncpy(buf, Path, PATH_MAX);
+        buf = Path;
     else
-        std::strncpy(buf, getTempPath().c_str(), PATH_MAX);
-
-    buf[PATH_MAX] = 0; // null termination needed
+        buf = getTempPath();
 
     // File name in the path 
     if (FileName) {
-        std::strcat(buf, "/");
-        std::strcat(buf, FileName);
-        std::strcat(buf, "XXXXXX");
+        buf += "/";
+        buf += FileName;
+        buf += "XXXXXX";
     }
-    else
-        std::strcat(buf, "/fileXXXXXX");
+    else {
+        buf += "/fileXXXXXX";
+    }
 
-    int id = mkstemp(buf);
+    int id = mkstemp(const_cast<char*>(buf.c_str()));
     if (id > -1) {
         FILE* file = fdopen(id, "w");
         fclose(file);
+        unlink(buf.c_str());
     }
-    return std::string(buf);
+    return buf;
 #endif
 }
 
@@ -272,10 +272,8 @@ std::wstring FileInfo::toStdWString() const
 #endif
 }
 
-std::string FileInfo::extension (bool complete) const
+std::string FileInfo::extension () const
 {
-    // complete not implemented
-    assert(complete==false);
     std::string::size_type pos = FileName.find_last_of('.');
     if (pos == std::string::npos)
         return std::string();

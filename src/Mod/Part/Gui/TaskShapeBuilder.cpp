@@ -37,6 +37,7 @@
 
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionFilter.h>
@@ -94,6 +95,8 @@ public:
     ShapeSelection* gate;
     Private()
     {
+        Gui::Command::runCommand(Gui::Command::App, "from FreeCAD import Base");
+        Gui::Command::runCommand(Gui::Command::App, "import Part");
     }
     ~Private()
     {
@@ -105,9 +108,7 @@ public:
 ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
   : d(new Private())
 {
-    Gui::Application::Instance->runPythonCode("from FreeCAD import Base");
-    Gui::Application::Instance->runPythonCode("import Part");
-
+    Q_UNUSED(parent);
     d->ui.setupUi(this);
     d->ui.label->setText(QString());
     d->bg.addButton(d->ui.radioButtonEdgeFromVertex, 0);
@@ -201,7 +202,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Edge");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -253,7 +254,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Face");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -305,7 +306,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Face");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -368,7 +369,7 @@ void ShapeBuilderWidget::createShellFromFace()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Shell");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {
@@ -420,7 +421,7 @@ void ShapeBuilderWidget::createSolidFromShell()
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand("Solid");
-        Gui::Application::Instance->runPythonCode((const char*)cmd.toLatin1(), false, false);
+        Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
         Gui::Application::Instance->activeDocument()->commitCommand();
     }
     catch (const Base::Exception&) {

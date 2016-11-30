@@ -77,8 +77,18 @@ class MESHGate:
 
 class ENGRAVEGate:
     def allow(self, doc, obj, sub):
-        return (obj.Name[0:11] == 'ShapeString')
+        engraveable = False
 
+        if hasattr(obj, "Shape"):
+            if obj.Shape.BoundBox.ZLength == 0.0:
+                try:
+                    obj = obj.Shape
+                except:
+                    return False
+                if len(obj.Wires) > 0:
+                    engraveable = True
+
+        return engraveable
 
 class DRILLGate:
     def allow(self, doc, obj, sub):
@@ -90,7 +100,7 @@ class DRILLGate:
             return False
         if obj.ShapeType == 'Vertex':
                 drillable = True
-        elif obj.ShapeType == 'Solid':
+        elif obj.ShapeType in['Solid', 'Compound']:
             if sub[0:4] == 'Face':
                 subobj = obj.getElement(sub)
                 drillable = isinstance(subobj.Edges[0].Curve, Part.Circle)
@@ -164,6 +174,13 @@ class POCKETGate:
 
         return pocketable
 
+class CONTOURGate:
+    def allow(self, doc, obj, sub):
+        pass
+
+def contourselect():
+    FreeCADGui.Selection.addSelectionGate(CONTOURGate())
+    FreeCAD.Console.PrintWarning("Contour Select Mode\n")
 
 def fselect():
     FreeCADGui.Selection.addSelectionGate(FGate())

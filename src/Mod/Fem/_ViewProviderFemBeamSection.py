@@ -24,6 +24,8 @@ __title__ = "_ViewProviderFemBeamSection"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package ViewProviderFemBeamSection
+#  \ingroup FEM
 
 import FreeCAD
 import FreeCADGui

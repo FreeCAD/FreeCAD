@@ -191,6 +191,7 @@ ExtensionModuleBase::ExtensionModuleBase( const char *name )
 : m_module_name( name )
 , m_full_module_name( __Py_PackageContext() != NULL ? std::string( __Py_PackageContext() ) : m_module_name )
 , m_method_table()
+, m_module( NULL )
 {}
 
 ExtensionModuleBase::~ExtensionModuleBase()
@@ -222,7 +223,7 @@ public:
 void ExtensionModuleBase::initialize( const char *module_doc )
 {
     PyObject *module_ptr = new ExtensionModuleBasePtr( this );
-    Py_InitModule4
+    m_module = Py_InitModule4
     (
     const_cast<char *>( m_module_name.c_str() ),    // name
     m_method_table.table(),                         // methods
@@ -240,6 +241,11 @@ Py::Module ExtensionModuleBase::module( void ) const
 Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
 {
     return module().getDict();
+}
+
+Object ExtensionModuleBase::moduleObject( void ) const
+{
+    return Object( m_module );
 }
 
 //================================================================================
@@ -644,7 +650,7 @@ PythonType &PythonType::supportIter()
 //    Handlers
 //
 //--------------------------------------------------------------------------------
-PythonExtensionBase *getPythonExtensionBase( PyObject *self )
+PYCXX_EXPORT PythonExtensionBase *getPythonExtensionBase( PyObject *self )
 {
     if( self->ob_type->tp_flags&Py_TPFLAGS_BASETYPE )
     {
@@ -1391,7 +1397,7 @@ Py::Object PythonExtensionBase::callOnSelf( const std::string &fn_name,
     return self().callMemberFunction( fn_name, args );
 }
 
-void PythonExtensionBase::reinit( Tuple &args, Dict &kwds )
+void PythonExtensionBase::reinit( Tuple & /*args*/, Dict & /*kwds*/ )
 {
     throw RuntimeError( "Must not call __init__ twice on this class" );
 }
@@ -1441,7 +1447,7 @@ int PythonExtensionBase::compare( const Py::Object &)
 }
 
 #if PY_MAJOR_VERSION > 2 || (PY_MAJOR_VERSION == 2 && PY_MINOR_VERSION >= 1)
-Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int op )
+Py::Object PythonExtensionBase::rich_compare( const Py::Object &, int /*op*/ )
 {
     missing_method( rich_compare );
     return Py::None();
@@ -1759,6 +1765,8 @@ extern "C" PyObject *method_keyword_call_handler( PyObject *_self_and_name_tuple
     }
 }
 
+//NOTE: This method is used in ExtensionModule.hxx but not provided by PyCXX.
+//However, it's required because without it we get linker errors.
 extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * )
 {
     try

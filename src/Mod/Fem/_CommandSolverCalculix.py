@@ -24,13 +24,14 @@ __title__ = "_CommandSolverCalculix"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package CommandSolverCalculix
+#  \ingroup FEM
 
 import FreeCAD
 from FemCommands import FemCommands
-
-if FreeCAD.GuiUp:
-    import FreeCADGui
-    from PySide import QtCore
+import FreeCADGui
+import FemGui
+from PySide import QtCore
 
 
 class _CommandSolverCalculix(FemCommands):
@@ -44,10 +45,18 @@ class _CommandSolverCalculix(FemCommands):
         self.is_active = 'with_analysis'
 
     def Activated(self):
+        has_nonlinear_material_obj = False
+        for m in FemGui.getActiveAnalysis().Member:
+            if hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                has_nonlinear_material_obj = True
         FreeCAD.ActiveDocument.openTransaction("Create SolverCalculix")
         FreeCADGui.addModule("FemSolverCalculix")
-        FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverCalculix.makeFemSolverCalculix()]")
+        if has_nonlinear_material_obj:
+            FreeCADGui.doCommand("solver = FemSolverCalculix.makeFemSolverCalculix()")
+            FreeCADGui.doCommand("solver.MaterialNonlinearity = 'nonlinear'")
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [solver]")
+        else:
+            FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [FemSolverCalculix.makeFemSolverCalculix()]")
 
 
-if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())
+FreeCADGui.addCommand('Fem_SolverCalculix', _CommandSolverCalculix())

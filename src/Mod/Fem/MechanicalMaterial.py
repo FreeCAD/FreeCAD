@@ -24,6 +24,8 @@ __title__ = "MechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import _MechanicalMaterial
@@ -39,3 +41,5 @@ def makeMechanicalMaterial(name):
         _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
+
+# @}

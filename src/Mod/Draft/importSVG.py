@@ -25,6 +25,14 @@ __title__="FreeCAD Draft Workbench - SVG importer/exporter"
 __author__ = "Yorik van Havre, Sebastian Hoogen"
 __url__ = ["http://www.freecadweb.org"]
 
+## @package importSVG
+#  \ingroup DRAFT
+#  \brief SVG file importer & exporter
+#
+#  This module provides support for importing and exporting SVG files. It
+#  enables importing/exporting objects directly to/from the 3D document, but
+#  doesn't handle the SVG output from the Drawng and TechDraw modules.
+
 '''
 This script imports SVG files in FreeCAD. Currently only reads the following entities:
 paths, lines, circular arcs ,rects, circles, ellipses, polygons, polylines.
@@ -1176,8 +1184,9 @@ def getContents(filename,tag,stringmode=False):
 def open(filename):
         docname=os.path.split(filename)[1]
         doc=FreeCAD.newDocument(docname)
-        doc.Label = decodeName(docname[:-4])
+        doc.Label = docname[:-4]
         parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.setContentHandler(svgHandler())
         parser._cont_handler.doc = doc
         f = pythonopen(filename)
@@ -1193,6 +1202,7 @@ def insert(filename,docname):
                 doc=FreeCAD.newDocument(docname)
         FreeCAD.ActiveDocument = doc
         parser = xml.sax.make_parser()
+        parser.setFeature(xml.sax.handler.feature_external_ges, False)
         parser.setContentHandler(svgHandler())
         parser._cont_handler.doc = doc
         parser.parse(pythonopen(filename))

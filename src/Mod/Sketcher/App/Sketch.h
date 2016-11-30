@@ -51,6 +51,8 @@ public:
 
     /// solve the actual set up sketch
     int solve(void);
+    /// resets the solver
+    int resetSolver();
     /// get standard (aka fine) solver precision
     double getSolverPrecision(){ return GCSsys.getFinePrecision(); }
     /// delete all geometry and constraints, leave an empty sketch
@@ -126,6 +128,8 @@ public:
     int addEllipse(const Part::GeomEllipse &ellipse, bool fixed=false);
     /// add an arc of ellipse
     int addArcOfEllipse(const Part::GeomArcOfEllipse &ellipseSegment, bool fixed=false);
+    /// add an arc of hyperbola
+    int addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, bool fixed=false);
     //@}
 
 
@@ -301,6 +305,10 @@ public:
     int addInternalAlignmentEllipseMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentEllipseFocus1(int geoId1, int geoId2);
     int addInternalAlignmentEllipseFocus2(int geoId1, int geoId2);
+    /// add InternalAlignmentHyperbolaMajorRadius to a line and a hyperbola
+    int addInternalAlignmentHyperbolaMajorDiameter(int geoId1, int geoId2);
+    int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
+    int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     //@}
 public:
     //This func is to be used during angle-via-point constraint creation. It calculates
@@ -315,7 +323,7 @@ public:
     //icstr should be the value returned by addXXXXConstraint
     //see more info in respective function in GCS.
     double calculateConstraintError(int icstr) { return GCSsys.calculateConstraintErrorByTag(icstr);}
-    
+
     /// Returns the size of the Geometry
     int getGeometrySize(void) const {return Geoms.size();}
 
@@ -326,7 +334,8 @@ public:
         Arc     = 3, // 3 Points(start,end,mid), (4)+5 Parameters((x1,y1,x2,y2),x,y,r,a1,a2)
         Circle  = 4, // 1 Point(mid), 3 Parameters(x,y,r)
         Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis
-        ArcOfEllipse = 6
+        ArcOfEllipse = 6,
+        ArcOfHyperbola = 7
     };
 
     float SolveTime;
@@ -346,7 +355,10 @@ protected:
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef {
-        ConstrDef() : driving(true) {}
+        ConstrDef() : constr(0)
+                    , driving(true)
+                    , value(0)
+                    , secondvalue(0) {}
         Constraint *    constr;             // pointer to the constraint
         bool            driving;
         double *        value;
@@ -370,6 +382,7 @@ protected:
     std::vector<GCS::Circle> Circles;
     std::vector<GCS::Ellipse> Ellipses;
     std::vector<GCS::ArcOfEllipse>  ArcsOfEllipse;
+    std::vector<GCS::ArcOfHyperbola>    ArcsOfHyperbola;
 
     bool isInitMove;
     bool isFine;

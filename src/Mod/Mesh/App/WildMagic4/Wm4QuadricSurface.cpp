@@ -108,6 +108,7 @@ Real QuadricSurface<Real>::FZ (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FXX (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFXX = ((Real)2.0)*m_kA[0][0];
     return fFXX;
 }
@@ -115,6 +116,7 @@ Real QuadricSurface<Real>::FXX (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FXY (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFXY = ((Real)2.0)*m_kA[0][1];
     return fFXY;
 }
@@ -122,6 +124,7 @@ Real QuadricSurface<Real>::FXY (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FXZ (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFXZ = ((Real)2.0)*m_kA[0][2];
     return fFXZ;
 }
@@ -129,6 +132,7 @@ Real QuadricSurface<Real>::FXZ (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FYY (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFYY = ((Real)2.0)*m_kA[1][1];
     return fFYY;
 }
@@ -136,6 +140,7 @@ Real QuadricSurface<Real>::FYY (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FYZ (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFYZ = ((Real)2.0)*m_kA[1][2];
     return fFYZ;
 }
@@ -143,6 +148,7 @@ Real QuadricSurface<Real>::FYZ (const Vector3<Real>& rkP) const
 template <class Real>
 Real QuadricSurface<Real>::FZZ (const Vector3<Real>& rkP) const
 {
+    (void)rkP;
     Real fFZZ = ((Real)2.0)*m_kA[2][2];
     return fFZZ;
 }

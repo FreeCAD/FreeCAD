@@ -88,11 +88,13 @@
 #include "SpaceballEvent.h"
 #include "Control.h"
 #include "DocumentRecovery.h"
-#include "TaskView/TaskView.h"
+#include "TransactionObject.h"
+#include "FileDialog.h"
 
 #include "SplitView3DInventor.h"
 #include "View3DInventor.h"
 #include "ViewProvider.h"
+#include "ViewProviderExtension.h"
 #include "ViewProviderExtern.h"
 #include "ViewProviderFeature.h"
 #include "ViewProviderPythonFeature.h"
@@ -111,12 +113,14 @@
 #include "ViewProviderPart.h"
 #include "ViewProviderOrigin.h"
 #include "ViewProviderMaterialObject.h"
+#include "ViewProviderGroupExtension.h"
 
 #include "Language/Translator.h"
+#include "TaskView/TaskView.h"
 #include "TaskView/TaskDialogPython.h"
 #include <Gui/Quarter/Quarter.h>
 #include "View3DViewerPy.h"
-#include "GuiInitScript.h"
+#include <Gui/GuiInitScript.h>
 
 
 using namespace Gui;
@@ -275,7 +279,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
     try {
         Base::BaseClass* base = static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
-            std::auto_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
+            std::unique_ptr<Gui::ViewProviderDocumentObject> vp(static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
             obj->getPropertyMap(Map);
             vp->attach(obj);
@@ -322,7 +326,7 @@ struct PyMethodDef FreeCADGui_methods[] = {
      "getSoDBVersion() -> String\n\n"
      "Return a text string containing the name\n"
      "of the Coin library and version information"},
-    {NULL, NULL}  /* sentinel */
+    {NULL, NULL, 0, NULL}  /* sentinel */
 };
 
 
@@ -449,8 +453,10 @@ Application::Application(bool GUIenabled)
     // instanciate the workbench dictionary
     _pcWorkbenchDictionary = PyDict_New();
 
-    createStandardOperations();
-    MacroCommand::load();
+    if (GUIenabled) {
+        createStandardOperations();
+        MacroCommand::load();
+    }
     ObjectLabelObserver::instance();
 }
 
@@ -526,7 +532,9 @@ void Application::open(const char* FileName, const char* Module)
                     Command::doCommand(Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
             }
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -574,7 +582,9 @@ void Application::importFrom(const char* FileName, const char* DocName, const ch
             }
 
             // the original file name is required
-            getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
+            QString filename = QString::fromUtf8(File.filePath().c_str());
+            getMainWindow()->appendRecentFile(filename);
+            FileDialog::setWorkingDirectory(filename);
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -621,16 +631,15 @@ void Application::exportTo(const char* FileName, const char* DocName, const char
 
             std::string code = str.str();
             // the original file name is required
-            if (runPythonCode(code.c_str(), false)) {
-                // search for a module that is able to open the exported file because otherwise
-                // it doesn't need to be added to the recent files list (#0002047)
-                std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
-                if (!importMap.empty())
-                    getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
-            }
+            Gui::Command::runCommand(Gui::Command::App, code.c_str());
+            // search for a module that is able to open the exported file because otherwise
+            // it doesn't need to be added to the recent files list (#0002047)
+            std::map<std::string, std::string> importMap = App::GetApplication().getImportFilters(te.c_str());
+            if (!importMap.empty())
+                getMainWindow()->appendRecentFile(QString::fromUtf8(File.filePath().c_str()));
 
             // allow exporters to pass _objs__ to submodules before deleting it
-            runPythonCode("del __objs__", false);
+            Gui::Command::runCommand(Gui::Command::App, "del __objs__");
         }
         catch (const Base::PyException& e){
             // Usually thrown if the file is invalid somehow
@@ -697,7 +706,7 @@ void Application::slotDeleteDocument(const App::Document& Doc)
         setActiveDocument(0);
 
     // For exception-safety use a smart pointer
-    auto_ptr<Document> delDoc (doc->second);
+    unique_ptr<Document> delDoc (doc->second);
     d->documents.erase(doc);
 }
 
@@ -850,6 +859,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
         return;
     }
 
+#ifdef FC_DEBUG
     // May be useful for error detection
     if (d->activeDocument) {
         App::Document* doc = d->activeDocument->getDocument();
@@ -858,6 +868,7 @@ void Application::setActiveDocument(Gui::Document* pcDocument)
     else {
         Base::Console().Log("No active document\n");
     }
+#endif
 
     // notify all views attached to the application (not views belong to a special document)
     for(list<Gui::BaseView*>::iterator It=d->passive.begin();It!=d->passive.end();++It)
@@ -933,9 +944,11 @@ void Application::onUpdate(void)
 /// Gets called if a view gets activated, this manages the whole activation scheme
 void Application::viewActivated(MDIView* pcView)
 {
+#ifdef FC_DEBUG
     // May be useful for error detection
     Base::Console().Log("Active view is %s (at %p)\n",
                  (const char*)pcView->windowTitle().toUtf8(),pcView);
+#endif
 
     signalActivateView(pcView);
 
@@ -1358,67 +1371,6 @@ CommandManager &Application::commandManager(void)
     return d->commandManager;
 }
 
-void Application::runCommand(bool bForce, const char* sCmd,...)
-{
-    va_list ap;
-    va_start(ap, sCmd);
-    QString s;
-    const QString cmd = s.vsprintf(sCmd, ap);
-    va_end(ap);
-
-    QByteArray format = cmd.toLatin1();
-
-    if (bForce)
-        d->macroMngr->addLine(MacroManager::App, format.constData());
-    else
-        d->macroMngr->addLine(MacroManager::Gui, format.constData());
-
-    Base::Interpreter().runString(format.constData());
-}
-
-bool Application::runPythonCode(const char* cmd, bool gui, bool pyexc)
-{
-    if (gui)
-        d->macroMngr->addLine(MacroManager::Gui,cmd);
-    else
-        d->macroMngr->addLine(MacroManager::App,cmd);
-
-    try {
-        Base::Interpreter().runString(cmd);
-        return true;
-    }
-    catch (Base::PyException &e) {
-        if (pyexc) {
-            e.ReportException();
-            Base::Console().Error("Stack Trace: %s\n",e.getStackTrace().c_str());
-        }
-        else {
-            throw; // re-throw to handle in calling instance
-        }
-    }
-    catch (Base::AbortException&) {
-    }
-    catch (Base::Exception &e) {
-        e.ReportException();
-    }
-    catch (std::exception &e) {
-        std::string str;
-        str += "C++ exception thrown (";
-        str += e.what();
-        str += ")";
-        Base::Console().Error(str.c_str());
-    }
-    catch (const char* e) {
-        Base::Console().Error("%s\n", e);
-    }
-#ifndef FC_DEBUG
-    catch (...) {
-        Base::Console().Error("Unknown C++ exception in command thrown\n");
-    }
-#endif
-    return false;
-}
-
 //**************************************************************************
 // Init, Destruct and ingleton
 
@@ -1449,12 +1401,13 @@ void messageHandler(QtMsgType type, const char *msg)
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
+    Q_UNUSED(type);
     Base::Console().Log("%s\n", msg);
 #endif
 }
 
 #ifdef FC_DEBUG // redirect Coin messages to FreeCAD
-void messageHandlerCoin(const SoError * error, void * userdata)
+void messageHandlerCoin(const SoError * error, void * /*userdata*/)
 {
     if (error && error->getTypeId() == SoDebugError::getClassTypeId()) {
         const SoDebugError* dbg = static_cast<const SoDebugError*>(error);
@@ -1524,6 +1477,14 @@ void Application::initTypes(void)
     Gui::SplitView3DInventor                    ::init();
     // View Provider
     Gui::ViewProvider                           ::init();
+    Gui::ViewProviderExtension                  ::init();
+    Gui::ViewProviderExtensionPython            ::init();
+    Gui::ViewProviderGroupExtension             ::init();
+    Gui::ViewProviderGroupExtensionPython       ::init();
+    Gui::ViewProviderGeoFeatureGroupExtension   ::init();
+    Gui::ViewProviderGeoFeatureGroupExtensionPython::init();    
+    Gui::ViewProviderOriginGroupExtension       ::init();
+    Gui::ViewProviderOriginGroupExtensionPython ::init();
     Gui::ViewProviderExtern                     ::init();
     Gui::ViewProviderDocumentObject             ::init();
     Gui::ViewProviderFeature                    ::init();
@@ -1559,6 +1520,10 @@ void Application::initTypes(void)
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+    // register transaction type
+    new App::TransactionProducer<TransactionViewProvider>
+            (ViewProviderDocumentObject::getClassTypeId());
 }
 
 void Application::runApplication(void)
@@ -1579,9 +1544,19 @@ void Application::runApplication(void)
     if (it != cfg.end() && mainApp.isRunning()) {
         // send the file names to be opened to the server application so that this
         // opens them
+        QDir cwd = QDir::current();
         std::list<std::string> files = App::Application::getCmdLineFiles();
         for (std::list<std::string>::iterator jt = files.begin(); jt != files.end(); ++jt) {
-            QByteArray msg(jt->c_str(), static_cast<int>(jt->size()));
+            QString fn = QString::fromUtf8(jt->c_str(), static_cast<int>(jt->size()));
+            QFileInfo fi(fn);
+            // if path name is relative make it absolute because the running instance
+            // cannot determine the full path when trying to load the file
+            if (fi.isRelative()) {
+                fn = cwd.absoluteFilePath(fn);
+                fn = QDir::cleanPath(fn);
+            }
+
+            QByteArray msg = fn.toUtf8();
             msg.prepend("OpenFile:");
             if (!mainApp.sendMessage(msg)) {
                 qWarning("Failed to send message to server");
@@ -1655,6 +1630,15 @@ void Application::runApplication(void)
 #if !defined(Q_WS_X11)
     QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QString::fromLatin1(":/icons/FreeCAD-default"));
     QIcon::setThemeName(QLatin1String("FreeCAD-default"));
+#endif
+
+#if defined(FC_OS_LINUX)
+    // See #0001588
+    QString path = FileDialog::restoreLocation();
+    FileDialog::setWorkingDirectory(QDir::currentPath());
+    FileDialog::saveLocation(path);
+#else
+    FileDialog::setWorkingDirectory(FileDialog::restoreLocation());
 #endif
 
     Application app(true);

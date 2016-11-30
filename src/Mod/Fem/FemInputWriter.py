@@ -20,20 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
-'''
-- next step would be save the constraints node and element data in the in the FreeCAD FEM Mesh Object
-  and link them to the appropriate constraint object
-- if the informations are used by the FEM Mesh file exporter FreeCAD would support writing FEM Mesh Groups
-- which is a most needed feature of FEM module
-- smesh supports mesh groups, how about pythonbinding in FreeCAD. Is there somethin implemented allready?
-'''
-
-
 __title__ = "FemInputWriter"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemMeshTools
@@ -41,29 +33,35 @@ import os
 
 
 class FemInputWriter():
-    def __init__(self, analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
-                 fixed_obj,
-                 force_obj, pressure_obj,
-                 displacement_obj,
+    def __init__(self,
+                 analysis_obj, solver_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
+                 fixed_obj, displacement_obj,
+                 contact_obj, planerotation_obj, transform_obj,
+                 selfweight_obj, force_obj, pressure_obj,
+                 temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
-                 analysis_type, eigenmode_parameters,
-                 dir_name):
+                 analysis_type, dir_name
+                 ):
         self.analysis = analysis_obj
         self.solver_obj = solver_obj
         self.mesh_object = mesh_obj
-        self.material_objects = mat_obj
+        self.material_objects = matlin_obj
+        self.material_nonlinear_objects = matnonlin_obj
         self.fixed_objects = fixed_obj
+        self.displacement_objects = displacement_obj
+        self.contact_objects = contact_obj
+        self.planerotation_objects = planerotation_obj
+        self.transform_objects = transform_obj
+        self.selfweight_objects = selfweight_obj
         self.force_objects = force_obj
         self.pressure_objects = pressure_obj
-        self.displacement_objects = displacement_obj
+        self.temperature_objects = temperature_obj
+        self.heatflux_objects = heatflux_obj
+        self.initialtemperature_objects = initialtemperature_obj
         self.beamsection_objects = beamsection_obj
         self.shellthickness_objects = shellthickness_obj
         self.analysis_type = analysis_type
-        if eigenmode_parameters:
-            self.no_of_eigenfrequencies = eigenmode_parameters[0]
-            self.eigenfrequeny_range_low = eigenmode_parameters[1]
-            self.eigenfrequeny_range_high = eigenmode_parameters[2]
         self.dir_name = dir_name
         if not dir_name:
             print('Error: FemInputWriter has no working_dir --> we gone make a temporary one!')
@@ -76,16 +74,39 @@ class FemInputWriter():
         self.femmesh = self.mesh_object.FemMesh
         self.femnodes_mesh = {}
         self.femelement_table = {}
+        self.constraint_conflict_nodes = []
+        self.femnodes_ele_table = {}
 
     def get_constraints_fixed_nodes(self):
         # get nodes
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
+            for node in femobj['Nodes']:
+                self.constraint_conflict_nodes.append(node)
 
     def get_constraints_displacement_nodes(self):
         # get nodes
         for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
-            femobj['Nodes'] = FemMeshTools.get_femnodes_by_references(self.femmesh, femobj['Object'].References)
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+            # add nodes to constraint_conflict_nodes, needed by constraint plane rotation
+            for node in femobj['Nodes']:
+                self.constraint_conflict_nodes.append(node)
+
+    def get_constraints_planerotation_nodes(self):
+        # get nodes
+        for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+
+    def get_constraints_transform_nodes(self):
+        # get nodes
+        for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
+
+    def get_constraints_temperature_nodes(self):
+        # get nodes
+        for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['Nodes'] = FemMeshTools.get_femnodes_by_femobj_with_references(self.femmesh, femobj)
 
     def get_constraints_force_nodeloads(self):
         # check shape type of reference shape
@@ -102,14 +123,14 @@ class FemInputWriter():
                 # frc_obj.References could be empty ! # TODO in FemTools: check
                 FreeCAD.Console.PrintError('At least one Force Object has empty References!\n')
             if femobj['RefShapeType'] == 'Vertex':
-                #print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
+                # print("load on vertices --> we do not need the femelement_table and femnodes_mesh for node load calculation")
                 pass
             elif femobj['RefShapeType'] == 'Face' and FemMeshTools.is_solid_femmesh(self.femmesh) and not FemMeshTools.has_no_face_data(self.femmesh):
-                #print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
+                # print("solid_mesh with face data --> we do not need the femelement_table but we need the femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
             else:
-                #print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
+                # print("mesh without needed data --> we need the femelement_table and femnodes_mesh for node load calculation")
                 if not self.femnodes_mesh:
                     self.femnodes_mesh = self.femmesh.Nodes
                 if not self.femelement_table:
@@ -125,3 +146,29 @@ class FemInputWriter():
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_edge_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
             elif femobj['RefShapeType'] == 'Face':  # area load on faces
                 femobj['NodeLoadTable'] = FemMeshTools.get_force_obj_face_nodeload_table(self.femmesh, self.femelement_table, self.femnodes_mesh, frc_obj)
+
+    def get_constraints_pressure_faces(self):
+        # TODO see comments in get_constraints_force_nodeloads(), it applies here too. Mhh it applies to all constraints ...
+
+        '''
+        # depreciated version
+        # get the faces and face numbers
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            femobj['PressureFaces'] = FemMeshTools.get_pressure_obj_faces_depreciated(self.femmesh, femobj)
+            # print(femobj['PressureFaces'])
+        '''
+
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        if not self.femelement_table:
+            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+        if not self.femnodes_ele_table:
+            self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            pressure_faces = FemMeshTools.get_pressure_obj_faces(self.femmesh, self.femelement_table, self.femnodes_ele_table, femobj)
+            # print(len(pressure_faces))
+            femobj['PressureFaces'] = [(femobj['Object'].Name + ': face load', pressure_faces)]
+            # print(femobj['PressureFaces'])
+
+#  @}

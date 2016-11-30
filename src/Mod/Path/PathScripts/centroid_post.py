@@ -21,11 +21,11 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
-''' example post for Centroid CNC mill'''
+TOOLTIP=''' example post for Centroid CNC mill'''
+
 import FreeCAD
 import datetime
 now = datetime.datetime.now()
-originfile = FreeCAD.ActiveDocument.FileName
 import Path, PathScripts
 from PathScripts import PostUtils
 
@@ -45,7 +45,7 @@ COMMENT= ';' #centroid control comment symbol
 HEADER = ""
 HEADER += ";Exported by FreeCAD\n"
 HEADER += ";Post Processor: " + __name__ +"\n"
-HEADER += ";CAM file: "+originfile+"\n"
+HEADER += ";CAM file: %s\n"
 HEADER += ";Output Time:"+str(now)+"\n"
 
 TOOLRETURN = '''M5 M25
@@ -69,7 +69,7 @@ FOOTER = 'M99'+'\n'
 if open.__module__ == '__builtin__':
     pythonopen = open
 
-def export(selection,filename):
+def export(selection,filename,argstring):
     params = ['X','Y','Z','A','B','I','J','F','H','S','T','Q','R','L'] #Using XY plane most of the time so skipping K
     for obj in selection:
         if not hasattr(obj,"Path"):
@@ -77,20 +77,18 @@ def export(selection,filename):
             return
     myMachine = None
     for pathobj in selection:
-        if hasattr(pathobj,"Group"): #We have a compound or selection.
-            for p in pathobj.Group:
-                if p.Name == "Machine":
-                    myMachine = p
-    if myMachine is None: 
+        if hasattr(pathobj,"MachineName"):
+            myMachine = pathobj.MachineName
+        if hasattr(pathobj, "MachineUnits"):
+            if pathobj.MachineUnits == "Metric":
+               UNITS = "G21"
+            else:
+               UNITS = "G20"
+    if myMachine is None:
         print "No machine found in this selection"
-    else:
-        if myMachine.MachineUnits == "Metric":
-           UNITS = "G21"
-        else:
-           UNITS = "G20"
 
     gcode =''
-    gcode+= HEADER
+    gcode+= HEADER % (FreeCAD.ActiveDocument.FileName)
     gcode+= SAFETYBLOCK
     gcode+= UNITS+'\n'
 
@@ -99,8 +97,7 @@ def export(selection,filename):
 
     gobjects = []
     for g in selection[0].Group:
-        if g.Name <>'Machine': #filtering out gcode home position from Machine object
-            gobjects.append(g)
+        gobjects.append(g)
 
     for obj in gobjects:
         for c in obj.Path.Commands:
@@ -113,11 +110,11 @@ def export(selection,filename):
             outstring.append(command)
             if MODAL == True:
                 if command == lastcommand:
-                    outstring.pop(0) 
+                    outstring.pop(0)
             if c.Parameters >= 1:
                 for param in params:
                     if param in c.Parameters:
-                        if param == 'F': 
+                        if param == 'F':
                             outstring.append(param + PostUtils.fmt(c.Parameters['F'], FEED_DECIMALS,UNITS))
                         elif param == 'H':
                             outstring.append(param + str(int(c.Parameters['H'])))

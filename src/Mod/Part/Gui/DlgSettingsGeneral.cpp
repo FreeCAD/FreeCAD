@@ -199,9 +199,18 @@ DlgImportExportStep::~DlgImportExportStep()
 void DlgImportExportStep::saveSettings()
 {
     int unit = ui->comboBoxUnits->currentIndex();
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
-    hGrp->SetInt("Unit", unit);
+    Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+
+    // General
+    Base::Reference<ParameterGrp> hGenGrp = hPartGrp->GetGroup("General");
+    int writesurfacecurve = ui->checkBoxPcurves->isChecked() ? 1 : 0;
+    hGenGrp->SetInt("WriteSurfaceCurveMode", writesurfacecurve);
+    Interface_Static::SetIVal("write.surfacecurve.mode", writesurfacecurve);
+
+    // STEP
+    Base::Reference<ParameterGrp> hStepGrp = hPartGrp->GetGroup("STEP");
+    hStepGrp->SetInt("Unit", unit);
     switch (unit) {
         case 1:
             Interface_Static::SetCVal("write.step.unit","M");
@@ -217,29 +226,38 @@ void DlgImportExportStep::saveSettings()
     // scheme
     if (ui->radioButtonAP203->isChecked()) {
         Interface_Static::SetCVal("write.step.schema","AP203");
-        hGrp->SetASCII("Scheme", "AP203");
+        hStepGrp->SetASCII("Scheme", "AP203");
     }
     else {
         // possible values: AP214CD (1996), AP214DIS (1998), AP214IS (2002)
         Interface_Static::SetCVal("write.step.schema","AP214CD");
-        hGrp->SetASCII("Scheme", "AP214CD");
+        hStepGrp->SetASCII("Scheme", "AP214CD");
     }
 
     // header info
-    hGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
-    hGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
-  //hGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
+    hStepGrp->SetASCII("Company", ui->lineEditCompany->text().toLatin1());
+    hStepGrp->SetASCII("Author", ui->lineEditAuthor->text().toLatin1());
+  //hStepGrp->SetASCII("Product", ui->lineEditProduct->text().toLatin1());
 }
 
 void DlgImportExportStep::loadSettings()
 {
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part")->GetGroup("STEP");
-    int unit = hGrp->GetInt("Unit", 0);
+    Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+
+    // General
+    Base::Reference<ParameterGrp> hGenGrp = hPartGrp->GetGroup("General");
+    int writesurfacecurve = Interface_Static::IVal("write.surfacecurve.mode");
+    writesurfacecurve = hGenGrp->GetInt("WriteSurfaceCurveMode", writesurfacecurve);
+    ui->checkBoxPcurves->setChecked(writesurfacecurve == 0 ? false : true);
+
+    // STEP
+    Base::Reference<ParameterGrp> hStepGrp = hPartGrp->GetGroup("STEP");
+    int unit = hStepGrp->GetInt("Unit", 0);
     ui->comboBoxUnits->setCurrentIndex(unit);
 
     // scheme
-    QString ap = QString::fromStdString(hGrp->GetASCII("Scheme", 
+    QString ap = QString::fromStdString(hStepGrp->GetASCII("Scheme",
         Interface_Static::CVal("write.step.schema")));
     if (ap.startsWith(QLatin1String("AP203")))
         ui->radioButtonAP203->setChecked(true);
@@ -247,8 +265,8 @@ void DlgImportExportStep::loadSettings()
         ui->radioButtonAP214->setChecked(true);
 
     // header info
-    ui->lineEditCompany->setText(QString::fromStdString(hGrp->GetASCII("Company")));
-    ui->lineEditAuthor->setText(QString::fromStdString(hGrp->GetASCII("Author")));
+    ui->lineEditCompany->setText(QString::fromStdString(hStepGrp->GetASCII("Company")));
+    ui->lineEditAuthor->setText(QString::fromStdString(hStepGrp->GetASCII("Author")));
     ui->lineEditProduct->setText(QString::fromLatin1(
         Interface_Static::CVal("write.step.product.name")));
 }

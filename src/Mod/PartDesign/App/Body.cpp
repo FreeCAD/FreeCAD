@@ -213,7 +213,7 @@ bool Body::isAfterInsertPoint(App::DocumentObject* feature) {
     }
 }
 
-const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
+bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
@@ -224,19 +224,20 @@ const bool Body::isMemberOfMultiTransform(const App::DocumentObject* f)
             static_cast<const PartDesign::Transformed*>(f)->Originals.getValues().empty());
 }
 
-const bool Body::isSolidFeature(const App::DocumentObject* f)
+bool Body::isSolidFeature(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
 
-    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    if (f->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
+        !PartDesign::Feature::isDatum(f)) {
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(f);
     }
     return false;//DeepSOIC: work-in-progress?
 }
 
-const bool Body::isAllowed(const App::DocumentObject* f)
+bool Body::isAllowed(const App::DocumentObject* f)
 {
     if (f == NULL)
         return false;
@@ -256,6 +257,9 @@ const bool Body::isAllowed(const App::DocumentObject* f)
 
 Body* Body::findBodyOf(const App::DocumentObject* feature)
 {
+    if(!feature)
+        return nullptr;
+    
     return static_cast<Body*>(BodyBase::findBodyOf(feature));
 }
 
@@ -394,7 +398,7 @@ App::DocumentObjectExecReturn *Body::execute(void)
         // get the shape of the tip
         tipShape = static_cast<Part::Feature *>(tip)->Shape.getShape();
 
-        if ( tipShape._Shape.IsNull () ) {
+        if ( tipShape.getShape().IsNull () ) {
             return new App::DocumentObjectExecReturn ( "Tip shape is empty" );
         }
 

@@ -42,10 +42,15 @@
 
 #include <Mod/PartDesign/App/Feature.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeaturePrimitive.h>
+#include <Mod/PartDesign/App/FeatureSketchBased.h>
+#include <Mod/PartDesign/App/FeatureBoolean.h>
+#include <Mod/PartDesign/App/DatumCS.h>
 
 #include "ReferenceSelection.h"
 #include "Utils.h"
 #include "WorkflowManager.h"
+
 
 //===========================================================================
 // Helper for Body
@@ -59,23 +64,22 @@ PartDesign::Body *getBody(bool messageIfNot)
     PartDesign::Body * activeBody = nullptr;
     Gui::MDIView *activeView = Gui::Application::Instance->activeView();
 
-    if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
-
-        if (activeView) {
+    if (activeView) {
+        if ( PartDesignGui::assureModernWorkflow ( activeView->getAppDocument() ) ) {
             activeBody = activeView->getActiveObject<PartDesign::Body*>(PDBODYKEY);
-        }
 
-        if (!activeBody && messageIfNot) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
-                QObject::tr("In order to use PartDesign you need an active Body object in the document. "
-                            "Please make one active (double click) or create one. If you have a legacy document "
-                            "with PartDesign objects without Body, use the transfer function in "
-                            "PartDesign to put them into a Body."
-                            ));
+            if (!activeBody && messageIfNot) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No active Body"),
+                    QObject::tr("In order to use PartDesign you need an active Body object in the document. "
+                                "Please make one active (double click) or create one. If you have a legacy document "
+                                "with PartDesign objects without Body, use the transfer function in "
+                                "PartDesign to put them into a Body."
+                                ));
+            }
         }
     }
-    return activeBody;
 
+    return activeBody;
 }
 
 PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
@@ -234,8 +238,8 @@ bool isPartDesignAwareObjecta (App::DocumentObject *obj, bool respectGroups = fa
             PartDesign::Body::isAllowed ( obj ) ||
             obj->isDerivedFrom ( PartDesign::Body::getClassTypeId () ) ||
             ( respectGroups && (
-                                obj->isDerivedFrom (App::GeoFeatureGroup::getClassTypeId () ) ||
-                                obj->isDerivedFrom (App::DocumentObjectGroup::getClassTypeId () )
+                                obj->hasExtension (App::GeoFeatureGroupExtension::getExtensionClassTypeId () ) ||
+                                obj->hasExtension (App::GroupExtension::getExtensionClassTypeId () )
                                ) ) );
 }
 
@@ -336,6 +340,146 @@ void relinkToBody (PartDesign::Feature *feature) {
                 if ( !valueStr.empty () ) {
                     Gui::Command::doCommand ( Gui::Command::Doc, "App.activeDocument().%s.%s=%s",
                             obj->getNameInDocument (), prop->getName (), valueStr.c_str() );
+                }
+            }
+        }
+    }
+}
+
+bool isFeatureMovable(App::DocumentObject* const feat)
+{
+    if (feat->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+        auto prim = static_cast<PartDesign::Feature*>(feat);
+        App::DocumentObject* bf = prim->BaseFeature.getValue();
+        if (bf)
+            return false;
+    }
+
+    if (feat->getTypeId().isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId())) {
+        auto prim = static_cast<PartDesign::FeaturePrimitive*>(feat);
+
+        if (!isFeatureMovable(prim->CoordinateSystem.getValue()))
+            return false;
+    }
+
+    if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+        auto sk = prim->getVerifiedSketch(true);
+
+        if (!isFeatureMovable(static_cast<App::DocumentObject*>(sk)))
+            return false;
+
+        if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
+            if (std::any_of(prop->getValues().begin(), prop->getValues().end(), [](App::DocumentObject* obj){return !isFeatureMovable(obj); }))
+                return false;
+        }
+
+        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+            App::DocumentObject* axis = prop->getValue();
+            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+                return false;
+        }
+
+        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
+            App::DocumentObject* axis = prop->getValue();
+            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+                return false;
+        }
+
+        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+            App::DocumentObject* axis = prop->getValue();
+            if (!isFeatureMovable(static_cast<App::DocumentObject*>(axis)))
+                return false;
+        }
+
+    }
+
+    if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
+        auto attachable = static_cast<Part::AttachableObject*>(feat);
+        App::DocumentObject* support = attachable->Support.getValue();
+        if (support && !support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()))
+            return false;
+    }
+
+    return true;
+}
+
+std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::DocumentObject*>& features)
+{
+    std::set<App::DocumentObject*> unique_objs;
+
+    for (auto const &feat : features)
+    {
+        // Get coordinate system object
+        if (feat->getTypeId().isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId())) {
+            auto prim = static_cast<PartDesign::FeaturePrimitive*>(feat);
+            App::DocumentObject* cs = prim->CoordinateSystem.getValue();
+            if (cs && cs->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
+                unique_objs.insert(cs);
+        }
+
+        // Get sketches and datums from profile based features
+        if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+            auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+            Part::Part2DObject* sk = prim->getVerifiedSketch(true);
+            if (sk) {
+                unique_objs.insert(static_cast<App::DocumentObject*>(sk));
+            }
+            if (auto prop = static_cast<App::PropertyLinkList*>(prim->getPropertyByName("Sections"))) {
+                for (App::DocumentObject* obj : prop->getValues()) {
+                    unique_objs.insert(obj);
+                }
+            }
+            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+                App::DocumentObject* axis = prop->getValue();
+                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                    unique_objs.insert(axis);
+                }
+            }
+            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
+                App::DocumentObject* axis = prop->getValue();
+                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                    unique_objs.insert(axis);
+                }
+            }
+            if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
+                App::DocumentObject* axis = prop->getValue();
+                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                    unique_objs.insert(axis);
+                }
+            }
+        }
+    }
+
+    std::vector<App::DocumentObject*> result;
+    result.reserve(unique_objs.size());
+    result.insert(result.begin(), unique_objs.begin(), unique_objs.end());
+
+    return result;
+}
+
+void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
+{
+    if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
+        auto attachable = static_cast<Part::AttachableObject*>(feat);
+        App::DocumentObject* support = attachable->Support.getValue();
+        if (support && support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+            auto originfeat = static_cast<App::OriginFeature*>(support);
+            App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
+            if (targetOriginFeature) {
+                attachable->Support.setValue(static_cast<App::DocumentObject*>(targetOriginFeature), "");
+            }
+        }
+    }
+    else if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        auto prim = static_cast<PartDesign::ProfileBased*>(feat);
+        if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
+            App::DocumentObject* axis = prop->getValue();
+            if (axis && axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                auto originfeat = static_cast<App::OriginFeature*>(axis);
+                App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
+                if (targetOriginFeature) {
+                    prop->setValue(static_cast<App::DocumentObject*>(targetOriginFeature), std::vector<std::string>(0));
                 }
             }
         }

@@ -82,7 +82,7 @@ public:
      *  ext = fi.extension();   // ext = "gz"
      *@endcode
      */
-    std::string extension (bool complete = false) const;
+    std::string extension () const;
     /// Checks for a special extension, NOT case sensetive
     bool hasExtension (const char* Ext) const;
     //@}

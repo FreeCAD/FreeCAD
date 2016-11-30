@@ -1,3 +1,5 @@
 /** \defgroup SHIP Ship
- *  \ingroup WORKBENCHES */
+ *  \ingroup PYTHONWORKBENCHES 
+ *  \brief Tools towork with ship hulls
+ */
 

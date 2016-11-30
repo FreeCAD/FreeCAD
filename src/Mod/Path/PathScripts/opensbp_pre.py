@@ -1,26 +1,25 @@
-#***************************************************************************
-#*   (c) sliptonic (shopinthewoods<at>gmail.com) 2014                        *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Lesser General Public License for more details.                   *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************/
-
+# ***************************************************************************
+# *   (c) sliptonic (shopinthewoods<at>gmail.com) 2014                      *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************/
 
 '''
 This is a preprocessor file for the Path workbench. Its aim is to
@@ -47,12 +46,11 @@ TODO
 Many other OpenSBP commands not handled
 
 '''
+import FreeCAD
+import os, Path
 
 AXIS = 'X','Y','Z','A','B'  #OpenSBP always puts multiaxis move parameters in this order
 SPEEDS = 'XY','Z','A','B'
-
-import FreeCAD
-import os, Path
 
 # to distinguish python built-in open function from the one declared below
 if open.__module__ == '__builtin__':
@@ -84,7 +82,6 @@ def insert(filename,docname):
 def parse(inputstring):
     "parse(inputstring): returns a list of parsed output string"
     print "preprocessing..."
-    
     # split the input by line
     lines = inputstring.split("\n")
     return_output = []
@@ -95,6 +92,7 @@ def parse(inputstring):
     movecommand = ['G1', 'G0', 'G02', 'G03']
 
     for l in lines:
+        # print l
         # remove any leftover trailing and preceding spaces
         l = l.strip()
         if not l:
@@ -116,7 +114,8 @@ def parse(inputstring):
                 s = "G0 "
             else:   #feed move
                 s = "G1 "
-            speed = lastfeedspeed["XY"] 
+            speed = lastfeedspeed["XY"]
+
             for i  in range (1, len(words)):
                 if words [i] == '':
                     if last[AXIS[i-1]] == None:
@@ -142,10 +141,13 @@ def parse(inputstring):
                     speed = lastfeedspeed["XY"]
                 else:
                     speed = lastfeedspeed[words[0][1]]
-            
+
 
             last[words[0][1]] = words[1]
-            output += s + words[0][1] + str(words[1])  + " F" + speed + "\n"
+            output += s
+            for key, val in last.iteritems():
+                if val is not None:
+                    output += key + str(val) + " F" + speed + "\n"
 
         if words[0] in ["JS"]: #set jog speed
             for i  in range (1, len(words)):
@@ -171,11 +173,11 @@ def parse(inputstring):
             continue
 
         if words[0] in ["TR"]: #Setting spindle speed
-            if  int(words[1]) < 0:
+            if  float(words[1]) < 0:
                 s = "M4 S"
             else:
                 s = "M3 S"
-            s += str(abs(int(words[1])))
+            s += str(abs(float(words[1])))
             output += s + '\n'
 
         if words[0] in ["CG"]: #Gcode circle/arc
@@ -188,8 +190,13 @@ def parse(inputstring):
                     s = "G2"
                 else: #CCW
                     s = "G3"
+
+
                 s += " X" + words[2] + " Y" + words[3] + " I" + words[4] + " J" + words[5] + " F" + str(lastfeedspeed["XY"])
                 output  += s + '\n'
+
+                last["X"] = words[2]
+                last["Y"] = words[3]
 
     #Make sure all appended paths have at least one move command.
     if any (x in output for x in movecommand):

@@ -48,13 +48,13 @@ namespace KDL {
 		virtual double Duration() const {
 			return duration;
 		}
-		virtual Frame Pos(double time) const {
+		virtual Frame Pos(double /*time*/) const {
 			return pos;
 		}
-		virtual Twist Vel(double time) const {
+		virtual Twist Vel(double /*time*/) const {
 			return Twist::Zero();
 		}
-		virtual Twist Acc(double time) const {
+		virtual Twist Acc(double /*time*/) const {
 			return Twist::Zero();
 		}
 		virtual void Write(std::ostream& os) const;

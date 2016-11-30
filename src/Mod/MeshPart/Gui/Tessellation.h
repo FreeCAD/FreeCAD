@@ -58,7 +58,7 @@ private Q_SLOTS:
 private:
     QString document;
     QButtonGroup* buttonGroup;
-    std::auto_ptr<Ui_Tessellation> ui;
+    std::unique_ptr<Ui_Tessellation> ui;
 };
 
 class TaskTessellation : public Gui::TaskView::TaskDialog

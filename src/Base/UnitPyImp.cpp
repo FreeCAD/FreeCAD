@@ -1,12 +1,12 @@
 
 #include "PreCompiled.h"
 
-#include "Base/Unit.h"
+#include <Base/Unit.h>
 
 // inclusion of the generated files (generated out of UnitPy.xml)
-#include "UnitPy.h"
-#include "QuantityPy.h"
-#include "UnitPy.cpp"
+#include <Base/UnitPy.h>
+#include <Base/QuantityPy.h>
+#include <Base/UnitPy.cpp>
 
 using namespace Base;
 
@@ -14,9 +14,9 @@ using namespace Base;
 std::string UnitPy::representation(void) const
 {
     const UnitSignature &  Sig = getUnitPtr()->getSignature();
-	std::stringstream ret;
+    std::stringstream ret;
     ret << "Unit: "; 
-	ret << getUnitPtr()->getString().toUtf8().constData() << " (";
+    ret << getUnitPtr()->getString().toUtf8().constData() << " (";
     ret << Sig.Length << ",";                 
     ret << Sig.Mass  << ",";                    
     ret << Sig.Time  << ",";                   
@@ -29,7 +29,7 @@ std::string UnitPy::representation(void) const
     if(! type.empty())
         ret << " [" << type << "]";
 
-	return ret.str();
+    return ret.str();
 }
 
 PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
@@ -39,7 +39,7 @@ PyObject *UnitPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 }
 
 // constructor method
-int UnitPy::PyInit(PyObject* args, PyObject* kwd)
+int UnitPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     Unit *self = getUnitPtr();
 
@@ -194,122 +194,120 @@ int UnitPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * UnitPy::number_divide_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_divide_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_remainder_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_remainder_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_power_handler (PyObject *self, PyObject *other, PyObject *arg)
+PyObject * UnitPy::number_power_handler (PyObject* /*self*/, PyObject* /*other*/, PyObject* /*modulo*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_negative_handler (PyObject *self)
+PyObject * UnitPy::number_negative_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_positive_handler (PyObject *self)
+PyObject * UnitPy::number_positive_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_absolute_handler (PyObject *self)
+PyObject * UnitPy::number_absolute_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int UnitPy::number_nonzero_handler (PyObject *self)
+int UnitPy::number_nonzero_handler (PyObject* /*self*/)
 {
     return 1;
 }
 
-PyObject * UnitPy::number_invert_handler (PyObject *self)
+PyObject * UnitPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_and_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_or_handler (PyObject *self, PyObject *other)
+PyObject * UnitPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-int UnitPy::number_coerce_handler (PyObject **self, PyObject **other)
+int UnitPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
 {
     return 1;
 }
 
-PyObject * UnitPy::number_int_handler (PyObject *self)
+PyObject * UnitPy::number_int_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_long_handler (PyObject *self)
+PyObject * UnitPy::number_long_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_float_handler (PyObject *self)
+PyObject * UnitPy::number_float_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_oct_handler (PyObject *self)
+PyObject * UnitPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * UnitPy::number_hex_handler (PyObject *self)
+PyObject * UnitPy::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
-
-

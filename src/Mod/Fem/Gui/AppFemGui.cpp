@@ -33,7 +33,10 @@
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 #include "PropertyFemMeshItem.h"
-#include "DlgSettingsFemImp.h"
+#include "DlgSettingsFemGeneralImp.h"
+#include "DlgSettingsFemCcxImp.h"
+#include "DlgSettingsFemGmshImp.h"
+#include "DlgSettingsFemZ88Imp.h"
 #include "ViewProviderFemMesh.h"
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
@@ -47,10 +50,17 @@
 #include "ViewProviderFemConstraintBearing.h"
 #include "ViewProviderFemConstraintFixed.h"
 #include "ViewProviderFemConstraintForce.h"
+#include "ViewProviderFemConstraintFluidBoundary.h"
 #include "ViewProviderFemConstraintPressure.h"
 #include "ViewProviderFemConstraintGear.h"
 #include "ViewProviderFemConstraintPulley.h"
 #include "ViewProviderFemConstraintDisplacement.h"
+#include "ViewProviderFemConstraintTemperature.h"
+#include "ViewProviderFemConstraintHeatflux.h"
+#include "ViewProviderFemConstraintInitialTemperature.h"
+#include "ViewProviderFemConstraintPlaneRotation.h"
+#include "ViewProviderFemConstraintContact.h"
+#include "ViewProviderFemConstraintTransform.h"
 #include "ViewProviderResult.h"
 #include "Workbench.h"
 
@@ -100,6 +110,7 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderFemAnalysis               ::init();
     FemGui::ViewProviderFemAnalysisPython         ::init();
     FemGui::ViewProviderFemMesh                   ::init();
+    FemGui::ViewProviderFemMeshPython                   ::init();
     FemGui::ViewProviderFemMeshShape              ::init();
     FemGui::ViewProviderFemMeshShapeNetgen        ::init();
     FemGui::ViewProviderSolver                    ::init();
@@ -112,14 +123,21 @@ PyMODINIT_FUNC initFemGui()
     FemGui::ViewProviderFemConstraintBearing      ::init();
     FemGui::ViewProviderFemConstraintFixed        ::init();
     FemGui::ViewProviderFemConstraintForce        ::init();
+    FemGui::ViewProviderFemConstraintFluidBoundary          ::init();
     FemGui::ViewProviderFemConstraintPressure     ::init();
     FemGui::ViewProviderFemConstraintGear         ::init();
     FemGui::ViewProviderFemConstraintPulley       ::init();
     FemGui::ViewProviderFemConstraintDisplacement ::init();
+    FemGui::ViewProviderFemConstraintHeatflux     ::init();
+    FemGui::ViewProviderFemConstraintTemperature  ::init();
+    FemGui::ViewProviderFemConstraintInitialTemperature  ::init();
+    FemGui::ViewProviderFemConstraintPlaneRotation::init();
+    FemGui::ViewProviderFemConstraintContact      ::init();
+    FemGui::ViewProviderFemConstraintTransform    ::init();
     FemGui::ViewProviderResult                    ::init();
     FemGui::ViewProviderResultPython              ::init();
     FemGui::PropertyFemMeshItem                   ::init();
-    
+
 #ifdef FC_USE_VTK
     FemGui::ViewProviderFemPostObject          ::init();
     FemGui::ViewProviderFemPostPipeline        ::init();
@@ -135,7 +153,10 @@ PyMODINIT_FUNC initFemGui()
 
 
     // register preferences pages
-    new Gui::PrefPageProducer<FemGui::DlgSettingsFemImp> ("FEM");
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGeneralImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemCcxImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemGmshImp> (QT_TRANSLATE_NOOP("QObject","FEM"));
+    new Gui::PrefPageProducer<FemGui::DlgSettingsFemZ88Imp> (QT_TRANSLATE_NOOP("QObject","FEM"));
 
      // add resources and reloads the translators
     loadFemResource();

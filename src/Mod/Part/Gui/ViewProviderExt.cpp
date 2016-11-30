@@ -633,7 +633,7 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getModelPoints(const SoPickedPo
     return std::vector<Base::Vector3d>();
 }
 
-std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* Element) const
+std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /*Element*/) const
 {
     return std::vector<Base::Vector3d>();
 }
@@ -644,14 +644,20 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Color>& col
     if (size > 1 && size == this->faceset->partIndex.getNum()) {
         pcShapeBind->value = SoMaterialBinding::PER_PART;
         pcShapeMaterial->diffuseColor.setNum(size);
+        pcShapeMaterial->transparency.setNum(size);
         SbColor* ca = pcShapeMaterial->diffuseColor.startEditing();
-        for (int i = 0; i < size; i++)
+        float *t = pcShapeMaterial->transparency.startEditing();
+        for (int i = 0; i < size; i++) {
             ca[i].setValue(colors[i].r, colors[i].g, colors[i].b);
+            t[i] = colors[i].a;
+        }
         pcShapeMaterial->diffuseColor.finishEditing();
+        pcShapeMaterial->transparency.finishEditing();
     }
     else if (colors.size() == 1) {
         pcShapeBind->value = SoMaterialBinding::OVERALL;
         pcShapeMaterial->diffuseColor.setValue(colors[0].r, colors[0].g, colors[0].b);
+        //pcShapeMaterial->transparency = colors[0].a; do not get transparency from DiffuseColor in this case
     }
 }
 
@@ -695,6 +701,7 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
 void ViewProviderPartExt::unsetHighlightedFaces()
 {
     ShapeMaterial.touch();
+    Transparency.touch();
 }
 
 void ViewProviderPartExt::setHighlightedEdges(const std::vector<App::Color>& colors)
@@ -904,9 +911,10 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
         cShape.Location(aLoc);
 
         // count triangles and nodes in the mesh
-        TopExp_Explorer Ex;
-        for (Ex.Init(cShape,TopAbs_FACE);Ex.More();Ex.Next()) {
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
+        TopTools_IndexedMapOfShape faceMap;
+        TopExp::MapShapes(cShape, TopAbs_FACE, faceMap);
+        for (int i=1; i <= faceMap.Extent(); i++) {
+            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(faceMap(i)), aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
@@ -915,7 +923,7 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             }
 
             TopExp_Explorer xp;
-            for (xp.Init(Ex.Current(),TopAbs_EDGE);xp.More();xp.Next())
+            for (xp.Init(faceMap(i),TopAbs_EDGE);xp.More();xp.Next())
                 faceEdges.insert(xp.Current().HashCode(INT_MAX));
             numFaces++;
         }
@@ -975,9 +983,9 @@ void ViewProviderPartExt::updateVisual(const TopoDS_Shape& inputShape)
             norms[i]= SbVec3f(0.0,0.0,0.0);
 
         int ii = 0,faceNodeOffset=0,faceTriaOffset=0;
-        for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next(),ii++) {
+        for (int i=1; i <= faceMap.Extent(); i++, ii++) {
             TopLoc_Location aLoc;
-            const TopoDS_Face &actFace = TopoDS::Face(Ex.Current());
+            const TopoDS_Face &actFace = TopoDS::Face(faceMap(i));
             // get the mesh of the shape
             Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace,aLoc);
             if (mesh.IsNull()) continue;

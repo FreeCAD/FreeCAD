@@ -50,7 +50,7 @@ CmdMeshPartMesher::CmdMeshPartMesher()
     sStatusTip    = sToolTipText;
 }
 
-void CmdMeshPartMesher::activated(int iMsg)
+void CmdMeshPartMesher::activated(int)
 {
     Gui::Control().showDialog(new MeshPartGui::TaskTessellation());
 }

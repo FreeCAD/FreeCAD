@@ -84,9 +84,10 @@ void StartGui::Workbench::activated()
     }
 }
 
-void StartGui::Workbench::setupContextMenu(const char* recipient,Gui::MenuItem* item) const
+void StartGui::Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
-
+    Q_UNUSED(recipient);
+    Q_UNUSED(item);
 }
 
 Gui::MenuItem* StartGui::Workbench::setupMenuBar() const

@@ -50,6 +50,8 @@ public:
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)
     {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
         return Py::asObject(new TestGui::UnitTestDialogPy());
     }
     Py::Object setTest(const Py::Tuple& args)

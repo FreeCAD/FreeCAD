@@ -50,9 +50,9 @@ CmdStartConstraintAxle::CmdStartConstraintAxle()
 
 void CmdStartConstraintAxle::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
     // load the file with the module
     //Command::doCommand(Command::Gui, "import Start, StartGui");
-      
 }
 
 

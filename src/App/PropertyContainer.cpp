@@ -51,7 +51,7 @@ TYPESYSTEM_SOURCE(App::PropertyContainer,Base::Persistence);
 // here the implemataion! description should take place in the header file!
 PropertyContainer::PropertyContainer()
 {
-    propertyData.parentPropertyData = 0;
+    propertyData.parentPropertyData = 0; 
 }
 
 PropertyContainer::~PropertyContainer()
@@ -260,7 +260,7 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
     reader.readEndElement("Properties");
 }
 
-void PropertyData::addProperty(const PropertyContainer *container,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
+void PropertyData::addProperty(OffsetBase offsetBase,const char* PropName, Property *Prop, const char* PropertyGroup , PropertyType Type, const char* PropertyDocu)
 {
   bool IsIn = false;
   for (vector<PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
@@ -271,7 +271,7 @@ void PropertyData::addProperty(const PropertyContainer *container,const char* Pr
   {
     PropertySpec temp;
     temp.Name   = PropName;
-    temp.Offset = (short) ((char*)Prop - (char*)container);
+    temp.Offset = offsetBase.getOffsetTo(Prop);
     temp.Group  = PropertyGroup;
     temp.Type   = Type;
     temp.Docu   = PropertyDocu;
@@ -279,35 +279,35 @@ void PropertyData::addProperty(const PropertyContainer *container,const char* Pr
   }
 }
 
-const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyContainer *container,const char* PropName) const
+const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const char* PropName) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(strcmp(It->Name,PropName)==0)
       return &(*It);
 
   if(parentPropertyData)
-      return parentPropertyData->findProperty(container,PropName);
+      return parentPropertyData->findProperty(offsetBase,PropName);
  
   return 0;
 }
 
-const PropertyData::PropertySpec *PropertyData::findProperty(const PropertyContainer *container,const Property* prop) const
+const PropertyData::PropertySpec *PropertyData::findProperty(OffsetBase offsetBase,const Property* prop) const
 {
-  const int diff = (int) ((char*)prop - (char*)container);
+  const int diff = offsetBase.getOffsetTo(prop);
 
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
     if(diff == It->Offset)
-      return &(*It);
+        return &(*It);
   
   if(parentPropertyData)
-      return parentPropertyData->findProperty(container,prop);
-
+      return parentPropertyData->findProperty(offsetBase,prop);
+  
   return 0;
 }
 
-const char* PropertyData::getName(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getName(OffsetBase offsetBase,const Property* prop) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,prop);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,prop);
 
   if(Spec)
     return Spec->Name;
@@ -326,9 +326,9 @@ const char* PropertyData::getName(const PropertyContainer *container,const Prope
   */
 }
 
-short PropertyData::getType(const PropertyContainer *container,const Property* prop) const
+short PropertyData::getType(OffsetBase offsetBase,const Property* prop) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,prop);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,prop);
 
   if(Spec)
     return Spec->Type;
@@ -349,9 +349,9 @@ short PropertyData::getType(const PropertyContainer *container,const Property* p
   */
 }
 
-short PropertyData::getType(const PropertyContainer *container,const char* name) const
+short PropertyData::getType(OffsetBase offsetBase,const char* name) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,name);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
   if(Spec)
     return Spec->Type;
@@ -359,9 +359,9 @@ short PropertyData::getType(const PropertyContainer *container,const char* name)
     return 0;
 }
 
-const char* PropertyData::getGroup(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getGroup(OffsetBase offsetBase,const Property* prop) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,prop);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,prop);
 
   if(Spec)
     return Spec->Group;
@@ -382,9 +382,9 @@ const char* PropertyData::getGroup(const PropertyContainer *container,const Prop
   */
 }
 
-const char* PropertyData::getGroup(const PropertyContainer *container,const char* name) const
+const char* PropertyData::getGroup(OffsetBase offsetBase,const char* name) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,name);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
   if(Spec)
     return Spec->Group;
@@ -392,9 +392,9 @@ const char* PropertyData::getGroup(const PropertyContainer *container,const char
     return 0;
 }
 
-const char* PropertyData::getDocumentation(const PropertyContainer *container,const Property* prop) const
+const char* PropertyData::getDocumentation(OffsetBase offsetBase,const Property* prop) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,prop);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,prop);
 
   if(Spec)
     return Spec->Docu;
@@ -402,9 +402,9 @@ const char* PropertyData::getDocumentation(const PropertyContainer *container,co
     return 0;
 }
 
-const char* PropertyData::getDocumentation(const PropertyContainer *container,const char* name) const
+const char* PropertyData::getDocumentation(OffsetBase offsetBase,const char* name) const
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,name);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
   if(Spec)
     return Spec->Docu;
@@ -414,12 +414,12 @@ const char* PropertyData::getDocumentation(const PropertyContainer *container,co
 
 
 
-Property *PropertyData::getPropertyByName(const PropertyContainer *container,const char* name) const 
+Property *PropertyData::getPropertyByName(OffsetBase offsetBase,const char* name) const 
 {
-  const PropertyData::PropertySpec* Spec = findProperty(container,name);
+  const PropertyData::PropertySpec* Spec = findProperty(offsetBase,name);
 
   if(Spec)
-    return (Property *) (Spec->Offset + (char *)container);
+    return (Property *) (Spec->Offset + offsetBase.getOffset());
   else
     return 0;
 /*
@@ -437,10 +437,10 @@ Property *PropertyData::getPropertyByName(const PropertyContainer *container,con
   }*/
 }
 
-void PropertyData::getPropertyMap(const PropertyContainer *container,std::map<std::string,Property*> &Map) const
+void PropertyData::getPropertyMap(OffsetBase offsetBase,std::map<std::string,Property*> &Map) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    Map[It->Name] = (Property *) (It->Offset + (char *)container);
+    Map[It->Name] = (Property *) (It->Offset + offsetBase.getOffset());
 /*
   std::map<std::string,PropertySpec>::const_iterator pos;
 
@@ -451,14 +451,14 @@ void PropertyData::getPropertyMap(const PropertyContainer *container,std::map<st
   */
 
   if(parentPropertyData)
-    parentPropertyData->getPropertyMap(container,Map);
-
+      parentPropertyData->getPropertyMap(offsetBase,Map);
+  
 }
 
-void PropertyData::getPropertyList(const PropertyContainer *container,std::vector<Property*> &List) const
+void PropertyData::getPropertyList(OffsetBase offsetBase,std::vector<Property*> &List) const
 {
   for (vector<PropertyData::PropertySpec>::const_iterator It = propertyData.begin(); It != propertyData.end(); ++It)
-    List.push_back((Property *) (It->Offset + (char *)container) );
+    List.push_back((Property *) (It->Offset + offsetBase.getOffset()) );
 
 /*  std::map<std::string,PropertySpec>::const_iterator pos;
 
@@ -467,7 +467,7 @@ void PropertyData::getPropertyList(const PropertyContainer *container,std::vecto
     List.push_back((Property *) (pos->second.Offset + (char *)container) );
   }*/
   if(parentPropertyData)
-    parentPropertyData->getPropertyList(container,List);
+      parentPropertyData->getPropertyList(offsetBase,List);
 
 }
 
@@ -475,6 +475,7 @@ void PropertyData::getPropertyList(const PropertyContainer *container,std::vecto
 
 /** \defgroup PropFrame Property framework
     \ingroup APP
+    \brief System to access object properties
 \section Introduction
 The property framework introduces the ability to access attributes (member variables) of a class by name without
 knowing the class type. It's like the reflection mechanism of Java or C#.

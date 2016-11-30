@@ -44,7 +44,7 @@ BodyBase::BodyBase()
     ADD_PROPERTY(BaseFeature , (0) );
 }
 
-const bool BodyBase::hasFeature(const App::DocumentObject* f) const
+bool BodyBase::hasFeature(const App::DocumentObject* f) const
 {
     const std::vector<App::DocumentObject*> &features = Model.getValues();
     return f == BaseFeature.getValue() || std::find(features.begin(), features.end(), f) != features.end();
@@ -65,7 +65,7 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
     return NULL;
 }
 
-const bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
+bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentObject* target) const {
     assert (feature);
 
     if (feature == target) {

@@ -53,7 +53,7 @@ CmdVisualInspection::CmdVisualInspection()
     sWhatsThis    = "Inspection_VisualInspection";
 }
 
-void CmdVisualInspection::activated(int iMsg)
+void CmdVisualInspection::activated(int)
 {
     InspectionGui::VisualInspection dlg(Gui::getMainWindow());
     dlg.exec();
@@ -80,7 +80,7 @@ CmdInspectElement::CmdInspectElement()
     sPixmap       = "inspect_pipette";
 }
 
-void CmdInspectElement::activated(int iMsg)
+void CmdInspectElement::activated(int)
 {
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());

@@ -84,9 +84,9 @@ public:
     /** Checks for intersection. */
     inline bool operator && (const BoundBox3<_Precision> &rcBB) const;
     /** Checks for intersection. */
-    inline bool Intersect (const BoundBox2D &rcBB) const;
+    inline bool Intersect (const BoundBox2d &rcBB) const;
     /** Checks for intersection. */
-    inline bool operator && (const BoundBox2D &rcBB) const;
+    inline bool operator && (const BoundBox2d &rcBB) const;
     /** Computes the intersection between two bounding boxes.
     * The result is also a bounding box.
     */
@@ -112,7 +112,7 @@ public:
     /** Checks if this 2D box lies inside the box.
      * @note It's up to the client programmer to make sure that both bounding boxes are valid.
      */
-    inline bool IsInBox (const BoundBox2D &rcbb) const;
+    inline bool IsInBox (const BoundBox2d &rcbb) const;
     /** Checks whether the bounding box is valid. */
     bool IsValid (void) const;
     //@}
@@ -167,7 +167,7 @@ public:
      */
     Vector3<_Precision> ClosestPoint (const Vector3<_Precision> &rclPt) const;
     /** Projects the box onto a plane and returns a 2D box. */
-    BoundBox2D ProjectBox(const ViewProjMethod *rclP) const;
+    BoundBox2d ProjectBox(const ViewProjMethod *rclP) const;
     /** Transform the corners of this box with the given matrix and create a new bounding box.
      * @note It's up to the client programmer to make sure that this bounding box is valid.
      */
@@ -299,17 +299,17 @@ bool BoundBox3<_Precision>::operator && (const BoundBox3<_Precision> &rcBB) cons
 }
 
 template <class _Precision>
-inline bool BoundBox3<_Precision>::Intersect (const BoundBox2D &rcBB) const
+inline bool BoundBox3<_Precision>::Intersect (const BoundBox2d &rcBB) const
 {
-    if (rcBB.fMaxX < this->MinX || rcBB.fMinX > this->MaxX)
+    if (rcBB.MaxX < this->MinX || rcBB.MinX > this->MaxX)
         return false;
-    if (rcBB.fMaxY < this->MinY || rcBB.fMinY > this->MaxY)
+    if (rcBB.MaxY < this->MinY || rcBB.MinY > this->MaxY)
         return false;
     return true;
 }
 
 template <class _Precision>
-inline bool BoundBox3<_Precision>::operator && (const BoundBox2D &rcBB) const
+inline bool BoundBox3<_Precision>::operator && (const BoundBox2d &rcBB) const
 {
     return Intersect(rcBB);
 }
@@ -391,11 +391,11 @@ inline bool BoundBox3<_Precision>::IsInBox (const BoundBox3<_Precision> &rcBB) c
 }
 
 template <class _Precision>
-inline bool BoundBox3<_Precision>::IsInBox (const BoundBox2D &rcBB) const
+inline bool BoundBox3<_Precision>::IsInBox (const BoundBox2d &rcBB) const
 {
-    if (rcBB.fMinX < this->MinX || rcBB.fMaxX > this->MaxX)
+    if (rcBB.MinX < this->MinX || rcBB.MaxX > this->MaxX)
         return false;
-    if (rcBB.fMinY < this->MinY || rcBB.fMaxY > this->MaxY)
+    if (rcBB.MinY < this->MinY || rcBB.MaxY > this->MaxY)
         return false;
     return true;
 }
@@ -833,7 +833,7 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
     for (int i = 0; i < 6; i++) {
         Vector3<_Precision> clTemp = rclPt;
         CalcPlane(i, cBase, cNormal);
-        clTemp.ProjToPlane(cBase, cNormal);
+        clTemp.ProjectToPlane(cBase, cNormal);
         _Precision fDist = (clTemp - rclPt).Length();
         if (fDist < fMinDist) {
             fMinDist = fDist;
@@ -872,14 +872,14 @@ inline Vector3<_Precision> BoundBox3<_Precision>::ClosestPoint (const Vector3<_P
 }
 
 template <class _Precision>
-inline BoundBox2D BoundBox3<_Precision>::ProjectBox(const ViewProjMethod *pclP) const
+inline BoundBox2d BoundBox3<_Precision>::ProjectBox(const ViewProjMethod *pclP) const
 {
-    BoundBox2D  clBB2D;
+    BoundBox2d  clBB2D;
     clBB2D.SetVoid();
 
     for (int i = 0; i < 8; i++) {
         Vector3<_Precision> clTrsPt = (*pclP)(CalcPoint(i));
-        clBB2D.Add(Vector2D(clTrsPt.x, clTrsPt.y));
+        clBB2D.Add(Vector2d(clTrsPt.x, clTrsPt.y));
     }
 
     return clBB2D;

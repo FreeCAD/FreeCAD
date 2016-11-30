@@ -60,6 +60,19 @@
         </property>
         <widget class="QWidget" name="pageStandard">
          <layout class="QGridLayout" name="gridLayout_8">
+          <item row="3" column="0">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>189</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="0" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
@@ -87,18 +100,19 @@
             </item>
            </layout>
           </item>
+          <item row="2" column="0">
+           <widget class="QCheckBox" name="groupsFaceColors">
+            <property name="text">
+             <string>Define segments by face colors</string>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="0">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
+           <widget class="QCheckBox" name="meshShapeColors">
+            <property name="text">
+             <string>Apply face colors to mesh</string>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>189</height>
-             </size>
-            </property>
-           </spacer>
+           </widget>
           </item>
          </layout>
         </widget>

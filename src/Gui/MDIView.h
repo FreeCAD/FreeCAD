@@ -111,20 +111,20 @@ public:
     ViewMode currentViewMode() const { return currentMode; }
 
 
-	/// access getter for the active object list
-	template<typename _T>
-	inline _T getActiveObject(const char* name) const
-	{
-		return ActiveObjects.getObject<_T>(name);
-	};
-	void setActiveObject(App::DocumentObject*o, const char*n)
-	{
-		ActiveObjects.setObject(o, n);
-	};
-	bool hasActiveObject(const char*n) const
-	{
-		return ActiveObjects.hasObject(n);
-	};
+    /// access getter for the active object list
+    template<typename _T>
+    inline _T getActiveObject(const char* name) const
+    {
+        return ActiveObjects.getObject<_T>(name);
+    }
+    void setActiveObject(App::DocumentObject*o, const char*n)
+    {
+        ActiveObjects.setObject(o, n);
+    }
+    bool hasActiveObject(const char*n) const
+    {
+        return ActiveObjects.hasObject(n);
+    }
 
 public Q_SLOTS:
     virtual void setOverrideCursor(const QCursor&);

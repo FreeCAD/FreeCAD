@@ -319,12 +319,12 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		inline	const	Vector2d operator-(void)const{return Vector2d(-dx, -dy);}							// v1 = -v0;  (unary minus)
 
-		inline	const	double operator*(const Vector2d &v)const{return (dx * v.dx + dy * v.dy);}			// dot product	m0.m1.cos a = v0 * v1
+		inline		double operator*(const Vector2d &v)const{return (dx * v.dx + dy * v.dy);}			// dot product	m0.m1.cos a = v0 * v1
 		inline			Vector2d operator*(double c)const{return Vector2d(dx*c, dy*c);}							// scalar product
 		inline	const	Vector2d& operator*=(double c){dx *= c; dy *= c; return *this;}						// scalar product
 		inline			Vector2d operator*(int c)const{return Vector2d(dx*(double)c, dy*(double)c);}				// scalar product
 
-		inline	const	double operator^(const Vector2d &v)const{return (dx * v.dy - dy * v.dx);}			// cross product m0.m1.sin a = v0 ^ v1
+		inline		double operator^(const Vector2d &v)const{return (dx * v.dy - dy * v.dx);}			// cross product m0.m1.sin a = v0 ^ v1
 		inline			Vector2d operator~(void)const{return Vector2d(-dy, dx);}							// perp to left
 
 						bool operator==(const Vector2d &v)const;													// v1 == v2
@@ -387,7 +387,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		const	Vector3d operator-(void)const{return Vector3d(-dx, -dy, -dz);}										// v1 = -v0;  (unary minus)
 
-		const	double operator*(const Vector3d &v)const{return (dx * v.dx + dy * v.dy + dz * v.dz);}				// dot product	m0 m1 cos a = v0 * v1
+			double operator*(const Vector3d &v)const{return (dx * v.dx + dy * v.dy + dz * v.dz);}				// dot product	m0 m1 cos a = v0 * v1
 
 		const Vector3d& operator*=(double c){dx *= c; dy *= c; dz *= c; return *this;}								// scalar products
 		friend const Vector3d operator*(const Vector3d &v, double c){return Vector3d(v.dx*c, v.dy*c, v.dz*c);}

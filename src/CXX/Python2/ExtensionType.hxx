@@ -104,7 +104,7 @@
 
 namespace Py
 {
-    extern PythonExtensionBase *getPythonExtensionBase( PyObject *self );
+    PYCXX_EXPORT extern PythonExtensionBase *getPythonExtensionBase( PyObject *self );
 
     struct PythonClassInstance
     {
@@ -125,7 +125,7 @@ namespace Py
 
         ~ExtensionClassMethodsTable()
         {
-            delete m_methods_table;
+            delete[] m_methods_table;
         }
 
         // check that all methods added are unique
@@ -188,7 +188,7 @@ namespace Py
     : public PythonExtensionBase
     {
     protected:
-        explicit PythonClass( PythonClassInstance *self, Tuple &args, Dict &kwds )
+        explicit PythonClass( PythonClassInstance *self, Tuple &/*args*/, Dict &/*kwds*/ )
         : PythonExtensionBase()
         , m_class_instance( self )
         {
@@ -220,7 +220,7 @@ namespace Py
 #else
                 const char *default_name = "unknown";
 #endif
-                p = new PythonType( sizeof( T ), 0, default_name );
+                p = new PythonType( sizeof( PythonClassInstance ), 0, default_name );
                 p->set_tp_new( extension_object_new );
                 p->set_tp_init( extension_object_init );
                 p->set_tp_dealloc( extension_object_deallocator );
@@ -235,7 +235,7 @@ namespace Py
             return *p;
         }
 
-        static PyObject *extension_object_new( PyTypeObject *subtype, PyObject *args, PyObject *kwds )
+        static PyObject *extension_object_new( PyTypeObject *subtype, PyObject * /*args*/, PyObject * /*kwds*/ )
         {
 #ifdef PYCXX_DEBUG
             std::cout << "extension_object_new()" << std::endl;

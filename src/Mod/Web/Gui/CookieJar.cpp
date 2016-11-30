@@ -27,6 +27,7 @@
 #include <QTextStream>
 #include <QFile>
 #include <QTimer>
+#include <QNetworkCookie>
 #endif
 
 #include "CookieJar.h"

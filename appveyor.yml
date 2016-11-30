@@ -1,0 +1,65 @@
+#version:
+
+environment:
+  matrix:
+    - generator: "Visual Studio 12 Win64"
+      ARCH: "Win64"
+      Compiler: "MSVC2013"
+    - generator: "Visual Studio 12"
+      ARCH: "Win32"
+      Compiler: "MSVC2013"
+
+#cache: #
+
+configuration:
+  #- Debug
+  - Release
+
+#branches:
+#  only:
+
+clone_depth: 1600
+
+# scripts that are called at very beginning, before repo cloning
+#init:
+
+#before_build:
+
+# scripts that run after cloning repository
+#todo cleanup libpacks on the FreeCAD-ports-cache repo
+install:
+  - cd C:\projects\freecad
+  - if [%ARCH%] == [Win64] (
+      powershell -Command "Start-FileDownload https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x64_VC12.7z" &&
+      7z x FreeCADLibs_11.5.1_x64_VC12.7z > nul &&
+      ren FreeCADLibs_11.5_x64_VC12 FreeCADLibs)
+  - if [%ARCH%] == [Win32] (
+      powershell -Command "Start-FileDownload https://github.com/FreeCAD/FreeCAD-ports-cache/releases/download/v0.17/FreeCADLibs_11.5.1_x86_VC12.7z" &&
+      7z x FreeCADLibs_11.5.1_x86_VC12.7z > nul &&
+      ren FreeCADLibs_11.5_x86_VC12 FreeCADLibs)
+  - dir
+
+build_script:
+  - cd C:\projects\freecad
+  - mkdir build
+  - cd build
+  - cmake -DFREECAD_LIBPACK_DIR=C:\projects\freecad\FreeCADLibs
+    -DBUILD_FEM_NETGEN=OFF
+    -G "%generator%" ..
+  - mkdir bin
+  - xcopy C:\projects\freecad\FreeCADLibs\bin C:\projects\freecad\build\bin /E /Q
+  - msbuild /m FreeCAD_Trunk.sln
+
+#after_build:
+  - cd C:\projects\freecad\build\bin\
+  - FreeCADCmd.exe --run-test 0
+
+#artifacts:
+
+test: off  # to avoid discovering tests
+
+#
+# The following section automatically uploads artifacts
+# whenever a tag is created on the master branch.
+#
+#deploy:

@@ -55,15 +55,15 @@ double Path_Point::LengthToS(double length) {
 double Path_Point::PathLength(){
 	return 0;
 }
-Frame Path_Point::Pos(double s) const  {
+Frame Path_Point::Pos(double /*s*/) const  {
 	return F_base_start;
 }
 
-Twist Path_Point::Vel(double s,double sd) const  {
+Twist Path_Point::Vel(double /*s*/,double /*sd*/) const  {
 	return Twist::Zero();
 }
 
-Twist Path_Point::Acc(double s,double sd,double sdd) const  {
+Twist Path_Point::Acc(double /*s*/,double /*sd*/,double /*sdd*/) const  {
 	return Twist::Zero();
 }
 

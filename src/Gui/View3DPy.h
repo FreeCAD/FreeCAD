@@ -48,6 +48,7 @@ public:
 
     Py::Object message(const Py::Tuple&);
     Py::Object fitAll(const Py::Tuple&);
+    Py::Object boxZoom(const Py::Tuple&, const Py::Dict&);
     Py::Object viewBottom(const Py::Tuple&);
     Py::Object viewFront(const Py::Tuple&);
     Py::Object viewLeft(const Py::Tuple&);

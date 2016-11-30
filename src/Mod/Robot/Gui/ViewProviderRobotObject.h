@@ -71,7 +71,7 @@ protected:
     SoGroup               * pcOffRoot;
 
     SoGroup               * pcTcpRoot;
-    SoTransform           * pcTcpTransform;
+  //SoTransform           * pcTcpTransform;
 
     //SoTrackballDragger    * pcDragger;
     SoJackDragger         * pcDragger;

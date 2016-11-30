@@ -67,7 +67,7 @@ using namespace Gui;
 // Task Parameter
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool newObj, QWidget *parent)
+TaskPipeParameters::TaskPipeParameters(ViewProviderPipe *PipeView,bool /*newObj*/, QWidget *parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe",tr("Pipe parameters"))
 {
     // we need a separate container widget to add all controls to
@@ -286,7 +286,7 @@ void TaskPipeParameters::exitSelectionMode() {
 // Tassk Orientation
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+TaskPipeOrientation::TaskPipeOrientation(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section orientation")) {
 
     // we need a separate container widget to add all controls to
@@ -393,26 +393,27 @@ void TaskPipeOrientation::onButtonRefRemove(bool checked) {
     }
 }
 
-void TaskPipeOrientation::onBaseButton(bool checked) {
-
+void TaskPipeOrientation::onBaseButton(bool checked)
+{
     if (checked) {
         Gui::Selection().clearSelection();        
         selectionMode = refObjAdd;
     }
 }
 
-void TaskPipeOrientation::onTangentChanged(bool checked) {
-
+void TaskPipeOrientation::onTangentChanged(bool checked)
+{
+    Q_UNUSED(checked);
 }
 
-void TaskPipeOrientation::onCurvelinearChanged(bool checked) {
-
+void TaskPipeOrientation::onCurvelinearChanged(bool checked)
+{
     static_cast<PartDesign::Pipe*>(vp->getObject())->AuxilleryCurvelinear.setValue(checked);
     recomputeFeature();
 }
 
-void TaskPipeOrientation::onBinormalChanged(double) {
-
+void TaskPipeOrientation::onBinormalChanged(double)
+{
     Base::Vector3d vec(ui->doubleSpinBoxX->value(),
                        ui->doubleSpinBoxY->value(),
                        ui->doubleSpinBoxZ->value());
@@ -525,7 +526,7 @@ void TaskPipeOrientation::updateUI(int idx) {
 //**************************************************************************
 // Task Scaling
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool newObj, QWidget* parent)
+TaskPipeScaling::TaskPipeScaling(ViewProviderPipe* PipeView, bool /*newObj*/, QWidget* parent)
     : TaskSketchBasedParameters(PipeView, parent, "PartDesign_Additive_Pipe", tr("Section transformation")) {
 
             // we need a separate container widget to add all controls to
@@ -715,7 +716,7 @@ bool TaskDlgPipeParameters::accept()
     //the user has to decide which option we should take if external references are used
     PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(getPipeView()->getObject());
     auto pcActiveBody = PartDesignGui::getBodyFor(pcPipe, false);
-    auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
+  //auto pcActivePart = PartDesignGui::getPartFor(pcActiveBody, false);
     std::vector<App::DocumentObject*> copies;
 
     bool ext = false;
@@ -778,10 +779,11 @@ bool TaskDlgPipeParameters::accept()
         
         //we need to add the copied features to the body after the command action, as otherwise freecad crashs unexplainable
         for(auto obj : copies) {
-            if(pcActiveBody)
-                pcActiveBody->addFeature(obj);
-            else if (pcActivePart)
-                pcActivePart->addObject(obj);
+            //Dead code: pcActiveBody was previously used without checking for null, so it won't be null here either.
+            //if(pcActiveBody)
+            pcActiveBody->addFeature(obj);
+            //else if (pcActivePart)
+            //    pcActivePart->addObject(obj);
         }
     }
     catch (const Base::Exception& e) {

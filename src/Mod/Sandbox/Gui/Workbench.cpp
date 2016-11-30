@@ -151,7 +151,7 @@ SoWidgetShape::SoWidgetShape()
     SO_NODE_CONSTRUCTOR(SoWidgetShape);
 }
 
-void SoWidgetShape::GLRender(SoGLRenderAction *action)
+void SoWidgetShape::GLRender(SoGLRenderAction * /*action*/)
 {
 #if 1
     this->image = QPixmap::grabWidget(w, w->rect()).toImage();

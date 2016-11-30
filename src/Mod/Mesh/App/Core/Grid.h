@@ -434,7 +434,7 @@ inline void MeshFacetGrid::PosWithCheck (const Base::Vector3f &rclPoint, unsigne
   assert((rulX < _ulCtGridsX) && (rulY < _ulCtGridsY) && (rulZ < _ulCtGridsZ));
 }
 
-inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float fEpsilon)
+inline void MeshFacetGrid::AddFacet (const MeshGeomFacet &rclFacet, unsigned long ulFacetIndex, float /*fEpsilon*/)
 {
 #if 0
   unsigned long  i, ulX, ulY, ulZ, ulX1, ulY1, ulZ1, ulX2, ulY2, ulZ2;

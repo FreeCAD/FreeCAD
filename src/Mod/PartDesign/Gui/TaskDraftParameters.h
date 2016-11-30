@@ -39,8 +39,8 @@ public:
     TaskDraftParameters(ViewProviderDressUp *DressUpView, QWidget *parent=0);
     ~TaskDraftParameters();
 
-    const double getAngle(void) const;
-    const bool getReversed(void) const;
+    double getAngle(void) const;
+    bool getReversed(void) const;
     const std::vector<std::string> getFaces(void) const;
     void getPlane(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     void getLine(App::DocumentObject*& obj, std::vector<std::string>& sub) const;

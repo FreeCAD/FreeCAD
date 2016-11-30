@@ -17,6 +17,7 @@ set(MeshGui_LIBS
 
 set(Mesh_MOC_HDRS
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.h
     DlgRegularSolidImp.h
     DlgSettingsMeshView.h
     DlgSettingsImportExportImp.h
@@ -32,6 +33,7 @@ SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
 
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
+    DlgEvaluateSettings.ui
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
     DlgSettingsImportExport.ui
@@ -46,6 +48,9 @@ SET(Dialogs_SRCS
     DlgEvaluateMesh.ui
     DlgEvaluateMeshImp.cpp
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.ui
+    DlgEvaluateSettings.cpp
+    DlgEvaluateSettings.h
     DlgRegularSolid.ui
     DlgRegularSolidImp.cpp
     DlgRegularSolidImp.h

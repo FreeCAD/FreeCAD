@@ -95,7 +95,7 @@ CmdSandboxDocumentThread::CmdSandboxDocumentThread()
     sPixmap       = "Std_Tool1";
 }
 
-void CmdSandboxDocumentThread::activated(int iMsg)
+void CmdSandboxDocumentThread::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     for (int i=0; i<5; i++) {
@@ -122,7 +122,7 @@ CmdSandboxDocumentTestThread::CmdSandboxDocumentTestThread()
     sPixmap       = "Std_Tool1";
 }
 
-void CmdSandboxDocumentTestThread::activated(int iMsg)
+void CmdSandboxDocumentTestThread::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentTestThread* dt = new Sandbox::DocumentTestThread();
@@ -145,7 +145,7 @@ CmdSandboxDocumentSaveThread::CmdSandboxDocumentSaveThread()
     sStatusTip    = QT_TR_NOOP("Sandbox save function");
 }
 
-void CmdSandboxDocumentSaveThread::activated(int iMsg)
+void CmdSandboxDocumentSaveThread::activated(int)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     Sandbox::DocumentSaverThread* dt = new Sandbox::DocumentSaverThread(doc);
@@ -174,7 +174,7 @@ CmdSandboxDocThreadWithSeq::CmdSandboxDocThreadWithSeq()
     sPixmap       = "Std_Tool2";
 }
 
-void CmdSandboxDocThreadWithSeq::activated(int iMsg)
+void CmdSandboxDocThreadWithSeq::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
@@ -213,7 +213,7 @@ CmdSandboxDocThreadBusy::CmdSandboxDocThreadBusy()
     sPixmap       = "Std_Tool3";
 }
 
-void CmdSandboxDocThreadBusy::activated(int iMsg)
+void CmdSandboxDocThreadBusy::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
@@ -250,7 +250,7 @@ CmdSandboxDocumentNoThread::CmdSandboxDocumentNoThread()
     sPixmap       = "Std_Tool4";
 }
 
-void CmdSandboxDocumentNoThread::activated(int iMsg)
+void CmdSandboxDocumentNoThread::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     App::Document* doc = App::GetApplication().getActiveDocument();
@@ -281,7 +281,7 @@ CmdSandboxWorkerThread::CmdSandboxWorkerThread()
     sPixmap       = "Std_Tool1";
 }
 
-void CmdSandboxWorkerThread::activated(int iMsg)
+void CmdSandboxWorkerThread::activated(int)
 {
     Sandbox::WorkerThread* wt = new Sandbox::WorkerThread();
     QObject::connect(wt, SIGNAL(finished()), wt, SLOT(deleteLater()));
@@ -303,7 +303,7 @@ CmdSandboxPythonLockThread::CmdSandboxPythonLockThread()
     sStatusTip    = QT_TR_NOOP("Use Python's thread module where each thread is locked");
 }
 
-void CmdSandboxPythonLockThread::activated(int iMsg)
+void CmdSandboxPythonLockThread::activated(int)
 {
     doCommand(Doc,
         "import thread, time, Sandbox\n"
@@ -338,7 +338,7 @@ CmdSandboxPythonNolockThread::CmdSandboxPythonNolockThread()
     sStatusTip    = QT_TR_NOOP("Use Python's thread module where each thread is unlocked");
 }
 
-void CmdSandboxPythonNolockThread::activated(int iMsg)
+void CmdSandboxPythonNolockThread::activated(int)
 {
     doCommand(Doc,
         "import thread, time, Sandbox\n"
@@ -370,7 +370,7 @@ CmdSandboxPyQtThread::CmdSandboxPyQtThread()
     sStatusTip    = QT_TR_NOOP("Use PyQt's thread module");
 }
 
-void CmdSandboxPyQtThread::activated(int iMsg)
+void CmdSandboxPyQtThread::activated(int)
 {
     doCommand(Doc,
         "from PyQt4 import QtCore; import Sandbox\n"
@@ -405,7 +405,7 @@ CmdSandboxPythonThread::CmdSandboxPythonThread()
     sStatusTip    = QT_TR_NOOP("Use class PythonThread running Python code in its run() method");
 }
 
-void CmdSandboxPythonThread::activated(int iMsg)
+void CmdSandboxPythonThread::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     for (int i=0; i<5; i++) {
@@ -431,7 +431,7 @@ CmdSandboxPythonMainThread::CmdSandboxPythonMainThread()
     sStatusTip    = QT_TR_NOOP("Run python code in main thread");
 }
 
-void CmdSandboxPythonMainThread::activated(int iMsg)
+void CmdSandboxPythonMainThread::activated(int)
 {
     doCommand(Doc,
         "import Sandbox\n"
@@ -458,7 +458,7 @@ CmdSandboxDocThreadWithDialog::CmdSandboxDocThreadWithDialog()
     sPixmap       = "Std_Tool7";
 }
 
-void CmdSandboxDocThreadWithDialog::activated(int iMsg)
+void CmdSandboxDocThreadWithDialog::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
@@ -485,7 +485,7 @@ CmdSandboxDocThreadWithFileDlg::CmdSandboxDocThreadWithFileDlg()
     sPixmap       = "Std_Tool7";
 }
 
-void CmdSandboxDocThreadWithFileDlg::activated(int iMsg)
+void CmdSandboxDocThreadWithFileDlg::activated(int)
 {
     App::GetApplication().newDocument("Thread");
     Sandbox::DocumentThread* dt = new Sandbox::DocumentThread();
@@ -523,7 +523,7 @@ CmdSandboxEventLoop::CmdSandboxEventLoop()
     sPixmap       = "Std_Tool6";
 }
 
-void CmdSandboxEventLoop::activated(int iMsg)
+void CmdSandboxEventLoop::activated(int)
 {
     QTimer timer;
     timer.setSingleShot(true);
@@ -566,7 +566,7 @@ CmdSandboxMeshLoader::CmdSandboxMeshLoader()
     sPixmap       = "Std_Tool6";
 }
 
-void CmdSandboxMeshLoader::activated(int iMsg)
+void CmdSandboxMeshLoader::activated(int)
 {
     // use current path as default
     QStringList filter;
@@ -624,7 +624,7 @@ CmdSandboxMeshLoaderBoost::CmdSandboxMeshLoaderBoost()
     sPixmap       = "Std_Tool6";
 }
 
-void CmdSandboxMeshLoaderBoost::activated(int iMsg)
+void CmdSandboxMeshLoaderBoost::activated(int)
 {
 # if BOOST_VERSION >= 104100
     // use current path as default
@@ -678,7 +678,7 @@ CmdSandboxMeshLoaderFuture::CmdSandboxMeshLoaderFuture()
     sPixmap       = "Std_Tool6";
 }
 
-void CmdSandboxMeshLoaderFuture::activated(int iMsg)
+void CmdSandboxMeshLoaderFuture::activated(int)
 {
     // use current path as default
     QStringList filter;
@@ -793,7 +793,7 @@ CmdSandboxMeshTestJob::CmdSandboxMeshTestJob()
     sPixmap       = "Std_Tool7";
 }
 
-void CmdSandboxMeshTestJob::activated(int iMsg)
+void CmdSandboxMeshTestJob::activated(int)
 {
     Mesh::MeshObjectConstRefList meshes;
     App::Document* app_doc = App::GetApplication().getActiveDocument();
@@ -887,7 +887,7 @@ CmdSandboxMeshTestRef::CmdSandboxMeshTestRef()
     sStatusTip    = QT_TR_NOOP("Sandbox Test function");
 }
 
-void CmdSandboxMeshTestRef::activated(int iMsg)
+void CmdSandboxMeshTestRef::activated(int)
 {
     Gui::WaitCursor wc;
     std::vector< boost::shared_ptr<QThread> > threads;
@@ -934,7 +934,7 @@ CmdTestGrabWidget::CmdTestGrabWidget()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestGrabWidget::activated(int iMsg)
+void CmdTestGrabWidget::activated(int)
 {
     QCalendarWidget* c = new QCalendarWidget();
     c->hide();
@@ -1052,7 +1052,7 @@ CmdTestImageNode::CmdTestImageNode()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestImageNode::activated(int iMsg)
+void CmdTestImageNode::activated(int)
 {
     QString text = QString::fromLatin1("Distance: 2.7jgiorjgor84mm");
     QFont font;
@@ -1137,7 +1137,7 @@ CmdTestGDIWidget::CmdTestGDIWidget()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestGDIWidget::activated(int iMsg)
+void CmdTestGDIWidget::activated(int)
 {
 #ifdef Q_OS_WIN32
     GDIWidget* gdi = new GDIWidget(Gui::getMainWindow());
@@ -1163,7 +1163,7 @@ CmdTestRedirectPaint::CmdTestRedirectPaint()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestRedirectPaint::activated(int iMsg)
+void CmdTestRedirectPaint::activated(int)
 {
     QCalendarWidget* cal = new QCalendarWidget();
     QLabel* label = new QLabel();
@@ -1189,7 +1189,7 @@ CmdTestCryptographicHash::CmdTestCryptographicHash()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestCryptographicHash::activated(int iMsg)
+void CmdTestCryptographicHash::activated(int)
 {
     QByteArray data = "FreeCAD";
     QByteArray hash = QCryptographicHash::hash(data, QCryptographicHash::Md5);
@@ -1211,7 +1211,7 @@ CmdTestWidgetShape::CmdTestWidgetShape()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestWidgetShape::activated(int iMsg)
+void CmdTestWidgetShape::activated(int)
 {
     SandboxGui::SoWidgetShape* shape = new SandboxGui::SoWidgetShape;
     shape->setWidget(new QCalendarWidget());
@@ -1349,7 +1349,7 @@ MeshObjectRef makeParallelMengerSponge(int level, float x0, float y0, float z0)
     return mesh;
 }
 
-void CmdMengerSponge::activated(int iMsg)
+void CmdMengerSponge::activated(int)
 {
     bool ok;
     int level = QInputDialog::getInt(Gui::getMainWindow(),
@@ -1402,7 +1402,7 @@ CmdTestGraphicsView::CmdTestGraphicsView()
     sStatusTip  = QT_TR_NOOP("Creates a new  view window for the active document");
 }
 
-void CmdTestGraphicsView::activated(int iMsg)
+void CmdTestGraphicsView::activated(int)
 {
     Gui::GraphicsView3D* view3D = new Gui::GraphicsView3D(getActiveGuiDocument(), Gui::getMainWindow());
     view3D->setWindowTitle(QString::fromLatin1("Graphics scene"));
@@ -1431,7 +1431,7 @@ CmdTestTaskBox::CmdTestTaskBox()
     sStatusTip      = sToolTipText;
 }
 
-void CmdTestTaskBox::activated(int iMsg)
+void CmdTestTaskBox::activated(int)
 {
     QWidget* w = new SandboxGui::TaskPanelView();
     w->setAttribute(Qt::WA_DeleteOnClose);

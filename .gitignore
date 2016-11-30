@@ -30,3 +30,5 @@ install_manifest.txt
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/todolist.txt
 /src/Tools/offlinedoc/wikifiles.txt
+.subuser-dev
+/\.idea/

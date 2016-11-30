@@ -24,6 +24,7 @@
 #define TASKCSYSDRAGGER_H
 
 #include <Gui/TaskView/TaskDialog.h>
+#include <App/DocumentObserver.h>
 
 class QuantitySpinBox;
 
@@ -47,7 +48,7 @@ namespace Gui
       void onRIncrementSlot(double freshValue);
     private:
       void setupGui();
-      ViewProviderGeometryObject *vpObject;
+      App::DocumentObjectT vpObject;
       SoFCCSysDragger *dragger;
       QuantitySpinBox *tSpinBox;
       QuantitySpinBox *rSpinBox;

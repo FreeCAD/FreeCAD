@@ -148,7 +148,7 @@ PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args,PyObject * 
 
         std::string module = mod;
         if (module.empty()) {
-            std::string ext = fi.extension(false);
+            std::string ext = fi.extension();
             std::vector<std::string> modules = GetApplication().getImportModules(ext.c_str());
             if (modules.empty()) {
                 PyErr_Format(PyExc_IOError, "Filetype %s is not supported.", ext.c_str());
@@ -205,11 +205,14 @@ PyObject* Application::sNewDocument(PyObject * /*self*/, PyObject *args,PyObject
 {
     char *docName = 0;
     char *usrName = 0;
-    if (!PyArg_ParseTuple(args, "|ss", &docName, &usrName))     // convert args: Python->C
-        return NULL;                             // NULL triggers exception
+    if (!PyArg_ParseTuple(args, "|etet", "utf-8", &docName, "utf-8", &usrName))
+        return NULL;
 
     PY_TRY {
-        return GetApplication().newDocument(docName, usrName)->getPyObject();
+        App::Document* doc = GetApplication().newDocument(docName, usrName);
+        PyMem_Free(docName);
+        PyMem_Free(usrName);
+        return doc->getPyObject();
     }PY_CATCH;
 }
 

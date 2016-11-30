@@ -509,7 +509,7 @@ DocumentObjectExecReturn *App::PropertyExpressionEngine::execute()
             throw Base::Exception("Invalid property owner.");
 
         // Evaluate expression
-        std::auto_ptr<Expression> e(expressions[*it].expression->eval());
+        std::unique_ptr<Expression> e(expressions[*it].expression->eval());
 
 #ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
         {

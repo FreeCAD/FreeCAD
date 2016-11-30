@@ -100,10 +100,10 @@ void Picker::createPrimitive(QWidget* widget, const QString& descr, Gui::Documen
 
         // Execute the Python block
         doc->openCommand(descr.toUtf8());
-        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
         doc->commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(widget, descr, QString::fromLatin1(e.what()));
@@ -666,10 +666,10 @@ void DlgPrimitives::createPrimitive(const QString& placement)
         // Execute the Python block
         QString prim = tr("Create %1").arg(ui.comboBox1->currentText());
         Gui::Application::Instance->activeDocument()->openCommand(prim.toUtf8());
-        Gui::Command::doCommand(Gui::Command::Doc, (const char*)cmd.toUtf8());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
         Gui::Application::Instance->activeDocument()->commitCommand();
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
+        Gui::Command::runCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::runCommand(Gui::Command::Gui, "Gui.SendMsgToActiveView(\"ViewFit\")");
     }
     catch (const Base::PyException& e) {
         QMessageBox::warning(this, tr("Create %1")
@@ -683,6 +683,8 @@ void DlgPrimitives::createPrimitive(const QString& placement)
 
 Location::Location(QWidget* parent)
 {
+    Q_UNUSED(parent);
+    mode = 0;
     ui.setupUi(this);
 }
 

@@ -110,8 +110,8 @@ public:
     virtual ~MeshHoleFiller()
     {
     }
-    virtual bool fillHoles(Mesh::MeshObject& mesh, const std::list<std::vector<unsigned long> >& boundaries,
-                           unsigned long v1, unsigned long v2)
+    virtual bool fillHoles(Mesh::MeshObject&, const std::list<std::vector<unsigned long> >&,
+                           unsigned long, unsigned long)
     {
         return false;
     }

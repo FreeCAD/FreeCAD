@@ -41,7 +41,7 @@ using namespace Gui;
 
 
 TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"),
       tr("Nodes set"),
       true,
       parent),
@@ -62,7 +62,7 @@ TaskAnalysisInfo::TaskAnalysisInfo(Fem::FemAnalysis *pcObject,QWidget *parent)
 }
 
 
-void TaskAnalysisInfo::SwitchMethod(int Value)
+void TaskAnalysisInfo::SwitchMethod(int /*Value*/)
 {
  /*   if(Value == 1){
         ui->groupBox_AngleSearch->setEnabled(true);

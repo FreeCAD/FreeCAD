@@ -50,7 +50,7 @@ class List;
 }
 
 namespace Base {
-  class Polygon2D;
+  class Polygon2d;
   class ViewProjMethod;
 }
 
@@ -217,8 +217,8 @@ public:
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
-    void cut(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
-    void trim(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
+    void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
+    void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     //@}
 
     /** @name Selection */
@@ -270,12 +270,13 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
-    void validateDeformations(float fMaxAngle);
-    void validateDegenerations();
+    void validateDeformations(float fMaxAngle, float fEps);
+    void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
     void removeDuplicatedFacets();
     bool hasNonManifolds() const;
     void removeNonManifolds();
+    void removeNonManifoldPoints();
     bool hasSelfIntersections() const;
     void removeSelfIntersections();
     void removeSelfIntersections(const std::vector<unsigned long>&);
@@ -292,7 +293,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(GeometryType, const Segment& aSegment, float dev, unsigned long minFacets) const;
+    std::vector<Segment> getSegmentsFromType(GeometryType, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */
@@ -376,7 +377,7 @@ private:
     void deletedFacets(const std::vector<unsigned long>& remFacets);
     void updateMesh(const std::vector<unsigned long>&);
     void updateMesh();
-    void swapKernel(MeshCore::MeshKernel& m);
+    void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
 
 private:
     Base::Matrix4D _Mtrx;

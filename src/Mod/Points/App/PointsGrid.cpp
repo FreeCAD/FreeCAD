@@ -282,25 +282,33 @@ void PointsGrid::Position (const Base::Vector3d &rclPoint, unsigned long &rulX, 
 
 void PointsGrid::CalculateGridLength (unsigned long ulCtGrid, unsigned long ulMaxGrids)
 {
-  // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
-  // pro Grid sollen ca. 10 (?!?!) Facets liegen
-  // bzw. max Grids sollten 10000 nicht ueberschreiten
-  Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
-  for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
-    clBBPtsEnlarged.Add(*it);
-  double fVolElem;
+    // Grid Laengen bzw. Anzahl der Grids pro Dimension berechnen
+    // pro Grid sollen ca. 10 (?!?!) Facets liegen
+    // bzw. max Grids sollten 10000 nicht ueberschreiten
+    Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
+    for (PointKernel::const_iterator it = _pclPoints->begin(); it != _pclPoints->end(); ++it )
+        clBBPtsEnlarged.Add(*it);
+    double fVolElem;
 
-  if (_ulCtElements > (ulMaxGrids * ulCtGrid))
-    fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
-  else
-    fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(_ulCtElements);
+    if (_ulCtElements > (ulMaxGrids * ulCtGrid))
+        fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(ulMaxGrids * ulCtGrid);
+    else
+        fVolElem = (clBBPtsEnlarged.LengthX() * clBBPtsEnlarged.LengthY() * clBBPtsEnlarged.LengthZ()) / float(_ulCtElements);
 
-  double fVol     = fVolElem * float(ulCtGrid);
-  double fGridLen = float(pow((float)fVol,(float) 1.0f / 3.0f));
+    double fVol     = fVolElem * float(ulCtGrid);
+    double fGridLen = float(pow((float)fVol,(float) 1.0f / 3.0f));
 
-  _ulCtGridsX = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthX() / fGridLen), 1);
-  _ulCtGridsY = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthY() / fGridLen), 1);
-  _ulCtGridsZ = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthZ() / fGridLen), 1);
+    if (fGridLen > 0) {
+        _ulCtGridsX = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthX() / fGridLen), 1);
+        _ulCtGridsY = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthY() / fGridLen), 1);
+        _ulCtGridsZ = std::max<unsigned long>((unsigned long)(clBBPtsEnlarged.LengthZ() / fGridLen), 1);
+    }
+    else {
+        // Degenerated grid
+        _ulCtGridsX = 1;
+        _ulCtGridsY = 1;
+        _ulCtGridsZ = 1;
+    }
 }
 
 void PointsGrid::CalculateGridLength (int iCtGridPerAxis)
@@ -621,7 +629,7 @@ unsigned long PointsGrid::GetElements (unsigned long ulX, unsigned long ulY, uns
   return 0;
 }
 
-void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float fEpsilon)
+void PointsGrid::AddPoint (const Base::Vector3d &rclPt, unsigned long ulPtIndex, float /*fEpsilon*/)
 {
   unsigned long ulX, ulY, ulZ;
   Pos(Base::Vector3d(rclPt.x, rclPt.y, rclPt.z), ulX, ulY, ulZ);

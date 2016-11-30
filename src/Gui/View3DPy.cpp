@@ -83,6 +83,7 @@ void View3DInventorPy::init_type()
 
     add_varargs_method("message",&View3DInventorPy::message,"message()");
     add_varargs_method("fitAll",&View3DInventorPy::fitAll,"fitAll()");
+    add_keyword_method("boxZoom",&View3DInventorPy::boxZoom,"boxZoom()");
 
     add_varargs_method("viewBottom",&View3DInventorPy::viewBottom,"viewBottom()");
     add_varargs_method("viewFront",&View3DInventorPy::viewFront,"viewFront()");
@@ -229,22 +230,25 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         s_out << "Cannot access attribute '" << attr << "' of deleted object";
         throw Py::RuntimeError(s_out.str());
     }
-	else {
-		// see if a active object has the same name
-		App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
-		if (docObj){
-			return Py::Object(docObj->getPyObject(),true);
-		}else{
-			// else looking for a methode with the name and call it
-			Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
-			if (PyCFunction_Check(obj.ptr())) {
-				PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-				if (!pycxx_handler)
-					pycxx_handler = op->m_ml->ml_meth;
-				op->m_ml->ml_meth = method_varargs_ext_handler;
-			}
-			return obj;
-		}
+    else {
+        // see if an active object has the same name
+        App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
+        if (docObj) {
+            return Py::Object(docObj->getPyObject(),true);
+        }
+        else {
+            // else looking for a method with the name and call it
+            Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
+            if (PyCFunction_Check(obj.ptr())) {
+                PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+                if (op->m_ml->ml_flags == METH_VARARGS) {
+                    if (!pycxx_handler)
+                        pycxx_handler = op->m_ml->ml_meth;
+                    op->m_ml->ml_meth = method_varargs_ext_handler;
+                }
+            }
+            return obj;
+        }
     }
 }
 
@@ -301,6 +305,19 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
     }
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* kwds_box[] = {"XMin", "YMin", "XMax", "YMax", NULL};
+    short xmin, ymin, xmax, ymax;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "hhhh", kwds_box,
+                                     &xmin, &ymin, &xmax, &ymax))
+        throw Py::Exception();
+
+    SbBox2s box(xmin, ymin, xmax, ymax);
+    _view->getViewer()->boxZoom(box);
     return Py::None();
 }
 
@@ -714,10 +731,13 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
 
-    if (!PyArg_ParseTuple(args.ptr(), "s|iiss",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
         throw Py::Exception();
 
-    QFileInfo fi(QString::fromUtf8(cFileName));
+    std::string encodedName = std::string(cFileName);
+    PyMem_Free(cFileName);
+    QFileInfo fi(QString::fromUtf8(encodedName.c_str()));
+
     if (!fi.absoluteDir().exists())
         throw Py::RuntimeError("Directory where to save image doesn't exist");
 
@@ -745,7 +765,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
-    renderer.writeToImageFile(cFileName, cComment, cam->getViewVolume().getMatrix(), img);
+    renderer.writeToImageFile(encodedName.c_str(), cComment, cam->getViewVolume().getMatrix(), img);
 
     return Py::None();
 }
@@ -759,17 +779,17 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|is",&filename,&ps,&name))
         throw Py::Exception();
 
-    std::auto_ptr<SoVectorizeAction> vo;
+    std::unique_ptr<SoVectorizeAction> vo;
     Base::FileInfo fi(filename);
     if (fi.hasExtension("ps") || fi.hasExtension("eps")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoVectorizePSAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoVectorizePSAction());
         //vo->setGouraudThreshold(0.0f);
     }
     else if (fi.hasExtension("svg")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
     }
     else if (fi.hasExtension("idtf")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
     }
     else {
         throw Py::Exception("Not supported vector graphic");

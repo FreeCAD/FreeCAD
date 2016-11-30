@@ -177,10 +177,9 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 void TaskBooleanParameters::onButtonBodyAdd(bool checked)
 {
     if (checked) {
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc != NULL)
-            BooleanView->hide();
         PartDesign::Boolean* pcBoolean = static_cast<PartDesign::Boolean*>(BooleanView->getObject());
+        Gui::Document* doc = BooleanView->getDocument();
+        BooleanView->hide();
         if (pcBoolean->Bodies.getValues().empty() && pcBoolean->BaseFeature.getValue())
             doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
         selectionMode = bodyAdd;
@@ -328,7 +327,7 @@ bool TaskDlgBooleanParameters::accept()
         for (std::vector<std::string>::const_iterator it = bodies.begin(); it != bodies.end(); ++it)
             str << "App.ActiveDocument." << *it << ",";
         str << "]";
-        Gui::Command::doCommand(Gui::Command::Doc,str.str().c_str());
+        Gui::Command::runCommand(Gui::Command::Doc,str.str().c_str());
     }
     catch (const Base::Exception& e) {
         QMessageBox::warning(parameter, tr("Boolean: Accept: Input error"), QString::fromLatin1(e.what()));

@@ -135,10 +135,14 @@ void TaskPolarPatternParameters::setupUI()
     std::vector<App::DocumentObject*> originals = pcPolarPattern->Originals.getValues();
 
     // Fill data into dialog elements
-    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i)
-    {
-        if ((*i) != NULL)
-            ui->listWidgetFeatures->addItem(QString::fromLatin1((*i)->getNameInDocument()));
+    for (std::vector<App::DocumentObject*>::const_iterator i = originals.begin(); i != originals.end(); ++i) {
+        const App::DocumentObject* obj = *i;
+        if (obj != NULL) {
+            QListWidgetItem* item = new QListWidgetItem();
+            item->setText(QString::fromUtf8(obj->Label.getValue()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            ui->listWidgetFeatures->addItem(item);
+        }
     }
     // ---------------------
 
@@ -155,6 +159,9 @@ void TaskPolarPatternParameters::setupUI()
     App::DocumentObject* sketch = getSketchObject();
     if (sketch && sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         this->fillAxisCombo(axesLinks, static_cast<Part::Part2DObject*>(sketch));
+    }
+    else {
+        this->fillAxisCombo(axesLinks, NULL);
     }
 
     //show the parts coordinate system axis for selection
@@ -214,29 +221,40 @@ void TaskPolarPatternParameters::kickUpdateViewTimer() const
 void TaskPolarPatternParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-
+        
         if (originalSelected(msg)) {
-            if (selectionMode == addFeature)
-                ui->listWidgetFeatures->addItem(QString::fromLatin1(msg.pObjectName));
-            else
-                removeItemFromListWidget(ui->listWidgetFeatures, msg.pObjectName);
+            Gui::SelectionObject selObj(msg);
+            App::DocumentObject* obj = selObj.getObject();
+            Q_ASSERT(obj);
+
+            QString label = QString::fromUtf8(obj->Label.getValue());
+            QString objectName = QString::fromLatin1(msg.pObjectName);
+
+            if (selectionMode == addFeature) {
+                QListWidgetItem* item = new QListWidgetItem();
+                item->setText(label);
+                item->setData(Qt::UserRole, objectName);
+                ui->listWidgetFeatures->addItem(item);
+            }
+            else {
+                removeItemFromListWidget(ui->listWidgetFeatures, label);
+            }
             exitSelectionMode();
-        } else {
-            // TODO checkme (2015-09-01, Fat-Zer)
-            exitSelectionMode();
+        }
+        else {
             std::vector<std::string> axes;
             App::DocumentObject* selObj;
             PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
             getReferencedSelection(pcPolarPattern, msg, selObj, axes);
             if(!selObj)
-                return;
-            // Note: ReferenceSelection has already checked the selection for validity
-            if ( selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
+                    return;
+            
+            if (selectionMode == reference || selObj->isDerivedFrom ( App::Line::getClassTypeId () ) ) {
                 pcPolarPattern->Axis.setValue(selObj, axes);
-
                 recomputeFeature();
                 updateUI();
             }
+            exitSelectionMode();
         }
     }
 }
@@ -277,7 +295,8 @@ void TaskPolarPatternParameters::onOccurrences(const uint n) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onAxisChanged(int num) {
+void TaskPolarPatternParameters::onAxisChanged(int /*num*/)
+{
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
@@ -337,17 +356,17 @@ void TaskPolarPatternParameters::getAxis(App::DocumentObject*& obj, std::vector<
     sub = lnk.getSubValues();
 }
 
-const bool TaskPolarPatternParameters::getReverse(void) const
+bool TaskPolarPatternParameters::getReverse(void) const
 {
     return ui->checkReverse->isChecked();
 }
 
-const double TaskPolarPatternParameters::getAngle(void) const
+double TaskPolarPatternParameters::getAngle(void) const
 {
     return ui->polarAngle->value().getValue();
 }
 
-const unsigned TaskPolarPatternParameters::getOccurrences(void) const
+unsigned TaskPolarPatternParameters::getOccurrences(void) const
 {
     return ui->spinOccurrences->value();
 }

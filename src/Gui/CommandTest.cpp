@@ -69,6 +69,7 @@ Std_TestQM::Std_TestQM()
 
 void Std_TestQM::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QStringList files = QFileDialog::getOpenFileNames(getMainWindow(),
         QString::fromLatin1("Test translation"), QString(),
         QString::fromLatin1("Translation (*.qm)"));
@@ -106,6 +107,7 @@ Std_TestReloadQM::Std_TestReloadQM()
 
 void Std_TestReloadQM::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Translator::instance()->activateLanguage(Translator::instance()->activeLanguage().c_str());
 }
 
@@ -128,7 +130,7 @@ FCCmdTest1::FCCmdTest1()
 
 void FCCmdTest1::activated(int iMsg)
 {
-
+    Q_UNUSED(iMsg); 
 }
 
 bool FCCmdTest1::isActive(void)
@@ -156,8 +158,7 @@ FCCmdTest2::FCCmdTest2()
 
 void FCCmdTest2::activated(int iMsg)
 {
-
-
+    Q_UNUSED(iMsg); 
 }
 
 bool FCCmdTest2::isActive(void)
@@ -183,6 +184,7 @@ FCCmdTest3::FCCmdTest3()
 
 void FCCmdTest3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if (!pcDoc) return;
 }
@@ -212,6 +214,7 @@ FCCmdTest4::FCCmdTest4()
 
 void FCCmdTest4::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -240,6 +243,7 @@ FCCmdTest5::FCCmdTest5()
 
 void FCCmdTest5::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -268,6 +272,7 @@ FCCmdTest6::FCCmdTest6()
 
 void FCCmdTest6::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     App::Document *pcDoc = getDocument();
     if(!pcDoc) return;
 }
@@ -295,6 +300,7 @@ CmdTestProgress1::CmdTestProgress1()
 
 void CmdTestProgress1::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMutex mutex;
     QMutexLocker ml(&mutex);
     try
@@ -336,6 +342,7 @@ CmdTestProgress2::CmdTestProgress2()
 
 void CmdTestProgress2::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMutex mutex;
     QMutexLocker ml(&mutex);
 
@@ -378,6 +385,7 @@ CmdTestProgress3::CmdTestProgress3()
 
 void CmdTestProgress3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMutex mutex;
     QMutexLocker ml(&mutex);
     
@@ -447,6 +455,7 @@ CmdTestProgress4::CmdTestProgress4()
 
 void CmdTestProgress4::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMutex mutex;
     QMutexLocker ml(&mutex);
 
@@ -537,6 +546,7 @@ private:
 
 void CmdTestProgress5::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QEventLoop loop;
 
     BarThread* thr1 = new BarThread(2000);
@@ -579,6 +589,7 @@ CmdTestMDI1::CmdTestMDI1()
 
 void CmdTestMDI1::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
 }
@@ -602,6 +613,7 @@ CmdTestMDI2::CmdTestMDI2()
 
 void CmdTestMDI2::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     QMdiArea* area = getMainWindow()->findChild<QMdiArea*>();
     if (area) {
         MDIView* mdi = getMainWindow()->activeWindow();
@@ -629,6 +641,7 @@ CmdTestMDI3::CmdTestMDI3()
 
 void CmdTestMDI3::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     MDIView* mdi = getMainWindow()->activeWindow();
     getMainWindow()->removeWindow(mdi);
     mdi->setParent(0, Qt::Window | Qt::WindowTitleHint |
@@ -728,6 +741,7 @@ public:
 
 void CmdTestConsoleOutput::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     TestConsoleObserver obs;
     Base::Console().AttachObserver(&obs);
     QThreadPool::globalInstance()->start(new ConsoleMessageTask);

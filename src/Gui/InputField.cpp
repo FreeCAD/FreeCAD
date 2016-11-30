@@ -106,7 +106,7 @@ void InputField::bind(const App::ObjectIdentifier &_path)
     PropertyQuantity * prop = freecad_dynamic_cast<PropertyQuantity>(getPath().getProperty());
 
     if (prop)
-        actQuantity = prop->getValue();
+        actQuantity = Base::Quantity(prop->getValue());
 
     DocumentObject * docObj = getPath().getDocumentObject();
 
@@ -241,7 +241,7 @@ void InputField::newInput(const QString & text)
 
             setExpression(e);
 
-            std::auto_ptr<Expression> evalRes(getExpression()->eval());
+            std::unique_ptr<Expression> evalRes(getExpression()->eval());
 
             NumberExpression * value = freecad_dynamic_cast<NumberExpression>(evalRes.get());
             if (value) {
@@ -621,6 +621,7 @@ void InputField::fixup(QString& input) const
 
 QValidator::State InputField::validate(QString& input, int& pos) const
 {
+    Q_UNUSED(pos);
     try {
         Quantity res;
         QString text = input;

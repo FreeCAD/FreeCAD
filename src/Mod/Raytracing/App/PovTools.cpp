@@ -145,7 +145,7 @@ void PovTools::writeCameraVec(const char* FileName, const std::vector<CamDef>& C
 }
 
 void PovTools::writeData(const char *FileName, const char *PartName,
-                         const Data::ComplexGeoData* data, float fMeshDeviation)
+                         const Data::ComplexGeoData* data, float /*fMeshDeviation*/)
 {
     // open the file and write
     Base::ofstream fout(FileName);

@@ -24,6 +24,9 @@ __title__ = "_MechanicalMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package MechanicalMaterial
+#  \ingroup FEM
+
 
 class _MechanicalMaterial:
     "The Material object"

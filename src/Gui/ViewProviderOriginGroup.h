@@ -26,34 +26,17 @@
 #include <boost/signals.hpp>
 
 #include "ViewProviderGeoFeatureGroup.h"
+#include "ViewProviderOriginGroupExtension.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderOriginGroup: public ViewProviderGeoFeatureGroup
+class GuiExport ViewProviderOriginGroup: public ViewProviderDocumentObject,
+                                         public ViewProviderOriginGroupExtension
 {
-    PROPERTY_HEADER(Gui::ViewProviderOriginGroup);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderOriginGroup);
 public:
     ViewProviderOriginGroup ();
     virtual ~ViewProviderOriginGroup ();
-
-    virtual std::vector<App::DocumentObject*> claimChildren(void)const;
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
-
-    virtual void attach(App::DocumentObject *pcObject);
-    virtual void updateData(const App::Property* prop);
-
-    void updateOriginSize();
-
-protected:
-    void slotChangedObjectApp ( const App::DocumentObject& obj );
-    void slotChangedObjectGui ( const Gui::ViewProviderDocumentObject& obj );
-
-private:
-    std::vector<App::DocumentObject*> constructChildren (
-            const std::vector<App::DocumentObject*> &children ) const;
-
-    boost::signals::connection connectChangedObjectApp;
-    boost::signals::connection connectChangedObjectGui;
 };
 
 } /* Gui  */

@@ -30,12 +30,21 @@ if FreeCAD.GuiUp:
     from PySide import QtGui,QtCore
     from DraftTools import translate
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    # \endcond
 
 __title__="FreeCAD Arch Commands"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
+
+## @package ArchCommands
+#  \ingroup ARCH
+#  \brief Utility functions for theArch Workbench
+#
+#  This module provides general functions used by Arch tools
+#  and utility commands
 
 # module functions ###############################################
 
@@ -54,22 +63,27 @@ def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+    transparency = 0.0
     if objectType == "Wall":
         c = p.GetUnsigned("WallColor",4294967295)
     elif objectType == "Structure":
         c = p.GetUnsigned("StructureColor",2847259391)
     elif objectType == "WindowGlass":
         c = p.GetUnsigned("WindowGlassColor",1772731135)
+        transparency = p.GetInt("WindowTransparency",85)/100.0
     elif objectType == "Rebar":
         c = p.GetUnsigned("RebarColor",3111475967)
     elif objectType == "Panel":
         c = p.GetUnsigned("PanelColor",3416289279)
+    elif objectType == "Construction":
+        c = Draft.getParam("constructioncolor",746455039)
+        transparency = 0.80
     else:
         c = p.GetUnsigned("WindowsColor",810781695)
     r = float((c>>24)&0xFF)/255.0
     g = float((c>>16)&0xFF)/255.0
     b = float((c>>8)&0xFF)/255.0
-    result = (r,g,b,1.0)
+    result = (r,g,b,transparency)
     return result
 
 def addComponents(objectsList,host):
@@ -143,7 +157,7 @@ def removeComponents(objectsList,host=None):
                     fixDAG(o)
                     if FreeCAD.GuiUp:
                         if not Draft.getType(o) in ["Window","Roof"]:
-                            o.ViewObject.hide()
+                            setAsSubcomponent(o)
             host.Subtractions = s
     else:
         for o in objectsList:
@@ -198,6 +212,21 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
     return obj
+
+def setAsSubcomponent(obj):
+    '''Sets the given object properly to become a subcomponent (addition, subtraction)
+    of an Arch component'''
+    Draft.ungroup(obj)
+    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("applyConstructionStyle",True):
+        if FreeCAD.GuiUp:
+            color = getDefaultColor("Construction")
+            if hasattr(obj.ViewObject,"LineColor"):
+                obj.ViewObject.LineColor = color
+            if hasattr(obj.ViewObject,"ShapeColor"):
+                obj.ViewObject.ShapeColor = color
+            if hasattr(obj.ViewObject,"Transparency"):
+                obj.ViewObject.Transparency = int(color[3]*100)
+            obj.ViewObject.hide()
 
 def fixDAG(obj):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
@@ -412,14 +441,25 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
             try:
                 f = Part.Face(Part.makePolygon(pts))
             except:
-                pass
+                print "getShapeFromMesh: error building face from polygon"
+                #pass
             else:
                 faces.append(f)
         shell = Part.makeShell(faces)
-        solid = Part.Solid(shell)
-        solid = solid.removeSplitter()
-        return solid
-
+        try:
+            solid = Part.Solid(shell)
+        except Part.OCCError:
+            print "getShapeFromMesh: error creating solid"
+        else:
+            try:
+                solid = solid.removeSplitter()
+            except Part.OCCError:
+                print "getShapeFromMesh: error removing splitter"
+                #pass
+            return solid
+    
+    #if not mesh.isSolid():
+    #    print "getShapeFromMesh: non-solid mesh, using slow method"
     faces = []
     segments = mesh.getPlanarSegments(tolerance)
     #print len(segments)
@@ -442,9 +482,11 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         if flat:
             return se
     except Part.OCCError:
+        print "getShapeFromMesh: error removing splitter"
         try:
             cp = Part.makeCompound(faces)
         except Part.OCCError:
+            print "getShapeFromMesh: error creating compound"
             return None
         else:
             return cp
@@ -452,6 +494,7 @@ def getShapeFromMesh(mesh,fast=True,tolerance=0.001,flat=False,cut=True):
         try:
             solid = Part.Solid(se)
         except Part.OCCError:
+            print "getShapeFromMesh: error creating solid"
             return se
         else:
             return solid
@@ -642,17 +685,18 @@ def getHost(obj,strict=True):
                 return par
     return None
 
-def pruneIncluded(objectslist):
-    """pruneIncluded(objectslist): removes from a list of Arch objects, those that are subcomponents of
-    another shape-based object, leaving only the top-level shapes."""
+def pruneIncluded(objectslist,strict=False):
+    """pruneIncluded(objectslist,[strict]): removes from a list of Arch objects, those that are subcomponents of
+    another shape-based object, leaving only the top-level shapes. If strict is True, the object
+    is removed only if the parent is also part of the selection."""
     import Draft
     newlist = []
     for obj in objectslist:
         toplevel = True
         if obj.isDerivedFrom("Part::Feature"):
-            if not (Draft.getType(obj) in ["Window","Clone"]):
+            if not (Draft.getType(obj) in ["Window","Clone","Pipe"]):
                 for parent in obj.InList:
-                    if parent.isDerivedFrom("Part::Feature"):
+                    if parent.isDerivedFrom("Part::Feature") and not (Draft.getType(parent) in ["Facebinder"]):
                         if not parent.isDerivedFrom("Part::Part2DObject"):
                             # don't consider 2D objects based on arch elements
                             if hasattr(parent,"CloneOf"):
@@ -663,6 +707,9 @@ def pruneIncluded(objectslist):
                                     toplevel = False
                             else:
                                 toplevel = False
+                    if (toplevel == False) and strict:
+                        if not(parent in objectslist) and not(parent in newlist):
+                            toplevel = True
         if toplevel:
             newlist.append(obj)
     return newlist
@@ -912,28 +959,50 @@ def getExtrusionData(shape):
         return None
     # build faces list with normals
     faces = []
+    import Part
     for f in shape.Faces:
-        faces.append([f,f.normalAt(0,0)])
+        try:
+            faces.append([f,f.normalAt(0,0)])
+        except Part.OCCError:
+            return None
     # find opposite normals pairs
     pairs = []
     for i1, f1 in enumerate(faces):
         for i2, f2 in enumerate(faces):
             if f1[0].hashCode() != f2[0].hashCode():
-                if round(f1[1].getAngle(f2[1]),8) == 3.14159265:
+                if round(f1[1].getAngle(f2[1]),4) == 3.1416:
                     pairs.append([i1,i2])
     if not pairs:
         return None
-    for p in pairs:
-        hc = [faces[p[0]][0].hashCode(),faces[p[1]][0].hashCode()]
-        ok = True
+    valids = []
+    for pair in pairs:
+        hc = [faces[pair[0]][0].hashCode(),faces[pair[1]][0].hashCode()]
         # check if other normals are all at 90 degrees
+        ok = True
         for f in faces:
             if f[0].hashCode() not in hc:
-                if round(f[1].getAngle(faces[p[0]][1]),8) != 1.57079633:
+                if round(f[1].getAngle(faces[pair[0]][1]),4) != 1.5708:
                     ok = False
         if ok:
-            return [faces[p[0]][0],faces[p[1]][0].CenterOfMass.sub(faces[p[0]][0].CenterOfMass)]
+            valids.append([faces[pair[0]][0],faces[pair[1]][0].CenterOfMass.sub(faces[pair[0]][0].CenterOfMass)])
+    for v in valids:
+        # prefer vertical extrusions
+        if v[1].getAngle(FreeCAD.Vector(0,0,1)) < 0.0001:
+            return v
+    # otherwise return the first found
+    if valids:
+        return valids[0]
     return None
+
+def printMessage( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.information( None , "" , message.decode('utf8') )
+
+def printWarning( message ):
+    FreeCAD.Console.PrintMessage( message )
+    if FreeCAD.GuiUp :
+        reply = QtGui.QMessageBox.warning( None , "" , message.decode('utf8') )
 
 
 # command definitions ###############################################
@@ -1263,6 +1332,32 @@ class _CommandIfcSpreadsheet:
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
+
+class _ToggleSubs:
+    "the ToggleSubs command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_ToggleSubs',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Toggle subcomponents"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_ToggleSubs","Shows or hides the subcomponents of this object")}
+
+    def IsActive(self):
+        return bool(FreeCADGui.Selection.getSelection())
+
+    def Activated(self):
+        mode = None
+        for obj in FreeCADGui.Selection.getSelection():
+            if hasattr(obj, "Subtractions"):
+                for sub in obj.Subtractions:
+                    if not (Draft.getType(sub) in ["Window","Roof"]):
+                        if mode == None:
+                            # take the first sub as base
+                            mode = sub.ViewObject.isVisible()
+                        if mode == True:
+                            sub.ViewObject.hide()
+                        else:
+                            sub.ViewObject.show()
+
+
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Add',_CommandAdd())
     FreeCADGui.addCommand('Arch_Remove',_CommandRemove())
@@ -1277,3 +1372,4 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
     FreeCADGui.addCommand('Arch_IfcSpreadsheet',_CommandIfcSpreadsheet())
+    FreeCADGui.addCommand('Arch_ToggleSubs',_ToggleSubs())

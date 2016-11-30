@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterCcx"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import os
@@ -36,50 +37,288 @@ import FemInputWriter
 
 
 class FemInputWriterCcx(FemInputWriter.FemInputWriter):
-    def __init__(self, analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
-                 fixed_obj,
-                 force_obj, pressure_obj,
-                 displacement_obj,
+    def __init__(self,
+                 analysis_obj, solver_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
+                 fixed_obj, displacement_obj,
+                 contact_obj, planerotation_obj, transform_obj,
+                 selfweight_obj, force_obj, pressure_obj,
+                 temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
-                 analysis_type=None, eigenmode_parameters=None,
-                 dir_name=None):
-        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
-                                               mesh_obj, mat_obj,
-                                               fixed_obj,
-                                               force_obj, pressure_obj,
-                                               displacement_obj,
-                                               beamsection_obj, shellthickness_obj,
-                                               analysis_type, eigenmode_parameters,
-                                               dir_name)
-        self.file_name = self.dir_name + '/' + self.mesh_object.Name + '.inp'
+                 analysis_type=None, dir_name=None
+                 ):
+
+        FemInputWriter.FemInputWriter.__init__(
+            self,
+            analysis_obj, solver_obj,
+            mesh_obj, matlin_obj, matnonlin_obj,
+            fixed_obj, displacement_obj,
+            contact_obj, planerotation_obj, transform_obj,
+            selfweight_obj, force_obj, pressure_obj,
+            temperature_obj, heatflux_obj, initialtemperature_obj,
+            beamsection_obj, shellthickness_obj,
+            analysis_type, dir_name)
+        self.main_file_name = self.mesh_object.Name + '.inp'
+        self.file_name = self.dir_name + '/' + self.main_file_name
         print('FemInputWriterCcx --> self.dir_name  -->  ' + self.dir_name)
+        print('FemInputWriterCcx --> self.main_file_name  -->  ' + self.main_file_name)
         print('FemInputWriterCcx --> self.file_name  -->  ' + self.file_name)
 
     def write_calculix_input_file(self):
+        if self.solver_obj.SplitInputWriter is True:
+            self.write_calculix_splitted_input_file()
+        else:
+            self.write_calculix_one_input_file()
+        return self.file_name
+
+    def write_calculix_one_input_file(self):
+        timestart = time.clock()
         self.femmesh.writeABAQUS(self.file_name)
 
         # reopen file with "append" and add the analysis definition
         inpfile = open(self.file_name, 'a')
         inpfile.write('\n\n')
+
+        # node and element sets
         self.write_element_sets_material_and_femelement_type(inpfile)
-        self.write_node_sets_constraints_fixed(inpfile)
-        self.write_node_sets_constraints_displacement(inpfile)
+        if self.fixed_objects:
+            self.write_node_sets_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_node_sets_constraints_displacement(inpfile)
+        if self.planerotation_objects:
+            self.write_node_sets_constraints_planerotation(inpfile)
+        if self.contact_objects:
+            self.write_surfaces_contraints_contact(inpfile)
+        if self.transform_objects:
+            self.write_node_sets_constraints_transform(inpfile)
+        if self.analysis_type == "thermomech" and self.temperature_objects:
+            self.write_node_sets_constraints_temperature(inpfile)
+
+        # materials and fem element types
         self.write_materials(inpfile)
+        if self.analysis_type == "thermomech" and self.initialtemperature_objects:
+            self.write_constraints_initialtemperature(inpfile)
         self.write_femelementsets(inpfile)
-        self.write_step_begin(inpfile)
-        self.write_constraints_fixed(inpfile)
-        self.write_constraints_displacement(inpfile)
-        if self.analysis_type is None or self.analysis_type == "static":
-            self.write_constraints_force(inpfile)
-            self.write_constraints_pressure(inpfile)
-        elif self.analysis_type == "frequency":
-            self.write_frequency(inpfile)
+
+        # constraints independent from steps
+        if self.planerotation_objects:
+            self.write_constraints_planerotation(inpfile)
+        if self.contact_objects:
+            self.write_constraints_contact(inpfile)
+        if self.transform_objects:
+            self.write_constraints_transform(inpfile)
+
+        # step begin
+        if self.analysis_type == "frequency":
+            self.write_step_begin_static_frequency(inpfile)
+            self.write_analysis_frequency(inpfile)
+        elif self.analysis_type == "static":
+            self.write_step_begin_static_frequency(inpfile)
+        elif self.analysis_type == "thermomech":
+            self.write_step_begin_thermomech(inpfile)
+            self.write_analysis_thermomech(inpfile)
+
+        # constraints depend on step used in all analysis types
+        if self.fixed_objects:
+            self.write_constraints_fixed(inpfile)
+        if self.displacement_objects:
+            self.write_constraints_displacement(inpfile)
+
+        # constraints depend on step and depending on analysis type
+        if self.analysis_type == "frequency":
+            pass
+        elif self.analysis_type == "static":
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfile)
+            if self.force_objects:
+                self.write_constraints_force(inpfile)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfile)
+        elif self.analysis_type == "thermomech":
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfile)
+            if self.force_objects:
+                self.write_constraints_force(inpfile)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfile)
+            if self.temperature_objects:
+                self.write_constraints_temperature(inpfile)
+            if self.heatflux_objects:
+                self.write_constraints_heatflux(inpfile)
+
+        # output and step end
         self.write_outputs_types(inpfile)
         self.write_step_end(inpfile)
+
+        # footer
         self.write_footer(inpfile)
         inpfile.close()
-        return self.file_name
+        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
+
+    def write_calculix_splitted_input_file(self):
+        timestart = time.clock()
+
+        # reopen file with "append" and add the analysis definition
+        # first open file with "write" to ensure that each new iteration of writing of inputfile starts in new file
+        # first open file with "write" to ensure that the .writeABAQUS also writes in inputfile
+        inpfileMain = open(self.file_name, 'w')
+        inpfileMain.close
+        inpfileMain = open(self.file_name, 'a')
+        inpfileMain.write('\n\n')
+
+        # write nodes and elements
+        name = self.file_name[:-4]
+        include_name = self.main_file_name[:-4]
+
+        inpfileNodesElem = open(name + "_Node_Elem_sets.inp", 'w')
+        self.femmesh.writeABAQUS(name + "_Node_Elem_sets.inp")
+        inpfileNodesElem.close
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('**Nodes and Elements\n')
+        inpfileMain.write('** written by femmesh.writeABAQUS\n')
+        inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Elem_sets.inp \n")
+
+        # create seperate inputfiles for each node set or constraint
+        if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
+            inpfileNodes = open(name + "_Node_sets.inp", 'w')
+        if self.analysis_type == "thermomech" and self.temperature_objects:
+            inpfileNodeTemp = open(name + "_Node_Temp.inp", 'w')
+        if self.force_objects:
+            inpfileForce = open(name + "_Node_Force.inp", 'w')
+        if self.pressure_objects:
+            inpfilePressure = open(name + "_Pressure.inp", 'w')
+        if self.analysis_type == "thermomech" and self.heatflux_objects:
+            inpfileHeatflux = open(name + "_Node_Heatlfux.inp", 'w')
+        if self.contact_objects:
+            inpfileContact = open(name + "_Surface_Contact.inp", 'w')
+        if self.transform_objects:
+            inpfileTransform = open(name + "_Node_Transform.inp", 'w')
+
+        # node and element sets
+        self.write_element_sets_material_and_femelement_type(inpfileMain)
+        if self.fixed_objects:
+            self.write_node_sets_constraints_fixed(inpfileNodes)
+        if self.displacement_objects:
+            self.write_node_sets_constraints_displacement(inpfileNodes)
+        if self.planerotation_objects:
+            self.write_node_sets_constraints_planerotation(inpfileNodes)
+        if self.contact_objects:
+            self.write_surfaces_contraints_contact(inpfileContact)
+        if self.transform_objects:
+            self.write_node_sets_constraints_transform(inpfileTransform)
+
+        # write commentary and include statement for static case node sets
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('**Node sets for constraints\n')
+        inpfileMain.write('** written by write_node_sets_constraints_fixed\n')
+        inpfileMain.write('** written by write_node_sets_constraints_displacement\n')
+        inpfileMain.write('** written by write_node_sets_constraints_planerotation\n')
+        if self.fixed_objects:
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_sets.inp \n")
+
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('** Surfaces for contact constraint\n')
+        inpfileMain.write('** written by write_surfaces_contraints_contact\n')
+        if self.contact_objects:
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Surface_Contact.inp \n")
+
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('** Node sets for transform constraint\n')
+        inpfileMain.write('** written by write_node_sets_constraints_transform\n')
+        if self.transform_objects:
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Transform.inp \n")
+
+        if self.analysis_type == "thermomech" and self.temperature_objects:
+            self.write_node_sets_constraints_temperature(inpfileNodeTemp)
+
+        # include seperately written temperature constraint in input file
+        if self.analysis_type == "thermomech":
+            inpfileMain.write('\n***********************************************************\n')
+            inpfileMain.write('**Node sets for temperature constraint\n')
+            inpfileMain.write('** written by write_node_sets_constraints_temperature\n')
+            if self.temperature_objects:
+                inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Temp.inp \n")
+
+        # materials and fem element types
+        self.write_materials(inpfileMain)
+        if self.analysis_type == "thermomech" and self.initialtemperature_objects:
+            self.write_constraints_initialtemperature(inpfileMain)
+        self.write_femelementsets(inpfileMain)
+
+        # constraints independent from steps
+        if self.planerotation_objects:
+            self.write_constraints_planerotation(inpfileMain)
+        if self.contact_objects:
+            self.write_constraints_contact(inpfileMain)
+        if self.transform_objects:
+            self.write_constraints_transform(inpfileMain)
+
+        # step begin
+        if self.analysis_type == "frequency":
+            self.write_step_begin_static_frequency(inpfileMain)
+            self.write_analysis_frequency(inpfileMain)
+        elif self.analysis_type == "static":
+            self.write_step_begin_static_frequency(inpfileMain)
+        elif self.analysis_type == "thermomech":
+            self.write_step_begin_thermomech(inpfileMain)
+            self.write_analysis_thermomech(inpfileMain)
+
+        # constraints depend on step used in all analysis types
+        if self.fixed_objects:
+            self.write_constraints_fixed(inpfileMain)
+        if self.displacement_objects:
+            self.write_constraints_displacement(inpfileMain)
+
+        # constraints depend on step and depending on analysis type
+        if self.analysis_type == "frequency":
+            pass
+        elif self.analysis_type == "static":
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfileMain)
+            if self.force_objects:
+                self.write_constraints_force(inpfileForce)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfilePressure)
+        elif self.analysis_type == "thermomech":
+            if self.selfweight_objects:
+                self.write_constraints_selfweight(inpfileMain)
+            if self.force_objects:
+                self.write_constraints_force(inpfileForce)
+            if self.pressure_objects:
+                self.write_constraints_pressure(inpfilePressure)
+            if self.temperature_objects:
+                self.write_constraints_temperature(inpfileMain)
+            if self.heatflux_objects:
+                self.write_constraints_heatflux(inpfileHeatflux)
+
+        # include seperately written constraints in input file
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('** Node loads\n')
+        inpfileMain.write('** written by write_constraints_force\n')
+        if self.force_objects:
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Force.inp \n")
+
+        inpfileMain.write('\n***********************************************************\n')
+        inpfileMain.write('** Element + CalculiX face + load in [MPa]\n')
+        inpfileMain.write('** written by write_constraints_pressure\n')
+        if self.pressure_objects:
+            inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Pressure.inp \n")
+
+        if self.analysis_type == "thermomech":
+            inpfileMain.write('\n***********************************************************\n')
+            inpfileMain.write('** Convective heat transfer (heat flux)\n')
+            inpfileMain.write('** written by write_constraints_heatflux\n')
+            if self.heatflux_objects:
+                inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_Heatlfux.inp \n")
+
+        # output and step end
+        self.write_outputs_types(inpfileMain)
+        self.write_step_end(inpfileMain)
+
+        # footer
+        self.write_footer(inpfileMain)
+        inpfileMain.close()
+        print("Writing time input file: " + str(time.clock() - timestart) + ' \n')
 
     def write_element_sets_material_and_femelement_type(self, f):
         f.write('\n***********************************************************\n')
@@ -125,7 +364,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node set for fixed constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.fixed_objects:
+        for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -137,7 +376,96 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('\n***********************************************************\n')
         f.write('** Node sets for prescribed displacement constraint\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.displacement_objects:
+        for femobj in self.displacement_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
+            for n in femobj['Nodes']:
+                f.write(str(n) + ',\n')
+
+    def write_node_sets_constraints_planerotation(self, f):
+        # get nodes
+        self.get_constraints_planerotation_nodes()
+        # write nodes to file
+        if not self.femnodes_mesh:
+            self.femnodes_mesh = self.femmesh.Nodes
+        f.write('\n***********************************************************\n')
+        f.write('** Node set for plane rotation constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        # info about self.constraint_conflict_nodes:
+        # is used to check if MPC and constraint fixed and constraint displacement share same nodes,
+        # because MPC's and constriants fixed an constraints displacement can't share same nodes.
+        # thus call write_node_sets_constraints_planerotation has to be after constraint fixed and constraint displacement
+        for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            l_nodes = femobj['Nodes']
+            fric_obj = femobj['Object']
+            f.write('*NSET,NSET=' + fric_obj.Name + '\n')
+            # Code to extract nodes and coordinates on the PlaneRotation support face
+            nodes_coords = []
+            for node in l_nodes:
+                nodes_coords.append((node, self.femnodes_mesh[node].x, self.femnodes_mesh[node].y, self.femnodes_mesh[node].z))
+            node_planerotation = FemMeshTools.get_three_non_colinear_nodes(nodes_coords)
+            for i in range(len(l_nodes)):
+                if l_nodes[i] not in node_planerotation:
+                    node_planerotation.append(l_nodes[i])
+            MPC_nodes = []
+            for i in range(len(node_planerotation)):
+                cnt = 0
+                for j in range(len(self.constraint_conflict_nodes)):
+                    if node_planerotation[i] == self.constraint_conflict_nodes[j]:
+                        cnt = cnt + 1
+                if cnt == 0:
+                    MPC = node_planerotation[i]
+                    MPC_nodes.append(MPC)
+            for i in range(len(MPC_nodes)):
+                f.write(str(MPC_nodes[i]) + ',\n')
+
+    def write_surfaces_contraints_contact(self, f):
+        # get surface nodes and write them to file
+        f.write('\n***********************************************************\n')
+        f.write('** Surfaces for contact constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            contact_obj = femobj['Object']
+            cnt = 0
+            obj = obj + 1
+            for o, elem_tup in contact_obj.References:
+                for elem in elem_tup:
+                    ref_shape = o.Shape.getElement(elem)
+                    cnt = cnt + 1
+                    if ref_shape.ShapeType == 'Face':
+                        if cnt == 1:
+                            name = "DEP" + str(obj)
+                        else:
+                            name = "IND" + str(obj)
+                        f.write('*SURFACE, NAME =' + name + '\n')
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
+                        for i in v:
+                            f.write("{},S{}\n".format(i[0], i[1]))
+
+    def write_node_sets_constraints_transform(self, f):
+        # get nodes
+        self.get_constraints_transform_nodes()
+        # write nodes to file
+        f.write('\n***********************************************************\n')
+        f.write('** Node sets for transform constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.transform_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            trans_obj = femobj['Object']
+            if trans_obj.TransformType == "Rectangular":
+                f.write('*NSET,NSET=Rect' + trans_obj.Name + '\n')
+            elif trans_obj.TransformType == "Cylindrical":
+                f.write('*NSET,NSET=Cylin' + trans_obj.Name + '\n')
+            for n in femobj['Nodes']:
+                f.write(str(n) + ',\n')
+
+    def write_node_sets_constraints_temperature(self, f):
+        # get nodes
+        self.get_constraints_temperature_nodes()
+        # write nodes to file
+        f.write('\n***********************************************************\n')
+        f.write('** Node sets for temperature constraints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.temperature_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             f.write('*NSET,NSET=' + femobj['Object'].Name + '\n')
             for n in femobj['Nodes']:
                 f.write(str(n) + ',\n')
@@ -147,23 +475,63 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** Materials\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('** Young\'s modulus unit is MPa = N/mm2\n')
+        if self.analysis_type == "frequency" or self.selfweight_objects or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+            f.write('** Density\'s unit is t/mm^3\n')
+        if self.analysis_type == "thermomech":
+            f.write('** Thermal conductivity unit is kW/mm/K = t*mm/K*s^3\n')
+            f.write('** Specific Heat unit is kJ/t/K = mm^2/s^2/K\n')
         for femobj in self.material_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             mat_obj = femobj['Object']
-            # get material properties
-            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
-            YM_in_MPa = YM.getValueAs('MPa')
-            PR = float(mat_obj.Material['PoissonRatio'])
             mat_info_name = mat_obj.Material['Name']
             mat_name = mat_obj.Name
+            # get material properties, Currently in SI units: M/kg/s/Kelvin
+            YM = FreeCAD.Units.Quantity(mat_obj.Material['YoungsModulus'])
+            YM_in_MPa = float(YM.getValueAs('MPa'))
+            PR = float(mat_obj.Material['PoissonRatio'])
+            if self.analysis_type == "frequency" or self.selfweight_objects or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+                density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
+                density_in_tonne_per_mm3 = float(density.getValueAs('t/mm^3'))
+            if self.analysis_type == "thermomech":
+                TC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalConductivity'])
+                TC_in_WmK = float(TC.getValueAs('W/m/K'))  # SvdW: Add factor to force units to results' base units of t/mm/s/K - W/m/K results in no factor needed
+                TEC = FreeCAD.Units.Quantity(mat_obj.Material['ThermalExpansionCoefficient'])
+                TEC_in_mmK = float(TEC.getValueAs('mm/mm/K'))
+                SH = FreeCAD.Units.Quantity(mat_obj.Material['SpecificHeat'])
+                SH_in_JkgK = float(SH.getValueAs('J/kg/K')) * 1e+06  # SvdW: Add factor to force units to results' base units of t/mm/s/K
             # write material properties
-            f.write('**FreeCAD material name: ' + mat_info_name + '\n')
+            f.write('** FreeCAD material name: ' + mat_info_name + '\n')
             f.write('*MATERIAL, NAME=' + mat_name + '\n')
-            f.write('*ELASTIC \n')
-            f.write('{0},  {1:.3f}\n'.format(YM_in_MPa, PR))
-            density = FreeCAD.Units.Quantity(mat_obj.Material['Density'])
-            density_in_tone_per_mm3 = float(density.getValueAs('t/mm^3'))
-            f.write('*DENSITY \n')
-            f.write('{0:.3e}, \n'.format(density_in_tone_per_mm3))
+            f.write('*ELASTIC\n')
+            f.write('{0:.0f}, {1:.3f}\n'.format(YM_in_MPa, PR))
+            if self.analysis_type == "frequency" or self.selfweight_objects or (self.analysis_type == "thermomech" and not self.solver_obj.ThermoMechSteadyState):
+                f.write('*DENSITY\n')
+                f.write('{0:.3e}\n'.format(density_in_tonne_per_mm3))
+            if self.analysis_type == "thermomech":
+                f.write('*CONDUCTIVITY\n')
+                f.write('{0:.3f}\n'.format(TC_in_WmK))
+                f.write('*EXPANSION\n')
+                f.write('{0:.3e}\n'.format(TEC_in_mmK))
+                f.write('*SPECIFIC HEAT\n')
+                f.write('{0:.3e}\n'.format(SH_in_JkgK))
+            # nonlinear material properties
+            if self.solver_obj.MaterialNonlinearity == 'nonlinear':
+                for femobj in self.material_nonlinear_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+                    nl_mat_obj = femobj['Object']
+                    if nl_mat_obj.LinearBaseMaterial == mat_obj:
+                        if nl_mat_obj.MaterialModelNonlinearity == "simple hardening":
+                            f.write('*PLASTIC\n')
+                            f.write(nl_mat_obj.YieldPoint1 + '\n')
+                            f.write(nl_mat_obj.YieldPoint2 + '\n')
+                    f.write('\n')
+
+    def write_constraints_initialtemperature(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Initial temperature constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        f.write('*INITIAL CONDITIONS,TYPE=TEMPERATURE\n')
+        for itobj in self.initialtemperature_objects:  # Should only be one
+            inittemp_obj = itobj['Object']
+            f.write('Nall,{}\n'.format(inittemp_obj.initialTemperature))  # OvG: Initial temperature
 
     def write_femelementsets(self, f):
         f.write('\n***********************************************************\n')
@@ -200,17 +568,81 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     setion_def = '*SOLID SECTION, ' + elsetdef + material + '\n'
                     f.write(setion_def)
 
-    def write_step_begin(self, f):
+    def write_step_begin_static_frequency(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** One step is needed to calculate the mechanical analysis of FreeCAD\n')
-        f.write('** loads are applied quasi-static, means without involving the time dimension\n')
+        f.write('** One step is needed to run the mechanical analysis of FreeCAD\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        f.write('*STEP\n')
-        f.write('*STATIC\n')
+        static_frequency_step = '*STEP'
+        if self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'static':
+            static_frequency_step += ', NLGEOM'   # https://www.comsol.com/blogs/what-is-geometric-nonlinearity/
+        elif self.solver_obj.GeometricalNonlinearity == "nonlinear" and self.analysis_type == 'frequency':
+            print('Analysis type frequency and geometrical nonlinear analyis are not allowed together, linear is used instead!')
+        f.write(static_frequency_step + '\n')
+        if self.solver_obj.IterationsControlParameterTimeUse:
+            f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
+            f.write(self.solver_obj.IterationsControlParameterIter + '\n')
+            f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
+        analysis_static = '*STATIC'
+        if self.solver_obj.MatrixSolverType == "default":
+            pass
+        elif self.solver_obj.MatrixSolverType == "spooles":
+            analysis_static += ', SOLVER=SPOOLES'
+        elif self.solver_obj.MatrixSolverType == "iterativescaling":
+            analysis_static += ', SOLVER=ITERATIVE SCALING'
+        elif self.solver_obj.MatrixSolverType == "iterativecholesky":
+            analysis_static += ', SOLVER=ITERATIVE CHOLESKY'
+        if self.solver_obj.IterationsUserDefinedIncrementations:
+            analysis_static += ', DIRECT'
+        f.write(analysis_static + '\n')
+        if self.solver_obj.IterationsUserDefinedIncrementations:
+            f.write(self.solver_obj.IterationsUserDefinedTimeStepLength + '\n')
+
+    def write_step_begin_thermomech(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** One step is needed to run the thermomechanical analysis of FreeCAD\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        thermomech_step = '*STEP'
+        if self.solver_obj.GeometricalNonlinearity == "nonlinear":
+            thermomech_step += ', NLGEOM'
+        if self.solver_obj.IterationsThermoMechMaximum:
+            thermomech_step += ', INC=' + str(self.solver_obj.IterationsThermoMechMaximum)
+        f.write(thermomech_step + '\n')
+        if self.solver_obj.IterationsControlParameterTimeUse:
+            f.write('*CONTROLS, PARAMETERS=TIME INCREMENTATION\n')
+            f.write(self.solver_obj.IterationsControlParameterIter + '\n')
+            f.write(self.solver_obj.IterationsControlParameterCutb + '\n')
+
+    def write_analysis_frequency(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Frequency analysis\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        f.write('*FREQUENCY\n')
+        f.write('{},{},{}\n'.format(self.solver_obj.EigenmodesCount, self.solver_obj.EigenmodeLowLimit, self.solver_obj.EigenmodeHighLimit))
+
+    def write_analysis_thermomech(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Coupled temperature displacement analysis\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        thermomech_analysis = '*COUPLED TEMPERATURE-DISPLACEMENT'
+        if self.solver_obj.MatrixSolverType == "default":
+            pass
+        elif self.solver_obj.MatrixSolverType == "spooles":
+            thermomech_analysis += ', SOLVER=SPOOLES'
+        elif self.solver_obj.MatrixSolverType == "iterativescaling":
+            thermomech_analysis += ', SOLVER=ITERATIVE SCALING'
+        elif self.solver_obj.MatrixSolverType == "iterativecholesky":
+            thermomech_analysis += ', SOLVER=ITERATIVE CHOLESKY'
+        if self.solver_obj.ThermoMechSteadyState:
+            thermomech_analysis += ', STEADY STATE'
+            self.solver_obj.TimeInitialStep = 1.0  # Set time to 1 and ignore user inputs for steady state
+            self.solver_obj.TimeEnd = 1.0
+        thermomech_time = '{},{}'.format(self.solver_obj.TimeInitialStep, self.solver_obj.TimeEnd)  # OvG: 1.0 increment, total time 1 for steady state will cut back automatically
+        f.write(thermomech_analysis + '\n')
+        f.write(thermomech_time + '\n')
 
     def write_constraints_fixed(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Constaints\n')
+        f.write('** Fixed Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for femobj in self.fixed_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             fix_obj_name = femobj['Object'].Name
@@ -260,12 +692,72 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     f.write(disp_obj_name + ',6,6,' + str(disp_obj.zRotation) + '\n')
         f.write('\n')
 
+    def write_constraints_contact(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Contact Constraints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        obj = 0
+        for femobj in self.contact_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            obj = obj + 1
+            contact_obj = femobj['Object']
+            f.write('*CONTACT PAIR, INTERACTION=INT' + str(obj) + ',TYPE=SURFACE TO SURFACE\n')
+            ind_surf = "IND" + str(obj)
+            dep_surf = "DEP" + str(obj)
+            f.write(dep_surf + ',' + ind_surf + '\n')
+            f.write('*SURFACE INTERACTION, NAME=INT' + str(obj) + '\n')
+            f.write('*SURFACE BEHAVIOR,PRESSURE-OVERCLOSURE=LINEAR\n')
+            slope = contact_obj.Slope
+            f.write(str(slope) + ' \n')
+            friction = contact_obj.Friction
+            if friction > 0:
+                f.write('*FRICTION \n')
+                stick = (slope / 10.0)
+                f.write(str(friction) + ', ' + str(stick) + ' \n')
+
+    def write_constraints_planerotation(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** PlaneRotation Constraints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.planerotation_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            fric_obj_name = femobj['Object'].Name
+            f.write('*MPC\n')
+            f.write('PLANE,' + fric_obj_name + '\n')
+
+    def write_constraints_transform(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Transform Constaints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for trans_object in self.transform_objects:
+            trans_obj = trans_object['Object']
+            if trans_obj.TransformType == "Rectangular":
+                f.write('*TRANSFORM, NSET=Rect' + trans_obj.Name + ', TYPE=R\n')
+                coords = FemMeshTools.get_rectangular_coords(trans_obj)
+                f.write(coords + '\n')
+            elif trans_obj.TransformType == "Cylindrical":
+                f.write('*TRANSFORM, NSET=Cylin' + trans_obj.Name + ', TYPE=C\n')
+                coords = FemMeshTools.get_cylindrical_coords(trans_obj)
+                f.write(coords + '\n')
+
+    def write_constraints_selfweight(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Self weight Constraint\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for femobj in self.selfweight_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
+            selwei_obj_name = femobj['Object'].Name
+            f.write('** ' + selwei_obj_name + '\n')
+            f.write('*DLOAD\n')
+            f.write('Eall,GRAV,9810,0,0,-1\n')
+            f.write('\n')
+        # grav (erdbeschleunigung) is equal for all elements
+        # should be only one constraint
+        # different elment sets for different density are written in the material element sets allready
+
     def write_constraints_force(self, f):
         # check shape type of reference shape and get node loads
         self.get_constraints_force_nodeloads()
         # write node loads to file
         f.write('\n***********************************************************\n')
-        f.write('** Node loads\n')
+        f.write('** Node loads Constraints\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         f.write('*CLOAD\n')
         for femobj in self.force_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
@@ -289,28 +781,46 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('\n')
 
     def write_constraints_pressure(self, f):
+        # get the faces and face numbers
+        self.get_constraints_pressure_faces()
+        # write face loads to file
         f.write('\n***********************************************************\n')
         f.write('** Element + CalculiX face + load in [MPa]\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        for femobj in self.pressure_objects:
+        for femobj in self.pressure_objects:  # femobj --> dict, FreeCAD document object is femobj['Object']
             prs_obj = femobj['Object']
+            rev = -1 if prs_obj.Reversed else 1
             f.write('*DLOAD\n')
-            for o, elem_tup in prs_obj.References:
-                rev = -1 if prs_obj.Reversed else 1
-                for elem in elem_tup:
-                    ref_shape = o.Shape.getElement(elem)
-                    if ref_shape.ShapeType == 'Face':
-                        v = self.femmesh.getccxVolumesByFace(ref_shape)
-                        f.write("** Load on face {}\n".format(elem))
-                        for i in v:
-                            f.write("{},P{},{}\n".format(i[0], i[1], rev * prs_obj.Pressure))
+            for ref_shape in femobj['PressureFaces']:
+                f.write('** ' + ref_shape[0] + '\n')
+                for face, fno in ref_shape[1]:
+                    f.write("{},P{},{}\n".format(face, fno, rev * prs_obj.Pressure))
 
-    def write_frequency(self, f):
+    def write_constraints_temperature(self, f):
         f.write('\n***********************************************************\n')
-        f.write('** Frequency analysis\n')
+        f.write('** Fixed temperature constraint applied\n')
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
-        f.write('*FREQUENCY\n')
-        f.write('{},{},{}\n'.format(self.no_of_eigenfrequencies, self.eigenfrequeny_range_low, self.eigenfrequeny_range_high))
+        for ftobj in self.temperature_objects:
+            fixedtemp_obj = ftobj['Object']
+            f.write('*BOUNDARY\n')
+            f.write('{},11,11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+            f.write('\n')
+
+    def write_constraints_heatflux(self, f):
+        f.write('\n***********************************************************\n')
+        f.write('** Heatflux constraints\n')
+        f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
+        for hfobj in self.heatflux_objects:
+            heatflux_obj = hfobj['Object']
+            f.write('*FILM\n')
+            for o, elem_tup in heatflux_obj.References:
+                for elem in elem_tup:
+                    ho = o.Shape.getElement(elem)
+                    if ho.ShapeType == 'Face':
+                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                        f.write("** Heat flux on face {}\n".format(elem))
+                        for i in v:
+                            f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')
@@ -320,7 +830,10 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             f.write('*NODE FILE, OUTPUT=2d\n')
         else:
             f.write('*NODE FILE\n')
-        f.write('U\n')
+        if self.analysis_type == "thermomech":  # MPH write out nodal temperatures if thermomechanical
+            f.write('U, NT\n')
+        else:
+            f.write('U\n')
         f.write('*EL FILE\n')
         f.write('S, E\n')
         f.write('** outputs --> dat file\n')
@@ -453,9 +966,19 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
             self.ccx_elsets.append(ccx_elset)
 
     def get_ccx_elsets_multiple_mat_solid(self):
-        if not self.femelement_table:
-            self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
-        FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects)
+        all_found = False
+        if self.femmesh.GroupCount:
+            all_found = FemMeshTools.get_femelement_sets_from_group_data(self.femmesh, self.material_objects)
+            print(all_found)
+        if all_found is False:
+            if not self.femelement_table:
+                self.femelement_table = FemMeshTools.get_femelement_table(self.femmesh)
+            # we gone use the binary search for get_femelements_by_femnodes(), thus we need the parameter values self.femnodes_ele_table
+            if not self.femnodes_mesh:
+                self.femnodes_mesh = self.femmesh.Nodes
+            if not self.femnodes_ele_table:
+                self.femnodes_ele_table = FemMeshTools.get_femnodes_ele_table(self.femnodes_mesh, self.femelement_table)
+            FemMeshTools.get_femelement_sets(self.femmesh, self.femelement_table, self.material_objects, self.femnodes_ele_table)
         for mat_data in self.material_objects:
             mat_obj = mat_data['Object']
             ccx_elset = {}
@@ -540,3 +1063,5 @@ def get_ccx_elset_solid_name(mat_name, solid_name=None, mat_short_name=None):
         return mat_short_name + solid_name
     else:
         return mat_name + solid_name
+
+#  @}

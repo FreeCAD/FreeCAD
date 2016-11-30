@@ -57,7 +57,7 @@ CmdRobotInsertKukaIR500::CmdRobotInsertKukaIR500()
 }
 
 
-void CmdRobotInsertKukaIR500::activated(int iMsg)
+void CmdRobotInsertKukaIR500::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr500_1.wrl";
@@ -99,7 +99,7 @@ CmdRobotInsertKukaIR16::CmdRobotInsertKukaIR16()
 }
 
 
-void CmdRobotInsertKukaIR16::activated(int iMsg)
+void CmdRobotInsertKukaIR16::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr16.wrl";
@@ -140,7 +140,7 @@ CmdRobotInsertKukaIR210::CmdRobotInsertKukaIR210()
 }
 
 
-void CmdRobotInsertKukaIR210::activated(int iMsg)
+void CmdRobotInsertKukaIR210::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr210.WRL";
@@ -180,7 +180,7 @@ CmdRobotInsertKukaIR125::CmdRobotInsertKukaIR125()
 }
 
 
-void CmdRobotInsertKukaIR125::activated(int iMsg)
+void CmdRobotInsertKukaIR125::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr125_3.wrl";
@@ -221,7 +221,7 @@ CmdRobotAddToolShape::CmdRobotAddToolShape()
 }
 
 
-void CmdRobotAddToolShape::activated(int iMsg)
+void CmdRobotAddToolShape::activated(int)
 {
     std::vector<App::DocumentObject*> robots = getSelection()
         .getObjectsOfType(Robot::RobotObject::getClassTypeId());

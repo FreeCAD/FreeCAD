@@ -86,7 +86,7 @@ PyObject *ArcOfEllipsePy::PyMake(struct _typeobject *, PyObject *, PyObject *)  
 }
 
 // constructor method
-int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* kwds)
+int ArcOfEllipsePy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     PyObject* o;
     double u1, u2;
@@ -222,12 +222,12 @@ Py::Object ArcOfEllipsePy::getEllipse(void) const
     return Py::Object(new EllipsePy(new GeomEllipse(ellipse)), true);
 }
 
-PyObject *ArcOfEllipsePy::getCustomAttributes(const char* attr) const
+PyObject *ArcOfEllipsePy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int ArcOfEllipsePy::setCustomAttributes(const char* attr, PyObject *obj)
+int ArcOfEllipsePy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

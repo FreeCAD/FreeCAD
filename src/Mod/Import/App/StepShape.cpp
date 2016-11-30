@@ -40,7 +40,7 @@
 
 using namespace Import;
 
-StepShape::StepShape(const char* fileName)
+StepShape::StepShape()
 {
 }
 

@@ -1,340 +1,170 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>211</width>
-    <height>734</height>
+    <width>287</width>
+    <height>415</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Schedule definition</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>General</string>
+    <widget class="QTableWidget" name="list">
+     <property name="cornerButtonEnabled">
+      <bool>true</bool>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QComboBox" name="ComboType">
-        <item>
-         <property name="text">
-          <string>Quantities</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Spaces</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Doors and windows</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Start cell</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="FieldStartCell">
-          <property name="text">
-           <string>A1</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="text">
-           <string>Area unit</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="FieldAreaUnit">
-          <property name="text">
-           <string>m²</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Volume unit</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="FieldVolumeUnit">
-          <property name="text">
-           <string>m³</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="text">
-           <string>Currency unit</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="pushButton">
-          <property name="toolTip">
-           <string>This must match what is stored in the project materials. No conversion will be done.</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset theme="messagebox_warning">
-            <normaloff/>
-           </iconset>
-          </property>
-          <property name="flat">
-           <bool>true</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLineEdit" name="FieldCurrencyUnit">
-          <property name="text">
-           <string>€</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
+     <property name="rowCount">
+      <number>0</number>
+     </property>
+     <property name="columnCount">
+      <number>5</number>
+     </property>
+     <attribute name="horizontalHeaderDefaultSectionSize">
+      <number>120</number>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>true</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Description</string>
+      </property>
+      <property name="toolTip">
+       <string>A description for this operation</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Value</string>
+      </property>
+      <property name="toolTip">
+       <string>The value to retrieve for each object. Can be &quot;count&quot; to count the objects, or object.Shape.Volume to retrieve a certain property.</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Unit</string>
+      </property>
+      <property name="toolTip">
+       <string>An optional unit to express the resulting value. Ex: m^3</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Objects</string>
+      </property>
+      <property name="toolTip">
+       <string>An optional semicolon (;) separated list of object names to be considered by this operation. If the list contains groups, children will be added</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Filter</string>
+      </property>
+      <property name="toolTip">
+       <string>A semicolon (;) separated list of type:value filters (see documentation for filters syntax)</string>
+      </property>
+     </column>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="GroupQuantities">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>1677215</height>
-      </size>
-     </property>
-     <property name="title">
-      <string>Quantities</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
-      <item>
-       <widget class="QCheckBox" name="CheckOnlyShowTotals">
-        <property name="text">
-         <string>Only show totals</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckDescription">
-        <property name="text">
-         <string>Add material description</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckColor">
-        <property name="text">
-         <string>Add material color</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckFinish">
-        <property name="text">
-         <string>Add material finish</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckUrl">
-        <property name="text">
-         <string>Add material URL</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckPrice">
-        <property name="text">
-         <string>Add price calculation</string>
-        </property>
-        <property name="checked">
-         <bool>false</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckStructures">
-        <property name="text">
-         <string>Add structures</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckStairs">
-        <property name="text">
-         <string>Add stairs</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckWalls">
-        <property name="text">
-         <string>Add walls</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckOthers">
-        <property name="text">
-         <string>Add all other roles</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckFloors">
-        <property name="text">
-         <string>Add floors</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckCeilings">
-        <property name="text">
-         <string>Add ceilings</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckRoofs">
-        <property name="text">
-         <string>Add roofs</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckWindows">
-        <property name="text">
-         <string>Add windows and doors</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckPanels">
-        <property name="text">
-         <string>Add panels</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckEquipments">
-        <property name="text">
-         <string>Add equipments</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QCheckBox" name="CheckFurniture">
-        <property name="text">
-         <string>Add furniture</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="buttonAdd">
+       <property name="toolTip">
+        <string>Adds a line below the selected line/cell</string>
+       </property>
+       <property name="text">
+        <string>Add</string>
+       </property>
+       <property name="icon">
+        <iconset theme="add">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonDel">
+       <property name="toolTip">
+        <string>Deletes the selected line</string>
+       </property>
+       <property name="text">
+        <string>Del</string>
+       </property>
+       <property name="icon">
+        <iconset theme="remove">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonClear">
+       <property name="toolTip">
+        <string>Clears the whole list</string>
+       </property>
+       <property name="text">
+        <string>Clear</string>
+       </property>
+       <property name="icon">
+        <iconset theme="cancel">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
-     </property>
-    </spacer>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="buttonSelect">
+       <property name="toolTip">
+        <string>Put selected objects into the &quot;Objects&quot; column of the selected row</string>
+       </property>
+       <property name="text">
+        <string>Selection</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonImport">
+       <property name="toolTip">
+        <string>Imports the contents of a CSV file</string>
+       </property>
+       <property name="text">
+        <string>Import</string>
+       </property>
+       <property name="icon">
+        <iconset theme="document-import">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="buttonExport">
+       <property name="toolTip">
+        <string>This exports the contents of the &quot;Result&quot; spreadsheet to a csv file. In Libreoffice, you can keep this csv file linked by right-clicking the sheets tab bar -&gt; New sheet -&gt; From file -&gt; Link</string>
+       </property>
+       <property name="text">
+        <string>Export</string>
+       </property>
+       <property name="icon">
+        <iconset theme="document-export">
+         <normaloff/>
+        </iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

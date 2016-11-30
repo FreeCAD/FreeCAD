@@ -38,7 +38,9 @@ VertexProperty::VertexProperty() :
   text(new QGraphicsTextItem()),
   row(0),
   column(0),
+  topoSortIndex(0),
   lastVisibleState(VisibilityState::None),
+  lastFeatureState(FeatureState::None),
   dagVisible(true)
 {
   //set z values.

@@ -141,14 +141,36 @@ SpaceTypes = [
 "Transportation - Terminal - Ticket Counter"
 ]
 
+ConditioningTypes = [
+"Unconditioned",
+"Heated",
+"Cooled",
+"HeatedAndCooled",
+"Vented",
+"NaturallyVentedOnly"
+]
+
 import FreeCAD,ArchComponent,ArchCommands,math,Draft
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+    
+## @package ArchSpace
+#  \ingroup ARCH
+#  \brief The Space object and tools
+#
+#  This module provides tools to build Space objects.
+#  Spaces define an open volume inside or outside a
+#  building, ie. a room.
 
 def makeSpace(objects=None,baseobj=None,name="Space"):
     """makeSpace([objects]): Creates a space object from the given objects. Objects can be one
@@ -193,9 +215,9 @@ class _CommandSpace:
     "the Arch Space command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Space',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Space"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Space","Space"),
                 'Accel': "S, P",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Space","Creates a space object from selected boundary objects")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -223,17 +245,25 @@ class _Space(ArchComponent.Component):
     "A space object"
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch","The objects that make the boundaries of this space object")
-        obj.addProperty("App::PropertyFloat",      "Area",          "Arch","The computed floor area of this space")
-        obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch","The finishing of the floor of this space")
-        obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch","The finishing of the walls of this space")
-        obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch","The finishing of the ceiling of this space")
-        obj.addProperty("App::PropertyLinkList",   "Group",         "Arch","Objects that are included inside this space, such as furniture")
-        obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch","The type of this space")
-        obj.addProperty("App::PropertyLength",     "FloorThickness","Arch","The thickness of the floor finish")
+        obj.addProperty("App::PropertyLinkSubList","Boundaries",    "Arch",QT_TRANSLATE_NOOP("App::Property","The objects that make the boundaries of this space object"))
+        obj.addProperty("App::PropertyArea",       "Area",          "Arch",QT_TRANSLATE_NOOP("App::Property","The computed floor area of this space"))
+        obj.addProperty("App::PropertyString",     "FinishFloor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the floor of this space"))
+        obj.addProperty("App::PropertyString",     "FinishWalls",   "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the walls of this space"))
+        obj.addProperty("App::PropertyString",     "FinishCeiling", "Arch",QT_TRANSLATE_NOOP("App::Property","The finishing of the ceiling of this space"))
+        obj.addProperty("App::PropertyLinkList",   "Group",         "Arch",QT_TRANSLATE_NOOP("App::Property","Objects that are included inside this space, such as furniture"))
+        obj.addProperty("App::PropertyEnumeration","SpaceType",     "Arch",QT_TRANSLATE_NOOP("App::Property","The type of this space"))
+        obj.addProperty("App::PropertyLength",     "FloorThickness","Arch",QT_TRANSLATE_NOOP("App::Property","The thickness of the floor finish"))
+        obj.addProperty("App::PropertyLink",       "Zone",          "Arch",QT_TRANSLATE_NOOP("App::Property","A zone this space is part of"))
+        obj.addProperty("App::PropertyInteger",    "NumberOfPeople","Arch",QT_TRANSLATE_NOOP("App::Property","The number of people who typically occupy this space"))
+        obj.addProperty("App::PropertyFloat",      "LightingPower", "Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed to light this space in Watts"))
+        obj.addProperty("App::PropertyFloat",      "EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by the equipments of this space in Watts"))
+        obj.addProperty("App::PropertyBool",       "AutoPower",     "Arch",QT_TRANSLATE_NOOP("App::Property","If True, Equipment Power will be automatically filled by the equipments included in this space"))
+        obj.addProperty("App::PropertyEnumeration","Conditioning",  "Arch",QT_TRANSLATE_NOOP("App::Property","The type of air conditioning of this space"))
         self.Type = "Space"
-        self.SpaceType = "Undefined"
+        obj.SpaceType = SpaceTypes
+        obj.Conditioning = ConditioningTypes
         obj.Role = Roles
+        obj.setEditorMode("HorizontalArea",2)
 
     def execute(self,obj):
         
@@ -245,7 +275,19 @@ class _Space(ArchComponent.Component):
     def onChanged(self,obj,prop):
         if prop in ["Boundaries","Base"]:
             self.getShape(obj)
-            obj.Area = self.getArea(obj)
+            if hasattr(obj.Area,"Value"):
+                a = self.getArea(obj)
+                if obj.Area.Value != a:
+                    obj.Area = a
+        elif prop == "Group":
+            if hasattr(obj,"EquipmentPower"):
+                if obj.AutoPower:
+                    p = 0
+                    for o in Draft.getObjectsOfType(Draft.getGroupContents(obj.Group,addgroups=True),"Equipment"):
+                        if hasattr(o,"EquipmentPower"):
+                            p += o.EquipmentPower
+                    if p != obj.EquipmentPower:
+                        obj.EquipmentPower = p
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
 
@@ -275,7 +317,7 @@ class _Space(ArchComponent.Component):
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Feature"):
                 if obj.Base.Shape.Solids:
-                    shape = obj.Base.Shape.Solids[0].copy()
+                    shape = obj.Base.Shape.copy()
                     shape = shape.removeSplitter()
 
         # 2: if not, add all bounding boxes of considered objects and build a first shape
@@ -344,9 +386,21 @@ class _Space(ArchComponent.Component):
             e = Part.__sortEdges__(e.Edges)
             w = Part.Wire(e)
             f = Part.Face(w)
-            return f.Area
         except Part.OCCError:
             return 0
+        else:
+            if hasattr(obj,"PerimeterLength"):
+                if w.Length != obj.PerimeterLength.Value:
+                    obj.PerimeterLength = w.Length
+            if hasattr(obj,"VerticalArea"):
+                a = 0
+                for f in sh.Faces:
+                    ang = f.normalAt(0,0).getAngle(FreeCAD.Vector(0,0,1))
+                    if (ang > 1.57) and (ang < 1.571):
+                        a += f.Area
+                    if a != obj.VerticalArea.Value:
+                        obj.VerticalArea = a
+            return f.Area
 
 
 class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
@@ -357,16 +411,16 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         vobj.LineWidth = 1
         vobj.LineColor = (1.0,0.0,0.0,1.0)
         vobj.DrawStyle = "Dotted"
-        vobj.addProperty("App::PropertyStringList",    "Text",        "Arch","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data")
-        vobj.addProperty("App::PropertyString",        "FontName",    "Arch","The name of the font")
-        vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch","The color of the area text")
-        vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch","The size of the text font")
-        vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch","The size of the first line of text")
-        vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Arch","The space between the lines of text")
-        vobj.addProperty("App::PropertyVectorDistance","TextPosition","Arch","The position of the text. Leave (0,0,0) for automatic position")
-        vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Arch","The justification of the text")
-        vobj.addProperty("App::PropertyInteger",       "Decimals",    "Arch","The number of decimals to use for calculated texts")
-        vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Arch","Show the unit suffix")
+        vobj.addProperty("App::PropertyStringList",    "Text",        "Arch",QT_TRANSLATE_NOOP("App::Property","The text to show. Use $area, $label, $tag, $floor, $walls, $ceiling to insert the respective data"))
+        vobj.addProperty("App::PropertyString",        "FontName",    "Arch",QT_TRANSLATE_NOOP("App::Property","The name of the font"))
+        vobj.addProperty("App::PropertyColor",         "TextColor",   "Arch",QT_TRANSLATE_NOOP("App::Property","The color of the area text"))
+        vobj.addProperty("App::PropertyLength",        "FontSize",    "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
+        vobj.addProperty("App::PropertyLength",        "FirstLine",   "Arch",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
+        vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Arch",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"))
+        vobj.addProperty("App::PropertyVectorDistance","TextPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the text. Leave (0,0,0) for automatic position"))
+        vobj.addProperty("App::PropertyEnumeration",   "TextAlign",   "Arch",QT_TRANSLATE_NOOP("App::Property","The justification of the text"))
+        vobj.addProperty("App::PropertyInteger",       "Decimals",    "Arch",QT_TRANSLATE_NOOP("App::Property","The number of decimals to use for calculated texts"))
+        vobj.addProperty("App::PropertyBool",          "ShowUnit",    "Arch",QT_TRANSLATE_NOOP("App::Property","Show the unit suffix"))
         vobj.TextColor = (0.0,0.0,0.0,1.0)
         vobj.Text = ["$label","$area"]
         vobj.TextAlign = ["Left","Center","Right"]
@@ -397,14 +451,17 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         self.text2.justification = coin.SoAsciiText.LEFT
         self.coords = coin.SoTransform()
         self.header = coin.SoTransform()
-        label = coin.SoSeparator()
-        label.addChild(self.coords)
-        label.addChild(self.color)
-        label.addChild(self.font)
-        label.addChild(self.text2)
-        label.addChild(self.header)
-        label.addChild(self.text1)
-        vobj.Annotation.addChild(label)
+        self.label = coin.SoSwitch()
+        sep = coin.SoSeparator()
+        self.label.whichChild = 0
+        sep.addChild(self.coords)
+        sep.addChild(self.color)
+        sep.addChild(self.font)
+        sep.addChild(self.text2)
+        sep.addChild(self.header)
+        sep.addChild(self.text1)
+        self.label.addChild(sep)
+        vobj.Annotation.addChild(self.label)
         self.onChanged(vobj,"TextColor")
         self.onChanged(vobj,"FontSize")
         self.onChanged(vobj,"FirstLine")
@@ -519,6 +576,12 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
                 else:
                     self.text1.justification = coin.SoAsciiText.LEFT
                     self.text2.justification = coin.SoAsciiText.LEFT
+                    
+        elif prop == "Visibility":
+            if vobj.Visibility:
+                self.label.whichChild = 0
+            else:
+                self.label.whichChild = -1
 
     def setEdit(self,vobj,mode):
         taskd = SpaceTaskPanel()

@@ -50,6 +50,7 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
+#include "ViewProviderExtension.h"
 
 using namespace std;
 using namespace Gui;
@@ -60,7 +61,7 @@ using namespace Gui;
 // ViewProvider
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::PropertyContainer)
+PROPERTY_SOURCE_ABSTRACT(Gui::ViewProvider, App::TransactionalObject)
 
 ViewProvider::ViewProvider()
     : pcAnnotation(0)
@@ -69,8 +70,9 @@ ViewProvider::ViewProvider()
     , _iActualMode(-1)
     , _iEditMode(-1)
     , viewOverrideMode(-1)
-    , _updateData(true)
 {
+    setStatus(UpdateData, true);
+
     pcRoot = new SoSeparator();
     pcRoot->ref();
     pcModeSwitch = new SoSwitch();
@@ -122,15 +124,18 @@ void ViewProvider::finishEditing()
 
 bool ViewProvider::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
     return true;
 }
 
 void ViewProvider::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum); 
 }
 
 void ViewProvider::setEditViewer(View3DInventorViewer*, int ModNum)
 {
+    Q_UNUSED(ModNum); 
 }
 
 void ViewProvider::unsetEditViewer(View3DInventorViewer*)
@@ -139,18 +144,17 @@ void ViewProvider::unsetEditViewer(View3DInventorViewer*)
 
 bool ViewProvider::isUpdatesEnabled () const
 {
-    return _updateData;
+    return testStatus(UpdateData);
 }
 
 void ViewProvider::setUpdatesEnabled (bool enable)
 {
-    _updateData = enable;
+    setStatus(UpdateData, enable);
 }
 
 void highlight(const HighlightMode& high)
 {
-
-
+    Q_UNUSED(high); 
 }
 
 void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
@@ -302,7 +306,29 @@ std::vector<std::string> ViewProvider::getDisplayMaskModes() const
 void ViewProvider::setDisplayMode(const char* ModeName)
 {
     _sCurrentMode = ModeName;
+    
+    //infom the exteensions
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionSetDisplayMode(ModeName);
 }
+
+const char* ViewProvider::getDefaultDisplayMode() const {
+
+    return 0;
+}
+
+vector<std::string> ViewProvider::getDisplayModes(void) const {
+
+    std::vector< std::string > modes;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto extModes = ext->extensionGetDisplayModes();
+        modes.insert( modes.end(), extModes.begin(), extModes.end() );
+    }
+    return modes;
+}
+
 
 std::string ViewProvider::getActiveDisplayMode(void) const
 {
@@ -312,11 +338,21 @@ std::string ViewProvider::getActiveDisplayMode(void) const
 void ViewProvider::hide(void)
 {
     pcModeSwitch->whichChild = -1;
+
+    //tell extensions that we hide
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionHide();
 }
 
 void ViewProvider::show(void)
 {
     setModeSwitch();
+    
+    //tell extensions that we show
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionShow();
 }
 
 bool ViewProvider::isShow(void) const
@@ -415,6 +451,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec2s& pos, const View3DInven
     //get the picked point
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setPoint(pos);
+    rp.setRadius(viewer->getPickRadius());
     rp.apply(root);
     root->unref();
     trans->unref();
@@ -451,6 +488,7 @@ SoPickedPoint* ViewProvider::getPointOnRay(const SbVec3f& pos,const SbVec3f& dir
     //get the picked point
     SoRayPickAction rp(viewer->getSoRenderManager()->getViewportRegion());
     rp.setRay(pos,dir);
+    rp.setRadius(viewer->getPickRadius());
     rp.apply(root);
     root->unref();
     trans->unref();
@@ -468,4 +506,177 @@ std::vector<Base::Vector3d> ViewProvider::getModelPoints(const SoPickedPoint* pp
     const SbVec3f& vec = pp->getPoint();
     pts.push_back(Base::Vector3d(vec[0],vec[1],vec[2]));
     return pts;
+}
+
+bool ViewProvider::keyPressed(bool pressed, int key)
+{
+    (void)pressed;
+    (void)key;
+    return false;
+}
+
+bool ViewProvider::mouseMove(const SbVec2s &cursorPos,
+                             View3DInventorViewer* viewer)
+{
+    (void)cursorPos;
+    (void)viewer;
+    return false;
+}
+
+bool ViewProvider::mouseButtonPressed(int button, bool pressed,
+                                      const SbVec2s &cursorPos,
+                                      const View3DInventorViewer* viewer)
+{
+    (void)button;
+    (void)pressed;
+    (void)cursorPos;
+    (void)viewer;
+    return false;
+    }
+
+bool ViewProvider::onDelete(const vector< string >& subNames) {
+    bool del = true;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        del = del || ext->extensionOnDelete(subNames);
+
+    return del;
+}
+
+bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDragObject(obj))
+            return true;
+
+    return false;
+}
+
+bool ViewProvider::canDragObjects() const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDragObjects())
+            return true;
+
+    return false;
+}
+
+void ViewProvider::dragObject(App::DocumentObject* obj) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDragObject(obj)) {
+            ext->extensionDragObject(obj);
+            return;
+        }
+    }
+
+    throw Base::Exception("ViewProvider::dragObject: no extension for draging given object available."); 
+}
+
+
+bool ViewProvider::canDropObject(App::DocumentObject* obj) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDropObject(obj))
+            return true;
+
+    return false;
+}
+
+bool ViewProvider::canDropObjects() const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        if(ext->extensionCanDropObjects())
+            return true;
+
+    return false;
+}
+
+void ViewProvider::dropObject(App::DocumentObject* obj) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        if(ext->extensionCanDropObject(obj)) {
+            ext->extensionDropObject(obj);
+            return;
+        }
+    }
+
+    throw Base::Exception("ViewProvider::dropObject: no extension for droping given object available."); 
+}
+
+void ViewProvider::Restore(Base::XMLReader& reader) {
+    
+    setStatus(Gui::isRestoring, true);
+    TransactionalObject::Restore(reader);
+    setStatus(Gui::isRestoring, false);
+}
+
+void ViewProvider::updateData(const App::Property* prop) {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector)
+        ext->extensionUpdateData(prop);
+}
+
+SoSeparator* ViewProvider::getBackRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetBackRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
+}
+
+SoGroup* ViewProvider::getChildRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetChildRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
+}
+
+SoSeparator* ViewProvider::getFrontRoot(void) const {
+
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        auto* node = ext->extensionGetFrontRoot();
+        if(node)
+            return node;
+    }
+    return nullptr;
+}
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildren(void) const {
+
+    std::vector< App::DocumentObject* > vec;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren();
+        if(!nvec.empty())
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+    }
+    return vec;
+}
+
+std::vector< App::DocumentObject* > ViewProvider::claimChildren3D(void) const {
+
+    std::vector< App::DocumentObject* > vec;
+    auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
+    for(Gui::ViewProviderExtension* ext : vector) {
+        std::vector< App::DocumentObject* > nvec = ext->extensionClaimChildren3D();
+        if(!nvec.empty())
+            vec.insert(std::end(vec), std::begin(nvec), std::end(nvec));  
+    }
+    return vec;
 }

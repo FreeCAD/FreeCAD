@@ -70,6 +70,8 @@ CmdPointsImport::CmdPointsImport()
 
 void CmdPointsImport::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     QString fn = Gui::FileDialog::getOpenFileName(Gui::getMainWindow(),
       QString::null, QString(), QString::fromLatin1("%1 (*.asc);;%2 (*.*)")
       .arg(QObject::tr("Ascii Points")).arg(QObject::tr("All Files")));
@@ -117,6 +119,8 @@ CmdPointsExport::CmdPointsExport()
 
 void CmdPointsExport::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     std::vector<App::DocumentObject*> points = getSelection().getObjectsOfType(Points::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::const_iterator it = points.begin(); it != points.end(); ++it) {
         QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(),
@@ -156,6 +160,8 @@ CmdPointsTransform::CmdPointsTransform()
 
 void CmdPointsTransform::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     // This is a test command to transform a point cloud directly written in C++ (not Python)
     Base::Placement trans;
     trans.setRotation(Base::Rotation(Base::Vector3d(0.0, 0.0, 1.0), 1.570796));
@@ -190,6 +196,8 @@ CmdPointsConvert::CmdPointsConvert()
 
 void CmdPointsConvert::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     bool ok;
     double tol = QInputDialog::getDouble(Gui::getMainWindow(), QObject::tr("Distance"),
         QObject::tr("Enter maximum distance:"), 0.1, 0.05, 10.0, 2, &ok);
@@ -277,6 +285,8 @@ CmdPointsPolyCut::CmdPointsPolyCut()
 
 void CmdPointsPolyCut::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     std::vector<App::DocumentObject*> docObj = Gui::Selection().getObjectsOfType(Points::Feature::getClassTypeId());
     for (std::vector<App::DocumentObject*>::iterator it = docObj.begin(); it != docObj.end(); ++it) {
         if (it == docObj.begin()) {

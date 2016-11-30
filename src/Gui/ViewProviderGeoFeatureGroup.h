@@ -26,40 +26,22 @@
 #define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
 
 
-#include "ViewProviderDocumentObjectGroup.h"
+#include "ViewProviderDocumentObject.h"
+#include "ViewProviderGeoFeatureGroupExtension.h"
+#include "ViewProviderPythonFeature.h"
 
 namespace Gui {
 
-class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderDocumentObjectGroup
+class GuiExport ViewProviderGeoFeatureGroup : public ViewProviderDocumentObject,
+                                              public ViewProviderGeoFeatureGroupExtension
 {
-    PROPERTY_HEADER(Gui::ViewProviderGeoFeatureGroup);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderGeoFeatureGroup);
 
 public:
     /// constructor.
     ViewProviderGeoFeatureGroup();
     /// destructor.
     virtual ~ViewProviderGeoFeatureGroup();
-
-    virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
-
-    virtual SoGroup* getChildRoot(void) const {return pcGroupChildren;};
-
-    virtual void attach(App::DocumentObject* pcObject);
-    virtual void setDisplayMode(const char* ModeName);
-    virtual std::vector<std::string> getDisplayModes(void) const;
-
-    /// Show the object in the view: suppresses behavior of DocumentObjectGroup
-    virtual void show(void) {
-        ViewProviderDocumentObject::show();
-    }
-    /// Hide the object in the view: suppresses behavior of DocumentObjectGroup
-    virtual void hide(void) {
-        ViewProviderDocumentObject::hide();
-    }
-
-    virtual void updateData(const App::Property*);
-protected:
-    SoGroup *pcGroupChildren;
 };
 
 typedef ViewProviderPythonFeatureT<ViewProviderGeoFeatureGroup> ViewProviderGeoFeatureGroupPython;

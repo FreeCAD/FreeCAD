@@ -59,7 +59,7 @@ FemPostFunction::~FemPostFunction()
 }
 
 DocumentObjectExecReturn* FemPostFunction::execute(void) {
-    
+
     return DocumentObject::StdReturn;
 }
 
@@ -70,10 +70,10 @@ FemPostPlaneFunction::FemPostPlaneFunction(void): FemPostFunction() {
 
     ADD_PROPERTY(Origin,(Base::Vector3d(0.0,0.0,0.0)));
     ADD_PROPERTY(Normal,(Base::Vector3d(0.0,0.0,1.0)));
-    
+
     m_plane = vtkSmartPointer<vtkPlane>::New();
     m_implicit = m_plane;
-    
+
     m_plane->SetOrigin(0., 0., 0.);
     m_plane->SetNormal(0., 0., 1.);
 }
@@ -83,7 +83,7 @@ FemPostPlaneFunction::~FemPostPlaneFunction() {
 }
 
 void FemPostPlaneFunction::onChanged(const Property* prop) {
-    
+
     if(prop == &Origin) {
         const Base::Vector3d& vec = Origin.getValue();
         m_plane->SetOrigin(vec[0], vec[1], vec[2]);
@@ -92,7 +92,7 @@ void FemPostPlaneFunction::onChanged(const Property* prop) {
         const Base::Vector3d& vec = Normal.getValue();
         m_plane->SetNormal(vec[0], vec[1], vec[2]);
     }
-    
+
     Fem::FemPostFunction::onChanged(prop);
 }
 
@@ -105,7 +105,7 @@ FemPostSphereFunction::FemPostSphereFunction(void): FemPostFunction() {
 
     ADD_PROPERTY(Radius,(5));
     ADD_PROPERTY(Center,(Base::Vector3d(1.0,0.0,0.0)));
-    
+
     m_sphere = vtkSmartPointer<vtkSphere>::New();
     m_implicit = m_sphere;
 
@@ -126,6 +126,6 @@ void FemPostSphereFunction::onChanged(const Property* prop) {
     else if(prop == &Radius) {
         m_sphere->SetRadius(Radius.getValue());
     }
-    
+
     Fem::FemPostFunction::onChanged(prop);
 }

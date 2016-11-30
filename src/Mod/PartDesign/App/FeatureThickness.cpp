@@ -87,6 +87,6 @@ App::DocumentObjectExecReturn *Thickness::execute(void)
     if (fabs(thickness) > 2*tol)
         this->Shape.setValue(getSolid(TopShape.makeThickSolid(closingFaces, thickness, tol, false, false, mode, join)));
     else
-        this->Shape.setValue(getSolid(TopShape._Shape));
+        this->Shape.setValue(getSolid(TopShape.getShape()));
     return App::DocumentObject::StdReturn;
 }

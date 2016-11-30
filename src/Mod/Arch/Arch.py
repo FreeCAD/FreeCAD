@@ -26,14 +26,14 @@ __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 ## \defgroup ARCH Arch
-#  \ingroup WORKBENCHES
+#  \ingroup PYTHONWORKBENCHES
+#  \brief Architecture and BIM tools
 #
-#  Architecture and BIM module
-#
-#  This module provides tools specialized in architectural and Building
-#  Information Modeling (BIM).
+#  This module provides tools specialized in Building Information Modeling (BIM).
+#  such as convenience tools to build walls, windows or structures, and 
+#  IFC import/export capabilities.
 
-'''The Arch module provides tools specialized in architectural BIM modeling.'''
+'''The Arch module provides tools specialized in BIM modeling.'''
 
 import FreeCAD
 if FreeCAD.GuiUp:
@@ -62,3 +62,4 @@ from ArchServer import *
 from ArchMaterial import *
 from ArchSchedule import *
 from ArchPrecast import *
+from ArchPipe import *

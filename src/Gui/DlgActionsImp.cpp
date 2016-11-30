@@ -306,6 +306,8 @@ void DlgCustomActionsImp::on_buttonReplaceAction_clicked()
     CommandManager& rclMan = Application::Instance->commandManager();
     Command* pCmd = rclMan.getCommandByName(actionName.constData());
     MacroCommand* macro = dynamic_cast<MacroCommand*>(pCmd);
+    if (!macro)
+        return;
 
     if (!actionWhatsThis->text().isEmpty())
         macro->setWhatsThis(actionWhatsThis->text().toUtf8());

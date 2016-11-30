@@ -2,12 +2,13 @@
     This is the core functionality of FreeCAD.
 
     It groups the Base classes, and the main components of freecad core,
-    spread over their App and Gui sides
+    spread over their App and Gui sides. Core components are programmed in
+    C++ but provide a broad Python API.
  */
 
 /** \defgroup WORKBENCHES Workbenches
  */
 
-/** \defgroup EMBEDDED Embedded 3rd party material
+/** \defgroup EMBEDDED Embedded 3rd party libraries
     Important tools and libraries incorporated to FreeCAD.
  */

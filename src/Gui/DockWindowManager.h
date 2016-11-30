@@ -67,6 +67,7 @@ public:
     static void destruct();
 
     bool registerDockWindow(const char* name, QWidget* widget);
+    QWidget* unregisterDockWindow(const char* name);
     void setup(DockWindowItems*);
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget

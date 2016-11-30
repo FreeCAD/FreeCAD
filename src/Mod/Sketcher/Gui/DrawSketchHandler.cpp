@@ -75,7 +75,7 @@ DrawSketchHandler::~DrawSketchHandler()
 void DrawSketchHandler::quit(void)
 {
     assert(sketchgui);
-    sketchgui->drawEdit(std::vector<Base::Vector2D>());
+    sketchgui->drawEdit(std::vector<Base::Vector2d>());
     resetPositionText();
 
     unsetCursor();
@@ -133,7 +133,7 @@ void DrawSketchHandler::unsetCursor(void)
 }
 
 int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
-                                          const Base::Vector2D& Pos, const Base::Vector2D& Dir,
+                                          const Base::Vector2d& Pos, const Base::Vector2d& Dir,
                                           AutoConstraint::TargetType type)
 {
     suggestedConstraints.clear();
@@ -162,16 +162,16 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             
     }
     else if (preSelCrs == 0) { // root point
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::RtPnt;
         PosId = Sketcher::start;
     }
     else if (preSelCrs == 1){ // x axis
-        GeoId = -1;
+        GeoId = Sketcher::GeoEnum::HAxis;
         hitShapeDir = Base::Vector3d(1,0,0);
         
     }
     else if (preSelCrs == 2){ // y axis
-        GeoId = -2;
+        GeoId = Sketcher::GeoEnum::VAxis;
         hitShapeDir = Base::Vector3d(0,1,0);
     }
 
@@ -191,12 +191,12 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             constr.Type = Sketcher::Tangent;
         
         if(constr.Type == Sketcher::Tangent && Dir.Length() > 1e-8 && hitShapeDir.Length() > 1e-8) { // We are hitting a line and have hitting vector information
-            Base::Vector3d dir3d = Base::Vector3d(Dir.fX,Dir.fY,0);
+            Base::Vector3d dir3d = Base::Vector3d(Dir.x,Dir.y,0);
             double cosangle=dir3d.Normalize()*hitShapeDir.Normalize();
             
             // the angle between the line and the hitting direction are over around 6 degrees (it is substantially parallel)
             // or if it is an sketch axis (that can not move to accomodate to the shape), then only if it is around 6 degrees with the normal (around 84 degrees)
-            if (fabs(cosangle) < 0.995f || ((GeoId==-1 || GeoId==-2) && fabs(cosangle) < 0.1))
+            if (fabs(cosangle) < 0.995f || ((GeoId==Sketcher::GeoEnum::HAxis || GeoId==Sketcher::GeoEnum::VAxis) && fabs(cosangle) < 0.1))
                 suggestedConstraints.push_back(constr);
             
             
@@ -221,7 +221,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     constr.Type = Sketcher::None;
     constr.GeoId = Constraint::GeoUndef;
     constr.PosId = Sketcher::none;
-    double angle = std::abs(atan2(Dir.fY, Dir.fX));
+    double angle = std::abs(atan2(Dir.y, Dir.x));
     if (angle < angleDevRad || (M_PI - angle) < angleDevRad )
         // Suggest horizontal constraint
         constr.Type = Sketcher::Horizontal;
@@ -243,16 +243,16 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
     // Get geometry list
     const std::vector<Part::Geometry *> geomlist = sketchgui->getSketchObject()->getCompleteGeometry();
 
-    Base::Vector3d tmpPos(Pos.fX, Pos.fY, 0.f);                 // Current cursor point
-    Base::Vector3d tmpDir(Dir.fX, Dir.fY, 0.f);                 // Direction of line
-    Base::Vector3d tmpStart(Pos.fX-Dir.fX, Pos.fY-Dir.fY, 0.f);  // Start point
+    Base::Vector3d tmpPos(Pos.x, Pos.y, 0.f);                 // Current cursor point
+    Base::Vector3d tmpDir(Dir.x, Dir.y, 0.f);                 // Direction of line
+    Base::Vector3d tmpStart(Pos.x-Dir.x, Pos.y-Dir.y, 0.f);  // Start point
 
     // Iterate through geometry
     int i = 0;
     for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it, i++) {
 
         if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
-            const Part::GeomCircle *circle = dynamic_cast<const Part::GeomCircle *>((*it));
+            const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>((*it));
 
             Base::Vector3d center = circle->getCenter();
 
@@ -263,7 +263,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 continue;
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
             double projDist = std::abs(projPnt.Length() - radius);
 
             // Find if nearest
@@ -274,7 +274,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 
         } else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
             
-            const Part::GeomEllipse *ellipse = dynamic_cast<const Part::GeomEllipse *>((*it));
+            const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>((*it));
 
             Base::Vector3d center = ellipse->getCenter();
 
@@ -287,7 +287,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             Base::Vector3d focus1P = center + cf * majdir;
             Base::Vector3d focus2P = center - cf * majdir;
             
-            Base::Vector3d norm = Base::Vector3d(Dir.fY,-Dir.fX).Normalize();
+            Base::Vector3d norm = Base::Vector3d(Dir.y,-Dir.x).Normalize();
             
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
                         
@@ -301,7 +301,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             }
 
         } else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *arc = dynamic_cast<const Part::GeomArcOfCircle *>((*it));
+            const Part::GeomArcOfCircle *arc = static_cast<const Part::GeomArcOfCircle *>((*it));
 
             Base::Vector3d center = arc->getCenter();
             double radius = arc->getRadius();
@@ -311,7 +311,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 continue;
 
             Base::Vector3d projPnt(0.f, 0.f, 0.f);
-            projPnt = projPnt.ProjToLine(center - tmpPos, tmpDir);
+            projPnt = projPnt.ProjectToLine(center - tmpPos, tmpDir);
             double projDist = std::abs(projPnt.Length() - radius);
 
             if (projDist < tangDeviation) {
@@ -329,7 +329,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
                 }
             }
         } else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *aoe = dynamic_cast<const Part::GeomArcOfEllipse *>((*it));
+            const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>((*it));
 
             Base::Vector3d center = aoe->getCenter();
 
@@ -342,7 +342,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
             Base::Vector3d focus1P = center + cf * majdir;
             Base::Vector3d focus2P = center - cf * majdir;
             
-            Base::Vector3d norm = Base::Vector3d(Dir.fY,-Dir.fX).Normalize();
+            Base::Vector3d norm = Base::Vector3d(Dir.y,-Dir.x).Normalize();
             
             double distancetoline = norm*(tmpPos - focus1P); // distance focus1 to line
                         
@@ -433,7 +433,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 bool mid_external;
                 bool end_external;
                 
-                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
                 
                 if( !(start_external && end_external) ) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%i)) "
@@ -449,7 +449,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 bool mid_external;
                 bool end_external;
                 
-                dynamic_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
+                static_cast<Sketcher::SketchObject*>((sketchgui->getObject()))->isCoincidentWithExternalGeometry(geoId1, start_external, mid_external, end_external);
                 
                 if( !(start_external && end_external) ) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%i)) "
@@ -460,7 +460,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 
                 } break;
             case Sketcher::Tangent: {
-                Sketcher::SketchObject* Obj = dynamic_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+                Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
                 
                 const Part::Geometry *geom1 = Obj->getGeometry(geoId1);
                 const Part::Geometry *geom2 = Obj->getGeometry(it->GeoId);
@@ -581,13 +581,13 @@ void DrawSketchHandler::renderSuggestConstraintsCursor(std::vector<AutoConstrain
     applyCursor(newCursor);
 }
 
-void DrawSketchHandler::setPositionText(const Base::Vector2D &Pos, const SbString &text)
+void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos, const SbString &text)
 {
     sketchgui->setPositionText(Pos, text);
 }
 
 
-void DrawSketchHandler::setPositionText(const Base::Vector2D &Pos)
+void DrawSketchHandler::setPositionText(const Base::Vector2d &Pos)
 {
     sketchgui->setPositionText(Pos);
 }

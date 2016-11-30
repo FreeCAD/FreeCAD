@@ -52,12 +52,12 @@ std::vector<const char*> PointKernel::getElementTypes(void) const
     return temp;
 }
 
-unsigned long PointKernel::countSubElements(const char* Type) const
+unsigned long PointKernel::countSubElements(const char* /*Type*/) const
 {
     return 0;
 }
 
-Data::Segment* PointKernel::getSubElement(const char* Type, unsigned long n) const
+Data::Segment* PointKernel::getSubElement(const char* /*Type*/, unsigned long /*n*/) const
 {
     //unsigned long i = 1;
 
@@ -119,7 +119,10 @@ std::vector<PointKernel::value_type> PointKernel::getValidPoints() const
         if (!(boost::math::isnan(it->x) || 
               boost::math::isnan(it->y) ||
               boost::math::isnan(it->z)))
-            valid.push_back(value_type(it->x, it->y, it->z));
+            valid.push_back(value_type(
+                    static_cast<float_type>(it->x),
+                    static_cast<float_type>(it->y),
+                    static_cast<float_type>(it->z)));
     }
     return valid;
 }
@@ -194,8 +197,8 @@ void PointKernel::save(std::ostream& out) const
 }
 
 void PointKernel::getPoints(std::vector<Base::Vector3d> &Points,
-                            std::vector<Base::Vector3d> &Normals,
-                            float Accuracy, uint16_t flags) const
+                            std::vector<Base::Vector3d> &/*Normals*/,
+                            float /*Accuracy*/, uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _Points.size();
     Points.reserve(ctpoints);

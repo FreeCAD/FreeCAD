@@ -47,6 +47,7 @@
 #include <utilities.h>
 
 #include <list>
+#include <memory>
 #include <vector>
 #include <limits>
 
@@ -64,7 +65,9 @@ namespace nglib {
 #include <meshing.hpp>
 //#include <meshtype.hpp>
 namespace netgen {
-#ifdef NETGEN_V5
+#if NETGEN_VERSION > 5
+  DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, shared_ptr<Mesh>&, MeshingParameters&, int, int);
+#elif NETGEN_VERSION == 5
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, MeshingParameters&, int, int);
 #else
   DLL_HEADER extern int OCCGenerateMesh (OCCGeometry&, Mesh*&, int, int, char*);
@@ -187,7 +190,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::CheckHypothesis (SMESH_Mesh&         aMesh,
 
 namespace
 {
-  void limitSize( netgen::Mesh* ngMesh,
+  inline void limitSize( netgen::Mesh* ngMesh,
                   const double  maxh )
   {
     // get bnd box
@@ -241,7 +244,11 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
   ngLib._isComputeOk = false;
 
   netgen::Mesh   ngMeshNoLocSize;
+#if NETGEN_VERSION < 6
   netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh,  & ngMeshNoLocSize };
+#else
+  netgen::Mesh * ngMeshes[2] = { (netgen::Mesh*) ngLib._ngMesh.get(),  & ngMeshNoLocSize };
+#endif
   netgen::OCCGeometry occgeoComm;
 
   // min / max sizes are set as follows:
@@ -472,7 +479,10 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Compute(SMESH_Mesh&         aMesh,
       try {
         OCC_CATCH_SIGNALS;
 
-#ifdef NETGEN_V5
+#if NETGEN_VERSION >=6
+        std::shared_ptr<netgen::Mesh> mesh_ptr(ngMesh,  [](netgen::Mesh*){});
+        err = netgen::OCCGenerateMesh(occgeom, mesh_ptr, netgen::mparam, startWith, endWith);
+#elif NETGEN_VERSION > 4
         err = netgen::OCCGenerateMesh(occgeom, ngMesh, netgen::mparam, startWith, endWith);
 #else
         char *optstr = 0;
@@ -669,7 +679,7 @@ bool NETGENPlugin_NETGEN_2D_ONLY::Evaluate(SMESH_Mesh& aMesh,
 
   // compute edge length
   double ELen = 0;
-  if (_hypLengthFromEdges || !_hypLengthFromEdges && !_hypMaxElementArea) {
+  if (_hypLengthFromEdges || (!_hypLengthFromEdges && !_hypMaxElementArea)) {
     if ( nb1d > 0 )
       ELen = fullLen / nb1d;
   }

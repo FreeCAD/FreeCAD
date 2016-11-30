@@ -1,0 +1,535 @@
+/***************************************************************************
+ *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *                                                                         *
+ *   This file is part of the FreeCAD CAx development system.              *
+ *                                                                         *
+ *   This library is free software; you can redistribute it and/or         *
+ *   modify it under the terms of the GNU Library General Public           *
+ *   License as published by the Free Software Foundation; either          *
+ *   version 2 of the License, or (at your option) any later version.      *
+ *                                                                         *
+ *   This library  is distributed in the hope that it will be useful,      *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU Library General Public License for more details.                  *
+ *                                                                         *
+ *   You should have received a copy of the GNU Library General Public     *
+ *   License along with this library; see the file COPYING.LIB. If not,    *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
+ *                                                                         *
+ ***************************************************************************/
+
+#include "PreCompiled.h"
+#ifndef _PreComp_
+
+#include <BRep_Tool.hxx>
+#include <BRepMesh_IncrementalMesh.hxx>
+#include <BRepLib.hxx>
+#include <BRepLProp_CurveTool.hxx>
+#include <BRepLProp_CLProps.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <BRepBuilderAPI_MakeFace.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <gp_Ax2.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Elips.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Vec.hxx>
+#include <HLRBRep.hxx>
+#include <HLRBRep_Algo.hxx>
+#include <HLRBRep_HLRToShape.hxx>
+#include <HLRAlgo_Projector.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Wire.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+
+#endif  // #ifndef _PreComp_
+
+#include <algorithm>
+#include <chrono>
+
+#include <Base/Console.h>
+#include <Base/Exception.h>
+#include <Base/FileInfo.h>
+#include <Base/Tools.h>
+
+#include <Mod/Part/App/PartFeature.h>
+
+#include "DrawUtil.h"
+#include "GeometryObject.h"
+#include "DrawViewPart.h"
+
+using namespace TechDrawGeometry;
+using namespace TechDraw;
+using namespace std;
+
+struct EdgePoints {
+    gp_Pnt v1, v2;
+    TopoDS_Edge edge;
+};
+
+GeometryObject::GeometryObject(const string& parent) :
+    Scale(1.f),
+    m_parentName(parent),
+    m_isoCount(0)
+{
+}
+
+GeometryObject::~GeometryObject()
+{
+    clear();
+}
+
+void GeometryObject::setScale(double value)
+{
+    Scale = value;
+}
+
+
+const std::vector<BaseGeom *> GeometryObject::getVisibleFaceEdges(const bool smooth, const bool seam) const
+{
+    std::vector<BaseGeom *> result;
+    bool smoothOK = smooth;
+    bool seamOK = seam;
+
+    for (auto& e:edgeGeom) {
+        if (e->visible) {
+            switch (e->classOfEdge) {
+                case ecHARD:
+                case ecOUTLINE:
+                    result.push_back(e);
+                    break;
+                case ecSMOOTH:
+                    if (smoothOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                case ecSEAM:
+                    if (seamOK) {
+                        result.push_back(e);
+                    }
+                    break;
+                default:
+                ;
+            }
+        }
+    }
+    return result;
+}
+
+
+
+void GeometryObject::clear()
+{
+    for(std::vector<BaseGeom *>::iterator it = edgeGeom.begin(); it != edgeGeom.end(); ++it) {
+        delete *it;
+        *it = 0;
+    }
+
+    for(std::vector<Face *>::iterator it = faceGeom.begin(); it != faceGeom.end(); ++it) {
+        delete *it;
+        *it = 0;
+    }
+
+    for(std::vector<Vertex *>::iterator it = vertexGeom.begin(); it != vertexGeom.end(); ++it) {
+        delete *it;
+        *it = 0;
+    }
+
+    vertexGeom.clear();
+    faceGeom.clear();
+    edgeGeom.clear();
+}
+
+//!set up a hidden line remover and project a shape with it
+void GeometryObject::projectShape(const TopoDS_Shape& input,
+                             const gp_Pnt& inputCenter,
+                             const Base::Vector3d& direction)
+{
+    // Clear previous Geometry
+    clear();
+    Base::Vector3d origin(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
+    auto start = chrono::high_resolution_clock::now();
+
+    Handle_HLRBRep_Algo brep_hlr = NULL;
+    try {
+        brep_hlr = new HLRBRep_Algo();
+        brep_hlr->Add(input, m_isoCount);
+        HLRAlgo_Projector projector( viewAxis );
+        brep_hlr->Projector(projector);
+        brep_hlr->Update();
+        brep_hlr->Hide();
+    }
+    catch (...) {
+        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");
+    }
+    auto end   = chrono::high_resolution_clock::now();
+    auto diff  = end - start;
+    double diffOut = chrono::duration <double, milli> (diff).count();
+    Base::Console().Log("TIMING - %s GO spent: %.3f millisecs in HLRBRep_Algo & co\n",m_parentName.c_str(),diffOut);
+
+    try {
+        HLRBRep_HLRToShape hlrToShape(brep_hlr);
+
+        visHard    = hlrToShape.VCompound();
+        visSmooth  = hlrToShape.Rg1LineVCompound();
+        visSeam    = hlrToShape.RgNLineVCompound();
+        visOutline = hlrToShape.OutLineVCompound();
+        visIso     = hlrToShape.IsoLineVCompound();
+        hidHard    = hlrToShape.HCompound();
+        hidSmooth  = hlrToShape.Rg1LineHCompound();
+        hidSeam    = hlrToShape.RgNLineHCompound();
+        hidOutline = hlrToShape.OutLineHCompound();
+        hidIso     = hlrToShape.IsoLineHCompound();
+
+//need these 3d curves to prevent "zero edges" later
+        BRepLib::BuildCurves3d(visHard);
+        BRepLib::BuildCurves3d(visSmooth);
+        BRepLib::BuildCurves3d(visSeam);
+        BRepLib::BuildCurves3d(visOutline);
+        BRepLib::BuildCurves3d(visIso);
+        BRepLib::BuildCurves3d(hidHard);
+        BRepLib::BuildCurves3d(hidSmooth);
+        BRepLib::BuildCurves3d(hidSeam);
+        BRepLib::BuildCurves3d(hidOutline);
+        BRepLib::BuildCurves3d(hidIso);
+    }
+    catch (...) {
+        Standard_Failure::Raise("GeometryObject::projectShape - error occurred while extracting edges");
+    }
+
+}
+
+//!add edges meeting filter criteria for category, visibility
+void GeometryObject::extractGeometry(edgeClass category, bool visible)
+{
+    TopoDS_Shape filtEdges;
+    if (visible) {
+        switch (category) {
+            case ecHARD:
+                filtEdges = visHard;
+                break;
+            case ecOUTLINE:
+                filtEdges = visOutline;
+                break;
+            case ecSMOOTH:
+                filtEdges = visSmooth;
+                break;
+            case ecSEAM:
+                filtEdges = visSeam;
+                break;
+            case ecUVISO:
+                filtEdges = visIso;
+                break;
+            default:
+                Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported visible edgeClass: %d\n",category);
+                return;
+        }
+    } else {
+        switch (category) {
+            case ecHARD:
+                filtEdges = hidHard;
+                break;
+            case ecOUTLINE:
+                filtEdges = hidOutline;
+                break;
+            case ecSMOOTH:
+                filtEdges = hidSmooth;
+                break;
+            case ecSEAM:
+                filtEdges = hidSeam;
+                break;
+            case ecUVISO:
+                filtEdges = hidIso;
+                break;
+            default:
+                Base::Console().Warning("GeometryObject::ExtractGeometry - unsupported hidden edgeClass: %d\n",category);
+                return;
+        }
+    }
+
+    addGeomFromCompound(filtEdges, category, visible);
+}
+
+//! update edgeGeom and vertexGeom from Compound of edges
+void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible)
+{
+    if(edgeCompound.IsNull()) {
+        Base::Console().Log("TechDraw::GeometryObject::addGeomFromCompound edgeCompound is NULL\n");
+        return; // There is no OpenCascade Geometry to be calculated
+    }
+
+    BaseGeom* base;
+    TopExp_Explorer edges(edgeCompound, TopAbs_EDGE);
+    for (int i = 1 ; edges.More(); edges.Next(),i++) {
+        const TopoDS_Edge& edge = TopoDS::Edge(edges.Current());
+        if (edge.IsNull()) {
+            //Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is NULL\n",i);
+            continue;
+        }
+        if (DrawUtil::isZeroEdge(edge)) {
+            Base::Console().Log("INFO - GO::addGeomFromCompound - edge: %d is zeroEdge\n",i);
+            continue;
+        }
+
+        base = BaseGeom::baseFactory(edge);
+        if (base == nullptr) {
+            Base::Console().Message("Error - GO::addGeomFromCompound - baseFactory failed for edge: %d\n",i);
+            throw Base::Exception("GeometryObject::addGeomFromCompound - baseFactory failed");
+        }
+        base->classOfEdge = category;
+        base->visible = visible;
+        edgeGeom.push_back(base);
+
+        //add vertices of new edge if not already in list
+        if (visible) {
+            BaseGeom* lastAdded = edgeGeom.back();
+            bool v1Add = true, v2Add = true;
+            bool c1Add = true;
+            TechDrawGeometry::Vertex* v1 = new TechDrawGeometry::Vertex(lastAdded->getStartPoint());
+            TechDrawGeometry::Vertex* v2 = new TechDrawGeometry::Vertex(lastAdded->getEndPoint());
+            TechDrawGeometry::Circle* circle = dynamic_cast<TechDrawGeometry::Circle*>(lastAdded);
+            TechDrawGeometry::Vertex* c1 = nullptr;
+            if (circle) {
+                c1 = new TechDrawGeometry::Vertex(circle->center);
+                c1->isCenter = true;
+                c1->visible = true;
+            }
+
+            std::vector<Vertex *>::iterator itVertex = vertexGeom.begin();
+            for (; itVertex != vertexGeom.end(); itVertex++) {
+                if ((*itVertex)->isEqual(v1,Precision::Confusion())) {
+                    v1Add = false;
+                }
+                if ((*itVertex)->isEqual(v2,Precision::Confusion())) {
+                    v2Add = false;
+                }
+                if (circle) {
+                    if ((*itVertex)->isEqual(c1,Precision::Confusion())) {
+                        c1Add = false;
+                    }
+                }
+
+            }
+            if (v1Add) {
+                vertexGeom.push_back(v1);
+                v1->visible = true;
+            } else {
+                delete v1;
+            }
+            if (v2Add) {
+                vertexGeom.push_back(v2);
+                v2->visible = true;
+            } else {
+                delete v2;
+            }
+
+            if (circle) {
+                if (c1Add) {
+                    vertexGeom.push_back(c1);
+                    c1->visible = true;
+                } else {
+                    delete c1;
+                }
+            }
+        }
+    }  //end TopExp
+}
+
+//! empty Face geometry
+void GeometryObject::clearFaceGeom()
+{
+    faceGeom.clear();
+}
+
+//! add a Face to Face Geometry
+void GeometryObject::addFaceGeom(Face* f)
+{
+    faceGeom.push_back(f);
+}
+
+
+bool GeometryObject::isWithinArc(double theta, double first,
+                                 double last, bool cw) const
+{
+    if (fabs(last - first) >= 2 * M_PI) {
+        return true;
+    }
+
+    // Put params within [0, 2*pi) - not totally sure this is necessary
+    theta = fmod(theta, 2 * M_PI);
+    if (theta < 0) {
+        theta += 2 * M_PI;
+    }
+
+    first = fmod(first, 2 * M_PI);
+    if (first < 0) {
+        first += 2 * M_PI;
+    }
+
+    last = fmod(last, 2 * M_PI);
+    if (last < 0) {
+        last += 2 * M_PI;
+    }
+
+    if (cw) {
+        if (first > last) {
+            return theta <= first && theta >= last;
+        } else {
+            return theta <= first || theta >= last;
+        }
+    } else {
+        if (first > last) {
+            return theta >= first || theta <= last;
+        } else {
+            return theta >= first && theta <= last;
+        }
+    }
+}
+
+Base::BoundBox3d GeometryObject::calcBoundingBox() const
+{
+    Bnd_Box testBox;
+    testBox.SetGap(0.0);
+    for (std::vector<BaseGeom *>::const_iterator it( edgeGeom.begin() );
+            it != edgeGeom.end(); ++it) {
+         BRepBndLib::Add((*it)->occEdge, testBox);
+    }
+    if (testBox.IsVoid()) {
+        Base::Console().Log("INFO - GO::calcBoundingBox - testBox is void\n");
+    }
+    double xMin,xMax,yMin,yMax,zMin,zMax;
+    testBox.Get(xMin,yMin,zMin,xMax,yMax,zMax);
+
+    Base::BoundBox3d bbox(xMin,yMin,zMin,xMax,yMax,zMax);
+    return bbox;
+}
+
+//! does this GeometryObject already have this vertex
+bool GeometryObject::findVertex(Base::Vector2d v)
+{
+    bool found = false;
+    std::vector<Vertex*>::iterator it = vertexGeom.begin();
+    for (; it != vertexGeom.end(); it++) {
+        double dist = (v - (*it)->pnt).Length();
+        if (dist < Precision::Confusion()) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+/// utility non-class member functions
+//! gets a coordinate system
+gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+                                     const Base::Vector3d& direction,
+                                     const bool flip)
+{
+    gp_Pnt inputCenter(origin.x,origin.y,origin.z);
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
+    if (!flip) {
+        flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
+    }
+    Base::Vector3d cross = flipDirection;
+    //special cases
+    if (flipDirection == stdZ) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else if (flipDirection == (stdZ * -1.0)) {
+        cross = Base::Vector3d(1.0,0.0,0.0);
+    } else {
+        cross.Normalize();
+        cross = cross.Cross(stdZ);
+    }
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(inputCenter,
+                      gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                      gp_Dir(cross.x, cross.y, cross.z));
+    return viewAxis;
+}
+
+
+
+//! Returns the centroid of shape, as viewed according to direction
+gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
+                                    const Base::Vector3d &direction)
+{
+    Base::Vector3d origin(0.0,0.0,0.0);
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
+
+    gp_Trsf tempTransform;
+    tempTransform.SetTransformation(viewAxis);
+    BRepBuilderAPI_Transform builder(shape, tempTransform);
+
+    Bnd_Box tBounds;
+    BRepBndLib::Add(builder.Shape(), tBounds);
+
+    tBounds.SetGap(0.0);
+    Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+    tBounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    Standard_Real x = (xMin + xMax) / 2.0,
+                  y = (yMin + yMax) / 2.0,
+                  z = (zMin + zMax) / 2.0;
+
+    // Get centroid back into object space
+    tempTransform.Inverted().Transforms(x, y, z);
+
+    return gp_Pnt(x, y, z);
+}
+
+//!scales & mirrors a shape about a center
+TopoDS_Shape TechDrawGeometry::mirrorShape(const TopoDS_Shape &input,
+                             const gp_Pnt& inputCenter,
+                             double scale)
+{
+    TopoDS_Shape transShape;
+    try {
+        // Make tempTransform scale the object around it's centre point and
+        // mirror about the Y axis
+        gp_Trsf tempTransform;
+        tempTransform.SetScale(inputCenter, scale);
+        gp_Trsf mirrorTransform;
+        mirrorTransform.SetMirror( gp_Ax2(inputCenter, gp_Dir(0, 1, 0)) );
+        tempTransform.Multiply(mirrorTransform);
+
+        // Apply that transform to the shape.  This should preserve the centre.
+        BRepBuilderAPI_Transform mkTrf(input, tempTransform);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::mirrorShape - mirror/scale failed.\n");
+        return transShape;
+    }
+    return transShape;
+}
+
+//!scales a shape about a origin
+TopoDS_Shape TechDrawGeometry::scaleShape(const TopoDS_Shape &input,
+                                          double scale)
+{
+    TopoDS_Shape transShape;
+    try {
+        gp_Trsf scaleTransform;
+        scaleTransform.SetScale(gp_Pnt(0,0,0), scale);
+
+        BRepBuilderAPI_Transform mkTrf(input, scaleTransform);
+        transShape = mkTrf.Shape();
+    }
+    catch (...) {
+        Base::Console().Log("GeometryObject::scaleShape - scale failed.\n");
+        return transShape;
+    }
+    return transShape;
+}

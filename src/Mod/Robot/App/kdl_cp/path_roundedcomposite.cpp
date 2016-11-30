@@ -104,11 +104,11 @@ void Path_RoundedComposite::Add(const Frame& F_base_point) {
 			if (d >= bcdist)
 				throw Error_MotionPlanning_Not_Feasible(6);
 
-			std::auto_ptr < Path
+			std::unique_ptr < Path
 					> line1(
 							new Path_Line(F_base_start, F_base_via,
 									orient->Clone(), eqradius));
-			std::auto_ptr < Path
+			std::unique_ptr < Path
 					> line2(
 							new Path_Line(F_base_via, F_base_point,
 									orient->Clone(), eqradius));

@@ -1,6 +1,9 @@
 /***************************************************************************
- *   Copyright (c) 2015 Przemo Firszt <przemo@firszt.eu>                   *
- *   Based on Force constraint                                             *
+ *   Copyright (c) 2015 FreeCAD Developers                                 *
+ *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *
+ *            Ruan Olwagen <olwager@eskom.co.za>                           *
+ *            Oswald van Ginkel <vginkeo@eskom.co.za>                      *
+ *   Based on Force constraint by Jan Rheinländer                          *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
@@ -32,6 +35,11 @@
 #include "TaskFemConstraint.h"
 #include "ViewProviderFemConstraintPressure.h"
 
+#include <QObject>
+#include <Base/Console.h>
+#include <App/DocumentObject.h>
+#include <QListWidgetItem>
+
 class Ui_TaskFemConstraintPressure;
 
 namespace FemGui {
@@ -41,23 +49,27 @@ class TaskFemConstraintPressure : public TaskFemConstraint
 
 public:
     TaskFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView,QWidget *parent = 0);
-    virtual ~TaskFemConstraintPressure();
-    double getPressure(void) const;
-    virtual const std::string getReferences() const;
-    bool getReverse(void) const;
+    ~TaskFemConstraintPressure();
+    const std::string getReferences() const;
+    double get_Pressure()const;
+    bool get_Reverse()const;
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-    void onPressureChanged(const Base::Quantity & f);
+
     void onCheckReverse(bool);
+    void addToSelection();
+    void removeFromSelection();
+    void setSelection(QListWidgetItem* item);
 
 protected:
-    virtual void changeEvent(QEvent *e);
+    void changeEvent(QEvent *e);
 
 private:
-    virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
+    //void onSelectionChanged(const Gui::SelectionChanges& msg);
     void updateUI();
     Ui_TaskFemConstraintPressure* ui;
+
 };
 
 class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
@@ -66,9 +78,9 @@ class TaskDlgFemConstraintPressure : public TaskDlgFemConstraint
 
 public:
     TaskDlgFemConstraintPressure(ViewProviderFemConstraintPressure *ConstraintView);
-    virtual void open();
-    virtual bool accept();
-    virtual bool reject();
+    void open();
+    bool accept();
+    bool reject();
 };
 
 } //namespace FemGui

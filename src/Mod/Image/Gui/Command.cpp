@@ -60,6 +60,8 @@ CmdImageOpen::CmdImageOpen()
 
 void CmdImageOpen::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     // add all supported QImage formats
     QString formats;
     QTextStream str(&formats);
@@ -102,6 +104,8 @@ CmdCreateImagePlane::CmdCreateImagePlane()
 
 void CmdCreateImagePlane::activated(int iMsg)
 {
+    Q_UNUSED(iMsg);
+
     QString formats;
     QTextStream str(&formats);
     str << QObject::tr("Images") << " (";
@@ -131,12 +135,20 @@ void CmdCreateImagePlane::activated(int iMsg)
         Base::Rotation r = Dlg.Pos.getRotation();
 
         std::string FeatName = getUniqueObjectName("ImagePlane");
+        double xPixelsPerM = impQ.dotsPerMeterX();
+        double width = impQ.width();
+        width = width * 1000 / xPixelsPerM;
+        int nWidth = static_cast<int>(width+0.5);
+        double yPixelsPerM = impQ.dotsPerMeterY();
+        double height = impQ.height();
+        height = height * 1000 / yPixelsPerM;
+        int nHeight = static_cast<int>(height+0.5);
 
         openCommand("Create ImagePlane");
         doCommand(Doc,"App.activeDocument().addObject('Image::ImagePlane','%s\')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.ImageFile = '%s'",FeatName.c_str(),(const char*)s.toUtf8());
-        doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),impQ.width () );
-        doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),impQ.height() );
+        doCommand(Doc,"App.activeDocument().%s.XSize = %d",FeatName.c_str(),nWidth);
+        doCommand(Doc,"App.activeDocument().%s.YSize = %d",FeatName.c_str(),nHeight);
         doCommand(Doc,"App.activeDocument().%s.Placement = App.Placement(App.Vector(%f,%f,%f),App.Rotation(%f,%f,%f,%f))"
                      ,FeatName.c_str(),p.x,p.y,p.z,r[0],r[1],r[2],r[3]);
         commitCommand();

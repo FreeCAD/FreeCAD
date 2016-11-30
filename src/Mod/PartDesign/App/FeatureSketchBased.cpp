@@ -77,32 +77,12 @@
 #include <App/OriginFeature.h>
 #include <App/Document.h>
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/FaceMakerCheese.h>
 #include "FeatureSketchBased.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
 
 using namespace PartDesign;
-
-// sort bounding boxes according to diagonal length
-class ProfileBased::Wire_Compare : public std::binary_function<const TopoDS_Wire&,
-                                                              const TopoDS_Wire&, bool> {
-public:
-    bool operator() (const TopoDS_Wire& w1, const TopoDS_Wire& w2)
-    {
-        Bnd_Box box1, box2;
-        if (!w1.IsNull()) {
-            BRepBndLib::Add(w1, box1);
-            box1.SetGap(0.0);
-        }
-
-        if (!w2.IsNull()) {
-            BRepBndLib::Add(w2, box2);
-            box2.SetGap(0.0);
-        }
-
-        return box1.SquareExtent() < box2.SquareExtent();
-    }
-};
 
 PROPERTY_SOURCE(PartDesign::ProfileBased, PartDesign::FeatureAddSub)
 
@@ -203,7 +183,7 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
         if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             
             auto wires = getProfileWires();
-            return makeFace(wires);
+            return Part::FaceMakerCheese::makeFace(wires);
         }
         else if(result->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
             if(Profile.getSubValues().empty())
@@ -294,7 +274,7 @@ const TopoDS_Face ProfileBased::getSupportFace() const {
             assert(sub.size()==1);
             // get the selected sub shape (a Face)
             const Part::TopoShape &shape = part->Shape.getShape();
-            if (shape._Shape.IsNull())
+            if (shape.getShape().IsNull())
                 throw Base::Exception("Sketch support shape is empty!");
 
             TopoDS_Shape sh = shape.getSubShape(sub[0].c_str());
@@ -373,195 +353,6 @@ void ProfileBased::onChanged(const App::Property* prop)
     FeatureAddSub::onChanged(prop);
 }
 
-bool ProfileBased::isInside(const TopoDS_Wire& wire1, const TopoDS_Wire& wire2) const
-{
-    Bnd_Box box1;
-    BRepBndLib::Add(wire1, box1);
-    box1.SetGap(0.0);
-
-    Bnd_Box box2;
-    BRepBndLib::Add(wire2, box2);
-    box2.SetGap(0.0);
-
-    if (box1.IsOut(box2))
-        return false;
-
-    double prec = Precision::Confusion();
-
-    BRepBuilderAPI_MakeFace mkFace(wire1);
-    if (!mkFace.IsDone())
-        Standard_Failure::Raise("Failed to create a face from wire in sketch");
-    TopoDS_Face face = validateFace(mkFace.Face());
-    BRepAdaptor_Surface adapt(face);
-    IntTools_FClass2d class2d(face, prec);
-    Handle_Geom_Surface surf = new Geom_Plane(adapt.Plane());
-    ShapeAnalysis_Surface as(surf);
-
-    TopExp_Explorer xp(wire2,TopAbs_VERTEX);
-    while (xp.More())  {
-        TopoDS_Vertex v = TopoDS::Vertex(xp.Current());
-        gp_Pnt p = BRep_Tool::Pnt(v);
-        gp_Pnt2d uv = as.ValueOfUV(p, prec);
-        if (class2d.Perform(uv) == TopAbs_IN)
-            return true;
-        // TODO: We can make a check to see if all points are inside or all outside
-        // because otherwise we have some intersections which is not allowed
-        else
-            return false;
-        xp.Next();
-    }
-
-    return false;
-}
-
-TopoDS_Face ProfileBased::validateFace(const TopoDS_Face& face) const
-{
-    BRepCheck_Analyzer aChecker(face);
-    if (!aChecker.IsValid()) {
-        TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
-        TopTools_IndexedMapOfShape myMap;
-        myMap.Add(outerwire);
-
-        TopExp_Explorer xp(face,TopAbs_WIRE);
-        ShapeFix_Wire fix;
-        fix.SetFace(face);
-        fix.Load(outerwire);
-        fix.Perform();
-        BRepBuilderAPI_MakeFace mkFace(fix.WireAPIMake());
-        while (xp.More()) {
-            if (!myMap.Contains(xp.Current())) {
-                fix.Load(TopoDS::Wire(xp.Current()));
-                fix.Perform();
-                mkFace.Add(fix.WireAPIMake());
-            }
-            xp.Next();
-        }
-
-        aChecker.Init(mkFace.Face());
-        if (!aChecker.IsValid()) {
-            ShapeFix_Shape fix(mkFace.Face());
-            fix.SetPrecision(Precision::Confusion());
-            fix.SetMaxTolerance(Precision::Confusion());
-            fix.SetMaxTolerance(Precision::Confusion());
-            fix.Perform();
-            fix.FixWireTool()->Perform();
-            fix.FixFaceTool()->Perform();
-            TopoDS_Face fixedFace = TopoDS::Face(fix.Shape());
-            aChecker.Init(fixedFace);
-            if (!aChecker.IsValid())
-                Standard_Failure::Raise("Failed to validate broken face");
-            return fixedFace;
-        }
-        return mkFace.Face();
-    }
-
-    return face;
-}
-
-TopoDS_Shape ProfileBased::makeFace(std::list<TopoDS_Wire>& wires) const
-{
-    BRepBuilderAPI_MakeFace mkFace(wires.front());
-    const TopoDS_Face& face = mkFace.Face();
-    if (face.IsNull())
-        return face;
-    gp_Dir axis(0,0,1);
-    BRepAdaptor_Surface adapt(face);
-    if (adapt.GetType() == GeomAbs_Plane) {
-        axis = adapt.Plane().Axis().Direction();
-    }
-
-    wires.pop_front();
-    for (std::list<TopoDS_Wire>::iterator it = wires.begin(); it != wires.end(); ++it) {
-        BRepBuilderAPI_MakeFace mkInnerFace(*it);
-        const TopoDS_Face& inner_face = mkInnerFace.Face();
-        if (inner_face.IsNull())
-            return inner_face; // failure
-        gp_Dir inner_axis(0,0,1);
-        BRepAdaptor_Surface adapt(inner_face);
-        if (adapt.GetType() == GeomAbs_Plane) {
-            inner_axis = adapt.Plane().Axis().Direction();
-        }
-        // It seems that orientation is always 'Forward' and we only have to reverse
-        // if the underlying plane have opposite normals.
-        if (axis.Dot(inner_axis) < 0)
-            it->Reverse();
-        mkFace.Add(*it);
-    }
-    return validateFace(mkFace.Face());
-}
-
-TopoDS_Shape ProfileBased::makeFace(const std::vector<TopoDS_Wire>& w) const
-{
-    if (w.empty())
-        return TopoDS_Shape();
-
-    //FIXME: Need a safe method to sort wire that the outermost one comes last
-    // Currently it's done with the diagonal lengths of the bounding boxes
-#if 1
-    std::vector<TopoDS_Wire> wires = w;
-    std::sort(wires.begin(), wires.end(), Wire_Compare());
-    std::list<TopoDS_Wire> wire_list;
-    wire_list.insert(wire_list.begin(), wires.rbegin(), wires.rend());
-#else
-    //bug #0001133: try alternative sort algorithm
-    std::list<TopoDS_Wire> unsorted_wire_list;
-    unsorted_wire_list.insert(unsorted_wire_list.begin(), w.begin(), w.end());
-    std::list<TopoDS_Wire> wire_list;
-    Wire_Compare wc;
-    while (!unsorted_wire_list.empty()) {
-        std::list<TopoDS_Wire>::iterator w_ref = unsorted_wire_list.begin();
-        std::list<TopoDS_Wire>::iterator w_it = unsorted_wire_list.begin();
-        for (++w_it; w_it != unsorted_wire_list.end(); ++w_it) {
-            if (wc(*w_ref, *w_it))
-                w_ref = w_it;
-        }
-        wire_list.push_back(*w_ref);
-        unsorted_wire_list.erase(w_ref);
-    }
-#endif
-
-    // separate the wires into several independent faces
-    std::list< std::list<TopoDS_Wire> > sep_wire_list;
-    while (!wire_list.empty()) {
-        std::list<TopoDS_Wire> sep_list;
-        TopoDS_Wire wire = wire_list.front();
-        wire_list.pop_front();
-        sep_list.push_back(wire);
-
-        std::list<TopoDS_Wire>::iterator it = wire_list.begin();
-        while (it != wire_list.end()) {
-            if (isInside(wire, *it)) {
-                sep_list.push_back(*it);
-                it = wire_list.erase(it);
-            }
-            else {
-                ++it;
-            }
-        }
-
-        sep_wire_list.push_back(sep_list);
-    }
-
-    if (sep_wire_list.size() == 1) {
-        std::list<TopoDS_Wire>& wires = sep_wire_list.front();
-        return makeFace(wires);
-    }
-    else if (sep_wire_list.size() > 1) {
-        TopoDS_Compound comp;
-        BRep_Builder builder;
-        builder.MakeCompound(comp);
-        for (std::list< std::list<TopoDS_Wire> >::iterator it = sep_wire_list.begin(); it != sep_wire_list.end(); ++it) {
-            TopoDS_Shape aFace = makeFace(*it);
-            if (!aFace.IsNull())
-                builder.Add(comp, aFace);
-        }
-
-        return comp;
-    }
-    else {
-        return TopoDS_Shape(); // error
-    }
-}
 
 void ProfileBased::getUpToFaceFromLinkSub(TopoDS_Face& upToFace,
                                          const App::PropertyLinkSub& refFace)
@@ -730,8 +521,8 @@ void ProfileBased::generatePrism(TopoDS_Shape& prism,
 
 }
 
-const bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
-                                            const gp_Dir& dir) {
+bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const TopoDS_Face& face,
+                                       const gp_Dir& dir) {
     // Project wire onto the face (face, not surface! So limits of face apply)
     // FIXME: The results of BRepProj_Projection do not seem to be very stable. Sometimes they return no result
     // even in the simplest projection case.
@@ -741,7 +532,7 @@ const bool ProfileBased::checkWireInsideFace(const TopoDS_Wire& wire, const Topo
     return (proj.More() && proj.Current().Closed());
 }
 
-const bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &face)
+bool ProfileBased::checkLineCrossesFace(const gp_Lin &line, const TopoDS_Face &face)
 {
 #if 1
     BRepBuilderAPI_MakeEdge mkEdge(line);
@@ -898,7 +689,9 @@ void ProfileBased::remapSupportShape(const TopoDS_Shape& newShape)
 
     // here we must reset the placement otherwise the geometric matching doesn't work
     Part::TopoShape shape = this->Shape.getValue();
-    shape._Shape.Location(TopLoc_Location());
+    TopoDS_Shape sh = shape.getShape();
+    sh.Location(TopLoc_Location());
+    shape.setShape(sh);
 
     std::vector<App::DocumentObject*> refs = this->getInList();
     for (std::vector<App::DocumentObject*>::iterator it = refs.begin(); it != refs.end(); ++it) {
@@ -1084,7 +877,7 @@ bool ProfileBased::isParallelPlane(const TopoDS_Shape& s1, const TopoDS_Shape& s
 }
 
 
-const double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
+double ProfileBased::getReversedAngle(const Base::Vector3d &b, const Base::Vector3d &v)
 {
     try {
         Part::Feature* obj = getVerifiedObject();

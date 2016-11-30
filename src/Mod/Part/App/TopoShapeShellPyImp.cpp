@@ -92,7 +92,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>((*it).ptr())->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 if (!sh.IsNull())
                     builder.Add(shell, sh);
             }
@@ -117,7 +117,7 @@ int TopoShapeShellPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return -1;
     }
 
-    getTopoShapePtr()->_Shape = shape;
+    getTopoShapePtr()->setShape(shape);
     return 0;
 }
 
@@ -128,17 +128,17 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
         return NULL;
 
     BRep_Builder builder;
-    TopoDS_Shape& shell = getTopoShapePtr()->_Shape;
+    TopoDS_Shape shell = getTopoShapePtr()->getShape();
     
     try {
         const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>(obj)->
-            getTopoShapePtr()->_Shape;
+            getTopoShapePtr()->getShape();
         if (!sh.IsNull()) {
             builder.Add(shell, sh);
             BRepCheck_Analyzer check(shell);
             if (!check.IsValid()) {
                 ShapeUpgrade_ShellSewing sewShell;
-                getTopoShapePtr()->_Shape = sewShell.ApplySewing(shell);
+                getTopoShapePtr()->setShape(sewShell.ApplySewing(shell));
             }
         }
         else {
@@ -151,6 +151,8 @@ PyObject*  TopoShapeShellPy::add(PyObject *args)
         return 0;
     }
 
+    getTopoShapePtr()->setShape(shell);
+
     Py_Return;
 }
 
@@ -159,11 +161,11 @@ PyObject*  TopoShapeShellPy::getFreeEdges(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     ShapeAnalysis_Shell as;
-    as.LoadShells(getTopoShapePtr()->_Shape);
+    as.LoadShells(getTopoShapePtr()->getShape());
 #if OCC_VERSION_HEX < 0x060500
-    as.CheckOrientedShells(getTopoShapePtr()->_Shape, Standard_True);
+    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True);
 #else
-    as.CheckOrientedShells(getTopoShapePtr()->_Shape, Standard_True, Standard_True);
+    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 #endif
     TopoDS_Compound comp = as.FreeEdges();
     return new TopoShapeCompoundPy(new TopoShape(comp));
@@ -174,11 +176,11 @@ PyObject*  TopoShapeShellPy::getBadEdges(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
     ShapeAnalysis_Shell as;
-    as.LoadShells(getTopoShapePtr()->_Shape);
+    as.LoadShells(getTopoShapePtr()->getShape());
 #if OCC_VERSION_HEX < 0x060500
-    as.CheckOrientedShells(getTopoShapePtr()->_Shape, Standard_True);
+    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True);
 #else
-    as.CheckOrientedShells(getTopoShapePtr()->_Shape, Standard_True, Standard_True);
+    as.CheckOrientedShells(getTopoShapePtr()->getShape(), Standard_True, Standard_True);
 #endif
     TopoDS_Compound comp = as.BadEdges();
     return new TopoShapeCompoundPy(new TopoShape(comp));
@@ -192,7 +194,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
 
     try {
         Base::Vector3d pt = Py::Vector(pPnt,false).toVector();
-        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Shell(this->getTopoShapePtr()->_Shape), gp_Pnt(pt.x,pt.y,pt.z));
+        BRepPrimAPI_MakeHalfSpace mkHS(TopoDS::Shell(this->getTopoShapePtr()->getShape()), gp_Pnt(pt.x,pt.y,pt.z));
         return new TopoShapeSolidPy(new TopoShape(mkHS.Solid()));
     }
     catch (Standard_Failure) {
@@ -205,7 +207,7 @@ PyObject* TopoShapeShellPy::makeHalfSpace(PyObject *args)
 Py::Object TopoShapeShellPy::getMass(void) const
 {
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
     double c = props.Mass();
     return Py::Float(c);
 }
@@ -213,7 +215,7 @@ Py::Object TopoShapeShellPy::getMass(void) const
 Py::Object TopoShapeShellPy::getCenterOfMass(void) const
 {
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
     gp_Pnt c = props.CentreOfMass();
     return Py::Vector(Base::Vector3d(c.X(),c.Y(),c.Z()));
 }
@@ -221,7 +223,7 @@ Py::Object TopoShapeShellPy::getCenterOfMass(void) const
 Py::Object TopoShapeShellPy::getMatrixOfInertia(void) const
 {
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
     gp_Mat m = props.MatrixOfInertia();
     Base::Matrix4D mat;
     for (int i=0; i<3; i++) {
@@ -235,7 +237,7 @@ Py::Object TopoShapeShellPy::getMatrixOfInertia(void) const
 Py::Object TopoShapeShellPy::getStaticMoments(void) const
 {
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
     Standard_Real lx,ly,lz;
     props.StaticMoments(lx,ly,lz);
     Py::Tuple tuple(3);
@@ -248,7 +250,7 @@ Py::Object TopoShapeShellPy::getStaticMoments(void) const
 Py::Dict TopoShapeShellPy::getPrincipalProperties(void) const
 {
     GProp_GProps props;
-    BRepGProp::SurfaceProperties(getTopoShapePtr()->_Shape, props);
+    BRepGProp::SurfaceProperties(getTopoShapePtr()->getShape(), props);
     GProp_PrincipalProps pprops = props.PrincipalProperties();
 
     Py::Dict dict;

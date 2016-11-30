@@ -41,9 +41,14 @@ except AttributeError:
 
 
 def review(obj):
-    limits = False
-    "checks the selected project for common errors"
+    "checks the selected job for common errors"
     toolcontrolcount = 0
+
+    if len(obj.Tooltable.Tools) == 0:
+        FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(obj.Label) + " has no tools defined in the tool table\n"))
+    if obj.X_Max == obj.X_Min or obj.Y_Max == obj.Y_Min:
+        FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
+
     for item in obj.Group:
         print "Checking: " + item.Label
         if item.Name[:2] == "TC":
@@ -63,15 +68,6 @@ def review(obj):
             if item.SpindleSpeed == 0:
                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "Tool Controller: " + str(item.Label) + " has a 0 value for the spindle speed\n"))
 
-        if item.Name[:7] == "Machine":
-            if len(item.Tooltable.Tools) == 0:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity",  "Machine: " + str(item.Label) + " has no tools defined in the tool table\n"))
-
-            if item.X_Max == item.X_Min or item.Y_Max == item.Y_Min:
-                FreeCAD.Console.PrintWarning(translate("Path_Sanity", "It appears the machine limits haven't been set.  Not able to check path extents.\n"))
-            else:
-                limits = True
-
     if toolcontrolcount == 0:
         FreeCAD.Console.PrintWarning(translate("Path_Sanity", "A Tool Controller was not found. Default values are used which is dangerous.  Please add a Tool Controller.\n"))
 
@@ -84,7 +80,11 @@ class CommandPathSanity:
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Sanity","Check the Path Project for common errors")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         # check that the selection contains exactly what we want

@@ -16,7 +16,7 @@
 		</Documentation>
 		<Methode Name="makeOffset" Const="true">
 			<Documentation>
-				<UserDocu>Offset the shape by a given ammount</UserDocu>
+				<UserDocu>Offset the face by a given ammount. Returns Compound of Wires. Deprecated - use makeOffset2D instead.</UserDocu>
 			</Documentation>
 		</Methode>
 		<Methode Name="tangentAt" Const="true">
@@ -64,7 +64,18 @@
 				<UserDocu>Validate the face.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="setTolerance">
+        <Methode Name="curveOnSurface">
+            <Documentation>
+                <UserDocu>
+curveonSurface(Edge) -> None or tuple
+Returns the curve  associated to the  edge in  the
+parametric  space of  the  face.  Returns None if this
+curve  does not exist. If this curve exists then a tuple
+of curve and and parameter range is returned.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="setTolerance">
 			<Documentation>
 				<UserDocu>Set the tolerance for the face.</UserDocu>
 			</Documentation>

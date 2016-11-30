@@ -46,6 +46,7 @@ namespace Base {
 
 namespace App
 {
+    class TransactionalObject;
     class DocumentObject;
     class DocumentObjectExecReturn;
     class Document;
@@ -63,6 +64,12 @@ class AppExport Document : public App::PropertyContainer
     PROPERTY_HEADER(App::Document);
 
 public:
+    enum Status {
+        SkipRecompute = 0,
+        KeepTrailingDigits = 1,
+        Closable = 2,
+    };
+
     /** @name Properties */
     //@{
     /// holds the long name of the document (utf-8 coded)
@@ -82,24 +89,24 @@ public:
     /// Id e.g. Part number
     PropertyString Id;
     /// unique identifier of the document
-    PropertyUUID   Uid;
+    PropertyUUID Uid;
     /** License string
       * Holds the short license string for the Item, e.g. CC-BY
       * for the Creative Commons license suit.
       */
-    App::PropertyString  License;
+    App::PropertyString License;
     /// License descripton/contract URL
-    App::PropertyString  LicenseURL;
+    App::PropertyString LicenseURL;
     /// Meta descriptons
-    App::PropertyMap     Meta;
+    App::PropertyMap Meta;
     /// Material descriptons, used and defined in the Material module.
-    App::PropertyMap     Material;
+    App::PropertyMap Material;
     /// read-only name of the temp dir created wen the document is opened
-    PropertyString		TransientDir;
-	/// Tip object of the document (if any)
-	PropertyLink		Tip;
- 	/// Tip object of the document (if any)
-	PropertyString		TipName;
+    PropertyString TransientDir;
+    /// Tip object of the document (if any)
+    PropertyLink Tip;
+    /// Tip object of the document (if any)
+    PropertyString TipName;
     //@}
 
     /** @name Signals of the document */
@@ -115,6 +122,10 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
@@ -203,7 +214,7 @@ public:
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
     /// Returns true if the DocumentObject is contained in this document
-    const bool isIn(const DocumentObject *pFeat) const;
+    bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -213,6 +224,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
@@ -242,6 +254,10 @@ public:
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a spezified object
     const char* getErrorDescription(const App::DocumentObject*) const;
+    /// return the status bits
+    bool testStatus(Status pos) const;
+    /// set the status bits
+    void setStatus(Status pos, bool on);
     //@}
 
 
@@ -308,9 +324,10 @@ public:
 
     friend class Application;
     /// because of transaction handling
+    friend class TransactionalObject;
     friend class DocumentObject;
     friend class Transaction;
-    friend class TransactionObject;
+    friend class TransactionDocumentObject;
 
     /// Destruction
     virtual ~Document();
@@ -329,7 +346,7 @@ protected:
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
-    void onBeforeChangeProperty(const DocumentObject *Who, const Property *What);
+    void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature

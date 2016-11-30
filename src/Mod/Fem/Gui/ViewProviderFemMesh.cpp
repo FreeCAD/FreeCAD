@@ -183,7 +183,7 @@ App::PropertyFloatConstraint::Constraints ViewProviderFemMesh::floatRange = {1.0
 
 ViewProviderFemMesh::ViewProviderFemMesh()
 {
-    sPixmap = "fem-fem-mesh-from-shape";
+    sPixmap = "fem-femmesh-from-shape";
 
     ADD_PROPERTY(PointColor,(App::Color(0.7f,0.7f,0.7f)));
     ADD_PROPERTY(PointSize,(5.0f));
@@ -465,7 +465,7 @@ SoDetail* ViewProviderFemMesh::getDetail(const char* subelement) const
     return detail;
 }
 
-std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* Element) const
+std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* /*Element*/) const
 {
     return std::vector<Base::Vector3d>();
 }
@@ -473,7 +473,7 @@ std::vector<Base::Vector3d> ViewProviderFemMesh::getSelectionShape(const char* E
 void ViewProviderFemMesh::setHighlightNodes(const std::set<long>& HighlightedNodes)
 {
     if(!HighlightedNodes.empty()){
-        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
+        SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>(this->pcObject)->FemMesh).getValue().getSMesh())->GetMeshDS();
 
         pcAnoCoords->point.setNum(HighlightedNodes.size());
         SbVec3f* verts = pcAnoCoords->point.startEditing();
@@ -685,7 +685,7 @@ void ViewProviderFEMMeshBuilder::buildNodes(const App::Property* prop, std::vect
             pcFaces = static_cast<SoIndexedFaceSet*>(nodes[1]);
     }
 
-    if (pcPointsCoord && pcFaces){
+    if (pcPointsCoord && pcFaces && pcLines){
         std::vector<unsigned long> vFaceElementIdx;
         std::vector<unsigned long> vNodeElementIdx;
         bool onlyEdges;
@@ -723,15 +723,15 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
 
     SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>(mesh->getValue().getSMesh())->GetMeshDS();
 
-	int numFaces = data->NbFaces();
-	int numNodes = data->NbNodes();
-	int numEdges = data->NbEdges();
+    int numFaces = data->NbFaces();
+    int numNodes = data->NbNodes();
+    int numEdges = data->NbEdges();
 
     if(numFaces+numNodes+numEdges == 0) return;
     Base::TimeInfo Start;
     Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
-	const SMDS_MeshInfo& info = data->GetMeshInfo();
+    const SMDS_MeshInfo& info = data->GetMeshInfo();
     int numTria = info.NbTriangles();
     int numQuad = info.NbQuadrangles();
 
@@ -2463,4 +2463,16 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     Base::Console().Log("    %f: Finish =========================================================\n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
 
 
+}
+
+
+// Python feature -----------------------------------------------------------------------
+
+namespace Gui {
+/// @cond DOXERR
+PROPERTY_SOURCE_TEMPLATE(FemGui::ViewProviderFemMeshPython, FemGui::ViewProviderFemMesh)
+/// @endcond
+
+// explicit template instantiation
+template class FemGuiExport ViewProviderPythonFeatureT<ViewProviderFemMesh>;
 }

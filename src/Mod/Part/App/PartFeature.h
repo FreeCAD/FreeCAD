@@ -55,10 +55,6 @@ public:
 
     /** @name methods override feature */
     //@{
-    /// recalculate the feature
-    /// recompute only this object
-    virtual App::DocumentObjectExecReturn *recompute(void);
-    virtual App::DocumentObjectExecReturn *execute(void);
     virtual short mustExecute(void) const;
     //@}
 
@@ -71,6 +67,10 @@ public:
     TopLoc_Location getLocation() const;
     
 protected:
+    /// recompute only this object
+    virtual App::DocumentObjectExecReturn *recompute(void);
+    /// recalculate the feature
+    virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);
     /**
      * Build a history of changes
@@ -141,8 +141,8 @@ std::vector<cutFaces> findAllFacesCutBy(const TopoDS_Shape& shape,
   * If there is any error in the boolean operations, the check always returns false
   */
 PartExport
-const bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
-                             const bool quick, const bool touch_is_intersection);
+bool checkIntersection(const TopoDS_Shape& first, const TopoDS_Shape& second,
+                       const bool quick, const bool touch_is_intersection);
 
 } //namespace Part
 

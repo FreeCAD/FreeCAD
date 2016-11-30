@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport 
-		Father="PropertyContainerPy" 
+		Father="ExtensionContainerPy" 
 		Name="DocumentObjectPy" 
 		Twin="DocumentObject" 
 		TwinPointer="DocumentObject" 
 		Include="App/DocumentObject.h" 
 		Namespace="App" 
-		FatherInclude="App/PropertyContainerPy.h" 
+		FatherInclude="App/ExtensionContainerPy.h" 
 		FatherNamespace="App">
 		<Documentation>
 			<Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
 			<UserDocu>This is the father of all classes handled by the document</UserDocu>
 		</Documentation>
-		<Methode Name="touch">
+        <Methode Name="addProperty">
+            <Documentation>
+                <UserDocu>
+                    addProperty(string, string) -- Add a generic property.
+                    The first argument specifies the type, the second the
+                    name of the property.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeProperty">
+            <Documentation>
+                <UserDocu>
+                    removeProperty(string) -- Remove a generic property.
+                    Note, you can only remove user-defined properties but not built-in ones.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="supportedProperties">
+            <Documentation>
+                <UserDocu>A list of supported property types</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="touch">
 			<Documentation>
 				<UserDocu>Mark the object as changed (touched)</UserDocu>
 			</Documentation>
@@ -23,11 +45,16 @@
 				<UserDocu>Mark the object as unchanged</UserDocu>
 			</Documentation>
 		</Methode>
-                <Methode Name="setExpression">
-                        <Documentation>
-                                <UserDocu>Register an expression for a property</UserDocu>
-                        </Documentation>
-                </Methode>
+        <Methode Name="setExpression">
+            <Documentation>
+                <UserDocu>Register an expression for a property</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="recompute">
+            <Documentation>
+                <UserDocu>Recomputes this object</UserDocu>
+            </Documentation>
+        </Methode>
     <Attribute Name="OutList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects this object links to.</UserDocu>

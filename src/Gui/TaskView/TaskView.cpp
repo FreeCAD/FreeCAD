@@ -468,6 +468,7 @@ void TaskView::keyPressEvent(QKeyEvent* ke)
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
+    Q_UNUSED(doc); 
     if (!ActiveDialog)
         updateWatcher();
 }
@@ -494,6 +495,7 @@ void TaskView::slotRedoDocument(const App::Document&)
 void TaskView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                         Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     std::string temp;
 
     if (Reason.Type == SelectionChanges::AddSelection ||
@@ -574,12 +576,18 @@ void TaskView::removeDialog(void)
 
     TaskDialog* remove = NULL;
     if (ActiveDialog) {
-        const std::vector<QWidget*> &cont = ActiveDialog->getDialogContent();
-        for(std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
-            taskPanel->removeWidget(*it);
+        // See 'accept' and 'reject'
+        if (ActiveDialog->property("taskview_accept_or_reject").isNull()) {
+            const std::vector<QWidget*> &cont = ActiveDialog->getDialogContent();
+            for(std::vector<QWidget*>::const_iterator it=cont.begin();it!=cont.end();++it){
+                taskPanel->removeWidget(*it);
+            }
+            remove = ActiveDialog;
+            ActiveDialog = 0;
         }
-        remove = ActiveDialog;
-        ActiveDialog = 0;
+        else {
+            ActiveDialog->setProperty("taskview_remove_dialog", true);
+        }
     }
 
     taskPanel->removeStretch();
@@ -587,7 +595,7 @@ void TaskView::removeDialog(void)
     // put the watcher back in control
     addTaskWatcher();
     
-    if(remove) {
+    if (remove) {
         remove->emitDestructionSignal();
         delete remove;
     }
@@ -700,13 +708,23 @@ void TaskView::removeTaskWatcher(void)
 
 void TaskView::accept()
 {
-    if (ActiveDialog->accept())
+    // Make sure that if 'accept' calls 'closeDialog' the deletion is postponed until
+    // the dialog leaves the 'accept' method
+    ActiveDialog->setProperty("taskview_accept_or_reject", true);
+    bool success = ActiveDialog->accept();
+    ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
+    if (success || ActiveDialog->property("taskview_remove_dialog").isValid())
         removeDialog();
 }
 
 void TaskView::reject()
 {
-    if (ActiveDialog->reject())
+    // Make sure that if 'reject' calls 'closeDialog' the deletion is postponed until
+    // the dialog leaves the 'reject' method
+    ActiveDialog->setProperty("taskview_accept_or_reject", true);
+    bool success = ActiveDialog->reject();
+    ActiveDialog->setProperty("taskview_accept_or_reject", QVariant());
+    if (success || ActiveDialog->property("taskview_remove_dialog").isValid())
         removeDialog();
 }
 

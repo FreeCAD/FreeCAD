@@ -60,6 +60,7 @@
         <file>icons/Snap_Near.svg</file>
         <file>icons/Snap_Dimensions.svg</file>
         <file>icons/Snap_WorkingPlane.svg</file>
+        <file>icons/Snap_Special.svg</file>
         <file>icons/Draft_Clone.svg</file>
         <file>icons/Draft_Heal.svg</file>
         <file>icons/Draft_Ellipse.svg</file>
@@ -68,6 +69,7 @@
         <file>icons/Draft_FlipDimension.svg</file>
         <file>icons/Draft_Mirror.svg</file>
         <file>icons/Draft_Grid.svg</file>
+        <file>icons/Draft_Slope.svg</file>
         <file>icons/DraftWorkbench.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>

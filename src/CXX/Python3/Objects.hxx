@@ -50,6 +50,7 @@
 #include <iterator>
 #include <utility>
 #include <typeinfo>
+#include <algorithm>
 
 namespace Py
 {
@@ -221,7 +222,9 @@ namespace Py
         {
             // not allowed to commit suicide, however
             if( reference_count() == 1 )
-            throw RuntimeError( "Object::decrement_reference_count error." );
+            {
+                throw RuntimeError( "Object::decrement_reference_count error." );
+            }
             Py::_XDECREF( p );
         }
 
@@ -378,13 +381,17 @@ namespace Py
         void setAttr( const std::string &s, const Object &value )
         {
             if( PyObject_SetAttrString( p, const_cast<char*>( s.c_str() ), *value ) == -1 )
-                throw AttributeError( "getAttr failed." );
+            {
+                throw AttributeError( "setAttr failed." );
+            }
         }
 
         void delAttr( const std::string &s )
         {
             if( PyObject_DelAttrString( p, const_cast<char*>( s.c_str() ) ) == -1 )
+            {
                 throw AttributeError( "delAttr failed." );
+            }
         }
 
         // PyObject_SetItem is too weird to be using from C++
@@ -392,9 +399,11 @@ namespace Py
 
         void delItem( const Object &key )
         {
-            //if( PyObject_DelItem( p, *key ) == -1 )
-            // failed to link on Windows?
-            throw KeyError( "delItem failed." );
+            if( PyObject_DelItem( p, *key ) == -1 )
+            {
+                // failed to link on Windows?
+                throw KeyError( "delItem failed." );
+            }
         }
         // Equality and comparison use PyObject_Compare
 
@@ -413,7 +422,7 @@ namespace Py
         {
         }
 
-        virtual bool accepts( PyObject *pyob )
+        virtual bool accepts( PyObject *pyob ) const
         {
             return pyob == NULL;
         }
@@ -1408,14 +1417,18 @@ namespace Py
         void verify_length( size_type required_size ) const
         {
             if( size() != required_size )
+            {
                 throw IndexError( "Unexpected SeqBase<T> length." );
+            }
         }
 
         void verify_length( size_type min_size, size_type max_size ) const
         {
             size_type n = size();
             if( n < min_size || n > max_size )
+            {
                 throw IndexError( "Unexpected SeqBase<T> length." );
+            }
         }
 
         class PYCXX_EXPORT iterator
@@ -1520,8 +1533,9 @@ namespace Py
             int operator-( const iterator &other ) const
             {
                 if( seq->ptr() != other.seq->ptr() )
+                {
                     throw RuntimeError( "SeqBase<T>::iterator comparison error" );
-
+                }
                 return count - other.count;
             }
 
@@ -1672,7 +1686,9 @@ namespace Py
             int operator-( const const_iterator &other ) const
             {
                 if( *seq != *other.seq )
+                {
                     throw RuntimeError( "SeqBase<T>::const_iterator::- error" );
+                }
                 return count - other.count;
             }
 
@@ -3122,7 +3138,9 @@ namespace Py
         Callable &operator=( PyObject *rhsp )
         {
             if( ptr() != rhsp )
+            {
                 set( rhsp );
+            }
             return *this;
         }
 
@@ -3135,18 +3153,35 @@ namespace Py
         // Call
         Object apply( const Tuple &args ) const
         {
-            return asObject( PyObject_CallObject( ptr(), args.ptr() ) );
+            PyObject *result = PyObject_CallObject( ptr(), args.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         // Call with keywords
         Object apply( const Tuple &args, const Dict &kw ) const
         {
-            return asObject( PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() ) );
+            PyObject *result = PyEval_CallObjectWithKeywords( ptr(), args.ptr(), kw.ptr() );
+            if( result == NULL )
+            {
+                throw Exception();
+            }
+            return asObject( result );
         }
 
         Object apply( PyObject *pargs = 0 ) const
         {
-            return apply( Tuple( pargs ) );
+            if( pargs == 0 )
+            {
+                return apply( Tuple() );
+            }
+            else
+            {
+                return apply( Tuple( pargs ) );
+            }
         }
     };
 

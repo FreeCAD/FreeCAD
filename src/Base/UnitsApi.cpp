@@ -67,11 +67,11 @@ UnitSystem    UnitsApi::actSystem = SI1;
 //QString  UnitsApi::UserPrefUnit   [50];
 int      UnitsApi::UserPrefDecimals = 2;
 
-UnitsApi::UnitsApi(const char* filter)
+UnitsApi::UnitsApi(const char* /*filter*/)
 {
 }
 
-UnitsApi::UnitsApi(const std::string& filter)
+UnitsApi::UnitsApi(const std::string& /*filter*/)
 {
 }
 
@@ -116,9 +116,9 @@ void UnitsApi::setSchema(UnitSystem s)
 
 // === static translation methodes ==========================================
 
-QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
-	return UserPrefSystem->schemaTranslate(quant,factor,unitString);
+    return UserPrefSystem->schemaTranslate(quant,factor,unitString);
 }
 
 

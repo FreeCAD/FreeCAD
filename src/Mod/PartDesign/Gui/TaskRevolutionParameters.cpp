@@ -413,4 +413,6 @@ TaskDlgRevolutionParameters::TaskDlgRevolutionParameters(PartDesignGui::ViewProv
     assert(RevolutionView);
     Content.push_back(new TaskRevolutionParameters(RevolutionView));
 }
+
+
 #include "moc_TaskRevolutionParameters.cpp"

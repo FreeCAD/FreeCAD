@@ -124,6 +124,7 @@
 #include "ImportIges.h"
 #include "ImportStep.h"
 #include "edgecluster.h"
+#include "FaceMaker.h"
 
 #ifdef FCUseFreeType
 #  include "FT2FC.h"
@@ -252,11 +253,15 @@ public:
         add_varargs_method("makeShell",&Module::makeShell,
             "makeShell(list) -- Create a shell out of a list of faces."
         );
+        add_varargs_method("makeFace",&Module::makeFace,
+            "makeFace(list_of_shapes_or_compound, maker_class_name) -- Create a face (faces) using facemaker class.\n"
+            "maker_class_name is a string like 'Part::FaceMakerSimple'."
+        );
         add_varargs_method("makeFilledFace",&Module::makeFilledFace,
             "makeFilledFace(list) -- Create a face out of a list of edges."
         );
         add_varargs_method("makeSolid",&Module::makeSolid,
-            "makeSolid(shape) -- Create a solid out of the shells inside a shape."
+            "makeSolid(shape): Create a solid out of shells of shape. If shape is a compsolid, the overall volume solid is created."
         );
         add_varargs_method("makePlane",&Module::makePlane,
             "makePlane(length,width,[pnt,dirZ,dirX]) -- Make a plane\n"
@@ -556,7 +561,7 @@ private:
         Part::Feature *pcFeature = (Part::Feature *)pcDoc->addObject("Part::Feature", "Shape");
         // copy the data
         //TopoShape* shape = new MeshObject(*pShape->getTopoShapeObjectPtr());
-        pcFeature->Shape.setValue(pShape->getTopoShapePtr()->_Shape);
+        pcFeature->Shape.setValue(pShape->getTopoShapePtr()->getShape());
         pcDoc->recompute();
 
         return Py::None();
@@ -576,7 +581,7 @@ private:
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                        getTopoShapePtr()->_Shape;
+                        getTopoShapePtr()->getShape();
                     if (!sh.IsNull())
                         builder.Add(Comp, sh);
                 }
@@ -606,7 +611,7 @@ private:
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapeFacePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapeFacePy*>((*it).ptr())->
-                        getTopoShapePtr()->_Shape;
+                        getTopoShapePtr()->getShape();
                     if (!sh.IsNull())
                         builder.Add(shell, sh);
                 }
@@ -626,6 +631,63 @@ private:
 
         return Py::asObject(new TopoShapeShellPy(new TopoShape(shape)));
     }
+    Py::Object makeFace(const Py::Tuple& args)
+    {
+        try {
+            char* className = 0;
+            PyObject* pcPyShapeOrList = nullptr;
+            PyErr_Clear();
+            if (PyArg_ParseTuple(args.ptr(), "Os", &pcPyShapeOrList, &className)) {
+                std::unique_ptr<FaceMaker> fm = Part::FaceMaker::ConstructFromType(className);
+
+                //dump all supplied shapes to facemaker, no matter what type (let facemaker decide).
+                if (PySequence_Check(pcPyShapeOrList)){
+                    Py::Sequence list(pcPyShapeOrList);
+                    for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                        PyObject* item = (*it).ptr();
+                        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                            const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
+                            fm->addShape(sh);
+                        } else {
+                            throw Py::TypeError("Object is not a shape.");
+                        }
+                    }
+                } else if (PyObject_TypeCheck(pcPyShapeOrList, &(Part::TopoShapePy::Type))) {
+                    const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(pcPyShapeOrList)->getTopoShapePtr()->getShape();
+                    if (sh.IsNull())
+                        throw Base::Exception("Shape is null!");
+                    if (sh.ShapeType() == TopAbs_COMPOUND)
+                        fm->useCompound(TopoDS::Compound(sh));
+                    else
+                        fm->addShape(sh);
+                } else {
+                    throw Py::Exception(PyExc_TypeError, "First argument is neither a shape nor list of shapes.");
+                }
+
+                fm->Build();
+
+                if(fm->Shape().IsNull())
+                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+
+                switch(fm->Shape().ShapeType()){
+                case TopAbs_FACE:
+                    return Py::asObject(new TopoShapeFacePy(new TopoShape(fm->Shape())));
+                case TopAbs_COMPOUND:
+                    return Py::asObject(new TopoShapeCompoundPy(new TopoShape(fm->Shape())));
+                default:
+                    return Py::asObject(new TopoShapePy(new TopoShape(fm->Shape())));
+                }
+            }
+
+            throw Py::Exception(Base::BaseExceptionFreeCADError, std::string("Argument type signature not recognized. Should be either (list, string), or (shape, string)"));
+
+        } catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            throw Py::Exception(PartExceptionOCCError, e->GetMessageString());
+        } catch (Base::Exception &e){
+            throw Py::Exception(Base::BaseExceptionFreeCADError, e.what());
+        }
+    }
     Py::Object makeFilledFace(const Py::Tuple& args)
     {
         // TODO: BRepFeat_SplitShape
@@ -639,7 +701,7 @@ private:
         try {
             if (surf) {
                 const TopoDS_Shape& face = static_cast<TopoShapeFacePy*>(surf)->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
                     builder.LoadInitSurface(TopoDS::Face(face));
                 }
@@ -649,7 +711,7 @@ private:
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                     const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                        getTopoShapePtr()->_Shape;
+                        getTopoShapePtr()->getShape();
                     if (!sh.IsNull()) {
                         if (sh.ShapeType() == TopAbs_EDGE) {
                             builder.Add(TopoDS::Edge(sh), GeomAbs_C0);
@@ -693,25 +755,47 @@ private:
             throw Py::Exception();
 
         try {
-            BRepBuilderAPI_MakeSolid mkSolid;
             const TopoDS_Shape& shape = static_cast<TopoShapePy*>(obj)
-                ->getTopoShapePtr()->_Shape;
-            TopExp_Explorer anExp (shape, TopAbs_SHELL);
+                ->getTopoShapePtr()->getShape();
+            //first, if we were given a compsolid, try making a solid out of it
+            TopExp_Explorer CSExp (shape, TopAbs_COMPSOLID);
+            TopoDS_CompSolid compsolid;
             int count=0;
-            for (; anExp.More(); anExp.Next()) {
+            for (; CSExp.More(); CSExp.Next()) {
                 ++count;
-                mkSolid.Add(TopoDS::Shell(anExp.Current()));
+                compsolid = TopoDS::CompSolid(CSExp.Current());
+                if (count > 1)
+                    break;
             }
+            if (count == 0) {
+                //no compsolids. Get shells...
+                BRepBuilderAPI_MakeSolid mkSolid;
+                TopExp_Explorer anExp (shape, TopAbs_SHELL);
+                count=0;
+                for (; anExp.More(); anExp.Next()) {
+                    ++count;
+                    mkSolid.Add(TopoDS::Shell(anExp.Current()));
+                }
 
-            if (count == 0)
-                Standard_Failure::Raise("No shells found in shape");
+                if (count == 0)//no shells?
+                    Standard_Failure::Raise("No shells or compsolids found in shape");
 
-            TopoDS_Solid solid = mkSolid.Solid();
-            BRepLib::OrientClosedSolid(solid);
-            return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+                TopoDS_Solid solid = mkSolid.Solid();
+                BRepLib::OrientClosedSolid(solid);
+                return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+            } else if (count == 1) {
+                BRepBuilderAPI_MakeSolid mkSolid(compsolid);
+                TopoDS_Solid solid = mkSolid.Solid();
+                return Py::asObject(new TopoShapeSolidPy(new TopoShape(solid)));
+            } else { // if (count > 1)
+                Standard_Failure::Raise("Only one compsolid can be accepted. Provided shape has more than one compsolid.");
+                return Py::None(); //prevents compiler warning
+            }
         }
-        catch (Standard_Failure) {
-            throw Py::Exception(PartExceptionOCCError, "creation of solid failed");
+        catch (Standard_Failure err) {
+            std::stringstream errmsg;
+            errmsg << "Creation of solid failed: " << err.GetMessageString();
+            throw Py::Exception(PartExceptionOCCError, errmsg.str().c_str());
         }
     }
     Py::Object makePlane(const Py::Tuple& args)
@@ -1204,7 +1288,7 @@ private:
                 &(Base::VectorPy::Type), &pDir)) {
                 throw Py::Exception();
             }
-            const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->_Shape;
+            const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pCrv)->getTopoShapePtr()->getShape();
             if (shape.IsNull()) {
                 throw Py::Exception(PartExceptionOCCError, "shape is empty");
             }
@@ -1275,8 +1359,8 @@ private:
                                             &(TopoShapePy::Type), &sh2))
             throw Py::Exception();
 
-        const TopoDS_Shape& shape1 = static_cast<TopoShapePy*>(sh1)->getTopoShapePtr()->_Shape;
-        const TopoDS_Shape& shape2 = static_cast<TopoShapePy*>(sh2)->getTopoShapePtr()->_Shape;
+        const TopoDS_Shape& shape1 = static_cast<TopoShapePy*>(sh1)->getTopoShapePtr()->getShape();
+        const TopoDS_Shape& shape2 = static_cast<TopoShapePy*>(sh2)->getTopoShapePtr()->getShape();
 
         try {
             if (shape1.ShapeType() == TopAbs_EDGE && shape2.ShapeType() == TopAbs_EDGE) {
@@ -1328,7 +1412,7 @@ private:
             cont = (int)GeomAbs_C0;
 
         try {
-            const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(pshape)->getTopoShapePtr()->_Shape;
+            const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(pshape)->getTopoShapePtr()->getShape();
             TopoShape myShape(path_shape);
             TopoDS_Shape face = myShape.makeTube(radius, tolerance, cont, maxdegree, maxsegment);
             return Py::asObject(new TopoShapeFacePy(new TopoShape(face)));
@@ -1351,8 +1435,8 @@ private:
             throw Py::Exception();
 
         try {
-            const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(path)->getTopoShapePtr()->_Shape;
-            const TopoDS_Shape& prof_shape = static_cast<TopoShapePy*>(profile)->getTopoShapePtr()->_Shape;
+            const TopoDS_Shape& path_shape = static_cast<TopoShapePy*>(path)->getTopoShapePtr()->getShape();
+            const TopoDS_Shape& prof_shape = static_cast<TopoShapePy*>(profile)->getTopoShapePtr()->getShape();
 
             TopoShape myShape(path_shape);
             TopoDS_Shape face = myShape.makeSweep(prof_shape, tolerance, fillMode);
@@ -1426,7 +1510,7 @@ private:
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             if (PyObject_TypeCheck((*it).ptr(), &(Part::TopoShapePy::Type))) {
                 const TopoDS_Shape& sh = static_cast<TopoShapePy*>((*it).ptr())->
-                    getTopoShapePtr()->_Shape;
+                    getTopoShapePtr()->getShape();
                 profiles.Append(sh);
             }
         }
@@ -1510,7 +1594,6 @@ private:
 #else
         throw Py::RuntimeError("FreeCAD compiled without FreeType support! This method is disabled...");
 #endif
-        return Py::None();
     }
     Py::Object exportUnits(const Py::Tuple& args)
     {
@@ -1579,7 +1662,7 @@ private:
         PyObject *object;
         if (PyArg_ParseTuple(args.ptr(),"O!",&(Part::TopoShapePy::Type), &object)) {
             TopoShape* ptr = static_cast<TopoShapePy*>(object)->getTopoShapePtr();
-            TopoDS_Shape shape = ptr->_Shape;
+            TopoDS_Shape shape = ptr->getShape();
             if (!shape.IsNull()) {
                 TopAbs_ShapeEnum type = shape.ShapeType();
                 switch (type)
@@ -1625,7 +1708,7 @@ private:
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
                 if (sh.ShapeType() == TopAbs_EDGE)
                     edges.push_back(TopoDS::Edge(sh));
                 else {
@@ -1663,7 +1746,7 @@ private:
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->_Shape;
+                const TopoDS_Shape& sh = static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape();
                 if (sh.ShapeType() == TopAbs_EDGE)
                     edges.push_back(TopoDS::Edge(sh));
                 else {
@@ -1691,7 +1774,7 @@ private:
 
         try {
             TopoDS_Shape* shape = new TopoDS_Shape();
-            (*shape) = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->_Shape;
+            (*shape) = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
             PyObject* proxy = 0;
             proxy = Base::Interpreter().createSWIGPointerObj("OCC.TopoDS", "TopoDS_Shape *", (void*)shape, 1);
             return Py::asObject(proxy);
@@ -1711,7 +1794,7 @@ private:
             TopoShape* shape = new TopoShape();
             Base::Interpreter().convertSWIGPointerObj("OCC.TopoDS","TopoDS_Shape *", proxy, &ptr, 0);
             TopoDS_Shape* s = reinterpret_cast<TopoDS_Shape*>(ptr);
-            shape->_Shape = (*s);
+            shape->setShape(*s);
             return Py::asObject(new TopoShapePy(shape));
         }
         catch (const Base::Exception& e) {

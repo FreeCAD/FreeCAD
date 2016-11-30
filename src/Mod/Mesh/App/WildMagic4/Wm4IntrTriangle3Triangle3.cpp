@@ -606,6 +606,9 @@ bool IntrTriangle3Triangle3<Real>::IntersectsSegment (
     const Vector3<Real>& rkEnd1)
 {
     // TO DO.
+    (void)rkTriangle;
+    (void)rkEnd0;
+    (void)rkEnd1;
     return false;
 }
 //----------------------------------------------------------------------------
@@ -614,6 +617,8 @@ bool IntrTriangle3Triangle3<Real>::GetCoplanarIntersection (
     const Plane3<Real>& rkPlane, const Triangle3<Real>& rkTri0,
     const Triangle3<Real>& rkTri1)
 {
+    (void)rkTri0;
+    (void)rkTri1;
     // Project triangles onto coordinate plane most aligned with plane
     // normal.
     int iMaxNormal = 0;
@@ -742,6 +747,7 @@ bool IntrTriangle3Triangle3<Real>::TestOverlap (const Vector3<Real>& rkAxis,
     Real fTMax, Real fSpeed, Real fUMin, Real fUMax, Real fVMin, Real fVMax,
     Real& rfTFirst, Real& rfTLast)
 {
+    (void)rkAxis;
     // Constant velocity separating axis test.
 
     Real fT;
@@ -855,6 +861,7 @@ bool IntrTriangle3Triangle3<Real>::FindOverlap (const Vector3<Real>& rkAxis,
     const Configuration& rkVC, ContactSide& rkSide, Configuration& rkTUC,
     Configuration& rkTVC, Real& rfTFirst, Real& rfTLast)
 {
+    (void)rkAxis;
     // Constant velocity separating axis test.  UC and VC are the new
     // potential configurations, and TUC and TVC are the best known
     // configurations.
@@ -1242,6 +1249,10 @@ void IntrTriangle3Triangle3<Real>::GetEdgeEdgeIntersection (
     const Vector3<Real>& rkV0, const Vector3<Real>& rkV1)
 {
     // TO DO.
+    (void)rkU0;
+    (void)rkU1;
+    (void)rkV0;
+    (void)rkV1;
 }
 //----------------------------------------------------------------------------
 

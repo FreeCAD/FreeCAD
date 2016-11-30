@@ -3,8 +3,6 @@ if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)
 endif(BUILD_FEM_VTK)
 
-include(${VTK_USE_FILE})
-    
 add_subdirectory(App)
 
 if(BUILD_GUI)
@@ -26,7 +24,7 @@ INSTALL(
         TestFem.py
 
         FemCommands.py
-        _CommandMeshFromShape.py
+        _CommandMeshNetgenFromShape.py
         _CommandPurgeResults.py
         _CommandRunSolver.py
         _CommandControlSolver.py
@@ -36,9 +34,19 @@ INSTALL(
         TaskPanelShowResult.ui
 
         FemAnalysis.py
-        _FemAnalysis.py
-        _ViewProviderFemAnalysis.py
         _CommandAnalysis.py
+
+        FemMeshGmsh.py
+        _FemMeshGmsh.py
+        _ViewProviderFemMeshGmsh.py
+        _CommandMeshGmshFromShape.py
+        _TaskPanelFemMeshGmsh.py
+        TaskPanelFemMeshGmsh.ui
+
+        FemGmshTools.py
+
+        FemMesh2Mesh.py
+        _CommandFEMMesh2Mesh.py
 
         FemBeamSection.py
         _FemBeamSection.py
@@ -54,6 +62,11 @@ INSTALL(
         _TaskPanelFemShellThickness.py
         TaskPanelFemShellThickness.ui
 
+        FemConstraintSelfWeight.py
+        _FemConstraintSelfWeight.py
+        _ViewProviderFemConstraintSelfWeight.py
+        _CommandConstraintSelfWeight.py
+
         MechanicalMaterial.py
         _MechanicalMaterial.py
         _ViewProviderMechanicalMaterial.py
@@ -61,7 +74,13 @@ INSTALL(
         _TaskPanelMechanicalMaterial.py
         TaskPanelMechanicalMaterial.ui
 
+        FemMaterialMechanicalNonlinear.py
+        _FemMaterialMechanicalNonlinear.py
+        _ViewProviderFemMaterialMechanicalNonlinear.py
+        _CommandMaterialMechanicalNonlinear.py
+
         # solver CalculiX ccx
+        importInpMesh.py
         ccxDatReader.py
         ccxFrdReader.py
         FemInputWriterCcx.py
@@ -101,6 +120,13 @@ INSTALL(
         test_files/ccx/cube_static.frd
         test_files/ccx/cube_static_expected_values
         test_files/ccx/cube.fcstd
+        test_files/ccx/spine_points.csv
+        test_files/ccx/spine_volumes.csv
+        test_files/ccx/spine_thermomech.inp
+        test_files/ccx/spine_thermomech.dat
+        test_files/ccx/spine_thermomech.frd
+        test_files/ccx/spine_thermomech_expected_values
+        test_files/ccx/spine_thermomech.fcstd
     DESTINATION
         Mod/Fem/test_files/ccx
 )

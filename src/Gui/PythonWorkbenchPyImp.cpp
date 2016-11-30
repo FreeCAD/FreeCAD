@@ -119,6 +119,9 @@ PyObject*  PythonWorkbenchPy::removeMenu(PyObject *args)
 PyObject*  PythonWorkbenchPy::listMenus(PyObject *args)
 {
     PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
         std::list<std::string> menus = getPythonBaseWorkbenchPtr()->listMenus();
 
         PyObject* pyList = PyList_New(menus.size());
@@ -245,6 +248,9 @@ PyObject*  PythonWorkbenchPy::removeToolbar(PyObject *args)
 PyObject*  PythonWorkbenchPy::listToolbars(PyObject *args)
 {
     PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
         std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listToolbars();
 
         PyObject* pyList = PyList_New(bars.size());
@@ -303,6 +309,9 @@ PyObject*  PythonWorkbenchPy::removeCommandbar(PyObject *args)
 PyObject*  PythonWorkbenchPy::listCommandbars(PyObject *args)
 {
     PY_TRY {
+        if (!PyArg_ParseTuple(args, ""))
+            return NULL;
+
         std::list<std::string> bars = getPythonBaseWorkbenchPtr()->listCommandbars();
 
         PyObject* pyList = PyList_New(bars.size());
@@ -315,12 +324,12 @@ PyObject*  PythonWorkbenchPy::listCommandbars(PyObject *args)
     } PY_CATCH;
 }
 
-PyObject *PythonWorkbenchPy::getCustomAttributes(const char* attr) const
+PyObject *PythonWorkbenchPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int PythonWorkbenchPy::setCustomAttributes(const char* attr, PyObject *obj)
+int PythonWorkbenchPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }

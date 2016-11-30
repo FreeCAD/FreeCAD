@@ -1,0 +1,4 @@
+/** \defgroup PATH Path
+ *  \ingroup CWORKBENCHES 
+ *  \brief Tools to generate CNC toolpaths and G-Code
+ */

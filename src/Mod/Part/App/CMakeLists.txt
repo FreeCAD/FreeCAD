@@ -13,6 +13,7 @@ include_directories(
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
@@ -83,6 +84,27 @@ generate_from_xml(TopoShapeVertexPy)
 generate_from_xml(TopoShapeWirePy)
 generate_from_xml(BRepOffsetAPI_MakePipeShellPy)
 
+# make sure to create the directory at configure time
+file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Geom2d)
+
+generate_from_xml(Geom2d/ArcOfCircle2dPy)
+generate_from_xml(Geom2d/ArcOfConic2dPy)
+generate_from_xml(Geom2d/ArcOfEllipse2dPy)
+generate_from_xml(Geom2d/ArcOfHyperbola2dPy)
+generate_from_xml(Geom2d/ArcOfParabola2dPy)
+generate_from_xml(Geom2d/BezierCurve2dPy)
+generate_from_xml(Geom2d/BSplineCurve2dPy)
+generate_from_xml(Geom2d/Circle2dPy)
+generate_from_xml(Geom2d/Conic2dPy)
+generate_from_xml(Geom2d/Ellipse2dPy)
+generate_from_xml(Geom2d/Geometry2dPy)
+generate_from_xml(Geom2d/Hyperbola2dPy)
+generate_from_xml(Geom2d/Curve2dPy)
+generate_from_xml(Geom2d/Line2dSegmentPy)
+generate_from_xml(Geom2d/Line2dPy)
+generate_from_xml(Geom2d/OffsetCurve2dPy)
+generate_from_xml(Geom2d/Parabola2dPy)
+
 SET(Features_SRCS
     FeaturePartBoolean.cpp
     FeaturePartBoolean.h
@@ -124,6 +146,8 @@ SET(Features_SRCS
     FeatureMirroring.h
     FeatureRevolution.cpp
     FeatureRevolution.h
+    FeatureOffset.cpp
+    FeatureOffset.h
     PartFeatures.cpp
     PartFeatures.h
     PartFeature.cpp
@@ -138,10 +162,10 @@ SET(Features_SRCS
     FeatureGeometrySet.cpp
     CustomFeature.cpp
     CustomFeature.h
-	BodyBase.h
-	BodyBase.cpp
-	DatumFeature.cpp
-	DatumFeature.h
+    BodyBase.h
+    BodyBase.cpp
+    DatumFeature.cpp
+    DatumFeature.h
     AttachableObject.h
     AttachableObject.cpp
 )
@@ -247,10 +271,51 @@ SET(Python_SRCS
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
+# Geom2d wrappers
+SET(Geom2dPy_SRCS
+    Geom2d/ArcOfCircle2dPy.xml
+    Geom2d/ArcOfCircle2dPyImp.cpp
+    Geom2d/ArcOfConic2dPy.xml
+    Geom2d/ArcOfConic2dPyImp.cpp
+    Geom2d/ArcOfEllipse2dPy.xml
+    Geom2d/ArcOfEllipse2dPyImp.cpp
+    Geom2d/ArcOfHyperbola2dPy.xml
+    Geom2d/ArcOfHyperbola2dPyImp.cpp
+    Geom2d/ArcOfParabola2dPy.xml
+    Geom2d/ArcOfParabola2dPyImp.cpp
+    Geom2d/BezierCurve2dPy.xml
+    Geom2d/BezierCurve2dPyImp.cpp
+    Geom2d/BSplineCurve2dPy.xml
+    Geom2d/BSplineCurve2dPyImp.cpp
+    Geom2d/Circle2dPy.xml
+    Geom2d/Circle2dPyImp.cpp
+    Geom2d/Conic2dPy.xml
+    Geom2d/Conic2dPyImp.cpp
+    Geom2d/Ellipse2dPy.xml
+    Geom2d/Ellipse2dPyImp.cpp
+    Geom2d/Geometry2dPy.xml
+    Geom2d/Geometry2dPyImp.cpp
+    Geom2d/Curve2dPy.xml
+    Geom2d/Curve2dPyImp.cpp
+    Geom2d/Hyperbola2dPy.xml
+    Geom2d/Hyperbola2dPyImp.cpp
+    Geom2d/Line2dPy.xml
+    Geom2d/Line2dPyImp.cpp
+    Geom2d/Line2dSegmentPy.xml
+    Geom2d/Line2dSegmentPyImp.cpp
+    Geom2d/OffsetCurve2dPy.xml
+    Geom2d/OffsetCurve2dPyImp.cpp
+    Geom2d/Parabola2dPy.xml
+    Geom2d/Parabola2dPyImp.cpp
+)
+
+SOURCE_GROUP("Geom2d" FILES ${Geom2dPy_SRCS})
+
 SET(Part_SRCS
     ${Features_SRCS}
     ${Properties_SRCS}
     ${Python_SRCS}
+    ${Geom2dPy_SRCS}
     Attacher.cpp
     Attacher.h
     AppPart.cpp
@@ -260,6 +325,8 @@ SET(Part_SRCS
     CrossSection.h
     Geometry.cpp
     Geometry.h
+    Geometry2d.cpp
+    Geometry2d.h
     ImportIges.cpp
     ImportIges.h
     ImportStep.cpp
@@ -280,6 +347,12 @@ SET(Part_SRCS
     OCCError.h
     FT2FC.cpp
     FT2FC.h
+    FaceMaker.cpp
+    FaceMaker.h
+    FaceMakerCheese.cpp
+    FaceMakerCheese.h
+    FaceMakerBullseye.cpp
+    FaceMakerBullseye.h
 )
 
 SET(Part_Scripts
@@ -292,6 +365,14 @@ SET(Part_Scripts
     AttachmentEditor/FrozenClass.py
     AttachmentEditor/TaskAttachmentEditor.py
     AttachmentEditor/TaskAttachmentEditor.ui
+    BOPTools/__init__.py
+    BOPTools/GeneralFuseResult.py
+    BOPTools/JoinAPI.py
+    BOPTools/JoinFeatures.py
+    BOPTools/ShapeMerge.py
+    BOPTools/SplitAPI.py
+    BOPTools/SplitFeatures.py
+    BOPTools/Utils.py
 )
 
 add_library(Part SHARED ${Part_SRCS})

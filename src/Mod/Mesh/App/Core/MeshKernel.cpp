@@ -43,6 +43,7 @@
 #include "Evaluation.h"
 #include "Builder.h"
 #include "Smoothing.h"
+#include "MeshIO.h"
 
 using namespace MeshCore;
 
@@ -385,6 +386,12 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
     RebuildNeighbours(countFacets);
 }
 
+void MeshKernel::Cleanup()
+{
+    MeshCleanup meshCleanup(_aclPointArray, _aclFacetArray);
+    meshCleanup.RemoveInvalids();
+}
+
 void MeshKernel::Clear (void)
 {
     _aclPointArray.clear();
@@ -691,7 +698,7 @@ void MeshKernel::RemoveInvalids ()
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj, 
-                           const Base::Polygon2D& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets) 
+                           const Base::Polygon2d& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets)
 {
     std::vector<unsigned long> aulFacets;
 
@@ -704,7 +711,7 @@ void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMet
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj,
-                           const Base::Polygon2D& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
+                           const Base::Polygon2d& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
 {
     MeshAlgorithm(*this).CheckFacets(rclGrid, pclProj, rclPoly, bInner, raclCutted);
     DeleteFacets(raclCutted);
@@ -918,6 +925,7 @@ void MeshKernel::Transform (const Base::Matrix4D &rclMat)
 
 void MeshKernel::Smooth(int iterations, float stepsize)
 {
+    (void)stepsize;
     LaplaceSmoothing(*this).Smooth(iterations);
 }
 
@@ -974,9 +982,9 @@ float MeshKernel::GetSurface( const std::vector<unsigned long>& aSegment ) const
 
 float MeshKernel::GetVolume() const
 {
-    MeshEvalSolid cSolid(*this);
-    if ( !cSolid.Evaluate() )
-        return 0.0f; // no solid
+    //MeshEvalSolid cSolid(*this);
+    //if ( !cSolid.Evaluate() )
+    //    return 0.0f; // no solid
 
     float fVolume = 0.0;
     MeshFacetIterator cIter(*this);

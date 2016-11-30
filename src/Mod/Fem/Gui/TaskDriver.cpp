@@ -47,7 +47,7 @@ using namespace Gui;
 
 
 TaskDriver::TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent)
-    : TaskBox(Gui::BitmapFactory().pixmap("fem-fem-mesh-create-node-by-poly"),
+    : TaskBox(Gui::BitmapFactory().pixmap("fem-femmesh-create-node-by-poly"),
       tr("Nodes set"),
       true,
       parent),
@@ -69,7 +69,7 @@ TaskDriver::TaskDriver(Fem::FemAnalysis *pcObject,QWidget *parent)
 
 
 
-void TaskDriver::SwitchMethod(int Value)
+void TaskDriver::SwitchMethod(int /*Value*/)
 {
     //if(Value == 1){
     //    ui->groupBox_AngleSearch->setEnabled(true);

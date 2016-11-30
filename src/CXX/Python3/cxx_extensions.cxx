@@ -205,6 +205,11 @@ Py::Dict ExtensionModuleBase::moduleDictionary( void ) const
     return module().getDict();
 }
 
+Object ExtensionModuleBase::moduleObject( void ) const
+{
+    return Object( m_module );
+}
+
 //================================================================================
 //
 //    Implementation of PythonType
@@ -1517,63 +1522,6 @@ extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple,
         return 0;
     }
 }
-
-#if 0
-extern "C" PyObject *method_noargs_call_handler( PyObject *_self_and_name_tuple, PyObject * )
-{
-    try
-    {
-        Tuple self_and_name_tuple( _self_and_name_tuple );
-
-        PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
-        if( self_as_void == NULL )
-            return NULL;
-
-        ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
-
-        Object result
-                (
-                self->invoke_method_noargs
-                    (
-                    PyCObject_AsVoidPtr( self_and_name_tuple[1].ptr() )
-                    )
-                );
-
-        return new_reference_to( result.ptr() );
-    }
-    catch( Exception & )
-    {
-        return 0;
-    }
-// #if 0
-    try
-    {
-        Tuple self_and_name_tuple( _self_and_name_tuple );
-
-        PyObject *self_in_cobject = self_and_name_tuple[0].ptr();
-        void *self_as_void = PyCObject_AsVoidPtr( self_in_cobject );
-        if( self_as_void == NULL )
-            return NULL;
-
-        ExtensionModuleBase *self = static_cast<ExtensionModuleBase *>( self_as_void );
-
-        String py_name( self_and_name_tuple[1] );
-        std::string name( py_name.as_std_string( NULL ) );
-
-        Object result( self->invoke_method_noargs( name ) );
-
-        return new_reference_to( result.ptr() );
-    }
-    catch( Exception & )
-    {
-        return 0;
-    }
-// #else
-    return 0;
-// #endif
-}
-#endif
 
 extern "C" PyObject *method_varargs_call_handler( PyObject *_self_and_name_tuple, PyObject *_args )
 {

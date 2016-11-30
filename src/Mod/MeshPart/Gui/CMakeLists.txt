@@ -28,6 +28,8 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(MeshPartGui_LIBS
     MeshPart
+    PartGui
+    MeshGui
     FreeCADGui
 )
 

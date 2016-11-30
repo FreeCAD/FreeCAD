@@ -174,7 +174,7 @@ PyMethodDef Application::Methods[] = {
     "createViewer([int]) -> View3DInventor/SplitView3DInventor\n\n"
     "shows and returns a viewer. If the integer argument is given and > 1: -> splitViewer"},
 
-  {NULL, NULL}		/* Sentinel */
+  {NULL, NULL, 0, NULL}		/* Sentinel */
 };
 
 PyObject* Gui::Application::sActiveDocument(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
@@ -656,7 +656,18 @@ PyObject* Application::sAddPreferencePage(PyObject * /*self*/, PyObject *args,Py
     PyErr_Clear();
 
     PyObject* dlg;
+    // old style classes
     if (PyArg_ParseTuple(args, "O!s", &PyClass_Type, &dlg, &grp)) {
+        // add to the preferences dialog
+        new PrefPagePyProducer(Py::Object(dlg), grp);
+
+        Py_INCREF(Py_None);
+        return Py_None;
+    }
+    PyErr_Clear();
+
+    // new style classes
+    if (PyArg_ParseTuple(args, "O!s", &PyType_Type, &dlg, &grp)) {
         // add to the preferences dialog
         new PrefPagePyProducer(Py::Object(dlg), grp);
 
@@ -803,8 +814,11 @@ PyObject* Application::sGetWorkbenchHandler(PyObject * /*self*/, PyObject *args,
     return pcWorkbench;
 }
 
-PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
+PyObject* Application::sListWorkbenchHandlers(PyObject * /*self*/, PyObject *args, PyObject * /*kwd*/)
 {
+    if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
+        return NULL;                       // NULL triggers exception
+
     Py_INCREF(Instance->_pcWorkbenchDictionary);
     return Instance->_pcWorkbenchDictionary;
 }
@@ -1005,13 +1019,14 @@ PyObject* Application::sAddCommand(PyObject * /*self*/, PyObject *args,PyObject 
 
 PyObject* Application::sRunCommand(PyObject * /*self*/, PyObject *args,PyObject * /*kwd*/)
 {
-    char*       pName;
-    if (!PyArg_ParseTuple(args, "s", &pName))     // convert args: Python->C 
-        return NULL;                    // NULL triggers exception 
+    char* pName;
+    int item = 0;
+    if (!PyArg_ParseTuple(args, "s|i", &pName, &item))
+        return NULL;
 
     Command* cmd = Application::Instance->commandManager().getCommandByName(pName);
     if (cmd) {
-        cmd->invoke(0);
+        cmd->invoke(item);
         Py_INCREF(Py_None);
         return Py_None;
     }

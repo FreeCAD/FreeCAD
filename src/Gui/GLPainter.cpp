@@ -35,7 +35,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
 
-GLPainter::GLPainter() : viewer(0), logicOp(false), lineStipple(false)
+GLPainter::GLPainter() : viewer(0), width(0), height(0), logicOp(false), lineStipple(false)
 {
 }
 
@@ -208,13 +208,23 @@ Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
     x_old = y_old = x_new = y_new = 0;
     working = false;
     stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
-Rubberband::Rubberband()
+Rubberband::Rubberband() : viewer(0)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
     stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Rubberband::~Rubberband()
@@ -309,7 +319,7 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Polyline::Polyline()
+Polyline::Polyline() : viewer(0)
 {
     x_new = y_new = 0;
     working = false;

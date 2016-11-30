@@ -24,8 +24,10 @@ __title__ = "_FemSolverZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemSolverZ88
+#  \ingroup FEM
 
-import FreeCAD
+# import FreeCAD
 import FemToolsZ88
 
 
@@ -40,15 +42,15 @@ class _FemSolverZ88():
         obj.addProperty("App::PropertyString", "SolverType", "Base", "Type of the solver", 1)  # the 1 set the property to ReadOnly
         obj.SolverType = str(self.Type)
 
-        fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        # fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")  # not needed ATM
 
-        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations")
-        obj.WorkingDir = fem_prefs.GetString("WorkingDir", "")
+        obj.addProperty("App::PropertyPath", "WorkingDir", "Fem", "Working directory for calculations, will only be used it is left blank in preferences")
+        # the working directory is not set, the solver working directory is only used if the preferences working directory is left blank
 
         obj.addProperty("App::PropertyEnumeration", "AnalysisType", "Fem", "Type of the analysis")
-        obj.AnalysisType = FemToolsZ88.FemToolsZ88.known_analysis_types
-        analysis_type = fem_prefs.GetInt("AnalysisType", 0)
-        obj.AnalysisType = FemToolsZ88.FemToolsZ88.known_analysis_types[analysis_type]
+        known_analysis_types = FemToolsZ88.FemToolsZ88.known_analysis_types
+        obj.AnalysisType = known_analysis_types
+        obj.AnalysisType = known_analysis_types[0]
 
     def execute(self, obj):
         return

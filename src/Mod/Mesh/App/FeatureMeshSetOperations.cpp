@@ -76,7 +76,7 @@ App::DocumentObjectExecReturn *SetOperations::execute(void)
         const MeshObject& meshKernel1 = mesh1->Mesh.getValue();
         const MeshObject& meshKernel2 = mesh2->Mesh.getValue();
 
-        std::auto_ptr<MeshObject> pcKernel(new MeshObject()); // Result Meshkernel
+        std::unique_ptr<MeshObject> pcKernel(new MeshObject()); // Result Meshkernel
 
         MeshCore::SetOperations::OperationType type;
         string ot(OperationType.getValue());

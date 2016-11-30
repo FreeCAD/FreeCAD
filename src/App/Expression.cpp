@@ -340,9 +340,9 @@ static bool definitelyLessThan(double a, double b, double epsilon)
 
 Expression * OperatorExpression::eval() const
 {
-    std::auto_ptr<Expression> e1(left->eval());
+    std::unique_ptr<Expression> e1(left->eval());
     NumberExpression * v1;
-    std::auto_ptr<Expression> e2(right->eval());
+    std::unique_ptr<Expression> e2(right->eval());
     NumberExpression * v2;
     Expression * output;
     const double epsilon = std::numeric_limits<double>::epsilon();
@@ -773,7 +773,7 @@ private:
 
 class StdDevCollector : public Collector {
 public:
-    StdDevCollector() : Collector() { }
+    StdDevCollector() : Collector(), n(0) { }
 
     void collect(Quantity value) {
         Collector::collect(value);
@@ -813,7 +813,7 @@ public:
         first = false;
     }
 
-    virtual Quantity getQuantity() const { return n; }
+    virtual Quantity getQuantity() const { return Quantity(n); }
 
 private:
     unsigned int n;
@@ -886,13 +886,13 @@ Expression * FunctionExpression::evalAggregate() const
                 if ((qp = freecad_dynamic_cast<PropertyQuantity>(p)) != 0)
                     c->collect(qp->getQuantityValue());
                 else if ((fp = freecad_dynamic_cast<PropertyFloat>(p)) != 0)
-                    c->collect(fp->getValue());
+                    c->collect(Quantity(fp->getValue()));
                 else
                     throw Exception("Invalid property type for aggregate");
             } while (range.next());
         }
         else if (args[i]->isDerivedFrom(App::VariableExpression::getClassTypeId())) {
-            std::auto_ptr<Expression> e(args[i]->eval());
+            std::unique_ptr<Expression> e(args[i]->eval());
             NumberExpression * n(freecad_dynamic_cast<NumberExpression>(e.get()));
 
             if (n)
@@ -919,8 +919,8 @@ Expression * FunctionExpression::eval() const
     if (f > AGGREGATES)
         return evalAggregate();
 
-    std::auto_ptr<Expression> e1(args[0]->eval());
-    std::auto_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
+    std::unique_ptr<Expression> e1(args[0]->eval());
+    std::unique_ptr<Expression> e2(args.size() > 1 ? args[1]->eval() : 0);
     NumberExpression * v1 = freecad_dynamic_cast<NumberExpression>(e1.get());
     NumberExpression * v2 = freecad_dynamic_cast<NumberExpression>(e2.get());
     double output;
@@ -1358,27 +1358,27 @@ Expression * VariableExpression::eval() const
     else if (value.type() == typeid(double)) {
         double dvalue = boost::any_cast<double>(value);
 
-        return new NumberExpression(owner, dvalue);
+        return new NumberExpression(owner, Quantity(dvalue));
     }
     else if (value.type() == typeid(float)) {
         double fvalue = boost::any_cast<float>(value);
 
-        return new NumberExpression(owner, fvalue);
+        return new NumberExpression(owner, Quantity(fvalue));
     }
     else if (value.type() == typeid(int)) {
         int ivalue = boost::any_cast<int>(value);
 
-        return new NumberExpression(owner, ivalue);
+        return new NumberExpression(owner, Quantity(ivalue));
     }
     else if (value.type() == typeid(long)) {
         long lvalue = boost::any_cast<long>(value);
 
-        return new NumberExpression(owner, lvalue);
+        return new NumberExpression(owner, Quantity(lvalue));
     }
     else if (value.type() == typeid(bool)) {
         double bvalue = boost::any_cast<bool>(value) ? 1.0 : 0.0;
 
-        return new NumberExpression(owner, bvalue);
+        return new NumberExpression(owner, Quantity(bvalue));
     }
     else if (value.type() == typeid(std::string)) {
         std::string svalue = boost::any_cast<std::string>(value);
@@ -1537,7 +1537,7 @@ bool ConditionalExpression::isTouched() const
 
 Expression *ConditionalExpression::eval() const
 {
-    std::auto_ptr<Expression> e(condition->eval());
+    std::unique_ptr<Expression> e(condition->eval());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
@@ -1551,7 +1551,7 @@ Expression *ConditionalExpression::eval() const
 
 Expression *ConditionalExpression::simplify() const
 {
-    std::auto_ptr<Expression> e(condition->simplify());
+    std::unique_ptr<Expression> e(condition->simplify());
     NumberExpression * v = freecad_dynamic_cast<NumberExpression>(e.get());
 
     if (v == 0)
@@ -1619,7 +1619,7 @@ int ConstantExpression::priority() const
 TYPESYSTEM_SOURCE_ABSTRACT(App::BooleanExpression, App::NumberExpression);
 
 BooleanExpression::BooleanExpression(const DocumentObject *_owner, bool _value)
-    : NumberExpression(owner, _value ? 1.0 : 0.0)
+    : NumberExpression(_owner, Quantity(_value ? 1.0 : 0.0))
 {
 }
 
@@ -1699,6 +1699,7 @@ namespace ExpressionParser {
 
 void ExpressionParser_yyerror(const char *errorinfo)
 {
+    (void)errorinfo;
 }
 
 /* helper function for tuning number strings with groups in a locale agnostic way... */

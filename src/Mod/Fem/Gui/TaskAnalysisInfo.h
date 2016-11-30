@@ -34,7 +34,7 @@ class Ui_TaskAnalysisInfo;
 class SoEventCallback;
 
 namespace Base {
-    class Polygon2D;
+    class Polygon2d;
 }
 namespace App {
     class Property;

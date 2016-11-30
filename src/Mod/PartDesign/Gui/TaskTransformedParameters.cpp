@@ -65,8 +65,9 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
               QString::fromLatin1((TransformedView->featureName + " parameters").c_str()),
               true,
               parent),
+      proxy(nullptr),
       TransformedView(TransformedView),
-      parentTask(NULL),
+      parentTask(nullptr),
       insideMultiTransform(false),
       blockUpdate(false)
 {
@@ -75,7 +76,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
 
 TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameters *parentTask)
     : TaskBox(QPixmap(), tr(""), true, parentTask),
-      TransformedView(NULL),
+      proxy(nullptr),
+      TransformedView(nullptr),
       parentTask(parentTask),
       insideMultiTransform(true),
       blockUpdate(false)
@@ -100,7 +102,7 @@ int TaskTransformedParameters::getUpdateViewTimeout() const
     return 500;
 }
 
-const bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
+bool TaskTransformedParameters::originalSelected(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection && (
                 (selectionMode == addFeature) || (selectionMode == removeFeature))) {
@@ -160,9 +162,9 @@ void TaskTransformedParameters::onButtonRemoveFeature(bool checked)
     }
 }
 
-void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const char* itemstr)
+void TaskTransformedParameters::removeItemFromListWidget(QListWidget* widget, const QString& itemstr)
 {
-    QList<QListWidgetItem*> items = widget->findItems(QString::fromLatin1(itemstr), Qt::MatchExactly);
+    QList<QListWidgetItem*> items = widget->findItems(itemstr, Qt::MatchExactly);
     if (!items.empty()) {
         for (QList<QListWidgetItem*>::const_iterator i = items.begin(); i != items.end(); i++) {
             QListWidgetItem* it = widget->takeItem(widget->row(*i));
@@ -336,7 +338,9 @@ void TaskTransformedParameters::exitSelectionMode()
 
 void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
 {
-    Gui::Selection().addSelectionGate(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateRefPtr(new ReferenceSelection(getBaseObject(), edge, face, /*point =*/ true));
+    std::unique_ptr<Gui::SelectionFilterGate> gateDepPtr(new NoDependentsSelection(getTopTransformedObject()));
+    Gui::Selection().addSelectionGate(new CombineSelectionFilterGates(gateRefPtr, gateDepPtr));
 }
 
 //**************************************************************************
@@ -345,7 +349,7 @@ void TaskTransformedParameters::addReferenceSelectionGate(bool edge, bool face)
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgTransformedParameters::TaskDlgTransformedParameters(ViewProviderTransformed *TransformedView_)
-    : TaskDlgFeatureParameters(TransformedView_)
+    : TaskDlgFeatureParameters(TransformedView_), parameter(0)
 {
     assert(vp);
     message = new TaskTransformedMessages(getTransformedView());

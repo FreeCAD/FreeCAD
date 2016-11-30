@@ -158,7 +158,7 @@ public:
   };
   struct NonNullFilter: public Filter
   {
-    bool operator()(const SMDS_MeshElement* e) const { return e; }
+    bool operator()(const SMDS_MeshElement* e) const { return e != 0; }
   };
   struct TypeFilter : public Filter
   {

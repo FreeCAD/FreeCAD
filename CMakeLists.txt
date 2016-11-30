@@ -23,11 +23,17 @@ if(COMMAND cmake_policy)
     endif(POLICY CMP0045)
 endif(COMMAND cmake_policy)
 
+find_program(CCACHE_PROGRAM ccache)  #This check should occur before project()
+if(CCACHE_PROGRAM)
+    set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCACHE_PROGRAM}")
+endif()
+
 # include local  modules
 include(AddFileDependencies)
 include(cMake/FreeCadMacros.cmake)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cMake")
+
 
 #if(CMAKE_CFG_INTDIR STREQUAL .)
     # No Debug/Release output paths
@@ -80,12 +86,15 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     if(BUILD_ENABLE_CXX11)
        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
     endif(BUILD_ENABLE_CXX11)
-    set(CMAKE_CXX_FLAGS "-Wall -Wno-deprecated -Wno-write-strings ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-write-strings ${CMAKE_CXX_FLAGS}")
     INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+
     # get linker errors as soon as possible and not at runtime e.g. for modules
-    if(UNIX)
-    #    SET(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
-    endif(UNIX)
+    if(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,-undefined,error")
+    elseif(UNIX)
+        set(CMAKE_SHARED_LINKER_FLAGS "-Wl,--no-undefined")
+    endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
 # ================================================================================
@@ -149,6 +158,13 @@ OPTION(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the 
 OPTION(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
 OPTION(FREECAD_BUILD_DEBIAN "Prepare for a build of a Debian package" OFF)
 
+# https://blog.kitware.com/constraining-values-with-comboboxes-in-cmake-cmake-gui/
+set(FREECAD_USE_OCC_VARIANT "Community Edition"  CACHE STRING  "Official OpenCASCADE version or community edition")
+set_property(CACHE FREECAD_USE_OCC_VARIANT PROPERTY STRINGS
+             "Official Version"
+             "Community Edition"
+)
+
 if(APPLE)
     OPTION(FREECAD_CREATE_MAC_APP "Create app bundle on install" OFF)
 
@@ -172,7 +188,7 @@ if(APPLE)
     endif(FREECAD_CREATE_MAC_APP)
 endif(APPLE)
 
-OPTION(BUILD_FEM "Build the FreeCAD FEM module, be aware, unfinished code!" ON)
+OPTION(BUILD_FEM "Build the FreeCAD FEM module" ON)
 OPTION(BUILD_SANDBOX "Build the FreeCAD Sandbox module which is only for testing purposes" OFF)
 OPTION(BUILD_TEMPLATE "Build the FreeCAD template module which is only for testing purposes" OFF)
 OPTION(BUILD_ARCH "Build the FreeCAD Architecture module" ON)
@@ -203,6 +219,7 @@ OPTION(BUILD_SKETCHER "Build the FreeCAD sketcher module" ON)
 OPTION(BUILD_SPREADSHEET "Build the FreeCAD spreadsheet module" ON)
 OPTION(BUILD_START "Build the FreeCAD start module" ON)
 OPTION(BUILD_TEST "Build the FreeCAD test module" ON)
+OPTION(BUILD_TECHDRAW "Build the FreeCAD Technical Drawing module" ON)
 OPTION(BUILD_WEB "Build the FreeCAD web module" ON)
 OPTION(BUILD_VR "Build the FreeCAD Oculus Rift support (need Oculus SDK 4.x or higher)" OFF)
 
@@ -230,8 +247,7 @@ if (FREECAD_BUILD_DEBIAN)
     # A Debian package for SMESH doesn't exist
     #set(FREECAD_USE_EXTERNAL_SMESH ON)
 endif (FREECAD_BUILD_DEBIAN)
-
-if(BUILD_MESH_PART OR BUILD_FEM)
+if(BUILD_FEM)
     set(BUILD_SMESH ON)
 endif()
 
@@ -263,7 +279,7 @@ REQUIRES_MODS(BUILD_IDF                BUILD_PART)
 REQUIRES_MODS(BUILD_IMPORT             BUILD_PART)
 REQUIRES_MODS(BUILD_INSPECTION         BUILD_MESH BUILD_POINTS BUILD_PART)
 REQUIRES_MODS(BUILD_JTREADER           BUILD_MESH)
-REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH)
+REQUIRES_MODS(BUILD_MESH_PART          BUILD_PART BUILD_MESH BUILD_SMESH)
 REQUIRES_MODS(BUILD_OPENSCAD           BUILD_MESH_PART BUILD_DRAFT)
 REQUIRES_MODS(BUILD_PART_DESIGN        BUILD_SKETCHER)
 REQUIRES_MODS(BUILD_PATH               BUILD_PART BUILD_ROBOT)
@@ -275,6 +291,7 @@ REQUIRES_MODS(BUILD_SHIP               BUILD_PART BUILD_PLOT BUILD_IMAGE)
 REQUIRES_MODS(BUILD_SKETCHER           BUILD_PART)
 REQUIRES_MODS(BUILD_SPREADSHEET        BUILD_DRAFT)
 REQUIRES_MODS(BUILD_START              BUILD_WEB)
+REQUIRES_MODS(BUILD_TECHDRAW           BUILD_PART BUILD_SPREADSHEET)
 
 # ==============================================================================
 
@@ -510,7 +527,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
     SET(_boost_TEST_VERSIONS ${Boost_ADDITIONAL_VERSIONS})
 
-    find_package(Boost ${BOOST_MIN_VERSION} 
+    find_package(Boost ${BOOST_MIN_VERSION}
         COMPONENTS filesystem program_options regex signals system thread REQUIRED)
 
     IF(NOT Boost_FOUND)
@@ -556,9 +573,41 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # Salome SMESH sources are under src/3rdParty now
     IF(BUILD_SMESH)
         #if we use smesh we definitly also need vtk, no matter of external or internal smesh
-        find_package(VTK REQUIRED) #don't check VERSION 6 as this would exclude version 7
+        set (VTK_COMPONENTS
+            vtkCommonCore
+            vtkCommonDataModel
+            vtkFiltersVerdict
+            vtkIOXML
+            vtkFiltersCore
+            vtkFiltersGeneral
+            vtkIOLegacy
+            vtkFiltersExtraction
+            vtkFiltersSources
+            vtkFiltersGeometry
+        )
+        # check which modules are available
+        if(UNIX AND NOT APPLE)
+            list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
+            foreach(_module ${VTK_COMPONENTS})
+                file(GLOB_RECURSE _module_exists /usr/lib*/cmake/*${_module}.cmake
+                                                 ${CMAKE_ROOT}/*${_module}.cmake)
+                if(_module_exists)
+                    list(APPEND AVAILABLE_VTK_COMPONENTS ${_module})
+                endif()
+            endforeach()
+        endif()
+
+        # don't check VERSION 6 as this would exlude VERSION 7
+        if(AVAILABLE_VTK_COMPONENTS)
+            message(STATUS "VTK components: ${AVAILABLE_VTK_COMPONENTS}")
+            find_package(VTK COMPONENTS ${AVAILABLE_VTK_COMPONENTS} REQUIRED NO_MODULE)
+        else()
+            message(STATUS "VTK components: not found or used")
+            find_package(VTK REQUIRED NO_MODULE)
+        endif()
+
         set(BUILD_FEM_VTK ON)
-        if(${VTK_MAJOR_VERSION} LESS 6) 
+        if(${VTK_MAJOR_VERSION} LESS 6)
             message( FATAL_ERROR "Found VTK version is <6, this is not compatible" )
         endif()
         if(${VTK_MAJOR_VERSION} EQUAL 6)
@@ -566,11 +615,11 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 set(VTK_OPTIONS -DVTK_NO_QUAD_POLY)
             endif()
             if(${VTK_MINOR_VERSION} EQUAL 0)
-                message(WARNING "VTK <6.0 cannot be used with c++11, FEM postprocessing is disabled")
+                message(WARNING "VTK equal to 6.0 cannot be used with c++11, FEM postprocessing is disabled")
                 set(BUILD_FEM_VTK OFF)
             endif()
-        endif() 
-        
+        endif()
+
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
             if (WIN32)
@@ -608,9 +657,9 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     find_package(SWIG)
 
     IF(NOT SWIG_FOUND)
-        MESSAGE("==================================================\n"
-                "SWIG not found, don't build SWIG binding for pivy.\n"
-                "==================================================\n")
+        MESSAGE("=====================================================\n"
+                "SWIG not found, will not build SWIG binding for pivy.\n"
+                "=====================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
 # -------------------------------- Eigen --------------------------------
@@ -625,6 +674,13 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 # -------------------------------- Qt --------------------------------
 
 # sets ${QT_LIBRARIES}
+
+    # If using MacPorts, help the Qt4 finder.
+    if(MACPORTS_PREFIX)
+        if(NOT QT_QMAKE_EXECUTABLE)
+            set(QT_QMAKE_EXECUTABLE ${MACPORTS_PREFIX}/libexec/qt4/bin/qmake)
+        endif()
+    endif()
 
     SET(QT_MIN_VERSION 4.5.0)
     set(QT_USE_QTNETWORK TRUE)
@@ -641,15 +697,15 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     include(${QT_USE_FILE})
 
     IF(NOT QT4_FOUND)
-        MESSAGE(FATAL_ERROR "=======================\n"
-                            "Qt libraries not found.\n"
-                            "=======================\n")
+        MESSAGE(FATAL_ERROR "========================\n"
+                            "Qt4 libraries not found.\n"
+                            "========================\n")
     ENDIF(NOT QT4_FOUND)
 
     IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("=====================================================\n"
-                "Qt Webkit not found, don't build browser integration.\n"
-                "=====================================================\n")
+        MESSAGE("========================================================\n"
+                "Qt Webkit not found, will not build browser integration.\n"
+                "========================================================\n")
     ENDIF(NOT QT_QTWEBKIT_FOUND)
 
 
@@ -690,7 +746,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     endif(FREECAD_USE_FREETYPE)
 
 #---------------------------------------------------
-        
+
     if(BUILD_GUI)
 # -------------------------------- OpenGL --------------------------------
 
@@ -976,4 +1032,3 @@ if (${CMAKE_BUILD_TOOL} MATCHES "make")
             "Now run 'make' to build ${PACKAGE_NAME}\n"
             "=======================================\n")
 endif()
-

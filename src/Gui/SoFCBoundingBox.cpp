@@ -218,11 +218,11 @@ void SoFCBoundingBox::GLRender (SoGLRenderAction *action)
     state->pop();
 }
 
-void SoFCBoundingBox::generatePrimitives (SoAction *action)
+void SoFCBoundingBox::generatePrimitives (SoAction * /*action*/)
 {
 }
 
-void SoFCBoundingBox::computeBBox (SoAction *action, SbBox3f &box, SbVec3f &center)
+void SoFCBoundingBox::computeBBox (SoAction * /*action*/, SbBox3f &box, SbVec3f &center)
 {
     center = (minBounds.getValue() + maxBounds.getValue()) / 2.0f;
     box.setBounds(minBounds.getValue(), maxBounds.getValue());

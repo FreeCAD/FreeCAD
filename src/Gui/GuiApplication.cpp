@@ -70,9 +70,10 @@ GUIApplication::~GUIApplication()
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
-    if (!receiver && event) {
+    if (!receiver) {
         Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
             (int)event->type());
+        return false;
     }
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 

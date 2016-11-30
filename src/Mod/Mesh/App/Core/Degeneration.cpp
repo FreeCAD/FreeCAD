@@ -448,76 +448,69 @@ bool MeshEvalInternalFacets::Evaluate()
 
 bool MeshEvalDegeneratedFacets::Evaluate()
 {
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    if ( it->IsDegenerated() )
-      return false;
-  }
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        if (it->IsDegenerated(fEpsilon))
+            return false;
+    }
 
-  return true;
+    return true;
 }
 
 unsigned long MeshEvalDegeneratedFacets::CountEdgeTooSmall (float fMinEdgeLength) const
 {
-  MeshFacetIterator  clFIter(_rclMesh);   
-  unsigned long k = 0;
+    MeshFacetIterator  clFIter(_rclMesh);
+    unsigned long k = 0;
 
-  while (clFIter.EndReached() == false)
-  {
-    for ( int i = 0; i < 3; i++)
-    {
-      if (Base::Distance(clFIter->_aclPoints[i], clFIter->_aclPoints[(i+1)%3]) < fMinEdgeLength)
-        k++;
+    while (clFIter.EndReached() == false) {
+        for (int i = 0; i < 3; i++) {
+            if (Base::Distance(clFIter->_aclPoints[i], clFIter->_aclPoints[(i+1)%3]) < fMinEdgeLength)
+                k++;
+        }
+        ++clFIter;
     }
-    ++clFIter;
-  }
 
-  return k;
+    return k;
 }
 
 std::vector<unsigned long> MeshEvalDegeneratedFacets::GetIndices() const
 {
-  std::vector<unsigned long> aInds;
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    if ( it->IsDegenerated() )
-      aInds.push_back(it.Position());
-  }
+    std::vector<unsigned long> aInds;
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        if (it->IsDegenerated(fEpsilon))
+            aInds.push_back(it.Position());
+    }
 
-  return aInds;
+    return aInds;
 }
 
 bool MeshFixDegeneratedFacets::Fixup()
 {
-  MeshTopoAlgorithm cTopAlg(_rclMesh);
+    MeshTopoAlgorithm cTopAlg(_rclMesh);
 
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    if ( it->IsDegenerated() )
-    {
-      unsigned long uCt = _rclMesh.CountFacets();
-      unsigned long uId = it.Position();
-      cTopAlg.RemoveDegeneratedFacet(uId);
-      if ( uCt != _rclMesh.CountFacets() )
-      {
-        // due to a modification of the array the iterator became invalid
-        it.Set(uId-1);
-      }
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        if (it->IsDegenerated(fEpsilon)) {
+            unsigned long uCt = _rclMesh.CountFacets();
+            unsigned long uId = it.Position();
+            cTopAlg.RemoveDegeneratedFacet(uId);
+            if (uCt != _rclMesh.CountFacets()) {
+                // due to a modification of the array the iterator became invalid
+                it.Set(uId-1);
+            }
+        }
     }
-  }
 
-  return true;
+    return true;
 }
 
 unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength, float fMinEdgeAngle)
 {
     unsigned long ulCtLastLoop, ulCtFacets = _rclMesh.CountFacets();
 
-    MeshFacetArray &rclFAry = _rclMesh._aclFacetArray;
-    MeshPointArray &rclPAry = _rclMesh._aclPointArray;
+    const MeshFacetArray &rclFAry = _rclMesh.GetFacets();
+    const MeshPointArray &rclPAry = _rclMesh.GetPoints();
     MeshFacetArray::_TConstIterator f_beg = rclFAry.begin();
 
     // repeat until no facet van be removed
@@ -610,97 +603,100 @@ unsigned long MeshFixDegeneratedFacets::RemoveEdgeTooSmall (float fMinEdgeLength
 
 bool MeshEvalDeformedFacets::Evaluate()
 {
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    if ( it->IsDeformed() )
-      return false;
-  }
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
 
-  return true;
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        if (it->IsDeformed(fCosMinAngle, fCosMaxAngle))
+            return false;
+    }
+
+    return true;
 }
 
 std::vector<unsigned long> MeshEvalDeformedFacets::GetIndices() const
 {
-  std::vector<unsigned long> aInds;
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    if ( it->IsDeformed() )
-      aInds.push_back(it.Position());
-  }
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
 
-  return aInds;
+    std::vector<unsigned long> aInds;
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        if (it->IsDeformed(fCosMinAngle, fCosMaxAngle))
+            aInds.push_back(it.Position());
+    }
+
+    return aInds;
 }
 
 bool MeshFixDeformedFacets::Fixup()
 {
-  Base::Vector3f u,v;
-  MeshTopoAlgorithm cTopAlg(_rclMesh);
+    float fCosMinAngle = cos(fMinAngle);
+    float fCosMaxAngle = cos(fMaxAngle);
 
-  MeshFacetIterator it(_rclMesh);
-  for ( it.Init(); it.More(); it.Next() )
-  {
-    // possibly deformed but not degenerated
-    if ( !it->IsDegenerated() )
-    {
-      // store the angles to avoid to compute twice
-      float fCosAngles[3] = {0,0,0};
-      bool done=false;
+    Base::Vector3f u,v;
+    MeshTopoAlgorithm cTopAlg(_rclMesh);
 
-      for (int i=0; i<3; i++)
-      {
-        u = it->_aclPoints[(i+1)%3]-it->_aclPoints[i];
-        v = it->_aclPoints[(i+2)%3]-it->_aclPoints[i];
-        u.Normalize();
-        v.Normalize();
+    MeshFacetIterator it(_rclMesh);
+    for (it.Init(); it.More(); it.Next()) {
+        // possibly deformed but not degenerated
+        if (!it->IsDegenerated(fEpsilon)) {
+            // store the angles to avoid to compute twice
+            float fCosAngles[3] = {0,0,0};
+            bool done=false;
 
-        float fCosAngle = u * v;
-        fCosAngles[i] = fCosAngle;
-      }
+            for (int i=0; i<3; i++) {
+                u = it->_aclPoints[(i+1)%3]-it->_aclPoints[i];
+                v = it->_aclPoints[(i+2)%3]-it->_aclPoints[i];
+                u.Normalize();
+                v.Normalize();
 
-      // first check for angle > 120 deg: in this case we swap with the opposite edge
-      for (int i=0; i<3; i++)
-      {
-        float fCosAngle = fCosAngles[i];
-        if (fCosAngle < -0.5f) {
-          const MeshFacet& face = it.GetReference();
-          unsigned long uNeighbour = face._aulNeighbours[(i+1)%3];
-          if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
-            cTopAlg.SwapEdge(it.Position(), uNeighbour);
-            done = true;
-          }
-          break;
+                float fCosAngle = u * v;
+                fCosAngles[i] = fCosAngle;
+            }
+
+            // first check for angle > 120 deg: in this case we swap with the opposite edge
+            for (int i=0; i<3; i++) {
+                float fCosAngle = fCosAngles[i];
+                if (fCosAngle < fCosMaxAngle) {
+                    const MeshFacet& face = it.GetReference();
+                    unsigned long uNeighbour = face._aulNeighbours[(i+1)%3];
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
+                        cTopAlg.SwapEdge(it.Position(), uNeighbour);
+                        done = true;
+                    }
+                    break;
+                }
+            }
+
+            // we have swapped already
+            if (done)
+                continue;
+
+            // now check for angle < 30 deg: in this case we swap with one of the edges the corner is part of
+            for (int j=0; j<3; j++) {
+                float fCosAngle = fCosAngles[j];
+                if (fCosAngle > fCosMinAngle) {
+                    const MeshFacet& face = it.GetReference();
+
+                    unsigned long uNeighbour = face._aulNeighbours[j];
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
+                        cTopAlg.SwapEdge(it.Position(), uNeighbour);
+                        break;
+                    }
+
+                    uNeighbour = face._aulNeighbours[(j+2)%3];
+                    if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxSwapAngle)) {
+                        cTopAlg.SwapEdge(it.Position(), uNeighbour);
+                        break;
+                    }
+                }
+            }
         }
-      }
-
-      // we have swapped already
-      if (done)
-        continue;
-
-      // now check for angle < 30 deg: in this case we swap with one of the edges the corner is part of
-      for (int j=0; j<3; j++)
-      {
-        float fCosAngle = fCosAngles[j];
-        if (fCosAngle > 0.86f) {
-          const MeshFacet& face = it.GetReference();
-
-          unsigned long uNeighbour = face._aulNeighbours[j];
-          if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
-            cTopAlg.SwapEdge(it.Position(), uNeighbour);
-            break;
-          }
-          uNeighbour = face._aulNeighbours[(j+2)%3];
-          if (uNeighbour!=ULONG_MAX && cTopAlg.ShouldSwapEdge(it.Position(), uNeighbour, fMaxAngle)) {
-            cTopAlg.SwapEdge(it.Position(), uNeighbour);
-            break;
-          }
-        }
-      }
     }
-  }
 
-  return true;
+    return true;
 }
 
 // ----------------------------------------------------------------------
@@ -923,79 +919,99 @@ bool MeshEvalBorderFacet::Evaluate()
 
 bool MeshEvalRangeFacet::Evaluate()
 {
-  const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  unsigned long ulCtFacets = rFaces.size();
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+    unsigned long ulCtFacets = rFaces.size();
 
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it ) {
-    for ( int i = 0; i < 3; i++ ) {
-      if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < ULONG_MAX)) {
-        return false;
-      }
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
+        for (int i = 0; i < 3; i++) {
+            if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < ULONG_MAX)) {
+                return false;
+            }
+        }
     }
-  }
 
-  return true;
+    return true;
 }
 
 std::vector<unsigned long> MeshEvalRangeFacet::GetIndices() const
 {
-  std::vector<unsigned long> aInds;
-  const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  unsigned long ulCtFacets = rFaces.size();
+    std::vector<unsigned long> aInds;
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+    unsigned long ulCtFacets = rFaces.size();
 
-  unsigned long ind=0;
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++ )
-  {
-    for ( int i = 0; i < 3; i++ ) {
-      if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < ULONG_MAX)) {
-        aInds.push_back(ind);
-        break;
-      }
+    unsigned long ind=0;
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+        for (int i = 0; i < 3; i++) {
+            if ((it->_aulNeighbours[i] >= ulCtFacets) && (it->_aulNeighbours[i] < ULONG_MAX)) {
+                aInds.push_back(ind);
+                break;
+            }
+        }
     }
-  }
 
-  return aInds;
+    return aInds;
 }
 
 bool MeshFixRangeFacet::Fixup()
 {
-  return false;
+    _rclMesh.RebuildNeighbours();
+    return true;
 }
 
 // ----------------------------------------------------------------------
 
 bool MeshEvalRangePoint::Evaluate()
 {
-  const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  unsigned long ulCtPoints = _rclMesh.CountPoints();
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+    unsigned long ulCtPoints = _rclMesh.CountPoints();
 
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it ) {
-    if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
-      return false;
-  }
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it) {
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
+            return false;
+    }
 
-  return true;
+    return true;
 }
 
 std::vector<unsigned long> MeshEvalRangePoint::GetIndices() const
 {
-  std::vector<unsigned long> aInds;
-  const MeshFacetArray& rFaces = _rclMesh.GetFacets();
-  unsigned long ulCtPoints = _rclMesh.CountPoints();
+    std::vector<unsigned long> aInds;
+    const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+    unsigned long ulCtPoints = _rclMesh.CountPoints();
 
-  unsigned long ind=0;
-  for ( MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++ )
-  {
-    if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
-      aInds.push_back(ind);
-  }
+    unsigned long ind=0;
+    for (MeshFacetArray::_TConstIterator it = rFaces.begin(); it != rFaces.end(); ++it, ind++) {
+        if (std::find_if(it->_aulPoints, it->_aulPoints + 3, std::bind2nd(std::greater_equal<unsigned long>(), ulCtPoints)) < it->_aulPoints + 3)
+            aInds.push_back(ind);
+    }
 
-  return aInds;
+    return aInds;
 }
 
 bool MeshFixRangePoint::Fixup()
 {
-  return false;
+    MeshEvalRangePoint eval(_rclMesh);
+    if (_rclMesh.CountPoints() == 0) {
+        // if no points are there but facets then the whole mesh can be cleared
+        _rclMesh.Clear();
+    }
+    else {
+        // facets with point indices out of range cannot be directly deleted because
+        // 'DeleteFacets' will segfault. But setting all point indices to 0 works.
+        std::vector<unsigned long> invalid = eval.GetIndices();
+        if (!invalid.empty()) {
+            const MeshFacetArray& rFaces = _rclMesh.GetFacets();
+            for (std::vector<unsigned long>::iterator it = invalid.begin(); it != invalid.end(); ++it) {
+                MeshFacet& face = const_cast<MeshFacet&>(rFaces[*it]);
+                face._aulPoints[0] = 0;
+                face._aulPoints[1] = 0;
+                face._aulPoints[2] = 0;
+            }
+
+            _rclMesh.DeleteFacets(invalid);
+        }
+    }
+    return true;
 }
 
 // ----------------------------------------------------------------------

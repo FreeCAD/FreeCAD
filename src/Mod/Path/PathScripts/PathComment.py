@@ -1,119 +1,126 @@
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 ''' Used for CNC machine comments for Path module. Create a comment and place it in the Document tree.'''
 
-import FreeCAD,FreeCADGui,Path,PathGui
-from PathScripts import PathProject
-from PySide import QtCore,QtGui
+import FreeCAD
+import FreeCADGui
+import Path
+from PySide import QtCore, QtGui
 
 # Qt tanslation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
+
 class Comment:
-    def __init__(self,obj):
-        obj.addProperty("App::PropertyString","Comment","Path","Comment or note for CNC program")
+
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyString", "Comment",
+                        "Path", "Comment or note for CNC program")
         obj.Proxy = self
         mode = 2
-        obj.setEditorMode('Placement',mode)
-
+        obj.setEditorMode('Placement', mode)
 
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
-    def onChanged(self,obj,prop):
+    def onChanged(self, obj, prop):
         pass
 
-    def execute(self,obj):
-            output =""
-            output += '('+ str(obj.Comment)+')\n'
-            path = Path.Path(output)
-            obj.Path = path
+    def execute(self, obj):
+        output = ""
+        output += '(' + str(obj.Comment) + ')\n'
+        path = Path.Path(output)
+        obj.Path = path
+
 
 class _ViewProviderComment:
-    def __init__(self,vobj): #mandatory
-#        obj.addProperty("App::PropertyFloat","SomePropertyName","PropertyGroup","Description of this property")
+
+    def __init__(self, vobj):  # mandatory
         vobj.Proxy = self
         mode = 2
-        vobj.setEditorMode('LineWidth',mode)
-        vobj.setEditorMode('MarkerColor',mode)
-        vobj.setEditorMode('NormalColor',mode)
-        vobj.setEditorMode('ShowFirstRapid',mode)
-        vobj.setEditorMode('DisplayMode',mode)
-        vobj.setEditorMode('BoundingBox',mode)
-        vobj.setEditorMode('Selectable',mode)
-        vobj.setEditorMode('ShapeColor',mode)
-        vobj.setEditorMode('Transparency',mode)
-        vobj.setEditorMode('Visibility',mode)
+        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('MarkerColor', mode)
+        vobj.setEditorMode('NormalColor', mode)
+        vobj.setEditorMode('ShowFirstRapid', mode)
+        vobj.setEditorMode('DisplayMode', mode)
+        vobj.setEditorMode('BoundingBox', mode)
+        vobj.setEditorMode('Selectable', mode)
+        vobj.setEditorMode('ShapeColor', mode)
+        vobj.setEditorMode('Transparency', mode)
+        vobj.setEditorMode('Visibility', mode)
 
-
-    def __getstate__(self): #mandatory
+    def __getstate__(self):  # mandatory
         return None
 
-    def __setstate__(self,state): #mandatory
+    def __setstate__(self, state):  # mandatory
         return None
 
-    def getIcon(self): #optional
+    def getIcon(self):  # optional
         return ":/icons/Path-Comment.svg"
 
-    def onChanged(self,vobj,prop): #optional
+    def onChanged(self, vobj, prop):  # optional
         mode = 2
-        vobj.setEditorMode('LineWidth',mode)
-        vobj.setEditorMode('MarkerColor',mode)
-        vobj.setEditorMode('NormalColor',mode)
-        vobj.setEditorMode('ShowFirstRapid',mode)
-        vobj.setEditorMode('DisplayMode',mode)
-        vobj.setEditorMode('BoundingBox',mode)
-        vobj.setEditorMode('Selectable',mode)
-        vobj.setEditorMode('ShapeColor',mode)
-        vobj.setEditorMode('Transparency',mode)
-        vobj.setEditorMode('Visibility',mode)
-
-    def getIcon(self):
-        return ":/icons/Path-Comment.svg"
+        vobj.setEditorMode('LineWidth', mode)
+        vobj.setEditorMode('MarkerColor', mode)
+        vobj.setEditorMode('NormalColor', mode)
+        vobj.setEditorMode('ShowFirstRapid', mode)
+        vobj.setEditorMode('DisplayMode', mode)
+        vobj.setEditorMode('BoundingBox', mode)
+        vobj.setEditorMode('Selectable', mode)
+        vobj.setEditorMode('ShapeColor', mode)
+        vobj.setEditorMode('Transparency', mode)
+        vobj.setEditorMode('Visibility', mode)
 
 
 class CommandPathComment:
+
     def GetResources(self):
-        return {'Pixmap'  : 'Path-Comment',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Comment"),
+        return {'Pixmap': 'Path-Comment',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Comment"),
                 'Accel': "P, C",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment","Add a Comment to your CNC program")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_Comment", "Add a Comment to your CNC program")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
-        FreeCAD.ActiveDocument.openTransaction(translate("Path_Comment","Create a Comment in your CNC program"))
+        FreeCAD.ActiveDocument.openTransaction(
+            translate("Path_Comment", "Create a Comment in your CNC program"))
         FreeCADGui.addModule("PathScripts.PathComment")
         snippet = '''
 import Path
@@ -123,15 +130,15 @@ obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","Comment")
 PathScripts.PathComment.Comment(obj)
 PathScripts.PathComment._ViewProviderComment(obj.ViewObject)
 
-PathUtils.addToProject(obj)
+PathUtils.addToJob(obj)
 '''
         FreeCADGui.doCommand(snippet)
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-if FreeCAD.GuiUp: 
+if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Path_Comment',CommandPathComment())
+    FreeCADGui.addCommand('Path_Comment', CommandPathComment())
 
 
 FreeCAD.Console.PrintLog("Loading PathComment... done\n")

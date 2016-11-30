@@ -1378,13 +1378,13 @@ yyreduce:
 
   case 8:
 #line 74 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)); }
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))); }
 #line 1383 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 75 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::POS, new NumberExpression(DocumentObject, 1)); }
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[0].expr), OperatorExpression::POS, new NumberExpression(DocumentObject, Quantity(1))); }
 #line 1389 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1444,25 +1444,25 @@ yyreduce:
 
   case 19:
 #line 87 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new NumberExpression(DocumentObject, (yyvsp[0].fvalue));                                  }
+    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((yyvsp[0].fvalue)));                        }
 #line 1449 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 88 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new NumberExpression(DocumentObject, (yyvsp[0].fvalue));                                  }
+    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((yyvsp[0].fvalue)));                        }
 #line 1455 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
 #line 89 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new NumberExpression(DocumentObject, (double)(yyvsp[0].ivalue));                          }
+    { (yyval.expr) = new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue)));                }
 #line 1461 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 90 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new ConstantExpression(DocumentObject, (yyvsp[0].constant).name, (yyvsp[0].constant).fvalue);                }
+    { (yyval.expr) = new ConstantExpression(DocumentObject, (yyvsp[0].constant).name, Quantity((yyvsp[0].constant).fvalue));      }
 #line 1467 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
@@ -1582,13 +1582,13 @@ yyreduce:
 
   case 42:
 #line 117 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, new NumberExpression(DocumentObject, (double)(yyvsp[0].ivalue)));   }
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-2].expr), OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))));   }
 #line 1587 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 
   case 43:
 #line 118 "ExpressionParser.y" /* yacc.c:1646  */
-    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-3].expr), OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, (double)(yyvsp[0].ivalue)), OperatorExpression::NEG, new NumberExpression(DocumentObject, -1)));   }
+    { (yyval.expr) = new OperatorExpression(DocumentObject, (yyvsp[-3].expr), OperatorExpression::POW, new OperatorExpression(DocumentObject, new NumberExpression(DocumentObject, Quantity((double)(yyvsp[0].ivalue))), OperatorExpression::NEG, new NumberExpression(DocumentObject, Quantity(-1))));   }
 #line 1593 "ExpressionParser.tab.c" /* yacc.c:1646  */
     break;
 

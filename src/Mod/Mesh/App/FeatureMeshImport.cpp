@@ -53,7 +53,7 @@ short Mesh::Import::mustExecute(void) const
 
 App::DocumentObjectExecReturn *Mesh::Import::execute(void)
 {
-    std::auto_ptr<MeshObject> apcKernel(new MeshObject());
+    std::unique_ptr<MeshObject> apcKernel(new MeshObject());
     apcKernel->load(FileName.getValue());
     Mesh.setValuePtr(apcKernel.release());
 

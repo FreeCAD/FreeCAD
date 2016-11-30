@@ -29,6 +29,13 @@ __title__="FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
 __url__ = "http://www.freecadweb.org"
 
+## @package WorkingPlane
+#  \ingroup DRAFT
+#  \brief This module handles the Working Plane and grid of the Draft module.
+#
+#  This module contains the plane class which provides a virtual plane in FreeCAD
+#  and a couple of utility functions
+
 '''
 This module provides a class called plane to assist in selecting and maintaining a working plane.
 '''

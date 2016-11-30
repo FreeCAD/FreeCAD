@@ -98,14 +98,16 @@
 #include "Annotation.h"
 #include "MeasureDistance.h"
 #include "Placement.h"
-#include "GeoFeatureGroup.h"
-#include "OriginGroup.h"
+#include "GeoFeatureGroupExtension.h"
+#include "OriginGroupExtension.h"
 #include "Part.h"
 #include "OriginFeature.h"
 #include "Origin.h"
 #include "MaterialObject.h"
-#include "MaterialPy.h"
 #include "Expression.h"
+#include "Transactions.h"
+#include <App/MaterialPy.h>
+#include <Base/GeometryPyCXX.h>
 
 // If you stumble here, run the target "BuildExtractRevision" on Windows systems
 // or the Python script "SubWCRev.py" on Linux based systems which builds
@@ -128,9 +130,9 @@ using namespace boost::program_options;
 
 
 // scriptings (scripts are build in but can be overridden by command line option)
-#include "InitScript.h"
-#include "TestScript.h"
-#include "CMakeScript.h"
+#include <App/InitScript.h>
+#include <App/TestScript.h>
+#include <App/CMakeScript.h>
 
 #ifdef _MSC_VER // New handler for Microsoft Visual C++ compiler
 # include <new.h>
@@ -244,6 +246,10 @@ Application::Application(std::map<std::string,std::string> &mConfig)
     Base::ProgressIndicatorPy::init_type();
     Base::Interpreter().addType(Base::ProgressIndicatorPy::type_object(),
         pBaseModule,"ProgressIndicator");
+
+    Base::Vector2dPy::init_type();
+    Base::Interpreter().addType(Base::Vector2dPy::type_object(),
+        pBaseModule,"Vector2d");
 }
 
 Application::~Application()
@@ -296,7 +302,7 @@ Document* Application::newDocument(const char * Name, const char * UserName)
     }
 
     // create the FreeCAD document
-    auto_ptr<Document> newDoc(new Document() );
+    std::unique_ptr<Document> newDoc(new Document());
 
     // add the document to the internal list
     DocMap[name] = newDoc.release(); // now owned by the Application
@@ -340,7 +346,7 @@ bool Application::closeDocument(const char* name)
     // For exception-safety use a smart pointer
     if (_pActiveDoc == pos->second)
         setActiveDocument((Document*)0);
-    auto_ptr<Document> delDoc (pos->second);
+    std::unique_ptr<Document> delDoc (pos->second);
     DocMap.erase( pos );
 
     // Trigger observers after removing the document from the internal map.
@@ -1011,9 +1017,9 @@ void unexpection_error_handler()
     // try to throw an exception and give the user chance to save their work
 #if !defined(_DEBUG)
     throw Base::Exception("Unexpected error occurred! Please save your work under a new file name and restart the application!");
-#endif
-
+#else
     terminate();
+#endif
 }
 
 #ifdef _MSC_VER // Microsoft compiler
@@ -1023,7 +1029,7 @@ void my_trans_func( unsigned int code, EXCEPTION_POINTERS* pExp )
 
    //switch (code)
    //{
-   //    case FLT_DIVIDE_BY_ZERO : 
+   //    case FLT_DIVIDE_BY_ZERO :
    //       //throw CMyFunkyDivideByZeroException(code, pExp);
    //       throw Base::Exception("Devision by zero!");
    //    break;
@@ -1095,6 +1101,8 @@ void Application::initTypes(void)
     App ::PropertyAngle             ::init();
     App ::PropertyDistance          ::init();
     App ::PropertyLength            ::init();
+    App ::PropertyArea              ::init();
+    App ::PropertyVolume            ::init();
     App ::PropertySpeed             ::init();
     App ::PropertyAcceleration      ::init();
     App ::PropertyForce             ::init();
@@ -1132,7 +1140,19 @@ void Application::initTypes(void)
     App ::PropertyPythonObject      ::init();
     App ::PropertyExpressionEngine  ::init();
 
+    // Extension classes
+    App ::Extension                     ::init();
+    App ::ExtensionContainer            ::init();
+    App ::DocumentObjectExtension       ::init();
+    App ::GroupExtension                ::init();
+    App ::GroupExtensionPython          ::init();
+    App ::GeoFeatureGroupExtension      ::init();
+    App ::GeoFeatureGroupExtensionPython::init();
+    App ::OriginGroupExtension          ::init();
+    App ::OriginGroupExtensionPython    ::init();
+
     // Document classes
+    App ::TransactionalObject       ::init();
     App ::DocumentObject            ::init();
     App ::GeoFeature                ::init();
     App ::FeatureTest               ::init();
@@ -1154,9 +1174,6 @@ void Application::initTypes(void)
     App ::OriginFeature             ::init();
     App ::Plane                     ::init();
     App ::Line                      ::init();
-    App ::GeoFeatureGroup           ::init();
-    App ::GeoFeatureGroupPython     ::init();
-    App ::OriginGroup               ::init();
     App ::Part                      ::init();
     App ::Origin                    ::init();
 
@@ -1173,6 +1190,9 @@ void Application::initTypes(void)
     App ::BooleanExpression         ::init();
     App ::RangeExpression           ::init();
 
+    // register transaction type
+    new App::TransactionProducer<TransactionDocumentObject>
+            (DocumentObject::getClassTypeId());
 }
 
 void Application::initConfig(int argc, char ** argv)
@@ -1349,8 +1369,9 @@ std::list<std::string> Application::getCmdLineFiles()
     return files;
 }
 
-void Application::processFiles(const std::list<std::string>& files)
+std::list<std::string> Application::processFiles(const std::list<std::string>& files)
 {
+    std::list<std::string> processed;
     Base::Console().Log("Init: Processing command line files\n");
     for (std::list<std::string>::const_iterator it = files.begin(); it != files.end(); ++it) {
         Base::FileInfo file(*it);
@@ -1361,17 +1382,21 @@ void Application::processFiles(const std::list<std::string>& files)
             if (file.hasExtension("fcstd") || file.hasExtension("std")) {
                 // try to open
                 Application::_pcSingleton->openDocument(file.filePath().c_str());
+                processed.push_back(*it);
             }
             else if (file.hasExtension("fcscript") || file.hasExtension("fcmacro")) {
                 Base::Interpreter().runFile(file.filePath().c_str(), true);
+                processed.push_back(*it);
             }
             else if (file.hasExtension("py")) {
                 try{
                     Base::Interpreter().loadModule(file.fileNamePure().c_str());
+                    processed.push_back(*it);
                 }
                 catch(const PyException&) {
                     // if loading the module does not work, try just running the script (run in __main__)
                     Base::Interpreter().runFile(file.filePath().c_str(),true);
+                    processed.push_back(*it);
                 }
             }
             else {
@@ -1383,6 +1408,7 @@ void Application::processFiles(const std::list<std::string>& files)
                     Base::Interpreter().runStringArg("import %s",mods.front().c_str());
                     Base::Interpreter().runStringArg("%s.open(u\"%s\")",mods.front().c_str(),
                             escapedstr.c_str());
+                    processed.push_back(*it);
                     Base::Console().Log("Command line open: %s.open(u\"%s\")\n",mods.front().c_str(),escapedstr.c_str());
                 }
                 else {
@@ -1400,6 +1426,8 @@ void Application::processFiles(const std::list<std::string>& files)
             Console().Error("Unknown exception while processing file: %s \n", file.filePath().c_str());
         }
     }
+
+    return processed; // successfully processed files
 }
 
 void Application::processCmdLineFiles(void)
@@ -1577,6 +1605,10 @@ pair<string, string> customSyntax(const string& s)
         return make_pair(string("display"), string("null"));
     else if (s.find("-style") == 0)
         return make_pair(string("style"), string("null"));
+    else if (s.find("-graphicssystem") == 0)
+        return make_pair(string("graphicssystem"), string("null"));
+    else if (s.find("-widgetcount") == 0)
+        return make_pair(string("widgetcount"), string(""));
     else if (s.find("-geometry") == 0)
         return make_pair(string("geometry"), string("null"));
     else if (s.find("-font") == 0)
@@ -1648,7 +1680,7 @@ void Application::ParseOptions(int ac, char ** av)
     ("log-file", value<string>(), "Unlike to --write-log this allows to log to an arbitrary file")
     ("user-cfg,u", value<string>(),"User config file to load/save user settings")
     ("system-cfg,s", value<string>(),"Systen config file to load/save system settings")
-    ("run-test,t",   value<int>()   ,"Test level")
+    ("run-test,t",   value<string>()   ,"Test case - or 0 for all")
     ("module-path,M", value< vector<string> >()->composing(),"Additional module paths")
     ("python-path,P", value< vector<string> >()->composing(),"Additional python paths")
     ("single-instance", "Allow to run a single instance of the application")
@@ -1667,6 +1699,8 @@ void Application::ParseOptions(int ac, char ** av)
     ("stylesheet", boost::program_options::value< string >(), "set the application stylesheet")
     ("session",    boost::program_options::value< string >(), "restore the application from an earlier session")
     ("reverse",                                               "set the application's layout direction from right to left")
+    ("widgetcount",                                           "print debug messages about widgets")
+    ("graphicssystem", boost::program_options::value< string >(), "backend to be used for on-screen widgets and pixmaps")
     ("display",    boost::program_options::value< string >(), "set the X-Server")
     ("geometry ",  boost::program_options::value< string >(), "set the X-Window geometry")
     ("font",       boost::program_options::value< string >(), "set the X-Window font")
@@ -1855,21 +1889,14 @@ void Application::ParseOptions(int ac, char ** av)
     }
 
     if (vm.count("run-test")) {
-        int level = vm["run-test"].as<int>();
-        switch (level) {
-        case '0':
-            // test script level 0
-            mConfig["RunMode"] = "Internal";
-            mConfig["ScriptFileName"] = "FreeCADTest";
-            //sScriptName = FreeCADTest;
-            break;
-        default:
-            //default testing level 0
-            mConfig["RunMode"] = "Internal";
-            mConfig["ScriptFileName"] = "FreeCADTest";
-            //sScriptName = FreeCADTest;
-            break;
-        };
+       string testCase = vm["run-test"].as<string>();
+        if ( "0" == testCase) {
+            testCase = "TestApp.All";
+        }
+        mConfig["TestCase"] = testCase;
+        mConfig["RunMode"] = "Internal";
+        mConfig["ScriptFileName"] = "FreeCADTest";
+        //sScriptName = FreeCADTest;
     }
 
     if (vm.count("single-instance")) {
@@ -2084,6 +2111,19 @@ void Application::ExtractUserPath()
         // the application due to branding reasons.
         appData += PATHSEP;
         mConfig["UserAppData"] = appData;
+
+        // Create the default macro directory
+        fi.setFile(getUserMacroDir());
+        if (!fi.exists() && !Py_IsInitialized()) {
+            if (!fi.createDirectory()) {
+                // If the creation fails only write an error but do not raise an
+                // exception because it doesn't prevent FreeCAD from working
+                std::string error = "Cannot create directory ";
+                error += fi.fileName();
+                // Want more details on console
+                std::cerr << error << std::endl;
+            }
+        }
     }
 #else
 # error "Implement ExtractUserPath() for your platform."
@@ -2119,7 +2159,7 @@ std::string Application::FindHomePath(const char* sCall)
         // path. In the worst case we simply get q wrong path and FreeCAD is not
         // able to load its modules.
         char resolved[PATH_MAX];
-#if defined(FC_OS_BSD) 
+#if defined(FC_OS_BSD)
         int mib[4];
         mib[0] = CTL_KERN;
         mib[1] = KERN_PROC;

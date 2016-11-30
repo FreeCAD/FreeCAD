@@ -96,6 +96,7 @@ SelectionView::~SelectionView()
 void SelectionView::OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
                              Gui::SelectionSingleton::MessageType Reason)
 {
+    Q_UNUSED(rCaller); 
     QString selObject;
     QTextStream str(&selObject);
     if (Reason.Type == SelectionChanges::AddSelection) {
@@ -289,7 +290,7 @@ void SelectionView::onUpdate(void)
 {
 }
 
-bool SelectionView::onMsg(const char* pMsg,const char** ppReturn)
+bool SelectionView::onMsg(const char* /*pMsg*/,const char** /*ppReturn*/)
 {
     return false;
 }

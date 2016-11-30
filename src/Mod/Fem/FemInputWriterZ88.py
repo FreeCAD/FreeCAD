@@ -20,11 +20,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "FemInputWriterZ88"
 __author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 import FemMeshTools
@@ -33,22 +34,27 @@ import FemInputWriter
 
 
 class FemInputWriterZ88(FemInputWriter.FemInputWriter):
-    def __init__(self, analysis_obj, solver_obj,
-                 mesh_obj, mat_obj,
-                 fixed_obj,
-                 force_obj, pressure_obj,
-                 displacement_obj,
+    def __init__(self,
+                 analysis_obj, solver_obj,
+                 mesh_obj, matlin_obj, matnonlin_obj,
+                 fixed_obj, displacement_obj,
+                 contact_obj, planerotation_obj, transform_obj,
+                 selfweight_obj, force_obj, pressure_obj,
+                 temperature_obj, heatflux_obj, initialtemperature_obj,
                  beamsection_obj, shellthickness_obj,
-                 analysis_type=None, eigenmode_parameters=None,
-                 dir_name=None):
-        FemInputWriter.FemInputWriter.__init__(self, analysis_obj, solver_obj,
-                                               mesh_obj, mat_obj,
-                                               fixed_obj,
-                                               force_obj, pressure_obj,
-                                               displacement_obj,
-                                               beamsection_obj, shellthickness_obj,
-                                               analysis_type, eigenmode_parameters,
-                                               dir_name)
+                 analysis_type=None, dir_name=None
+                 ):
+
+        FemInputWriter.FemInputWriter.__init__(
+            self,
+            analysis_obj, solver_obj,
+            mesh_obj, matlin_obj, matnonlin_obj,
+            fixed_obj, displacement_obj,
+            contact_obj, planerotation_obj, transform_obj,
+            selfweight_obj, force_obj, pressure_obj,
+            temperature_obj, heatflux_obj, initialtemperature_obj,
+            beamsection_obj, shellthickness_obj,
+            analysis_type, dir_name)
         self.file_name = self.dir_name + '/z88'
         print('FemInputWriterZ88 --> self.dir_name  -->  ' + self.dir_name)
         print('FemInputWriterZ88 --> self.file_name  -->  ' + self.file_name)
@@ -312,3 +318,5 @@ Entries for Cuthill-McKee Z88H         Daten fuer Cuthill- McKee Programm
 
 DYNAMIC END
 '''
+
+#  @}

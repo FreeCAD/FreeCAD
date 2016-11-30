@@ -470,6 +470,7 @@ ObjectIdentifier::Component::Component(const String &_component, ObjectIdentifie
     , type(_type)
     , index(_index)
     , key(_key)
+    , keyIsString(false)
 {
 }
 
@@ -856,7 +857,7 @@ ObjectIdentifier ObjectIdentifier::relativeTo(const ObjectIdentifier &other) con
 
 ObjectIdentifier ObjectIdentifier::parse(const DocumentObject *docObj, const std::string &str)
 {
-    std::auto_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
+    std::unique_ptr<Expression> expr(ExpressionParser::parse(docObj, str.c_str()));
     VariableExpression * v = freecad_dynamic_cast<VariableExpression>(expr.get());
 
     if (v)

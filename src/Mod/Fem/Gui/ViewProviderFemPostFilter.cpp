@@ -42,11 +42,11 @@ ViewProviderFemPostClip::~ViewProviderFemPostClip() {
 }
 
 void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
-    
+
     //add the function box
-    dlg->appendBox(new TaskPostClip(dlg->getView(), 
+    dlg->appendBox(new TaskPostClip(dlg->getView(),
                                     &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
-    
+
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
@@ -64,10 +64,10 @@ ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() {
 }
 
 void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg) {
-    
+
     //add the function box
     dlg->appendBox(new TaskPostScalarClip(dlg->getView()));
-    
+
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
@@ -84,10 +84,10 @@ ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() {
 }
 
 void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg) {
-    
+
     //add the function box
     dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
-    
+
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
@@ -105,11 +105,11 @@ ViewProviderFemPostCut::~ViewProviderFemPostCut() {
 }
 
 void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg) {
-    
+
     //add the function box
-    dlg->appendBox(new TaskPostCut(dlg->getView(), 
+    dlg->appendBox(new TaskPostCut(dlg->getView(),
                                     &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
-    
+
     //add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }

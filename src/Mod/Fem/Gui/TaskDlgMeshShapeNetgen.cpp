@@ -52,12 +52,13 @@ using namespace FemGui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgMeshShapeNetgen::TaskDlgMeshShapeNetgen(FemGui::ViewProviderFemMeshShapeNetgen *obj)
-    : TaskDialog(),ViewProviderFemMeshShapeNetgen(obj)
+    : TaskDialog(), param(0), ViewProviderFemMeshShapeNetgen(obj)
 {
     FemMeshShapeNetgenObject = dynamic_cast<Fem::FemMeshShapeNetgenObject *>(obj->getObject());
-    param   = new TaskTetParameter(FemMeshShapeNetgenObject);
-
-    Content.push_back(param);
+    if (FemMeshShapeNetgenObject) {
+        param   = new TaskTetParameter(FemMeshShapeNetgenObject);
+        Content.push_back(param);
+    }
 }
 
 TaskDlgMeshShapeNetgen::~TaskDlgMeshShapeNetgen()
@@ -100,11 +101,11 @@ bool TaskDlgMeshShapeNetgen::accept()
         if(param->touched)
         {
             Gui::WaitCursor wc;
-            App::DocumentObjectExecReturn* ret = FemMeshShapeNetgenObject->recompute();
-            if (ret) {
+            bool ret = FemMeshShapeNetgenObject->recomputeFeature();
+            if (!ret) {
                 wc.restoreCursor();
-                QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"), QString::fromStdString(ret->Why));
-                delete ret;
+                QMessageBox::critical(Gui::getMainWindow(), tr("Meshing failure"),
+                                      QString::fromStdString(FemMeshShapeNetgenObject->getStatusString()));
                 return true;
             }
         }

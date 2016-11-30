@@ -150,6 +150,7 @@ PyMODINIT_FUNC initPartGui()
     PartGui::ViewProviderLoft               ::init();
     PartGui::ViewProviderSweep              ::init();
     PartGui::ViewProviderOffset             ::init();
+    PartGui::ViewProviderOffset2D           ::init();
     PartGui::ViewProviderThickness          ::init();
     PartGui::ViewProviderCustom             ::init();
     PartGui::ViewProviderCustomPython       ::init();

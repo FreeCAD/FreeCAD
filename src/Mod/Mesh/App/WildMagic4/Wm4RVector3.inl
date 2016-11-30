@@ -24,7 +24,7 @@ RVector3<ISIZE>::RVector3 ()
 }
 //----------------------------------------------------------------------------
 template <int ISIZE>
-RVector3<ISIZE>::RVector3 (const RVector3& rkV)
+RVector3<ISIZE>::RVector3 (const RVector3& rkV) : TRVector<3,ISIZE>()
 {
     m_akTuple[0] = rkV.m_akTuple[0];
     m_akTuple[1] = rkV.m_akTuple[1];

@@ -102,6 +102,7 @@ QByteArray PrefWidget::paramGrpPath() const
  */
 void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+    Q_UNUSED(rCaller);
     if (std::strcmp(sReason,m_sPrefName) == 0)
         restorePreferences();
 }

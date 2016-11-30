@@ -13,7 +13,29 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>This is the ViewProvider base class</UserDocu>
 		</Documentation>
-		<Methode Name="show">
+        <Methode Name="addProperty">
+            <Documentation>
+                <UserDocu>
+                    addProperty(string, string) -- Add a generic property.
+                    The first argument specifies the type, the second the
+                    name of the property.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="removeProperty">
+            <Documentation>
+                <UserDocu>
+                    removeProperty(string) -- Remove a generic property.
+                    Note, you can only remove user-defined properties but not built-in ones.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="supportedProperties">
+            <Documentation>
+                <UserDocu>A list of supported property types</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="show">
 			<Documentation>
 				<UserDocu>Show the object</UserDocu>
 			</Documentation>
@@ -28,7 +50,12 @@
 				<UserDocu>Check if the object is visible</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="listDisplayModes">
+        <Methode Name="addDisplayMode">
+            <Documentation>
+                <UserDocu>Add a new display mode to the view provider</UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="listDisplayModes">
 			<Documentation>
 				<UserDocu>Show a list of all display modes</UserDocu>
 			</Documentation>

@@ -42,6 +42,7 @@ PROPERTY_SOURCE(PathGui::ViewProviderPathCompound, PathGui::ViewProviderPath)
 
 bool ViewProviderPathCompound::setEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     Gui::TaskView::TaskDialog* dlg = new TaskDlgPathCompound(this);
     Gui::Control().showDialog(dlg);
     return true;
@@ -49,6 +50,7 @@ bool ViewProviderPathCompound::setEdit(int ModNum)
 
 void ViewProviderPathCompound::unsetEdit(int ModNum)
 {
+    Q_UNUSED(ModNum);
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
 }

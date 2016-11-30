@@ -60,6 +60,7 @@ StdCmdArrangeIcons::StdCmdArrangeIcons()
 
 void StdCmdArrangeIcons::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->arrangeIcons ();
 }
 
@@ -87,6 +88,7 @@ StdCmdTileWindows::StdCmdTileWindows()
 
 void StdCmdTileWindows::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->tile();
 }
 
@@ -114,6 +116,7 @@ StdCmdCascadeWindows::StdCmdCascadeWindows()
 
 void StdCmdCascadeWindows::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->cascade();
 }
 
@@ -135,14 +138,16 @@ StdCmdCloseActiveWindow::StdCmdCloseActiveWindow()
     sToolTipText  = QT_TR_NOOP("Close active window");
     sWhatsThis    = QT_TR_NOOP("Close active window");
     sStatusTip    = QT_TR_NOOP("Close active window");
-    // CTRL+F4 is already set by an QMdiSubWindow and thus we must use the
-    // alternative CTRL+W here to avoid an ambiguous shortcut overload
-	sAccel        = "Ctrl+W";
+    // In QMdiSubWindow the 'QKeySequence::Close' shortcut is set which will
+    // collide with this shortcut. Thus the shortcut of QMdiSubWindow will be
+    // reset in MainWindow::addWindow() (#0002631)
+    sAccel        = keySequenceToAccel(QKeySequence::Close);
     eType         = 0;
 }
 
 void StdCmdCloseActiveWindow::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->closeActiveWindow();
 }
 
@@ -169,6 +174,7 @@ StdCmdCloseAllWindows::StdCmdCloseAllWindows()
 
 void StdCmdCloseAllWindows::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->closeAllWindows();
 }
 
@@ -197,6 +203,7 @@ StdCmdActivateNextWindow::StdCmdActivateNextWindow()
 
 void StdCmdActivateNextWindow::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->activateNextWindow();
 }
 
@@ -225,6 +232,7 @@ StdCmdActivatePrevWindow::StdCmdActivatePrevWindow()
 
 void StdCmdActivatePrevWindow::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     getMainWindow()->activatePreviousWindow();
 }
 
@@ -252,6 +260,7 @@ StdCmdWindows::StdCmdWindows()
 
 void StdCmdWindows::activated(int iMsg)
 {
+    Q_UNUSED(iMsg); 
     Gui::Dialog::DlgActivateWindowImp dlg( getMainWindow() );
     dlg.exec();
 }
@@ -297,6 +306,7 @@ StdCmdDockViewMenu::StdCmdDockViewMenu()
 void StdCmdDockViewMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdDockViewMenu::isActive(void)
@@ -332,6 +342,7 @@ StdCmdToolBarMenu::StdCmdToolBarMenu()
 void StdCmdToolBarMenu::activated(int iMsg)
 {
     // Handled by the related QAction objects
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdToolBarMenu::isActive(void)
@@ -411,6 +422,7 @@ StdCmdWindowsMenu::StdCmdWindowsMenu()
 void StdCmdWindowsMenu::activated(int iMsg)
 {
     // already handled by the main window
+    Q_UNUSED(iMsg); 
 }
 
 bool StdCmdWindowsMenu::isActive(void)

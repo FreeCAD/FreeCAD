@@ -81,7 +81,15 @@
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="projectToLine">
+        <Methode Name="isEqual">
+            <Documentation>
+                <UserDocu>isEqual(Vector, tolerance) -> Boolean
+                          If the distance to the given point is less or equal to the tolerance
+                          bith points are considered equal.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="projectToLine">
 			<Documentation>
 				<UserDocu>projectToLine(Vector pnt,Vector vec)
 						  Projects the point 'pnt' on a line that goes through the origin with the direction vector 'vec'.

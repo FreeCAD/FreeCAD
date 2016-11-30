@@ -137,28 +137,22 @@ protected:
                               const bool reversed);
 
     /// Check whether the wire after projection on the face is inside the face
-    static const bool checkWireInsideFace(const TopoDS_Wire& wire,
-                                          const TopoDS_Face& face,
-                                          const gp_Dir& dir);
+    static bool checkWireInsideFace(const TopoDS_Wire& wire,
+                                    const TopoDS_Face& face,
+                                    const gp_Dir& dir);
 
     /// Check whether the line crosses the face (line and face must be on the same plane)
-    static const bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
-    class Wire_Compare;
+    static bool checkLineCrossesFace(const gp_Lin& line, const TopoDS_Face& face);
 
 
     /// Used to suggest a value for Reversed flag so that material is always removed (Groove) or added (Revolution) from the support
-    const double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
+    double getReversedAngle(const Base::Vector3d& b, const Base::Vector3d& v);
     /// get Axis from ReferenceAxis
     void getAxis(const App::DocumentObject* pcReferenceAxis, const std::vector<std::string>& subReferenceAxis,
                  Base::Vector3d& base, Base::Vector3d& dir);
-    
-    TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
-    
+        
 private:
     void onChanged(const App::Property* prop);
-    TopoDS_Face validateFace(const TopoDS_Face&) const;
-    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only    
-    bool isInside(const TopoDS_Wire&, const TopoDS_Wire&) const;
     bool isParallelPlane(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isEqualGeometry(const TopoDS_Shape&, const TopoDS_Shape&) const;
     bool isQuasiEqual(const TopoDS_Shape&, const TopoDS_Shape&) const;

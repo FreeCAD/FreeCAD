@@ -53,7 +53,7 @@
 using Base::Console;
 using App::Application;
 
-const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015\n"\
+const char sBanner[] = "(c) Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2016\n"\
                        "  #####                 ####  ###   ####  \n" \
                        "  #                    #      # #   #   # \n" \
                        "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -130,16 +130,22 @@ int main( int argc, char ** argv )
     }
     catch (const Base::Exception& e) {
         e.ReportException();
+        exit(1);
     }
     catch (...) {
         Console().Error("Application unexpectedly terminated\n");
+        exit(1);
     }
 
     // Destruction phase ===========================================================
     Console().Log("FreeCAD terminating...\n");
 
-    // close open documents
-    App::GetApplication().closeAllDocuments();
+    try {
+        // close open documents
+        App::GetApplication().closeAllDocuments();
+    }
+    catch(...) {
+    }
 
     // cleans up
     Application::destruct();

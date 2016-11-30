@@ -35,6 +35,7 @@
 #include <Base/Reader.h>
 #include <Base/Interpreter.h>
 #include <Base/Sequencer.h>
+#include <Base/Tools.h>
 #include <Base/ViewProj.h>
 
 #include "Core/Builder.h"
@@ -106,7 +107,7 @@ unsigned long MeshObject::countSubElements(const char* Type) const
     return 0;
 }
 
-Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) const
+Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long /*n*/) const
 {
     //TODO
     std::string element(Type);
@@ -117,9 +118,9 @@ Data::Segment* MeshObject::getSubElement(const char* Type, unsigned long n) cons
     return 0;
 }
 
-void MeshObject::getFacesFromSubelement(const Data::Segment* segm,
+void MeshObject::getFacesFromSubelement(const Data::Segment* /*segm*/,
                                         std::vector<Base::Vector3d> &Points,
-                                        std::vector<Base::Vector3d> &PointNormals,
+                                        std::vector<Base::Vector3d> &/*PointNormals*/,
                                         std::vector<Facet> &faces) const
 {
     //TODO
@@ -254,7 +255,7 @@ MeshPoint MeshObject::getPoint(unsigned long index) const
 
 void MeshObject::getPoints(std::vector<Base::Vector3d> &Points,
                            std::vector<Base::Vector3d> &Normals,
-                           float Accuracy, uint16_t flags) const
+                           float /*Accuracy*/, uint16_t /*flags*/) const
 {
     Base::Matrix4D mat = _Mtrx;
 
@@ -288,7 +289,7 @@ Mesh::Facet MeshObject::getFacet(unsigned long index) const
 }
 
 void MeshObject::getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
-                          float Accuracy, uint16_t flags) const
+                          float /*Accuracy*/, uint16_t /*flags*/) const
 {
     unsigned long ctpoints = _kernel.CountPoints();
     Points.reserve(ctpoints);
@@ -313,7 +314,7 @@ unsigned int MeshObject::getMemSize (void) const
     return _kernel.GetMemSize();
 }
 
-void MeshObject::Save (Base::Writer &writer) const
+void MeshObject::Save (Base::Writer &/*writer*/) const
 {
     // this is handled by the property class
 }
@@ -323,7 +324,7 @@ void MeshObject::SaveDocFile (Base::Writer &writer) const
     _kernel.Write(writer.Stream());
 }
 
-void MeshObject::Restore(Base::XMLReader &reader)
+void MeshObject::Restore(Base::XMLReader &/*reader*/)
 {
     // this is handled by the property class
 }
@@ -340,8 +341,35 @@ void MeshObject::save(const char* file, MeshCore::MeshIO::Format f,
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
     if (objectname)
         aWriter.SetObjectName(objectname);
+
+    // go through the segment list and put them to the exporter when
+    // the "save" flag is set
+    std::vector<MeshCore::Group> groups;
+    for (std::size_t index = 0; index < this->_segments.size(); index++) {
+        if (this->_segments[index].isSaved()) {
+            MeshCore::Group g;
+            g.indices = this->_segments[index].getIndices();
+            g.name = this->_segments[index].getName();
+            groups.push_back(g);
+        }
+    }
+    aWriter.SetGroups(groups);
+    if (mat && mat->library.empty()) {
+        Base::FileInfo fi(file);
+        const_cast<MeshCore::Material*>(mat)->library = fi.fileNamePure() + ".mtl";
+    }
+
     aWriter.Transform(this->_Mtrx);
-    aWriter.SaveAny(file, f);
+    if (aWriter.SaveAny(file, f)) {
+        if (mat && mat->binding == MeshCore::MeshIO::PER_FACE && f == MeshCore::MeshIO::OBJ) {
+            Base::FileInfo fi(file);
+            std::string fn = fi.dirPath() + "/" + mat->library;
+            fi.setFile(fn);
+            Base::ofstream str(fi, std::ios::out | std::ios::binary);
+            aWriter.SaveMTL(str);
+            str.close();
+        }
+    }
 }
 
 void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
@@ -351,6 +379,20 @@ void MeshObject::save(std::ostream& str, MeshCore::MeshIO::Format f,
     MeshCore::MeshOutput aWriter(this->_kernel, mat);
     if (objectname)
         aWriter.SetObjectName(objectname);
+
+    // go through the segment list and put them to the exporter when
+    // the "save" flag is set
+    std::vector<MeshCore::Group> groups;
+    for (std::size_t index = 0; index < this->_segments.size(); index++) {
+        if (this->_segments[index].isSaved()) {
+            MeshCore::Group g;
+            g.indices = this->_segments[index].getIndices();
+            g.name = this->_segments[index].getName();
+            groups.push_back(g);
+        }
+    }
+    aWriter.SetGroups(groups);
+
     aWriter.Transform(this->_Mtrx);
     aWriter.SaveFormat(str, f);
 }
@@ -362,7 +404,7 @@ bool MeshObject::load(const char* file, MeshCore::Material* mat)
     if (!aReader.LoadAny(file))
         return false;
 
-    swapKernel(kernel);
+    swapKernel(kernel, aReader.GetGroupNames());
     return true;
 }
 
@@ -373,16 +415,17 @@ bool MeshObject::load(std::istream& str, MeshCore::MeshIO::Format f, MeshCore::M
     if (!aReader.LoadFormat(str, f))
         return false;
 
-    swapKernel(kernel);
+    swapKernel(kernel, aReader.GetGroupNames());
     return true;
 }
 
-void MeshObject::swapKernel(MeshCore::MeshKernel& kernel)
+void MeshObject::swapKernel(MeshCore::MeshKernel& kernel,
+                            const std::vector<std::string>& g)
 {
     _kernel.Swap(kernel);
     // Some file formats define several objects per file (e.g. OBJ).
     // Now we mark each object as an own segment so that we can break
-    // the object into its orriginal objects again.
+    // the object into its original objects again.
     this->_segments.clear();
     const MeshCore::MeshFacetArray& faces = _kernel.GetFacets();
     MeshCore::MeshFacetArray::_TConstIterator it;
@@ -405,6 +448,13 @@ void MeshObject::swapKernel(MeshCore::MeshKernel& kernel)
     // if the whole mesh is a single object then don't mark as segment
     if (!segment.empty() && (segment.size() < faces.size())) {
         this->_segments.push_back(Segment(this,segment,true));
+    }
+
+    // apply the group names to the segments
+    if (this->_segments.size() == g.size()) {
+        for (std::size_t index = 0; index < this->_segments.size(); index++) {
+            this->_segments[index].setName(g[index]);
+        }
     }
 
 #ifndef FC_DEBUG
@@ -801,7 +851,7 @@ void MeshObject::offsetSpecial2(float fSize)
             }
         }
         
-        // if there no flipped triangels -> stop
+        // if there are no flipped triangles -> stop
         //int f =fliped.size();
         if (fliped.size() == 0)
             break;
@@ -929,7 +979,7 @@ void MeshObject::crossSections(const std::vector<MeshObject::TPlane>& planes, st
     }
 }
 
-void MeshObject::cut(const Base::Polygon2D& polygon2d,
+void MeshObject::cut(const Base::Polygon2d& polygon2d,
                      const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
     MeshCore::MeshAlgorithm meshAlg(this->_kernel);
@@ -954,7 +1004,7 @@ void MeshObject::cut(const Base::Polygon2D& polygon2d,
         this->deleteFacets(check);
 }
 
-void MeshObject::trim(const Base::Polygon2D& polygon2d,
+void MeshObject::trim(const Base::Polygon2d& polygon2d,
                       const Base::ViewProjMethod& proj, MeshObject::CutType type)
 {
     MeshCore::MeshTrimming trim(this->_kernel, &proj, polygon2d);
@@ -1049,9 +1099,11 @@ void MeshObject::refine()
     unsigned long cnt = _kernel.CountFacets();
     MeshCore::MeshFacetIterator cF(_kernel);
     MeshCore::MeshTopoAlgorithm topalg(_kernel);
+
+    // x < 30 deg => cos(x) > sqrt(3)/2 or x > 120 deg => cos(x) < -0.5
     for (unsigned long i=0; i<cnt; i++) {
         cF.Set(i);
-        if (!cF->IsDeformed())
+        if (!cF->IsDeformed(0.86f, -0.5f))
             topalg.InsertVertexAndSwapEdge(i, cF->GetGravityPoint(), 0.1f);
     }
 
@@ -1204,6 +1256,10 @@ void MeshObject::removeNonManifolds()
         f_fix.Fixup();
         deletedFacets(f_fix.GetDeletedFaces());
     }
+}
+
+void MeshObject::removeNonManifoldPoints()
+{
     MeshCore::MeshEvalPointManifolds p_eval(_kernel);
     if (!p_eval.Evaluate()) {
         std::vector<unsigned long> faces;
@@ -1335,19 +1391,22 @@ void MeshObject::validateIndices()
         this->_segments.clear();
 }
 
-void MeshObject::validateDeformations(float fMaxAngle)
+void MeshObject::validateDeformations(float fMaxAngle, float fEps)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshFixDeformedFacets eval(_kernel, fMaxAngle);
+    MeshCore::MeshFixDeformedFacets eval(_kernel,
+                                         Base::toRadians(30.0f),
+                                         Base::toRadians(120.0f),
+                                         fMaxAngle, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();
 }
 
-void MeshObject::validateDegenerations()
+void MeshObject::validateDegenerations(float fEps)
 {
     unsigned long count = _kernel.CountFacets();
-    MeshCore::MeshFixDegeneratedFacets eval(_kernel);
+    MeshCore::MeshFixDegeneratedFacets eval(_kernel, fEps);
     eval.Fixup();
     if (_kernel.CountFacets() < count)
         this->_segments.clear();
@@ -1390,7 +1449,7 @@ MeshObject* MeshObject::createMeshFromList(Py::List& list)
     }
 
     Base::EmptySequencer seq;
-    std::auto_ptr<MeshObject> mesh(new MeshObject);
+    std::unique_ptr<MeshObject> mesh(new MeshObject);
     //mesh->addFacets(facets);
     mesh->getKernel() = facets;
     return mesh.release();
@@ -1558,6 +1617,9 @@ MeshObject* MeshObject::createCube(float length, float width, float height, floa
 void MeshObject::addSegment(const Segment& s)
 {
     addSegment(s.getIndices());
+    this->_segments.back().setName(s.getName());
+    this->_segments.back().save(s.isSaved());
+    this->_segments.back()._modifykernel = s._modifykernel;
 }
 
 void MeshObject::addSegment(const std::vector<unsigned long>& inds)
@@ -1597,7 +1659,7 @@ MeshObject* MeshObject::meshFromSegment(const std::vector<unsigned long>& indice
     return new MeshObject(kernel, _Mtrx);
 }
 
-std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType type, const Segment& aSegment,
+std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType type,
                                                      float dev, unsigned long minFacets) const
 {
     std::vector<Segment> segm;
@@ -1605,17 +1667,31 @@ std::vector<Segment> MeshObject::getSegmentsFromType(MeshObject::GeometryType ty
         return segm;
 
     MeshCore::MeshSegmentAlgorithm finder(this->_kernel);
-    MeshCore::MeshDistanceSurfaceSegment* surf;
-    surf = new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev);
-    std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
-    surfaces.push_back(surf);
-    finder.FindSegments(surfaces);
-
-    const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
-    for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
-        segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
+    std::unique_ptr<MeshCore::MeshDistanceSurfaceSegment> surf;
+    switch (type) {
+    case PLANE:
+        surf.reset(new MeshCore::MeshDistancePlanarSegment(this->_kernel, minFacets, dev));
+        break;
+    // todo!
+    case CYLINDER:
+        break;
+    case SPHERE:
+        break;
+    default:
+        break;
     }
-    delete surf;
+
+    if (surf.get()) {
+        std::vector<MeshCore::MeshSurfaceSegment*> surfaces;
+        surfaces.push_back(surf.get());
+        finder.FindSegments(surfaces);
+
+        const std::vector<MeshCore::MeshSegment>& data = surf->GetSegments();
+        for (std::vector<MeshCore::MeshSegment>::const_iterator it = data.begin(); it != data.end(); ++it) {
+            segm.push_back(Segment(const_cast<MeshObject*>(this), *it, false));
+        }
+    }
+
     return segm;
 }
 

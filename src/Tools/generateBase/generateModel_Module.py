@@ -216,7 +216,7 @@ class GenerateModel:
 
 class PythonExport:
     subclass = None
-    def __init__(self, FatherNamespace='', RichCompare=0, Name='', Reference=0, FatherInclude='', Father='', Namespace='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations=''):
+    def __init__(self, FatherNamespace='', RichCompare=0, Name='', Reference=0, FatherInclude='', Father='', Namespace='', Twin='', Constructor=0, TwinPointer='', Include='', NumberProtocol=0, Delete=0, Documentation=None, Methode=None, Attribute=None, Sequence=None, CustomAttributes='', ClassDeclarations='', Initialization=0):
         self.FatherNamespace = FatherNamespace
         self.RichCompare = RichCompare
         self.Name = Name
@@ -231,6 +231,7 @@ class PythonExport:
         self.NumberProtocol = NumberProtocol
         self.Delete = Delete
         self.Documentation = Documentation
+        self.Initialization = Initialization
         if Methode is None:
             self.Methode = []
         else:
@@ -248,6 +249,8 @@ class PythonExport:
         else:
             return PythonExport(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def getInitialization(self): return self.Initialization
+    def setInitialization(self, Initialization): self.Initialization = Initialization
     def getDocumentation(self): return self.Documentation
     def setDocumentation(self, Documentation): self.Documentation = Documentation
     def getMethode(self): return self.Methode
@@ -311,6 +314,8 @@ class PythonExport:
         outfile.write(' Twin="%s"' % (self.getTwin(), ))
         if self.getConstructor() is not None:
             outfile.write(' Constructor="%s"' % (self.getConstructor(), ))
+        if self.getInitialization() is not None:
+            outfile.write(' Initialization="%s"' % (self.getInitialization(), ))
         outfile.write(' TwinPointer="%s"' % (self.getTwinpointer(), ))
         outfile.write(' Include="%s"' % (self.getInclude(), ))
         if self.getNumberprotocol() is not None:
@@ -354,6 +359,7 @@ class PythonExport:
         showIndent(outfile, level)
         outfile.write('Constructor = "%s",\n' % (self.getConstructor(),))
         showIndent(outfile, level)
+        outfile.write('Initialization = "%s",\n' % (self.getInitialization(),))
         outfile.write('TwinPointer = "%s",\n' % (self.getTwinpointer(),))
         showIndent(outfile, level)
         outfile.write('Include = "%s",\n' % (self.getInclude(),))
@@ -442,6 +448,13 @@ class PythonExport:
                 self.Constructor = 0
             else:
                 raise ValueError('Bad boolean attribute (Constructor)')
+        if attrs.get('Initialization'):
+            if attrs.get('Initialization').value in ('true', '1'):
+                self.Initialization = 1
+            elif attrs.get('Initialization').value in ('false', '0'):
+                self.Initialization = 0
+            else:
+                raise ValueError('Bad boolean attribute (Initialization)')
         if attrs.get('TwinPointer'):
             self.TwinPointer = attrs.get('TwinPointer').value
         if attrs.get('Include'):
@@ -493,6 +506,11 @@ class PythonExport:
             for text__content_ in child_.childNodes:
                 ClassDeclarations_ += text__content_.nodeValue
             self.ClassDeclarations = ClassDeclarations_
+        elif child_.nodeType == Node.ELEMENT_NODE and \
+            nodeName_ == 'Initialization':
+            obj_ = Documentation.factory()
+            obj_.build(child_)
+            self.setDocumentation(obj_)
 # end class PythonExport
 
 
@@ -1827,6 +1845,14 @@ class SaxGeneratemodelHandler(handler.ContentHandler):
                     obj.setConstructor(0)
                 else:
                     self.reportError('"Constructor" attribute must be boolean ("true", "1", "false", "0")')
+            val = attrs.get('Initialization', None)
+            if val is not None:
+                if val in ('true', '1'):
+                    obj.setInitialization(1)
+                elif val in ('false', '0'):
+                    obj.setInitialization(0)
+                else:
+                    self.reportError('"Initialization" attribute must be boolean ("true", "1", "false", "0")')
             val = attrs.get('TwinPointer', None)
             if val is not None:
                 obj.setTwinpointer(val)

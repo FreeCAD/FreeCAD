@@ -113,7 +113,7 @@ public:
     void draw(bool temp=false);
 
     /// draw the edit curve
-    void drawEdit(const std::vector<Base::Vector2D> &EditCurve);
+    void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
 
     /// Is the view provider selectable
     bool isSelectable(void) const;
@@ -189,7 +189,7 @@ public:
     void snapToGrid(double &x, double &y);
 
     /// moves a selected constraint
-    void moveConstraint(int constNum, const Base::Vector2D &toPos);
+    void moveConstraint(int constNum, const Base::Vector2d &toPos);
     /// finds a free position for placing a constraint icon
     Base::Vector3d seekConstraintPosition(const Base::Vector3d &origPos,
                                           const Base::Vector3d &norm,
@@ -342,8 +342,8 @@ protected:
     SbVec3s getDisplayedSize(const SoImage *) const;
     //@}
 
-    void setPositionText(const Base::Vector2D &Pos, const SbString &txt);
-    void setPositionText(const Base::Vector2D &Pos);
+    void setPositionText(const Base::Vector2d &Pos, const SbString &txt);
+    void setPositionText(const Base::Vector2d &Pos);
     void resetPositionText(void);
 
     // handle preselection and selection of points
@@ -393,7 +393,6 @@ protected:
     bool relative;
 
     std::string oldWb;
-    int antiAliasing;
 
     Gui::Rubberband* rubberband;
     App::Part*          parentPart = nullptr;

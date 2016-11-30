@@ -140,16 +140,6 @@ App::DocumentObjectExecReturn *AttachableObject::execute()
     return Part::Feature::execute();
 }
 
-namespace Attacher {
-    void setReadonlyness(App::Property &prop, bool on)
-    {
-        unsigned long status = prop.getStatus();
-        prop.setStatus(App::Property::ReadOnly, on);
-        if (status != prop.getStatus())
-            App::GetApplication().signalChangePropertyEditor(prop);
-    }
-}
-
 void AttachableObject::onChanged(const App::Property* prop)
 {
     if(! this->isRestoring()){
@@ -172,8 +162,8 @@ void AttachableObject::onChanged(const App::Property* prop)
             }
 
             eMapMode mmode = eMapMode(this->MapMode.getValue());
-            setReadonlyness(this->superPlacement, !bAttached);
-            setReadonlyness(this->Placement, bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
+            this->superPlacement.setReadOnly(!bAttached);
+            this->Placement.setReadOnly(bAttached && mmode != mmTranslate); //for mmTranslate, orientation should remain editable even when attached.
         }
 
     }

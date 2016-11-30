@@ -21,11 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-
 __title__ = "Fem Tools super class"
 __author__ = "Przemo Firszt, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
+## \addtogroup FEM
+#  @{
 
 import FreeCAD
 from PySide import QtCore
@@ -85,7 +86,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     ## Resets mesh color, deformation and removes all result objects if preferences to keep them is not set
     #  @param self The python object self
     def reset_mesh_purge_results_checked(self):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
         keep_results_on_rerun = self.fem_prefs.GetBool("KeepResultsOnReRun", False)
         if not keep_results_on_rerun:
             self.purge_results()
@@ -105,7 +106,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
-    #  @param limit cutoff value. All values over the limit are treated as equel to the limit. Useful for filtering out hot spots.
+    #  @param limit cutoff value. All values over the limit are treated as equal to the limit. Useful for filtering out hot spots.
     def show_result(self, result_type="Sabs", limit=None):
         self.update_objects()
         if result_type == "None":
@@ -147,24 +148,37 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         self.mesh.ViewObject.applyDisplacement(displacement_factor)
 
     def update_objects(self):
-        # [{'Object':materials}, {}, ...]
+        # [{'Object':materials_linear}, {}, ...]
+        # [{'Object':materials_nonlinear}, {}, ...]
         # [{'Object':fixed_constraints, 'NodeSupports':bool}, {}, ...]
         # [{'Object':force_constraints, 'NodeLoad':value}, {}, ...
         # [{'Object':pressure_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':temerature_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':heatflux_constraints, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':initialtemperature_constraints, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':beam_sections, 'xxxxxxxx':value}, {}, ...]
         # [{'Object':shell_thicknesses, 'xxxxxxxx':value}, {}, ...]
+        # [{'Object':contact_constraints, 'xxxxxxxx':value}, {}, ...]
 
         ## @var mesh
         #  mesh of the analysis. Used to generate .inp file and to show results
         self.mesh = None
-        ## @var materials
-        # set of materials from the analysis. Updated with update_objects
-        # Induvidual materials are "App::MaterialObjectPython" type
-        self.materials = []
+        ## @var materials_linear
+        # set of linear materials from the analysis. Updated with update_objects
+        #  Individual materials are "App::MaterialObjectPython" type
+        self.materials_linear = []
+        ## @var materials_nonlinear
+        # set of nonlinear materials from the analysis. Updated with update_objects
+        #  Individual materials are Proxy.Type "FemMaterialMechanicalNonlinear"
+        self.materials_nonlinear = []
         ## @var fixed_constraints
         #  set of fixed constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintFixed" type
         self.fixed_constraints = []
+        ## @var selfweight_constraints
+        #  set of selfweight constraints from the analysis. Updated with update_objects
+        #  Individual constraints are Proxy.Type "FemConstraintSelfWeight"
+        self.selfweight_constraints = []
         ## @var force_constraints
         #  set of force constraints from the analysis. Updated with update_objects
         #  Individual constraints are "Fem::ConstraintForce" type
@@ -185,6 +199,30 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         # set of displacements for the analysis. Updated with update_objects
         # Individual displacement_constraints are Proxy.Type "FemConstraintDisplacement"
         self.displacement_constraints = []
+        ## @var temperature_constraints
+        # set of temperatures for the analysis. Updated with update_objects
+        # Individual temperature_constraints are Proxy.Type "FemConstraintTemperature"
+        self.temperature_constraints = []
+        ## @var heatflux_constraints
+        # set of heatflux constraints for the analysis. Updated with update_objects
+        # Individual heatflux_constraints are Proxy.Type "FemConstraintHeatflux"
+        self.heatflux_constraints = []
+        ## @var initialtemperature_constraints
+        # set of initial temperatures for the analysis. Updated with update_objects
+        # Individual initialTemperature_constraints are Proxy.Type "FemConstraintInitialTemperature"
+        self.initialtemperature_constraints = []
+        ## @var planerotation_constraints
+        #  set of plane rotation constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintPlaneRotation" type
+        self.planerotation_constraints = []
+        ## @var contact_constraints
+        #  set of contact constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintContact" type
+        self.contact_constraints = []
+        ## @var transform_constraints
+        #  set of transform constraints from the analysis. Updated with update_objects
+        #  Individual constraints are "Fem::ConstraintTransform" type
+        self.transform_constraints = []
 
         found_solver_for_use = False
         for m in self.analysis.Member:
@@ -208,13 +246,21 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 else:
                     raise Exception('FEM: Multiple mesh in analysis not yet supported!')
             elif m.isDerivedFrom("App::MaterialObjectPython"):
-                material_dict = {}
-                material_dict['Object'] = m
-                self.materials.append(material_dict)
+                material_linear_dict = {}
+                material_linear_dict['Object'] = m
+                self.materials_linear.append(material_linear_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemMaterialMechanicalNonlinear":
+                material_nonlinear_dict = {}
+                material_nonlinear_dict['Object'] = m
+                self.materials_nonlinear.append(material_nonlinear_dict)
             elif m.isDerivedFrom("Fem::ConstraintFixed"):
                 fixed_constraint_dict = {}
                 fixed_constraint_dict['Object'] = m
                 self.fixed_constraints.append(fixed_constraint_dict)
+            elif hasattr(m, "Proxy") and m.Proxy.Type == "FemConstraintSelfWeight":
+                selfweight_dict = {}
+                selfweight_dict['Object'] = m
+                self.selfweight_constraints.append(selfweight_dict)
             elif m.isDerivedFrom("Fem::ConstraintForce"):
                 force_constraint_dict = {}
                 force_constraint_dict['Object'] = m
@@ -223,10 +269,34 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 PressureObjectDict = {}
                 PressureObjectDict['Object'] = m
                 self.pressure_constraints.append(PressureObjectDict)
-            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):  # OvG: Replacement reference to C++ implementation of Displacement Constraint
+            elif m.isDerivedFrom("Fem::ConstraintDisplacement"):
                 displacement_constraint_dict = {}
                 displacement_constraint_dict['Object'] = m
                 self.displacement_constraints.append(displacement_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintTemperature"):
+                temperature_constraint_dict = {}
+                temperature_constraint_dict['Object'] = m
+                self.temperature_constraints.append(temperature_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintHeatflux"):
+                heatflux_constraint_dict = {}
+                heatflux_constraint_dict['Object'] = m
+                self.heatflux_constraints.append(heatflux_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintInitialTemperature"):
+                initialtemperature_constraint_dict = {}
+                initialtemperature_constraint_dict['Object'] = m
+                self.initialtemperature_constraints.append(initialtemperature_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintPlaneRotation"):
+                planerotation_constraint_dict = {}
+                planerotation_constraint_dict['Object'] = m
+                self.planerotation_constraints.append(planerotation_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintContact"):
+                contact_constraint_dict = {}
+                contact_constraint_dict['Object'] = m
+                self.contact_constraints.append(contact_constraint_dict)
+            elif m.isDerivedFrom("Fem::ConstraintTransform"):
+                transform_constraint_dict = {}
+                transform_constraint_dict['Object'] = m
+                self.transform_constraints.append(transform_constraint_dict)
             elif hasattr(m, "Proxy") and m.Proxy.Type == "FemBeamSection":
                 beam_section_dict = {}
                 beam_section_dict['Object'] = m
@@ -238,6 +308,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     def check_prerequisites(self):
         message = ""
+        # analysis
         if not self.analysis:
             message += "No active Analysis\n"
         if self.analysis_type not in self.known_analysis_types:
@@ -247,29 +318,90 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         import os
         if not (os.path.isdir(self.working_dir)):
                 message += "Working directory \'{}\' doesn't exist.".format(self.working_dir)
+        # solver
+        if not self.solver:
+            message += "No solver object defined in the analysis\n"
+        else:
+            if self.analysis_type == "frequency":
+                if not hasattr(self.solver, "EigenmodeHighLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeHighLimit.\n"
+                elif not hasattr(self.solver, "EigenmodeLowLimit"):
+                    message += "Frequency analysis: Solver has no EigenmodeLowLimit.\n"
+                elif not hasattr(self.solver, "EigenmodesCount"):
+                    message += "Frequency analysis: Solver has no EigenmodesCount.\n"
+            if hasattr(self.solver, "MaterialNonlinearity") and self.solver.MaterialNonlinearity == "nonlinear" and not self.materials_nonlinear:
+                message += "Solver is set to nonlinear materials, but there is no nonlinear material in the analysis. \n"
+        # mesh
         if not self.mesh:
             message += "No mesh object defined in the analysis\n"
-        if not self.materials:
+        if self.mesh:
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount > 0 and not self.shell_thicknesses:
+                message += "FEM mesh has no volume elements, either define a shell thicknesses or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount > 0 and not self.beam_sections:
+                message += "FEM mesh has no volume and no shell elements, either define a beam section or provide a FEM mesh with volume elements.\n"
+            if self.mesh.FemMesh.VolumeCount == 0 and self.mesh.FemMesh.FaceCount == 0 and self.mesh.FemMesh.EdgeCount == 0:
+                message += "FEM mesh has neither volume nor shell or edge elements. Provide a FEM mesh with elements!\n"
+        # materials linear and nonlinear
+        if not self.materials_linear:
             message += "No material object defined in the analysis\n"
         has_no_references = False
-        for m in self.materials:
+        for m in self.materials_linear:
             if len(m['Object'].References) == 0:
                 if has_no_references is True:
                     message += "More than one material has an empty references list (Only one empty references list is allowed!).\n"
                 has_no_references = True
+        for m in self.materials_linear:
+            mat_map = m['Object'].Material
+            if 'YoungsModulus' not in mat_map:
+                message += "No YoungsModulus defined for at least one material.\n"
+            if 'PoissonRatio' not in mat_map:
+                message += "No PoissonRatio defined for at least one material.\n"
+            if self.analysis_type == "frequency" or self.selfweight_constraints:
+                if 'Density' not in mat_map:
+                    message += "No Density defined for at least one material.\n"
+            if self.analysis_type == "thermomech":
+                if 'ThermalConductivity' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
+                if 'ThermalExpansionCoefficient' not in mat_map:
+                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
+                if 'SpecificHeat' not in mat_map:
+                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+        for m in self.materials_linear:
+            has_nonlinear_material = False
+            for nlm in self.materials_nonlinear:
+                if nlm['Object'].LinearBaseMaterial == m['Object']:
+                    if has_nonlinear_material is False:
+                        has_nonlinear_material = True
+                    else:
+                        message += "At least two nonlinear materials use the same linear base material. Only one nonlinear material for each linear material allowed. \n"
+        # constraints
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
-                message += "Neither a constraint fixed nor a contraint displacement defined in the static analysis\n"
+                message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
         if self.analysis_type == "static":
-            if not (self.force_constraints or self.pressure_constraints):
-                message += "Neither constraint force nor constraint pressure defined in the static analysis\n"
+            if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
+                message += "Static analysis: Neither constraint force nor constraint pressure or a constraint selfweight defined.\n"
+        if self.analysis_type == "thermomech":
+            if not self.initialtemperature_constraints:
+                message += "Thermomechanical analysis: No initial temperature defined.\n"
+            if len(self.initialtemperature_constraints) > 1:
+                message += "Thermomechanical analysis: Only one initial temperature is allowed.\n"
+        # beam sections and shell thicknesses
         if self.beam_sections:
+            if self.shell_thicknesses:
+                # this needs to be checked only once either here or in shell_thicknesses
+                message += "Beam Sections and shell thicknesses in one analysis is not supported at the moment.\n"
             has_no_references = False
             for b in self.beam_sections:
                 if len(b['Object'].References) == 0:
                     if has_no_references is True:
                         message += "More than one beam section has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.FaceCount > 0 or self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Beam sections defined but FEM mesh has volume or shell elements.\n"
+                if self.mesh.FemMesh.EdgeCount == 0:
+                    message += "Beam sections defined but FEM mesh has no edge elements.\n"
         if self.shell_thicknesses:
             has_no_references = False
             for s in self.shell_thicknesses:
@@ -277,44 +409,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                     if has_no_references is True:
                         message += "More than one shell thickness has an empty references list (Only one empty references list is allowed!).\n"
                     has_no_references = True
+            if self.mesh:
+                if self.mesh.FemMesh.VolumeCount > 0:
+                    message += "Shell thicknesses defined but FEM mesh has volume elements.\n"
+                if self.mesh.FemMesh.FaceCount == 0:
+                    message += "Shell thicknesses defined but FEM mesh has no shell elements.\n"
         return message
-
-    ## Sets eigenmode parameters for CalculiX frequency analysis
-    #  @param self The python object self
-    #  @param number number of eigenmodes that wll be calculated, default read for FEM prefs or 10 if not set in the FEM prefs
-    #  @param limit_low lower value of requested eigenfrequency range, default read for FEM prefs or 0.0 if not set in the FEM prefs
-    #  @param limit_high higher value of requested eigenfrequency range, default read for FEM prefs or 1000000.o if not set in the FEM prefs
-    def set_eigenmode_parameters(self, number=None, limit_low=None, limit_high=None):
-        self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        if number is not None:
-            _number = number
-        else:
-            try:
-                _number = self.solver.NumberOfEigenmodes
-            except:
-                #Not yet in prefs, so it will always default to 10
-                _number = self.fem_prefs.GetInteger("NumberOfEigenmodes", 10)
-        if _number < 1:
-            _number = 1
-
-        if limit_low is not None:
-            _limit_low = limit_low
-        else:
-            try:
-                _limit_low = self.solver.EigenmodeLowLimit
-            except:
-                #Not yet in prefs, so it will always default to 0.0
-                _limit_low = self.fem_prefs.GetFloat("EigenmodeLowLimit", 0.0)
-
-        if limit_high is not None:
-            _limit_high = limit_high
-        else:
-            try:
-                _limit_high = self.solver.EigenmodeHighLimit
-            except:
-                #Not yet in prefs, so it will always default to 1000000.0
-                _limit_high = self.fem_prefs.GetFloat("EigenmodeHighLimit", 1000000.0)
-        self.eigenmode_parameters = (_number, _limit_low, _limit_high)
 
     ## Sets base_name
     #  @param self The python object self
@@ -340,9 +440,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
 
     ## Sets analysis type.
     #  @param self The python object self
-    #  @param analysis_type type of the analysis. Allowed values are:
-    #  - static
-    #  - frequency
+    #  @param analysis_type type of the analysis.
     def set_analysis_type(self, analysis_type=None):
         if analysis_type is not None:
             self.analysis_type = analysis_type
@@ -350,7 +448,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             try:
                 self.analysis_type = self.solver.AnalysisType
             except:
-                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+                self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
                 self.analysis_type = self.fem_prefs.GetString("AnalysisType", "static")
 
     ## Sets working dir for solver execution. Called with no working_dir uses WorkingDir from FEM preferences
@@ -362,7 +460,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
             self.working_dir = working_dir
         else:
             self.working_dir = ''
-            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
+            self.fem_prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/General")
             if self.fem_prefs.GetString("WorkingDir"):
                 try:
                     self.working_dir = self.fem_prefs.GetString("WorkingDir")
@@ -420,6 +518,10 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
     #  - U1, U2, U3 - deformation
     #  - Uabs - absolute deformation
     #  - Sabs - Von Mises stress
+    #    Prin1 Principal stress 1
+    #    Prin2 Principal stress 2
+    #    Prin3 Principal stress 3
+    #    MaxSear maximum shear stress
     #  - None - always return (0.0, 0.0, 0.0)
     def get_stats(self, result_type):
         stats = (0.0, 0.0, 0.0)
@@ -430,6 +532,12 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                          "U3": (m.Stats[6], m.Stats[7], m.Stats[8]),
                          "Uabs": (m.Stats[9], m.Stats[10], m.Stats[11]),
                          "Sabs": (m.Stats[12], m.Stats[13], m.Stats[14]),
+                         "MaxPrin": (m.Stats[15], m.Stats[16], m.Stats[17]),
+                         "MidPrin": (m.Stats[18], m.Stats[19], m.Stats[20]),
+                         "MinPrin": (m.Stats[21], m.Stats[22], m.Stats[23]),
+                         "MaxShear": (m.Stats[24], m.Stats[25], m.Stats[26]),
                          "None": (0.0, 0.0, 0.0)}
                 stats = match[result_type]
         return stats
+
+#  @}

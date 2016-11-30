@@ -740,7 +740,7 @@ Py::Int BezierSurfacePy::getVDegree(void) const
 {
     Handle_Geom_BezierSurface surf = Handle_Geom_BezierSurface::DownCast
         (getGeometryPtr()->handle());
-    return Py::Int(surf->UDegree()); 
+    return Py::Int(surf->VDegree()); 
 }
 
 Py::Int BezierSurfacePy::getMaxDegree(void) const

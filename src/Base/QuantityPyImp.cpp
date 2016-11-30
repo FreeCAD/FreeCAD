@@ -49,7 +49,7 @@ PyObject *QuantityPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 }
 
 // constructor method
-int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
+int QuantityPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
     Quantity *self = getQuantityPtr();
 
@@ -110,7 +110,7 @@ int QuantityPy::PyInit(PyObject* args, PyObject* kwd)
     return -1;
 }
 
-PyObject* QuantityPy::getUserPreferred(PyObject *args)
+PyObject* QuantityPy::getUserPreferred(PyObject* /*args*/)
 {
     QString uus;
     double factor;
@@ -198,7 +198,7 @@ PyObject* QuantityPy::getValueAs(PyObject *args)
         return 0;
     }
 
-    quant = getQuantityPtr()->getValueAs(quant);
+    quant = Quantity(getQuantityPtr()->getValueAs(quant));
     return new QuantityPy(new Quantity(quant));
 }
 
@@ -418,14 +418,14 @@ PyObject * QuantityPy::number_remainder_handler (PyObject *self, PyObject *other
     return new QuantityPy(new Quantity(q,a->getUnit()));
 }
 
-PyObject * QuantityPy::number_divmod_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_divmod_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     //PyNumber_Divmod();
     PyErr_SetString(PyExc_NotImplementedError, "Not implemented");
     return 0;
 }
 
-PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject *modulo)
+PyObject * QuantityPy::number_power_handler (PyObject *self, PyObject *other, PyObject * /*modulo*/)
 {
     if (!PyObject_TypeCheck(self, &(QuantityPy::Type))) {
         PyErr_SetString(PyExc_TypeError, "First arg must be Quantity");
@@ -585,54 +585,54 @@ int QuantityPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0; 
 }
 
-PyObject * QuantityPy::number_invert_handler (PyObject *self)
+PyObject * QuantityPy::number_invert_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "bad operand type for unary ~");
     return 0;
 }
 
-PyObject * QuantityPy::number_lshift_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_lshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for <<");
     return 0;
 }
 
-PyObject * QuantityPy::number_rshift_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_rshift_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for >>");
     return 0;
 }
 
-PyObject * QuantityPy::number_and_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_and_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for &");
     return 0;
 }
 
-PyObject * QuantityPy::number_xor_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_xor_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for ^");
     return 0;
 }
 
-PyObject * QuantityPy::number_or_handler (PyObject *self, PyObject *other)
+PyObject * QuantityPy::number_or_handler (PyObject* /*self*/, PyObject* /*other*/)
 {
     PyErr_SetString(PyExc_TypeError, "unsupported operand type(s) for |");
     return 0;
 }
 
-int QuantityPy::number_coerce_handler (PyObject **self, PyObject **other)
+int QuantityPy::number_coerce_handler (PyObject** /*self*/, PyObject** /*other*/)
 {
     return 1;
 }
 
-PyObject * QuantityPy::number_oct_handler (PyObject *self)
+PyObject * QuantityPy::number_oct_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "oct() argument can't be converted to oct");
     return 0;
 }
 
-PyObject * QuantityPy::number_hex_handler (PyObject *self)
+PyObject * QuantityPy::number_hex_handler (PyObject* /*self*/)
 {
     PyErr_SetString(PyExc_TypeError, "hex() argument can't be converted to hex");
     return 0;
