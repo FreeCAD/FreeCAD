@@ -250,7 +250,6 @@ class TestTag02SquareTag(PathTestBase): # =============
 
     def test10(self):
         """Verify intersection of square tag with an arc."""
-        print
         tag = Tag( 0, 0, 8, 3, 90, True, 0)
         p1 = Vector(10, -10, 0)
         p2 = Vector(10, +10, 0)
@@ -259,7 +258,6 @@ class TestTag02SquareTag(PathTestBase): # =============
         pi = Vector(0.8, -3.919184, 0)
         pj = Vector(0.8, +3.919184, 0)
 
-        print("(%s - %s) - %s" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter), edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)))
         s = tag.intersect(edge)
         self.assertTrue(s.isComplete())
         self.assertEqual(len(s.edges), 4)
@@ -268,6 +266,25 @@ class TestTag02SquareTag(PathTestBase): # =============
         self.assertCurve(s.edges[2], pi + Vector(0, 0, 3), Vector(0, 0, 3), pj + Vector(0, 0, 3))
         self.assertLine(s.edges[3], pj + Vector(0, 0, 3), pj)
         self.assertCurve(s.tail, pj, Vector(4.486010, +8.342417, 0), p2)
+
+    def test20(self):
+        """Verify intersection of square tag with a helix."""
+        tag = Tag( 0, 0, 8, 3, 90, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 2)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10, 'K': 1}), p1)
+
+        pi = Vector(0.8, -3.919184, 0.743623)
+        pj = Vector(0.8, +3.919184, 1.256377)
+
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 4)
+        self.assertCurve(s.edges[0], p1, Vector(4.486010, -8.342417, 0.371812), pi)
+        self.assertLine(s.edges[1], pi, pi + Vector(0, 0, 3-pi.z))
+        self.assertCurve(s.edges[2], pi + Vector(0, 0, 3-pi.z), Vector(0, 0, 3), pj + Vector(0, 0, 3-pj.z))
+        self.assertLine(s.edges[3], pj + Vector(0, 0, 3-pj.z), pj)
+        self.assertCurve(s.tail, pj, Vector(4.486010, +8.342417, 1.628188), p2)
 
 
 class TestTag03TrapezoidTag(PathTestBase): # ============= 
@@ -481,6 +498,48 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
             self.assertTrue(s.isComplete())
             self.assertLine(s.tail, edge.Curve.StartPoint, edge.Curve.EndPoint)
 
+    def test10(self):
+        """Verify intersection with an arc."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 0)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10}), p1)
+
+        pi = Vector(0.8, -3.919184, 0)
+        pj = Vector(0.05, -0.998749, 3)
+        pk = Vector(0.05, +0.998749, 3)
+        pl = Vector(0.8, +3.919184, 0)
+
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 4)
+        self.assertCurve(s.edges[0], p1, Vector(4.486010, -8.342417, 0), pi)
+        self.assertCurve(s.edges[1], pi, Vector(0.314296, -2.487396, 1.470795), pj)
+        self.assertCurve(s.edges[2], pj, Vector(0, 0, 3), pk)
+        self.assertCurve(s.edges[3], pk, Vector(.3142960, +2.487396, 1.470795), pl)
+        self.assertCurve(s.tail,     pl, Vector(4.486010, +8.342417, 0), p2)
+
+    def test20(self):
+        """Verify intersection with a helix."""
+        tag = Tag( 0, 0, 8, 3, 45, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 2)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10, 'K': 1}), p1)
+
+        pi = Vector(0.513574, -3.163498, 0.795085)
+        pj = Vector(0.050001, -0.998749, 3)
+        pk = Vector(0.050001, +0.998749, 3)
+        pl = Vector(0.397586, +2.791711, 1.180119)
+
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 4)
+        self.assertCurve(s.edges[0], p1, Vector(4.153420, -8.112798, 0.397543), pi)
+        self.assertCurve(s.edges[1], pi, Vector(0.221698, -2.093992, 1.897543), pj)
+        self.assertCurve(s.edges[2], pj, Vector(0, 0, 3), pk)
+        self.assertCurve(s.edges[3], pk, Vector(0.182776, 1.903182, 2.090060), pl)
+        self.assertCurve(s.tail, pl, Vector(3.996548, +7.997409, 1.590060), p2)
+
 
 class TestTag04TriangularTag(PathTestBase): # ========================
     """Unit tests for tags that take on a triangular shape."""
@@ -565,4 +624,42 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertTrue(i.isComplete())
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3, p4])
         self.assertIsNotNone(i.tail)
+
+    def test10(self):
+        """Verify intersection with an arc."""
+        tag = Tag( 0, 0, 8, 7, 45, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 0)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10}), p1)
+
+        pi = Vector(0.8, -3.919184, 0)
+        pj = Vector(0.0, 0.0, 4)
+        pk = Vector(0.8, +3.919184, 0)
+
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 3)
+        self.assertCurve(s.edges[0], p1, Vector(4.486010, -8.342417, 0), pi)
+        self.assertCurve(s.edges[1], pi, Vector(0.202041, -2., 1.958759), pj)
+        self.assertCurve(s.edges[2], pj, Vector(0.202041, +2., 1.958759), pk)
+        self.assertCurve(s.tail,     pk, Vector(4.486010, +8.342417, 0), p2)
+
+    def test20(self):
+        """Verify intersection with a helix."""
+        tag = Tag( 0, 0, 8, 7, 45, True, 0)
+        p1 = Vector(10, -10, 0)
+        p2 = Vector(10, +10, 2)
+        edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10, 'K': 1}), p1)
+
+        pi = Vector(0.513574, -3.163498, 0.795085)
+        pj = Vector(0.000001, 0, 4)
+        pk = Vector(0.397586, +2.791711, 1.180119)
+
+        s = tag.intersect(edge)
+        self.assertTrue(s.isComplete())
+        self.assertEqual(len(s.edges), 3)
+        self.assertCurve(s.edges[0], p1, Vector(4.153420, -8.112798, 0.397543), pi)
+        self.assertCurve(s.edges[1], pi, Vector(0.129229, -1.602457, 2.397542), pj)
+        self.assertCurve(s.edges[2], pj, Vector(0.099896, 1.409940, 2.590059), pk)
+        self.assertCurve(s.tail, pk, Vector(3.996548, +7.997409, 1.590060), p2)
 
