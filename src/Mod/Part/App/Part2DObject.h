@@ -29,7 +29,7 @@
 #include <Base/Axis.h>
 
 #include "PartFeature.h"
-#include "AttachableObject.h"
+#include "AttachExtension.h"
 
 class TopoDS_Face;
 
@@ -50,9 +50,9 @@ class Geometry;
   * geometry as its descend Sketcher::SketchObject .
   */
 
-class PartExport Part2DObject : public Part::AttachableObject
+class PartExport Part2DObject : public Part::Feature, public Part::AttachExtension
 {
-    PROPERTY_HEADER(Part::Part2DObject);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Part::Part2DObject);
 
 public:
     Part2DObject();

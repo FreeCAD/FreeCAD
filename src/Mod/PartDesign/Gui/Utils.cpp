@@ -394,8 +394,8 @@ bool isFeatureMovable(App::DocumentObject* const feat)
 
     }
 
-    if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
-        auto attachable = static_cast<Part::AttachableObject*>(feat);
+    if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+        auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->Support.getValue();
         if (support && !support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()))
             return false;
@@ -460,8 +460,8 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
 
 void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
 {
-    if (feat->getTypeId().isDerivedFrom(Part::AttachableObject::getClassTypeId())) {
-        auto attachable = static_cast<Part::AttachableObject*>(feat);
+    if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
+        auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->Support.getValue();
         if (support && support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())) {
             auto originfeat = static_cast<App::OriginFeature*>(support);

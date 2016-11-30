@@ -28,7 +28,7 @@
 #include <App/PropertyLinks.h>
 
 #include "PartFeature.h"
-#include "AttachableObject.h"
+#include "AttachExtension.h"
 
 namespace Part
 {
@@ -36,9 +36,9 @@ namespace Part
 // This generic class is defined here so that the Sketcher module can access datum features
 // without creating a dependency on PartDesign
 
-class PartExport Datum : public Part::AttachableObject
+class PartExport Datum : public Part::Feature, public Part::AttachExtension
 {
-    PROPERTY_HEADER(Part::Datum);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Part::Datum);
 
 public:
     Datum();

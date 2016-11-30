@@ -1,30 +1,30 @@
 
 #include "PreCompiled.h"
 
-#include "Mod/Part/App/AttachableObject.h"
+#include "Mod/Part/App/AttachExtension.h"
 #include "OCCError.h"
 
 #include "AttachEnginePy.h"
 
-// inclusion of the generated files (generated out of AttachableObjectPy.xml)
-#include "AttachableObjectPy.h"
-#include "AttachableObjectPy.cpp"
+// inclusion of the generated files (generated out of AttachExtensionPy.xml)
+#include "AttachExtensionPy.h"
+#include "AttachExtensionPy.cpp"
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string AttachableObjectPy::representation(void) const
+std::string AttachExtensionPy::representation(void) const
 {
     return std::string("<Part::AttachableObject>");
 }
 
-PyObject* AttachableObjectPy::positionBySupport(PyObject *args)
+PyObject* AttachExtensionPy::positionBySupport(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
         return 0;
     bool bAttached = false;
     try{
-        bAttached = this->getAttachableObjectPtr()->positionBySupport();
+        bAttached = this->getAttachExtensionPtr()->positionBySupport();
     } catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
@@ -36,14 +36,14 @@ PyObject* AttachableObjectPy::positionBySupport(PyObject *args)
     return Py::new_reference_to(Py::Boolean(bAttached));
 }
 
-PyObject* AttachableObjectPy::changeAttacherType(PyObject *args)
+PyObject* AttachExtensionPy::changeAttacherType(PyObject *args)
 {
     const char* typeName;
     if (!PyArg_ParseTuple(args, "s", &typeName))
         return 0;
     bool ret;
     try{
-        ret = this->getAttachableObjectPtr()->changeAttacherType(typeName);
+        ret = this->getAttachExtensionPtr()->changeAttacherType(typeName);
     } catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
@@ -55,16 +55,16 @@ PyObject* AttachableObjectPy::changeAttacherType(PyObject *args)
     return Py::new_reference_to(Py::Boolean(ret));
 }
 
-Py::Object AttachableObjectPy::getAttacher(void) const
+Py::Object AttachExtensionPy::getAttacher(void) const
 {
     try {
-        this->getAttachableObjectPtr()->attacher(); //throws if attacher is not set
+        this->getAttachExtensionPtr()->attacher(); //throws if attacher is not set
     } catch (Base::Exception) {
         return Py::None();
     }
 
     try {
-        return Py::Object( new Attacher::AttachEnginePy(this->getAttachableObjectPtr()->attacher().copy()), true);
+        return Py::Object( new Attacher::AttachEnginePy(this->getAttachExtensionPtr()->attacher().copy()), true);
     } catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Py::Exception(Part::PartExceptionOCCError, e->GetMessageString());
@@ -74,12 +74,12 @@ Py::Object AttachableObjectPy::getAttacher(void) const
 
 }
 
-PyObject *AttachableObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject *AttachExtensionPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int AttachableObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int AttachExtensionPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

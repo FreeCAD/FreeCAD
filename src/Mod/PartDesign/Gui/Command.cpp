@@ -112,7 +112,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
 
             //test if current selection fits a mode.
             if (support.getSize() > 0) {
-                Part::AttachableObject* pcDatum = static_cast<Part::AttachableObject*>(cmd.getDocument()->getObject(FeatName.c_str()));
+                Part::AttachExtension* pcDatum = cmd.getDocument()->getObject(FeatName.c_str())->getExtensionByType<Part::AttachExtension>();
                 pcDatum->attacher().references.Paste(support);
                 SuggestResult sugr;
                 pcDatum->attacher().suggestMapModes(sugr);

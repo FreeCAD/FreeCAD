@@ -186,14 +186,10 @@ private:
 
 /// We make sur that the PropertyData of the container is not connected to the one of the extension
 #define PROPERTY_SOURCE_WITH_EXTENSIONS(_class_, _parentclass_) \
-TYPESYSTEM_SOURCE_P(_class_);\
-const App::PropertyData * _class_::getPropertyDataPtr(void){return &propertyData;} \
-const App::PropertyData & _class_::getPropertyData(void) const{return propertyData;} \
-App::PropertyData _class_::propertyData; \
-void _class_::init(void){\
-  initSubclass(_class_::classTypeId, #_class_ , #_parentclass_, &(_class_::create) ); \
-  _class_::propertyData.parentPropertyData = _parentclass_::getPropertyDataPtr();\
-}
+    PROPERTY_SOURCE(_class_, _parentclass_)
+
+#define PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(_class_, _parentclass_) \
+    PROPERTY_SOURCE_ABSTRACT(_class_, _parentclass_)
 
 } //App
 

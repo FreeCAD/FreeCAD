@@ -32,10 +32,11 @@
 using namespace Part;
 using namespace Attacher;
 
-PROPERTY_SOURCE_ABSTRACT(Part::Datum, Part::AttachableObject)
+PROPERTY_SOURCE_ABSTRACT_WITH_EXTENSIONS(Part::Datum, Part::Feature)
 
 Datum::Datum(void)
 {
+    AttachExtension::initExtension(this);
     touch();
 }
 
@@ -47,7 +48,7 @@ void Datum::onDocumentRestored()
 {
     // This seems to be the only way to make the ViewProvider display the datum feature
     Support.touch();
-    AttachableObject::onDocumentRestored();
+    Part::Feature::onDocumentRestored();
 }
 
 TopoDS_Shape Datum::getShape() const

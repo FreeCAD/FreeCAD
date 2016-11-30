@@ -73,7 +73,7 @@ generate_from_xml(RectangularTrimmedSurfacePy)
 generate_from_xml(SurfaceOfExtrusionPy)
 generate_from_xml(SurfaceOfRevolutionPy)
 generate_from_xml(PartFeaturePy)
-generate_from_xml(AttachableObjectPy)
+generate_from_xml(AttachExtensionPy)
 generate_from_xml(Part2DObjectPy)
 generate_from_xml(AttachEnginePy)
 generate_from_xml(TopoShapePy)
@@ -169,8 +169,8 @@ SET(Features_SRCS
     BodyBase.cpp
     DatumFeature.cpp
     DatumFeature.h
-    AttachableObject.h
-    AttachableObject.cpp
+    AttachExtension.h
+    AttachExtension.cpp
 )
 SOURCE_GROUP("Features" FILES ${Features_SRCS})
 
@@ -251,8 +251,8 @@ SET(Python_SRCS
     SurfaceOfRevolutionPyImp.cpp
     PartFeaturePy.xml
     PartFeaturePyImp.cpp
-    AttachableObjectPy.xml
-    AttachableObjectPyImp.cpp
+    AttachExtensionPy.xml
+    AttachExtensionPyImp.cpp
     Part2DObjectPy.xml
     Part2DObjectPyImp.cpp
     AttachEnginePy.xml

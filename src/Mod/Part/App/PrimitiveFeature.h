@@ -26,14 +26,14 @@
 
 #include <App/PropertyUnits.h>
 #include "PartFeature.h"
-#include "AttachableObject.h"
+#include "AttachExtension.h"
 
 namespace Part
 {
 
-class PartExport Primitive : public Part::AttachableObject
+class PartExport Primitive : public Part::Feature, public Part::AttachExtension
 {
-    PROPERTY_HEADER(Part::Primitive);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Part::Primitive);
 
 public:
     Primitive();
@@ -42,7 +42,7 @@ public:
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void) = 0;
+    App::DocumentObjectExecReturn *execute(void);
     short mustExecute() const;
     //@}
 

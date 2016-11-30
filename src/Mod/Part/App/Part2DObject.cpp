@@ -62,18 +62,19 @@ const int Part2DObject::H_Axis = -1;
 const int Part2DObject::V_Axis = -2;
 const int Part2DObject::N_Axis = -3;
 
-PROPERTY_SOURCE(Part::Part2DObject, Part::AttachableObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Part::Part2DObject, Part::Feature)
 
 
 Part2DObject::Part2DObject()
 {
+    AttachExtension::initExtension(this);
     this->setAttacher(new Attacher::AttachEnginePlane);
 }
 
 
 App::DocumentObjectExecReturn *Part2DObject::execute(void)
 {
-    return AttachableObject::execute();
+    return Feature::execute();
 }
 
 void Part2DObject::transformPlacement(const Base::Placement &transform)
