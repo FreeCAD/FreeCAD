@@ -100,6 +100,7 @@
 
 #include <Base/VectorPy.h>
 #include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/LineSegmentPy.h>
 #include <Mod/Part/App/CirclePy.h>
 #include <Mod/Part/App/EllipsePy.h>
 #include <Mod/Part/App/ArcPy.h>
@@ -2720,7 +2721,7 @@ PyObject *GeomArcOfParabola::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomLine,Part::GeomCurve);
+TYPESYSTEM_SOURCE(Part::GeomLine,Part::GeomCurve)
 
 GeomLine::GeomLine()
 {
@@ -2825,7 +2826,7 @@ PyObject *GeomLine::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomCurve);
+TYPESYSTEM_SOURCE(Part::GeomLineSegment,Part::GeomCurve)
 
 GeomLineSegment::GeomLineSegment()
 {
@@ -2951,7 +2952,7 @@ void GeomLineSegment::Restore    (Base::XMLReader &reader)
 
 PyObject *GeomLineSegment::getPyObject(void)
 {
-    return new LinePy((GeomLineSegment*)this->clone());
+    return new LineSegmentPy(static_cast<GeomLineSegment*>(this->clone()));
 }
 
 // -------------------------------------------------
