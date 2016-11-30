@@ -24,10 +24,10 @@ import FreeCAD, os, sys, unittest, Part, Sketcher
 App = FreeCAD
 
 def CreateBoxSketchSet(SketchFeature):
-	SketchFeature.addGeometry(Part.Line(FreeCAD.Vector(-99.230339,36.960674,0),FreeCAD.Vector(69.432587,36.960674,0)))
-	SketchFeature.addGeometry(Part.Line(FreeCAD.Vector(69.432587,36.960674,0),FreeCAD.Vector(69.432587,-53.196629,0)))
-	SketchFeature.addGeometry(Part.Line(FreeCAD.Vector(69.432587,-53.196629,0),FreeCAD.Vector(-99.230339,-53.196629,0)))
-	SketchFeature.addGeometry(Part.Line(FreeCAD.Vector(-99.230339,-53.196629,0),FreeCAD.Vector(-99.230339,36.960674,0)))
+	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(-99.230339,36.960674,0),FreeCAD.Vector(69.432587,36.960674,0)))
+	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(69.432587,36.960674,0),FreeCAD.Vector(69.432587,-53.196629,0)))
+	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(69.432587,-53.196629,0),FreeCAD.Vector(-99.230339,-53.196629,0)))
+	SketchFeature.addGeometry(Part.LineSegment(FreeCAD.Vector(-99.230339,-53.196629,0),FreeCAD.Vector(-99.230339,36.960674,0)))
 	# add the constraints
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1)) 
@@ -42,11 +42,11 @@ def CreateBoxSketchSet(SketchFeature):
 	SketchFeature.addConstraint(Sketcher.Constraint('Distance',0,187.573036)) 
 
 def CreateSlotPlateSet(SketchFeature):
-	SketchFeature.addGeometry(Part.Line(App.Vector(60.029362,-30.279360,0),App.Vector(-120.376335,-30.279360,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(60.029362,-30.279360,0),App.Vector(-120.376335,-30.279360,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',0)) 
-	SketchFeature.addGeometry(Part.Line(App.Vector(-120.376335,-30.279360,0),App.Vector(-70.193062,38.113884,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(-120.376335,-30.279360,0),App.Vector(-70.193062,38.113884,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',0,2,1,1)) 
-	SketchFeature.addGeometry(Part.Line(App.Vector(-70.193062,38.113884,0),App.Vector(60.241116,37.478645,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(-70.193062,38.113884,0),App.Vector(60.241116,37.478645,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',1,2,2,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',2)) 
 	SketchFeature.addGeometry(Part.ArcOfCircle(Part.Circle(App.Vector(60.039921,3.811391,0),App.Vector(0,0,1),35.127132),-1.403763,1.419522))
@@ -70,11 +70,11 @@ def CreateSlotPlateSet(SketchFeature):
 
 def CreateSlotPlateInnerSet(SketchFeature):
 	SketchFeature.addGeometry(Part.Circle(App.Vector(195.055893,39.562252,0),App.Vector(0,0,1),29.846098))
-	SketchFeature.addGeometry(Part.Line(App.Vector(150.319031,13.449363,0),App.Vector(36.700474,13.139774,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(150.319031,13.449363,0),App.Vector(36.700474,13.139774,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',5)) 
-	SketchFeature.addGeometry(Part.Line(App.Vector(36.700474,13.139774,0),App.Vector(77.566010,63.292927,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(36.700474,13.139774,0),App.Vector(77.566010,63.292927,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',5,2,6,1)) 
-	SketchFeature.addGeometry(Part.Line(App.Vector(77.566010,63.292927,0),App.Vector(148.151917,63.602505,0)))
+	SketchFeature.addGeometry(Part.LineSegment(App.Vector(77.566010,63.292927,0),App.Vector(148.151917,63.602505,0)))
 	SketchFeature.addConstraint(Sketcher.Constraint('Coincident',6,2,7,1)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Horizontal',7)) 
 	SketchFeature.addConstraint(Sketcher.Constraint('Parallel',1,6)) 

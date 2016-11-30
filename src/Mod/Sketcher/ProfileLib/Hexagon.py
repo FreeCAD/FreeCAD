@@ -37,12 +37,12 @@ def makeHexagonSimple(sketchName=None):
         sketch = App.ActiveDocument.getObject(sketchName)
 
     geoList = []
-    geoList.append(Part.Line(App.Vector(-20.00,34.64,0),App.Vector(20.00,34.64,0)))
-    geoList.append(Part.Line(App.Vector(20.00,34.64,0),App.Vector(47.082363,0.00,0)))
-    geoList.append(Part.Line(App.Vector(40.00,0.00,0),App.Vector(20.00,-34.64,0)))
-    geoList.append(Part.Line(App.Vector(20.00,-34.64,0),App.Vector(-20.00,-34.64,0)))
-    geoList.append(Part.Line(App.Vector(-20.00,-34.64,0),App.Vector(-40.00,0.00,0)))
-    geoList.append(Part.Line(App.Vector(-40.00,0.00,0),App.Vector(-20.00,34.64,0)))
+    geoList.append(Part.LineSegment(App.Vector(-20.00,34.64,0),App.Vector(20.00,34.64,0)))
+    geoList.append(Part.LineSegment(App.Vector(20.00,34.64,0),App.Vector(47.082363,0.00,0)))
+    geoList.append(Part.LineSegment(App.Vector(40.00,0.00,0),App.Vector(20.00,-34.64,0)))
+    geoList.append(Part.LineSegment(App.Vector(20.00,-34.64,0),App.Vector(-20.00,-34.64,0)))
+    geoList.append(Part.LineSegment(App.Vector(-20.00,-34.64,0),App.Vector(-40.00,0.00,0)))
+    geoList.append(Part.LineSegment(App.Vector(-40.00,0.00,0),App.Vector(-20.00,34.64,0)))
     (l1,l2,l3,l4,l5,l6) = sketch.addGeometry(geoList)
 
     conList = []

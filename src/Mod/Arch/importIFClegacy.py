@@ -1268,7 +1268,7 @@ def getIfcExtrusionData(obj,scale=1,nosubs=False):
                 for e in p.Edges:
                     if isinstance(e.Curve,Part.Circle):
                         curves = True
-                    elif not isinstance(e.Curve,Part.Line):
+                    elif not isinstance(e.Curve,Part.LineSegment):
                         print "Arch.getIfcExtrusionData: Warning: unsupported edge type in profile"
                 if curves:
                     # Composite profile
@@ -1356,7 +1356,7 @@ def getIfcBrepFacesData(obj,scale=1,sub=False,tessellation=1):
             curves = False
             for face in sol.Faces:
                 for e in face.Edges:
-                    if not isinstance(e.Curve,Part.Line):
+                    if not isinstance(e.Curve,Part.LineSegment):
                         curves = True
             if curves:
                 tris = sol.tessellate(tessellation)

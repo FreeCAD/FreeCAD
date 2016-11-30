@@ -117,7 +117,7 @@ class _Axis:
                     ang = math.radians(obj.Angles[i])
                     p1 = Vector(dist,0,0)
                     p2 = Vector(dist+(l/math.cos(ang))*math.sin(ang),l,0)
-                    geoms.append(Part.Line(p1,p2).toShape())
+                    geoms.append(Part.LineSegment(p1,p2).toShape())
         if geoms:
             sh = Part.Compound(geoms)
             sh.Placement = obj.Placement
