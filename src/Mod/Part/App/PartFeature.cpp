@@ -93,7 +93,7 @@ App::DocumentObjectExecReturn *Feature::recompute(void)
 App::DocumentObjectExecReturn *Feature::execute(void)
 {
     this->Shape.touch();
-    return App::DocumentObject::StdReturn;
+    return GeoFeature::execute();
 }
 
 PyObject *Feature::getPyObject(void)

@@ -25,19 +25,19 @@
 #ifndef _PreComp_
 #endif
 
-#include "AttachableObject.h"
+#include "AttachExtension.h"
 
 #include <Base/Console.h>
 #include <App/Application.h>
 
 #include <App/FeaturePythonPyImp.h>
-#include "AttachableObjecty.h"
+#include "AttachExtensionPy.h"
 
 
 using namespace Part;
 using namespace Attacher;
 
-EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, Part::Feature);
+EXTENSION_PROPERTY_SOURCE(Part::AttachExtension, App::DocumentObjectExtension);
 
 AttachExtension::AttachExtension()
    :  _attacher(0)
@@ -126,10 +126,17 @@ bool AttachExtension::positionBySupport()
     };
 }
 
-App::DocumentObjectExecReturn *AttachExtension::exttensionExecute()
+short int AttachExtension::extensionMustExecute(void) {
+    return DocumentObjectExtension::extensionMustExecute();
+}
+
+
+App::DocumentObjectExecReturn *AttachExtension::extensionExecute()
 {
+    Base::Console().Message("Execute Extension");
     if(this->isTouched_Mapping()) {
         try{
+            Base::Console().Message("Call position by support");
             positionBySupport();
         } catch (Base::Exception &e) {
             return new App::DocumentObjectExecReturn(e.what());
@@ -153,11 +160,11 @@ void AttachExtension::extensionOnChanged(const App::Property* prop)
             try{
                 bAttached = positionBySupport();
             } catch (Base::Exception &e) {
-                this->setError();
+                getExtendedObject()->setStatus(App::Error, true);
                 Base::Console().Error("PositionBySupport: %s",e.what());
                 //set error message - how?
             } catch (Standard_Failure &e){
-                this->setError();
+                getExtendedObject()->setStatus(App::Error, true);
                 Base::Console().Error("PositionBySupport: %s",e.GetMessageString());
             }
 
@@ -195,23 +202,22 @@ App::PropertyPlacement& AttachExtension::getPlacement() {
     return static_cast<App::GeoFeature*>(getExtendedObject())->Placement;
 }
 
+PyObject* AttachExtension::getExtensionPyObject(void) {
+    
+    if (ExtensionPythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        ExtensionPythonObject = Py::Object(new AttachExtensionPy(this),true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
+}
+
 
 namespace App {
 /// @cond DOXERR
   EXTENSION_PROPERTY_SOURCE_TEMPLATE(Part::AttachExtensionPython, Part::AttachExtension)
-  template<> const char* Part::AttachExtensionPython::getViewProviderName(void) const {
-    return "PartGui::ViewProviderPython";
-  }
-  template<> PyObject* Part::AttachExtensionPython::getPyObject(void) {
-        if (PythonObject.is(Py::_None())) {
-            // ref counter is set to 1
-            PythonObject = Py::Object(new FeaturePythonPyT<Part::AttachExtensionPy>(this),true);
-        }
-        return Py::new_reference_to(PythonObject);
-  }
 /// @endcond
 
 // explicit template instantiation
-  template class PartExport FeaturePythonT<Part::AttachExtension>;
+  template class PartExport ExtensionPythonT<Part::AttachExtension>;
 }
 
