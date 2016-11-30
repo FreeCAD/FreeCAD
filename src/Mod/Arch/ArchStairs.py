@@ -177,7 +177,7 @@ class _Stairs(ArchComponent.Component):
                     return
                 if (len(obj.Base.Shape.Edges) == 1):
                     edge = obj.Base.Shape.Edges[0]
-                    if isinstance(edge.Curve,Part.Line):
+                    if isinstance(edge.Curve,Part.LineSegment):
                         if obj.Landings == "At center":
                             landings = 1
                             self.makeStraightStairsWithLanding(obj,edge)
@@ -192,7 +192,7 @@ class _Stairs(ArchComponent.Component):
             else:
                 if not obj.Length.Value:
                     return
-                edge = Part.Line(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
+                edge = Part.LineSegment(Vector(0,0,0),Vector(obj.Length.Value,0,0)).toShape()
                 if obj.Landings == "At center":
                     landings = 1
                     self.makeStraightStairsWithLanding(obj,edge)
@@ -478,9 +478,9 @@ class _Stairs(ArchComponent.Component):
         p2 = p1.add(DraftVecUtils.scale(vLength,landing-1).add(Vector(0,0,landing*hstep)))
         p3 = p2.add(DraftVecUtils.scaleTo(vLength,obj.Width.Value))
         p4 = p3.add(DraftVecUtils.scale(vLength,obj.NumberOfSteps-(landing+1)).add(Vector(0,0,(obj.NumberOfSteps-landing)*hstep)))
-        self.makeStraightStairs(obj,Part.Line(p1,p2).toShape(),landing)
-        self.makeStraightLanding(obj,Part.Line(p2,p3).toShape())
-        self.makeStraightStairs(obj,Part.Line(p3,p4).toShape(),obj.NumberOfSteps-landing)
+        self.makeStraightStairs(obj,Part.LineSegment(p1,p2).toShape(),landing)
+        self.makeStraightLanding(obj,Part.LineSegment(p2,p3).toShape())
+        self.makeStraightStairs(obj,Part.LineSegment(p3,p4).toShape(),obj.NumberOfSteps-landing)
 
 
     def makeCurvedStairs(self,obj,edge):

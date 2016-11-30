@@ -385,7 +385,7 @@ def edgestofaces(edges,algo=3,eps=0.001):
             p1 = w.Vertexes[-1].Point
             edges2 = w.Edges[:]
             try:
-                edges2.append(Part.Line(p1,p0).toShape())
+                edges2.append(Part.LineSegment(p1,p0).toShape())
                 w = Part.Wire(edges2)
                 #w = Part.Wire(fcgeo.sortEdges(edges2))
             except OCCError:
@@ -461,9 +461,9 @@ def superWireReverse(debuglist,closed=False):
                         nexte[0].Vertexes[-1*(not nexte[1])].Point)
         else:
             p2 = curr[0].Vertexes[-1*(curr[1])].Point
-        if isinstance(curr[0].Curve,Part.Line):
+        if isinstance(curr[0].Curve,Part.LineSegment):
             print "line",p1,p2
-            newedges.append(Part.Line(p1,p2).toShape())
+            newedges.append(Part.LineSegment(p1,p2).toShape())
         elif isinstance(curr[0].Curve,Part.Circle):
             p3 = findMidpoint(curr[0])
             print "arc",p1,p3,p2

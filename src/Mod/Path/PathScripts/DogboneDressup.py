@@ -112,7 +112,7 @@ def edgesForCommands(cmds, startPt):
         if cmd.Name in movecommands:
             pt = pointFromCommand(cmd, lastPt)
             if cmd.Name in movestraight:
-                edges.append(Part.Edge(Part.Line(lastPt, pt)))
+                edges.append(Part.Edge(Part.LineSegment(lastPt, pt)))
             elif cmd.Name in movearc:
                 center = lastPt + pointFromCommand(cmd, FreeCAD.Vector(0,0,0), 'I', 'J', 'K')
                 A = lastPt - center
@@ -210,7 +210,7 @@ class Chord (object):
         return self.End - self.Start
 
     def asLine(self):
-        return Part.Line(self.Start, self.End)
+        return Part.LineSegment(self.Start, self.End)
 
     def asEdge(self):
         return Part.Edge(self.asLine())
@@ -434,7 +434,7 @@ class ObjectDressup:
         debugPrint("smooth:  (%.2f, %.2f)-(%.2f, %.2f)" % (edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
         for e in wire.Edges:
             self.dbg.append(e)
-            if type(e.Curve) == Part.Line:
+            if type(e.Curve) == Part.LineSegment:
                 debugPrint("         (%.2f, %.2f)-(%.2f, %.2f)" % (e.Vertexes[0].Point.x, e.Vertexes[0].Point.y, e.Vertexes[1].Point.x, e.Vertexes[1].Point.y))
             else:
                 debugPrint("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
@@ -522,9 +522,9 @@ class ObjectDressup:
         vb1 = FreeCAD.Vector(length, -self.toolRadius, 0)
         vm2 = FreeCAD.Vector(length + self.toolRadius, 0, 0)
 
-        boneBot = Part.Line(vb1, vb0)
-        boneLid = Part.Line(vb0, vt0)
-        boneTop = Part.Line(vt0, vt1)
+        boneBot = Part.LineSegment(vb1, vb0)
+        boneLid = Part.LineSegment(vb0, vt0)
+        boneTop = Part.LineSegment(vt0, vt1)
 
         # what we actually want is an Arc - but findIntersect only returns the coincident if one exists
         # which really sucks because that's the one we're probably not interested in ....

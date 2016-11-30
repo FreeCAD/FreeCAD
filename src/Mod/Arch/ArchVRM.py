@@ -218,7 +218,7 @@ class Renderer:
         if len(edge.Vertexes) > 1:
             v1 = self.wp.getLocalCoords(edge.Vertexes[0].Point)
             v2 = self.wp.getLocalCoords(edge.Vertexes[-1].Point)
-            return Part.Line(v1,v2).toShape()
+            return Part.LineSegment(v1,v2).toShape()
         return edge
         
     def flattenFace(self,face):

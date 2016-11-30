@@ -109,13 +109,13 @@ def silhouette(obj):
 def isSameEdge(e1, e2):
     """isSameEdge(e1,e2): return True if the 2 edges are both lines or arcs/circles and have the same
     points - inspired by Yorik's function isSameLine"""
-    if not (isinstance(e1.Curve, Part.Line) or isinstance(e1.Curve, Part.Circle)):
+    if not (isinstance(e1.Curve, Part.LineSegment) or isinstance(e1.Curve, Part.Circle)):
         return False
-    if not (isinstance(e2.Curve, Part.Line) or isinstance(e2.Curve, Part.Circle)):
+    if not (isinstance(e2.Curve, Part.LineSegment) or isinstance(e2.Curve, Part.Circle)):
         return False
     if type(e1.Curve) != type(e2.Curve):
         return False
-    if isinstance(e1.Curve, Part.Line):
+    if isinstance(e1.Curve, Part.LineSegment):
         if (DraftVecUtils.equals(e1.Vertexes[0].Point, e2.Vertexes[0].Point)) and \
            (DraftVecUtils.equals(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)):
             return True
@@ -232,7 +232,7 @@ def filterArcs(arcEdge):
             splitlist.append(eseg2)
         else:
             splitlist.append(s)
-    elif isinstance(s.Curve, Part.Line):
+    elif isinstance(s.Curve, Part.LineSegment):
         pass
     return splitlist
 

@@ -202,7 +202,7 @@ class ObjectDrilling:
                     for e in subobj.Edges:
                         if isinstance (e.Curve, Part.Circle):
                             cedge.append(e)
-                        elif isinstance (e.Curve, Part.Line):
+                        elif isinstance (e.Curve, Part.LineSegment):
                             ledge.append(e)
                     if len(cedge) == 2 and len(ledge) == 1:
                         drillable = True

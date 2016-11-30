@@ -46,7 +46,7 @@ def findholes(obj):
     for h in facelist:
         for w in h.Wires:
             for c in w.Edges:
-                if ( isinstance(c.Curve,Part.Line)):
+                if ( isinstance(c.Curve,Part.LineSegment)):
                     v0=Base.Vector(c.Vertexes[0].X, c.Vertexes[0].Y, c.Vertexes[0].Z); v1=Base.Vector(c.Vertexes[1].X,c.Vertexes[1].Y, c.Vertexes[1].Z)
                     if (v1.sub(v0).x == 0) and (v1.sub(v0).y == 0):
                         lsp = Base.Vector(h.BoundBox.Center.x,h.BoundBox.Center.y,h.BoundBox.ZMax)

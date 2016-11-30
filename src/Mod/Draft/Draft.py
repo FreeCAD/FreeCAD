@@ -1551,8 +1551,8 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
                 s2 = newwire
             w1 = s1.Edges
             w2 = s2.Edges
-            w3 = Part.Line(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
-            w4 = Part.Line(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
+            w3 = Part.LineSegment(s1.Vertexes[0].Point,s2.Vertexes[0].Point).toShape()
+            w4 = Part.LineSegment(s1.Vertexes[-1].Point,s2.Vertexes[-1].Point).toShape()
             newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
             newobj.Shape = Part.Face(Part.Wire(w1+[w3]+w2+[w4]))
         else:
@@ -2920,7 +2920,7 @@ def upgrade(objects,delete=False,force=None):
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Face")
                     newobj.Shape = f
                 else:
-                    edges.append(Part.Line(p1,p0).toShape())
+                    edges.append(Part.LineSegment(p1,p0).toShape())
                     w = Part.Wire(Part.__sortEdges__(edges))
                     newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Wire")
                     newobj.Shape = w
@@ -3140,7 +3140,7 @@ def upgrade(objects,delete=False,force=None):
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
-                if isinstance(e.Curve,Part.Line):
+                if isinstance(e.Curve,Part.LineSegment):
                     result = turnToLine(objects[0])
                     if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
 
@@ -3740,14 +3740,14 @@ class _ViewProviderDimension(_ViewProviderDraft):
                         base = None
                         proj = None
                     else:
-                        base = Part.Line(self.p2,self.p3).toShape()
+                        base = Part.LineSegment(self.p2,self.p3).toShape()
                         proj = DraftGeomUtils.findDistance(self.p1,base).negative()
             if not base:
                 if DraftVecUtils.equals(self.p1,self.p4):
                     base = None
                     proj = None
                 else:
-                    base = Part.Line(self.p1,self.p4).toShape()
+                    base = Part.LineSegment(self.p1,self.p4).toShape()
                     proj = DraftGeomUtils.findDistance(obj.Dimline,base)
                 if proj:
                     self.p2 = self.p1.add(proj.negative())
@@ -4570,15 +4570,15 @@ class _Wire(_DraftObject):
                                 npts = []
                                 v = p.sub(lp)
                                 v = DraftVecUtils.scaleTo(v,v.Length/(obj.Subdivisions+1))
-                                edges.append(Part.Line(lp,lp.add(v)).toShape())
+                                edges.append(Part.LineSegment(lp,lp.add(v)).toShape())
                                 lv = lp.add(v)
                                 for j in range(obj.Subdivisions):
-                                    edges.append(Part.Line(lv,lv.add(v)).toShape())
+                                    edges.append(Part.LineSegment(lv,lv.add(v)).toShape())
                                     lv = lv.add(v)
                             else:
-                                edges.append(Part.Line(lp,p).toShape())
+                                edges.append(Part.LineSegment(lp,p).toShape())
                         else:
-                            edges.append(Part.Line(lp,p).toShape())
+                            edges.append(Part.LineSegment(lp,p).toShape())
                         lp = p
                 try:
                     shape = Part.Wire(edges)
