@@ -40,9 +40,9 @@
 
 #include "OCCError.h"
 #include "Geometry.h"
-#include "LinePy.h"
-#include "PlanePy.h"
-#include "PlanePy.cpp"
+#include <Mod/Part/App/LinePy.h>
+#include <Mod/Part/App/PlanePy.h>
+#include <Mod/Part/App/PlanePy.cpp>
 
 using namespace Part;
 
@@ -266,12 +266,10 @@ PyObject* PlanePy::uIso(PyObject * args)
         Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast
             (getGeomPlanePtr()->handle());
         Handle_Geom_Line c = Handle_Geom_Line::DownCast(plane->UIso(u));
-        GeomLineSegment* line = new GeomLineSegment();
-        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+        GeomLine* line = new GeomLine();
+        Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
             (line->handle());
-        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-            (this_curv->BasisCurve());
-        this_line->SetLin(c->Lin());
+        this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
     catch (Standard_Failure) {
@@ -291,12 +289,10 @@ PyObject* PlanePy::vIso(PyObject * args)
         Handle_Geom_Plane plane = Handle_Geom_Plane::DownCast
             (getGeomPlanePtr()->handle());
         Handle_Geom_Line c = Handle_Geom_Line::DownCast(plane->VIso(v));
-        GeomLineSegment* line = new GeomLineSegment();
-        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+        GeomLine* line = new GeomLine();
+        Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
             (line->handle());
-        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
-            (this_curv->BasisCurve());
-        this_line->SetLin(c->Lin());
+        this_curv->SetLin(c->Lin());
         return new LinePy(line);
     }
     catch (Standard_Failure) {
