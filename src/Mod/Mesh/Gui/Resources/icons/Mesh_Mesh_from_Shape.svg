@@ -15,7 +15,7 @@
    id="svg3020"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Mesh_from_Shape_nova.svg">
+   sodipodi:docname="Mesh_Mesh_from_Shape.svg">
   <defs
      id="defs3022">
     <linearGradient
@@ -102,15 +102,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="14.827145"
-     inkscape:cx="32.982502"
+     inkscape:cx="33.11739"
      inkscape:cy="21.642272"
      inkscape:current-layer="g3618"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:snap-global="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
+     inkscape:window-width="1920"
+     inkscape:window-height="1137"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1">
@@ -283,14 +283,22 @@
            inkscape:connector-curvature="0" />
         <path
            style="fill:none;stroke:#172a04;stroke-width:3.29156804;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           d="m 184.75054,114.52887 23.85668,50.86438 17.89251,-50.86438"
-           id="path3926-1"
-           inkscape:connector-curvature="0" />
+           d="m 184.75054,114.52887 41.74919,0"
+           id="path3928-5"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
         <path
            style="fill:none;stroke:#172a04;stroke-width:3.29156804;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-           d="M 208.60722,129.06154 202.64305,99.996195"
-           id="path3928-5"
-           inkscape:connector-curvature="0" />
+           d="m 184.75054,150.86057 23.85668,-21.79902"
+           id="path3928-5-3"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
+        <path
+           style="fill:none;stroke:#172a04;stroke-width:3.29156804;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+           d="m 208.60722,165.39325 17.89251,-50.86438"
+           id="path3928-5-6"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
       </g>
     </g>
     <path
