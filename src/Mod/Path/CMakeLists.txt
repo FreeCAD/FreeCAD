@@ -16,61 +16,68 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
-    PathScripts/__init__.py
-    PathScripts/PostUtils.py
-    PathScripts/example_pre.py
-    PathScripts/opensbp_pre.py
-    PathScripts/opensbp_post.py
-    PathScripts/example_post.py
-    PathScripts/linuxcnc_post.py
-    PathScripts/centroid_post.py
-    PathScripts/comparams_post.py
-    PathScripts/dynapath_post.py
-    PathScripts/generic_post.py
-    PathScripts/dumper_post.py
-    PathScripts/rml_post.py
-    PathScripts/TooltableEditor.py
-    PathScripts/PathProfile.py
-    PathScripts/PathProfileEdges.py
-    PathScripts/PathContour.py
-    PathScripts/PathMillFace.py
-    PathScripts/PathPocket.py
-    PathScripts/PathDrilling.py
-    PathScripts/PathDressup.py
+    PathScripts/DogboneDressup.py
     PathScripts/DragknifeDressup.py
-    PathScripts/PathHop.py
-    PathScripts/PathUtils.py
-    PathScripts/PathSelection.py
-    PathScripts/PathFixture.py
-    PathScripts/PathCopy.py
+    PathScripts/PathAreaUtils.py
+    PathScripts/PathArray.py
+    PathScripts/PathComment.py
     PathScripts/PathCompoundExtended.py
+    PathScripts/PathContour.py
+    PathScripts/PathCopy.py
+    PathScripts/PathCustom.py
+    PathScripts/PathDressup.py
+    PathScripts/PathDrilling.py
+    PathScripts/PathEngrave.py
+    PathScripts/PathFacePocket.py
+    PathScripts/PathFaceProfile.py
+    PathScripts/PathFixture.py
+    PathScripts/PathFromShape.py
+    PathScripts/PathGeom.py
+    PathScripts/PathHop.py
+    PathScripts/PathInspect.py
     PathScripts/PathJob.py
-    PathScripts/PathStock.py
+    PathScripts/PathKurveUtils.py
+    PathScripts/PathLoadTool.py
+    PathScripts/PathMillFace.py
     PathScripts/PathPlane.py
+    PathScripts/PathPocket.py
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
-    PathScripts/PathLoadTool.py
-    PathScripts/PathToolLenOffset.py
-    PathScripts/PathComment.py
-    PathScripts/PathStop.py
-    PathScripts/PathFromShape.py
-    PathScripts/PathKurveUtils.py
-    PathScripts/PathAreaUtils.py
-    PathScripts/slic3r_pre.py
-    PathScripts/PathFaceProfile.py
-    PathScripts/PathFacePocket.py
-    PathScripts/PathArray.py
-    PathScripts/PathCustom.py
-    PathScripts/PathInspect.py
-    PathScripts/PathSimpleCopy.py
-    PathScripts/PathEngrave.py
-    PathScripts/PathSurface.py
+    PathScripts/PathPreferences.py
+    PathScripts/PathPreferencesPathJob.py
+    PathScripts/PathProfile.py
+    PathScripts/PathProfileEdges.py
     PathScripts/PathRemote.py
     PathScripts/PathSanity.py
+    PathScripts/PathSelection.py
+    PathScripts/PathSimpleCopy.py
+    PathScripts/PathStock.py
+    PathScripts/PathStop.py
+    PathScripts/PathSurface.py
+    PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
-    PathScripts/DogboneDressup.py
-    PathScripts/PathPreferencesPathJob.py
-    PathScripts/PathPreferences.py
+    PathScripts/PathUtils.py
+    PathScripts/PostUtils.py
+    PathScripts/TooltableEditor.py
+    PathScripts/__init__.py
+    PathScripts/centroid_post.py
+    PathScripts/comparams_post.py
+    PathScripts/dumper_post.py
+    PathScripts/dynapath_post.py
+    PathScripts/example_post.py
+    PathScripts/example_pre.py
+    PathScripts/generic_post.py
+    PathScripts/linuxcnc_post.py
+    PathScripts/opensbp_post.py
+    PathScripts/opensbp_pre.py
+    PathScripts/rml_post.py
+    PathScripts/slic3r_pre.py
+    PathTests/PathTestUtils.py
+    PathTests/TestPathGeom.py
+    PathTests/TestPathPost.py
+    PathTests/__init__.py
+    PathTests/test_linuxcnc_00.ngc
+    TestPathApp.py
 )
 
 SET(PathScripts_NC_SRCS

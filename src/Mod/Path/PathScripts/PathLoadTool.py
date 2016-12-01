@@ -82,7 +82,8 @@ class LoadTool():
 
         path = Path.Path(commands)
         obj.Path = path
-        obj.ViewObject.Visibility = True
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = True
 
     def onChanged(self, obj, prop):
         mode = 2
@@ -181,13 +182,14 @@ PathUtils.addToJob(obj)
         FreeCAD.ActiveDocument.recompute()
 
     @staticmethod
-    def Create(jobname = None):
+    def Create(jobname = None, assignViewProvider = True):
         import PathScripts
         import PathUtils
 
         obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "TC")
         PathScripts.PathLoadTool.LoadTool(obj)
-        PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
+        if assignViewProvider:
+            PathScripts.PathLoadTool._ViewProviderLoadTool(obj.ViewObject)
 
         PathUtils.addToJob(obj, jobname)
 

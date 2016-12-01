@@ -1,94 +1,94 @@
 <RCC>
     <qresource>
-        <file>icons/preferences-path.svg</file>
-        <file>icons/Path-Toolpath.svg</file>
-        <file>icons/Path-Compound.svg</file>
-        <file>icons/Path-Shape.svg</file>
-        <file>icons/Path-Profile.svg</file>
-        <file>icons/Path-Contour.svg</file>
-        <file>icons/Path-Pocket.svg</file>
-        <file>icons/Path-Drilling.svg</file>
-        <file>icons/Path-Job.svg</file>
-        <file>icons/Path-Dressup.svg</file>
-        <file>icons/Path-Hop.svg</file>
-        <file>icons/Path-Datums.svg</file>
-        <file>icons/Path-Copy.svg</file>
-        <file>icons/Path-ToolTable.svg</file>
-        <file>icons/Path-LengthOffset.svg</file>
-        <file>icons/Path-Axis.svg</file>
-        <file>icons/Path-Stock.svg</file>
-        <file>icons/Path-Plane.svg</file>
-        <file>icons/Path-Post.svg</file>
-        <file>icons/Path-LoadTool.svg</file>
-        <file>icons/Path-Comment.svg</file>
-        <file>icons/Path-Stop.svg</file>
-        <file>icons/Path-Machine.svg</file>
-        <file>icons/Path-Kurve.svg</file>
-        <file>icons/Path-FaceProfile.svg</file>
-        <file>icons/Path-FacePocket.svg</file>
-        <file>icons/Path-Array.svg</file>
-        <file>icons/Path-Custom.svg</file>
-        <file>icons/Path-Inspect.svg</file>
-        <file>icons/Path-ToolChange.svg</file>
-        <file>icons/Path-SimpleCopy.svg</file>
-        <file>icons/Path-Engrave.svg</file>
-        <file>icons/Path-Sanity.svg</file>
         <file>icons/Path-3DSurface.svg</file>
-        <file>icons/Path-Speed.svg</file>
+        <file>icons/Path-Array.svg</file>
+        <file>icons/Path-Axis.svg</file>
         <file>icons/Path-BaseGeometry.svg</file>
+        <file>icons/Path-Comment.svg</file>
+        <file>icons/Path-Compound.svg</file>
+        <file>icons/Path-Contour.svg</file>
+        <file>icons/Path-Copy.svg</file>
+        <file>icons/Path-Custom.svg</file>
+        <file>icons/Path-Datums.svg</file>
         <file>icons/Path-Depths.svg</file>
+        <file>icons/Path-Dressup.svg</file>
+        <file>icons/Path-Drilling.svg</file>
+        <file>icons/Path-Engrave.svg</file>
+        <file>icons/Path-FacePocket.svg</file>
+        <file>icons/Path-FaceProfile.svg</file>
+        <file>icons/Path-Face.svg</file>
         <file>icons/Path-Heights.svg</file>
+        <file>icons/Path-Hop.svg</file>
+        <file>icons/Path-Inspect.svg</file>
+        <file>icons/Path-Job.svg</file>
+        <file>icons/Path-Kurve.svg</file>
+        <file>icons/Path-LengthOffset.svg</file>
+        <file>icons/Path-LoadTool.svg</file>
         <file>icons/Path-MachineLathe.svg</file>
         <file>icons/Path-MachineMill.svg</file>
+        <file>icons/Path-Machine.svg</file>
         <file>icons/Path-OperationA.svg</file>
         <file>icons/Path-OperationB.svg</file>
+        <file>icons/Path-Plane.svg</file>
+        <file>icons/Path-Pocket.svg</file>
+        <file>icons/Path-Post.svg</file>
         <file>icons/Path-Profile-Edges.svg</file>
         <file>icons/Path-Profile-Face.svg</file>
+        <file>icons/Path-Profile.svg</file>
+        <file>icons/Path-Sanity.svg</file>
         <file>icons/Path-SelectLoop.svg</file>
-        <file>icons/Path-Face.svg</file>
-        <file>translations/Path_de.qm</file>
+        <file>icons/Path-Shape.svg</file>
+        <file>icons/Path-SimpleCopy.svg</file>
+        <file>icons/Path-Speed.svg</file>
+        <file>icons/Path-Stock.svg</file>
+        <file>icons/Path-Stop.svg</file>
+        <file>icons/Path-ToolChange.svg</file>
+        <file>icons/Path-Toolpath.svg</file>
+        <file>icons/Path-ToolTable.svg</file>
+        <file>icons/preferences-path.svg</file>
+        <file>panels/ContourEdit.ui</file>
+        <file>panels/DlgJobChooser.ui</file>
+        <file>panels/DlgSelectPostProcessor.ui</file>
+        <file>panels/DlgToolCopy.ui</file>
+        <file>panels/DogboneEdit.ui</file>
+        <file>panels/DrillingEdit.ui</file>
+        <file>panels/EngraveEdit.ui</file>
+        <file>panels/JobEdit.ui</file>
+        <file>panels/MillFaceEdit.ui</file>
+        <file>panels/PocketEdit.ui</file>
+        <file>panels/ProfileEdgesEdit.ui</file>
+        <file>panels/ProfileEdit.ui</file>
+        <file>panels/RemoteEdit.ui</file>
+        <file>panels/SurfaceEdit.ui</file>
+        <file>panels/ToolControl.ui</file>
+        <file>panels/ToolEdit.ui</file>
+        <file>panels/ToolLibraryEditor.ui</file>
+        <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>
-        <file>translations/Path_zh-CN.qm</file>
-        <file>translations/Path_zh-TW.qm</file>
-        <file>translations/Path_hr.qm</file>
         <file>translations/Path_cs.qm</file>
-        <file>translations/Path_nl.qm</file>
+        <file>translations/Path_de.qm</file>
+        <file>translations/Path_el.qm</file>
+        <file>translations/Path_es-ES.qm</file>
         <file>translations/Path_fi.qm</file>
         <file>translations/Path_fr.qm</file>
+        <file>translations/Path_hr.qm</file>
         <file>translations/Path_hu.qm</file>
+        <file>translations/Path_it.qm</file>
         <file>translations/Path_ja.qm</file>
+        <file>translations/Path_nl.qm</file>
         <file>translations/Path_no.qm</file>
         <file>translations/Path_pl.qm</file>
+        <file>translations/Path_pt-BR.qm</file>
         <file>translations/Path_pt-PT.qm</file>
         <file>translations/Path_ro.qm</file>
         <file>translations/Path_ru.qm</file>
-        <file>translations/Path_sr.qm</file>
-        <file>translations/Path_es-ES.qm</file>
-        <file>translations/Path_sv-SE.qm</file>
-        <file>translations/Path_uk.qm</file>
-        <file>translations/Path_it.qm</file>
-        <file>translations/Path_pt-BR.qm</file>
-        <file>translations/Path_el.qm</file>
         <file>translations/Path_sk.qm</file>
-        <file>translations/Path_tr.qm</file>
         <file>translations/Path_sl.qm</file>
-        <file>panels/EngraveEdit.ui</file>
-        <file>panels/DrillingEdit.ui</file>
-        <file>panels/PocketEdit.ui</file>
-        <file>panels/ProfileEdit.ui</file>
-        <file>panels/SurfaceEdit.ui</file>
-        <file>panels/RemoteEdit.ui</file>
-        <file>panels/ToolControl.ui</file>
-        <file>panels/ToolLibraryEditor.ui</file>
-        <file>panels/JobEdit.ui</file>
-        <file>panels/DlgToolCopy.ui</file>
-        <file>panels/ToolEdit.ui</file>
-        <file>panels/DlgJobChooser.ui</file>
-        <file>panels/ContourEdit.ui</file>
-        <file>panels/MillFaceEdit.ui</file>
-        <file>panels/ProfileEdgesEdit.ui</file>
-        <file>panels/DogboneEdit.ui</file>
-        <file>panels/DlgSelectPostProcessor.ui</file>
-        <file>preferences/PathJob.ui</file>
+        <file>translations/Path_sr.qm</file>
+        <file>translations/Path_sv-SE.qm</file>
+        <file>translations/Path_tr.qm</file>
+        <file>translations/Path_uk.qm</file>
+        <file>translations/Path_zh-CN.qm</file>
+        <file>translations/Path_zh-TW.qm</file>
     </qresource>
 </RCC>
