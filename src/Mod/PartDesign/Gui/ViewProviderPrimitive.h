@@ -40,7 +40,6 @@ public:
     /// destructor
     virtual ~ViewProviderPrimitive();
     
-    virtual std::vector< App::DocumentObject* > claimChildren(void) const;
     virtual void attach(App::DocumentObject*);
     virtual void updateData(const App::Property*);
     

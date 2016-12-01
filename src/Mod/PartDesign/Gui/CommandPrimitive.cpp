@@ -67,7 +67,6 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     pcAction->setIcon(pcAction->actions().at(iMsg)->icon());
 
     std::string FeatName;
-    std::string CSName = getUniqueObjectName("CoordinateSystem");;
     if(iMsg == 0) {
 
         FeatName = getUniqueObjectName("Box");
@@ -136,19 +135,12 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
 
     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
-        CSName.c_str());
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), CSName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
-        FeatName.c_str(), CSName.c_str());
     Gui::Command::updateActive();
 
     auto* prm = static_cast<PartDesign::FeaturePrimitive*>(getDocument()->getObject(FeatName.c_str()));
     if (prm->BaseFeature.getValue())
        doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", prm->BaseFeature.getValue()->getNameInDocument());
 
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
 }
 
@@ -265,7 +257,6 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
     }
 
     std::string FeatName;
-    std::string CSName = getUniqueObjectName("CoordinateSystem");
     if(iMsg == 0) {
 
         FeatName = getUniqueObjectName("Box");
@@ -333,12 +324,6 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
 
     Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.addObject(\'PartDesign::CoordinateSystem\',\'%s\')",
-        CSName.c_str());
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
-                    ,pcActiveBody->getNameInDocument(), CSName.c_str());
-    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.CoordinateSystem=(App.ActiveDocument.%s)",
-        FeatName.c_str(), CSName.c_str());
     Gui::Command::updateActive();
 
     if (isActiveObjectValid() && (pcActiveBody != NULL)) {
@@ -348,7 +333,6 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
         }
     }
 
-    Gui::Command::doCommand(Gui, "Gui.activeDocument().hide(\'%s\')", CSName.c_str());
     Gui::Command::doCommand(Gui, "Gui.activeDocument().setEdit(\'%s\')", FeatName.c_str());
 }
 

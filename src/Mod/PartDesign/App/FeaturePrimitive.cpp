@@ -59,12 +59,12 @@ const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0,360.0,1.0}
 const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0,90.0,1.0};
 const App::PropertyQuantityConstraint::Constraints quantityRange  = {0.0,FLT_MAX,0.1};
 
-PROPERTY_SOURCE(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesign::FeaturePrimitive, PartDesign::FeatureAddSub)
 
 FeaturePrimitive::FeaturePrimitive()
   :  primitiveType(Box)
 {
-    ADD_PROPERTY_TYPE(CoordinateSystem, (0), "Primitive", App::Prop_None, "References to build the location of the primitive");
+    Part::AttachExtension::initExtension(this);
 }
 
 TopoDS_Shape FeaturePrimitive::refineShapeIfActive(const TopoDS_Shape& oldShape) const
@@ -84,11 +84,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 {
     try {
         //transform the primitive in the correct coordinance
-        App::DocumentObject* cs =  CoordinateSystem.getValue();
-        if(cs && cs->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
-            Placement.setValue(static_cast<PartDesign::CoordinateSystem*>(cs)->Placement.getValue());
-        else 
-            Placement.setValue(Base::Placement());
+        FeatureAddSub::execute();
         
         //if we have no base we just add the standard primitive shape
         TopoDS_Shape base;
