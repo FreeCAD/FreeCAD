@@ -492,6 +492,9 @@ void QGIViewPart::removeDecorations()
          QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
          QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
+            removeFromGroup(decor);
+            scene()->removeItem(decor);
+            delete decor;
          } else if (mat) {
             removeFromGroup(mat);
             scene()->removeItem(mat);
