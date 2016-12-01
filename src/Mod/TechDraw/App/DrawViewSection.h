@@ -84,6 +84,8 @@ public:
 
 public:
     std::vector<TechDrawGeometry::Face*> getFaceGeometry();
+    static Base::Vector3d getSectionVector (const Base::Vector3d baseViewDir, const std::string sectionName);
+
     static const char* SectionDirEnums[];
 
 protected:

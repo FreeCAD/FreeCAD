@@ -43,11 +43,13 @@
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 
 #include "TaskSectionView.h"
 #include <Mod/TechDraw/Gui/ui_TaskSectionView.h>
 
 using namespace Gui;
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 void _printVect(char* label, Base::Vector3d v);
@@ -119,61 +121,26 @@ void TaskSectionView::resetValues()
 bool TaskSectionView::calcValues()
 {
     bool result = true;
-    Base::Vector3d stdX(1.0,0.0,0.0);
-    Base::Vector3d stdY(0.0,1.0,0.0);
-    Base::Vector3d stdZ(0.0,0.0,1.0);
     Base::Vector3d view = m_base->Direction.getValue();
-    sectionDir = "unset";
 
     if (ui->pb_Up->isChecked()) {
         sectionDir = "Up";
-        sectionProjDir = view;
-        sectionNormal  = Base::Vector3d(view.x,view.z,-view.y);
-        if (view == stdZ) {
-            sectionProjDir = (-1.0 * stdY);
-            sectionNormal  = (-1.0 * stdY);
-        } else if (view == (-1.0 * stdZ)) {
-            sectionProjDir = (-1.0 * stdY);
-            sectionNormal  = (-1.0 * stdY);
-        }
+        sectionProjDir = DrawViewSection::getSectionVector(view,sectionDir);
     } else if (ui->pb_Down->isChecked()) {
         sectionDir = "Down";
-        sectionProjDir = view;
-        sectionNormal  = Base::Vector3d(-view.x,-view.z,view.y);
-        if (view == stdZ) {
-            sectionProjDir = stdY;
-            sectionNormal  = stdY;
-        } else if (view == (-1.0 * stdZ)) {
-            sectionProjDir = stdY;
-            sectionNormal  = stdY;
-        }
+        sectionProjDir = DrawViewSection::getSectionVector(view,sectionDir);
     } else if (ui->pb_Left->isChecked()) {
         sectionDir = "Left";
-        sectionProjDir = Base::Vector3d(-view.y,view.x,view.z);
-        sectionNormal  = Base::Vector3d(-view.y,view.x,0.0);
-        if (view == stdZ) {
-            sectionProjDir = stdX;
-            sectionNormal  = stdX;
-        } else if (view == (-1.0 * stdZ)) {
-            sectionProjDir = stdX;
-            sectionNormal  = stdX;
-        }
+        sectionProjDir = DrawViewSection::getSectionVector(view,sectionDir);
     } else if (ui->pb_Right->isChecked()) {
         sectionDir = "Right";
-        sectionProjDir = Base::Vector3d(view.y,-view.x,view.z);
-        sectionNormal  = Base::Vector3d(view.y,-view.x,0.0);
-        if (view == stdZ) {
-            sectionProjDir = -1.0 * stdX;
-            sectionNormal  = -1.0 * stdX;
-        } else if (view == (-1.0 * stdZ)) {
-            sectionProjDir = -1.0 * stdX;
-            sectionNormal  = -1.0 * stdX;
-        }
+        sectionProjDir = DrawViewSection::getSectionVector(view,sectionDir);
     } else {
         Base::Console().Message("Select a direction\n");
         result = false;
     }
 
+    sectionNormal = sectionProjDir;
     if (result) {
         ui->leNormal->setText(formatVector(sectionNormal));
         ui->leProjDir->setText(formatVector(sectionProjDir));
