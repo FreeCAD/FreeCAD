@@ -601,36 +601,12 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
 {
     
     assert(PrimitiveView);
-    
-    PartDesign::FeaturePrimitive* prm = static_cast<PartDesign::FeaturePrimitive*>(PrimitiveView->getObject());
-    cs  = static_cast<PartDesign::CoordinateSystem*>(prm->CoordinateSystem.getValue());
-    
-    //if no coordinate system exist we need to add one, it is highly important that it exists!
-    if(!cs) {
-        std::string CSName = App::GetApplication().getActiveDocument()->getUniqueObjectName("CoordinateSystem");
-        cs = static_cast<PartDesign::CoordinateSystem*>(
-                App::GetApplication().getActiveDocument()->addObject("PartDesign::CoordinateSystem", CSName.c_str()));
-        prm->CoordinateSystem.setValue(cs);
-    }
-            
-    ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
-            Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
-    
-    assert(vp);
-    
-    //make sure the relevant things are visible
-    cs_visibility = vp->isVisible();
-    vp->Visibility.setValue(true);
       
-    parameter  = new TaskDatumParameters(vp);
-    Content.push_back(parameter);
+    //parameter  = new TaskDatumParameters(vp);
+    //Content.push_back(parameter);
 
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
-
-    //make sure we track changes from the coordinate system to the primitive position
-    auto bnd = boost::bind(&TaskPrimitiveParameters::objectChanged, this, _1, _2);
-    connection = vp_prm->getObject()->getDocument()->signalChangedObject.connect(bnd);
 }
 
 TaskPrimitiveParameters::~TaskPrimitiveParameters()
@@ -638,24 +614,11 @@ TaskPrimitiveParameters::~TaskPrimitiveParameters()
 
 }
 
-void TaskPrimitiveParameters::objectChanged(const App::DocumentObject& obj, const App::Property& p)
-{
-    if (&obj == cs && strcmp(p.getName(), "Placement")==0) {
-        vp_prm->getObject()->recomputeFeature();
-    }
-}
-
 bool TaskPrimitiveParameters::accept()
 {
     primitive->setPrimitive(QString::fromUtf8(vp_prm->getObject()->getNameInDocument()));
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
-            Gui::Application::Instance->activeDocument()->getViewProvider(cs)); 
-    vp->setVisible(cs_visibility);
-
-    connection.disconnect();
 
     return true;
 }
@@ -665,15 +628,6 @@ bool TaskPrimitiveParameters::reject()
     // roll back the done things
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-
-    //if we did not delete the document object we  need to set the visibilities right
-    ViewProviderDatumCoordinateSystem* vp = static_cast<ViewProviderDatumCoordinateSystem*>(
-        Gui::Application::Instance->activeDocument()->getViewProvider(cs));
-
-    if (vp)
-        vp->setVisible(cs_visibility);
-
-    connection.disconnect();
 
     return true;
 }

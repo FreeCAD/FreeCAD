@@ -28,13 +28,14 @@
 #include <App/PropertyUnits.h>
 
 #include "FeatureAddSub.h"
+#include <Mod/Part/App/AttachExtension.h>
 
 namespace PartDesign
 {
 
-class PartDesignExport FeaturePrimitive : public PartDesign::FeatureAddSub
+class PartDesignExport FeaturePrimitive : public PartDesign::FeatureAddSub, public Part::AttachExtension
 {
-    PROPERTY_HEADER(PartDesign::FeaturePrimitive);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesign::FeaturePrimitive);
 
 public:
     enum Type {
@@ -56,9 +57,6 @@ public:
     Type         getPrimitiveType() {return primitiveType;};      
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape& oldShape) const;    
     virtual void onChanged(const App::Property* prop);
-    
-    /// The references datum defining the primtive location
-    App::PropertyLink CoordinateSystem;
     
     /// Do nothing, just to suppress warning, must be redefined in derived classes
     virtual App::DocumentObjectExecReturn* execute() {

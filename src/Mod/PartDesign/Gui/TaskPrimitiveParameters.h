@@ -113,8 +113,6 @@ public:
     TaskPrimitiveParameters(ViewProviderPrimitive *PrimitiveView);
     ~TaskPrimitiveParameters();
 
-    void objectChanged(const App::DocumentObject&, const App::Property&);
-
 protected:
     virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const;
 
@@ -122,12 +120,9 @@ protected:
     virtual bool reject();
 
 private:
-    s::connection connection;
     TaskBoxPrimitives*   primitive;
     TaskDatumParameters* parameter;
-    PartDesign::CoordinateSystem* cs;
     ViewProviderPrimitive* vp_prm;
-    bool cs_visibility;
 };
 
 } //namespace PartDesignGui
