@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://web.resource.org/cc/"
+   xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
@@ -13,12 +14,24 @@
    height="32px"
    id="svg9484"
    sodipodi:version="0.32"
-   inkscape:version="0.45.1"
-   sodipodi:docbase="C:\_Projekte\FreeCAD\src\Mod\Dental\Gui\Icons"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="mesh_boundary.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
   <defs
      id="defs9486">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3787">
+      <stop
+         style="stop-color:#3465a4;stop-opacity:1;"
+         offset="0"
+         id="stop3789" />
+      <stop
+         style="stop-color:#3465a4;stop-opacity:0;"
+         offset="1"
+         id="stop3791" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient12537">
@@ -39,6 +52,16 @@
        y1="14.755193"
        x2="30.5"
        y2="14.755193"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(35,-2)" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3787"
+       id="linearGradient3793"
+       x1="17.66153"
+       y1="12.138105"
+       x2="18.211552"
+       y2="15.855962"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -48,17 +71,30 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.836083"
-     inkscape:cx="13.609847"
-     inkscape:cy="16"
+     inkscape:zoom="30.050351"
+     inkscape:cx="14.978163"
+     inkscape:cy="14.945866"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="1247"
-     inkscape:window-height="766"
-     inkscape:window-x="434"
-     inkscape:window-y="245" />
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:snap-global="false"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2989"
+       units="px"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       spacingx="1px"
+       spacingy="1px" />
+  </sodipodi:namedview>
   <metadata
      id="metadata9489">
     <rdf:RDF>
@@ -75,24 +111,50 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="fill:url(#linearGradient12547);fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1.0;opacity:1"
-       d="M 30,27 L 26,2.5103853 L 5,17"
-       id="path9506"
-       inkscape:export-filename="C:\_Projekte\FreeCAD\src\Mod\Dental\Gui\Icons\mesh_boundary.png"
-       inkscape:export-xdpi="75"
-       inkscape:export-ydpi="75" />
+       style="fill:#73d216;stroke:none"
+       d="M 3,17 25,3 29,29 z"
+       id="path2991-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
     <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="M 5,17 L 30,27"
-       id="path9524" />
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 5.0999495,18.06471 24.84705,5.3764356"
+       id="path3779"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 23.24119,4.5882122 26.731588,27.32539"
+       id="path3781"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#8ae234;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 28.557989,26.51248 5.0175919,15.629447"
+       id="path3783"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#172a04;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+       d="M 3,17 25,3 29,29 z"
+       id="path2991"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccc" />
     <path
        sodipodi:type="arc"
-       style="opacity:1;fill:#0000ff;fill-opacity:1;stroke:#000002;stroke-opacity:1"
+       style="fill:#204a87;fill-opacity:1;stroke:#0b1521;stroke-width:2.15216589;stroke-opacity:1"
        id="path10509"
        sodipodi:cx="20.143869"
        sodipodi:cy="14.792462"
        sodipodi:rx="5.051754"
        sodipodi:ry="3.6309483"
-       d="M 25.195623 14.792462 A 5.051754 3.6309483 0 1 1  15.092115,14.792462 A 5.051754 3.6309483 0 1 1  25.195623 14.792462 z" />
+       d="m 25.195623,14.792462 a 5.051754,3.6309483 0 1 1 -10.103508,0 5.051754,3.6309483 0 1 1 10.103508,0 z"
+       transform="matrix(0.8959021,0,0,0.96393551,0.42718817,1.2410203)" />
+    <path
+       style="fill:none;stroke:url(#linearGradient3793);stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 16,15.905877 C 15.658748,14 19.576447,13.223486 20.858816,15.070592"
+       id="path3785"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
   </g>
 </svg>
