@@ -123,10 +123,12 @@ class plane:
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis;
         self.axis.normalize()
-        if (DraftVecUtils.equals(axis, Vector(1,0,0))):
+        if axis.getAngle(Vector(1,0,0)) < 0.00001:
+            self.axis = Vector(1,0,0)
             self.u = Vector(0,1,0)
             self.v = Vector(0,0,1)
-        elif (DraftVecUtils.equals(axis, Vector(-1,0,0))):
+        elif axis.getAngle(Vector(-1,0,0)) < 0.00001:
+            self.axos = Vector(-1,0,0)
             self.u = Vector(0,-1,0)
             self.v = Vector(0,0,1)
         elif upvec:

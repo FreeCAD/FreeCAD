@@ -1101,6 +1101,8 @@ def getNormal(shape):
             vdir = Draft.get3DView().getViewDirection()
             if n.getAngle(vdir) < 0.78:
                 n = n.negative()
+        if not n.Length:
+            return None
         return n
 
 def getRotation(v1,v2=FreeCAD.Vector(0,0,1)):
