@@ -38,6 +38,7 @@ Arguments for linuxcnc:
     --header,--no-header             ... output headers (--header)
     --comments,--no-comments         ... output comments (--comments)
     --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
+    --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
 '''
 
 import datetime
@@ -90,6 +91,7 @@ def processArguments(argstring):
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
+    global SHOW_EDITOR
     for arg in argstring.split():
         if arg == '--header':
             OUTPUT_HEADER = True
@@ -103,6 +105,10 @@ def processArguments(argstring):
             OUTPUT_LINE_NUMBERS = True
         elif arg == '--no-line-numbers':
             OUTPUT_LINE_NUMBERS = False
+        elif arg == '--show-editor':
+            SHOW_EDITOR = True
+        elif arg == '--no-show-editor':
+            SHOW_EDITOR = False
 
 def export(objectslist, filename, argstring):
     processArguments(argstring)
@@ -179,9 +185,12 @@ def export(objectslist, filename, argstring):
 
     print "done postprocessing."
 
-    gfile = pythonopen(filename, "wb")
-    gfile.write(gcode)
-    gfile.close()
+    if not filename == '-':
+        gfile = pythonopen(filename, "wb")
+        gfile.write(final)
+        gfile.close()
+
+    return final
 
 
 def linenumber():
