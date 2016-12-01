@@ -121,13 +121,6 @@ void ViewProviderPrimitive::updateData(const App::Property* p) {
     PartDesignGui::ViewProviderAddSub::updateData(p);
 }
 
-std::vector< App::DocumentObject* > ViewProviderPrimitive::claimChildren(void) const {
-    std::vector< App::DocumentObject* > vec;
-    vec.push_back(static_cast<PartDesign::FeaturePrimitive*>(getObject())->CoordinateSystem.getValue());
-    
-    return vec;
-}
-
 QIcon ViewProviderPrimitive::getIcon(void) const {
 
     QString str = QString::fromLatin1("PartDesign_");

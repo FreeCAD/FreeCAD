@@ -355,13 +355,6 @@ bool isFeatureMovable(App::DocumentObject* const feat)
             return false;
     }
 
-    if (feat->getTypeId().isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId())) {
-        auto prim = static_cast<PartDesign::FeaturePrimitive*>(feat);
-
-        if (!isFeatureMovable(prim->CoordinateSystem.getValue()))
-            return false;
-    }
-
     if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         auto sk = prim->getVerifiedSketch(true);
@@ -410,13 +403,6 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
 
     for (auto const &feat : features)
     {
-        // Get coordinate system object
-        if (feat->getTypeId().isDerivedFrom(PartDesign::FeaturePrimitive::getClassTypeId())) {
-            auto prim = static_cast<PartDesign::FeaturePrimitive*>(feat);
-            App::DocumentObject* cs = prim->CoordinateSystem.getValue();
-            if (cs && cs->getTypeId() == PartDesign::CoordinateSystem::getClassTypeId())
-                unique_objs.insert(cs);
-        }
 
         // Get sketches and datums from profile based features
         if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
