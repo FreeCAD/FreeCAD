@@ -4199,8 +4199,8 @@ class Draft2Sketch(Modifier):
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                     lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
                 elif obj.isDerivedFrom("Part::Feature"):
-                    if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
-                        lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=False)")
+                    #if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
+                    lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
             self.commit(translate("draft","Convert"),
                         lines + ['FreeCAD.ActiveDocument.recompute()'])
         self.finish()
