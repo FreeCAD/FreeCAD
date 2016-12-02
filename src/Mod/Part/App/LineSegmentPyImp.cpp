@@ -116,6 +116,25 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
 
     PyErr_Clear();
+    if (PyArg_ParseTuple(args, "O!dd", &(LinePy::Type), &pLine, &first, &last)) {
+        // Copy line
+        LinePy* pcLine = static_cast<LinePy*>(pLine);
+        // get Geom_Line of line segment
+        Handle_Geom_Line that_line = Handle_Geom_Line::DownCast
+            (pcLine->getGeomLinePtr()->handle());
+        // get Geom_Line of line segment
+        Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+            (this->getGeomLineSegmentPtr()->handle());
+        Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+            (this_curv->BasisCurve());
+
+        // Assign the lines
+        this_line->SetLin(that_line->Lin());
+        this_curv->SetTrim(first, last);
+        return 0;
+    }
+
+    PyErr_Clear();
     PyObject *pV1, *pV2;
     if (PyArg_ParseTuple(args, "O!O!", &(Base::VectorPy::Type), &pV1,
                                        &(Base::VectorPy::Type), &pV2)) {
@@ -159,6 +178,8 @@ int LineSegmentPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     PyErr_SetString(PyExc_TypeError, "Line constructor accepts:\n"
         "-- empty parameter list\n"
         "-- LineSegment\n"
+        "-- LineSegment,double,double\n"
+        "-- Line,double,double\n"
         "-- Point, Point");
     return -1;
 }
