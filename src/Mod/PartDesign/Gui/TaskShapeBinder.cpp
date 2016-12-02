@@ -317,35 +317,13 @@ bool TaskDlgShapeBinder::accept()
     return true;
 }
 
-//bool TaskDlgShapeBinder::reject()
-//{
-//    // get the support and Sketch
-//    PartDesign::Pipe* pcPipe = static_cast<PartDesign::Pipe*>(PipeView->getObject()); 
-//    Sketcher::SketchObject *pcSketch = 0;
-//    App::DocumentObject    *pcSupport = 0;
-//    if (pcPipe->Sketch.getValue()) {
-//        pcSketch = static_cast<Sketcher::SketchObject*>(pcPipe->Sketch.getValue()); 
-//        pcSupport = pcSketch->Support.getValue();
-//    }
-//
-//    // roll back the done things
-//    Gui::Command::abortCommand();
-//    Gui::Command::doCommand(Gui::Command::Gui,"Gui.activeDocument().resetEdit()");
-//    
-//    // if abort command deleted the object the support is visible again
-//    if (!Gui::Application::Instance->getViewProvider(pcPipe)) {
-//        if (pcSketch && Gui::Application::Instance->getViewProvider(pcSketch))
-//            Gui::Application::Instance->getViewProvider(pcSketch)->show();
-//        if (pcSupport && Gui::Application::Instance->getViewProvider(pcSupport))
-//            Gui::Application::Instance->getViewProvider(pcSupport)->show();
-//    }
-//
-//    //Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.recompute()");
-//    //Gui::Command::commitCommand();
-//
-//    return true;
-//}
-
-
+bool TaskDlgShapeBinder::reject()
+{
+  // roll back the done things
+  Gui::Command::abortCommand();
+  Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+  Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+  return true;
+}
 
 #include "moc_TaskShapeBinder.cpp"
