@@ -5860,14 +5860,15 @@ class _ViewProviderVisGroup:
                         for o in vobj.Object.Group:
                             if o.ViewObject:
                                 for p in ["LineColor","ShapeColor","LineWidth","DrawStyle","Transparency"]:
-                                    if hasattr(o.ViewObject,p):
-                                        setattr(o.ViewObject,p,getattr(vobj,p))
-                                    elif hasattr(o,p):
-                                        # for Drawing views
-                                        setattr(o,p,getattr(vobj,p))
-                                    elif (p == "DrawStyle") and hasattr(o,"LineStyle"):
-                                        # Special case in Drawing views
-                                        setattr(o,"LineStyle",getattr(vobj,p))
+                                    if hasattr(vobj,p):
+                                        if hasattr(o.ViewObject,p):
+                                            setattr(o.ViewObject,p,getattr(vobj,p))
+                                        elif hasattr(o,p):
+                                            # for Drawing views
+                                            setattr(o,p,getattr(vobj,p))
+                                        elif (p == "DrawStyle") and hasattr(o,"LineStyle"):
+                                            # Special case in Drawing views
+                                            setattr(o,"LineStyle",getattr(vobj,p))
                                 if vobj.Object.InList:
                                     # touch the page if something was changed
                                     if vobj.Object.InList[0].isDerivedFrom("Drawing::FeaturePage"):
