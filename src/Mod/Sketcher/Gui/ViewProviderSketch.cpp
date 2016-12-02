@@ -2680,7 +2680,7 @@ void ViewProviderSketch::drawConstraintIcons()
             if((*it)->Name.empty())
                 thisIcon.label = QString::number(constrId + 1);
             else
-                thisIcon.label = QString::fromLatin1((*it)->Name.c_str());
+                thisIcon.label = QString::fromUtf8((*it)->Name.c_str());
             iconQueue.push_back(thisIcon);
 
             // Note that the second translation is meant to be applied after the first.
@@ -2696,11 +2696,12 @@ void ViewProviderSketch::drawConstraintIcons()
             thisIcon.destination = dynamic_cast<SoImage *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON));
             thisIcon.infoPtr = static_cast<SoInfo *>(sep->getChild(CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID));
         }
-        else
+        else {
             if ((*it)->Name.empty())
                 thisIcon.label = QString();
             else
-                thisIcon.label = QString::fromLatin1((*it)->Name.c_str());
+                thisIcon.label = QString::fromUtf8((*it)->Name.c_str());
+        }
 
         iconQueue.push_back(thisIcon);
     }
