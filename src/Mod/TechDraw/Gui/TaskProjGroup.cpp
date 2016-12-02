@@ -449,6 +449,9 @@ QString TaskProjGroup::formatVector(Base::Vector3d v)
 
 bool TaskProjGroup::accept()
 {
+    Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
+    if (!doc) return false;
+
     Gui::Command::commitCommand();
     Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
@@ -458,6 +461,9 @@ bool TaskProjGroup::accept()
 
 bool TaskProjGroup::reject()
 {
+    Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
+    if (!doc) return false;
+
     if (getCreateMode()) {
         std::string multiViewName = multiView->getNameInDocument();
         std::string PageName = multiView->findParentPage()->getNameInDocument();
