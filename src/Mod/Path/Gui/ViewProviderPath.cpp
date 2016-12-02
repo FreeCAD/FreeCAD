@@ -107,6 +107,7 @@ ViewProviderPath::ViewProviderPath()
 
     pcLines = new PartGui::SoBrepEdgeSet();
     pcLines->ref();
+    pcLines->coordIndex.setNum(0);
     
     pcLineColor = new SoMaterial;
     pcLineColor->ref();
