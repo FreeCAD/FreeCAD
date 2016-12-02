@@ -76,7 +76,6 @@ std::vector<std::string> ViewProviderViewSection::getDisplayModes(void) const
 
 void ViewProviderViewSection::updateData(const App::Property* prop)
 {
-    Base::Console().Log("ViewProviderViewSection::updateData - Update View: %s\n",prop->getName());
     if (prop == &(getViewObject()->ShowCutSurface)   ||
         prop == &(getViewObject()->CutSurfaceColor) ) {
         // redraw QGIVP
