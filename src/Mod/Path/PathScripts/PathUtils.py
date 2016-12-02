@@ -63,6 +63,9 @@ def cleanedges(splines, precision):
         elif geomType(spline) == "Line":
             edges.append(spline)
 
+        elif geomType(spline) == "LineSegment":
+            edges.append(spline)
+
         else:
             pass
 
@@ -244,7 +247,7 @@ def reverseEdge(e):
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif geomType(e) == "Line":
+    elif geomType(e) == "LineSegment":
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
@@ -410,7 +413,7 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
             arclist = filterArcs(e)
             for a in arclist:
                 edgelist.append(a)
-        elif geomType(e) == "Line":
+        elif geomType(e) == "LineSegment":
             edgelist.append(e)
         elif geomType(e) == "BSplineCurve" or \
                 geomType(e) == "BezierCurve" or \
