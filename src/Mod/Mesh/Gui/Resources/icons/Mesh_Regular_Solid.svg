@@ -15,7 +15,7 @@
    id="svg2860"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Regular_Solid_nova.svg"
+   sodipodi:docname="Mesh_Regular_Solid.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/mesh/Mesh_Regular_Solid3.png"
@@ -334,17 +334,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16"
-     inkscape:cx="14.393693"
-     inkscape:cy="41.329539"
+     inkscape:zoom="7.4135727"
+     inkscape:cx="58.765704"
+     inkscape:cy="29.913203"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-global="true">
     <inkscape:grid
@@ -353,7 +353,10 @@
        empspacing="2"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       units="px"
+       spacingx="1px"
+       spacingy="1px" />
   </sodipodi:namedview>
   <metadata
      id="metadata2865">
@@ -508,7 +511,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;stroke:#172a04;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 19,17 6,12"
+       d="m 5,23 36,0"
        id="path3848"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="cc" />
