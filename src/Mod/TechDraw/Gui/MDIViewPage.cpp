@@ -180,19 +180,6 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
 MDIViewPage::~MDIViewPage()
 {
-    // Safely remove graphicview items that have built up TEMP SOLUTION
-    for(auto it : deleteItems) {
-        auto qObjPtr( dynamic_cast<QObject *>(it) );
-        if (qObjPtr) {
-            qObjPtr->deleteLater();
-        } else {
-            delete it;
-        }
-    }
-    deleteItems.clear();
-
-    //m_view will be deleted by MDIViewPage as a Qt child
-    //delete m_view;
 }
 
 
@@ -403,7 +390,6 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
                     Base::Console().Log("ERROR - MDIViewPage::updateDrawing - %s already removed from QGraphicsScene\n",
                                         (*itGraphics)->getViewName());
                 }
-                deleteItems.append(*itGraphics); // delete in the destructor when completly safe. TEMP SOLUTION
             }
             itGraphics++;
         }
