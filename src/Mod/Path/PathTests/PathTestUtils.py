@@ -44,7 +44,7 @@ class PathTestBase(unittest.TestCase):
 
     def assertLine(self, edge, pt1, pt2):
         """Verify that edge is a line from pt1 to pt2."""
-        self.assertIs(type(edge.Curve), Part.Line)
+        self.assertIs(type(edge.Curve), Part.LineSegment)
         self.assertCoincide(edge.Curve.StartPoint, pt1)
         self.assertCoincide(edge.Curve.EndPoint, pt2)
 
