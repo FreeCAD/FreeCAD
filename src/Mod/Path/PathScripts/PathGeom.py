@@ -117,7 +117,7 @@ class PathGeom:
 
         endPoint = cls.commandEndPoint(cmd, startPoint)
         if (cmd.Name in cls.CmdMoveStraight) or (cmd.Name in cls.CmdMoveFast):
-            return Part.Edge(Part.Line(startPoint, endPoint))
+            return Part.Edge(Part.LineSegment(startPoint, endPoint))
 
         if cmd.Name in cls.CmdMoveArc:
             center = startPoint + cls.commandEndPoint(cmd, Vector(0,0,0), 'I', 'J', 'K')
