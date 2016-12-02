@@ -683,6 +683,9 @@ Py::Float TopoShapeEdgePy::getLength(void) const
     return Py::Float(GCPnts_AbscissaPoint::Length(adapt));
 }
 
+#include <App/Application.h>
+#include <Mod/Part/App/LineSegmentPy.h>
+
 Py::Object TopoShapeEdgePy::getCurve() const
 {
     const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
@@ -691,11 +694,41 @@ Py::Object TopoShapeEdgePy::getCurve() const
     {
     case GeomAbs_Line:
         {
-            GeomLine* line = new GeomLine();
-            Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
-                (line->handle());
-            this_curv->SetLin(adapt.Line());
-            return Py::Object(new LinePy(line),true);
+            static bool LineOld = true;
+            static bool init = false;
+            if (!init) {
+                init = true;
+                Base::Reference<ParameterGrp> hPartGrp = App::GetApplication().GetUserParameter()
+                    .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/Part");
+                Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
+                LineOld = hGenPGrp->GetBool("LineOld", true);
+            }
+
+            if (LineOld) {
+                GeomLineSegment* line = new GeomLineSegment();
+                Handle_Geom_TrimmedCurve this_curv = Handle_Geom_TrimmedCurve::DownCast
+                    (line->handle());
+                Handle_Geom_Line this_line = Handle_Geom_Line::DownCast
+                    (this_curv->BasisCurve());
+                this_line->SetLin(adapt.Line());
+                this_curv->SetTrim(adapt.FirstParameter(), adapt.LastParameter());
+                PyErr_SetString(PyExc_DeprecationWarning,
+                    "For future usage 'Curve' will return 'Line' which is infinite "
+                    "instead of the limited 'LineSegment'.\n"
+                    "If you need a line segment then use this:\n"
+                    "Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)"
+                    "To suppress the warning set BaseApp/Preferences/Mod/Part/General/LineOld to false");
+                PyErr_Print();
+
+                return Py::Object(new LineSegmentPy(line),true); // LinePyOld
+            }
+            else {
+                GeomLine* line = new GeomLine();
+                Handle_Geom_Line this_curv = Handle_Geom_Line::DownCast
+                    (line->handle());
+                this_curv->SetLin(adapt.Line());
+                return Py::Object(new LinePy(line),true);
+            }
         }
     case GeomAbs_Circle:
         {
