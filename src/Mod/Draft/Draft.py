@@ -2595,8 +2595,34 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     return None
             # if not addTo:
                 # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
-            for edge in obj.Shape.Edges:
-                nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
+            if autoconstraints:
+                start = 0
+                end = 0
+                for wire in obj.Shape.Wires:
+                    for edge in wire.OrderedEdges:
+                        nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
+                        end += 1
+                    segs = list(range(start,end))
+                    for seg in segs:
+                        if seg == nobj.GeometryCount-1:
+                            if wire.isClosed:
+                                if nobj.Geometry[seg].EndPoint == nobj.Geometry[start].StartPoint:
+                                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,start,StartPoint))
+                                else:
+                                    nobj.addConstraint(Constraint("Coincident",seg,StartPoint,start,EndPoint))
+                        else:
+                            if nobj.Geometry[seg].EndPoint == nobj.Geometry[seg+1].StartPoint:
+                                nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                            else:
+                                nobj.addConstraint(Constraint("Coincident",seg,StartPoint,seg+1,EndPoint))
+                        if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
+                            nobj.addConstraint(Constraint("Vertical",seg))
+                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
+                            nobj.addConstraint(Constraint("Horizontal",seg))
+                    start = end
+            else:
+                for edge in obj.Shape.Edges:
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
             ok = True
         formatObject(nobj,obj)
         if ok and delete:

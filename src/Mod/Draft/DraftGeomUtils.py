@@ -188,7 +188,7 @@ def hasOnlyWires(shape):
 def geomType(edge):
     "returns the type of geom this edge is based on"
     try:
-        if isinstance(edge.Curve,Part.LineSegment):
+        if (isinstance(edge.Curve,Part.LineSegment) or isinstance(edge.Curve,Part.Line)):
             return "Line"
         elif isinstance(edge.Curve,Part.Circle):
             return "Circle"
@@ -549,6 +549,8 @@ def orientEdge(edge, normal=None):
         angle = -1*edge.Placement.Rotation.Angle*FreeCAD.Units.Radian
 
     edge.rotate(base, axis, angle)
+    if isinstance(edge.Curve,Part.Line):
+        return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
     return edge.Curve
 
 def mirror (point, edge):
