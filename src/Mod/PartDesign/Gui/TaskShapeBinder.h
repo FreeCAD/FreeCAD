@@ -94,7 +94,7 @@ public:
     /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
     /// is called by the framework if the dialog is rejected (Cancel)
-    //virtual bool reject();
+    virtual bool reject();
 
 protected:
     TaskShapeBinder  *parameter;
