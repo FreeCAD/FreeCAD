@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>487</width>
-    <height>474</height>
+    <height>489</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -370,7 +370,7 @@ Values with differences below this value will be treated as same.</string>
         <item>
          <widget class="Gui::PrefLineEdit" name="lineEdit">
           <property name="text">
-           <string>Clone of</string>
+           <string/>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>ClonePrefix</cstring>
