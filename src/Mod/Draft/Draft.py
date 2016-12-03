@@ -2690,7 +2690,7 @@ def clone(obj,delta=None):
     linked copy of the given object. If the original object changes, the final object
     changes too. Optionally, you can give a delta Vector to move the clone from the
     original position.'''
-    prefix = getParam("ClonePrefix","Clone of")
+    prefix = getParam("ClonePrefix","")
     if prefix:
         prefix = prefix.strip()+" "
     if not isinstance(obj,list):

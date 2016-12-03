@@ -278,9 +278,12 @@ class _Panel(ArchComponent.Component):
         obj.addProperty("App::PropertyAngle","WaveDirection","Arch", QT_TRANSLATE_NOOP("App::Property","The direction of waves for corrugated elements"))
         obj.addProperty("App::PropertyEnumeration","WaveType","Arch", QT_TRANSLATE_NOOP("App::Property","The type of waves for corrugated elements"))
         obj.addProperty("App::PropertyArea","Area","Arch",       QT_TRANSLATE_NOOP("App::Property","The area of this panel"))
+        obj.addProperty("App::PropertyEnumeration","FaceMaker","Arch",QT_TRANSLATE_NOOP("App::Property","The facemaker type to use to build the profile of this object"))
+        obj.addProperty("App::PropertyVector","Normal","Arch",QT_TRANSLATE_NOOP("App::Property","The normal extrusion direction of this object (keep (0,0,0) for automatic normal)"))
         obj.Sheets = 1
         self.Type = "Panel"
         obj.WaveType = ["Curved","Trapezoidal"]
+        obj.FaceMaker = ["None","Simple","Cheese","Bullseye"]
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
 
@@ -322,6 +325,11 @@ class _Panel(ArchComponent.Component):
         pl = obj.Placement
         base = None
         normal = None
+        if hasattr(obj,"Normal"):
+            if obj.Normal.Length > 0:
+                normal = Vector(obj.Normal)
+                normal.normalize()
+                normal.multiply(thickness)
         baseprofile = None
         if obj.Base:
             base = obj.Base.Shape.copy()
@@ -329,17 +337,29 @@ class _Panel(ArchComponent.Component):
                 p = FreeCAD.Placement(obj.Base.Placement)
                 if base.Faces:
                     baseprofile = base
-                    normal = baseprofile.Faces[0].normalAt(0,0).multiply(thickness)
+                    if not normal:
+                        normal = baseprofile.Faces[0].normalAt(0,0).multiply(thickness)
                     base = base.extrude(normal)
                 elif base.Wires:
-                    closed = True
-                    for w in base.Wires:
-                        if not w.isClosed():
-                            closed = False
-                    if closed:
-                        baseprofile = ArchCommands.makeFace(base.Wires)
-                        normal = baseprofile.normalAt(0,0).multiply(thickness)
-                        base = baseprofile.extrude(normal)
+                    fm = False
+                    if hasattr(obj,"FaceMaker"):
+                        if obj.FaceMaker != "None":
+                            try:
+                                base = Part.makeFace(base.Wires,"Part::FaceMaker"+str(obj.FaceMaker))
+                                fm = True
+                            except:
+                                FreeCAD.Console.PrintError(translate("Arch","Facemaker returned an error")+"\n")
+                                return
+                    if not fm:
+                        closed = True
+                        for w in base.Wires:
+                            if not w.isClosed():
+                                closed = False
+                        if closed:
+                            baseprofile = ArchCommands.makeFace(base.Wires)
+                            if not normal:
+                                normal = baseprofile.normalAt(0,0).multiply(thickness)
+                            base = baseprofile.extrude(normal)
                 elif obj.Base.isDerivedFrom("Mesh::Feature"):
                     if obj.Base.Mesh.isSolid():
                         if obj.Base.Mesh.countComponents() == 1:
@@ -347,7 +367,8 @@ class _Panel(ArchComponent.Component):
                             if sh.isClosed() and sh.isValid() and sh.Solids:
                                 base = sh
         else:
-            normal = Vector(0,0,1).multiply(thickness)
+            if not normal:
+                normal = Vector(0,0,1).multiply(thickness)
             l2 = length/2 or 0.5
             w2 = width/2 or 0.5
             v1 = Vector(-l2,-w2,0)
@@ -457,6 +478,10 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Panel_Clone.svg"
         return ":/icons/Arch_Panel_Tree.svg"
 
 
