@@ -6,7 +6,7 @@
 FreeCAD python API documentation
 ================================
 
-This is the complete python API reference of the FreeCAD appication
+This is the complete python API reference of the FreeCAD application
 
 .. toctree::
    :maxdepth: 4
