@@ -13,7 +13,7 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>
-				The abstract class GeometryCurve is the root class of all curve objects.
+                The abstract class Geom2dCurve is the root class of all curve objects.
 			</UserDocu>
 		</Documentation>
         <Methode Name="reverse">
@@ -26,7 +26,6 @@
 				<UserDocu>Return the shape for the geometry.</UserDocu>
 			</Documentation>
 		</Methode>
-        <!--
         <Methode Name="discretize" Const="true" Keyword="true">
 			<Documentation>
         <UserDocu>Discretizes the curve and returns a list of points.
@@ -50,7 +49,7 @@ then the behaviour is as if using the keyword 'Distance'.
 Example:
 
 import Part
-c=Part.Circle()
+c=PartGeom2d.Circle2d()
 c.Radius=5
 p=c.discretize(Number=50,First=3.14)
 s=Part.Compound([Part.Vertex(i) for i in p])
@@ -75,30 +74,28 @@ length([uMin,uMax,Tol]) -> Float</UserDocu>
 parameterAtDistance([abscissa, startingParameter]) -> Float the</UserDocu>
 			</Documentation>
 		</Methode>
-        -->
 		<Methode Name="value">
 			<Documentation>
 				<UserDocu>Computes the point of parameter u on this curve</UserDocu>
 			</Documentation>
 		</Methode>
-        <!--
 		<Methode Name="tangent">
 			<Documentation>
 				<UserDocu>Computes the tangent of parameter u on this curve</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="parameter">
+        <Methode Name="parameter">
 			<Documentation>
 				<UserDocu>Returns the parameter on the curve
 of the nearest orthogonal projection of the point.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="normal" Const="true">
+        <Methode Name="normal" Const="true">
 		  <Documentation>
 			  <UserDocu>Vector = normal(pos) - Get the normal vector at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 		</Methode>
-	  <Methode Name="curvature" Const="true">
+      <Methode Name="curvature" Const="true">
 		  <Documentation>
 			  <UserDocu>Float = curvature(pos) - Get the curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
@@ -108,21 +105,14 @@ of the nearest orthogonal projection of the point.</UserDocu>
 			  <UserDocu>Vector = centerOfCurvature(float pos) - Get the center of curvature at the given parameter [First|Last] if defined</UserDocu>
 		  </Documentation>
 	  </Methode>
-                <Methode Name="intersect" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points and curve segments between the curve and the curve/surface.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-                <Methode Name="intersectCC" Const="true">
-                        <Documentation>
-                                <UserDocu>
-                                        Returns all intersection points between this curve and the given curve.
-                                </UserDocu>
-                        </Documentation>
-                </Methode>
-		<Methode Name="toBSpline">
+        <Methode Name="intersectCC" Const="true">
+            <Documentation>
+                <UserDocu>
+                    Returns all intersection points between this curve and the given curve.
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="toBSpline">
 			<Documentation>
 				<UserDocu>
 					Converts a curve of any type (only part from First to Last)
@@ -130,7 +120,7 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="approximateBSpline">
+        <Methode Name="approximateBSpline">
 			<Documentation>
 				<UserDocu>
 					Approximates a curve of any type to a B-Spline curve
@@ -138,7 +128,6 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        -->
         <Attribute Name="Continuity" ReadOnly="true">
 			<Documentation>
 				<UserDocu>
