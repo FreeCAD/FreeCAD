@@ -410,13 +410,14 @@ PyObject* BSplineCurve2dPy::getPoles(PyObject * args)
             (getGeometry2dPtr()->handle());
         TColgp_Array1OfPnt2d p(1,curve->NbPoles());
         curve->Poles(p);
+
         Py::List poles;
+        Py::Module module("__FreeCADBase__");
+        Py::Callable method(module.getAttr("Vector2d"));
+        Py::Tuple arg(2);
         for (Standard_Integer i=p.Lower(); i<=p.Upper(); i++) {
             gp_Pnt2d pnt = p(i);
 
-            Py::Module module("__FreeCADBase__");
-            Py::Callable method(module.getAttr("Vector2d"));
-            Py::Tuple arg(2);
             arg.setItem(0, Py::Float(pnt.X()));
             arg.setItem(1, Py::Float(pnt.Y()));
             poles.append(method.apply(arg));
