@@ -716,7 +716,7 @@ Py::Object TopoShapeEdgePy::getCurve() const
                     "For future usage 'Curve' will return 'Line' which is infinite "
                     "instead of the limited 'LineSegment'.\n"
                     "If you need a line segment then use this:\n"
-                    "Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)"
+                    "Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)\n"
                     "To suppress the warning set BaseApp/Preferences/Mod/Part/General/LineOld to false");
                 PyErr_Print();
 
