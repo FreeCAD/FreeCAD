@@ -763,7 +763,7 @@ PyObject* GeometryCurvePy::intersectCC(PyObject *args)
         if (!curve1.IsNull()) {
             PyObject *p;
             double prec = Precision::Confusion();
-            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometrySurfacePy::Type), &p, &prec))
+            if (!PyArg_ParseTuple(args, "O!|d", &(Part::GeometryCurvePy::Type), &p, &prec))
                 return 0;
             Handle_Geom_Curve curve2 = Handle_Geom_Curve::DownCast(static_cast<GeometryPy*>(p)->getGeometryPtr()->handle());
             GeomAPI_ExtremaCurveCurve intersector(curve1, curve2);
