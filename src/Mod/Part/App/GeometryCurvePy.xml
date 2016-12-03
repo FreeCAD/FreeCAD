@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometryPy"
 		Name="GeometryCurvePy"
+        PythonName="Part.Curve"
 		Twin="GeomCurve"
 		TwinPointer="GeomCurve"
 		Include="Mod/Part/App/Geometry.h"

@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometrySurfacePy"
 		Name="OffsetSurfacePy"
+        PythonName="Part.OffsetSurface"
 		Twin="GeomOffsetSurface"
 		TwinPointer="GeomOffsetSurface"
 		Include="Mod/Part/App/Geometry.h"
