@@ -23,9 +23,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <assert.h>
-//#include <QGraphicsScene>
-//#include <QGraphicsSceneHoverEvent>
-//#include <QMouseEvent>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
 #endif
@@ -55,16 +52,18 @@ QGIMatting::QGIMatting() :
     setFlag(QGraphicsItem::ItemIsSelectable, false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
 
-    m_mat = new QGraphicsPathItem();    //QGIPrimPath??
+    m_mat = new QGraphicsPathItem();
     addToGroup(m_mat);
     m_border = new QGraphicsPathItem();
     addToGroup(m_border);
 
     m_pen.setColor(Qt::white);
-    m_brush.setColor(Qt::white);
-    m_brush.setStyle(Qt::SolidPattern);
 //    m_pen.setColor(Qt::black);
 //    m_pen.setStyle(Qt::DashLine);
+    m_brush.setColor(Qt::white);
+//    m_brush.setColor(Qt::black);
+    m_brush.setStyle(Qt::SolidPattern);
+//    m_brush.setStyle(Qt::CrossPattern);
 //    m_brush.setStyle(Qt::NoBrush);
     m_penB.setColor(Qt::black);
     m_brushB.setStyle(Qt::NoBrush);
@@ -77,29 +76,14 @@ QGIMatting::QGIMatting() :
     setZValue(ZVALUE::MATTING);
 }
 
-void QGIMatting::centerAt(QPointF centerPos)
-{
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = centerPos.x() - width/2.;
-    double newY = centerPos.y() - height/2.;
-    setPos(newX,newY);
-}
-
-void QGIMatting::centerAt(double cX, double cY)
-{
-    QRectF box = boundingRect();
-    double width = box.width();
-    double height = box.height();
-    double newX = cX - width/2.;
-    double newY = cY - height/2.;
-    setPos(newX,newY);
-}
-
 void QGIMatting::draw()
 {
-    QRectF outline(-m_width/2.0,-m_height/2.0,m_width,m_height);
+    prepareGeometryChange();
+    double radiusFudge = 1.15;                    //keep slightly larger than fudge in App/DVDetail to prevent bleed through
+    double outerRadius = m_radius * radiusFudge;
+    m_width = outerRadius;
+    m_height = outerRadius;
+    QRectF outline(-m_width,-m_height,2.0 * m_width,2.0 * m_height);
     QPainterPath ppOut;
     ppOut.addRect(outline);
     QPainterPath ppCut;
@@ -107,13 +91,15 @@ void QGIMatting::draw()
         QRectF roundCutout (-m_radius,-m_radius,2.0 * m_radius,2.0 * m_radius);
         ppCut.addEllipse(roundCutout);
     } else {
-        double squareSize = m_radius / 1.4142;                                 //fit within radius
+        double squareSize = m_radius/ 1.4142;                                 //fit just within radius
         QRectF squareCutout (-squareSize,-squareSize,2.0 * squareSize,2.0 * squareSize);
         ppCut.addRect(squareCutout);
     }
     ppOut.addPath(ppCut);
     m_mat->setPath(ppOut);
     m_border->setPath(ppCut);
+    m_mat->setZValue(ZVALUE::MATTING);
+    m_border->setZValue(ZVALUE::MATTING);
 }
 
 int QGIMatting::getHoleStyle()
@@ -124,9 +110,19 @@ int QGIMatting::getHoleStyle()
     return style;
 }
 
+//need this because QQGIG only updates BR when items added/deleted.
+QRectF QGIMatting::boundingRect() const
+{
+    QRectF result ;
+    result = childrenBoundingRect().adjusted(-1,-1,1,1);
+    return result;
+}
+
 void QGIMatting::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+
+    //painter->drawRect(boundingRect().adjusted(-2.0,-2.0,2.0,2.0));
 
     QGraphicsItemGroup::paint (painter, &myOption, widget);
 }

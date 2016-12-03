@@ -49,8 +49,7 @@ public:
     int type() const { return Type;}
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-    virtual void centerAt(QPointF centerPos);
-    virtual void centerAt(double cX, double cY);
+    virtual QRectF boundingRect() const;
 
     virtual void setSize(double w, double h) {m_height = h; m_width = w;}
     //virtual void setHoleStyle(int hs) {m_holeStyle = hs;}
