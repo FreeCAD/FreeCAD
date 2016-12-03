@@ -247,7 +247,7 @@ def reverseEdge(e):
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif geomType(e) == "LineSegment":
+    elif geomType(e) == "LineSegment" or geomType(e) == "Line":
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
