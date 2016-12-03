@@ -206,11 +206,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -235,11 +236,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -262,11 +264,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -291,11 +294,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -318,11 +322,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt2d p = adapt.Value (discretizer.Parameter (i));
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -345,11 +350,12 @@ PyObject* Curve2dPy::discretize(PyObject *args, PyObject *kwds)
             if (discretizer.NbPoints () > 0) {
                 Py::List points;
                 int nbPoints = discretizer.NbPoints ();
+
+                Py::Module module("__FreeCADBase__");
+                Py::Callable method(module.getAttr("Vector2d"));
+                Py::Tuple arg(2);
                 for (int i=1; i<=nbPoints; i++) {
                     gp_Pnt p = discretizer.Value (i);
-                    Py::Module module("__FreeCADBase__");
-                    Py::Callable method(module.getAttr("Vector2d"));
-                    Py::Tuple arg(2);
                     arg.setItem(0, Py::Float(p.X()));
                     arg.setItem(1, Py::Float(p.Y()));
                     points.append(method.apply(arg));
@@ -766,15 +772,15 @@ PyObject* Curve2dPy::intersectCC(PyObject *args)
             }
 
             Py::List points;
+            Py::Module module("__FreeCADBase__");
+            Py::Callable method(module.getAttr("Vector2d"));
+            Py::Tuple arg(2);
             for (int i = 1; i <= intersector.NbExtrema(); i++) {
                 if (intersector.Distance(i) > Precision::Confusion())
                     continue;
                 gp_Pnt2d p1, p2;
                 intersector.Points(i, p1, p2);
 
-                Py::Module module("__FreeCADBase__");
-                Py::Callable method(module.getAttr("Vector2d"));
-                Py::Tuple arg(2);
                 arg.setItem(0, Py::Float(p1.X()));
                 arg.setItem(1, Py::Float(p1.Y()));
                 points.append(method.apply(arg));
