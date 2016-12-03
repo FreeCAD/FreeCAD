@@ -14,12 +14,11 @@
 		<Documentation>
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>
-				Describes a rational or non-rational Bezier curve:
+                Describes a rational or non-rational Bezier curve in 2d space:
 				-- a non-rational Bezier curve is defined by a table of poles (also called control points)
 				-- a rational Bezier curve is defined by a table of poles with varying weights
 			</UserDocu>
 		</Documentation>
-        <!--
 		<Attribute Name="Degree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the polynomial degree of this Bezier curve,
@@ -27,7 +26,7 @@ which is equal to the number of poles minus 1.</UserDocu>
 			</Documentation>
 			<Parameter Name="Degree" Type="Int"/>
 		</Attribute>
-		<Attribute Name="MaxDegree" ReadOnly="true">
+        <Attribute Name="MaxDegree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the value of the maximum polynomial degree of any
 Bezier curve curve. This value is 25.</UserDocu>
@@ -41,7 +40,7 @@ Bezier curve curve. This value is 25.</UserDocu>
 			</Documentation>
 			<Parameter Name="NbPoles" Type="Int"/>
 		</Attribute>
-		<Attribute Name="StartPoint" ReadOnly="true">
+        <Attribute Name="StartPoint" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the start point of this Bezier curve.</UserDocu>
 			</Documentation>
@@ -53,7 +52,7 @@ Bezier curve curve. This value is 25.</UserDocu>
 			</Documentation>
 			<Parameter Name="EndPoint" Type="Object"/>
 		</Attribute>
-		<Methode Name="isRational">
+        <Methode Name="isRational">
 			<Documentation>
 				<UserDocu>Returns false if the weights of all the poles of this Bezier curve are equal.</UserDocu>
 			</Documentation>
@@ -77,7 +76,7 @@ Increases the degree of this Bezier curve to Degree.
 As a result, the poles and weights tables are modified.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="insertPoleAfter">
+        <Methode Name="insertPoleAfter">
 			<Documentation>
 				<UserDocu>Inserts after the pole of index.</UserDocu>
 			</Documentation>
@@ -98,7 +97,7 @@ If this Bezier curve is rational, it can become non-rational.</UserDocu>
 				<UserDocu>Modifies this Bezier curve by segmenting it.</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="setPole">
+        <Methode Name="setPole">
 			<Documentation>
 				<UserDocu>Set a pole of the Bezier curve.</UserDocu>
 			</Documentation>
