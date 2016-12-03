@@ -117,7 +117,7 @@ public:
         EXTENSION_PROXY_ONEARG(allowObject, pyobj);
                 
         if(result.isNone())
-            ExtensionT::allowObject(obj);
+            return ExtensionT::allowObject(obj);
         
         if(result.isBoolean())
             return result.isTrue();
