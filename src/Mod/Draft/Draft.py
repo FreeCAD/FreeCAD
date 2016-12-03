@@ -3166,7 +3166,7 @@ def upgrade(objects,delete=False,force=None):
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
-                if isinstance(e.Curve,Part.LineSegment):
+                if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
                     if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
 
