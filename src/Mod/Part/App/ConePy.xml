@@ -3,6 +3,7 @@
 	<PythonExport 
 		Father="GeometrySurfacePy" 
 		Name="ConePy" 
+        PythonName="Part.Cone"
 		Twin="GeomCone" 
 		TwinPointer="GeomCone" 
 		Include="Mod/Part/App/Geometry.h" 

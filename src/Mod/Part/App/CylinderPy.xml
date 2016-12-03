@@ -3,6 +3,7 @@
 	<PythonExport 
 		Father="GeometrySurfacePy" 
 		Name="CylinderPy" 
+        PythonName="Part.Cylinder"
 		Twin="GeomCylinder" 
 		TwinPointer="GeomCylinder" 
 		Include="Mod/Part/App/Geometry.h" 

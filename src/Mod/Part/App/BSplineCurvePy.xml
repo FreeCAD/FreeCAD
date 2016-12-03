@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometryCurvePy"
 		Name="BSplineCurvePy"
+        PythonName="Part.BSplineCurve"
 		Twin="GeomBSplineCurve"
 		TwinPointer="GeomBSplineCurve"
 		Include="Mod/Part/App/Geometry.h"

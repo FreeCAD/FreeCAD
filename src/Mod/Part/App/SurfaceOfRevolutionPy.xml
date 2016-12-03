@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometrySurfacePy"
 		Name="SurfaceOfRevolutionPy"
+        PythonName="Part.SurfaceOfRevolution"
 		Twin="GeomSurfaceOfRevolution"
 		TwinPointer="GeomSurfaceOfRevolution"
 		Include="Mod/Part/App/Geometry.h"
