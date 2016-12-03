@@ -26,7 +26,9 @@ import FreeCAD
 import FreeCADGui
 import Part
 import math
+# import Draft
 # import Path
+# import TechDraw
 from DraftGeomUtils import geomType
 # from DraftGeomUtils import findWires
 # import DraftVecUtils
@@ -103,7 +105,6 @@ def fmt(val): return format(val, '.4f')
 # def silhouette(obj):
 #     from FreeCAD import Vector
 #     s = getProjected(obj.Shape, Vector(0,0,1))
-#     print s
 #     w = TechDraw.findOuterWire(s.Edges)
 #     return w
 
@@ -808,34 +809,58 @@ def rampPlunge(edge, rampangle, destZ, startZ):
 
 
 class depth_params:
-    '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters'''
+    '''calculates the intermediate depth values for various operations given the starting, ending, and stepdown parameters
+    (self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None])
 
-    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, user_depths=None):
+        Note: if user_depths are supplied, only user_depths will be used.
+
+        clearance_height:   Height to clear all obstacles
+        rapid_safety_space: Height to rapid between locations
+        start_depth:        Top of Stock
+        step_down:          Distance to step down between passes (always positive)
+        z_finish_step:      Maximum amount of material to remove on the final pass
+        final_depth:        Lowest point of the cutting operation
+        user_depths:        List of specified depths
+    '''
+
+    def __init__(self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_step, final_depth, user_depths=None):
+        '''self, clearance_height, rapid_safety_space, start_depth, step_down, z_finish_depth, final_depth, [user_depths=None]'''
+        if z_finish_step > step_down:
+            raise ValueError('z_finish_step must be less than step_down')
+
         self.clearance_height = clearance_height
         self.rapid_safety_space = math.fabs(rapid_safety_space)
         self.start_depth = start_depth
         self.step_down = math.fabs(step_down)
-        self.z_finish_depth = math.fabs(z_finish_depth)
+        self.z_finish_step = math.fabs(z_finish_step)
         self.final_depth = final_depth
         self.user_depths = user_depths
 
-    def get_depths(self):
+    def get_depths(self, equalstep=False):
+        '''returns a list of depths to be used in order from first to last.
+        equalstep=True: all steps down before the finish pass will be equalized.'''
+
         depths = []
         if self.user_depths is not None:
             depths = self.user_depths
         else:
-            depth = self.final_depth
-            depths = [depth]
-            depth += self.z_finish_depth
-            if depth + 0.0000001 < self.start_depth:
-                if self.z_finish_depth > 0.0000001:
-                    depths.insert(0, depth)
-                layer_count = int((self.start_depth - depth) /
-                                  self.step_down - 0.0000001) + 1
-                if layer_count > 0:
-                    layer_depth = (self.start_depth - depth) / layer_count
-                    for i in range(1, layer_count):
-                        depth += layer_depth
-                        depths.append(depth)
-        depths.reverse()
+            total_depth = self.start_depth - self.final_depth
+            if total_depth <= 0:
+                return depths
+            layers_required = int((total_depth - self.z_finish_step) / self.step_down)
+            partial_steplayer = (total_depth - self.z_finish_step) % self.step_down
+            if equalstep is True and partial_steplayer > 0:
+                layerstep = float((total_depth - self.z_finish_step) / (layers_required + 1))
+            else:
+                layerstep = self.step_down
+
+            for step in range(layers_required):
+                d = self.start_depth - ((step +1) * layerstep)
+                depths.append(d)
+
+            if self.z_finish_step != 0 and depths[-1] != self.final_depth + self.z_finish_step:
+                depths.append(self.final_depth + self.z_finish_step)
+            if depths[-1] != self.final_depth:
+                depths.append(self.final_depth)
+
         return depths
