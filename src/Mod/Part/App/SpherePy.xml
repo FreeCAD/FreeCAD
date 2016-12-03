@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometrySurfacePy"
 		Name="SpherePy"
+        PythonName="Part.Sphere"
 		Twin="GeomSphere"
 		TwinPointer="GeomSphere"
 		Include="Mod/Part/App/Geometry.h"

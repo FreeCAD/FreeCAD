@@ -3,6 +3,7 @@
 	<PythonExport
         Father="Geometry2dPy"
         Name="Curve2dPy"
+        PythonName="Part.Geom2d.Curve2d"
         Twin="Geom2dCurve"
         TwinPointer="Geom2dCurve"
         Include="Mod/Part/App/Geometry2d.h"

@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="ArcOfEllipsePy" 
+      PythonName="Part.ArcOfEllipse"
       Twin="GeomArcOfEllipse" 
       TwinPointer="GeomArcOfEllipse" 
       Include="Mod/Part/App/Geometry.h" 

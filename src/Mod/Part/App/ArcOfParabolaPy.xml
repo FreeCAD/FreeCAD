@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="ArcOfParabolaPy" 
+      PythonName="Part.ArcOfParabola"
       Twin="GeomArcOfParabola" 
       TwinPointer="GeomArcOfParabola" 
       Include="Mod/Part/App/Geometry.h" 

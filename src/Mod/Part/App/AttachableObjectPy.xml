@@ -3,6 +3,7 @@
   <PythonExport 
     Father="PartFeaturePy"  
     Name="AttachableObjectPy" 
+    PythonName="Part.AttachableObject"
     Twin="AttachableObject" 
     TwinPointer="AttachableObject" 
     Include="Mod/Part/App/AttachableObject.h" 

@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometryCurvePy"
 		Name="BezierCurvePy"
+        PythonName="Part.BezierCurve"
 		Twin="GeomBezierCurve"
 		TwinPointer="GeomBezierCurve"
 		Include="Mod/Part/App/Geometry.h"

@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometrySurfacePy"
 		Name="RectangularTrimmedSurfacePy"
+        PythonName="Part.RectangularTrimmedSurface"
 		Twin="GeomTrimmedSurface"
 		TwinPointer="GeomTrimmedSurface"
 		Include="Mod/Part/App/Geometry.h"

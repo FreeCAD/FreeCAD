@@ -163,7 +163,7 @@ public:
 PyTypeObject LinePyOld::Type = {
     PyObject_HEAD_INIT(&PyType_Type)
     0,                                                /*ob_size*/
-    "Part.GeomLine",     /*tp_name*/
+    "Part.Line",     /*tp_name*/
     sizeof(LinePyOld),                       /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */

@@ -3,6 +3,7 @@
 	<PythonExport 
 		Father="GeometrySurfacePy" 
 		Name="ToroidPy" 
+        PythonName="Part.Toroid"
 		Twin="GeomToroid" 
 		TwinPointer="GeomToroid" 
 		Include="Mod/Part/App/Geometry.h" 

@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometrySurfacePy"
 		Name="BSplineSurfacePy"
+        PythonName="Part.BSplineSurface"
 		Twin="GeomBSplineSurface"
 		TwinPointer="GeomBSplineSurface"
 		Include="Mod/Part/App/Geometry.h"

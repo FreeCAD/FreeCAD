@@ -3,6 +3,7 @@
   <PythonExport 
       Father="Curve2dPy"
       Name="Line2dSegmentPy"
+      PythonName="Part.Geom2d.Line2dSegment"
       Twin="Geom2dLineSegment" 
       TwinPointer="Geom2dLineSegment"
       Include="Mod/Part/App/Geometry2d.h"

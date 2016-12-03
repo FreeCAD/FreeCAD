@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="LineSegmentPy"
+      PythonName="Part.LineSegment"
       Twin="GeomLineSegment" 
       TwinPointer="GeomLineSegment" 
       Include="Mod/Part/App/Geometry.h" 

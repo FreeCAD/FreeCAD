@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="ArcOfHyperbolaPy" 
+      PythonName="Part.ArcOfHyperbola"
       Twin="GeomArcOfHyperbola" 
       TwinPointer="GeomArcOfHyperbola" 
       Include="Mod/Part/App/Geometry.h" 

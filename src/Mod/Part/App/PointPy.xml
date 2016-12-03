@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryPy" 
       Name="PointPy" 
+      PythonName="Part.Point"
       Twin="GeomPoint" 
       TwinPointer="GeomPoint" 
       Include="Mod/Part/App/Geometry.h" 

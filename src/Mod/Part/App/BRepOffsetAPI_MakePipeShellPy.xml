@@ -3,6 +3,7 @@
 	<PythonExport
       Father="PyObjectBase"
       Name="BRepOffsetAPI_MakePipeShellPy"
+      PythonName="Part.BRepOffsetAPI_MakePipeShell"
       Twin="BRepOffsetAPI_MakePipeShell"
       TwinPointer="BRepOffsetAPI_MakePipeShell"
       Include="BRepOffsetAPI_MakePipeShell.hxx"

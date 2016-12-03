@@ -3,6 +3,7 @@
 	<PythonExport
 		Father="GeometryCurvePy"
 		Name="OffsetCurvePy"
+        PythonName="Part.OffsetCurve"
 		Twin="GeomOffsetCurve"
 		TwinPointer="GeomOffsetCurve"
 		Include="Mod/Part/App/Geometry.h"

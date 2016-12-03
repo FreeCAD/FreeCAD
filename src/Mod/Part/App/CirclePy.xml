@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="CirclePy" 
+      PythonName="Part.Circle"
       Twin="GeomCircle" 
       TwinPointer="GeomCircle" 
       Include="Mod/Part/App/Geometry.h" 
