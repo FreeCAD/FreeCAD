@@ -103,7 +103,6 @@ DrawViewDetail::DrawViewDetail()
     ADD_PROPERTY_TYPE(Reference ,("1"),dgroup,App::Prop_None,"An identifier for this detail");
 
     getParameters();
-
 }
 
 DrawViewDetail::~DrawViewDetail()
@@ -235,7 +234,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     gp_Pnt inputCenter;
     try {
-        inputCenter = TechDrawGeometry::findCentroid(detail,
+        inputCenter = TechDrawGeometry::findCentroid(tool,
                                                      Direction.getValue());
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(detail,
                                                     inputCenter,
