@@ -272,7 +272,11 @@ using namespace @self.export.Namespace@;
 /// Type structure of @self.export.Name@
 PyTypeObject @self.export.Name@::Type = {
     PyVarObject_HEAD_INIT(&PyType_Type,0)
++ if (self.export.PythonName):
+    "@self.export.PythonName@",     /*tp_name*/
+= else:
     "@self.export.Namespace@.@self.export.Twin@",     /*tp_name*/
+-
     sizeof(@self.export.Name@),                       /*tp_basicsize*/
     0,                                                /*tp_itemsize*/
     /* methods */

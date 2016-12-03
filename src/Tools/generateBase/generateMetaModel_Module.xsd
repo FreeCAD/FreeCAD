@@ -55,6 +55,7 @@
 							<xs:element name="ClassDeclarations" type="xs:string"/>
 						</xs:sequence>
 						<xs:attribute name="Name" type="xs:string" use="required"/>
+						<xs:attribute name="PythonName" type="xs:string" use="optional"/>
 						<xs:attribute name="Include" type="xs:string" use="required"/>
 						<xs:attribute name="Father" type="xs:string" use="required"/>
 						<xs:attribute name="Twin" type="xs:string" use="required"/>
@@ -67,6 +68,7 @@
 						<xs:attribute name="TwinPointer" type="xs:string" use="required"/>
 						<xs:attribute name="Delete" type="xs:boolean" use="optional" default="false"/>
 						<xs:attribute name="Reference" type="xs:boolean" use="optional"/>
+						<xs:attribute name="Initialization" type="xs:boolean" use="optional" default="false"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
