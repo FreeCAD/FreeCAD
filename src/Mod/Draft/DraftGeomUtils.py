@@ -105,7 +105,7 @@ def isPtOnEdge(pt,edge) :
 def hasCurves(shape):
     "hasCurve(shape): checks if the given shape has curves"
     for e in shape.Edges:
-            if not isinstance(e.Curve,Part.LineSegment):
+            if not isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     return True
     return False
 
@@ -159,9 +159,9 @@ def getQuad(face):
 
 def areColinear(e1,e2):
     """areColinear(e1,e2): returns True if both edges are colinear"""
-    if not isinstance(e1.Curve,Part.LineSegment):
+    if not isinstance(e1.Curve,(Part.LineSegment,Part.Line)):
         return False
-    if not isinstance(e2.Curve,Part.LineSegment):
+    if not isinstance(e2.Curve,(Part.LineSegment,Part.Line)):
         return False
     v1 = vec(e1)
     v2 = vec(e2)
@@ -188,7 +188,7 @@ def hasOnlyWires(shape):
 def geomType(edge):
     "returns the type of geom this edge is based on"
     try:
-        if (isinstance(edge.Curve,Part.LineSegment) or isinstance(edge.Curve,Part.Line)):
+        if isinstance(edge.Curve,(Part.LineSegment,Part.Line)):
             return "Line"
         elif isinstance(edge.Curve,Part.Circle):
             return "Circle"
