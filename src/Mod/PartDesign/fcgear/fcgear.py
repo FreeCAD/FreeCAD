@@ -51,7 +51,7 @@ class FCWireBuilder(object):
         """Add a segment between self.pos and p"""
         p = rotate(p, self.theta)
         end = Base.Vector(*p)
-        self.wire.append(Part.Line(self.pos, end))
+        self.wire.append(Part.LineSegment(self.pos, end))
         self.pos = end
 
     def arc(self, p, r, sweep):

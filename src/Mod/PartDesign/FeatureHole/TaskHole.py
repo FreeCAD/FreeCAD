@@ -540,7 +540,7 @@ class TaskHole:
                 self.feature.Support = (feature, [element])       
             elif self.selectionMode == "LinearReference":
                 if shape.ShapeType == "Edge":
-                    if shape.Curve.__class__ != Part.Line:
+                    if shape.Curve.__class__ != Part.LineSegment:
                         FreeCAD.Console.PrintMessage("Selected edge must be linear\n")
                         return
                     if len(refs) > 1:
@@ -565,7 +565,7 @@ class TaskHole:
                 axis.Document.recompute()
             elif self.selectionMode == "LinearReference2":
                 if shape.ShapeType == "Edge":
-                    if shape.Curve.__class__ != Part.Line:
+                    if shape.Curve.__class__ != Part.LineSegment:
                         FreeCAD.Console.PrintMessage("Selected edge must be linear\n")
                         return
                     if len(refs) > 2:

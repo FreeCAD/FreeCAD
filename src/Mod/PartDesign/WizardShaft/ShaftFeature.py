@@ -70,17 +70,17 @@ class ShaftFeature:
         if oldLength == 0:
             # First segment of shaft
             # Create centerline
-            self.sketch.addGeometry(Part.Line(self.App.Vector(0,0,0), self.App.Vector(self.totalLength,0,0)))
+            self.sketch.addGeometry(Part.LineSegment(self.App.Vector(0,0,0), self.App.Vector(self.totalLength,0,0)))
             self.sketch.addConstraint(Sketcher.Constraint('DistanceX',0, self.totalLength)) # Constraint1            
             self.sketch.addConstraint(Sketcher.Constraint('DistanceY', -1,1,0,1,innerradius)) # Constraint2
             self.sketch.addConstraint(Sketcher.Constraint('PointOnObject',0,1,-2)) # Constraint3
             self.sketch.addConstraint(Sketcher.Constraint('Horizontal', 0)) # Constraint4
             # Create first segment
-            self.sketch.addGeometry(Part.Line(self.App.Vector(0,innerradius,0), self.App.Vector(0,radius,0)))
+            self.sketch.addGeometry(Part.LineSegment(self.App.Vector(0,innerradius,0), self.App.Vector(0,radius,0)))
             self.sketch.addConstraint(Sketcher.Constraint('DistanceY',-1,1,1,2,radius)) # Constraint5
             self.sketch.addConstraint(Sketcher.Constraint('Coincident',0,1,1,1)) # Constraint6
             self.sketch.addConstraint(Sketcher.Constraint('Vertical',1)) # Constraint7
-            self.sketch.addGeometry(Part.Line(self.App.Vector(0,radius,0), self.App.Vector(length,radius,0)))
+            self.sketch.addGeometry(Part.LineSegment(self.App.Vector(0,radius,0), self.App.Vector(length,radius,0)))
             self.sketch.addConstraint(Sketcher.Constraint('DistanceX',2,length)) # Constraint8
             self.sketch.addConstraint(Sketcher.Constraint('Coincident',2,1,1,2)) # Constraint9
             self.sketch.addConstraint(Sketcher.Constraint('Horizontal',2)) # Constraint10
@@ -91,17 +91,17 @@ class ShaftFeature:
             # Adjust length of centerline
             self.sketch.setDatum(0,self.totalLength)
             # Add segment at the end
-            self.sketch.addGeometry(Part.Line(self.App.Vector(oldLength,self.lastRadius,0), self.App.Vector(oldLength,radius,0)))
+            self.sketch.addGeometry(Part.LineSegment(self.App.Vector(oldLength,self.lastRadius,0), self.App.Vector(oldLength,radius,0)))
             self.sketch.addConstraint(Sketcher.Constraint('DistanceY', -1,1, segRadius, 2, radius))
             self.sketch.addConstraint(Sketcher.Constraint('Coincident',segRadius,1,prevSegLength,2))
             self.sketch.addConstraint(Sketcher.Constraint('Vertical',segRadius))
-            self.sketch.addGeometry(Part.Line(self.App.Vector(oldLength,radius,0), self.App.Vector(oldLength+length,radius,0)))
+            self.sketch.addGeometry(Part.LineSegment(self.App.Vector(oldLength,radius,0), self.App.Vector(oldLength+length,radius,0)))
             self.sketch.addConstraint(Sketcher.Constraint('DistanceX',segLength,length))
             self.sketch.addConstraint(Sketcher.Constraint('Coincident',segLength,1,segRadius,2))
             self.sketch.addConstraint(Sketcher.Constraint('Horizontal',segLength))
 
         # close the sketch
-        self.sketch.addGeometry(Part.Line(self.App.Vector(oldLength+length,radius,0), self.App.Vector(oldLength+length,innerradius,0)))
+        self.sketch.addGeometry(Part.LineSegment(self.App.Vector(oldLength+length,radius,0), self.App.Vector(oldLength+length,innerradius,0)))
         self.sketch.addConstraint(Sketcher.Constraint('Coincident',0,2,segEnd,2))
         self.sketch.addConstraint(Sketcher.Constraint('Coincident',segEnd,1,segLength,2))
         self.lastRadius = radius

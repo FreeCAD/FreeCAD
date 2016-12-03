@@ -917,7 +917,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                 try{
                     if(!major)
                     {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
                         Obj->getNameInDocument(),
                         majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
                         
@@ -927,7 +927,7 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
                     }
                     if(!minor)
                     {                       
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Line(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
+                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
                         Obj->getNameInDocument(),
                         minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
                         

@@ -62,8 +62,8 @@ def makeRegularPolygon(
 
     geoList = []
     for i in range(0,sides-1): 
-        geoList.append(Part.Line(pointList[i],pointList[i+1]))
-    geoList.append(Part.Line(pointList[sides-1],pointList[0]))
+        geoList.append(Part.LineSegment(pointList[i],pointList[i+1]))
+    geoList.append(Part.LineSegment(pointList[sides-1],pointList[0]))
     geoList.append(Part.Circle(centerPoint,App.Vector(0,0,1),diffVec.Length))
     geoIndices = sketch.addGeometry(geoList,construction)
 

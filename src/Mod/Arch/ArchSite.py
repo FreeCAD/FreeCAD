@@ -124,7 +124,7 @@ def makeSolarDiagram(longitude,latitude,scale=1,complete=False):
         p1 = FreeCAD.Vector(math.cos(a)*scale,math.sin(a)*scale,0)
         p2 = FreeCAD.Vector(math.cos(a)*scale*0.125,math.sin(a)*scale*0.125,0)
         p3 = FreeCAD.Vector(math.cos(a)*scale*1.08,math.sin(a)*scale*1.08,0)
-        circles.append(Part.Line(p1,p2).toShape())
+        circles.append(Part.LineSegment(p1,p2).toShape())
         circlepos.append((ad,p3))
 
     # build the sun curves at solstices and equinoxe

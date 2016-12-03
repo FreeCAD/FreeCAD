@@ -1662,11 +1662,14 @@ TopoDS_Shape TopoShape::makeHelix(Standard_Real pitch, Standard_Real height,
                                   Standard_Boolean leftHanded,
                                   Standard_Boolean newStyle) const
 {
-    if (pitch < Precision::Confusion())
+    if (fabs(pitch) < Precision::Confusion())
         Standard_Failure::Raise("Pitch of helix too small");
 
-    if (height < Precision::Confusion())
+    if (fabs(height) < Precision::Confusion())
         Standard_Failure::Raise("Height of helix too small");
+
+    if ((height > 0 && pitch < 0) || (height < 0 && pitch > 0))
+        Standard_Failure::Raise("Pitch and height of helix not compatible");
 
     gp_Ax2 cylAx2(gp_Pnt(0.0,0.0,0.0) , gp::DZ());
     Handle_Geom_Surface surf;

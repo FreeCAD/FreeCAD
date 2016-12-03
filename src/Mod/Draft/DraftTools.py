@@ -536,7 +536,7 @@ class Line(Creator):
                 self.planetrack.set(self.node[0])
         elif (len(self.node) == 2):
             last = self.node[len(self.node)-2]
-            newseg = Part.Line(last,point).toShape()
+            newseg = Part.LineSegment(last,point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
             if self.isWire:
@@ -545,7 +545,7 @@ class Line(Creator):
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node)-2]
             if not DraftVecUtils.equals(last,point):
-                newseg = Part.Line(last,point).toShape()
+                newseg = Part.LineSegment(last,point).toShape()
                 newshape=currentshape.fuse(newseg)
                 self.obj.Shape = newshape
             msg(translate("draft", "Pick next point, or Finish (shift-F) or close (o):\n"))
@@ -2933,7 +2933,7 @@ class Trimex(Modifier):
                     ray = self.newpoint.sub(v1)
                     ray.multiply(self.force/ray.Length)
                     self.newpoint = Vector.add(v1,ray)
-                newedges.append(Part.Line(self.newpoint,v2).toShape())
+                newedges.append(Part.LineSegment(self.newpoint,v2).toShape())
         else:
             center = edge.Curve.Center
             rad = edge.Curve.Radius
@@ -4199,8 +4199,8 @@ class Draft2Sketch(Modifier):
                 elif obj.isDerivedFrom("Part::Part2DObjectPython"):
                     lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
                 elif obj.isDerivedFrom("Part::Feature"):
-                    if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
-                        lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=False)")
+                    #if (len(obj.Shape.Wires) == 1) or (len(obj.Shape.Edges) == 1):
+                    lines.append("Draft.makeSketch(FreeCAD.ActiveDocument."+obj.Name+",autoconstraints=True)")
             self.commit(translate("draft","Convert"),
                         lines + ['FreeCAD.ActiveDocument.recompute()'])
         self.finish()

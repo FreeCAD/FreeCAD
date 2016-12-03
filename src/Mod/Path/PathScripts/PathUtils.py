@@ -63,6 +63,9 @@ def cleanedges(splines, precision):
         elif geomType(spline) == "Line":
             edges.append(spline)
 
+        elif geomType(spline) == "LineSegment":
+            edges.append(spline)
+
         else:
             pass
 
@@ -109,13 +112,13 @@ def silhouette(obj):
 def isSameEdge(e1, e2):
     """isSameEdge(e1,e2): return True if the 2 edges are both lines or arcs/circles and have the same
     points - inspired by Yorik's function isSameLine"""
-    if not (isinstance(e1.Curve, Part.Line) or isinstance(e1.Curve, Part.Circle)):
+    if not (isinstance(e1.Curve, Part.LineSegment) or isinstance(e1.Curve, Part.Circle)):
         return False
-    if not (isinstance(e2.Curve, Part.Line) or isinstance(e2.Curve, Part.Circle)):
+    if not (isinstance(e2.Curve, Part.LineSegment) or isinstance(e2.Curve, Part.Circle)):
         return False
     if type(e1.Curve) != type(e2.Curve):
         return False
-    if isinstance(e1.Curve, Part.Line):
+    if isinstance(e1.Curve, Part.LineSegment):
         if (DraftVecUtils.equals(e1.Vertexes[0].Point, e2.Vertexes[0].Point)) and \
            (DraftVecUtils.equals(e1.Vertexes[-1].Point, e2.Vertexes[-1].Point)):
             return True
@@ -232,7 +235,7 @@ def filterArcs(arcEdge):
             splitlist.append(eseg2)
         else:
             splitlist.append(s)
-    elif isinstance(s.Curve, Part.Line):
+    elif isinstance(s.Curve, Part.LineSegment):
         pass
     return splitlist
 
@@ -244,7 +247,7 @@ def reverseEdge(e):
         arcendpt = e.valueAt(e.LastParameter)
         arcofCirc = Part.ArcOfCircle(arcendpt, arcmid, arcstpt)
         newedge = arcofCirc.toShape()
-    elif geomType(e) == "Line":
+    elif geomType(e) == "LineSegment":
         stpt = e.valueAt(e.FirstParameter)
         endpt = e.valueAt(e.LastParameter)
         newedge = Part.makeLine(endpt, stpt)
@@ -410,7 +413,7 @@ def SortPath(wire, Side, radius, clockwise, firstedge=None, SegLen=0.5):
             arclist = filterArcs(e)
             for a in arclist:
                 edgelist.append(a)
-        elif geomType(e) == "Line":
+        elif geomType(e) == "LineSegment":
             edgelist.append(e)
         elif geomType(e) == "BSplineCurve" or \
                 geomType(e) == "BezierCurve" or \
