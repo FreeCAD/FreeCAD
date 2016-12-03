@@ -356,7 +356,6 @@ class EditorPanel():
         pass
 
     def getType(self, tooltype):
-        print("tooltype: ", tooltype)
         "gets a combobox index number for a given type or viceversa"
         toolslist = ["Drill", "CenterDrill", "CounterSink", "CounterBore",
                      "Reamer", "Tap", "EndMill", "SlotCutter", "BallEndMill",
@@ -389,8 +388,9 @@ class EditorPanel():
 
     def addTool(self):
         t = Path.Tool()
-        print (t)
+        print ("adding a new tool")
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
+
         r = editform.exec_()
         if r:
             if editform.NameField.text():
