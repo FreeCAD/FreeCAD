@@ -329,6 +329,7 @@ void QGIView::drawCaption()
     QRectF displayArea = customChildrenBoundingRect();
     m_caption->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
+    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
     m_caption->setFont(m_font);
     QString captionStr = QString::fromUtf8(getViewObject()->Caption.getValue());
     m_caption->setPlainText(captionStr);
@@ -361,6 +362,7 @@ void QGIView::drawBorder()
 
     m_label->setDefaultTextColor(m_colCurrent);
     m_font.setFamily(getPrefFont());
+    m_font.setPointSize(getPrefFontSize());     //scene units (mm), not points
     m_label->setFont(m_font);
     QString labelStr = QString::fromUtf8(getViewObject()->Label.getValue());
     m_label->setPlainText(labelStr);
