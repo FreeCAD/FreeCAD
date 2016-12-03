@@ -33,6 +33,7 @@
 #include "Base/Exception.h"
 #include <Base/Console.h>
 #include <Base/PyObjectBase.h>
+#include <ExtensionPy.h>
  
 /* We do not use a standard property macro for type initiation. The reason is that we have the first
  * PropertyData in the extension chain, there is no parent property data. 
@@ -96,7 +97,12 @@ void Extension::initExtension(ExtensionContainer* obj) {
 
 PyObject* Extension::getExtensionPyObject(void) {
 
-    return nullptr;
+    if (ExtensionPythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        auto grp = new ExtensionPy(this);
+        ExtensionPythonObject = Py::Object(grp,true);
+    }
+    return Py::new_reference_to(ExtensionPythonObject);
 }
 
 const char* Extension::name() {
