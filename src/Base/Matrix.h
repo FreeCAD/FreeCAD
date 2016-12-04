@@ -95,6 +95,12 @@ public:
   double determinant() const;
   /// Analyse the transformation
   std::string analyse(void) const;
+  /// Outer product (Dyadic product)
+  Matrix4D& Outer(const Vector3f& rV1, const Vector3f& rV2);
+  Matrix4D& Outer(const Vector3d& rV1, const Vector3d& rV2);
+  /// Hat operator (skew symmetric)
+  Matrix4D& Hat(const Vector3f& rV);
+  Matrix4D& Hat(const Vector3d& rV);
   //@}
 
   void getMatrix  (double dMtrx[16]) const;

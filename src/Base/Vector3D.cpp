@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #include "Tools.h"
 #include "Vector3D.h"
-#include "Matrix.h"
+
 using namespace Base;
 
 template <class _Precision>
@@ -190,44 +190,6 @@ Vector3<_Precision> Vector3<_Precision>::Cross(const Vector3<_Precision>& rcVct)
     cVctRes.y = (z * rcVct.x) - (x * rcVct.z);
     cVctRes.z = (x * rcVct.y) - (y * rcVct.x);
     return cVctRes;
-}
-
-template <class _Precision>
-Matrix4D Vector3<_Precision>::Outer(const Vector3<_Precision>& rcVct) const
-{
-    Matrix4D mat;
-    mat[0][0] = x * rcVct.x;
-    mat[0][1] = x * rcVct.y;
-    mat[0][2] = x * rcVct.z;
-
-    mat[1][0] = y * rcVct.x;
-    mat[1][1] = y * rcVct.y;
-    mat[1][2] = y * rcVct.z;
-
-    mat[2][0] = z * rcVct.x;
-    mat[2][1] = z * rcVct.y;
-    mat[2][2] = z * rcVct.z;
-
-    return mat;
-}
-
-template <class _Precision>
-Matrix4D Vector3<_Precision>::Hat(void) const
-{
-    Matrix4D mat;
-    mat[0][0] = 0.0;
-    mat[0][1] = -z;
-    mat[0][2] = y;
-
-    mat[1][0] = z;
-    mat[1][1] = 0.0;
-    mat[1][2] = -x;
-
-    mat[2][0] = -y;
-    mat[2][1] = x;
-    mat[2][2] = 0.0;
-
-    return mat;
 }
 
 template <class _Precision>

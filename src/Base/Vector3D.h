@@ -73,10 +73,6 @@ struct float_traits<double> {
     static inline float_type maximum() { return DBL_MAX; }
 };
 
-class Matrix4D;
-//#include <Base/Matrix.h>
-
-
 /** The Vector Base class. */
 template <class _Precision>
 class Vector3
@@ -130,10 +126,6 @@ public:
     Vector3 operator %  (const Vector3<_Precision>& rcVct) const;
     /// Cross product
     Vector3 Cross (const Vector3<_Precision>& rcVct) const;
-    /// Outer product
-    Matrix4D Outer(const Vector3<_Precision>& rcVct) const;
-    /// Hat operator (skew symmetric)
-    Matrix4D Hat(void) const;
 
     /// Comparing for inequality
     bool operator != (const Vector3<_Precision>& rcVct) const;

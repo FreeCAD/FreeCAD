@@ -871,3 +871,79 @@ std::string Matrix4D::analyse(void) const
     }
     return text;
 }
+
+Matrix4D& Matrix4D::Outer(const Vector3f& rV1, const Vector3f& rV2)
+{
+    setToUnity();
+
+    dMtrx4D[0][0] = rV1.x * rV2.x;
+    dMtrx4D[0][1] = rV1.x * rV2.y;
+    dMtrx4D[0][2] = rV1.x * rV2.z;
+
+    dMtrx4D[1][0] = rV1.y * rV2.x;
+    dMtrx4D[1][1] = rV1.y * rV2.y;
+    dMtrx4D[1][2] = rV1.y * rV2.z;
+
+    dMtrx4D[2][0] = rV1.z * rV2.x;
+    dMtrx4D[2][1] = rV1.z * rV2.y;
+    dMtrx4D[2][2] = rV1.z * rV2.z;
+
+    return *this;
+}
+
+Matrix4D& Matrix4D::Outer(const Vector3d& rV1, const Vector3d& rV2)
+{
+    setToUnity();
+
+    dMtrx4D[0][0] = rV1.x * rV2.x;
+    dMtrx4D[0][1] = rV1.x * rV2.y;
+    dMtrx4D[0][2] = rV1.x * rV2.z;
+
+    dMtrx4D[1][0] = rV1.y * rV2.x;
+    dMtrx4D[1][1] = rV1.y * rV2.y;
+    dMtrx4D[1][2] = rV1.y * rV2.z;
+
+    dMtrx4D[2][0] = rV1.z * rV2.x;
+    dMtrx4D[2][1] = rV1.z * rV2.y;
+    dMtrx4D[2][2] = rV1.z * rV2.z;
+
+    return *this;
+}
+
+Matrix4D& Matrix4D::Hat(const Vector3f& rV)
+{
+    setToUnity();
+
+    dMtrx4D[0][0] = 0.0;
+    dMtrx4D[0][1] = -rV.z;
+    dMtrx4D[0][2] = rV.y;
+
+    dMtrx4D[1][0] = rV.z;
+    dMtrx4D[1][1] = 0.0;
+    dMtrx4D[1][2] = -rV.x;
+
+    dMtrx4D[2][0] = -rV.y;
+    dMtrx4D[2][1] = rV.x;
+    dMtrx4D[2][2] = 0.0;
+
+    return *this;
+}
+
+Matrix4D& Matrix4D::Hat(const Vector3d& rV)
+{
+    setToUnity();
+
+    dMtrx4D[0][0] = 0.0;
+    dMtrx4D[0][1] = -rV.z;
+    dMtrx4D[0][2] = rV.y;
+
+    dMtrx4D[1][0] = rV.z;
+    dMtrx4D[1][1] = 0.0;
+    dMtrx4D[1][2] = -rV.x;
+
+    dMtrx4D[2][0] = -rV.y;
+    dMtrx4D[2][1] = rV.x;
+    dMtrx4D[2][2] = 0.0;
+
+    return *this;
+}
