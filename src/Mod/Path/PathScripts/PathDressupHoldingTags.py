@@ -26,6 +26,7 @@ import FreeCADGui
 import DraftGeomUtils
 import Path
 import Part
+import copy
 import math
 
 from PathScripts import PathUtils
@@ -47,6 +48,19 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 debugDressup = True
+debugComponents = ['P0', 'P1', 'P2', 'P3']
+
+def debugPrint(comp, msg):
+    if debugDressup and comp in debugComponents:
+        print(msg)
+
+def debugEdge(edge, prefix, comp = None):
+    pf = edge.valueAt(edge.FirstParameter)
+    pl = edge.valueAt(edge.LastParameter)
+    if comp:
+        debugPrint(comp, "%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+    else:
+        print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
 
 def debugMarker(vector, label, color = None, radius = 0.5):
     if debugDressup:
@@ -54,6 +68,17 @@ def debugMarker(vector, label, color = None, radius = 0.5):
         obj.Label = label
         obj.Radius = radius
         obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        if color:
+            obj.ViewObject.ShapeColor = color
+
+def debugCylinder(vector, r, height, label, color = None):
+    if debugDressup:
+        obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
+        obj.Label = label
+        obj.Radius = r
+        obj.Height = height
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.ViewObject.Transparency = 90
         if color:
             obj.ViewObject.ShapeColor = color
 
@@ -66,21 +91,30 @@ movearc = movecw + moveccw
 slack = 0.0000001
 
 def pathCommandForEdge(edge):
-    pt = edge.Curve.EndPoint
+    pt = edge.valueAt(edge.LastParameter)
     params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
     if type(edge.Curve) == Part.Line:
-        return Part.Command('G1', params)
-
-    p1 = edge.Curve.StartPoint
-    p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-    p3 = pt
-    if Side.Left == Side.of(p2 - p1, p3 - p2):
-        cmd = 'G3'
+        command =  Path.Command('G1', params)
     else:
-        cmd = 'G2'
-    offset = pt1 - edge.Curve.Center
-    params.update({'I': offset.x, 'J': offset.y, 'K': offset.z})
-    return Part.Command(cmd, params)
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+        p3 = pt
+        if Side.Left == Side.of(p2 - p1, p3 - p2):
+            cmd = 'G3'
+        else:
+            cmd = 'G2'
+        pa = PathGeom.xy(p1)
+        pb = PathGeom.xy(p2)
+        pc = PathGeom.xy(p3)
+        pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+        print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
+        print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
+        offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
+        print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+        params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
+        command = Path.Command(cmd, params)
+    print command
+    return command
 
 
 class Tag:
@@ -117,7 +151,7 @@ class Tag:
         return self.z + self.actualHeight
 
     def centerLine(self):
-        return Part.Line(self.originAt(self.bottom()), self.originAt(self.top()))
+        return Part.Line(self.originAt(self.bottom() - 1), self.originAt(self.top() + 1))
 
     def createSolidsAt(self, z):
         self.z = z
@@ -157,6 +191,7 @@ class Tag:
         #
         # If no intersection occured the Intersection can be viewed as being
         # at P3 with no additional edges.
+        Pnone = 1
         P0 = 2
         P1 = 3
         P2 = 4
@@ -164,18 +199,23 @@ class Tag:
 
         def __init__(self, tag):
             self.tag = tag
-            self.state = self.P3
+            self.state = self.Pnone
             self.edges = []
             self.tail = None
 
         def isComplete(self):
-            return self.state == self.P3
+            return self.state == self.Pnone or self.state == self.P3
+
+        def hasEdges(self):
+            return self.state != self.Pnone
 
         def moveEdgeToPlateau(self, edge):
             if type(edge.Curve) is Part.Line:
+                e = copy.copy(edge)
                 z = edge.Curve.StartPoint.z
             elif type(edge.Curve) is Part.Circle:
                 # it's an arc
+                e = copy.copy(edge)
                 z = edge.Curve.Center.z
             else:
                 # it's a helix -> transform to arc
@@ -183,45 +223,54 @@ class Tag:
                 p1 = PathGeom.xy(edge.valueAt(edge.FirstParameter))
                 p2 = PathGeom.xy(edge.valueAt((edge.FirstParameter + edge.LastParameter)/2))
                 p3 = PathGeom.xy(edge.valueAt(edge.LastParameter))
-                edge = Part.Edge(Part.Arc(p1, p2, p3))
-            edge.translate(Vector(0, 0, self.tag.top() - z))
-            return edge
+                e = Part.Edge(Part.Arc(p1, p2, p3))
+            print("-------- moveEdgeToPlateau")
+            e.translate(Vector(0, 0, self.tag.top() - z))
+            return e
 
         def intersectP0Core(self, edge):
-            #print("----- P0 (%s - %s)" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+            debugPrint('P0', "----- P0-core")
 
             i = self.tag.nextIntersectionClosestTo(edge, self.tag.core, edge.valueAt(edge.FirstParameter))
             if i:
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
                     # if P0 and P1 are the same, we need to insert a segment for the rise
-                    #print("-------  insert vertical rise (%s)" % i)
+                    debugPrint('P0', "-------  insert vertical rise (%s)" % i)
                     self.edges.append(Part.Edge(Part.Line(i, FreeCAD.Vector(i.x, i.y, self.tag.top()))))
                     self.p1 = i
                     self.state = self.P1
                     return edge
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
-                    #print("-------  consumed (%s)" % i)
+                    debugPrint('P0', "-------  consumed (%s)" % i)
                     e = edge
                     tail = None
                 else:
-                    #print("-------  split at (%s)" % i)
+                    debugPrint('P0', "-------  split at (%s)" % i)
                     e, tail = self.tag.splitEdgeAt(edge, i)
                 self.p1 = e.valueAt(edge.LastParameter)
-                self.edges.append(self.tag.mapEdgeToSolid(e))
+                self.edges.extend(self.tag.mapEdgeToSolid(e, 'P0-core-1'))
                 self.state = self.P1
                 return tail
             # no intersection, the entire edge fits between P0 and P1
-            #print("-------  no intersection")
-            self.edges.append(self.tag.mapEdgeToSolid(edge))
+            debugPrint('P0', "-------  no intersection")
+            self.edges.extend(self.tag.mapEdgeToSolid(edge, 'P0-core-2'))
             return None
 
         def intersectP0(self, edge):
+            pf = edge.valueAt(edge.FirstParameter)
+            pl = edge.valueAt(edge.LastParameter)
+            debugPrint('P0', "----- P0 %s(%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+
             if self.tag.core:
                 return self.intersectP0Core(edge)
+
             # if we have no core the tip is the origin of the Tag
             line = Part.Edge(self.tag.centerLine())
-            i = DraftGeomUtils.findIntersection(line, edge)
+            debugEdge(line, "------- center line", 'P0')
+            #i = DraftGeomUtils.findIntersection(line, edge, True)
+            i = line.Curve.intersect(edge)
             if i:
+                debugPrint('P0', '------- P0 split @ (%.2f, %.2f, %.2f)' % (i[0].x, i[0].y, i[0].z))
                 if PathGeom.pointsCoincide(i[0], edge.valueAt(edge.LastParameter)):
                     e = edge
                     tail = None
@@ -231,69 +280,82 @@ class Tag:
                 self.p1 = i[0]
                 self.p2 = i[0]
             else:
+                debugPrint('P0', '------- P0 no intersect')
                 e = edge
                 tail = None
-            self.edges.append(self.tag.mapEdgeToSolid(e))
+            self.edges.extend(self.tag.mapEdgeToSolid(e, 'P0'))
             return tail
 
 
 
         def intersectP1(self, edge):
-            #print("----- P1 (%s - %s)" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+            pf = edge.valueAt(edge.FirstParameter)
+            pl = edge.valueAt(edge.LastParameter)
+            debugPrint('P1', "----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
             i = self.tag.nextIntersectionClosestTo(edge, self.tag.core, edge.valueAt(edge.LastParameter))
             if i:
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
-                    #print("----- P1 edge too short")
-                    self.edges.append(self.tag.mapEdgeToSolid(edge))
-                    return self
+                    debugPrint('P1', "----- P1 edge too short")
+                    #self.edges.extend(self.tag.mapEdgeToSolid(edge, 'P1'))
+                    self.edges.append(self.moveEdgeToPlateau(edge))
+                    return None
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
-                    #print("----- P1 edge at end")
+                    debugPrint('P1', "----- P1 edge at end")
                     e = edge
                     tail = None
                 else:
-                    #print("----- P1 split edge @ (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
+                    debugPrint('P1', "----- P1 split edge @ (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
                     e, tail = self.tag.splitEdgeAt(edge, i)
                     f = e.valueAt(e.FirstParameter)
                     l = e.valueAt(e.LastParameter)
-                    #print("----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (f.x, f.y, f.z, l.x, l.y, l.z))
+                    debugPrint('P1', "----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (f.x, f.y, f.z, l.x, l.y, l.z))
                 self.p2 = e.valueAt(e.LastParameter)
                 self.state = self.P2
             else:
-                #print("----- P1 no intersect")
+                debugPrint('P1', "----- P1 no intersect")
                 e = edge
                 tail = None
             f = e.valueAt(e.FirstParameter)
             l = e.valueAt(e.LastParameter)
-            #print("----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (f.x, f.y, f.z, l.x, l.y, l.z))
+            debugPrint('P1', "----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (f.x, f.y, f.z, l.x, l.y, l.z))
             self.edges.append(self.moveEdgeToPlateau(e))
             return tail
 
         def intersectP2(self, edge):
-            #print("----- P2 (%s - %s)" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+            pf = edge.valueAt(edge.FirstParameter)
+            pl = edge.valueAt(edge.LastParameter)
+            debugPrint('P2', "----- P2 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
             i = self.tag.nextIntersectionClosestTo(edge, self.tag.solid, edge.valueAt(edge.LastParameter))
             if i:
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
-                    #print("------- insert exit plunge (%s)"  % i)
+                    debugPrint('P2', "------- insert exit plunge (%s)"  % i)
                     self.edges.append(Part.Edge(Part.Line(FreeCAD.Vector(i.x, i.y, self.tag.top()), i)))
                     e = None
                     tail = edge
                 elif PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
-                    #print("------- entire segment added (%s)"  % i)
+                    debugPrint('P2', "------- entire segment added (%s)"  % i)
                     e = edge
                     tail = None
                 else:
                     e, tail = self.tag.splitEdgeAt(edge, i)
-                #if tail:
-                #    print("----- P3 (%s - %s)" % (tail.valueAt(edge.FirstParameter), tail.valueAt(edge.LastParameter)))
-                #else:
-                #    print("----- P3 (---)")
+                if tail:
+                    pf = tail.valueAt(tail.FirstParameter)
+                    pl = tail.valueAt(tail.LastParameter)
+                    debugPrint('P3', "----- P3 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+                else:
+                    debugPrint('P3', "----- P3 (---)")
                 self.state = self.P3
                 self.tail = tail
             else:
+                debugPrint('P2', "----- P2 no intersection")
                 e = edge
                 tail = None
             if e:
-                self.edges.append(self.tag.mapEdgeToSolid(e))
+                pf = e.valueAt(e.FirstParameter)
+                pl = e.valueAt(e.LastParameter)
+                s = 'P2' if self.state == self.P2 else 'P3'
+                debugPrint(s, "----- %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (s, pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+                self.edges.extend(self.tag.mapEdgeToSolid(e, 'P2'))
             return tail
 
         def intersect(self, edge):
@@ -310,27 +372,56 @@ class Tag:
 
     def splitEdgeAt(self, edge, pt):
         p = edge.Curve.parameter(pt)
+
+        pf = edge.valueAt(edge.FirstParameter)
+        pl = edge.valueAt(edge.LastParameter)
+        print("-------- splitAt((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): (%.2f, %.2f, %.2f)) -> param[%.2f -> %.2f]: %.2f" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z, pt.x, pt.y, pt.z, edge.FirstParameter, edge.LastParameter, p))
+
         wire = edge.split(p)
         # split does not carry the Placement of the original curve foward ...
         wire.transformShape(edge.Placement.toMatrix())
         return wire.Edges
 
-    def mapEdgeToSolid(self, edge):
-        #print("mapEdgeToSolid: (%s %s)" % (edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)))
+    def mapEdgeToSolid(self, edge, label):
+        pf = edge.valueAt(edge.FirstParameter)
+        pl = edge.valueAt(edge.LastParameter)
+        print("--------- mapEdgeToSolid-%s: %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (label, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+
         p1a = edge.valueAt(edge.FirstParameter)
         p1b = FreeCAD.Vector(p1a.x, p1a.y, p1a.z + self.height)
+        p1a.z = self.bottom()
         e1 = Part.Edge(Part.Line(p1a, p1b))
         p1 = self.nextIntersectionClosestTo(e1, self.solid, p1b) # top most intersection
-        #print("       p1: (%s %s) -> %s" % (p1a, p1b, p1))
+        print("---------- p1: (%s %s) -> %s %d" % (p1a, p1b, p1, self.solid.isInside(p1, 0.0000001, True)))
+        if not p1:
+            raise Exception('no p1')
+            return []
 
         p2a = edge.valueAt(edge.LastParameter)
         p2b = FreeCAD.Vector(p2a.x, p2a.y, p2a.z + self.height)
+        p2a.z = self.bottom()
         e2 = Part.Edge(Part.Line(p2a, p2b))
         p2 = self.nextIntersectionClosestTo(e2, self.solid, p2b) # top most intersection
-        #print("       p2: (%s %s) -> %s" % (p2a, p2b, p2))
+        if not p2:
+            p1 = edge.valueAt(edge.FirstParameter)
+            p2 = edge.valueAt(edge.LastParameter)
+            print("---------- p1: %d%d" % (self.solid.isInside(p1, 0.0000001, True), self.solid.isInside(p1, 0.0000001, False)))
+            print("---------- p2: %d%d" % (self.solid.isInside(p2, 0.0000001, True), self.solid.isInside(p2, 0.0000001, False)))
+            #if not self.solid.isInside(p1, 0.0000001, False):
+                # p1 is on the solid - 
+            raise Exception('no p2')
+            return []
+
+        print("---------- %s - %s" % (p1, p2))
+        print("---------- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p2.x, p2.y, p2.z, p1.x, p1.y, p1.z))
+
+        if PathGeom.pointsCoincide(p1, p2):
+            return []
 
         if type(edge.Curve) == Part.Line:
-            return Part.Edge(Part.Line(p1, p2))
+            e = Part.Edge(Part.Line(p1, p2))
+            debugEdge(e, "-------- >>")
+            return [e]
 
         m = FreeCAD.Matrix()
         m.unity()
@@ -344,15 +435,16 @@ class Tag:
             else:
                 m.A34 *= p1.y
             e = edge.transformGeometry(m).Edges[0]
-            return e
+            debugEdge(e, "-------- >>")
+            return [e]
 
         # it's already a helix, just need to lift it to the plateau
-        m.A33 = pd.z / (p2a.z - p1a.z)
+        m.A33 = pd.z / (edge.valueAt(edge.LastParameter).z - edge.valueAt(edge.FirstParameter).z)
         m.A34 = (1 - m.A33)
         if pd.z < 0:
-            m.A34 *= p2a.z
+            m.A34 *= edge.valueAt(edge.LastParameter).z
         else:
-            m.A34 *= p1a.z
+            m.A34 *= edge.valueAt(edge.FirstParameter).z
 
         #print
         pf = edge.valueAt(edge.FirstParameter)
@@ -364,53 +456,89 @@ class Tag:
         pl = e.valueAt(e.LastParameter)
         #print("(%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
         #raise Exception("mensch")
-        return e
+        debugEdge(e, "-------- >>")
+        return [e]
 
 
     def filterIntersections(self, pts, face):
         if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder:
+            #print("it's a cone/cylinder, checking z")
             return filter(lambda pt: pt.z >= self.bottom() and pt.z <= self.top(), pts)
         if type(face.Surface) == Part.Plane:
+            #print("it's a plane, checking R")
             c = face.Edges[0].Curve
             if (type(c) == Part.Circle):
                 return filter(lambda pt: (pt - c.Center).Length <= c.Radius, pts)
         print("==== we got a %s" % face.Surface)
 
+    def isPointOnEdge(self, pt, edge):
+        param = edge.Curve.parameter(pt)
+        if edge.FirstParameter <= param <= edge.LastParameter:
+            return True
+        if edge.LastParameter <= param <= edge.FirstParameter:
+            return True
+        if PathGeom.isRoughly(edge.FirstParameter, param) or PathGeom.isRoughly(edge.LastParameter, param):
+            return True
+        print("-------- X %.2f <= %.2f <=%.2f   (%.2f, %.2f, %.2f)" % (edge.FirstParameter, param, edge.LastParameter, pt.x, pt.y, pt.z))
+        return False
+
 
     def nextIntersectionClosestTo(self, edge, solid, refPt):
+        ef = edge.valueAt(edge.FirstParameter)
+        el = edge.valueAt(edge.LastParameter)
+        print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
+
         pts = []
         for index, face in enumerate(solid.Faces):
             i = edge.Curve.intersect(face.Surface)[0]
             ps = self.filterIntersections([FreeCAD.Vector(p.X, p.Y, p.Z) for p in i], face)
-            pts.extend(ps)
+            pts.extend(filter(lambda pt: self.isPointOnEdge(pt, edge), ps))
+            if len(ps)  != len(filter(lambda pt: self.isPointOnEdge(pt, edge), ps)):
+                filtered = filter(lambda pt: self.isPointOnEdge(pt, edge), ps)
+                print("-------- ++ len(ps)=%d, len(filtered)=%d" % (len(ps), len(filtered)))
+                for p in ps:
+                    included = '+' if p in filtered else '-'
+                    print("--------     %s (%.2f, %.2f, %.2f)" % (included, p.x, p.y, p.z))
         if pts:
             closest = sorted(pts, key=lambda pt: (pt - refPt).Length)[0]
-            #print("--pts: %s -> %s" % (pts, closest))
+            for p in pts:
+                print("-------- - intersect pt : (%.2f, %.2f, %.2f)" % (p.x, p.y, p.z))
+            print("-------- -> (%.2f, %.2f, %.2f)" % (closest.x, closest.y, closest.z))
             return closest
+        
+        print("-------- -> None")
         return None
 
-    def intersect(self, edge):
+    def intersect(self, edge, check = True):
+        print("--- intersect")
         inters = self.Intersection(self)
-        if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
-            i = self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(edge.FirstParameter))
-            if i:
-                inters.state = self.Intersection.P0
-                inters.p0 = i
-                if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
-                    inters.edges.append(edge)
-                    return inters
-                if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
-                    tail = edge
+        if check:
+            if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
+                i = self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(edge.FirstParameter))
+                if i:
+                    print("---- (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
+                    inters.state = self.Intersection.P0
+                    inters.p0 = i
+                    if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
+                        print("---- entire edge consumed.")
+                        inters.edges.append(edge)
+                        return inters
+                    if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
+                        print("---- nothing of edge consumed.")
+                        tail = edge
+                    else:
+                        print("---- split edge")
+                        e,tail = self.splitEdgeAt(edge, i)
+                        inters.edges.append(e)
+                    return inters.intersect(tail)
                 else:
-                    e,tail = self.splitEdgeAt(edge, i)
-                    inters.edges.append(e)
-                return inters.intersect(tail)
-            #else:
-            #    print("No intersection found.")
-        #else:
-        #    print("Fly by")
+                    print("---- No intersection found.")
+            else:
+                print("---- Fly by")
+        else:
+            print("---- skipped")
         # if we get here there is no intersection with the tag
-        inters.state = self.Intersection.P3
+        inters.state = self.Intersection.Pnone
         inters.tail = edge
         return inters
 
@@ -418,7 +546,7 @@ class PathData:
     def __init__(self, obj):
         self.obj = obj
         self.wire = PathGeom.wireForPath(obj.Base.Path)
-        self.edges = wire.Edges
+        self.edges = self.wire.Edges
         self.base = self.findBottomWire(self.edges)
         # determine overall length
         self.length = self.base.Length
@@ -430,20 +558,30 @@ class PathData:
         bottom = [e for e in edges if e.Vertexes[0].Point.z == minZ and e.Vertexes[1].Point.z == minZ]
         wire = Part.Wire(bottom)
         if wire.isClosed():
-            return Part.Wire(self.sortedBase(bottom))
+            #return Part.Wire(self.sortedBase(bottom))
+            return wire
         # if we get here there are already holding tags, or we're not looking at a profile
         # let's try and insert the missing pieces - another day
         raise ValueError("Selected path doesn't seem to be a Profile operation.")
 
     def sortedBase(self, base):
         # first find the exit point, where base wire is closed
-        edges = [e for e in self.edges if e.valueAt(edge.FirstParameter).z == self.minZ and e.valueAt(edge.LastParameter).z != self.maxZ]
-        exit = sorted(edges, key=lambda e: -e.valueAt(edge.LastParameter).z)[0]
-        pt = exit.valueAt(edge.FirstParameter)
+        edges = [e for e in self.edges if e.valueAt(e.FirstParameter).z == self.minZ and e.valueAt(e.LastParameter).z != self.maxZ]
+        exit = sorted(edges, key=lambda e: -e.valueAt(e.LastParameter).z)[0]
+        pt = exit.valueAt(exit.FirstParameter)
         # then find the first base edge, and sort them until done
         ordered = []
         while base:
-            edge = [e for e in base if e.valueAt(edge.FirstParameter) == pt][0]
+            edges = [e for e in base if e.valueAt(e.FirstParameter) == pt]
+            if not edges:
+                print ordered
+                print base
+                print("(%.2f, %.2f, %.2f)" % (pt.x, pt.y, pt.z))
+                for e in base:
+                    pf = e.valueAt(e.FirstParameter)
+                    pl = e.valueAt(e.LastParameter)
+                    print("(%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+            edge = edges[0]
             ordered.append(edge)
             base.remove(edge)
             pt = edge.valueAt(edge.LastParameter)
@@ -467,7 +605,7 @@ class PathData:
         return (edges[0], edges[-1])
 
     def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
-        #print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
+        print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
         #for e in self.base.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
@@ -601,35 +739,49 @@ class ObjectDressup:
             return closest
         return None
 
-    def createPath(self, edges, tagSolids):
+    def createPath(self, edges, tags):
         commands = []
-        i = 0
-        while i != len(edges):
-            edge = edges[i]
-            while edge:
-                for solid in tagSolids:
-                    for face in solid.Faces:
-                        pt = self.tagIntersection(face, edge)
-                        if pt:
-                            if pt == edge.Curve.StartPoint:
-                                pt
-                            elif pt != edge.Curve.EndPoint:
-                                parameter = edge.Curve.parameter(pt)
-                                wire = edge.split(parameter)
-                                commands.append(pathCommandForEdge(wire.Edges[0]))
-                                edge = wire.Edges[1]
-                                break;
-                            else:
-                                commands.append(pathCommandForEdge(edge))
-                                edge = None
-                                i += 1
-                                break
-                    if not edge:
-                        break
+        lastEdge = 0
+        lastTag = 0
+        sameTag = None
+        t = 0
+        inters = None
+        edge = None
+
+        while edge or lastEdge < len(edges):
+            print("------- lastEdge = %d/%d.%d/%d" % (lastEdge, lastTag, t, len(tags)))
+            if not edge:
+                edge = edges[lastEdge]
+                debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(edges)))
+                lastEdge += 1
+                sameTag = None
+
+            if inters:
+                inters = inters.intersect(edge)
+            else:
+                tIndex = (t + lastTag) % len(tags)
+                t += 1
+                print("<<<<< lastTag=%d, t=%d, tIndex=%d, sameTag=%s >>>>>>" % (lastTag, t, tIndex, sameTag))
+                inters = tags[tIndex].intersect(edge, True or tIndex != sameTag)
+            edge = inters.tail
+
+            if inters.isComplete():
+                if inters.hasEdges():
+                    sameTag = (t + lastTag - 1) % len(tags)
+                    lastTag = sameTag
+                    t = 1
+                    for e in inters.edges:
+                        commands.append(pathCommandForEdge(e))
+                inters = None
+
+            if t >= len(tags):
+                # gone through all tags, consume edge and move on
                 if edge:
                     commands.append(pathCommandForEdge(edge))
-                    edge = None
-        return self.obj.Path
+                edge = None
+                t = 0
+
+        return Path.Path(commands)
 
 
     def execute(self, obj):
@@ -648,14 +800,14 @@ class ObjectDressup:
             return
 
         if hasattr(obj, 'Tags') and obj.Tags:
-            if self.fingerprint == obj.Tags:
+            if False and self.fingerprint == obj.Tags:
                 print("execute - cache valid")
                 return
             print("execute - tags from property")
             tags = [Tag.FromString(tag) for tag in obj.Tags]
         else:
             print("execute - default tags")
-            tags = self.generateTags(obj, 4.)
+            tags = self.generateTags(obj, 2.)
 
         if not tags:
             print("execute - no tags")
@@ -663,12 +815,14 @@ class ObjectDressup:
             obj.Path = obj.Base.Path
             return
 
+        print("execute - %d tags" % (len(tags)))
         tagID = 0
         for tag in tags:
             tagID += 1
             if tag.enabled:
                 #print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
-                debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                #debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                debugCylinder(tag.originAt(pathData.minZ), tag.width/2, tag.actualHeight, "tag-%02d" % tagID)
 
         tags = pathData.sortedTags(tags)
         for tag in tags:
@@ -677,8 +831,7 @@ class ObjectDressup:
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
 
-        #obj.Path = self.createPath(pathData.edges, tags)
-        obj.Path = self.Base.Path
+        obj.Path = self.createPath(pathData.edges, tags)
 
     def setTags(self, obj, tags):
         obj.Tags = [tag.toString() for tag in tags]
@@ -690,7 +843,7 @@ class ObjectDressup:
         return self.setup(obj).generateTags(obj, 4)
 
     def setup(self, obj):
-        if not hasattr(self, "pathData") or not self.pathData:
+        if False or not hasattr(self, "pathData") or not self.pathData:
             try:
                 pathData = PathData(obj)
             except ValueError:

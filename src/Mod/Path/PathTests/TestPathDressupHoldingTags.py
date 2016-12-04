@@ -544,7 +544,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
 class TestTag04TriangularTag(PathTestBase): # ========================
     """Unit tests for tags that take on a triangular shape."""
 
-    def test00(self):
+    def xtest00(self):
         """Verify intersection of triangular tag with line ending at tag start."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
@@ -555,7 +555,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
         self.assertIsNone(i.tail)
 
-    def test01(self):
+    def xtest01(self):
         """Verify intersection of triangular tag with line ending between P0 and P1."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(3, 0, 0)))
@@ -576,7 +576,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertLine(i.edges[2], p2, p3)
         self.assertIsNone(i.tail)
 
-    def test02(self):
+    def xtest02(self):
         """Verify proper down plunge on exit of triangular tag."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
 
@@ -603,7 +603,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3])
 
-    def test03(self):
+    def xtest03(self):
         """Verify triangular tag shap on intersection."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         
@@ -625,7 +625,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3, p4])
         self.assertIsNotNone(i.tail)
 
-    def test10(self):
+    def xtest10(self):
         """Verify intersection with an arc."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         p1 = Vector(10, -10, 0)
