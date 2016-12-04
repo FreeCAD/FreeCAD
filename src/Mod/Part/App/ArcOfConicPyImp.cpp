@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -23,111 +23,106 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Geom_Conic.hxx>
+# include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include <Mod/Part/App/OCCError.h>
-#include <Mod/Part/App/ConicPy.h>
-#include <Mod/Part/App/ConicPy.cpp>
+#include "Geometry.h"
+#include <Mod/Part/App/ArcOfConicPy.h>
+#include <Mod/Part/App/ArcOfConicPy.cpp>
+#include "OCCError.h"
 
-#include <Base/VectorPy.h>
 #include <Base/GeometryPyCXX.h>
+#include <Base/VectorPy.h>
 
 using namespace Part;
 
 // returns a string which represents the object e.g. when printed in python
-std::string ConicPy::representation(void) const
+std::string ArcOfConicPy::representation(void) const
 {
-    return "<Conic object>";
+    return "<ArcOfConic object>";
 }
 
-PyObject *ConicPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *ArcOfConicPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError,
-        "You cannot create an instance of the abstract class 'Conic'.");
+        "You cannot create an instance of the abstract class 'ArcOfConic'.");
     return 0;
 }
 
 // constructor method
-int ConicPy::PyInit(PyObject* /*args*/, PyObject* /*kwds*/)
+int ArcOfConicPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
-    return 0;
+    return -1;
 }
 
-Py::Object ConicPy::getCenter(void) const
+Py::Object ArcOfConicPy::getLocation(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
-    gp_Pnt loc = conic->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
+    return Py::Vector(getGeomArcOfConicPtr()->getLocation());
 }
 
-Py::Object ConicPy::getLocation(void) const
+Py::Object ArcOfConicPy::getCenter(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
-    gp_Pnt loc = conic->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
+    return Py::Vector(getGeomArcOfConicPtr()->getCenter());
 }
 
-void  ConicPy::setCenter(Py::Object arg)
+void  ArcOfConicPy::setLocation(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomConicPtr()->setLocation(loc);
+        getGeomArcOfConicPtr()->setLocation(loc);
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomConicPtr()->setLocation(loc);
-    } else {
+        getGeomArcOfConicPtr()->setLocation(loc);
+    }
+    else {
         std::string error = std::string("type must be 'Vector', not ");
         error += p->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
 
-void  ConicPy::setLocation(Py::Object arg)
+void  ArcOfConicPy::setCenter(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
         Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomConicPtr()->setLocation(loc);
+        getGeomArcOfConicPtr()->setCenter(loc);
     }
     else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
         Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomConicPtr()->setLocation(loc);
-    } else {
+        getGeomArcOfConicPtr()->setCenter(loc);
+    }
+    else {
         std::string error = std::string("type must be 'Vector', not ");
         error += p->ob_type->tp_name;
         throw Py::TypeError(error);
     }
 }
 
-Py::Float ConicPy::getEccentricity(void) const
+Py::Float ArcOfConicPy::getAngleXU(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
-    return Py::Float(conic->Eccentricity());
+    return Py::Float(getGeomArcOfConicPtr()->getAngleXU());
 }
 
-Py::Float ConicPy::getAngleXU(void) const
+void ArcOfConicPy::setAngleXU(Py::Float arg)
 {
-    return Py::Float(getGeomConicPtr()->getAngleXU());
+    getGeomArcOfConicPtr()->setAngleXU((double)arg);
 }
 
-void ConicPy::setAngleXU(Py::Float arg)
+Py::Object ArcOfConicPy::getAxis(void) const
 {
-    getGeomConicPtr()->setAngleXU((double)arg);
-}
-
-Py::Object ConicPy::getAxis(void) const
-{
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->Axis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setAxis(Py::Object arg)
+void  ArcOfConicPy::setAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -143,7 +138,9 @@ void  ConicPy::setAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     try {
         gp_Ax1 axis;
         axis.SetLocation(conic->Location());
@@ -155,15 +152,17 @@ void  ConicPy::setAxis(Py::Object arg)
     }
 }
 
-Py::Object ConicPy::getXAxis(void) const
+Py::Object ArcOfConicPy::getXAxis(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->XAxis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setXAxis(Py::Object arg)
+void  ArcOfConicPy::setXAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -179,7 +178,9 @@ void  ConicPy::setXAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     try {
         gp_Ax2 pos;
         pos = conic->Position();
@@ -191,15 +192,17 @@ void  ConicPy::setXAxis(Py::Object arg)
     }
 }
 
-Py::Object ConicPy::getYAxis(void) const
+Py::Object ArcOfConicPy::getYAxis(void) const
 {
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     gp_Ax1 axis = conic->YAxis();
     gp_Dir dir = axis.Direction();
     return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
 }
 
-void  ConicPy::setYAxis(Py::Object arg)
+void  ArcOfConicPy::setYAxis(Py::Object arg)
 {
     PyObject* p = arg.ptr();
     Base::Vector3d val;
@@ -215,7 +218,9 @@ void  ConicPy::setYAxis(Py::Object arg)
         throw Py::TypeError(error);
     }
 
-    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(getGeomConicPtr()->handle());
+    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
+        (getGeomArcOfConicPtr()->handle());
+    Handle_Geom_Conic conic = Handle_Geom_Conic::DownCast(trim->BasisCurve());
     try {
         gp_Ax2 pos;
         pos = conic->Position();
@@ -227,12 +232,12 @@ void  ConicPy::setYAxis(Py::Object arg)
     }
 }
 
-PyObject *ConicPy::getCustomAttributes(const char* ) const
+PyObject *ArcOfConicPy::getCustomAttributes(const char* ) const
 {
     return 0;
 }
 
-int ConicPy::setCustomAttributes(const char* , PyObject *)
+int ArcOfConicPy::setCustomAttributes(const char* , PyObject *)
 {
     return 0; 
 }
