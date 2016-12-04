@@ -1106,22 +1106,21 @@ class Snapper:
         bsize = p.GetInt("ToolbarIconSize",24)+2
         isize = p.GetInt("ToolbarIconSize",24)/3*2
         self.toolbar = QtGui.QToolBar(None)
+        self.toolbar.setIconSize(QtCore.QSize(isize, isize))
         self.toolbar.setObjectName("Draft Snap")
         self.toolbar.setWindowTitle(QtCore.QCoreApplication.translate("Workbench", "Draft Snap"))
         self.toolbarButtons = []
         # grid button
-        gridbutton = QtGui.QPushButton(None)
+        gridbutton = QtGui.QToolButton(None)
         gridbutton.setIcon(QtGui.QIcon(":/icons/Draft_Grid.svg"))
-        gridbutton.setIconSize(QtCore.QSize(isize, isize))
         gridbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
         gridbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_ToggleGrid","Toggles the Draft grid on/off"))
         gridbutton.setObjectName("GridButton")
         QtCore.QObject.connect(gridbutton,QtCore.SIGNAL("clicked()"),self.toggleGrid)
         self.toolbar.addWidget(gridbutton)
         # master button
-        self.masterbutton = QtGui.QPushButton(None)
+        self.masterbutton = QtGui.QToolButton(None)
         self.masterbutton.setIcon(QtGui.QIcon(":/icons/Snap_Lock.svg"))
-        self.masterbutton.setIconSize(QtCore.QSize(isize, isize))
         self.masterbutton.setMaximumSize(QtCore.QSize(bsize,bsize))
         self.masterbutton.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Lock","Toggle On/Off"))
         self.masterbutton.setObjectName("SnapButtonMain")
@@ -1131,9 +1130,8 @@ class Snapper:
         self.toolbar.addWidget(self.masterbutton)
         for c,i in self.cursors.items():
             if i:
-                b = QtGui.QPushButton(None)
+                b = QtGui.QToolButton(None)
                 b.setIcon(QtGui.QIcon(i))
-                b.setIconSize(QtCore.QSize(isize, isize))
                 b.setMaximumSize(QtCore.QSize(bsize,bsize))
                 if c == "passive":
                     b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_Near","Nearest"))
@@ -1147,9 +1145,8 @@ class Snapper:
                 QtCore.QObject.connect(b,QtCore.SIGNAL("toggled(bool)"),self.saveSnapModes)
         # adding non-snap button
         for n in ["Dimensions","WorkingPlane"]:
-            b = QtGui.QPushButton(None)
+            b = QtGui.QToolButton(None)
             b.setIcon(QtGui.QIcon(":/icons/Snap_"+n+".svg"))
-            b.setIconSize(QtCore.QSize(isize, isize))
             b.setMaximumSize(QtCore.QSize(bsize,bsize))
             b.setToolTip(QtCore.QCoreApplication.translate("Draft_Snap_"+n,n))
             b.setObjectName("SnapButton"+n)
