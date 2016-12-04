@@ -18,6 +18,8 @@
    sodipodi:docname="Tree_Mesh.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
+  <title
+     id="title3725">Tree_Mesh</title>
   <defs
      id="defs3054">
     <inkscape:perspective
@@ -69,26 +71,29 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.75"
-     inkscape:cx="28.736857"
-     inkscape:cy="123.131"
+     inkscape:zoom="123.11706"
+     inkscape:cx="1.9596043"
+     inkscape:cy="27.874281"
      inkscape:current-layer="g3884"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:snap-global="true"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid2991"
        empspacing="2"
        visible="true"
        enabled="true"
-       snapvisiblegridlinesonly="true" />
+       snapvisiblegridlinesonly="true"
+       units="px"
+       spacingx="1px"
+       spacingy="1px" />
   </sodipodi:namedview>
   <metadata
      id="metadata3057">
@@ -98,6 +103,40 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Tree_Mesh</dc:title>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Tree_Mesh.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>plane</rdf:li>
+            <rdf:li>tesselated</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Tesselated folded plane, lit from top</dc:description>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -113,7 +152,7 @@
          sodipodi:cx="25.1875"
          sodipodi:cy="41.625"
          transform="matrix(-0.34490802,1.7675115,1.0422728,0.24876696,148.23989,117.79495)"
-         d="m 43.25,41.625 a 18.0625,5.875 0 1 1 -36.125,0 18.0625,5.875 0 1 1 36.125,0 z"
+         d="m 43.25,41.625 c 0,3.244673 -8.086857,5.875 -18.0625,5.875 -9.975643,0 -18.0625,-2.630327 -18.0625,-5.875 0,-3.244673 8.086857,-5.875 18.0625,-5.875 9.975643,0 18.0625,2.630327 18.0625,5.875 z"
          sodipodi:type="arc"
          style="opacity:0.26704544;color:#000000;fill:url(#radialGradient3169);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
          sodipodi:ry="5.875"

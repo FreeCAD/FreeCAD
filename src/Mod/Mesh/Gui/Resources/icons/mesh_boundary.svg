@@ -18,6 +18,8 @@
    sodipodi:docname="mesh_boundary.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
+  <title
+     id="title3749">mesh_boundary</title>
   <defs
      id="defs9486">
     <linearGradient
@@ -72,19 +74,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.624403"
-     inkscape:cx="22.191114"
-     inkscape:cy="25.889708"
+     inkscape:zoom="10.774357"
+     inkscape:cx="15.24726"
+     inkscape:cy="32"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:snap-global="true"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid2989"
@@ -104,6 +106,41 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:title>mesh_boundary</dc:title>
+        <dc:description>A single triangular mesh face with a hole in it</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>triangle</rdf:li>
+            <rdf:li>face</rdf:li>
+            <rdf:li>hole</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/mesh_boundary.svg</dc:identifier>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -150,7 +187,7 @@
        sodipodi:cy="14.792462"
        sodipodi:rx="5.051754"
        sodipodi:ry="3.6309483"
-       d="m 25.195623,14.792462 a 5.051754,3.6309483 0 1 1 -10.103508,0 5.051754,3.6309483 0 1 1 10.103508,0 z"
+       d="m 25.195623,14.792462 c 0,2.005318 -2.261747,3.630949 -5.051754,3.630949 -2.790006,0 -5.051754,-1.625631 -5.051754,-3.630949 0,-2.005317 2.261748,-3.630948 5.051754,-3.630948 2.790007,0 5.051754,1.625631 5.051754,3.630948 z"
        transform="matrix(1.8607197,0,0,2.0020199,0.565081,-29.722958)" />
     <path
        style="fill:none;stroke:url(#linearGradient3793);stroke-width:4.15384626;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
