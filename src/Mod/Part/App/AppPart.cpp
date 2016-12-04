@@ -69,6 +69,7 @@
 #include "Mod/Part/App/LinePy.h"
 #include "Mod/Part/App/LineSegmentPy.h"
 #include "Mod/Part/App/PointPy.h"
+#include "Mod/Part/App/ConicPy.h"
 #include "Mod/Part/App/CirclePy.h"
 #include "Mod/Part/App/EllipsePy.h"
 #include "Mod/Part/App/ArcPy.h"
@@ -304,6 +305,7 @@ PyMODINIT_FUNC initPart()
     }
     Base::Interpreter().addType(&Part::LineSegmentPy        ::Type,partModule,"LineSegment");
     Base::Interpreter().addType(&Part::PointPy              ::Type,partModule,"Point");
+    Base::Interpreter().addType(&Part::ConicPy              ::Type,partModule,"Conic");
     Base::Interpreter().addType(&Part::CirclePy             ::Type,partModule,"Circle");
     Base::Interpreter().addType(&Part::EllipsePy            ::Type,partModule,"Ellipse");
     Base::Interpreter().addType(&Part::HyperbolaPy          ::Type,partModule,"Hyperbola");
@@ -457,6 +459,7 @@ PyMODINIT_FUNC initPart()
     Part::GeomCurve               ::init();
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
+    Part::GeomConic               ::init();
     Part::GeomCircle              ::init();
     Part::GeomArcOfCircle         ::init();
     Part::GeomArcOfEllipse        ::init();

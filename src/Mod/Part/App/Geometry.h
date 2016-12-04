@@ -209,7 +209,39 @@ private:
     Handle_Geom_BSplineCurve myCurve;
 };
 
-class PartExport GeomCircle : public GeomCurve
+class PartExport GeomConic : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+protected:
+    GeomConic();
+
+public:
+    virtual ~GeomConic();
+    virtual Geometry *clone(void) const = 0;
+
+    /*!
+     * \deprecated use getLocation
+     * \brief getCenter
+     */
+    Base::Vector3d getCenter(void) const;
+    Base::Vector3d getLocation(void) const;
+    void setLocation(const Base::Vector3d& Center);
+    /*!
+     * \deprecated use setLocation
+     * \brief setCenter
+     */
+    void setCenter(const Base::Vector3d& Center);
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
+    bool isReversed() const;
+
+    virtual unsigned int getMemSize(void) const = 0;
+    virtual PyObject *getPyObject(void) = 0;
+
+    const Handle_Geom_Geometry& handle() const = 0;
+};
+
+class PartExport GeomCircle : public GeomConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -218,11 +250,8 @@ public:
     virtual ~GeomCircle();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getCenter(void) const;
     double getRadius(void) const;
-    void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
-    bool isReversed() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -271,7 +300,7 @@ private:
     Handle_Geom_TrimmedCurve myCurve;
 };
 
-class PartExport GeomEllipse : public GeomCurve
+class PartExport GeomEllipse : public GeomConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -280,17 +309,12 @@ public:
     virtual ~GeomEllipse();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);
     Base::Vector3d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector3d newdir);
-    bool isReversedInXY() const;
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -348,7 +372,7 @@ private:
 };
 
 
-class PartExport GeomHyperbola : public GeomCurve
+class PartExport GeomHyperbola : public GeomConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -357,14 +381,10 @@ public:
     virtual ~GeomHyperbola();
     virtual Geometry *clone(void) const;
     
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);   
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -420,7 +440,7 @@ private:
     Handle_Geom_TrimmedCurve myCurve;
 };
 
-class PartExport GeomParabola : public GeomCurve
+class PartExport GeomParabola : public GeomConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -429,12 +449,8 @@ public:
     virtual ~GeomParabola();
     virtual Geometry *clone(void) const;
     
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getFocal(void) const;
     void setFocal(double length);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;

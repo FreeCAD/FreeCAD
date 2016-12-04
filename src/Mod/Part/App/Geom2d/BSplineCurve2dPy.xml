@@ -15,7 +15,6 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>Describes a B-Spline curve in 3D space</UserDocu>
 		</Documentation>
-        <!--
 		<Attribute Name="Degree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the polynomial degree of this B-Spline curve.</UserDocu>
@@ -441,6 +440,5 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        -->
 	</PythonExport>
 </GenerateModel>
