@@ -162,6 +162,28 @@ class CommandPathPost:
                         return True
         return False
 
+    def exportObjectsWith(self, objs, job, needFilename = True):
+        # check if the user has a project and has set the default post and
+        # output filename
+        postArgs = PathPreferences.defaultPostProcessorArgs()
+        if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
+            postArgs = job.PostProcessorArgs
+        elif hasattr(job, "PostProcessor") and job.PostProcessor:
+            postArgs = ''
+
+        postname = self.resolvePostProcessor(job)
+        filename = '-'
+        if postname and needFilename:
+            filename = self.resolveFileName(job)
+
+        if postname and filename:
+            print("post: %s(%s, %s)" % (postname, filename, postArgs))
+            processor = PostProcessor.load(postname)
+            gcode = processor.export(objs, filename, postArgs)
+            return (False, gcode)
+        else:
+            return (True, '')
+
     def Activated(self):
         FreeCAD.ActiveDocument.openTransaction(
             translate("Path_Post", "Post Process the Selected path(s)"))
@@ -187,7 +209,7 @@ class CommandPathPost:
         else:
             job = jobs.pop()
             print("Job for selected objects = %s" % job.Name)
-            (fail, rc) = exportObjectsWith(selected, job)
+            (fail, rc) = self.exportObjectsWith(selected, job)
 
         if fail:
             FreeCAD.ActiveDocument.abortTransaction()
@@ -195,27 +217,7 @@ class CommandPathPost:
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
-    def exportObjectsWith(self, objs, job, needFilename = True):
-        # check if the user has a project and has set the default post and
-        # output filename
-        postArgs = PathPreferences.defaultPostProcessorArgs()
-        if hasattr(job, "PostProcessorArgs") and job.PostProcessorArgs:
-            postArgs = job.PostProcessorArgs
-        elif hasattr(job, "PostProcessor") and job.PostProcessor:
-            postArgs = ''
 
-        postname = self.resolvePostProcessor(job)
-        filename = '-'
-        if postname and needFilename:
-            filename = self.resolveFileName(job)
-
-        if postname and filename:
-            print("post: %s(%s, %s)" % (postname, filename, postArgs))
-            processor = PostProcessor.load(postname)
-            gcode = processor.export(objs, filename, postArgs)
-            return (False, gcode)
-        else:
-            return (True, '')
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
