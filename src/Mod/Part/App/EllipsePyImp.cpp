@@ -33,8 +33,8 @@
 
 #include "OCCError.h"
 #include "Geometry.h"
-#include "EllipsePy.h"
-#include "EllipsePy.cpp"
+#include <Mod/Part/App/EllipsePy.h>
+#include <Mod/Part/App/EllipsePy.cpp>
 
 using namespace Part;
 
@@ -151,44 +151,6 @@ void EllipsePy::setMinorRadius(Py::Float arg)
     ellipse->SetMinorRadius((double)arg);
 }
 
-Py::Float EllipsePy::getAngleXU(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    
-    gp_Pnt center = ellipse->Axis().Location();
-    gp_Dir normal = ellipse->Axis().Direction();
-    gp_Dir xdir = ellipse->XAxis().Direction();
-        
-    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
-    
-    return Py::Float(-xdir.AngleWithRef(xdirref.XDirection(),normal));
-
-}
-
-void EllipsePy::setAngleXU(Py::Float arg)
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-
-
-    gp_Pnt center = ellipse->Axis().Location();
-    gp_Dir normal = ellipse->Axis().Direction();
-    
-    gp_Ax1 normaxis(center, normal);
-    
-    gp_Ax2 xdirref(center, normal);
-    
-    xdirref.Rotate(normaxis,arg);
-    
-    ellipse->SetPosition(xdirref);
-
-}
-
-Py::Float EllipsePy::getEccentricity(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    return Py::Float(ellipse->Eccentricity()); 
-}
-
 Py::Float EllipsePy::getFocal(void) const
 {
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
@@ -207,73 +169,6 @@ Py::Object EllipsePy::getFocus2(void) const
     Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
     gp_Pnt loc = ellipse->Focus2();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-Py::Object EllipsePy::getCenter(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    gp_Pnt loc = ellipse->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-void EllipsePy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-        ellipse->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
-    }
-    else if (PyTuple_Check(p)) {
-        Py::Tuple tuple(arg);
-        gp_Pnt loc;
-        loc.SetX((double)Py::Float(tuple.getItem(0)));
-        loc.SetY((double)Py::Float(tuple.getItem(1)));
-        loc.SetZ((double)Py::Float(tuple.getItem(2)));
-        Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-        ellipse->SetLocation(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object EllipsePy::getAxis(void) const
-{
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    gp_Ax1 axis = ellipse->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void EllipsePy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Ellipse ellipse = Handle_Geom_Ellipse::DownCast(getGeomEllipsePtr()->handle());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(ellipse->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        ellipse->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
 }
 
 PyObject *EllipsePy::getCustomAttributes(const char* /*attr*/) const

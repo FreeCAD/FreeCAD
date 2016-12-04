@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
 	<PythonExport
-		Father="GeometryCurvePy"
+        Father="ConicPy"
 		Name="EllipsePy"
         PythonName="Part.Ellipse"
 		Twin="GeomEllipse"
 		TwinPointer="GeomEllipse"
 		Include="Mod/Part/App/Geometry.h"
 		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometryCurvePy.h"
+        FatherInclude="Mod/Part/App/ConicPy.h"
 		FatherNamespace="Part"
 		Constructor="true">
 		<Documentation>
@@ -47,18 +47,6 @@
 			</Documentation>
 			<Parameter Name="MinorRadius" Type="Float"/>
 		</Attribute>
-		<Attribute Name="AngleXU" ReadOnly="false">
-		  <Documentation>
-		    <UserDocu>The angle between the X axis and the major axis of the ellipse.</UserDocu>
-		  </Documentation>
-		  <Parameter Name="AngleXU" Type="Float"/>
-		</Attribute>		
-		<Attribute Name="Eccentricity" ReadOnly="true">
-			<Documentation>
-				<UserDocu>The eccentricity of the ellipse.</UserDocu>
-			</Documentation>
-			<Parameter Name="Eccentricity" Type="Float"/>
-		</Attribute>
 		<Attribute Name="Focal" ReadOnly="true">
 			<Documentation>
 				<UserDocu>The focal distance of the ellipse.</UserDocu>
@@ -81,18 +69,6 @@ the second focus is on the negative side.
 				</Documentation>
 			</Documentation>
 			<Parameter Name="Focus2" Type="Object"/>
-		</Attribute>
-		<Attribute Name="Center" ReadOnly="false">
-			<Documentation>
-				<UserDocu>Center of the ellipse.</UserDocu>
-			</Documentation>
-			<Parameter Name="Center" Type="Object"/>
-		</Attribute>
-		<Attribute Name="Axis" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The axis direction of the circle</UserDocu>
-			</Documentation>
-			<Parameter Name="Axis" Type="Object"/>
 		</Attribute>
 	</PythonExport>
 </GenerateModel>

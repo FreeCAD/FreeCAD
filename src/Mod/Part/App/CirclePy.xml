@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
-      Father="GeometryCurvePy" 
+      Father="ConicPy"
       Name="CirclePy" 
       PythonName="Part.Circle"
       Twin="GeomCircle" 
       TwinPointer="GeomCircle" 
       Include="Mod/Part/App/Geometry.h" 
       Namespace="Part" 
-      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherInclude="Mod/Part/App/ConicPy.h"
       FatherNamespace="Part"
       Constructor="true">
     <Documentation>
@@ -36,30 +36,6 @@ Part.Circle(Point1,Point2,Point3)
         <UserDocu>The radius of the circle.</UserDocu>
       </Documentation>
       <Parameter Name="Radius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="Center" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Center of the circle.</UserDocu>
-      </Documentation>
-      <Parameter Name="Center" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Axis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="Axis" Type="Object"/>
-    </Attribute>
-    <Attribute Name="XAxis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The X axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="XAxis" Type="Object"/>
-    </Attribute>
-    <Attribute Name="YAxis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The Y axis direction of the circle</UserDocu>
-      </Documentation>
-      <Parameter Name="YAxis" Type="Object"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

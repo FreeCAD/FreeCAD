@@ -33,8 +33,8 @@
 
 #include "OCCError.h"
 #include "Geometry.h"
-#include "HyperbolaPy.h"
-#include "HyperbolaPy.cpp"
+#include <Mod/Part/App/HyperbolaPy.h>
+#include <Mod/Part/App/HyperbolaPy.cpp>
 
 using namespace Part;
 
@@ -151,44 +151,6 @@ void HyperbolaPy::setMinorRadius(Py::Float arg)
     hyperbola->SetMinorRadius((double)arg);
 }
 
-Py::Float HyperbolaPy::getAngleXU(void) const
-{
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-    
-    gp_Pnt center = hyperbola->Axis().Location();
-    gp_Dir normal = hyperbola->Axis().Direction();
-    gp_Dir xdir = hyperbola->XAxis().Direction();
-        
-    gp_Ax2 xdirref(center, normal); // this is a reference system, might be CCW or CW depending on the creation method
-    
-    return Py::Float(-xdir.AngleWithRef(xdirref.XDirection(),normal));
-
-}
-
-void HyperbolaPy::setAngleXU(Py::Float arg)
-{
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-
-
-    gp_Pnt center = hyperbola->Axis().Location();
-    gp_Dir normal = hyperbola->Axis().Direction();
-    
-    gp_Ax1 normaxis(center, normal);
-    
-    gp_Ax2 xdirref(center, normal);
-    
-    xdirref.Rotate(normaxis,arg);
-    
-    hyperbola->SetPosition(xdirref);
-
-}
-
-Py::Float HyperbolaPy::getEccentricity(void) const
-{
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-    return Py::Float(hyperbola->Eccentricity()); 
-}
-
 Py::Float HyperbolaPy::getFocal(void) const
 {
     Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
@@ -207,73 +169,6 @@ Py::Object HyperbolaPy::getFocus2(void) const
     Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
     gp_Pnt loc = hyperbola->Focus2();
     return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-Py::Object HyperbolaPy::getCenter(void) const
-{
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-    gp_Pnt loc = hyperbola->Location();
-    return Py::Vector(Base::Vector3d(loc.X(), loc.Y(), loc.Z()));
-}
-
-void HyperbolaPy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-        hyperbola->SetLocation(gp_Pnt(loc.x, loc.y, loc.z));
-    }
-    else if (PyTuple_Check(p)) {
-        Py::Tuple tuple(arg);
-        gp_Pnt loc;
-        loc.SetX((double)Py::Float(tuple.getItem(0)));
-        loc.SetY((double)Py::Float(tuple.getItem(1)));
-        loc.SetZ((double)Py::Float(tuple.getItem(2)));
-        Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-        hyperbola->SetLocation(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object HyperbolaPy::getAxis(void) const
-{
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-    gp_Ax1 axis = hyperbola->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void HyperbolaPy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(getGeomHyperbolaPtr()->handle());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(hyperbola->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        hyperbola->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
 }
 
 PyObject *HyperbolaPy::getCustomAttributes(const char* /*attr*/) const
