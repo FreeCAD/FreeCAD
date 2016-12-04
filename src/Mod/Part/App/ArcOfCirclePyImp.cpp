@@ -30,10 +30,10 @@
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Mod/Part/App/Geometry.h"
-#include "ArcOfCirclePy.h"
-#include "ArcOfCirclePy.cpp"
-#include "CirclePy.h"
+#include "Geometry.h"
+#include <Mod/Part/App/ArcOfCirclePy.h>
+#include <Mod/Part/App/ArcOfCirclePy.cpp>
+#include <Mod/Part/App/CirclePy.h>
 #include "OCCError.h"
 
 #include <Base/GeometryPyCXX.h>
@@ -139,69 +139,6 @@ Py::Float ArcOfCirclePy::getRadius(void) const
 void  ArcOfCirclePy::setRadius(Py::Float arg)
 {
     getGeomArcOfCirclePtr()->setRadius((double)arg);
-}
-
-Py::Object ArcOfCirclePy::getCenter(void) const
-{
-    return Py::Vector(getGeomArcOfCirclePtr()->getCenter());
-}
-
-void  ArcOfCirclePy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomArcOfCirclePtr()->setCenter(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object ArcOfCirclePy::getAxis(void) const
-{
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    gp_Ax1 axis = circle->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  ArcOfCirclePy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfCirclePtr()->handle());
-    Handle_Geom_Circle circle = Handle_Geom_Circle::DownCast(trim->BasisCurve());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(circle->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        circle->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
 }
 
 Py::Object ArcOfCirclePy::getCircle(void) const

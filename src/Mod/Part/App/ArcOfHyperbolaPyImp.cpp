@@ -30,10 +30,10 @@
 # include <Geom_TrimmedCurve.hxx>
 #endif
 
-#include "Mod/Part/App/Geometry.h"
-#include "ArcOfHyperbolaPy.h"
-#include "ArcOfHyperbolaPy.cpp"
-#include "HyperbolaPy.h"
+#include "Geometry.h"
+#include <Mod/Part/App/ArcOfHyperbolaPy.h>
+#include <Mod/Part/App/ArcOfHyperbolaPy.cpp>
+#include <Mod/Part/App/HyperbolaPy.h>
 #include "OCCError.h"
 
 #include <Base/GeometryPyCXX.h>
@@ -139,79 +139,6 @@ Py::Float ArcOfHyperbolaPy::getMinorRadius(void) const
 void  ArcOfHyperbolaPy::setMinorRadius(Py::Float arg)
 {
     getGeomArcOfHyperbolaPtr()->setMinorRadius((double)arg);
-}
-
-Py::Float ArcOfHyperbolaPy::getAngleXU(void) const
-{
-    return Py::Float(getGeomArcOfHyperbolaPtr()->getAngleXU()); 
-}
-
-void ArcOfHyperbolaPy::setAngleXU(Py::Float arg)
-{
-    getGeomArcOfHyperbolaPtr()->setAngleXU((double)arg);
-}
-
-Py::Object ArcOfHyperbolaPy::getCenter(void) const
-{
-    return Py::Vector(getGeomArcOfHyperbolaPtr()->getCenter());
-}
-
-void  ArcOfHyperbolaPy::setCenter(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        Base::Vector3d loc = static_cast<Base::VectorPy*>(p)->value();
-        getGeomArcOfHyperbolaPtr()->setCenter(loc);
-    }
-    else if (PyObject_TypeCheck(p, &PyTuple_Type)) {
-        Base::Vector3d loc = Base::getVectorFromTuple<double>(p);
-        getGeomArcOfHyperbolaPtr()->setCenter(loc);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-}
-
-Py::Object ArcOfHyperbolaPy::getAxis(void) const
-{
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
-    gp_Ax1 axis = hyperbola->Axis();
-    gp_Dir dir = axis.Direction();
-    return Py::Vector(Base::Vector3d(dir.X(), dir.Y(), dir.Z()));
-}
-
-void  ArcOfHyperbolaPy::setAxis(Py::Object arg)
-{
-    PyObject* p = arg.ptr();
-    Base::Vector3d val;
-    if (PyObject_TypeCheck(p, &(Base::VectorPy::Type))) {
-        val = static_cast<Base::VectorPy*>(p)->value();
-    }
-    else if (PyTuple_Check(p)) {
-        val = Base::getVectorFromTuple<double>(p);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector', not ");
-        error += p->ob_type->tp_name;
-        throw Py::TypeError(error);
-    }
-
-    Handle_Geom_TrimmedCurve trim = Handle_Geom_TrimmedCurve::DownCast
-        (getGeomArcOfHyperbolaPtr()->handle());
-    Handle_Geom_Hyperbola hyperbola = Handle_Geom_Hyperbola::DownCast(trim->BasisCurve());
-    try {
-        gp_Ax1 axis;
-        axis.SetLocation(hyperbola->Location());
-        axis.SetDirection(gp_Dir(val.x, val.y, val.z));
-        hyperbola->SetAxis(axis);
-    }
-    catch (Standard_Failure) {
-        throw Py::Exception("cannot set axis");
-    }
 }
 
 Py::Object ArcOfHyperbolaPy::getHyperbola(void) const

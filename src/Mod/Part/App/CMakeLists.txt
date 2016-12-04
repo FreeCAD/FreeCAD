@@ -40,6 +40,7 @@ if(FREETYPE_FOUND)
 endif(FREETYPE_FOUND)
 
 generate_from_xml(ArcPy)
+generate_from_xml(ArcOfConicPy)
 generate_from_xml(ArcOfCirclePy)
 generate_from_xml(ArcOfParabolaPy)
 generate_from_xml(BodyBasePy)
@@ -184,6 +185,8 @@ SOURCE_GROUP("Properties" FILES ${Properties_SRCS})
 SET(Python_SRCS
     ArcPy.xml
     ArcPyImp.cpp
+    ArcOfConicPy.xml
+    ArcOfConicPyImp.cpp
     ArcOfCirclePy.xml
     ArcOfCirclePyImp.cpp
     ArcOfParabolaPy.xml
