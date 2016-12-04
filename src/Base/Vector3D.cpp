@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 #include "Tools.h"
 #include "Vector3D.h"
-
+#include "Matrix.h"
 using namespace Base;
 
 template <class _Precision>
@@ -96,7 +96,7 @@ Vector3<_Precision> Vector3<_Precision>::operator -  (const Vector3<_Precision>&
     cVctRes.z = z - rcVct.z;
     return cVctRes;
 }
- 
+
 template <class _Precision>
 Vector3<_Precision> Vector3<_Precision>::operator - (void) const
 {
@@ -131,7 +131,7 @@ Vector3<_Precision>& Vector3<_Precision>::operator *= (_Precision fScale)
 }
 
 template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::operator /= (_Precision fDiv) 
+Vector3<_Precision>& Vector3<_Precision>::operator /= (_Precision fDiv)
 {
     x /= fDiv;
     y /= fDiv;
@@ -193,8 +193,46 @@ Vector3<_Precision> Vector3<_Precision>::Cross(const Vector3<_Precision>& rcVct)
 }
 
 template <class _Precision>
+Matrix4D Vector3<_Precision>::Outer(const Vector3<_Precision>& rcVct) const
+{
+    Matrix4D mat;
+    mat[0][0] = x * rcVct.x;
+    mat[0][1] = x * rcVct.y;
+    mat[0][2] = x * rcVct.z;
+
+    mat[1][0] = y * rcVct.x;
+    mat[1][1] = y * rcVct.y;
+    mat[1][2] = y * rcVct.z;
+
+    mat[2][0] = z * rcVct.x;
+    mat[2][1] = z * rcVct.y;
+    mat[2][2] = z * rcVct.z;
+
+    return mat;
+}
+
+template <class _Precision>
+Matrix4D Vector3<_Precision>::Hat(void) const
+{
+    Matrix4D mat;
+    mat[0][0] = 0.0;
+    mat[0][1] = -z;
+    mat[0][2] = y;
+
+    mat[1][0] = z;
+    mat[1][1] = 0.0;
+    mat[1][2] = -x;
+
+    mat[2][0] = -y;
+    mat[2][1] = x;
+    mat[2][2] = 0.0;
+
+    return mat;
+}
+
+template <class _Precision>
 bool Vector3<_Precision>::operator != (const Vector3<_Precision>& rcVct) const
-{ 
+{
     return !((*this) == rcVct);
 }
 
@@ -213,7 +251,7 @@ bool Vector3<_Precision>::IsEqual(const Vector3<_Precision> &rclPnt, _Precision 
 }
 
 template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::ProjectToPlane (const Vector3<_Precision> &rclBase, 
+Vector3<_Precision>& Vector3<_Precision>::ProjectToPlane (const Vector3<_Precision> &rclBase,
                                                           const Vector3<_Precision> &rclNorm)
 {
     Vector3<_Precision> clTemp(rclNorm);
@@ -231,7 +269,7 @@ void Vector3<_Precision>::ProjectToPlane (const Vector3 &rclBase,
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase, 
+_Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase,
                                                  const Vector3<_Precision> &rclNorm) const
 {
     return ((*this - rclBase) * rclNorm) / rclNorm.Length();
@@ -244,7 +282,7 @@ _Precision Vector3<_Precision>::Length (void) const
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase, 
+_Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase,
                                                 const Vector3<_Precision> &rclDirect) const
 {
     return (_Precision) fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length());
@@ -401,7 +439,7 @@ _Precision Vector3<_Precision>::GetAngle (const Vector3 &rcVect) const
     _Precision divid, fNum;
 
     divid = Length() * ((Vector3<_Precision>&)rcVect).Length();
- 
+
     if ((divid < -1e-10f) || (divid > 1e-10f)) {
         fNum = (*this * rcVect) / divid;
         if (fNum < -1)

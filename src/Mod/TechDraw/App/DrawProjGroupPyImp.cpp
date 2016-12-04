@@ -71,6 +71,7 @@ PyObject* DrawProjGroupPy::getItemByLabel(PyObject* args)
     return new DrawProjGroupItemPy(newProj);
 }
 
+//TODO: this is no longer required?
 PyObject* DrawProjGroupPy::setViewOrientation(PyObject* args)
 {
     const char* projType;
@@ -78,15 +79,15 @@ PyObject* DrawProjGroupPy::setViewOrientation(PyObject* args)
     if (!PyArg_ParseTuple(args, "Os", &pcObj,&projType))
         throw Py::Exception();
 
-    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>(obj);
-        TechDraw::DrawProjGroup* projGroup = getDrawProjGroupPtr();
-        projGroup->setViewOrientation( view, projType );
+//    App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+//    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+//        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>(obj);
+//        TechDraw::DrawProjGroup* projGroup = getDrawProjGroupPtr();
+//        projGroup->setViewOrientation( view, projType );
 
-    } else {
-        Base::Console().Message("'%s' is not a DrawProjGroup Item, it will be ignored.\n", obj->Label.getValue());
-    }
+//    } else {
+//        Base::Console().Message("'%s' is not a DrawProjGroup Item, it will be ignored.\n", obj->Label.getValue());
+//    }
 
     return Py_None;
 }
