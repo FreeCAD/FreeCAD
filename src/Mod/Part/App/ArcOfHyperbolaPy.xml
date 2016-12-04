@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
   <PythonExport 
-      Father="GeometryCurvePy" 
+      Father="ArcOfConicPy"
       Name="ArcOfHyperbolaPy" 
       PythonName="Part.ArcOfHyperbola"
       Twin="GeomArcOfHyperbola" 
       TwinPointer="GeomArcOfHyperbola" 
       Include="Mod/Part/App/Geometry.h" 
       Namespace="Part" 
-      FatherInclude="Mod/Part/App/GeometryCurvePy.h" 
+      FatherInclude="Mod/Part/App/ArcOfConicPy.h"
       FatherNamespace="Part"
       Constructor="true">
     <Documentation>
@@ -26,24 +26,6 @@
         <UserDocu>The minor radius of the hyperbola.</UserDocu>
       </Documentation>
       <Parameter Name="MinorRadius" Type="Float"/>
-    </Attribute>
-    <Attribute Name="AngleXU" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The angle between the X axis and the major axis of the hyperbola.</UserDocu>
-      </Documentation>
-      <Parameter Name="AngleXU" Type="Float"/>
-    </Attribute> 
-    <Attribute Name="Center" ReadOnly="false">
-      <Documentation>
-        <UserDocu>Center of the hyperbola.</UserDocu>
-      </Documentation>
-      <Parameter Name="Center" Type="Object"/>
-    </Attribute>
-    <Attribute Name="Axis" ReadOnly="false">
-      <Documentation>
-        <UserDocu>The axis direction of the hyperbola</UserDocu>
-      </Documentation>
-      <Parameter Name="Axis" Type="Object"/>
     </Attribute>
     <Attribute Name="Hyperbola" ReadOnly="true">
       <Documentation>

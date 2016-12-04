@@ -388,7 +388,7 @@ void SketcherValidation::on_findReversed_clicked()
         //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
         if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
             const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
-            if(segm->isReversedInXY()){
+            if (segm->isReversed()) {
                 points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
                 points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
             }

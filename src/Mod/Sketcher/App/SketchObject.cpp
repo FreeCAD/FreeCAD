@@ -4454,7 +4454,7 @@ int SketchObject::port_reversedExternalArcs(bool justAnalyze)
                 Part::Geometry* g = this->ExternalGeo[-geoId-1];
                 if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()){
                     const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
-                    if(segm->isReversedInXY()){
+                    if (segm->isReversed()){
                         //Gotcha! a link to an endpoint of external arc that is reversed.
                         //create a constraint copy, affect it, replace the pointer
                         if (!affected)

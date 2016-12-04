@@ -212,6 +212,7 @@ private:
 class PartExport GeomConic : public GeomCurve
 {
     TYPESYSTEM_HEADER();
+
 protected:
     GeomConic();
 
@@ -234,6 +235,46 @@ public:
     double getAngleXU(void) const;
     void setAngleXU(double angle);
     bool isReversed() const;
+
+    virtual unsigned int getMemSize(void) const = 0;
+    virtual PyObject *getPyObject(void) = 0;
+
+    const Handle_Geom_Geometry& handle() const = 0;
+};
+
+class PartExport GeomArcOfConic : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+
+protected:
+    GeomArcOfConic();
+
+public:
+    virtual ~GeomArcOfConic();
+    virtual Geometry *clone(void) const = 0;
+
+    Base::Vector3d getStartPoint(bool emulateCCWXY=false) const;
+    Base::Vector3d getEndPoint(bool emulateCCWXY=false) const;
+
+    /*!
+     * \deprecated use getLocation
+     * \brief getCenter
+     */
+    Base::Vector3d getCenter(void) const;
+    Base::Vector3d getLocation(void) const;
+    void setLocation(const Base::Vector3d& Center);
+    /*!
+     * \deprecated use setLocation
+     * \brief setCenter
+     */
+    void setCenter(const Base::Vector3d& Center);
+
+    virtual void getRange(double& u, double& v, bool emulateCCWXY) const = 0;
+    virtual void setRange(double u, double v, bool emulateCCWXY) = 0;
+
+    bool isReversed() const;
+    double getAngleXU(void) const;
+    void setAngleXU(double angle);
 
     virtual unsigned int getMemSize(void) const = 0;
     virtual PyObject *getPyObject(void) = 0;
@@ -266,7 +307,7 @@ private:
     Handle_Geom_Circle myCurve;
 };
 
-class PartExport GeomArcOfCircle : public GeomCurve
+class PartExport GeomArcOfCircle : public GeomArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -275,16 +316,11 @@ public:
     virtual ~GeomArcOfCircle();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
-    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
-
-    Base::Vector3d getCenter(void) const;
     double getRadius(void) const;
-    void setCenter(const Base::Vector3d& Center);
     void setRadius(double Radius);
-    void getRange(double& u, double& v, bool emulateCCWXY) const;
-    void setRange(double u, double v, bool emulateCCWXY);
-    bool isReversedInXY() const;
+
+    virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
+    virtual void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -330,7 +366,7 @@ private:
     Handle_Geom_Ellipse myCurve;
 };
 
-class PartExport GeomArcOfEllipse : public GeomCurve
+class PartExport GeomArcOfEllipse : public GeomArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -339,23 +375,15 @@ public:
     virtual ~GeomArcOfEllipse();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint(bool emulateCCWXY) const;
-    Base::Vector3d getEndPoint(bool emulateCCWXY) const;
-
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);
     Base::Vector3d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector3d newdir);
-    bool isReversedInXY() const;
 
-    void getRange(double& u, double& v, bool emulateCCWXY) const;
-    void setRange(double u, double v, bool emulateCCWXY);
+    virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
+    virtual void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -399,7 +427,7 @@ private:
     Handle_Geom_Hyperbola myCurve;
 };
 
-class PartExport GeomArcOfHyperbola : public GeomCurve
+class PartExport GeomArcOfHyperbola : public GeomArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -408,23 +436,15 @@ public:
     virtual ~GeomArcOfHyperbola();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint() const;
-    Base::Vector3d getEndPoint() const;
-
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getMajorRadius(void) const;
     void setMajorRadius(double Radius);
     double getMinorRadius(void) const;
     void setMinorRadius(double Radius);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);
     Base::Vector3d getMajorAxisDir() const;
     void setMajorAxisDir(Base::Vector3d newdir);
-    bool isReversedInXY() const;    
-    
-    void getRange(double& u, double& v, bool emulateCCWXY) const;
-    void setRange(double u, double v, bool emulateCCWXY);
+
+    virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
+    virtual void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
@@ -465,7 +485,7 @@ private:
     Handle_Geom_Parabola myCurve;
 };
 
-class PartExport GeomArcOfParabola : public GeomCurve
+class PartExport GeomArcOfParabola : public GeomArcOfConic
 {
     TYPESYSTEM_HEADER();
 public:
@@ -474,18 +494,11 @@ public:
     virtual ~GeomArcOfParabola();
     virtual Geometry *clone(void) const;
 
-    Base::Vector3d getStartPoint() const;
-    Base::Vector3d getEndPoint() const;
-
-    Base::Vector3d getCenter(void) const;
-    void setCenter(const Base::Vector3d& Center);
     double getFocal(void) const;
     void setFocal(double length);
-    double getAngleXU(void) const;
-    void setAngleXU(double angle);
     
-    void getRange(double& u, double& v) const;
-    void setRange(double u, double v);
+    virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
+    virtual void setRange(double u, double v, bool emulateCCWXY);
 
     // Persistence implementer ---------------------
     virtual unsigned int getMemSize(void) const;
