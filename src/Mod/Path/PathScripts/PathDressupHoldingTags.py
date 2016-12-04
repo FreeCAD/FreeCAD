@@ -93,7 +93,7 @@ slack = 0.0000001
 def pathCommandForEdge(edge):
     pt = edge.valueAt(edge.LastParameter)
     params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
-    if type(edge.Curve) == Part.Line:
+    if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
         command =  Path.Command('G1', params)
     else:
         p1 = edge.valueAt(edge.FirstParameter)
@@ -151,7 +151,7 @@ class Tag:
         return self.z + self.actualHeight
 
     def centerLine(self):
-        return Part.Line(self.originAt(self.bottom() - 1), self.originAt(self.top() + 1))
+        return Part.LineSegment(self.originAt(self.bottom() - 1), self.originAt(self.top() + 1))
 
     def createSolidsAt(self, z):
         self.z = z
@@ -210,9 +210,9 @@ class Tag:
             return self.state != self.Pnone
 
         def moveEdgeToPlateau(self, edge):
-            if type(edge.Curve) is Part.Line:
+            if type(edge.Curve) is Part.Line or type(edge.Curve) is Part.LineSegment:
                 e = copy.copy(edge)
-                z = edge.Curve.StartPoint.z
+                z = edge.valueAt(edge.FirstParameter).z
             elif type(edge.Curve) is Part.Circle:
                 # it's an arc
                 e = copy.copy(edge)
@@ -236,7 +236,7 @@ class Tag:
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
                     # if P0 and P1 are the same, we need to insert a segment for the rise
                     debugPrint('P0', "-------  insert vertical rise (%s)" % i)
-                    self.edges.append(Part.Edge(Part.Line(i, FreeCAD.Vector(i.x, i.y, self.tag.top()))))
+                    self.edges.append(Part.Edge(Part.LineSegment(i, FreeCAD.Vector(i.x, i.y, self.tag.top()))))
                     self.p1 = i
                     self.state = self.P1
                     return edge
@@ -267,8 +267,8 @@ class Tag:
             # if we have no core the tip is the origin of the Tag
             line = Part.Edge(self.tag.centerLine())
             debugEdge(line, "------- center line", 'P0')
-            #i = DraftGeomUtils.findIntersection(line, edge, True)
-            i = line.Curve.intersect(edge)
+            i = DraftGeomUtils.findIntersection(line, edge, True)
+            #i = line.Curve.intersect(edge)
             if i:
                 debugPrint('P0', '------- P0 split @ (%.2f, %.2f, %.2f)' % (i[0].x, i[0].y, i[0].z))
                 if PathGeom.pointsCoincide(i[0], edge.valueAt(edge.LastParameter)):
@@ -329,7 +329,7 @@ class Tag:
             if i:
                 if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
                     debugPrint('P2', "------- insert exit plunge (%s)"  % i)
-                    self.edges.append(Part.Edge(Part.Line(FreeCAD.Vector(i.x, i.y, self.tag.top()), i)))
+                    self.edges.append(Part.Edge(Part.LineSegment(FreeCAD.Vector(i.x, i.y, self.tag.top()), i)))
                     e = None
                     tail = edge
                 elif PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
@@ -390,7 +390,7 @@ class Tag:
         p1a = edge.valueAt(edge.FirstParameter)
         p1b = FreeCAD.Vector(p1a.x, p1a.y, p1a.z + self.height)
         p1a.z = self.bottom()
-        e1 = Part.Edge(Part.Line(p1a, p1b))
+        e1 = Part.Edge(Part.LineSegment(p1a, p1b))
         p1 = self.nextIntersectionClosestTo(e1, self.solid, p1b) # top most intersection
         print("---------- p1: (%s %s) -> %s %d" % (p1a, p1b, p1, self.solid.isInside(p1, 0.0000001, True)))
         if not p1:
@@ -400,7 +400,7 @@ class Tag:
         p2a = edge.valueAt(edge.LastParameter)
         p2b = FreeCAD.Vector(p2a.x, p2a.y, p2a.z + self.height)
         p2a.z = self.bottom()
-        e2 = Part.Edge(Part.Line(p2a, p2b))
+        e2 = Part.Edge(Part.LineSegment(p2a, p2b))
         p2 = self.nextIntersectionClosestTo(e2, self.solid, p2b) # top most intersection
         if not p2:
             p1 = edge.valueAt(edge.FirstParameter)
@@ -418,8 +418,8 @@ class Tag:
         if PathGeom.pointsCoincide(p1, p2):
             return []
 
-        if type(edge.Curve) == Part.Line:
-            e = Part.Edge(Part.Line(p1, p2))
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            e = Part.Edge(Part.LineSegment(p1, p2))
             debugEdge(e, "-------- >>")
             return [e]
 
