@@ -19,6 +19,8 @@
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/mesh/Mesh_Create_Mesh_from_Shape_01.png"
    inkscape:export-xdpi="52.432858"
    inkscape:export-ydpi="52.432858">
+  <title
+     id="title3263">Mesh_Cube</title>
   <defs
      id="defs2987">
     <inkscape:perspective
@@ -191,18 +193,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.7339351"
-     inkscape:cx="-15.841432"
+     inkscape:zoom="14.290041"
+     inkscape:cx="-28.479489"
      inkscape:cy="31.277574"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1600"
+     inkscape:window-width="800"
      inkscape:window-height="837"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid3012"
@@ -222,7 +224,40 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>Mesh_Cube</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Sat Dec 21 21:54:56 2013 +1100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[jmaustpc]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/RegularSolids/Mesh_Cube.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>cube</rdf:li>
+            <rdf:li>tesselated</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Tesselated cube mesh, lit from top</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>

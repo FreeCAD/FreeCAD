@@ -21,6 +21,8 @@
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/mesh/Mesh_Regular_Solids/Mesh_Torus1_16px.png"
    inkscape:export-xdpi="22.5"
    inkscape:export-ydpi="22.5">
+  <title
+     id="title3258">Mesh_Torus</title>
   <defs
      id="defs2903">
     <linearGradient
@@ -211,18 +213,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.75"
-     inkscape:cx="-30.774069"
-     inkscape:cy="60.436415"
+     inkscape:zoom="4.0736194"
+     inkscape:cx="32.913023"
+     inkscape:cy="33.551074"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
-     inkscape:window-x="0"
+     inkscape:window-width="799"
+     inkscape:window-height="836"
+     inkscape:window-x="799"
      inkscape:window-y="27"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:snap-global="false">
     <inkscape:grid
        type="xygrid"
@@ -240,7 +242,41 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>Mesh_Torus</dc:title>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/RegularSolids/Mesh_Torus.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>Tesselated torus mesh, lit from top</dc:description>
+        <dc:coverage />
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>torus</rdf:li>
+            <rdf:li>tesselated</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:date>Sat Dec 21 21:54:56 2013 +1100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[jmaustpc]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
       </cc:Work>
     </rdf:RDF>
   </metadata>
