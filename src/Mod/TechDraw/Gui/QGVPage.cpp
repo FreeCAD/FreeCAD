@@ -60,7 +60,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
-
+#include "Rez.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -150,8 +150,8 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
           pageHeight = 297;
 
     if ( m_vpPage->getDrawPage()->hasValidTemplate() ) {
-        pageWidth = m_vpPage->getDrawPage()->getPageWidth();
-        pageHeight = m_vpPage->getDrawPage()->getPageHeight();
+        pageWidth = Rez::guiX(m_vpPage->getDrawPage()->getPageWidth());
+        pageHeight = Rez::guiX(m_vpPage->getDrawPage()->getPageHeight());
     }
 
     // Draw the white page
@@ -180,8 +180,8 @@ int QGVPage::addView(QGIView *view)
     QGIView *parent = 0;
     parent = findParent(view);
 
-    QPointF viewPos(view->getViewObject()->X.getValue(),
-                    view->getViewObject()->Y.getValue() * -1);
+    QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
+                    Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
     if(parent) {
         // Transfer the child vierw to the parent
@@ -258,7 +258,7 @@ QGIView * QGVPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view)
 
 QGIView * QGVPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
 {
-    QPoint qp(view->X.getValue(),view->Y.getValue());
+    //QPoint qp(view->X.getValue(),view->Y.getValue());
     // This essentially adds a null view feature to ensure view size is consistent
     auto qview( new QGIViewSymbol );
 
@@ -272,7 +272,7 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 {
     auto qview( new QGIViewClip );
 
-    qview->setPosition(view->X.getValue(), view->Y.getValue());
+    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->setViewFeature(view);
 
     addView(qview);
@@ -291,7 +291,7 @@ QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 
 QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 {
-    QPoint qp(view->X.getValue(),view->Y.getValue());
+    //QPoint qp(view->X.getValue(),view->Y.getValue());
     auto qview( new QGIViewImage );
 
     qview->setViewFeature(view);
@@ -532,8 +532,8 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 
-    double width  =  page->getPageWidth();
-    double height =  page->getPageHeight();
+    double width  =  Rez::guiX(page->getPageWidth());
+    double height =  Rez::guiX(page->getPageHeight());
     QRectF sourceRect(0.0,-height,width,height);
     QRectF targetRect;
 

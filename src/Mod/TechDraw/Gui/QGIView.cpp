@@ -45,6 +45,7 @@
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
 
+#include "Rez.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -190,11 +191,11 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
                    tempY = getY();
 //            getViewObject()->X.setValue(tempX);
 //            getViewObject()->Y.setValue(tempY);
-            getViewObject()->setPosition(tempX,tempY);
+            getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
         } else {
 //            getViewObject()->X.setValue(x());
 //            getViewObject()->Y.setValue(getYInClip(y()));
-            getViewObject()->setPosition(x(),getYInClip(y()));
+            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
         }
         getViewObject()->setMouseMove(false);
     }
@@ -244,7 +245,7 @@ double QGIView::getYInClip(double y)
         if (parentView) {
             auto parentFeat( dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject()) );
             if (parentFeat) {
-                return parentFeat->Height.getValue() - y;
+                return Rez::guiX(parentFeat->Height.getValue()) - y;
             }
         }
     }
@@ -259,8 +260,8 @@ void QGIView::updateView(bool update)
     if (update ||
         getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
-        double featX = getViewObject()->X.getValue();
-        double featY = getViewObject()->Y.getValue();
+        double featX = Rez::guiX(getViewObject()->X.getValue());
+        double featY = Rez::guiX(getViewObject()->Y.getValue());
         setPosition(featX,featY);
     }
 
@@ -501,7 +502,7 @@ double QGIView::getPrefFontSize()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     double fontSize = hGrp->GetFloat("LabelSize", 5.0);
-    return fontSize;
+    return Rez::guiX(fontSize);
 }
 
 void QGIView::dumpRect(char* text, QRectF r) {

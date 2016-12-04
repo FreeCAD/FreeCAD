@@ -50,6 +50,7 @@
 #include <Base/Parameter.h>
 
 #include <Mod/TechDraw/App/DrawViewAnnotation.h>
+#include "Rez.h"
 #include "QGIViewAnnotation.h"
 #include "QGCustomText.h"
 
@@ -129,7 +130,7 @@ void QGIViewAnnotation::drawAnnotation()
     ss << "<html>\n<head>\n<style>\n";
     ss << "p {";
     ss << "font-family:" << viewAnno->Font.getValue() << "; ";
-    ss << "font-size:" << viewAnno->TextSize.getValue() << "pt; ";               //units compatibility???
+    ss << "font-size:" << Rez::guiX(viewAnno->TextSize.getValue()) << "pt; ";   //not really pts???
     if (viewAnno->TextStyle.isValue("Normal")) {
         ss << "font-weight:normal; font-style:normal; ";
     } else if (viewAnno->TextStyle.isValue("Bold")) {
@@ -156,7 +157,7 @@ void QGIViewAnnotation::drawAnnotation()
     ss << "</p>\n</body>\n</html> ";
 
     prepareGeometryChange();
-    m_textItem->setTextWidth(viewAnno->MaxWidth.getValue());
+    m_textItem->setTextWidth(Rez::guiX(viewAnno->MaxWidth.getValue()));
     QString qs = QString::fromUtf8(ss.str().c_str());
     m_textItem->setHtml(qs);
     m_textItem->setPos(0.,0.);

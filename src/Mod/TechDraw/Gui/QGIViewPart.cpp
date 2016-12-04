@@ -53,6 +53,7 @@
 #include <Mod/TechDraw/App/DrawHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 
+#include "Rez.h"
 #include "ZVALUE.h"
 #include "QGIFace.h"
 #include "QGIEdge.h"
@@ -69,7 +70,7 @@
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
 
-const float lineScaleFactor = 1.;   // temp fiddle for devel
+const float lineScaleFactor = Rez::guiX(1.);   // temp fiddle for devel
 const float vertexScaleFactor = 2.; // temp fiddle for devel
 
 QGIViewPart::QGIViewPart()
@@ -144,15 +145,25 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           double x = geom->center.x - geom->radius;
           double y = geom->center.y - geom->radius;
 
-          path.addEllipse(x, y, geom->radius * 2, geom->radius * 2);            //topleft@(x,y) radx,rady
+          path.addEllipse(Rez::guiX(x),
+                          Rez::guiX(y), 
+                          Rez::guiX(geom->radius * 2), 
+                          Rez::guiX(geom->radius * 2));            //topleft@(x,y) radx,rady
           //Base::Console().Message("TRACE -drawPainterPath - making an CIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
         } break;
         case TechDrawGeometry::ARCOFCIRCLE: {
           TechDrawGeometry::AOC  *geom = static_cast<TechDrawGeometry::AOC *>(baseGeom);
 
-          pathArc(path, geom->radius, geom->radius, 0., geom->largeArc, geom->cw,
-                  geom->endPnt.x, geom->endPnt.y,
-                  geom->startPnt.x, geom->startPnt.y);
+          pathArc(path, 
+                  Rez::guiX(geom->radius), 
+                  Rez::guiX(geom->radius), 
+                  0., 
+                  geom->largeArc, 
+                  geom->cw,
+                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.y),
+                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.y));
 //          double x = geom->center.x - geom->radius;
 //          double y = geom->center.y - geom->radius;
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFCIRCLE @(%.3f,%.3f) R:%.3f\n",x, y, geom->radius);
@@ -166,20 +177,43 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
                  endX = geom->center.x - geom->major * cos(geom->angle),
                  endY = geom->center.y - geom->major * sin(geom->angle);
 
-          pathArc(path, geom->major, geom->minor, geom->angle, false, false,
-                  endX, endY, startX, startY);
+          pathArc(path, 
+                  Rez::guiX(geom->major), 
+                  Rez::guiX(geom->minor), 
+                  geom->angle, 
+                  false, 
+                  false,
+                  Rez::guiX(endX), 
+                  Rez::guiX(endY), 
+                  Rez::guiX(startX), 
+                  Rez::guiX(startY));
 
-          pathArc(path, geom->major, geom->minor, geom->angle, false, false,
-                  startX, startY, endX, endY);
+          pathArc(path, 
+                  Rez::guiX(geom->major), 
+                  Rez::guiX(geom->minor), 
+                  geom->angle, 
+                  false, 
+                  false,
+                  Rez::guiX(startX), 
+                  Rez::guiX(startY), 
+                  Rez::guiX(endX), 
+                  Rez::guiX(endY));
 
           //Base::Console().Message("TRACE -drawPainterPath - making an ELLIPSE @(%.3f,%.3f) R1:%.3f R2:%.3f\n",geom->center.x,geom->center.y, geom->major, geom->minor);
         } break;
         case TechDrawGeometry::ARCOFELLIPSE: {
           TechDrawGeometry::AOE *geom = static_cast<TechDrawGeometry::AOE *>(baseGeom);
 
-          pathArc(path, geom->major, geom->minor, geom->angle, geom->largeArc, geom->cw,
-                        geom->endPnt.x, geom->endPnt.y,
-                        geom->startPnt.x, geom->startPnt.y);
+          pathArc(path, 
+                  Rez::guiX(geom->major), 
+                  Rez::guiX(geom->minor), 
+                  geom->angle, 
+                  geom->largeArc, 
+                  geom->cw,
+                  Rez::guiX(geom->endPnt.x), 
+                  Rez::guiX(geom->endPnt.y),
+                  Rez::guiX(geom->startPnt.x), 
+                  Rez::guiX(geom->startPnt.y));
           //Base::Console().Message("TRACE -drawPainterPath - making an ARCOFELLIPSE R1:%.3f R2:%.3f From: (%.3f,%.3f) To: (%.3f,%.3f)\n",geom->major, geom->minor,geom->startPnt.x, geom->startPnt.y,geom->endPnt.x, geom->endPnt.y);
 
         } break;
@@ -187,26 +221,26 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           TechDrawGeometry::BezierSegment *geom = static_cast<TechDrawGeometry::BezierSegment *>(baseGeom);
 
           // Move painter to the beginning
-          path.moveTo(geom->pnts[0].x, geom->pnts[0].y);
+          path.moveTo(Rez::guiX(geom->pnts[0].x), Rez::guiX(geom->pnts[0].y));
           //Base::Console().Message("TRACE -drawPainterPath - making an BEZIER From: (%.3f,%.3f)\n",geom->pnts[0].x,geom->pnts[0].y);
 
           if ( geom->poles == 2 ) {
               // Degree 1 bezier = straight line...
-              path.lineTo(geom->pnts[1].x, geom->pnts[1].y);
+              path.lineTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y));
 
           } else if ( geom->poles == 3 ) {
-              path.quadTo(geom->pnts[1].x, geom->pnts[1].y,
-                          geom->pnts[2].x, geom->pnts[2].y);
+              path.quadTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
+                          Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y));
 
           } else if ( geom->poles == 4 ) {
-              path.cubicTo(geom->pnts[1].x, geom->pnts[1].y,
-                           geom->pnts[2].x, geom->pnts[2].y,
-                           geom->pnts[3].x, geom->pnts[3].y);
+              path.cubicTo(Rez::guiX(geom->pnts[1].x), Rez::guiX(geom->pnts[1].y),
+                           Rez::guiX(geom->pnts[2].x), Rez::guiX(geom->pnts[2].y),
+                           Rez::guiX(geom->pnts[3].x), Rez::guiX(geom->pnts[3].y));
           } else {                                                 //can only handle lines,quads,cubes
               Base::Console().Error("Bad pole count (%d) for BezierSegment\n",geom->poles);
               auto itBez = geom->pnts.begin() + 1;
               for (; itBez != geom->pnts.end();itBez++)  {
-                path.lineTo((*itBez).x, (*itBez).y);         //show something for debugging
+                path.lineTo(Rez::guiX((*itBez).x), Rez::guiX((*itBez).y));         //show something for debugging
               }
           }
         } break;
@@ -216,7 +250,7 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
           std::vector<TechDrawGeometry::BezierSegment>::const_iterator it = geom->segments.begin();
 
           // Move painter to the beginning of our first segment
-          path.moveTo(it->pnts[0].x, it->pnts[0].y);
+          path.moveTo(Rez::guiX(it->pnts[0].x), Rez::guiX(it->pnts[0].y));
           //Base::Console().Message("TRACE -drawPainterPath - making an BSPLINE From: (%.3f,%.3f)\n",it->pnts[0].x,it->pnts[0].y);
 
           for ( ; it != geom->segments.end(); ++it) {
@@ -224,16 +258,16 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
               // of the first segment, or end of the last
               if ( it->poles == 2 ) {
                   // Degree 1 bezier = straight line...
-                  path.lineTo(it->pnts[1].x, it->pnts[1].y);
+                  path.lineTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y));
 
               } else if ( it->poles == 3 ) {
-                  path.quadTo(it->pnts[1].x, it->pnts[1].y,
-                              it->pnts[2].x, it->pnts[2].y);
+                  path.quadTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
+                              Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y));
 
               } else if ( it->poles == 4 ) {
-                  path.cubicTo(it->pnts[1].x, it->pnts[1].y,
-                               it->pnts[2].x, it->pnts[2].y,
-                               it->pnts[3].x, it->pnts[3].y);
+                  path.cubicTo(Rez::guiX(it->pnts[1].x), Rez::guiX(it->pnts[1].y),
+                               Rez::guiX(it->pnts[2].x), Rez::guiX(it->pnts[2].y),
+                               Rez::guiX(it->pnts[3].x), Rez::guiX(it->pnts[3].y));
               } else {                                                 //can only handle lines,quads,cubes
                   Base::Console().Error("Bad pole count (%d) for BezierSegment of BSpline geometry\n",it->poles);
                   path.lineTo(it->pnts[1].x, it->pnts[1].y);         //show something for debugging
@@ -243,11 +277,11 @@ QPainterPath QGIViewPart::drawPainterPath(TechDrawGeometry::BaseGeom *baseGeom) 
         case TechDrawGeometry::GENERIC: {
           TechDrawGeometry::Generic *geom = static_cast<TechDrawGeometry::Generic *>(baseGeom);
 
-          path.moveTo(geom->points[0].x, geom->points[0].y);
+          path.moveTo(Rez::guiX(geom->points[0].x), Rez::guiX(geom->points[0].y));
           std::vector<Base::Vector2d>::const_iterator it = geom->points.begin();
           //Base::Console().Message("TRACE -drawPainterPath - making an GENERIC From: (%.3f,%.3f)\n",geom->points[0].x, geom->points[0].y);
           for(++it; it != geom->points.end(); ++it) {
-              path.lineTo((*it).x, (*it).y);
+              path.lineTo(Rez::guiX((*it).x), Rez::guiX((*it).y));
               //Base::Console().Message(">>>> To: (%.3f,%.3f)\n",(*it).x, (*it).y);
           }
         } break;
@@ -412,15 +446,15 @@ void QGIViewPart::drawViewPart()
             if (showCenters) {
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
-                cmItem->setPos((*vert)->pnt.x, (*vert)->pnt.y);                //this is in ViewPart coords
-                cmItem->setThick(0.5 * lineWidth * lineScaleFactor);             //need minimum?
+                cmItem->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
+                cmItem->setThick(0.5 * lineWidth);             //need minimum?
                 cmItem->setSize( cAdjust * lineWidth * vertexScaleFactor);
                 cmItem->setZValue(ZVALUE::VERTEX);
             }
         } else {
             QGIVertex *item = new QGIVertex(i);
             addToGroup(item);
-            item->setPos((*vert)->pnt.x, (*vert)->pnt.y);                //this is in ViewPart coords
+            item->setPos(Rez::guiX((*vert)->pnt.x), Rez::guiX((*vert)->pnt.y));
             item->setRadius(lineWidth * vertexScaleFactor);
             item->setZValue(ZVALUE::VERTEX);
         }
@@ -542,15 +576,14 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         Base::Vector3d org = viewSection->SectionOrigin.getValue();
         double scale = viewPart->Scale.getValue();
         Base::Vector3d pOrg = scale * viewPart->projectPoint(org);
-        //pOrg.y = -1 * pOrg.y;
         //now project pOrg onto arrowDir
         Base::Vector3d displace;
         displace.ProjectToLine(pOrg, arrowDir);
         Base::Vector3d offset = pOrg + displace;
 
-        sectionLine->setPos(offset.x,offset.y);
+        sectionLine->setPos(Rez::guiX(offset.x),Rez::guiX(offset.y));
         double sectionSpan;
-        double sectionFudge = 10.0;
+        double sectionFudge = Rez::guiX(10.0);
         double xVal, yVal;
         if (horiz)  {
             sectionSpan = m_border->rect().width() + sectionFudge;
@@ -562,8 +595,8 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             yVal = sectionSpan / 2.0;
         }
         sectionLine->setBounds(-xVal,-yVal,xVal,yVal);
-        sectionLine->setWidth(viewPart->LineWidth.getValue());          //TODO: add fudge to make sectionLine thinner than reg lines?
-        sectionLine->setFont(m_font,6.0);
+        sectionLine->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));          //TODO: add fudge to make sectionLine thinner than reg lines?
+        sectionLine->setFont(m_font,Rez::guiX(6.0));
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->draw();
     }
@@ -625,7 +658,7 @@ void QGIViewPart::drawMatting()
     double radius = dvd->Radius.getValue() * scale;
     QGIMatting* mat = new QGIMatting();
     addToGroup(mat);
-    mat->setRadius(radius);
+    mat->setRadius(Rez::guiX(radius));
     mat->setPos(0.0,0.0);
     mat->draw();
     mat->show();
