@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
+ *   Copyright (c) 2016 WandererFan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,55 +20,35 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMARROW_H
-#define DRAWINGGUI_QGRAPHICSITEMARROW_H
+#ifndef DRAWINGGUI_REZ_H
+#define DRAWINGGUI_REZ_H
 
-# include "QGIPrimPath.h"
-
-QT_BEGIN_NAMESPACE
-class QPainter;
-class QStyleOptionGraphicsItem;
-QT_END_NAMESPACE
+#include <QPointF>
+#include <QRectF>
+#include <QSize>
+#include <Base/Vector3D.h>
+#include <Base/Tools2D.h>
 
 namespace TechDrawGui
 {
 
-class TechDrawGuiExport QGIArrow : public QGIPrimPath
+/// Functions to handle mm resolution conversion
+class TechDrawGuiExport Rez
 {
 public:
-    explicit QGIArrow();
-    ~QGIArrow() {}
+    static double getRezFactor();
+//turn App side value to Gui side value
+    static double guiX(double x);
+    static Base::Vector2d guiX(Base::Vector2d v);
+    static Base::Vector3d guiX(Base::Vector3d v);
 
-    enum {Type = QGraphicsItem::UserType + 109};
-    int type() const { return Type;}
-
-public:
-    void draw();
-    //void setHighlighted(bool state);
-    void flip(bool state);
-    double getSize() { return m_size; }
-    void setSize(double s);
-    int getStyle() { return m_style; }
-    void setStyle(int s) { m_style = s; }
-    //QPainterPath shape() const;
-    static int getPrefArrowStyle();
-
-    virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
-
-protected:
-    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
-    QPainterPath makeFilledTriangle(double length, double width, bool flipped);
-    QPainterPath makeOpenArrow(double length, double width, bool flipped);
-    QPainterPath makeHashMark(double length, double width, bool flipped); 
-   
-private:
-    QBrush m_brush;
-    Qt::BrushStyle m_fill;
-    double m_size;
-    int m_style;
-    bool isFlipped;
+//turn Gui side value to App side value
+    static double appX(double x);
+    static QPointF guiPt(QPointF p);
+    static QRectF guiRect(QRectF r);
+    static QSize guiSize(QSize s);
+    static QSize appSize(QSize s);
 };
 
-} // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMARROW_H
+} //end namespace TechDrawGui
+#endif

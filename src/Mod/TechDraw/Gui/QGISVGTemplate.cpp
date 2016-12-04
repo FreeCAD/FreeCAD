@@ -40,6 +40,7 @@
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawSVGTemplate.h>
 
+#include "Rez.h"
 #include "ZVALUE.h"
 #include "TemplateTextField.h"
 #include "QGISVGTemplate.h"
@@ -100,15 +101,15 @@ void QGISVGTemplate::load(const QString &fileName)
         firstTime = false;
     }
 
-    //This is probably first time only logic too.
+    //convert from pixels or mm or inches in svg file to mm page size
     TechDraw::DrawSVGTemplate *tmplte = getSVGTemplate();
     double xaspect, yaspect;
     xaspect = tmplte->getWidth() / (double) size.width();
     yaspect = tmplte->getHeight() / (double) size.height();
 
     QTransform qtrans;
-    qtrans.translate(0.f, -tmplte->getHeight());
-    qtrans.scale(xaspect , yaspect);
+    qtrans.translate(0.f, Rez::guiX(-tmplte->getHeight()));
+    qtrans.scale(Rez::guiX(xaspect) , Rez::guiX(yaspect));
     m_svgItem->setTransform(qtrans);
 }
 
@@ -190,11 +191,11 @@ void QGISVGTemplate::createClickHandles(void)
             QString yStr = QString::fromStdString(yMatch[1].str());
             QString editableName = QString::fromStdString(nameMatch[1].str());
 
-            double x = xStr.toDouble();
-            double y = yStr.toDouble();
+            double x = Rez::guiX(xStr.toDouble());
+            double y = Rez::guiX(yStr.toDouble());
 
             //TODO: this should probably be configurable without a code change
-            double editClickBoxSize = 1.5;
+            double editClickBoxSize = Rez::guiX(1.5);
             QColor editClickBoxColor = Qt::green;
 
             double width = editClickBoxSize;
@@ -202,7 +203,7 @@ void QGISVGTemplate::createClickHandles(void)
 
             TemplateTextField *item = new TemplateTextField(this, tmplte, nameMatch[1].str(), qgview);
             float pad = 1;
-            item->setRect(x - pad, -tmplte->getHeight() + y - height - pad,
+            item->setRect(x - pad, Rez::guiX(-tmplte->getHeight()) + y - height - pad,
                           width + 2 * pad, height + 2 * pad);
 
             QPen myPen;

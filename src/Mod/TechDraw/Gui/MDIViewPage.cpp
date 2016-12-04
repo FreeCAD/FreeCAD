@@ -77,6 +77,7 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
+#include "Rez.h"
 #include "QGIDrawingTemplate.h"
 #include "QGIView.h"
 #include "QGIViewPart.h"
@@ -169,8 +170,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
         //make sceneRect 1 pagesize bigger in every direction
-        double width  =  pageTemplate->Width.getValue();
-        double height =  pageTemplate->Height.getValue();
+        double width  =  Rez::guiX(pageTemplate->Width.getValue());
+        double height =  Rez::guiX(pageTemplate->Height.getValue());
         m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
         viewAll();
@@ -254,8 +255,8 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 
 QPointF MDIViewPage::getTemplateCenter(TechDraw::DrawTemplate *obj)
 {
-    double cx  =  obj->Width.getValue()/2.0;
-    double cy =  -obj->Height.getValue()/2.0;
+    double cx  =  Rez::guiX(obj->Width.getValue())/2.0;
+    double cy =  -Rez::guiX(obj->Height.getValue())/2.0;
     QPointF result(cx,cy);
     return result;
 }
@@ -731,8 +732,8 @@ void MDIViewPage::print(QPrinter* printer)
     double width  =  0.0;
     double height =  0.0;
     if( pageTemplate ) {
-      width  =  pageTemplate->Width.getValue();
-      height =  pageTemplate->Height.getValue();
+      width  =  Rez::guiX(pageTemplate->Width.getValue());
+      height =  Rez::guiX(pageTemplate->Height.getValue());
     }
     QRectF sourceRect(0.0,-height,width,height);
 

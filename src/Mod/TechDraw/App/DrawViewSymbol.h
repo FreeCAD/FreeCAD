@@ -32,6 +32,7 @@
 
 namespace TechDraw
 {
+class DrawPage;
 
 
 class TechDrawExport DrawViewSymbol : public TechDraw::DrawView
@@ -57,6 +58,8 @@ public:
         return "TechDrawGui::ViewProviderSymbol";
     }
     virtual QRectF getRect() const;
+    virtual bool checkFit(TechDraw::DrawPage* p) const override;
+
 
 protected:
     virtual void onChanged(const App::Property* prop);

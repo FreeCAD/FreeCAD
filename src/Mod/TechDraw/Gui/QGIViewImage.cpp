@@ -42,6 +42,7 @@
 
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
+#include "Rez.h"
 #include "QGCustomImage.h"
 #include "QGCustomClip.h"
 #include "QGIViewImage.h"
@@ -64,6 +65,7 @@ QGIViewImage::QGIViewImage()
     m_cliparea->setRect(0.,0.,5.,5.);
 
     m_imageItem = new QGCustomImage();
+    m_imageItem->setTransformationMode(Qt::SmoothTransformation);
     m_cliparea->addToGroup(m_imageItem);
     m_imageItem->setPos(0.,0.);
 }
@@ -112,9 +114,10 @@ void QGIViewImage::draw()
         return;
     }
 
-    auto viewImage( static_cast<TechDraw::DrawViewImage*>(getViewObject()) );
-    QRectF newRect(0.0,0.0,viewImage->Width.getValue(),viewImage->Height.getValue());
-    m_cliparea->setRect(newRect.adjusted(-1,-1,1,1));
+    auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
+    QRectF newRect(0.0,0.0,Rez::guiX(viewImage->Width.getValue()),Rez::guiX(viewImage->Height.getValue()));
+    double pad = Rez::guiX(1.0);
+    m_cliparea->setRect(newRect.adjusted(-pad,-pad,pad,pad));
 
     drawImage();
     if (borderVisible) {

@@ -94,6 +94,8 @@ SET(TechDrawGui_SRCS
     TaskSectionView.h
     DrawGuiUtil.cpp
     DrawGuiUtil.h
+    Rez.cpp
+    Rez.h
 )
 SET(TechDrawGuiView_SRCS
     MDIViewPage.cpp
