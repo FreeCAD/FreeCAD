@@ -15,12 +15,14 @@
    id="svg2784"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Sphere.svg"
+   sodipodi:docname="Mesh_Sphere.svg.2016_12_04_09_55_40.0.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/mesh/Mesh_Regular_Solids/Mesh_Sphere1_32px.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
+  <title
+     id="title3262">Mesh_Sphere</title>
   <defs
      id="defs2786">
     <linearGradient
@@ -147,15 +149,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.7781746"
-     inkscape:cx="-13.333972"
+     inkscape:zoom="75.856524"
+     inkscape:cx="-22.364503"
      inkscape:cy="40.1445"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1">
@@ -175,7 +177,40 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>Mesh_Sphere</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Sat Dec 21 21:54:56 2013 +1100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[jmaustpc]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/RegularSolids/Mesh_Sphere.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>sphere</rdf:li>
+            <rdf:li>tesselated</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Tesselated sphere mesh, lit from top</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>

@@ -15,7 +15,9 @@
    id="svg3020"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Mesh_Curvature_Plot.svg">
+   sodipodi:docname="Mesh_Tree_Curvature_Plot.svg">
+  <title
+     id="title3727">Mesh_Tree_Curvature_Plot</title>
   <defs
      id="defs3022">
     <linearGradient
@@ -67,18 +69,18 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8.3062445"
-     inkscape:cx="9.061412"
-     inkscape:cy="24.473397"
+     inkscape:zoom="25.633311"
+     inkscape:cx="24.94495"
+     inkscape:cy="29.478519"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid3028"
@@ -97,7 +99,41 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title>Mesh_Tree_Curvature_Plot</dc:title>
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/Mesh_Tree_Curvature_Plot.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>mesh</rdf:li>
+            <rdf:li>color</rdf:li>
+            <rdf:li>plot</rdf:li>
+            <rdf:li>diamond</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Diamond Shaped mesh with color coded faces</dc:description>
+        <dc:date>Fri Dec 20 16:28:14 2013 +0100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
     </rdf:RDF>
   </metadata>
