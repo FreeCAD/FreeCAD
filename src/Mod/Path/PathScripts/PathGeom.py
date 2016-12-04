@@ -135,6 +135,8 @@ class PathGeom:
 
         endPoint = cls.commandEndPoint(cmd, startPoint)
         if (cmd.Name in cls.CmdMoveStraight) or (cmd.Name in cls.CmdMoveFast):
+            if cls.pointsCoincide(startPoint, endPoint):
+                return None
             return Part.Edge(Part.LineSegment(startPoint, endPoint))
 
         if cmd.Name in cls.CmdMoveArc:
