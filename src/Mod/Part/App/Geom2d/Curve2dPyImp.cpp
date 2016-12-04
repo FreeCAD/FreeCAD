@@ -87,7 +87,7 @@ int Curve2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* Curve2dPy::reverse(PyObject *args)
+PyObject* Curve2dPy::reverse(PyObject * /*args*/)
 {
     try {
         Handle_Geom2d_Curve curve = Handle_Geom2d_Curve::DownCast(getGeom2dCurvePtr()->handle());
