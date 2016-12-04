@@ -19,6 +19,8 @@
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/main_icons/pipette_32px.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
+  <title
+     id="title3733">mesh_pipette</title>
   <defs
      id="defs4">
     <linearGradient
@@ -122,9 +124,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4.0596237"
-     inkscape:cx="-0.35673549"
-     inkscape:cy="19.973058"
+     inkscape:zoom="10.474172"
+     inkscape:cx="14.848964"
+     inkscape:cy="31.910228"
      inkscape:document-units="px"
      inkscape:current-layer="g3844"
      showgrid="true"
@@ -132,11 +134,11 @@
      inkscape:showpageshadow="false"
      borderlayer="false"
      inkscape:snap-global="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
+     inkscape:window-width="800"
+     inkscape:window-height="836"
      inkscape:window-x="0"
      inkscape:window-y="27"
-     inkscape:window-maximized="1">
+     inkscape:window-maximized="0">
     <inkscape:grid
        type="xygrid"
        id="grid2990"
@@ -156,7 +158,40 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title>mesh_pipette</dc:title>
+        <cc:license
+           rdf:resource="https://www.gnu.org/copyleft/lesser.html" />
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Mesh/Gui/Resources/icons/mesh_pipette.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>pipette</rdf:li>
+            <rdf:li>eyedropper</rdf:li>
+            <rdf:li>sample</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Pipette or eyedropper lit from above</dc:description>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:date>Sat Feb 8 16:10:16 2014 +0100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -172,7 +207,7 @@
          sodipodi:cx="25.1875"
          sodipodi:cy="41.625"
          transform="matrix(1.256055,0,0,0.819149,-3.6368853,1011.4526)"
-         d="m 43.25,41.625 a 18.0625,5.875 0 1 1 -36.125,0 18.0625,5.875 0 1 1 36.125,0 z"
+         d="m 43.25,41.625 c 0,3.244673 -8.086857,5.875 -18.0625,5.875 -9.975643,0 -18.0625,-2.630327 -18.0625,-5.875 0,-3.244673 8.086857,-5.875 18.0625,-5.875 9.975643,0 18.0625,2.630327 18.0625,5.875 z"
          sodipodi:type="arc"
          style="opacity:0.26704544;color:#000000;fill:url(#radialGradient3113);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1;marker:none;visibility:visible;display:inline;overflow:visible"
          sodipodi:ry="5.875"
