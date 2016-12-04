@@ -53,6 +53,8 @@
 #include "MenuManager.h"
 #include "Application.h"
 #include "MainWindow.h"
+#include "View3DInventor.h"
+#include "View3DInventorViewer.h"
 
 using namespace Gui;
 
@@ -633,6 +635,14 @@ void TreeWidget::dropEvent(QDropEvent *event)
             if (parent && parent->type() == TreeWidget::ObjectType) {
                 Gui::ViewProvider* vpp = static_cast<DocumentObjectItem *>(parent)->object();
                 vpp->dragObject(obj);
+            }
+
+            std::list<MDIView*> baseViews = gui->getMDIViews();
+            for (MDIView* view : baseViews) {
+                View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
+                if (activeView && !activeView->getViewer()->hasViewProvider(vpc)) {
+                    activeView->getViewer()->addViewProvider(vpc);
+                }
             }
         }
         gui->commitCommand();
