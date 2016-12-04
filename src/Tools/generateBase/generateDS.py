@@ -3215,6 +3215,9 @@ Options:
     --root-element="XXX"     Assume XXX is root element of instance docs.
                              Default is first element defined in schema.
     --super="XXX"            Super module name in subclass module. Default="???"
+
+Example:
+python generateDS.py -o generateModel_Module.py generateMetaModel_Module.xsd
 """
 
 def usage():

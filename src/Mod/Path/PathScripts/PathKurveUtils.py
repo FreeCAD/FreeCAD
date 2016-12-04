@@ -43,7 +43,7 @@ def makeAreaVertex(seg):
             segtype = int(seg.Curve.Axis.z)  # 1=ccw arc,-1=cw arc
             vertex = area.Vertex(segtype, area.Point(seg.valueAt(seg.LastParameter)[0], seg.valueAt(
                 seg.LastParameter)[1]), area.Point(seg.Curve.Center.x, seg.Curve.Center.y))
-        elif isinstance(seg.Curve, Part.LineSegment):
+        elif isinstance(seg.Curve, Part.LineSegment) or isinstance(seg.Curve, Part.Line):
             point1 = seg.valueAt(seg.FirstParameter)[
                 0], seg.valueAt(seg.FirstParameter)[1]
             point2 = seg.valueAt(seg.LastParameter)[

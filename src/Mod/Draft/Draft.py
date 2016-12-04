@@ -2690,7 +2690,7 @@ def clone(obj,delta=None):
     linked copy of the given object. If the original object changes, the final object
     changes too. Optionally, you can give a delta Vector to move the clone from the
     original position.'''
-    prefix = getParam("ClonePrefix","Clone of")
+    prefix = getParam("ClonePrefix","")
     if prefix:
         prefix = prefix.strip()+" "
     if not isinstance(obj,list):
@@ -3166,7 +3166,7 @@ def upgrade(objects,delete=False,force=None):
             else:
                 # turn to Draft line
                 e = objects[0].Shape.Edges[0]
-                if isinstance(e.Curve,Part.LineSegment):
+                if isinstance(e.Curve,(Part.LineSegment,Part.Line)):
                     result = turnToLine(objects[0])
                     if result: msg(translate("draft", "Found 1 linear object: converting to line\n"))
 

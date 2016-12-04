@@ -3,6 +3,7 @@
 	<PythonExport
         Father="Curve2dPy"
         Name="BSplineCurve2dPy"
+        PythonName="Part.Geom2d.BSplineCurve2d"
         Twin="Geom2dBSplineCurve"
         TwinPointer="Geom2dBSplineCurve"
         Include="Mod/Part/App/Geometry2d.h"
@@ -14,7 +15,6 @@
 			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
 			<UserDocu>Describes a B-Spline curve in 3D space</UserDocu>
 		</Documentation>
-        <!--
 		<Attribute Name="Degree" ReadOnly="true">
 			<Documentation>
 				<UserDocu>Returns the polynomial degree of this B-Spline curve.</UserDocu>
@@ -440,6 +440,5 @@ from the knots table of this B-Spline curve.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-        -->
 	</PythonExport>
 </GenerateModel>

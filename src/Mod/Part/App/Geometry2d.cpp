@@ -568,6 +568,12 @@ void Geom2dBSplineCurve::makeC1Continuous(double tol)
     Geom2dConvert::C0BSplineToC1BSplineCurve(this->myCurve, tol);
 }
 
+std::list<Geometry2d*> Geom2dBSplineCurve::toBiArcs(double /*tolerance*/) const
+{
+    Standard_Failure::Raise("Not yet implemented");
+    return std::list<Geometry2d*>();
+}
+
 unsigned int Geom2dBSplineCurve::getMemSize(void) const
 {
     throw Base::NotImplementedError("Geom2dBSplineCurve::getMemSize");

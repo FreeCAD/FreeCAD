@@ -3,6 +3,7 @@
   <PythonExport 
       Father="GeometryCurvePy" 
       Name="ArcPy" 
+      PythonName="Part.Arc"
       Twin="GeomTrimmedCurve" 
       TwinPointer="GeomTrimmedCurve" 
       Include="Mod/Part/App/Geometry.h" 
