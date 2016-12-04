@@ -97,7 +97,7 @@ class TestTag02SquareTag(PathTestBase): # =============
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
         pt1 = Vector(+5, 5, 0)
         pt2 = Vector(-5, 5, 0)
-        edge = Part.Edge(Part.Line(pt1, pt2))
+        edge = Part.Edge(Part.LineSegment(pt1, pt2))
 
         i = tag.intersect(edge)
         self.assertIsNotNone(i)
@@ -109,18 +109,18 @@ class TestTag02SquareTag(PathTestBase): # =============
     def test01(self):
         """Verify intersection of square tag with line ending at tag start."""
         tag = Tag( 0, 0, 8, 3, 90, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(4, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 1)
-        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertLine(i.edges[0], edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter))
         self.assertIsNone(i.tail)
 
     def test02(self):
         """Verify intersection of square tag with line ending between P1 and P2."""
         tag = Tag( 0, 0, 8, 3, 90, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(1, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P1)
@@ -128,13 +128,13 @@ class TestTag02SquareTag(PathTestBase): # =============
         p1 = Vector(4, 0, 0)
         p2 = Vector(4, 0, 3)
         p3 = Vector(1, 0, 3)
-        self.assertLine(i.edges[0], edge.Curve.StartPoint, p1)
+        self.assertLine(i.edges[0], edge.valueAt(edge.FirstParameter), p1)
         self.assertLine(i.edges[1], p1, p2)
         self.assertLine(i.edges[2], p2, p3)
         self.assertIsNone(i.tail)
 
         # verify we stay in P1 if we add another segment
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(0, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(0, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P1)
         self.assertEqual(len(i.edges), 4)
@@ -145,12 +145,12 @@ class TestTag02SquareTag(PathTestBase): # =============
     def test03(self):
         """Verify intesection of square tag with line ending on P2."""
         tag = Tag( 0, 0, 8, 3, 90, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-4, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertEqual(len(i.edges), 3)
-        p0 = edge.Curve.StartPoint
+        p0 = edge.valueAt(edge.FirstParameter)
         p1 = Vector( 4, 0, 0)
         p2 = Vector( 4, 0, 3)
         p3 = Vector(-4, 0, 3)
@@ -160,9 +160,9 @@ class TestTag02SquareTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # make sure it also works if we get there not directly
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(0, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(0, 0, 0)))
         i = tag.intersect(edge)
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(-4, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertEqual(len(i.edges), 4)
@@ -176,18 +176,18 @@ class TestTag02SquareTag(PathTestBase): # =============
     def test04(self):
         """Verify plunge down is inserted for square tag on exit."""
         tag = Tag( 0, 0, 8, 3, 90, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-5, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-5, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P3)
         self.assertTrue(i.isComplete())
         self.assertEqual(len(i.edges), 4)
-        p0 = edge.Curve.StartPoint
+        p0 = edge.valueAt(edge.FirstParameter)
         p1 = Vector( 4, 0, 0)
         p2 = Vector( 4, 0, 3)
         p3 = Vector(-4, 0, 3)
         p4 = Vector(-4, 0, 0)
-        p5 = edge.Curve.EndPoint
+        p5 = edge.valueAt(edge.LastParameter)
         self.assertLine(i.edges[0], p0, p1)
         self.assertLine(i.edges[1], p1, p2)
         self.assertLine(i.edges[2], p2, p3)
@@ -198,13 +198,13 @@ class TestTag02SquareTag(PathTestBase): # =============
     def test05(self):
         """Verify all lines between P0 and P3 are added."""
         tag = Tag( 0, 0, 4, 7, 90, True, 0)
-        e0 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+2, 0, 0)))
-        e1 = Part.Edge(Part.Line(e0.Curve.EndPoint, Vector(+1, 0, 0)))
-        e2 = Part.Edge(Part.Line(e1.Curve.EndPoint, Vector(+0.5, 0, 0)))
-        e3 = Part.Edge(Part.Line(e2.Curve.EndPoint, Vector(-0.5, 0, 0)))
-        e4 = Part.Edge(Part.Line(e3.Curve.EndPoint, Vector(-1, 0, 0)))
-        e5 = Part.Edge(Part.Line(e4.Curve.EndPoint, Vector(-2, 0, 0)))
-        e6 = Part.Edge(Part.Line(e5.Curve.EndPoint, Vector(-5, 0, 0)))
+        e0 = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(+2, 0, 0)))
+        e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), Vector(+1, 0, 0)))
+        e2 = Part.Edge(Part.LineSegment(e1.valueAt(e1.LastParameter), Vector(+0.5, 0, 0)))
+        e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), Vector(-0.5, 0, 0)))
+        e4 = Part.Edge(Part.LineSegment(e3.valueAt(e3.LastParameter), Vector(-1, 0, 0)))
+        e5 = Part.Edge(Part.LineSegment(e4.valueAt(e4.LastParameter), Vector(-2, 0, 0)))
+        e6 = Part.Edge(Part.LineSegment(e5.valueAt(e5.LastParameter), Vector(-5, 0, 0)))
 
         i = tag
         for e in [e0, e1, e2, e3, e4, e5]:
@@ -222,7 +222,7 @@ class TestTag02SquareTag(PathTestBase): # =============
         pt6 = Vector(-2, 0, 7)
 
         self.assertEqual(len(i.edges), 8)
-        self.assertLines(i.edges, i.tail, [e0.Curve.StartPoint, pt0, pt1, pt2, pt3, pt4, pt5, pt6, e6.Curve.StartPoint, e6.Curve.EndPoint])
+        self.assertLines(i.edges, i.tail, [e0.valueAt(e0.FirstParameter), pt0, pt1, pt2, pt3, pt4, pt5, pt6, e6.valueAt(e6.FirstParameter), e6.valueAt(e6.LastParameter)])
         self.assertIsNotNone(i.tail)
 
     def test06(self):
@@ -236,17 +236,17 @@ class TestTag02SquareTag(PathTestBase): # =============
             p3 = Vector(-2, 0, 7)
             p4 = Vector(-2, 0, i)
             p5 = Vector(-5, 0, i)
-            edge = Part.Edge(Part.Line(p0, p5))
+            edge = Part.Edge(Part.LineSegment(p0, p5))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
             self.assertLines(s.edges, s.tail, [p0, p1, p2, p3, p4, p5])
 
         # for all edges at height or above the original line is used
         for i in range(7, 9):
-            edge = Part.Edge(Part.Line(Vector(5, 0, i), Vector(-5, 0, i)))
+            edge = Part.Edge(Part.LineSegment(Vector(5, 0, i), Vector(-5, 0, i)))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
-            self.assertLine(s.tail, edge.Curve.StartPoint, edge.Curve.EndPoint)
+            self.assertLine(s.tail, edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter))
 
     def test10(self):
         """Verify intersection of square tag with an arc."""
@@ -295,7 +295,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
         pt1 = Vector(+5, 5, 0)
         pt2 = Vector(-5, 5, 0)
-        edge = Part.Edge(Part.Line(pt1, pt2))
+        edge = Part.Edge(Part.LineSegment(pt1, pt2))
 
         i = tag.intersect(edge)
         self.assertIsNotNone(i)
@@ -307,21 +307,21 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
     def test01(self):
         """Veify intersection of trapezoid tag with line ending before P1."""
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(4, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 1)
-        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertLine(i.edges[0], edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter))
         self.assertIsNone(i.tail)
 
         # now add another segment that doesn't reach the top of the cone
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(3, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(3, 0, 0)))
         i = i.intersect(edge)
         # still a P0 and edge fully consumed
-        p1 = Vector(edge.Curve.StartPoint)
+        p1 = Vector(edge.valueAt(edge.FirstParameter))
         p1.z = 0
-        p2 = Vector(edge.Curve.EndPoint)
+        p2 = Vector(edge.valueAt(edge.LastParameter))
         p2.z = 1  # height of cone @ (3,0)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 2)
@@ -329,10 +329,10 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # add another segment to verify starting point offset
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(2, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(2, 0, 0)))
         i = i.intersect(edge)
         # still a P0 and edge fully consumed
-        p3 = Vector(edge.Curve.EndPoint)
+        p3 = Vector(edge.valueAt(edge.LastParameter))
         p3.z = 2  # height of cone @ (2,0)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 3)
@@ -342,19 +342,19 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
     def test02(self):
         """Verify intersection of trapezoid tag with line ending between P1 and P2"""
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(1, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P1)
         self.assertEqual(len(i.edges), 2)
         p1 = Vector(4, 0, 0)
         p2 = Vector(1, 0, 3)
-        self.assertLine(i.edges[0], edge.Curve.StartPoint, p1)
+        self.assertLine(i.edges[0], edge.valueAt(edge.FirstParameter), p1)
         self.assertLine(i.edges[1], p1, p2)
         self.assertIsNone(i.tail)
 
         # verify we stay in P1 if we add another segment
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(0, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(0, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P1)
         self.assertEqual(len(i.edges), 3)
@@ -365,11 +365,11 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
     def test03(self):
         """Verify intersection of trapezoid tag with edge ending on P2."""
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-1, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
-        p0 = Vector(edge.Curve.StartPoint)
+        p0 = Vector(edge.valueAt(edge.FirstParameter))
         p1 = Vector(4, 0, 0)
         p2 = Vector(1, 0, 3)
         p3 = Vector(-1, 0, 3)
@@ -377,18 +377,18 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # make sure we get the same result if there's another edge
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(1, 0, 0)))
         i = tag.intersect(edge)
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(-1, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3])
         self.assertIsNone(i.tail)
 
         # and also if the last segment doesn't cross the entire plateau
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(0.5, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(0.5, 0, 0)))
         i = tag.intersect(edge)
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(-1, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         p2a = Vector(0.5, 0, 3)
@@ -398,7 +398,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
     def test04(self):
         """Verify proper down plunge on trapezoid tag exit."""
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-2, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-2, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
@@ -411,7 +411,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # make sure adding another segment doesn't change the state
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-3, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(-3, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertEqual(len(i.edges), 5)
@@ -420,7 +420,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # now if we complete to P3 ....
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(-4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(-4, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P3)
         self.assertTrue(i.isComplete())
@@ -430,7 +430,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # verify proper operation if there is a single edge going through all
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-4, 0, 0)))
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P3)
         self.assertTrue(i.isComplete())
@@ -438,23 +438,23 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertIsNone(i.tail)
 
         # verify tail is added as well
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(-5, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(-5, 0, 0)))
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P3)
         self.assertTrue(i.isComplete())
-        self.assertLines(i.edges, i.tail, [p0, p1, p2, p3, p6, edge.Curve.EndPoint])
+        self.assertLines(i.edges, i.tail, [p0, p1, p2, p3, p6, edge.valueAt(edge.LastParameter)])
         self.assertIsNotNone(i.tail)
 
     def test05(self):
         """Verify all lines between P0 and P3 are added."""
         tag = Tag( 0, 0, 8, 3, 45, True, 0)
-        e0 = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(+4, 0, 0)))
-        e1 = Part.Edge(Part.Line(e0.Curve.EndPoint, Vector(+2, 0, 0)))
-        e2 = Part.Edge(Part.Line(e1.Curve.EndPoint, Vector(+0.5, 0, 0)))
-        e3 = Part.Edge(Part.Line(e2.Curve.EndPoint, Vector(-0.5, 0, 0)))
-        e4 = Part.Edge(Part.Line(e3.Curve.EndPoint, Vector(-1, 0, 0)))
-        e5 = Part.Edge(Part.Line(e4.Curve.EndPoint, Vector(-2, 0, 0)))
-        e6 = Part.Edge(Part.Line(e5.Curve.EndPoint, Vector(-5, 0, 0)))
+        e0 = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(+4, 0, 0)))
+        e1 = Part.Edge(Part.LineSegment(e0.valueAt(e0.LastParameter), Vector(+2, 0, 0)))
+        e2 = Part.Edge(Part.LineSegment(e1.valueAt(e1.LastParameter), Vector(+0.5, 0, 0)))
+        e3 = Part.Edge(Part.LineSegment(e2.valueAt(e2.LastParameter), Vector(-0.5, 0, 0)))
+        e4 = Part.Edge(Part.LineSegment(e3.valueAt(e3.LastParameter), Vector(-1, 0, 0)))
+        e5 = Part.Edge(Part.LineSegment(e4.valueAt(e4.LastParameter), Vector(-2, 0, 0)))
+        e6 = Part.Edge(Part.LineSegment(e5.valueAt(e5.LastParameter), Vector(-5, 0, 0)))
 
         i = tag
         for e in [e0, e1, e2, e3, e4, e5]:
@@ -472,7 +472,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         p6 = Vector(-2, 0, 2)
         p7 = Vector(-4, 0, 0)
 
-        self.assertLines(i.edges, i.tail, [e0.Curve.StartPoint, p0, p1, p2, p3, p4, p5, p6, p7, e6.Curve.EndPoint])
+        self.assertLines(i.edges, i.tail, [e0.valueAt(e0.FirstParameter), p0, p1, p2, p3, p4, p5, p6, p7, e6.valueAt(e6.LastParameter)])
         self.assertIsNotNone(i.tail)
 
     def test06(self):
@@ -486,17 +486,17 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
             p3 = Vector(-1, 0, 3)
             p4 = Vector(-4+i, 0, i)
             p5 = Vector(-5, 0, i)
-            edge = Part.Edge(Part.Line(p0, p5))
+            edge = Part.Edge(Part.LineSegment(p0, p5))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
             self.assertLines(s.edges, s.tail, [p0, p1, p2, p3, p4, p5])
 
         # for all edges at height or above the original line is used
         for i in range(3, 5):
-            edge = Part.Edge(Part.Line(Vector(5, 0, i), Vector(-5, 0, i)))
+            edge = Part.Edge(Part.LineSegment(Vector(5, 0, i), Vector(-5, 0, i)))
             s = tag.intersect(edge)
             self.assertTrue(s.isComplete())
-            self.assertLine(s.tail, edge.Curve.StartPoint, edge.Curve.EndPoint)
+            self.assertLine(s.tail, edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter))
 
     def test10(self):
         """Verify intersection with an arc."""
@@ -544,31 +544,31 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
 class TestTag04TriangularTag(PathTestBase): # ========================
     """Unit tests for tags that take on a triangular shape."""
 
-    def xtest00(self):
+    def test00(self):
         """Verify intersection of triangular tag with line ending at tag start."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(4, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(4, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 1)
-        self.assertLine(i.edges[0], edge.Curve.StartPoint, edge.Curve.EndPoint)
+        self.assertLine(i.edges[0], edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter))
         self.assertIsNone(i.tail)
 
-    def xtest01(self):
+    def test01(self):
         """Verify intersection of triangular tag with line ending between P0 and P1."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
-        edge = Part.Edge(Part.Line(Vector(5, 0, 0), Vector(3, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(Vector(5, 0, 0), Vector(3, 0, 0)))
 
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P0)
         p1 = Vector(4, 0, 0)
         p2 = Vector(3, 0, 1)
-        self.assertLines(i.edges, i.tail, [edge.Curve.StartPoint, p1, p2])
+        self.assertLines(i.edges, i.tail, [edge.valueAt(edge.FirstParameter), p1, p2])
         self.assertIsNone(i.tail)
 
         # verify we stay in P1 if we add another segment
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, Vector(1, 0, 0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), Vector(1, 0, 0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P0)
         self.assertEqual(len(i.edges), 3)
@@ -576,21 +576,21 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertLine(i.edges[2], p2, p3)
         self.assertIsNone(i.tail)
 
-    def xtest02(self):
+    def test02(self):
         """Verify proper down plunge on exit of triangular tag."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
 
         p0 = Vector(5, 0, 0)
         p1 = Vector(4, 0, 0)
         p2 = Vector(0, 0, 4)
-        edge = Part.Edge(Part.Line(p0, FreeCAD.Vector(0,0,0)))
+        edge = Part.Edge(Part.LineSegment(p0, FreeCAD.Vector(0,0,0)))
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertEqual(len(i.edges), 2)
         self.assertLines(i.edges, i.tail, [p0, p1, p2])
 
         # adding another segment doesn't make a difference
-        edge = Part.Edge(Part.Line(edge.Curve.EndPoint, FreeCAD.Vector(-3,0,0)))
+        edge = Part.Edge(Part.LineSegment(edge.valueAt(edge.LastParameter), FreeCAD.Vector(-3,0,0)))
         i = i.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertEqual(len(i.edges), 3)
@@ -598,12 +598,12 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3])
 
         # same result if all is one line
-        edge = Part.Edge(Part.Line(p0, edge.Curve.EndPoint))
+        edge = Part.Edge(Part.LineSegment(p0, edge.valueAt(edge.LastParameter)))
         i = tag.intersect(edge)
         self.assertEqual(i.state, Tag.Intersection.P2)
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3])
 
-    def xtest03(self):
+    def test03(self):
         """Verify triangular tag shap on intersection."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         
@@ -611,7 +611,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         p1 = Vector(4, 0, 0)
         p2 = Vector(0, 0, 4)
         p3 = Vector(-4, 0, 0)
-        edge = Part.Edge(Part.Line(p0, p3))
+        edge = Part.Edge(Part.LineSegment(p0, p3))
         i = tag.intersect(edge)
         self.assertTrue(i.isComplete())
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3])
@@ -619,13 +619,13 @@ class TestTag04TriangularTag(PathTestBase): # ========================
 
         # this should also work if there is some excess, aka tail
         p4 = Vector(-5, 0, 0)
-        edge = Part.Edge(Part.Line(p0, p4))
+        edge = Part.Edge(Part.LineSegment(p0, p4))
         i = tag.intersect(edge)
         self.assertTrue(i.isComplete())
         self.assertLines(i.edges, i.tail, [p0, p1, p2, p3, p4])
         self.assertIsNotNone(i.tail)
 
-    def xtest10(self):
+    def test10(self):
         """Verify intersection with an arc."""
         tag = Tag( 0, 0, 8, 7, 45, True, 0)
         p1 = Vector(10, -10, 0)
