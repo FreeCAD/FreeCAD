@@ -34,10 +34,15 @@
 #include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+
+#include <Inventor/SbVec3f.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
 #include <Mod/TechDraw/App/DrawPage.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
@@ -51,6 +56,7 @@
 #include <Mod/TechDraw/Gui/ui_TaskProjGroup.h>
 
 using namespace Gui;
+using namespace TechDraw;
 using namespace TechDrawGui;
 
 //TODO: Look into this, seems we might be able to delete it now?  IR
@@ -89,6 +95,11 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     connect(ui->butLeftRotate,  SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
     connect(ui->butCCWRotate,   SIGNAL(clicked()), this, SLOT(rotateButtonClicked(void)));
 
+    //3D button
+    connect(ui->but3D,   SIGNAL(clicked()), this, SLOT(on3DClicked(void)));
+    //Reset button
+    connect(ui->butReset,   SIGNAL(clicked()), this, SLOT(onResetClicked(void)));
+
     // Slot for Scale Type
     connect(ui->cmbScaleType, SIGNAL(currentIndexChanged(int)), this, SLOT(scaleTypeChanged(int)));
     connect(ui->sbScaleNum,   SIGNAL(valueChanged(int)), this, SLOT(scaleManuallyChanged(int)));
@@ -102,6 +113,8 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
     ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
     m_mdi = dvp->getMDIViewPage();
+
+    setUiPrimary();
 }
 
 TaskProjGroup::~TaskProjGroup()
@@ -142,31 +155,50 @@ void TaskProjGroup::rotateButtonClicked(void)
     if ( multiView && ui ) {
         const QObject *clicked = sender();
 
-        // Any translation/scale/etc applied here will be ignored, as
-        // DrawProjGroup::setFrontViewOrientation() only
-        // uses it to set Direction and XAxisDirection.
-        Base::Matrix4D m = multiView->viewOrientationMatrix.getValue();
 
-        // TODO: Construct these directly
-        Base::Matrix4D t;
-
-        //TODO: Consider changing the vectors around depending on whether we're in First or Third angle mode - might be more intuitive? IR
-        if ( clicked == ui->butTopRotate ) {
-            t.rotX(M_PI / -2);
-        } else if ( clicked == ui->butCWRotate ) {
-            t.rotY(M_PI / -2);
-        } else if ( clicked == ui->butRightRotate) {
-            t.rotZ(M_PI / 2);
+        if ( clicked == ui->butTopRotate ) {          //change Front View Dir by 90
+            multiView->rotateUp();
         } else if ( clicked == ui->butDownRotate) {
-            t.rotX(M_PI / 2);
+            multiView->rotateDown();
+        } else if ( clicked == ui->butRightRotate) {
+            multiView->rotateRight();
         } else if ( clicked == ui->butLeftRotate) {
-            t.rotZ(M_PI / -2);
+            multiView->rotateLeft();
+        } else if ( clicked == ui->butCWRotate ) {              //doesn't change Anchor view dir. changes projType of secondaries, not dir
+            multiView->spinCW();
         } else if ( clicked == ui->butCCWRotate) {
-            t.rotY(M_PI / 2);
+            multiView->spinCCW();
         }
-        m *= t;
+        setUiPrimary();
+        Gui::Command::updateActive();
+    }
+}
 
-        multiView->setFrontViewOrientation(m);
+void TaskProjGroup::on3DClicked(void)
+{
+    Base::Vector3d dir3D = get3DViewDir();
+    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
+    if (front) {
+        front->Direction.setValue(dir3D);
+        front->recomputeFeature();
+        setUiPrimary();
+        multiView->makeInitialMap(front);
+        multiView->updateSecondaryDirs();
+        Gui::Command::updateActive();
+    }
+}
+
+void TaskProjGroup::onResetClicked(void)
+{
+    Base::Vector3d dir = multiView->nameToStdDirection("Front");
+    TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
+    if (front) {
+        front->Direction.setValue(dir);
+        front->recomputeFeature();
+        setUiPrimary();
+        multiView->makeInitialMap(front);
+        multiView->updateSecondaryDirs();
+        multiView->dumpMap();
         Gui::Command::updateActive();
     }
 }
@@ -375,8 +407,51 @@ void TaskProjGroup::setupViewCheckboxes(bool addConnections)
     }
 }
 
+void TaskProjGroup::setUiPrimary()
+{
+    Base::Vector3d frontDir = multiView->getAnchorDirection();
+    ui->lePrimary->setText(formatVector(frontDir));
+}
+
+Base::Vector3d TaskProjGroup::get3DViewDir()
+{
+    Base::Vector3d viewDir(0.0,-1.0,0.0);                                       //default to front
+    std::list<MDIView*> mdis = Gui::Application::Instance->activeDocument()->getMDIViews();
+    Gui::View3DInventor *view;
+    Gui::View3DInventorViewer *viewer;
+    for (auto& m: mdis) {                                                       //find the 3D viewer
+        view = dynamic_cast<Gui::View3DInventor*>(m);
+        if (view) {
+            viewer = view->getViewer();
+            break;
+        }
+    }
+    if (!viewer) {
+        Base::Console().Log("LOG - TaskProjGroup could not find a 3D viewer\n");
+        return viewDir;
+    }
+
+    SbVec3f dvec = viewer->getViewDirection();
+    viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
+    viewDir = viewDir * -1;              //Inventor coords are opposite projection direction coords
+    return viewDir;
+}
+
+
+QString TaskProjGroup::formatVector(Base::Vector3d v)
+{
+    QString data = QString::fromLatin1("[%1 %2 %3]")
+        .arg(QLocale::system().toString(v.x, 'f', 2))
+        .arg(QLocale::system().toString(v.y, 'f', 2))
+        .arg(QLocale::system().toString(v.z, 'f', 2));
+    return data;
+}
+
 bool TaskProjGroup::accept()
 {
+    Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
+    if (!doc) return false;
+
     Gui::Command::commitCommand();
     Gui::Command::updateActive();
     Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
@@ -386,6 +461,9 @@ bool TaskProjGroup::accept()
 
 bool TaskProjGroup::reject()
 {
+    Gui::Document* doc = Gui::Application::Instance->getDocument(multiView->getDocument());
+    if (!doc) return false;
+
     if (getCreateMode()) {
         std::string multiViewName = multiView->getNameInDocument();
         std::string PageName = multiView->findParentPage()->getNameInDocument();
