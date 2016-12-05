@@ -129,6 +129,33 @@ class PathGeom:
         return Vector(point.x, point.y, 0)
 
     @classmethod
+    def cmdForEdge(cls, edge):
+        pt = edge.valueAt(edge.LastParameter)
+        params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            command =  Path.Command('G1', params)
+        else:
+            p1 = edge.valueAt(edge.FirstParameter)
+            p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+            p3 = pt
+            if Side.Left == Side.of(p2 - p1, p3 - p2):
+                cmd = 'G3'
+            else:
+                cmd = 'G2'
+            pa = PathGeom.xy(p1)
+            pb = PathGeom.xy(p2)
+            pc = PathGeom.xy(p3)
+            pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+            #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
+            #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
+            offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
+            #print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+            params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
+            command = Path.Command(cmd, params)
+        #print command
+        return command
+
+    @classmethod
     def edgeForCmd(cls, cmd, startPoint):
         """(cmd, startPoint).
         Returns an Edge representing the given command, assuming a given startPoint."""
@@ -215,26 +242,76 @@ class PathGeom:
 
     @classmethod
     def arcToHelix(cls, edge, z0, z1):
-        m = FreeCAD.Matrix()
-        m.unity()
+        """(edge, z0, z1)
+        Assuming edge is an arc it'll return a helix matching the arc starting at z0 and rising/falling to z1."""
+
 
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt(edge.LastParameter)
-        z = p1.z
 
-        pd = p2 - p1
-        dz = z1 - z0
+        cmd = cls.cmdForEdge(edge)
+        params = cmd.Parameters
+        params.update({'Z': z1, 'K': (z1 - z0)/2})
+        command = Path.Command(cmd.Name, params)
 
-        #print("arcToHelix(%.2f, %.2f): dz=%.2f, dy=%.2f, z=%.2f" % (z0 ,z1, dz, pd.y, z))
+        return cls.edgeForCmd(command, FreeCAD.Vector(p1.x, p1.y, z0))
 
-        m.A32 = dz / pd.y
-        m.A34 = - m.A32
-        if dz < 0:
-            m.A34 *= p2.y
-            m.A34 += z1 - z
+
+    @classmethod
+    def helixToArc(cls, edge, z = 0):
+        """(edge, z=0)
+        Returns the projection of the helix onto the XY-plane with a given offset."""
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+        p3 = edge.valueAt(edge.LastParameter)
+        p01 = FreeCAD.Vector(p1.x, p1.y, z)
+        p02 = FreeCAD.Vector(p2.x, p2.y, z)
+        p03 = FreeCAD.Vector(p3.x, p3.y, z)
+        return Part.Edge(Part.Arc(p01, p02, p03))
+
+    @classmethod
+    def splitArcAt(cls, edge, pt):
+        """(edge, pt)
+        Returns a list of 2 edges which together form the original arc split at the given point.
+        The Vector pt has to represnt a point on the given arc."""
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = pt
+        p3 = edge.valueAt(edge.LastParameter)
+        edges = []
+
+        p = edge.Curve.parameter(p2)
+        #print("splitArcAt(%.2f, %.2f, %.2f): %.2f - %.2f - %.2f" % (pt.x, pt.y, pt.z, edge.FirstParameter, p, edge.LastParameter))
+
+        p12 = edge.Curve.value((edge.FirstParameter + p)/2)
+        p23 = edge.Curve.value((p + edge.LastParameter)/2)
+        #print("splitArcAt: p12=(%.2f, %.2f, %.2f) p23=(%.2f, %.2f, %.2f)" % (p12.x, p12.y, p12.z, p23.x, p23.y, p23.z))
+
+        edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
+        edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
+
+        return edges
+
+    @classmethod
+    def splitEdgeAt(cls, edge, pt):
+        """(edge, pt)
+        Returns a list of 2 edges, forming the original edge split at the given point.
+        The results are undefined if the Vector representing the point is not part of the edge."""
+        # I could not get the OCC parameterAt and split to work ...
+        # pt HAS to be on the edge, otherwise the results are undefined
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = pt
+        p3 = edge.valueAt(edge.LastParameter)
+        edges = []
+
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            # it's a line
+            return [Part.Edge(Part.LineSegment(p1, p2)), Part.Edge(Part.LineSegment(p2, p3))]
+        elif type(edge.Curve) == Part.Circle:
+            # it's an arc
+            return cls.splitArcAt(edge, pt)
         else:
-            m.A34 *= p1.y
-            m.A34 += z0 - z
+            # it's a helix
+            arc = cls.helixToArc(edge, 0)
+            aes = cls.splitArcAt(arc, FreeCAD.Vector(pt.x, pt.y, 0))
+            return [cls.arcToHelix(aes[0], p1.z, p2.z), cls.arcToHelix(aes[1], p2.z, p3.z)]
 
-        e = edge.transformGeometry(m).Edges[0]
-        return e
