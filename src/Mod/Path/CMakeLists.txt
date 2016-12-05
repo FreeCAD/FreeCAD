@@ -21,6 +21,7 @@ SET(PathScripts_SRCS
     PathCommands.py
     PathScripts/PathAreaOp.py
     PathScripts/PathArray.py
+    PathScripts/AxisMapDressup.py
     PathScripts/PathCircularHoleBase.py
     PathScripts/PathCircularHoleBaseGui.py
     PathScripts/PathComment.py
