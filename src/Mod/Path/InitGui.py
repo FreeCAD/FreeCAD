@@ -46,6 +46,7 @@ class PathWorkbench (Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
         # load python modules
+	from PathScripts import AxisMapDressup.py
         from PathScripts import PathArray
         from PathScripts import PathComment
         from PathScripts import PathCustom
