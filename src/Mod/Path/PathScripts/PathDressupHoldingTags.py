@@ -267,7 +267,20 @@ class Tag:
             # if we have no core the tip is the origin of the Tag
             line = Part.Edge(self.tag.centerLine())
             debugEdge(line, "------- center line", 'P0')
-            i = DraftGeomUtils.findIntersection(line, edge, True)
+            if type(edge.Curve) != Part.Circle and type(edge.Curve) != Part.Line:
+                p1 = edge.valueAt(edge.FirstParameter)
+                p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+                p3 = edge.valueAt(edge.LastParameter)
+                p1.z = 0
+                p2.z = 0
+                p3.z = 0
+                arc = Part.Edge(Part.Arc(p1, p2, p3))
+                aps = DraftGeomUtils.findIntersection(line, arc)
+                for p in aps:
+                    print("%s - p=%.2f" % (p, arc.Curve.parameter(p)))
+                i = [edge.valueAt(arc.Curve.parameter(p)) for p in aps]
+            else:
+                i = DraftGeomUtils.findIntersection(line, edge)
             #i = line.Curve.intersect(edge)
             if i:
                 debugPrint('P0', '------- P0 split @ (%.2f, %.2f, %.2f)' % (i[0].x, i[0].y, i[0].z))
@@ -371,16 +384,53 @@ class Tag:
 
 
     def splitEdgeAt(self, edge, pt):
-        p = edge.Curve.parameter(pt)
+        # I'm getting rather tired of this interface, so I decided to implement this myself.
+        # How hard can it be?
+        # There are only 3 types of edges passing through here, Line, Circle and Helix ...
+        if False:
+            p = edge.Curve.parameter(pt)
+            #p = edge.parameterAt(Part.Vertex(pt.x, pt.y, pt.z))
 
-        pf = edge.valueAt(edge.FirstParameter)
-        pl = edge.valueAt(edge.LastParameter)
-        print("-------- splitAt((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): (%.2f, %.2f, %.2f)) -> param[%.2f -> %.2f]: %.2f" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z, pt.x, pt.y, pt.z, edge.FirstParameter, edge.LastParameter, p))
+            pf = edge.valueAt(edge.FirstParameter)
+            pl = edge.valueAt(edge.LastParameter)
+            print("-------- splitAt((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): (%.2f, %.2f, %.2f)) -> param[%.2f -> %.2f]: %.2f" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z, pt.x, pt.y, pt.z, edge.FirstParameter, edge.LastParameter, p))
 
-        wire = edge.split(p)
-        # split does not carry the Placement of the original curve foward ...
-        wire.transformShape(edge.Placement.toMatrix())
-        return wire.Edges
+            print("-------- splitAt(%.2f <= %.2f <= %.2f" % (edge.FirstParameter, p, edge.LastParameter))
+            wire = edge.split(p)
+            # split does not carry the Placement of the original curve foward ...
+            wire.transformShape(edge.Placement.toMatrix())
+            return wire.Edges
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = pt
+        p3 = edge.valueAt(edge.LastParameter)
+        edges = []
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            edges.append(Part.LineSegment(p1, p2))
+            edges.append(Part.LineSegment(p2, p3))
+        elif type(edge.Curve) == Part.Circle:
+            # it's an arc
+            p = edge.Curve.parameterAt(p2)
+            p12 = edge.Curve.value((edge.Curve.FirstParameter + p)/2)
+            p23 = edge.Curve.value((p + edge.Curve.LastParameter)/2)
+            edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
+            edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
+        else:
+            # it's a helix
+            # convert to arc
+            p01 = FreeCAD.Vector(p1.x, p1.y, 0)
+            p02 = FreeCAD.Vector(p2.x, p2.y, 0)
+            p03 = FreeCAD.Vector(p3.x, p3.y, 0)
+            e0 = Part.Edge(Part.Arc(p01, p02, p03))
+            # split arc
+            p0 = e0.Curve.parameterAt(p02)
+            p012 = e0.Curve.value((e0.Curve.FirstParameter + p0)/2)
+            p023 = e0.Curve.value((p0 + e0.Curve.LastParameter)/2)
+            e01 = Part.Edge(Part.Arc(p01, p012, p02))
+            e02 = Part.Edge(Part.Arc(p02, p023, p03))
+            # transform arcs into helical form
+            edges.append(self.arcToHelix(e01, p1.z, p2.z))
+            edges.append(self.arcToHelix(e02, p2.z, p3.z))
+        return edges
 
     def mapEdgeToSolid(self, edge, label):
         pf = edge.valueAt(edge.FirstParameter)

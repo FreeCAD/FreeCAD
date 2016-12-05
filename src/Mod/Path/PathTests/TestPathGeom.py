@@ -145,3 +145,30 @@ class TestPathGeom(PathTestBase):
         self.assertEqual(len(wires[1].Edges), 1)
         self.assertLine(wires[1].Edges[0], Vector(0,1,0), Vector(0,0,0))
 
+
+    def test60(self):
+        """Verify arcToHelix returns proper helix."""
+        p1 = Vector(10,-10,0)
+        p2 = Vector(0,0,0)
+        p3 = Vector(10,10,0)
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 0, 2)
+        self.assertCurve(e, p1, p2 + Vector(0,0,1), p3 + Vector(0,0,2))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 3, 7)
+        self.assertCurve(e, p1 + Vector(0,0,3), p2 + Vector(0,0,5), p3 + Vector(0,0,7))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 9, 1)
+        self.assertCurve(e, p1 + Vector(0,0,9), p2 + Vector(0,0,5), p3 + Vector(0,0,1))
+
+        dz = Vector(0,0,3)
+        p11 = p1 + dz
+        p12 = p2 + dz
+        p13 = p3 + dz
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 0, 8)
+        self.assertCurve(e, p1, p2 + Vector(0,0,4), p3 + Vector(0,0,8))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 2, -2)
+        self.assertCurve(e, p1 + Vector(0,0,2), p2, p3 + Vector(0,0,-2))
+

@@ -213,3 +213,28 @@ class PathGeom:
                 wires.append(Part.Wire(edges))
         return wires
 
+    @classmethod
+    def arcToHelix(cls, edge, z0, z1):
+        m = FreeCAD.Matrix()
+        m.unity()
+
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = edge.valueAt(edge.LastParameter)
+        z = p1.z
+
+        pd = p2 - p1
+        dz = z1 - z0
+
+        #print("arcToHelix(%.2f, %.2f): dz=%.2f, dy=%.2f, z=%.2f" % (z0 ,z1, dz, pd.y, z))
+
+        m.A32 = dz / pd.y
+        m.A34 = - m.A32
+        if dz < 0:
+            m.A34 *= p2.y
+            m.A34 += z1 - z
+        else:
+            m.A34 *= p1.y
+            m.A34 += z0 - z
+
+        e = edge.transformGeometry(m).Edges[0]
+        return e
