@@ -234,7 +234,29 @@ class DocumentBasicCases(unittest.TestCase):
         self.Doc.removeObject(obj.Name)
         del obj
     
+  def testExtensionBugViewProvider(self):
 
+    class Layer():
+      def __init__(self, obj):
+        obj.addExtension("App::GroupExtensionPython", self)
+
+    class LayerViewProvider():
+      def __init__(self, obj):
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.Proxy = self
+    
+    obj = self.Doc.addObject("App::FeaturePython","Layer")
+    Layer(obj)
+    self.failUnless(obj.hasExtension("App::GroupExtension"))
+
+    if FreeCAD.GuiUp:
+        LayerViewProvider(obj.ViewObject)
+        self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtension"))
+        self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
+    
+    self.Doc.removeObject(obj.Name)
+    del obj
+     
   def tearDown(self):
     #closing doc
     FreeCAD.closeDocument("CreateTest")

@@ -36,6 +36,7 @@
 #include <App/DocumentObject.h>
 #include <App/GroupExtension.h>
 #include <App/Expression.h>
+#include <Base/Console.h>
 #include <QMessageBox>
 
 using namespace Gui;
@@ -75,6 +76,8 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 }
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
+
+    Base::Console().Message("Check ViewProviderGroupExtension");
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
 

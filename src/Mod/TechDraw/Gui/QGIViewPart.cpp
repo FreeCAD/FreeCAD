@@ -310,8 +310,8 @@ void QGIViewPart::updateView(bool update)
 
 void QGIViewPart::draw() {
     drawViewPart();
-    drawBorder();
     drawMatting();
+    drawBorder();
 }
 
 void QGIViewPart::drawViewPart()
@@ -492,6 +492,9 @@ void QGIViewPart::removeDecorations()
          QGIDecoration* decor = dynamic_cast<QGIDecoration*>(c);
          QGIMatting* mat = dynamic_cast<QGIMatting*>(c);
          if (decor) {
+            removeFromGroup(decor);
+            scene()->removeItem(decor);
+            delete decor;
          } else if (mat) {
             removeFromGroup(mat);
             scene()->removeItem(mat);
@@ -622,11 +625,8 @@ void QGIViewPart::drawMatting()
     double radius = dvd->Radius.getValue() * scale;
     QGIMatting* mat = new QGIMatting();
     addToGroup(mat);
-    mat->setPos(0.0,0.0);
     mat->setRadius(radius);
-    QRectF displayArea = customChildrenBoundingRect();
-    mat->setSize(displayArea.width(),displayArea.height());
-    //mat->setHoleStyle(dvd->getMattingStyle());
+    mat->setPos(0.0,0.0);
     mat->draw();
     mat->show();
 }

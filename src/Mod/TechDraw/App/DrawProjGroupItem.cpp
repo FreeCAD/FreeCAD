@@ -34,6 +34,7 @@
 
 #include <Mod/TechDraw/App/DrawProjGroupItemPy.h>  // generated from DrawProjGroupItemPy.xml
 
+
 using namespace TechDraw;
 
 const char* DrawProjGroupItem::TypeEnums[] = {"Front",

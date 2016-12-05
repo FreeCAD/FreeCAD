@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <sstream>
 #include <QRectF>
+#include <cmath>
 #endif
 
 #include <App/Document.h>
@@ -34,6 +35,7 @@
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
+
 
 #include "DrawUtil.h"
 #include "DrawPage.h"
@@ -65,11 +67,89 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
-    ADD_PROPERTY(viewOrientationMatrix, (Base::Matrix4D()));
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
+}
+
+void DrawProjGroup::onChanged(const App::Property* prop)
+{
+    //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones dont... Or vice-versa.  why would you change from 1st to 3rd in mid drawing?
+    //if group hasn't been added to page yet, can't scale or distribute projItems
+    TechDraw::DrawPage *page = getPage();
+    if (!isRestoring() && page) {
+        if ( prop == &Views ) {
+            recompute();
+        } else if (prop == &Scale) {
+            updateChildren(Scale.getValue());
+            //resetPositions();
+            distributeProjections();
+        } else if (prop == &Source) {
+            App::DocumentObject* sourceObj = Source.getValue();
+            if (sourceObj != nullptr) {
+                if (!hasAnchor()) {
+                    addProjection("Front");
+                }
+            } else {
+                //Source has been changed to null! Why? What to do?
+            }
+        } else if (prop == &ScaleType) {
+            recompute();
+        } else if (prop == &AutoDistribute  &&
+            AutoDistribute.getValue()) {
+            resetPositions();
+            recompute();
+        }
+    }
+    TechDraw::DrawViewCollection::onChanged(prop);
+}
+
+App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
+{
+    //if group hasn't been added to page yet, can't scale or distribute projItems
+    TechDraw::DrawPage *page = getPage();
+    if (!page) {
+        return DrawViewCollection::execute();
+    }
+
+    App::DocumentObject* docObj = Source.getValue();
+    if (docObj == nullptr) {
+        return DrawViewCollection::execute();
+    }
+
+    docObj = Anchor.getValue();                     //must have an anchor, so create one as soon as we have a Page and Source
+    if (docObj == nullptr) {
+       docObj = addProjection("Front");
+    }
+
+    double newScale = Scale.getValue();
+    if (ScaleType.isValue("Automatic")) {
+        //Recalculate scale if Group is too big or too small!
+        if (!checkFit(page)) {
+            newScale = calculateAutomaticScale();
+            if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
+                resetPositions();
+                Scale.setValue(newScale);
+            }
+         }
+    } else if (ScaleType.isValue("Page")) {
+        newScale = page->Scale.getValue();
+        if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
+            resetPositions();
+            Scale.setValue(newScale);
+        }
+    } else if (ScaleType.isValue("Custom")) {
+        //don't have to do anything special
+    }
+
+    // recalculate positions for children
+    if (Views.getSize()) {
+        updateChildren(newScale);
+        distributeProjections();
+    }
+
+    return DrawViewCollection::execute();
 }
 
 short DrawProjGroup::mustExecute() const
@@ -169,7 +249,6 @@ QRectF DrawProjGroup::getRect() const         //this is current rect, not potent
     arrangeViewPointers(viewPtrs);
     double width, height;
     minimumBbViews(viewPtrs, width, height);                           // w,h of just the views at 1:1 scale
-    //need to add spacingX,spacingY
     double xSpace = spacingX.getValue() * 3.0 * std::max(1.0,Scale.getValue());
     double ySpace = spacingY.getValue() * 2.0 * std::max(1.0,Scale.getValue());
     double rectW = Scale.getValue() * width + xSpace;                  //scale the 1:1 w,h and add whitespace
@@ -200,28 +279,6 @@ void DrawProjGroup::minimumBbViews(DrawProjGroupItem *viewPtrs[10],
     height = row0h + row1h + row2h;
 }
 
-void DrawProjGroup::onChanged(const App::Property* prop)
-{
-    //TODO: For some reason, when the projection type is changed, the isometric views show change appropriately, but the orthographic ones dont... Or vice-versa.
-    //if group hasn't been added to page yet, can't scale or distribute projItems
-    TechDraw::DrawPage *page = getPage();
-    if (!isRestoring() && page) {
-        if ( prop == &Views ) {
-            recompute();
-        } else if (prop == &Scale) {
-            updateChildren(Scale.getValue());
-            //resetPositions();
-            distributeProjections();
-        } else if (prop == &ScaleType) {
-            recompute();
-        } else if (prop == &AutoDistribute  &&
-            AutoDistribute.getValue()) {
-            resetPositions();
-            recompute();
-        }
-    }
-    TechDraw::DrawViewCollection::onChanged(prop);
-}
 
 void DrawProjGroup::moveToCentre(void)
 {
@@ -246,6 +303,14 @@ App::DocumentObject * DrawProjGroup::getProjObj(const char *viewProjType) const
 
     return 0;
 }
+
+DrawProjGroupItem* DrawProjGroup::getProjItem(const char *viewProjType) const
+{
+    App::DocumentObject* docObj = getProjObj(viewProjType);
+    DrawProjGroupItem* result = static_cast<DrawProjGroupItem*>(docObj);
+    return result;
+}
+
 
 bool DrawProjGroup::checkViewProjType(const char *in)
 {
@@ -288,9 +353,6 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         std::string FeatName = getDocument()->getUniqueObjectName("ProjItem");
         auto docObj( getDocument()->addObject( "TechDraw::DrawProjGroupItem",     //add to Document
                                                FeatName.c_str() ) );
-        if( strcmp(viewProjType,"Front") == 0 ) {
-            Anchor.setValue(docObj);
-        }
         view = static_cast<TechDraw::DrawProjGroupItem *>( docObj );
         view->Source.setValue( Source.getValue() );
         if (ScaleType.isValue("Automatic")) {
@@ -301,7 +363,17 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Scale.setValue( Scale.getValue() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
-        setViewOrientation( view, viewProjType );
+        if( strcmp(viewProjType,"Front") == 0 ) {
+
+            Anchor.setValue(docObj);
+            view->Direction.setValue(nameToStdDirection("Front"));    //just (Base::Vector3d(0.0,-1.0,0.0))
+            view->recomputeFeature();
+            makeInitialMap(view);
+            //dumpMap();
+        } else {
+            //dumpMap();
+            view->Direction.setValue(m_viewDir[viewProjType]);
+        }
 
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
@@ -349,44 +421,6 @@ int DrawProjGroup::purgeProjections()
         }
     }
     return Views.getValues().size();
-}
-
-void DrawProjGroup::setViewOrientation(DrawProjGroupItem *v, const char *projType) const
-{
-    Base::Vector3d dir;
-
-    // Traditional orthographic
-    if(strcmp(projType, "Front") == 0) {
-        dir.Set(0, -1, 0);
-    } else if(strcmp(projType, "Rear") == 0) {
-        dir.Set(0, 1, 0);
-    } else if(strcmp(projType, "Right") == 0) {
-        dir.Set(1, 0, 0);
-    } else if(strcmp(projType, "Left") == 0) {
-        dir.Set(-1, 0, 0);
-    } else if(strcmp(projType, "Top") == 0) {
-        dir.Set(0, 0, 1);
-    } else if(strcmp(projType, "Bottom") == 0) {
-        dir.Set(0, 0, -1);
-
-    // Isometric
-    } else if(strcmp(projType, "FrontTopLeft") == 0) {
-        dir.Set(-1,-1,1);
-        dir.Normalize();
-    } else if(strcmp(projType, "FrontTopRight") == 0) {
-        dir.Set(1, -1, 1);
-        dir.Normalize();
-    } else if(strcmp(projType, "FrontBottomRight") == 0) {
-        dir.Set(1, -1, -1);
-        dir.Normalize();
-    } else if(strcmp(projType, "FrontBottomLeft") == 0) {
-        dir.Set(-1, -1, -1);
-        dir.Normalize();
-    } else {
-        throw Base::Exception("Unknown view type in DrawProjGroup::setViewOrientation()");
-    }
-    dir = viewOrientationMatrix.getValue() * dir;              //multiply std dir by transform matrix
-    v->Direction.setValue(dir);
 }
 
 void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
@@ -570,58 +604,7 @@ void DrawProjGroup::resetPositions(void)
     }
 }
 
-//TODO: Turn this into a command so it can be issued from python
-//????: this sets the orientation for all views, not just Front???
-void DrawProjGroup::setFrontViewOrientation(const Base::Matrix4D &newMat)
-{
-    viewOrientationMatrix.setValue(newMat);
 
-    for( auto it : Views.getValues() ) {
-        auto view( dynamic_cast<DrawProjGroupItem *>(it) );
-        if( view ) {
-            setViewOrientation(view, view->Type.getValueAsString());
-            // TODO: Seems we should ensure that modifying the view triggers this automatically? IR
-            view->touch();
-        }
-    }
-}
-
-App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
-{
-    //if group hasn't been added to page yet, can't scale or distribute projItems
-    TechDraw::DrawPage *page = getPage();
-    if (!page) {
-        return DrawViewCollection::execute();
-    }
-
-    double newScale = Scale.getValue();
-    if (ScaleType.isValue("Automatic")) {
-        //Recalculate scale if Group is too big or too small!
-        if (!checkFit(page)) {
-            newScale = calculateAutomaticScale();
-            if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
-                resetPositions();
-                Scale.setValue(newScale);
-            }
-         }
-    } else if (ScaleType.isValue("Page")) {
-        newScale = page->Scale.getValue();
-        if(std::abs(Scale.getValue() - newScale) > FLT_EPSILON) {
-            resetPositions();
-            Scale.setValue(newScale);
-        }
-    } else if (ScaleType.isValue("Custom")) {
-        //don't have to do anything special
-    }
-
-    // recalculate positions for children
-    if (Views.getSize()) {
-        updateChildren(newScale);
-        //resetPositions();
-        distributeProjections();
-    }
-    return DrawViewCollection::execute();
-}
 
 void DrawProjGroup::updateChildren(double scale)
 {
@@ -686,8 +669,277 @@ App::Enumeration DrawProjGroup::usedProjectionType(void)
     return ret;
 }
 
+bool DrawProjGroup::hasAnchor(void)
+{
+    bool result = false;
+    App::DocumentObject* docObj = Anchor.getValue();
+    if (docObj != nullptr) {
+        result = true;
+    }
+    return result;
+}
+
+
+
+void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
+{
+    App::DocumentObject* docObj = Anchor.getValue();
+    DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+    item->Direction.setValue(dir);
+}
+
+Base::Vector3d DrawProjGroup::getAnchorDirection(void)
+{
+    Base::Vector3d result;
+    App::DocumentObject* docObj = Anchor.getValue();
+    if (docObj != nullptr) {
+        DrawProjGroupItem* item = static_cast<DrawProjGroupItem*>(docObj);
+        result = item->Direction.getValue();
+    } else {
+        Base::Console().Log("ERROR - DPG::getAnchorDir - no Anchor!!\n");
+    }
+    return result;
+}
+
+//static
+Base::Vector3d DrawProjGroup::nameToStdDirection(std::string name)
+{
+    Base::Vector3d result;
+    //name to standard view direction
+    std::map<std::string,Base::Vector3d> stdViews = {
+        { "Front",            Base::Vector3d(0, -1, 0) },
+        { "Rear",             Base::Vector3d(0, 1, 0) },
+        { "Right",            Base::Vector3d(1, 0, 0) },
+        { "Left",             Base::Vector3d(-1, 0, 0) },
+        { "Top",              Base::Vector3d(0, 0, 1) },
+        { "Bottom",           Base::Vector3d(0, 0, -1) },
+        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },
+        { "FrontTopRight",    Base::Vector3d(1, -1, 1) },
+        { "FrontBottomRight", Base::Vector3d(1, -1, -1) },
+        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) } };
+    auto it = stdViews.find(name);
+    if (it != stdViews.end()) {
+        result = (*it).second;
+    }
+    return result;
+}
+
+
+//*************************************
+//* view direction manipulation routines
+//*************************************
+
+//make map from anchor u,v,w
+//std::map<std::string,Base::Vector3d>  DrawProjGroup::makeInitialMap(TechDraw::DrawProjGroupItem* anchor)
+void DrawProjGroup::makeInitialMap(TechDraw::DrawProjGroupItem* anchor)
+{
+    m_viewDir = makeUnspunMap(anchor->Direction.getValue(),
+                              anchor->getUDir(),
+                              anchor->getVDir() * -1);               //the infamous flipped Y
+}
+
+//! remake map from FRT
+std::map<std::string,Base::Vector3d>  DrawProjGroup::makeUnspunMap()
+{
+    return makeUnspunMap(m_viewDir["Front"],
+                         m_viewDir["Right"],
+                         m_viewDir["Top"]);
+}
+
+//remake this everytime Anchor.Direction changes
+std::map<std::string,Base::Vector3d>  DrawProjGroup::makeUnspunMap(Base::Vector3d f, Base::Vector3d r, Base::Vector3d t)
+{
+    std::map<std::string,Base::Vector3d> viewDir;
+    viewDir["Front"] = f;
+    viewDir["Right"] = r;
+    viewDir["Top"] = t;
+    viewDir["Rear"] = viewDir["Front"] * -1.0;
+    viewDir["Left"] = viewDir["Right"] * -1.0;
+    viewDir["Bottom"] = viewDir["Top"] * -1.0;
+    viewDir["FrontTopRight"] = viewDir["Right"] + viewDir["Front"] + viewDir["Top"];
+    viewDir["FrontTopLeft"] = viewDir["Left"] + viewDir["Front"] + viewDir["Top"];
+    viewDir["FrontBottomRight"] = viewDir["Right"] + viewDir["Front"] + viewDir["Bottom"];
+    viewDir["FrontBottomLeft"] = viewDir["Left"] + viewDir["Front"] + viewDir["Bottom"];
+    return viewDir;
+}
+
+void DrawProjGroup::dumpMap()
+{
+    Base::Console().Message("TRACE - DPG::dumpMap - entries: %d\n",m_viewDir.size());
+    std::map<std::string, Base::Vector3d>::const_iterator it;
+    for (it = m_viewDir.begin(); it != m_viewDir.end(); it++)
+    {
+        Base::Console().Message("%s  -  %s\n",(it->first).c_str(), DrawUtil::formatVector(it->second).c_str());
+    }
+}
+
+void DrawProjGroup::updateSecondaryDirs()
+{
+    for (auto& docObj: Views.getValues()) {
+        Base::Vector3d newDir;
+        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+        ProjItemType t = static_cast<ProjItemType>(v->Type.getValue());
+        switch (t) {
+            case Front : {
+                newDir = m_viewDir["Front"];
+                break;
+            }
+            case Rear : {
+                newDir = m_viewDir["Rear"];
+                break;
+            }
+            case Left : {
+                newDir = m_viewDir["Left"];
+                break;
+            }
+            case Right : {
+                newDir = m_viewDir["Right"];
+                break;
+            }
+            case Top : {
+                newDir = m_viewDir["Top"];
+                break;
+            }
+            case Bottom : {
+                newDir = m_viewDir["Bottom"];
+                break;
+            }
+            case FrontTopLeft : {
+                newDir = m_viewDir["FrontTopLeft"];
+                break;
+            }
+            case FrontTopRight : {
+                newDir = m_viewDir["FrontTopRight"];
+                break;
+            }
+            case FrontBottomLeft : {
+                newDir = m_viewDir["FrontBottomLeft"];
+                break;
+            }
+            case FrontBottomRight : {
+                newDir = m_viewDir["FrontBottomRight"];
+                break;
+            }
+            default: {
+                //TARFU invalid secondary type
+                Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
+                newDir = v->Direction.getValue();
+            }
+        }
+        v->Direction.setValue(newDir);
+    }
+}
+
+
+void DrawProjGroup::rotateRight()
+{
+//Front -> Right -> Rear -> Left -> Front
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Left"];
+    r = m_viewDir["Front"];
+    t = m_viewDir["Top"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+
+void DrawProjGroup::rotateLeft()
+{
+//Front -> Left -> Rear -> Right -> Front
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Right"];
+    r = m_viewDir["Rear"];
+    t = m_viewDir["Top"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+
+void DrawProjGroup::rotateUp()
+{
+//Front -> Top -> Rear -> Bottom -> Front
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Bottom"];
+    r = m_viewDir["Right"];
+    t = m_viewDir["Front"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+    
+void DrawProjGroup::rotateDown()
+{
+//Front -> Bottom -> Rear -> Top -> Front
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Top"];
+    r = m_viewDir["Right"];
+    t = m_viewDir["Rear"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+
+void DrawProjGroup::spinCW()
+{
+//Top -> Right -> Bottom -> Left -> Top
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Front"];
+    t = m_viewDir["Left"];
+    r = m_viewDir["Top"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+    
+void DrawProjGroup::spinCCW()
+{
+//Top -> Left -> Bottom -> Right -> Top
+    Base::Vector3d f,r,t;
+    f = m_viewDir["Front"];
+    t = m_viewDir["Right"];
+    r = m_viewDir["Bottom"];
+    m_viewDir = makeUnspunMap(f,r,t);
+    updateSecondaryDirs();
+}
+
+//*************************************
+
+//! rebuild view direction map from existing DPGI's if possible or from Anchor
 void DrawProjGroup::onDocumentRestored()
 {
+    Base::Vector3d f,r,t;
+    bool ffound = false;
+    bool rfound = false;
+    bool tfound = false;
+    
+    for (auto& docObj: Views.getValues()) {
+        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+        ProjItemType type = static_cast<ProjItemType>(v->Type.getValue());
+        switch (type) {
+            case Front : {
+                f = v->Direction.getValue();
+                ffound = true;
+                break;
+            }
+            case Right : {
+                r = v->Direction.getValue();
+                rfound = true;
+                break;
+            }
+            case Top : {
+                t = v->Direction.getValue();
+                tfound = true;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+    }
+    if (ffound && rfound && tfound) {
+        m_viewDir = makeUnspunMap(f,r,t);
+    } else {
+        App::DocumentObject* docObj = Anchor.getValue();
+        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>( docObj );
+        makeInitialMap(view);
+        Base::Console().Log("LOG: - DPG::restore - making map from Anchor\n");
+    }
+    //dumpMap();
     DrawViewCollection::onDocumentRestored();
 }
 
