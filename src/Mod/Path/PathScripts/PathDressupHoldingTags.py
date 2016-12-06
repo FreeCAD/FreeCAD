@@ -82,6 +82,18 @@ def debugCylinder(vector, r, height, label, color = None):
         if color:
             obj.ViewObject.ShapeColor = color
 
+def debugCone(vector, r1, r2, height, label, color = None):
+    if debugDressup:
+        obj = FreeCAD.ActiveDocument.addObject("Part::Cone", label)
+        obj.Label = label
+        obj.Radius1 = r1
+        obj.Radius2 = r2
+        obj.Height = height
+        obj.Placement = FreeCAD.Placement(vector, FreeCAD.Rotation(FreeCAD.Vector(0,0,1), 0))
+        obj.ViewObject.Transparency = 90
+        if color:
+            obj.ViewObject.ShapeColor = color
+
 class Tag:
 
     @classmethod
@@ -121,6 +133,8 @@ class Tag:
     def createSolidsAt(self, z):
         self.z = z
         r1 = self.width / 2
+        self.r1 = r1
+        self.r2 = r1
         height = self.height
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
@@ -136,6 +150,7 @@ class Tag:
                 height = r1 * tangens
                 self.core = None
                 self.actualHeight = height
+            self.r2 = r2
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
@@ -791,17 +806,20 @@ class ObjectDressup:
             return
 
         print("execute - %d tags" % (len(tags)))
+        tags = pathData.sortedTags(tags)
+        for tag in tags:
+            tag.createSolidsAt(pathData.minZ)
+
         tagID = 0
         for tag in tags:
             tagID += 1
             if tag.enabled:
                 #print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
                 #debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                debugCylinder(tag.originAt(pathData.minZ), tag.width/2, tag.actualHeight, "tag-%02d" % tagID)
-
-        tags = pathData.sortedTags(tags)
-        for tag in tags:
-            tag.createSolidsAt(pathData.minZ)
+                if tag.angle != 90:
+                    debugCone(tag.originAt(pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
+                else:
+                    debugCylinder(tag.originAt(pathData.minZ), tag.width/2, tag.actualHeight, "tag-%02d" % tagID)
 
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
