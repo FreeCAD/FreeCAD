@@ -254,6 +254,9 @@ class PathGeom:
         params.update({'Z': z1, 'K': (z1 - z0)/2})
         command = Path.Command(cmd.Name, params)
 
+        print("- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): %.2f:%.2f" % (edge.Vertexes[0].X, edge.Vertexes[0].Y, edge.Vertexes[0].Z, edge.Vertexes[1].X, edge.Vertexes[1].Y, edge.Vertexes[1].Z, z0, z1))
+        print("- %s -> %s" % (cmd, command))
+
         return cls.edgeForCmd(command, FreeCAD.Vector(p1.x, p1.y, z0))
 
 
