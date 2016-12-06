@@ -14,12 +14,24 @@
    height="64px"
    id="svg2726"
    sodipodi:version="0.32"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="Snap_Intersection.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
      id="defs2728">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3782">
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="0"
+         id="stop3784" />
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="1"
+         id="stop3786" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3144">
@@ -84,6 +96,15 @@
        fx="225.26402"
        fy="672.79736"
        r="34.345188" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3782"
+       id="linearGradient3788"
+       x1="36"
+       y1="56"
+       x2="30"
+       y2="13"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -92,18 +113,28 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.8890873"
-     inkscape:cx="15.517769"
-     inkscape:cy="17.410483"
+     inkscape:zoom="15.556349"
+     inkscape:cx="23.810967"
+     inkscape:cy="20.588263"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="755"
-     inkscape:window-x="0"
-     inkscape:window-y="22"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="false"
+     inkscape:snap-nodes="true">
+    <inkscape:grid
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true"
+       type="xygrid"
+       id="grid2994" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2731">
     <rdf:RDF>
@@ -124,10 +155,18 @@
        id="g4289"
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
-         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:5.00000003;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="M 14.4375 4.78125 L 4.65625 14.5625 L 22 31.90625 L 4.65625 49.25 L 14.4375 59.03125 L 31.78125 41.6875 L 49.125 59.03125 L 58.90625 49.25 L 41.5625 31.90625 L 58.90625 14.5625 L 49.125 4.78125 L 31.78125 22.125 L 14.4375 4.78125 z "
+         style="color:#000000;fill:url(#linearGradient3788);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="M 15,4.9999997 5.0000001,15 22,32 5.0000001,49 15,59 32,42 49,59 59,49 42,32 59,15 49,4.9999997 32,22 z"
          transform="matrix(6.1679584,0,0,6.1679584,-39.231908,407.75637)"
-         id="rect3942-4-9" />
+         id="rect3942-4-9"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccccccc" />
+      <path
+         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:12.33591689000000000;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 53.287469,457.10004 -43.175709,43.1757 104.85529,104.8553 -104.85529,104.85529 43.175709,43.17571 104.855291,-104.85529 104.8553,104.85529 43.1757,-43.17571 -104.85529,-104.85529 104.85529,-104.8553 -43.1757,-43.1757 -104.8553,104.85529 z"
+         id="rect3942-4-9-1"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccccccc" />
     </g>
   </g>
 </svg>

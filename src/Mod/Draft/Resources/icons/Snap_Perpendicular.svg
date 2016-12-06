@@ -14,12 +14,24 @@
    height="64px"
    id="svg2726"
    sodipodi:version="0.32"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="Snap_Perpendicular.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1">
   <defs
      id="defs2728">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3759">
+      <stop
+         style="stop-color:#06989a;stop-opacity:1"
+         offset="0"
+         id="stop3761" />
+      <stop
+         style="stop-color:#34e0e2;stop-opacity:1"
+         offset="1"
+         id="stop3763" />
+    </linearGradient>
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3144">
@@ -50,6 +62,15 @@
        fx="225.26402"
        fy="672.79736"
        r="34.345188" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3759"
+       id="linearGradient3765"
+       x1="182.81459"
+       y1="728.49023"
+       x2="127.30297"
+       y2="598.96307"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -58,18 +79,26 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.7781746"
-     inkscape:cx="24.45243"
-     inkscape:cy="13.674951"
+     inkscape:zoom="11"
+     inkscape:cx="33.987142"
+     inkscape:cy="31.621572"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1" />
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2989"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2731">
     <rdf:RDF>
@@ -90,11 +119,17 @@
        id="g4289"
        transform="matrix(0.1621282,0,0,0.1621282,6.3605986,-66.108806)">
       <path
-         style="color:#000000;fill:#00b286;fill-opacity:1;fill-rule:nonzero;stroke:#002e2e;stroke-width:29.87757301;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-         d="m 126.31496,439.55224 c 0,0 -0.79298,86.49258 -0.79298,128.94588 0,42.45331 0.79298,125.77395 0.79298,125.77395 l -137.088541,0 0,69.15728 c 0,0 111.830851,0.79298 168.539261,0.79298 56.70841,0 171.7112,-0.79298 171.7112,-0.79298 l 0,-69.15728 -132.51282,0 c 0,0 0.79298,-56.05449 0.79298,-121.80903 0,-65.75454 -0.79298,-132.9108 -0.79298,-132.9108 z"
+         style="color:#000000;fill:url(#linearGradient3765);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:12.33591652000000000;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 114.96705,475.60391 0,185.03875 -135.695083,0 0,74.01551 357.741593,0 0,-74.01551 -148.03101,0 0,-185.03875 z"
          id="rect3942"
          inkscape:connector-curvature="0"
-         sodipodi:nodetypes="czccczccczcc" />
+         sodipodi:nodetypes="ccccccccc" />
+      <path
+         style="color:#000000;fill:none;stroke:#34e0e2;stroke-width:12.33591652;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         d="m 127.30297,487.93983 0,185.03875 -135.6950856,0 0,49.34367 333.0697556,0 0,-49.34367 -148.031,0 0,-185.03875 z"
+         id="rect3942-3"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccccccc" />
     </g>
   </g>
 </svg>
