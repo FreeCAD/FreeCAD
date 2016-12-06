@@ -287,8 +287,11 @@ void ViewProviderPath::updateData(const App::Property* prop)
                     center = cmd.getCenter();
                 else
                     center = (last + cmd.getCenter());
+                Base::Vector3d next0 = Base::Vector3d(next.x, next.y, 0);
+                Base::Vector3d last0 = Base::Vector3d(last.x, last.y, 0);
+                Base::Vector3d center0 = Base::Vector3d(center.x, center.y, 0);
                 //double radius = (last - center).Length();
-                double angle = (next - center).GetAngle(last - center);
+                double angle = (next0 - center0).GetAngle(last0 - center0);
                 // GetAngle will always return the minor angle. Switch if needed
                 Base::Vector3d anorm = (last - center) % (next - center);
                 if ( (anorm.z < 0) && ( (name == "G3") || (name == "G03") ) )
@@ -298,16 +301,16 @@ void ViewProviderPath::updateData(const App::Property* prop)
                 if (angle == 0)
                     angle = M_PI * 2;
                 int segments = 3/(deviation/angle); //we use a rather simple rule here, provisorily
-                double dZ = (next.z - last.z)/segments; //How far each sigment will helix in Z
+                double dZ = (next.z - last.z)/segments; //How far each segment will helix in Z
                 for (int j = 1; j < segments; j++) {
                     //std::cout << "vector " << j << std::endl;
                     Base::Vector3d inter;
                     Base::Rotation rot(norm,(angle/segments)*j);
                     //std::cout << "angle " << (angle/segments)*j << std::endl;
-                    rot.multVec((last - center),inter);
-                    inter.z = dZ * j; //Enable displaying helices
+                    rot.multVec((last0 - center0),inter);
+                    inter.z = last.z + dZ * j; //Enable displaying helices
                     //std::cout << "result " << inter.x << " , " << inter.y << " , " << inter.z << std::endl;
-                    points.push_back( center + inter);
+                    points.push_back( center0 + inter);
                     colorindex.push_back(1);
                 }
                 //std::cout << "next " << next.x << " , " << next.y << " , " << next.z << std::endl;
