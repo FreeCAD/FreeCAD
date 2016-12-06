@@ -82,41 +82,6 @@ def debugCylinder(vector, r, height, label, color = None):
         if color:
             obj.ViewObject.ShapeColor = color
 
-movecommands = ['G0', 'G00', 'G1', 'G01', 'G2', 'G02', 'G3', 'G03']
-movestraight = ['G1', 'G01']
-movecw =       ['G2', 'G02']
-moveccw =      ['G3', 'G03']
-movearc = movecw + moveccw
-
-slack = 0.0000001
-
-def pathCommandForEdge(edge):
-    pt = edge.valueAt(edge.LastParameter)
-    params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
-    if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
-        command =  Path.Command('G1', params)
-    else:
-        p1 = edge.valueAt(edge.FirstParameter)
-        p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-        p3 = pt
-        if Side.Left == Side.of(p2 - p1, p3 - p2):
-            cmd = 'G3'
-        else:
-            cmd = 'G2'
-        pa = PathGeom.xy(p1)
-        pb = PathGeom.xy(p2)
-        pc = PathGeom.xy(p3)
-        pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
-        print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
-        print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
-        offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
-        print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
-        params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
-        command = Path.Command(cmd, params)
-    print command
-    return command
-
-
 class Tag:
 
     @classmethod
@@ -246,7 +211,7 @@ class Tag:
                     tail = None
                 else:
                     debugPrint('P0', "-------  split at (%s)" % i)
-                    e, tail = self.tag.splitEdgeAt(edge, i)
+                    e, tail = PathGeom.splitEdgeAt(edge, i)
                 self.p1 = e.valueAt(edge.LastParameter)
                 self.edges.extend(self.tag.mapEdgeToSolid(e, 'P0-core-1'))
                 self.state = self.P1
@@ -276,9 +241,10 @@ class Tag:
                 p3.z = 0
                 arc = Part.Edge(Part.Arc(p1, p2, p3))
                 aps = DraftGeomUtils.findIntersection(line, arc)
+                paramScale = (edge.LastParameter - edge.FirstParameter) / (arc.LastParameter - arc.FirstParameter)
                 for p in aps:
                     print("%s - p=%.2f" % (p, arc.Curve.parameter(p)))
-                i = [edge.valueAt(arc.Curve.parameter(p)) for p in aps]
+                i = [edge.valueAt(arc.Curve.parameter(p) * paramScale) for p in aps]
             else:
                 i = DraftGeomUtils.findIntersection(line, edge)
             #i = line.Curve.intersect(edge)
@@ -288,7 +254,7 @@ class Tag:
                     e = edge
                     tail = None
                 else:
-                    e, tail = self.tag.splitEdgeAt(edge, i[0])
+                    e, tail = PathGeom.splitEdgeAt(edge, i[0])
                 self.state = self.P2 # P1 and P2 are identical for triangular tags
                 self.p1 = i[0]
                 self.p2 = i[0]
@@ -318,7 +284,7 @@ class Tag:
                     tail = None
                 else:
                     debugPrint('P1', "----- P1 split edge @ (%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
-                    e, tail = self.tag.splitEdgeAt(edge, i)
+                    e, tail = PathGeom.splitEdgeAt(edge, i)
                     f = e.valueAt(e.FirstParameter)
                     l = e.valueAt(e.LastParameter)
                     debugPrint('P1', "----- P1 (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (f.x, f.y, f.z, l.x, l.y, l.z))
@@ -350,7 +316,7 @@ class Tag:
                     e = edge
                     tail = None
                 else:
-                    e, tail = self.tag.splitEdgeAt(edge, i)
+                    e, tail = PathGeom.splitEdgeAt(edge, i)
                 if tail:
                     pf = tail.valueAt(tail.FirstParameter)
                     pl = tail.valueAt(tail.LastParameter)
@@ -383,63 +349,14 @@ class Tag:
             return self
 
 
-    def splitEdgeAt(self, edge, pt):
-        # I'm getting rather tired of this interface, so I decided to implement this myself.
-        # How hard can it be?
-        # There are only 3 types of edges passing through here, Line, Circle and Helix ...
-        if False:
-            p = edge.Curve.parameter(pt)
-            #p = edge.parameterAt(Part.Vertex(pt.x, pt.y, pt.z))
-
-            pf = edge.valueAt(edge.FirstParameter)
-            pl = edge.valueAt(edge.LastParameter)
-            print("-------- splitAt((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): (%.2f, %.2f, %.2f)) -> param[%.2f -> %.2f]: %.2f" % (pf.x, pf.y, pf.z, pl.x, pl.y, pl.z, pt.x, pt.y, pt.z, edge.FirstParameter, edge.LastParameter, p))
-
-            print("-------- splitAt(%.2f <= %.2f <= %.2f" % (edge.FirstParameter, p, edge.LastParameter))
-            wire = edge.split(p)
-            # split does not carry the Placement of the original curve foward ...
-            wire.transformShape(edge.Placement.toMatrix())
-            return wire.Edges
-        p1 = edge.valueAt(edge.FirstParameter)
-        p2 = pt
-        p3 = edge.valueAt(edge.LastParameter)
-        edges = []
-        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
-            edges.append(Part.LineSegment(p1, p2))
-            edges.append(Part.LineSegment(p2, p3))
-        elif type(edge.Curve) == Part.Circle:
-            # it's an arc
-            p = edge.Curve.parameterAt(p2)
-            p12 = edge.Curve.value((edge.Curve.FirstParameter + p)/2)
-            p23 = edge.Curve.value((p + edge.Curve.LastParameter)/2)
-            edges.append(Part.Edge(Part.Arc(p1, p12, p2)))
-            edges.append(Part.Edge(Part.Arc(p2, p23, p3)))
-        else:
-            # it's a helix
-            # convert to arc
-            p01 = FreeCAD.Vector(p1.x, p1.y, 0)
-            p02 = FreeCAD.Vector(p2.x, p2.y, 0)
-            p03 = FreeCAD.Vector(p3.x, p3.y, 0)
-            e0 = Part.Edge(Part.Arc(p01, p02, p03))
-            # split arc
-            p0 = e0.Curve.parameterAt(p02)
-            p012 = e0.Curve.value((e0.Curve.FirstParameter + p0)/2)
-            p023 = e0.Curve.value((p0 + e0.Curve.LastParameter)/2)
-            e01 = Part.Edge(Part.Arc(p01, p012, p02))
-            e02 = Part.Edge(Part.Arc(p02, p023, p03))
-            # transform arcs into helical form
-            edges.append(self.arcToHelix(e01, p1.z, p2.z))
-            edges.append(self.arcToHelix(e02, p2.z, p3.z))
-        return edges
-
     def mapEdgeToSolid(self, edge, label):
         pf = edge.valueAt(edge.FirstParameter)
         pl = edge.valueAt(edge.LastParameter)
         print("--------- mapEdgeToSolid-%s: %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (label, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
 
         p1a = edge.valueAt(edge.FirstParameter)
-        p1b = FreeCAD.Vector(p1a.x, p1a.y, p1a.z + self.height)
         p1a.z = self.bottom()
+        p1b = FreeCAD.Vector(p1a.x, p1a.y, self.height * 1.01)
         e1 = Part.Edge(Part.LineSegment(p1a, p1b))
         p1 = self.nextIntersectionClosestTo(e1, self.solid, p1b) # top most intersection
         print("---------- p1: (%s %s) -> %s %d" % (p1a, p1b, p1, self.solid.isInside(p1, 0.0000001, True)))
@@ -448,8 +365,8 @@ class Tag:
             return []
 
         p2a = edge.valueAt(edge.LastParameter)
-        p2b = FreeCAD.Vector(p2a.x, p2a.y, p2a.z + self.height)
         p2a.z = self.bottom()
+        p2b = FreeCAD.Vector(p2a.x, p2a.y, self.height * 1.01)
         e2 = Part.Edge(Part.LineSegment(p2a, p2b))
         p2 = self.nextIntersectionClosestTo(e2, self.solid, p2b) # top most intersection
         if not p2:
@@ -518,7 +435,7 @@ class Tag:
             #print("it's a plane, checking R")
             c = face.Edges[0].Curve
             if (type(c) == Part.Circle):
-                return filter(lambda pt: (pt - c.Center).Length <= c.Radius, pts)
+                return filter(lambda pt: (pt - c.Center).Length <= c.Radius or PathGeom.isRoughly((pt - c.Center).Length, c.Radius), pts)
         print("==== we got a %s" % face.Surface)
 
     def isPointOnEdge(self, pt, edge):
@@ -529,18 +446,26 @@ class Tag:
             return True
         if PathGeom.isRoughly(edge.FirstParameter, param) or PathGeom.isRoughly(edge.LastParameter, param):
             return True
-        print("-------- X %.2f <= %.2f <=%.2f   (%.2f, %.2f, %.2f)" % (edge.FirstParameter, param, edge.LastParameter, pt.x, pt.y, pt.z))
+        print("-------- X %.2f <= %.2f <=%.2f   (%.2f, %.2f, %.2f)   %.2f:%.2f" % (edge.FirstParameter, param, edge.LastParameter, pt.x, pt.y, pt.z, edge.Curve.parameter(edge.valueAt(edge.FirstParameter)), edge.Curve.parameter(edge.valueAt(edge.LastParameter))))
+        p1 = edge.Vertexes[0]
+        f1 = edge.Curve.parameter(FreeCAD.Vector(p1.X, p1.Y, p1.Z))
+        p2 = edge.Vertexes[1]
+        f2 = edge.Curve.parameter(FreeCAD.Vector(p2.X, p2.Y, p2.Z))
+        print("--------   (%.2f, %.2f, %.2f):%.2f (%.2f, %.2f, %.2f):%.2f" % (p1.X, p1.Y, p1.Z, f1, p2.X, p2.Y, p2.Z, f2))
+        print("--------   %s %s" % (edge.Placement, edge.Orientation))
         return False
 
 
     def nextIntersectionClosestTo(self, edge, solid, refPt):
         ef = edge.valueAt(edge.FirstParameter)
+        em = edge.valueAt((edge.FirstParameter+edge.LastParameter)/2)
         el = edge.valueAt(edge.LastParameter)
-        print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
+        print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, em.x, em.y, em.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
 
         pts = []
         for index, face in enumerate(solid.Faces):
             i = edge.Curve.intersect(face.Surface)[0]
+            print i
             ps = self.filterIntersections([FreeCAD.Vector(p.X, p.Y, p.Z) for p in i], face)
             pts.extend(filter(lambda pt: self.isPointOnEdge(pt, edge), ps))
             if len(ps)  != len(filter(lambda pt: self.isPointOnEdge(pt, edge), ps)):
@@ -578,7 +503,7 @@ class Tag:
                         tail = edge
                     else:
                         print("---- split edge")
-                        e,tail = self.splitEdgeAt(edge, i)
+                        e,tail = PathGeom.splitEdgeAt(edge, i)
                         inters.edges.append(e)
                     return inters.intersect(tail)
                 else:
@@ -821,13 +746,13 @@ class ObjectDressup:
                     lastTag = sameTag
                     t = 1
                     for e in inters.edges:
-                        commands.append(pathCommandForEdge(e))
+                        commands.append(PathGeom.cmdForEdge(e))
                 inters = None
 
             if t >= len(tags):
                 # gone through all tags, consume edge and move on
                 if edge:
-                    commands.append(pathCommandForEdge(edge))
+                    commands.append(PathGeom.cmdForEdge(edge))
                 edge = None
                 t = 0
 

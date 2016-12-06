@@ -538,7 +538,7 @@ class TestTag03TrapezoidTag(PathTestBase): # =============
         self.assertCurve(s.edges[1], pi, Vector(0.221698, -2.093992, 1.897543), pj)
         self.assertCurve(s.edges[2], pj, Vector(0, 0, 3), pk)
         self.assertCurve(s.edges[3], pk, Vector(0.182776, 1.903182, 2.090060), pl)
-        self.assertCurve(s.tail, pl, Vector(3.996548, +7.997409, 1.590060), p2)
+        self.assertCurve(s.tail,     pl, Vector(3.996548, +7.997409, 1.590060), p2)
 
 
 class TestTag04TriangularTag(PathTestBase): # ========================
@@ -652,7 +652,7 @@ class TestTag04TriangularTag(PathTestBase): # ========================
         edge = PathGeom.edgeForCmd(Path.Command('G2', {'X': p2.x, 'Y': p2.y, 'Z': p2.z, 'J': 10, 'K': 1}), p1)
 
         pi = Vector(0.513574, -3.163498, 0.795085)
-        pj = Vector(0.000001, 0, 4)
+        pj = Vector(0, 0, 4)
         pk = Vector(0.397586, +2.791711, 1.180119)
 
         s = tag.intersect(edge)
