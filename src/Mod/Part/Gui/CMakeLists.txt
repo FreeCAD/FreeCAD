@@ -47,6 +47,7 @@ set(PartGui_MOC_HDRS
     TaskThickness.h
     TaskDimension.h
     TaskCheckGeometry.h
+    TaskAttacher.h
 )
 fc_wrap_cpp(PartGui_MOC_SRCS ${PartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartGui_MOC_SRCS})
@@ -76,6 +77,7 @@ set(PartGui_UIC_SRCS
     TaskLoft.ui
     TaskOffset.ui
     TaskSweep.ui
+    TaskAttacher.ui
 )
 qt4_wrap_ui(PartGui_UIC_HDRS ${PartGui_UIC_SRCS})
 
@@ -219,6 +221,8 @@ SET(PartGui_SRCS
     TaskDimension.h
     TaskCheckGeometry.cpp
     TaskCheckGeometry.h
+    TaskAttacher.h 
+    TaskAttacher.cpp 
 )
 
 SET(PartGui_Scripts
