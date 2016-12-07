@@ -88,13 +88,10 @@ TaskDatumParameters::~TaskDatumParameters()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgDatumParameters::TaskDlgDatumParameters(ViewProviderDatum *ViewProvider)
-    : TaskDlgAttacher(ViewProvider)
+    : TaskDlgAttacher(ViewProvider, false)
 {
     assert(ViewProvider);
     parameter  = new TaskDatumParameters(ViewProvider);
-
-    Content.front()->deleteLater();
-    Content.clear();
     Content.push_back(parameter);
 }
 
