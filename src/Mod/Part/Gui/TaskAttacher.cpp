@@ -895,13 +895,15 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider)
+TaskDlgAttacher::TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox)
     : TaskDialog(),ViewProvider(ViewProvider)
 {
     assert(ViewProvider);
-    parameter  = new TaskAttacher(ViewProvider);
-
-    Content.push_back(parameter);
+    
+    if(createBox) {
+        parameter  = new TaskAttacher(ViewProvider);
+        Content.push_back(parameter);
+    }
 }
 
 TaskDlgAttacher::~TaskDlgAttacher()
