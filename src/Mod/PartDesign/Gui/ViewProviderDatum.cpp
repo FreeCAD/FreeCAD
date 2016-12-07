@@ -236,7 +236,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
         // the task panel
         Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
         TaskDlgDatumParameters *datumDlg = qobject_cast<TaskDlgDatumParameters *>(dlg);
-        if (datumDlg && datumDlg->getDatumView() != this)
+        if (datumDlg && datumDlg->getViewProvider() != this)
             datumDlg = 0; // another datum feature left open its task panel
         if (dlg && !datumDlg) {
             QMessageBox msgBox;

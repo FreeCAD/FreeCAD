@@ -76,7 +76,6 @@ set(PartDesignGui_UIC_SRCS
     TaskPolarPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
-    TaskDatumParameters.ui
     TaskShapeBinder.ui
     TaskPrimitiveParameters.ui
     TaskPipeParameters.ui
@@ -207,7 +206,6 @@ SET(PartDesignGuiTaskDlgs_SRCS
     #TaskHoleParameters.ui
     #TaskHoleParameters.cpp
     #TaskHoleParameters.h
-    TaskDatumParameters.ui
     TaskDatumParameters.cpp
     TaskDatumParameters.h
     TaskShapeBinder.ui
