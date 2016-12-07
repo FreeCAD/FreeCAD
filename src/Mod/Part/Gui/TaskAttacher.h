@@ -139,7 +139,7 @@ class TaskDlgAttacher : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider);
+    TaskDlgAttacher(Gui::ViewProviderDocumentObject *ViewProvider, bool createBox = true);
     ~TaskDlgAttacher();
 
     Gui::ViewProviderDocumentObject* getViewProvider() const
