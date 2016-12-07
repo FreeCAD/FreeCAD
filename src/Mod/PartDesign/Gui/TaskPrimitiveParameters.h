@@ -120,8 +120,8 @@ protected:
     virtual bool reject();
 
 private:
-    TaskBoxPrimitives*   primitive;
-    TaskDatumParameters* parameter;
+    TaskBoxPrimitives*     primitive;
+    PartGui::TaskAttacher* parameter;
     ViewProviderPrimitive* vp_prm;
 };
 

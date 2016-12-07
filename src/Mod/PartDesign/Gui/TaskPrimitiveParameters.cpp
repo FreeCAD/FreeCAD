@@ -602,11 +602,11 @@ TaskPrimitiveParameters::TaskPrimitiveParameters(ViewProviderPrimitive* Primitiv
     
     assert(PrimitiveView);
       
-    //parameter  = new TaskDatumParameters(vp);
-    //Content.push_back(parameter);
-
     primitive = new TaskBoxPrimitives(PrimitiveView);
     Content.push_back(primitive);
+    
+    parameter  = new PartGui::TaskAttacher(PrimitiveView);
+    Content.push_back(parameter);
 }
 
 TaskPrimitiveParameters::~TaskPrimitiveParameters()
