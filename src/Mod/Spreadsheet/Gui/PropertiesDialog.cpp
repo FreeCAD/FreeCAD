@@ -48,12 +48,16 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     assert(ranges.size() > 0);
     Range range = ranges[0];
 
-    sheet->getNewCell(*range)->getForeground(foregroundColor);
-    sheet->getCell(*range)->getBackground(backgroundColor);
-    sheet->getCell(*range)->getAlignment(alignment);
-    sheet->getCell(*range)->getStyle(style);
-    sheet->getCell(*range)->getDisplayUnit(displayUnit);
-    sheet->getCell(*range)->getAlias(alias);
+    Cell * cell = sheet->getNewCell(*range);
+
+    assert(cell != 0);
+
+    (void)cell->getForeground(foregroundColor);
+    (void)cell->getBackground(backgroundColor);
+    (void)cell->getAlignment(alignment);
+    (void)cell->getStyle(style);
+    (void)cell->getDisplayUnit(displayUnit);
+    (void)cell->getAlias(alias);
 
     orgForegroundColor = foregroundColor;
     orgBackgroundColor = backgroundColor;
