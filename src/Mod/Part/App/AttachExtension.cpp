@@ -134,10 +134,8 @@ short int AttachExtension::extensionMustExecute(void) {
 
 App::DocumentObjectExecReturn *AttachExtension::extensionExecute()
 {
-    Base::Console().Message("Execute Extension");
     if(this->isTouched_Mapping()) {
         try{
-            Base::Console().Message("Call position by support");
             positionBySupport();
         } catch (Base::Exception &e) {
             return new App::DocumentObjectExecReturn(e.what());
