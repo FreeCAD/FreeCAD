@@ -46,7 +46,7 @@ namespace PartGui {
 
 class Ui_TaskAttacher;
 
-class TaskAttacher : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class PartGuiExport TaskAttacher : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -134,7 +134,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgAttacher : public Gui::TaskView::TaskDialog
+class PartGuiExport TaskDlgAttacher : public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
