@@ -379,14 +379,20 @@ void CmdTechDrawNewDiameterDimension::activated(int iMsg)
                                                    QObject::tr(edgeMsg.str().c_str()));
         return;
     }
-
+    
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Dimensions");
+    std::string diamSym = hGrp->GetASCII("DiameterSymbol","\xe2\x8c\x80");
+    const char * format = "%value%";
+    char formatSpec[80];
+    std::strcpy (formatSpec,diamSym.c_str());
+    std::strcat (formatSpec,format);
+    
     openCommand("Create Dimension");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewDimension','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Type = '%s'",FeatName.c_str()
                                                        ,"Diameter");
-
-    const char * format = "\xe2\x8c\x80%value%";
-    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),format);
+    doCommand(Doc, "App.activeDocument().%s.FormatSpec = '%s'", FeatName.c_str(),formatSpec);
 
     dim = dynamic_cast<TechDraw::DrawViewDimension *>(getDocument()->getObject(FeatName.c_str()));
     if (!dim) {
