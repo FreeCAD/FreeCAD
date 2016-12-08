@@ -198,7 +198,7 @@ void TaskProjGroup::onResetClicked(void)
         setUiPrimary();
         multiView->makeInitialMap(front);
         multiView->updateSecondaryDirs();
-        multiView->dumpMap();
+        //multiView->dumpMap();
         Gui::Command::updateActive();
     }
 }
