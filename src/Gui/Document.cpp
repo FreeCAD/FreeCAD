@@ -1479,17 +1479,17 @@ void Document::handleChildren3D(ViewProvider* viewProvider)
         }
     } else if (viewProvider && viewProvider->isDerivedFrom(ViewProviderDocumentObjectGroup::getClassTypeId())) {
 
-        ViewProviderDocumentObject* vp = static_cast<ViewProviderDocumentObject *>(viewProvider);
-        auto* ext = vp->getObject()->getExtensionByType<App::GroupExtension>();
-        std::vector<App::DocumentObject*> children = ext->getObjects();
+        if (viewProvider->hasExtension(ViewProviderDocumentObjectGroup::getExtensionClassTypeId())) {
+            std::vector<App::DocumentObject*> children = viewProvider->claimChildren();
 
-        for (auto& child : children) {
-            ViewProvider* ChildViewProvider = getViewProvider(child);
-            if (ChildViewProvider) {
-                for (BaseView* view : d->baseViews) {
-                    View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
-                    if (activeView && !activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
-                        activeView->getViewer()->addViewProvider(ChildViewProvider);
+            for (auto& child : children) {
+                ViewProvider* ChildViewProvider = getViewProvider(child);
+                if (ChildViewProvider) {
+                    for (BaseView* view : d->baseViews) {
+                        View3DInventor *activeView = dynamic_cast<View3DInventor *>(view);
+                        if (activeView && !activeView->getViewer()->hasViewProvider(ChildViewProvider)) {
+                            activeView->getViewer()->addViewProvider(ChildViewProvider);
+                        }
                     }
                 }
             }
