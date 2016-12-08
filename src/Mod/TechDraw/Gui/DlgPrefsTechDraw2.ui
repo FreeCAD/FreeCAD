@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>384</height>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
      <x>10</x>
      <y>20</y>
      <width>501</width>
-     <height>141</height>
+     <height>161</height>
     </rect>
    </property>
    <property name="title">
@@ -31,7 +31,7 @@
       <x>20</x>
       <y>30</y>
       <width>471</width>
-      <height>90</height>
+      <height>125</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout" columnstretch="1,2,1">
@@ -108,6 +108,34 @@
        </property>
       </widget>
      </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Diameter Symbol</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="2">
+      <widget class="Gui::PrefLineEdit" name="leDiameter">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>⌀</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>DiameterSymbol</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>/Mod/TechDraw/Dimensions</cstring>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -115,7 +143,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>160</y>
+     <y>190</y>
      <width>501</width>
      <height>201</height>
     </rect>
@@ -344,6 +372,11 @@
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefLineEdit</class>
+   <extends>QLineEdit</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
