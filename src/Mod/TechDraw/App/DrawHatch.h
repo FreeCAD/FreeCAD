@@ -44,6 +44,7 @@ public:
     App::PropertyLinkSub     Source;                                   //the dvp & face this hatch belongs to
     App::PropertyFile        HatchPattern;
     App::PropertyColor       HatchColor;
+    App::PropertyFloat       HatchScale;
 
     //short mustExecute() const;
 

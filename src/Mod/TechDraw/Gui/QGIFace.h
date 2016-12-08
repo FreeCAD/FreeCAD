@@ -65,6 +65,7 @@ public:
     void setPath(const QPainterPath & path);
     void buildHatch(void);
     void setHatchColor(std::string c);
+    void setHatchScale(double s);
     void setDrawEdges(bool b);
     void toggleSvg(bool b);
 
@@ -77,6 +78,7 @@ protected:
     QGCustomSvg *m_svg;
     QByteArray m_svgXML;
     std::string m_svgCol;
+    double m_svgScale;
 
 private:
     QBrush m_brush;
