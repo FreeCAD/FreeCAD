@@ -156,7 +156,6 @@ QGIViewDimension::QGIViewDimension() :
     //centerMark = new QGICMark();
     //addToGroup(centerMark);
 
-
     // connecting the needed slots and signals
     QObject::connect(
         datumLabel, SIGNAL(dragging()),
@@ -188,7 +187,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension *obj)
     setViewFeature(static_cast<TechDraw::DrawView *>(obj));
 
     // Set the QGIGroup Properties based on the DrawView
-    float x = obj->X.getValue();
+    float x = obj->X.getValue();               //(0,0)?
     float y = obj->Y.getValue();
 
     datumLabel->setPosFromCenter(x, y);
@@ -1019,14 +1018,15 @@ void QGIViewDimension::draw()
 
                 double labelangle = atan2(-labelVec.y, labelVec.x);
 
-                double startangle = atan2(dir1.y,dir1.x);
-                double range      = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
-                                           dir1.x*dir2.x+dir1.y*dir2.y);
+                double startangle = atan2(dir1.y,dir1.x);                       //whichever edge was clicked first
+
+                double range      = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,         //atan2(dir1.cross(dir2), dir1.dot(dir2)) =
+                                           dir1.x*dir2.x+dir1.y*dir2.y);        // angle between dir1,dir2
 
                 double endangle = startangle + range;
 
-                // Obtain the Label Position and measure the length between intersection
-                Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);
+                // Obtain the Label Position
+                Base::Vector3d lblCenter(datumLabel->X(), datumLabel->Y(), 0);   //(0,0) at creation
 
                 float bbX  = datumLabel->boundingRect().width();
                 float bbY  = datumLabel->boundingRect().height();
@@ -1045,6 +1045,55 @@ void QGIViewDimension::draw()
                 // add an offset from the ends (add 1mm from end)
                 p1 += (p1-p0).Normalize() * 5.;
                 p2 += (p2-p0).Normalize() * 5.;
+
+                double l = labelangle;
+                double s = startangle;
+                double e = endangle;
+
+                //map angles onto [0,2PI]
+                if (l < 0.0) {
+                    l += 2.0 * M_PI;
+                }
+                if (s < 0.0) {
+                    s += 2.0 * M_PI;
+                }
+                if (e < 0.0) {
+                    e += 2.0 * M_PI;
+                }
+                double low = std::min(s,e);
+                double high = std::max(s,e);
+                double offset;
+                offset = -low;                         //rotate low number to 0*
+                //double offLow  = low + offset;         //sb always zero
+                double offHigh = high + offset;
+                double offLabel = l + offset; 
+                if (offLabel  < 0.0) {                 //make sure offLabel is [0,2PI]
+                    offLabel += 2.0 * M_PI;
+                }
+
+                //where to draw the arc
+                double arcDir;
+                double arcRange;
+                if ((offLabel <= offHigh) &&
+                     (offLabel >= 0.0)) {
+                      arcRange = high - low;
+                      arcDir = 1.0;
+                } else {   //offhigh <= offLabel <= 2PI
+                      arcRange =  2.0 * M_PI - (high - low);
+                      arcDir = -1.0;
+                }
+
+                //flip the arrow heads?
+                bool isOutside = true;
+                if (offHigh <= M_PI) {                   // end is in top half
+                    if  (offLabel <= offHigh ) {  //label between 0 and offhigh 
+                          isOutside = false;
+                    }
+                } else {         //offHigh > M_PI        //en is in bottom half
+                    if (offLabel >= offHigh) {   //label between offHigh and 0/360
+                          isOutside = false;
+                    }
+                }
 
                 Base::Vector3d ar1Pos = p0;
                 Base::Vector3d ar2Pos = p0;
@@ -1068,72 +1117,9 @@ void QGIViewDimension::draw()
                     path.lineTo(p2.x, p2.y);
                 }
 
-
-                bool isOutside = true;
-
-                // TODO find a better solution for this. Addmitedely not tidy
-                // ###############
-                // Treat zero as positive to be consistent for horizontal lines
-                if(std::abs(startangle) < FLT_EPSILON)
-                    startangle = 0;
-
-                 if(std::abs(endangle) < FLT_EPSILON)
-                    endangle = 0;
-
-                if(startangle >= 0 && endangle >= 0) {
-                    // Both are in positive side
-                  double langle = labelangle;
-                  if(labelangle < 0)
-                    langle += M_PI * 2;
-                    if(endangle - startangle > 0) {
-                        if(langle > startangle && langle < endangle)
-                            isOutside = false;
-                    } else {
-                        if(langle < startangle && langle > endangle)
-                            isOutside = false;
-                    }
-                } else if(startangle < 0 && endangle < 0) {
-                    // Both are in positive side
-                   double langle = labelangle;
-                    if(labelangle > 0)
-                        langle -= M_PI * 2;
-                    if(endangle - startangle < 0) {
-                        if(langle > endangle && langle < startangle) // clockwise
-                            isOutside = false;
-                    } else {
-                        if(langle < endangle && langle > startangle) // anticlockwise
-                            isOutside = false;
-                    }
-                } else if(startangle >= 0 && endangle < 0) {
-                    if(labelangle < startangle && labelangle > endangle) // clockwise
-                        isOutside = false;
-
-                } else if(startangle < 0 && endangle >= 0) {
-                   // Both are in positive side
-
-                    if(labelangle > startangle && labelangle < endangle) // clockwise
-                        isOutside = false;
-                }
-
                 QRectF arcRect(p0.x - length, p0.y - length, 2. * length, 2. * length);
-                path.arcMoveTo(arcRect, endangle * 180 / M_PI);
-                if(isOutside) {
-                    if(labelangle > endangle)
-                    {
-                        path.arcTo(arcRect, endangle * 180 / M_PI, (labelangle  - endangle) * 180 / M_PI); // chosen a nominal value for 10 degrees
-                        path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                        path.arcTo(arcRect, startangle * 180 / M_PI, -10);
-                    } else {
-                        path.arcTo(arcRect, endangle * 180 / M_PI, 10); // chosen a nominal value for 10 degrees
-                        path.arcMoveTo(arcRect,startangle * 180 / M_PI);
-                        path.arcTo(arcRect, startangle * 180 / M_PI, (labelangle - startangle) * 180 / M_PI);
-                    }
-
-
-                } else {
-                    path.arcTo(arcRect, endangle * 180 / M_PI, -range * 180 / M_PI);
-                }
-
+                path.arcMoveTo(arcRect, low * 180 / M_PI);
+                path.arcTo(arcRect, low * 180 / M_PI, arcDir * arcRange * 180 / M_PI);
                 dimLines->setPath(path);
 
                 aHead1->flip(true);
@@ -1151,7 +1137,7 @@ void QGIViewDimension::draw()
                 aHead1->setPos(ar1Pos.x,ar1Pos.y );
                 aHead2->setPos(ar2Pos.x,ar2Pos.y );
 
-                float ar1angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;
+                float ar1angle = atan2(-norm1.y, -norm1.x) * 180 / M_PI;  //TODO: arrow dir sb tangent to arc.
                 float ar2angle = atan2(norm2.y, norm2.x) * 180 / M_PI;
 
                 if(isOutside) {
@@ -1163,19 +1149,17 @@ void QGIViewDimension::draw()
                 }
 
                 // Set the angle of the datum text
-
                 Base::Vector3d labelNorm(-labelVec.y, labelVec.x, 0.);
-                double lAngle = atan2(labelNorm.y, labelNorm.x);
-
-                if (lAngle > M_PI_2+M_PI/12) {
-                    lAngle -= M_PI;
-                } else if (lAngle <= -M_PI_2+M_PI/12) {
-                    lAngle += M_PI;
+                double angLabelNorm = atan2(labelNorm.y, labelNorm.x);
+                //if label moves above/below horizontal, flip it right side up
+                if (angLabelNorm > M_PI_2-M_PI/12) {    // label norm angle > 90 - 15 = 85
+                    angLabelNorm -= M_PI;               // angLabelNorm - 180   Flip
+                } else if (angLabelNorm <= -M_PI_2-M_PI/12) {  // <  -90 - 15 = - 105
+                    angLabelNorm += M_PI;               // angLabelNorm + 180   Flip
                 }
 
                 datumLabel->setTransformOriginPoint(bbX / 2., bbY /2.);
-
-                datumLabel->setRotation(lAngle * 180 / M_PI);
+                datumLabel->setRotation(angLabelNorm * 180 / M_PI);
 
             } else {
                 throw Base::Exception("FVD::draw - Invalid reference for dimension type (4)");
