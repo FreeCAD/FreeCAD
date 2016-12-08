@@ -65,6 +65,7 @@ public:
     ~TaskDlgDatumParameters();
     
     virtual bool accept();
+    virtual bool reject();
 };
 
 } //namespace PartDesignGui
