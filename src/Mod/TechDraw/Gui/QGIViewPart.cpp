@@ -379,6 +379,7 @@ void QGIViewPart::drawViewPart()
                 if (!fHatch->HatchPattern.isEmpty()) {
                     App::Color hColor = fHatch->HatchColor.getValue();
                     newFace->setHatchColor(hColor.asCSSString());
+                    newFace->setHatchScale(fHatch->HatchScale.getValue());
                     newFace->setHatch(fHatch->HatchPattern.getValue());
                 }
             }

@@ -73,6 +73,7 @@ QGIFace::QGIFace(int index) :
     m_rect->setParentItem(this);
 
     m_svgCol = SVGCOLDEFAULT;
+    m_svgScale = 1.0;
 }
 
 QGIFace::~QGIFace()
@@ -149,14 +150,16 @@ void QGIFace::setPath(const QPainterPath & path)
 void QGIFace::buildHatch()
 {
     m_styleNormal = Qt::NoBrush;
+    double wTile = SVGSIZEW * m_svgScale;
+    double hTile = SVGSIZEH * m_svgScale;
     double w = boundingRect().width();
     double h = boundingRect().height();
     QRectF r = boundingRect();
     QPointF fCenter = r.center();
-    double nw = ceil(w / SVGSIZEW);
-    double nh = ceil(h / SVGSIZEH);
-    w = nw * SVGSIZEW;
-    h = nh * SVGSIZEW;
+    double nw = ceil(w / wTile);
+    double nh = ceil(h / hTile);
+    w = nw * wTile;
+    h = nh * hTile;
     m_rect->setRect(0.,0.,w,-h);
     m_rect->centerAt(fCenter);
     r = m_rect->rect();
@@ -167,9 +170,10 @@ void QGIFace::buildHatch()
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
+            tile->setScale(m_svgScale);
             if (tile->load(&colorXML)) {
                 tile->setParentItem(m_rect);
-                tile->setPos(iw*SVGSIZEW,-h + ih*SVGSIZEH);
+                tile->setPos(iw*wTile,-h + ih*hTile);
             }
         }
     }
@@ -181,6 +185,11 @@ void QGIFace::buildHatch()
 void QGIFace::setHatchColor(std::string c)
 {
     m_svgCol = c;
+}
+
+void QGIFace::setHatchScale(double s)
+{
+    m_svgScale = s;
 }
 
 //QtSvg does not handle clipping, so we must be able to turn the hatching on/off
