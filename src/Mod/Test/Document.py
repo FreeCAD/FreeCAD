@@ -196,7 +196,7 @@ class DocumentBasicCases(unittest.TestCase):
       self.failUnless(len(grp.Group) == 1)
       self.failUnless(grp.Group[0] == obj)
     except:
-      self.failUnless(True)
+      self.failUnless(False)
       
     #test if the method override works
     class SpecialGroup():
@@ -261,6 +261,24 @@ class DocumentBasicCases(unittest.TestCase):
     #closing doc
     FreeCAD.closeDocument("CreateTest")
 
+# class must be defined in global scope to allow it to be reloaded on document open
+class SaveRestoreSpecialGroup():
+    def __init__(self, obj):
+        obj.addExtension("App::GroupExtensionPython", self)
+        obj.Proxy = self
+        
+    def allowObject(self, obj):
+        return False;
+
+# class must be defined in global scope to allow it to be reloaded on document open    
+class SaveRestoreSpecialGroupViewProvider():
+    def __init__(self, obj):
+        obj.addExtension("Gui::ViewProviderGroupExtensionPython", self)
+        obj.Proxy = self
+        
+    def testFunction(self):
+        pass
+        
 class DocumentSaveRestoreCases(unittest.TestCase):
   def setUp(self):
     self.Doc = FreeCAD.newDocument("SaveRestoreTests")
@@ -318,6 +336,40 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     except:
         # Okay, no document open
         self.failUnless(True)
+        
+  def testExtensionSaveRestore(self):
+    # saving and restoring
+    SaveName = self.TempPath + os.sep + "SaveRestoreExtensions.FCStd"
+    Doc = FreeCAD.newDocument("SaveRestoreExtensions")
+    #we try to create a normal python object and add a extension to it 
+    obj  = Doc.addObject("App::DocumentObject", "Obj") 
+    grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
+    grp2 = Doc.addObject("App::FeaturePython", "Extension_2") 
+    
+    grp1.addExtension("App::GroupExtensionPython", None)
+    SaveRestoreSpecialGroup(grp2)
+    if FreeCAD.GuiUp:
+        SaveRestoreSpecialGroupViewProvider(grp2.ViewObject)
+    grp2.Group = [obj]
+    
+    Doc.saveAs(SaveName)
+    FreeCAD.closeDocument("SaveRestoreExtensions")
+    Doc = FreeCAD.open(SaveName)
+    
+    self.failUnless(Doc.Extension_1.hasExtension("App::GroupExtension"))
+    self.failUnless(Doc.Extension_2.hasExtension("App::GroupExtension"))
+    self.failUnless(Doc.Extension_1.ExtensionProxy is None)
+    self.failUnless(Doc.Extension_2.ExtensionProxy is not None)
+    self.failUnless(Doc.Extension_2.Group[0] is Doc.Obj)
+    self.failUnless(hasattr(Doc.Extension_2.Proxy, 'allowObject'))
+    self.failUnless(hasattr(Doc.Extension_2.ExtensionProxy, 'allowObject'))
+
+    if FreeCAD.GuiUp:
+      self.failUnless(Doc.Extension_2.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
+      self.failUnless(hasattr(Doc.Extension_2.ViewObject.Proxy, 'testFunction'))
+      self.failUnless(hasattr(Doc.Extension_2.ViewObject.ExtensionProxy, 'testFunction'))
+
+    FreeCAD.closeDocument("SaveRestoreExtensions")
 
   def tearDown(self):
     #closing doc

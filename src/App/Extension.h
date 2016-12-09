@@ -253,6 +253,12 @@ public:
     virtual const char* extensionGetPropertyDocumentation(const char *name) const;
     //@}
     
+    /** @name Persistance */
+    //@{
+    virtual void extensionSave(Base::Writer&) const {};
+    virtual void extensionRestore(Base::XMLReader&) {};
+    //@}
+    
     /** @name TypeHandling */
     //@{
     bool extensionIsDerivedFrom(const Base::Type type) const {return getExtensionTypeId().isDerivedFrom(type);}
