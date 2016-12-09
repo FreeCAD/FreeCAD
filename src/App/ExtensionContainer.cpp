@@ -87,7 +87,7 @@ bool ExtensionContainer::hasExtension(const char* name) const {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
-        if(strcmp(entry.second->name(), name) == 0)
+        if(strcmp(entry.second->name().c_str(), name) == 0)
             return true;
     }
     return false;
@@ -114,7 +114,7 @@ Extension* ExtensionContainer::getExtension(const char* name) {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
-        if(strcmp(entry.second->name(), name) == 0)
+        if(strcmp(entry.second->name().c_str(), name) == 0)
             return entry.second;
     }
     return nullptr;
