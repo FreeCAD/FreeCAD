@@ -46,6 +46,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     cbShowUnits->onSave();
     dsbFontSize->onSave();
     colDimColor->onSave();
+    leDiameter->onSave();
     pcbMatting->onSave();
     pcbCenterStyle->onSave();
     colCenterLine->onSave();
@@ -58,6 +59,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     cbShowUnits->onRestore();
     dsbFontSize->onRestore();
     colDimColor->onRestore();
+    leDiameter->onRestore();
     pcbMatting->onRestore();
     pcbCenterStyle->onRestore();
     colCenterLine->onRestore();
