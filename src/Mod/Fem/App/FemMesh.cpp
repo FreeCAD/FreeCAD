@@ -126,8 +126,16 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 {
     _Mtrx = mesh._Mtrx;
 
+#if 1
+    // create a temporary file
+    Base::FileInfo fi(App::Application::getTempFileName().c_str());
+    mesh.myMesh->ExportUNV(fi.filePath().c_str());
+    this->myMesh->UNVToMesh(fi.filePath().c_str());
+    fi.deleteFile();
+#else
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
+    // Some further information is still not copied: http://forum.freecadweb.org/viewtopic.php?f=18&t=18982#p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (;aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -353,6 +361,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
             }
         }
     }
+#endif
 }
 
 const SMESH_Mesh* FemMesh::getSMesh() const
