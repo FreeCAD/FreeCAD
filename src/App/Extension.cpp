@@ -105,7 +105,7 @@ PyObject* Extension::getExtensionPyObject(void) {
     return Py::new_reference_to(ExtensionPythonObject);
 }
 
-const char* Extension::name() {
+std::string Extension::name() const {
     
     if(m_extensionType.isBad())
         throw Base::Exception("Extension::setExtendedObject: Extension type not set");
@@ -114,9 +114,9 @@ const char* Extension::name() {
     std::string::size_type pos = temp.find_last_of(":");
 
     if(pos != std::string::npos)
-        return temp.substr(pos+1).c_str();
+        return temp.substr(pos+1);
     else
-        return std::string().c_str();
+        return std::string();
 }
 
 
