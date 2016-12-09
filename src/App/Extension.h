@@ -217,13 +217,13 @@ public:
 
     void initExtension(App::ExtensionContainer* obj);
     
-    App::ExtensionContainer*       getExtendedContainer() {return m_base;};
-    const App::ExtensionContainer* getExtendedContainer() const {return m_base;};
+    App::ExtensionContainer*       getExtendedContainer() {return m_base;}
+    const App::ExtensionContainer* getExtendedContainer() const {return m_base;}
  
     //get extension name without namespace
-    const char* name();
+    std::string name() const;
  
-    bool isPythonExtension() {return m_isPythonExtension;};
+    bool isPythonExtension() {return m_isPythonExtension;}
   
     virtual PyObject* getExtensionPyObject(void);
   
@@ -258,10 +258,10 @@ public:
     bool extensionIsDerivedFrom(const Base::Type type) const {return getExtensionTypeId().isDerivedFrom(type);}
 protected:
     static void initExtensionSubclass(Base::Type &toInit,const char* ClassName, const char *ParentName, 
-                             Base::Type::instantiationMethod method=0);
+                                      Base::Type::instantiationMethod method=0);
     //@}
 
-    virtual void extensionOnChanged(const Property* p) {(void)(p);};
+    virtual void extensionOnChanged(const Property* p) {(void)(p);}
     
     friend class App::ExtensionContainer;
 
@@ -376,6 +376,6 @@ typedef ExtensionPythonT<App::Extension> ExtensionPython;
         return res.ptr();\
     };
     
-}; //App
+} //App
 
 #endif // APP_EXTENSION_H
