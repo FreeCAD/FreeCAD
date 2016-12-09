@@ -305,7 +305,7 @@ bool DocumentObject::isTouched() const
 void DocumentObject::Save (Base::Writer &writer) const
 {
     writer.ObjectName = this->getNameInDocument();
-    App::PropertyContainer::Save(writer);
+    App::ExtensionContainer::Save(writer);
 }
 
 /**

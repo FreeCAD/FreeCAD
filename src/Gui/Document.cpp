@@ -898,8 +898,11 @@ void Document::SaveDocFile (Base::Writer &writer) const
         ViewProvider* obj = it->second;
         writer.Stream() << writer.ind() << "<ViewProvider name=\""
                         << doc->getNameInDocument() << "\" "
-                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0)
-                        << "\">" << std::endl;
+                        << "expanded=\"" << (doc->testStatus(App::Expand) ? 1:0) << "\"";
+        if(obj->hasExtensions())
+            writer.Stream() << " Extensions=\"True\"";
+        
+        writer.Stream() << ">" << std::endl;
         obj->Save(writer);
         writer.Stream() << writer.ind() << "</ViewProvider>" << std::endl;
     }

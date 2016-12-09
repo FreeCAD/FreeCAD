@@ -331,6 +331,11 @@ std::string DynamicProperty::encodeAttribute(const std::string& str) const
 
 void DynamicProperty::Save (Base::Writer &writer) const 
 {
+    //extenions must be saved first, as they need to be read and initialised before properties (as 
+    //they have their own properties which they need to handle on restore)
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        static_cast<App::ExtensionContainer*>(this->pc)->saveExtensions(writer);
+    
     std::map<std::string,Property*> Map;
     getPropertyMap(Map);
 
@@ -389,6 +394,10 @@ void DynamicProperty::Save (Base::Writer &writer) const
 
 void DynamicProperty::Restore(Base::XMLReader &reader)
 {
+    //first all extensions must be initialised so that they can handle their properties
+    if(this->pc->isDerivedFrom(App::ExtensionContainer::getClassTypeId()))
+        static_cast<App::ExtensionContainer*>(this->pc)->restoreExtensions(reader);
+    
     reader.readElement("Properties");
     int Cnt = reader.getAttributeAsInteger("Count");
 

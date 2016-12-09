@@ -108,12 +108,12 @@ PyObject* Extension::getExtensionPyObject(void) {
 std::string Extension::name() const {
     
     if(m_extensionType.isBad())
-        throw Base::Exception("Extension::setExtendedObject: Extension type not set");
+        throw Base::Exception("Extension::name: Extension type not set");
     
     std::string temp(m_extensionType.getName());
     std::string::size_type pos = temp.find_last_of(":");
 
-    if(pos != std::string::npos)
+    if(pos != std::string::npos) 
         return temp.substr(pos+1);
     else
         return std::string();

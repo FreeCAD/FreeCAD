@@ -83,11 +83,11 @@ bool ExtensionContainer::hasExtension(Base::Type t) const {
     return true;
 }
 
-bool ExtensionContainer::hasExtension(const char* name) const {
+bool ExtensionContainer::hasExtension(std::string name) const {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
-        if(strcmp(entry.second->name().c_str(), name) == 0)
+        if(entry.second->name() == name)
             return true;
     }
     return false;
@@ -110,11 +110,16 @@ Extension* ExtensionContainer::getExtension(Base::Type t) {
     return result->second;
 }
 
-Extension* ExtensionContainer::getExtension(const char* name) {
+bool ExtensionContainer::hasExtensions() const {
+    
+    return !_extensions.empty();
+}
+
+Extension* ExtensionContainer::getExtension(std::string name) {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
-        if(strcmp(entry.second->name().c_str(), name) == 0)
+        if(entry.second->name() == name)
             return entry.second;
     }
     return nullptr;
@@ -272,4 +277,136 @@ void ExtensionContainer::onChanged(const Property* prop) {
         entry.second->extensionOnChanged(prop);
         
     App::PropertyContainer::onChanged(prop);
+}
+
+void ExtensionContainer::Save(Base::Writer& writer) const {
+
+    //Note: save extensions must be called first to ensure that the extension element is always the 
+    //      very first inside the object element. That is needed as extension eleent works together with 
+    //      an object attribute, and if annother element would be read first the object attributes would be
+    //      cleared.
+    saveExtensions(writer);
+    App::PropertyContainer::Save(writer);
+}
+
+void ExtensionContainer::Restore(Base::XMLReader& reader) {
+    
+    //restore dynamic extensions. 
+    //Note 1: The extension element must be read first, before all other object elements. That is 
+    //        needed as the element works together with an object element attribute, which would be 
+    //        cleared if annother attribute is read first
+    //Note 2: This must happen before the py object of this container is used, as only in the 
+    //        pyobject constructor the extension methods are added to the container.
+    restoreExtensions(reader);
+    App::PropertyContainer::Restore(reader);
+}
+
+void ExtensionContainer::saveExtensions(Base::Writer& writer) const {
+        
+    //we don't save anything if there are no dynamic extensions
+    if(!hasExtensions())
+        return;
+     
+    //save dynamic extensions
+    writer.incInd(); // indentation for 'Extensions'
+    writer.Stream() << writer.ind() << "<Extensions Count=\"" << _extensions.size() << "\">" << std::endl;
+    for(auto entry : _extensions) {
+        
+        auto ext = entry.second;
+        writer.incInd(); // indentation for 'Extension name'
+        writer.Stream() << writer.ind() << "<Extension"
+        << " type=\"" << ext->getExtensionTypeId().getName() <<"\""
+        << " name=\"" << ext->name() << "\">" << std::endl;
+        writer.incInd(); // indentation for the actual Extension
+        try {
+            // We must make sure to handle all exceptions accordingly so that
+            // the project file doesn't get invalidated. In the error case this
+            // means to proceed instead of aborting the write operation.
+            ext->extensionSave(writer);
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("ExtensionContainer::Save: Unknown C++ exception thrown. Try to continue...\n");
+        }
+#endif
+        writer.decInd(); // indentation for the actual extension
+        writer.Stream() << writer.ind() << "</Extension>" << std::endl;    
+        writer.decInd(); // indentation for 'Extension name'
+    }
+    writer.Stream() << writer.ind() << "</Extensions>" << std::endl;
+    writer.decInd();
+}
+
+void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
+
+    //Dynamic extensions are optional (also because they are introduced late into the document format)
+    //and hence it is possible that the element does not exist. As we cannot check for the existance of 
+    //an element a object attribute is set if extensions are available. Here we check that 
+    //attribute, and only if it exists the extensions element will be available.
+    if(!reader.hasAttribute("Extensions"))
+        return;
+     
+    reader.readElement("Extensions");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Extension");
+        const char* Type = reader.getAttribute("type");
+        const char* Name = reader.getAttribute("type");
+        try {
+            App::Extension* ext = getExtension(Name);
+            if(!ext) {
+                //get the extension type asked for
+                Base::Type extension =  Base::Type::fromName(Type);
+                if (extension.isBad() || !extension.isDerivedFrom(App::Extension::getExtensionClassTypeId())) {
+                    std::stringstream str;
+                    str << "No extension found of type '" << Type << "'" << std::ends;
+                    throw Base::Exception(str.str());
+                }
+
+                //register the extension
+                ext = static_cast<App::Extension*>(extension.createInstance());
+                //check if this really is a python extension!
+                if (!ext->isPythonExtension()) {
+                    delete ext;
+                    std::stringstream str;
+                    str << "Extension is not a python addable version: '" << Type << "'" << std::ends;
+                    throw Base::Exception(str.str());
+                }
+
+                ext->initExtension(this);
+            }
+            if (ext && strcmp(ext->getExtensionTypeId().getName(), Type) == 0)
+                ext->extensionRestore(reader);
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("ExtensionContainer::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Extension");
+    }
+    reader.readEndElement("Extensions");
 }

@@ -1153,7 +1153,11 @@ void Document::writeObjects(const std::vector<App::DocumentObject*>& obj,
 
     writer.incInd(); // indentation for 'Object name'
     for (it = obj.begin(); it != obj.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\">" << endl;
+        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getNameInDocument() << "\"";
+        if((*it)->hasExtensions())
+            writer.Stream() << " Extensions=\"True\"";
+            
+        writer.Stream() << ">" << endl;
         (*it)->Save(writer);
         writer.Stream() << writer.ind() << "</Object>" << endl;
     }

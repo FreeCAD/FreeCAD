@@ -29,6 +29,8 @@
 #include "PropertyPythonObject.h"
 #include "DynamicProperty.h"
 #include <CXX/Objects.hxx>
+#include <Base/Writer.h>
+#include <Base/Reader.h>
 
 namespace App {
     
@@ -123,9 +125,10 @@ public:
 
     void registerExtension(Base::Type extension, App::Extension* ext);
     bool hasExtension(Base::Type) const; //returns first of type (or derived from) and throws otherwise
-    bool hasExtension(const char* name) const; //this version does not check derived classes
+    bool hasExtension(std::string name) const; //this version does not check derived classes
+    bool hasExtensions() const;
     App::Extension* getExtension(Base::Type);  //returns first of type (or derived from) and throws otherwise
-    App::Extension* getExtension(const char* name); //this version does not check derived classes
+    App::Extension* getExtension(std::string name); //this version does not check derived classes
     
     //returns first of type (or derived from) and throws otherwise
     template<typename ExtensionT>
@@ -175,6 +178,14 @@ public:
     //@}
     
     virtual void onChanged(const Property*);
+    
+    virtual void Save(Base::Writer& writer) const;
+    virtual void Restore(Base::XMLReader& reader);
+    
+    //those methods save/restore the dynamic extenions without handling properties, which is something
+    //done by the default Save/Restore methods.
+    void saveExtensions(Base::Writer& writer) const;
+    void restoreExtensions(Base::XMLReader& reader);
     
 private:
     //stored extensions
