@@ -39,7 +39,7 @@ EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtensi
 
 OriginGroupExtension::OriginGroupExtension () {
     
-    initExtension(OriginGroupExtension::getExtensionClassTypeId());
+    initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }

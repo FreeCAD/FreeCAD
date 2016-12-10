@@ -38,7 +38,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGeoFeatureGroupExtension, Gui::ViewPr
 
 ViewProviderGeoFeatureGroupExtension::ViewProviderGeoFeatureGroupExtension()
 {
-    initExtension(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
+    initExtensionType(ViewProviderGeoFeatureGroupExtension::getExtensionClassTypeId());
     
     pcGroupChildren = new SoGroup();
     pcGroupChildren->ref();
@@ -84,8 +84,8 @@ std::vector<std::string> ViewProviderGeoFeatureGroupExtension::extensionGetDispl
 void ViewProviderGeoFeatureGroupExtension::extensionUpdateData(const App::Property* prop)
 {
     auto obj = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    if (obj && prop == &obj->Placement) {
-        getExtendedViewProvider()->setTransformation ( obj->Placement.getValue().toMatrix() );
+    if (obj && prop == &obj->placement()) {
+        getExtendedViewProvider()->setTransformation ( obj->placement().getValue().toMatrix() );
     } else {
         ViewProviderGroupExtension::extensionUpdateData ( prop );
     }
