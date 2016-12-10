@@ -130,6 +130,14 @@ class PathGeom:
 
     @classmethod
     def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True):
+        """(edge, flip = False, useHelixForBSpline = True) -> List(Path.Command)
+        Returns a list of Path.Command representing the given edge.
+        If flip is True the edge is considered to be backwards.
+        If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
+        to represent a helix and results in G2 or G3 command. Otherwise edge has
+        no direct Path.Command mapping and will be approximated by straight segments.
+        Approximation is also the approach for edges that are neither straight lines
+        nor arcs (nor helixes)."""
         pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
         params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
@@ -147,7 +155,7 @@ class PathGeom:
                     cmd = 'G3'
                 else:
                     cmd = 'G2'
-                print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
+                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
                 pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
 
                 pa = PathGeom.xy(p1)
@@ -168,7 +176,7 @@ class PathGeom:
                 # at this point pixellation is all we can do
                 commands = []
                 segments = int(math.ceil((deviation / eStraight.Length) * 1000))
-                print("**** pixellation with %d segments" % segments)
+                #print("**** pixellation with %d segments" % segments)
                 dParameter = (edge.LastParameter - edge.FirstParameter) / segments
                 for i in range(0, segments):
                     if flip:
@@ -176,7 +184,7 @@ class PathGeom:
                     else:
                         p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
                     cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
-                    print("***** %s" % cmd)
+                    #print("***** %s" % cmd)
                     commands.append(cmd)
         #print commands
         return commands
@@ -280,8 +288,8 @@ class PathGeom:
         params.update({'Z': z1, 'K': (z1 - z0)/2})
         command = Path.Command(cmd.Name, params)
 
-        print("- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): %.2f:%.2f" % (edge.Vertexes[0].X, edge.Vertexes[0].Y, edge.Vertexes[0].Z, edge.Vertexes[1].X, edge.Vertexes[1].Y, edge.Vertexes[1].Z, z0, z1))
-        print("- %s -> %s" % (cmd, command))
+        #print("- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): %.2f:%.2f" % (edge.Vertexes[0].X, edge.Vertexes[0].Y, edge.Vertexes[0].Z, edge.Vertexes[1].X, edge.Vertexes[1].Y, edge.Vertexes[1].Z, z0, z1))
+        #print("- %s -> %s" % (cmd, command))
 
         return cls.edgeForCmd(command, FreeCAD.Vector(p1.x, p1.y, z0))
 

@@ -29,8 +29,4 @@ from PathTests.TestPathPost import PathPostTestCases
 from PathTests.TestPathGeom import TestPathGeom
 from PathTests.TestPathDepthParams import depthTestCases
 
-from PathTests.TestPathDressupHoldingTags import TestTag01BasicTag
-from PathTests.TestPathDressupHoldingTags import TestTag02SquareTag
-from PathTests.TestPathDressupHoldingTags import TestTag03TrapezoidTag
-from PathTests.TestPathDressupHoldingTags import TestTag04TriangularTag
-
+from PathTests.TestPathDressupHoldingTags import TestHoldingTags
