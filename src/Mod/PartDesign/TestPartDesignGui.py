@@ -74,11 +74,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BoxObj.Height=10.0
         self.BodySource.addFeature(self.BoxObj)
 
-        self.BoxCoords = self.Doc.addObject('PartDesign::CoordinateSystem','CoordinateSystem')
-        self.BodySource.addFeature(self.BoxCoords)
-        self.BoxObj.CoordinateSystem=(self.BoxCoords)
         App.ActiveDocument.recompute()
-        Gui.activeDocument().hide('CoordinateSystem')
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.Sketch.Support = (self.BoxObj, ('Face3',))
@@ -124,7 +120,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
         #assert depenedencies of the Sketch
-        self.assertEqual(len(self.BodySource.Model), 4, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodySource.Model), 3, "Source body feature count is wrong")
         self.assertEqual(len(self.BodyTarget.Model), 0, "Target body feature count is wrong")
 
     def testMoveSingleFeature(self):
