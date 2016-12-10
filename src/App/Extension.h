@@ -255,8 +255,8 @@ public:
     
     /** @name Persistance */
     //@{
-    virtual void extensionSave(Base::Writer&) const {};
-    virtual void extensionRestore(Base::XMLReader&) {};
+    virtual void extensionSave(Base::Writer&) const {}
+    virtual void extensionRestore(Base::XMLReader&) {}
     //@}
     
     /** @name TypeHandling */

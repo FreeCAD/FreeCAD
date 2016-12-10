@@ -113,7 +113,7 @@ std::string Extension::name() const {
     std::string temp(m_extensionType.getName());
     std::string::size_type pos = temp.find_last_of(":");
 
-    if(pos != std::string::npos) 
+    if(pos != std::string::npos)
         return temp.substr(pos+1);
     else
         return std::string();
