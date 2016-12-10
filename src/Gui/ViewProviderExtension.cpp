@@ -37,7 +37,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderExtension, App::Extension)
 
 ViewProviderExtension::ViewProviderExtension() 
 {
-    initExtension(Gui::ViewProviderExtension::getExtensionClassTypeId());
+    initExtensionType(Gui::ViewProviderExtension::getExtensionClassTypeId());
 }
 
 ViewProviderExtension::~ViewProviderExtension()

@@ -38,7 +38,7 @@ EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
 GroupExtension::GroupExtension()
 {
-    initExtension(GroupExtension::getExtensionClassTypeId());
+    initExtensionType(GroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
