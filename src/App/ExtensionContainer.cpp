@@ -83,7 +83,7 @@ bool ExtensionContainer::hasExtension(Base::Type t) const {
     return true;
 }
 
-bool ExtensionContainer::hasExtension(std::string name) const {
+bool ExtensionContainer::hasExtension(const std::string& name) const {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
@@ -115,7 +115,7 @@ bool ExtensionContainer::hasExtensions() const {
     return !_extensions.empty();
 }
 
-Extension* ExtensionContainer::getExtension(std::string name) {
+Extension* ExtensionContainer::getExtension(const std::string& name) {
 
     //and for types derived from it, as they can be cast to the extension
     for(auto entry : _extensions) {            
