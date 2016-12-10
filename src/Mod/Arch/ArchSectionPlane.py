@@ -589,7 +589,11 @@ class _ArchDrawingView:
     def execute(self, obj):
         if hasattr(obj,"Source"):
             if obj.Source:
-                svgbody = getSVG(obj.Source,obj.AlwaysOn,obj.RenderingMode,obj.ShowCut,obj.ShowFill,obj.Scale,obj.LineWidth,obj.FontSize)
+                if hasattr(obj,"AlwaysOn"):
+                    a = obj.AlwaysOn
+                else:
+                    a = False
+                svgbody = getSVG(obj.Source,a,obj.RenderingMode,obj.ShowCut,obj.ShowFill,obj.Scale,obj.LineWidth,obj.FontSize)
                 if svgbody:
                     result = '<g id="' + obj.Name + '"'
                     result += ' transform="'
