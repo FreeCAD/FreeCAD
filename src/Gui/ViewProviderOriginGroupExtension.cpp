@@ -48,7 +48,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderOriginGroupExtension, Gui::ViewProvid
 
 ViewProviderOriginGroupExtension::ViewProviderOriginGroupExtension()
 {
-    initExtension(ViewProviderOriginGroupExtension::getExtensionClassTypeId());
+    initExtensionType(ViewProviderOriginGroupExtension::getExtensionClassTypeId());
 }
 
 ViewProviderOriginGroupExtension::~ViewProviderOriginGroupExtension()

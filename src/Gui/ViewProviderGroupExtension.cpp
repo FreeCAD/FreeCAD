@@ -45,7 +45,7 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExte
 
 ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
 {
-    initExtension(ViewProviderGroupExtension::getExtensionClassTypeId());
+    initExtensionType(ViewProviderGroupExtension::getExtensionClassTypeId());
 }
 
 ViewProviderGroupExtension::~ViewProviderGroupExtension()

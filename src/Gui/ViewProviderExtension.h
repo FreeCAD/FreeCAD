@@ -97,7 +97,7 @@ public:
     
     ViewProviderExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
-        ExtensionT::initExtension(ViewProviderExtensionPythonT::getExtensionClassTypeId());
+        ExtensionT::initExtensionType(ViewProviderExtensionPythonT::getExtensionClassTypeId());
         
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }

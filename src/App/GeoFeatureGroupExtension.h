@@ -41,7 +41,9 @@ class AppExport GeoFeatureGroupExtension : public App::GroupExtension
     EXTENSION_PROPERTY_HEADER(App::GeoFeatureGroupExtension);
 
 public:
-    PropertyPlacement Placement;
+    PropertyPlacement& placement();
+    
+    virtual void initExtension(ExtensionContainer* obj);
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.

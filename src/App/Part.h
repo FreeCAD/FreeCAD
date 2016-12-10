@@ -35,7 +35,7 @@ namespace App
 
 /** Base class of all geometric document objects.
  */
-class AppExport Part : public App::DocumentObject, public App::OriginGroupExtension
+class AppExport Part : public App::GeoFeature, public App::OriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::Part);
 
