@@ -89,13 +89,13 @@ class PathGeom:
         return cls.pointsCoincide(edge.valueAt(edge.FirstParameter), vector) or cls.pointsCoincide(edge.valueAt(edge.LastParameter), vector)
 
     @classmethod
-    def getAngle(cls, vertex):
-        """(vertex)
-        Returns the angle [-pi,pi] of a vertex using the X-axis as the reference.
+    def getAngle(cls, vector):
+        """(vector)
+        Returns the angle [-pi,pi] of a vector using the X-axis as the reference.
         Positive angles for vertexes in the upper hemishpere (positive y values)
         and negative angles for the lower hemishpere."""
-        a = vertex.getAngle(FreeCAD.Vector(1,0,0))
-        if vertex.y < 0:
+        a = vector.getAngle(FreeCAD.Vector(1,0,0))
+        if vector.y < 0:
             return -a
         return a
 
@@ -129,31 +129,57 @@ class PathGeom:
         return Vector(point.x, point.y, 0)
 
     @classmethod
-    def cmdForEdge(cls, edge):
-        pt = edge.valueAt(edge.LastParameter)
+    def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True):
+        pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
         params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
-            command =  Path.Command('G1', params)
+            commands =  [Path.Command('G1', params)]
         else:
-            p1 = edge.valueAt(edge.FirstParameter)
-            p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-            p3 = pt
-            if Side.Left == Side.of(p2 - p1, p3 - p2):
-                cmd = 'G3'
+            if not flip:
+                p1 = edge.valueAt(edge.FirstParameter)
+                p3 = pt
             else:
-                cmd = 'G2'
-            pa = PathGeom.xy(p1)
-            pb = PathGeom.xy(p2)
-            pc = PathGeom.xy(p3)
-            pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
-            #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
-            #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
-            offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
-            #print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
-            params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
-            command = Path.Command(cmd, params)
-        #print command
-        return command
+                p1 = pt
+                p3 = edge.valueAt(edge.LastParameter)
+            p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
+            if type(edge.Curve) == Part.Circle or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+                if Side.Left == Side.of(p2 - p1, p3 - p2):
+                    cmd = 'G3'
+                else:
+                    cmd = 'G2'
+                print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
+                pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
+
+                pa = PathGeom.xy(p1)
+                pb = PathGeom.xy(p2)
+                pc = PathGeom.xy(p3)
+                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pa.x, pa.y, pa.z, pc.x, pc.y, pc.z))
+                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z))
+                offset = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center - p1
+                #print("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
+                params.update({'I': offset.x, 'J': offset.y, 'K': (p3.z - p1.z)/2})
+                commands = [ Path.Command(cmd, params) ]
+            else:
+                eStraight = Part.Edge(Part.LineSegment(p1, p3))
+                esP2 = eStraight.valueAt((eStraight.FirstParameter + eStraight.LastParameter)/2)
+                deviation = (p2 - esP2).Length
+                if cls.isRoughly(deviation, 0):
+                    return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
+                # at this point pixellation is all we can do
+                commands = []
+                segments = int(math.ceil((deviation / eStraight.Length) * 1000))
+                print("**** pixellation with %d segments" % segments)
+                dParameter = (edge.LastParameter - edge.FirstParameter) / segments
+                for i in range(0, segments):
+                    if flip:
+                        p = edge.valueAt(edge.LastParameter - (i + 1) * dParameter)
+                    else:
+                        p = edge.valueAt(edge.FirstParameter + (i + 1) * dParameter)
+                    cmd = Path.Command('G1', {'X': p.x, 'Y': p.y, 'Z': p.z})
+                    print("***** %s" % cmd)
+                    commands.append(cmd)
+        #print commands
+        return commands
 
     @classmethod
     def edgeForCmd(cls, cmd, startPoint):
@@ -249,7 +275,7 @@ class PathGeom:
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt(edge.LastParameter)
 
-        cmd = cls.cmdForEdge(edge)
+        cmd = cls.cmdsForEdge(edge)[0]
         params = cmd.Parameters
         params.update({'Z': z1, 'K': (z1 - z0)/2})
         command = Path.Command(cmd.Name, params)
