@@ -132,6 +132,12 @@ class DraftTest(unittest.TestCase):
         r2 = Draft.offset(r,FreeCAD.Vector(-1,-1,0),copy=True)
         self.failUnless(r2,"Draft Offset failed")
 
+    def testCloneOfPart(self):
+        #test for a bug introduced by changes attachment code
+        box = FreeCAD.ActiveDocument.addObject("Part::Box", "Box")
+        clone = Draft.clone(box)
+        self.failUnless(clone.hasExtension("Part::AttachExtension"))
+
     # modification tools
 
     def tearDown(self):
