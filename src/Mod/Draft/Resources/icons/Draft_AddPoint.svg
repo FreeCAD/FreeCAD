@@ -361,9 +361,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="10.43673"
-     inkscape:cx="33.703508"
-     inkscape:cy="14.311257"
+     inkscape:zoom="11.510205"
+     inkscape:cx="16.144505"
+     inkscape:cy="33.025712"
      inkscape:current-layer="g3906"
      showgrid="true"
      inkscape:document-units="px"
@@ -399,18 +399,6 @@
        empcolor="#ff0000"
        empopacity="0.25098039" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata3617">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -479,4 +467,51 @@
          transform="translate(127.44439,128.22016)" />
     </g>
   </g>
+  <metadata
+     id="metadata3120">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_AddPoint</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_AddPoint.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>plus</rdf:li>
+            <rdf:li>add</rdf:li>
+            <rdf:li>cross</rdf:li>
+            <rdf:li>dot</rdf:li>
+            <rdf:li>line</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A plus sign hovering above a line with a dot at its midpoint</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

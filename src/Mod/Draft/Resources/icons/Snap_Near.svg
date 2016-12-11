@@ -98,17 +98,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11"
-     inkscape:cx="23.31398"
-     inkscape:cy="30.868817"
+     inkscape:zoom="7.2080078"
+     inkscape:cx="19.940635"
+     inkscape:cy="39.80739"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="true"
      inkscape:snap-nodes="false">
@@ -120,18 +120,6 @@
        enabled="true"
        snapvisiblegridlinesonly="true" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata2731">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -147,7 +135,7 @@
          sodipodi:cy="26.587624"
          sodipodi:rx="8.8709764"
          sodipodi:ry="8.8709764"
-         d="m 40.88363,26.587624 a 8.8709764,8.8709764 0 1 1 -17.741953,0 8.8709764,8.8709764 0 1 1 17.741953,0 z"
+         d="m 40.88363,26.587624 c 0,4.899305 -3.971672,8.870976 -8.870977,8.870976 -4.899305,0 -8.870976,-3.971671 -8.870976,-8.870976 0,-4.899305 3.971671,-8.870977 8.870976,-8.870977 4.899305,0 8.870977,3.971672 8.870977,8.870977 z"
          transform="matrix(6.2576679,0,0,6.2576679,19.497793,340.06718)" />
       <rect
          style="color:#000000;fill:url(#linearGradient3021);fill-opacity:1;fill-rule:nonzero;stroke:#042a2a;stroke-width:12.33612484;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -171,8 +159,53 @@
          sodipodi:cy="26.587624"
          sodipodi:rx="8.8709764"
          sodipodi:ry="8.8709764"
-         d="m 40.88363,26.587624 a 8.8709764,8.8709764 0 1 1 -17.741953,0 8.8709764,8.8709764 0 1 1 17.741953,0 z"
+         d="m 40.88363,26.587624 c 0,4.899305 -3.971672,8.870976 -8.870977,8.870976 -4.899305,0 -8.870976,-3.971671 -8.870976,-8.870976 0,-4.899305 3.971671,-8.870977 8.870976,-8.870977 4.899305,0 8.870977,3.971672 8.870977,8.870977 z"
          transform="matrix(4.8670752,0,0,4.867075,64.014356,377.03975)" />
     </g>
   </g>
+  <metadata
+     id="metadata6518">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Snap_Near</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Fri Mar 16 18:29:56 2012 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Snap_Near.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:description>A dot or circle above and to the right of a line at a slight angle</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>line</rdf:li>
+            <rdf:li>circle</rdf:li>
+            <rdf:li>dot</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
