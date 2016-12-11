@@ -280,6 +280,7 @@ namespace Gui
       >
     > GraphLinkContainer;
     
+    bool hasRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn);
     const GraphLinkRecord& findRecord(Vertex vertexIn, const GraphLinkContainer &containerIn);
     const GraphLinkRecord& findRecord(const App::DocumentObject* dObjectIn, const GraphLinkContainer &containerIn);
     const GraphLinkRecord& findRecord(const Gui::ViewProviderDocumentObject* VPDObjectIn, const GraphLinkContainer &containerIn);

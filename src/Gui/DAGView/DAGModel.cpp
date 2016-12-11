@@ -479,6 +479,8 @@ void Model::updateSlot()
     std::vector<App::DocumentObject *> otherDObjects = currentDObject->getOutList();
     for (auto &currentOtherDObject : otherDObjects)
     {
+      if (!hasRecord(currentOtherDObject, *graphLink))
+          continue;
       Vertex otherVertex = findRecord(currentOtherDObject, *graphLink).vertex;
       bool result;
       Edge edge;
