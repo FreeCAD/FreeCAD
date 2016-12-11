@@ -104,9 +104,14 @@ class Tag:
         except:
             return None
 
+    def toString(self):
+        return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
+
     def __init__(self, x, y, width, height, angle, enabled=True, z=None):
+        print("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d, %s)" % (x, y, width, height, angle/math.pi, enabled, z))
         self.x = x
         self.y = y
+        self.z = z
         self.width = math.fabs(width)
         self.height = math.fabs(height)
         self.actualHeight = self.height
@@ -114,9 +119,6 @@ class Tag:
         self.enabled = enabled
         if z is not None:
             self.createSolidsAt(z)
-
-    def toString(self):
-        return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
 
     def originAt(self, z):
         return FreeCAD.Vector(self.x, self.y, z)
@@ -135,27 +137,21 @@ class Tag:
         height = self.height
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
-            self.core  = self.solid.copy()
         elif self.angle > 0.0 and height > 0.0:
             tangens = math.tan(math.radians(self.angle))
             dr = height / tangens
             if dr < r1:
                 r2 = r1 - dr
-                self.core = Part.makeCylinder(r2, height)
             else:
                 r2 = 0
                 height = r1 * tangens
-                self.core = None
                 self.actualHeight = height
             self.r2 = r2
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
             self.solid = Part.makeSphere(r1 / 10000)
-            self.core = None
         self.solid.translate(self.originAt(z))
-        if self.core:
-            self.core.translate(self.originAt(z))
 
     def filterIntersections(self, pts, face):
         if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder:
@@ -536,6 +532,8 @@ class ObjectDressup:
                 edge = None
                 t = 0
 
+        for cmd in commands:
+            print(cmd)
         return Path.Path(commands)
 
 
@@ -548,6 +546,10 @@ class ObjectDressup:
             return
         if not obj.Base.Path.Commands:
             return
+
+        if obj.Path:
+            for cmd in obj.Path.Commands:
+                print(cmd)
 
         pathData = self.setup(obj)
         if not pathData:
@@ -572,6 +574,7 @@ class ObjectDressup:
 
         print("execute - %d tags" % (len(tags)))
         tags = pathData.sortedTags(tags)
+        self.setTags(obj, tags, False)
         for tag in tags:
             tag.createSolidsAt(pathData.minZ)
 
@@ -591,9 +594,13 @@ class ObjectDressup:
 
         obj.Path = self.createPath(pathData.edges, tags)
 
-    def setTags(self, obj, tags):
+    def setTags(self, obj, tags, update = True):
+        print("setTags(.....)")
+        for t in tags:
+            print(" .... %s" % t.toString())
         obj.Tags = [tag.toString() for tag in tags]
-        self.execute(obj)
+        if update:
+            self.execute(obj)
 
     def getTags(self, obj):
         if hasattr(self, 'tags'):
