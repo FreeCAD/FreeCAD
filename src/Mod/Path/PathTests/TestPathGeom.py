@@ -30,7 +30,7 @@ import math
 import unittest
 
 from FreeCAD import Vector
-from PathScripts.PathDressupHoldingTags import *
+#from PathScripts.PathDressupHoldingTags import *
 from PathScripts.PathGeom import PathGeom
 from PathTests.PathTestUtils import PathTestBase
 
