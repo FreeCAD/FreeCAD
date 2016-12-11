@@ -184,8 +184,8 @@ class DocumentBasicCases(unittest.TestCase):
     
   def testExtensions(self):
     #we try to create a normal python object and add a extension to it 
-    obj = self.Doc.addObject("App::DocumentObject", "Extension_1")
-    grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
+    obj = self.Doc.addObject("App::FeaturePython", "Extension_1")
+    grp = self.Doc.addObject("App::FeaturePython", "Extension_2")
     #we should have all methods we need to handle extensions 
     try:
       self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
@@ -204,7 +204,7 @@ class DocumentBasicCases(unittest.TestCase):
             return False;
     
     callback = SpecialGroup()
-    grp2 = self.Doc.addObject("App::DocumentObject", "Extension_3")  
+    grp2 = self.Doc.addObject("App::FeaturePython", "Extension_3")  
     grp2.addExtension("App::GroupExtensionPython", callback)
     
     try:
@@ -227,7 +227,7 @@ class DocumentBasicCases(unittest.TestCase):
             def __init__(self, obj):
                 obj.addExtension("App::GroupExtensionPython", self)
              
-        obj = self.Doc.addObject("App::DocumentObject", "myObj")
+        obj = self.Doc.addObject("App::FeaturePython", "myObj")
         MyExtension(obj)
         self.failUnless(obj.hasExtension("App::GroupExtension"))
         self.failUnless(obj.hasExtension("App::GroupExtensionPython"))
@@ -342,8 +342,8 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     SaveName = self.TempPath + os.sep + "SaveRestoreExtensions.FCStd"
     Doc = FreeCAD.newDocument("SaveRestoreExtensions")
     #we try to create a normal python object and add a extension to it 
-    obj  = Doc.addObject("App::DocumentObject", "Obj") 
-    grp1 = Doc.addObject("App::DocumentObject", "Extension_1")
+    obj  = Doc.addObject("App::FeaturePython", "Obj") 
+    grp1 = Doc.addObject("App::FeaturePython", "Extension_1")
     grp2 = Doc.addObject("App::FeaturePython", "Extension_2") 
     
     grp1.addExtension("App::GroupExtensionPython", None)
