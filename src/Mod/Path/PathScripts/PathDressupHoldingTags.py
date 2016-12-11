@@ -312,12 +312,13 @@ class MapWireToTag:
                 self.addEdge(e)
                 self.tail = tail
             self.exit = i
-            shell = self.wire.extrude(FreeCAD.Vector(0, 0, 10))
-            face = shell.common(self.tag.solid)
+            if self.wire:
+                shell = self.wire.extrude(FreeCAD.Vector(0, 0, 10))
+                face = shell.common(self.tag.solid)
 
-            for e,flip in self.cleanupEdges(face.Edges):
-                debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
-                self.commands.extend(PathGeom.cmdsForEdge(e, flip, False))
+                for e,flip in self.cleanupEdges(face.Edges):
+                    debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
+                    self.commands.extend(PathGeom.cmdsForEdge(e, flip, False))
             self.complete = True
 
     def mappingComplete(self):
@@ -387,6 +388,7 @@ class PathData:
         startIndex = 0
         for i in range(0, len(self.base.Edges)):
             edge = self.base.Edges[i]
+            print('  %d: %.2f' % (i, edge.Length))
             if edge.Length == longestEdge.Length:
                 startIndex = i
                 break
@@ -401,10 +403,10 @@ class PathData:
 
         minLength = min(2. * W, longestEdge.Length)
 
-        #print("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f)" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length))
-        #print("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
-        #print("               -> lastTagLength=%.2f)" % lastTagLength)
-        #print("               -> currentLength=%.2f)" % currentLength)
+        print("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length, minLength))
+        print("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
+        print("               -> lastTagLength=%.2f)" % lastTagLength)
+        print("               -> currentLength=%.2f)" % currentLength)
 
         edgeDict = { startIndex: startCount }
 
@@ -419,7 +421,7 @@ class PathData:
 
         for (i, count) in edgeDict.iteritems():
             edge = self.base.Edges[i]
-            #print(" %d: %d" % (i, count))
+            print(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
             distance = (edge.LastParameter - edge.FirstParameter) / count
@@ -432,15 +434,15 @@ class PathData:
     def processEdge(self, index, edge, currentLength, lastTagLength, tagDistance, minLength, edgeDict):
         tagCount = 0
         currentLength += edge.Length
-        if edge.Length > minLength:
+        if edge.Length >= minLength:
             while lastTagLength + tagDistance < currentLength:
                 tagCount += 1
                 lastTagLength += tagDistance
             if tagCount > 0:
-                #print("      index=%d -> count=%d" % (index, tagCount))
+                print("      index=%d -> count=%d" % (index, tagCount))
                 edgeDict[index] = tagCount
-        #else:
-            #print("      skipping=%-2d (%.2f)" % (index, edge.Length))
+        else:
+            print("      skipping=%-2d (%.2f)" % (index, edge.Length))
 
         return (currentLength, lastTagLength)
 
@@ -532,8 +534,8 @@ class ObjectDressup:
                 edge = None
                 t = 0
 
-        for cmd in commands:
-            print(cmd)
+        #for cmd in commands:
+        #    print(cmd)
         return Path.Path(commands)
 
 
@@ -546,10 +548,6 @@ class ObjectDressup:
             return
         if not obj.Base.Path.Commands:
             return
-
-        if obj.Path:
-            for cmd in obj.Path.Commands:
-                print(cmd)
 
         pathData = self.setup(obj)
         if not pathData:
@@ -595,7 +593,7 @@ class ObjectDressup:
         obj.Path = self.createPath(pathData.edges, tags)
 
     def setTags(self, obj, tags, update = True):
-        print("setTags(.....)")
+        print("setTags(%d, %d)" % (len(tags), update))
         for t in tags:
             print(" .... %s" % t.toString())
         obj.Tags = [tag.toString() for tag in tags]
