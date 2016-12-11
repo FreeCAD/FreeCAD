@@ -59,6 +59,7 @@ void DlgSettingsPathColor::saveSettings()
     DefaultPathMarkerColor->onSave();
     DefaultExtentsColor->onSave();
     DefaultProbePathColor->onSave();
+    DefaultHighlightPathColor->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -70,6 +71,7 @@ void DlgSettingsPathColor::loadSettings()
     DefaultPathMarkerColor->onRestore();
     DefaultExtentsColor->onRestore();
     DefaultProbePathColor->onRestore();
+    DefaultHighlightPathColor->onRestore();
 }
 
 /**
