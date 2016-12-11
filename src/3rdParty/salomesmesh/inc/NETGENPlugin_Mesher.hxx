@@ -36,6 +36,8 @@
 #include <SMESH_Algo.hxx>
 #include <SMESH_ProxyMesh.hxx>
 
+#define NETGEN_VERSION_STRING(a,b) (a << 16) + (b << 8)
+
 namespace nglib {
 #include <nglib.h>
 }
@@ -83,7 +85,7 @@ struct NETGENPlugin_ngMeshInfo
 struct NETGENPLUGIN_EXPORT NETGENPlugin_NetgenLibWrapper
 {
   bool             _isComputeOk;
-#if NETGEN_VERSION < 6
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0)
   nglib::Ng_Mesh * _ngMesh;
 #else
   std::shared_ptr<nglib::Ng_Mesh> _ngMesh;
@@ -202,7 +204,7 @@ class NETGENPLUGIN_EXPORT NETGENPlugin_Mesher
   bool                 _optimize;
   int                  _fineness;
   bool                 _isViscousLayers2D;
-#if NETGEN_VERSION < 6
+#if NETGEN_VERSION < NETGEN_VERSION_STRING(6,0)
   netgen::Mesh*        _ngMesh;
 #else
   std::shared_ptr<netgen::Mesh> _ngMesh;
