@@ -2712,7 +2712,8 @@ def clone(obj,delta=None):
             pass
         return cl
     else:
-        cl = FreeCAD.ActiveDocument.addObject("Part::AttachableObjectPython","Clone")
+        cl = FreeCAD.ActiveDocument.addObject("Part::FeaturePython","Clone")
+        cl.addExtension("Part::AttachExtensionPython", None)
         cl.Label = prefix + obj[0].Label
     _Clone(cl)
     if gui:
