@@ -47,7 +47,7 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
-debugDressup = False
+debugDressup = True
 debugComponents = ['P0', 'P1', 'P2', 'P3']
 
 def debugPrint(comp, msg):
@@ -246,13 +246,16 @@ class MapWireToTag:
 
     def cleanupEdges(self, edges):
         # first remove all internal struts
+        debugEdge(Part.Edge(Part.LineSegment(self.entry, self.exit)), '------> cleanupEdges')
         inputEdges = copy.copy(edges)
         plinths = []
         for e in edges:
+            debugEdge(e, '........ cleanup')
             p1 = e.valueAt(e.FirstParameter)
             p2 = e.valueAt(e.LastParameter)
             if p1.x == p2.x and p1.y == p2.y:
                 if not (PathGeom.edgeConnectsTo(e, self.entry) or PathGeom.edgeConnectsTo(e, self.exit)):
+                    debugEdge(e, '......... X0 %d/%d' % (PathGeom.edgeConnectsTo(e, self.entry), PathGeom.edgeConnectsTo(e, self.exit)))
                     inputEdges.remove(e)
                     if p1.z > p2.z:
                         plinths.append(p2)
@@ -262,13 +265,15 @@ class MapWireToTag:
         # including the edge that connects the entry and exit point directly
         for e in copy.copy(inputEdges):
             if PathGeom.edgeConnectsTo(e, self.entry) and PathGeom.edgeConnectsTo(e, self.exit):
+                debugEdge(e, '......... X1')
                 inputEdges.remove(e)
                 continue
             for p in plinths:
                 if PathGeom.edgeConnectsTo(e, p):
+                    debugEdge(e, '......... X2')
                     inputEdges.remove(e)
                     break
-        # the remaining edges form walk around the tag
+        # the remaining edges form a walk around the tag
         # they need to be ordered and potentially flipped though
         outputEdges = []
         p = self.entry
@@ -447,6 +452,8 @@ class PathData:
         return (currentLength, lastTagLength)
 
     def tagHeight(self):
+        if hasattr(self.obj, 'Base') and hasattr(self.obj.Base, 'StartDepth') and hasattr(self.obj.Base, 'FinalDepth'):
+            return self.obj.Base.StartDepth - self.obj.Base.FinalDepth
         return self.maxZ - self.minZ
 
     def tagWidth(self):
