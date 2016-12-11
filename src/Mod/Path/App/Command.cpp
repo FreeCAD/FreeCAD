@@ -34,6 +34,7 @@
 #include <Base/Reader.h>
 #include <Base/Exception.h>
 #include "Command.h"
+#include <stdio.h>
 
 using namespace Base;
 using namespace Path;
