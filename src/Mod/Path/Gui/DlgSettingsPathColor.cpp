@@ -33,8 +33,8 @@ using namespace PathGui;
 /* TRANSLATOR PathGui::DlgSettingsPathColor */
 
 /**
- *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the 
- *  name 'name' and widget flags set to 'f' 
+ *  Constructs a DlgSettingsObjectColor which is a child of 'parent', with the
+ *  name 'name' and widget flags set to 'f'
  */
 DlgSettingsPathColor::DlgSettingsPathColor(QWidget* parent)
     : PreferencePage(parent)
@@ -42,7 +42,7 @@ DlgSettingsPathColor::DlgSettingsPathColor(QWidget* parent)
     this->setupUi(this);
 }
 
-/** 
+/**
  *  Destroys the object and frees any allocated resources
  */
 DlgSettingsPathColor::~DlgSettingsPathColor()
@@ -58,6 +58,8 @@ void DlgSettingsPathColor::saveSettings()
     DefaultPathLineWidth->onSave();
     DefaultPathMarkerColor->onSave();
     DefaultExtentsColor->onSave();
+    DefaultProbePathColor->onSave();
+    DefaultHighlightPathColor->onSave();
 }
 
 void DlgSettingsPathColor::loadSettings()
@@ -68,6 +70,8 @@ void DlgSettingsPathColor::loadSettings()
     DefaultPathLineWidth->onRestore();
     DefaultPathMarkerColor->onRestore();
     DefaultExtentsColor->onRestore();
+    DefaultProbePathColor->onRestore();
+    DefaultHighlightPathColor->onRestore();
 }
 
 /**
