@@ -131,9 +131,12 @@ std::string Command::toGCode (void) const
     std::stringstream str;
     str.precision(5);
     str << Name;
+    char v[60];
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
         std::string k = i->first;
-        std::string v = boost::lexical_cast<std::string>(i->second);
+        //std::string v = std::to_string(i->second);  // only 6 digits
+        snprintf(v, sizeof(v), "%.9f", i->second);
+        v[sizeof(v)-1] = '\0';
         str << " " << k << v;
     }
     return str.str();
