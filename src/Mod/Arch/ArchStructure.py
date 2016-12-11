@@ -201,6 +201,8 @@ class _CommandStructure:
                 args["Width"] = self.Width
                 args["Height"] = self.Height
                 argstring = ""
+                # fix for precast placement, since their (0,0) point is the lower left corner
+                point = FreeCAD.Vector(point.x-self.Length/2,point.y-self.Width/2,point.z)
                 for pair in args.items():
                     argstring += pair[0].lower() + "="
                     if isinstance(pair[1],str):
