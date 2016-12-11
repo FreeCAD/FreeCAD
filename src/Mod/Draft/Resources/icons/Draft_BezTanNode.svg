@@ -29,9 +29,9 @@
      inkscape:window-height="837"
      id="namedview67"
      showgrid="true"
-     inkscape:zoom="9.895752"
-     inkscape:cx="29.546148"
-     inkscape:cy="34.587634"
+     inkscape:zoom="25.937694"
+     inkscape:cx="28.755792"
+     inkscape:cy="32.737045"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -356,18 +356,6 @@
          id="stop3840" />
     </linearGradient>
   </defs>
-  <metadata
-     id="metadata3617">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1">
     <path
@@ -443,4 +431,49 @@
        id="path4250-7-1-3-9"
        d="m -21.383898,25.077595 a 4.4222541,4.4226169 0 1 1 6.717775,5.753453 4.4222541,4.4226169 0 0 1 -6.717775,-5.753453 z" />
   </g>
+  <metadata
+     id="metadata3697">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_BezTanNode</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Thu Jan 30 09:16:37 2014 -0500</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_BezTanNode.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>curve</rdf:li>
+            <rdf:li>line</rdf:li>
+            <rdf:li>control</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A curved line passing through a point with unequally distant control points</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

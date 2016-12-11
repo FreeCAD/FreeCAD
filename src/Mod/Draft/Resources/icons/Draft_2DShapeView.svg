@@ -265,9 +265,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.3671877"
-     inkscape:cx="33.122014"
-     inkscape:cy="46.539806"
+     inkscape:zoom="7.0339511"
+     inkscape:cx="-0.43255474"
+     inkscape:cy="43.015355"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -305,18 +305,6 @@
        spacingx="1px"
        spacingy="1px" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata2771">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -358,4 +346,49 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccc" />
   </g>
+  <metadata
+     id="metadata57">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_2DShapeView</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_2DShapeView.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>box</rdf:li>
+            <rdf:li>plane</rdf:li>
+            <rdf:li>rectangle</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A box floating above a projection of its lower face</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
