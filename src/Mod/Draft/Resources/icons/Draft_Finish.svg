@@ -329,15 +329,15 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11"
-     inkscape:cx="4.0723865"
-     inkscape:cy="37.023593"
+     inkscape:zoom="11.116426"
+     inkscape:cx="15.580504"
+     inkscape:cy="31.999356"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1137"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -364,18 +364,6 @@
        empcolor="#ff0000"
        empopacity="0.25098039" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata3617">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -454,4 +442,51 @@
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccc" />
   </g>
+  <metadata
+     id="metadata4582">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_Finish</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>line</rdf:li>
+            <rdf:li>dot</rdf:li>
+            <rdf:li>checkmark</rdf:li>
+            <rdf:li>check</rdf:li>
+            <rdf:li>correct</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Three sides of a square or diamond with a dot on the three leftmost corners and a large circle on the rightmost corner with a checkmark</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

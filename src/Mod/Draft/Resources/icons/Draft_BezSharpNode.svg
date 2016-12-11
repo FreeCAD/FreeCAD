@@ -31,9 +31,9 @@
      showgrid="true"
      inkscape:snap-bbox="true"
      inkscape:snap-nodes="true"
-     inkscape:zoom="9.895752"
-     inkscape:cx="27.577515"
-     inkscape:cy="34.873449"
+     inkscape:zoom="12.968847"
+     inkscape:cx="4.4020509"
+     inkscape:cy="34.307968"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
@@ -396,18 +396,6 @@
        x2="43.486729"
        y2="475.68085" />
   </defs>
-  <metadata
-     id="metadata3617">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1">
     <path
@@ -491,4 +479,51 @@
          d="m -21.383898,25.077595 a 4.4222541,4.4226169 0 1 1 6.717775,5.753453 4.4222541,4.4226169 0 0 1 -6.717775,-5.753453 z" />
     </g>
   </g>
+  <metadata
+     id="metadata3520">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_BezSharpNode</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Sun Feb 2 18:22:27 2014 +0100</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Sebastian Hoogen]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_BezSharpNode.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>curved</rdf:li>
+            <rdf:li>line</rdf:li>
+            <rdf:li>dot</rdf:li>
+            <rdf:li>circle</rdf:li>
+            <rdf:li>control</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>An irregularly curved lin passing through a dot with unequally spaced control points at an angle to each other</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

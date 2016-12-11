@@ -917,9 +917,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.85882"
-     inkscape:cx="38.168286"
-     inkscape:cy="31.314285"
+     inkscape:zoom="7.7707698"
+     inkscape:cx="-14.68784"
+     inkscape:cy="29.659264"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -940,18 +940,6 @@
        spacingx="1px"
        spacingy="1px" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata3617">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -1067,4 +1055,51 @@
       </g>
     </g>
   </g>
+  <metadata
+     id="metadata5217">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_PathArray</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Wed Nov 27 18:41:35 2013 -0500</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_PathArray.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>rectangle</rdf:li>
+            <rdf:li>line</rdf:li>
+            <rdf:li>path</rdf:li>
+            <rdf:li>sequence</rdf:li>
+            <rdf:li>repetition</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Three rectangles joined by a path, one in the lower left aligned top-bottom, another in the center aligned left-right and a third aligned top-bottom in the top right corner</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

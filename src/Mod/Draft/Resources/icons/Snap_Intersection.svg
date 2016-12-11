@@ -113,17 +113,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="15.556349"
-     inkscape:cx="23.810967"
-     inkscape:cy="20.588263"
+     inkscape:zoom="10.193662"
+     inkscape:cx="13.326691"
+     inkscape:cy="33.042365"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-bbox="false"
      inkscape:snap-nodes="true">
@@ -135,18 +135,6 @@
        type="xygrid"
        id="grid2994" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata2731">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -169,4 +157,50 @@
          sodipodi:nodetypes="ccccccccccccc" />
     </g>
   </g>
+  <metadata
+     id="metadata6439">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Snap_Intersection</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Mar 12 17:20:03 2012 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Snap_Intersection.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>cross</rdf:li>
+            <rdf:li>multiply</rdf:li>
+            <rdf:li>multiplication</rdf:li>
+            <rdf:li>intersection</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>An angled cross, similar to a multiplication sign</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
