@@ -161,9 +161,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="20.387325"
-     inkscape:cx="56.397058"
-     inkscape:cy="15.341752"
+     inkscape:zoom="9.4464322"
+     inkscape:cx="-6.2098079"
+     inkscape:cy="26.651404"
      inkscape:current-layer="g4289"
      showgrid="true"
      inkscape:document-units="px"
@@ -197,18 +197,6 @@
        empcolor="#ff0000"
        empopacity="0.25098039" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata2731">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -317,4 +305,49 @@
          inkscape:connector-curvature="0" />
     </g>
   </g>
+  <metadata
+     id="metadata4658">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_Grid</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Tue Dec 29 12:10:22 2015 -0200</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Grid.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>grid</rdf:li>
+            <rdf:li>lines</rdf:li>
+            <rdf:li>intersecting</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>Six mutually intersecting lines forming a grid</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>

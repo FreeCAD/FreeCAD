@@ -173,9 +173,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.2080078"
-     inkscape:cx="23.349075"
-     inkscape:cy="27.194764"
+     inkscape:zoom="4.7232161"
+     inkscape:cx="-55.016644"
+     inkscape:cy="39.558979"
      inkscape:current-layer="g3360"
      showgrid="true"
      inkscape:document-units="px"
@@ -210,18 +210,6 @@
        empcolor="#ff0000"
        empopacity="0.25098039" />
   </sodipodi:namedview>
-  <metadata
-     id="metadata5826">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
   <g
      id="layer1"
      inkscape:label="Layer 1"
@@ -240,7 +228,7 @@
          sodipodi:cy="30"
          sodipodi:rx="20.727272"
          sodipodi:ry="20.727272"
-         d="m 52.727272,30 a 20.727272,20.727272 0 1 1 -41.454544,0 20.727272,20.727272 0 1 1 41.454544,0 z"
+         d="M 52.727272,30 C 52.727272,41.447356 43.447356,50.727272 32,50.727272 20.552644,50.727272 11.272728,41.447356 11.272728,30 11.272728,18.552644 20.552644,9.272728 32,9.272728 43.447356,9.272728 52.727272,18.552644 52.727272,30 z"
          transform="matrix(9.5231147,0,0,9.5231147,800.3066,934.2359)" />
       <path
          style="color:#000000;fill:#cc0000;fill-opacity:1;fill-rule:evenodd;stroke:#280000;stroke-width:14.62134743;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -262,8 +250,53 @@
          sodipodi:cy="30"
          sodipodi:rx="20.727272"
          sodipodi:ry="20.727272"
-         d="m 52.727272,30 a 20.727272,20.727272 0 1 1 -41.454544,0 20.727272,20.727272 0 1 1 41.454544,0 z"
+         d="M 52.727272,30 C 52.727272,41.447356 43.447356,50.727272 32,50.727272 20.552644,50.727272 11.272728,41.447356 11.272728,30 11.272728,18.552644 20.552644,9.272728 32,9.272728 43.447356,9.272728 52.727272,18.552644 52.727272,30 z"
          transform="matrix(8.8176988,0,0,8.8176988,822.8799,955.39837)" />
     </g>
   </g>
+  <metadata
+     id="metadata4697">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Draft_Heal</dc:title>
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Wed Mar 6 12:14:14 2013 -0300</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[Yorik van Havre]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Heal.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>red cross</rdf:li>
+            <rdf:li>cross</rdf:li>
+            <rdf:li>circle</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>A red cross similar to a medical red cross on a white circle</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
 </svg>
