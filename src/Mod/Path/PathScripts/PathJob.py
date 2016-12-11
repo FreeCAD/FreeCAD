@@ -243,9 +243,6 @@ class TaskPanel:
         self.postProcessorArgsDefaultTooltip = self.form.cboPostProcessorArgs.toolTip()
 
     def accept(self):
-        if self.obj.Base is None:
-            QtGui.QMessageBox.information(None,"","No Base Object Selected.")
-            return
         self.getFields()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
