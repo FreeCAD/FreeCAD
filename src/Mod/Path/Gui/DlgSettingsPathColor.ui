@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>297</width>
-    <height>281</height>
+    <width>310</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -204,12 +204,68 @@
         </property>
        </widget>
       </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Path Highlight Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultHighlightPathColor">
+        <property name="toolTip">
+         <string>The default line color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>255</red>
+          <green>125</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultHighlightPathColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
-     <zorder>DefaultRapidPathColor_2</zorder>
-     <zorder>label_8</zorder>
+     <zorder>label_6</zorder>
+     <zorder>DefaultNormalPathColor</zorder>
+     <zorder>label_9</zorder>
+     <zorder>DefaultPathLineWidth</zorder>
+     <zorder>label_10</zorder>
+     <zorder>DefaultPathMarkerColor</zorder>
+     <zorder>label_7</zorder>
+     <zorder>DefaultRapidPathColor</zorder>
+     <zorder>label</zorder>
+     <zorder>DefaultExtentsColor</zorder>
      <zorder>label_8</zorder>
      <zorder>DefaultProbePathColor</zorder>
+     <zorder>label_11</zorder>
+     <zorder>DefaultHighlightPathColor</zorder>
     </widget>
+   </item>
+   <item row="2" column="0" colspan="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>217</height>
+      </size>
+     </property>
+    </spacer>
    </item>
    <item row="0" column="1">
     <spacer name="horizontalSpacer">
@@ -220,19 +276,6 @@
       <size>
        <width>7</width>
        <height>220</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="0" colspan="2">
-    <spacer name="verticalSpacer">
-     <property name="orientation">
-      <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>217</height>
       </size>
      </property>
     </spacer>
