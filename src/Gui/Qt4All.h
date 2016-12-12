@@ -71,6 +71,7 @@
 #include <QDesktopWidget>
 #include <QDialogButtonBox>
 #include <QDockWidget>
+#include <QDrag>
 #include <qdrawutil.h>
 #include <qevent.h>
 #include <QFileDialog>
@@ -97,7 +98,7 @@
 #include <QMainWindow>
 #include <qmenubar.h>
 #include <qmessagebox.h>
-#include <qmime.h>
+#include <QMimeData>
 #include <qmovie.h>
 #include <qpainter.h>
 #include <qpalette.h>
@@ -147,12 +148,8 @@
 #include <qobject.h>
 #include <QMdiArea>
 #include <QMdiSubWindow>
-#include <QWorkspace> // obsolete
 // QtNetwork
-#include <QFtp>
-#include <QHttp>
-#include <QHttpResponseHeader>
-#include <QHttpRequestHeader>
+#include <QNetworkAccessManager>
 #include <QTcpServer>
 #include <QTcpSocket>
 // QtOpenGL
