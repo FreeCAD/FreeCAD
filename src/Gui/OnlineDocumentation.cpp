@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <QBuffer>
-# include <QHttpResponseHeader>
 # include <QMessageBox>
 # include <QTcpSocket>
 #endif
@@ -68,119 +67,6 @@ static const unsigned char navicon_data[] = {
     0x00,0x00,0x93,0xfd,0x00,0x00,0x81,0xd8,0x00,0x00,0x99,0x9d,0x00,0x00,
     0x9c,0x3d,0x00,0x00,0x9f,0xfd,0x00,0x00,0x80,0xfd,0x00,0x00,0xff,0x7d,
     0x00,0x00,0xfe,0x01,0x00,0x00,0xff,0x7f,0x00,0x00};
-
-OnlineDocumentation::OnlineDocumentation()
-{
-    // store the listed files in a stringlist
-    std::string path = App::GetApplication().getHomePath();
-    path += "/doc/docs.zip";
-    zipios::ZipFile zip(path);
-    if (zip.isValid()) {
-        zipios::ConstEntries entries = zip.entries();
-        for (zipios::ConstEntries::iterator it = entries.begin(); it != entries.end(); ++it) {
-            this->files.push_back(QString::fromLatin1((*it)->getFileName().c_str()));
-        }
-    }
-}
-
-OnlineDocumentation::~OnlineDocumentation()
-{
-}
-
-QByteArray OnlineDocumentation::loadResource(const QString& filename) const
-{
-    QString fn = filename;
-    fn = filename.mid(1);
-    QByteArray res;
-
-    if (fn == QLatin1String("favicon.ico")) {
-        // Return an resource icon in ico format
-        res.reserve(navicon_data_len);
-        for (int i=0; i<(int)navicon_data_len;i++) {
-            res[i] = navicon_data[i];
-        }
-    }
-    else if (filename == QLatin1String("/")) {
-        // load the startpage
-        QString header = QString::fromLatin1(
-            "<!doctype html PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\">"
-            "<link rel=\"shortcut icon\" href=\"favicon.ico\" type=\"image/x-icon\">"
-            "<html><head><title>Python: Index of Modules</title>"
-            "</head><body bgcolor=\"#f0f0f8\">"
-            ""
-            "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-            "<tr bgcolor=\"#7799ee\">"
-            "<td valign=bottom>&nbsp;<br>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>Python: Index of Modules</strong></big></big></font></td>"
-            "<td align=right valign=bottom>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
-            "<p><p>"
-            "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"section\">"
-            "<tr bgcolor=\"#ee77aa\">"
-            "<td colspan=3 valign=bottom>&nbsp;<br>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\"><big><strong>FreeCAD Modules</strong></big></font></td></tr>"
-            ""
-            "<tr><td bgcolor=\"#ee77aa\"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>"
-            "<td width=\"100%\"><table width=\"100%\" summary=\"list\"><tr><td width=\"25%\" valign=top>");
-        int ct=0;
-        for (QStringList::ConstIterator it = this->files.begin(); it != this->files.end(); ++it) {
-            QString file = *it;
-            if (file.endsWith(QLatin1String(".html"))) {
-                file.chop(5);
-                if ((++ct)%15 == 0)
-                    header += QString::fromLatin1("</td><td width=\"25%\" valign=top>");
-                header += QString::fromLatin1("<a href=\"%1.html\">%2</a><br>").arg(file).arg(file);
-            }
-        }
-
-        header += QString::fromLatin1(
-        "</td></tr></table></td></tr></table> <p>"
-        //"<p align=right>"
-        //"<font color=\"#909090\" face=\"helvetica, arial\"><strong>"
-        //"pydoc</strong> by Ka-Ping Yee &lt;ping@lfw.org&gt;</font>"
-        "</body></html>");
-        res.append(header);
-    }
-    else if (this->files.contains(fn)) {
-        // load the requested page from zip 
-        std::string path = App::GetApplication().getHomePath();
-        path += "/doc/docs.zip";
-        zipios::ZipFile zip(path);
-        zipios::ConstEntryPointer entry = zip.getEntry((const char*)fn.toLatin1());
-        std::istream* str = zip.getInputStream(entry);
-
-        // set size of the array so that no re-allocation is needed when reading from the stream
-        res.reserve(entry->getSize());
-        QBuffer buffer(&res);
-        buffer.open(QIODevice::WriteOnly);
-        Base::IODeviceOStreambuf buf(&buffer);
-        (*str) >> &buf;
-    }
-    else {
-        // load the error page
-        QHttpResponseHeader header(404, QString::fromLatin1("File not found"));
-        header.setContentType(QString::fromLatin1("text/html\r\n"
-            "\r\n"
-            "<html><head><title>Error</title></head>"
-            "<body bgcolor=\"#f0f0f8\">"
-            "<table width=\"100%\" cellspacing=0 cellpadding=2 border=0 summary=\"heading\">"
-            "<tr bgcolor=\"#7799ee\">"
-            "<td valign=bottom>&nbsp;<br>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;<br><big><big><strong>FreeCAD Documentation</strong></big></big></font></td>"
-            "<td align=right valign=bottom>"
-            "<font color=\"#ffffff\" face=\"helvetica, arial\">&nbsp;</font></td></tr></table>"
-            "<p><p>"
-            "<h1>404 - File not found</h1>"
-            "<div><p><strong>The requested URL was not found on this server."
-            "</strong></p>"
-            "</div></body>"
-            "</html>"
-            "\r\n"));
-        res.append(header.toString());
-    }
-
-    return res;
-}
 
 PythonOnlineHelp::PythonOnlineHelp()
 {
@@ -317,9 +203,8 @@ QByteArray PythonOnlineHelp::loadResource(const QString& filename) const
 
 QByteArray PythonOnlineHelp::fileNotFound() const
 {
-    QByteArray res;
-    QHttpResponseHeader header(404, QString::fromLatin1("File not found"));
-    header.setContentType(QString::fromLatin1("text/html\r\n"
+    QString contentType = QString::fromLatin1(
+        "text/html\r\n"
         "\r\n"
         "<html><head><title>Error</title></head>"
         "<body bgcolor=\"#f0f0f8\">"
@@ -335,8 +220,16 @@ QByteArray PythonOnlineHelp::fileNotFound() const
         "</strong></p>"
         "</div></body>"
         "</html>"
-        "\r\n"));
-    res.append(header.toString());
+        "\r\n"
+    );
+
+    QString header = QString::fromLatin1("content-type: %1\r\n").arg(contentType);
+
+    QString http(QLatin1String("HTTP/1.1 %1 %2\r\n%3\r\n"));
+    QString httpResponseHeader = http.arg(404).arg(QLatin1String("File not found")).arg(header);
+
+    QByteArray res;
+    res.append(httpResponseHeader);
     return res;
 }
 
@@ -376,14 +269,31 @@ void HttpServer::readClient()
         return;
 
     // This slot is called when the client sent data to the server. The
-    // server looks if it was a GET request and  sends back the 
+    // server looks if it was a GET request and  sends back the
     // corresponding HTML document from the ZIP file.
     QTcpSocket* socket = (QTcpSocket*)sender();
     if (socket->canReadLine()) {
-        QString request = QString::fromLatin1(socket->readLine());
-        QHttpRequestHeader header(request);
-        if (header.method() == QLatin1String("GET")) {
-            socket->write(help.loadResource(header.path()));
+        QString httpRequestHeader = QString::fromLatin1(socket->readLine());
+        QStringList lst = httpRequestHeader.simplified().split(QLatin1String(" "));
+        QString method;
+        QString path;
+        if (lst.count() > 0) {
+            QString m = lst[0];
+            if (lst.count() > 1) {
+                QString p = lst[1];
+                if (lst.count() > 2) {
+                    QString v = lst[2];
+                    if (v.length() >= 8 && v.left(5) == QLatin1String("HTTP/") &&
+                        v[5].isDigit() && v[6] == QLatin1Char('.') && v[7].isDigit()) {
+                        method = m;
+                        path = p;
+                    }
+                }
+            }
+        }
+
+        if (method == QLatin1String("GET")) {
+            socket->write(help.loadResource(path));
             socket->close();
             if (socket->state() == QTcpSocket::UnconnectedState) {
                 //mark the socket for deletion but do not destroy immediately
