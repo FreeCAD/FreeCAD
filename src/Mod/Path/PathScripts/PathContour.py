@@ -120,9 +120,15 @@ class ObjectContour:
     def __setstate__(self, state):
         return None
 
+    def setLabel(self, obj):
+        if not obj.UserLabel:
+            obj.Label = obj.Name + " :" + obj.ToolDescription
+        else:
+            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+
     def onChanged(self, obj, prop):
         if prop == "UserLabel":
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+            self.setLabel(obj)
 
     def setDepths(proxy, obj):
         parentJob = PathUtils.findParentJob(obj)
@@ -231,10 +237,7 @@ class ObjectContour:
             obj.ToolNumber = toolLoad.ToolNumber
             obj.ToolDescription = toolLoad.Name
 
-        if obj.UserLabel == "":
-            obj.Label = obj.Name + " :" + obj.ToolDescription
-        else:
-            obj.Label = obj.UserLabel + " :" + obj.ToolDescription
+        self.setLabel(obj)
 
         output += "(" + obj.Label + ")"
         if not obj.UseComp:

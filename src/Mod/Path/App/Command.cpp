@@ -133,7 +133,7 @@ std::string Command::toGCode (void) const
     str << Name;
     for(std::map<std::string,double>::const_iterator i = Parameters.begin(); i != Parameters.end(); ++i) {
         std::string k = i->first;
-        std::string v = boost::lexical_cast<std::string>(i->second);
+        std::string v = std::to_string(i->second);
         str << " " << k << v;
     }
     return str.str();
