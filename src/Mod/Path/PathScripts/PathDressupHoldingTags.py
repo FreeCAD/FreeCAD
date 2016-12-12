@@ -215,10 +215,12 @@ class Tag:
 
 class MapWireToTag:
     def __init__(self, edge, tag, i):
+        debugEdge(edge, 'MapWireToTag(%.2f, %.2f, %.2f)' % (i.x, i.y, i.z))
         self.tag = tag
         if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
+            debugEdge(tail, '.........=')
         elif PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, '++++++++ .')
             self.commands = PathGeom.cmdsForEdge(edge)
@@ -227,6 +229,7 @@ class MapWireToTag:
             e, tail = PathGeom.splitEdgeAt(edge, i)
             debugEdge(e, '++++++++ .')
             self.commands = PathGeom.cmdsForEdge(e)
+            debugEdge(tail, '.........-')
         self.tail = tail
         self.edges = []
         self.entry = i
@@ -234,6 +237,7 @@ class MapWireToTag:
         self.wire = None
 
     def addEdge(self, edge):
+        debugEdge(edge, '..........')
         if self.wire:
             self.wire.add(edge)
         else:
@@ -244,6 +248,18 @@ class MapWireToTag:
             return True, edge.valueAt(edge.FirstParameter)
         return False, edge.valueAt(edge.LastParameter)
 
+    def isEntryOrExitStrut(self, p1, p2):
+        p = PathGeom.xy(p1)
+        pEntry0 = PathGeom.xy(self.entry)
+        pExit0 = PathGeom.xy(self.exit)
+        # it can only be an entry strut if the strut coincides with the entry point and is above it
+        if PathGeom.pointsCoincide(p, pEntry0) and p1.z >= self.entry.z and p2.z >= self.entry.z:
+            return True
+        if PathGeom.pointsCoincide(p, pExit0) and p1.z >= self.exit.z and p2.z >= self.exit.z:
+            return True
+        return False
+
+
     def cleanupEdges(self, edges):
         # first remove all internal struts
         debugEdge(Part.Edge(Part.LineSegment(self.entry, self.exit)), '------> cleanupEdges')
@@ -253,8 +269,9 @@ class MapWireToTag:
             debugEdge(e, '........ cleanup')
             p1 = e.valueAt(e.FirstParameter)
             p2 = e.valueAt(e.LastParameter)
-            if p1.x == p2.x and p1.y == p2.y:
-                if not (PathGeom.edgeConnectsTo(e, self.entry) or PathGeom.edgeConnectsTo(e, self.exit)):
+            if PathGeom.pointsCoincide(PathGeom.xy(p1), PathGeom.xy(p2)):
+                #it's a strut
+                if not self.isEntryOrExitStrut(p1, p2):
                     debugEdge(e, '......... X0 %d/%d' % (PathGeom.edgeConnectsTo(e, self.entry), PathGeom.edgeConnectsTo(e, self.exit)))
                     inputEdges.remove(e)
                     if p1.z > p2.z:
@@ -495,6 +512,16 @@ class ObjectDressup:
     def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
         return self.pathData.generateTags(obj, count, width, height, angle, spacing)
 
+    def isValidTagStartIntersection(self, edge, i):
+        if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
+            return False
+        p1 = edge.valueAt(edge.FirstParameter)
+        p2 = edge.valueAt(edge.LastParameter)
+        if PathGeom.pointsCoincide(PathGeom.xy(p1), PathGeom.xy(p2)):
+            # if this vertical goes up, it can't be the start of a tag intersection
+            if p1.z < p2.z:
+                return False
+        return True
 
     def createPath(self, edges, tags):
         commands = []
@@ -528,7 +555,7 @@ class ObjectDressup:
                 tIndex = (t + lastTag) % len(tags)
                 t += 1
                 i = tags[tIndex].intersects(edge, edge.FirstParameter)
-                if i:
+                if i and self.isValidTagStartIntersection(edge, i):
                     mapper = MapWireToTag(edge, tags[tIndex], i)
                     edge = mapper.tail
 
