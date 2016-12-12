@@ -161,10 +161,9 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
         // add elements
         if (elem->GetType() != SMDSAbs_Node) {
             int ID = elem->GetID();
-            const SMDS_MeshElement * newElem;
             switch (elem->GetEntityType()) {
             case SMDSEntity_Polyhedra:
-                newElem = editor.GetMeshDS()->
+                editor.GetMeshDS()->
                     AddPolyhedralVolumeWithID(nodes,
                                               static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
                                               ID);
@@ -174,14 +173,14 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
                 SMESH_MeshEditor::ElemFeatures elemFeat;
                 elemFeat.Init(static_cast<const SMDS_BallElement*>(elem)->GetDiameter());
                 elemFeat.SetID(ID);
-                newElem = editor.AddElement(nodes, elemFeat);
+                editor.AddElement(nodes, elemFeat);
                 break;
             }
             default:
                 {
                     SMESH_MeshEditor::ElemFeatures elemFeat(elem->GetType(), elem->IsPoly());
                     elemFeat.SetID(ID);
-                    newElem = editor.AddElement(nodes, elemFeat);
+                    editor.AddElement(nodes, elemFeat);
                     break;
                 }
             }
