@@ -36,7 +36,7 @@
 using namespace SketcherGui;
 using namespace Gui::PropertyEditor;
 
-TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::PropertyItem)
+PROPERTYITEM_SOURCE(SketcherGui::PropertyConstraintListItem)
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {

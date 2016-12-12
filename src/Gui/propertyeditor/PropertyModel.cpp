@@ -239,18 +239,12 @@ void PropertyModel::buildUp(const PropertyModel::PropertyList& props)
             App::Property* prop = it->front();
             QString editor = QString::fromLatin1(prop->getEditorName());
             if (!editor.isEmpty()) {
-                Base::BaseClass* item = 0;
-                try {
-                    item = static_cast<Base::BaseClass*>(Base::Type::
-                        createInstanceByName(prop->getEditorName(),true));
-                }
-                catch (...) {
-                }
+                PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(prop->getEditorName());
                 if (!item) {
                     qWarning("No property item for type %s found\n", prop->getEditorName());
                     continue;
                 }
-                if (item->getTypeId().isDerivedFrom(PropertyItem::getClassTypeId())) {
+                else {
                     PropertyItem* child = (PropertyItem*)item;
                     child->setParent(rootItem);
                     rootItem->appendChild(child);
@@ -286,17 +280,11 @@ void PropertyModel::appendProperty(const App::Property& prop)
 {
     QString editor = QString::fromLatin1(prop.getEditorName());
     if (!editor.isEmpty()) {
-        Base::BaseClass* item = 0;
-        try {
-            item = static_cast<Base::BaseClass*>(Base::Type::
-                createInstanceByName(prop.getEditorName(),true));
-        }
-        catch (...) {
-        }
+        PropertyItem* item = PropertyItemFactory::instance().createPropertyItem(prop.getEditorName());
         if (!item) {
             qWarning("No property item for type %s found\n", prop.getEditorName());
         }
-        else if (item->getTypeId().isDerivedFrom(PropertyItem::getClassTypeId())) {
+        else {
             // notify system to add new row
             int row = rootItem->childCount();
             beginInsertRows(QModelIndex(), row, row);

@@ -33,7 +33,7 @@ using namespace MeshGui;
 using MeshCore::MeshKernel;
 
 
-TYPESYSTEM_SOURCE(MeshGui::PropertyMeshKernelItem, Gui::PropertyEditor::PropertyItem);
+PROPERTYITEM_SOURCE(MeshGui::PropertyMeshKernelItem)
 
 PropertyMeshKernelItem::PropertyMeshKernelItem()
 {
