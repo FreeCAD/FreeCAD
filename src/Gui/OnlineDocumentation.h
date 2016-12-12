@@ -39,25 +39,6 @@ bool GuiExport OpenURLInBrowser(const char * URL);
  * the client to be displayed.
  * @author Werner Mayer
  */
-class OnlineDocumentation : public QObject
-{
-    Q_OBJECT
-
-public:
-    OnlineDocumentation();
-    ~OnlineDocumentation();
-
-    QByteArray loadResource(const QString& filename) const;
-
-private:
-    QStringList files;
-};
-
-/**
- * Returns the content of an HTML page which gets sent to 
- * the client to be displayed.
- * @author Werner Mayer
- */
 class PythonOnlineHelp : public QObject
 {
     Q_OBJECT
@@ -109,10 +90,6 @@ protected:
 private:
     HttpServer* server;
 };
-
-// --------------------------------------------------------------------
-
-
 
 }
 
