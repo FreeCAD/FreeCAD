@@ -163,7 +163,6 @@ set(Gui_MOC_HDRS
     Control.h
     Clipping.h
     DemoMode.h
-    DownloadDialog.h
     DownloadItem.h
     DownloadManager.h
     DlgActionsImp.h
@@ -197,7 +196,6 @@ set(Gui_MOC_HDRS
     DlgSettingsImageImp.h
     DlgSettingsMacroImp.h
     DlgSettingsUnitsImp.h
-    DlgTipOfTheDayImp.h
     DlgCheckableMessageBox.h
     DlgToolbarsImp.h
     DlgWorkbenchesImp.h
@@ -216,7 +214,6 @@ set(Gui_MOC_HDRS
     GraphvizView.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h
-    HelpView.h
     InputVector.h
     MainWindow.h
     ManualAlignment.h
@@ -309,7 +306,6 @@ SET(Gui_UIC_SRCS
     DlgSettingsImage.ui
     DlgSettingsMacro.ui
     DlgCheckableMessageBox.ui
-    DlgTipOfTheDay.ui
     DlgToolbars.ui
     DlgWorkbenches.ui
     DlgTreeWidget.ui
@@ -377,7 +373,6 @@ SET(Dialog_CPP_SRCS
     DlgProjectInformationImp.cpp
     DlgProjectUtility.cpp
     DlgPropertyLink.cpp
-    DlgTipOfTheDayImp.cpp
     DlgExpressionInput.cpp
     TaskDlgRelocation.cpp
     DlgCheckableMessageBox.cpp
@@ -389,7 +384,6 @@ SET(Dialog_CPP_SRCS
     SceneInspector.cpp
     TextureMapping.cpp
     Transform.cpp
-    DownloadDialog.cpp
     DownloadItem.cpp
     DownloadManager.cpp
     DocumentRecovery.cpp
@@ -412,7 +406,6 @@ SET(Dialog_HPP_SRCS
     DlgProjectUtility.h
     DlgPropertyLink.h
     DlgCheckableMessageBox.h
-    DlgTipOfTheDayImp.h
     DlgExpressionInput.h
     TaskDlgRelocation.h
     TaskCSysDragger.h
@@ -423,7 +416,6 @@ SET(Dialog_HPP_SRCS
     SceneInspector.h
     TextureMapping.h
     Transform.h
-    DownloadDialog.h
     DownloadItem.h
     DownloadManager.h
     DocumentRecovery.h
@@ -450,7 +442,6 @@ SET(Dialog_SRCS
     DlgProjectInformation.ui
     DlgProjectUtility.ui
     DlgPropertyLink.ui
-    DlgTipOfTheDay.ui
     DlgCheckableMessageBox.ui
     DlgTreeWidget.ui
     DlgExpressionInput.ui
@@ -552,7 +543,6 @@ SOURCE_GROUP("Dialog\\Settings" FILES ${Dialog_Settings_SRCS})
 SET(Dock_Windows_CPP_SRCS
     CombiView.cpp
     DockWindow.cpp
-    HelpView.cpp
     PropertyView.cpp
     ReportView.cpp
     SelectionView.cpp
@@ -569,7 +559,6 @@ SET(Dock_Windows_CPP_SRCS
 SET(Dock_Windows_HPP_SRCS
     CombiView.h
     DockWindow.h
-    HelpView.h
     PropertyView.h
     ReportView.h
     SelectionView.h

@@ -67,7 +67,6 @@
 #include "MainWindow.h"
 #include "Application.h"
 #include "Assistant.h"
-#include "DownloadDialog.h"
 #include "DownloadManager.h"
 #include "WaitCursor.h"
 
@@ -94,14 +93,12 @@
 #include "SelectionView.h"
 #include "MenuManager.h"
 //#include "ToolBox.h"
-#include "HelpView.h"
 #include "ReportView.h"
 #include "CombiView.h"
 #include "PythonConsole.h"
 #include "TaskView/TaskView.h"
 #include "DAGView/DAGView.h"
 
-#include "DlgTipOfTheDayImp.h"
 #include "DlgUndoRedo.h"
 #include "DlgOnlineHelpImp.h"
 
@@ -1278,24 +1275,6 @@ QPixmap MainWindow::splashImage() const
     }
 
     return splash_image;
-}
-
-void MainWindow::showTipOfTheDay(bool force)
-{
-    // tip of the day?
-    ParameterGrp::handle
-    hGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp")->
-            GetGroup("Preferences")->GetGroup("General");
-
-    const std::map<std::string,std::string>& config = App::Application::Config();
-    std::map<std::string, std::string>::const_iterator tp = config.find("HideTipOfTheDay");
-    bool tip = (tp == config.end());
-
-    tip = hGrp->GetBool("Tipoftheday", tip);
-    if (tip || force) {
-        Gui::Dialog::DlgTipOfTheDayImp dlg(instance);
-        dlg.exec();
-    }
 }
 
 /**
