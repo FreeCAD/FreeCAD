@@ -59,26 +59,6 @@
 
 using namespace Gui::PropertyEditor;
 
-namespace Gui { namespace PropertyEditor {
-    static QColor toQColor(const App::Color& col)
-    {
-        return QColor(
-            (int)(255.0f*col.r),
-            (int)(255.0f*col.g),
-            (int)(255.0f*col.b)
-            );
-    }
-    static App::Color fromQColor(const QColor& col)
-    {
-        App::Color val;
-        val.r = (float)col.red() / 255.0f;
-        val.g = (float)col.green() / 255.0f;
-        val.b = (float)col.blue() / 255.0f;
-        return val;
-    }
-}
-}
-
 Gui::PropertyEditor::PropertyItemFactory* Gui::PropertyEditor::PropertyItemFactory::_singleton = NULL;
 
 PropertyItemFactory& PropertyItemFactory::instance()
@@ -2311,7 +2291,7 @@ QVariant PropertyColorItem::value(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId()));
 
     App::Color value = ((App::PropertyColor*)prop)->getValue();
-    return QVariant(toQColor(value));
+    return QVariant(value.asValue<QColor>());
 }
 
 void PropertyColorItem::setValue(const QVariant& value)
@@ -2319,7 +2299,7 @@ void PropertyColorItem::setValue(const QVariant& value)
     if (!value.canConvert<QColor>())
         return;
     QColor col = value.value<QColor>();
-    App::Color val = fromQColor(col);
+    App::Color val; val.setValue<QColor>(col);
     QString data = QString::fromLatin1("(%1,%2,%3)")
                     .arg(val.r,0,'f',decimals())
                     .arg(val.g,0,'f',decimals())
@@ -2565,10 +2545,10 @@ QVariant PropertyMaterialItem::toolTip(const App::Property* prop) const
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
 
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
-    QColor dc = toQColor(value.diffuseColor);
-    QColor ac = toQColor(value.ambientColor);
-    QColor sc = toQColor(value.specularColor);
-    QColor ec = toQColor(value.emissiveColor);
+    QColor dc = value.diffuseColor.asValue<QColor>();
+    QColor ac = value.ambientColor.asValue<QColor>();
+    QColor sc = value.specularColor.asValue<QColor>();
+    QColor ec = value.emissiveColor.asValue<QColor>();
 
     QString data = QString::fromUtf8(
         "Diffuse color: [%1, %2, %3]\n"
@@ -2596,10 +2576,10 @@ QVariant PropertyMaterialItem::value(const App::Property* prop) const
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
     Material mat;
 
-    mat.diffuseColor = toQColor(value.diffuseColor);
-    mat.ambientColor = toQColor(value.ambientColor);
-    mat.specularColor = toQColor(value.specularColor);
-    mat.emissiveColor = toQColor(value.emissiveColor);
+    mat.diffuseColor = value.diffuseColor.asValue<QColor>();
+    mat.ambientColor = value.ambientColor.asValue<QColor>();
+    mat.specularColor = value.specularColor.asValue<QColor>();
+    mat.emissiveColor = value.emissiveColor.asValue<QColor>();
     mat.shininess = value.shininess;
     mat.transparency = value.transparency;
 
@@ -2612,10 +2592,10 @@ void PropertyMaterialItem::setValue(const QVariant& value)
         return;
 
     Material mat = value.value<Material>();
-    App::Color dc = fromQColor(mat.diffuseColor);
-    App::Color ac = fromQColor(mat.ambientColor);
-    App::Color sc = fromQColor(mat.specularColor);
-    App::Color ec = fromQColor(mat.emissiveColor);
+    App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
+    App::Color ac; ac.setValue<QColor>(mat.ambientColor);
+    App::Color sc; sc.setValue<QColor>(mat.specularColor);
+    App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
     float s = mat.shininess;
     float t = mat.transparency;
 
@@ -2992,10 +2972,10 @@ QVariant PropertyMaterialListItem::toolTip(const App::Property* prop) const
         return QVariant();
 
     App::Material value = values.front();
-    QColor dc = toQColor(value.diffuseColor);
-    QColor ac = toQColor(value.ambientColor);
-    QColor sc = toQColor(value.specularColor);
-    QColor ec = toQColor(value.emissiveColor);
+    QColor dc = value.diffuseColor.asValue<QColor>();
+    QColor ac = value.ambientColor.asValue<QColor>();
+    QColor sc = value.specularColor.asValue<QColor>();
+    QColor ec = value.emissiveColor.asValue<QColor>();
 
     QString data = QString::fromUtf8(
         "Diffuse color: [%1, %2, %3]\n"
@@ -3025,10 +3005,10 @@ QVariant PropertyMaterialListItem::value(const App::Property* prop) const
 
     for (std::vector<App::Material>::const_iterator it = value.begin(); it != value.end(); ++it) {
         Material mat;
-        mat.diffuseColor = toQColor(it->diffuseColor);
-        mat.ambientColor = toQColor(it->ambientColor);
-        mat.specularColor = toQColor(it->specularColor);
-        mat.emissiveColor = toQColor(it->emissiveColor);
+        mat.diffuseColor = it->diffuseColor.asValue<QColor>();
+        mat.ambientColor = it->ambientColor.asValue<QColor>();
+        mat.specularColor = it->specularColor.asValue<QColor>();
+        mat.emissiveColor = it->emissiveColor.asValue<QColor>();
         mat.shininess = it->shininess;
         mat.transparency = it->transparency;
 
@@ -3053,10 +3033,10 @@ void PropertyMaterialListItem::setValue(const QVariant& value)
 
     for (QVariantList::iterator it = list.begin(); it != list.end(); ++it) {
         Material mat = it->value<Material>();
-        App::Color dc = fromQColor(mat.diffuseColor);
-        App::Color ac = fromQColor(mat.ambientColor);
-        App::Color sc = fromQColor(mat.specularColor);
-        App::Color ec = fromQColor(mat.emissiveColor);
+        App::Color dc; dc.setValue<QColor>(mat.diffuseColor);
+        App::Color ac; ac.setValue<QColor>(mat.ambientColor);
+        App::Color sc; sc.setValue<QColor>(mat.specularColor);
+        App::Color ec; ec.setValue<QColor>(mat.emissiveColor);
         float s = mat.shininess;
         float t = mat.transparency;
 
