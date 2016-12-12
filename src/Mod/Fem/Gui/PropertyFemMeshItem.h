@@ -41,7 +41,7 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     Q_PROPERTY(int Volumes READ countVolumes)
     Q_PROPERTY(int Polyhedrons READ countPolyhedrons)
     Q_PROPERTY(int Groups READ countGroups)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;

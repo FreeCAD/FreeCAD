@@ -37,7 +37,7 @@ class MeshGuiExport PropertyMeshKernelItem : public Gui::PropertyEditor::Propert
     Q_PROPERTY(int Points READ countPoints)
     Q_PROPERTY(int Edges READ countEdges)
     Q_PROPERTY(int Faces READ countFaces)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;

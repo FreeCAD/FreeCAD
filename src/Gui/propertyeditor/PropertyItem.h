@@ -29,7 +29,7 @@
 #include <QItemEditorFactory>
 #include <vector>
 
-#include <Base/Type.h>
+#include <Base/Factory.h>
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
@@ -49,15 +49,62 @@ Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
 #endif
 
+#define PROPERTYITEM_HEADER \
+public: \
+    static void *create(void); \
+    static void init(void);
+
+#define PROPERTYITEM_SOURCE(_class_) \
+void * _class_::create(void) { \
+   return new _class_ ();\
+} \
+void _class_::init(void) { \
+    (void)new Gui::PropertyEditor::PropertyItemProducer<_class_>(#_class_); \
+}
+
 namespace Gui {
 namespace Dialog { class TaskPlacement; }
 namespace PropertyEditor {
 
+class PropertyItem;
+
+/**
+ * The PropertyItemFactory provides methods for the dynamic creation of property items.
+ * \author Werner Mayer
+ */
+class GuiExport PropertyItemFactory : public Base::Factory
+{
+public:
+    static PropertyItemFactory& instance();
+    static void destruct ();
+
+    PropertyItem* createPropertyItem (const char* sName) const;
+
+private:
+    static PropertyItemFactory* _singleton;
+
+    PropertyItemFactory(){}
+    ~PropertyItemFactory(){}
+};
+
+template <class CLASS>
+class PropertyItemProducer : public Base::AbstractProducer
+{
+public:
+    PropertyItemProducer(const char* className) {
+        PropertyItemFactory::instance().AddProducer(className, this);
+    }
+    virtual ~PropertyItemProducer() {
+    }
+    virtual void* Produce () const {
+        return CLASS::create();
+    }
+};
+
 class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass, public ExpressionBinding
 {
     Q_OBJECT
-
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
 public:
     ~PropertyItem();
@@ -134,7 +181,7 @@ private:
  */
 class GuiExport PropertyStringItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -154,7 +201,7 @@ protected:
  */
 class GuiExport PropertyFontItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -174,7 +221,7 @@ protected:
  */
 class GuiExport PropertySeparatorItem : public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     bool isSeparator() const { return true; }
     QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
@@ -186,7 +233,7 @@ class GuiExport PropertySeparatorItem : public PropertyItem
  */
 class GuiExport PropertyIntegerItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -207,7 +254,7 @@ protected:
  */
 class GuiExport PropertyIntegerConstraintItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -228,7 +275,7 @@ protected:
  */
 class GuiExport PropertyFloatItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -249,7 +296,7 @@ protected:
  */
 class GuiExport PropertyUnitItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -269,7 +316,7 @@ protected:
  */
 class GuiExport PropertyUnitConstraintItem: public PropertyUnitItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
 
@@ -283,7 +330,7 @@ protected:
  */
 class GuiExport PropertyFloatConstraintItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -304,7 +351,7 @@ protected:
  */
 class GuiExport PropertyAngleItem : public PropertyFloatItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
 protected:
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -320,7 +367,7 @@ protected:
  */
 class GuiExport PropertyBoolItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -345,7 +392,7 @@ class GuiExport PropertyVectorItem: public PropertyItem
     Q_PROPERTY(double x READ x WRITE setX DESIGNABLE true USER true)
     Q_PROPERTY(double y READ y WRITE setY DESIGNABLE true USER true)
     Q_PROPERTY(double z READ z WRITE setZ DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -384,7 +431,7 @@ class GuiExport PropertyVectorDistanceItem: public PropertyItem
     Q_PROPERTY(Base::Quantity x READ x WRITE setX DESIGNABLE true USER true)
     Q_PROPERTY(Base::Quantity y READ y WRITE setY DESIGNABLE true USER true)
     Q_PROPERTY(Base::Quantity z READ z WRITE setZ DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -431,7 +478,7 @@ class GuiExport PropertyMatrixItem: public PropertyItem
     Q_PROPERTY(double A42 READ getA42 WRITE setA42 DESIGNABLE true USER true)
     Q_PROPERTY(double A43 READ getA43 WRITE setA43 DESIGNABLE true USER true)
     Q_PROPERTY(double A44 READ getA44 WRITE setA44 DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -528,7 +575,7 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     Q_PROPERTY(Base::Quantity Angle READ getAngle WRITE setAngle DESIGNABLE true USER true)
     Q_PROPERTY(Base::Vector3d Axis READ getAxis WRITE setAxis DESIGNABLE true USER true)
     Q_PROPERTY(Base::Vector3d Position READ getPosition WRITE setPosition DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -567,7 +614,7 @@ private:
  */
 class GuiExport PropertyEnumItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -587,7 +634,7 @@ protected:
  */
 class GuiExport PropertyStringListItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -608,7 +655,7 @@ protected:
  */
 class GuiExport PropertyFloatListItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -629,7 +676,7 @@ protected:
  */
 class GuiExport PropertyIntegerListItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -650,7 +697,7 @@ protected:
  */
 class GuiExport PropertyColorItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -679,7 +726,7 @@ class GuiExport PropertyMaterialItem : public PropertyItem
     Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
     Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
     Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -728,7 +775,7 @@ class GuiExport PropertyMaterialListItem : public PropertyItem
     Q_PROPERTY(QColor EmissiveColor READ getEmissiveColor WRITE setEmissiveColor DESIGNABLE true USER true)
     Q_PROPERTY(float Shininess READ getShininess WRITE setShininess DESIGNABLE true USER true)
     Q_PROPERTY(float Transparency READ getTransparency WRITE setTransparency DESIGNABLE true USER true)
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -774,7 +821,7 @@ private:
  */
 class GuiExport PropertyFileItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -795,7 +842,7 @@ protected:
  */
 class GuiExport PropertyPathItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -816,7 +863,7 @@ protected:
  */
 class GuiExport PropertyTransientFileItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
@@ -872,7 +919,7 @@ private:
  */
 class GuiExport PropertyLinkItem: public PropertyItem
 {
-    TYPESYSTEM_HEADER();
+    PROPERTYITEM_HEADER
 
     virtual QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const;
     virtual void setEditorData(QWidget *editor, const QVariant& data) const;
