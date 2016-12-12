@@ -34,9 +34,10 @@ parameters, like e.g. suppress the units in the header and at every hop.
 '''
 
 # reload in python console:
-#   import maho_post
-#   reload(maho_post)
+#   import generic_post
+#   reload(generic_post)
 
+''' example post for Maho M 600E mill'''
 import FreeCAD
 import time
 import Path, PathScripts
@@ -195,7 +196,11 @@ def mkHeader(selection):
   now = time.strftime("%Y-%m-%d %H:%M")
   originfile = FreeCAD.ActiveDocument.FileName
   headerNoNumber = "%PM\n"     # this line gets no linenumber
-  headerNoNumber += "N9XXX (" + selection[0].Description + ", " + now + ")\n"  # this line gets no linenumber, it is already a specially numbered
+  if hasattr(selection[0],"Description"):
+     description = selection[0].Description
+  else:
+     description = ""
+  headerNoNumber += "N9XXX (" + description + ", " + now + ")\n"  # this line gets no linenumber, it is already a specially numbered
   header = ""
 #  header += "(Output Time:" + str(now) + ")\n"
   header += "(" + originfile + ")\n"
@@ -304,11 +309,12 @@ def export(selection,filename,argstring):
 
     gobjects = []
     for g in selection[0].Group:
-        gobjects.append(g)
+        if g.Name <>'Machine': #filtering out gcode home position from Machine object
+            gobjects.append(g)
 
     for obj in gobjects:
-        if hasattr(obj,'GComment'):
-          gcode += linenumberify('(' + obj.GComment + ')')
+        if hasattr(obj,'Comment'):
+          gcode += linenumberify('(' + obj.Comment + ')')
         for c in obj.Path.Commands:
             outstring = []
             command = c.Name

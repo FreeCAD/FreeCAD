@@ -58,7 +58,6 @@ class LoadTool():
         obj.setEditorMode('Placement', mode)
 
     def execute(self, obj):
-
         tool = PathUtils.getTool(obj, obj.ToolNumber)
         if tool is not None:
             obj.Label = obj.Name + ": " + tool.Name
@@ -86,14 +85,12 @@ class LoadTool():
             obj.ViewObject.Visibility = True
 
     def onChanged(self, obj, prop):
-        mode = 2
-        obj.setEditorMode('Placement', mode)
-        # if prop == "ToolNumber":
-        job = PathUtils.findParentJob(obj)
-        if job is not None:
-            for g in job.Group:
-                if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
-                    g.touch()
+        if prop == "ToolNumber" and not 'Restore' in obj.State:
+            job = PathUtils.findParentJob(obj)
+            if job is not None:
+                for g in job.Group:
+                    if not(isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool)):
+                        g.touch()
 
 
 class _ViewProviderLoadTool:
