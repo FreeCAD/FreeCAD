@@ -607,27 +607,21 @@ const char * Command::endCmdHelp(void)
 void Command::applyCommandData(const char* context, Action* action)
 {
     action->setText(QCoreApplication::translate(
-        context, getMenuText(), 0,
-        QCoreApplication::UnicodeUTF8));
+        context, getMenuText()));
     action->setToolTip(QCoreApplication::translate(
-        context, getToolTipText(), 0,
-        QCoreApplication::UnicodeUTF8));
+        context, getToolTipText()));
     if (sStatusTip)
         action->setStatusTip(QCoreApplication::translate(
-            context, getStatusTip(), 0,
-            QCoreApplication::UnicodeUTF8));
+            context, getStatusTip()));
     else
         action->setStatusTip(QCoreApplication::translate(
-            context, getToolTipText(), 0,
-            QCoreApplication::UnicodeUTF8));
+            context, getToolTipText()));
     if (sWhatsThis)
         action->setWhatsThis(QCoreApplication::translate(
-            context, getWhatsThis(), 0,
-            QCoreApplication::UnicodeUTF8));
+            context, getWhatsThis()));
     else
         action->setWhatsThis(QCoreApplication::translate(
-            context, getToolTipText(), 0,
-            QCoreApplication::UnicodeUTF8));
+            context, getToolTipText()));
     QString accel = action->shortcut().toString(QKeySequence::NativeText);
     if (!accel.isEmpty()) {
         // show shortcut inside tooltip
