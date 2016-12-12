@@ -28,7 +28,7 @@
 
 #include <Base/Tools.h>
 
-#include <Gui/propertyeditor/PropertyItem.h>
+#include <Gui/MetaTypes.h>
 #include "../App/PropertyConstraintList.h"
 #include "PropertyConstraintListItem.h"
 
@@ -36,7 +36,7 @@
 using namespace SketcherGui;
 using namespace Gui::PropertyEditor;
 
-TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::PropertyItem);
+TYPESYSTEM_SOURCE(SketcherGui::PropertyConstraintListItem, Gui::PropertyEditor::PropertyItem)
 
 PropertyConstraintListItem::PropertyConstraintListItem()
 {

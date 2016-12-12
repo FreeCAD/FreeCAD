@@ -76,8 +76,6 @@
 
 using namespace PartGui;
 
-Q_DECLARE_METATYPE(Base::Quantity)
-
 FilletRadiusDelegate::FilletRadiusDelegate(QObject *parent) : QItemDelegate(parent)
 {
 }

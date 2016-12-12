@@ -28,7 +28,7 @@
 #include <App/Property.h>
 #include <App/Expression.h>
 #include <Base/Parameter.h>
-#include <Base/Quantity.h>
+#include <Gui/MetaTypes.h>
 #include "Widgets.h"
 #include "Window.h"
 #include "SpinBox.h"
