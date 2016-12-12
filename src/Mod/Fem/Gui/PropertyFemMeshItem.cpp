@@ -33,7 +33,7 @@
 using namespace FemGui;
 
 
-TYPESYSTEM_SOURCE(FemGui::PropertyFemMeshItem, Gui::PropertyEditor::PropertyItem);
+PROPERTYITEM_SOURCE(FemGui::PropertyFemMeshItem)
 
 PropertyFemMeshItem::PropertyFemMeshItem()
 {
