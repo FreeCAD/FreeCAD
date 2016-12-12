@@ -1046,6 +1046,7 @@ SET(FreeCADGui_SRCS
     InventorAll.h
     Macro.h
     MergeDocuments.h
+    MetaTypes.h
     PreCompiled.cpp
     PreCompiled.h
     Qt4All.h

@@ -38,13 +38,16 @@
 #include <App/PropertyStandard.h>
 #include <Gui/Widgets.h>
 #include <Gui/ExpressionBinding.h>
+#include <Gui/MetaTypes.h>
 
+#ifdef Q_MOC_RUN
 Q_DECLARE_METATYPE(Base::Vector3f)
 Q_DECLARE_METATYPE(Base::Vector3d)
 Q_DECLARE_METATYPE(Base::Matrix4D)
 Q_DECLARE_METATYPE(Base::Placement)
 Q_DECLARE_METATYPE(Base::Quantity)
 Q_DECLARE_METATYPE(QList<Base::Quantity>)
+#endif
 
 namespace Gui {
 namespace Dialog { class TaskPlacement; }
