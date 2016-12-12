@@ -291,7 +291,7 @@ MainWindow::MainWindow(QWidget * parent, Qt::WindowFlags f)
     d->activityTimer = new QTimer(this);
     d->activityTimer->setObjectName(QString::fromLatin1("activityTimer"));
     connect(d->activityTimer, SIGNAL(timeout()),this, SLOT(updateActions()));
-    d->activityTimer->setSingleShot(true);
+    d->activityTimer->setSingleShot(false);
     d->activityTimer->start(300);
 
     // show main window timer
@@ -1088,15 +1088,9 @@ void MainWindow::appendRecentFile(const QString& filename)
 
 void MainWindow::updateActions()
 {
-    static QTime cLastCall;
-
-    if (cLastCall.elapsed() > 250 && isVisible()) {
+    if (isVisible()) {
         Application::Instance->commandManager().testActive();
-        cLastCall.start();
     }
-
-    d->activityTimer->setSingleShot(true);
-    d->activityTimer->start(300);	
 }
 
 void MainWindow::switchToTopLevelMode()
