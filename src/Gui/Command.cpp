@@ -39,7 +39,6 @@
 #include "Application.h"
 #include "Document.h"
 #include "Selection.h"
-#include "HelpView.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "DlgUndoRedo.h"
