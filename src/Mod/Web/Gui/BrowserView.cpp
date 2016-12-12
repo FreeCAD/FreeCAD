@@ -50,6 +50,7 @@
 # include <QDesktopServices>
 # include <QMenu>
 # include <QDesktopWidget>
+# include <QSignalMapper>
 #endif
 
 #include "BrowserView.h"
@@ -57,7 +58,6 @@
 #include <Gui/Application.h>
 #include <Gui/MainWindow.h>
 #include <Gui/ProgressBar.h>
-#include <Gui/DownloadDialog.h>
 #include <Gui/Command.h>
 #include <Gui/OnlineDocumentation.h>
 #include <Gui/DownloadManager.h>
