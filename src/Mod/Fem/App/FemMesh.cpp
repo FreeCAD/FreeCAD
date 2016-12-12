@@ -56,6 +56,7 @@
 #include <boost/assign/list_of.hpp>
 #include <SMESH_Gen.hxx>
 #include <SMESH_Mesh.hxx>
+#include <SMESH_MeshEditor.hxx>
 #include <SMESH_Group.hxx>
 #include <SMDS_MeshGroup.hxx>
 #include <SMESHDS_GroupBase.hxx>
@@ -126,12 +127,119 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
 {
     _Mtrx = mesh._Mtrx;
 
+    // See file SMESH_I/SMESH_Gen_i.cxx in the git repo of smesh at https://git.salome-platform.org
 #if 1
-    // create a temporary file
-    Base::FileInfo fi(App::Application::getTempFileName().c_str());
-    mesh.myMesh->ExportUNV(fi.filePath().c_str());
-    this->myMesh->UNVToMesh(fi.filePath().c_str());
-    fi.deleteFile();
+    // 1. Get source mesh
+    SMESHDS_Mesh* srcMeshDS = mesh.myMesh->GetMeshDS();
+
+    // 2. Get target mesh
+    SMESHDS_Mesh* newMeshDS = this->myMesh->GetMeshDS();
+    SMESH_MeshEditor editor(this->myMesh);
+
+    // 3. Get elements to copy
+    SMDS_ElemIteratorPtr srcElemIt; SMDS_NodeIteratorPtr srcNodeIt;
+    srcElemIt = srcMeshDS->elementsIterator();
+    srcNodeIt = srcMeshDS->nodesIterator();
+
+    // 4. Copy elements
+    int iN;
+    const SMDS_MeshNode *nSrc, *nTgt;
+    std::vector< const SMDS_MeshNode* > nodes;
+    while (srcElemIt->more()) {
+        const SMDS_MeshElement * elem = srcElemIt->next();
+        // find / add nodes
+        nodes.resize(elem->NbNodes());
+        SMDS_ElemIteratorPtr nIt = elem->nodesIterator();
+        for (iN = 0; nIt->more(); ++iN) {
+            nSrc = static_cast<const SMDS_MeshNode*>( nIt->next() );
+            nTgt = newMeshDS->FindNode( nSrc->GetID());
+            if (!nTgt)
+                nTgt = newMeshDS->AddNodeWithID( nSrc->X(), nSrc->Y(), nSrc->Z(), nSrc->GetID());
+            nodes[iN] = nTgt;
+        }
+
+        // add elements
+        if (elem->GetType() != SMDSAbs_Node) {
+            int ID = elem->GetID();
+            const SMDS_MeshElement * newElem;
+            switch (elem->GetEntityType()) {
+            case SMDSEntity_Polyhedra:
+                newElem = editor.GetMeshDS()->
+                    AddPolyhedralVolumeWithID(nodes,
+                                              static_cast<const SMDS_VtkVolume*>(elem)->GetQuantities(),
+                                              ID);
+                break;
+            case SMDSEntity_Ball:
+            {
+                SMESH_MeshEditor::ElemFeatures elemFeat;
+                elemFeat.Init(static_cast<const SMDS_BallElement*>(elem)->GetDiameter());
+                elemFeat.SetID(ID);
+                newElem = editor.AddElement(nodes, elemFeat);
+                break;
+            }
+            default:
+                {
+                    SMESH_MeshEditor::ElemFeatures elemFeat(elem->GetType(), elem->IsPoly());
+                    elemFeat.SetID(ID);
+                    newElem = editor.AddElement(nodes, elemFeat);
+                    break;
+                }
+            }
+        }
+    }
+
+    // 4(b). Copy free nodes
+    if (srcNodeIt && srcMeshDS->NbNodes() != newMeshDS->NbNodes()) {
+        while (srcNodeIt->more()) {
+            nSrc = srcNodeIt->next();
+            if (nSrc->NbInverseElements() == 0) {
+                nTgt = newMeshDS->AddNodeWithID(nSrc->X(), nSrc->Y(), nSrc->Z(), nSrc->GetID());
+            }
+        }
+    }
+
+    // 5. Copy groups
+    SMESH_Mesh::GroupIteratorPtr gIt = mesh.myMesh->GetGroups();
+    while (gIt->more()) {
+        SMESH_Group* group = gIt->next();
+        const SMESHDS_GroupBase* groupDS = group->GetGroupDS();
+
+        // Check group type. We copy nodal groups containing nodes of copied element
+        SMDSAbs_ElementType groupType = groupDS->GetType();
+        if (groupType != SMDSAbs_Node && newMeshDS->GetMeshInfo().NbElements( groupType ) == 0)
+            continue; // group type differs from types of meshPart
+
+        // Find copied elements in the group
+        std::vector< const SMDS_MeshElement* > groupElems;
+        SMDS_ElemIteratorPtr eIt = groupDS->GetElements();
+        const SMDS_MeshElement* foundElem;
+        if (groupType == SMDSAbs_Node) {
+            while (eIt->more()) {
+                if ((foundElem = newMeshDS->FindNode( eIt->next()->GetID())))
+                    groupElems.push_back(foundElem);
+            }
+        }
+        else {
+            while (eIt->more())
+                if ((foundElem = newMeshDS->FindElement(eIt->next()->GetID())))
+                    groupElems.push_back(foundElem);
+        }
+
+        // Make a new group
+        if (!groupElems.empty()) {
+            int aId;
+            SMESH_Group* newGroupObj = this->myMesh->AddGroup(groupType, group->GetName(), aId);
+            SMESHDS_Group* newGroupDS = dynamic_cast<SMESHDS_Group*>(newGroupObj->GetGroupDS());
+            if (newGroupDS) {
+                SMDS_MeshGroup& smdsGroup = ((SMESHDS_Group*)newGroupDS)->SMDSGroup();
+                for (unsigned i = 0; i < groupElems.size(); ++i)
+                    smdsGroup.Add(groupElems[i]);
+            }
+        }
+    }
+
+    newMeshDS->Modified();
+
 #else
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
