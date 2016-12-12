@@ -25,7 +25,7 @@
 #define GUI_QUANTITYSPINBOX_H
 
 #include <QAbstractSpinBox>
-#include <Base/Quantity.h>
+#include <Gui/MetaTypes.h>
 #include "ExpressionBinding.h"
 
 #ifdef Q_MOC_RUN
