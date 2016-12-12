@@ -28,6 +28,7 @@
 #include <QUrl>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QAbstractListModel>
 
 class AutoSaver;
 class QFileIconProvider;
