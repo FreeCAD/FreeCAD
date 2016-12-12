@@ -215,36 +215,32 @@ void CmdDrawingNewPage::languageChange()
         int id = (*it)->property("TemplateId").toInt();
         QString orientation = (*it)->property("TemplateOrientation").toString();
         if (orientation.compare(QLatin1String("landscape"), Qt::CaseInsensitive) == 0)
-            orientation = QCoreApplication::translate("Drawing_NewPage", "Landscape", 0, QCoreApplication::CodecForTr);
+            orientation = QCoreApplication::translate("Drawing_NewPage", "Landscape");
         else if (orientation.compare(QLatin1String("portrait"), Qt::CaseInsensitive) == 0)
-            orientation = QCoreApplication::translate("Drawing_NewPage", "Portrait", 0, QCoreApplication::CodecForTr);
+            orientation = QCoreApplication::translate("Drawing_NewPage", "Portrait");
         QString info = (*it)->property("TemplateInfo").toString();
 
         if (info.isEmpty()) {
             (*it)->setText(QCoreApplication::translate(
-                "Drawing_NewPage", "%1%2 %3", 0,
-                QCoreApplication::CodecForTr)
+                "Drawing_NewPage", "%1%2 %3")
                 .arg(paper)
                 .arg(id)
                 .arg(orientation));
             (*it)->setToolTip(QCoreApplication::translate(
-                "Drawing_NewPage", "Insert new %1%2 %3 drawing", 0,
-                QCoreApplication::CodecForTr)
+                "Drawing_NewPage", "Insert new %1%2 %3 drawing")
                 .arg(paper)
                 .arg(id)
                 .arg(orientation));
         }
         else {
             (*it)->setText(QCoreApplication::translate(
-                "Drawing_NewPage", "%1%2 %3 (%4)", 0,
-                QCoreApplication::CodecForTr)
+                "Drawing_NewPage", "%1%2 %3 (%4)")
                 .arg(paper)
                 .arg(id)
                 .arg(orientation)
                 .arg(info));
             (*it)->setToolTip(QCoreApplication::translate(
-                "Drawing_NewPage", "Insert new %1%2 %3 (%4) drawing", 0,
-                QCoreApplication::CodecForTr)
+                "Drawing_NewPage", "Insert new %1%2 %3 (%4) drawing")
                 .arg(paper)
                 .arg(id)
                 .arg(orientation)

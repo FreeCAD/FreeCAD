@@ -255,8 +255,7 @@ int PropertyItem::decimals() const
 QVariant PropertyItem::toolTip(const App::Property* prop) const
 {
     QString str = QApplication::translate("App::Property",
-                                          prop->getDocumentation(),
-                                          0, QApplication::UnicodeUTF8);
+                                          prop->getDocumentation());
     return QVariant(str);
 }
 

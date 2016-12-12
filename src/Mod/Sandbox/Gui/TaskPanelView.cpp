@@ -172,18 +172,18 @@ public:
 
     void retranslateUi(QWidget *MainWindow2)
     {
-        MainWindow2->setWindowTitle(QApplication::translate("MainWindow2", "ActionBox Example", 0, QApplication::UnicodeUTF8));
-        actionNew->setText(QApplication::translate("MainWindow2", "Create new file", 0, QApplication::UnicodeUTF8));
-        actionLoad->setText(QApplication::translate("MainWindow2", "Load a file", 0, QApplication::UnicodeUTF8));
-        actionSave->setText(QApplication::translate("MainWindow2", "Save current file", 0, QApplication::UnicodeUTF8));
-        actionPrint->setText(QApplication::translate("MainWindow2", "Print file contents", 0, QApplication::UnicodeUTF8));
-        ActionGroup1->setProperty("headerText", QVariant(QApplication::translate("MainWindow2", "Choose Scheme", 0, QApplication::UnicodeUTF8)));
-        rbDefaultScheme->setText(QApplication::translate("MainWindow2", "Default", 0, QApplication::UnicodeUTF8));
-        rbXPBlueScheme->setText(QApplication::translate("MainWindow2", "XP Blue", 0, QApplication::UnicodeUTF8));
-        rbXPBlue2Scheme->setText(QApplication::translate("MainWindow2", "XP Blue 2", 0, QApplication::UnicodeUTF8));
-        rbVistaScheme->setText(QApplication::translate("MainWindow2", "Vista", 0, QApplication::UnicodeUTF8));
-        rbMacScheme->setText(QApplication::translate("MainWindow2", "MacOS", 0, QApplication::UnicodeUTF8));
-        rbAndroidScheme->setText(QApplication::translate("MainWindow2", "Android", 0, QApplication::UnicodeUTF8));
+        MainWindow2->setWindowTitle(QApplication::translate("MainWindow2", "ActionBox Example"));
+        actionNew->setText(QApplication::translate("MainWindow2", "Create new file"));
+        actionLoad->setText(QApplication::translate("MainWindow2", "Load a file"));
+        actionSave->setText(QApplication::translate("MainWindow2", "Save current file"));
+        actionPrint->setText(QApplication::translate("MainWindow2", "Print file contents"));
+        ActionGroup1->setProperty("headerText", QVariant(QApplication::translate("MainWindow2", "Choose Scheme")));
+        rbDefaultScheme->setText(QApplication::translate("MainWindow2", "Default"));
+        rbXPBlueScheme->setText(QApplication::translate("MainWindow2", "XP Blue"));
+        rbXPBlue2Scheme->setText(QApplication::translate("MainWindow2", "XP Blue 2"));
+        rbVistaScheme->setText(QApplication::translate("MainWindow2", "Vista"));
+        rbMacScheme->setText(QApplication::translate("MainWindow2", "MacOS"));
+        rbAndroidScheme->setText(QApplication::translate("MainWindow2", "Android"));
         Q_UNUSED(MainWindow2);
     } // retranslateUi
 
@@ -351,15 +351,15 @@ public:
 
     void retranslateUi(QWidget *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("TestTaskBox", "ActionBox Example", 0, QApplication::UnicodeUTF8));
-        label->setText(QApplication::translate("TestTaskBox", "ActionBoxes", 0, QApplication::UnicodeUTF8));
-        label_2->setText(QApplication::translate("TestTaskBox", "ActionLabels", 0, QApplication::UnicodeUTF8));
-        ActionLabel1->setText(QApplication::translate("TestTaskBox", "Simple clickable action", 0, QApplication::UnicodeUTF8));
-        ActionLabel2->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon", 0, QApplication::UnicodeUTF8));
+        MainWindow->setWindowTitle(QApplication::translate("TestTaskBox", "ActionBox Example"));
+        label->setText(QApplication::translate("TestTaskBox", "ActionBoxes"));
+        label_2->setText(QApplication::translate("TestTaskBox", "ActionLabels"));
+        ActionLabel1->setText(QApplication::translate("TestTaskBox", "Simple clickable action"));
+        ActionLabel2->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon"));
 #ifndef QT_NO_TOOLTIP
-        ActionLabel3->setToolTip(QApplication::translate("TestTaskBox", "Tooltip of the ActionLabel", 0, QApplication::UnicodeUTF8));
+        ActionLabel3->setToolTip(QApplication::translate("TestTaskBox", "Tooltip of the ActionLabel"));
 #endif // QT_NO_TOOLTIP
-        ActionLabel3->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon and tooltip", 0, QApplication::UnicodeUTF8));
+        ActionLabel3->setText(QApplication::translate("TestTaskBox", "Simple clickable action with icon and tooltip"));
         Q_UNUSED(MainWindow);
     } // retranslateUi
 };

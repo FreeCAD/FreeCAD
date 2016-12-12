@@ -440,14 +440,11 @@ Action * StdCmdWindowsMenu::createAction(void)
         QAction* window = pcAction->addAction(QObject::tr(sToolTipText));
         window->setCheckable(true);
         window->setToolTip(QCoreApplication::translate(
-            this->className(), sToolTipText, 0,
-            QCoreApplication::CodecForTr));
+            this->className(), sToolTipText));
         window->setStatusTip(QCoreApplication::translate(
-            this->className(), sStatusTip, 0,
-            QCoreApplication::CodecForTr));
+            this->className(), sStatusTip));
         window->setWhatsThis(QCoreApplication::translate(
-            this->className(), sWhatsThis, 0,
-            QCoreApplication::CodecForTr));
+            this->className(), sWhatsThis));
     }
 
     QAction* sep = pcAction->addAction(QLatin1String(""));

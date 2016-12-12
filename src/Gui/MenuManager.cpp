@@ -210,8 +210,7 @@ void MenuManager::setup(MenuItem* menuItems) const
                 // create a new menu
                 std::string menuName = (*it)->command();
                 QMenu* menu = menuBar->addMenu(
-                    QApplication::translate("Workbench", menuName.c_str(),
-                                            0, QApplication::UnicodeUTF8));
+                    QApplication::translate("Workbench", menuName.c_str()));
                 action = menu->menuAction();
                 menu->setObjectName(QString::fromLatin1(menuName.c_str()));
                 action->setObjectName(QString::fromLatin1(menuName.c_str()));
@@ -264,8 +263,7 @@ void MenuManager::setup(MenuItem* item, QMenu* menu) const
                     // Creste a submenu
                     std::string menuName = (*it)->command();
                     QMenu* submenu = menu->addMenu(
-                        QApplication::translate("Workbench", menuName.c_str(),
-                                                0, QApplication::UnicodeUTF8));
+                        QApplication::translate("Workbench", menuName.c_str()));
                     QAction* action = submenu->menuAction();
                     submenu->setObjectName(QString::fromLatin1((*it)->command().c_str()));
                     action->setObjectName(QString::fromLatin1((*it)->command().c_str()));
@@ -334,14 +332,12 @@ void MenuManager::retranslate(QMenu* menu) const
     if (cmd) {
         menu->setTitle(
             QApplication::translate(cmd->className(),
-                                    cmd->getMenuText(),
-                                    0, QCoreApplication::CodecForTr));
+                                    cmd->getMenuText()));
     }
     else {
         menu->setTitle(
             QApplication::translate("Workbench",
-                                    (const char*)menuName,
-                                    0, QApplication::UnicodeUTF8));
+                                    (const char*)menuName));
     }
     QList<QAction*> actions = menu->actions();
     for (QList<QAction*>::Iterator it = actions.begin(); it != actions.end(); ++it) {
