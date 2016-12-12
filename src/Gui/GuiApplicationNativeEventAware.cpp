@@ -43,7 +43,7 @@
 
 #ifdef _USE_3DCONNEXION_SDK
 //windows
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 Gui::GUIApplicationNativeEventAware* Gui::GUIApplicationNativeEventAware::gMouseInput = 0;
 #endif
 #endif //_USE_3DCONNEXION_SDK
@@ -66,14 +66,14 @@ Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware()
 #endif
 
 #ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     if (gMouseInput == this) {
         gMouseInput = 0;
         Base::Console().Log("3Dconnexion device detached.\n");
     }
 #endif
 //mac
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACX
     // if 3Dconnexion library was loaded at runtime
     if (InstallConnexionHandlers) {
         // Close our connection with the 3dx driver
@@ -103,13 +103,13 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 #endif
 
 #ifdef _USE_3DCONNEXION_SDK
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
     spaceballPresent = Is3dmouseAttached();
 
     if (spaceballPresent) {
         fLast3dmouseInputTime = 0;
 
-        if (InitializeRawInput(mainWindow->winId())){
+        if (InitializeRawInput((HWND)mainWindow->winId())){
             gMouseInput = this;
             qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
             Base::Console().Log("3Dconnexion device initialized.\n");
@@ -119,9 +119,9 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
     } else {
         Base::Console().Log("3Dconnexion device not attached.\n");
     }
-#endif // #ifdef Q_WS_WIN
+#endif // #ifdef Q_OS_WIN
 //mac
-#ifdef Q_WS_MACX
+#ifdef Q_OS_MACX
     OSStatus err;
     /* make sure the framework is installed */
     if (InstallConnexionHandlers == NULL)

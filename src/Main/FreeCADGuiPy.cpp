@@ -198,14 +198,14 @@ FreeCADGui_embedToWindow(PyObject * /*self*/, PyObject *args)
 #if defined(Q_OS_WIN)
     void* window = 0;
     str >> window;
-    WId winid = (WId)window;
+    HWND winid = (HWND)window;
 
     LONG oldLong = GetWindowLong(winid, GWL_STYLE);
     SetWindowLong(winid, GWL_STYLE,
     oldLong | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
     //SetWindowLong(widget->winId(), GWL_STYLE,
     //    WS_CHILD | WS_CLIPCHILDREN | WS_CLIPSIBLINGS);
-    SetParent(widget->winId(), winid);
+    SetParent((HWND)widget->winId(), winid);
 
     QEvent embeddingEvent(QEvent::EmbeddingControl);
     QApplication::sendEvent(widget, &embeddingEvent);

@@ -393,7 +393,7 @@ void ConstraintView::contextMenuEvent (QContextMenuEvent* event)
     CONTEXT_ITEM("Sketcher_SelectElementsAssociatedWithConstraints","Select Elements","Sketcher_SelectElementsAssociatedWithConstraints",doSelectConstraints,true)
 
     QAction* rename = menu.addAction(tr("Rename"), this, SLOT(renameCurrentItem())
-#ifndef Q_WS_MAC // on Mac F2 doesn't seem to trigger an edit signal
+#ifndef Q_OS_MAC // on Mac F2 doesn't seem to trigger an edit signal
         ,QKeySequence(Qt::Key_F2)
 #endif
         );
