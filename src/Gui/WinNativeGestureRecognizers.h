@@ -33,13 +33,13 @@
 #include <QGestureRecognizer>
 #include <QPinchGesture>
 
-#ifdef Q_WS_WIN
+#ifdef Q_OS_WIN
 #if QT_VERSION < 0x050000
 #if(WINVER >= 0x0601) // need Windows 7
 #define GESTURE_MESS
 #endif
 #endif // QT_VERSION < 0x050000
-#endif // Q_WS_WIN
+#endif // Q_OS_WIN
 
 #ifdef GESTURE_MESS
 

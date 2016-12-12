@@ -1019,7 +1019,7 @@ void MainWindow::showMainWindow()
     // starts a timer to check for the visibility of the main window and call
     // ShowWindow() if needed.
     // So far, this phenomena only appeared with Qt4.1.4
-#if defined(Q_WS_WIN) && (QT_VERSION == 0x040104)
+#if defined(Q_OS_WIN) && (QT_VERSION == 0x040104)
     WId id = this->winId();
     ShowWindow(id, SW_SHOW);
     std::cout << "Force to show main window" << std::endl;

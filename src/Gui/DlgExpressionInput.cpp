@@ -180,7 +180,7 @@ void DlgExpressionInput::setExpressionInputSize(int width, int height)
 
 void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_WS_WIN)
+#if 0//defined(Q_OS_WIN)
     if (QWidget::mouseGrabber() == this) {
         QList<QWidget*> childs = this->findChildren<QWidget*>();
         for (QList<QWidget*>::iterator it = childs.begin(); it != childs.end(); ++it) {
@@ -203,7 +203,7 @@ void DlgExpressionInput::mouseReleaseEvent(QMouseEvent* ev)
 
 void DlgExpressionInput::mousePressEvent(QMouseEvent* ev)
 {
-#if 0//defined(Q_WS_WIN)
+#if 0//defined(Q_OS_WIN)
     bool handled = false;
     if (QWidget::mouseGrabber() == this) {
         QList<QWidget*> childs = this->findChildren<QWidget*>();
@@ -241,7 +241,7 @@ void DlgExpressionInput::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);
 
-#if 0//defined(Q_WS_WIN)
+#if 0//defined(Q_OS_WIN)
     // This way we can fetch click events outside modal dialogs
     QWidget* widget = QApplication::activeModalWidget();
     if (widget) {
