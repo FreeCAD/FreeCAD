@@ -226,7 +226,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
         // update the tool tip
         QString accel = shortcut.toString(QKeySequence::NativeText);
         QString toolTip = QCoreApplication::translate(cmd->className(),
-            cmd->getToolTipText(), 0, QCoreApplication::UnicodeUTF8);
+            cmd->getToolTipText());
         if (!accel.isEmpty()) {
             if (!toolTip.isEmpty()) {
                 QString tip = QString::fromLatin1("%1 (%2)")
@@ -240,7 +240,7 @@ void DlgCustomKeyboardImp::on_buttonAssign_clicked()
 
         // update the status tip
         QString statusTip = QCoreApplication::translate(cmd->className(),
-            cmd->getStatusTip(), 0, QCoreApplication::UnicodeUTF8);
+            cmd->getStatusTip());
         if (statusTip.isEmpty())
             statusTip = toolTip;
         if (!accel.isEmpty()) {
@@ -281,12 +281,12 @@ void DlgCustomKeyboardImp::on_buttonClear_clicked()
 
         // update the tool tip
         QString toolTip = QCoreApplication::translate(cmd->className(),
-            cmd->getToolTipText(), 0, QCoreApplication::UnicodeUTF8);
+            cmd->getToolTipText());
         action->setToolTip(toolTip);
 
         // update the status tip
         QString statusTip = QCoreApplication::translate(cmd->className(),
-            cmd->getStatusTip(), 0, QCoreApplication::UnicodeUTF8);
+            cmd->getStatusTip());
         if (statusTip.isEmpty())
             statusTip = toolTip;
         action->setStatusTip(statusTip);
