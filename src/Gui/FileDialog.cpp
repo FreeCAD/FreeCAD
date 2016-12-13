@@ -151,12 +151,22 @@ QString FileDialog::getSaveFileName (QWidget * parent, const QString & caption, 
     // before showing the file dialog.
 #if defined(FC_OS_LINUX)
     QList<QUrl> urls;
+
+#if QT_VERSION >= 0x050000
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+#else
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+#endif
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
     urls << QUrl::fromLocalFile(QDir::currentPath());
@@ -232,12 +242,22 @@ QString FileDialog::getOpenFileName(QWidget * parent, const QString & caption, c
 
 #if defined(FC_OS_LINUX)
     QList<QUrl> urls;
+
+#if QT_VERSION >= 0x050000
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+#else
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+#endif
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
     urls << QUrl::fromLocalFile(QDir::currentPath());
@@ -292,12 +312,22 @@ QStringList FileDialog::getOpenFileNames (QWidget * parent, const QString & capt
 
 #if defined(FC_OS_LINUX)
     QList<QUrl> urls;
+
+#if QT_VERSION >= 0x050000
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    urls << QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+#else
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DesktopLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::DocumentsLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::HomeLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MusicLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::PicturesLocation));
     urls << QUrl::fromLocalFile(QDesktopServices::storageLocation(QDesktopServices::MoviesLocation));
+#endif
     urls << QUrl::fromLocalFile(getWorkingDirectory());
     urls << QUrl::fromLocalFile(restoreLocation());
     urls << QUrl::fromLocalFile(QDir::currentPath());
