@@ -9,7 +9,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
 

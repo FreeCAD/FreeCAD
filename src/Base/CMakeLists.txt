@@ -53,11 +53,7 @@ endif(MSVC)
 
 # needed for OpenSUSE
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set(FreeCADBase_LIBS
-        ${FreeCADBase_LIBS}
-        -lutil
-        -ldl
-    )
+    list(APPEND FreeCADBase_LIBS -lutil -ldl)
 endif()
 
 generate_from_xml(BaseClassPy)
