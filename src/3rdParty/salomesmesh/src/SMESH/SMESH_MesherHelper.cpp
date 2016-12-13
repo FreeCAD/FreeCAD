@@ -4584,7 +4584,7 @@ namespace { // Structures used by FixQuadraticElements()
       SMDS_ElemIteratorPtr faceIter( new TIterOnIter( faceIterVec ));
 
       // a seacher to check if a volume is close to a concave face
-      std::auto_ptr< SMESH_ElementSearcher > faceSearcher
+      std::unique_ptr< SMESH_ElementSearcher > faceSearcher
         ( SMESH_MeshAlgos::GetElementSearcher( *theHelper.GetMeshDS(), faceIter ));
 
       // classifier
