@@ -73,17 +73,21 @@ DlgCustomActionsImp::DlgCustomActionsImp( QWidget* parent )
     
     d = QDir(systemMacroDirStr, QLatin1String("*.FCMacro *.py"));
     
-    if(d.exists()) {
-	for (unsigned int i=0; i<d.count(); i++ ) {
-	    actionMacros->insertItem(0,d[i],QVariant(true));
-	}
+    if (d.exists()) {
+        for (unsigned int i=0; i<d.count(); i++ ) {
+            actionMacros->insertItem(0,d[i],QVariant(true));
+        }
     }
 
     QStringList labels; labels << tr("Icons") << tr("Macros");
     actionListWidget->setHeaderLabels(labels);
     actionListWidget->header()->hide();
     actionListWidget->setIconSize(QSize(32, 32));
+#if QT_VERSION >= 0x050000
+    actionListWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+#else
     actionListWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+#endif
 
     showActions();
 }

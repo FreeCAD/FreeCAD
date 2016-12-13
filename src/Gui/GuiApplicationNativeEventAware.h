@@ -26,6 +26,9 @@
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
+#if QT_VERSION >= 0x050000
+#include <QAbstractNativeEventFilter>
+#endif
 
 class QMainWindow;
 
@@ -62,6 +65,25 @@ extern void CleanupConnexionHandlers(void) __attribute__((weak_import));
 
 namespace Gui
 {
+#if QT_VERSION >= 0x050000
+    class RawInputEventFilter : public QAbstractNativeEventFilter
+    {
+    public:
+        typedef bool (*EventFilter)(void *message, long *result);
+        RawInputEventFilter(EventFilter) {
+        }
+        virtual ~RawInputEventFilter() {
+        }
+
+        virtual bool nativeEventFilter(const QByteArray & /*eventType*/, void *message, long *result) {
+            return eventFilter(message, result);
+        }
+
+    private:
+        EventFilter eventFilter;
+    };
+#endif
+
     class GUIApplicationNativeEventAware : public QApplication
     {
         Q_OBJECT
