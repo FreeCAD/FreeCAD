@@ -101,7 +101,7 @@ public:
     }
 };
 
-class GuiExport PropertyItem : virtual public QObject, public Base::BaseClass, public ExpressionBinding
+class GuiExport PropertyItem : public QObject, public ExpressionBinding
 {
     Q_OBJECT
     PROPERTYITEM_HEADER
@@ -128,8 +128,8 @@ public:
        childs which like to be informed of a binding*/
     virtual void bind(const App::Property& prop);
     virtual void bind(const App::ObjectIdentifier& _path);
-    virtual void propertyBound()  {};
-       
+    virtual void propertyBound()  {}
+
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
     void appendChild(PropertyItem *child);
