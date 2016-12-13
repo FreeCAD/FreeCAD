@@ -14,6 +14,7 @@ cmake_minimum_required(VERSION 2.8.0 FATAL_ERROR)
 
 if(COMMAND cmake_policy)
     cmake_policy(SET CMP0003 NEW)
+    cmake_policy(SET CMP0020 NEW)
     # added in cmake 3.0
     if(POLICY CMP0050)
         cmake_policy(SET CMP0050 OLD)
@@ -714,7 +715,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     # It adds a reverse dependency to solve this
     # This has the unfortunate side effect that some files are always rebuilt
     # There is probably a cleaner solution than this
-    macro(fc_wrap_cpp outfiles )
+    macro(fc_wrap_cpp outfiles)
         # get include dirs
         QT4_GET_MOC_FLAGS(moc_flags)
         QT4_EXTRACT_OPTIONS(moc_files moc_options moc_target ${ARGN})

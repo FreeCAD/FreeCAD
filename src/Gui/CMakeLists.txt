@@ -67,14 +67,12 @@ IF(SPNAV_FOUND)
     include_directories(
         ${SPNAV_INCLUDE_DIR}
     )
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
+    list(APPEND FreeCADGui_LIBS
         ${SPNAV_LIBRARIES}
     )
     find_package(X11 QUIET)
     if (X11_FOUND)
-        set(FreeCADGui_LIBS
-            ${FreeCADGui_LIBS}
+        list(APPEND FreeCADGui_LIBS
             ${X11_X11_LIB}
         )
     endif(X11_FOUND)
@@ -85,8 +83,7 @@ IF(OCULUS_FOUND)
     include_directories(
         ${OCULUS_INCLUDE_DIRS}
     )
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
+    list(APPEND FreeCADGui_LIBS
         ${OCULUS_LIBRARIES}
     )
 ENDIF(OCULUS_FOUND)
@@ -96,8 +93,7 @@ if(SHIBOKEN_INCLUDE_DIR)
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
+    list(APPEND FreeCADGui_LIBS
         ${SHIBOKEN_LIBRARY}
     )
 endif(SHIBOKEN_INCLUDE_DIR)
@@ -109,8 +105,7 @@ if(PYSIDE_INCLUDE_DIR)
         ${PYSIDE_INCLUDE_DIR}/QtCore
         ${PYSIDE_INCLUDE_DIR}/QtGui
     )
-    set(FreeCADGui_LIBS
-        ${FreeCADGui_LIBS}
+    list(APPEND FreeCADGui_LIBS
         ${PYSIDE_LIBRARY}
     )
 endif(PYSIDE_INCLUDE_DIR)
