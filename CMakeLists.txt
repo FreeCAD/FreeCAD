@@ -722,7 +722,10 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             find_package(Qt5UiTools)
             find_package(Qt5Network)
             find_package(Qt5Concurrent)
-            #find_package(Qt5WebEngine)
+            if (NOT WIN32)
+            # Disable for Windows for now since building the Qt sources always fails
+            find_package(Qt5WebKitWidgets)
+            endif()
         endif(BUILD_GUI)
 
         IF(NOT Qt5Core_FOUND)
