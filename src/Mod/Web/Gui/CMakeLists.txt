@@ -13,10 +13,10 @@ set(WebGui_LIBS
 
 if(BUILD_QT5)
     include_directories(
-        ${Qt5WebEngine_INCLUDE_DIRS}
+        ${Qt5WebKitWidgets_INCLUDE_DIRS}
     )
     list(APPEND WebGui_LIBS
-        ${Qt5WebEngine_LIBRARIES}
+        ${Qt5WebKitWidgets_LIBRARIES}
     )
     qt5_add_resources(Web_QRC_SRCS Resources/Web.qrc)
 else()
