@@ -47,7 +47,6 @@ SET(PathScripts_SRCS
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProfile.py
     PathScripts/PathProfileEdges.py
-    PathScripts/PathRemote.py
     PathScripts/PathSanity.py
     PathScripts/PathSelection.py
     PathScripts/PathSimpleCopy.py
@@ -73,6 +72,7 @@ SET(PathScripts_SRCS
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
     PathTests/PathTestUtils.py
+    PathTests/TestPathDepthParams.py
     PathTests/TestPathGeom.py
     PathTests/TestPathPost.py
     PathTests/__init__.py

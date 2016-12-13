@@ -114,12 +114,12 @@ class ObjectFace:
             bb = ss.Shape.BoundBox  # parent boundbox
             subobj = ss.Shape.getElement(sub)
             fbb = subobj.BoundBox  # feature boundbox
-            obj.StartDepth = bb.ZMax
+            obj.StartDepth = bb.ZMax + 1
             obj.ClearanceHeight = bb.ZMax + 5.0
             obj.SafeHeight = bb.ZMax + 3.0
 
             if fbb.ZMax == fbb.ZMin and fbb.ZMax == bb.ZMax:  # top face
-                obj.FinalDepth = bb.ZMin
+                obj.FinalDepth = fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMax == bb.ZMax:  # vertical face, full cut
                 obj.FinalDepth = fbb.ZMin
             elif fbb.ZMax > fbb.ZMin and fbb.ZMin > bb.ZMin:  # internal vertical wall
@@ -211,6 +211,7 @@ class ObjectFace:
 
     # To reload this from FreeCAD, use: import PathScripts.PathFace; reload(PathScripts.PathFace)
     def execute(self, obj):
+        print "in execute"
 
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -224,7 +225,7 @@ class ObjectFace:
             self.vertFeed = 100
             self.horizFeed = 100
             self.vertRapid = 100
-            self.horiRrapid = 100
+            self.horizRrapid = 100
             self.radius = 0.25
             obj.ToolNumber = 0
             obj.ToolDescription = "UNDEFINED"
@@ -511,6 +512,8 @@ class TaskPanel:
         for i in self.obj.Base:
             for sub in i[1]:
                 self.form.baseList.addItem(i[0].Name + "." + sub)
+        #self.obj.Proxy.execute(self.obj)
+        FreeCAD.ActiveDocument.recompute()
 
     def deleteBase(self):
         dlist = self.form.baseList.selectedItems()
@@ -533,11 +536,10 @@ class TaskPanel:
                     newlist.append(i)
             self.form.baseList.takeItem(self.form.baseList.row(d))
         self.obj.Base = newlist
-        self.obj.Proxy.execute(self.obj)
+        #self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
     def itemActivated(self):
-        print self.form.baseList.selectedItems()[0].text()
         FreeCADGui.Selection.clearSelection()
         slist = self.form.baseList.selectedItems()
         for i in slist:
@@ -561,7 +563,7 @@ class TaskPanel:
             newlist.append(item)
         self.obj.Base = newlist
 
-        self.obj.Proxy.execute(self.obj)
+        #self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
     def getStandardButtons(self):
