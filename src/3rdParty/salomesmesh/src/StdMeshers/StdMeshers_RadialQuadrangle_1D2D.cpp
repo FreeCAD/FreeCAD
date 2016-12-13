@@ -1137,7 +1137,7 @@ bool StdMeshers_RadialQuadrangle_1D2D::Evaluate(SMESH_Mesh& aMesh,
 
   myHelper = new SMESH_MesherHelper( aMesh );
   myHelper->SetSubShape( aShape );
-  auto_ptr<SMESH_MesherHelper> helperDeleter( myHelper );
+  unique_ptr<SMESH_MesherHelper> helperDeleter( myHelper );
 
   TNodeDistributor* algo1d = TNodeDistributor::GetDistributor(aMesh);
 

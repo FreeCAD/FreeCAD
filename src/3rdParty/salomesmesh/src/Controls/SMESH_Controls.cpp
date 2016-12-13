@@ -2917,7 +2917,7 @@ void ConnectedElements::SetPoint( double x, double y, double z )
   // find myNodeID by myXYZ if possible
   if ( myMeshModifTracer.GetMesh() )
   {
-    auto_ptr<SMESH_ElementSearcher> searcher
+    unique_ptr<SMESH_ElementSearcher> searcher
       ( SMESH_MeshAlgos::GetElementSearcher( (SMDS_Mesh&) *myMeshModifTracer.GetMesh() ));
 
     vector< const SMDS_MeshElement* > foundElems;

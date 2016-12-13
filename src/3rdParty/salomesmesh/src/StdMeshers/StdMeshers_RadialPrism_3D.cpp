@@ -161,7 +161,7 @@ bool StdMeshers_RadialPrism_3D::Compute(SMESH_Mesh& aMesh, const TopoDS_Shape& a
   myHelper = new SMESH_MesherHelper( aMesh );
   myHelper->IsQuadraticSubMesh( aShape );
   // to delete helper at exit from Compute()
-  std::auto_ptr<SMESH_MesherHelper> helperDeleter( myHelper );
+  std::unique_ptr<SMESH_MesherHelper> helperDeleter( myHelper );
 
   // get 2 shells
   TopoDS_Solid solid = TopoDS::Solid( aShape );

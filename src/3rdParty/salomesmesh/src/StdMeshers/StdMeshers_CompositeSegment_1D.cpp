@@ -173,7 +173,7 @@ namespace {
               // check if an edge is a part of a complex side
               TopoDS_Face face;
               TopoDS_Edge edge = TopoDS::Edge( subMesh->GetSubShape() );
-              auto_ptr< StdMeshers_FaceSide > side
+              unique_ptr< StdMeshers_FaceSide > side
                 ( StdMeshers_CompositeSegment_1D::GetFaceSide(*subMesh->GetFather(),
                                                               edge, face, false ));
               if ( side->NbEdges() > 1 && side->NbSegments() )
@@ -287,7 +287,7 @@ void StdMeshers_CompositeSegment_1D::SetEventListener(SMESH_subMesh* subMesh)
     // check if an edge is a part of a complex side
     TopoDS_Face face;
     TopoDS_Edge edge = TopoDS::Edge( subMesh->GetSubShape() );
-    auto_ptr< StdMeshers_FaceSide > side
+    unique_ptr< StdMeshers_FaceSide > side
       ( StdMeshers_CompositeSegment_1D::GetFaceSide(*subMesh->GetFather(),edge, face, false ));
     if ( side->NbEdges() > 1 ) { // complex
 
@@ -368,7 +368,7 @@ bool StdMeshers_CompositeSegment_1D::Compute(SMESH_Mesh &         aMesh,
 
   // Get edges to be discretized as a whole
   TopoDS_Face nullFace;
-  auto_ptr< StdMeshers_FaceSide > side( GetFaceSide(aMesh, edge, nullFace, true ));
+  unique_ptr< StdMeshers_FaceSide > side( GetFaceSide(aMesh, edge, nullFace, true ));
   //side->dump("IN COMPOSITE SEG");
 
   if ( side->NbEdges() < 2 )
@@ -384,7 +384,7 @@ bool StdMeshers_CompositeSegment_1D::Compute(SMESH_Mesh &         aMesh,
   }
 
   // Compute node parameters
-  auto_ptr< BRepAdaptor_CompCurve > C3d ( side->GetCurve3d() );
+  unique_ptr< BRepAdaptor_CompCurve > C3d ( side->GetCurve3d() );
   double f = C3d->FirstParameter(), l = C3d->LastParameter();
   list< double > params;
   if ( !computeInternalParameters ( aMesh, *C3d, side->Length(), f, l, params, false ))
