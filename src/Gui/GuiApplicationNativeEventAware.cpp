@@ -111,7 +111,11 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow *window)
 
         if (InitializeRawInput((HWND)mainWindow->winId())){
             gMouseInput = this;
+#if QT_VERSION >= 0x050000
+            qApp->installNativeEventFilter(new Gui::RawInputEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter));
+#else
             qApp->setEventFilter(Gui::GUIApplicationNativeEventAware::RawInputEventFilter);
+#endif
             Base::Console().Log("3Dconnexion device initialized.\n");
         } else {
             Base::Console().Log("3Dconnexion device is attached, but not initialized.\n");

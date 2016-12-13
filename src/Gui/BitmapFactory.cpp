@@ -37,7 +37,7 @@
 # include <sstream>
 #endif
 
-#ifdef FC_OS_WIN32
+#if defined (FC_OS_WIN32) && QT_VERSION < 0x050000
 #define QTWEBKIT
 #endif
 

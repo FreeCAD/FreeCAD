@@ -45,6 +45,9 @@
 # include <QStatusBar>
 # include <QTimer>
 # include <QToolBar>
+#if QT_VERSION >= 0x050000
+# include <QUrlQuery>
+#endif
 # include <QWhatsThis>
 #endif
 
@@ -1476,8 +1479,15 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& url)
 //#ifndef QT_NO_OPENSSL
         else if (it->scheme().toLower() == QLatin1String("https")) {
             QUrl url = *it;
+#if QT_VERSION >= 0x050000
+            QUrlQuery urlq(url);
+            if (urlq.hasQueryItem(QLatin1String("sid"))) {
+                urlq.removeAllQueryItems(QLatin1String("sid"));
+                url.setQuery(urlq);
+#else
             if (it->hasEncodedQueryItem(QByteArray("sid"))) {
                 url.removeEncodedQueryItem(QByteArray("sid"));
+#endif
                 url.setScheme(QLatin1String("http"));
             }
             Gui::Dialog::DownloadManager* dm = Gui::Dialog::DownloadManager::getInstance();

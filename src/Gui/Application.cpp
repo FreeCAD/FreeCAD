@@ -34,6 +34,9 @@
 # include <QFileInfo>
 # include <QLocale>
 # include <QMessageBox>
+#if QT_VERSION >= 0x050000
+# include <QMessageLogContext>
+#endif
 # include <QPointer>
 # include <QGLFormat>
 # include <QGLPixelBuffer>
@@ -1372,13 +1375,23 @@ CommandManager &Application::commandManager(void)
 }
 
 //**************************************************************************
-// Init, Destruct and ingleton
+// Init, Destruct and singleton
 
+#if QT_VERSION >= 0x050000
+typedef void (*_qt_msg_handler_old)(QtMsgType, const QMessageLogContext &, const QString &);
+#else
 typedef void (*_qt_msg_handler_old)(QtMsgType type, const char *msg);
+#endif
 _qt_msg_handler_old old_qtmsg_handler = 0;
 
+#if QT_VERSION >= 0x050000
+void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &qmsg)
+{
+    const QChar *msg = qmsg.unicode();
+#else
 void messageHandler(QtMsgType type, const char *msg)
 {
+#endif
 #ifdef FC_DEBUG
     switch (type)
     {
@@ -1397,7 +1410,11 @@ void messageHandler(QtMsgType type, const char *msg)
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
+#if QT_VERSION >=0x050000
+        (*old_qtmsg_handler)(type, context, qmsg);
+#else
         (*old_qtmsg_handler)(type, msg);
+#endif
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
@@ -1426,7 +1443,11 @@ void messageHandlerCoin(const SoError * error, void * /*userdata*/)
         }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
+#if QT_VERSION >=0x050000
+        (*old_qtmsg_handler)(QtDebugMsg, QMessageLogContext(), QString::fromLatin1(msg));
+#else
         (*old_qtmsg_handler)(QtDebugMsg, msg);
+#endif
 #endif
     }
     else if (error) {
@@ -1457,7 +1478,11 @@ void Application::initApplication(void)
         initTypes();
         new Base::ScriptProducer( "FreeCADGuiInit", FreeCADGuiInit );
         init_resources();
+#if QT_VERSION >=0x050000
+        old_qtmsg_handler = qInstallMessageHandler(messageHandler);
+#else
         old_qtmsg_handler = qInstallMsgHandler(messageHandler);
+#endif
         init = true;
     }
     catch (...) {
