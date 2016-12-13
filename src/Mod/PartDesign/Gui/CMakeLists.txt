@@ -56,7 +56,11 @@ set(PartDesignGui_MOC_HDRS
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
 
-qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+if(BUILD_QT5)
+    qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+else()
+    qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+endif()
 
 set(PartDesignGui_UIC_SRCS
     TaskFeaturePick.ui
@@ -83,7 +87,12 @@ set(PartDesignGui_UIC_SRCS
     TaskLoftParameters.ui
     DlgReference.ui
 )
-qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+
+if(BUILD_QT5)
+    qt5_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+endif()
 
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp

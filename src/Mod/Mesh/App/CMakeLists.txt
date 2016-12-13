@@ -13,12 +13,20 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
 )
 
-
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
     FreeCADBase
     FreeCADApp
 )
+
+if (BUILD_QT5)
+    include_directories(
+        ${Qt5Concurrent_INCLUDE_DIRS}
+    )
+    list(APPEND Mesh_LIBS
+        ${Qt5Concurrent_LIBRARIES}
+    )
+endif()
 
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)

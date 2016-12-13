@@ -38,12 +38,17 @@ set(MeshPartGui_MOC_HDRS
 fc_wrap_cpp(MeshPartGui_MOC_SRCS ${MeshPartGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${MeshPartGui_MOC_SRCS})
 
-qt4_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
-
 set(MeshPartGui_UIC_SRCS
     Tessellation.ui
 )
-qt4_wrap_ui(MeshPartGui_UIC_HDRS ${MeshPartGui_UIC_SRCS})
+
+if(BUILD_QT5)
+    qt5_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
+    qt5_wrap_ui(MeshPartGui_UIC_HDRS ${MeshPartGui_UIC_SRCS})
+else()
+    qt4_add_resources(MeshPartGui_QRC_SRCS Resources/MeshPart.qrc)
+    qt4_wrap_ui(MeshPartGui_UIC_HDRS ${MeshPartGui_UIC_SRCS})
+endif()
 
 SET(MeshPartGui_SRCS
     ${MeshPartGui_QRC_SRCS}
