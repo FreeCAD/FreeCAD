@@ -28,8 +28,6 @@ from PySide import QtCore, QtGui
 from PathScripts.PathPostProcessor import PostProcessor
 from PathScripts.PathPreferences import PathPreferences
 import Draft
-import os
-import glob
 
 
 FreeCADGui = None
@@ -331,11 +329,8 @@ class TaskPanel:
         else:
             for o in FreeCADGui.Selection.getCompleteSelection():
                 baseindex = self.form.cboBaseObject.findText(o.Name, QtCore.Qt.MatchFixedString)
-        print baseindex
         if baseindex >= 0:
-            self.form.cboBaseObject.blockSignals(True)
             self.form.cboBaseObject.setCurrentIndex(baseindex)
-            self.form.cboBaseObject.blockSignals(False)
 
 
     def open(self):

@@ -22,16 +22,9 @@
 # *                                                                         *
 # ***************************************************************************
 '''PathKurveUtils - functions needed for using libarea (created by Dan Heeks) for making simple CNC profile paths '''
-import FreeCAD
-from FreeCAD import Vector
-import FreeCADGui as Gui
 import Part
-import DraftGeomUtils
-import DraftVecUtils
-from DraftGeomUtils import geomType
 import math
 import area
-import Path
 from PathScripts import PathUtils
 from nc.nc import *
 import PathScripts.nc.iso
@@ -209,7 +202,7 @@ def profile(curve, side_of_line, radius=1.0, vertfeed=0.0, horizfeed=0.0, offset
     layer_count = int((start_depth - final_depth) / stepdown)
     if layer_count * stepdown + 0.00001 < start_depth - final_depth:
         layer_count += 1
-    current_start_depth = start_depth
+    # current_start_depth = start_depth
     prev_depth = start_depth
     for i in range(1, layer_count + 1):
         if i == layer_count:
@@ -388,7 +381,7 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
     # do multiple depths
     depths = depthparams.get_depths()
 
-    current_start_depth = depthparams.start_depth
+    # current_start_depth = depthparams.start_depth
 
     # tags
     if len(tags) > 0:
@@ -532,7 +525,7 @@ class Tag:
 
         height_above_depth = tag_top_depth - depth
         ramp_width_at_depth = height_above_depth / math.tan(self.angle)
-        cut_depth = start_depth - depth
+        # cut_depth = start_depth - depth
         half_flat_top = radius + self.width / 2
 
         d = curve.PointToPerim(self.p)
@@ -574,7 +567,7 @@ class Tag:
     def get_z_at_perim(self, current_perim, curve, radius, start_depth, depth, final_depth):
         # return the z for this position on the kurve ( specified by current_perim ), for this tag
         # if the position is not within the tag, then depth is returned
-        cut_depth = start_depth - depth
+        # cut_depth = start_depth - depth
         half_flat_top = radius + self.width / 2
 
         z = depth

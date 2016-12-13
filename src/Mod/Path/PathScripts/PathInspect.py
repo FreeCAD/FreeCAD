@@ -25,7 +25,7 @@
 from PySide import QtCore, QtGui
 import FreeCAD
 import FreeCADGui
-
+import Path
 # Qt tanslation handling
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
@@ -37,21 +37,21 @@ except AttributeError:
         return QtGui.QApplication.translate(context, text, disambig)
 
 
-class OldHighlighter(QtGui.QSyntaxHighlighter):
+# class OldHighlighter(QtGui.QSyntaxHighlighter):
 
-    def highlightBlock(self, text):
+#     def highlightBlock(self, text):
 
-        myClassFormat = QtGui.QTextCharFormat()
-        myClassFormat.setFontWeight(QtGui.QFont.Bold)
-        myClassFormat.setForeground(QtCore.Qt.green)
-        # the regex pattern to be colored
-        pattern = "(G.*?|M.*?)\\s"
-        expression = QtCore.QRegExp(pattern)
-        index = text.index(expression)
-        while index >= 0:
-            length = expression.matchedLength()
-            setFormat(index, length, myClassFormat)
-            index = text.index(expression, index + length)
+#         myClassFormat = QtGui.QTextCharFormat()
+#         myClassFormat.setFontWeight(QtGui.QFont.Bold)
+#         myClassFormat.setForeground(QtCore.Qt.green)
+#         # the regex pattern to be colored
+#         pattern = "(G.*?|M.*?)\\s"
+#         expression = QtCore.QRegExp(pattern)
+#         index = text.index(expression)
+#         while index >= 0:
+#             length = expression.matchedLength()
+#             setFormat(index, length, myClassFormat)
+#             index = text.index(expression, index + length)
 
 
 class GCodeHighlighter(QtGui.QSyntaxHighlighter):
@@ -110,10 +110,20 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 class GCodeEditorDialog(QtGui.QDialog):
 
-    def __init__(self, parent=FreeCADGui.getMainWindow()):
-
+    def __init__(self, PathObj, parent=FreeCADGui.getMainWindow()):
+        self.PathObj = PathObj
         QtGui.QDialog.__init__(self, parent)
         layout = QtGui.QVBoxLayout(self)
+
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Path")
+        c = p.GetUnsigned("DefaultHighlightPathColor", 4286382335 )
+        Q = QtGui.QColor(int((c >> 24) & 0xFF), int((c >> 16) & 0xFF), int((c >> 8) & 0xFF))
+        highlightcolor = (Q.red()/255., Q.green()/255., Q.blue()/255., Q.alpha()/255.)
+
+        self.selectionobj = FreeCAD.ActiveDocument.addObject("Path::Feature","selection")
+        self.selectionobj.ViewObject.LineWidth = 4
+        self.selectionobj.ViewObject.NormalColor = highlightcolor
+        self.selectionobj.ViewObject.ShowFirstRapid = False
 
         # nice text editor widget for editing the gcode
         self.editor = QtGui.QTextEdit()
@@ -140,6 +150,53 @@ class GCodeEditorDialog(QtGui.QDialog):
         layout.addWidget(self.buttons)
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
+        self.editor.selectionChanged.connect(self.hightlightpath)
+        self.finished.connect(self.cleanup)
+
+    def cleanup(self):
+        FreeCAD.ActiveDocument.removeObject(self.selectionobj.Name)
+
+    def hightlightpath(self):
+        cursor = self.editor.textCursor()
+        sp = cursor.selectionStart()
+        ep = cursor.selectionEnd()
+        cursor.setPosition(sp)
+        startrow = cursor.blockNumber()
+        cursor.setPosition(ep)
+        endrow = cursor.blockNumber()
+
+        commands = self.PathObj.Commands
+
+        #Derive the starting position for the first selected command
+        prevX = prevY = prevZ = None
+        prevcommands = commands[:startrow]
+        prevcommands.reverse()
+        for c in prevcommands:
+            if prevX is None:
+                if c.Parameters.get("X") is not None:
+                    prevX = c.Parameters.get("X")
+            if prevY is None:
+                if c.Parameters.get("Y") is not None:
+                    prevY = c.Parameters.get("Y")
+            if prevZ is None:
+                if c.Parameters.get("Z") is not None:
+                    prevZ = c.Parameters.get("Z")
+            if prevX is not None and prevY is not None and prevZ is not None:
+                break
+        if prevX is None:
+            prevX = 0.0
+        if prevY is None:
+            prevY = 0.0
+        if prevZ is None:
+            prevZ = 0.0
+
+        #Build a new path with selection
+        p = Path.Path()
+        firstrapid = Path.Command("G0", {"X": prevX, "Y":prevY, "Z":prevZ})
+
+        selectionpath = [firstrapid] + commands[startrow:endrow +1]
+        p.Commands = selectionpath
+        self.selectionobj.Path = p
 
 
 def show(obj):
@@ -147,7 +204,7 @@ def show(obj):
 
     if hasattr(obj, "Path"):
         if obj.Path:
-            dia = GCodeEditorDialog()
+            dia = GCodeEditorDialog(obj.Path)
             dia.editor.setText(obj.Path.toGCode())
             result = dia.exec_()
             # exec_() returns 0 or 1 depending on the button pressed (Ok or

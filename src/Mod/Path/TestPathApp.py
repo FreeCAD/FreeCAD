@@ -27,3 +27,5 @@ import TestApp
 from PathTests.TestPathPost import PathPostTestCases
 
 from PathTests.TestPathGeom import TestPathGeom
+from PathTests.TestPathDepthParams import depthTestCases
+

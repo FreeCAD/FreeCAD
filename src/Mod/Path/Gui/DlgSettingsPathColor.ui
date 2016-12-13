@@ -6,192 +6,255 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>359</width>
-    <height>282</height>
+    <width>310</width>
+    <height>304</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Path colors</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QFormLayout" name="formLayout">
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBoxDefaultColors">
      <property name="title">
       <string>Default Path colors</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_6">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Default normal path color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultNormalPathColor">
-          <property name="toolTip">
-           <string>The default color for new shapes</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>0</red>
-            <green>170</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultNormalPathColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_9">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Default pathline width</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="Gui::PrefSpinBox" name="DefaultPathLineWidth">
-          <property name="toolTip">
-           <string>The default line thickness for new shapes</string>
-          </property>
-          <property name="suffix">
-           <string>px</string>
-          </property>
-          <property name="maximum">
-           <number>9</number>
-          </property>
-          <property name="value">
-           <number>1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultPathLineWidth</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_10">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Default path marker color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultPathMarkerColor">
-          <property name="toolTip">
-           <string>The default line color for new shapes</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>85</red>
-            <green>255</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultPathMarkerColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="minimumSize">
-           <size>
-            <width>182</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Rapid path color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultRapidPathColor">
-          <property name="toolTip">
-           <string>The default line color for new shapes</string>
-          </property>
-          <property name="color">
-           <color>
-            <red>170</red>
-            <green>0</green>
-            <blue>0</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultRapidPathColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Machine extents color</string>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="1">
-         <widget class="Gui::PrefColorButton" name="DefaultExtentsColor">
-          <property name="prefEntry" stdset="0">
-           <cstring>DefaultExtentsColor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Path</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="minimumSize">
          <size>
-          <width>28</width>
-          <height>20</height>
+          <width>182</width>
+          <height>0</height>
          </size>
         </property>
-       </spacer>
+        <property name="text">
+         <string>Default normal path color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultNormalPathColor">
+        <property name="toolTip">
+         <string>The default color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>0</red>
+          <green>170</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultNormalPathColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Default pathline width</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="DefaultPathLineWidth">
+        <property name="toolTip">
+         <string>The default line thickness for new shapes</string>
+        </property>
+        <property name="suffix">
+         <string>px</string>
+        </property>
+        <property name="maximum">
+         <number>9</number>
+        </property>
+        <property name="value">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultPathLineWidth</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Default path marker color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultPathMarkerColor">
+        <property name="toolTip">
+         <string>The default line color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>85</red>
+          <green>255</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultPathMarkerColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_7">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Rapid path color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultRapidPathColor">
+        <property name="toolTip">
+         <string>The default line color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>170</red>
+          <green>0</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultRapidPathColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_8">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Probe Path color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultProbePathColor">
+        <property name="toolTip">
+         <string>The default line color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>255</red>
+          <green>255</green>
+          <blue>5</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultProbePathColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Machine extents color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultExtentsColor">
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultExtentsColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_11">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Path Highlight Color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefColorButton" name="DefaultHighlightPathColor">
+        <property name="toolTip">
+         <string>The default line color for new shapes</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>255</red>
+          <green>125</green>
+          <blue>0</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultHighlightPathColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Path</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
+     <zorder>label_6</zorder>
+     <zorder>DefaultNormalPathColor</zorder>
+     <zorder>label_9</zorder>
+     <zorder>DefaultPathLineWidth</zorder>
+     <zorder>label_10</zorder>
+     <zorder>DefaultPathMarkerColor</zorder>
+     <zorder>label_7</zorder>
+     <zorder>DefaultRapidPathColor</zorder>
+     <zorder>label</zorder>
+     <zorder>DefaultExtentsColor</zorder>
+     <zorder>label_8</zorder>
+     <zorder>DefaultProbePathColor</zorder>
+     <zorder>label_11</zorder>
+     <zorder>DefaultHighlightPathColor</zorder>
     </widget>
    </item>
-   <item>
+   <item row="2" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -200,6 +263,19 @@
       <size>
        <width>20</width>
        <height>217</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>7</width>
+       <height>220</height>
       </size>
      </property>
     </spacer>
