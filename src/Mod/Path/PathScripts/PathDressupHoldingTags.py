@@ -279,17 +279,20 @@ class MapWireToTag:
                     else:
                         plinths.append(p1)
         # remove all edges that are connected to the plinths of the (former) internal struts
-        # including the edge that connects the entry and exit point directly
         for e in copy.copy(inputEdges):
-            if PathGeom.edgeConnectsTo(e, self.entry) and PathGeom.edgeConnectsTo(e, self.exit):
-                debugEdge(e, '......... X1')
-                inputEdges.remove(e)
-                continue
             for p in plinths:
                 if PathGeom.edgeConnectsTo(e, p):
-                    debugEdge(e, '......... X2')
+                    debugEdge(e, '......... X1')
                     inputEdges.remove(e)
                     break
+        # if there are any edges beside a direct edge remaining, the direct edge between
+        # entry and exit is redundant
+        if len(inputEdges) > 1:
+            for e in copy.copy(inputEdges):
+                if PathGeom.edgeConnectsTo(e, self.entry) and PathGeom.edgeConnectsTo(e, self.exit):
+                    debugEdge(e, '......... X2')
+                    inputEdges.remove(e)
+
         # the remaining edges form a walk around the tag
         # they need to be ordered and potentially flipped though
         outputEdges = []
@@ -321,6 +324,13 @@ class MapWireToTag:
             #    print("xxxxxx (%.2f, %.2f, %.2f)" % (p.x, p.y, p.z))
         return outputEdges
 
+    def shell(self):
+        shell = self.wire.extrude(FreeCAD.Vector(0, 0, 10))
+        redundant = filter(lambda f: f.Area == 0, shell.childShapes())
+        if redundant:
+            return shell.removeShape(redundant)
+        return shell
+
     def add(self, edge):
         self.tail = None
         if self.tag.solid.isInside(edge.valueAt(edge.LastParameter), 0.000001, True):
@@ -335,8 +345,7 @@ class MapWireToTag:
                 self.tail = tail
             self.exit = i
             if self.wire:
-                shell = self.wire.extrude(FreeCAD.Vector(0, 0, 10))
-                face = shell.common(self.tag.solid)
+                face = self.shell().common(self.tag.solid)
 
                 for e,flip in self.cleanupEdges(face.Edges):
                     debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
