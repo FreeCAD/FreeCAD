@@ -13,9 +13,7 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/ANN/include
     ${Boost_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
@@ -28,17 +26,16 @@ include_directories(
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
-        SMESH
-        SMDS
-        SMESHDS
-    )
+    Part
+    FreeCADApp
+    StdMeshers
+    SMESH
+    SMDS
+    SMESHDS
+)
 
 if(BUILD_FEM_NETGEN)
-    set(Fem_LIBS
-        ${Fem_LIBS}
+    list(APPEND Fem_LIBS
         NETGENPlugin
     )
 endif(BUILD_FEM_NETGEN)

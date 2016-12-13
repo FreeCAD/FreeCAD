@@ -22,7 +22,6 @@ include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}/..
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -113,11 +112,11 @@ SET(Sketcher_SRCS
 SET(Sketcher_Scripts
     Init.py
     SketcherExample.py
-	TestSketcherApp.py
-	Profiles.py
-	ProfileLib/Hexagon.py
-	ProfileLib/RegularPolygon.py
-	ProfileLib/__init__.py
+    TestSketcherApp.py
+    Profiles.py
+    ProfileLib/Hexagon.py
+    ProfileLib/RegularPolygon.py
+    ProfileLib/__init__.py
 )
 
 add_library(Sketcher SHARED ${Sketcher_SRCS})

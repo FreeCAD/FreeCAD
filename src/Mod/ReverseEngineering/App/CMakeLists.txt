@@ -34,7 +34,6 @@ include_directories(
     ${EIGEN3_INCLUDE_DIR}
     ${PCL_INCLUDE_DIRS}
     ${FLANN_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
