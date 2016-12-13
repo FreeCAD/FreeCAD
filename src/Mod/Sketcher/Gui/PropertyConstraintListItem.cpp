@@ -211,7 +211,7 @@ bool PropertyConstraintListItem::event (QEvent* ev)
             Sketcher::PropertyConstraintList* item;
 
             int id = 0;
-            if (this->parent()->getTypeId() == SketcherGui::PropertyConstraintListItem::getClassTypeId()) {
+            if (dynamic_cast<SketcherGui::PropertyConstraintListItem*>(this->parent())) {
                 item = static_cast<Sketcher::PropertyConstraintList*>(this->parent()->getFirstProperty());
             }
             else {
