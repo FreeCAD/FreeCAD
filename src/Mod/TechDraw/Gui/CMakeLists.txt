@@ -11,8 +11,6 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
-    ${QT_USE_QTXML}
     ${OCC_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
