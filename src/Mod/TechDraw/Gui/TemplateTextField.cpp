@@ -63,7 +63,11 @@ void TemplateTextField::execDialog()
     if(uiCode == QDialog::Accepted) {
        if (tmplte) {
            newContent = ui->getFieldContent();
-           QString qsClean = Qt::escape(newContent);                            //Qt5 note: this becomes qsNewContent.toHtmlEscaped();
+#if QT_VERSION >= 0x050000
+           QString qsClean = newContent.toHtmlEscaped();
+#else
+           QString qsClean = Qt::escape(newContent);
+#endif
            std::string utf8Content = qsClean.toUtf8().constData();
            tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
        }
