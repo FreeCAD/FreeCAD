@@ -3606,7 +3606,7 @@ void _ViscousBuilder::computeGeomSize( _SolidData& data )
 {
   data._geomSize = Precision::Infinite();
   double intersecDist;
-  auto_ptr<SMESH_ElementSearcher> searcher
+  unique_ptr<SMESH_ElementSearcher> searcher
     ( SMESH_MeshAlgos::GetElementSearcher( *getMeshDS(),
                                            data._proxyMesh->GetFaces( data._solid )) );
 
@@ -3948,7 +3948,7 @@ bool _ViscousBuilder::smoothAndCheck(_SolidData& data,
   // Check if the last segments of _LayerEdge intersects 2D elements;
   // checked elements are either temporary faces or faces on surfaces w/o the layers
 
-  auto_ptr<SMESH_ElementSearcher> searcher
+  unique_ptr<SMESH_ElementSearcher> searcher
     ( SMESH_MeshAlgos::GetElementSearcher( *getMeshDS(),
                                            data._proxyMesh->GetFaces( data._solid )) );
 
@@ -4464,7 +4464,7 @@ bool _ViscousBuilder::updateNormals( _SolidData&         data,
 
   SMDS_ElemIteratorPtr fIt( new SMDS_ElementVectorIterator( tmpFaces.begin(),
                                                             tmpFaces.end()));
-  auto_ptr<SMESH_ElementSearcher> searcher
+  unique_ptr<SMESH_ElementSearcher> searcher
     ( SMESH_MeshAlgos::GetElementSearcher( *getMeshDS(), fIt ));
 
   // 1) Find intersections
