@@ -41,7 +41,11 @@ set(TechDrawGui_MOC_HDRS
 fc_wrap_cpp(TechDrawGui_MOC_SRCS ${TechDrawGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${TechDrawGui_MOC_SRCS})
 
-qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
+if(BUILD_QT5)
+    qt5_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
+else()
+    qt4_add_resources(TechDrawGui_SRCS Resources/TechDraw.qrc)
+endif()
 
 set(TechDrawGui_UIC_SRCS
     DlgPrefsTechDraw.ui
@@ -52,7 +56,11 @@ set(TechDrawGui_UIC_SRCS
     TaskSectionView.ui
 )
 
-qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
+if(BUILD_QT5)
+    qt5_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(TechDrawGui_UIC_HDRS ${TechDrawGui_UIC_SRCS})
+endif()
 
 SET(TechDrawGui_SRCS
     ${TechDrawGui_SRCS}
