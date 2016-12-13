@@ -498,14 +498,19 @@ void Document::exportGraphviz(std::ostream& out) const
 
             // Add edges between document objects
             for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                std::map<DocumentObject*, int> dups;
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
+                const DocumentObject * docObj = It->second;
+
                 for (std::vector<DocumentObject*>::const_iterator It2=OutList.begin();It2!=OutList.end();++It2) {
                     if (*It2) {
-                        const DocumentObject * docObj = It->second;
 
-                        // Skip duplicate edges
-                        if (edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second)
+                        // Count duplicate edges
+                        bool inserted = edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList).second;
+                        if (inserted) {
+                            dups[*It2]++;
                             continue;
+                        }
 
                         // Skip edge if an expression edge already exists
                         if (existingEdges.find(std::make_pair(docObj, *It2)) != existingEdges.end())
@@ -514,7 +519,6 @@ void Document::exportGraphviz(std::ostream& out) const
                         // Add edge
 
                         Edge edge;
-                        bool inserted;
 
                         tie(edge, inserted) = add_edge(GlobalVertexList[getId(docObj)], GlobalVertexList[getId(*It2)], DepList);
 
@@ -525,6 +529,15 @@ void Document::exportGraphviz(std::ostream& out) const
                             edgeAttrMap[edge]["lhead"] = getClusterName(*It2);
                     }
                 }
+
+                // Set labels for duplicate edges
+                for (std::map<DocumentObject*, int>::const_iterator It2 = dups.begin(); It2 != dups.end(); ++It2) {
+                    Edge e(edge(GlobalVertexList[getId(It->second)], GlobalVertexList[getId(It2->first)], DepList).first);
+                    std::stringstream s;
+                    s << " " << (It2->second + 1) << "x";
+                    edgeAttrMap[e]["label"] = s.str();
+                }
+
             }
 
         }
