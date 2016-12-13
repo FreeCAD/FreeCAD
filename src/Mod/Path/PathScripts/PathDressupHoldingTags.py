@@ -47,11 +47,10 @@ except AttributeError:
     def translate(context, text, disambig=None):
         return QtGui.QApplication.translate(context, text, disambig)
 
-debugDressup = True
-debugComponents = ['P0', 'P1', 'P2', 'P3']
+debugDressup = False
 
-def debugPrint(comp, msg):
-    if debugDressup and comp in debugComponents:
+def debugPrint(msg):
+    if debugDressup:
         print(msg)
 
 def debugEdge(edge, prefix, comp = None):
@@ -108,7 +107,7 @@ class Tag:
         return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
 
     def __init__(self, x, y, width, height, angle, enabled=True, z=None):
-        print("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d, %s)" % (x, y, width, height, angle/math.pi, enabled, z))
+        debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d, %s)" % (x, y, width, height, angle/math.pi, enabled, z))
         self.x = x
         self.y = y
         self.z = z
@@ -357,7 +356,7 @@ class MapWireToTag:
 
 class PathData:
     def __init__(self, obj):
-        print("PathData(%s)" % obj.Base.Name)
+        debugPrint("PathData(%s)" % obj.Base.Name)
         self.obj = obj
         self.wire = PathGeom.wireForPath(obj.Base.Path)
         self.edges = self.wire.Edges
@@ -420,7 +419,7 @@ class PathData:
         startIndex = 0
         for i in range(0, len(self.base.Edges)):
             edge = self.base.Edges[i]
-            print('  %d: %.2f' % (i, edge.Length))
+            debugPrint('  %d: %.2f' % (i, edge.Length))
             if edge.Length == longestEdge.Length:
                 startIndex = i
                 break
@@ -435,10 +434,10 @@ class PathData:
 
         minLength = min(2. * W, longestEdge.Length)
 
-        print("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length, minLength))
-        print("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
-        print("               -> lastTagLength=%.2f)" % lastTagLength)
-        print("               -> currentLength=%.2f)" % currentLength)
+        debugPrint("length=%.2f shortestEdge=%.2f(%.2f) longestEdge=%.2f(%.2f) minLength=%.2f" % (self.base.Length, shortestEdge.Length, shortestEdge.Length/self.base.Length, longestEdge.Length, longestEdge.Length / self.base.Length, minLength))
+        debugPrint("   start: index=%-2d count=%d (length=%.2f, distance=%.2f)" % (startIndex, startCount, startEdge.Length, tagDistance))
+        debugPrint("               -> lastTagLength=%.2f)" % lastTagLength)
+        debugPrint("               -> currentLength=%.2f)" % currentLength)
 
         edgeDict = { startIndex: startCount }
 
@@ -453,7 +452,7 @@ class PathData:
 
         for (i, count) in edgeDict.iteritems():
             edge = self.base.Edges[i]
-            print(" %d: %d" % (i, count))
+            debugPrint(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
             distance = (edge.LastParameter - edge.FirstParameter) / count
@@ -471,10 +470,10 @@ class PathData:
                 tagCount += 1
                 lastTagLength += tagDistance
             if tagCount > 0:
-                print("      index=%d -> count=%d" % (index, tagCount))
+                debugPrint("      index=%d -> count=%d" % (index, tagCount))
                 edgeDict[index] = tagCount
         else:
-            print("      skipping=%-2d (%.2f)" % (index, edge.Length))
+            debugPrint("      skipping=%-2d (%.2f)" % (index, edge.Length))
 
         return (currentLength, lastTagLength)
 
@@ -606,7 +605,7 @@ class ObjectDressup:
             tags = [Tag.FromString(tag) for tag in obj.Tags]
         else:
             print("execute - default tags")
-            tags = self.generateTags(obj, 2.)
+            tags = self.generateTags(obj, 4.)
 
         if not tags:
             print("execute - no tags")
