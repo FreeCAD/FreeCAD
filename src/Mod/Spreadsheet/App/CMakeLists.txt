@@ -9,7 +9,6 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
 )
 
 set(Spreadsheet_LIBS
