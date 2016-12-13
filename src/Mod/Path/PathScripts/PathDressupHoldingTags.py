@@ -348,6 +348,7 @@ class MapWireToTag:
 
 class PathData:
     def __init__(self, obj):
+        print("PathData(%s)" % obj.Base.Name)
         self.obj = obj
         self.wire = PathGeom.wireForPath(obj.Base.Path)
         self.edges = self.wire.Edges
@@ -640,7 +641,7 @@ class ObjectDressup:
         return self.setup(obj).generateTags(obj, 4)
 
     def setup(self, obj):
-        if False or not hasattr(self, "pathData") or not self.pathData:
+        if True or not hasattr(self, "pathData") or not self.pathData:
             try:
                 pathData = PathData(obj)
             except ValueError:
