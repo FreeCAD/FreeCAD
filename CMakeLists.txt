@@ -70,6 +70,9 @@ IF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
                     OUTPUT_VARIABLE CMAKE_CXX_COMPILER_VERSION)
 ENDIF(CMAKE_COMPILER_IS_GNUCXX AND NOT CMAKE_CXX_COMPILER_VERSION)
 
+# Switch to build FreeCAD with Qt5
+OPTION(BUILD_QT5 "Build with Qt5." OFF)
+
 # Enabled C++11 for Freecad 0.17 and later
 IF(FREECAD_VERSION VERSION_GREATER 0.16)
     OPTION(BUILD_ENABLE_CXX11 "Enable C++11 support." ON)
@@ -674,41 +677,65 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # -------------------------------- Qt --------------------------------
 
-# sets ${QT_LIBRARIES}
-
-    # If using MacPorts, help the Qt4 finder.
-    if(MACPORTS_PREFIX)
-        if(NOT QT_QMAKE_EXECUTABLE)
-            set(QT_QMAKE_EXECUTABLE ${MACPORTS_PREFIX}/libexec/qt4/bin/qmake)
+    if (NOT BUILD_QT5)
+        # If using MacPorts, help the Qt4 finder.
+        if(MACPORTS_PREFIX)
+            if(NOT QT_QMAKE_EXECUTABLE)
+                set(QT_QMAKE_EXECUTABLE ${MACPORTS_PREFIX}/libexec/qt4/bin/qmake)
+            endif()
         endif()
-    endif()
 
-    SET(QT_MIN_VERSION 4.5.0)
-    set(QT_USE_QTNETWORK TRUE)
-    set(QT_USE_QTXML TRUE)
-    if(BUILD_GUI)
-        set(QT_USE_QTOPENGL TRUE)
-        set(QT_USE_QTSVG TRUE)
-        set(QT_USE_QTUITOOLS TRUE)
-        set(QT_USE_QTWEBKIT TRUE)
-    endif(BUILD_GUI)
+        SET(QT_MIN_VERSION 4.5.0)
+        set(QT_USE_QTNETWORK TRUE)
+        set(QT_USE_QTXML TRUE)
+        if(BUILD_GUI)
+            set(QT_USE_QTOPENGL TRUE)
+            set(QT_USE_QTSVG TRUE)
+            set(QT_USE_QTUITOOLS TRUE)
+            set(QT_USE_QTWEBKIT TRUE)
+        endif(BUILD_GUI)
 
-    find_package(Qt4)# REQUIRED
+        find_package(Qt4)# REQUIRED
 
-    include(${QT_USE_FILE})
+        include(${QT_USE_FILE})
 
-    IF(NOT QT4_FOUND)
-        MESSAGE(FATAL_ERROR "========================\n"
-                            "Qt4 libraries not found.\n"
-                            "========================\n")
-    ENDIF(NOT QT4_FOUND)
+        IF(NOT QT4_FOUND)
+            MESSAGE(FATAL_ERROR "========================\n"
+                                "Qt4 libraries not found.\n"
+                                "========================\n")
+        ENDIF(NOT QT4_FOUND)
 
-    IF(NOT QT_QTWEBKIT_FOUND)
-        MESSAGE("========================================================\n"
-                "Qt Webkit not found, will not build browser integration.\n"
-                "========================================================\n")
-    ENDIF(NOT QT_QTWEBKIT_FOUND)
+        IF(NOT QT_QTWEBKIT_FOUND)
+            MESSAGE("========================================================\n"
+                    "Qt Webkit not found, will not build browser integration.\n"
+                    "========================================================\n")
+        ENDIF(NOT QT_QTWEBKIT_FOUND)
 
+    elseif (BUILD_QT5)
+        find_package(Qt5Network)
+        find_package(Qt5Xml)
+        if(BUILD_GUI)
+            find_package(Qt5Widgets)
+            find_package(Qt5PrintSupport)
+            find_package(Qt5OpenGL)
+            find_package(Qt5Svg)
+            find_package(Qt5UiTools)
+            find_package(Qt5Network)
+            find_package(Qt5Concurrent)
+            if (NOT WIN32)
+            # Disable for Windows for now since building the Qt sources always fails
+            find_package(Qt5WebKitWidgets)
+            endif()
+        endif(BUILD_GUI)
+
+        IF(NOT Qt5Core_FOUND)
+            MESSAGE(FATAL_ERROR "========================\n"
+                                "Qt5 libraries not found.\n"
+                                "========================\n")
+        ENDIF(NOT Qt5Core_FOUND)
+
+        include(Qt4Macros)
+    endif (NOT BUILD_QT5)
 
     # This is a special version of the built in macro qt4_wrap_cpp
     # It is required since moc'ed files are now included instead of being added to projects directly
