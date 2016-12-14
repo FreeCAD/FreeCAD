@@ -206,6 +206,8 @@ Py::Object PythonWrapper::fromQIcon(const QIcon* icon)
     PyObject* pyobj = Shiboken::createWrapper<QIcon>(icon, true);
     if (pyobj)
         return Py::asObject(pyobj);
+#else
+    Q_UNUSED(icon);
 #endif
     throw Py::RuntimeError("Failed to wrap icon");
 }

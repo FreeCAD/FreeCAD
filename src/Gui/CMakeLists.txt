@@ -47,20 +47,46 @@ if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
          ${COIN3D_LIBRARIES}
-         ${QT_LIBRARIES}
-         ${QT_QTUITOOLS_LIBRARY}
          ${OPENGL_gl_LIBRARY}
     )
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
         ${COIN3D_LIBRARIES}
-        ${QT_LIBRARIES}
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
     )
 endif(MSVC)
+
+if (BUILD_QT5)
+    include_directories(
+        ${Qt5Core_INCLUDE_DIRS}
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5OpenGL_INCLUDE_DIRS}
+        ${Qt5PrintSupport_INCLUDE_DIRS}
+        ${Qt5Svg_INCLUDE_DIRS}
+        ${Qt5Network_INCLUDE_DIRS}
+        ${Qt5UiTools_INCLUDE_DIRS}
+    )
+    list(APPEND FreeCADGui_LIBS
+        ${Qt5Core_LIBRARIES}
+        ${Qt5Widgets_LIBRARIES}
+        ${Qt5OpenGL_LIBRARIES}
+        ${Qt5PrintSupport_LIBRARIES}
+        ${Qt5Svg_LIBRARIES}
+        ${Qt5Network_LIBRARIES}
+        ${Qt5UiTools_LIBRARIES}
+    )
+else()
+    include_directories(
+        ${QT_INCLUDE_DIR}
+    )
+    list(APPEND FreeCADGui_LIBS
+        ${QT_LIBRARIES}
+        ${QT_QTUITOOLS_LIBRARY}
+    )
+endif()
 
 IF(SPNAV_FOUND)
     add_definitions(-DSPNAV_FOUND)
@@ -89,7 +115,10 @@ IF(OCULUS_FOUND)
 ENDIF(OCULUS_FOUND)
 
 if(SHIBOKEN_INCLUDE_DIR)
-    add_definitions(-DHAVE_SHIBOKEN)
+    if (BUILD_QT5)
+    else()
+        add_definitions(-DHAVE_SHIBOKEN)
+    endif()
     include_directories(
         ${SHIBOKEN_INCLUDE_DIR}
     )
@@ -99,7 +128,10 @@ if(SHIBOKEN_INCLUDE_DIR)
 endif(SHIBOKEN_INCLUDE_DIR)
 
 if(PYSIDE_INCLUDE_DIR)
-    add_definitions(-DHAVE_PYSIDE)
+    if (BUILD_QT5)
+    else()
+        add_definitions(-DHAVE_PYSIDE)
+    endif()
     include_directories(
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
@@ -256,15 +288,23 @@ set(Gui_MOC_HDRS
     DAGView/DAGView.h
     DAGView/DAGModel.h
 )
-#qt4_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
+
 fc_wrap_cpp(Gui_MOC_SRCS ${Gui_MOC_HDRS})
 #SOURCE_GROUP("Moc" FILES ${Gui_MOC_SRCS})
 
-add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
-    COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
+if (BUILD_QT5)
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
+        COMMAND ${Qt5Core_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
 
-set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+else()
+    add_custom_command(OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp
+        COMMAND ${QT_MOC_EXECUTABLE} -o ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp
+        DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/GraphvizView.cpp)
+
+    set_property(SOURCE GraphvizView.cpp APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/moc_GraphvizView-internal.cpp)
+endif()
 
 SET(Gui_UIC_SRCS
     AboutApplication.ui
@@ -325,9 +365,14 @@ SET(Gui_RES_SRCS
     iisTaskPanel/src/iisTaskPanel.qrc
     QSint/actionpanel/schemes.qrc
 )
-QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
 
-QT4_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
+if (BUILD_QT5)
+    QT5_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
+    QT5_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
+else()
+    QT4_ADD_RESOURCES(Gui_QRC_SRCS ${Gui_RES_SRCS})
+    QT4_WRAP_UI(Gui_UIC_HDRS ${Gui_UIC_SRCS})
+endif()
 SOURCE_GROUP("Uic" FILES ${Gui_UIC_HDRS})
 
 # The command sources
@@ -685,7 +730,12 @@ set(iis_MOC_HDRS
     iisTaskPanel/src/iistaskgroup.h
     iisTaskPanel/src/iistaskheader.h
 )
-qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
+
+if (BUILD_QT5)
+    qt5_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
+else()
+    qt4_wrap_cpp(iis_MOC_SRCS ${iis_MOC_HDRS})
+endif()
 SOURCE_GROUP("Widget\\iisTaskPanel\\Mocs" FILES ${iis_MOC_SRCS})
 
 SET(qsintActionPanel_SRCS
@@ -722,7 +772,11 @@ set(qsint_MOC_HDRS
     QSint/actionpanel/actionpanel.h
     QSint/actionpanel/taskheader_p.h
 )
-qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
+if(BUILD_QT5)
+    qt5_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
+else()
+    qt4_wrap_cpp(qsint_MOC_SRCS ${qsint_MOC_HDRS})
+endif()
 SOURCE_GROUP("Widget\\QSintActionPanel\\Mocs" FILES ${qsint_MOC_SRCS})
 
 #SET(Resource_RCS
@@ -790,8 +844,12 @@ SET(Quarter_MOC_HDR
     Quarter/eventhandlers/DragDropHandler.h
     Quarter/eventhandlers/EventFilter.h
     Quarter/QuarterWidget.h
-)  
-qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
+)
+if(BUILD_QT5)
+    qt5_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
+else()
+    qt4_wrap_cpp(Quarter_MOC_SRCS ${Quarter_MOC_HDR})
+endif()
 
 SET(Quarter_SRCS 
     ${Quarter_CPP_SRC} 

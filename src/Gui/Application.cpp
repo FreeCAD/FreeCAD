@@ -1387,11 +1387,38 @@ _qt_msg_handler_old old_qtmsg_handler = 0;
 #if QT_VERSION >= 0x050000
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &qmsg)
 {
+    Q_UNUSED(context);
     const QChar *msg = qmsg.unicode();
+#ifdef FC_DEBUG
+    switch (type)
+    {
+    case QtInfoMsg:
+    case QtDebugMsg:
+        Base::Console().Message("%s\n", msg);
+        break;
+    case QtWarningMsg:
+        Base::Console().Warning("%s\n", msg);
+        break;
+    case QtCriticalMsg:
+        Base::Console().Error("%s\n", msg);
+        break;
+    case QtFatalMsg:
+        Base::Console().Error("%s\n", msg);
+        abort();                    // deliberately core dump
+    }
+#ifdef FC_OS_WIN32
+    if (old_qtmsg_handler)
+        (*old_qtmsg_handler)(type, context, qmsg);
+#endif
+#else
+    // do not stress user with Qt internals but write to log file if enabled
+    Q_UNUSED(type);
+    Base::Console().Log("%s\n", msg);
+#endif
+}
 #else
 void messageHandler(QtMsgType type, const char *msg)
 {
-#endif
 #ifdef FC_DEBUG
     switch (type)
     {
@@ -1410,11 +1437,7 @@ void messageHandler(QtMsgType type, const char *msg)
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
-#if QT_VERSION >=0x050000
-        (*old_qtmsg_handler)(type, context, qmsg);
-#else
         (*old_qtmsg_handler)(type, msg);
-#endif
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
@@ -1422,6 +1445,7 @@ void messageHandler(QtMsgType type, const char *msg)
     Base::Console().Log("%s\n", msg);
 #endif
 }
+#endif
 
 #ifdef FC_DEBUG // redirect Coin messages to FreeCAD
 void messageHandlerCoin(const SoError * error, void * /*userdata*/)
