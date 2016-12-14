@@ -265,7 +265,7 @@ public:
   typedef TNodeOfNodeListMap::iterator                                     TNodeOfNodeListMapItr;
   typedef std::vector<TNodeOfNodeListMapItr>                               TVecOfNnlmiMap;
   typedef std::map<const SMDS_MeshElement*, TVecOfNnlmiMap, TElemSort >    TElemOfVecOfNnlmiMap;
-  typedef std::auto_ptr< std::list<int> > PGroupIDs;
+  typedef std::unique_ptr< std::list<int> > PGroupIDs;
 
   PGroupIDs RotationSweep (TIDSortedElemSet   theElements[2],
                            const gp_Ax1&      theAxis,
