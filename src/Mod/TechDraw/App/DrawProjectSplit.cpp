@@ -115,7 +115,8 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
     TopoDS_Shape scaledShape;
     scaledShape = TechDrawGeometry::scaleShape(copyShape,
                                                scale);
-    TechDrawGeometry::GeometryObject* go = buildGeometryObject(scaledShape,inputCenter,direction);
+    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(Base::Vector3d(0.0,0.0,0.0),direction);
+    TechDrawGeometry::GeometryObject* go = buildGeometryObject(scaledShape,viewAxis);
     result = getEdges(go);
 
     delete go;
@@ -123,16 +124,13 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 }
 
 
-TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(
-                                           TopoDS_Shape shape, 
-                                           gp_Pnt& inputCenter, 
-                                           Base::Vector3d direction)
+TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
+                                                                        gp_Ax2 viewAxis)
 {
     TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit");
 
     geometryObject->projectShape(shape,
-                            inputCenter,
-                            direction);
+                                 viewAxis);
     geometryObject->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                                     true);
     geometryObject->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -440,8 +438,13 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
     auto last = std::unique(sorted.begin(), sorted.end(), edgeSortItem::edgeEqual);  //duplicates to back
     sorted.erase(last, sorted.end());                         //remove dupls
 
-    for (auto& e: sorted) {
-        result.push_back(inEdges.at(e.idx));
+    //TODO: "sorted" turns to garbage if pagescale set to "0.1"!!!!???? ***
+    for (auto e: sorted) {
+        if (e.idx < inEdges.size()) {
+            result.push_back(inEdges.at(e.idx));                  //<<< ***here
+        } else {
+            Base::Console().Message("ERROR - DPS::removeDuplicateEdges - access: %d inEdges: %d\n",e.idx,inEdges.size());
+        }
     }
 
     return result;

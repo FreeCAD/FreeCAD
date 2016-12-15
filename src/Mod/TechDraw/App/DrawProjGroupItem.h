@@ -54,6 +54,7 @@ public:
     ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
+    App::PropertyVector      OrientBasis;
 
     short mustExecute() const;
     /** @name methods overide Feature */
@@ -63,7 +64,10 @@ public:
 //    virtual App::DocumentObjectExecReturn *execute(void);  // TODO: Delete me too if we take out the implementation
     //@}
 
-    DrawProjGroup* getGroup(void);
+    DrawProjGroup* getGroup(void) const;
+    virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
+                               const Base::Vector3d& direction, 
+                               const bool flip=true) const override;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
