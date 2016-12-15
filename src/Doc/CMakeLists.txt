@@ -33,7 +33,8 @@ if(DOXYGEN_FOUND)
                            ${CMAKE_SOURCE_DIR}/src/Mod
                            ${CMAKE_BINARY_DIR}/src/Mod
                            ${CMAKE_SOURCE_DIR}/src/Main 
-                           ${CMAKE_SOURCE_DIR}/src/Doc 
+                           ${CMAKE_SOURCE_DIR}/src/Doc
+                           ${CMAKE_BINARY_DIR}/src/Doc
     )
     STRING(REGEX REPLACE ";" " " DOXYGEN_INPUT_LIST "${DOXYGEN_SOURCE_DIR}")
 
@@ -62,6 +63,24 @@ if(DOXYGEN_FOUND)
         )
     endif( COIN3D_DOC_FOUND )
 
+    # Try to get some git information about the source tree
+    EXECUTE_PROCESS(COMMAND git rev-parse --abbrev-ref HEAD
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                    OUTPUT_VARIABLE GIT_DOC_REV
+                    ERROR_VARIABLE GIT_REV_FAILED
+                    RESULT_VARIABLE GIT_REV_RETURN_CODE)
+    if( GIT_REV_RETURN_CODE EQUAL 0 )
+        EXECUTE_PROCESS(COMMAND git log -n1 "--pretty=format:%h %cD '%s'"
+                        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+                        OUTPUT_VARIABLE GIT_DOC_LOG
+                        ERROR_VARIABLE GIT_REV_FAILED
+                        RESULT_VARIABLE GIT_REV_RETURN_CODE)
+        set(GIT_REVISION_INFO
+            "Built from git branch ${GIT_DOC_REV}, commit ${GIT_DOC_LOG}")
+    endif()
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/mainpage.dox.in
+                   ${CMAKE_CURRENT_BINARY_DIR}/mainpage.dox @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildDevDoc.cfg.in  
                    ${CMAKE_CURRENT_BINARY_DIR}/BuildDevDoc.cfg @ONLY)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/BuildWebDoc.cfg.in  
@@ -119,4 +138,3 @@ else( DOXYGEN_FOUND )
     ADD_CUSTOM_TARGET(DevDoc
                       echo "Doxygen not found.  Install it and rerun CMake")
 endif( DOXYGEN_FOUND )
-
