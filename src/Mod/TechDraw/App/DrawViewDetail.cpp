@@ -169,7 +169,7 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
     double radius = Radius.getValue() * radiusFudge;
     Base::Vector3d dirDetail = dvp->Direction.getValue();
     double scale = Scale.getValue();
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(Base::Vector3d(0.0,0.0,0.0), dirDetail, false);
+    gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(0.0,0.0,0.0), dirDetail, false);
 
     Base::BoundBox3d bbxSource = partTopo.getBoundBox();
 
@@ -239,7 +239,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(detail,
                                                     inputCenter,
                                                     scale);
-        geometryObject = buildGeometryObject(mirroredShape,inputCenter);
+        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
