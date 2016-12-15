@@ -228,7 +228,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
-        geometryObject = buildGeometryObject(mirroredShape,inputCenter);   //this is original shape after cut by section prism
+        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        geometryObject = buildGeometryObject(mirroredShape,viewAxis);   //this is original shape after cut by section prism
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
@@ -275,7 +276,7 @@ gp_Pln DrawViewSection::getSectionPlane() const
 {
     Base::Vector3d plnPnt = SectionOrigin.getValue();
     Base::Vector3d plnNorm = SectionNormal.getValue();
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(plnPnt,plnNorm,false);
+    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
     gp_Ax3 viewAxis3(viewAxis);
 
     return gp_Pln(viewAxis3);
@@ -351,7 +352,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(origin,direction);
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
     brep_hlr->Add(face);

@@ -146,7 +146,8 @@ App::DocumentObjectExecReturn *DrawViewMulti::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(comp,
                                                     inputCenter,
                                                     Scale.getValue());
-        geometryObject = buildGeometryObject(mirroredShape,inputCenter);
+        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        geometryObject = buildGeometryObject(mirroredShape,viewAxis);
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
