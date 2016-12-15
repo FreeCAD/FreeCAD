@@ -77,7 +77,8 @@
     The homepage of FreeCAD is <a href="http://www.freecadweb.org">here</a>.
   
   \endif
-  
+
+@GIT_REVISION_INFO@
  */
 
 /** \namespace std
