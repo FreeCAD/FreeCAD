@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+# include <QByteArray>
 # include <qpixmap.h>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoDrawStyle.h>
@@ -185,6 +186,19 @@ void ViewProviderDocumentObject::attach(App::DocumentObject *pcObj)
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
         ext->extensionAttach(pcObj);
+}
+
+void ViewProviderDocumentObject::updateData(const App::Property* prop)
+{
+    if (pcObject && prop == &pcObject->Label) {
+        // SoBase::setName() replaces characters that according to the
+        // VRML standard are invalid. To avoid the replacement we use
+        // the percent encoding.
+        QByteArray ba(pcObject->Label.getValue());
+        QByteArray name = ba.toPercentEncoding();
+        pcRoot->setName(name.constData());
+    }
+    ViewProvider::updateData(prop);
 }
 
 Gui::Document* ViewProviderDocumentObject::getDocument() const

@@ -62,6 +62,7 @@ public:
     App::PropertyBool Visibility;
 
     virtual void attach(App::DocumentObject *pcObject);
+    virtual void updateData(const App::Property*);
     /// Set the active mode, i.e. the first item of the 'Display' property.
     void setActiveMode();
     /// Hide the object in the view

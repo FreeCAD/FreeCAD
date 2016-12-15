@@ -263,13 +263,14 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
                     dMtrx[12],dMtrx[13],dMtrx[14], dMtrx[15]);
 }
 
-void ViewProvider::addDisplayMaskMode( SoNode *node, const char* type )
+void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 {
-    _sDisplayMaskModes[ type ] = pcModeSwitch->getNumChildren();
-    pcModeSwitch->addChild( node );
+    node->setName(type);
+    _sDisplayMaskModes[type] = pcModeSwitch->getNumChildren();
+    pcModeSwitch->addChild(node);
 }
 
-void ViewProvider::setDisplayMaskMode( const char* type )
+void ViewProvider::setDisplayMaskMode(const char* type)
 {
     std::map<std::string, int>::const_iterator it = _sDisplayMaskModes.find( type );
     if (it != _sDisplayMaskModes.end())
