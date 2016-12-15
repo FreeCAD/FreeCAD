@@ -270,7 +270,9 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
 {
     std::string result;
     std::stringstream builder;
+    builder << std::fixed << std::setprecision(3) ;
     builder << " (" << v.x  << "," << v.y << "," << v.z << ") ";
+//    builder << " (" << setw(6) << v.x  << "," << setw(6) << v.y << "," << setw(6) << v.z << ") ";
     result = builder.str();
     return result;
 }
@@ -317,16 +319,28 @@ Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d from
     return toPoint;
 }
 
-//! check if direction is parallel to stdZ
-bool DrawUtil::checkZParallel(const Base::Vector3d direction)
+//! check if two vectors are parallel
+bool DrawUtil::checkParallel(const Base::Vector3d v1, Base::Vector3d v2)
 {
     bool result = false;
-    Base::Vector3d stdZ(0.0,0.0,1.0);
-    double dot = fabs(direction.Dot(stdZ));
-    double mag = direction.Length() * 1;   //stdZ.Length() == 1
+    double dot = fabs(v1.Dot(v2));
+    double mag = v1.Length() * v2.Length();
     if (DrawUtil::fpCompare(dot,mag)) {
         result = true;
     }
+    return result;
+}
+
+//! rotate vector by angle radians around axis through org
+Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec,
+                                   double angle,
+                                   Base::Vector3d axis,
+                                   Base::Vector3d org)
+{
+    Base::Vector3d result;
+    Base::Matrix4D xForm;
+    xForm.rotLine(org,axis,angle);
+    result = xForm * (vec);
     return result;
 }
 
