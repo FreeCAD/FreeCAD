@@ -24,14 +24,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="800"
-     inkscape:window-height="952"
+     inkscape:window-height="836"
      id="namedview3431"
      showgrid="true"
-     inkscape:zoom="7.8216511"
-     inkscape:cx="49.638004"
-     inkscape:cy="14.063908"
-     inkscape:window-x="2781"
-     inkscape:window-y="43"
+     inkscape:zoom="9.6854039"
+     inkscape:cx="40.061966"
+     inkscape:cy="24.106606"
+     inkscape:window-x="798"
+     inkscape:window-y="27"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1"
      inkscape:snap-nodes="false"
@@ -1030,11 +1030,11 @@
        id="rect4319"
        width="54.569717"
        height="26.815836"
-       x="12.229599"
-       y="8.4912739" />
+       x="14.828177"
+       y="5.892695" />
     <path
-       style="fill:#73d216;fill-opacity:1;fill-rule:evenodd;stroke:#4e9a06;stroke-width:2.59857871;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 12.33702,25.235436 c 0,0 4.981477,-4.028672 15.560651,-4.028672 7.780332,0 9.359976,12.086009 19.450802,12.086009 7.780332,0 11.670498,-8.057337 19.450829,-8.057337 l 0,20.143339 -54.462282,0 z"
+       style="fill:#73d216;fill-opacity:1;fill-rule:evenodd;stroke:#4e9a06;stroke-width:2.59857869;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 14.935599,22.636857 c 0,0 4.981477,-4.028672 15.560651,-4.028672 7.780332,0 9.359976,12.086009 19.450802,12.086009 7.780332,0 11.670498,-8.057337 19.450829,-8.057337 l 0,20.143339 -54.462282,0 z"
        id="path4317"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="csscccc" />
@@ -1043,8 +1043,8 @@
        id="rect4315"
        width="54.569725"
        height="36.258022"
-       x="12.229598"
-       y="9.1207666" />
+       x="14.828176"
+       y="6.5221877" />
     <circle
        style="color:#000000;fill:#fce94f;fill-opacity:1;fill-rule:evenodd;stroke:#edd400;stroke-width:2.29977202;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="path4321"
@@ -1056,6 +1056,6 @@
        sodipodi:cy="30.95915"
        sodipodi:rx="3.4918404"
        sodipodi:ry="3.4918404"
-       transform="matrix(1.1066104,0,0,1.1537384,14.430752,-14.542101)" />
+       transform="matrix(1.1066104,0,0,1.1537384,17.029331,-17.14068)" />
   </g>
 </svg>

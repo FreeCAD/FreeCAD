@@ -15,7 +15,7 @@
    id="svg2860"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="TechDraw_ProjFrontTopLeft.svg"
+   sodipodi:docname="TechDraw_ProjLeft.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    version="1.1"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/Drawing/TechDraw_insert_standard_views/TechDraw_Box_ortho_2_32px.png"
@@ -41,11 +41,11 @@
       <stop
          id="stop3868"
          offset="0"
-         style="stop-color:#2e3436;stop-opacity:1" />
+         style="stop-color:#06989a;stop-opacity:1" />
       <stop
          id="stop3870"
          offset="1"
-         style="stop-color:#555753;stop-opacity:1" />
+         style="stop-color:#16d0d2;stop-opacity:1" />
     </linearGradient>
     <linearGradient
        id="linearGradient3377">
@@ -169,15 +169,15 @@
      inkscape:pageshadow="2"
      inkscape:zoom="10.484375"
      inkscape:cx="3.1479955"
-     inkscape:cy="37.721515"
+     inkscape:cy="36.052364"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1600"
-     inkscape:window-height="837"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      inkscape:snap-global="false">
     <inkscape:grid
@@ -199,7 +199,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
