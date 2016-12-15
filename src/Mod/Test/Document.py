@@ -233,6 +233,13 @@ class DocumentBasicCases(unittest.TestCase):
         self.failUnless(obj.hasExtension("App::GroupExtensionPython"))
         self.Doc.removeObject(obj.Name)
         del obj
+
+  def testExtensionGroup(self):
+    obj = self.Doc.addObject("App::DocumentObject", "Obj")
+    grp = self.Doc.addObject("App::FeaturePython", "Extension_2")
+    grp.addExtension("App::GroupExtensionPython", None)
+    grp.Group = [obj]
+    self.assertTrue(obj in grp.Group)
     
   def testExtensionBugViewProvider(self):
 
