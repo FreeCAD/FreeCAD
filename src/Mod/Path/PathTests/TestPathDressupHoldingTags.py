@@ -50,26 +50,20 @@ class TestHoldingTags(PathTestBase):
 
 
     def test01(self):
-        """Verify solid and core for a 90 degree tag are identical cylinders."""
+        """Verify solid for a 90 degree tag is a cylinder."""
         tag = Tag(100, 200, 4, 5, 90, True)
         tag.createSolidsAt(17)
 
         self.assertIsNotNone(tag.solid)
         self.assertCylinderAt(tag.solid, Vector(100, 200, 17), 2, 5)
 
-        self.assertIsNotNone(tag.core)
-        self.assertCylinderAt(tag.core, Vector(100, 200, 17), 2, 5)
-
     def test02(self):
-        """Verify trapezoidal tag has a cone shape with a lid, and cylinder core."""
+        """Verify trapezoidal tag has a cone shape with a lid."""
         tag = Tag(0, 0, 18, 5, 45, True)
         tag.createSolidsAt(0)
 
         self.assertIsNotNone(tag.solid)
         self.assertConeAt(tag.solid, Vector(0,0,0), 9, 4, 5)
-
-        self.assertIsNotNone(tag.core)
-        self.assertCylinderAt(tag.core, Vector(0,0,0), 4, 5)
 
     def test03(self):
         """Verify pointy cone shape of tag with pointy end if width, angle and height match up."""
@@ -78,14 +72,10 @@ class TestHoldingTags(PathTestBase):
         self.assertIsNotNone(tag.solid)
         self.assertConeAt(tag.solid, Vector(0,0,0), 5, 0, 5)
 
-        self.assertIsNone(tag.core)
-
     def test04(self):
         """Verify height adjustment if tag isn't wide eough for angle."""
         tag = Tag(0, 0, 5, 17, 60, True)
         tag.createSolidsAt(0)
         self.assertIsNotNone(tag.solid)
         self.assertConeAt(tag.solid, Vector(0,0,0), 2.5, 0, 2.5 * math.tan((60/180.0)*math.pi))
-
-        self.assertIsNone(tag.core)
 
