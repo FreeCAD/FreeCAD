@@ -53,12 +53,10 @@ def debugPrint(msg):
     if debugDressup:
         print(msg)
 
-def debugEdge(edge, prefix, comp = None):
+def debugEdge(edge, prefix, force = False):
     pf = edge.valueAt(edge.FirstParameter)
     pl = edge.valueAt(edge.LastParameter)
-    if comp:
-        debugPrint(comp, "%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
-    elif debugDressup:
+    if force or debugDressup:
         print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
 
 def debugMarker(vector, label, color = None, radius = 0.5):
@@ -354,11 +352,34 @@ class MapWireToTag:
     def mappingComplete(self):
         return self.complete
 
+class _RapidEdges:
+    def __init__(self, rapid):
+        self.rapid = rapid
+
+    def isRapid(self, edge, removeIfFound=True):
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            v0 = edge.Vertexes[0]
+            v1 = edge.Vertexes[1]
+            for r in self.rapid:
+                r0 = r.Vertexes[0]
+                r1 = r.Vertexes[1]
+                if PathGeom.isRoughly(r0.X, v0.X) and PathGeom.isRoughly(r0.Y, v0.Y) and PathGeom.isRoughly(r0.Z, v0.Z) and PathGeom.isRoughly(r1.X, v1.X) and PathGeom.isRoughly(r1.Y, v1.Y) and PathGeom.isRoughly(r1.Z, v1.Z):
+                    if removeIfFound:
+                        self.rapid.remove(r)
+                    return True
+        return False
+
+    def p(self):
+        print('rapid:')
+        for r in self.rapid:
+            debugEdge(r, '  ', True)
+
 class PathData:
     def __init__(self, obj):
         debugPrint("PathData(%s)" % obj.Base.Name)
         self.obj = obj
-        self.wire = PathGeom.wireForPath(obj.Base.Path)
+        self.wire, rapid = PathGeom.wireForPath(obj.Base.Path)
+        self.rapid = _RapidEdges(rapid)
         self.edges = self.wire.Edges
         self.base = self.findBottomWire(self.edges)
         # determine overall length
@@ -532,7 +553,7 @@ class ObjectDressup:
                 return False
         return True
 
-    def createPath(self, edges, tags):
+    def createPath(self, edges, tags, rapid):
         commands = []
         lastEdge = 0
         lastTag = 0
@@ -573,7 +594,11 @@ class ObjectDressup:
                 # gone through all tags, consume edge and move on
                 if edge:
                     debugEdge(edge, '++++++++')
-                    commands.extend(PathGeom.cmdsForEdge(edge))
+                    if rapid.isRapid(edge, True):
+                        v = edge.Vertexes[1]
+                        commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
+                    else:
+                        commands.extend(PathGeom.cmdsForEdge(edge))
                 edge = None
                 t = 0
 
@@ -633,7 +658,7 @@ class ObjectDressup:
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
 
-        obj.Path = self.createPath(pathData.edges, tags)
+        obj.Path = self.createPath(pathData.edges, tags, pathData.rapid)
 
     def setTags(self, obj, tags, update = True):
         print("setTags(%d, %d)" % (len(tags), update))
