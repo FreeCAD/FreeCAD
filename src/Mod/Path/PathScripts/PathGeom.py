@@ -63,7 +63,7 @@ class Side:
 class PathGeom:
     """Class to transform Path Commands into Edges and Wire and back again.
     The interface might eventuallly become part of Path itself."""
-    CmdMoveFast     = ['G0', 'G00']
+    CmdMoveRapid    = ['G0', 'G00']
     CmdMoveStraight = ['G1', 'G01']
     CmdMoveCW       = ['G2', 'G02']
     CmdMoveCCW      = ['G3', 'G03']
@@ -195,7 +195,7 @@ class PathGeom:
         Returns an Edge representing the given command, assuming a given startPoint."""
 
         endPoint = cls.commandEndPoint(cmd, startPoint)
-        if (cmd.Name in cls.CmdMoveStraight) or (cmd.Name in cls.CmdMoveFast):
+        if (cmd.Name in cls.CmdMoveStraight) or (cmd.Name in cls.CmdMoveRapid):
             if cls.pointsCoincide(startPoint, endPoint):
                 return None
             return Part.Edge(Part.LineSegment(startPoint, endPoint))
@@ -247,13 +247,16 @@ class PathGeom:
         """(path, [startPoint=Vector(0,0,0)])
         Returns a wire representing all move commands found in the given path."""
         edges = []
+        rapid = []
         if hasattr(path, "Commands"):
             for cmd in path.Commands:
                 edge = cls.edgeForCmd(cmd, startPoint)
                 if edge:
+                    if cmd.Name in cls.CmdMoveRapid:
+                        rapid.append(edge)
                     edges.append(edge)
                     startPoint = cls.commandEndPoint(cmd, startPoint)
-        return Part.Wire(edges)
+        return (Part.Wire(edges), rapid)
 
     @classmethod
     def wiresForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
@@ -266,7 +269,7 @@ class PathGeom:
                 if cmd.Name in cls.CmdMove:
                     edges.append(cls.edgeForCmd(cmd, startPoint))
                     startPoint = cls.commandEndPoint(cmd, startPoint)
-                elif cmd.Name in cls.CmdMoveFast:
+                elif cmd.Name in cls.CmdMoveRapid:
                     wires.append(Part.Wire(edges))
                     edges = []
                     startPoint = cls.commandEndPoint(cmd, startPoint)
