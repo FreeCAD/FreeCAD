@@ -266,6 +266,12 @@ class ObjectDrilling:
                         FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
                     else:
                         baselist.append(item)
+            else:
+                if item in baselist:
+                    FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
+                else:
+                    baselist.append(item)
+
 
         if sub[0:4] == 'Edge':
             drillableEdges = []
@@ -277,7 +283,7 @@ class ObjectDrilling:
                     if candidateedge.Curve.Radius == o.Curve.Radius and candidateedge.Curve.Center.z == o.Curve.Center.z:
                         drillableEdges.append("Edge" + str(i+1))
             if len(drillableEdges) > 1:
-                reply = QtGui.QMessageBox.question(None,"","Multiple drillable faces found.  Drill them all?",
+                reply = QtGui.QMessageBox.question(None,"","Multiple drillable edges found.  Drill them all?",
                         QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
                 if reply == QtGui.QMessageBox.Yes:
                     for i in drillableEdges:
@@ -292,6 +298,11 @@ class ObjectDrilling:
                         FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
                     else:
                         baselist.append(item)
+            else:
+                if item in baselist:
+                    FreeCAD.Console.PrintWarning("Drillable location already in the list" + "\n")
+                else:
+                    baselist.append(item)
 
         print baselist
         obj.Base = baselist
