@@ -28,6 +28,7 @@
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/BoundBox.h>
 #include <string>
 #include <vector>
 

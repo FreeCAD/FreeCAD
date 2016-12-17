@@ -65,9 +65,6 @@ public:
     //@}
 
     DrawProjGroup* getGroup(void) const;
-    virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
-                               const Base::Vector3d& direction, 
-                               const bool flip=true) const override;
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -75,6 +72,11 @@ public:
     }
     //return PyObject as DrawProjGroupItemPy
     virtual PyObject *getPyObject(void);
+//************************************
+    Base::Vector3d rotated(const double angle)    ;
+    virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
+                               const Base::Vector3d& direction, 
+                               const bool flip=true) const override;
 
 protected:
     /// Called by the container when a Property was changed

@@ -164,8 +164,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
     Base::Vector3d vx(x.X(),x.Y(),x.Z());
     Base::Vector3d vy(y.X(),y.Y(),y.Z());
     Base::Vector3d vz(z.X(),z.Y(),z.Z());
-    Base::Console().Message("TRACE - GO::projectShape - %s viewAxis x: %s y: %s Z: %s\n",m_parentName.c_str(),
-                            DrawUtil::formatVector(vx).c_str(), DrawUtil::formatVector(vy).c_str(), DrawUtil::formatVector(vz).c_str());
+//    Base::Console().Message("TRACE - GO::projectShape - %s viewAxis x: %s y: %s Z: %s\n",m_parentName.c_str(),
+//                            DrawUtil::formatVector(vx).c_str(), DrawUtil::formatVector(vy).c_str(), DrawUtil::formatVector(vz).c_str());
 //*******
 
     auto start = chrono::high_resolution_clock::now();

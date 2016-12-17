@@ -116,8 +116,7 @@ public:
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction,
-                               const bool flip=true,
-                               const Base::Vector3d& xAxis=Base::Vector3d(0.0,0.0,0.0)) const;
+                               const bool flip=true) const;
 
     virtual short mustExecute() const;
 

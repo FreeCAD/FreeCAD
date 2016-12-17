@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
-    Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
+//    Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
 
 
     (void) DrawView::execute();           //make sure Scale is up to date
@@ -187,8 +187,8 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
 
-   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
-                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
+//   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
+//                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
 
     return App::DocumentObject::StdReturn;
 }
@@ -517,10 +517,8 @@ bool DrawViewPart::hasGeometry(void) const
 //boring here. gets more interesting in descendents.
 gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis,
-                                 const bool flip,
-                                 const Base::Vector3d& xAxis) const
+                                 const bool flip)  const
 {
-     (void)xAxis;
      gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);
      return viewAxis;
 }

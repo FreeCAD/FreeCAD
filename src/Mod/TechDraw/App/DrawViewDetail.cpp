@@ -186,7 +186,8 @@ App::DocumentObjectExecReturn *DrawViewDetail::execute(void)
 
     //turn anchor(x,y,0) in projection plane(P) into displacement in 3D
     Base::Vector3d offsetCenter3D = DrawUtil::toR3(viewAxis, anchor);     //displacement in R3
-    if (DrawUtil::checkZParallel(dirDetail)) {
+    Base::Vector3d stdZ(0.0,0.0,1.0);
+    if (DrawUtil::checkParallel(dirDetail,stdZ)) {
         extentNear = extentNear + offsetCenter3D;
     } else {
         extentNear = extentNear - offsetCenter3D;
