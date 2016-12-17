@@ -180,25 +180,26 @@ void TaskProjGroup::on3DClicked(void)
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {
         front->Direction.setValue(dir3D);
-        front->recomputeFeature();
+        //front->OrientBasis.setValue(rot3D);
+        //front->recomputeFeature();
         setUiPrimary();
-        multiView->makeInitialMap(front);
-        multiView->updateSecondaryDirs();
+        //multiView->makeInitialMap(front);
+        //multiView->updateSecondaryDirs();
         Gui::Command::updateActive();
     }
 }
 
 void TaskProjGroup::onResetClicked(void)
 {
-    Base::Vector3d dir = multiView->nameToStdDirection("Front");
+//    Base::Vector3d dir = multiView->nameToStdDirection("Front");
+    
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {
-        front->Direction.setValue(dir);
-        front->recomputeFeature();
+        //multiView->reset()
+//        front->recomputeFeature();
         setUiPrimary();
-        multiView->makeInitialMap(front);
-        multiView->updateSecondaryDirs();
-        //multiView->dumpMap();
+//        multiView->makeInitialMap(front);
+//        multiView->updateSecondaryDirs();
         Gui::Command::updateActive();
     }
 }
