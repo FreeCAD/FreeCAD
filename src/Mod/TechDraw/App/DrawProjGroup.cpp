@@ -36,7 +36,9 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 
+#include <Base/Matrix.h>
 
+#include "Cube.h"
 #include "DrawUtil.h"
 #include "DrawPage.h"
 #include "DrawProjGroupItem.h"
@@ -50,6 +52,32 @@ const char* DrawProjGroup::ProjectionTypeEnums[] = {"Default",
                                                               "First Angle",
                                                               "Third Angle",
                                                               NULL};
+
+const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdDir = {
+        { "Front",            Base::Vector3d(0, -1, 0) },    //front
+        { "Rear",             Base::Vector3d(0, 1, 0) },     //rear
+        { "Right",            Base::Vector3d(1, 0, 0) },     //right
+        { "Left",             Base::Vector3d(-1, 0, 0) },    //left
+        { "Top",              Base::Vector3d(0, 0, 1) },     //top
+        { "Bottom",           Base::Vector3d(0, 0, -1) },    //bottom
+        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },     //FTL
+        { "FrontTopRight",    Base::Vector3d(1, -1, 1) },    //FTR
+        { "FrontBottomRight", Base::Vector3d(1, -1, -1) },   //FBR
+        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) } };  //FBL
+                                                              
+const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdRot = {
+        { "Front",            Base::Vector3d(1,  0, 0) },     //front
+        { "Rear",             Base::Vector3d(-1, 0, 0) },     //rear
+        { "Right",            Base::Vector3d(0, -1, 0) },     //right      this makes the first rendering correct, but
+        { "Left",             Base::Vector3d(0,  1, 0) },     //left       every 2nd subsequent rendering upside down (ie cube is incorrect)
+//        { "Right",            Base::Vector3d(0, 1, 0) },     //right         this makes the first rendering upside down
+//        { "Left",             Base::Vector3d(0,  -1, 0) },     //left        but subsequent renderings right side up (ie cube is correct)
+        { "Top",              Base::Vector3d(1,  0, 0) },     //top
+        { "Bottom",           Base::Vector3d(1,  0, 0) },     //bottom
+        { "FrontTopLeft",     Base::Vector3d(-2, -1, 0.5) },   //FTL  ???
+        { "FrontTopRight",    Base::Vector3d(2, -1, 0.5) },   //FTR   OK
+        { "FrontBottomRight", Base::Vector3d(2, -1, -0.5) },   //FBR  probable
+        { "FrontBottomLeft",  Base::Vector3d(-2, -1, -0.5) } }; //FBL ???
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
@@ -67,10 +95,16 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(spacingX, (15), agroup, App::Prop_None, "Horizontal spacing between views");
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
+    m_cube = new Cube();
+    m_cube->initialize(m_frameToStdDir.at("Right"), m_frameToStdRot.at("Right"), 
+                      m_frameToStdDir.at("Left"),   m_frameToStdRot.at("Left"),
+                      m_frameToStdDir.at("Front"), m_frameToStdRot.at("Front"), m_frameToStdDir.at("Rear"),   m_frameToStdRot.at("Rear"),
+                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"));
 }
 
 DrawProjGroup::~DrawProjGroup()
 {
+    delete m_cube;
 }
 
 void DrawProjGroup::onChanged(const App::Property* prop)
@@ -345,6 +379,7 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
+    //Base::Console().Message("TRACE - DPG::addProjection(%s)\n",viewProjType);
     //if this is the first Projection added, it should automatically be the Anchor/front view
     // or if viewProjType == "Front" Anchor.setValue(view)
     DrawProjGroupItem *view( nullptr );
@@ -363,16 +398,17 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Scale.setValue( Scale.getValue() );
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
+        view->Source.setValue( Source.getValue() );
         if( strcmp(viewProjType,"Front") == 0 ) {
 
             Anchor.setValue(docObj);
-            view->Direction.setValue(nameToStdDirection("Front"));    //just (Base::Vector3d(0.0,-1.0,0.0))
-            view->recomputeFeature();
-            makeInitialMap(view);
-            //dumpMap();
+            view->Direction.setValue(m_frameToStdDir.at("Front"));    //just (Base::Vector3d(0.0,-1.0,0.0))
+            view->OrientBasis.setValue(m_frameToStdRot.at("Front"));
+            //view->recomputeFeature();
         } else {
-            //dumpMap();
-            view->Direction.setValue(m_viewDir[viewProjType]);
+            //really need to check with Cube to get current dir & rot
+            view->Direction.setValue(m_frameToStdDir.at(viewProjType));
+            view->OrientBasis.setValue(m_frameToStdRot.at(viewProjType));
         }
 
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
@@ -380,6 +416,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->recomputeFeature();
     }
 
+    Base::Console().Message("TRACE - DPG::addProjection exits\n");
     return view;
 }
 
@@ -506,6 +543,7 @@ void DrawProjGroup::makeViewBbs(DrawProjGroupItem *viewPtrs[10],
 
 bool DrawProjGroup::distributeProjections()
 {
+    //TODO: bounding boxes do not take view orientation into account
     if (!AutoDistribute.getValue()) {
         return true;
     }
@@ -680,6 +718,19 @@ bool DrawProjGroup::hasAnchor(void)
     return result;
 }
 
+TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
+{
+//    Base::Console().Message("TRACE - DPG::getAnchor() - %s\n",getNameInDocument());
+    DrawProjGroupItem* result = nullptr;
+    App::DocumentObject* docObj = Anchor.getValue();
+    if (docObj == nullptr) {
+        //explode! DPG w/o anchor
+        Base::Console().Message("TRACE - DPG::getAnchor - DPG has no Anchor!!!\n");
+    } else {
+        result = static_cast<DrawProjGroupItem*>(docObj);
+    }
+    return result;
+}
 
 
 void DrawProjGroup::setAnchorDirection(const Base::Vector3d dir)
@@ -702,199 +753,137 @@ Base::Vector3d DrawProjGroup::getAnchorDirection(void)
     return result;
 }
 
-//static
-Base::Vector3d DrawProjGroup::nameToStdDirection(std::string name)
-{
-    Base::Vector3d result;
-    //name to standard view direction
-    std::map<std::string,Base::Vector3d> stdViews = {
-        { "Front",            Base::Vector3d(0, -1, 0) },
-        { "Rear",             Base::Vector3d(0, 1, 0) },
-        { "Right",            Base::Vector3d(1, 0, 0) },
-        { "Left",             Base::Vector3d(-1, 0, 0) },
-        { "Top",              Base::Vector3d(0, 0, 1) },
-        { "Bottom",           Base::Vector3d(0, 0, -1) },
-        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },
-        { "FrontTopRight",    Base::Vector3d(1, -1, 1) },
-        { "FrontBottomRight", Base::Vector3d(1, -1, -1) },
-        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) } };
-    auto it = stdViews.find(name);
-    if (it != stdViews.end()) {
-        result = (*it).second;
-    }
-    return result;
-}
-
 
 //*************************************
 //* view direction manipulation routines
 //*************************************
 
-//make map from anchor u,v,w
-//std::map<std::string,Base::Vector3d>  DrawProjGroup::makeInitialMap(TechDraw::DrawProjGroupItem* anchor)
-void DrawProjGroup::makeInitialMap(TechDraw::DrawProjGroupItem* anchor)
-{
-    m_viewDir = makeUnspunMap(anchor->Direction.getValue(),
-                              anchor->getUDir(),
-                              anchor->getVDir() * -1);               //the infamous flipped Y
-}
-
-//! remake map from FRT
-std::map<std::string,Base::Vector3d>  DrawProjGroup::makeUnspunMap()
-{
-    return makeUnspunMap(m_viewDir["Front"],
-                         m_viewDir["Right"],
-                         m_viewDir["Top"]);
-}
-
-//remake this everytime Anchor.Direction changes
-std::map<std::string,Base::Vector3d>  DrawProjGroup::makeUnspunMap(Base::Vector3d f, Base::Vector3d r, Base::Vector3d t)
-{
-    std::map<std::string,Base::Vector3d> viewDir;
-    viewDir["Front"] = f;
-    viewDir["Right"] = r;
-    viewDir["Top"] = t;
-    viewDir["Rear"] = viewDir["Front"] * -1.0;
-    viewDir["Left"] = viewDir["Right"] * -1.0;
-    viewDir["Bottom"] = viewDir["Top"] * -1.0;
-    viewDir["FrontTopRight"] = viewDir["Right"] + viewDir["Front"] + viewDir["Top"];
-    viewDir["FrontTopLeft"] = viewDir["Left"] + viewDir["Front"] + viewDir["Top"];
-    viewDir["FrontBottomRight"] = viewDir["Right"] + viewDir["Front"] + viewDir["Bottom"];
-    viewDir["FrontBottomLeft"] = viewDir["Left"] + viewDir["Front"] + viewDir["Bottom"];
-    return viewDir;
-}
-
-void DrawProjGroup::dumpMap()
-{
-    Base::Console().Message("TRACE - DPG::dumpMap - entries: %d\n",m_viewDir.size());
-    std::map<std::string, Base::Vector3d>::const_iterator it;
-    for (it = m_viewDir.begin(); it != m_viewDir.end(); it++)
-    {
-        Base::Console().Message("%s  -  %s\n",(it->first).c_str(), DrawUtil::formatVector(it->second).c_str());
-    }
-}
-
 void DrawProjGroup::updateSecondaryDirs()
 {
+//    Base::Console().Message("TRACE - DPG::updateSecondaryDirs() - %s\n",getNameInDocument());
     for (auto& docObj: Views.getValues()) {
         Base::Vector3d newDir;
+        Base::Vector3d newAxis;
+        std::string pic;
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         ProjItemType t = static_cast<ProjItemType>(v->Type.getValue());
         switch (t) {
             case Front : {
-                newDir = m_viewDir["Front"];
+                newDir = m_cube->getFront();
+                newAxis = m_cube->getFrontRot();
                 break;
             }
             case Rear : {
-                newDir = m_viewDir["Rear"];
+                newDir = m_cube->getRear();
+                newAxis = m_cube->getRearRot();
                 break;
             }
             case Left : {
-                newDir = m_viewDir["Left"];
+                newDir = m_cube->getLeft();
+                newAxis = m_cube->getLeftRot();
                 break;
             }
             case Right : {
-                newDir = m_viewDir["Right"];
+                newDir = m_cube->getRight();
+                newAxis = m_cube->getRightRot();
                 break;
             }
             case Top : {
-                newDir = m_viewDir["Top"];
+                newDir = m_cube->getTop();
+                newAxis = m_cube->getTopRot();
                 break;
             }
             case Bottom : {
-                newDir = m_viewDir["Bottom"];
+                newDir = m_cube->getBottom();
+                newAxis = m_cube->getBottomRot();
                 break;
             }
             case FrontTopLeft : {
-                newDir = m_viewDir["FrontTopLeft"];
+                newDir = m_frameToStdDir.at("FrontTopLeft");
+                newAxis = m_frameToStdRot.at("FrontTopLeft");
                 break;
             }
             case FrontTopRight : {
-                newDir = m_viewDir["FrontTopRight"];
+                newDir = m_frameToStdDir.at("FrontTopRight");
+                newAxis = m_frameToStdRot.at("FrontTopRight");
                 break;
             }
             case FrontBottomLeft : {
-                newDir = m_viewDir["FrontBottomLeft"];
+                newDir = m_frameToStdDir.at("FrontBottomLeft");
+                newAxis = m_frameToStdRot.at("FrontBottomLeft");
                 break;
             }
             case FrontBottomRight : {
-                newDir = m_viewDir["FrontBottomRight"];
+                newDir = m_frameToStdDir.at("FrontBottomRight");
+                newAxis = m_frameToStdRot.at("FrontBottomRight");
                 break;
             }
             default: {
                 //TARFU invalid secondary type
                 Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
                 newDir = v->Direction.getValue();
+                newAxis = v->OrientBasis.getValue();
             }
         }
         v->Direction.setValue(newDir);
+        v->OrientBasis.setValue(newAxis);
+        v->recomputeFeature();
     }
+//    Base::Console().Message("TRACE - DPG::updateSecondaryDirs exits\n");
 }
 
 
 void DrawProjGroup::rotateRight()
 {
 //Front -> Right -> Rear -> Left -> Front
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Left"];
-    r = m_viewDir["Front"];
-    t = m_viewDir["Top"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    //m_cube->dump("TRACE - DPG::rotR before");
+    m_cube->rotateRight(); 
+    //m_cube->dump("TRACE - DPG::rotR after");
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::rotateLeft()
 {
 //Front -> Left -> Rear -> Right -> Front
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Right"];
-    r = m_viewDir["Rear"];
-    t = m_viewDir["Top"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    //m_cube->dump("TRACE - DPG::rotL before");
+    m_cube->rotateLeft(); 
+    //m_cube->dump("TRACE - DPG::rotL after");
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::rotateUp()
 {
 //Front -> Top -> Rear -> Bottom -> Front
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Bottom"];
-    r = m_viewDir["Right"];
-    t = m_viewDir["Front"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    //m_cube->dump("TRACE - DPG::rotU before");
+    m_cube->rotateUp(); 
+    //m_cube->dump("TRACE - DPG::rotU after");
     updateSecondaryDirs();
 }
     
 void DrawProjGroup::rotateDown()
 {
 //Front -> Bottom -> Rear -> Top -> Front
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Top"];
-    r = m_viewDir["Right"];
-    t = m_viewDir["Rear"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    m_cube->dump("TRACE - DPG::rotD before");
+    m_cube->rotateDown(); 
+    m_cube->dump("TRACE - DPG::rotD after");
     updateSecondaryDirs();
 }
 
 void DrawProjGroup::spinCW()
 {
 //Top -> Right -> Bottom -> Left -> Top
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Front"];
-    t = m_viewDir["Left"];
-    r = m_viewDir["Top"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    //m_cube->dump("TRACE - DPG::spinCW before");
+    m_cube->spinCW(); 
+    //m_cube->dump("TRACE - DPG::spinCW after");
     updateSecondaryDirs();
 }
     
 void DrawProjGroup::spinCCW()
 {
 //Top -> Left -> Bottom -> Right -> Top
-    Base::Vector3d f,r,t;
-    f = m_viewDir["Front"];
-    t = m_viewDir["Right"];
-    r = m_viewDir["Bottom"];
-    m_viewDir = makeUnspunMap(f,r,t);
+    //m_cube->dump("TRACE - DPG::spingCCW before");
+    m_cube->spinCCW(); 
+    //m_cube->dump("TRACE - DPG::spinCCW after");
     updateSecondaryDirs();
 }
 
@@ -903,45 +892,47 @@ void DrawProjGroup::spinCCW()
 //! rebuild view direction map from existing DPGI's if possible or from Anchor
 void DrawProjGroup::onDocumentRestored()
 {
-    Base::Vector3d f,r,t;
-    bool ffound = false;
-    bool rfound = false;
-    bool tfound = false;
-    
-    for (auto& docObj: Views.getValues()) {
-        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
-        ProjItemType type = static_cast<ProjItemType>(v->Type.getValue());
-        switch (type) {
-            case Front : {
-                f = v->Direction.getValue();
-                ffound = true;
-                break;
-            }
-            case Right : {
-                r = v->Direction.getValue();
-                rfound = true;
-                break;
-            }
-            case Top : {
-                t = v->Direction.getValue();
-                tfound = true;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-    if (ffound && rfound && tfound) {
-        m_viewDir = makeUnspunMap(f,r,t);
-    } else {
-        App::DocumentObject* docObj = Anchor.getValue();
-        TechDraw::DrawProjGroupItem* view = static_cast<TechDraw::DrawProjGroupItem*>( docObj );
-        makeInitialMap(view);
-        Base::Console().Log("LOG: - DPG::restore - making map from Anchor\n");
-    }
-    //dumpMap();
-    DrawViewCollection::onDocumentRestored();
+//    Base::Vector3d f,r,t;
+//    Base::Vector3d fr,rr,tr;
+//    bool ffound = false;
+//    bool rfound = false;
+//    bool tfound = false;
+//    
+//    for (auto& docObj: Views.getValues()) {
+//        DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
+//        ProjItemType type = static_cast<ProjItemType>(v->Type.getValue());
+//        switch (type) {
+//            case Front : {
+//                f = v->Direction.getValue();
+//                fr = v->OrientBasis.getValue();
+//                ffound = true;
+//                break;
+//            }
+//            case Right : {
+//                r  = v->Direction.getValue();
+//                rr = v->OrientBasis.getValue();
+//                rfound = true;
+//                break;
+//            }
+//            case Top : {
+//                t = v->Direction.getValue();
+//                tr = v->OrientBasis.getValue();
+//                tfound = true;
+//                break;
+//            }
+//            default: {
+//                break;
+//            }
+//        }
+//    }
+//    if (ffound && rfound && tfound) {
+//        //m_cube->reinit(r,rr,f,fr,t,tr);
+//        Base::Console().Log("LOG: - DPG::restore - found Right,Front,Top\n");
+//    } else {
+//        m_cube->initialize(r,f,t);
+//        Base::Console().Log("LOG: - DPG::restore - didn't find Right,Front,Top\n");
+//    }
+//    DrawViewCollection::onDocumentRestored();
 }
 
 PyObject *DrawProjGroup::getPyObject(void)

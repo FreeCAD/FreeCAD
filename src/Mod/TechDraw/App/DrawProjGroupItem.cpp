@@ -153,26 +153,14 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
 //         Base::Console().Message("TRACE - DPGI::getViewAxis - parallel  flip: %d\n",flip);
          viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //use default orientation
      } else {
-//         Base::Console().Message("TRACE - DPGI::getViewAxis - skew  flip: %d\n",flip);
-         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
+         //Base::Console().Message("TRACE - DPGI::getViewAxis - skew  flip: %d\n",flip);
+//         if (Type.isValue("Right") || Type.isValue("Left")) {               //no difference with incorrect initial axis
+//             viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,!flip);     //no difference with correct initial axis!!
+//         } else {
+             viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
+//         }
      }
      
-//     if (Type.isValue("Front")) {
-//         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //show front in upright stance
-//     } else  {
-//         const char *viewProjType = Type.getValueAsString();
-//         DrawProjGroup* grp = getGroup();
-//         if (grp == nullptr) {
-//             Base::Console().Message("TRACE - DPGI::getViewAxis - NO GROUP!!!\n");
-//             return TechDrawGeometry::getViewAxis(pt,axis,flip);       //too early
-//         } else {
-//             getGroup()->dumpViewDir("viewDir map");                  //<<<<
-//             getGroup()->dumpXAxisDir("xAxisDir map");
-//             Base::Vector3d x = getGroup()->getXAxisDir(viewProjType);
-//             Base::Vector3d x = OrientBasis.getValue();
-//             viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
-//         }
-//     }
      //Base::Console().Message("TRACE - DPGI::getViewAxis exits\n");
      return viewAxis;
 }
@@ -192,12 +180,12 @@ Base::Vector3d DrawProjGroupItem::rotated(const double angle)
                             DrawUtil::formatVector(line).c_str(),
                             DrawUtil::formatVector(oldBasis).c_str(),
                             DrawUtil::formatVector(newBasis).c_str());
-    if (getGroup() != nullptr) {
-        if (getGroup()->getException(Type.getValueAsString())) {
-            newBasis = newBasis * -1.0;
-            Base::Console().Message("TRACE - DPGI::rotated - EXCEPTION\n");
-        }
-    }
+//    if (getGroup() != nullptr) {
+//        if (getGroup()->getException(Type.getValueAsString())) {
+//            newBasis = newBasis * -1.0;
+//            Base::Console().Message("TRACE - DPGI::rotated - EXCEPTION\n");
+//        }
+//    }
     return newBasis;
 }
 
