@@ -4384,6 +4384,7 @@ public:
         }
         return true;
     }
+
 protected:
     bool selectionDone;
     Base::Vector2d EditPoint;
