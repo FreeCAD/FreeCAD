@@ -497,6 +497,8 @@ public:
     double getFocal(void) const;
     void setFocal(double length);
     
+    Base::Vector3d getFocus(void) const;
+    
     virtual void getRange(double& u, double& v, bool emulateCCWXY) const;
     virtual void setRange(double u, double v, bool emulateCCWXY);
 

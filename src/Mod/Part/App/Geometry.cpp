@@ -2322,6 +2322,15 @@ void GeomArcOfParabola::setFocal(double length)
     }
 }
 
+Base::Vector3d GeomArcOfParabola::getFocus(void) const
+{
+    Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
+    gp_Pnt gp = p->Focus();
+    
+    return Base::Vector3d(gp.X(),gp.Y(),gp.Z());
+}
+
+
 void GeomArcOfParabola::getRange(double& u, double& v, bool /*emulateCCWXY*/) const
 {
 #if 0
