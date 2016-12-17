@@ -63,7 +63,7 @@ def addToComponent(compobject,addobject,mod=None):
     if compobject == addobject: return
     # first check zis already there
     found = False
-    attribs = ["Additions","Objects","Components","Subtractions","Base"]
+    attribs = ["Additions","Objects","Components","Subtractions","Base","Group"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -89,6 +89,8 @@ def addToComponent(compobject,addobject,mod=None):
                     setattr(compobject,mod,l)
                     if mod != "Objects":
                         addobject.ViewObject.hide()
+                        if Draft.getType(compobject) == "PanelSheet":
+                            addobject.Placement.move(compobject.Placement.Base.negative())
         else:
             for a in attribs[:3]:
                 if hasattr(compobject,a):
@@ -106,7 +108,7 @@ def removeFromComponent(compobject,subobject):
     it is added as a subtraction.'''
     if compobject == subobject: return
     found = False
-    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures"]
+    attribs = ["Additions","Subtractions","Objects","Components","Base","Axes","Fixtures","Group"]
     for a in attribs:
         if hasattr(compobject,a):
             if a == "Base":
@@ -120,6 +122,8 @@ def removeFromComponent(compobject,subobject):
                     l.remove(subobject)
                     setattr(compobject,a,l)
                     subobject.ViewObject.show()
+                    if Draft.getType(compobject) == "PanelSheet":
+                        subobject.Placement.move(compobject.Placement.Base)
                     found = True
     if not found:
         if hasattr(compobject,"Subtractions"):
@@ -154,7 +158,7 @@ class ComponentTaskPanel:
         # the categories are shown only if they are not empty.
 
         self.obj = None
-        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures"]
+        self.attribs = ["Base","Additions","Subtractions","Objects","Components","Axes","Fixtures","Armatures","Group"]
         self.baseform = QtGui.QWidget()
         self.baseform.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.baseform)
@@ -300,6 +304,7 @@ class ComponentTaskPanel:
         self.treeComponents.setText(0,QtGui.QApplication.translate("Arch", "Components", None, QtGui.QApplication.UnicodeUTF8))
         self.treeFixtures.setText(0,QtGui.QApplication.translate("Arch", "Fixtures", None, QtGui.QApplication.UnicodeUTF8))
         self.treeArmatures.setText(0,QtGui.QApplication.translate("Arch", "Armatures", None, QtGui.QApplication.UnicodeUTF8))
+        self.treeGroup.setText(0,QtGui.QApplication.translate("Arch", "Group", None, QtGui.QApplication.UnicodeUTF8))
 
 class Component:
     "The default Arch Component object"

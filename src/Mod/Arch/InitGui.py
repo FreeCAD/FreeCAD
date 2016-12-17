@@ -37,7 +37,7 @@ class ArchWorkbench(Workbench):
                      "Arch_Floor","Arch_Building","Arch_Site",
                      "Arch_Window","Arch_Roof","Arch_Axis",
                      "Arch_SectionPlane","Arch_Space","Arch_Stairs",
-                     "Arch_Panel","Arch_Equipment",
+                     "Arch_PanelTools","Arch_Equipment",
                      "Arch_Frame","Arch_Material","Arch_Schedule","Arch_PipeTools",
                      "Arch_CutPlane","Arch_Add","Arch_Remove","Arch_Survey"]
         self.utilities = ["Arch_Component","Arch_SplitMesh","Arch_MeshToShape",

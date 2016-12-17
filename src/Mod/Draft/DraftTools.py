@@ -3501,6 +3501,16 @@ class Edit(Modifier):
                             if self.pl: 
                                 p = self.pl.multVec(p)
                             self.editpoints.append(p)
+                elif Draft.getType(self.obj) == "PanelCut":
+                    if self.obj.TagPosition.Length == 0:
+                        pos = self.obj.Shape.BoundBox.Center
+                    else:
+                        pos = self.pl.multVec(self.obj.TagPosition)
+                    self.editpoints.append(pos)
+                elif Draft.getType(self.obj) == "PanelSheet":
+                    self.editpoints.append(self.pl.multVec(self.obj.TagPosition))
+                    for o in self.obj.Group:
+                        self.editpoints.append(self.pl.multVec(o.Placement.Base))
                 if Draft.getType(self.obj) != "BezCurve":
                     self.trackers = []
                     if self.editpoints:
@@ -3724,6 +3734,14 @@ class Edit(Modifier):
             nodes = self.obj.Nodes
             nodes[self.editing] = self.invpl.multVec(v)
             self.obj.Nodes = nodes
+        elif Draft.getType(self.obj) == "PanelCut":
+            if self.editing == 0:
+                self.obj.TagPosition = self.invpl.multVec(v)
+        elif Draft.getType(self.obj) == "PanelSheet":
+            if self.editing == 0:
+                self.obj.TagPosition = self.invpl.multVec(v)
+            else:
+                self.obj.Group[self.editing-1].Placement.Base = self.invpl.multVec(v)
 
     def numericInput(self,v,numy=None,numz=None):
         '''this function gets called by the toolbar
