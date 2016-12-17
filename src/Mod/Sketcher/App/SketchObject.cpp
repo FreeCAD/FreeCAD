@@ -33,6 +33,7 @@
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
+# include <gp_Parab.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
@@ -41,6 +42,7 @@
 # include <Geom_Circle.hxx>
 # include <Geom_Ellipse.hxx>
 # include <Geom_Hyperbola.hxx>
+# include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -504,6 +506,14 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
             return aoh->getEndPoint();
         else if (PosId == mid)
             return aoh->getCenter();
+    } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola*>(geo);
+        if (PosId == start)
+            return aop->getStartPoint();
+        else if (PosId == end)
+            return aop->getEndPoint();
+        else if (PosId == mid)
+            return aop->getCenter();
     }
 
     return Base::Vector3d();
@@ -560,6 +570,7 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
         geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
         geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         return true;
     }
@@ -3670,6 +3681,33 @@ void SketchObject::rebuildExternalGeometry(void)
                                         aoh->Construction = true;
                                         ExternalGeo.push_back(aoh);
                                     }
+                                } else if (projCurve.GetType() == GeomAbs_Parabola) {
+                                    gp_Parab e = projCurve.Parabola();
+                                    gp_Pnt p = e.Location();
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+                                    
+                                    gp_Dir normal = e.Axis().Direction();
+                                    gp_Dir xdir = e.XAxis().Direction();
+                                    gp_Ax2 xdirref(p, normal);
+
+                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
+                                        Part::GeomParabola* parabola = new Part::GeomParabola();
+                                        parabola->setFocal(e.Focal());
+                                        parabola->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                                        parabola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(),normal));
+                                        parabola->Construction = true;
+                                        ExternalGeo.push_back(parabola);
+                                    }
+                                    else {
+                                        Part::GeomArcOfParabola* aop = new Part::GeomArcOfParabola();
+                                        Handle_Geom_Curve curve = new Geom_Parabola(e);
+                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                                                                                projCurve.LastParameter());
+                                        aop->setHandle(tCurve);
+                                        aop->Construction = true;
+                                        ExternalGeo.push_back(aop);
+                                    }
                                 }
                                 else if (projCurve.GetType() == GeomAbs_Ellipse) {
                                     gp_Elips e = projCurve.Ellipse();
@@ -3782,6 +3820,13 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(mid);	  
         } else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(end);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);
