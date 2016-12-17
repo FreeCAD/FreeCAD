@@ -239,6 +239,36 @@ namespace GCS
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfHyperbola* Copy();
     };
+    
+    class Parabola: public Curve
+    {
+    public:
+        Parabola(){ }
+        virtual ~Parabola(){}
+        Point vertex; 
+        Point focus1;
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        virtual DeriVector2 Value(double u, double du, double* derivparam = 0);
+        virtual int PushOwnParams(VEC_pD &pvec);
+        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
+        virtual Parabola* Copy();
+    };    
+
+    class ArcOfParabola: public Parabola
+    {
+    public:
+        ArcOfParabola(){startAngle=0;endAngle=0;}
+        virtual ~ArcOfParabola(){}
+	// parameters
+        double *startAngle;
+        double *endAngle;
+        Point start;
+        Point end;
+	// interface helpers
+        virtual int PushOwnParams(VEC_pD &pvec);
+        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
+        virtual ArcOfParabola* Copy();
+    };
 
 } //namespace GCS
 
