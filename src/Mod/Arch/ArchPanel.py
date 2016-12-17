@@ -57,7 +57,8 @@ Presets = [None,
            ["Plywood 18mm, 1220 x 2440",1200,2400,18],
            ["Plywood 25mm, 1220 x 2440",1200,2400,25],
            ["MDF 3mm, 900 x 600",       900, 600, 3],
-           ["MDF 6mm, 900 x 600",       900, 600, 6]]
+           ["MDF 6mm, 900 x 600",       900, 600, 6],
+           ["OSB 18mm, 1200 x 2400",    1200,2400,18]]
 
 def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Panel"):
     '''makePanel([obj],[length],[width],[thickness],[placement]): creates a
@@ -67,7 +68,8 @@ def makePanel(baseobj=None,length=0,width=0,thickness=0,placement=None,name="Pan
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
     obj.Label = translate("Arch",name)
     _Panel(obj)
-    _ViewProviderPanel(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderPanel(obj.ViewObject)
     if baseobj:
         obj.Base = baseobj
         obj.Base.ViewObject.hide()
@@ -93,13 +95,37 @@ def makePanelView(panel,page=None,name="PanelView"):
             page.Template = Draft.getParam("template",FreeCAD.getResourceDir()+'Mod/Drawing/Templates/A3_Landscape.svg')
     view = FreeCAD.ActiveDocument.addObject("Drawing::FeatureViewPython",name)
     page.addObject(view)
-    _PanelView(view)
+    PanelView(view)
     view.Source = panel
-    view.Label = translate("Arch","View of")+" "+panel.Name
+    view.Label = translate("Arch","View of")+" "+panel.Label
     return view
 
 
-class _CommandPanel:
+def makePanelCut(panel,name="PanelView"):
+    """makePanelCut(panel) : Creates a 2D view of the given panel
+    in the 3D space, positioned at the origin."""
+    view = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    PanelCut(view)
+    view.Source = panel
+    view.Label = translate("Arch","View of")+" "+panel.Label
+    if FreeCAD.GuiUp:
+        ViewProviderPanelCut(view.ViewObject)
+    return view
+
+
+def makePanelSheet(panels=[],name="PanelSheet"):
+    """makePanelSheet([panels]) : Creates a sheet with the given panel cuts
+    in the 3D space, positioned at the origin."""
+    sheet = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    PanelSheet(sheet)
+    if panels:
+        sheet.Group = panels
+    if FreeCAD.GuiUp:
+        ViewProviderPanelSheet(sheet.ViewObject)
+    return sheet
+
+
+class CommandPanel:
     "the Arch Panel command definition"
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Panel',
@@ -262,6 +288,59 @@ class _CommandPanel:
 
     def rotate(self):
         self.rotated = not self.rotated
+
+
+class CommandPanelCut:
+    "the Arch Panel Cut command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Panel_Cut',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Cut","Panel Cut"),
+                'Accel': "P, C",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates 2D views of selected panels")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        if FreeCADGui.Selection.getSelection():
+            FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel Cut")))
+            FreeCADGui.addModule("Arch")
+            for obj in FreeCADGui.Selection.getSelection():
+                if Draft.getType(obj) == "Panel":
+                    FreeCADGui.doCommand("Arch.makePanelCut(FreeCAD.ActiveDocument."+obj.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+
+
+class CommandPanelSheet:
+    "the Arch Panel Sheet command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Panel_Sheet',
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Panel Sheet"),
+                'Accel': "P, S",
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Panel_Sheet","Creates a 2D sheet which can contain panel cuts")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel Sheet")))
+        FreeCADGui.addModule("Arch")
+        if FreeCADGui.Selection.getSelection():
+            l = "["
+            for obj in FreeCADGui.Selection.getSelection():
+                l += "FreeCAD.ActiveDocument."+obj.Name+","
+            l += "]"
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            FreeCADGui.doCommand("__objs__ = "+l)
+            FreeCADGui.doCommand("Arch.makePanelSheet(__objs__)")
+            FreeCADGui.doCommand("del __objs__")
+        else:
+            FreeCADGui.doCommand("Arch.makePanelSheet()")
+        FreeCAD.ActiveDocument.commitTransaction()
+        FreeCAD.ActiveDocument.recompute()
+
 
 
 class _Panel(ArchComponent.Component):
@@ -485,7 +564,7 @@ class _ViewProviderPanel(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Panel_Tree.svg"
 
 
-class _PanelView:
+class PanelView:
     "A Drawing view for Arch Panels"
 
     def __init__(self, obj):
@@ -559,5 +638,328 @@ class _PanelView:
     def setDisplayMode(self,mode):
         return mode
 
+
+class PanelCut(Draft._DraftObject):
+    "A flat, 2D view of an Arch Panel"
+
+    def __init__(self, obj):
+        Draft._DraftObject.__init__(self,obj)
+        obj.addProperty("App::PropertyLink","Source","Arch",QT_TRANSLATE_NOOP("App::Property","The linked object"))
+        obj.addProperty("App::PropertyString","TagText","Arch",QT_TRANSLATE_NOOP("App::Property","The text to display. Can be %tag%, %label% or %description% to display the panel tag or label"))
+        obj.addProperty("App::PropertyLength","TagSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+        obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
+        obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+        obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+        obj.Proxy = self
+        self.Type = "PanelCut"
+        obj.TagText = "%tag%"
+        obj.TagSize = 10
+        obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
+
+    def execute(self, obj):
+        pl = obj.Placement
+        if obj.Source:
+            base = None
+            if Draft.getType(obj.Source) == "Panel":
+                import Part,DraftGeomUtils
+                baseobj = None
+                if obj.Source.CloneOf:
+                    baseobj = obj.Source.CloneOf.Base
+                if obj.Source.Base:
+                    baseobj = obj.Source.Base
+                if baseobj:
+                    if baseobj.isDerivedFrom("Part::Feature"):
+                        if baseobj.Shape.Solids:
+                            return
+                        else:
+                            base = Part.makeCompound(baseobj.Shape.Wires)
+                            n = None
+                            for w in base.Wires:
+                                n = DraftGeomUtils.getNormal(w)
+                                if n:
+                                    break
+                            if not n:
+                                n = Vector(0,0,1)
+                            base.translate(base.Vertexes[0].Point.negative())
+                            r = FreeCAD.Rotation(n,Vector(0,0,1))
+                            base.rotate(Vector(0,0,0),r.Axis,math.degrees(r.Angle))
+                    elif baseobj.isDerivedFrom("Mesh::Feature"):
+                        return
+                else:
+                    l2 = obj.Source.Length/2
+                    w2 = obj.Source.Width/2
+                    v1 = Vector(-l2,-w2,0)
+                    v2 = Vector(l2,-w2,0)
+                    v3 = Vector(l2,w2,0)
+                    v4 = Vector(-l2,w2,0)
+                    base = Part.makePolygon([v1,v2,v3,v4,v1])
+                if base:
+                    self.outline = base
+                    if obj.FontFile and obj.TagText and obj.TagSize.Value:
+                        if obj.TagPosition.Length == 0:
+                            pos = base.BoundBox.Center
+                        else:
+                            pos = obj.TagPosition
+                        if obj.TagText == "%tag%":
+                            string = obj.Source.Tag
+                        elif obj.TagText == "%label%":
+                            string = obj.Source.Label
+                        elif obj.TagText == "%description%":
+                            string = obj.Source.Description
+                        else:
+                            string = obj.TagText
+                        chars = []
+                        for char in Part.makeWireString(string,obj.FontFile,obj.TagSize.Value,0):
+                            chars.extend(char)
+                        textshape = Part.Compound(chars)
+                        textshape.translate(pos.sub(textshape.BoundBox.Center))
+                        textshape.rotate(textshape.BoundBox.Center,Vector(0,0,1),obj.TagRotation.Value)
+                        self.tag = textshape
+                        base = Part.Compound([base,textshape])
+                    else:
+                        base = Part.Compound([base])
+                    obj.Shape = base
+                    obj.Placement = pl
+
+
+class ViewProviderPanelCut(Draft._ViewProviderDraft):
+    "a view provider for the panel cut object"
+
+    def __init__(self,vobj):
+        Draft._ViewProviderDraft.__init__(self,vobj)
+        vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+        vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+
+    def attach(self,vobj):
+        Draft._ViewProviderDraft.attach(self,vobj)
+        from pivy import coin
+        self.coords = coin.SoCoordinate3()
+        self.lineset = coin.SoLineSet()
+        self.lineset.numVertices.setValue(-1)
+        lineStyle = coin.SoDrawStyle()
+        lineStyle.linePattern = 0x0f0f
+        self.color = coin.SoBaseColor()
+        self.switch = coin.SoSwitch()
+        sep = coin.SoSeparator()
+        self.switch.whichChild = -1
+        sep.addChild(self.color)
+        sep.addChild(lineStyle)
+        sep.addChild(self.coords)
+        sep.addChild(self.lineset)
+        self.switch.addChild(sep)
+        vobj.Annotation.addChild(self.switch)
+        self.onChanged(vobj,"ShowMargin")
+        self.onChanged(vobj,"LineColor")
+
+    def onChanged(self,vobj,prop):
+        if prop in ["Margin","ShowMargin"]:
+            if hasattr(vobj,"Margin") and hasattr(vobj,"ShowMargin"):
+                if (vobj.Margin.Value > 0) and vobj.Object.Shape and vobj.ShowMargin:
+                    self.lineset.numVertices.setValue(-1)
+                    if vobj.Object.Shape.Wires:
+                        d = 0
+                        dw = None
+                        for w in vobj.Object.Shape.Wires:
+                            if w.BoundBox.DiagonalLength > d:
+                                d = w.BoundBox.DiagonalLength
+                                dw = w
+                        if dw:
+                            ow = dw.makeOffset2D(vobj.Margin.Value)
+                            verts = []
+                            for v in ow.OrderedVertexes:
+                                v = vobj.Object.Placement.inverse().multVec(v.Point)
+                                verts.append((v.x,v.y,v.z))
+                            if dw.isClosed():
+                                verts.append(verts[0])
+                        self.coords.point.setValues(verts)
+                        self.lineset.numVertices.setValue(len(verts))
+                        self.switch.whichChild = 0
+                else:
+                    self.switch.whichChild = -1
+        elif prop == "LineColor":
+            if hasattr(vobj,"LineColor"):
+                c = vobj.LineColor
+                self.color.rgb.setValue(c[0],c[1],c[2])
+        Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+
+    def updateData(self,obj,prop):
+        if prop in ["Shape"]:
+            self.onChanged(obj.ViewObject,"Margin")
+        Draft._ViewProviderDraft.updateData(self,obj,prop)
+
+
+class PanelSheet(Draft._DraftObject):
+    "A collection of Panel cuts under a sheet"
+
+    def __init__(self, obj):
+        Draft._DraftObject.__init__(self,obj)
+        obj.addProperty("App::PropertyLinkList","Group","Arch",QT_TRANSLATE_NOOP("App::Property","The linked Panel cuts"))
+        obj.addProperty("App::PropertyString","TagText","Arch",QT_TRANSLATE_NOOP("App::Property","The tag text to display"))
+        obj.addProperty("App::PropertyLength","TagSize","Arch",QT_TRANSLATE_NOOP("App::Property","The size of the tag text"))
+        obj.addProperty("App::PropertyVector","TagPosition","Arch",QT_TRANSLATE_NOOP("App::Property","The position of the tag text. Keep (0,0,0) for automatic center position"))
+        obj.addProperty("App::PropertyAngle","TagRotation","Arch",QT_TRANSLATE_NOOP("App::Property","The rotation of the tag text"))
+        obj.addProperty("App::PropertyFile","FontFile","Arch",QT_TRANSLATE_NOOP("App::Property","The font of the tag text"))
+        obj.addProperty("App::PropertyLength","Width","Arch",QT_TRANSLATE_NOOP("App::Property","The width of the sheet"))
+        obj.addProperty("App::PropertyLength","Height","Arch",QT_TRANSLATE_NOOP("App::Property","The height of the sheet"))
+        obj.addProperty("App::PropertyPercent","FillRatio","Arch",QT_TRANSLATE_NOOP("App::Property","The fill ratio of this sheet"))
+        obj.Proxy = self
+        self.Type = "PanelSheet"
+        obj.TagSize = 10
+        obj.Width = 1000
+        obj.Height = 1000
+        obj.FontFile = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetString("FontFile","")
+        obj.setEditorMode("FillRatio",2)
+
+    def execute(self, obj):
+        import Part
+        pl = obj.Placement
+        if obj.Width.Value and obj.Height.Value:
+            l2 = obj.Width.Value/2
+            w2 = obj.Height.Value/2
+            v1 = Vector(-l2,-w2,0)
+            v2 = Vector(l2,-w2,0)
+            v3 = Vector(l2,w2,0)
+            v4 = Vector(-l2,w2,0)
+            base = Part.makePolygon([v1,v2,v3,v4,v1])
+            self.sheetborder = base
+            wires = []
+            area = obj.Width.Value * obj.Height.Value
+            subarea = 0
+            for v in obj.Group:
+                if v.isDerivedFrom("Part::Feature"):
+                    wires.extend(v.Shape.Wires)
+                    if Draft.getType(v) == "PanelCut":
+                        if v.Source:
+                            subarea += v.Source.Area.Value
+                    else:
+                        for w in v.Shape.Wires:
+                            if w.isClosed():
+                                f = Part.Face(w)
+                                subarea += f.Area
+            if wires:
+                base = Part.Compound([base]+wires)
+            if obj.FontFile and obj.TagText and obj.TagSize.Value:
+                chars = []
+                for char in Part.makeWireString(obj.TagText,obj.FontFile,obj.TagSize.Value,0):
+                    chars.extend(char)
+                textshape = Part.Compound(chars)
+                textshape.translate(obj.TagPosition)
+                textshape.rotate(textshape.BoundBox.Center,Vector(0,0,1),obj.TagRotation.Value)
+                self.sheettag = textshape
+                base = Part.Compound([base,textshape])
+            obj.Shape = base
+            obj.Placement = pl
+            obj.FillRatio = int((subarea/area)*100)
+
+
+class ViewProviderPanelSheet(Draft._ViewProviderDraft):
+    "a view provider for the panel sheet object"
+
+    def __init__(self,vobj):
+        Draft._ViewProviderDraft.__init__(self,vobj)
+        vobj.addProperty("App::PropertyLength","Margin","Arch",QT_TRANSLATE_NOOP("App::Property","A margin inside the boundary"))
+        vobj.addProperty("App::PropertyBool","ShowMargin","Arch",QT_TRANSLATE_NOOP("App::Property","Turns the display of the margin on/off"))
+
+
+    def getIcon(self):
+        return ":/icons/Draft_Drawing.svg"
+
+    def setEdit(self,vobj,mode):
+        if mode == 0:
+            taskd = SheetTaskPanel(vobj.Object)
+            taskd.update()
+            FreeCADGui.Control.showDialog(taskd)
+            return True
+        return False
+
+    def unsetEdit(self,vobj,mode):
+        FreeCADGui.Control.closeDialog()
+        return False
+
+    def attach(self,vobj):
+        Draft._ViewProviderDraft.attach(self,vobj)
+        from pivy import coin
+        self.coords = coin.SoCoordinate3()
+        self.lineset = coin.SoLineSet()
+        self.lineset.numVertices.setValue(-1)
+        lineStyle = coin.SoDrawStyle()
+        lineStyle.linePattern = 0x0f0f
+        self.color = coin.SoBaseColor()
+        self.switch = coin.SoSwitch()
+        sep = coin.SoSeparator()
+        self.switch.whichChild = -1
+        sep.addChild(self.color)
+        sep.addChild(lineStyle)
+        sep.addChild(self.coords)
+        sep.addChild(self.lineset)
+        self.switch.addChild(sep)
+        vobj.Annotation.addChild(self.switch)
+        self.onChanged(vobj,"ShowMargin")
+        self.onChanged(vobj,"LineColor")
+
+    def onChanged(self,vobj,prop):
+        if prop in ["Margin","ShowMargin"]:
+            if hasattr(vobj,"Margin") and hasattr(vobj,"ShowMargin"):
+                if (vobj.Margin.Value > 0) and (vobj.Margin.Value < vobj.Object.Width.Value/2) and (vobj.Margin.Value < vobj.Object.Height.Value/2):
+                    l2 = vobj.Object.Width.Value/2
+                    w2 = vobj.Object.Height.Value/2
+                    v = vobj.Margin.Value
+                    v1 = (-l2+v,-w2+v,0)
+                    v2 = (l2-v,-w2+v,0)
+                    v3 = (l2-v,w2-v,0)
+                    v4 = (-l2+v,w2-v,0)
+                    self.coords.point.setValues([v1,v2,v3,v4,v1])
+                    self.lineset.numVertices.setValue(5)
+                if vobj.ShowMargin:
+                    self.switch.whichChild = 0
+                else:
+                    self.switch.whichChild = -1
+        elif prop == "LineColor":
+            if hasattr(vobj,"LineColor"):
+                c = vobj.LineColor
+                self.color.rgb.setValue(c[0],c[1],c[2])
+        Draft._ViewProviderDraft.onChanged(self,vobj,prop)
+
+    def updateData(self,obj,prop):
+        if prop in ["Width","Height"]:
+            self.onChanged(obj.ViewObject,"Margin")
+        Draft._ViewProviderDraft.updateData(self,obj,prop)
+
+
+class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
+
+    def __init__(self,obj):
+        ArchComponent.ComponentTaskPanel.__init__(self)
+        self.obj = obj
+        self.optwid = QtGui.QWidget()
+        self.optwid.setWindowTitle(QtGui.QApplication.translate("Arch", "Tools", None, QtGui.QApplication.UnicodeUTF8))
+        lay = QtGui.QVBoxLayout(self.optwid)
+        self.editButton = QtGui.QPushButton(self.optwid)
+        self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit views positions", None, QtGui.QApplication.UnicodeUTF8))
+        lay.addWidget(self.editButton)
+        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
+        self.form = [self.form,self.optwid]
+
+    def editNodes(self):
+        FreeCADGui.Control.closeDialog()
+        FreeCADGui.runCommand("Draft_Edit")
+
+
 if FreeCAD.GuiUp:
-    FreeCADGui.addCommand('Arch_Panel',_CommandPanel())
+
+    class CommandPanelGroup:
+
+        def GetCommands(self):
+            return tuple(['Arch_Panel','Arch_Panel_Cut','Arch_Panel_Sheet'])
+        def GetResources(self):
+            return { 'MenuText': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools'),
+                     'ToolTip': QT_TRANSLATE_NOOP("Arch_PanelTools",'Panel tools')
+                   }
+        def IsActive(self):
+            return not FreeCAD.ActiveDocument is None
+
+    FreeCADGui.addCommand('Arch_Panel',CommandPanel())
+    FreeCADGui.addCommand('Arch_Panel_Cut',CommandPanelCut())
+    FreeCADGui.addCommand('Arch_Panel_Sheet',CommandPanelSheet())
+    FreeCADGui.addCommand('Arch_PanelTools', CommandPanelGroup())

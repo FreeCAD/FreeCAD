@@ -581,8 +581,10 @@ def getMovableChildren(objectslist,recursive=True):
     with all child objects that have a "MoveWithHost" property set to True. If
     recursive is True, all descendents are considered, otherwise only direct children.'''
     added = []
+    if not isinstance(objectslist,list):
+        objectslist = [objectslist]
     for obj in objectslist:
-        if not (getType(obj) in ["Clone","SectionPlane"]):
+        if not (getType(obj) in ["Clone","SectionPlane","Facebinder"]):
             # objects that should never move their children
             children = obj.OutList
             if  hasattr(obj,"Proxy"):
@@ -2708,6 +2710,8 @@ def clone(obj,delta=None):
         cl.Placement = obj[0].Placement
         try:
             cl.Role = base.Role
+            cl.Description = base.Description
+            cl.Tag = base.Tag
         except:
             pass
         return cl
@@ -3563,6 +3567,8 @@ class _ViewProviderDraft:
             objs.extend(self.Object.Objects)
         if hasattr(self.Object,"Components"):
             objs.extend(self.Object.Components)
+        if hasattr(self.Object,"Group"):
+            objs.extend(self.Object.Group)
         return objs
 
 class _ViewProviderDraftAlt(_ViewProviderDraft):
