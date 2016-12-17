@@ -44,6 +44,7 @@
 #include <Mod/Sketcher/App/Sketch.h>
 
 #include "ViewProviderSketch.h"
+#include "DrawSketchHandler.h"
 #include "ui_InsertDatum.h"
 #include "EditDatumDialog.h"
 #include "CommandConstraints.h"
@@ -62,6 +63,8 @@ namespace SketcherGui
 }
 
 ConstraintCreationMode constraintCreationMode=Driving;
+
+void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler);
 
 bool isCreateConstraintActive(Gui::Document *doc)
 {
@@ -927,6 +930,91 @@ bool CmdSketcherConstrainVertical::isActive(void)
 }
 
 
+// ======================================================================================
+
+/* XPM */
+static const char *cursor_createlock[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+..........###............",
+"................######..........",
+"...............##....##.........",
+"..............##......##........",
+"..............##......##........",
+".............############.......",
+".............############.......",
+".............############.......",
+".............############.......",
+".............############.......",
+".............############.......",
+".............############.......",
+".............############.......",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+/**
+ * @brief The DrawSketchHandlerLock class
+ *
+ * Hacking on the lines of the functions in CommandCreateGeo.cpp to make lock
+ * constraints on the fly.
+ */
+class DrawSketchHandlerLock: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerLock() : selectionDone(false) {}
+    virtual ~DrawSketchHandlerLock() {}
+
+    virtual void activated(ViewProviderSketch *)
+    {
+        setCursor(QPixmap(cursor_createlock),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        setPositionText(onSketchPos);
+        if (seekAutoConstraint(sugConstr, onSketchPos, Base::Vector2d(0.f,0.f))) {
+            renderSuggestConstraintsCursor(sugConstr);
+            return;
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        EditPoint = onSketchPos;
+        selectionDone = true;
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos) {
+        return true;
+    }
+
+protected:
+    bool selectionDone;
+    Base::Vector2d EditPoint;
+    std::vector<AutoConstraint> sugConstr;
+};
+
 DEF_STD_CMD_AU(CmdSketcherConstrainLock);
 
 CmdSketcherConstrainLock::CmdSketcherConstrainLock()
@@ -945,6 +1033,7 @@ CmdSketcherConstrainLock::CmdSketcherConstrainLock()
 void CmdSketcherConstrainLock::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerLock());
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
@@ -986,7 +1075,8 @@ void CmdSketcherConstrainLock::activated(int iMsg)
         Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%f)) ",
         selection[0].getFeatName(),GeoId,PosId,pnt.y);
 
-    if (GeoId <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+    if (GeoId <= Sketcher::GeoEnum::RefExt || constraintCreationMode==Reference) {
+        // it is a constraint on a external line, make it non-driving
         const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
         
         Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
