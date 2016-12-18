@@ -314,7 +314,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 
 		inline	const	Vector2d& operator+=(const Vector2d &v){dx += v.dx; dy += v.dy; return *this;}		// v1 += v0;
 		inline			Vector2d operator-(const Vector2d &v)const{return Vector2d( dx - v.dx, dy - v.dy);}	// v2 = v0 - v1;
-		inline	const	Vector2d& operator-=(const Vector2d &v){dx -= v.dx; dy =- v.dy; return *this;}		// v1 -= v0;
+		inline	const	Vector2d& operator-=(const Vector2d &v){dx -= v.dx; dy -= v.dy; return *this;}		// v1 -= v0;
 		inline			Vector2d operator-(const double d){ return Vector2d(dx - d, dy - d); };
 
 		inline	const	Vector2d operator-(void)const{return Vector2d(-dx, -dy);}							// v1 = -v0;  (unary minus)
@@ -383,7 +383,7 @@ inline bool FNEZ(double a, double tolerance = TIGHT_TOLERANCE) {return fabs(a) >
 		const	Vector3d& operator+=(const Vector3d &v){dx += v.dx; dy += v.dy; dz += v.dz; return *this;}			// v1 += v0;
 		Vector3d operator-(const Vector3d &v)const{return Vector3d( dx - v.dx, dy - v.dy, dz - v.dz);}				// v2 = v0 - v1;
 		const	Vector3d& operator-=(const Vector3d &v){
-			dx -= v.dx; dy =- v.dy; dz = -v.dz; return *this;}			// v1 -= v0;
+			dx -= v.dx; dy -= v.dy; dz -= v.dz; return *this;}			// v1 -= v0;
 
 		const	Vector3d operator-(void)const{return Vector3d(-dx, -dy, -dz);}										// v1 = -v0;  (unary minus)
 
