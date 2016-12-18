@@ -2750,13 +2750,13 @@ namespace Py
 
     // TMM: now for mapref<T>
     template< class T >
-    bool operator==(const mapref<T>& left, const mapref<T>& right)
+    bool operator==(const mapref<T>& /*left*/, const mapref<T>& /*right*/)
     {
         return true;    // NOT completed.
     }
 
     template< class T >
-    bool operator!=(const mapref<T>& left, const mapref<T>& right)
+    bool operator!=(const mapref<T>& /*left*/, const mapref<T>& /*right*/)
     {
         return true;    // not completed.
     }
