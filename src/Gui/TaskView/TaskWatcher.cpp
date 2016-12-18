@@ -92,7 +92,6 @@ TaskWatcherCommands::TaskWatcherCommands(const char* Filter,const char* commands
             (BitmapFactory().pixmap(pixmap), trUtf8(name), true, 0);
 
         for (const char** i=commands;*i;i++) {
-            if(!i) break;
             Command *c = mgr.getCommandByName(*i);
             if (c) {
                 // handled in TaskBox::actionEvent()

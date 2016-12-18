@@ -539,7 +539,7 @@ bool ViewProvider::onDelete(const vector< string >& subNames) {
     bool del = true;
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
     for(Gui::ViewProviderExtension* ext : vector)
-        del = del || ext->extensionOnDelete(subNames);
+        del &= ext->extensionOnDelete(subNames);
 
     return del;
 }
