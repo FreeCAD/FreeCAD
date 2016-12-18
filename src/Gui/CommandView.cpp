@@ -1460,17 +1460,21 @@ void StdViewDockUndockFullscreen::activated(int iMsg)
 {
     MDIView* view = getMainWindow()->activeWindow();
     if (!view) return; // no active view
-    if (iMsg == (int)(view->currentViewMode()))
-        return; // nothing to do
 
     if (iMsg==0) {
-        view->setCurrentViewMode( MDIView::Child );
+        view->setCurrentViewMode(MDIView::Child);
     }
     else if (iMsg==1) {
-        view->setCurrentViewMode( MDIView::TopLevel );
+        if (view->currentViewMode() == MDIView::TopLevel)
+            view->setCurrentViewMode(MDIView::Child);
+        else
+            view->setCurrentViewMode(MDIView::TopLevel);
     }
     else if (iMsg==2) {
-        view->setCurrentViewMode( MDIView::FullScreen );
+        if (view->currentViewMode() == MDIView::FullScreen)
+            view->setCurrentViewMode(MDIView::Child);
+        else
+            view->setCurrentViewMode(MDIView::FullScreen);
     }
 }
 
