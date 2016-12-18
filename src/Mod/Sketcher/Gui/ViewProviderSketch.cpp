@@ -165,10 +165,20 @@ struct EditData {
     EditRoot(0),
     PointsMaterials(0),
     CurvesMaterials(0),
+    RootCrossMaterials(0),
+    EditCurvesMaterials(0),
     PointsCoordinate(0),
     CurvesCoordinate(0),
-    CurveSet(0), RootCrossSet(0), EditCurveSet(0),
-    PointSet(0), pickStyleAxes(0)
+    RootCrossCoordinate(0),
+    EditCurvesCoordinate(0),
+    CurveSet(0),
+    RootCrossSet(0),
+    EditCurveSet(0),
+    PointSet(0),
+    textX(0),
+    textPos(0),
+    constrGroup(0),
+    pickStyleAxes(0)
     {}
 
     // pointer to the active handler for new sketch objects
