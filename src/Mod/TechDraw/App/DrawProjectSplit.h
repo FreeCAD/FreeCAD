@@ -55,7 +55,10 @@ struct splitPoint {
 class edgeSortItem
 {
 public:
-    edgeSortItem() {}
+    edgeSortItem() {
+        startAngle = endAngle = 0.0;
+        idx = 0;
+    }
     ~edgeSortItem() {}
 
     Base::Vector3d start;

@@ -453,7 +453,8 @@ void DrawProjGroup::arrangeViewPointers(DrawProjGroupItem *viewPtrs[10]) const
             if (oView) {
                 const char *viewTypeCStr = oView->Type.getValueAsString();
                 if (strcmp(viewTypeCStr, "Front") == 0) {
-                    viewPtrs[thirdAngle ? 4 : 4] = oView;
+                  //viewPtrs[thirdAngle ? 4 : 4] = oView;
+                    viewPtrs[4] = oView;
                 } else if (strcmp(viewTypeCStr, "Left") == 0) {
                     viewPtrs[thirdAngle ? 3 : 5] = oView;
                 } else if (strcmp(viewTypeCStr, "Right") == 0) {

@@ -418,7 +418,7 @@ Base::Vector3d TaskProjGroup::get3DViewDir()
     Base::Vector3d viewDir(0.0,-1.0,0.0);                                       //default to front
     std::list<MDIView*> mdis = Gui::Application::Instance->activeDocument()->getMDIViews();
     Gui::View3DInventor *view;
-    Gui::View3DInventorViewer *viewer;
+    Gui::View3DInventorViewer *viewer = nullptr;
     for (auto& m: mdis) {                                                       //find the 3D viewer
         view = dynamic_cast<Gui::View3DInventor*>(m);
         if (view) {
@@ -491,8 +491,10 @@ bool TaskProjGroup::reject()
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //TODO: Do we really need to hang on to the TaskDlgProjGroup in this class? IR
-TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode) : TaskDialog(),
-                                                                                                 multiView(featView)
+TaskDlgProjGroup::TaskDlgProjGroup(TechDraw::DrawProjGroup* featView, bool mode)
+    : TaskDialog()
+    , viewProvider(nullptr)
+    , multiView(featView)
 {
     //viewProvider = dynamic_cast<const ViewProviderProjGroup *>(featView);
     widget  = new TaskProjGroup(featView,mode);
