@@ -80,7 +80,7 @@ public:
     virtual void extensionUpdateData(const App::Property*);
     
 private:
-    Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
+  //Gui::ViewProviderDocumentObject* m_viewBase = nullptr;
 };
 
 /**
