@@ -69,21 +69,21 @@ public:
   { return (Real)(2.0*m_afCoeff[0]*rkP.X() + m_afCoeff[2] + m_afCoeff[4]*rkP.Y()); }
   virtual Real FY (const Vector3<Real>& rkP) const
   { return (Real)(2.0*m_afCoeff[1]*rkP.Y() + m_afCoeff[3] + m_afCoeff[4]*rkP.X()); }
-  virtual Real FZ (const Vector3<Real>& rkP) const
+  virtual Real FZ (const Vector3<Real>& /*rkP*/) const
   { return (Real)-1.0; }
 
   // second-order partial derivatives
-  virtual Real FXX (const Vector3<Real>& rkP) const
+  virtual Real FXX (const Vector3<Real>& /*rkP*/) const
   { return (Real)(2.0*m_afCoeff[0]); }
-  virtual Real FXY (const Vector3<Real>& rkP) const
+  virtual Real FXY (const Vector3<Real>& /*rkP*/) const
   { return (Real)(m_afCoeff[4]); }
-  virtual Real FXZ (const Vector3<Real>& rkP) const
+  virtual Real FXZ (const Vector3<Real>& /*rkP*/) const
   { return (Real)0.0; }
-  virtual Real FYY (const Vector3<Real>& rkP) const
+  virtual Real FYY (const Vector3<Real>& /*rkP*/) const
   { return (Real)(2.0*m_afCoeff[1]); }
-  virtual Real FYZ (const Vector3<Real>& rkP) const
+  virtual Real FYZ (const Vector3<Real>& /*rkP*/) const
   { return (Real)0.0; }
-  virtual Real FZZ (const Vector3<Real>& rkP) const
+  virtual Real FZZ (const Vector3<Real>& /*rkP*/) const
   { return (Real)0.0; }
 
 protected:

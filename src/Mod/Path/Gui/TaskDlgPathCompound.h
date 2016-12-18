@@ -52,7 +52,6 @@ protected:
 private:
     QWidget* proxy;
     Ui_TaskDlgPathCompound* ui;
-    ViewProviderPathCompound *CompoundView;
 };
 
 /// Task Dialog
