@@ -154,7 +154,6 @@ short DrawPage::mustExecute() const
 
     // Check if within this Page, any Views have been touched
     // Why does Page have to execute if a View changes?
-    bool ViewsTouched = false;
     const std::vector<App::DocumentObject*> &vals = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = vals.begin(); it < vals.end(); ++it) {
        if((*it)->isTouched()) {
@@ -162,7 +161,7 @@ short DrawPage::mustExecute() const
         }
     }
 
-    return (ViewsTouched) ? 1 : App::DocumentObject::mustExecute();
+    return App::DocumentObject::mustExecute();
 }
 
 PyObject *DrawPage::getPyObject(void)

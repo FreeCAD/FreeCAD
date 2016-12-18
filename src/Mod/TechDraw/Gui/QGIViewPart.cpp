@@ -296,9 +296,9 @@ void QGIViewPart::updateView(bool update)
         QList<QGraphicsItem*> items = childItems();
         for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); ++it) {
             QGIEdge *edge = dynamic_cast<QGIEdge *>(*it);
-            if(edge  && edge->getHiddenEdge()) {
+            if(edge && edge->getHiddenEdge()) {
                 edge->setWidth(viewPart->HiddenWidth.getValue() * lineScaleFactor);
-            } else {
+            } else if (edge){
                 edge->setWidth(viewPart->LineWidth.getValue() * lineScaleFactor);
             }
         }
