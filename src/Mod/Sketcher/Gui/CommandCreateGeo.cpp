@@ -3427,7 +3427,13 @@ static const char *cursor_createarcofhyperbola[]={
 class DrawSketchHandlerArcOfHyperbola : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerArcOfHyperbola() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    DrawSketchHandlerArcOfHyperbola()
+      : Mode(STATUS_SEEK_First)
+      , EditCurve(34)
+      , arcAngle(0)
+      , arcAngle_t(0)
+    {
+    }
     virtual ~DrawSketchHandlerArcOfHyperbola(){}
     /// mode table
     enum SelectMode {
@@ -3743,7 +3749,7 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
-    double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
+    double arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 
 };
