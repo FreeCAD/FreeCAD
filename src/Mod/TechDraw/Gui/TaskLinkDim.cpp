@@ -108,7 +108,7 @@ void TaskLinkDim::loadAvailDims()
     int found = 0;
     for (; itView != pageViews.end(); itView++) {
         if ((*itView)->isDerivedFrom(TechDraw::DrawViewDimension::getClassTypeId())) {
-            TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>((*itView));
+            TechDraw::DrawViewDimension* dim = static_cast<TechDraw::DrawViewDimension*>((*itView));
             int dimRefType = dim->getRefType();
             if (dimRefType == selRefType) {                                     //potential matches
                 found++;
@@ -190,7 +190,6 @@ bool TaskLinkDim::dimReferencesSelection(const TechDraw::DrawViewDimension* dim)
 
 void TaskLinkDim::updateDims()
 {
-
     int iDim;
     int count = ui->selector->selectedTreeWidget()->topLevelItemCount();
     for (iDim=0; iDim<count; iDim++) {
@@ -198,6 +197,8 @@ void TaskLinkDim::updateDims()
         QString name = child->data(0, Qt::UserRole).toString();
         App::DocumentObject* obj = m_page->getDocument()->getObject(name.toStdString().c_str());
         TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(obj);
+        if (!dim)
+            continue;
 //        std::vector<App::DocumentObject*> parts;
 //        for (unsigned int iPart = 0; iPart < m_subs.size(); iPart++) {
 //            parts.push_back(m_part);
@@ -215,7 +216,7 @@ void TaskLinkDim::updateDims()
         QString name = child->data(0, Qt::UserRole).toString();
         App::DocumentObject* obj = m_page->getDocument()->getObject(name.toStdString().c_str());
         TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(obj);
-        if (dimReferencesSelection(dim))  {
+        if (dim && dimReferencesSelection(dim))  {
            std::string measureType = "Projected";
            std::string DimName = dim->getNameInDocument();
            Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.MeasureType = \'%s\'",

@@ -111,7 +111,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     m_page = multiView->findParentPage();
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(m_page->getDocument());
     Gui::ViewProvider* vp = activeGui->getViewProvider(m_page);
-    ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+    ViewProviderPage* dvp = static_cast<ViewProviderPage*>(vp);
     m_mdi = dvp->getMDIViewPage();
 
     setUiPrimary();

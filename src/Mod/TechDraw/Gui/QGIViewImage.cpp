@@ -112,7 +112,7 @@ void QGIViewImage::draw()
         return;
     }
 
-    auto viewImage( dynamic_cast<TechDraw::DrawViewImage*>(getViewObject()) );
+    auto viewImage( static_cast<TechDraw::DrawViewImage*>(getViewObject()) );
     QRectF newRect(0.0,0.0,viewImage->Width.getValue(),viewImage->Height.getValue());
     m_cliparea->setRect(newRect.adjusted(-1,-1,1,1));
 

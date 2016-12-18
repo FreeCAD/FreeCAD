@@ -615,7 +615,7 @@ void QGIViewPart::drawMatting()
 {
     auto viewPart( dynamic_cast<TechDraw::DrawViewPart *>(getViewObject()) );
     TechDraw::DrawViewDetail* dvd = nullptr;
-    if (viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+    if (viewPart && viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
         dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
     } else {
         return;
