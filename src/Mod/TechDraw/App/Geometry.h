@@ -164,7 +164,7 @@ class TechDrawExport BezierSegment: public BaseGeom
 {
 public:
     BezierSegment(const TopoDS_Edge &e);
-    BezierSegment() {}
+    BezierSegment() { poles = degree = 0; }
     ~BezierSegment() = default;
 
     int poles;

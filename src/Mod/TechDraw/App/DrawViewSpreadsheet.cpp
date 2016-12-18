@@ -246,7 +246,7 @@ std::string DrawViewSpreadsheet::getSheetImage(void)
                 celltext = field.str();
             }
             // get colors, style, alignment and span
-            int alignment;
+            int alignment = 0;
             std::string bcolor = "none";
             std::string fcolor = c.asCSSString();
             std::string textstyle = "";

@@ -66,6 +66,7 @@ const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
+     viewObj(nullptr),
      locked(false),
      borderVisible(true),
      m_innerView(false)
@@ -304,7 +305,9 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 void QGIView::toggleCache(bool state)
 {
     // temp for devl. chaching was hiding problems WF
-    setCacheMode((state)? NoCache : NoCache);
+    //setCacheMode((state)? NoCache : NoCache);
+    Q_UNUSED(state);
+    setCacheMode(NoCache);
 }
 
 void QGIView::toggleBorder(bool state)

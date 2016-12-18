@@ -755,7 +755,8 @@ void QGIViewPart::toggleCache(bool state)
   QList<QGraphicsItem*> items = childItems();
     for(QList<QGraphicsItem*>::iterator it = items.begin(); it != items.end(); it++) {
         //(*it)->setCacheMode((state)? DeviceCoordinateCache : NoCache);        //TODO: fiddle cache settings if req'd for performance
-        (*it)->setCacheMode((state)? NoCache : NoCache);
+        Q_UNUSED(state);
+        (*it)->setCacheMode(NoCache);
         (*it)->update();
     }
 }
