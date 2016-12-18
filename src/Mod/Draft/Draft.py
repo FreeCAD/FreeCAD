@@ -2500,6 +2500,8 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
         nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch")
         deletable = nobj
         nobj.ViewObject.Autoconstraints = False
+        startc = 0
+        endc = 0
 
     rotation = None
     for obj in objectslist:
@@ -2586,11 +2588,18 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                         nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                 ok = True
         elif obj.isDerivedFrom("Part::Feature"):
-            if rotation is None:
-                rotation = obj.Placement.Rotation
             if not DraftGeomUtils.isPlanar(obj.Shape):
                 FreeCAD.Console.PrintError(translate("draft","The given object is not planar and cannot be converted into a sketch."))
                 return None
+            if rotation is None:
+                #rotation = obj.Placement.Rotation
+                norm = DraftGeomUtils.getNormal(obj.Shape)
+                if norm:
+                    rotation = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),norm)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("draft","Unable to guess the normal direction of this object"))
+                    rotation = FreeCAD.Rotation()
+                    norm = obj.Placement.Rotation.Axis
             for e in obj.Shape.Edges:
                 if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
                     FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
@@ -2598,38 +2607,36 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
             # if not addTo:
                 # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
             if autoconstraints:
-                start = 0
-                end = 0
                 for wire in obj.Shape.Wires:
                     for edge in wire.OrderedEdges:
                         nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
-                        end += 1
-                    segs = list(range(start,end))
+                        endc += 1
+                    segs = list(range(startc,endc))
                     for seg in segs:
                         if seg == nobj.GeometryCount-1:
                             if wire.isClosed:
-                                if nobj.Geometry[seg].EndPoint == nobj.Geometry[start].StartPoint:
-                                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,start,StartPoint))
-                                else:
-                                    nobj.addConstraint(Constraint("Coincident",seg,StartPoint,start,EndPoint))
+                                if nobj.Geometry[seg].EndPoint == nobj.Geometry[startc].StartPoint:
+                                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,startc,StartPoint))
+                                elif nobj.Geometry[seg].StartPoint == nobj.Geometry[startc].EndPoint:
+                                    nobj.addConstraint(Constraint("Coincident",seg,StartPoint,startc,EndPoint))
                         else:
                             if nobj.Geometry[seg].EndPoint == nobj.Geometry[seg+1].StartPoint:
                                 nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            else:
+                            elif nobj.Geometry[seg].StartPoint == nobj.Geometry[seg+1].EndPoint:
                                 nobj.addConstraint(Constraint("Coincident",seg,StartPoint,seg+1,EndPoint))
                         if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
                             nobj.addConstraint(Constraint("Vertical",seg))
                         elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
                             nobj.addConstraint(Constraint("Horizontal",seg))
-                    start = end
+                    startc = endc
             else:
                 for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
+                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge,norm))
             ok = True
         formatObject(nobj,obj)
         if ok and delete:
             FreeCAD.ActiveDocument.removeObject(obj.Name)
-    if not rotation is None:
+    if rotation:
         nobj.Placement.Rotation = rotation
     else:
         print("-----error!!! rotation is still None...")
