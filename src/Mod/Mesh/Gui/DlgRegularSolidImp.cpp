@@ -44,14 +44,9 @@
 
 using namespace MeshGui;
 
-/**
- *  Constructs a MeshGui::DlgRegularSolidImp as a child of 'parent', with the
- *  name 'name' and widget flags set to 'f'.
- *
- *  The dialog will by default be modeless, unless you set 'modal' to
- *  true to construct a modal dialog.
- */
-MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
+/* TRANSLATOR MeshGui::DlgRegularSolidImp */
+
+DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
   : QDialog( parent, fl )
 {
     this->setupUi(this);
@@ -104,12 +99,12 @@ MeshGui::DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags
 /**
  *  Destroys the object and frees any allocated resources
  */
-MeshGui::DlgRegularSolidImp::~DlgRegularSolidImp()
+DlgRegularSolidImp::~DlgRegularSolidImp()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void MeshGui::DlgRegularSolidImp::changeEvent(QEvent *e)
+void DlgRegularSolidImp::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         this->retranslateUi(this);
@@ -120,7 +115,7 @@ void MeshGui::DlgRegularSolidImp::changeEvent(QEvent *e)
 /**
  * Builds a mesh solid from the currently active solid type.
  */
-void MeshGui::DlgRegularSolidImp::on_createSolidButton_clicked()
+void DlgRegularSolidImp::on_createSolidButton_clicked()
 {
     try {
         Gui::WaitCursor wc;
