@@ -260,7 +260,6 @@ private:
         catch (const Base::Exception& e) {
             throw Py::RuntimeError(e.what());
         }
-        return Py::None();
     }
     
 };
