@@ -87,20 +87,21 @@ int Curve2dPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
     return 0;
 }
 
-PyObject* Curve2dPy::reverse(PyObject * /*args*/)
+PyObject* Curve2dPy::reverse(PyObject * args)
 {
-    try {
-        Handle_Geom2d_Curve curve = Handle_Geom2d_Curve::DownCast(getGeom2dCurvePtr()->handle());
-        curve->Reverse();
-        Py_Return;
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
-        return 0;
+    if (PyArg_ParseTuple(args, "")) {
+        try {
+            Handle_Geom2d_Curve curve = Handle_Geom2d_Curve::DownCast(getGeom2dCurvePtr()->handle());
+            curve->Reverse();
+            Py_Return;
+        }
+        catch (Standard_Failure) {
+            Handle_Standard_Failure e = Standard_Failure::Caught();
+            PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+            return 0;
+        }
     }
 
-    PyErr_SetString(PartExceptionOCCError, "Geometry is not a curve");
     return 0;
 }
 
