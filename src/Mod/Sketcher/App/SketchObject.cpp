@@ -497,7 +497,7 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
         else if (PosId == mid)
             return aoc->getCenter();
     } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-        const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola*>(geo);
+        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
         if (PosId == start)
             return aoh->getStartPoint();
         else if (PosId == end)
@@ -1729,7 +1729,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         }
         
     } else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
-        const Part::GeomArcOfHyperbola *aoh = dynamic_cast<const Part::GeomArcOfHyperbola*>(geo);
+        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
         Base::Vector3d center = aoh->getCenter();
         double startAngle, endAngle;
         aoh->getRange(startAngle, endAngle, /*emulateCCW=*/true);
@@ -1761,8 +1761,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
                     // go through all constraints and replace the point (GeoId,end) with (newGeoId,end)
                     transferConstraints(GeoId, end, newGeoId, end);
 
-                    Part::GeomArcOfHyperbola *aoh1 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
-                    Part::GeomArcOfHyperbola *aoh2 = dynamic_cast<Part::GeomArcOfHyperbola*>(geomlist[newGeoId]);
+                    Part::GeomArcOfHyperbola *aoh1 = static_cast<Part::GeomArcOfHyperbola*>(geomlist[GeoId]);
+                    Part::GeomArcOfHyperbola *aoh2 = static_cast<Part::GeomArcOfHyperbola*>(geomlist[newGeoId]);
                     aoh1->setRange(startAngle, startAngle + theta1, /*emulateCCW=*/true);
                     aoh2->setRange(startAngle + theta2, endAngle, /*emulateCCW=*/true);
 

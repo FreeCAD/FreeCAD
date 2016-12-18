@@ -212,7 +212,7 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     } else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) { // add an arc of hyperbola
-        const GeomArcOfHyperbola *aoh = dynamic_cast<const GeomArcOfHyperbola*>(geo);
+        const GeomArcOfHyperbola *aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     } else {
