@@ -1,139 +1,95 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   version="1.1"
-   width="64"
-   height="64"
-   id="svg2">
-  <defs
-     id="defs4">
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="TriangleOutM"
-       style="overflow:visible">
-      <path
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         transform="scale(0.4,0.4)"
-         id="path3966"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.1" width="64" height="64" id="svg2" inkscape:version="0.48.5 r10040" sodipodi:docname="section-down.svg">
+  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="1920" inkscape:window-height="1017" id="namedview24" showgrid="true" inkscape:snap-bbox="true" inkscape:snap-nodes="true" inkscape:zoom="6.8343873" inkscape:cx="71.527077" inkscape:cy="25.386825" inkscape:window-x="1912" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="g7108">
+    <inkscape:grid type="xygrid" id="grid3001" units="px" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true" spacingx="1px" spacingy="1px"/>
+  </sodipodi:namedview>
+  <defs id="defs4">
+    <linearGradient inkscape:collect="always" id="linearGradient10855">
+      <stop style="stop-color:#ce5c00;stop-opacity:1" offset="0" id="stop10857"/>
+      <stop style="stop-color:#fcaf3e;stop-opacity:1" offset="1" id="stop10859"/>
+    </linearGradient>
+    <marker inkscape:stockid="TriangleOutS" orient="auto" refY="0.0" refX="0.0" id="TriangleOutS" style="overflow:visible">
+      <path id="path4211" d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt" transform="scale(0.2)"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="TriangleInM"
-       style="overflow:visible">
-      <path
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         transform="scale(-0.4,-0.4)"
-         id="path3957"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+    <marker inkscape:stockid="TriangleInS" orient="auto" refY="0.0" refX="0.0" id="TriangleInS" style="overflow:visible">
+      <path id="path4202" d="M 5.77,0.0 L -2.88,5.0 L -2.88,-5.0 L 5.77,0.0 z " style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt" transform="scale(-0.2)"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="TriangleOutL"
-       style="overflow:visible">
-      <path
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         transform="scale(0.8,0.8)"
-         id="path3963"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+    <linearGradient inkscape:collect="always" id="linearGradient3857">
+      <stop style="stop-color:#ce5c00;stop-opacity:1" offset="0" id="stop3859"/>
+      <stop style="stop-color:#fcaf3e;stop-opacity:1" offset="1" id="stop3861"/>
+    </linearGradient>
+    <linearGradient inkscape:collect="always" id="linearGradient3831">
+      <stop style="stop-color:#c4a000;stop-opacity:1" offset="0" id="stop3833"/>
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3835"/>
+    </linearGradient>
+    <marker refX="0" refY="0" orient="auto" id="TriangleOutM" style="overflow:visible">
+      <path d="m 5.77,0 -8.65,5 0,-10 8.65,5 z" transform="scale(0.4,0.4)" id="path3966" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow1Lend"
-       style="overflow:visible">
-      <path
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
-         transform="matrix(-0.8,0,0,-0.8,-10,0)"
-         id="path3824"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+    <marker refX="0" refY="0" orient="auto" id="TriangleInM" style="overflow:visible">
+      <path d="m 5.77,0 -8.65,5 0,-10 8.65,5 z" transform="scale(-0.4,-0.4)" id="path3957" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="TriangleInL"
-       style="overflow:visible">
-      <path
-         d="m 5.77,0 -8.65,5 0,-10 8.65,5 z"
-         transform="scale(-0.8,-0.8)"
-         id="path3954"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+    <marker refX="0" refY="0" orient="auto" id="TriangleOutL" style="overflow:visible">
+      <path d="m 5.77,0 -8.65,5 0,-10 8.65,5 z" transform="scale(0.8,0.8)" id="path3963" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow2Lstart"
-       style="overflow:visible">
-      <path
-         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
-         transform="matrix(1.1,0,0,1.1,1.1,0)"
-         id="path3839"
-         style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round" />
+    <marker refX="0" refY="0" orient="auto" id="Arrow1Lend" style="overflow:visible">
+      <path d="M 0,0 5,-5 -12.5,0 5,5 0,0 z" transform="matrix(-0.8,0,0,-0.8,-10,0)" id="path3824" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
     </marker>
-    <marker
-       refX="0"
-       refY="0"
-       orient="auto"
-       id="Arrow1Lstart"
-       style="overflow:visible">
-      <path
-         d="M 0,0 5,-5 -12.5,0 5,5 0,0 z"
-         transform="matrix(0.8,0,0,0.8,10,0)"
-         id="path3821"
-         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt" />
+    <marker refX="0" refY="0" orient="auto" id="TriangleInL" style="overflow:visible">
+      <path d="m 5.77,0 -8.65,5 0,-10 8.65,5 z" transform="scale(-0.8,-0.8)" id="path3954" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
     </marker>
+    <marker refX="0" refY="0" orient="auto" id="Arrow2Lstart" style="overflow:visible">
+      <path d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z" transform="matrix(1.1,0,0,1.1,1.1,0)" id="path3839" style="fill-rule:evenodd;stroke-width:0.625;stroke-linejoin:round"/>
+    </marker>
+    <marker refX="0" refY="0" orient="auto" id="Arrow1Lstart" style="overflow:visible">
+      <path d="M 0,0 5,-5 -12.5,0 5,5 0,0 z" transform="matrix(0.8,0,0,0.8,10,0)" id="path3821" style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt"/>
+    </marker>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3831" id="linearGradient3837" x1="24.000002" y1="994.36224" x2="34.000004" y2="1046.3622" gradientUnits="userSpaceOnUse"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3857" id="linearGradient3863" x1="27.000002" y1="1004.3622" x2="33.000004" y2="1036.3622" gradientUnits="userSpaceOnUse"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient10855" id="linearGradient10861" x1="28.000002" y1="1006.3622" x2="36.000004" y2="1036.3622" gradientUnits="userSpaceOnUse"/>
   </defs>
-  <metadata
-     id="metadata7">
+  <metadata id="metadata7">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[WandererFan]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>section-down</dc:title>
+        <dc:date>2016-10-06</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/TechDraw/Gui/Resources/icons/actions/section-down.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     transform="translate(0,-988.36218)"
-     id="layer1">
-    <g
-       transform="matrix(-1,0,0,-1,64.000002,2040.7244)"
-       id="g7108">
-      <rect
-         width="57.698685"
-         height="57.693031"
-         x="3.1506577"
-         y="991.51569"
-         id="rect7087"
-         style="color:#000000;fill:#fce94f;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.30412978;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
-      <rect
-         width="34.819664"
-         height="34.838646"
-         x="14.590168"
-         y="1002.9429"
-         id="rect2985"
-         style="color:#000000;fill:#f57900;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.17058085;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
-      <path
-         d="m 7.4305643,1004.2688 0.1262691,16.6676 0,0.2525 48.9923986,-0.2525 0,-16.415"
-         id="path3041"
-         style="color:#000000;fill:none;stroke:#000000;stroke-width:2.29999995;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:6.89999986, 2.29999995;stroke-dashoffset:0;marker:none;marker-start:url(#TriangleInM);marker-end:url(#TriangleOutM);visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  <g transform="translate(0,-988.36218)" id="layer1">
+    <g transform="matrix(-1,0,0,-1,64.000002,2040.7244)" id="g7108">
+      <rect width="58" height="58.000042" x="3.0000019" y="991.36224" id="rect7087" style="color:#000000;fill:url(#linearGradient3837);fill-opacity:1;fill-rule:nonzero;stroke:#302b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"/>
+      <rect width="54" height="54.000065" x="5.0000019" y="993.36224" id="rect7087-3" style="color:#000000;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#fce94f;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"/>
+      <rect width="34" height="34.000038" x="15.000002" y="1003.3622" id="rect2985" style="color:#000000;fill:url(#linearGradient10861);fill-opacity:1;fill-rule:nonzero;stroke:#ce5c00;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"/>
+      <path d="m 10.000002,1004.3622 0,18 0,0 44,0 0,-18" id="path3041" style="color:#000000;fill:none;stroke:#2e3436;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:4, 8;stroke-dashoffset:10;marker:none;marker-start:none;marker-end:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" inkscape:connector-curvature="0" sodipodi:nodetypes="ccccc"/>
+      <path style="fill:#2e3436;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="m 5,45 10,0 -5,9 z" id="path3018" inkscape:connector-curvature="0" transform="matrix(-1,0,0,-1,64.000002,1052.3622)"/>
+      <path style="fill:#2e3436;stroke:none" d="m 15.000002,1007.3622 -10,0 5,-8.99998 z" id="path3018-1" inkscape:connector-curvature="0"/>
     </g>
   </g>
 </svg>
