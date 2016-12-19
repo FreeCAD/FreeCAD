@@ -5799,6 +5799,9 @@ class _Facebinder(_DraftObject):
                     sh = sh.removeSplitter()
             else:
                 sh = faces[0]
+                if hasattr(obj,"Extrusion"):
+                    if obj.Extrusion.Value:
+                        sh = sh.extrude(sh.normalAt(0,0).multiply(obj.Extrusion.Value))
                 sh.transformShape(sh.Matrix, True)
         except Part.OCCError:
             print("Draft: error building facebinder")
