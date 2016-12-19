@@ -434,7 +434,7 @@ class ObjectDressup:
         debugPrint("smooth:  (%.2f, %.2f)-(%.2f, %.2f)" % (edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
         for e in wire.Edges:
             self.dbg.append(e)
-            if type(e.Curve) == Part.LineSegment:
+            if type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line:
                 debugPrint("         (%.2f, %.2f)-(%.2f, %.2f)" % (e.Vertexes[0].Point.x, e.Vertexes[0].Point.y, e.Vertexes[1].Point.x, e.Vertexes[1].Point.y))
             else:
                 debugPrint("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
