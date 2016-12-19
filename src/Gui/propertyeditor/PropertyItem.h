@@ -114,6 +114,7 @@ public:
     void updateData();
     const std::vector<App::Property*>& getPropertyData() const;
     bool hasProperty(const App::Property*) const;
+    virtual void assignProperty(const App::Property*);
     bool removeProperty(const App::Property*);
     App::Property* getFirstProperty();
     const App::Property* getFirstProperty() const;
@@ -582,6 +583,7 @@ class GuiExport PropertyPlacementItem: public PropertyItem
     virtual QVariant editorData(QWidget *editor) const;
 
     virtual void propertyBound();
+    virtual void assignProperty(const App::Property*);
 
     Base::Quantity getAngle() const;
     void setAngle(Base::Quantity);

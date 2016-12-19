@@ -160,6 +160,10 @@ bool PropertyItem::hasProperty(const App::Property* prop) const
         return false;
 }
 
+void PropertyItem::assignProperty(const App::Property*)
+{
+}
+
 bool PropertyItem::removeProperty(const App::Property* prop)
 {
     std::vector<App::Property*>::iterator it = std::find(propertyItems.begin(), propertyItems.end(), prop);
@@ -1835,6 +1839,21 @@ void PropertyPlacementItem::setPosition(const Base::Vector3d& pos)
     setValue(QVariant::fromValue(val));
 }
 
+void PropertyPlacementItem::assignProperty(const App::Property* prop)
+{
+    if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+        const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
+        double angle;
+        Base::Vector3d dir;
+        value.getRotation().getValue(dir, angle);
+        Base::Vector3d cross = this->rot_axis.Cross(dir);
+        if (cross.Sqr() > Base::Vector3d::epsilon()) {
+            this->rot_axis = dir;
+        }
+        this->rot_angle = Base::toDegrees(angle);
+    }
+}
+
 QVariant PropertyPlacementItem::value(const App::Property* prop) const
 {
     assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()));
@@ -1928,13 +1947,13 @@ QWidget* PropertyPlacementItem::createEditor(QWidget* parent, const QObject* rec
 
 void PropertyPlacementItem::setEditorData(QWidget *editor, const QVariant& data) const
 {
-    Gui::LabelButton *pe = qobject_cast<Gui::LabelButton*>(editor);
+    PlacementEditor *pe = qobject_cast<PlacementEditor*>(editor);
     pe->setValue(data);
 }
 
 QVariant PropertyPlacementItem::editorData(QWidget *editor) const
 {
-    Gui::LabelButton *pe = qobject_cast<Gui::LabelButton*>(editor);
+    PlacementEditor *pe = qobject_cast<PlacementEditor*>(editor);
     return pe->value();
 }
 
