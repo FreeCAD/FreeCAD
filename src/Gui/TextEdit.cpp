@@ -156,7 +156,7 @@ void TextEdit::complete()
 
 /**
  * Creates the listbox containing all possibilities for the completion.
- * The listbox is closed when ESC is pressed, the text edit field looses focus or a
+ * The listbox is closed when ESC is pressed, the text edit field loses focus or a
  * mouse button was pressed.
  */
 void TextEdit::createListBox()

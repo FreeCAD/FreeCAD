@@ -974,7 +974,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     // be avoided because when two or more windows are either in 'TopLevel' or 'Fullscreen'
     // mode only the last window gets all key event even if it is not the active one.
     //
-    // It is important to set the focus proxy to get all key events otherwise we would loose
+    // It is important to set the focus proxy to get all key events otherwise we would lose
     // control after redirecting the first key event to the GL widget.
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add

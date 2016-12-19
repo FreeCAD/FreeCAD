@@ -255,7 +255,7 @@ public:
 protected:
     /// is called by the document when the provider goes in edit mode
     virtual bool setEdit(int ModNum);
-    /// is called when you loose the edit mode
+    /// is called when you lose the edit mode
     virtual void unsetEdit(int ModNum);
     /// return the edit mode or -1 if nothing is being edited
     int getEditingMode() const;
