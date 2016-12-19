@@ -4367,7 +4367,6 @@ public:
             else
                 static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();            
 
-            //ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
             
             if(continuousMode){
@@ -4516,7 +4515,7 @@ namespace SketcherGui {
             return  false;
         }
     };
-};
+}
 
 
 /* XPM */
