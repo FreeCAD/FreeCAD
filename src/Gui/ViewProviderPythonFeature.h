@@ -387,7 +387,7 @@ protected:
         if (!ok) ok = ViewProviderT::setEdit(ModNum);
         return ok;
     }
-    /// is called when you loose the edit mode
+    /// is called when you lose the edit mode
     virtual void unsetEdit(int ModNum)
     {
         bool ok = imp->unsetEdit(ModNum);

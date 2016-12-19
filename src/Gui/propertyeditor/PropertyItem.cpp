@@ -1898,7 +1898,7 @@ void PropertyPlacementItem::setValue(const QVariant& value)
     if (!value.canConvert<Base::Placement>())
         return;
     // Accept this only if the user changed the axis, angle or position but
-    // not if >this< item looses focus
+    // not if >this< item loses focus
     if (!changed_value)
         return;
     changed_value = false;

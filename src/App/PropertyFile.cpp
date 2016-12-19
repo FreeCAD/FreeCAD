@@ -182,7 +182,7 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
         // directory:
         // When a file is read-only it is supposed to be assigned to a
         // PropertyFileIncluded instance. In this case we must copy the
-        // file because otherwise the above instance looses its data.
+        // file because otherwise the above instance loses its data.
         // If the file is writable it is supposed to be of free use and
         // it can be simply renamed.
 
