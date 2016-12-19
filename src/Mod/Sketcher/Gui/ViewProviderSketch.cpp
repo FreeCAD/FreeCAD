@@ -2314,7 +2314,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 pnt0 = aop->getCenter();
                 float angle = float(startangle) + segment/2;
                 for (int i = 0; i < countSegments; ++i, angle += segment) {
-                    pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) + angle * sin(phi),
+                    pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
                                          pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
                                          0.f);
 
