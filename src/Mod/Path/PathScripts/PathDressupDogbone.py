@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PathScripts import PathUtils
+from PathScripts.PathGeom import *
 from PySide import QtCore, QtGui
 import math
 import Part
@@ -267,14 +268,14 @@ class Chord (object):
         return self.arcCommand("G3", center)
 
     def isAPlungeMove(self):
-        return self.End.z != self.Start.z
+        return not PathGeom.isRoughly(self.End.z, self.Start.z)
 
     def foldsBackOrTurns(self, chord, side):
         dir = chord.getDirectionOf(self)
         return dir == 'Back' or dir == side
 
     def connectsTo(self, chord):
-        return self.End == chord.Start
+        return PathGeom.isRoughly(self.End, chord.Start)
 
 class Bone:
     def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):
@@ -353,24 +354,22 @@ class Bone:
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The base path to modify"))
-        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The side of path to insert bones"))
+        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The base path to modify"))
+        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The style of boness"))
+        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The style of boness"))
         obj.Style = Style.All
         obj.Style = Style.Dogbone
-        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Bones that aren't dressed up"))
+        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Bones that aren't dressed up"))
         obj.BoneBlacklist = []
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
+        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The algorithm to determine the bone length"))
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
-        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if Incision == custom"))
+        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
-        self.shapes = {}
-        self.dbg = []
 
     def __getstate__(self):
         return None
@@ -413,6 +412,10 @@ class ObjectDressup:
             debugPrint("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
         return ppt
 
+    def pointIsOnEdge(self, point, edge):
+        param = edge.Curve.parameter(point)
+        return edge.FirstParameter <= param <= edge.LastParameter
+
     def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color = None):
         if smooth == 0:
             debugPrint(" No smoothing requested")
@@ -434,12 +437,13 @@ class ObjectDressup:
         debugPrint("smooth:  (%.2f, %.2f)-(%.2f, %.2f)" % (edge.Vertexes[0].Point.x, edge.Vertexes[0].Point.y, edge.Vertexes[1].Point.x, edge.Vertexes[1].Point.y))
         for e in wire.Edges:
             self.dbg.append(e)
-            if type(e.Curve) == Part.LineSegment:
+            if type(e.Curve) == Part.LineSegment or type(e.Curve) == Part.Line:
                 debugPrint("         (%.2f, %.2f)-(%.2f, %.2f)" % (e.Vertexes[0].Point.x, e.Vertexes[0].Point.y, e.Vertexes[1].Point.x, e.Vertexes[1].Point.y))
             else:
                 debugPrint("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
             for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
-                if pt != corner:
+                if not PathGeom.pointsCoincide(pt, corner) and self.pointIsOnEdge(pt, e):
+                    debugMarker(pt, "candidate-%d-%s" % (self.boneId, d), color, 0.05)
                     debugPrint("         -> candidate")
                     distance = (pt - refPoint).Length
                     if not pivot or pivotDistance > distance:
@@ -456,7 +460,7 @@ class ObjectDressup:
             t2 = self.findPivotIntersection(pivot, pivotEdge, outChord.asEdge(), inChord.End, d, color)
 
             commands = []
-            if t1 != inChord.Start:
+            if not PathGeom.pointsCoincide(t1, inChord.Start):
                 debugPrint("  add lead in")
                 commands.append(Chord(inChord.Start, t1).g1Command())
             if bone.obj.Side == Side.Left:
@@ -465,13 +469,13 @@ class ObjectDressup:
             else:
                 debugPrint("  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f" % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y))
                 commands.append(Chord(t1, t2).g2Command(pivot))
-            if t2 != outChord.End:
+            if not PathGeom.pointsCoincide(t2, outChord.End):
                 debugPrint("  add lead out")
                 commands.append(Chord(t2, outChord.End).g1Command())
 
-            debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
-            debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
-            debugMarker(t2,    "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
+            #debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
+            #debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
+            #debugMarker(t2,    "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
 
             return commands
 
@@ -484,7 +488,7 @@ class ObjectDressup:
         bone.tip = bone.inChord.End # in case there is no bone
 
         debugPrint("corner = (%.2f, %.2f)" % (corner.x, corner.y))
-        debugMarker(corner, 'corner', (1., 0., 1.), 0.3)
+        debugMarker(corner, 'corner', (1., 0., 1.), self.toolRadius)
 
         length = fixedLength
         if bone.obj.Incision == Incision.Custom:
@@ -505,7 +509,7 @@ class ObjectDressup:
         bone.tip = boneInChord.End
 
         if bone.smooth == 0:
-            return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
+            return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), bone.outChord.g1Command()]
 
         # reconstruct the corner and convert to an edge
         offset = corner - bone.inChord.End
@@ -547,14 +551,14 @@ class ObjectDressup:
     def tboneHorizontal(self, bone):
         angle = bone.angle()
         boneAngle = 0
-        if angle == math.pi or math.fabs(angle) > math.pi/2:
+        if PathGeom.isRoughly(angle, math.pi) or math.fabs(angle) > math.pi/2:
             boneAngle = -math.pi
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
     def tboneVertical(self, bone):
         angle = bone.angle()
         boneAngle = math.pi/2
-        if angle == math.pi or angle < 0:
+        if PathGeom.isRoughly(angle, math.pi) or angle < 0:
             boneAngle = -boneAngle
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
@@ -622,7 +626,7 @@ class ObjectDressup:
         self.bones.append((bone.boneId, bone.location(), enabled, inaccessible))
 
         self.boneId = bone.boneId
-        if debugDressup and bone.boneId < 11:
+        if debugDressup and bone.boneId > 2:
             commands = self.boneCommands(bone, False)
         else:
             commands = self.boneCommands(bone, enabled)
@@ -646,7 +650,7 @@ class ObjectDressup:
                     for pt in cutoff:
                         #debugCircle(e1.Curve.Center, e1.Curve.Radius, "bone.%d-1" % (self.boneId), (1.,0.,0.))
                         #debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
-                        if pt == e1.valueAt(e1.LastParameter) or pt == e2.valueAt(e2.FirstParameter):
+                        if PathGeom.pointsCoincide(pt, e1.valueAt(e1.LastParameter)) or PathGeom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
                             continue
                         debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
@@ -753,20 +757,19 @@ class ObjectDressup:
         obj.Path = path
 
     def setup(self, obj):
-        if not hasattr(self, 'toolRadius'):
-            debugPrint("Here we go ... ")
-            if hasattr(obj.Base, "BoneBlacklist"):
-                # dressing up a bone dressup
-                obj.Side = obj.Base.Side
+        debugPrint("Here we go ... ")
+        if hasattr(obj.Base, "BoneBlacklist"):
+            # dressing up a bone dressup
+            obj.Side = obj.Base.Side
+        else:
+            # otherwise dogbones are opposite of the base path's side
+            if obj.Base.Side == Side.Left:
+                obj.Side = Side.Right
+            elif obj.Base.Side == Side.Right:
+                obj.Side = Side.Left
             else:
-                # otherwise dogbones are opposite of the base path's side
-                if obj.Base.Side == Side.Left:
-                    obj.Side = Side.Right
-                elif obj.Base.Side == Side.Right:
-                    obj.Side = Side.Left
-                else:
-                    # This will cause an error, which is fine for now 'cause I don't know what to do here
-                    obj.Side = 'On'
+                # This will cause an error, which is fine for now 'cause I don't know what to do here
+                obj.Side = 'On'
 
         self.toolRadius = 5
         toolLoad = PathUtils.getLastToolLoad(obj)
@@ -778,6 +781,9 @@ class ObjectDressup:
                 self.toolRadius = 5
             else:
                 self.toolRadius = tool.Diameter / 2
+
+        self.shapes = {}
+        self.dbg = []
 
     def boneStateList(self, obj):
         state = {}
@@ -799,7 +805,7 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Edit Dogbone Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Dogbone", "Edit Dogbone Dress-up"))
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -856,9 +862,10 @@ class TaskPanel:
         self.updateBoneList()
 
         if debugDressup:
-            for self.obj in FreeCAD.ActiveDocument.Objects:
-                if self.obj.Name.startswith('Shape'):
-                    FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.Name.startswith('Shape'):
+                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            print('object name %s' % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 debugPrint("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
@@ -960,12 +967,12 @@ class ViewProviderDressup:
         PathUtils.addToJob(arg1.Object.Base)
         return True
 
-class CommandDogboneDressup:
+class CommandDressupDogbone:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dogbone Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Creates a Dogbone Dress-up object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Dogbone Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Creates a Dogbone Dress-up object from a selected path")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -979,27 +986,27 @@ class CommandDogboneDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select one path object\n"))
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "The selected object is not a path\n"))
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
             return
         if not hasattr(baseObject, "Side"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dogbone Dress-up"))
-        FreeCADGui.addModule("PathScripts.DogboneDressup")
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Dogbone", "Create Dogbone Dress-up"))
+        FreeCADGui.addModule("PathScripts.PathDressupDogbone")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('dbo = PathScripts.PathDressupDogbone.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + baseObject.Name)
-        FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('PathScripts.PathDressupDogbone.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.Base.ViewObject.Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
@@ -1008,6 +1015,6 @@ class CommandDogboneDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Dogbone_Dressup', CommandDogboneDressup())
+    FreeCADGui.addCommand('PathDressup_Dogbone', CommandDressupDogbone())
 
-FreeCAD.Console.PrintLog("Loading DogboneDressup... done\n")
+FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")
