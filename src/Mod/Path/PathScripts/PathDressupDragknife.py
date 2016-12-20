@@ -467,12 +467,12 @@ class ViewProviderDressup:
         return True
 
 
-class CommandDragknifeDressup:
+class CommandDressupDragknife:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "DragKnife Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("DragKnife_Dressup", "Modifies a path to add dragknife corner actions")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_DragKnife", "DragKnife Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_DragKnife", "Modifies a path to add dragknife corner actions")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -487,25 +487,25 @@ class CommandDragknifeDressup:
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
             FreeCAD.Console.PrintError(
-                translate("DragKnife_Dressup", "Please select one path object\n"))
+                translate("PathDressup_DragKnife", "Please select one path object\n"))
             return
         if not selection[0].isDerivedFrom("Path::Feature"):
             FreeCAD.Console.PrintError(
-                translate("DragKnife_Dressup", "The selected object is not a path\n"))
+                translate("PathDressup_DragKnife", "The selected object is not a path\n"))
             return
         if selection[0].isDerivedFrom("Path::FeatureCompoundPython"):
             FreeCAD.Console.PrintError(
-                translate("DragKnife_Dressup", "Please select a Path object"))
+                translate("PathDressup_DragKnife", "Please select a Path object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("DragKnife_Dressup", "Create Dress-up"))
-        FreeCADGui.addModule("PathScripts.DragknifeDressup")
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_DragKnife", "Create Dress-up"))
+        FreeCADGui.addModule("PathScripts.PathDressupDragknife")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","DragknifeDressup")')
-        FreeCADGui.doCommand('PathScripts.DragknifeDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('PathScripts.PathDressupDragknife.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + selection[0].Name)
-        FreeCADGui.doCommand('PathScripts.DragknifeDressup.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('PathScripts.PathDressupDragknife.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
         FreeCADGui.doCommand('obj.filterangle = 20')
@@ -518,6 +518,6 @@ class CommandDragknifeDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('DragKnife_Dressup', CommandDragknifeDressup())
+    FreeCADGui.addCommand('PathDressup_DragKnife', CommandDressupDragknife())
 
-FreeCAD.Console.PrintLog("Loading DragKnife_Dressup... done\n")
+FreeCAD.Console.PrintLog("Loading PathDressup_DragKnife... done\n")
