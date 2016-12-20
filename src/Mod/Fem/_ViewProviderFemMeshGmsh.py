@@ -109,3 +109,14 @@ class _ViewProviderFemMeshGmsh:
 
     def __setstate__(self, state):
         return None
+
+    def claimChildren(self):
+        return self.Object.MeshRegionList
+
+    def onDelete(self, feature, subelements):
+        try:
+            for obj in self.claimChildren():
+                obj.ViewObject.show()
+        except Exception as err:
+            FreeCAD.Console.PrintError("Error in onDelete: " + err.message)
+        return True
