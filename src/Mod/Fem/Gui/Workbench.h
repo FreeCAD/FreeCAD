@@ -21,8 +21,8 @@
  ***************************************************************************/
 
 
-#ifndef IMAGE_WORKBENCH_H
-#define IMAGE_WORKBENCH_H
+#ifndef FEM_WORKBENCH_H
+#define FEM_WORKBENCH_H
 
 #include <Gui/Workbench.h>
 
@@ -47,4 +47,4 @@ protected:
 } // namespace FemGui
 
 
-#endif // IMAGE_WORKBENCH_H
+#endif // FEM_WORKBENCH_H
