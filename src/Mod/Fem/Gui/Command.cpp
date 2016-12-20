@@ -471,7 +471,7 @@ void CmdFemConstraintTransform::activated(int)
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
 
     doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-    
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -602,7 +602,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
 
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts    
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -1123,6 +1123,29 @@ bool CmdFemPostCreateClipFilter::isActive(void)
     return hasActiveDocument();
 }
 
+DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
+
+CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
+  : Command("Fem_PostCreateDataAlongLineFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sWhatsThis      = "Fem_PostCreateDataAlongLineFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-DataAlongLine";
+}
+
+void CmdFemPostCreateDataAlongLineFilter::activated(int)
+{
+}
+
+bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
 DEF_STD_CMD_A(CmdFemPostCreateScalarClipFilter);
 
 CmdFemPostCreateScalarClipFilter::CmdFemPostCreateScalarClipFilter()
@@ -1456,6 +1479,7 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);

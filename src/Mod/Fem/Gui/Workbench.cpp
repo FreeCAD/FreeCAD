@@ -103,6 +103,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
             << "Fem_PostCreateScalarClipFilter"
             << "Fem_PostCreateCutFilter"
             << "Fem_PostCreateWarpVectorFilter"
+            << "Fem_PostCreateDataAlongLineFilter"
             << "Separator"
             << "Fem_PostCreateFunctions";
 #endif
