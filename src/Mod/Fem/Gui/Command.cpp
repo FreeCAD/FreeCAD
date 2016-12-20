@@ -1126,7 +1126,6 @@ mb = []\n\
 for i in range(len(sValues)):\n\
     peak.append(sValues[i])\n\
     mb.append(bending[i] + membrane[0])\n\
-print str(round(membrane[0],2))\n\
 import FreeCAD\n\
 import numpy as np\n\
 from matplotlib import pyplot as plt\n\
