@@ -147,12 +147,10 @@ class FemGmshTools():
                 FreeCAD.Console.PrintError("You can not mesh a Vertex.\n")
                 self.dimension = '0'
             elif shty == 'Compound':
-                print('Found: ' + shty)
-                print('I do not know what is inside your Compound. Dimension was set to 3 anyway.')
-                # TODO check contents of Compound
-                # use dimension 3 on any shape works for 2D and 1d meshes as well !
-                # but not in combination with sewfaces or connectfaces
-                self.dimension = '3'
+                print('  Found a ' + shty)
+                err = "A Compound could contain anything. GMSH may not return the expected mesh. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                FreeCAD.Console.PrintError(err + "\n")
+                self.dimension = '3'  # dimension 3 works for 2D and 1d shapes as well
             else:
                 self.dimension = '0'
                 FreeCAD.Console.PrintError('Could not retrive Dimension from shape type. Please choose dimension.')
@@ -224,39 +222,48 @@ class FemGmshTools():
         else:
             print('  NO group meshing.')
 
-        self.ele_length_map = {}
-        for mr_obj in self.mesh_obj.MeshRegionList:
-            # print(mr_obj.Name)
-            # print(mr_obj.CharacteristicLength)
-            # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
-            for sub in mr_obj.References:
-                # print(sub[0])  # Part the elements belongs to
-                # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
-                search_ele_in_shape_to_mesh = False
-                if not self.part_obj.Shape.isSame(sub[0].Shape):
-                    # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
-                    # print("  But we gone try to fine it in the Shape to mesh :-)")
-                    search_ele_in_shape_to_mesh = True
-                for eles in sub[1]:
-                    # print(eles)  # element
-                    if search_ele_in_shape_to_mesh:
-                        ele_shape = FemMeshTools.get_element(sub[0], eles)  # the method getElement(element) does not return Solid elements
-                        found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
-                        if found_element:
-                            eles = found_element
-                        else:
-                            FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
-                    print(eles)  # element
-                    if eles not in self.ele_length_map:
-                        self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
-                    else:
-                        FreeCAD.Console.PrintError("The element " + eles + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
-        print('  {}'.format(self.ele_length_map))
+        self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
-        for elel in self.ele_length_map:
-            ele_shape = FemMeshTools.get_element(self.part_obj, elel)  # the method getElement(element) does not return Solid elements
-            ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
-            self.ele_node_map[elel] = ele_vertexes
+        if not self.mesh_obj.MeshRegionList:
+            print ('  No Mesh regions.')
+        else:
+            print ('  Mesh regions, we need to get the elements.')
+            if self.part_obj.Shape.ShapeType == 'Compound':
+                # see http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&start=40#p149467 and http://forum.freecadweb.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                err = "GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                FreeCAD.Console.PrintError(err + "\n")
+            for mr_obj in self.mesh_obj.MeshRegionList:
+                # print(mr_obj.Name)
+                # print(mr_obj.CharacteristicLength)
+                # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
+                for sub in mr_obj.References:
+                    # print(sub[0])  # Part the elements belongs to
+                    # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                    search_ele_in_shape_to_mesh = False
+                    if not self.part_obj.Shape.isSame(sub[0].Shape):
+                        # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
+                        # print("  But we gone try to find it in the Shape to mesh :-)")
+                        search_ele_in_shape_to_mesh = True
+                    for eles in sub[1]:
+                        # print(eles)  # element
+                        if search_ele_in_shape_to_mesh:
+                            # we gone try to find the element it in the Shape to mesh and use the found element as eles
+                            ele_shape = FemMeshTools.get_element(sub[0], eles)  # the method getElement(element) does not return Solid elements
+                            found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
+                            if found_element:
+                                eles = found_element
+                            else:
+                                FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                        # print(eles)  # element
+                        if eles not in self.ele_length_map:
+                            self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
+                        else:
+                            FreeCAD.Console.PrintError("The element " + eles + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
+            for elel in self.ele_length_map:
+                ele_shape = FemMeshTools.get_element(self.part_obj, elel)  # the method getElement(element) does not return Solid elements
+                ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+                self.ele_node_map[elel] = ele_vertexes
+        print('  {}'.format(self.ele_length_map))
         print('  {}'.format(self.ele_node_map))
 
     def write_part_file(self):
@@ -267,7 +274,7 @@ class FemGmshTools():
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
         if self.analysis and self.group_elements:
-            print('  We gone have found elements to make mesh groups for.')
+            # print('  We gone have found elements to make mesh groups for.')
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
             for group in self.group_elements:
