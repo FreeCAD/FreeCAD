@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>713</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,17 +57,7 @@
       <item>
        <widget class="QLabel" name="l_label_text_1">
         <property name="text">
-         <string>Leave references blank </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_label_text_2">
-        <property name="text">
-         <string>to choose all remaining shapes</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+         <string>Leave blank to choose all remaining shapes</string>
         </property>
        </widget>
       </item>
@@ -80,6 +70,34 @@
       </item>
       <item>
        <widget class="QListWidget" name="list_References"/>
+      </item>
+      <item>
+       <layout class="QGridLayout" name="gridLayout">
+        <item row="1" column="1">
+         <widget class="QRadioButton" name="rb_standard">
+          <property name="text">
+           <string>Face, Edge</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QRadioButton" name="rb_solid">
+          <property name="text">
+           <string>Solid</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_label_text_5">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
