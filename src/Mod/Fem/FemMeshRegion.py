@@ -31,7 +31,7 @@ import FreeCAD
 import _FemMeshRegion
 
 
-def makeFemMeshRegion(base_mesh, element_length=2.0, name="FEMMeshRegion"):
+def makeFemMeshRegion(base_mesh, element_length=0.0, name="FEMMeshRegion"):
     '''makeFemMeshRegion([length], [name]): creates a  FEM mesh region object to define properties for a regon of a FEM mesh'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     _FemMeshRegion._FemMeshRegion(obj)

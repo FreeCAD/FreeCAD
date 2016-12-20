@@ -236,29 +236,35 @@ class FemGmshTools():
                 # print(mr_obj.Name)
                 # print(mr_obj.CharacteristicLength)
                 # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
-                for sub in mr_obj.References:
-                    # print(sub[0])  # Part the elements belongs to
-                    # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
-                    search_ele_in_shape_to_mesh = False
-                    if not self.part_obj.Shape.isSame(sub[0].Shape):
-                        # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
-                        # print("  But we gone try to find it in the Shape to mesh :-)")
-                        search_ele_in_shape_to_mesh = True
-                    for eles in sub[1]:
-                        # print(eles)  # element
-                        if search_ele_in_shape_to_mesh:
-                            # we gone try to find the element it in the Shape to mesh and use the found element as eles
-                            ele_shape = FemMeshTools.get_element(sub[0], eles)  # the method getElement(element) does not return Solid elements
-                            found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
-                            if found_element:
-                                eles = found_element
-                            else:
-                                FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
-                        # print(eles)  # element
-                        if eles not in self.ele_length_map:
-                            self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
-                        else:
-                            FreeCAD.Console.PrintError("The element " + eles + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
+                if mr_obj.CharacteristicLength:
+                    if mr_obj.References:
+                        for sub in mr_obj.References:
+                            # print(sub[0])  # Part the elements belongs to
+                            # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                            search_ele_in_shape_to_mesh = False
+                            if not self.part_obj.Shape.isSame(sub[0].Shape):
+                                # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
+                                # print("  But we gone try to find it in the Shape to mesh :-)")
+                                search_ele_in_shape_to_mesh = True
+                            for eles in sub[1]:
+                                # print(eles)  # element
+                                if search_ele_in_shape_to_mesh:
+                                    # we gone try to find the element it in the Shape to mesh and use the found element as eles
+                                    ele_shape = FemMeshTools.get_element(sub[0], eles)  # the method getElement(element) does not return Solid elements
+                                    found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
+                                    if found_element:
+                                        eles = found_element
+                                    else:
+                                        FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                                # print(eles)  # element
+                                if eles not in self.ele_length_map:
+                                    self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
+                                else:
+                                    FreeCAD.Console.PrintError("The element " + eles + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
+                    else:
+                        FreeCAD.Console.PrintError("The meshregion: " + mr_obj.Name + " is not used to create the mesh because the reference list is empty.\n")
+                else:
+                    FreeCAD.Console.PrintError("The meshregion: " + mr_obj.Name + " is not used to create the mesh because the CharacteristicLength is 0.0 mm.\n")
             for elel in self.ele_length_map:
                 ele_shape = FemMeshTools.get_element(self.part_obj, elel)  # the method getElement(element) does not return Solid elements
                 ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
