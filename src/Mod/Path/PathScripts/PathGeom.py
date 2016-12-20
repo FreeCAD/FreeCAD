@@ -71,6 +71,24 @@ class PathGeom:
     CmdMove         = CmdMoveStraight + CmdMoveArc
 
     @classmethod
+    def isRoughly(cls, float1, float2, error=0.0000001):
+        """(float1, float2, [error=0.0000001])
+        Returns true if the two values are the same within a given error."""
+        return math.fabs(float1 - float2) <= error
+
+    @classmethod
+    def pointsCoincide(cls, p1, p2, error=0.0000001):
+        """(p1, p2, [error=0.0000001])
+        Return True if two points are roughly identical (see also isRoughly)."""
+        return cls.isRoughly(p1.x, p2.x, error) and cls.isRoughly(p1.y, p2.y, error) and cls.isRoughly(p1.z, p2.z, error)
+
+    @classmethod
+    def edgeConnectsTo(cls, edge, vector):
+        """(edge, vector)
+        Returns True if edge connects to given vector."""
+        return cls.pointsCoincide(edge.valueAt(edge.FirstParameter), vector) or cls.pointsCoincide(edge.valueAt(edge.LastParameter), vector)
+
+    @classmethod
     def getAngle(cls, vertex):
         """(vertex)
         Returns the angle [-pi,pi] of a vertex using the X-axis as the reference.

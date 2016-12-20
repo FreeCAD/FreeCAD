@@ -25,6 +25,7 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PathScripts import PathUtils
+from PathScripts.PathGeom import *
 from PySide import QtCore, QtGui
 import math
 import Part
@@ -267,14 +268,14 @@ class Chord (object):
         return self.arcCommand("G3", center)
 
     def isAPlungeMove(self):
-        return self.End.z != self.Start.z
+        return not PathGeom.isRoughly(self.End.z, self.Start.z)
 
     def foldsBackOrTurns(self, chord, side):
         dir = chord.getDirectionOf(self)
         return dir == 'Back' or dir == side
 
     def connectsTo(self, chord):
-        return self.End == chord.Start
+        return PathGeom.isRoughly(self.End, chord.Start)
 
 class Bone:
     def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):
@@ -369,8 +370,6 @@ class ObjectDressup:
         obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
-        self.shapes = {}
-        self.dbg = []
 
     def __getstate__(self):
         return None
@@ -413,6 +412,10 @@ class ObjectDressup:
             debugPrint("        -->  (%.2f, %.2f)" % (ppt.x, ppt.y))
         return ppt
 
+    def pointIsOnEdge(self, point, edge):
+        param = edge.Curve.parameter(point)
+        return edge.FirstParameter <= param <= edge.LastParameter
+
     def smoothChordCommands(self, bone, inChord, outChord, edge, wire, corner, smooth, color = None):
         if smooth == 0:
             debugPrint(" No smoothing requested")
@@ -439,7 +442,8 @@ class ObjectDressup:
             else:
                 debugPrint("         (%.2f, %.2f)^%.2f" % (e.Curve.Center.x, e.Curve.Center.y, e.Curve.Radius))
             for pt in DraftGeomUtils.findIntersection(edge, e, True, findAll=True):
-                if pt != corner:
+                if not PathGeom.pointsCoincide(pt, corner) and self.pointIsOnEdge(pt, e):
+                    debugMarker(pt, "candidate-%d-%s" % (self.boneId, d), color, 0.05)
                     debugPrint("         -> candidate")
                     distance = (pt - refPoint).Length
                     if not pivot or pivotDistance > distance:
@@ -456,7 +460,7 @@ class ObjectDressup:
             t2 = self.findPivotIntersection(pivot, pivotEdge, outChord.asEdge(), inChord.End, d, color)
 
             commands = []
-            if t1 != inChord.Start:
+            if not PathGeom.pointsCoincide(t1, inChord.Start):
                 debugPrint("  add lead in")
                 commands.append(Chord(inChord.Start, t1).g1Command())
             if bone.obj.Side == Side.Left:
@@ -465,13 +469,13 @@ class ObjectDressup:
             else:
                 debugPrint("  add g2 command center=(%.2f, %.2f) -> from (%2f, %.2f) to (%.2f, %.2f" % (pivot.x, pivot.y, t1.x, t1.y, t2.x, t2.y))
                 commands.append(Chord(t1, t2).g2Command(pivot))
-            if t2 != outChord.End:
+            if not PathGeom.pointsCoincide(t2, outChord.End):
                 debugPrint("  add lead out")
                 commands.append(Chord(t2, outChord.End).g1Command())
 
-            debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
-            debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
-            debugMarker(t2,    "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
+            #debugMarker(pivot, "pivot.%d-%s"     % (self.boneId, d), color, 0.2)
+            #debugMarker(t1,    "pivot.%d-%s.in"  % (self.boneId, d), color, 0.1)
+            #debugMarker(t2,    "pivot.%d-%s.out" % (self.boneId, d), color, 0.1)
 
             return commands
 
@@ -484,7 +488,7 @@ class ObjectDressup:
         bone.tip = bone.inChord.End # in case there is no bone
 
         debugPrint("corner = (%.2f, %.2f)" % (corner.x, corner.y))
-        debugMarker(corner, 'corner', (1., 0., 1.), 0.3)
+        debugMarker(corner, 'corner', (1., 0., 1.), self.toolRadius)
 
         length = fixedLength
         if bone.obj.Incision == Incision.Custom:
@@ -505,7 +509,7 @@ class ObjectDressup:
         bone.tip = boneInChord.End
 
         if bone.smooth == 0:
-            return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), outChord.g1Command()]
+            return [ bone.lastCommand, boneInChord.g1Command(), boneOutChord.g1Command(), bone.outChord.g1Command()]
 
         # reconstruct the corner and convert to an edge
         offset = corner - bone.inChord.End
@@ -547,14 +551,14 @@ class ObjectDressup:
     def tboneHorizontal(self, bone):
         angle = bone.angle()
         boneAngle = 0
-        if angle == math.pi or math.fabs(angle) > math.pi/2:
+        if PathGeom.isRoughly(angle, math.pi) or math.fabs(angle) > math.pi/2:
             boneAngle = -math.pi
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
     def tboneVertical(self, bone):
         angle = bone.angle()
         boneAngle = math.pi/2
-        if angle == math.pi or angle < 0:
+        if PathGeom.isRoughly(angle, math.pi) or angle < 0:
             boneAngle = -boneAngle
         return self.inOutBoneCommands(bone, boneAngle, self.toolRadius)
 
@@ -622,7 +626,7 @@ class ObjectDressup:
         self.bones.append((bone.boneId, bone.location(), enabled, inaccessible))
 
         self.boneId = bone.boneId
-        if debugDressup and bone.boneId < 11:
+        if debugDressup and bone.boneId > 2:
             commands = self.boneCommands(bone, False)
         else:
             commands = self.boneCommands(bone, enabled)
@@ -646,7 +650,7 @@ class ObjectDressup:
                     for pt in cutoff:
                         #debugCircle(e1.Curve.Center, e1.Curve.Radius, "bone.%d-1" % (self.boneId), (1.,0.,0.))
                         #debugCircle(e2.Curve.Center, e2.Curve.Radius, "bone.%d-2" % (self.boneId), (0.,1.,0.))
-                        if pt == e1.valueAt(e1.LastParameter) or pt == e2.valueAt(e2.FirstParameter):
+                        if PathGeom.pointsCoincide(pt, e1.valueAt(e1.LastParameter)) or PathGeom.pointsCoincide(pt, e2.valueAt(e2.FirstParameter)):
                             continue
                         debugMarker(pt, "it", (0.0, 1.0, 1.0))
                         # 1. remove all redundant commands
@@ -753,20 +757,19 @@ class ObjectDressup:
         obj.Path = path
 
     def setup(self, obj):
-        if not hasattr(self, 'toolRadius'):
-            debugPrint("Here we go ... ")
-            if hasattr(obj.Base, "BoneBlacklist"):
-                # dressing up a bone dressup
-                obj.Side = obj.Base.Side
+        debugPrint("Here we go ... ")
+        if hasattr(obj.Base, "BoneBlacklist"):
+            # dressing up a bone dressup
+            obj.Side = obj.Base.Side
+        else:
+            # otherwise dogbones are opposite of the base path's side
+            if obj.Base.Side == Side.Left:
+                obj.Side = Side.Right
+            elif obj.Base.Side == Side.Right:
+                obj.Side = Side.Left
             else:
-                # otherwise dogbones are opposite of the base path's side
-                if obj.Base.Side == Side.Left:
-                    obj.Side = Side.Right
-                elif obj.Base.Side == Side.Right:
-                    obj.Side = Side.Left
-                else:
-                    # This will cause an error, which is fine for now 'cause I don't know what to do here
-                    obj.Side = 'On'
+                # This will cause an error, which is fine for now 'cause I don't know what to do here
+                obj.Side = 'On'
 
         self.toolRadius = 5
         toolLoad = PathUtils.getLastToolLoad(obj)
@@ -778,6 +781,9 @@ class ObjectDressup:
                 self.toolRadius = 5
             else:
                 self.toolRadius = tool.Diameter / 2
+
+        self.shapes = {}
+        self.dbg = []
 
     def boneStateList(self, obj):
         state = {}
@@ -856,9 +862,10 @@ class TaskPanel:
         self.updateBoneList()
 
         if debugDressup:
-            for self.obj in FreeCAD.ActiveDocument.Objects:
-                if self.obj.Name.startswith('Shape'):
-                    FreeCAD.ActiveDocument.removeObject(self.obj.Name)
+            for obj in FreeCAD.ActiveDocument.Objects:
+                if obj.Name.startswith('Shape'):
+                    FreeCAD.ActiveDocument.removeObject(obj.Name)
+            print('object name %s' % self.obj.Name)
             if hasattr(self.obj.Proxy, "shapes"):
                 debugPrint("showing shapes attribute")
                 for shapes in self.obj.Proxy.shapes.itervalues():
