@@ -38,6 +38,9 @@ class _TaskPanelFemMeshRegion:
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
+        self.selection_mode_solid = False
+        self.selection_mode_std_print_message = "Select Faces, Edges and Vertices by single click on them to add them to the list."
+        self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
         self.obj = obj
         self.references = []
         if self.obj.References:
@@ -45,6 +48,8 @@ class _TaskPanelFemMeshRegion:
             self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMeshRegion.ui")
+        QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
+        QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
@@ -64,6 +69,16 @@ class _TaskPanelFemMeshRegion:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def choose_selection_mode_standard(self, state):
+        self.selection_mode_solid = not state
+        if self.sel_server and not self.selection_mode_solid:
+            print(self.selection_mode_std_print_message)
+
+    def choose_selection_mode_solid(self, state):
+        self.selection_mode_solid = state
+        if self.sel_server and self.selection_mode_solid:
+            print(self.selection_mode_solid_print_message)
 
     def get_references(self):
         for ref in self.tuplereferences:
@@ -96,7 +111,10 @@ class _TaskPanelFemMeshRegion:
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        print_message = "Select Edges and Faces by single click on them or Solids by single click on a Vertex to add them to the list"
+        if self.selection_mode_solid:  # print message on button click
+            print_message = self.selection_mode_solid_print_message
+        else:
+            print_message = self.selection_mode_std_print_message
         import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
@@ -110,25 +128,41 @@ class _TaskPanelFemMeshRegion:
                 if shape_to_mesh.isSame(selection[0].Shape):
                     if selection[1]:
                         elt = selection[0].Shape.getElement(selection[1])
-                        '''
-                        # we need to select a Solid out of a CompSolid !!!
-                        # may be by selecting a Face and and Edge which belongs to the solid
-                        # we really need some ShapeType filter for selecting shapes
-                        if elt.ShapeType == "Vertex":
-                            if selection[0].Shape.ShapeType == "Solid":
-                                elt = selection[0].Shape
-                                selection = (selection[0], '')
+                        if self.selection_mode_solid:
+                            # in solid selection mode use edges and faces for selection of a solid
+                            solid_to_add = None
+                            if elt.ShapeType == 'Edge':
+                                found_edge = False
+                                for i, s in enumerate(shape_to_mesh.Solids):
+                                    for e in s.Edges:
+                                        if elt.isSame(e):
+                                            if not found_edge:
+                                                solid_to_add = str(i + 1)
+                                            else:
+                                                FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
+                                                solid_to_add = None
+                                            found_edge = True
+                            elif elt.ShapeType == 'Face':
+                                found_face = False
+                                for i, s in enumerate(shape_to_mesh.Solids):
+                                    for e in s.Faces:
+                                        if elt.isSame(e):
+                                            if not found_face:
+                                                solid_to_add = str(i + 1)
+                                            else:
+                                                FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
+                                                solid_to_add = None
+                                            found_edge = True
+                            if solid_to_add:
+                                selection = (selection[0], 'Solid' + solid_to_add)
+                                print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
                             else:
-                                FreeCAD.Console.PrintMessage("Selected Vertex does not belong to a Solid: " + selection[0].Name + " is a " + selection[0].Shape.ShapeType + " \n")
-                        '''
-                        if elt.ShapeType == "Vertex" or elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
-                            if selection not in self.references:
-                                self.references.append(selection)
-                                self.rebuild_list_References()
-                            else:
-                                FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
+                                return
+                        if selection not in self.references:
+                            self.references.append(selection)
+                            self.rebuild_list_References()
                         else:
-                            FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is a not supported ShapeType: ' + elt.ShapeType + ' \n')
+                            FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
                     else:
                         FreeCAD.Console.PrintError("No selection[1].\n")
                 else:
