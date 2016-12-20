@@ -51,6 +51,7 @@ INSTALL(
         FemMeshRegion.py
         _FemMeshRegion.py
         _ViewProviderFemMeshRegion.py
+        _CommandMeshRegion.py
 
         FemBeamSection.py
         _FemBeamSection.py
