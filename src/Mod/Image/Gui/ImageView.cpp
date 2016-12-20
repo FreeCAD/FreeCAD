@@ -40,6 +40,37 @@ using namespace ImageGui;
 ImageView::ImageView(QWidget* parent)
   : MDIView(0, parent), _ignoreCloseEvent(false)
 {
+  // Create an OpenGL widget for displaying images
+#if QT_VERSION >=0x050000
+    // Since Qt5 there is a weird behaviour when creating a GLImageBox.
+    // It works correctly for the first time when creating an image view
+    // but only when no 3d view is created. For the second time or if a
+    // 3d view is created it fails with an assert() inside the function
+    // QWindowPrivate::create because QWindowsIntegration::createPlatformWindow
+    // fails to create an instance of QPlatformWindow.
+    // The reason for the failure is that for the passed parent widget
+    // i.e. this ImageView the QPlatformWindow is also null.
+    // As said above it works the very first time because at construction time
+    // of GLImageBox it doesn't set the ImageView as parent but the parent of
+    // the ImageView, i.e. the main window. This mafic happens inside the
+    // function QWidgetPrivate::setParent_sys at this line:
+    //        QWidget *parentWithWindow =
+    //            newparent ? (newparent->windowHandle() ? newparent : newparent->nativeParentWidget()) : 0;
+    // where newparent->nativeParentWidget() returns the main window.
+    // For the second time this magic fails. Interesting in this context is
+    // that for the 3d view this magic always works.
+    // In order to fix this problem we directly pass the pointer of the parent
+    // of this ImageView, i.e. the main window.
+    // Note:
+    // Since Qt the class QGLWidget is marked as deprecated and should be
+    // replaced by QOpenGLWidget.
+
+  _pGLImageBox = new GLImageBox(parent);
+#else
+  _pGLImageBox = new GLImageBox(this);
+#endif
+  setCentralWidget(_pGLImageBox);
+
   // enable mouse tracking when moving even if no buttons are pressed
   setMouseTracking(true);
 
@@ -48,10 +79,6 @@ ImageView::ImageView(QWidget* parent)
 
   // Create the default status bar for displaying messages
   enableStatusBar(true);
-
-  // Create an OpenGL widget for displaying images
-  _pGLImageBox = new GLImageBox(this);
-  setCentralWidget(_pGLImageBox);
 
   _currMode = nothing;
   _currX = 0;
