@@ -55,7 +55,7 @@ public:
     double get_Y_rot()const;
     double get_Z_rot()const;
     std::string get_transform_type(void) const;
-    static std::string getDisplcementReferences(const std::string showConstr);
+    static std::string getSurfaceReferences(const std::string showConstr);
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
