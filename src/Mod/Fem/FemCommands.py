@@ -60,6 +60,8 @@ class FemCommands(object):
                 active = FreeCADGui.ActiveDocument is not None and self.part_feature_selected()
             elif self.is_active == 'with_femmesh':
                 active = FreeCADGui.ActiveDocument is not None and self.femmesh_selected()
+            elif self.is_active == 'with_gmsh_femmesh':
+                active = FreeCADGui.ActiveDocument is not None and self.gmsh_femmesh_selected()
             elif self.is_active == 'with_femmesh_andor_res':
                 active = FreeCADGui.ActiveDocument is not None and self.with_femmesh_andor_res_selected()
             elif self.is_active == 'with_material':
@@ -88,6 +90,13 @@ class FemCommands(object):
         def femmesh_selected(self):
             sel = FreeCADGui.Selection.getSelection()
             if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
+                return True
+            else:
+                return False
+
+        def gmsh_femmesh_selected(self):
+            sel = FreeCADGui.Selection.getSelection()
+            if len(sel) == 1 and hasattr(sel[0], "Proxy") and sel[0].Proxy.Type == "FemMeshGmsh":
                 return True
             else:
                 return False

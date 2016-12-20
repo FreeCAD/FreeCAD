@@ -70,6 +70,7 @@ SET(FemScripts_SRCS
     _CommandMechanicalMaterial.py
     _CommandMeshGmshFromShape.py
     _CommandMeshNetgenFromShape.py
+    _CommandMeshRegion.py
     _CommandPurgeResults.py
     _CommandRunSolver.py
     _CommandShellThickness.py
