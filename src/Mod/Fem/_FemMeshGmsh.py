@@ -33,7 +33,7 @@ class _FemMeshGmsh():
     """
 
     # they will be used from the task panel too, thus they need to be outside of the __init__
-    known_element_dimensions = ['Automatic', '1D', '2D', '3D']
+    known_element_dimensions = ['From Shape', '1D', '2D', '3D']
     known_element_orders = ['1st', '2nd']
     known_mesh_algorithm_2D = ['Automatic', 'MeshAdapt', 'Delaunay', 'Frontal', 'BAMG', 'DelQuad']
     known_mesh_algorithm_3D = ['Automatic', 'Delaunay', 'New Delaunay', 'Frontal', 'Frontal Delaunay', 'Frontal Hex', 'MMG3D', 'R-tree']
@@ -57,7 +57,7 @@ class _FemMeshGmsh():
 
         obj.addProperty("App::PropertyEnumeration", "ElementDimension", "FEM GMSH Mesh Params", "Dimension of mesh elements (Auto = according ShapeType of part to mesh)")
         obj.ElementDimension = _FemMeshGmsh.known_element_dimensions
-        obj.ElementDimension = 'Automatic'  # according ShapeType of Part to mesh
+        obj.ElementDimension = 'From Shape'  # according ShapeType of Part to mesh
 
         obj.addProperty("App::PropertyEnumeration", "ElementOrder", "FEM GMSH Mesh Params", "Order of mesh elements")
         obj.ElementOrder = _FemMeshGmsh.known_element_orders
