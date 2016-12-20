@@ -29,6 +29,7 @@ __url__ = "http://www.freecadweb.org"
 
 import FreeCAD
 import Fem
+import FemMeshTools
 import Units
 import subprocess
 import tempfile
@@ -218,7 +219,6 @@ class FemGmshTools():
     def get_group_data(self):
         if self.analysis:
             print('  Group meshing.')
-            import FemMeshTools
             self.group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
             print('  {}'.format(self.group_elements))
         else:
@@ -240,11 +240,7 @@ class FemGmshTools():
                 for eles in sub[1]:
                     # print(eles)  # element
                     if search_ele_in_shape_to_mesh:
-                        if eles.startswith('Solid'):
-                            ele_shape = sub[0].Shape.Solids[int(eles.lstrip('Solid')) - 1]  # Solid
-                        else:
-                            ele_shape = sub[0].Shape.getElement(eles)  # Face, Edge, Vertex
-                        import FemMeshTools
+                        ele_shape = FemMeshTools.get_element(sub[0], eles)  # the method getElement(element) does not return Solid elements
                         found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
                         if found_element:
                             eles = found_element
@@ -258,10 +254,7 @@ class FemGmshTools():
         print('  {}'.format(self.ele_length_map))
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         for elel in self.ele_length_map:
-            if elel.startswith('Solid'):
-                ele_shape = self.part_obj.Shape.Solids[int(elel.lstrip('Solid')) - 1]  # Solid
-            else:
-                ele_shape = self.part_obj.Shape.getElement(elel)  # Face, Edge, Vertex
+            ele_shape = FemMeshTools.get_element(self.part_obj, elel)  # the method getElement(element) does not return Solid elements
             ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
             self.ele_node_map[elel] = ele_vertexes
         print('  {}'.format(self.ele_node_map))
