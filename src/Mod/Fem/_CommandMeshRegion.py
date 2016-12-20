@@ -37,7 +37,7 @@ class _CommandMeshRegion(FemCommands):
     "The Fem_MeshRegion command definition"
     def __init__(self):
         super(_CommandMeshRegion, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+        self.resources = {'Pixmap': 'fem-femmesh-region',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshRegion", "FEM mesh region"),
                           'Accel': "M, R",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshRegion", "Creates a FEM mesh region")}

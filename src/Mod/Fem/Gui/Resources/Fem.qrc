@@ -29,6 +29,7 @@
         <file>icons/fem-femmesh-from-shape.svg</file>
         <file>icons/fem-femmesh-gmsh-from-shape.svg</file>
         <file>icons/fem-femmesh-netgen-from-shape.svg</file>
+        <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
