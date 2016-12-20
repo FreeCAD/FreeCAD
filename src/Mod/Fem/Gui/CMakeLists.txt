@@ -53,7 +53,7 @@ set(FemGui_MOC_HDRS
     TaskFemConstraintBearing.h
     TaskFemConstraintFixed.h
     TaskFemConstraintForce.h
-    TaskFemConstraintFluidBoundary.h  
+    TaskFemConstraintFluidBoundary.h
     TaskFemConstraintPressure.h
     TaskFemConstraintGear.h
     TaskFemConstraintPulley.h
@@ -109,6 +109,7 @@ if(BUILD_FEM_VTK)
         ${FemGui_UIC_SRCS}
         TaskPostDisplay.ui
         TaskPostClip.ui
+        TaskPostDataAlongLine.ui
         TaskPostScalarClip.ui
         TaskPostWarpVector.ui
         TaskPostCut.ui
@@ -270,6 +271,7 @@ if(BUILD_FEM_VTK)
         PlaneWidget.ui
         SphereWidget.ui
         TaskPostClip.ui
+        TaskPostDataAlongLine.ui
         TaskPostScalarClip.ui
         TaskPostDisplay.ui
         TaskPostWarpVector.ui

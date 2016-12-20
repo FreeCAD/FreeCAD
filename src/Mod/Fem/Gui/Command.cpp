@@ -1139,6 +1139,7 @@ CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
 
 void CmdFemPostCreateDataAlongLineFilter::activated(int)
 {
+    setupFilter(this, "DataAlongLine");
 }
 
 bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
