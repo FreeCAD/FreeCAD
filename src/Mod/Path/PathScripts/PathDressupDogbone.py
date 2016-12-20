@@ -354,20 +354,20 @@ class Bone:
 class ObjectDressup:
 
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The base path to modify"))
-        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The side of path to insert bones"))
+        obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The base path to modify"))
+        obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The style of boness"))
+        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The style of boness"))
         obj.Style = Style.All
         obj.Style = Style.Dogbone
-        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Bones that aren't dressed up"))
+        obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Bones that aren't dressed up"))
         obj.BoneBlacklist = []
         obj.setEditorMode('BoneBlacklist', 2)  # hide this one
-        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "The algorithm to determine the bone length"))
+        obj.addProperty("App::PropertyEnumeration", "Incision", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The algorithm to determine the bone length"))
         obj.Incision = Incision.All
         obj.Incision = Incision.Adaptive
-        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dressup length if Incision == custom"))
+        obj.addProperty("App::PropertyFloat", "Custom", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Dressup length if Incision == custom"))
         obj.Custom = 0.0
         obj.Proxy = self
 
@@ -805,7 +805,7 @@ class TaskPanel:
     def __init__(self, obj):
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/DogboneEdit.ui")
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Edit Dogbone Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Dogbone", "Edit Dogbone Dress-up"))
 
     def reject(self):
         FreeCAD.ActiveDocument.abortTransaction()
@@ -967,12 +967,12 @@ class ViewProviderDressup:
         PathUtils.addToJob(arg1.Object.Base)
         return True
 
-class CommandDogboneDressup:
+class CommandDressupDogbone:
 
     def GetResources(self):
         return {'Pixmap': 'Path-Dressup',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Dogbone Dress-up"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Dogbone_Dressup", "Creates a Dogbone Dress-up object from a selected path")}
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Dogbone Dress-up"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Creates a Dogbone Dress-up object from a selected path")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -986,27 +986,27 @@ class CommandDogboneDressup:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select one path object\n"))
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "The selected object is not a path\n"))
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
             return
         if not hasattr(baseObject, "Side"):
-            FreeCAD.Console.PrintError(translate("Dogbone_Dressup", "Please select a Profile or Dogbone Dressup object"))
+            FreeCAD.Console.PrintError(translate("PathDressup_Dogbone", "Please select a Profile or Dogbone Dressup object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("Dogbone_Dressup", "Create Dogbone Dress-up"))
-        FreeCADGui.addModule("PathScripts.DogboneDressup")
+        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_Dogbone", "Create Dogbone Dress-up"))
+        FreeCADGui.addModule("PathScripts.PathDressupDogbone")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "DogboneDressup")')
-        FreeCADGui.doCommand('dbo = PathScripts.DogboneDressup.ObjectDressup(obj)')
+        FreeCADGui.doCommand('dbo = PathScripts.PathDressupDogbone.ObjectDressup(obj)')
         FreeCADGui.doCommand('obj.Base = FreeCAD.ActiveDocument.' + baseObject.Name)
-        FreeCADGui.doCommand('PathScripts.DogboneDressup.ViewProviderDressup(obj.ViewObject)')
+        FreeCADGui.doCommand('PathScripts.PathDressupDogbone.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('obj.Base.ViewObject.Visibility = False')
         FreeCADGui.doCommand('dbo.setup(obj)')
@@ -1015,6 +1015,6 @@ class CommandDogboneDressup:
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
-    FreeCADGui.addCommand('Dogbone_Dressup', CommandDogboneDressup())
+    FreeCADGui.addCommand('PathDressup_Dogbone', CommandDressupDogbone())
 
-FreeCAD.Console.PrintLog("Loading DogboneDressup... done\n")
+FreeCAD.Console.PrintLog("Loading DressupDogbone... done\n")
