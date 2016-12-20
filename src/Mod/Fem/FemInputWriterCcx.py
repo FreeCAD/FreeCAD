@@ -802,9 +802,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for ftobj in self.temperature_objects:
             fixedtemp_obj = ftobj['Object']
-            f.write('*BOUNDARY\n')
-            f.write('{},11,11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
-            f.write('\n')
+            NumberOfNodes = len(ftobj['Nodes'])
+            if fixedtemp_obj.ConstraintType == "Temperature":
+                f.write('*BOUNDARY\n')
+                f.write('{},11,11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+                f.write('\n')
+            elif fixedtemp_obj.ConstraintType == "CFlux":
+                f.write('*CFLUX\n')
+                f.write('{},11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.CFlux / NumberOfNodes))
+                f.write('\n')
 
     def write_constraints_heatflux(self, f):
         f.write('\n***********************************************************\n')
