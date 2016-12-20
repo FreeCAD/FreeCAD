@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>309</width>
-    <height>233</height>
+    <width>503</width>
+    <height>340</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,9 +43,33 @@
     <widget class="QListWidget" name="lw_references"/>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QRadioButton" name="rb_temperature">
+       <property name="text">
+        <string>Temperature</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QRadioButton" name="rb_cflux">
+       <property name="text">
+        <string>Concentrated heat flux</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="layoutTemperature">
      <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="lbl_type">
        <property name="text">
         <string>Temperature</string>
        </property>
