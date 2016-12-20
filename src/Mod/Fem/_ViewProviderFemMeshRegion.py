@@ -59,14 +59,10 @@ class _ViewProviderFemMeshRegion:
         return
 
     def setEdit(self, vobj, mode=0):
-        # hide all meshes and shapes, show part to mesh
+        # hide all meshes
         for o in FreeCAD.ActiveDocument.Objects:
-            if o.isDerivedFrom("Fem::FemMeshObject") or hasattr(o, "Shape"):
+            if o.isDerivedFrom("Fem::FemMeshObject"):
                 o.ViewObject.hide()
-        if len(self.Object.InList) == 1:
-            self.Object.InList[0].Part.ViewObject.show()
-        else:
-            FreeCAD.Console.PrintError(self.Object.Name + ' seam to belong to more than one mesh object. This is not supported.\n')
         # show task panel
         import _TaskPanelFemMeshRegion
         taskd = _TaskPanelFemMeshRegion._TaskPanelFemMeshRegion(self.Object)
