@@ -114,7 +114,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(ViewProviderFemConstraint
     ui->lw_Rect->clear();
 
     //Transformable surfaces
-    Gui::Command::doCommand(Gui::Command::Doc,TaskFemConstraintTransform::getDisplcementReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
+    Gui::Command::doCommand(Gui::Command::Doc,TaskFemConstraintTransform::getSurfaceReferences((static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument()).c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<App::DocumentObject*> nDispl = pcConstraint->NameDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
@@ -436,7 +436,7 @@ void TaskFemConstraintTransform::onReferenceDeleted() {
     TaskFemConstraintTransform::removeFromSelection();
 }
 
-std::string TaskFemConstraintTransform::getDisplcementReferences(std::string showConstr="")
+std::string TaskFemConstraintTransform::getSurfaceReferences(std::string showConstr="")
 {
     return "for obj in FreeCAD.ActiveDocument.Objects:\n\
         if obj.isDerivedFrom(\"Fem::FemAnalysisPython\"):\n\
@@ -446,7 +446,7 @@ A = []\n\
 i = 0\n\
 ss = []\n\
 for member in members:\n\
-        if member.isDerivedFrom(\"Fem::ConstraintDisplacement\"):\n\
+        if (member.isDerivedFrom(\"Fem::ConstraintDisplacement\")) or (member.isDerivedFrom(\"Fem::ConstraintForce\")):\n\
                 m = member.References\n\
                 A.append(m)\n\
                 if i >0:\n\
