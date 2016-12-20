@@ -45,7 +45,18 @@ class _TaskPanelFemBeamSection:
             self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemBeamSection.ui")
+
+        if self.obj.SectionType == 'Rectangular':
+            self.form.rb_Rect.setChecked(True)
+        elif self.obj.SectionType == 'Circular':
+            self.form.rb_Circ.setChecked(True)
+        elif self.obj.SectionType == 'Pipe':
+            self.form.rb_Pipe.setChecked(True)
+
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        QtCore.QObject.connect(self.form.rb_Rect, QtCore.SIGNAL("clicked()"), self.rect_section)
+        QtCore.QObject.connect(self.form.rb_Circ, QtCore.SIGNAL("clicked()"), self.circ_section)
+        QtCore.QObject.connect(self.form.rb_Pipe, QtCore.SIGNAL("clicked()"), self.pipe_section)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
@@ -99,6 +110,23 @@ class _TaskPanelFemBeamSection:
         print_message = "Select Edges by single click on them to add them to the list"
         import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
+
+    def rect_section(self):
+        '''Called if Rectangular radio button is triggered'''
+        self.obj.SectionType = 'Rectangular'
+        self.obj.RectWidth = 20.0
+        self.obj.RectHeight = 20.0
+
+    def circ_section(self):
+        '''Called if Circular radio button is triggered'''
+        self.obj.SectionType = 'Circular'
+        self.obj.CircRadius = 20.0
+
+    def pipe_section(self):
+        '''Called if Pipe radio button is triggered'''
+        self.obj.SectionType = 'Pipe'
+        self.obj.PipeRadius = 20.0
+        self.obj.PipeThickness = 2.0
 
     def selectionParser(self, selection):
         # print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
