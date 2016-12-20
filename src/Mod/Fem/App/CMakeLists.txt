@@ -80,6 +80,7 @@ SET(FemScripts_SRCS
     _FemConstraintSelfWeight.py
     _FemMaterialMechanicalNonlinear.py
     _FemMeshGmsh.py
+    _FemMeshRegion.py
     _FemShellThickness.py
     _FemSolverCalculix.py
     _FemSolverZ88.py
@@ -94,6 +95,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemConstraintSelfWeight.py
     _ViewProviderFemMaterialMechanicalNonlinear.py
     _ViewProviderFemMeshGmsh.py
+    _ViewProviderFemMeshRegion.py
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
     _ViewProviderFemSolverZ88.py
@@ -116,6 +118,7 @@ SET(FemScripts_SRCS
     FemMaterialMechanicalNonlinear.py
     FemMesh2Mesh.py
     FemMeshGmsh.py
+    FemMeshRegion.py
     FemMeshTools.py
     FemShellThickness.py
     FemSolverCalculix.py
