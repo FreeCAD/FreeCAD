@@ -39,7 +39,7 @@ def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     obj.RectHeight = height
     obj.CircRadius = height
     obj.PipeRadius = height
-    obj.PipeThickness = 2.0 
+    obj.PipeThickness = 2.0
     if FreeCAD.GuiUp:
         import _ViewProviderFemBeamSection
         _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
