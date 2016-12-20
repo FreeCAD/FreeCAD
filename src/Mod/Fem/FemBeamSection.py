@@ -31,15 +31,21 @@ import FreeCAD
 import _FemBeamSection
 
 
-def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
+def makeFemBeamSection(sectiontype='Rectangular', width=10.0, height=25.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     _FemBeamSection._FemBeamSection(obj)
+    sec_types = _FemBeamSection._FemBeamSection.known_beam_types
+    if sectiontype not in sec_types:
+        FreeCAD.Console.PrintError("Section type is not known. Set to " + sec_types[0] + " \n")
+        obj.SectionType = sec_types[0]
+    else:
+        obj.SectionType = sectiontype
     obj.RectWidth = width
     obj.RectHeight = height
-    obj.CircRadius = height
-    obj.PipeRadius = height
-    obj.PipeThickness = 2.0
+    obj.CircDiameter = height
+    obj.PipeDiameter = height
+    obj.PipeThickness = width
     if FreeCAD.GuiUp:
         import _ViewProviderFemBeamSection
         _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
