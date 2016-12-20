@@ -83,8 +83,6 @@ class _FemMeshGmsh():
         obj.Algorithm3D = _FemMeshGmsh.known_mesh_algorithm_3D
         obj.Algorithm3D = 'Automatic'  # ?
 
-        obj.addProperty("App::PropertyMap", "CharacteristicLengthMap", "FEM GMSH Mesh Params", "Map of CharacteristicLength of Shape elements")
-
     def execute(self, obj):
         return
 
