@@ -61,7 +61,7 @@ class _FemMeshGmsh():
         obj.ElementOrder = 'Automatic'  # = 2nd
 
         obj.addProperty("App::PropertyBool", "OptimizeStd", "FEM GMSH Mesh Params", "Optimize tetra elements")
-        obj.OptimizeStd = False
+        obj.OptimizeStd = True
 
         obj.addProperty("App::PropertyBool", "OptimizeNetgen", "FEM GMSH Mesh Params", "Optimize tetra elements by use of Netgen")
         obj.OptimizeNetgen = False
