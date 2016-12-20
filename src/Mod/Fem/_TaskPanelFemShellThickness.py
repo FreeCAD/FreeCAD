@@ -39,22 +39,20 @@ class _TaskPanelFemShellThickness:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
-        self.references = []
-        if self.obj.References:
-            self.tuplereferences = self.obj.References
-            self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemShellThickness.ui")
+        QtCore.QObject.connect(self.form.if_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.thickness_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.rebuild_list_References()
+        self.get_shellthickness_props()
+        self.update()
 
     def accept(self):
+        self.set_shellthickness_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
-        self.obj.References = self.references
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
         return True
@@ -64,6 +62,25 @@ class _TaskPanelFemShellThickness:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def get_shellthickness_props(self):
+        self.thickness = self.obj.Thickness
+        self.references = []
+        if self.obj.References:
+            self.tuplereferences = self.obj.References
+            self.get_references()
+
+    def set_shellthickness_props(self):
+        self.obj.References = self.references
+        self.obj.Thickness = self.thickness
+
+    def update(self):
+        'fills the widgets'
+        self.form.if_thickness.setText(self.thickness.UserString)
+        self.rebuild_list_References()
+
+    def thickness_changed(self, base_quantity_value):
+        self.thickness = base_quantity_value
 
     def get_references(self):
         for ref in self.tuplereferences:
