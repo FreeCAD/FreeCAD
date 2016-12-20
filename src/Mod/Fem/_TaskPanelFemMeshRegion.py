@@ -38,28 +38,26 @@ class _TaskPanelFemMeshRegion:
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
+        self.obj = obj
         self.selection_mode_solid = False
         self.selection_mode_std_print_message = "Select Faces, Edges and Vertices by single click on them to add them to the list."
         self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
-        self.obj = obj
-        self.references = []
-        if self.obj.References:
-            self.tuplereferences = self.obj.References
-            self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMeshRegion.ui")
+        QtCore.QObject.connect(self.form.if_elelen, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.elelen_changed)
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
         QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.rebuild_list_References()
+        self.get_meshregion_props()
+        self.update()
 
     def accept(self):
+        self.set_meshregion_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
-        self.obj.References = self.references
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
         return True
@@ -69,6 +67,25 @@ class _TaskPanelFemMeshRegion:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def get_meshregion_props(self):
+        self.elelen = self.obj.CharacteristicLength
+        self.references = []
+        if self.obj.References:
+            self.tuplereferences = self.obj.References
+            self.get_references()
+
+    def set_meshregion_props(self):
+        self.obj.References = self.references
+        self.obj.CharacteristicLength = self.elelen
+
+    def update(self):
+        'fills the widgets'
+        self.form.if_elelen.setText(self.elelen.UserString)
+        self.rebuild_list_References()
+
+    def elelen_changed(self, base_quantity_value):
+        self.elelen = base_quantity_value
 
     def choose_selection_mode_standard(self, state):
         self.selection_mode_solid = not state
