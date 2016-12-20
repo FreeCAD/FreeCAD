@@ -543,15 +543,23 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     beamsec_obj = ccx_elset['beamsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
-                    height = beamsec_obj.Height.getValueAs('mm')
-                    width = beamsec_obj.Width.getValueAs('mm')
-                    if width == 0:
-                        section_type = ', SECTION=CIRC'
-                        setion_geo = str(height) + '\n'
-                    else:
+                    if beamsec_obj.SectionType == 'Rectangular':
+                        height = beamsec_obj.RectHeight.getValueAs('mm')
+                        width = beamsec_obj.RectWidth.getValueAs('mm')
                         section_type = ', SECTION=RECT'
                         setion_geo = str(height) + ', ' + str(width) + '\n'
-                    setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                        setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                    elif beamsec_obj.SectionType == 'Circular':
+                        radius = beamsec_obj.CircRadius.getValueAs('mm')
+                        section_type = ', SECTION=CIRC'
+                        setion_geo = str(radius) + '\n'
+                        setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                    elif beamsec_obj.SectionType == 'Pipe':
+                        radius = beamsec_obj.PipeRadius.getValueAs('mm')
+                        thickness = beamsec_obj.PipeThickness.getValueAs('mm')
+                        section_type = ', SECTION=PIPE'
+                        setion_geo = str(radius) + ', ' + str(thickness) + '\n'
+                        setion_def = '*BEAM GENERAL SECTION, ' + elsetdef + material + section_type + '\n'
                     f.write(setion_def)
                     f.write(setion_geo)
                 elif 'shellthickness_obj'in ccx_elset:  # shell mesh
