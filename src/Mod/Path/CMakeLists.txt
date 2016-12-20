@@ -16,8 +16,6 @@ INSTALL(
 
 SET(PathScripts_SRCS
     PathCommands.py
-    PathScripts/DogboneDressup.py
-    PathScripts/DragknifeDressup.py
     PathScripts/PathAreaUtils.py
     PathScripts/PathArray.py
     PathScripts/PathComment.py
@@ -26,6 +24,8 @@ SET(PathScripts_SRCS
     PathScripts/PathCopy.py
     PathScripts/PathCustom.py
     PathScripts/PathDressup.py
+    PathScripts/PathDressupDogbone.py
+    PathScripts/PathDressupDragknife.py
     PathScripts/PathDrilling.py
     PathScripts/PathEngrave.py
     PathScripts/PathFacePocket.py
