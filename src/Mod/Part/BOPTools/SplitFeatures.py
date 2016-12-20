@@ -123,7 +123,7 @@ class ViewProviderBooleanFragments:
         return True
 
 def cmdCreateBooleanFragmentsFeature(name, mode):
-    """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create 
+    """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create
     BooleanFragments feature (GFA). Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Boolean Fragments")
@@ -250,7 +250,7 @@ class ViewProviderSlice:
         return True
 
 def cmdCreateSliceFeature(name, mode):
-    """cmdCreateSliceFeature(name, mode): implementation of GUI command to create 
+    """cmdCreateSliceFeature(name, mode): implementation of GUI command to create
     Slice feature. Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Slice")
@@ -378,7 +378,7 @@ class ViewProviderXOR:
         return True
 
 def cmdCreateXORFeature(name):
-    """cmdCreateXORFeature(name): implementation of GUI command to create 
+    """cmdCreateXORFeature(name): implementation of GUI command to create
     XOR feature (GFA). Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Boolean XOR")
