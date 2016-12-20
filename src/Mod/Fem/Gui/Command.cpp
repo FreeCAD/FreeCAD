@@ -798,7 +798,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint temperature ");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature acting on a face");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
     sWhatsThis      = "Fem_ConstraintTemperature";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-temperature";
