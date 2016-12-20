@@ -30,7 +30,9 @@ __url__ = "http://www.freecadweb.org"
 
 class _FemBeamSection:
     "The FemBeamSection object"
+
     known_beam_types = ['Rectangular', 'Circular', 'Pipe']
+
     def __init__(self, obj):
         obj.addProperty("App::PropertyLength", "RectWidth", "RectBeamSection", "set width of the rectangular beam elements")
         obj.addProperty("App::PropertyLength", "RectHeight", "RectBeamSection", "set height of therectangular beam elements")
