@@ -1123,8 +1123,8 @@ void CmdSketcherConstrainLock::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select entities from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select entities from the sketch."));
         return;
     }
 
@@ -1135,6 +1135,8 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     if (SubNames.size() != 1) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select exactly one entity from the sketch."));
+        // clear the selection (convenience)
+        getSelection().clearSelection();
         return;
     }
 
@@ -1145,6 +1147,8 @@ void CmdSketcherConstrainLock::activated(int iMsg)
     if (isEdge(GeoId,PosId) || (GeoId < 0 && GeoId >= Sketcher::GeoEnum::VAxis)) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
             QObject::tr("Select one vertex from the sketch other than the origin."));
+        // clear the selection (convenience)
+        getSelection().clearSelection();
         return;
     }
 
