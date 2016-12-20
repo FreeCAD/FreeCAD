@@ -550,12 +550,12 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                         setion_geo = str(height) + ', ' + str(width) + '\n'
                         setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
                     elif beamsec_obj.SectionType == 'Circular':
-                        radius = beamsec_obj.CircRadius.getValueAs('mm')
+                        radius = 0.5 * beamsec_obj.CircDiameter.getValueAs('mm')
                         section_type = ', SECTION=CIRC'
                         setion_geo = str(radius) + '\n'
                         setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
                     elif beamsec_obj.SectionType == 'Pipe':
-                        radius = beamsec_obj.PipeRadius.getValueAs('mm')
+                        radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs('mm')
                         thickness = beamsec_obj.PipeThickness.getValueAs('mm')
                         section_type = ', SECTION=PIPE'
                         setion_geo = str(radius) + ', ' + str(thickness) + '\n'

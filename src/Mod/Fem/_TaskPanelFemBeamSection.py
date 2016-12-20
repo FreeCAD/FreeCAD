@@ -79,8 +79,8 @@ class _TaskPanelFemBeamSection:
         self.SectionType = self.obj.SectionType
         self.RectHeight = self.obj.RectHeight
         self.RectWidth = self.obj.RectWidth
-        self.CircRadius = self.obj.CircRadius
-        self.PipeRadius = self.obj.PipeRadius
+        self.CircDiameter = self.obj.CircDiameter
+        self.PipeDiameter = self.obj.PipeDiameter
         self.PipeThickness = self.obj.PipeThickness
 
     def set_beamsection_props(self):
@@ -88,8 +88,8 @@ class _TaskPanelFemBeamSection:
         self.obj.SectionType = self.SectionType
         self.obj.RectHeight = self.RectHeight
         self.obj.RectWidth = self.RectWidth
-        self.obj.CircRadius = self.CircRadius
-        self.obj.PipeRadius = self.PipeRadius
+        self.obj.CircDiameter = self.CircDiameter
+        self.obj.PipeDiameter = self.PipeDiameter
         self.obj.PipeThickness = self.PipeThickness
 
     def update(self):
@@ -98,8 +98,8 @@ class _TaskPanelFemBeamSection:
         self.form.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
         self.form.if_rec_height.setText(self.RectHeight.UserString)
         self.form.if_rec_width.setText(self.RectWidth.UserString)
-        self.form.if_circ_diameter.setText(self.CircRadius.UserString)
-        self.form.if_pipe_diameter.setText(self.PipeRadius.UserString)
+        self.form.if_circ_diameter.setText(self.CircDiameter.UserString)
+        self.form.if_pipe_diameter.setText(self.PipeDiameter.UserString)
         self.form.if_pipe_thickness.setText(self.PipeThickness.UserString)
         self.rebuild_list_References()
 
@@ -116,10 +116,10 @@ class _TaskPanelFemBeamSection:
         self.RectWidth = base_quantity_value
 
     def circ_diameter_changed(self, base_quantity_value):
-        self.CircRadius = base_quantity_value
+        self.CircDiameter = base_quantity_value
 
     def pipe_diameter_changed(self, base_quantity_value):
-        self.PipeRadius = base_quantity_value
+        self.PipeDiameter = base_quantity_value
 
     def pipe_thickness_changed(self, base_quantity_value):
         self.PipeThickness = base_quantity_value
