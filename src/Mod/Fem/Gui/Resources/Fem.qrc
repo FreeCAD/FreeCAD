@@ -54,6 +54,7 @@
         <file>icons/fem-isosurface.png</file>
         <file>icons/fem-warp.png</file>
 
+        <file>icons/fem-linearizedstresses.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
         <file>translations/Fem_fi.qm</file>
