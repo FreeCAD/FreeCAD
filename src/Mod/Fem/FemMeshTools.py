@@ -72,10 +72,7 @@ def get_femnodes_by_references(femmesh, references):
 def get_femnodes_by_refshape(femmesh, ref):
     nodes = []
     for refelement in ref[1]:
-        if refelement.startswith('Solid'):
-            r = ref[0].Shape.Solids[int(refelement.lstrip('Solid')) - 1]  # Solid
-        else:
-            r = ref[0].Shape.getElement(refelement)  # Face, Edge, Vertex
+        r = get_element(ref[0], refelement)  # the method getElement(element) does not return Solid elements
         print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', refelement)
         if r.ShapeType == 'Vertex':
             nodes += femmesh.getNodesByVertex(r)
@@ -1018,12 +1015,7 @@ def get_analysis_group_elements(aAnalysis, aPart):
                     # print(parent)
                     # print(childs)
                     for child in childs:
-                        if child:
-                            # Face, Edge, Vertex
-                            ref_shape = parent.Shape.getElement(child)
-                        else:
-                            # Solid
-                            ref_shape = parent.Shape
+                        ref_shape = get_element(parent, child)  # the method getElement(element) does not return Solid elements
                         if not stype:
                             stype = ref_shape.ShapeType
                         elif stype != ref_shape.ShapeType:
@@ -1238,6 +1230,13 @@ def is_same_geometry(shape1, shape2):
             return False
     else:
         return False
+
+
+def get_element(part, element):
+    if element.startswith('Solid'):
+        return part.Shape.Solids[int(element.lstrip('Solid')) - 1]  # Solid
+    else:
+        return part.Shape.getElement(element)  # Face, Edge, Vertex
 
 
 def femelements_count_ok(len_femelement_table, count_femelements):

@@ -123,13 +123,11 @@ class _TaskPanelMechanicalMaterial:
                 self.references.append((ref[0], elem))
 
     def has_equal_references_shape_types(self):
+        import FemMeshTools
         if not self.references:
             self.references_shape_type = None
         for ref in self.references:
-            if ref[1].startswith('Solid'):
-                r = ref[0].Shape.Solids[int(ref[1].lstrip('Solid')) - 1]  # Solid
-            else:
-                r = ref[0].Shape.getElement(ref[1])  # Face, Edge
+            r = FemMeshTools.get_element(ref[0], ref[1])  # the method getElement(element) does not return Solid elements
             # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
             if self.references_shape_type is None:
                 self.references_shape_type = r.ShapeType
