@@ -58,11 +58,11 @@ class FemGmshTools():
         self.clmin = Units.Quantity(self.mesh_obj.CharacteristicLengthMin).Value
 
         # order
-        # known_element_orders = ['Automatic', '1st', '2nd']
+        # known_element_orders = ['1st', '2nd']
         self.order = self.mesh_obj.ElementOrder
         if self.order == '1st':
             self.order = '1'
-        elif self.order == 'Automatic' or self.order == '2nd':
+        elif self.order == '2nd':
             self.order = '2'
         else:
             print('Error in order')
