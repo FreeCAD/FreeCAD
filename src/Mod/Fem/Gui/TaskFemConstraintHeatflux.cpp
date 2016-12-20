@@ -110,7 +110,7 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     } else if (constraint_type == "DFlux") {
         ui->rb_dflux->setChecked(1);
         ui->sw_heatflux->setCurrentIndex(1);
-        Base::Quantity c = Base::Quantity(pcConstraint->DFlux.getValue(), Base::Unit::HeatFluxDensity);
+        Base::Quantity c = Base::Quantity(pcConstraint->DFlux.getValue(), Base::Unit::HeatFlux);
         ui->if_heatflux->setValue(c);
     }
 
@@ -196,7 +196,7 @@ void TaskFemConstraintHeatflux::Flux()
     Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ConstraintType = %s",name.c_str(), get_constraint_type().c_str());
-    Base::Quantity c = Base::Quantity(0, Base::Unit::HeatFluxDensity);
+    Base::Quantity c = Base::Quantity(0, Base::Unit::HeatFlux);
     ui->if_heatflux->setValue(c);
     pcConstraint->DFlux.setValue(0);
     ui->sw_heatflux->setCurrentIndex(1);

@@ -155,6 +155,14 @@ QString UnitsSchemaInternal::schemaTranslate(const Quantity &quant, double &fact
             factor = 0.001;
         }
     }
+    else if (unit == Unit::Power) {
+        unitString = QString::fromLatin1("W");
+        factor = 1000000;
+    }
+    else if (unit == Unit::HeatFlux) {
+        unitString = QString::fromLatin1("W/m^2");
+        factor = 1.0;
+    }
     else {
         // default action for all cases without special treatment:
         unitString = quant.getUnit().getString();
