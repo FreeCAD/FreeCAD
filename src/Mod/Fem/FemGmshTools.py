@@ -220,26 +220,36 @@ class FemGmshTools():
             print('  Group meshing.')
             import FemMeshTools
             self.group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
-            print(self.group_elements)
+            print('  {}'.format(self.group_elements))
         else:
             print('  NO group meshing.')
-        self.ele_length_map = self.mesh_obj.CharacteristicLengthMap
-        self.ele_node_map = {}
-        if self.ele_length_map:
-            import FemMeshTools
-            print(self.ele_length_map)
-            self.ele_node_map = {}
-            for e in self.ele_length_map:
-                if not e.startswith('Solid'):
-                    # Face, Edge, Vertex
-                    ele_shape = self.part_obj.Shape.getElement(e)
-                else:
-                    # Solid
-                    ele_shape_index = int(e.lstrip('Solid')) - 1
-                    ele_shape = self.part_obj.Shape.Solids[ele_shape_index]
-                ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
-                self.ele_node_map[e] = ele_vertexes
-            print(self.ele_node_map)
+
+        self.ele_length_map = {}
+        for mr_obj in self.mesh_obj.MeshRegionList:
+            # print(mr_obj.Name)
+            # print(mr_obj.CharacteristicLength)
+            # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
+            for sub in mr_obj.References:
+                # print(sub[0])  # Part the elements belongs to
+                # check if the shape of the mesh region is an element of the Part to mesh
+                if not self.part_obj.Shape.isSame(sub[0].Shape):
+                    FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.\n")
+                for eles in sub[1]:
+                    # print(eles)  # element
+                    if eles not in self.ele_length_map:
+                        self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
+                    else:
+                        FreeCAD.Console.PrintError("The element " + eles + " of the meshregion " + mr_obj.Name + " has been added to another mesh region.\n")
+        print('  {}'.format(self.ele_length_map))
+        self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
+        for elel in self.ele_length_map:
+            if elel.startswith('Solid'):
+                ele_shape = self.part_obj.Shape.Solids[int(elel.lstrip('Solid')) - 1]  # Solid
+            else:
+                ele_shape = self.part_obj.Shape.getElement(elel)  # Face, Edge, Vertex
+            ele_vertexes = FemMeshTools.get_vertexes_by_element(self.part_obj.Shape, ele_shape)
+            self.ele_node_map[elel] = ele_vertexes
+        print('  {}'.format(self.ele_node_map))
 
     def write_part_file(self):
         self.part_obj.Shape.exportBrep(self.temp_file_geometry)
@@ -279,7 +289,7 @@ class FemGmshTools():
             for e in self.ele_length_map:
                 ele_nodes = (''.join((str(n + 1) + ', ') for n in self.ele_node_map[e])).rstrip(', ')
                 geo.write("// " + e + "\n")
-                geo.write("Characteristic Length { " + ele_nodes + " } = " + self.ele_length_map[e] + ";\n")
+                geo.write("Characteristic Length { " + ele_nodes + " } = " + str(self.ele_length_map[e]) + ";\n")
             geo.write("\n")
         geo.write("Mesh.CharacteristicLengthMax = " + str(self.clmax) + ";\n")
         geo.write("Mesh.CharacteristicLengthMin = " + str(self.clmin) + ";\n")
