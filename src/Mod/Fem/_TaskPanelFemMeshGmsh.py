@@ -119,6 +119,14 @@ class _TaskPanelFemMeshGmsh:
 
     def run_gmsh(self):
         QApplication.setOverrideCursor(Qt.WaitCursor)
+        partsh = self.obj.Part
+        if partsh.Shape.ShapeType == "Compound":
+            error_message = "The mesh to shape is a Compound, GMSH could return unexpected meshes for Compounds. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+            FreeCAD.Console.PrintError(error_message + "\n")
+            if hasattr(partsh, "Proxy") and (partsh.Proxy.Type == "FeatureBooleanFragments" or partsh.Proxy.Type == "FeatureSlice" or partsh.Proxy.Type == "FeatureXOR"):  # other part obj might not have a Proxy
+                error_message = "The mesh to shape is a boolean split tools Compound, GMSH could return unexpected meshes for a boolean split tools Compound. It is strongly recommended to extract the shape to mesh from the Compound and use this one."
+                FreeCAD.Console.PrintError(error_message + "\n")
+                QtGui.QMessageBox.critical(None, "Shape to mesh is a Compound", error_message)
         self.Start = time.time()
         self.form.l_time.setText('Time: {0:4.1f}: '.format(time.time() - self.Start))
         self.console_message_gmsh = ''
