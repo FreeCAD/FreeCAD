@@ -41,6 +41,9 @@ public:
     App::PropertyFloat AmbientTemp;
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyFloat FilmCoef;
+    App::PropertyFloat DFlux;
+    App::PropertyEnumeration ConstraintType;
+
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 

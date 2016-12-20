@@ -120,6 +120,7 @@ public:
     static Unit ThermalExpansionCoefficient;
     static Unit SpecificHeat;
     static Unit ThermalTransferCoefficient;
+    static Unit HeatFluxDensity;
 
     //@}
 protected:

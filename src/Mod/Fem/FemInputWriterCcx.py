@@ -818,15 +818,26 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for hfobj in self.heatflux_objects:
             heatflux_obj = hfobj['Object']
-            f.write('*FILM\n')
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == 'Face':
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        f.write("** Heat flux on face {}\n".format(elem))
-                        for i in v:
-                            f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+            if heatflux_obj.ConstraintType == "Convection":
+                f.write('*FILM\n')
+                for o, elem_tup in heatflux_obj.References:
+                    for elem in elem_tup:
+                        ho = o.Shape.getElement(elem)
+                        if ho.ShapeType == 'Face':
+                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                            f.write("** Heat flux on face {}\n".format(elem))
+                            for i in v:
+                                f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+            elif heatflux_obj.ConstraintType == "DFlux":
+                f.write('*DFLUX\n')
+                for o, elem_tup in heatflux_obj.References:
+                    for elem in elem_tup:
+                        ho = o.Shape.getElement(elem)
+                        if ho.ShapeType == 'Face':
+                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                            f.write("** Heat flux on face {}\n".format(elem))
+                            for i in v:
+                                f.write("{},S{},{}\n".format(i[0], i[1], heatflux_obj.DFlux))
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')
