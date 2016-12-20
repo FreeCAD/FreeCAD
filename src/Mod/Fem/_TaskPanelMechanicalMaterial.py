@@ -40,6 +40,9 @@ class _TaskPanelMechanicalMaterial:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
+        self.selection_mode_solid = False
+        self.selection_mode_std_print_message = "Select Faces and Edges by single click on them to add them to the list."
+        self.selection_mode_solid_print_message = "Select Solids by single click on a Face or Edge which belongs to the Solid, to add the Solid to the list."
         self.material = self.obj.Material
         self.references = []
         if self.obj.References:
@@ -54,6 +57,8 @@ class _TaskPanelMechanicalMaterial:
         QtCore.QObject.connect(self.form.spinBox_poisson_ratio, QtCore.SIGNAL("valueChanged(double)"), self.pr_changed)
         QtCore.QObject.connect(self.form.input_fd_density, QtCore.SIGNAL("valueChanged(double)"), self.density_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
+        QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
+        QtCore.QObject.connect(self.form.rb_solid, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_solid)
         QtCore.QObject.connect(self.form.input_fd_thermal_conductivity, QtCore.SIGNAL("valueChanged(double)"), self.tc_changed)
         QtCore.QObject.connect(self.form.input_fd_expansion_coefficient, QtCore.SIGNAL("valueChanged(double)"), self.tec_changed)
         QtCore.QObject.connect(self.form.input_fd_specific_heat, QtCore.SIGNAL("valueChanged(double)"), self.sh_changed)
@@ -102,6 +107,16 @@ class _TaskPanelMechanicalMaterial:
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
 
+    def choose_selection_mode_standard(self, state):
+        self.selection_mode_solid = not state
+        if self.sel_server and not self.selection_mode_solid:
+            print(self.selection_mode_std_print_message)
+
+    def choose_selection_mode_solid(self, state):
+        self.selection_mode_solid = state
+        if self.sel_server and self.selection_mode_solid:
+            print(self.selection_mode_solid_print_message)
+
     def get_references(self):
         for ref in self.tuplereferences:
             for elem in ref[1]:
@@ -111,10 +126,10 @@ class _TaskPanelMechanicalMaterial:
         if not self.references:
             self.references_shape_type = None
         for ref in self.references:
-            if ref[1]:
-                r = ref[0].Shape.getElement(ref[1])
+            if ref[1].startswith('Solid'):
+                r = ref[0].Shape.Solids[int(ref[1].lstrip('Solid')) - 1]  # Solid
             else:
-                r = ref[0].Shape
+                r = ref[0].Shape.getElement(ref[1])  # Face, Edge
             # print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', ref[1])
             if self.references_shape_type is None:
                 self.references_shape_type = r.ShapeType
@@ -339,33 +354,52 @@ class _TaskPanelMechanicalMaterial:
         # here the addReference button EditTaskPanel has to be triggered to start selection mode
         FreeCADGui.Selection.clearSelection()
         # start SelectionObserver and parse the function to add the References to the widget
-        # TODO add a ToolTip with print_message if the mouse pointer is over addReference button
-        print_message = "Select Edges and Faces by single click on them or Solids by single click on a Vertex to add them to the list"
+        if self.selection_mode_solid:  # print message on button click
+            print_message = self.selection_mode_solid_print_message
+        else:
+            print_message = self.selection_mode_std_print_message
         import FemSelectionObserver
         self.sel_server = FemSelectionObserver.FemSelectionObserver(self.selectionParser, print_message)
 
     def selectionParser(self, selection):
-        # print('selection: ', selection[0].Shape.ShapeType, ' --> ', selection[0].Name, ' --> ', selection[1])
-        if hasattr(selection[0], "Shape"):
-            if selection[1]:
-                elt = selection[0].Shape.getElement(selection[1])
-                if elt.ShapeType == "Vertex":
-                    if selection[0].Shape.ShapeType == "Solid":
-                        elt = selection[0].Shape
-                        selection = (selection[0], '')
-                    else:
-                        FreeCAD.Console.PrintMessage("Selected Vertex does not belong to a Solid: " + selection[0].Name + " is a " + selection[0].Shape.ShapeType + " \n")
-                if elt.ShapeType == 'Edge' or elt.ShapeType == 'Face' or elt.ShapeType == 'Solid':
-                    if not self.references:
-                        self.references_shape_type = elt.ShapeType
-                    if elt.ShapeType == self.references_shape_type:
-                        if selection not in self.references:
-                            self.references.append(selection)
-                            self.rebuild_list_References()
-                        else:
-                            FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
-                    else:
-                        FreeCAD.Console.PrintMessage(elt.ShapeType + ' selected, but reference list has ' + self.references_shape_type + 's already!\n')
+        print('selection: ', selection[0].Shape.ShapeType, ' --> ', selection[0].Name, ' --> ', selection[1])
+        if hasattr(selection[0], "Shape") and selection[1]:
+            elt = selection[0].Shape.getElement(selection[1])
+            if self.selection_mode_solid:
+                # in solid selection mode use edges and faces for selection of a solid
+                solid_to_add = None
+                if elt.ShapeType == 'Edge':
+                    found_edge = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Edges:
+                            if elt.isSame(e):
+                                if not found_edge:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                elif elt.ShapeType == 'Face':
+                    found_face = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Faces:
+                            if elt.isSame(e):
+                                if not found_face:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                if solid_to_add:
+                    selection = (selection[0], 'Solid' + solid_to_add)
+                    print('selection element changed to Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
+                else:
+                    return
+            if selection not in self.references:
+                self.references.append(selection)
+                self.rebuild_list_References()
+            else:
+                FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()

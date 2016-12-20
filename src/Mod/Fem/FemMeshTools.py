@@ -72,10 +72,10 @@ def get_femnodes_by_references(femmesh, references):
 def get_femnodes_by_refshape(femmesh, ref):
     nodes = []
     for refelement in ref[1]:
-        if refelement:
-            r = ref[0].Shape.getElement(refelement)  # Vertex, Edge, Face
+        if refelement.startswith('Solid'):
+            r = ref[0].Shape.Solids[int(refelement.lstrip('Solid')) - 1]  # Solid
         else:
-            r = ref[0].Shape  # solid
+            r = ref[0].Shape.getElement(refelement)  # Face, Edge, Vertex
         print('  ReferenceShape : ', r.ShapeType, ', ', ref[0].Name, ', ', ref[0].Label, ' --> ', refelement)
         if r.ShapeType == 'Vertex':
             nodes += femmesh.getNodesByVertex(r)
