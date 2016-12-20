@@ -67,6 +67,6 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, dou
         unitString = quant.getUnit().getString();
         factor = 1.0;
     }
-
+    
     return toLocale(quant, factor, unitString);
 }
