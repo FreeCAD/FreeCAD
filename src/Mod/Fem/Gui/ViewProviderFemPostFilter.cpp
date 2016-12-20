@@ -51,6 +51,24 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg) {
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
 }
 
+PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAlongLine, FemGui::ViewProviderFemPostObject)
+
+ViewProviderFemPostDataAlongLine::ViewProviderFemPostDataAlongLine() {
+
+    sPixmap = "fem-DataAlongLine";
+}
+
+ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() {
+
+}
+
+void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg) {
+
+    //add the function box
+    dlg->appendBox(new TaskPostDataAlongLine(dlg->getView()));
+
+}
+
 
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostScalarClip, FemGui::ViewProviderFemPostObject)
 
