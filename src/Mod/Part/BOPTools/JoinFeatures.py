@@ -121,6 +121,7 @@ class FeatureConnect:
         obj.addProperty("App::PropertyLength","Tolerance","Connect","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureConnect"
 
     def execute(self,selfobj):
         rst = JoinAPI.connect([obj.Shape for obj in selfobj.Objects], selfobj.Tolerance)
@@ -214,6 +215,7 @@ class FeatureEmbed:
         obj.addProperty("App::PropertyLength","Tolerance","Embed","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureEmbed"
 
     def execute(self,selfobj):
         rst = JoinAPI.embed_legacy(selfobj.Base.Shape, selfobj.Tool.Shape, selfobj.Tolerance)
@@ -308,6 +310,7 @@ class FeatureCutout:
         obj.addProperty("App::PropertyLength","Tolerance","Cutout","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureCutout"
 
     def execute(self,selfobj):
         rst = JoinAPI.cutout_legacy(selfobj.Base.Shape, selfobj.Tool.Shape, selfobj.Tolerance)
