@@ -67,6 +67,8 @@ ConstraintCreationMode constraintCreationMode=Driving;
 
 void ActivateHandler(Gui::Document *doc,DrawSketchHandler *handler);
 
+bool isCreateGeoActive(Gui::Document *doc);
+
 bool isCreateConstraintActive(Gui::Document *doc)
 {
     if (doc) {
@@ -1197,7 +1199,8 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 
 bool CmdSketcherConstrainLock::isActive(void)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    //    return isCreateConstraintActive( getActiveGuiDocument() );
+    return isCreateGeoActive( getActiveGuiDocument() );
 }
 
 
