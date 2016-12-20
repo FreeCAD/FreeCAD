@@ -231,11 +231,26 @@ class FemGmshTools():
             # print(Units.Quantity(mr_obj.CharacteristicLength).Value)
             for sub in mr_obj.References:
                 # print(sub[0])  # Part the elements belongs to
-                # check if the shape of the mesh region is an element of the Part to mesh
+                # check if the shape of the mesh region is an element of the Part to mesh, if not try to find the element in the shape to mesh
+                search_ele_in_shape_to_mesh = False
                 if not self.part_obj.Shape.isSame(sub[0].Shape):
-                    FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.\n")
+                    # print("  One element of the meshregion " + mr_obj.Name + " is not an element of the Part to mesh.")
+                    # print("  But we gone try to fine it in the Shape to mesh :-)")
+                    search_ele_in_shape_to_mesh = True
                 for eles in sub[1]:
                     # print(eles)  # element
+                    if search_ele_in_shape_to_mesh:
+                        if eles.startswith('Solid'):
+                            ele_shape = sub[0].Shape.Solids[int(eles.lstrip('Solid')) - 1]  # Solid
+                        else:
+                            ele_shape = sub[0].Shape.getElement(eles)  # Face, Edge, Vertex
+                        import FemMeshTools
+                        found_element = FemMeshTools.find_element_in_shape(self.part_obj.Shape, ele_shape)
+                        if found_element:
+                            eles = found_element
+                        else:
+                            FreeCAD.Console.PrintError("One element of the meshregion " + mr_obj.Name + " could not be found in the Part to mesh. It will be ignored.\n")
+                    print(eles)  # element
                     if eles not in self.ele_length_map:
                         self.ele_length_map[eles] = Units.Quantity(mr_obj.CharacteristicLength).Value
                     else:

@@ -120,55 +120,43 @@ class _TaskPanelFemMeshRegion:
 
     def selectionParser(self, selection):
         print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
-        if hasattr(selection[0], "Shape"):
-            # get the Shape to mesh
-            if len(self.obj.InList) == 1:
-                shape_to_mesh = self.obj.InList[0].Part.Shape
-                # check if the Shape the selected element belongs to is the Part to mesh of the mesh object
-                if shape_to_mesh.isSame(selection[0].Shape):
-                    if selection[1]:
-                        elt = selection[0].Shape.getElement(selection[1])
-                        if self.selection_mode_solid:
-                            # in solid selection mode use edges and faces for selection of a solid
-                            solid_to_add = None
-                            if elt.ShapeType == 'Edge':
-                                found_edge = False
-                                for i, s in enumerate(shape_to_mesh.Solids):
-                                    for e in s.Edges:
-                                        if elt.isSame(e):
-                                            if not found_edge:
-                                                solid_to_add = str(i + 1)
-                                            else:
-                                                FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
-                                                solid_to_add = None
-                                            found_edge = True
-                            elif elt.ShapeType == 'Face':
-                                found_face = False
-                                for i, s in enumerate(shape_to_mesh.Solids):
-                                    for e in s.Faces:
-                                        if elt.isSame(e):
-                                            if not found_face:
-                                                solid_to_add = str(i + 1)
-                                            else:
-                                                FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
-                                                solid_to_add = None
-                                            found_edge = True
-                            if solid_to_add:
-                                selection = (selection[0], 'Solid' + solid_to_add)
-                                print('selection: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
-                            else:
-                                return
-                        if selection not in self.references:
-                            self.references.append(selection)
-                            self.rebuild_list_References()
-                        else:
-                            FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
-                    else:
-                        FreeCAD.Console.PrintError("No selection[1].\n")
+        if hasattr(selection[0], "Shape") and selection[1]:
+            elt = selection[0].Shape.getElement(selection[1])
+            if self.selection_mode_solid:
+                # in solid selection mode use edges and faces for selection of a solid
+                solid_to_add = None
+                if elt.ShapeType == 'Edge':
+                    found_edge = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Edges:
+                            if elt.isSame(e):
+                                if not found_edge:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Edge belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                elif elt.ShapeType == 'Face':
+                    found_face = False
+                    for i, s in enumerate(selection[0].Shape.Solids):
+                        for e in s.Faces:
+                            if elt.isSame(e):
+                                if not found_face:
+                                    solid_to_add = str(i + 1)
+                                else:
+                                    FreeCAD.Console.PrintMessage('Face belongs to more than one solid\n')
+                                    solid_to_add = None
+                                found_edge = True
+                if solid_to_add:
+                    selection = (selection[0], 'Solid' + solid_to_add)
+                    print('selection element changed to Solid: ', selection[0].Shape.ShapeType, '  ', selection[0].Name, '  ', selection[1])
                 else:
-                    FreeCAD.Console.PrintError("The selected element does not belong to the shape to mesh. Select an element of the object: " + self.obj.InList[0].Part.Name + "\n")
+                    return
+            if selection not in self.references:
+                self.references.append(selection)
+                self.rebuild_list_References()
             else:
-                FreeCAD.Console.PrintMessage(self.obj.Name + ' seam to belong to more than one mesh object. This is not supported.\n')
+                FreeCAD.Console.PrintMessage(selection[0].Name + ' --> ' + selection[1] + ' is in reference list already!\n')
 
     def rebuild_list_References(self):
         self.form.list_References.clear()
