@@ -24,7 +24,7 @@
 __title__ = "BOPTools package"
 __url__ = "http://www.freecadweb.org"
 __doc__ = """BOPTools Package (part of FreeCAD). Routines that power Connect, Embed, Cutout,
-BooleanFragments, Slice and XOR features of Part Workbench. Useful for other custom 
+BooleanFragments, Slice and XOR features of Part Workbench. Useful for other custom
 BOP-like operations"""
 
 ## @package BOPTools
@@ -57,14 +57,14 @@ def reloadAll():
     import FreeCAD
     if FreeCAD.GuiUp:
         addCommands()
-        
+
 def addCommands():
     "addCommands(): add all GUI commands of BOPTools package to FreeCAD command manager."
     JoinFeatures.addCommands()
     SplitFeatures.addCommands()
-    
+
 def generalFuseIsAvailable():
-    """generalFuseIsAvailable(): returns True if FreeCAD's Part.Shape.generalFuse is functional. 
+    """generalFuseIsAvailable(): returns True if FreeCAD's Part.Shape.generalFuse is functional.
     True if Part.OCC_VERSION >= 6.9.0."""
     import Part
     if not hasattr(Part, "OCC_VERSION"):
