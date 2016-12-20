@@ -173,8 +173,8 @@ class FemInputWriterZ88(FemInputWriter.FemInputWriter):
         if FemMeshTools.is_edge_femmesh(self.femmesh):
             if len(self.beamsection_objects) == 1:
                 beam_obj = self.beamsection_objects[0]['Object']
-                width = beam_obj.Width.getValueAs('mm')
-                height = beam_obj.Height.getValueAs('mm')
+                width = beam_obj.RectWidth.getValueAs('mm')
+                height = beam_obj.RectHeight.getValueAs('mm')
                 area = str(width * height)
                 elements_data.append('1 ' + str(self.element_count) + ' ' + area + ' 0 0 0 0 0 0 ')
                 print("Be aware, only trusses are supported for edge meshes!")

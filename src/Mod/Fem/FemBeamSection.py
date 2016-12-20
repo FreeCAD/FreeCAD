@@ -35,8 +35,11 @@ def makeFemBeamSection(width=20.0, height=20.0, name="BeamSection"):
     '''makeFemBeamSection([width], [height], [name]): creates an beamsection object to define a cross section'''
     obj = FreeCAD.ActiveDocument.addObject("Fem::FeaturePython", name)
     _FemBeamSection._FemBeamSection(obj)
-    obj.Width = width
-    obj.Height = height
+    obj.RectWidth = width
+    obj.RectHeight = height
+    obj.CircRadius = height
+    obj.PipeRadius = height
+    obj.PipeThickness = 2.0 
     if FreeCAD.GuiUp:
         import _ViewProviderFemBeamSection
         _ViewProviderFemBeamSection._ViewProviderFemBeamSection(obj.ViewObject)
