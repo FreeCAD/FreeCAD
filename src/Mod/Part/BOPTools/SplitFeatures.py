@@ -75,6 +75,7 @@ class FeatureBooleanFragments:
         obj.addProperty("App::PropertyLength","Tolerance","BooleanFragments","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureBooleanFragments"
 
     def execute(self,selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
@@ -203,6 +204,7 @@ class FeatureSlice:
         obj.addProperty("App::PropertyLength","Tolerance","Slice","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureSlice"
 
     def execute(self,selfobj):
         if len(selfobj.Tools) < 1:
@@ -327,6 +329,7 @@ class FeatureXOR:
         obj.addProperty("App::PropertyLength","Tolerance","XOR","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureXOR"
 
     def execute(self,selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
