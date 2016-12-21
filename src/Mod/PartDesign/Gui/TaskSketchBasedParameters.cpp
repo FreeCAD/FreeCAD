@@ -147,7 +147,7 @@ const QByteArray TaskSketchBasedParameters::onFaceName(const QString& text)
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
         return QByteArray();
     } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        if (!activeBody->hasFeature(obj))
+        if (!activeBody->hasObject(obj))
             return QByteArray();
         return QByteArray();
     } else {
