@@ -65,8 +65,10 @@ public:
 
     /// drag and drop
     bool canDragObjects() const;
+    bool canDragObject(App::DocumentObject*) const;
     void dragObject(App::DocumentObject*);
     bool canDropObjects() const;
+    bool canDropObject(App::DocumentObject*) const;
     void dropObject(App::DocumentObject*);
 };
 
@@ -89,8 +91,10 @@ public:
 
     /// drag and drop
     bool canDragObjects() const;
+    bool canDragObject(App::DocumentObject*) const;
     void dragObject(App::DocumentObject*);
     bool canDropObjects() const;
+    bool canDropObject(App::DocumentObject*) const;
     void dropObject(App::DocumentObject*);
 };
 
