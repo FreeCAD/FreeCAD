@@ -230,6 +230,7 @@ namespace GCS
         int addConstraintInternalAlignmentHyperbolaMajorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId=0);
         int addConstraintInternalAlignmentHyperbolaMinorDiameter(Hyperbola &e, Point &p1, Point &p2, int tagId=0);
         int addConstraintInternalAlignmentHyperbolaFocus(Hyperbola &e, Point &p1, int tagId=0);
+	int addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, int tagId=0);
 
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p);
         double calculateAngleViaPoint(Curve &crv1, Curve &crv2, Point &p1, Point &p2);

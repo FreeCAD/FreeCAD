@@ -1092,6 +1092,9 @@ int Sketch::addConstraint(const Constraint *constraint)
             case HyperbolaFocus: 
                 rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
                 break;
+	    case ParabolaFocus: 
+                rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
+                break;
             default:
                 break;
         }
@@ -2244,6 +2247,32 @@ int Sketch::addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2)
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentHyperbolaFocus(a1, p1, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentParabolaFocus(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfParabola)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p1 = Points[pointId1];
+
+        GCS::ArcOfParabola &a1 = ArcsOfParabola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentParabolaFocus(a1, p1, tag);
         return ConstraintsCounter;
     }
     return -1;
