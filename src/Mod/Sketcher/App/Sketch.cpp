@@ -639,8 +639,8 @@ int Sketch::addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, boo
     Geoms.push_back(def);
 
     // arcs require an ArcRules constraint for the end points
-    //if (!fixed)
-    //    GCSsys.addConstraintArcOfParabolaRules(a);
+    if (!fixed)
+        GCSsys.addConstraintArcOfParabolaRules(a);
 
     // return the position of the newly added geometry
     return Geoms.size()-1;

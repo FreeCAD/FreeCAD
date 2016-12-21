@@ -604,6 +604,12 @@ int System::addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId)
     return addConstraintCurveValue(a.end,a,a.endAngle, tagId);
 }
 
+int System::addConstraintArcOfParabolaRules(ArcOfParabola &a, int tagId)
+{
+    addConstraintCurveValue(a.start,a,a.startAngle, tagId);
+    return addConstraintCurveValue(a.end,a,a.endAngle, tagId);
+}
+
 int System::addConstraintPointOnArc(Point &p, Arc &a, int tagId)
 {
     return addConstraintP2PDistance(p, a.center, a.rad, tagId);
