@@ -184,7 +184,8 @@ namespace GCS
         int addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int tagId=0);
         int addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId=0);
         int addConstraintCurveValue(Point &p, Curve &a, double *u, int tagId=0);
-        int addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId=0);        
+        int addConstraintArcOfHyperbolaRules(ArcOfHyperbola &a, int tagId=0);
+	int addConstraintArcOfParabolaRules(ArcOfParabola &a, int tagId=0);
         int addConstraintPointOnArc(Point &p, Arc &a, int tagId=0);
         int addConstraintPerpendicularLine2Arc(Point &p1, Point &p2, Arc &a,
                                                int tagId=0);
