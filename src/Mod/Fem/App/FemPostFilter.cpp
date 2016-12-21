@@ -210,8 +210,11 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
     m_probe->SetValidPointMaskArrayName("ValidPointArray");
     m_probe->SetPassPointArrays(1);
     m_probe->SetPassCellArrays(1);
+    // needs vtk > 6.1
+#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
     m_probe->ComputeToleranceOff();
     m_probe->SetTolerance(0.01);
+#endif
 
     clip.filterSource   = m_probe;
     clip.filterTarget   = m_probe;
