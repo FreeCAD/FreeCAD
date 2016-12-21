@@ -265,7 +265,21 @@ SbMatrix ViewProvider::convert(const Base::Matrix4D &rcMatrix) const
 
 void ViewProvider::addDisplayMaskMode(SoNode *node, const char* type)
 {
-    node->setName(type);
+    if (type) {
+        std::string name = type;
+        for (std::string::iterator it = name.begin(); it != name.end(); ++it) {
+            if (it == name.begin()) {
+                if (!SbName::isBaseNameStartChar(*it))
+                    *it = '_';
+            }
+            else {
+                if (!SbName::isBaseNameChar(*it))
+                    *it = '_';
+            }
+        }
+        node->setName(name.c_str());
+    }
+
     _sDisplayMaskModes[type] = pcModeSwitch->getNumChildren();
     pcModeSwitch->addChild(node);
 }
