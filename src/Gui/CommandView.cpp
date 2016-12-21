@@ -907,6 +907,47 @@ bool StdCmdHideSelection::isActive(void)
 }
 
 //===========================================================================
+// Std_SelectVisibleObjects
+//===========================================================================
+DEF_STD_CMD_A(StdCmdSelectVisibleObjects)
+
+StdCmdSelectVisibleObjects::StdCmdSelectVisibleObjects()
+  : Command("Std_SelectVisibleObjects")
+{
+    sGroup        = QT_TR_NOOP("Standard-View");
+    sMenuText     = QT_TR_NOOP("Select visible objects");
+    sToolTipText  = QT_TR_NOOP("Select visible objects in the active document");
+    sStatusTip    = QT_TR_NOOP("Select visible objects in the active document");
+    sWhatsThis    = "Std_SelectVisibleObjects";
+    eType         = Alter3DView;
+}
+
+void StdCmdSelectVisibleObjects::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // go through active document
+    Gui::Document* doc = Application::Instance->activeDocument();
+    App::Document* app = doc->getDocument();
+    const std::vector<App::DocumentObject*> obj = app->getObjectsOfType
+        (App::DocumentObject::getClassTypeId());
+
+    std::vector<App::DocumentObject*> visible;
+    visible.reserve(obj.size());
+    for (std::vector<App::DocumentObject*>::const_iterator it=obj.begin();it!=obj.end();++it) {
+        if (doc->isShow((*it)->getNameInDocument()))
+            visible.push_back(*it);
+    }
+
+    SelectionSingleton& rSel = Selection();
+    rSel.setSelection(app->getName(), visible);
+}
+
+bool StdCmdSelectVisibleObjects::isActive(void)
+{
+    return App::GetApplication().getActiveDocument();
+}
+
+//===========================================================================
 // Std_ToggleObjects
 //===========================================================================
 DEF_STD_CMD_A(StdCmdToggleObjects)
@@ -2649,6 +2690,7 @@ void CreateViewStdCommands(void)
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());
+    rcCmdMgr.addCommand(new StdCmdSelectVisibleObjects());
     rcCmdMgr.addCommand(new StdCmdToggleObjects());
     rcCmdMgr.addCommand(new StdCmdShowObjects());
     rcCmdMgr.addCommand(new StdCmdHideObjects());
