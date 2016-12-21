@@ -88,7 +88,7 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
         return nullptr;
 
     PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
-    if(rv && rv->hasFeature(obj))
+    if(rv && rv->hasObject(obj))
         return rv;
 
     rv = PartDesign::Body::findBodyOf(obj);

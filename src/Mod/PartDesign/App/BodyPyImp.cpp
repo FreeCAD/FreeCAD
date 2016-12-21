@@ -68,7 +68,7 @@ PyObject* BodyPy::addFeature(PyObject *args)
     Body* body = this->getBodyPtr();
 
     try {
-        body->addFeature(feature);
+        body->addObject(feature);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
@@ -107,7 +107,7 @@ PyObject* BodyPy::insertFeature(PyObject *args)
     Body* body = this->getBodyPtr();
 
     try {
-        body->insertFeature(feature, target, after);
+        body->insertObject(feature, target, after);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
@@ -126,7 +126,7 @@ PyObject* BodyPy::removeFeature(PyObject *args)
     Body* body = this->getBodyPtr();
 
     try {
-        body->removeFeature(feature);
+        body->removeObject(feature);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
@@ -140,7 +140,7 @@ PyObject*  BodyPy::removeModelFromDocument(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return 0;
 
-    getBodyPtr()->removeModelFromDocument();
+    getBodyPtr()->removeObjectsFromDocument();
     Py_Return;
 }
 

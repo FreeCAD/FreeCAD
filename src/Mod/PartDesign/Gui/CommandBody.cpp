@@ -742,7 +742,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     if ( body ) {
         bodyBase= body->BaseFeature.getValue();
         for ( auto feat: features ) {
-            if ( !body->hasFeature ( feat ) ) {
+            if ( !body->hasObject ( feat ) ) {
                 allFeaturesFromSameBody = false;
                 break;
             }
@@ -760,7 +760,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     // Create a list of all features in this body
-    const std::vector<App::DocumentObject*> & model = body->Model.getValues();
+    const std::vector<App::DocumentObject*> & model = body->Group.getValues();
 
     // Ask user to select the target feature
     bool ok;
