@@ -618,6 +618,8 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                 set(BUILD_FEM_VTK OFF)
             endif()
         endif()
+        # on openSUSE 13.1 VTK_LIBRARIES ends with "optimized" keyword
+        list(REMOVE_ITEM VTK_LIBRARIES "optimized" "debug")
 
         if(NOT FREECAD_USE_EXTERNAL_SMESH)
             # See https://www.hdfgroup.org/HDF5/release/cmakebuild.html
