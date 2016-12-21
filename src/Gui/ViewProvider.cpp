@@ -397,9 +397,8 @@ void ViewProvider::setModeSwitch()
 {
     if (viewOverrideMode == -1)
         pcModeSwitch->whichChild = _iActualMode;
-    else
-        if (viewOverrideMode < pcModeSwitch->getNumChildren())
-            pcModeSwitch->whichChild = viewOverrideMode;
+    else if (viewOverrideMode < pcModeSwitch->getNumChildren())
+        pcModeSwitch->whichChild = viewOverrideMode;
 }
 
 void ViewProvider::setDefaultMode(int val)
@@ -533,7 +532,7 @@ bool ViewProvider::mouseButtonPressed(int button, bool pressed,
     (void)cursorPos;
     (void)viewer;
     return false;
-    }
+}
 
 bool ViewProvider::onDelete(const vector< string >& subNames) {
     bool del = true;
@@ -547,9 +546,10 @@ bool ViewProvider::onDelete(const vector< string >& subNames) {
 bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionCanDragObject(obj))
             return true;
+    }
 
     return false;
 }
@@ -557,9 +557,10 @@ bool ViewProvider::canDragObject(App::DocumentObject* obj) const {
 bool ViewProvider::canDragObjects() const {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector)
+    for(Gui::ViewProviderExtension* ext : vector) {
         if(ext->extensionCanDragObjects())
             return true;
+    }
 
     return false;
 }
@@ -574,7 +575,7 @@ void ViewProvider::dragObject(App::DocumentObject* obj) {
         }
     }
 
-    throw Base::Exception("ViewProvider::dragObject: no extension for draging given object available."); 
+    throw Base::Exception("ViewProvider::dragObject: no extension for dragging given object available.");
 }
 
 
@@ -615,7 +616,7 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
         }
     }
 
-    throw Base::Exception("ViewProvider::dropObject: no extension for droping given object available."); 
+    throw Base::Exception("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
 void ViewProvider::Restore(Base::XMLReader& reader) {
