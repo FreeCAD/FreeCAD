@@ -461,7 +461,7 @@ def superWireReverse(debuglist,closed=False):
                         nexte[0].Vertexes[-1*(not nexte[1])].Point)
         else:
             p2 = curr[0].Vertexes[-1*(curr[1])].Point
-        if isinstance(curr[0].Curve,Part.LineSegment):
+        if isinstance(curr[0].Curve,(Part.LineSegment, Part.Line)):
             print "line",p1,p2
             newedges.append(Part.LineSegment(p1,p2).toShape())
         elif isinstance(curr[0].Curve,Part.Circle):
