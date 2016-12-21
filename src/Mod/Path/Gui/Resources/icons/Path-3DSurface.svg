@@ -25,17 +25,17 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
+     inkscape:window-height="1137"
      id="namedview32"
      showgrid="true"
      inkscape:snap-bbox="false"
      inkscape:snap-nodes="true"
      inkscape:snap-global="false"
      inkscape:zoom="11.313709"
-     inkscape:cx="6.6058236"
-     inkscape:cy="30.143799"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:cx="11.655185"
+     inkscape:cy="55.631597"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1">
     <inkscape:grid
@@ -247,13 +247,13 @@
          sodipodi:nodetypes="ccccccccccccccc"
          inkscape:connector-curvature="0"
          id="rect4417-3"
-         d="m 94.494721,6.8017444 0,26.9999996 17.999999,-8 0,-18.9999996 z m 17.999999,22.9999996 -17.999999,8 0,8 17.999999,-8 z m 0,12 -14.999999,7 5.999999,4 9,-5 z"
+         d="m 94.494721,6.8017444 -0.01099,27.5961536 18.021979,-7.660256 -0.011,-19.9358976 z M 112.49472,29.801744 94.483731,37.462 l 0.01099,8.339744 17.999999,-8 z m 0.011,10.724359 -16.520148,7.660256 7.509158,4.615385 9,-5 z"
          style="color:#000000;fill:url(#linearGradient4055);fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:3.03373241;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <path
          sodipodi:nodetypes="ccccccccccccccc"
          inkscape:connector-curvature="0"
          id="rect4417-1"
-         d="m 97.487394,9.8850776 0,19.1985174 12.014656,-5.410056 0,-13.7884614 z m 12.014656,24.5647544 -11.989201,5.349196 0,1.376249 11.963741,-5.40113 z m -0.0487,12.026526 -6.16263,2.729424 0.26628,0.209588 5.89564,-2.929845 z"
+         d="m 97.487394,9.8850776 0,19.8687894 11.991186,-5.098858 0.0235,-14.7699314 z m 12.014656,24.5647544 -11.989201,5.01406 0,1.711385 11.963741,-5.40113 z m 0.0452,10.829611 -7.19513,3.327881 1.20492,0.808046 5.9895,-3.408611 z"
          style="color:#000000;fill:none;stroke:#d3d7cf;stroke-width:3.03373241;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
     </g>
   </g>

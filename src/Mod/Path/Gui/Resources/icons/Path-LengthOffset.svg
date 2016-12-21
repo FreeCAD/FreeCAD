@@ -507,9 +507,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.4999999"
-     inkscape:cx="16.7707"
-     inkscape:cy="52.52005"
+     inkscape:zoom="31.112698"
+     inkscape:cx="27.432282"
+     inkscape:cy="35.098338"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -522,9 +522,9 @@
      inkscape:object-paths="true"
      inkscape:object-nodes="true"
      inkscape:window-width="1920"
-     inkscape:window-height="1057"
-     inkscape:window-x="1912"
-     inkscape:window-y="-8"
+     inkscape:window-height="1137"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
      inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
@@ -567,7 +567,7 @@
          sodipodi:nodetypes="cccccccccccccccc"
          inkscape:connector-curvature="0"
          id="rect4417-9"
-         d="M 62.99999,41.840567 59,44.548996 59,49 l 10,-6 -1e-5,-1.159433 z M 69,47 l -10,6 0,4 10,-6 z m 0,8 -8,5 3,1.754717 L 69,58 z"
+         d="m 61.999991,41.840567 -3,1.991824 0,5.975472 10,-5.975472 -10e-7,-1.991824 z m 7,3.95912 -10,6 0,6 10,-6 z m 0,7.991824 -9,4.97956 L 64,61.754717 69,58 z"
          style="color:#000000;fill:#d3d7cf;fill-opacity:1;fill-rule:nonzero;stroke:#2e3436;stroke-width:1.99590766;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
       <rect
          y="33.873272"
