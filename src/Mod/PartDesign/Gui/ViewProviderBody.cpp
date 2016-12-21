@@ -183,7 +183,7 @@ bool ViewProviderBody::doubleClicked(void)
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 {
     PartDesign::Body* body= static_cast<PartDesign::Body*> ( getObject () );
-    const std::vector<App::DocumentObject*> &model = body->Model.getValues ();
+    const std::vector<App::DocumentObject*> &model = body->Group.getValues ();
     std::set<App::DocumentObject*> outSet; //< set of objects not to claim (childrens of childrens)
 
     // search for objects handled (claimed) by the features
@@ -220,7 +220,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
-    const std::vector<App::DocumentObject*> & features = body->Model.getValues();
+    const std::vector<App::DocumentObject*> & features = body->Group.getValues();
 
     std::vector<App::DocumentObject*> rv;
 
@@ -248,7 +248,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 //    bool active = body->IsActive.getValue();
 //    //Base::Console().Error("Body is %s\n", active ? "active" : "inactive");
 //    ActiveGuiDoc->signalHighlightObject(*this, Gui::Blue, active);
-//    std::vector<App::DocumentObject*> features = body->Model.getValues();
+//    std::vector<App::DocumentObject*> features = body->Group.getValues();
 //    bool highlight = true;
 //    App::DocumentObject* tip = body->Tip.getValue();
 //    for (std::vector<App::DocumentObject*>::const_iterator f = features.begin(); f != features.end(); f++) {
@@ -264,7 +264,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
     // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
     Gui::Command::doCommand(Gui::Command::Doc,
-            "App.getDocument(\"%s\").getObject(\"%s\").removeModelFromDocument()"
+            "App.getDocument(\"%s\").getObject(\"%s\").removeGroupFromDocument()"
             ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
     return true;
 }
@@ -273,7 +273,7 @@ void ViewProviderBody::updateData(const App::Property* prop)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
 
-    if (prop == &body->Model || prop == &body->BaseFeature) {
+    if (prop == &body->Group || prop == &body->BaseFeature) {
         // update sizes of origins and datums
         updateOriginDatumSize ();
         //ensure all model features are in visual body mode
@@ -298,7 +298,7 @@ void ViewProviderBody::slotChangedObjectApp ( const App::DocumentObject& obj, co
     }
 
     PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
-    if ( body && body->hasFeature (&obj ) ) {
+    if ( body && body->hasObject (&obj ) ) {
         updateOriginDatumSize ();
     }
 }
@@ -320,7 +320,7 @@ void ViewProviderBody::slotChangedObjectGui (
     PartDesign::Body *body = static_cast<PartDesign::Body*> ( getObject() );
     App::DocumentObject *obj = vp.getObject ();
 
-    if ( body && obj && body->hasFeature ( obj ) ) {
+    if ( body && obj && body->hasObject ( obj ) ) {
         updateOriginDatumSize ();
     }
 }
@@ -436,7 +436,7 @@ void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
        
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
-    auto features = body->Model.getValues();
+    auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
@@ -453,7 +453,7 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
        
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
-    auto features = body->Model.getValues();
+    auto features = body->Group.getValues();
     for(auto feature : features) {
         
         if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))

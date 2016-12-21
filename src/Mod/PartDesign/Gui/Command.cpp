@@ -385,7 +385,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
 
-        if (!pcActiveBody->hasFeature(obj)) {
+        if (!pcActiveBody->hasObject(obj)) {
             if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
                 // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
 
@@ -409,7 +409,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
 
                     if(pcActiveBody)
-                        pcActiveBody->addFeature(copy);
+                        pcActiveBody->addObject(copy);
                     else if (pcActivePart)
                         pcActivePart->addObject(copy);
 
@@ -466,7 +466,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( pcActiveBody && pcActiveBody->hasFeature(plane) ) {
+            if ( pcActiveBody && pcActiveBody->hasObject(plane) ) {
                 if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     validPlanes++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -640,7 +640,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
                 continue;
             }
-        } else if (!pcActiveBody->hasFeature(*s)) {
+        } else if (!pcActiveBody->hasObject(*s)) {
             // Check whether this plane belongs to a body of the same part
             PartDesign::Body* b = PartDesign::Body::findBodyOf(*s);
             if(!b)
@@ -807,7 +807,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
                 auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
                 auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
                 if(oBody)
-                    pcActiveBody->addFeature(copy);
+                    pcActiveBody->addObject(copy);
                 else
                     pcActivePart->addObject(copy);
 

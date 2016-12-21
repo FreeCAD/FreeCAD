@@ -25,6 +25,7 @@
 #define PART_BodyBase_H
 
 #include <App/PropertyStandard.h>
+#include <App/OriginGroupExtension.h>
 #include <Mod/Part/App/PartFeature.h>
 
 
@@ -36,19 +37,16 @@ namespace Part
  * in edit or active on a workbench, the body shows only the
  * resulting shape to the outside (Tip link).
  */
-class PartExport BodyBase : public Part::Feature
+class PartExport BodyBase : public Part::Feature, public App::OriginGroupExtension
 {
-    PROPERTY_HEADER(Part::BodyBase);
+    PROPERTY_HEADER_WITH_EXTENSIONS(Part::BodyBase);
 
 public:
     BodyBase();
 
-    /// The list of features
-    App::PropertyLinkList   Model;
-
     /**
      * The final feature of the body it is associated with.
-     * Note: tip may either point to the BaseFeature or to some feature inside the Model list.
+     * Note: tip may either point to the BaseFeature or to some feature inside the Group list.
      *       in case it points to the model the PartDesign::Body guaranties that it is a solid.
      */
     App::PropertyLink       Tip;
@@ -59,22 +57,15 @@ public:
      */
     App::PropertyLink BaseFeature;
 
-    /// Returns all Model objects prepanded by BaseFeature (if any)
+    /// Returns all Group objects prepanded by BaseFeature (if any)
     std::vector<App::DocumentObject *> getFullModel () {
         std::vector<App::DocumentObject *> rv;
         if ( BaseFeature.getValue () ) {
             rv.push_back ( BaseFeature.getValue () );
         }
-        std::copy ( Model.getValues ().begin (), Model.getValues ().end (), std::back_inserter (rv) );
+        std::copy ( Group.getValues ().begin (), Group.getValues ().end (), std::back_inserter (rv) );
         return rv;
     }
-
-    // These methods are located here to avoid a dependency of ViewProviderSketchObject on PartDesign
-    /// Remove the feature from the body
-    virtual void removeFeature(App::DocumentObject*){}
-
-    /// Return true if the feature belongs to this body or either the body is based on the feature
-    bool hasFeature(const App::DocumentObject *f) const;
 
     /// Return true if the feature belongs to the body and is located after the target
     bool isAfter(const App::DocumentObject *feature, const App::DocumentObject *target) const;
