@@ -4013,10 +4013,10 @@ public:
 
             currentgeoid++;
 
-            /*Gui::Command::doCommand(Gui::Command::Doc,
+            Gui::Command::doCommand(Gui::Command::Doc,
                                     "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
                                     sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid);*/
+                                    currentgeoid);
 
             }
             catch (const Base::Exception& e) {

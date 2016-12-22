@@ -3011,6 +3011,137 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         
         return incrgeo; //number of added elements
     }
+    else if(geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        // First we search what has to be restored
+        bool focus=false;
+	int focusgeoid=-1;
+	bool focus_to_vertex=false;
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::ParabolaFocus:
+                        focus=true;
+			focusgeoid=(*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+
+        if(focus) {
+	    // look for a line from focusgeoid:start to Geoid:mid_external
+	    std::vector<int> focusgeoidlistgeoidlist;
+	    std::vector<PointPos> focusposidlist;
+	    getDirectlyCoincidentPoints(focusgeoid, Sketcher::start, focusgeoidlistgeoidlist,
+                                       focusposidlist);
+	    
+	    std::vector<int> parabgeoidlistgeoidlist;
+	    std::vector<PointPos> parabposidlist;
+	    getDirectlyCoincidentPoints(GeoId, Sketcher::mid, parabgeoidlistgeoidlist,
+                                       parabposidlist);
+
+	    if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
+	    
+		int i,j;
+		for(i=0;i<focusgeoidlistgeoidlist.size();i++){
+		    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
+			if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
+			    const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
+			    
+			    if ( geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+				
+				if((focusposidlist[i] == Sketcher::start && parabposidlist[j] == Sketcher::end) ||
+				     (focusposidlist[i] == Sketcher::end && parabposidlist[j] == Sketcher::start))
+			
+				focus_to_vertex=true;
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+        int currentgeoid= getHighestCurveIndex();
+        int incrgeo= 0;
+
+        const Part::GeomArcOfParabola *aoh = static_cast<const Part::GeomArcOfParabola *>(geo);
+
+        Base::Vector3d center = aoh->getCenter();
+        Base::Vector3d focusp = aoh->getFocus();
+
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+
+       if(!focus)
+        {
+            Part::GeomPoint *pf1 = new Part::GeomPoint();
+            pf1->setPoint(focusp);
+
+            igeo.push_back(pf1);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::ParabolaFocus;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = GeoId;
+
+	    focusgeoid = currentgeoid+incrgeo+1;
+
+            icon.push_back(newConstr);
+            incrgeo++;
+        }
+
+        if(!focus_to_vertex)
+        {
+            Part::GeomLineSegment *paxis = new Part::GeomLineSegment();
+            paxis->setPoints(center,focusp);
+
+            igeo.push_back(paxis);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::Coincident;
+            newConstr->First = focusgeoid;
+	    newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = currentgeoid+incrgeo+1; // just added line
+            newConstr->SecondPos = Sketcher::end;
+
+	    icon.push_back(newConstr);
+
+            Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+            newConstr2->Type = Sketcher::Coincident;
+            newConstr2->First = GeoId;
+	    newConstr2->FirstPos = Sketcher::mid;
+            newConstr2->Second = currentgeoid+incrgeo+1; // just added line
+            newConstr2->SecondPos = Sketcher::start;	    
+
+            icon.push_back(newConstr2);
+
+            incrgeo++;
+        }
+
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+
+	for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+	    if (*it) 
+		delete *it;
+
+	icon.clear();
+	igeo.clear();
+
+        return incrgeo; //number of added elements
+    }
     else
         return -1; // not supported type
 }
