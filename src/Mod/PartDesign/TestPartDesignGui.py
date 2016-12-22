@@ -120,8 +120,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
         #assert depenedencies of the Sketch
-        self.assertEqual(len(self.BodySource.Model), 3, "Source body feature count is wrong")
-        self.assertEqual(len(self.BodyTarget.Model), 0, "Target body feature count is wrong")
+        self.assertEqual(len(self.BodySource.Group), 3, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Group), 0, "Target body feature count is wrong")
 
     def testMoveSingleFeature(self):
         FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
@@ -176,8 +176,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         
         self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
         self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
-        self.assertEqual(len(self.BodySource.Model), 0, "Source body feature count is wrong")
-        self.assertEqual(len(self.BodyTarget.Model), 2, "Target body feature count is wrong")
+        self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Group), 2, "Target body feature count is wrong")
 
     def tearDown(self):
         FreeCAD.closeDocument("SketchGuiTest")
