@@ -49,6 +49,7 @@ class FemWorkbench (Workbench):
         import _CommandRunSolver
         import _CommandPurgeResults
         import _CommandClearMesh
+        import _CommandPrintMeshInfo
         import _CommandControlSolver
         import _CommandFEMMesh2Mesh
         import _CommandMeshGmshFromShape
