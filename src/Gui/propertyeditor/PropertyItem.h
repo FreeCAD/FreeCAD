@@ -130,6 +130,7 @@ public:
     virtual void bind(const App::Property& prop);
     virtual void bind(const App::ObjectIdentifier& _path);
     virtual void propertyBound()  {}
+    QString expressionAsString() const;
 
     void setParent(PropertyItem* parent);
     PropertyItem *parent() const;
