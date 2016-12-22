@@ -53,7 +53,9 @@ Workbench::~Workbench()
 void Workbench::setupContextMenu(const char* recipient, Gui::MenuItem* item) const
 {
      StdWorkbench::setupContextMenu( recipient, item );
-     *item << "Separator" << "Fem_ClearMesh";
+     *item << "Separator" 
+           << "Fem_ClearMesh"
+           << "Fem_PrintMeshInfo";
 }
 
 Gui::ToolBarItem* Workbench::setupToolBars() const
