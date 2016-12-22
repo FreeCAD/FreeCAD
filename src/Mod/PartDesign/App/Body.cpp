@@ -439,26 +439,10 @@ void Body::onChanged (const App::Property* prop) {
 }
 
 void Body::setupObject () {
-    // NOTE: the code shared with App::OriginGroup
-    App::Document *doc = getDocument ();
-
-    std::string objName = std::string ( getNameInDocument() ).append ( "Origin" );
-
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
-
-    assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
-    Origin.setValue ( originObj );
-
     Part::BodyBase::setupObject ();
 }
 
 void Body::unsetupObject () {
-    App::DocumentObject *origin = Origin.getValue ();
-
-    if (origin && !origin->isDeleting ()) {
-        origin->getDocument ()->remObject (origin->getNameInDocument());
-    }
-
     Part::BodyBase::unsetupObject ();
 }
 

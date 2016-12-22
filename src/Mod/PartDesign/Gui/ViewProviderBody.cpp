@@ -61,22 +61,20 @@ using namespace PartDesignGui;
 
 const char* PartDesignGui::ViewProviderBody::BodyModeEnum[] = {"Through","Tip",NULL};
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
+PROPERTY_SOURCE_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody,PartGui::ViewProviderPart)
 
 ViewProviderBody::ViewProviderBody()
 {
     ADD_PROPERTY(DisplayModeBody,((long)0));
     DisplayModeBody.setEnums(BodyModeEnum);
-    
-    pcBodyChildren = new SoSeparator();
-    pcBodyChildren->ref();
 
     sPixmap = "PartDesign_Body_Tree.svg";
+    
+    Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }
 
 ViewProviderBody::~ViewProviderBody()
 {
-    pcBodyChildren->unref ();
     connectChangedObjectApp.disconnect();
     connectChangedObjectGui.disconnect();
 }
@@ -85,9 +83,9 @@ void ViewProviderBody::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderPart::attach(pcFeat);
-
-    addDisplayMaskMode(pcBodyChildren, "Through");
-    setDisplayMaskMode("Through");
+    
+    //set default display mode
+    onChanged(&DisplayModeBody);
 
     App::Document *adoc  = pcObject->getDocument ();
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( adoc ) ;
@@ -217,25 +215,46 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren(void)const
 
 
 std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
+
 {
+
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
+
+
 
     const std::vector<App::DocumentObject*> & features = body->Group.getValues();
 
+
+
     std::vector<App::DocumentObject*> rv;
 
+
+
     if ( body->Origin.getValue() ) { // Add origin
+
         rv.push_back (body->Origin.getValue());
+
     }
+
     if ( body->BaseFeature.getValue() ) { // Add Base Feature
+
         rv.push_back (body->BaseFeature.getValue());
+
     }
+
+
 
     // Add all other stuff
+
     std::copy (features.begin(), features.end(), std::back_inserter (rv) );
 
+
+
     return rv;
+
 }
+
+
 
 // TODO To be deleted (2015-09-08, Fat-Zer)
 //void ViewProviderBody::updateTree()
@@ -408,7 +427,7 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
                 ViewProvider::setOverrideMode("As Is");
                 overrideMode = mode;
             }
-            setDisplayMaskMode("Through");
+            setDisplayMaskMode("Group");
         }
         else {
             if(getOverrideMode() == "As Is")
@@ -463,3 +482,11 @@ void ViewProviderBody::setVisualBodyMode(bool bodymode) {
     }
 }
 
+std::vector< std::string > ViewProviderBody::getDisplayModes(void) const {
+    
+    //we get all dislay modes and remove the "Group" mode, as this is what we use for "Through" 
+    //body display mode
+    std::vector< std::string > modes = ViewProviderPart::getDisplayModes();
+    modes.erase(modes.begin());
+    return modes;
+}
