@@ -25,6 +25,7 @@
 #define PARTGUI_ViewProviderBody_H
 
 #include <Mod/Part/Gui/ViewProvider.h>
+#include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
 
 class SoGroup;
@@ -39,10 +40,10 @@ namespace PartDesignGui {
  *  If the Body is not active it shows only the result shape (tip).
  * \author jriegel
  */
-class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart
+class PartDesignGuiExport ViewProviderBody : public PartGui::ViewProviderPart, public Gui::ViewProviderOriginGroupExtension
 {
     Q_DECLARE_TR_FUNCTIONS(PartDesignGui::ViewProviderBody)
-    PROPERTY_HEADER(PartDesignGui::ViewProviderBody);
+    PROPERTY_HEADER_WITH_EXTENSIONS(PartDesignGui::ViewProviderBody);
 
 public:
     /// constructor
@@ -59,8 +60,9 @@ public:
     virtual std::vector<App::DocumentObject*> claimChildren(void)const;
 
     // returns the root node where the children gets collected(3D)
-    virtual SoGroup* getChildRoot(void) const {return pcBodyChildren;}
     virtual std::vector<App::DocumentObject*> claimChildren3D(void)const;
+
+    virtual std::vector< std::string > getDisplayModes(void) const;
     virtual void setDisplayMode(const char* ModeName);
     virtual void setOverrideMode(const std::string& mode);
 
@@ -89,9 +91,6 @@ protected:
     /// Set Feature viewprovider into visual body mode
     void setVisualBodyMode(bool bodymode);
 private:
-    /// group used to store children collected by claimChildren3D() in the through (edit) mode.
-    SoGroup *pcBodyChildren;
-
     static const char* BodyModeEnum[];
 
     boost::signals::connection connectChangedObjectApp;
