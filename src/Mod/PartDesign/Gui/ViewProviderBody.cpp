@@ -283,7 +283,7 @@ std::vector<App::DocumentObject*> ViewProviderBody::claimChildren3D(void)const
 bool ViewProviderBody::onDelete ( const std::vector<std::string> &) {
     // TODO May be do it conditionally? (2015-09-05, Fat-Zer)
     Gui::Command::doCommand(Gui::Command::Doc,
-            "App.getDocument(\"%s\").getObject(\"%s\").removeGroupFromDocument()"
+            "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
             ,getObject()->getDocument()->getName(), getObject()->getNameInDocument());
     return true;
 }

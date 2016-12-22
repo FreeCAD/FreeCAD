@@ -72,14 +72,14 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BoxObj.Length=10.0
         self.BoxObj.Width=10.0
         self.BoxObj.Height=10.0
-        self.BodySource.addFeature(self.BoxObj)
+        self.BodySource.addObject(self.BoxObj)
 
         App.ActiveDocument.recompute()
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.Sketch.Support = (self.BoxObj, ('Face3',))
         self.Sketch.MapMode = 'FlatFace'
-        self.BodySource.addFeature(self.Sketch)
+        self.BodySource.addObject(self.Sketch)
 
         geoList = []
         geoList.append(Part.LineSegment(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
@@ -108,7 +108,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Midplane = 0
         self.Pad.Offset = 0.000000
 
-        self.BodySource.addFeature(self.Pad)
+        self.BodySource.addObject(self.Pad)
 
         self.Doc.recompute()
         Gui.SendMsgToActiveView("ViewFit")
@@ -131,7 +131,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.Sketch.Support = (self.Doc.XY_Plane, [''])
         self.Sketch.MapMode = 'FlatFace'
-        self.BodySource.addFeature(self.Sketch)
+        self.BodySource.addObject(self.Sketch)
 
         geoList = []
         geoList.append(Part.LineSegment(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
@@ -160,7 +160,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Midplane = 0
         self.Pad.Offset = 0.000000
 
-        self.BodySource.addFeature(self.Pad)
+        self.BodySource.addObject(self.Pad)
 
         self.Doc.recompute()
         Gui.SendMsgToActiveView("ViewFit")

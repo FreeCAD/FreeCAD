@@ -133,7 +133,7 @@ void CmdPrimtiveCompAdditive::activated(int iMsg)
     }
 
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
     Gui::Command::updateActive();
 
@@ -322,7 +322,7 @@ void CmdPrimtiveCompSubtractive::activated(int iMsg)
             FeatName.c_str());
     }
 
-    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addFeature(App.activeDocument().%s)"
+    Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addObject(App.activeDocument().%s)"
                     ,pcActiveBody->getNameInDocument(), FeatName.c_str());
     Gui::Command::updateActive();
 

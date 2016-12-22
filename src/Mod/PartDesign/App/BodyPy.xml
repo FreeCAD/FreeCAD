@@ -13,14 +13,9 @@
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
       <UserDocu>PartDesign body class</UserDocu>
     </Documentation>
-    <Methode Name="addFeature">
+    <Methode Name="insertObject">
             <Documentation>
-                    <UserDocu>addFeature(feat) - Add the given feature after the current Tip feature</UserDocu>
-            </Documentation>
-    </Methode>
-    <Methode Name="insertFeature">
-            <Documentation>
-                    <UserDocu>insertFeatureAfter(feature, target, after=False)
+                    <UserDocu>insertObject(feature, target, after=False)
                         Insert the feature into the body after the given feature.
 
                         @param feature  The feature to insert into the body
@@ -29,18 +24,8 @@
                           and into the begin if where is InsertAfter.
                         @param after    if true insert the feature after the target. Default is false.
 
-                        @note the methode doesn't modifies the Tip unlike addFeature()
+                        @note the methode doesn't modifies the Tip unlike addObject()
                     </UserDocu>
-            </Documentation>
-    </Methode>
-    <Methode Name="removeFeature">
-            <Documentation>
-                    <UserDocu>removeFeature(feat) - Remove the given feature from the Body</UserDocu>
-            </Documentation>
-    </Methode>
-    <Methode Name="removeModelFromDocument">
-            <Documentation>
-                <UserDocu>Delets all the objects linked to the model.</UserDocu>
             </Documentation>
     </Methode>
   </PythonExport>
