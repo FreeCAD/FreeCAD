@@ -2434,6 +2434,8 @@ bool Sketch::updateGeometry()
 		aop->setXAxisDir(fd);
                 
                 aop->setCenter(vertex);
+		
+		aop->setFocal(fd.Length());
 
                 aop->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             }
