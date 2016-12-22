@@ -62,7 +62,7 @@ Body::Body() {
 // Note: The following code will catch Python Document::removeObject() modifications. If the object removed is
 // a member of the Body::Group, then it will be automatically removed from the Group property which triggers the
 // following two methods
-// But since we require the Python user to call both Document::addObject() and Body::addFeature(), we should
+// But since we require the Python user to call both Document::addObject() and Body::addObject(), we should
 // also require calling both Document::removeObject and Body::removeFeature() in order to be consistent
 void Body::onBeforeChange(const App::Property *prop)
 {

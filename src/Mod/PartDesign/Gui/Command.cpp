@@ -125,7 +125,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                 }
             }
             if (pcActiveBody) {
-                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                                pcActiveBody->getNameInDocument(), FeatName.c_str());
             }
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -278,7 +278,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
                     FeatName.c_str(), support.getPyReprString().c_str());
         }
-        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                 pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -429,7 +429,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
         //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
@@ -521,7 +521,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
             Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                         pcActiveBody->getNameInDocument(), FeatName.c_str());
             //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -584,13 +584,13 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         App::DocumentObject* lastSolidFeature = pcActiveBody->Tip.getValue();
         if (!prevSolidFeature || prevSolidFeature == lastSolidFeature) {
             // If the previous feature not given or is the Tip add Feature after it.
-            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                     pcActiveBody->getNameInDocument(), FeatName.c_str());
             prevSolidFeature = lastSolidFeature;
         } else {
             // Insert the feature into the body after the given one.
             cmd->doCommand(cmd->Doc,
-                    "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s, True)",
+                    "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s, True)",
                     pcActiveBody->getNameInDocument(), FeatName.c_str(), prevSolidFeature->getNameInDocument());
         }
     }
@@ -1855,7 +1855,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
         // Remove the Transformed feature from the Body
         if(pcActiveBody)
-            doCommand(Doc, "App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                       pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
 
         // Create a MultiTransform feature and move the Transformed feature inside it
