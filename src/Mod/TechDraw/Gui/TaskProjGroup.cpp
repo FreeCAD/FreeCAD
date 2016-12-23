@@ -176,30 +176,27 @@ void TaskProjGroup::rotateButtonClicked(void)
 
 void TaskProjGroup::on3DClicked(void)
 {
-    Base::Vector3d dir3D = get3DViewDir();
+    std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
+    Base::Vector3d dir = dir3D.first;
+    Base::Vector3d up = dir3D.second;
+    Base::Console().Message("TRACE - TPG::on3DClicked - dir: %s up: %s\n",
+                            DrawUtil::formatVector(dir).c_str(),DrawUtil::formatVector(up).c_str());
+    
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
-    if (front) {
-        front->Direction.setValue(dir3D);
-        //front->OrientBasis.setValue(rot3D);
-        //front->recomputeFeature();
+    if (front) {                              //why "if front"???
+        Base::Console().Message("TRACE - TPG::on3DClicked - front found\n");
+        multiView->setTable(dir,up);
         setUiPrimary();
-        //multiView->makeInitialMap(front);
-        //multiView->updateSecondaryDirs();
         Gui::Command::updateActive();
     }
 }
 
 void TaskProjGroup::onResetClicked(void)
 {
-//    Base::Vector3d dir = multiView->nameToStdDirection("Front");
-    
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {
-        //multiView->reset()
-//        front->recomputeFeature();
+        multiView->resetTable();
         setUiPrimary();
-//        multiView->makeInitialMap(front);
-//        multiView->updateSecondaryDirs();
         Gui::Command::updateActive();
     }
 }
@@ -414,9 +411,13 @@ void TaskProjGroup::setUiPrimary()
     ui->lePrimary->setText(formatVector(frontDir));
 }
 
-Base::Vector3d TaskProjGroup::get3DViewDir()
+
+//should return a configuration?  frontdir,upDir mapped in DPG
+std::pair<Base::Vector3d,Base::Vector3d> TaskProjGroup::get3DViewDir()
 {
+    std::pair<Base::Vector3d,Base::Vector3d> result;
     Base::Vector3d viewDir(0.0,-1.0,0.0);                                       //default to front
+    Base::Vector3d viewUp(0.0,0.0,1.0);                                         //default to top
     std::list<MDIView*> mdis = Gui::Application::Instance->activeDocument()->getMDIViews();
     Gui::View3DInventor *view;
     Gui::View3DInventorViewer *viewer = nullptr;
@@ -429,13 +430,21 @@ Base::Vector3d TaskProjGroup::get3DViewDir()
     }
     if (!viewer) {
         Base::Console().Log("LOG - TaskProjGroup could not find a 3D viewer\n");
-        return viewDir;
+        return std::make_pair( viewDir, viewUp);
     }
 
-    SbVec3f dvec = viewer->getViewDirection();
+    SbVec3f dvec  = viewer->getViewDirection();
+    SbVec3f upvec = viewer->getUpDirection();
+
     viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
-    viewDir = viewDir * -1;              //Inventor coords are opposite projection direction coords
-    return viewDir;
+    viewUp  = Base::Vector3d(upvec[0],upvec[1],upvec[2]);
+    Base::Console().Message("TRACE - TPG::get3dview - Viewer dir: %s  Viewer Up: %s \n",
+                            DrawUtil::formatVector(viewDir).c_str(),DrawUtil::formatVector(viewUp).c_str());
+    viewDir *= -1.0;              //Inventor dir is opposite TD dir, Inventor up is same as TD up
+    Base::Console().Message("TRACE - TPG::get3dview - (adjusted) Viewer dir: %s  Viewer Up: %s \n",
+                            DrawUtil::formatVector(viewDir).c_str(),DrawUtil::formatVector(viewUp).c_str());
+    result = std::make_pair(viewDir,viewUp);
+    return result;
 }
 
 

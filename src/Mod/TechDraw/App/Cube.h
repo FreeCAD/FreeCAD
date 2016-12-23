@@ -82,9 +82,11 @@ public:
     Cube();
     ~Cube();
     
-    void initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vector3d lr,
-                    Base::Vector3d f, Base::Vector3d fr, Base::Vector3d k, Base::Vector3d kr,             //k for bacK (rear)
-                    Base::Vector3d t, Base::Vector3d tr, Base::Vector3d b, Base::Vector3d br);
+void initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vector3d lr,
+                      Base::Vector3d f, Base::Vector3d fr, Base::Vector3d k, Base::Vector3d kr,      //k for bacK (rear)
+                      Base::Vector3d t, Base::Vector3d tr, Base::Vector3d b, Base::Vector3d br,
+                      Base::Vector3d fbl, Base::Vector3d fblr, Base::Vector3d fbr, Base::Vector3d fbrr,
+                      Base::Vector3d ftl, Base::Vector3d ftlr, Base::Vector3d ftr, Base::Vector3d ftrr);
 
 
 
@@ -94,6 +96,9 @@ public:
     void rotateLeft ();
     void spinCCW();
     void spinCW();
+    
+    void updateIsoDirs();
+    void updateIsoRots();
 
     Base::Vector3d getRight();
     Base::Vector3d getFront();
@@ -101,13 +106,22 @@ public:
     Base::Vector3d getLeft();
     Base::Vector3d getRear();
     Base::Vector3d getBottom();
+    Base::Vector3d getFBL();
+    Base::Vector3d getFBR();
+    Base::Vector3d getFTL();
+    Base::Vector3d getFTR();
+
     Base::Vector3d getRightRot();
     Base::Vector3d getFrontRot();
     Base::Vector3d getTopRot();
     Base::Vector3d getLeftRot();
     Base::Vector3d getRearRot();
     Base::Vector3d getBottomRot();
-
+    Base::Vector3d getFBLRot();
+    Base::Vector3d getFBRRot();
+    Base::Vector3d getFTLRot();
+    Base::Vector3d getFTRRot();
+    
     static std::string dirToView(Base::Vector3d v);
     std::string getBoardKey(void);
     void updateDirsToConfig(std::string cfg);
@@ -116,6 +130,7 @@ public:
     std::string getCurrConfig(void);
     
     void dump(char * title);
+    void dumpISO(char * title);
     void dumpState(char * title);
 
 private:

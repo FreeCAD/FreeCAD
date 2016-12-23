@@ -15,8 +15,9 @@
     cl = configLine( 5 , "BA", Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), 
                                Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0) );
     addDirItem(cl);
-    cl = configLine( 6 , "BC", Base::Vector3d(0,0,-1), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), 
-                               Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1) );
+    //BC = FBDECA
+    cl = configLine( 6 , "BC", Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), 
+                               Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0) );
     addDirItem(cl);
     cl = configLine( 7 , "BD", Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), 
                                Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), Base::Vector3d(0,1,0) );
