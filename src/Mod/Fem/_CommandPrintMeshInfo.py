@@ -31,13 +31,14 @@ import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
+from PySide import QtGui
 
 
 class _CommandPrintMeshInfo(FemCommands):
     "Print FEM mesh info"
     def __init__(self):
         super(_CommandPrintMeshInfo, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+        self.resources = {'Pixmap': 'fem-femmesh-print-info',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_PrintMeshInfo", "Print FEM mesh info"),
                           # 'Accel': "Z, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_PrintMeshInfo", "Print FEM mesh info")}
@@ -48,6 +49,10 @@ class _CommandPrintMeshInfo(FemCommands):
         if len(sel) == 1 and sel[0].isDerivedFrom("Fem::FemMeshObject"):
             FreeCAD.ActiveDocument.openTransaction("Print FEM mesh info")
             FreeCADGui.doCommand("print(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+
+            FreeCADGui.addModule("PySide")
+            FreeCADGui.doCommand("mesh_info = str(App.ActiveDocument." + sel[0].Name + ".FemMesh)")
+            FreeCADGui.doCommand("PySide.QtGui.QMessageBox.information(None, 'FEM Mesh Info', mesh_info)")
 
         FreeCADGui.Selection.clearSelection()
 

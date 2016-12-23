@@ -37,7 +37,7 @@ class _CommandClearMesh(FemCommands):
     "clear the FEM mesh"
     def __init__(self):
         super(_CommandClearMesh, self).__init__()
-        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+        self.resources = {'Pixmap': 'fem-femmesh-clear-mesh',
                           'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear FEM mesh"),
                           # 'Accel': "Z, Z",
                           'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_ClearMesh", "Clear the Mesh of a FEM mesh object")}
