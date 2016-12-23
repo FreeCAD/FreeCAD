@@ -15,7 +15,7 @@
    id="svg1307"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="Points_Import_Point_cloud.svg"
+   sodipodi:docname="Points_Export_Point_cloud.svg"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/mesh/Mesh_Import_Mesh3.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45"
@@ -645,9 +645,9 @@
      borderopacity="0.19607843"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="11.245891"
-     inkscape:cx="22.503354"
-     inkscape:cy="1.4119341"
+     inkscape:zoom="68.975119"
+     inkscape:cx="13.405587"
+     inkscape:cy="1.0087089"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -659,7 +659,7 @@
      guidetolerance="1px"
      stroke="#729fcf"
      inkscape:window-width="800"
-     inkscape:window-height="837"
+     inkscape:window-height="836"
      inkscape:window-x="0"
      inkscape:window-y="27"
      showborder="true"
@@ -767,11 +767,11 @@
         <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
-            <dc:title>Lapo Calamandrei</dc:title>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:creator>
         <cc:license
-           rdf:resource="http://creativecommons.org/licenses/by-sa/2.0/" />
+           rdf:resource="" />
         <dc:subject>
           <rdf:Bag>
             <rdf:li>media</rdf:li>
@@ -783,9 +783,33 @@
         </dc:subject>
         <dc:contributor>
           <cc:Agent>
-            <dc:title>Jakub Steiner</dc:title>
+            <dc:title />
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
           </cc:Agent>
         </dc:contributor>
+        <dc:title>Points_Export_Point_cloud</dc:title>
+        <dc:date>2014-01-26</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Points/Gui/Resources/icons/Points_Export_Point_cloud.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:source>http://agryson.net</dc:source>
       </cc:Work>
       <cc:License
          rdf:about="http://creativecommons.org/licenses/by-sa/2.0/">
@@ -932,7 +956,7 @@
        transform="translate(-45.999998,18)">
       <path
          transform="matrix(2.5187496,0,0,2.963236,20.400003,-67.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -942,7 +966,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,28.400003,-71.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -952,7 +976,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,38.400003,-67.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -962,7 +986,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,24.400003,-61.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -972,7 +996,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,34.400003,-61.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -982,7 +1006,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,18.400003,-53.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -992,7 +1016,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,28.400003,-47.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -1002,7 +1026,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,38.400003,-51.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
@@ -1012,7 +1036,7 @@
          sodipodi:type="arc" />
       <path
          transform="matrix(2.5187496,0,0,2.963236,40.400003,-41.705894)"
-         d="m 13.736973,14.411911 a 0.79404467,0.67493796 0 1 1 -1.588089,0 0.79404467,0.67493796 0 1 1 1.588089,0 z"
+         d="m 13.736973,14.411911 c 0,0.372758 -0.355506,0.674938 -0.794045,0.674938 -0.438538,0 -0.794044,-0.30218 -0.794044,-0.674938 0,-0.372758 0.355506,-0.674938 0.794044,-0.674938 0.438539,0 0.794045,0.30218 0.794045,0.674938 z"
          sodipodi:ry="0.67493796"
          sodipodi:rx="0.79404467"
          sodipodi:cy="14.411911"
