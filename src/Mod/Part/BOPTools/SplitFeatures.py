@@ -75,6 +75,7 @@ class FeatureBooleanFragments:
         obj.addProperty("App::PropertyLength","Tolerance","BooleanFragments","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureBooleanFragments"
 
     def execute(self,selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
@@ -122,7 +123,7 @@ class ViewProviderBooleanFragments:
         return True
 
 def cmdCreateBooleanFragmentsFeature(name, mode):
-    """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create 
+    """cmdCreateBooleanFragmentsFeature(name, mode): implementation of GUI command to create
     BooleanFragments feature (GFA). Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Boolean Fragments")
@@ -203,6 +204,7 @@ class FeatureSlice:
         obj.addProperty("App::PropertyLength","Tolerance","Slice","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureSlice"
 
     def execute(self,selfobj):
         if len(selfobj.Tools) < 1:
@@ -248,7 +250,7 @@ class ViewProviderSlice:
         return True
 
 def cmdCreateSliceFeature(name, mode):
-    """cmdCreateSliceFeature(name, mode): implementation of GUI command to create 
+    """cmdCreateSliceFeature(name, mode): implementation of GUI command to create
     Slice feature. Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Slice")
@@ -327,6 +329,7 @@ class FeatureXOR:
         obj.addProperty("App::PropertyLength","Tolerance","XOR","Tolerance when intersecting (fuzzy value). In addition to tolerances of the shapes.")
 
         obj.Proxy = self
+        self.Type = "FeatureXOR"
 
     def execute(self,selfobj):
         shapes = [obj.Shape for obj in selfobj.Objects]
@@ -375,7 +378,7 @@ class ViewProviderXOR:
         return True
 
 def cmdCreateXORFeature(name):
-    """cmdCreateXORFeature(name): implementation of GUI command to create 
+    """cmdCreateXORFeature(name): implementation of GUI command to create
     XOR feature (GFA). Mode can be "Standard", "Split", or "CompSolid"."""
     sel = FreeCADGui.Selection.getSelectionEx()
     FreeCAD.ActiveDocument.openTransaction("Create Boolean XOR")

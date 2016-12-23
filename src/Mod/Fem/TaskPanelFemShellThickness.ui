@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>249</width>
-    <height>379</height>
+    <width>350</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Shell thickness parameter</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -23,22 +23,62 @@
       </size>
      </property>
      <property name="title">
-      <string>Thickness</string>
+      <string>Parameter</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <widget class="QLabel" name="l_label_text_3">
-        <property name="text">
-         <string>Use FreeCAD Property Editor</string>
+       <layout class="QFormLayout" name="formLayout_1">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_label_text_4">
-        <property name="text">
-         <string>to edit the thickness value</string>
-        </property>
-       </widget>
+        <item row="1" column="1">
+         <widget class="Gui::InputField" name="if_thickness">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="text">
+           <string>0.0</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>1000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">mm</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>2</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="l_thickness">
+          <property name="text">
+           <string>Thickness:     </string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -52,17 +92,7 @@
       <item>
        <widget class="QLabel" name="l_label_text_1">
         <property name="text">
-         <string>Leave references blank </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="l_label_text_2">
-        <property name="text">
-         <string>to choose all remaining shapes</string>
-        </property>
-        <property name="wordWrap">
-         <bool>true</bool>
+         <string>Leave blank to choose all remaining shapes</string>
         </property>
        </widget>
       </item>
@@ -94,6 +124,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::InputField</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/InputField.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

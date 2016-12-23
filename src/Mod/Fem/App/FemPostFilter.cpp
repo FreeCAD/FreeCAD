@@ -68,12 +68,21 @@ void FemPostFilter::setActiveFilterPipeline(std::string name) {
 DocumentObjectExecReturn* FemPostFilter::execute(void) {
 
     if(!m_pipelines.empty() && !m_activePipeline.empty()) {
-
         FemPostFilter::FilterPipeline& pipe = m_pipelines[m_activePipeline];
-        pipe.source->SetInputDataObject(getInputData());
-        pipe.target->Update();
+        if (m_activePipeline.length() >= 13) {
+            std::string LineClip = m_activePipeline.substr(0,13);
+            if (LineClip == "DataAlongLine") {
+                pipe.filterSource->SetSourceData(getInputData());
+                pipe.filterTarget->Update();
 
-        Data.setValue(pipe.target->GetOutputDataObject(0));
+                Data.setValue(pipe.filterTarget->GetOutputDataObject(0));
+            }
+        } else {
+            pipe.source->SetInputDataObject(getInputData());
+            pipe.target->Update();
+            Data.setValue(pipe.target->GetOutputDataObject(0));
+        }
+
     }
     return StdReturn;
 }
@@ -171,6 +180,124 @@ DocumentObjectExecReturn* FemPostClipFilter::execute(void) {
     return Fem::FemPostFilter::execute();
 }
 
+PROPERTY_SOURCE(Fem::FemPostDataAlongLineFilter, Fem::FemPostFilter)
+
+FemPostDataAlongLineFilter::FemPostDataAlongLineFilter(void) : FemPostFilter() {
+
+    ADD_PROPERTY_TYPE(Point1,(Base::Vector3d(0.0,0.0,0.0)), "DataAlongLine", App::Prop_None, "The point 1 used to define end point of line");
+    ADD_PROPERTY_TYPE(Point2,(Base::Vector3d(0.0,0.0,1.0)), "DataAlongLine", App::Prop_None, "The point 2 used to define end point of line");
+    ADD_PROPERTY_TYPE(Resolution,(100), "DataAlongLine", App::Prop_None, "The number of intervals between the 2 end points of line");
+    ADD_PROPERTY_TYPE(XAxisData,(0), "DataAlongLine",App::Prop_None,"X axis data values used for plotting");
+    ADD_PROPERTY_TYPE(YAxisData,(0), "DataAlongLine",App::Prop_None,"Y axis data values used for plotting");
+    ADD_PROPERTY_TYPE(PlotData ,(""),"DataAlongLine",App::Prop_None,"Field used for plotting");
+
+    PlotData.setStatus(App::Property::ReadOnly, true);
+    XAxisData.setStatus(App::Property::ReadOnly, true);
+    YAxisData.setStatus(App::Property::ReadOnly, true);
+
+    FilterPipeline clip;
+
+    m_line = vtkSmartPointer<vtkLineSource>::New();
+    const Base::Vector3d& vec1 = Point1.getValue();
+    m_line->SetPoint1(vec1.x, vec1.y, vec1.z);
+    const Base::Vector3d& vec2 = Point2.getValue();
+    m_line->SetPoint2(vec2.x, vec2.y, vec2.z);
+    m_line->SetResolution(Resolution.getValue());
+
+
+    m_probe = vtkSmartPointer<vtkProbeFilter>::New();
+    m_probe->SetInputConnection(m_line->GetOutputPort());
+    m_probe->SetValidPointMaskArrayName("ValidPointArray");
+    m_probe->SetPassPointArrays(1);
+    m_probe->SetPassCellArrays(1);
+    // needs vtk > 6.1
+#if (VTK_MAJOR_VERSION > 6) || (VTK_MINOR_VERSION > 1)
+    m_probe->ComputeToleranceOff();
+    m_probe->SetTolerance(0.01);
+#endif
+
+    clip.filterSource   = m_probe;
+    clip.filterTarget   = m_probe;
+
+    addFilterPipeline(clip, "DataAlongLine");
+    setActiveFilterPipeline("DataAlongLine");
+}
+
+FemPostDataAlongLineFilter::~FemPostDataAlongLineFilter() {
+
+}
+
+DocumentObjectExecReturn* FemPostDataAlongLineFilter::execute(void) {
+
+    //recalculate the filter
+    return Fem::FemPostFilter::execute();
+}
+
+
+void FemPostDataAlongLineFilter::onChanged(const Property* prop) {
+    if(prop == &Point1) {
+        const Base::Vector3d& vec1 = Point1.getValue();
+        m_line->SetPoint1(vec1.x, vec1.y, vec1.z);
+    }
+    else if(prop == &Point2) {
+        const Base::Vector3d& vec2 = Point2.getValue();
+        m_line->SetPoint2(vec2.x, vec2.y, vec2.z);
+    }
+    else if(prop == &Resolution) {
+        m_line->SetResolution(Resolution.getValue());
+    }
+    else if(prop == &PlotData) {
+        GetAxisData();
+    }
+    Fem::FemPostFilter::onChanged(prop);
+}
+
+short int FemPostDataAlongLineFilter::mustExecute(void) const {
+
+    if(Point1.isTouched() ||
+       Point2.isTouched() ||
+       Resolution.isTouched()){
+
+        return 1;
+    }
+    else return App::DocumentObject::mustExecute();
+}
+
+void FemPostDataAlongLineFilter::GetAxisData() {
+
+    std::vector<double> coords;
+    std::vector<double> values;
+
+    vtkSmartPointer<vtkDataObject> data = m_probe->GetOutputDataObject(0);
+    vtkDataSet* dset = vtkDataSet::SafeDownCast(data);
+    vtkDataArray* pdata = dset->GetPointData()->GetArray(PlotData.getValue());
+    vtkDataArray *tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
+
+    int component = 0;
+
+    const Base::Vector3d& vec1 = Point1.getValue();
+    const Base::Vector3d& vec2 = Point2.getValue();
+    const Base::Vector3d diff = vec1 - vec2;
+    double Len = diff.Length();
+
+    for(int i=0; i<dset->GetNumberOfPoints(); ++i) {
+
+        double value = 0;
+        if(pdata->GetNumberOfComponents() == 1)
+            value = pdata->GetComponent(i, component);
+        else {
+            for(int j=0; j<pdata->GetNumberOfComponents(); ++j)
+                value += std::pow(pdata->GetComponent(i, j),2);
+
+            value = std::sqrt(value);
+        }
+        values.push_back(value);
+        double tcoord = tcoords->GetComponent(i, component);
+        coords.push_back(tcoord*Len);
+    }
+    YAxisData.setValues(values);
+    XAxisData.setValues(coords);
+}
 
 
 PROPERTY_SOURCE(Fem::FemPostScalarClipFilter, Fem::FemPostFilter)

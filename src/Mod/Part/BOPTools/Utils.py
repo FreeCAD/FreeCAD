@@ -40,7 +40,7 @@ class HashableShape(object):
 
 class HashableShape_Deep(object):
     """Similar to HashableShape, except that the things the shape is composed of are compared.
-    
+
 Example:
     >>> wire2 = Part.Wire(wire1.childShapes())
     >>> wire2.isSame(wire1)
@@ -48,29 +48,29 @@ Example:
     >>> HashableShape_Deep(wire2) == HashableShape_Deep(wire1)
     True # <--- made of same set of elements
     """
-    
+
     def __init__(self, shape):
         self.Shape = shape
         self.hash = 0
         for el in shape.childShapes():
             self.hash = self.hash ^ el.hashCode()
-    
+
     def __eq__(self, other):
         # avoiding extensive comparison for now. Just doing a few extra tests should reduce the already-low chances of false-positives
         if self.hash == other.hash:
             if len(self.Shape.childShapes()) == len(other.Shape.childShapes()):
                 if self.Shape.ShapeType == other.Shape.ShapeType:
                     return True
-        return False    
-        
+        return False
+
     def __hash__(self):
         return self.hash
 
 def compoundLeaves(shape_or_compound):
     """compoundLeaves(shape_or_compound): extracts all non-compound shapes from a nested compound.
-    Note: shape_or_compound may be a non-compound; then, it is the only thing in the 
+    Note: shape_or_compound may be a non-compound; then, it is the only thing in the
     returned list."""
-    
+
     if shape_or_compound.ShapeType == "Compound":
         leaves = []
         for child in shape_or_compound.childShapes():
@@ -78,23 +78,23 @@ def compoundLeaves(shape_or_compound):
         return leaves
     else:
         return [shape_or_compound]
-        
+
 def upgradeToAggregateIfNeeded(list_of_shapes, types = None):
-    """upgradeToAggregateIfNeeded(list_of_shapes, types = None): upgrades non-aggregate type 
-    shapes to aggregate-type shapes if the list has a mix of aggregate and non-aggregate 
+    """upgradeToAggregateIfNeeded(list_of_shapes, types = None): upgrades non-aggregate type
+    shapes to aggregate-type shapes if the list has a mix of aggregate and non-aggregate
     type shapes. Returns the new list. Recursively traverses into compounds.
-    
+
     aggregate shape types are Wire, Shell, CompSolid
     non-aggregate shape types are Vertex, Edge, Face, Solid
-    Compounds are something special: they are recursively traversed to upgrade the 
+    Compounds are something special: they are recursively traversed to upgrade the
     contained shapes.
-    
+
     Examples:
     list_of_shapes contains only faces -> nothing happens
     list_of_shapes contains faces and shells -> faces are converted to shells
-    
+
     'types' argument is needed for recursive traversal. Do not supply."""
-    
+
     import Part
     if types is None:
         types = set()
@@ -127,4 +127,3 @@ class FrozenClass(object):
 
     def _unfreeze(self):
         self.__isfrozen = False
-

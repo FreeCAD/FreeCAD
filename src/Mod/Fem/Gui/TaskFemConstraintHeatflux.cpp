@@ -65,6 +65,11 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     ui->lw_references->addAction(action);
     ui->lw_references->setContextMenuPolicy(Qt::ActionsContextMenu);
 
+    connect(ui->rb_convection, SIGNAL(clicked(bool)),  this, SLOT(Conv()));
+    connect(ui->rb_dflux, SIGNAL(clicked(bool)),  this, SLOT(Flux()));
+
+    connect(ui->if_heatflux, SIGNAL(valueChanged(double)),
+            this, SLOT(onHeatFluxChanged(double)));
     connect(ui->if_ambienttemp, SIGNAL(valueChanged(double)),
             this, SLOT(onAmbientTempChanged(double)));
     //connect(ui->if_facetemp, SIGNAL(valueChanged(double)),
@@ -90,13 +95,24 @@ TaskFemConstraintHeatflux::TaskFemConstraintHeatflux(ViewProviderFemConstraintHe
     // Fill data into dialog elements
     ui->if_ambienttemp->setMinimum(0);
     ui->if_ambienttemp->setMaximum(FLOAT_MAX);
-    Base::Quantity t = Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
-    ui->if_ambienttemp->setValue(t);
 
     ui->if_filmcoef->setMinimum(0);
     ui->if_filmcoef->setMaximum(FLOAT_MAX);
-    Base::Quantity f = Base::Quantity(pcConstraint->FilmCoef.getValue(), Base::Unit::ThermalTransferCoefficient);
-    ui->if_filmcoef->setValue(f);
+
+    std::string constraint_type = pcConstraint->ConstraintType.getValueAsString();
+    if (constraint_type == "Convection") {
+        ui->rb_convection->setChecked(1);
+        ui->sw_heatflux->setCurrentIndex(0);
+        Base::Quantity t = Base::Quantity(pcConstraint->AmbientTemp.getValue(), Base::Unit::Temperature);
+        ui->if_ambienttemp->setValue(t);
+        Base::Quantity f = Base::Quantity(pcConstraint->FilmCoef.getValue(), Base::Unit::ThermalTransferCoefficient);
+        ui->if_filmcoef->setValue(f);
+    } else if (constraint_type == "DFlux") {
+        ui->rb_dflux->setChecked(1);
+        ui->sw_heatflux->setCurrentIndex(1);
+        Base::Quantity c = Base::Quantity(pcConstraint->DFlux.getValue(), Base::Unit::HeatFlux);
+        ui->if_heatflux->setValue(c);
+    }
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -152,6 +168,38 @@ void TaskFemConstraintHeatflux::onFilmCoefChanged(double val)
 {
     Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
     pcConstraint->FilmCoef.setValue(val); // [W]/[[m^2]/[K]]
+}
+
+void TaskFemConstraintHeatflux::onHeatFluxChanged(double val)
+{
+    Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    pcConstraint->DFlux.setValue(val);
+
+}
+
+void TaskFemConstraintHeatflux::Conv()
+{
+    Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    std::string name = ConstraintView->getObject()->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ConstraintType = %s",name.c_str(), get_constraint_type().c_str());
+    Base::Quantity t = Base::Quantity(300, Base::Unit::Temperature);
+    ui->if_ambienttemp->setValue(t);
+    pcConstraint->AmbientTemp.setValue(300);
+    Base::Quantity f = Base::Quantity(10, Base::Unit::ThermalTransferCoefficient);
+    ui->if_filmcoef->setValue(f);
+    pcConstraint->FilmCoef.setValue(10);
+    ui->sw_heatflux->setCurrentIndex(0);
+}
+
+void TaskFemConstraintHeatflux::Flux()
+{
+    Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(ConstraintView->getObject());
+    std::string name = ConstraintView->getObject()->getNameInDocument();
+    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.ConstraintType = %s",name.c_str(), get_constraint_type().c_str());
+    Base::Quantity c = Base::Quantity(0, Base::Unit::HeatFlux);
+    ui->if_heatflux->setValue(c);
+    pcConstraint->DFlux.setValue(0);
+    ui->sw_heatflux->setCurrentIndex(1);
 }
 
 void TaskFemConstraintHeatflux::addToSelection()
@@ -325,6 +373,16 @@ double TaskFemConstraintHeatflux::getFilmCoef(void) const
     Base::Quantity filmcoef =  ui->if_filmcoef->getQuantity();
     double filmcoef_in_units = filmcoef.getValueAs(Base::Quantity(1.0,Base::Unit::ThermalTransferCoefficient));
     return filmcoef_in_units;
+}
+
+std::string TaskFemConstraintHeatflux::get_constraint_type(void) const {
+    std::string type;
+    if (ui->rb_convection->isChecked()) {
+        type = "\"Convection\"";
+    } else if (ui->rb_dflux->isChecked()) {
+        type = "\"DFlux\"";
+    }
+    return type;
 }
 
 void TaskFemConstraintHeatflux::changeEvent(QEvent *e)

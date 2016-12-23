@@ -121,7 +121,7 @@ bool SMESHDS_SubMesh::RemoveElement(const SMDS_MeshElement * ME, bool isElemDele
   }
   if (!IsComplexSubmesh())
   {
-    if ( ME->getshapeId() != myIndex ) // elem not in a pool can loose it's data already
+    if ( ME->getshapeId() != myIndex ) // elem not in a pool can lose its data already
     {
       if ( isElemDeleted )
         for ( size_t i = 0; i < myElements.size(); ++i )

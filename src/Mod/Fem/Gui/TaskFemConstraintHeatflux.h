@@ -53,6 +53,7 @@ public:
     double getAmbientTemp(void) const;
     /*double getFaceTemp(void) const;*/
     double getFilmCoef(void) const;
+    std::string get_constraint_type(void) const;
     virtual const std::string getReferences() const;
 
 private Q_SLOTS:
@@ -60,7 +61,9 @@ private Q_SLOTS:
     void onAmbientTempChanged(double val);
     /*void onFaceTempChanged(double val);*/
     void onFilmCoefChanged(double val);
-
+    void onHeatFluxChanged(double val);
+    void Conv();
+    void Flux();
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);

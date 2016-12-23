@@ -30,10 +30,19 @@ __url__ = "http://www.freecadweb.org"
 
 class _FemBeamSection:
     "The FemBeamSection object"
+
+    known_beam_types = ['Rectangular', 'Circular', 'Pipe']
+
     def __init__(self, obj):
-        obj.addProperty("App::PropertyLength", "Width", "BeamSection", "set width of the beam elements")
-        obj.addProperty("App::PropertyLength", "Height", "BeamSection", "set height of the beam elements")
+        obj.addProperty("App::PropertyLength", "RectWidth", "RectBeamSection", "set width of the rectangular beam elements")
+        obj.addProperty("App::PropertyLength", "RectHeight", "RectBeamSection", "set height of therectangular beam elements")
+        obj.addProperty("App::PropertyLength", "CircDiameter", "CircBeamSection", "set diameter of the circular beam elements")
+        obj.addProperty("App::PropertyLength", "PipeDiameter", "PipeBeamSection", "set outer diameter of the pipe beam elements")
+        obj.addProperty("App::PropertyLength", "PipeThickness", "PipeBeamSection", "set thickness of the pipe beam elements")
+        obj.addProperty("App::PropertyEnumeration", "SectionType", "BeamSection", "select beam section type")
         obj.addProperty("App::PropertyLinkSubList", "References", "BeamSection", "List of beam section shapes")
+        obj.SectionType = _FemBeamSection.known_beam_types
+        obj.SectionType = 'Rectangular'
         obj.Proxy = self
         self.Type = "FemBeamSection"
 

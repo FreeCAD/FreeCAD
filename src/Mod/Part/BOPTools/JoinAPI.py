@@ -36,9 +36,9 @@ def shapeOfMaxSize(list_of_shapes):
     """shapeOfMaxSize(list_of_shapes): finds the shape that has the largest mass in the list and returns it. The shapes in the list must be of same dimension."""
     #first, check if shapes can be compared by size
     ShapeMerge.dimensionOfShapes(list_of_shapes)
-    
+
     rel_precision = 1e-8
-    
+
     #find it!
     max_size = -1e100 # max size encountered so far
     count_max = 0 # number of shapes with size equal to max_size
@@ -56,40 +56,40 @@ def shapeOfMaxSize(list_of_shapes):
     return shape_max
 
 def connect(list_of_shapes, tolerance = 0.0):
-    """connect(list_of_shapes, tolerance = 0.0): connects solids (walled objects), shells and 
-    wires by throwing off small parts that result when splitting them at intersections. 
-    
-    Compounds in list_of_shapes are automatically exploded, so self-intersecting compounds 
+    """connect(list_of_shapes, tolerance = 0.0): connects solids (walled objects), shells and
+    wires by throwing off small parts that result when splitting them at intersections.
+
+    Compounds in list_of_shapes are automatically exploded, so self-intersecting compounds
     are valid for connect."""
-    
+
     # explode all compounds before GFA.
     new_list_of_shapes = []
     for sh in list_of_shapes:
         new_list_of_shapes.extend( compoundLeaves(sh) )
     list_of_shapes = new_list_of_shapes
-    
+
     #test if shapes are compatible for connecting
     dim = ShapeMerge.dimensionOfShapes(list_of_shapes)
     if dim == 0:
         raise TypeError("Cannot connect vertices!")
-        
+
     if len(list_of_shapes) < 2:
         return Part.makeCompound(list_of_shapes)
-        
+
     if not generalFuseIsAvailable(): #fallback to legacy
         result = list_of_shapes[0]
         for i in range(1, len(list_of_shapes)):
             result = connect_legacy(result, list_of_shapes[i], tolerance)
         return result
-    
+
     pieces, map = list_of_shapes[0].generalFuse(list_of_shapes[1:], tolerance)
     ao = GeneralFuseResult(list_of_shapes, (pieces, map))
     ao.splitAggregates()
     #print len(ao.pieces)," pieces total"
-    
+
     keepers = []
     all_danglers = [] # debug
-                
+
     #add all biggest dangling pieces
     for src in ao.source_shapes:
         danglers = [piece for piece in ao.piecesFromSource(src) if len(ao.sourcesOfPiece(piece)) == 1]
@@ -103,24 +103,24 @@ def connect(list_of_shapes, tolerance = 0.0):
     for ii in range(2, ao.largestOverlapCount()+1):
         list_ii_pieces = [piece for piece in ao.pieces if len(ao.sourcesOfPiece(piece)) == ii]
         keepers_2_add = []
-        for piece in list_ii_pieces: 
+        for piece in list_ii_pieces:
             if ShapeMerge.isConnected(piece, touch_test_list):
                 keepers_2_add.append(piece)
         if len(keepers_2_add) == 0:
             break
         keepers.extend(keepers_2_add)
         touch_test_list = Part.Compound(keepers_2_add)
-        
-    
+
+
     #merge, and we are done!
     #print len(keepers)," pieces to keep"
     return ShapeMerge.mergeShapes(keepers)
-    
+
 def connect_legacy(shape1, shape2, tolerance = 0.0):
-    """connect_legacy(shape1, shape2, tolerance = 0.0): alternative implementation of 
-    connect, without use of generalFuse. Slow. Provided for backwards compatibility, and 
+    """connect_legacy(shape1, shape2, tolerance = 0.0): alternative implementation of
+    connect, without use of generalFuse. Slow. Provided for backwards compatibility, and
     for older OCC."""
-    
+
     if tolerance>0.0:
         import FreeCAD as App
         App.Console.PrintWarning("connect_legacy does not support tolerance (yet).\n")
@@ -134,8 +134,8 @@ def connect_legacy(shape1, shape2, tolerance = 0.0):
 #    (TODO)
 
 def embed_legacy(shape_base, shape_tool, tolerance = 0.0):
-    """embed_legacy(shape_base, shape_tool, tolerance = 0.0): alternative implementation of 
-    embed, without use of generalFuse. Slow. Provided for backwards compatibility, and 
+    """embed_legacy(shape_base, shape_tool, tolerance = 0.0): alternative implementation of
+    embed, without use of generalFuse. Slow. Provided for backwards compatibility, and
     for older OCC."""
     if tolerance>0.0:
         import FreeCAD as App
@@ -152,12 +152,12 @@ def embed_legacy(shape_base, shape_tool, tolerance = 0.0):
     elif dim == 1:
         result = ShapeMerge.mergeShapes(result.Edges)
     return result
-    
+
 def cutout_legacy(shape_base, shape_tool, tolerance = 0.0):
-    """cutout_legacy(shape_base, shape_tool, tolerance = 0.0): alternative implementation of 
-    cutout, without use of generalFuse. Slow. Provided for backwards compatibility, and 
+    """cutout_legacy(shape_base, shape_tool, tolerance = 0.0): alternative implementation of
+    cutout, without use of generalFuse. Slow. Provided for backwards compatibility, and
     for older OCC."""
-    
+
     if tolerance>0.0:
         import FreeCAD as App
         App.Console.PrintWarning("cutout_legacy does not support tolerance (yet).\n")
@@ -168,8 +168,7 @@ def cutout_legacy(shape_base, shape_tool, tolerance = 0.0):
         for sh in shapes_base:
             result.append(cutout(sh, shape_tool))
         return Part.Compound(result)
-    
+
     shape_base = shapes_base[0]
     pieces = compoundLeaves(shape_base.cut(shape_tool))
     return shapeOfMaxSize(pieces)
-

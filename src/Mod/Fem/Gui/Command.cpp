@@ -471,7 +471,7 @@ void CmdFemConstraintTransform::activated(int)
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
 
     doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
-    
+
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -602,7 +602,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     doCommand(Doc,"App.activeDocument().%s.Member = App.activeDocument().%s.Member + [App.activeDocument().%s]",
                              Analysis->getNameInDocument(),Analysis->getNameInDocument(),FeatName.c_str());
 
-    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts    
+    doCommand(Doc,"%s",gethideMeshShowPartStr(FeatName).c_str()); //OvG: Hide meshes and show parts
     updateActive();
 
     doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -798,7 +798,7 @@ CmdFemConstraintTemperature::CmdFemConstraintTemperature()
     sAppModule      = "Fem";
     sGroup          = QT_TR_NOOP("Fem");
     sMenuText       = QT_TR_NOOP("Constraint temperature ");
-    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature acting on a face");
+    sToolTipText    = QT_TR_NOOP("Creates a FEM constraint for a temperature/concentrated heat flux acting on a face");
     sWhatsThis      = "Fem_ConstraintTemperature";
     sStatusTip      = sToolTipText;
     sPixmap         = "fem-constraint-temperature";
@@ -1099,6 +1099,63 @@ void setupFilter(Gui::Command* cmd, std::string Name) {
 
 };
 
+std::string Plot() {
+
+return "t=t_coords[len(t_coords)-1]\n\
+for i in range(len(t_coords)):\n\
+    dum = t_coords[i]\n\
+    t_coords[i] = dum - t_coords[len(t_coords)-1]*0.5\n\
+m = 0\n\
+for i in range(len(sValues)-1):\n\
+    m = m +(t_coords[i+1] - t_coords[i])*(sValues[i+1]+sValues[i])\n\
+m = (1/t)*0.5*m\n\
+membrane = []\n\
+for i in range(len(sValues)):\n\
+    membrane.append(m)\n\
+b = 0\n\
+for i in range(len(sValues)-1):\n\
+    d = (t_coords[i+1] - t_coords[i])\n\
+    b = b + d*(-3/t**2)*(sValues[i+1]*t_coords[i+1] + sValues[i]*t_coords[i])\n\
+b2 = -b\n\
+bending =[]\n\
+for i in range(len(t_coords)):\n\
+    func = ((b2-b)/t)*t_coords[i]\n\
+    bending.append(func)\n\
+peak = []\n\
+mb = []\n\
+for i in range(len(sValues)):\n\
+    peak.append(sValues[i])\n\
+    mb.append(bending[i] + membrane[0])\n\
+import FreeCAD\n\
+import numpy as np\n\
+from matplotlib import pyplot as plt\n\
+plt.figure(1)\n\
+plt.plot(t_coords, membrane, \"k--\")\n\
+plt.plot(t_coords, mb, \"b*-\")\n\
+plt.plot(t_coords, peak, \"r-x\")\n\
+plt.annotate(str(round(membrane[0],2)), xy=(t_coords[0], membrane[0]), xytext=(t_coords[0], membrane[0]))\n\
+plt.annotate(str(round(mb[0],2)), xy=(t_coords[0], mb[0]), xytext=(t_coords[0], mb[0]))\n\
+plt.annotate(str(round(mb[len(t_coords)-1],2)), xy=(t_coords[len(t_coords)-1], mb[len(t_coords)-1]), xytext=(t_coords[len(t_coords)-1], mb[len(t_coords)-1]))\n\
+plt.annotate(str(round(peak[0],2)), xy=(t_coords[0], peak[0]), xytext=(t_coords[0], peak[0]))\n\
+plt.annotate(str(round(peak[len(t_coords)-1],2)), xy=(t_coords[len(t_coords)-1], peak[len(t_coords)-1]), xytext=(t_coords[len(t_coords)-1], peak[len(t_coords)-1]))\n\
+FreeCAD.Console.PrintError('membrane stress = ')\n\
+FreeCAD.Console.PrintError([str(round(membrane[0],2))])\n\
+FreeCAD.Console.PrintError('membrane + bending min = ')\n\
+FreeCAD.Console.PrintError([str(round(mb[0],2))])\n\
+FreeCAD.Console.PrintError('membrane + bending  max = ')\n\
+FreeCAD.Console.PrintError([str(round(mb[len(t_coords)-1],2))])\n\
+FreeCAD.Console.PrintError('Total stress min = ')\n\
+FreeCAD.Console.PrintError([str(round(peak[0],2))])\n\
+FreeCAD.Console.PrintError('Total stress max = ')\n\
+FreeCAD.Console.PrintError([str(round(peak[len(t_coords)-1],2))])\n\
+plt.legend([\"Membrane\", \"Membrane and Bending\", \"Total\"], loc = \"best\")\n\
+plt.xlabel(\"Thickness [mm] \")\n\
+plt.ylabel(\"Stress [MPa]\")\n\
+plt.title(\"Linearized Stresses\")\n\
+plt.grid()\n\
+plt.show()\n";
+}
+
 DEF_STD_CMD_A(CmdFemPostCreateClipFilter);
 
 CmdFemPostCreateClipFilter::CmdFemPostCreateClipFilter()
@@ -1119,6 +1176,75 @@ void CmdFemPostCreateClipFilter::activated(int)
 }
 
 bool CmdFemPostCreateClipFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemPostCreateDataAlongLineFilter);
+
+CmdFemPostCreateDataAlongLineFilter::CmdFemPostCreateDataAlongLineFilter()
+  : Command("Fem_PostCreateDataAlongLineFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sToolTipText    = QT_TR_NOOP("Define/create a clip filter which clips a field along a line");
+    sWhatsThis      = "Fem_PostCreateDataAlongLineFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-DataAlongLine";
+}
+
+void CmdFemPostCreateDataAlongLineFilter::activated(int)
+{
+    setupFilter(this, "DataAlongLine");
+}
+
+bool CmdFemPostCreateDataAlongLineFilter::isActive(void)
+{
+    return hasActiveDocument();
+}
+
+DEF_STD_CMD_A(CmdFemPostCreateLinearizedStressesFilter);
+
+CmdFemPostCreateLinearizedStressesFilter::CmdFemPostCreateLinearizedStressesFilter()
+  : Command("Fem_PostCreateLinearizedStressesFilter")
+{
+    sAppModule      = "Fem";
+    sGroup          = QT_TR_NOOP("Fem");
+    sMenuText       = QT_TR_NOOP("Create stress linearization plots");
+    sToolTipText    = QT_TR_NOOP("Create stress linearization plots");
+    sWhatsThis      = "Fem_PostCreateLinearizedStressesFilter";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "fem-linearizedstresses";
+}
+
+void CmdFemPostCreateLinearizedStressesFilter::activated(int)
+{
+
+    Gui::SelectionFilter DataAlongLineFilter("SELECT Fem::FemPostDataAlongLineFilter COUNT 1");
+
+    if (DataAlongLineFilter.match()) {
+        Fem::FemPostDataAlongLineFilter* DataAlongLine = static_cast<Fem::FemPostDataAlongLineFilter*>(DataAlongLineFilter.Result[0][0].getObject());
+        std::string FieldName = DataAlongLine->PlotData.getValue();
+        if  ((FieldName == "Max shear stress (Tresca)") || (FieldName == "Maximum Principal stress") || (FieldName == "Minimum Principal stress") || (FieldName == "Von Mises stress")) {
+             doCommand(Gui::Command::Doc,"t_coords = App.ActiveDocument.DataAlongLine.XAxisData");
+             doCommand(Gui::Command::Doc,"sValues = App.ActiveDocument.DataAlongLine.YAxisData");
+             doCommand(Gui::Command::Doc, Plot().c_str());
+        } else {
+                QMessageBox::warning(Gui::getMainWindow(),
+                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
+                    qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+        }
+}
+    else {
+        QMessageBox::warning(Gui::getMainWindow(),
+            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Wrong selection"),
+            qApp->translate("CmdFemPostCreateLinearizedStressesFilter", "Select a Clip filter which clips a STRESS field along a line, please."));
+    }
+
+}
+
+bool CmdFemPostCreateLinearizedStressesFilter::isActive(void)
 {
     return hasActiveDocument();
 }
@@ -1456,6 +1582,8 @@ void CreateFemCommands(void)
     rcCmdMgr.addCommand(new CmdFemConstraintTransform());
 #ifdef FC_USE_VTK
     rcCmdMgr.addCommand(new CmdFemPostCreateClipFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCreateDataAlongLineFilter);
+    rcCmdMgr.addCommand(new CmdFemPostCreateLinearizedStressesFilter);
     rcCmdMgr.addCommand(new CmdFemPostCreateScalarClipFilter);
     rcCmdMgr.addCommand(new CmdFemPostWarpVectorFilter);
     rcCmdMgr.addCommand(new CmdFemPostFunctions);

@@ -1,5 +1,5 @@
 <RCC>
-    <qresource> 
+    <qresource>
         <file>icons/fem-add-fem-mesh.svg</file>
         <file>icons/fem-add-material.svg</file>
         <file>icons/fem-add-part.svg</file>
@@ -29,6 +29,7 @@
         <file>icons/fem-femmesh-from-shape.svg</file>
         <file>icons/fem-femmesh-gmsh-from-shape.svg</file>
         <file>icons/fem-femmesh-netgen-from-shape.svg</file>
+        <file>icons/fem-femmesh-region.svg</file>
         <file>icons/fem-femmesh-to-mesh.svg</file>
         <file>icons/fem-frequency-analysis.svg</file>
         <file>icons/fem-inp-editor.svg</file>
@@ -48,14 +49,16 @@
         <file>icons/preferences-fem.svg</file>
 
         <file>icons/fem-clip.png</file>
+        <file>icons/fem-DataAlongLine.png</file>
         <file>icons/fem-clip-scalar.png</file>
         <file>icons/fem-cut.png</file>
         <file>icons/fem-isosurface.png</file>
         <file>icons/fem-warp.png</file>
 
+        <file>icons/fem-linearizedstresses.svg</file>
         <file>translations/Fem_af.qm</file>
         <file>translations/Fem_de.qm</file>
-        <file>translations/Fem_fi.qm</file> 
+        <file>translations/Fem_fi.qm</file>
         <file>translations/Fem_fr.qm</file>
         <file>translations/Fem_hr.qm</file>
         <file>translations/Fem_it.qm</file>
@@ -80,4 +83,4 @@
         <file>translations/Fem_el.qm</file>
         <file>translations/Fem_sl.qm</file>
     </qresource>
-</RCC> 
+</RCC>

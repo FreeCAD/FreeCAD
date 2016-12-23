@@ -30,16 +30,65 @@
 #include <Base/Parameter.h>
 #include <App/PropertyLinks.h>
 #include "ViewProviderFemPostFunction.h"
+#include <boost/signals.hpp>
 
 class QComboBox;
 class Ui_TaskPostDisplay;
 class Ui_TaskPostClip;
+class Ui_TaskPostDataAlongLine;
 class Ui_TaskPostScalarClip;
 class Ui_TaskPostWarpVector;
 class Ui_TaskPostCut;
 
+class SoFontStyle;
+class SoText2;
+class SoBaseColor;
+class SoTranslation;
+class SoCoordinate3;
+class SoIndexedLineSet;
+class SoEventCallback;
+class SoMarkerSet;
+
 
 namespace FemGui {
+
+class ViewProviderPointMarker;
+class PointMarker : public QObject
+{
+    Q_OBJECT
+
+public:
+    PointMarker(Gui::View3DInventorViewer* view, std::string ObjName);
+    ~PointMarker();
+
+    void addPoint(const SbVec3f&);
+    int countPoints() const;
+
+Q_SIGNALS:
+    void PointsChanged(double x1, double y1, double z1, double x2, double y2, double z2);
+
+protected:
+    void customEvent(QEvent* e);
+
+private:
+    Gui::View3DInventorViewer *view;
+    ViewProviderPointMarker *vp;
+    std::string m_name;
+    std::string ObjectInvisible();
+};
+
+class FemGuiExport ViewProviderPointMarker : public Gui::ViewProviderDocumentObject
+{
+    PROPERTY_HEADER(FemGui::ViewProviderPointMarker);
+
+public:
+    ViewProviderPointMarker();
+    virtual ~ViewProviderPointMarker();
+
+protected:
+    SoCoordinate3    * pCoords;
+    friend class PointMarker;
+};
 
 class TaskPostBox : public Gui::TaskView::TaskBox {
 
@@ -105,7 +154,6 @@ protected:
     std::vector<TaskPostBox*>   m_boxes;
 };
 
-
 class TaskPostDisplay : public TaskPostBox
 {
     Q_OBJECT
@@ -162,6 +210,36 @@ private:
     QWidget* proxy;
     Ui_TaskPostClip* ui;
     FunctionWidget* fwidget;
+};
+
+class TaskPostDataAlongLine: public TaskPostBox {
+
+    Q_OBJECT
+
+public:
+    TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view, QWidget* parent = 0);
+    virtual ~TaskPostDataAlongLine();
+
+    virtual void applyPythonCode();
+    static void pointCallback(void * ud, SoEventCallback * n);
+
+private Q_SLOTS:
+    void on_SelectPoints_clicked();
+    void on_CreatePlot_clicked();
+    void on_Representation_activated(int i);
+    void on_Field_activated(int i);
+    void on_VectorMode_activated(int i);
+    void point2Changed(double);
+    void point1Changed(double);
+    void resolutionChanged(int val);
+    void onChange(double x1, double y1, double z1, double x2, double y2, double z2);
+
+
+private:
+    std::string Plot();
+    std::string ObjectVisible();
+    QWidget* proxy;
+    Ui_TaskPostDataAlongLine* ui;
 };
 
 class TaskPostScalarClip : public TaskPostBox {

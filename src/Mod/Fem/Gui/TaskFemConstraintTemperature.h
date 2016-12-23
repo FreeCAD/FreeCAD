@@ -52,10 +52,14 @@ public:
     ~TaskFemConstraintTemperature();
     const std::string getReferences() const;
     double get_temperature()const;
+    double get_cflux() const;
+    std::string get_constraint_type(void) const;
 
 private Q_SLOTS:
     void onReferenceDeleted(void);
-
+    void onTempCfluxChanged(double val);
+    void Temp();
+    void Flux();
     void addToSelection();
     void removeFromSelection();
     void setSelection(QListWidgetItem* item);

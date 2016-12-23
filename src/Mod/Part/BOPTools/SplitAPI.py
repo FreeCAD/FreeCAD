@@ -33,16 +33,16 @@ from . import Utils
 import FreeCAD
 
 def booleanFragments(list_of_shapes, mode, tolerance = 0.0):
-    """booleanFragments(list_of_shapes, mode, tolerance = 0.0): functional part of 
-    BooleanFragments feature. It's just result of generalFuse plus a bit of 
+    """booleanFragments(list_of_shapes, mode, tolerance = 0.0): functional part of
+    BooleanFragments feature. It's just result of generalFuse plus a bit of
     post-processing.
-    
+
     mode is a string. It can be "Standard", "Split" or "CompSolid".
-    "Standard" - return generalFuse as is. 
-    "Split" - wires and shells will be split at intersections. 
-    "CompSolid" - solids will be extracted from result of generelFuse, and compsolids will 
+    "Standard" - return generalFuse as is.
+    "Split" - wires and shells will be split at intersections.
+    "CompSolid" - solids will be extracted from result of generelFuse, and compsolids will
     be made from them; all other stuff is discarded."""
-    
+
     pieces, map = list_of_shapes[0].generalFuse(list_of_shapes[1:], tolerance)
     if mode == "Standard":
         return pieces
@@ -61,15 +61,15 @@ def booleanFragments(list_of_shapes, mode, tolerance = 0.0):
         raise ValueError("Unknown mode: {mode}".format(mode= mode))
 
 def slice(base_shape, tool_shapes, mode, tolerance = 0.0):
-    """slice(base_shape, tool_shapes, mode, tolerance = 0.0): functional part of 
+    """slice(base_shape, tool_shapes, mode, tolerance = 0.0): functional part of
     Slice feature. Splits base_shape into pieces based on intersections with tool_shapes.
-    
+
     mode is a string. It can be "Standard", "Split" or "CompSolid".
-    "Standard" - return like generalFuse: edges, faces and solids are split, but wires, 
-    shells, compsolids get extra segments but remain in one piece. 
-    "Split" - wires and shells will be split at intersections, too. 
+    "Standard" - return like generalFuse: edges, faces and solids are split, but wires,
+    shells, compsolids get extra segments but remain in one piece.
+    "Split" - wires and shells will be split at intersections, too.
     "CompSolid" - slice a solid and glue it back together to make a compsolid"""
-    
+
     shapes = [base_shape] + [Part.Compound([tool_shape]) for tool_shape in tool_shapes] # hack: putting tools into compounds will prevent contamination of result with pieces of tools
     if len(shapes) < 2:
         raise ValueError("No slicing objects supplied!")
