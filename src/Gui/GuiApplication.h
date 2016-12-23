@@ -49,10 +49,12 @@ public:
      * where an unhandled exception comes from.
      */
     bool notify (QObject * receiver, QEvent * event);
-    void commitData(QSessionManager &manager);
 
     /// Pointer to exceptions caught in Qt event handler
     boost::shared_ptr<Base::SystemExitException> caughtException;
+
+public Q_SLOTS:
+    void slotCommitData(QSessionManager &manager);
 
 protected:
     bool event(QEvent * event);
