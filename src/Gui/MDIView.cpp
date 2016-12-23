@@ -178,7 +178,7 @@ void MDIView::closeEvent(QCloseEvent *e)
         }
 
         // Note: When using QMdiArea we must not use removeWindow()
-        // because otherwise the QMdiSubWindow will loose its parent
+        // because otherwise the QMdiSubWindow will lose its parent
         // and thus the notification in QMdiSubWindow::closeEvent of
         // other mdi windows to get maximized if this window
         // is maximized will fail.

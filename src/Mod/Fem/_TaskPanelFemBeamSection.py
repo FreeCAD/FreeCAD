@@ -31,6 +31,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
+import _FemBeamSection
 
 
 class _TaskPanelFemBeamSection:
@@ -39,22 +40,27 @@ class _TaskPanelFemBeamSection:
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
         self.obj = obj
-        self.references = []
-        if self.obj.References:
-            self.tuplereferences = self.obj.References
-            self.get_references()
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemBeamSection.ui")
+        QtCore.QObject.connect(self.form.cb_crosssectiontype, QtCore.SIGNAL("activated(int)"), self.sectiontype_changed)
+        QtCore.QObject.connect(self.form.if_rec_height, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_height_changed)
+        QtCore.QObject.connect(self.form.if_rec_width, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.rec_width_changed)
+        QtCore.QObject.connect(self.form.if_circ_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.circ_diameter_changed)
+        QtCore.QObject.connect(self.form.if_pipe_diameter, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_diameter_changed)
+        QtCore.QObject.connect(self.form.if_pipe_thickness, QtCore.SIGNAL("valueChanged(Base::Quantity)"), self.pipe_thickness_changed)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         self.form.list_References.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.form.list_References.connect(self.form.list_References, QtCore.SIGNAL("customContextMenuRequested(QPoint)"), self.references_list_right_clicked)
 
-        self.rebuild_list_References()
+        self.form.cb_crosssectiontype.addItems(_FemBeamSection._FemBeamSection.known_beam_types)
+
+        self.get_beamsection_props()
+        self.update()
 
     def accept(self):
+        self.set_beamsection_props()
         if self.sel_server:
             FreeCADGui.Selection.removeObserver(self.sel_server)
-        self.obj.References = self.references
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCAD.ActiveDocument.recompute()
         return True
@@ -64,6 +70,59 @@ class _TaskPanelFemBeamSection:
             FreeCADGui.Selection.removeObserver(self.sel_server)
         FreeCADGui.ActiveDocument.resetEdit()
         return True
+
+    def get_beamsection_props(self):
+        self.references = []
+        if self.obj.References:
+            self.tuplereferences = self.obj.References
+            self.get_references()
+        self.SectionType = self.obj.SectionType
+        self.RectHeight = self.obj.RectHeight
+        self.RectWidth = self.obj.RectWidth
+        self.CircDiameter = self.obj.CircDiameter
+        self.PipeDiameter = self.obj.PipeDiameter
+        self.PipeThickness = self.obj.PipeThickness
+
+    def set_beamsection_props(self):
+        self.obj.References = self.references
+        self.obj.SectionType = self.SectionType
+        self.obj.RectHeight = self.RectHeight
+        self.obj.RectWidth = self.RectWidth
+        self.obj.CircDiameter = self.CircDiameter
+        self.obj.PipeDiameter = self.PipeDiameter
+        self.obj.PipeThickness = self.PipeThickness
+
+    def update(self):
+        'fills the widgets'
+        index_crosssectiontype = self.form.cb_crosssectiontype.findText(self.SectionType)
+        self.form.cb_crosssectiontype.setCurrentIndex(index_crosssectiontype)
+        self.form.if_rec_height.setText(self.RectHeight.UserString)
+        self.form.if_rec_width.setText(self.RectWidth.UserString)
+        self.form.if_circ_diameter.setText(self.CircDiameter.UserString)
+        self.form.if_pipe_diameter.setText(self.PipeDiameter.UserString)
+        self.form.if_pipe_thickness.setText(self.PipeThickness.UserString)
+        self.rebuild_list_References()
+
+    def sectiontype_changed(self, index):
+        if index < 0:
+            return
+        self.form.cb_crosssectiontype.setCurrentIndex(index)
+        self.SectionType = str(self.form.cb_crosssectiontype.itemText(index))  # form returns unicode
+
+    def rec_height_changed(self, base_quantity_value):
+        self.RectHeight = base_quantity_value
+
+    def rec_width_changed(self, base_quantity_value):
+        self.RectWidth = base_quantity_value
+
+    def circ_diameter_changed(self, base_quantity_value):
+        self.CircDiameter = base_quantity_value
+
+    def pipe_diameter_changed(self, base_quantity_value):
+        self.PipeDiameter = base_quantity_value
+
+    def pipe_thickness_changed(self, base_quantity_value):
+        self.PipeThickness = base_quantity_value
 
     def get_references(self):
         for ref in self.tuplereferences:

@@ -268,6 +268,7 @@ void PropertyModel::updateProperty(const App::Property& prop)
             child->updateData();
             QModelIndex data = this->index(row, column, QModelIndex());
             if (data.isValid()) {
+                child->assignProperty(&prop);
                 dataChanged(data, data);
                 updateChildren(child, column, data);
             }

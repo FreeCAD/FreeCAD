@@ -244,6 +244,11 @@ bool ViewProviderMultiFuse::canDragObjects() const
     return true;
 }
 
+bool ViewProviderMultiFuse::canDragObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
 void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
 {
     Part::MultiFuse* pBool = static_cast<Part::MultiFuse*>(getObject());
@@ -260,6 +265,11 @@ void ViewProviderMultiFuse::dragObject(App::DocumentObject* obj)
 bool ViewProviderMultiFuse::canDropObjects() const
 {
     return true;
+}
+
+bool ViewProviderMultiFuse::canDropObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
 }
 
 void ViewProviderMultiFuse::dropObject(App::DocumentObject* obj)
@@ -363,6 +373,11 @@ bool ViewProviderMultiCommon::canDragObjects() const
     return true;
 }
 
+bool ViewProviderMultiCommon::canDragObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+}
+
 void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
 {
     Part::MultiCommon* pBool = static_cast<Part::MultiCommon*>(getObject());
@@ -379,6 +394,11 @@ void ViewProviderMultiCommon::dragObject(App::DocumentObject* obj)
 bool ViewProviderMultiCommon::canDropObjects() const
 {
     return true;
+}
+
+bool ViewProviderMultiCommon::canDropObject(App::DocumentObject* obj) const
+{
+    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
 }
 
 void ViewProviderMultiCommon::dropObject(App::DocumentObject* obj)

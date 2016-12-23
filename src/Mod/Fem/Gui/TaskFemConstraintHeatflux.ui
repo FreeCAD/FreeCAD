@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>379</width>
-    <height>400</height>
+    <height>531</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>TaskFemConstraintHeatflux</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QLabel" name="lbl_references">
      <property name="text">
@@ -43,46 +43,104 @@
     <widget class="QListWidget" name="lw_references"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutAmbientTemp">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QLabel" name="lbl_ambienttemp">
+      <widget class="QRadioButton" name="rb_convection">
        <property name="text">
-        <string>Ambient Temperature</string>
+        <string>Surface Convection</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="Gui::InputField" name="if_ambienttemp">
+      <widget class="QRadioButton" name="rb_dflux">
        <property name="text">
-        <string>300 K</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">K</string>
+        <string>Surface heat flux</string>
        </property>
       </widget>
      </item>
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="layoutFilmCoef">
-     <item>
-      <widget class="QLabel" name="lbl_filmcoef">
-       <property name="text">
-        <string>Film coefficient</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::InputField" name="if_filmcoef">
-       <property name="text">
-        <string>1 W/m^2/K</string>
-       </property>
-       <property name="unit" stdset="0">
-        <string notr="true">W/m^2/K</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
+    <widget class="QStackedWidget" name="sw_heatflux">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="page">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="layoutFilmCoef">
+           <item>
+            <widget class="QLabel" name="lbl_filmcoef">
+             <property name="text">
+              <string>Film coefficient</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::InputField" name="if_filmcoef">
+             <property name="text">
+              <string>1 W/m^2/K</string>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true">W/m^2/K</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="layoutAmbientTemp">
+           <item>
+            <widget class="QLabel" name="lbl_ambienttemp">
+             <property name="text">
+              <string>Ambient Temperature</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Gui::InputField" name="if_ambienttemp">
+             <property name="text">
+              <string>300 K</string>
+             </property>
+             <property name="unit" stdset="0">
+              <string notr="true">K</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_2">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Surface heat flux</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="Gui::InputField" name="if_heatflux">
+           <property name="text">
+            <string>300 K</string>
+           </property>
+           <property name="unit" stdset="0">
+            <string notr="true">K</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
    </item>
   </layout>
  </widget>

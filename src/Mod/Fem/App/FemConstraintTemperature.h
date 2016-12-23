@@ -46,6 +46,8 @@ public:
 
     //Temperature parameters
     App::PropertyFloat Temperature;
+    App::PropertyFloat CFlux;
+    App::PropertyEnumeration ConstraintType;
 
 
     /// recalculate the object

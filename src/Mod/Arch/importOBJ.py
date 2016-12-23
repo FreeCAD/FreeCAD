@@ -98,10 +98,7 @@ def getIndices(shape,offset):
                     flist.append(fi)
             else:
                 fi = ""
-                # OCC vertices are unsorted. We need to sort in the right order...
-                edges = Part.__sortEdges__(f.OuterWire.Edges)
-                #print edges
-                for e in edges:
+                for e in f.OuterWire.OrderedEdges:
                     #print e.Vertexes[0].Point,e.Vertexes[1].Point
                     v = e.Vertexes[0]
                     ind = findVert(v,shape.Vertexes)

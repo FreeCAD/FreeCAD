@@ -46,7 +46,6 @@ EXTENSION_PROPERTY_SOURCE(Gui::ViewProviderGroupExtension, Gui::ViewProviderExte
 ViewProviderGroupExtension::ViewProviderGroupExtension()  : visible(false)
 {
     initExtension(ViewProviderGroupExtension::getExtensionClassTypeId());
-    
 }
 
 ViewProviderGroupExtension::~ViewProviderGroupExtension()
@@ -77,7 +76,9 @@ bool ViewProviderGroupExtension::extensionCanDropObjects() const {
 
 bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj) const {
 
-    Base::Console().Message("Check ViewProviderGroupExtension");
+#ifdef FC_DEBUG
+    Base::Console().Log("Check ViewProviderGroupExtension");
+#endif
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
 
@@ -86,12 +87,13 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
         return false;  
 
     //group into group?
-    if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
-            if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
-                return false;
+    if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
+        if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
+            return false;
+    }
 
     //We need to find the correct App extension to ask if this is a supported type, there should only be one
-    if(group->allowObject(obj)) 
+    if (group->allowObject(obj))
         return true;
 
     return false;

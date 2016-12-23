@@ -543,15 +543,23 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
                     beamsec_obj = ccx_elset['beamsection_obj']
                     elsetdef = 'ELSET=' + ccx_elset['ccx_elset_name'] + ', '
                     material = 'MATERIAL=' + ccx_elset['mat_obj_name']
-                    height = beamsec_obj.Height.getValueAs('mm')
-                    width = beamsec_obj.Width.getValueAs('mm')
-                    if width == 0:
-                        section_type = ', SECTION=CIRC'
-                        setion_geo = str(height) + '\n'
-                    else:
+                    if beamsec_obj.SectionType == 'Rectangular':
+                        height = beamsec_obj.RectHeight.getValueAs('mm')
+                        width = beamsec_obj.RectWidth.getValueAs('mm')
                         section_type = ', SECTION=RECT'
                         setion_geo = str(height) + ', ' + str(width) + '\n'
-                    setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                        setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                    elif beamsec_obj.SectionType == 'Circular':
+                        radius = 0.5 * beamsec_obj.CircDiameter.getValueAs('mm')
+                        section_type = ', SECTION=CIRC'
+                        setion_geo = str(radius) + '\n'
+                        setion_def = '*BEAM SECTION, ' + elsetdef + material + section_type + '\n'
+                    elif beamsec_obj.SectionType == 'Pipe':
+                        radius = 0.5 * beamsec_obj.PipeDiameter.getValueAs('mm')
+                        thickness = beamsec_obj.PipeThickness.getValueAs('mm')
+                        section_type = ', SECTION=PIPE'
+                        setion_geo = str(radius) + ', ' + str(thickness) + '\n'
+                        setion_def = '*BEAM GENERAL SECTION, ' + elsetdef + material + section_type + '\n'
                     f.write(setion_def)
                     f.write(setion_geo)
                 elif 'shellthickness_obj'in ccx_elset:  # shell mesh
@@ -802,9 +810,15 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for ftobj in self.temperature_objects:
             fixedtemp_obj = ftobj['Object']
-            f.write('*BOUNDARY\n')
-            f.write('{},11,11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
-            f.write('\n')
+            NumberOfNodes = len(ftobj['Nodes'])
+            if fixedtemp_obj.ConstraintType == "Temperature":
+                f.write('*BOUNDARY\n')
+                f.write('{},11,11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.Temperature))
+                f.write('\n')
+            elif fixedtemp_obj.ConstraintType == "CFlux":
+                f.write('*CFLUX\n')
+                f.write('{},11,{}\n'.format(fixedtemp_obj.Name, fixedtemp_obj.CFlux * 0.001 / NumberOfNodes))
+                f.write('\n')
 
     def write_constraints_heatflux(self, f):
         f.write('\n***********************************************************\n')
@@ -812,15 +826,26 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         f.write('** written by {} function\n'.format(sys._getframe().f_code.co_name))
         for hfobj in self.heatflux_objects:
             heatflux_obj = hfobj['Object']
-            f.write('*FILM\n')
-            for o, elem_tup in heatflux_obj.References:
-                for elem in elem_tup:
-                    ho = o.Shape.getElement(elem)
-                    if ho.ShapeType == 'Face':
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
-                        f.write("** Heat flux on face {}\n".format(elem))
-                        for i in v:
-                            f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+            if heatflux_obj.ConstraintType == "Convection":
+                f.write('*FILM\n')
+                for o, elem_tup in heatflux_obj.References:
+                    for elem in elem_tup:
+                        ho = o.Shape.getElement(elem)
+                        if ho.ShapeType == 'Face':
+                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                            f.write("** Heat flux on face {}\n".format(elem))
+                            for i in v:
+                                f.write("{},F{},{},{}\n".format(i[0], i[1], heatflux_obj.AmbientTemp, heatflux_obj.FilmCoef * 0.001))  # SvdW add factor to force heatflux to units system of t/mm/s/K # OvG: Only write out the VolumeIDs linked to a particular face
+            elif heatflux_obj.ConstraintType == "DFlux":
+                f.write('*DFLUX\n')
+                for o, elem_tup in heatflux_obj.References:
+                    for elem in elem_tup:
+                        ho = o.Shape.getElement(elem)
+                        if ho.ShapeType == 'Face':
+                            v = self.mesh_object.FemMesh.getccxVolumesByFace(ho)
+                            f.write("** Heat flux on face {}\n".format(elem))
+                            for i in v:
+                                f.write("{},S{},{}\n".format(i[0], i[1], heatflux_obj.DFlux * 0.001))
 
     def write_outputs_types(self, f):
         f.write('\n***********************************************************\n')

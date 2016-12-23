@@ -160,9 +160,9 @@ PyMODINIT_FUNC initFem()
     Fem::ConstraintInitialTemperature ::init();
     Fem::ConstraintPlaneRotation    ::init();
     Fem::ConstraintContact          ::init();
-    Fem::ConstraintFluidBoundary              ::init();
+    Fem::ConstraintFluidBoundary    ::init();
     Fem::ConstraintTransform        ::init();
-    
+
     Fem::FemResultObject            ::init();
     Fem::FemResultObjectPython      ::init();
     Fem::FemSolverObject            ::init();
@@ -173,6 +173,7 @@ PyMODINIT_FUNC initFem()
     Fem::FemPostPipeline            ::init();
     Fem::FemPostFilter              ::init();
     Fem::FemPostClipFilter          ::init();
+    Fem::FemPostDataAlongLineFilter ::init();
     Fem::FemPostScalarClipFilter    ::init();
     Fem::FemPostWarpVectorFilter    ::init();
     Fem::FemPostCutFilter           ::init();

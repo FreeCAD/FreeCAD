@@ -42,23 +42,13 @@
          <widget class="QComboBox" name="cb_dimension"/>
         </item>
         <item row="2" column="0">
-         <widget class="QLabel" name="l_order">
-          <property name="text">
-           <string>Mesh element order:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QComboBox" name="cb_order"/>
-        </item>
-        <item row="3" column="0">
          <widget class="QLabel" name="l_max">
           <property name="text">
            <string>Max element size (0.0 = Auto):</string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
+        <item row="2" column="1">
          <widget class="Gui::InputField" name="if_max">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -95,14 +85,14 @@
           </property>
          </widget>
         </item>
-        <item row="4" column="0">
+        <item row="3" column="0">
          <widget class="QLabel" name="l_min">
           <property name="text">
            <string>Min element size (0.0 = Auto):</string>
           </property>
          </widget>
         </item>
-        <item row="4" column="1">
+        <item row="3" column="1">
          <widget class="Gui::InputField" name="if_min">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

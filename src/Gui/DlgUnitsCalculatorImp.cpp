@@ -71,7 +71,7 @@ DlgUnitsCalculator::DlgUnitsCalculator( QWidget* parent, Qt::WindowFlags fl )
           << Base::Unit::AmountOfSubstance << Base::Unit::LuminoseIntensity << Base::Unit::Stress
           << Base::Unit::Pressure << Base::Unit::Force << Base::Unit::Work << Base::Unit::Power
           << Base::Unit::ThermalConductivity << Base::Unit::ThermalExpansionCoefficient
-          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient;
+          << Base::Unit::SpecificHeat << Base::Unit::ThermalTransferCoefficient <<Base::Unit::HeatFlux;
     for (QList<Base::Unit>::iterator it = units.begin(); it != units.end(); ++it) {
         ui->unitsBox->addItem(it->getTypeString());
     }

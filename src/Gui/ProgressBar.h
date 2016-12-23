@@ -175,7 +175,7 @@ private:
     void resetObserveEventFilter();
     /** Gets the events under control */
     void enterControlEvents();
-    /** Looses the control over incoming events*/
+    /** Loses the control over incoming events*/
     void leaveControlEvents();
     //@}
     ProgressBarPrivate* d;
