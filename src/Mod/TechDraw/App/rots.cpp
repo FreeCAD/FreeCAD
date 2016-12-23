@@ -53,7 +53,7 @@
     cl = configLine( 18 , "EC", Base::Vector3d(-1,0,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), 
                                 Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0) );
     addRotItem(cl);
-    cl = configLine( 19 , "ED", Base::Vector3d(1,0,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), 
+    cl = configLine( 19 , "ED", Base::Vector3d(1,0,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), 
                                 Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0) );
     addRotItem(cl);
     cl = configLine( 20 , "EF", Base::Vector3d(0,-1,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), 
