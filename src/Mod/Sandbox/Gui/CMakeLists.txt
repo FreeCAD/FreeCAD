@@ -31,7 +31,11 @@ set(SandboxGui_MOC_HDRS
 fc_wrap_cpp(SandboxGui_MOC_SRCS ${SandboxGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${SandboxGui_MOC_SRCS})
 
+if(BUILD_QT5)
+qt5_add_resources(Resource_SRCS Resources/Sandbox.qrc)
+else()
 qt4_add_resources(Resource_SRCS Resources/Sandbox.qrc)
+endif()
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Sandbox.qrc
