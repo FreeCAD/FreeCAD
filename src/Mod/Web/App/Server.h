@@ -84,7 +84,11 @@ class AppServer : public QTcpServer
 public:
     AppServer(QObject* parent = 0);
 
+#if QT_VERSION >=0x050000
+    void incomingConnection(qintptr socket);
+#else
     void incomingConnection(int socket);
+#endif
 
 protected:
     void customEvent(QEvent* e);

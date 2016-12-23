@@ -238,7 +238,11 @@ HttpServer::HttpServer(QObject* parent)
 {
 }
 
+#if QT_VERSION >=0x050000
+void HttpServer::incomingConnection(qintptr socket)
+#else
 void HttpServer::incomingConnection(int socket)
+#endif
 {
     if (disabled)
         return;
