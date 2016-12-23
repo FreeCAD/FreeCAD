@@ -54,7 +54,7 @@ public:
     boost::shared_ptr<Base::SystemExitException> caughtException;
 
 public Q_SLOTS:
-    void slotCommitData(QSessionManager &manager);
+    void commitData(QSessionManager &manager);
 
 protected:
     bool event(QEvent * event);
