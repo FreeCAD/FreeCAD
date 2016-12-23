@@ -63,6 +63,7 @@ SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 SET(FemScripts_SRCS
     _CommandAnalysis.py
     _CommandBeamSection.py
+    _CommandClearMesh.py
     _CommandControlSolver.py
     _CommandConstraintSelfWeight.py
     _CommandFEMMesh2Mesh.py
@@ -71,6 +72,7 @@ SET(FemScripts_SRCS
     _CommandMeshGmshFromShape.py
     _CommandMeshNetgenFromShape.py
     _CommandMeshRegion.py
+    _CommandPrintMeshInfo.py
     _CommandPurgeResults.py
     _CommandRunSolver.py
     _CommandShellThickness.py
