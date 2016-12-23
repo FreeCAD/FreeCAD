@@ -125,6 +125,9 @@ public:
     void rotateDown(void);
     void spinCW(void);
     void spinCCW(void);
+    
+    void setTable(Base::Vector3d dir, Base::Vector3d rot);
+    void resetTable(void);
 
 protected:
     void onChanged(const App::Property* prop);
@@ -166,7 +169,8 @@ protected:
     TechDraw::Cube* m_cube;
     static const std::map<std::string,Base::Vector3d> m_frameToStdDir;    //for initializing cube and
     static const std::map<std::string,Base::Vector3d> m_frameToStdRot;    //creating DPGI's
-
+    static const std::map<std::string,std::string> m_dirRotToConfig;
+    static const std::map<std::string,std::string> m_frontTopToConfig;
 };
 
 } //namespace TechDraw

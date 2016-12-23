@@ -57,36 +57,40 @@ Cube::~Cube(void)
 
 void Cube::initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vector3d lr,
                       Base::Vector3d f, Base::Vector3d fr, Base::Vector3d k, Base::Vector3d kr,      //k for bacK (rear)
-                      Base::Vector3d t, Base::Vector3d tr, Base::Vector3d b, Base::Vector3d br)
+                      Base::Vector3d t, Base::Vector3d tr, Base::Vector3d b, Base::Vector3d br,
+                      Base::Vector3d fbl, Base::Vector3d fblr, Base::Vector3d fbr, Base::Vector3d fbrr,
+                      Base::Vector3d ftl, Base::Vector3d ftlr, Base::Vector3d ftr, Base::Vector3d ftrr)
 {
     Base::Console().Message("TRACE - Cube::init()\n");
     //Base::Vector3d FTR = f+t+r;
     //Base::Vector3d FTL = f+t-r;
     //Base::Vector3d FBL = f-t-r;
     //Base::Vector3d FBR = -f-t-r;
+    m_mapFrameDir.clear();
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Bottom", b));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Front" , f));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Left"  , l));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Rear"  , k));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Right" , r));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Top"   , t));
-//    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopRight"   , b));
-//    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopLeft"    , b));
-//    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomLeft" , b));
-//    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomRight", b));
+    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomLeft" , fbl));
+    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomRight", fbr));
+    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopLeft"    , ftl));
+    m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopRight"   , ftr));
 
+    m_mapFrameRot.clear();
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Bottom", br));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Front" , fr));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Left"  , lr));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Rear"  , kr));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Right" , rr));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("Top"   , tr));
-//    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopRight"   , br));
-//    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopLeft"    , br));
-//    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomLeft" , br));
-//    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomRight", br));
+    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopRight"   , ftrr));
+    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontTopLeft"    , ftlr));
+    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomLeft" , fblr));
+    m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomRight", fbrr));
     
-    m_conTab.initialize();   //all possible configs of ABCDEF in RightFrontTopLeftRearBottom
+    m_conTab.initialize();   //all possible configs of ABCDEF in RightFrontTopLeftRearBottom order
 //    m_conTab.dump("conTab after init");
 }
 
@@ -98,8 +102,10 @@ void Cube::rotateUp()
     shiftFrame("Rear"  , "Bottom");
     shiftFrame("Top"   , "Rear");
     restoreSwap("Top");
-    
+
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("RotateUp(board after Rot update)");
 //    dumpState("RotateUp(after update)");
     //validateBoard();
@@ -116,7 +122,9 @@ void Cube::rotateDown()
     shiftFrame("Bottom" , "Rear");
     restoreSwap("Bottom");
 
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("RotateDown(board after Rot update)");
 //    dumpState("RotateDown(after update)");
     //validateBoard();
@@ -134,7 +142,9 @@ void Cube::rotateRight()
     shiftFrame("Right" , "Rear");
     restoreSwap("Right");
 
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("RotateRight(board after Rot update)");
 //    bool boardState = validateBoard(getCurrConfig());
 //    Base::Console().Message("TRACE - Cube::rotateRight - boardState: %d\n",boardState);
@@ -150,7 +160,9 @@ void Cube::rotateLeft()
     shiftFrame("Left" , "Rear");
     restoreSwap("Left");
 
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("RotateLeft(board after Rot updates)");
 //    dumpState("RotateLeft(after update)");
     
@@ -165,7 +177,9 @@ void Cube::spinCCW()
     shiftFrame("Top"   , "Left");
     restoreSwap("Top");
 
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("SpinCCW(board after Rot updates)");
 //    dumpState("SpinCCW(after update)");
 } 
@@ -179,10 +193,36 @@ void Cube::spinCW()
     shiftFrame("Top", "Right");
     restoreSwap("Top");
 
+    updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
+    updateIsoRots();
     dump("spinCW(board after Rot updates)");
 //    dumpState("SpinCW(after update)");
 } 
+
+void Cube::updateIsoDirs() 
+{
+    Base::Vector3d flb = getFront() + getLeft()  + getBottom();
+    Base::Vector3d frb = getFront() + getRight() + getBottom();
+    Base::Vector3d flt = getFront() + getLeft()  + getTop();
+    Base::Vector3d frt = getFront() + getRight() + getTop();
+    m_mapFrameDir.at("FrontBottomLeft")  = flb;
+    m_mapFrameDir.at("FrontBottomRight") = frb;
+    m_mapFrameDir.at("FrontTopLeft")     = flt;
+    m_mapFrameDir.at("FrontTopRight")    = frt;
+}
+
+void Cube::updateIsoRots() 
+{
+    Base::Vector3d flb = getFrontRot() + getLeftRot()  + getBottomRot();
+    Base::Vector3d frb = getFrontRot() + getRightRot() + getBottomRot();
+    Base::Vector3d flt = getFrontRot() + getLeftRot()  + getTopRot();
+    Base::Vector3d frt = getFrontRot() + getRightRot() + getTopRot();
+    m_mapFrameRot.at("FrontBottomLeft")  = flb;
+    m_mapFrameRot.at("FrontBottomRight") = frb;
+    m_mapFrameRot.at("FrontTopLeft")     = flt;
+    m_mapFrameRot.at("FrontTopRight")    = frt;
+}
 
 std::string Cube::dirToView(Base::Vector3d v)
 {
@@ -198,7 +238,7 @@ std::string Cube::dirToView(Base::Vector3d v)
 
 void Cube::updateDirsToConfig(std::string cfg)
 {
-//    Base::Console().Message("TRACE - Cube::updateDirs(%s) \n",cfg.c_str());
+    Base::Console().Message("TRACE - Cube::updateDirs(%s) \n",cfg.c_str());
     Base::Vector3d boardValue = m_conTab.getDirItem(cfg,"Front");
     m_mapFrameDir.at("Front") = boardValue;
     boardValue = m_conTab.getDirItem(cfg,"Rear");
@@ -356,6 +396,25 @@ void Cube::dump(char * title)
     Base::Console().Message("Cube: Board State - config: %s Dirs: %s  Rots: %s\n",boardConfig.c_str(),boardDirs.c_str(),boardRots.c_str());
 }
 
+//dumps the current "board" -ISO's
+void Cube::dumpISO(char * title)
+{
+//FBL/FBR/FTL/FTR
+//
+    Base::Console().Message("Cube ISO: %s\n", title); 
+    Base::Console().Message("FBL: %s/%s  \nFBR: %s/%s  \nFTL: %s/%s\nFTR: %s/%s\n", 
+                            DrawUtil::formatVector(getFBL()).c_str(),DrawUtil::formatVector(getFBLRot()).c_str(),
+                            DrawUtil::formatVector(getFBR()).c_str(),DrawUtil::formatVector(getFBRRot()).c_str(), 
+                            DrawUtil::formatVector(getFTL()).c_str(),DrawUtil::formatVector(getFTLRot()).c_str(), 
+                            DrawUtil::formatVector(getFTR()).c_str(),DrawUtil::formatVector(getFTRRot()).c_str());
+    std::string boardDirs = dirToView(getBottom()) + dirToView(getFront()) + dirToView(getLeft()) + 
+                            dirToView(getRear()) + dirToView(getRight()) + dirToView(getTop());
+    std::string boardRots = dirToView(getBottomRot()) + dirToView(getFrontRot()) + dirToView(getLeftRot()) + 
+                            dirToView(getRearRot()) + dirToView(getRightRot()) + dirToView(getTopRot());
+    std::string boardConfig = dirToView(getFront()) + dirToView(getRight());
+    Base::Console().Message("Cube: Board State - config: %s Dirs: %s  Rots: %s\n",boardConfig.c_str(),boardDirs.c_str(),boardRots.c_str());
+}
+
 //dumps the config state
 void Cube::dumpState(char* title)
 {
@@ -413,6 +472,35 @@ Base::Vector3d Cube::getBottom()
     return result;
 }
 
+Base::Vector3d Cube::getFBL()
+{
+    Base::Vector3d result;
+    result = m_mapFrameDir.at("FrontBottomLeft");
+    return result;
+}
+
+Base::Vector3d Cube::getFBR()
+{
+    Base::Vector3d result;
+    result = m_mapFrameDir.at("FrontBottomRight");
+    return result;
+}
+
+Base::Vector3d Cube::getFTL()
+{
+    Base::Vector3d result;
+    result = m_mapFrameDir.at("FrontTopLeft");
+    return result;
+}
+
+Base::Vector3d Cube::getFTR()
+{
+    Base::Vector3d result;
+    result = m_mapFrameDir.at("FrontTopRight");
+    return result;
+}
+
+
 Base::Vector3d Cube::getRightRot()
 {
     std::string myFace = "D";
@@ -458,6 +546,34 @@ Base::Vector3d Cube::getBottomRot()
     std::string myFace = "E";
     Base::Vector3d result;
     result = m_mapFrameRot.at("Bottom");
+    return result;
+}
+
+Base::Vector3d Cube::getFBLRot()
+{
+    Base::Vector3d result;
+    result = m_mapFrameRot.at("FrontBottomLeft");
+    return result;
+}
+
+Base::Vector3d Cube::getFBRRot()
+{
+    Base::Vector3d result;
+    result = m_mapFrameRot.at("FrontBottomRight");
+    return result;
+}
+
+Base::Vector3d Cube::getFTLRot()
+{
+    Base::Vector3d result;
+    result = m_mapFrameRot.at("FrontTopLeft");
+    return result;
+}
+
+Base::Vector3d Cube::getFTRRot()
+{
+    Base::Vector3d result;
+    result = m_mapFrameRot.at("FrontTopRight");
     return result;
 }
 
@@ -578,6 +694,8 @@ void configTable::addRotItem(configLine cl)
 void configTable::initialize(void)
 {
     Base::Console().Message("TRACE - cT::initialize()\n");
+    dirs.clear();
+    rots.clear();
     configLine cl;
 //Rotations
 #include "rots.cpp"    

@@ -60,10 +60,11 @@ const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdDir = {
         { "Left",             Base::Vector3d(-1, 0, 0) },    //left
         { "Top",              Base::Vector3d(0, 0, 1) },     //top
         { "Bottom",           Base::Vector3d(0, 0, -1) },    //bottom
-        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },     //FTL
-        { "FrontTopRight",    Base::Vector3d(1, -1, 1) },    //FTR
+        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) },   //FBL
         { "FrontBottomRight", Base::Vector3d(1, -1, -1) },   //FBR
-        { "FrontBottomLeft",  Base::Vector3d(-1, -1, -1) } };  //FBL
+        { "FrontTopLeft",     Base::Vector3d(-1,-1,1) },     //FTL
+        { "FrontTopRight",    Base::Vector3d(1, -1, 1) }    //FTR
+        };
                                                               
 const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdRot = {
         { "Front",            Base::Vector3d(1,  0, 0) },     //front
@@ -71,13 +72,69 @@ const std::map<std::string,Base::Vector3d> DrawProjGroup::m_frameToStdRot = {
         { "Right",            Base::Vector3d(0, -1, 0) },     //right      this makes the first rendering correct, but
         { "Left",             Base::Vector3d(0,  1, 0) },     //left       every 2nd subsequent rendering upside down (ie cube is incorrect)
 //        { "Right",            Base::Vector3d(0, 1, 0) },     //right         this makes the first rendering upside down
-//        { "Left",             Base::Vector3d(0,  -1, 0) },     //left        but subsequent renderings right side up (ie cube is correct)
+//        { "Left",             Base::Vector3d(0,  -1, 0) },   /left        but subsequent renderings right side up (ie cube is correct)
         { "Top",              Base::Vector3d(1,  0, 0) },     //top
         { "Bottom",           Base::Vector3d(1,  0, 0) },     //bottom
-        { "FrontTopLeft",     Base::Vector3d(-2, -1, 0.5) },   //FTL  ???
-        { "FrontTopRight",    Base::Vector3d(2, -1, 0.5) },   //FTR   OK
-        { "FrontBottomRight", Base::Vector3d(2, -1, -0.5) },   //FBR  probable
-        { "FrontBottomLeft",  Base::Vector3d(-2, -1, -0.5) } }; //FBL ???
+        { "FrontBottomLeft",  Base::Vector3d(2, -1, 0.5) },    //FBL   LFB
+        { "FrontBottomRight", Base::Vector3d(2, -1, -0.5) },   //FBR   RFB
+        { "FrontTopLeft",     Base::Vector3d(2, -1, -0.5) },   //FTL   LFT
+        { "FrontTopRight",    Base::Vector3d(2, 1, 0.5) }      //FTR   RFT
+        }; 
+
+// map of front.dir+front.rot onto config
+const std::map<std::string,std::string> DrawProjGroup::m_dirRotToConfig = {
+    {"AB","AB"},
+    {"AC","AC"},
+    {"AD","AD"},
+    {"AE","AE"},
+    {"BF","BA"},
+    {"BC","BC"},
+    {"BD","BD"},
+    {"BA","BF"},
+    {"CD","CA"},
+    {"CB","CB"},
+    {"CE","CE"},
+    {"CA","CF"},
+    {"DF","DA"},
+    {"DB","DB"},
+    {"DE","DE"},
+    {"DC","DF"},
+    {"EF","EA"},
+    {"EC","EC"},
+    {"ED","ED"},
+    {"EA","EF"},
+    {"FB","FB"},
+    {"FF","FC"},
+    {"FD","FD"},
+    {"FE","FE"}  };
+
+// map frontDir + topDir onto config
+const std::map<std::string,std::string> DrawProjGroup::m_frontTopToConfig = {
+    { "AC" , "AB" },
+    { "AE" , "AC" },
+    { "AB" , "AD" },
+    { "AD" , "AE" },
+    { "BD" , "BA" },
+    { "BA" , "BC" },
+    { "BF" , "BD" },
+    { "BC" , "BF" },
+    { "CB" , "CA" },
+    { "CF" , "CB" },
+    { "CA" , "CE" },
+    { "CE" , "CF" },
+    { "DE" , "DA" },
+    { "DA" , "DB" },
+    { "DF" , "DE" },
+    { "DB" , "DF" },
+    { "EC" , "EA" },
+    { "EF" , "EC" },
+    { "EA" , "ED" },
+    { "ED" , "EF" },
+    { "FD" , "FB" },
+    { "FB" , "FC" },
+    { "FE" , "FD" },
+    { "FC" , "FE" } };
+
 
 PROPERTY_SOURCE(TechDraw::DrawProjGroup, TechDraw::DrawViewCollection)
 
@@ -96,10 +153,15 @@ DrawProjGroup::DrawProjGroup(void)
     ADD_PROPERTY_TYPE(spacingY, (15), agroup, App::Prop_None, "Vertical spacing between views");
 
     m_cube = new Cube();
+    // D/C/A/F/B/E/FBL/
     m_cube->initialize(m_frameToStdDir.at("Right"), m_frameToStdRot.at("Right"), 
                       m_frameToStdDir.at("Left"),   m_frameToStdRot.at("Left"),
                       m_frameToStdDir.at("Front"), m_frameToStdRot.at("Front"), m_frameToStdDir.at("Rear"),   m_frameToStdRot.at("Rear"),
-                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"));
+                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"),
+                      m_frameToStdDir.at("FrontBottomLeft"), m_frameToStdRot.at("FrontBottomLeft"),
+                      m_frameToStdDir.at("FrontBottomRight"), m_frameToStdRot.at("FrontBottomRight"),
+                      m_frameToStdDir.at("FrontTopLeft"), m_frameToStdRot.at("FrontTopLeft"),
+                      m_frameToStdDir.at("FrontTopRight"), m_frameToStdRot.at("FrontTopRight") );
 }
 
 DrawProjGroup::~DrawProjGroup()
@@ -799,23 +861,23 @@ void DrawProjGroup::updateSecondaryDirs()
                 break;
             }
             case FrontTopLeft : {
-                newDir = m_frameToStdDir.at("FrontTopLeft");
-                newAxis = m_frameToStdRot.at("FrontTopLeft");
+                newDir = m_cube->getFTL();
+                newAxis = m_cube->getFTLRot();
                 break;
             }
             case FrontTopRight : {
-                newDir = m_frameToStdDir.at("FrontTopRight");
-                newAxis = m_frameToStdRot.at("FrontTopRight");
+                newDir = m_cube->getFTR();
+                newAxis = m_cube->getFTRRot();
                 break;
             }
             case FrontBottomLeft : {
-                newDir = m_frameToStdDir.at("FrontBottomLeft");
-                newAxis = m_frameToStdRot.at("FrontBottomLeft");
+                newDir = m_cube->getFBL();
+                newAxis = m_cube->getFBLRot();
                 break;
             }
             case FrontBottomRight : {
-                newDir = m_frameToStdDir.at("FrontBottomRight");
-                newAxis = m_frameToStdRot.at("FrontBottomRight");
+                newDir = m_cube->getFBR();
+                newAxis = m_cube->getFBRRot();
                 break;
             }
             default: {
@@ -887,8 +949,51 @@ void DrawProjGroup::spinCCW()
     updateSecondaryDirs();
 }
 
-//*************************************
+// find a config with Dir as Front view and Up as Top view
+void DrawProjGroup::setTable(Base::Vector3d dir, Base::Vector3d up)
+{
+    
+    std::string viewFront = Cube::dirToView(dir);    //convert to closest basis vector
+    std::string viewUp    = Cube::dirToView(up);    //convert to closest basis vector
+    std::string altKey    = viewFront + viewUp;
+    std::string config;
+    Base::Console().Message("TRACE - DPG::setTable - using altKey: %s\n", altKey.c_str());
+    try {
+        config = m_frontTopToConfig.at(altKey);
+    }
+//    catch (const std::out_of_range& oor) {
+//        std::cerr << "Out of Range error: " << oor.what() << '\n';
+//    }
+    catch (...) {
+       Base::Console().Error("Error - DPG::setTable - no match for alt config: %s\n",altKey.c_str());
+       return;
+    }
+    Base::Console().Message("TRACE - DPG::setTable - found config: %s **\n",config.c_str());
+    m_cube->updateDirsToConfig(config);
+    m_cube->updateRotsToConfig(config);
+    updateSecondaryDirs();
 
+}
+
+void DrawProjGroup::resetTable(void)
+{
+    m_cube->initialize(m_frameToStdDir.at("Right"), m_frameToStdRot.at("Right"), 
+                      m_frameToStdDir.at("Left"),   m_frameToStdRot.at("Left"),
+                      m_frameToStdDir.at("Front"), m_frameToStdRot.at("Front"), m_frameToStdDir.at("Rear"),   m_frameToStdRot.at("Rear"),
+                      m_frameToStdDir.at("Top"),   m_frameToStdRot.at("Top"),   m_frameToStdDir.at("Bottom"), m_frameToStdRot.at("Bottom"),
+                      m_frameToStdDir.at("FrontBottomLeft"), m_frameToStdRot.at("FrontBottomLeft"),
+                      m_frameToStdDir.at("FrontBottomRight"), m_frameToStdRot.at("FrontBottomRight"),
+                      m_frameToStdDir.at("FrontTopLeft"), m_frameToStdRot.at("FrontTopLeft"),
+                      m_frameToStdDir.at("FrontTopRight"), m_frameToStdRot.at("FrontTopRight") );
+    updateSecondaryDirs();
+}
+
+
+
+
+
+//*************************************
+//obs??
 //! rebuild view direction map from existing DPGI's if possible or from Anchor
 void DrawProjGroup::onDocumentRestored()
 {
