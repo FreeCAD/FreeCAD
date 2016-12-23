@@ -62,6 +62,8 @@ using namespace Gui;
 GUIApplication::GUIApplication(int & argc, char ** argv)
     : GUIApplicationNativeEventAware(argc, argv)
 {
+    connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
+            SLOT(slotCommitData(QSessionManager &)), Qt::DirectConnection);
 }
 
 GUIApplication::~GUIApplication()
@@ -130,7 +132,7 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
     return true;
 }
 
-void GUIApplication::commitData(QSessionManager &manager)
+void GUIApplication::slotCommitData(QSessionManager &manager)
 {
     if (manager.allowsInteraction()) {
         if (!Gui::getMainWindow()->close()) {
