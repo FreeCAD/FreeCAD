@@ -38,6 +38,7 @@ class FemGuiExport Workbench : public Gui::StdWorkbench
 public:
   Workbench();
   virtual ~Workbench();
+  void setupContextMenu(const char* recipient, Gui::MenuItem*) const;
 
 protected:
   Gui::ToolBarItem* setupToolBars() const;
