@@ -727,7 +727,12 @@ void ViewProviderFEMMeshBuilder::createMesh(const App::Property* prop,
     int numNodes = data->NbNodes();
     int numEdges = data->NbEdges();
 
-    if(numFaces+numNodes+numEdges == 0) return;
+    if (numFaces+numNodes+numEdges == 0) {
+        coords->point.setNum(0);
+        faces->coordIndex.setNum(0);
+        lines->coordIndex.setNum(0);
+        return;
+    }
     Base::TimeInfo Start;
     Base::Console().Log("Start: ViewProviderFEMMeshBuilder::createMesh() =================================\n");
 
