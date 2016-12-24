@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>318</height>
+        <height>313</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -66,19 +66,6 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QDoubleSpinBox" name="stepDown">
-         <property name="decimals">
-          <number>3</number>
-         </property>
-         <property name="minimum">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
@@ -93,6 +80,19 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QDoubleSpinBox" name="stepDown">
+         <property name="decimals">
+          <number>3</number>
+         </property>
+         <property name="minimum">
+          <double>0.100000000000000</double>
+         </property>
+         <property name="value">
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="Heights">
@@ -101,7 +101,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>318</height>
+        <height>313</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -151,7 +151,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>318</height>
+        <height>313</height>
        </rect>
       </property>
       <attribute name="label">
@@ -209,7 +209,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>318</height>
+        <height>313</height>
        </rect>
       </property>
       <attribute name="icon">

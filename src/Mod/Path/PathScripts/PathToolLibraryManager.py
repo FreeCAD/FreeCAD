@@ -190,6 +190,33 @@ class ToolLibraryManager():
         headers = ["","Tool Num.","Name","Tool Type","Material","Diameter","Length Offset","Flat Radius","Corner Radius","Cutting Edge Angle","Cutting Edge Height"]
         model = QtGui.QStandardItemModel()
         model.setHorizontalHeaderLabels(headers)
+        parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+        digits = parms.GetContents()[1][2] # user's number of digits of precision
+        if parms.GetContents()[0][2]==0:
+            suffix = 'mm'
+            conversion = 1.0
+        elif parms.GetContents()[0][2]==3:
+            suffix = 'in'
+            conversion = 25.4
+        else:
+            suffix = ''
+
+        def unitconv(ivalue):
+            parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+            digits = parms.GetContents()[1][2] #get user's number of digits of precision
+            if parms.GetContents()[0][2]==0:
+                suffix = 'mm'
+                conversion = 1.0
+            elif parms.GetContents()[0][2]==3:
+                suffix = 'in'
+                conversion = 25.4
+            else:
+                suffix = ''
+            val = FreeCAD.Units.parseQuantity(str(round(ivalue/conversion,digits))+suffix)
+            displayed_val = val.UserString #just the displayed value-not the internal one
+
+            return displayed_val
+
         if tt:
             if len(tt.Tools) == 0:
                 tooldata.append([])
@@ -201,12 +228,12 @@ class ToolLibraryManager():
                 itemName =  QtGui.QStandardItem(t.Name)
                 itemToolType =  QtGui.QStandardItem(t.ToolType)
                 itemMaterial =  QtGui.QStandardItem(t.Material)
-                itemDiameter =  QtGui.QStandardItem(str(t.Diameter))   
-                itemLengthOffset =  QtGui.QStandardItem(str(t.LengthOffset))
-                itemFlatRadius =  QtGui.QStandardItem(str(t.FlatRadius))
-                itmCornerRadius =  QtGui.QStandardItem(str(t.CornerRadius))
+                itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))   
+                itemLengthOffset =  QtGui.QStandardItem(unitconv(t.LengthOffset))
+                itemFlatRadius =  QtGui.QStandardItem(unitconv(t.FlatRadius))
+                itmCornerRadius =  QtGui.QStandardItem(unitconv(t.CornerRadius))
                 itemCuttingEdgeAngle =  QtGui.QStandardItem(str(t.CuttingEdgeAngle))
-                itemCuttingEdgeHeight =  QtGui.QStandardItem(str(t.CuttingEdgeHeight))
+                itemCuttingEdgeHeight =  QtGui.QStandardItem(unitconv(t.CuttingEdgeHeight))
 
                 row = [itemcheck, itemNumber, itemName, itemToolType, itemMaterial, itemDiameter, itemLengthOffset, itemFlatRadius, itmCornerRadius, itemCuttingEdgeAngle, itemCuttingEdgeHeight]
                 model.appendRow(row)
