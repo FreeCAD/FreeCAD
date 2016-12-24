@@ -539,7 +539,7 @@ DeriVector2 Parabola::Value(double u, double du, double* derivparam)
     f = fv.length(df);
     
     DeriVector2 xdir = fv.getNormalized();
-    DeriVector2 ydir = xdir.rotate90cw();
+    DeriVector2 ydir = xdir.rotate90ccw();
     
     DeriVector2 dirx = xdir.multD(u,du).multD(u,du).divD(4*f,4*df);
     DeriVector2 diry = ydir.multD(u,du); 
