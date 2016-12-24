@@ -3631,10 +3631,10 @@ Restart:
                                     r1a = aop->getFocal();
                                     double startangle, endangle;
                                     aop->getRange(startangle, endangle, /*emulateCCW=*/true);
-                                    Base::Vector3d majdir = aop->getXAxisDir();
+                                    Base::Vector3d majdir = - aop->getXAxisDir();
                                     angle1 = atan2(majdir.y, majdir.x);
                                     angle1plus = (startangle + endangle)/2;
-                                    midpos1 = aop->getCenter();
+                                    midpos1 = aop->getFocus();
                                 } else
                                     break;
 
@@ -3683,10 +3683,10 @@ Restart:
                                     r2a = aop->getFocal();
                                     double startangle, endangle;
                                     aop->getRange(startangle, endangle, /*emulateCCW=*/true);
-                                    Base::Vector3d majdir = aop->getXAxisDir();
+                                    Base::Vector3d majdir = -aop->getXAxisDir();
                                     angle2 = atan2(majdir.y, majdir.x);
                                     angle2plus = (startangle + endangle)/2;
-                                    midpos2 = aop->getCenter();
+                                    midpos2 = aop->getFocus();
                                 } else
                                     break;
 
