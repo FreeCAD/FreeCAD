@@ -1825,6 +1825,16 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
     
+    if (Geoms[geoId2].type == ArcOfParabola) {
+        if (Geoms[geoId1].type == ArcOfParabola) {
+            GCS::ArcOfParabola &a1 = ArcsOfParabola[Geoms[geoId1].index];
+            GCS::ArcOfParabola &a2 = ArcsOfParabola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualFocus(a1, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
+    
     if (Geoms[geoId1].type == Ellipse) {
         GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
         if (Geoms[geoId2].type == ArcOfEllipse) {

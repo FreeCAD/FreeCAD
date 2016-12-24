@@ -213,6 +213,7 @@ namespace GCS
         int addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int tagId=0);
         int addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId=0);
         int addConstraintEqualRadius(Arc &a1, Arc &a2, int tagId=0);
+	int addConstraintEqualFocus(ArcOfParabola &a1, ArcOfParabola &a2, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Line &l, int tagId=0);
         int addConstraintP2PSymmetric(Point &p1, Point &p2, Point &p, int tagId=0);
         int addConstraintSnellsLaw(Curve &ray1, Curve &ray2,
