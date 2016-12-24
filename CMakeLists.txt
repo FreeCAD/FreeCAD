@@ -369,7 +369,11 @@ if(FREECAD_LIBPACK_USE)
 
 # -------------------------------- Shiboken/PySide ------------------------
 
-    find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
+    if(BUILD_QT5)
+        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
+    else()
+        find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
+    endif()
 
 # -------------------------------- Salome SMESH --------------------------
 
@@ -828,6 +832,32 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 
 # -------------------------------- Shiboken/PySide ------------------------
 
+    if(BUILD_QT5)
+        # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
+        SET(PYTHON_SUFFIX -python2.7) # for shiboken
+        SET(PYTHON_BASENAME -python2.7) # for PySide
+
+        if(DEFINED MACPORTS_PREFIX)
+            find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
+            find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
+        endif(DEFINED MACPORTS_PREFIX)
+
+        find_package(Shiboken2)# REQUIRED
+        if(NOT SHIBOKEN_INCLUDE_DIR)
+            MESSAGE(FATAL_ERROR "====================\n"
+                                "shiboken2 not found.\n"
+                                "====================\n")
+        endif(NOT SHIBOKEN_INCLUDE_DIR)
+
+        find_package(PySide2)# REQUIRED
+        if(NOT PYSIDE_INCLUDE_DIR)
+            MESSAGE(FATAL_ERROR "==================\n"
+                                "PySide2 not found.\n"
+                                "==================\n")
+        endif(NOT PYSIDE_INCLUDE_DIR)
+
+        find_package(PySideTools REQUIRED) # PySide2 utilities (pyside-uic & pyside-rcc)
+    else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
         SET(PYTHON_BASENAME -python2.7) # for PySide
@@ -852,6 +882,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
         find_package(PySideTools REQUIRED) # PySide utilities (pyside-uic & pyside-rcc)
+    endif()
 
 # ------------------------------ Matplotlib ------------------------------
 

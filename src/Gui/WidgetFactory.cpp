@@ -61,6 +61,26 @@ PyTypeObject** SbkPySide_QtGuiTypes=NULL;
 # endif
 #endif
 
+#ifdef HAVE_SHIBOKEN2
+# define HAVE_SHIBOKEN
+# undef _POSIX_C_SOURCE
+# undef _XOPEN_SOURCE
+# include <basewrapper.h>
+# include <conversions.h>
+# include <sbkmodule.h>
+# include <typeresolver.h>
+# include <shiboken.h>
+# ifdef HAVE_PYSIDE2
+# define HAVE_PYSIDE
+# include <pyside2_qtcore_python.h>
+# include <pyside2_qtgui_python.h>
+# include <pyside2_qtwidgets_python.h>
+PyTypeObject** SbkPySide2_QtCoreTypes=NULL;
+PyTypeObject** SbkPySide2_QtGuiTypes=NULL;
+PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
+# endif
+#endif
+
 #ifdef __GNUC__
 # pragma GCC diagnostic pop
 #endif
@@ -255,7 +275,15 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 
 bool PythonWrapper::loadCoreModule()
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)
+    // QtCore
+    if (!SbkPySide2_QtCoreTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtCore"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide2_QtCoreTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtCore
     if (!SbkPySide_QtCoreTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtCore"));
@@ -269,13 +297,35 @@ bool PythonWrapper::loadCoreModule()
 
 bool PythonWrapper::loadGuiModule()
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+    // QtGui
+    if (!SbkPySide2_QtGuiTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtGui"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide2_QtGuiTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#elif defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     // QtGui
     if (!SbkPySide_QtGuiTypes) {
         Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide.QtGui"));
         if (requiredModule.isNull())
             return false;
         SbkPySide_QtGuiTypes = Shiboken::Module::getTypes(requiredModule);
+    }
+#endif
+    return true;
+}
+
+bool PythonWrapper::loadWidgetsModule()
+{
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+    // QtWidgets
+    if (!SbkPySide2_QtWidgetsTypes) {
+        Shiboken::AutoDecRef requiredModule(Shiboken::Module::import("PySide2.QtWidgets"));
+        if (requiredModule.isNull())
+            return false;
+        SbkPySide2_QtWidgetsTypes = Shiboken::Module::getTypes(requiredModule);
     }
 #endif
     return true;
@@ -290,7 +340,11 @@ void PythonWrapper::createChildrenNameAttributes(PyObject* root, QObject* object
         if (!name.isEmpty() && !name.startsWith("_") && !name.startsWith("qt_")) {
             bool hasAttr = PyObject_HasAttrString(root, name.constData());
             if (!hasAttr) {
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+                Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtCoreTypes[SBK_QOBJECT_IDX], child));
+#else
                 Shiboken::AutoDecRef pyChild(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtCoreTypes[SBK_QOBJECT_IDX], child));
+#endif
                 PyObject_SetAttrString(root, name.constData(), pyChild);
             }
             createChildrenNameAttributes(root, child);
@@ -307,7 +361,11 @@ void PythonWrapper::setParent(PyObject* pyWdg, QObject* parent)
 {
 #if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
     if (parent) {
+#if defined (HAVE_SHIBOKEN2) && defined(HAVE_PYSIDE2)
+        Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide2_QtGuiTypes[SBK_QWIDGET_IDX], parent));
+#else
         Shiboken::AutoDecRef pyParent(Shiboken::Conversions::pointerToPython((SbkObjectType*)SbkPySide_QtGuiTypes[SBK_QWIDGET_IDX], parent));
+#endif
         Shiboken::Object::setParent(pyParent, pyWdg);
     }
 #else
@@ -675,6 +733,7 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
             QWidget* widget = loader.load(device, parent);
             if (widget) {
                 wrap.loadGuiModule();
+                wrap.loadWidgetsModule();
 
                 Py::Object pyWdg = wrap.fromQWidget(widget);
                 wrap.createChildrenNameAttributes(*pyWdg, widget);
@@ -731,6 +790,7 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
         throw Py::RuntimeError(err);
     }
     wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
     return wrap.fromQWidget(widget);
 }
 
