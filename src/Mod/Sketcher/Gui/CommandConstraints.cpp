@@ -2012,10 +2012,12 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                 geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-                geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+		geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
 
                 Base::Vector3d center;
                 Base::Vector3d majdir;
+		Base::Vector3d focus;
                 double majord = 0;
                 double minord = 0;
                 double phi = 0;
@@ -2039,31 +2041,43 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     phi=atan2(majdir.y, majdir.x);
                 }
                 else
-                    if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
-                        const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
-                        
-                        center=aoh->getCenter();
-                        majord=aoh->getMajorRadius();
-                        minord=aoh->getMinorRadius();
-                        majdir=aoh->getMajorAxisDir();
-                        phi=atan2(majdir.y, majdir.x);
-                    }
+		if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+		    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
+		    
+		    center=aoh->getCenter();
+		    majord=aoh->getMajorRadius();
+		    minord=aoh->getMinorRadius();
+		    majdir=aoh->getMajorAxisDir();
+		    phi=atan2(majdir.y, majdir.x);
+		}
+		else
+		if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ){
+		    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo1);
+		    
+		    center=aop->getCenter();
+		    focus=aop->getFocus();
+		}
 
                 const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geo2);
 
                 Base::Vector3d point1=line->getStartPoint();
                 Base::Vector3d PoO;
-                
 
                 if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
                     double df=sqrt(majord*majord+minord*minord);
                     Base::Vector3d direction=point1-(center+majdir*df); // towards the focus
                     double tapprox=atan2(direction.y,direction.x)-phi; 
-                    
+
                     PoO = Base::Vector3d(center.x+majord*cosh(tapprox)*cos(phi)-minord*sinh(tapprox)*sin(phi),
                                          center.y+majord*cosh(tapprox)*sin(phi)+minord*sinh(tapprox)*cos(phi), 0);
                 }
-                else {
+                else if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                    Base::Vector3d direction=point1-focus; // towards the focus
+
+                    PoO = point1 + direction / 2;
+                }
+		else
+		{
                     Base::Vector3d direction=point1-center;
                     double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
 
@@ -2094,24 +2108,24 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                 catch (const Base::Exception& e) {
                     Base::Console().Error("%s\n", e.what());
                     Gui::Command::abortCommand();
-                    
+
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                     bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                    
+
                     if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
                         Gui::Command::updateActive();
-                    
+
                     return;
                 }
 
                 commitCommand();
-                
+
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-            
+
                 if(autoRecompute)
                     Gui::Command::updateActive();
-                
+
                 getSelection().clearSelection();
                 return;
 
