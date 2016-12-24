@@ -1423,6 +1423,82 @@ double ConstraintEqualMajorAxesConic::grad(double *param)
     return deriv * scale;
 }
 
+//  ConstraintEqualFocalDistance
+ConstraintEqualFocalDistance:: ConstraintEqualFocalDistance(ArcOfParabola * a1, ArcOfParabola * a2)
+{
+    this->e1 = a1;
+    this->e1->PushOwnParams(pvec);
+    this->e2 = a2;
+    this->e2->PushOwnParams(pvec);
+    origpvec = pvec;
+    pvecChangedFlag = true;
+    rescale();
+}
+
+void ConstraintEqualFocalDistance::ReconstructGeomPointers()
+{
+    int i =0;
+    e1->ReconstructOnNewPvec(pvec, i);
+    e2->ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintEqualFocalDistance::getTypeId()
+{
+    return EqualFocalDistance;
+}
+
+void ConstraintEqualFocalDistance::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintEqualFocalDistance::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    DeriVector2 focus1(this->e1->focus1, param);
+    DeriVector2 vertex1(this->e1->vertex, param);
+
+    DeriVector2 focalvect1 = vertex1.subtr(focus1);
+
+    double focal1, dfocal1;
+
+    focal1 = focalvect1.length(dfocal1);
+
+    DeriVector2 focus2(this->e2->focus1, param);
+    DeriVector2 vertex2(this->e2->vertex, param);
+
+    DeriVector2 focalvect2 = vertex2.subtr(focus2);
+
+    double focal2, dfocal2;
+
+    focal2 = focalvect2.length(dfocal2);
+
+    if (err)
+        *err = focal2 - focal1;
+    if (grad)
+        *grad = dfocal2 - dfocal1;
+}
+
+double ConstraintEqualFocalDistance::error()
+{    
+    double err;
+    errorgrad(&err,0,0);
+    return scale * err;
+}
+
+double ConstraintEqualFocalDistance::grad(double *param)
+{
+    //first of all, check that we need to compute anything.
+    if ( findParamInPvec(param) == -1  ) return 0.0;
+
+    double deriv;
+    errorgrad(0, &deriv, param);
+
+    return deriv * scale;
+}
+
 // ConstraintCurveValue
 ConstraintCurveValue::ConstraintCurveValue(Point &p, double* pcoord, Curve& crv, double *u)
 {

@@ -763,7 +763,14 @@ int System::addConstraintEqualRadii(ArcOfHyperbola &a1, ArcOfHyperbola &a2, int 
     
     Constraint *constr = new ConstraintEqualMajorAxesConic(&a1,&a2);
     constr->setTag(tagId);
-    return addConstraint(constr);    
+    return addConstraint(constr);
+}
+
+int System::addConstraintEqualFocus(ArcOfParabola &a1, ArcOfParabola &a2, int tagId)
+{
+    Constraint *constr = new ConstraintEqualFocalDistance(&a1,&a2);
+    constr->setTag(tagId);
+    return addConstraint(constr);
 }
 
 int System::addConstraintEqualRadius(Circle &c1, Arc &a2, int tagId)

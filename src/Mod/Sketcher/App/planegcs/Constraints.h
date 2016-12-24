@@ -66,7 +66,8 @@ namespace GCS
         CurveValue = 20,
         PointOnHyperbola = 21,
         InternalAlignmentPoint2Hyperbola = 22,
-	PointOnParabola = 23
+	PointOnParabola = 23,
+	EqualFocalDistance = 24
     };
     
     enum InternalAlignmentType {
@@ -463,7 +464,22 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
     };
-    
+
+    class ConstraintEqualFocalDistance : public Constraint
+    {
+    private:
+        ArcOfParabola * e1;
+        ArcOfParabola * e2;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        ConstraintEqualFocalDistance(ArcOfParabola * a1, ArcOfParabola * a2);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
     class ConstraintCurveValue : public Constraint
     {
     private:
