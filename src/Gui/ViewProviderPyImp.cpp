@@ -356,6 +356,7 @@ Py::Object ViewProviderPy::getIcon(void) const
 #else
     PythonWrapper wrap;
     wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
     QIcon icon = getViewProviderPtr()->getIcon();
     return wrap.fromQIcon(new QIcon(icon));
 #endif

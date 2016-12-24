@@ -45,6 +45,7 @@ public:
     PythonWrapper();
     bool loadCoreModule();
     bool loadGuiModule();
+    bool loadWidgetsModule();
 
     bool toCString(const Py::Object&, std::string&);
     QObject* toQObject(const Py::Object&);

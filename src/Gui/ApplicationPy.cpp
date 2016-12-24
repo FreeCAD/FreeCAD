@@ -579,6 +579,7 @@ PyObject* Application::sGetMainWindow(PyObject * /*self*/, PyObject *args,PyObje
     PythonWrapper wrap;
     wrap.loadCoreModule();
     wrap.loadGuiModule();
+    wrap.loadWidgetsModule();
     try {
         return Py::new_reference_to(wrap.fromQWidget(Gui::getMainWindow(), "QMainWindow"));
     }

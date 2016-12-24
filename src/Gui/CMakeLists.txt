@@ -116,6 +116,7 @@ ENDIF(OCULUS_FOUND)
 
 if(SHIBOKEN_INCLUDE_DIR)
     if (BUILD_QT5)
+        add_definitions(-DHAVE_SHIBOKEN2)
     else()
         add_definitions(-DHAVE_SHIBOKEN)
     endif()
@@ -128,10 +129,6 @@ if(SHIBOKEN_INCLUDE_DIR)
 endif(SHIBOKEN_INCLUDE_DIR)
 
 if(PYSIDE_INCLUDE_DIR)
-    if (BUILD_QT5)
-    else()
-        add_definitions(-DHAVE_PYSIDE)
-    endif()
     include_directories(
         ${PYSIDE_INCLUDE_DIR}
         ${PYSIDE_INCLUDE_DIR}/QtCore
@@ -140,6 +137,14 @@ if(PYSIDE_INCLUDE_DIR)
     list(APPEND FreeCADGui_LIBS
         ${PYSIDE_LIBRARY}
     )
+    if (BUILD_QT5)
+        include_directories(
+            ${PYSIDE_INCLUDE_DIR}/QtWidgets
+        )
+        add_definitions(-DHAVE_PYSIDE2)
+    else()
+        add_definitions(-DHAVE_PYSIDE)
+    endif()
 endif(PYSIDE_INCLUDE_DIR)
 
 generate_from_xml(DocumentPy)
