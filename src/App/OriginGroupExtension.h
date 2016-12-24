@@ -62,6 +62,11 @@ public:
     
     /// Origin linked to the group
     PropertyLink Origin;
+    
+    //changes all links of obj to a origin to point to this groupes origin
+    void relinkToOrigin(App::DocumentObject* obj);
+    
+    virtual void addObject(DocumentObject* obj);
 
 protected:
     /// Checks integrity of the Origin

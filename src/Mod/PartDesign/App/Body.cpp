@@ -169,7 +169,7 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
         start = Tip.getValue();
     }
 
-    if ( !start ) { // no tip
+    if ( !start || !hasObject(start) ) { // no or faulty tip
         return nullptr;
     }
 
@@ -268,7 +268,12 @@ void Body::addObject(App::DocumentObject *feature)
 {
     if(!isAllowed(feature))
         throw Base::Exception("Body: object is not allowed");
-    
+       
+    //only one group per object
+    auto *group = App::GroupExtension::getGroupOfObject(feature);
+    if(group && group != getExtendedObject())
+        group->getExtensionByType<App::GroupExtension>()->removeObject(feature);
+       
     insertObject (feature, getNextSolidFeature (), /*after = */ false);
     // Move the Tip if we added a solid
     if (isSolidFeature(feature)) {
@@ -292,6 +297,9 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
             throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
         }
     }
+    
+    //ensure that all origin links are ok
+    relinkToOrigin(feature);
 
     std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator insertInto;
