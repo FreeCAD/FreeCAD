@@ -143,9 +143,13 @@ PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
 
 void registerTypes()
 {
+#if defined (HAVE_SHIBOKEN2)
+    //FIXME: This crashes with Shiboken2
+#else
     SbkConverter* convert = Shiboken::Conversions::createConverter(&Base::QuantityPy::Type, toPythonFuncQuantity);
     Shiboken::Conversions::setPythonToCppPointerFunctions(convert, toCppPointerConvFuncQuantity, toCppPointerCheckFuncQuantity);
     Shiboken::Conversions::registerConverterName(convert, "Base::Quantity");
+#endif
 }
 #endif
 
@@ -153,7 +157,7 @@ void registerTypes()
 
 PythonWrapper::PythonWrapper()
 {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN)
     static bool init = false;
     if (!init) {
         init = true;
@@ -534,6 +538,26 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
     QString cmd;
     QTextStream str(&cmd);
     // https://github.com/albop/dolo/blob/master/bin/load_ui.py
+#if defined(HAVE_PYSIDE2)
+    str << "import pyside2uic\n"
+        << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+        << "import xml.etree.ElementTree as xml\n"
+        << "from cStringIO import StringIO\n"
+        << "\n"
+        << "uiFile = \"" << file.c_str() << "\"\n"
+        << "parsed = xml.parse(uiFile)\n"
+        << "widget_class = parsed.find('widget').get('class')\n"
+        << "form_class = parsed.find('class').text\n"
+        << "with open(uiFile, 'r') as f:\n"
+        << "    o = StringIO()\n"
+        << "    frame = {}\n"
+        << "    pyside2uic.compileUi(f, o, indent=0)\n"
+        << "    pyc = compile(o.getvalue(), '<string>', 'exec')\n"
+        << "    exec pyc in frame\n"
+        << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
+        << "    form_class = frame['Ui_%s'%form_class]\n"
+        << "    base_class = eval('QtWidgets.%s'%widget_class)\n";
+#else
     str << "import pysideuic\n"
         << "from PySide import QtCore, QtGui\n"
         << "import xml.etree.ElementTree as xml\n"
@@ -552,6 +576,7 @@ Py::Object PySideUicModule::loadUiType(const Py::Tuple& args)
         << "    #Fetch the base_class and form class based on their type in the xml from designer\n"
         << "    form_class = frame['Ui_%s'%form_class]\n"
         << "    base_class = eval('QtGui.%s'%widget_class)\n";
+#endif
 
     PyObject* result = PyRun_String((const char*)cmd.toLatin1(), Py_file_input, d.ptr(), d.ptr());
     if (result) {
@@ -607,6 +632,13 @@ Py::Object PySideUicModule::loadUi(const Py::Tuple& args)
         << "            return widget\n"
         << "\n"
         << "loader = UiLoader(globals()[\"base_\"])\n"
+        << "widget = loader.load(globals()[\"uiFile_\"])\n"
+        << "\n";
+#elif defined(HAVE_PYSIDE2)
+    str << "from PySide2 import QtCore, QtGui, QtWidgets\n"
+        << "import FreeCADGui"
+        << "\n"
+        << "loader = FreeCADGui.UiLoader()\n"
         << "widget = loader.load(globals()[\"uiFile_\"])\n"
         << "\n";
 #else
