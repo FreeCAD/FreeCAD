@@ -2374,9 +2374,9 @@ Base::Vector3d GeomArcOfParabola::getFocus(void) const
 }
 
 
-void GeomArcOfParabola::getRange(double& u, double& v, bool /*emulateCCWXY*/) const
+void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
 {
-#if 0
+//#if 0
     try {
         if (emulateCCWXY) {
             if (isReversed()) {
@@ -2390,17 +2390,17 @@ void GeomArcOfParabola::getRange(double& u, double& v, bool /*emulateCCWXY*/) co
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
-#endif
+//#endif
 
     u = myCurve->FirstParameter();
     v = myCurve->LastParameter();
 }
 
-void GeomArcOfParabola::setRange(double u, double v, bool /*emulateCCWXY*/)
+void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
 {
     try {
         myCurve->SetTrim(u, v);
-#if 0
+//#if 0
         if (emulateCCWXY) {
             if (isReversed()) {
                 Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
@@ -2408,7 +2408,7 @@ void GeomArcOfParabola::setRange(double u, double v, bool /*emulateCCWXY*/)
                 c->Reverse();
             }
         }
-#endif
+//#endif
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
