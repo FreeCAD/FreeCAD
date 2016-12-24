@@ -3851,8 +3851,7 @@ public:
             setPositionText(onSketchPos, text);
 
             sketchgui->drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f),
-                                   AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -4036,15 +4035,15 @@ public:
 
             Gui::Command::commitCommand();
 
-            // add auto constraints for the center point
+            // add auto constraints for the focus point
             if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid, Sketcher::mid);
+                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::start);
                 sugConstr1.clear();
             }
 
-            // add suggested constraints for arc
+            // add suggested constraints for vertex point
             if (sugConstr2.size() > 0) {
-                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::none);
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::mid);
                 sugConstr2.clear();
             }
 
