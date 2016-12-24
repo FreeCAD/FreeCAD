@@ -2460,7 +2460,7 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
 
     double CenterX,CenterY,CenterZ,NormalX,NormalY,NormalZ,Focal,AngleXU,StartAngle,EndAngle;
     // read my Element
-    reader.readElement("ArcOfHyperbola");
+    reader.readElement("ArcOfParabola");
     // get the value of my Attribute
     CenterX = reader.getAttributeAsFloat("CenterX");
     CenterY = reader.getAttributeAsFloat("CenterY");
