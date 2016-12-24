@@ -1639,6 +1639,105 @@ double ConstraintPointOnHyperbola::grad(double *param)
         return scale * deriv;
 }
 
+// ConstraintPointOnParabola
+ConstraintPointOnParabola::ConstraintPointOnParabola(Point &p, Parabola &e)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    e.PushOwnParams(pvec);
+    this->parab = e.Copy();
+    pvecChangedFlag = true;
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintPointOnParabola::ConstraintPointOnParabola(Point &p, ArcOfParabola &e)
+{
+    pvec.push_back(p.x);
+    pvec.push_back(p.y);
+    e.PushOwnParams(pvec);
+    this->parab = e.Copy();
+    pvecChangedFlag = true;
+    origpvec = pvec;
+    rescale();
+}
+
+ConstraintPointOnParabola::~ConstraintPointOnParabola()
+{
+    delete this->parab; this->parab = 0;
+}
+
+void ConstraintPointOnParabola::ReconstructGeomPointers()
+{
+    int i=0;
+    p.x=pvec[i]; i++;
+    p.y=pvec[i]; i++;
+    this->parab->ReconstructOnNewPvec(pvec, i);
+    pvecChangedFlag = false;
+}
+
+ConstraintType ConstraintPointOnParabola::getTypeId()
+{
+    return PointOnParabola;
+}
+
+void ConstraintPointOnParabola::rescale(double coef)
+{
+    scale = coef * 1;
+}
+
+void ConstraintPointOnParabola::errorgrad(double *err, double *grad, double *param)
+{
+    if (pvecChangedFlag) ReconstructGeomPointers();
+
+    DeriVector2 focus(this->parab->focus1, param);
+    DeriVector2 vertex(this->parab->vertex, param);
+
+    DeriVector2 point(this->p, param); //point to be constrained to parabola
+    
+    DeriVector2 focalvect = focus.subtr(vertex);
+    
+    DeriVector2 xdir = focalvect.getNormalized();
+    
+    DeriVector2 point_to_focus = point.subtr(focus);
+
+    double focal, dfocal;
+    
+    focal = focalvect.length(dfocal);
+    
+    double pf, dpf;
+    
+    pf = point_to_focus.length(dpf);
+    
+    double proj, dproj;
+    
+    proj = point_to_focus.scalarProd(xdir, &dproj);
+    
+    if (err) 
+	*err = pf - 2*focal - proj;
+    if (grad)
+	*grad = dpf - 2*dfocal - dproj;
+
+}
+
+double ConstraintPointOnParabola::error()
+{
+    double err;
+    errorgrad(&err,0,0);
+    return scale * err;
+}
+
+double ConstraintPointOnParabola::grad(double *param)
+{
+    //first of all, check that we need to compute anything.
+    if ( findParamInPvec(param) == -1  ) return 0.0;
+    
+    double deriv;
+    errorgrad(0, &deriv, param);
+    
+    return deriv*scale;
+}
+
 // ConstraintAngleViaPoint
 ConstraintAngleViaPoint::ConstraintAngleViaPoint(Curve &acrv1, Curve &acrv2, Point p, double* angle)
 {

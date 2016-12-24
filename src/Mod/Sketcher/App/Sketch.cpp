@@ -1886,7 +1886,13 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnHyperbolicArc(p1, a, tag);
             return ConstraintsCounter;
-        }        
+        }
+        else if (Geoms[geoId2].type == ArcOfParabola) {
+            GCS::ArcOfParabola &a = ArcsOfParabola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnParabolicArc(p1, a, tag);
+            return ConstraintsCounter;
+        }
     }
     return -1;
 }

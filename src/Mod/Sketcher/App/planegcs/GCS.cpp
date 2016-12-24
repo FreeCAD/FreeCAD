@@ -582,6 +582,13 @@ int System::addConstraintPointOnHyperbolicArc(Point &p, ArcOfHyperbola &e, int t
     return addConstraint(constr);   
 }
 
+int System::addConstraintPointOnParabolicArc(Point &p, ArcOfParabola &e, int tagId)
+{
+    Constraint *constr = new ConstraintPointOnParabola(p, e);
+    constr->setTag(tagId);
+    return addConstraint(constr);   
+}
+
 int System::addConstraintArcOfEllipseRules(ArcOfEllipse &a, int tagId)
 {
     addConstraintCurveValue(a.start,a,a.startAngle, tagId);
