@@ -432,6 +432,10 @@ FileOptionsDialog::FileOptionsDialog( QWidget* parent, Qt::WindowFlags fl )
     extensionButton = new QPushButton( this );
     extensionButton->setText( tr( "Extended" ) );
 
+#if QT_VERSION >= 0x050000
+    setOption(QFileDialog::DontUseNativeDialog);
+#endif
+
     //search for the grid layout and add the new button
     QGridLayout* grid = this->findChild<QGridLayout*>();
 #if QT_VERSION >= 0x040500
