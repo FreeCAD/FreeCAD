@@ -67,6 +67,8 @@ class TechDrawExport DrawUtil {
                                         double angle,
                                         Base::Vector3d axis,
                                         Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
+        static Base::Vector3d closestBasis(Base::Vector3d v);
+
 
 
         //debugging routines

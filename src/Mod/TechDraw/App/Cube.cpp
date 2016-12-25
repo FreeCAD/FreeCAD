@@ -27,7 +27,6 @@
 #endif
 
 #include <Base/Console.h>
-//#include <Base/Vector3D.h>
 
 #include "DrawUtil.h"
 #include "Cube.h"
@@ -55,17 +54,14 @@ Cube::~Cube(void)
 {
 }
 
+// D/C/A/F/B/E/FBL/FBR/FTL/FTR
 void Cube::initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vector3d lr,
                       Base::Vector3d f, Base::Vector3d fr, Base::Vector3d k, Base::Vector3d kr,      //k for bacK (rear)
                       Base::Vector3d t, Base::Vector3d tr, Base::Vector3d b, Base::Vector3d br,
                       Base::Vector3d fbl, Base::Vector3d fblr, Base::Vector3d fbr, Base::Vector3d fbrr,
                       Base::Vector3d ftl, Base::Vector3d ftlr, Base::Vector3d ftr, Base::Vector3d ftrr)
 {
-    Base::Console().Message("TRACE - Cube::init()\n");
-    //Base::Vector3d FTR = f+t+r;
-    //Base::Vector3d FTL = f+t-r;
-    //Base::Vector3d FBL = f-t-r;
-    //Base::Vector3d FBR = -f-t-r;
+    //these frames are only used at DPGI creation time? 
     m_mapFrameDir.clear();
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Bottom", b));
     m_mapFrameDir.insert(std::map<std::string, Base::Vector3d>::value_type("Front" , f));
@@ -90,8 +86,7 @@ void Cube::initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Bas
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomLeft" , fblr));
     m_mapFrameRot.insert(std::map<std::string, Base::Vector3d>::value_type("FrontBottomRight", fbrr));
     
-    m_conTab.initialize();   //all possible configs of ABCDEF in RightFrontTopLeftRearBottom order
-//    m_conTab.dump("conTab after init");
+    m_conTab.initialize();   //all possible configs of ABCDEF in bottom/front/left/(k)rear/right/top order
 }
 
 void Cube::rotateUp()
@@ -103,18 +98,13 @@ void Cube::rotateUp()
     shiftFrame("Top"   , "Rear");
     restoreSwap("Top");
 
-    updateIsoDirs();
-    updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
-    dump("RotateUp(board after Rot update)");
-//    dumpState("RotateUp(after update)");
-    //validateBoard();
-    
+    updateIsoDirs();                       //calculatge iso directions from ortho dirs
+    updateRotsToConfig(getCurrConfig());   //update rotations for ortho views from config table
+    updateIsoRots();                       //calculate iso rotations from iso/ortho dirs
 }    
 
 void Cube::rotateDown()
 {
-
     //Front -> Bottom -> Rear -> Top -> Front???
     saveSwap("Front");
     shiftFrame("Top"    , "Front");
@@ -125,16 +115,10 @@ void Cube::rotateDown()
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
     updateIsoRots();
-    dump("RotateDown(board after Rot update)");
-//    dumpState("RotateDown(after update)");
-    //validateBoard();
-    
 } 
 
 void Cube::rotateRight()
 {
-    //dump("RotateRight (board before)");
-    
     //Front -> Right -> Rear -> Left -> Front???
     saveSwap("Front");
     shiftFrame("Left"  , "Front");
@@ -145,10 +129,6 @@ void Cube::rotateRight()
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
     updateIsoRots();
-    dump("RotateRight(board after Rot update)");
-//    bool boardState = validateBoard(getCurrConfig());
-//    Base::Console().Message("TRACE - Cube::rotateRight - boardState: %d\n",boardState);
-//    dumpState("RotateRight(state after update)");
 } 
    
 void Cube::rotateLeft()
@@ -163,9 +143,6 @@ void Cube::rotateLeft()
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
     updateIsoRots();
-    dump("RotateLeft(board after Rot updates)");
-//    dumpState("RotateLeft(after update)");
-    
 } 
 
 void Cube::spinCCW()
@@ -180,8 +157,6 @@ void Cube::spinCCW()
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
     updateIsoRots();
-    dump("SpinCCW(board after Rot updates)");
-//    dumpState("SpinCCW(after update)");
 } 
 
 void Cube::spinCW()
@@ -196,8 +171,6 @@ void Cube::spinCW()
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
     updateIsoRots();
-    dump("spinCW(board after Rot updates)");
-//    dumpState("SpinCW(after update)");
 } 
 
 void Cube::updateIsoDirs() 
@@ -214,14 +187,14 @@ void Cube::updateIsoDirs()
 
 void Cube::updateIsoRots() 
 {
-    Base::Vector3d flb = getFrontRot() + getLeftRot()  + getBottomRot();
-    Base::Vector3d frb = getFrontRot() + getRightRot() + getBottomRot();
-    Base::Vector3d flt = getFrontRot() + getLeftRot()  + getTopRot();
-    Base::Vector3d frt = getFrontRot() + getRightRot() + getTopRot();
-    m_mapFrameRot.at("FrontBottomLeft")  = flb;
-    m_mapFrameRot.at("FrontBottomRight") = frb;
-    m_mapFrameRot.at("FrontTopLeft")     = flt;
-    m_mapFrameRot.at("FrontTopRight")    = frt;
+//    Base::Vector3d flb = getFrontRot() + getLeftRot()  + getBottomRot();
+//    Base::Vector3d frb = getFrontRot() + getRightRot() + getBottomRot();
+//    Base::Vector3d flt = getFrontRot() + getLeftRot()  + getTopRot();
+////    Base::Vector3d frt = getFrontRot() + getRightRot() + getTopRot();
+//    m_mapFrameRot.at("FrontBottomLeft")  = flb;
+//    m_mapFrameRot.at("FrontBottomRight") = frb;
+//    m_mapFrameRot.at("FrontTopLeft")     = flt;
+////    m_mapFrameRot.at("FrontTopRight")    = frt;
 }
 
 std::string Cube::dirToView(Base::Vector3d v)
@@ -238,7 +211,6 @@ std::string Cube::dirToView(Base::Vector3d v)
 
 void Cube::updateDirsToConfig(std::string cfg)
 {
-    Base::Console().Message("TRACE - Cube::updateDirs(%s) \n",cfg.c_str());
     Base::Vector3d boardValue = m_conTab.getDirItem(cfg,"Front");
     m_mapFrameDir.at("Front") = boardValue;
     boardValue = m_conTab.getDirItem(cfg,"Rear");
@@ -255,7 +227,6 @@ void Cube::updateDirsToConfig(std::string cfg)
 
 void Cube::updateRotsToConfig(std::string cfg)
 {
-    Base::Console().Message("TRACE - Cube::updateRots(%s) \n",cfg.c_str());
     Base::Vector3d boardValue = m_conTab.getRotItem(cfg,"Front");
     m_mapFrameRot.at("Front") = boardValue;
     boardValue = m_conTab.getRotItem(cfg,"Rear");
@@ -272,22 +243,16 @@ void Cube::updateRotsToConfig(std::string cfg)
 
 bool Cube::validateBoard(std::string cfg)
 {
-//    Base::Console().Message("TRACE - Cube::validateBoard(%s)\n",cfg.c_str());
     bool result = true;
     //check that Dirs match
     std::string strCfgDir;
     std::string strBoardDir;
-    
-//    Base::Console().Message("TRACE - Cube::validateBoard(%s) - BoardDirCount: %d BoardRotCount: %d\n",
-//                            cfg.c_str(),m_mapFrameDir.size(),m_mapFrameRot.size());
     for (auto& f: m_mapFrameDir) {
         Base::Vector3d boardValue = f.second;
         strBoardDir += dirToView(boardValue);
     }
     
     strCfgDir = m_conTab.getCfgDirStr(cfg);
-//    Base::Console().Message("TRACE - Cube::validateBoard(%s) - Config Dirs: %s  Board Dirs: %s\n",
-//                            cfg.c_str(),strCfgDir.c_str(),strBoardDir.c_str());
     if (strCfgDir != strBoardDir) {
         result = false;
         return result;
@@ -305,9 +270,6 @@ bool Cube::validateBoard(std::string cfg)
     if (strCfgRot != strBoardRot) {
         result = false;
     }
-//    Base::Console().Message("TRACE - Cube::validateBoard - Config Rots: %s  Board Rots: %s\n",strCfgRot.c_str(),strBoardRot.c_str());
-
-//    Base::Console().Message("TRACE - Cube::validateBoard - result: %d\n",result);
     return result;
 }
 
@@ -315,11 +277,11 @@ bool Cube::validateBoard(std::string cfg)
 std::string Cube::getBoardKey()
 {
     std::string result; 
-    Base::Vector3d frontDir = m_mapFrameDir.at("Front");
-    std::string frontView = dirToView(frontDir);
-    Base::Vector3d rightDir = m_mapFrameDir.at("Right");  
-    std::string rightView = dirToView(rightDir);
-    result = frontView + rightView;
+//    Base::Vector3d frontDir = m_mapFrameDir.at("Front");
+//    std::string frontView = dirToView(frontDir);
+//    Base::Vector3d rightDir = m_mapFrameDir.at("Right");  
+//    std::string rightView = dirToView(rightDir);
+//    result = frontView + rightView;
     return result;
 }
 
@@ -331,29 +293,8 @@ std::string Cube::getCurrConfig(void)
     boardValue = m_mapFrameDir.at("Right");                 
     std::string viewRight = dirToView(boardValue);
     std::string result = viewFront + viewRight;
-//    Base::Console().Message("TRACE - Cube::getCurrCon - Result: %s Front: %s Right: %s\n",result.c_str(),viewFront.c_str(),viewRight.c_str());
-//    for (auto& i : m_mapFrameDir) {
-//        Base::Console().Message("m_mapFrameDir: %s - %s - %s\n",
-//                                (i.first).c_str(),DrawUtil::formatVector(i.second).c_str(),dirToView(i.second).c_str());
-//    }
     return result;
 }
-
-//std::string Cube::stdDirToFace(Base::Vector3d dir)
-//{
-//    std::string result;
-////    int i = 0;
-////    auto it = m_stdDirToFaceKeys.begin();                //map find and at don't much like vector3d
-////    for (; it != m_stdDirToFaceKeys.end(); it++) {
-////        Base::Vector3d key = (*it);
-////        if ( key == dir ) {
-////            result = m_stdDirToFaceData.at(i);
-////            break;
-////        }
-////        i++;
-////    }
-//    return result;
-//}
 
 void Cube::saveSwap(std::string frame)
 {
@@ -426,7 +367,6 @@ void Cube::dumpState(char* title)
 
 Base::Vector3d Cube::getRight()
 {
-    std::string myFace = "D";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Right");
     return result;
@@ -434,7 +374,6 @@ Base::Vector3d Cube::getRight()
 
 Base::Vector3d Cube::getFront()
 {
-    std::string myFace = "A";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Front");
     return result;
@@ -442,7 +381,6 @@ Base::Vector3d Cube::getFront()
 
 Base::Vector3d Cube::getTop()
 {
-    std::string myFace = "B";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Top");
     return result;
@@ -450,7 +388,6 @@ Base::Vector3d Cube::getTop()
 
 Base::Vector3d Cube::getLeft()
 {
-    std::string myFace = "C";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Left");
     return result;
@@ -458,7 +395,6 @@ Base::Vector3d Cube::getLeft()
 
 Base::Vector3d Cube::getRear()
 {
-    std::string myFace = "F";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Rear");
     return result;
@@ -466,7 +402,6 @@ Base::Vector3d Cube::getRear()
 
 Base::Vector3d Cube::getBottom()
 {
-    std::string myFace = "E";
     Base::Vector3d result;
     result = m_mapFrameDir.at("Bottom");
     return result;
@@ -511,7 +446,6 @@ Base::Vector3d Cube::getRightRot()
 
 Base::Vector3d Cube::getFrontRot()
 {
-    std::string myFace = "A";
     Base::Vector3d result;
     result = m_mapFrameRot.at("Front");
     return result;
@@ -519,7 +453,6 @@ Base::Vector3d Cube::getFrontRot()
 
 Base::Vector3d Cube::getTopRot()
 {
-    std::string myFace = "B";
     Base::Vector3d result;
     result = m_mapFrameRot.at("Top");
     return result;
@@ -527,7 +460,6 @@ Base::Vector3d Cube::getTopRot()
 
 Base::Vector3d Cube::getLeftRot()
 {
-    std::string myFace = "C";
     Base::Vector3d result;
     result = m_mapFrameRot.at("Left");
     return result;
@@ -535,7 +467,6 @@ Base::Vector3d Cube::getLeftRot()
 
 Base::Vector3d Cube::getRearRot()
 {
-    std::string myFace = "F";
     Base::Vector3d result;
     result = m_mapFrameRot.at("Rear");
     return result;
@@ -552,28 +483,81 @@ Base::Vector3d Cube::getBottomRot()
 Base::Vector3d Cube::getFBLRot()
 {
     Base::Vector3d result;
-    result = m_mapFrameRot.at("FrontBottomLeft");
+    double magic1 = 157.5 * M_PI / 180.0;                // 90 + 45 + magic1
+//    double magic1 = -22.5 * M_PI / 180.0;              //45*/2
+    double magic2 = -17.632 * M_PI / 180.0;              //±35.264° / 2 "magic angle"??  
+                                                         // <<https://en.wikipedia.org/wiki/Isometric_projection#Overview
+    Base::Vector3d up = getTop();
+    Base::Vector3d view = getFBL();
+    Base::Vector3d cross = up.Cross(view);
+    Base::Vector3d rot1  = DrawUtil::vecRotate(view,magic1,cross);
+    Base::Vector3d rot2  = DrawUtil::vecRotate(rot1,magic2,up);
+    result = rot2;
+    Base::Vector3d viewA = getFront();
+    if ((viewA == m_viewToStdDir.at("C")) ||
+        (viewA == m_viewToStdDir.at("D"))) {
+        result = Base::Vector3d(-1.0*result.x,-1.0*result.y,result.z);
+    }
     return result;
 }
 
 Base::Vector3d Cube::getFBRRot()
 {
     Base::Vector3d result;
-    result = m_mapFrameRot.at("FrontBottomRight");
+    double magic1 = -22.5 * M_PI / 180.0;               //45*/2
+    double magic2 = 17.632 * M_PI / 180.0;              //±35.264° / 2 "magic angle"
+    Base::Vector3d up = getTop();
+    Base::Vector3d view = getFBR();
+    Base::Vector3d cross = up.Cross(view);
+    Base::Vector3d rot1  = DrawUtil::vecRotate(view,magic1,cross);
+    Base::Vector3d rot2  = DrawUtil::vecRotate(rot1,magic2,up);
+    result = rot2;
+    Base::Vector3d viewA = getFront();
+    if ((viewA == m_viewToStdDir.at("C")) ||
+        (viewA == m_viewToStdDir.at("D"))) {
+        result = Base::Vector3d(-1.0*result.x,-1.0*result.y,result.z);
+    }
     return result;
 }
 
 Base::Vector3d Cube::getFTLRot()
 {
     Base::Vector3d result;
-    result = m_mapFrameRot.at("FrontTopLeft");
+    double magic1 = -157.5 * M_PI / 180.0;
+    double magic2 = -17.632 * M_PI / 180.0;
+    
+    //+45? not quite
+    //-18?
+    Base::Vector3d up = getTop();
+    Base::Vector3d view = getFTL();
+    Base::Vector3d cross = up.Cross(view);
+    Base::Vector3d rot1  = DrawUtil::vecRotate(view,magic1,cross);
+    Base::Vector3d rot2  = DrawUtil::vecRotate(rot1,magic2,up);
+    result = rot2;
+    Base::Vector3d viewA = getFront();
+    if ((viewA == m_viewToStdDir.at("C")) ||
+        (viewA == m_viewToStdDir.at("D"))) {
+        result = Base::Vector3d(-1.0*result.x,-1.0*result.y,result.z);
+    }
     return result;
 }
 
 Base::Vector3d Cube::getFTRRot()
 {
     Base::Vector3d result;
-    result = m_mapFrameRot.at("FrontTopRight");
+    double magic1 = 22.5 * M_PI / 180.0;
+    double magic2 = 17.632 * M_PI / 180.0;
+    Base::Vector3d up = getTop();
+    Base::Vector3d view = getFTR();
+    Base::Vector3d cross = up.Cross(view);
+    Base::Vector3d rot1  = DrawUtil::vecRotate(view,magic1,cross);
+    Base::Vector3d rot2  = DrawUtil::vecRotate(rot1,magic2,up);
+    result = rot2;
+    Base::Vector3d viewA = getFront();
+    if ((viewA == m_viewToStdDir.at("C")) ||
+        (viewA == m_viewToStdDir.at("D"))) {
+        result = Base::Vector3d(-1.0*result.x,-1.0*result.y,result.z);
+    }
     return result;
 }
 
@@ -600,13 +584,10 @@ Base::Vector3d configLine::getItem(std::string frame)
 std::string configLine::getString()
 {
     //this outputs Bottom/Left/Front/Rear/Right/Top 
-//    Base::Console().Message("TRACE - conLine::getString() - key: %s\n", key.c_str());
     std::string result;
     for (auto& i: itemMap) {
         Base::Vector3d itemVec = i.second;
         result += Cube::dirToView(itemVec);
-//        Base::Console().Message("TRACE - %s - %s/%s\n",
-//                                i.first.c_str(),DrawUtil::formatVector(i.second).c_str(), Cube::dirToView(itemVec).c_str());
     }
     return result;
 }
@@ -625,7 +606,6 @@ void configLine::dump(char* title)
 std::string configTable::getCfgDirStr(std::string cfg)
 {
     std::string result;
-//    Base::Console().Message("TRACE - conTab::getCFGDirStr(%s)\n",cfg.c_str());
     configLine dirLine = getDirLine(cfg);
     result = dirLine.getString();
     return result;
@@ -652,14 +632,12 @@ configLine configTable::getRotLine(std::string k)
 configLine configTable::getLine(std::string k, std::vector<configLine> list)
 {
     configLine result;
-//    Base::Console().Message("TRACE - conTab::getLine(%s)\n",k.c_str());
     for (auto& l: list) {
         if (k == l.getKey()) {
             result = l;
             break;
         }
     }
-//    Base::Console().Message("result: %s\n",result.getString().c_str());
     return result;
 }
 
@@ -693,16 +671,163 @@ void configTable::addRotItem(configLine cl)
 
 void configTable::initialize(void)
 {
-    Base::Console().Message("TRACE - cT::initialize()\n");
     dirs.clear();
     rots.clear();
     configLine cl;
-//Rotations
-#include "rots.cpp"    
-//Directions items
-#include "dirs.cpp"
 
-    Base::Console().Message("TRACE - cT::initialize dirs: %d rots %d\n",dirs.size(),rots.size());
+//Rotations
+//#include "rots.cpp"    
+// Rots - b/f/l/k/r/t
+    cl = configLine( 1 , "AB", Base::Vector3d(0,0,1), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1) );
+    addRotItem(cl);
+    cl = configLine( 2 , "AC", Base::Vector3d(-1,0,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 3 , "AD", Base::Vector3d(1,0,0), Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 4 , "AE", Base::Vector3d(0,0,-1), Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1) );
+    addRotItem(cl);
+    cl = configLine( 5 , "BA", Base::Vector3d(0,-1,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0) );
+    addRotItem(cl);
+    cl = configLine( 6 , "BC", Base::Vector3d(-1,0,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 7 , "BD", Base::Vector3d(1,0,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 8 , "BF", Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0) );
+    addRotItem(cl);
+    cl = configLine( 9 , "CA", Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(0,1,0) );
+    addRotItem(cl);
+    cl = configLine( 10 , "CB", Base::Vector3d(0,0,1), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), Base::Vector3d(0,0,1) );
+    addRotItem(cl);
+    cl = configLine( 11 , "CE", Base::Vector3d(0,0,-1), Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1) );
+    addRotItem(cl);
+    cl = configLine( 12 , "CF", Base::Vector3d(0,-1,0), Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0) );
+    addRotItem(cl);
+    cl = configLine( 13 , "DA", Base::Vector3d(0,1,0), Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0) );
+    addRotItem(cl);
+    cl = configLine( 14 , "DB", Base::Vector3d(0,0,1), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1) );
+    addRotItem(cl);
+    cl = configLine( 15 , "DE", Base::Vector3d(0,0,-1), Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1) );
+    addRotItem(cl);
+    cl = configLine( 16 , "DF", Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,-1,0) );
+    addRotItem(cl);
+    cl = configLine( 17 , "EA", Base::Vector3d(0,1,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0) );
+    addRotItem(cl);
+    cl = configLine( 18 , "EC", Base::Vector3d(-1,0,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 19 , "ED", Base::Vector3d(1,0,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 20 , "EF", Base::Vector3d(0,-1,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 21 , "FB", Base::Vector3d(0,0,1), Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0), Base::Vector3d(0,0,1) );
+    addRotItem(cl);
+    cl = configLine( 22 , "FC", Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 23 , "FD", Base::Vector3d(1,0,0), Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(1,0,0) );
+    addRotItem(cl);
+    cl = configLine( 24 , "FE", Base::Vector3d(0,0,-1), Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1) );
+    addRotItem(cl);
+
+
+//Directions items
+//#include "dirs.cpp"
+// Dirs  - b/f/l/k/r/t
+    cl = configLine( 1 , "AB", Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), 
+                               Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 2 , "AC", Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0), 
+                               Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1) );
+    addDirItem(cl);
+    cl = configLine( 3 , "AD", Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), 
+                               Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,1) );
+    addDirItem(cl);
+    cl = configLine( 4 , "AE", Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), 
+                               Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 5 , "BA", Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), 
+                               Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0) );
+    addDirItem(cl);
+    //BC = FBDECA
+    cl = configLine( 6 , "BC", Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), 
+                               Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0) );
+    addDirItem(cl);
+    cl = configLine( 7 , "BD", Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), 
+                               Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), Base::Vector3d(0,1,0) );
+    addDirItem(cl);
+    cl = configLine( 8 , "BF", Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0), 
+                               Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 9 , "CA", Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), 
+                               Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1) );
+    addDirItem(cl);
+    cl = configLine( 10 , "CB", Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0) );
+    addDirItem(cl);
+    cl = configLine( 11 , "CE", Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0) );
+    addDirItem(cl);
+    cl = configLine( 12 , "CF", Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1) );
+    addDirItem(cl);
+    cl = configLine( 13 , "DA", Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1) );
+    addDirItem(cl);
+    cl = configLine( 14 , "DB", Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0) );
+    addDirItem(cl);
+    cl = configLine( 15 , "DE", Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0) );
+    addDirItem(cl);
+    cl = configLine( 16 , "DF", Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,1) );
+    addDirItem(cl);
+    cl = configLine( 17 , "EA", Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 18 , "EC", Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0) );
+    addDirItem(cl);
+    cl = configLine( 19 , "ED", Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0) );
+    addDirItem(cl);
+    cl = configLine( 20 , "EF", Base::Vector3d(-1,0,0), Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), 
+                                Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), Base::Vector3d(1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 21 , "FB", Base::Vector3d(-1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,-1), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1), Base::Vector3d(1,0,0) );
+    addDirItem(cl);
+    cl = configLine( 22 , "FC", Base::Vector3d(0,0,-1), Base::Vector3d(0,1,0), Base::Vector3d(1,0,0), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(-1,0,0), Base::Vector3d(0,0,1) );
+    addDirItem(cl);
+    cl = configLine( 23 , "FD", Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), Base::Vector3d(-1,0,0), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(1,0,0), Base::Vector3d(0,0,-1) );
+    addDirItem(cl);
+    cl = configLine( 24 , "FE", Base::Vector3d(1,0,0), Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), 
+                                Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), Base::Vector3d(-1,0,0) );
+    addDirItem(cl);
 }    
 
 void configTable::dump(char* title)
