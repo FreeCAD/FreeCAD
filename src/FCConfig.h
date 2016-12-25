@@ -342,5 +342,6 @@ typedef unsigned __int64    uint64_t;
 //#	define _PreComp_                  // use precompiled header
 #endif
 
+#define USE_OLD_DAG 0
 
 #endif //FC_CONFIG_H

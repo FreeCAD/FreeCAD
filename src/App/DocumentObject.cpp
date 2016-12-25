@@ -182,12 +182,86 @@ std::vector<DocumentObject*> DocumentObject::getOutList(void) const
     return ret;
 }
 
+#if USE_OLD_DAG
 std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 {
     if (_pDoc)
         return _pDoc->getInList(this);
     else
         return std::vector<App::DocumentObject*>();
+}
+
+#else // if USE_OLD_DAG
+
+std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
+{
+    return _inList;
+}
+
+#endif // if USE_OLD_DAG
+
+
+void _getInListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
+{
+    for (const auto objIt : obj->getInList()){
+        // if the check object is in the recursive inList we have a cycle!
+        if (objIt == checkObj || depth <= 0){
+            std::cerr << "DocumentObject::getInListRecursive(): cyclic dependency detected!"<<std::endl;
+            throw Base::Exception("DocumentObject::getInListRecursive(): cyclic dependency detected!");
+        }
+
+        objSet.push_back(objIt);
+        _getInListRecursive(objSet, objIt, checkObj,depth-1);
+    }
+}
+
+std::vector<App::DocumentObject*> DocumentObject::getInListRecursive(void) const
+{
+    // number of objects in document is a good estimate in result size
+    int maxDepth = getDocument()->countObjects() +2;
+    std::vector<App::DocumentObject*> result;
+    result.reserve(maxDepth);
+
+    // using a rcursie helper to collect all InLists
+    _getInListRecursive(result, this, this, maxDepth);
+
+    // remove duplicate entries and resize the vector
+    std::sort(result.begin(), result.end());
+    auto newEnd = std::unique(result.begin(), result.end());
+    result.resize(std::distance(result.begin(), newEnd));
+
+    return result;
+}
+
+void _getOutListRecursive(std::vector<DocumentObject*>& objSet, const DocumentObject* obj, const DocumentObject* checkObj, int depth)
+{
+    for (const auto objIt : obj->getOutList()){
+        // if the check object is in the recursive inList we have a cycle!
+        if (objIt == checkObj || depth <= 0){
+            std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::Exception("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+        }
+        objSet.push_back(objIt);
+        _getOutListRecursive(objSet, objIt, checkObj,depth-1);
+    }
+}
+
+std::vector<App::DocumentObject*> DocumentObject::getOutListRecursive(void) const
+{
+    // number of objects in document is a good estimate in result size
+    int maxDepth = getDocument()->countObjects() + 2;
+    std::vector<App::DocumentObject*> result;
+    result.reserve(maxDepth);
+
+    // using a recursive helper to collect all OutLists
+    _getOutListRecursive(result, this, this, maxDepth);
+
+    // remove duplicate entries and resize the vector
+    std::sort(result.begin(), result.end());
+    auto newEnd = std::unique(result.begin(), result.end());
+    result.resize(std::distance(result.begin(), newEnd));
+
+    return result;
 }
 
 DocumentObjectGroup* DocumentObject::getGroup() const
@@ -228,6 +302,67 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub &linkTo) const
     linkTo_in_vector.push_back(linkTo.getValue());
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
+
+#if USE_OLD_DAG
+#else
+bool DocumentObject::_isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
+{
+    if (std::find(_inList.begin(), _inList.end(), test) != _inList.end())
+        return true;
+
+    for (auto obj : _inList){
+        // if the check object is in the recursive inList we have a cycle!
+        if (obj == checkObj || depth <= 0){
+            std::cerr << "DocumentObject::getOutListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::Exception("DocumentObject::getOutListRecursive(): cyclic dependency detected!");
+        }
+
+        if (_isInInListRecursive(obj, test, checkObj, depth - 1))
+            return true;
+    }
+
+    return false;
+}
+
+bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
+{
+    return _isInInListRecursive(this, linkTo, this, getDocument()->countObjects());
+}
+
+bool DocumentObject::isInInList(DocumentObject *linkTo) const
+{
+    if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end())
+        return true;
+    else
+        return false;
+}
+
+bool DocumentObject::_isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
+{
+    std::vector <DocumentObject*> outList = act->getOutList();
+
+    if (std::find(outList.begin(), outList.end(), test) != outList.end())
+        return true;
+
+    for (auto obj : outList){
+        // if the check object is in the recursive inList we have a cycle!
+        if (obj == checkObj || depth <= 0){
+            std::cerr << "DocumentObject::isInOutListRecursive(): cyclic dependency detected!" << std::endl;
+            throw Base::Exception("DocumentObject::isInOutListRecursive(): cyclic dependency detected!");
+        }
+
+        if (_isInOutListRecursive(obj, test, checkObj, depth - 1))
+            return true;
+    }
+
+    return false;
+}
+
+bool DocumentObject::isInOutListRecursive(DocumentObject *linkTo) const
+{
+    return _isInOutListRecursive(this, linkTo, this, getDocument()->countObjects());
+}
+#endif //USE_OLD_DAG
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {
@@ -405,3 +540,17 @@ void DocumentObject::unsetupObject()
     for(auto ext : vector)
         ext->onExtendedUnsetupObject();
 }
+
+#if USE_OLD_DAG
+#else
+void App::DocumentObject::_removeBackLink(DocumentObject* rmfObj)
+{
+       _inList.erase(std::remove(_inList.begin(), _inList.end(), rmfObj), _inList.end());
+}
+
+void App::DocumentObject::_addBackLink(DocumentObject* newObje)
+{
+    if ( std::find(_inList.begin(), _inList.end(), newObje) == _inList.end() )
+       _inList.push_back(newObje);
+}
+#endif //USE_OLD_DAG
