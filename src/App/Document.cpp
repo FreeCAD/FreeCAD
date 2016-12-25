@@ -58,11 +58,17 @@ recompute path. Also enables more complicated dependencies beyond trees.
 # include <bitset>
 #endif
 
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/subgraph.hpp>
+#include <boost/graph/graphviz.hpp>
+
+#if USE_OLD_DAG
 #include <boost/graph/topological_sort.hpp>
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
 #include <boost/graph/visitors.hpp>
-#include <boost/graph/graphviz.hpp>
+#endif //USE_OLD_DAG
+
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
 #include <unordered_set>
@@ -138,15 +144,17 @@ struct DocumentP
     DocumentObject* activeObject;
     Transaction *activeUndoTransaction;
     int iTransactionMode;
-    std::map<Vertex,DocumentObject*> vertexMap;
     bool rollback;
     bool undoing; ///< document in the middle of undo or redo
     std::bitset<32> StatusBits;
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
+#if USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
+    std::map<Vertex,DocumentObject*> vertexMap;
+#endif //USE_OLD_DAG
 
     DocumentP() {
         activeObject = 0;
@@ -211,7 +219,7 @@ void Document::exportGraphviz(std::ostream& out) const
 {
     /* Typedefs for a graph with graphviz attributes */
     typedef std::map<std::string, std::string> GraphvizAttributes;
-    typedef subgraph< adjacency_list<vecS, vecS, directedS,
+    typedef boost::subgraph< adjacency_list<vecS, vecS, directedS,
             property<vertex_attribute_t, GraphvizAttributes>,
             property<edge_index_t, int, property<edge_attribute_t, GraphvizAttributes> >,
             property<graph_name_t, std::string,
@@ -1667,6 +1675,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
+#if USE_OLD_DAG
 namespace boost {
 // recursive helper function to get all dependencies
 void out_edges_recursive(const Vertex& v, const DependencyList& g, std::set<Vertex>& out)
@@ -1753,29 +1762,6 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
     return ary;
 }
 
-/**
- * @brief Signal that object identifiers, typically a property or document object has been renamed.
- *
- * This function iterates through all document object in the document, and calls its
- * renameObjectIdentifiers functions.
- *
- * @param paths Map with current and new names
- */
-
-void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
-{
-    std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
-
-    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
-    while (it != paths.end()) {
-        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
-        ++it;
-    }
-
-    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
-        (*it)->renameObjectIdentifiers(extendedPaths);
-}
-
 void Document::_rebuildDependencyList(void)
 {
     d->VertexObjectList.clear();
@@ -1809,13 +1795,62 @@ void Document::_rebuildDependencyList(void)
     }
 }
 
-void Document::recompute()
+#else
+
+std::vector<App::DocumentObject*> Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
 {
+    std::vector<App::DocumentObject*> dep;
+    for (auto obj : objs){
+        if(!obj)
+            continue;
+        std::vector<App::DocumentObject*> objDep = obj->getOutListRecursive();
+        dep.insert(dep.end(), objDep.begin(), objDep.end());
+        dep.push_back(obj);
+    }
+
+    // remove duplicate entries and resize the vector
+    std::sort(dep.begin(), dep.end());
+    auto newEnd = std::unique(dep.begin(), dep.end());
+    dep.resize(std::distance(dep.begin(), newEnd));
+
+    return dep;
+}
+#endif // USE_OLD_DAG
+
+
+/**
+ * @brief Signal that object identifiers, typically a property or document object has been renamed.
+ *
+ * This function iterates through all document object in the document, and calls its
+ * renameObjectIdentifiers functions.
+ *
+ * @param paths Map with current and new names
+ */
+
+void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier> &paths)
+{
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier> extendedPaths;
+
+    std::map<App::ObjectIdentifier, App::ObjectIdentifier>::const_iterator it = paths.begin();
+    while (it != paths.end()) {
+        extendedPaths[it->first.canonicalPath()] = it->second.canonicalPath();
+        ++it;
+    }
+
+    for (std::vector<DocumentObject*>::iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
+        (*it)->renameObjectIdentifiers(extendedPaths);
+}
+
+#if USE_OLD_DAG
+int Document::recompute()
+{
+    int objectCount = 0;
+    
     // The 'SkipRecompute' flag can be (tmp.) set to avoid to many
     // time expensive recomputes
     bool skip = testStatus(Document::SkipRecompute);
     if (skip)
-        return;
+        return 0;
 
     // delete recompute log
     for (std::vector<App::DocumentObjectExecReturn*>::iterator it=_RecomputeLog.begin();it!=_RecomputeLog.end();++it)
@@ -1835,7 +1870,7 @@ void Document::recompute()
     }
     catch (const std::exception& e) {
         std::cerr << "Document::recompute: " << e.what() << std::endl;
-        return;
+        return -1;
     }
 
     // caching vertex to DocObject
@@ -1908,8 +1943,9 @@ void Document::recompute()
             if ( _recomputeFeature(Cur)) {
                 // if somthing happen break execution of recompute
                 d->vertexMap.clear();
-                return;
+                return -1;
             }
+            ++objectCount;
         }
     }
 
@@ -1921,7 +1957,91 @@ void Document::recompute()
     d->vertexMap.clear();
 
     signalRecomputed(*this);
+    
+    return objectCount;
 }
+
+#else // USE_OLD_DAG
+
+std::vector<App::DocumentObject*> Document::topologicalSort() const
+{
+    // topological sort algorithm described here: https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
+    vector < App::DocumentObject* > ret;
+    ret.reserve(d->objectArray.size());
+    map < App::DocumentObject*,int > countMap;
+
+    for (auto objectIt : d->objectArray)
+        countMap[objectIt] = objectIt->getInList().size();
+
+    auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool { 
+        return count.second == 0; 
+    });
+
+    if (rootObjeIt == countMap.end()){
+        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << endl;
+        return ret;
+    }
+
+    while (rootObjeIt != countMap.end()){
+        rootObjeIt->second = rootObjeIt->second - 1;
+        for (auto outListIt : rootObjeIt->first->getOutList()){
+            auto outListMapIt = countMap.find(outListIt);
+            outListMapIt->second = outListMapIt->second - 1;
+        }
+        ret.push_back(rootObjeIt->first);
+
+        rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool { 
+            return count.second == 0; 
+        });
+    }
+
+    return ret;
+}
+
+int Document::recompute()
+{
+    int objectCount = 0;
+    // delete recompute log
+    for( auto LogEntry: _RecomputeLog)
+        delete LogEntry;
+    _RecomputeLog.clear();
+
+    // get the sorted vector of all objects in the document and go though it from the end
+    vector<DocumentObject*> topoSortedObjects = topologicalSort();
+
+    if (topoSortedObjects.size() != d->objectArray.size()){
+        cerr << "App::Document::recompute(): topological sort fails, invalid DAG!" << endl;
+        return -1;
+    }
+
+    for (auto objIt = topoSortedObjects.rbegin(); objIt != topoSortedObjects.rend(); ++objIt){
+        // ask the object if it should be recomputed
+        if ((*objIt)->mustExecute() == 1){
+            objectCount++;
+            if (_recomputeFeature(*objIt)) {
+                // if something happen break execution of recompute
+                return -1;
+            }
+            else{
+                (*objIt)->purgeTouched();
+                // set all dependent object touched to force recompute
+                for (auto inObjIt : (*objIt)->getInList())
+                    inObjIt->touch();
+            }
+        }
+
+    }
+#ifdef FC_DEBUG
+    // check if all objects are recalculated which were thouched 
+    for (auto objectIt : d->objectArray)
+        if (objectIt->isTouched())
+            cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;
+#endif
+
+        return objectCount;
+}
+
+#endif // USE_OLD_DAG
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 {
@@ -2182,6 +2302,7 @@ void Document::remObject(const char* sName)
         signalTransactionRemove(*pos->second, 0);
     }
 
+#if USE_OLD_DAG
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {
@@ -2191,7 +2312,8 @@ void Document::remObject(const char* sName)
             }
         }
     }
-
+#endif //USE_OLD_DAG
+    
     // Before deleting we must nullify all dependant objects
     breakDependency(pos->second, true);
 
@@ -2564,4 +2686,15 @@ int Document::countObjectsOfType(const Base::Type& typeId) const
 PyObject * Document::getPyObject(void)
 {
     return Py::new_reference_to(DocumentPythonObject);
+}
+
+std::vector<App::DocumentObject*> Document::getRootObjects() const
+{
+        std::vector < App::DocumentObject* > ret;
+
+        for (auto objectIt : d->objectArray)
+                if (objectIt->getInList().size() == 0)
+                        ret.push_back(objectIt);
+
+        return ret;
 }

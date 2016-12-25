@@ -490,6 +490,38 @@ Py::List DocumentPy::getObjects(void) const
     return res;
 }
 
+Py::List DocumentPy::getToplogicalSortedObjects(void) const
+{
+#if USE_OLD_DAG == 0 
+    std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
+    Py::List res;
+
+    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object((*It)->getPyObject(), true));
+
+    return res;
+#else
+    return Py::List();
+#endif
+}
+
+Py::List DocumentPy::getRootObjects(void) const
+{
+#if USE_OLD_DAG == 0    
+    std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
+    Py::List res;
+
+    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object((*It)->getPyObject(), true));
+
+    return res;
+#else
+    return Py::List();
+#endif
+}
+
 Py::Int DocumentPy::getUndoMode(void) const
 {
     return Py::Int(getDocumentPtr()->getUndoMode());

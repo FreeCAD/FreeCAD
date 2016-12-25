@@ -151,6 +151,18 @@ Both parameters are optional.</UserDocu>
       </Documentation>
       <Parameter Name="Objects" Type="List" />
     </Attribute>
+    <Attribute Name="ToplogicalSortedObjects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of object of this document in topological sorted order</UserDocu>
+      </Documentation>
+      <Parameter Name="ToplogicalSortedObjects" Type="List" />
+    </Attribute>
+    <Attribute Name="RootObjects" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The list of root object of this document</UserDocu>
+      </Documentation>
+      <Parameter Name="RootObjects" Type="List" />
+    </Attribute>
     <Attribute Name="UndoMode" ReadOnly="false">
       <Documentation>
         <UserDocu>The Undo mode of the Document (0 = no Undo, 1 = Undo/Redo)</UserDocu>
