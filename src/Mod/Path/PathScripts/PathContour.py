@@ -67,8 +67,8 @@ class ObjectContour:
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
         obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
-        obj.StepDown = (1, 0.01, 1000, 0.5)
+        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
+        #obj.StepDown = (1, 0.01, 1000, 0.5)
         obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
 
@@ -198,7 +198,7 @@ class ObjectContour:
 
         depthparams = depth_params(
             obj.ClearanceHeight.Value,
-            obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown, 0.0,
+            obj.SafeHeight.Value, obj.StartDepth.Value, obj.StepDown.Value, 0.0,
             obj.FinalDepth.Value, None)
 
         PathKurveUtils.profile2(
@@ -447,13 +447,13 @@ class TaskPanel:
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = self.form.clearanceHeight.text()
             if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = self.form.stepDown.value()
+                self.obj.StepDown = self.form.stepDown.text()
             if hasattr(self.obj, "OffsetExtra"):
-                self.obj.OffsetExtra = self.form.extraOffset.value()
+                self.obj.OffsetExtra = self.form.extraOffset.text()
             if hasattr(self.obj, "SegLen"):
                 self.obj.SegLen = self.form.segLen.value()
             if hasattr(self.obj, "RollRadius"):
-                self.obj.RollRadius = self.form.rollRadius.value()
+                self.obj.RollRadius = self.form.rollRadius.text()
             if hasattr(self.obj, "PlungeAngle"):
                 self.obj.PlungeAngle = str(self.form.plungeAngle.value())
             if hasattr(self.obj, "UseComp"):
@@ -471,10 +471,10 @@ class TaskPanel:
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.OffsetExtra.Value)
+        self.form.stepDown.setText(str(self.obj.StepDown.Value))
+        self.form.extraOffset.setText(str(self.obj.OffsetExtra.Value))
         self.form.segLen.setValue(self.obj.SegLen.Value)
-        self.form.rollRadius.setValue(self.obj.RollRadius.Value)
+        self.form.rollRadius.setText(str(self.obj.RollRadius.Value))
         self.form.plungeAngle.setValue(self.obj.PlungeAngle.Value)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)

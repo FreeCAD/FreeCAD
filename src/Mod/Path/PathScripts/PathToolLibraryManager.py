@@ -190,6 +190,23 @@ class ToolLibraryManager():
         headers = ["","Tool Num.","Name","Tool Type","Material","Diameter","Length Offset","Flat Radius","Corner Radius","Cutting Edge Angle","Cutting Edge Height"]
         model = QtGui.QStandardItemModel()
         model.setHorizontalHeaderLabels(headers)
+
+        def unitconv(ivalue):
+            parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
+            digits = parms.GetContents()[1][2] #get user's number of digits of precision
+            if parms.GetContents()[0][2]==0:
+                suffix = 'mm'
+                conversion = 1.0
+            elif parms.GetContents()[0][2]==3:
+                suffix = 'in'
+                conversion = 25.4
+            else:
+                suffix = ''
+            val = FreeCAD.Units.parseQuantity(str(round(ivalue/conversion,digits))+suffix)
+            displayed_val = val.UserString #just the displayed value-not the internal one
+
+            return displayed_val
+
         if tt:
             if len(tt.Tools) == 0:
                 tooldata.append([])
@@ -201,12 +218,12 @@ class ToolLibraryManager():
                 itemName =  QtGui.QStandardItem(t.Name)
                 itemToolType =  QtGui.QStandardItem(t.ToolType)
                 itemMaterial =  QtGui.QStandardItem(t.Material)
-                itemDiameter =  QtGui.QStandardItem(str(t.Diameter))
-                itemLengthOffset =  QtGui.QStandardItem(str(t.LengthOffset))
-                itemFlatRadius =  QtGui.QStandardItem(str(t.FlatRadius))
-                itmCornerRadius =  QtGui.QStandardItem(str(t.CornerRadius))
+                itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))   
+                itemLengthOffset =  QtGui.QStandardItem(unitconv(t.LengthOffset))
+                itemFlatRadius =  QtGui.QStandardItem(unitconv(t.FlatRadius))
+                itmCornerRadius =  QtGui.QStandardItem(unitconv(t.CornerRadius))
                 itemCuttingEdgeAngle =  QtGui.QStandardItem(str(t.CuttingEdgeAngle))
-                itemCuttingEdgeHeight =  QtGui.QStandardItem(str(t.CuttingEdgeHeight))
+                itemCuttingEdgeHeight =  QtGui.QStandardItem(unitconv(t.CuttingEdgeHeight))
 
                 row = [itemcheck, itemNumber, itemName, itemToolType, itemMaterial, itemDiameter, itemLengthOffset, itemFlatRadius, itmCornerRadius, itemCuttingEdgeAngle, itemCuttingEdgeHeight]
                 model.appendRow(row)
@@ -397,12 +414,12 @@ class EditorPanel():
                 t.Name = str(editform.NameField.text())
             t.ToolType = self.getType(editform.TypeField.currentIndex())
             t.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            t.Diameter = editform.DiameterField.value()
-            t.LengthOffset = editform.LengthOffsetField.value()
-            t.FlatRadius = editform.FlatRadiusField.value()
-            t.CornerRadius = editform.CornerRadiusField.value()
+            t.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
+            t.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
+            t.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
+            t.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
             t.CuttingEdgeAngle = editform.CuttingEdgeAngleField.value()
-            t.CuttingEdgeHeight = editform.CuttingEdgeHeightField.value()
+            t.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
 
             listname = self.form.listView.selectedIndexes()[0].data()
             if self.TLM.addnew(listname, t) is True:
@@ -463,12 +480,12 @@ class EditorPanel():
         editform.NameField.setText(tool.Name)
         editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
         editform.MaterialField.setCurrentIndex(self.getMaterial(tool.Material))
-        editform.DiameterField.setValue(tool.Diameter)
-        editform.LengthOffsetField.setValue(tool.LengthOffset)
-        editform.FlatRadiusField.setValue(tool.FlatRadius)
-        editform.CornerRadiusField.setValue(tool.CornerRadius)
+        editform.DiameterField.setText(str(tool.Diameter))
+        editform.LengthOffsetField.setText(str(tool.LengthOffset))
+        editform.FlatRadiusField.setText(str(tool.FlatRadius))
+        editform.CornerRadiusField.setText(str(tool.CornerRadius))
         editform.CuttingEdgeAngleField.setValue(tool.CuttingEdgeAngle)
-        editform.CuttingEdgeHeightField.setValue(tool.CuttingEdgeHeight)
+        editform.CuttingEdgeHeightField.setText(str(tool.CuttingEdgeHeight))
 
         r = editform.exec_()
         if r:
@@ -476,12 +493,12 @@ class EditorPanel():
                 tool.Name = str(editform.NameField.text())
             tool.ToolType = self.getType(editform.TypeField.currentIndex())
             tool.Material = self.getMaterial(editform.MaterialField.currentIndex())
-            tool.Diameter = editform.DiameterField.value()
-            tool.LengthOffset = editform.LengthOffsetField.value()
-            tool.FlatRadius = editform.FlatRadiusField.value()
-            tool.CornerRadius = editform.CornerRadiusField.value()
+            tool.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
+            tool.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
+            tool.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
+            tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
             tool.CuttingEdgeAngle = editform.CuttingEdgeAngleField.value()
-            tool.CuttingEdgeHeight = editform.CuttingEdgeHeightField.value()
+            tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
 
             if self.TLM.updateTool(listname, toolnum, tool) is True:
                 self.loadTable(self.form.listView.selectedIndexes()[0])

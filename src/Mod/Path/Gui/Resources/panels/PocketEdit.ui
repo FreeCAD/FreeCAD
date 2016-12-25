@@ -10,6 +10,12 @@
     <height>525</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="minimumSize">
    <size>
     <width>0</width>
@@ -23,7 +29,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>0</number>
+      <number>5</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -34,7 +40,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -112,7 +118,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -165,23 +171,20 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QDoubleSpinBox" name="stepDown">
-         <property name="decimals">
-          <number>3</number>
-         </property>
-         <property name="minimum">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="Gui::InputField" name="stepDown">
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
          </property>
         </widget>
        </item>
@@ -193,7 +196,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -243,7 +246,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="label">
@@ -257,7 +260,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="label">
@@ -331,7 +334,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>329</height>
+        <height>321</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -406,20 +409,35 @@
          </layout>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2">
+       <item row="8" column="0" colspan="2">
         <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Material Allowance</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QDoubleSpinBox" name="extraOffset"/>
-          </item>
-         </layout>
+         <layout class="QGridLayout" name="gridLayout_6"/>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Material Allowance</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="Gui::InputField" name="extraOffset">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="minimum">
+          <double>0.000000000000000</double>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
         </widget>
        </item>
       </layout>
