@@ -61,11 +61,23 @@
       </Documentation>
       <Parameter Name="OutList" Type="List"/>
     </Attribute>
+    <Attribute Name="OutListRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects this object links to recursivly.</UserDocu>
+      </Documentation>
+      <Parameter Name="OutListRecursive" Type="List"/>
+    </Attribute>
     <Attribute Name="InList" ReadOnly="true">
       <Documentation>
         <UserDocu>A list of all objects which link to this object.</UserDocu>
       </Documentation>
       <Parameter Name="InList" Type="List"/>
+    </Attribute>
+    <Attribute Name="InListRecursive" ReadOnly="true">
+      <Documentation>
+        <UserDocu>A list of all objects which link to this object recursivly.</UserDocu>
+      </Documentation>
+      <Parameter Name="InListRecursive" Type="List"/>
     </Attribute>
     <Attribute Name="Name" ReadOnly="true">
 			<Documentation>
