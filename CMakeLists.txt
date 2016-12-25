@@ -367,14 +367,6 @@ if(FREECAD_LIBPACK_USE)
                 "==================================================\n")
     ENDIF(NOT SWIG_FOUND)
 
-# -------------------------------- Shiboken/PySide ------------------------
-
-    if(BUILD_QT5)
-        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
-    else()
-        find_package(PySideTools REQUIRED) # Pyside utilities (pyside-uic & pyside-rcc)
-    endif()
-
 # -------------------------------- Salome SMESH --------------------------
 
     if(NOT FREECAD_USE_EXTERNAL_SMESH)
