@@ -856,7 +856,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
                                 "==================\n")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
-        find_package(PySideTools REQUIRED) # PySide2 utilities (pyside-uic & pyside-rcc)
+        find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
     else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
