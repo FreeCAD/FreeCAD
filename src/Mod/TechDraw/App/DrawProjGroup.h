@@ -127,7 +127,9 @@ public:
     void spinCCW(void);
     
     void setTable(Base::Vector3d dir, Base::Vector3d rot);
+    void setConfig(std::string cfg);
     void resetTable(void);
+    void dumpISO(char * title);
 
 protected:
     void onChanged(const App::Property* prop);

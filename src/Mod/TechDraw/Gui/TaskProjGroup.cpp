@@ -179,12 +179,9 @@ void TaskProjGroup::on3DClicked(void)
     std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
     Base::Vector3d dir = dir3D.first;
     Base::Vector3d up = dir3D.second;
-    Base::Console().Message("TRACE - TPG::on3DClicked - dir: %s up: %s\n",
-                            DrawUtil::formatVector(dir).c_str(),DrawUtil::formatVector(up).c_str());
     
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {                              //why "if front"???
-        Base::Console().Message("TRACE - TPG::on3DClicked - front found\n");
         multiView->setTable(dir,up);
         setUiPrimary();
         Gui::Command::updateActive();
@@ -438,11 +435,9 @@ std::pair<Base::Vector3d,Base::Vector3d> TaskProjGroup::get3DViewDir()
 
     viewDir = Base::Vector3d(dvec[0], dvec[1], dvec[2]);
     viewUp  = Base::Vector3d(upvec[0],upvec[1],upvec[2]);
-    Base::Console().Message("TRACE - TPG::get3dview - Viewer dir: %s  Viewer Up: %s \n",
-                            DrawUtil::formatVector(viewDir).c_str(),DrawUtil::formatVector(viewUp).c_str());
     viewDir *= -1.0;              //Inventor dir is opposite TD dir, Inventor up is same as TD up
-    Base::Console().Message("TRACE - TPG::get3dview - (adjusted) Viewer dir: %s  Viewer Up: %s \n",
-                            DrawUtil::formatVector(viewDir).c_str(),DrawUtil::formatVector(viewUp).c_str());
+    viewDir = DrawUtil::closestBasis(viewDir);
+    viewUp  = DrawUtil::closestBasis(viewUp);
     result = std::make_pair(viewDir,viewUp);
     return result;
 }

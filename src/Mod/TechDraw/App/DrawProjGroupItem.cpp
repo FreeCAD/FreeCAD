@@ -87,25 +87,6 @@ short DrawProjGroupItem::mustExecute() const
 
 void DrawProjGroupItem::onChanged(const App::Property *prop)
 {
-//    //TODO: too many executes!
-//    //TODO: Should we allow changes to the Type here?  Seems that should be handled through DrawProjGroup
-//    if (!isRestoring()) {
-////        //Base::Console().Message("TRACE - DPGI::onChanged(%s) - %s/%s\n",prop->getName(),getNameInDocument(),Label.getValue());
-//        if (prop == &Type && Type.isTouched()) {
-////            //Base::Console().Message("TRACE - DPGI::onChanged(%s) - Type: %s\n",prop->getName(),Type.getValueAsString());
-////            execute();
-//        } else if (prop == &Direction) {
-//            if (getGroup() != nullptr) {
-//            OrientBasis.setValue(getGroup()->getXAxisDir(Type.getValueAsString()));
-//            Base::Console().Message("TRACE - DPGI::onChanged(%s) - Direction: %s  Orient: %s\n",
-//                                    prop->getName(),DrawUtil::formatVector(Direction.getValue()).c_str(),
-//                                    DrawUtil::formatVector(OrientBasis.getValue()).c_str());
-//            }
-//        }
-////            execute();
-////        }  //else if (prop == &OrientBasis) {  //don't want to do twice though!
-//    }
-
     TechDraw::DrawViewPart::onChanged(prop);
 
 }
@@ -139,36 +120,25 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
                                  const Base::Vector3d& axis, 
                                  const bool flip) const
 {
-//     Base::Console().Message("TRACE - DPGI::getViewAxis - %s/%s - Type: %s\n",getNameInDocument(),Label.getValue(),Type.getValueAsString());
      gp_Ax2 viewAxis;
      Base::Vector3d x = OrientBasis.getValue();
      Base::Vector3d nx = x;
      x.Normalize();
      Base::Vector3d na = axis;
      na.Normalize();
-//     Base::Console().Message("TRACE - DPGI::getViewAxis - axis: %s orient: %s\n",
-//                             DrawUtil::formatVector(axis).c_str(),DrawUtil::formatVector(x).c_str());
      
      if (DrawUtil::checkParallel(nx,na)) {                    //parallel/antiparallel
-//         Base::Console().Message("TRACE - DPGI::getViewAxis - parallel  flip: %d\n",flip);
          viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //use default orientation
      } else {
-         //Base::Console().Message("TRACE - DPGI::getViewAxis - skew  flip: %d\n",flip);
-//         if (Type.isValue("Right") || Type.isValue("Left")) {               //no difference with incorrect initial axis
-//             viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,!flip);     //no difference with correct initial axis!!
-//         } else {
-             viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
-//         }
+         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
      }
      
-     //Base::Console().Message("TRACE - DPGI::getViewAxis exits\n");
      return viewAxis;
 }
 
 //! rotate OrientBasis by angle radians around view Direction
 Base::Vector3d DrawProjGroupItem::rotated(const double angle)
 {
-    Base::Console().Message("TRACE - DPGI::rotated - %s/%s angle: %.3f\n",Label.getValue(),Type.getValueAsString(),angle);
     Base::Vector3d line = Direction.getValue();
     Base::Vector3d oldBasis = OrientBasis.getValue();
     Base::Vector3d newBasis;
@@ -176,16 +146,6 @@ Base::Vector3d DrawProjGroupItem::rotated(const double angle)
     Base::Matrix4D xForm;
     xForm.rotLine(line,angle);
     newBasis = xForm * (oldBasis);
-    Base::Console().Message("TRACE - DPGI::rotated - line: %s old: %s new: %s\n",
-                            DrawUtil::formatVector(line).c_str(),
-                            DrawUtil::formatVector(oldBasis).c_str(),
-                            DrawUtil::formatVector(newBasis).c_str());
-//    if (getGroup() != nullptr) {
-//        if (getGroup()->getException(Type.getValueAsString())) {
-//            newBasis = newBasis * -1.0;
-//            Base::Console().Message("TRACE - DPGI::rotated - EXCEPTION\n");
-//        }
-//    }
     return newBasis;
 }
 

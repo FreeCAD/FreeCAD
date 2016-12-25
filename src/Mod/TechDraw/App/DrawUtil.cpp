@@ -344,6 +344,49 @@ Base::Vector3d DrawUtil::vecRotate(Base::Vector3d vec,
     return result;
 }
 
+Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
+{
+    Base::Vector3d result(0.0,-1,0);
+    Base::Vector3d  stdX(1.0,0.0,0.0);
+    Base::Vector3d  stdY(0.0,1.0,0.0);
+    Base::Vector3d  stdZ(0.0,0.0,1.0);
+    Base::Vector3d  stdXr(-1.0,0.0,0.0);
+    Base::Vector3d  stdYr(0.0,-1.0,0.0);
+    Base::Vector3d  stdZr(0.0,0.0,-1.0);
+    double angleX,angleY,angleZ,angleXr,angleYr,angleZr, angleMin;
+
+    angleX = stdX.GetAngle(v);
+    angleY = stdY.GetAngle(v);
+    angleZ = stdZ.GetAngle(v);
+    angleXr = stdXr.GetAngle(v);
+    angleYr = stdYr.GetAngle(v);
+    angleZr = stdZr.GetAngle(v);
+
+    angleMin = angleX;
+    result = stdX;
+    if (angleY < angleMin) {
+        angleMin = angleY;
+        result = stdY;
+    }
+    if (angleZ < angleMin) {
+        angleMin = angleZ;
+        result = stdZ;
+    }
+    if (angleXr < angleMin) {
+        angleMin = angleXr;
+        result = stdXr;
+    }
+    if (angleYr < angleMin) {
+        angleMin = angleYr;
+        result = stdYr;
+    }
+    if (angleZr < angleMin) {
+        angleMin = angleZr;
+        result = stdZr;
+    }
+    return result;
+}
+
 //based on Function provided by Joe Dowsett, 2014
 double DrawUtil::sensibleScale(double working_scale)
 {
