@@ -190,16 +190,6 @@ class ToolLibraryManager():
         headers = ["","Tool Num.","Name","Tool Type","Material","Diameter","Length Offset","Flat Radius","Corner Radius","Cutting Edge Angle","Cutting Edge Height"]
         model = QtGui.QStandardItemModel()
         model.setHorizontalHeaderLabels(headers)
-        parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")
-        digits = parms.GetContents()[1][2] # user's number of digits of precision
-        if parms.GetContents()[0][2]==0:
-            suffix = 'mm'
-            conversion = 1.0
-        elif parms.GetContents()[0][2]==3:
-            suffix = 'in'
-            conversion = 25.4
-        else:
-            suffix = ''
 
         def unitconv(ivalue):
             parms = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units")

@@ -65,8 +65,8 @@ class ObjectPocket:
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "ClearanceHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","The height needed to clear clamps and obstructions"))
         obj.addProperty("App::PropertyDistance", "SafeHeight", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Rapid Safety Height between locations."))
-        obj.addProperty("App::PropertyFloatConstraint", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
-        obj.StepDown = (0.0, 0.01, 100.0, 0.5)
+        obj.addProperty("App::PropertyDistance", "StepDown", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Incremental Step Down of Tool"))
+        #obj.StepDown = (0.0, 0.01, 100.0, 0.5)
         obj.addProperty("App::PropertyDistance", "StartDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Starting Depth of Tool- first cut depth in Z"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Final Depth of Tool- lowest value in Z"))
         obj.addProperty("App::PropertyDistance", "FinishDepth", "Depth", QtCore.QT_TRANSLATE_NOOP("App::Property","Maximum material removed on final pass."))
@@ -553,9 +553,9 @@ class TaskPanel:
             if hasattr(self.obj, "ClearanceHeight"):
                 self.obj.ClearanceHeight = self.form.clearanceHeight.text()
             if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = self.form.stepDown.value()
+                self.obj.StepDown = self.form.stepDown.text()
             if hasattr(self.obj, "MaterialAllowance"):
-                self.obj.MaterialAllowance = self.form.extraOffset.value()
+                self.obj.MaterialAllowance = self.form.extraOffset.text()
             if hasattr(self.obj, "UseStartPoint"):
                 self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "Algorithm"):
@@ -578,8 +578,8 @@ class TaskPanel:
         self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
         self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
         self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-        self.form.extraOffset.setValue(self.obj.MaterialAllowance.Value)
+        self.form.stepDown.setText(str(self.obj.StepDown))
+        self.form.extraOffset.setText(str(self.obj.MaterialAllowance.Value))
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useZigZag.setChecked(self.obj.UseZigZag)
         self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
