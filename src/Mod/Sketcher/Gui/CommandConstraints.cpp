@@ -936,11 +936,11 @@ bool CmdSketcherConstrainVertical::isActive(void)
 // ======================================================================================
 
 namespace SketcherGui {
-    class LockSelection : public Gui::SelectionFilterGate
+    class LockConstraintSelection : public Gui::SelectionFilterGate
     {
         App::DocumentObject* object;
     public:
-        LockSelection(App::DocumentObject* obj)
+        LockConstraintSelection(App::DocumentObject* obj)
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {}
 
@@ -1015,7 +1015,7 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new LockSelection(sketchgui->getObject()));
+        Gui::Selection().addSelectionGate(new LockConstraintSelection(sketchgui->getObject()));
         setCursor(QPixmap(cursor_createlock),7,7);
     }
 
@@ -1023,12 +1023,12 @@ public:
     {
         // If preselection Point
         //int preSelPnt = sketchgui->getPreselectPoint();
-        if (sketchgui->getPreselectPoint() != -1) {
-            setPositionText(onSketchPos);
-            return;
-        }
-        resetPositionText();
-        applyCursor();
+//        if (sketchgui->getPreselectPoint() != -1) {
+//            setPositionText(onSketchPos);
+//            return;
+//        }
+//        resetPositionText();
+//        applyCursor();
     }
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
@@ -1046,7 +1046,8 @@ public:
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) {
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
         Q_UNUSED(onSketchPos);
         if (selectionDone) {
             unsetCursor();
@@ -1207,6 +1208,147 @@ bool CmdSketcherConstrainLock::isActive(void)
     return isCreateGeoActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
+
+namespace SketcherGui {
+    class CoincidentConstraintSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        CoincidentConstraintSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+
+        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            if (element.substr(0,6) == "Vertex" || element.substr(0,9) == "RootPoint")
+                return true;
+            return false;
+        }
+    };
+}
+
+/* XPM */
+static const char *cursor_createcoincident[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"................................",
+"................................",
+".................####...........",
+"................######..........",
+"...............########.........",
+"...............########.........",
+"...............########.........",
+"...............########.........",
+"................######..........",
+".................####...........",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerCoincident: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerCoincident()
+    {
+        GeoId1 = GeoId2 = Constraint::GeoUndef;
+        PosId1 = PosId2 = Sketcher::none;
+    }
+    virtual ~DrawSketchHandlerCoincident()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+
+    virtual void activated(ViewProviderSketch *)
+    {
+        Gui::Selection().rmvSelectionGate();
+        Gui::Selection().addSelectionGate(new CoincidentConstraintSelection(sketchgui->getObject()));
+        setCursor(QPixmap(cursor_createcoincident), 7, 7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        int VtId = sketchgui->getPreselectPoint();
+        if (VtId != -1) {
+            if (GeoId1 == Constraint::GeoUndef) {
+                sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId1,PosId1);
+                std::stringstream ss;
+                ss << "Vertex" << VtId + 1;
+                Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                              sketchgui->getSketchObject()->getNameInDocument(),
+                                              ss.str().c_str(),
+                                              onSketchPos.x,
+                                              onSketchPos.y,
+                                              0.f);
+            }
+            else {
+                sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId2,PosId2);
+
+                // Apply the constraint
+                Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+
+                // undo command open
+                Gui::Command::openCommand("add coincident constraint");
+
+                // check if this coincidence is already enforced (even indirectly)
+                bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
+                if (!constraintExists && (GeoId1 != GeoId2)) {
+                    Gui::Command::doCommand(
+                        Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                        sketchgui->getObject()->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
+                    Gui::Command::commitCommand();
+                }
+                else {
+                    Gui::Command::abortCommand();
+                }
+            }
+        }
+        else {
+            GeoId1 = GeoId2 = Constraint::GeoUndef;
+            PosId1 = PosId2 = Sketcher::none;
+            Gui::Selection().clearSelection();
+        }
+        return true;
+    }
+protected:
+    int GeoId1, GeoId2;
+    Sketcher::PointPos PosId1, PosId2;
+};
 
 DEF_STD_CMD_A(CmdSketcherConstrainCoincident);
 
@@ -1227,13 +1369,15 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
 void CmdSketcherConstrainCoincident::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCoincident());
+
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select vertexes from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select vertexes from the sketch."));
         return;
     }
 
@@ -1297,7 +1441,8 @@ void CmdSketcherConstrainCoincident::activated(int iMsg)
 
 bool CmdSketcherConstrainCoincident::isActive(void)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    //    return isCreateConstraintActive( getActiveGuiDocument() );
+    return isCreateGeoActive( getActiveGuiDocument() );
 }
 
 
