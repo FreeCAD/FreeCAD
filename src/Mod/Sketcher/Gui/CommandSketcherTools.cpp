@@ -762,226 +762,57 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
             
             const Part::Geometry *geo = Obj->getGeometry(GeoId);            
             // Only for supported types
-            if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-                // First we search what has to be restored
-                bool major=false;
-                bool minor=false;
-                bool focus1=false;
-                bool focus2=false;
-                
-                int majorelementindex=-1;
-                int minorelementindex=-1;
-                int focus1elementindex=-1;
-                int focus2elementindex=-1;
-                
-                const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-                
-                for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-                        it != vals.end(); ++it) {
-                    if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
-                    {
-                        switch((*it)->AlignmentType){
-                            case Sketcher::EllipseMajorDiameter:
-                                major=true;
-                                majorelementindex=(*it)->First;
-                                break;
-                            case Sketcher::EllipseMinorDiameter:
-                                minor=true;
-                                minorelementindex=(*it)->First;
-                                break;
-                            case Sketcher::EllipseFocus1: 
-                                focus1=true;
-                                focus1elementindex=(*it)->First;
-                                break;
-                            case Sketcher::EllipseFocus2: 
-                                focus2=true;
-                                focus2elementindex=(*it)->First;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                
-                if(major && minor && focus1 && focus2)
-                {
-                    // Hide unused geometry here
-                    int majorconstraints=0; // number of constraints associated to the geoid of the major axis
-                    int minorconstraints=0;
-                    int focus1constraints=0;
-                    int focus2constraints=0;
-                    
-                    for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-                        it != vals.end(); ++it) {
-                        
-                        if((*it)->Second == majorelementindex || (*it)->First == majorelementindex || (*it)->Third == majorelementindex)
-                            majorconstraints++;
-                        else if((*it)->Second == minorelementindex || (*it)->First == minorelementindex || (*it)->Third == minorelementindex)
-                            minorconstraints++;
-                        else if((*it)->Second == focus1elementindex || (*it)->First == focus1elementindex || (*it)->Third == focus1elementindex)
-                            focus1constraints++;
-                        else if((*it)->Second == focus2elementindex || (*it)->First == focus2elementindex || (*it)->Third == focus2elementindex)
-                            focus2constraints++;
-                    }
-                    // those with less than 2 constraints must be removed
-                    if(majorconstraints>=2 && minorconstraints>=2 && focus1constraints>=2 && focus2constraints>=2)
-                        return; // nothing to delete
-                    
-                    App::Document* doc = App::GetApplication().getActiveDocument();
-                    
-                    if (!doc) return;
-                    
-                    doc->openTransaction("Delete");
-                    
-                    if(majorconstraints<2) {
-                        ss.str(std::string());
-                        ss << "Edge" << majorelementindex + 1;
-                        Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());                   
-                    }
-                    
-                    if(minorconstraints<2) {
-                        ss.str(std::string());
-                        ss << "Edge" << minorelementindex + 1;
-                        Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());                   
-                    }
-                    
-                    if(focus1constraints<2) {
-                        ss.str(std::string());
-                        int vertex = Obj->getVertexIndexGeoPos(focus1elementindex,Sketcher::start);
-                        if(vertex>-1){
-                            ss << "Vertex" <<  vertex + 1;
-                            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());                  
-                        }
-                    }
-                    
-                    if(focus2constraints<2) {
-                        ss.str(std::string());
-                        int vertex = Obj->getVertexIndexGeoPos(focus2elementindex,Sketcher::start);
-                        if(vertex>-1){
-                            ss << "Vertex" <<  vertex + 1;
-                            Gui::Selection().addSelection(doc_name.c_str(), obj_name.c_str(), ss.str().c_str());                  
-                        }
-                    }
-                    
-                    SketcherGui::ViewProviderSketch* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+            if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || 
+		geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+		geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+		geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
 
-                    if (vp) {
-                        std::vector<Gui::SelectionObject> sel = Gui::Selection().getSelectionEx(doc->getName());
-                        vp->onDelete(sel[0].getSubNames());
-                    }
-                    
-                    
-                    doc->commitTransaction();
-                    return;
-                }
-                
-                Gui::Command::openCommand("Expose ellipse internal geometry");
-                
-                int currentgeoid= Obj->getHighestCurveIndex();
-                int incrgeo= 0;
-                
-                Base::Vector3d center;
-                double majord;
-                double minord;
-                Base::Vector3d majdir;
-                
-                if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()){
-                    const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo);
-                    
-                    center=ellipse->getCenter();
-                    majord=ellipse->getMajorRadius();
-                    minord=ellipse->getMinorRadius();
-                    majdir=ellipse->getMajorAxisDir();
-                }
-                else {
-                    const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo);
-                    
-                    center=aoe->getCenter();
-                    majord=aoe->getMajorRadius();
-                    minord=aoe->getMinorRadius();
-                    majdir=aoe->getMajorAxisDir();
-                }
+		int currentgeoid = Obj->getHighestCurveIndex();
 
-                Base::Vector3d mindir = Base::Vector3d(-majdir.y, majdir.x, 0.0);
-                
-                Base::Vector3d majorpositiveend = center + majord * majdir;
-                Base::Vector3d majornegativeend = center - majord * majdir;
-                Base::Vector3d minorpositiveend = center + minord * mindir;
-                Base::Vector3d minornegativeend = center - minord * mindir;
-                
-                double df= sqrt(majord*majord-minord*minord);
-                
-                Base::Vector3d focus1P = center + df * majdir;
-                Base::Vector3d focus2P = center - df * majdir;
-                
-                try{
-                    if(!major)
-                    {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
-                        Obj->getNameInDocument(),
-                        majorpositiveend.x,majorpositiveend.y,majornegativeend.x,majornegativeend.y); // create line for major axis
-                        
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMajorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),currentgeoid+incrgeo+1,GeoId); // constrain major axis
-                        incrgeo++;
-                    }
-                    if(!minor)
-                    {                       
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.LineSegment(App.Vector(%f,%f,0),App.Vector(%f,%f,0)),True)",
-                        Obj->getNameInDocument(),
-                        minorpositiveend.x,minorpositiveend.y,minornegativeend.x,minornegativeend.y); // create line for minor axis
-                        
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseMinorDiameter',%d,%d)) ",
-                        selection[0].getFeatName(),currentgeoid+incrgeo+1,GeoId); // constrain minor axis
-                        incrgeo++;
-                    }
-                    if(!focus1)
-                    {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                            Obj->getNameInDocument(),
-                            focus1P.x,focus1P.y);
-                        
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus1',%d,%d,%d)) ",
-                        selection[0].getFeatName(),currentgeoid+incrgeo+1,Sketcher::start,GeoId); // constrain major axis
-                        incrgeo++;
-                    }
-                    if(!focus2)
-                    {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
-                            Obj->getNameInDocument(),
-                            focus2P.x,focus2P.y);
-                        
-                        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:EllipseFocus2',%d,%d,%d)) ",
-                        Obj->getNameInDocument(),currentgeoid+incrgeo+1,Sketcher::start,GeoId); // constrain major axis     
-                    }
-                    
-                    Gui::Command::commitCommand();
-                    
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                    
-                    if(autoRecompute)
-                        Gui::Command::updateActive();
-                
-                }
-                catch (const Base::Exception& e) {
-                    Base::Console().Error("%s\n", e.what());
-                    Gui::Command::abortCommand();
-                    
-                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-                    
-                    if(autoRecompute)
-                        Gui::Command::updateActive();
-                }
-    
-            } // if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) 
-            else {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse."));
-            }
+		try {
+		    Gui::Command::openCommand("Exposing Internal Geometry");
 
-        }
+		    Gui::Command::doCommand(Gui::Command::Doc,
+					    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+					    Obj->getNameInDocument(),
+					    GeoId);
+		    
+		    int aftergeoid = Obj->getHighestCurveIndex();
+		    
+		    if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
+			Gui::Command::doCommand(Gui::Command::Doc,
+			"App.ActiveDocument.%s.DeleteUnusedInternalGeometry(%d)",
+			Obj->getNameInDocument(),
+			GeoId);			
+		    }
+		    
+		}
+		catch (const Base::Exception& e) {
+		    Base::Console().Error("%s\n", e.what());
+		    Gui::Command::abortCommand();
+
+		    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+		    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+		    
+		    if(autoRecompute) 
+			Gui::Command::updateActive();
+		    else
+			static_cast<Sketcher::SketchObject *>(Obj)->solve();
+
+		    return;
+		}
+
+		Gui::Command::commitCommand();
+
+		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+		bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+		
+		if(autoRecompute) 
+		    Gui::Command::updateActive();
+		else
+		    static_cast<Sketcher::SketchObject *>(Obj)->solve();
+	    }
+	}
     }
 }
 
