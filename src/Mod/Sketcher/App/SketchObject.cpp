@@ -2475,6 +2475,26 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     if(it == geoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
                 }
+                else if(geocopy->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                    Part::GeomArcOfHyperbola *geoaoe = static_cast<Part::GeomArcOfHyperbola *>(geocopy);
+                    Base::Vector3d cp = geoaoe->getCenter();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
+
+                    geoaoe->setCenter(scp);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoe->getStartPoint(true);
+                }
+                else if(geocopy->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                    Part::GeomArcOfParabola *geoaoe = static_cast<Part::GeomArcOfParabola *>(geocopy);
+                    Base::Vector3d cp = geoaoe->getCenter();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
+
+                    geoaoe->setCenter(scp);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoe->getStartPoint(true);
+                }                
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
                     Part::GeomPoint *geopoint = static_cast<Part::GeomPoint *>(geocopy);
                     Base::Vector3d cp = geopoint->getPoint();
@@ -2728,7 +2748,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     if( newconstrVals.size() > constrvals.size() ) 
         Constraints.setValues(newconstrVals);
 
-    return Geometry.getSize()-1;    
+    return Geometry.getSize()-1;
     
 }
 
