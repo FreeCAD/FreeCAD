@@ -1392,7 +1392,9 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 #ifdef FC_DEBUG
     switch (type)
     {
+#if QT_VERSION >= 0x050500
     case QtInfoMsg:
+#endif
     case QtDebugMsg:
         Base::Console().Message("%s\n", msg);
         break;
