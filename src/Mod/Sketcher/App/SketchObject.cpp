@@ -3048,7 +3048,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
 	    if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
 	    
-		int i,j;
+		std::size_t i,j;
 		for(i=0;i<focusgeoidlistgeoidlist.size();i++){
 		    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
 			if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
