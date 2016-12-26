@@ -91,10 +91,10 @@ class DraftWorkbench (Workbench):
                          'Draft_Snap_Dimensions','Draft_Snap_WorkingPlane']
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft creation tools"),self.cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench","Draft modification tools"),self.modList)
-        self.appendMenu(translate("draft","&Draft"),self.cmdList+self.modList)
-        self.appendMenu([translate("draft","&Draft"),translate("draft","Utilities")],self.utils+self.treecmdList)
-        self.appendMenu([translate("draft","&Draft"),translate("draft","Wire tools")],self.lineList)
-        self.appendMenu([translate("draft","&Draft"),translate("draft","Snapping")],self.snapList)
+        self.appendMenu(QT_TRANSLATE_NOOP("draft","&Draft"),self.cmdList+self.modList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Utilities")],self.utils+self.treecmdList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Wire tools")],self.lineList)
+        self.appendMenu([QT_TRANSLATE_NOOP("draft","&Draft"),QT_TRANSLATE_NOOP("draft","Snapping")],self.snapList)
         if hasattr(FreeCADGui,"draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar,"loadedPreferences"):
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui","Draft")

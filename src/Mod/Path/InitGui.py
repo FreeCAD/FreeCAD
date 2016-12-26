@@ -93,29 +93,29 @@ class PathWorkbench (Workbench):
 
         def translate(context, text):
             return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
-        self.appendToolbar(translate("Path", "Project Setup"), projcmdlist)
-        self.appendToolbar(translate("Path", "Tool Commands"), toolcmdlist)
-        #self.appendToolbar(translate("Path", "Partial Commands"), prepcmdlist)
-        self.appendToolbar(translate("Path", "New Operations"), twodopcmdlist+threedopcmdlist)
-        self.appendToolbar(translate("Path", "Path Modification"), modcmdlist)
-        self.appendToolbar(translate("Path", "Helpful Tools"), extracmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Project Setup"), projcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Tool Commands"), toolcmdlist)
+        #self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Partial Commands"), prepcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "New Operations"), twodopcmdlist+threedopcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Path Modification"), modcmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Path", "Helpful Tools"), extracmdlist)
 
-        self.appendMenu([translate("Path", "&Path")], projcmdlist +["Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
-        #self.appendMenu([translate("Path", "Path"), translate(
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], projcmdlist +["Separator"] + toolcmdlist +["Separator"] +twodopcmdlist +["Separator"] +threedopcmdlist +["Separator"])
+        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
         #    "Path", "Tools")], toolcmdlist)
-        self.appendMenu([translate("Path", "&Path"), translate(
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Dressup")], dressupcmdlist)
-        self.appendMenu([translate("Path", "&Path"), translate(
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Partial Commands")], prepcmdlist)
-        #self.appendMenu([translate("Path", "Path"), translate(
+        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
         #    "Path", "New Operations")], opcmdlist)
-        self.appendMenu([translate("Path", "&Path"), translate(
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path"), QT_TRANSLATE_NOOP(
             "Path", "Path Modification")], modcmdlist)
-        #self.appendMenu([translate("Path", "Path"), translate(
+        #self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
         #    "Path", "Path Modification")], modcmdmore)
-        # self.appendMenu([translate("Path", "Path"), translate(
+        # self.appendMenu([QT_TRANSLATE_NOOP("Path", "Path"), QT_TRANSLATE_NOOP(
         #     "Path", "Remote Operations")], remotecmdlist)
-        self.appendMenu([translate("Path", "&Path")], extracmdlist)
+        self.appendMenu([QT_TRANSLATE_NOOP("Path", "&Path")], extracmdlist)
 
         Log('Loading Path workbench... done\n')
 
