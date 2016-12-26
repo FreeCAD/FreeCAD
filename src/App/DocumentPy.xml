@@ -102,7 +102,7 @@
     </Methode>
     <Methode Name="recompute">
       <Documentation>
-        <UserDocu>Recompute the document</UserDocu>
+        <UserDocu>Recompute the document and returns the amount of recomputed features</UserDocu>
       </Documentation>
     </Methode>
 	<Methode Name="getObject">
