@@ -384,8 +384,8 @@ PyObject*  DocumentPy::recompute(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
-    getDocumentPtr()->recompute();
-    Py_Return;
+    int objectCount = getDocumentPtr()->recompute();
+    return Py::new_reference_to(Py::Int(objectCount));
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
