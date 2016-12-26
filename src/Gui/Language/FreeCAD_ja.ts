@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -155,27 +166,27 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation>単位計算</translation>
+        <translation type="obsolete">単位計算</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation>を</translation>
+        <translation type="obsolete">を</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation>へ換算=&gt;</translation>
+        <translation type="obsolete">へ換算=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>ヘルプ</translation>
+        <translation type="obsolete">ヘルプ</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>コピー</translation>
+        <translation type="obsolete">コピー</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
 </context>
 <context>
@@ -325,6 +336,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">名前の変更</translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished">オブジェクトの名前を変更します。</translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished">編集を終了</translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished">オブジェクトの編集を終了します。</translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -352,7 +382,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>License...</source>
-        <translation>ライセンス...</translation>
+        <translation type="obsolete">ライセンス...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -365,6 +395,18 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Word size</source>
         <translation>ワードサイズ</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -531,6 +573,21 @@ while doing a left or right click and move the mouse up or down</source>
         <source>%1 at %2</source>
         <translation>%1 at %2
 </translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">ダイアログ</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished">テキストラベル</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -733,6 +790,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source></source>
         <translation>[empty string]</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">クリア</translation>
     </message>
 </context>
 <context>
@@ -2489,6 +2550,14 @@ Specify another directory, please.</source>
         <source>Imperial decimal (in/lb)</source>
         <translation>英ヤード・ポンド法 (in/lb)</translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2524,40 +2593,56 @@ Specify another directory, please.</source>
         <source>Simple color</source>
         <translation>単色</translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PickRadius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">ビュー</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation>ワンポイントアドバイス</translation>
+        <translation type="obsolete">ワンポイントアドバイス</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt; &lt;font size=&quot;+3&quot;&gt; 知っていますか...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt; &lt;font size=&quot;+3&quot;&gt; 知っていますか...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation>起動時にヒントを表示(&amp;S)</translation>
+        <translation type="obsolete">起動時にヒントを表示(&amp;S)</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation>Alt+S</translation>
+        <translation type="obsolete">Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation>次のヒント(&amp;N)</translation>
+        <translation type="obsolete">次のヒント(&amp;N)</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation>Alt+N</translation>
+        <translation type="obsolete">Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>閉じる(&amp;C)</translation>
+        <translation type="obsolete">閉じる(&amp;C)</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="obsolete">Alt+C</translation>
     </message>
     <message>
         <source></source>
@@ -2569,12 +2654,47 @@ Specify another directory, please.</source>
     <message>
         <source>Download failed: %1
 </source>
-        <translation>ダウンロードに失敗しました: %1
+        <translation type="obsolete">ダウンロードに失敗しました: %1
 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation>FreeCAD についてもっと詳しく知りたい場合 %1 へ行く、あるいはヘルプ項目 [ヘルプ] メニューでキーを押す必要があります.</translation>
+        <translation type="obsolete">FreeCAD についてもっと詳しく知りたい場合 %1 へ行く、あるいはヘルプ項目 [ヘルプ] メニューでキーを押す必要があります.</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished">単位計算</translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished">を</translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished">へ換算=&gt;</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished">ヘルプ</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">コピー</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">閉じる</translation>
     </message>
 </context>
 <context>
@@ -2745,43 +2865,43 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation>ダウンロード</translation>
+        <translation type="obsolete">ダウンロード</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>キャンセル</translation>
+        <translation type="obsolete">キャンセル</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>閉じる</translation>
+        <translation type="obsolete">閉じる</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation>既に現在のディレクトリに %1 という名前のファイルが存在します。上書きしますか？</translation>
+        <translation type="obsolete">既に現在のディレクトリに %1 という名前のファイルが存在します。上書きしますか？</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation>ファイル %1 を保存することができません: %2</translation>
+        <translation type="obsolete">ファイル %1 を保存することができません: %2</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation>%1 をダウンロード中</translation>
+        <translation type="obsolete">%1 をダウンロード中</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation>ダウンロードが取り消されました</translation>
+        <translation type="obsolete">ダウンロードが取り消されました</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>ダウンロードに失敗しました: %1.</translation>
+        <translation type="obsolete">ダウンロードに失敗しました: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation>現在のディレクトリに%1をダウンロードしました。</translation>
+        <translation type="obsolete">現在のディレクトリに%1をダウンロードしました。</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation>%1 at %2
+        <translation type="obsolete">%1 at %2
 </translation>
     </message>
 </context>
@@ -2928,7 +3048,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation>著作権</translation>
+        <translation type="obsolete">著作権</translation>
     </message>
 </context>
 <context>
@@ -3284,39 +3404,39 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation>前へ</translation>
+        <translation type="obsolete">前へ</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>次へ</translation>
+        <translation type="obsolete">次へ</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>ホーム</translation>
+        <translation type="obsolete">ホーム</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>開く</translation>
+        <translation type="obsolete">開く</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation>ファイルを開く</translation>
+        <translation type="obsolete">ファイルを開く</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation>すべてのHTMLファイル (*.htm *.html)</translation>
+        <translation type="obsolete">すべてのHTMLファイル (*.htm *.html)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation>外部ブラウザ</translation>
+        <translation type="obsolete">外部ブラウザ</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation>外部ブラウザーが設定されていません。環境設定で指定してください。</translation>
+        <translation type="obsolete">外部ブラウザーが設定されていません。環境設定で指定してください。</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation>%1 の開始に失敗しました</translation>
+        <translation type="obsolete">%1 の開始に失敗しました</translation>
     </message>
 </context>
 <context>
@@ -3442,60 +3562,68 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Reveals this object and its subelements in the python console.</source>
         <translation>Python コンソールでこのオブジェクトとそのサブ要素を表示</translation>
     </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation>ファイルを開けませんでした。</translation>
+        <translation type="obsolete">ファイルを開けませんでした。</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation>現在利用できないアドレス%1にアクセスしようとしました。 URLが存在することを確認し、ページを再読み込みしてください。</translation>
+        <translation type="obsolete">現在利用できないアドレス%1にアクセスしようとしました。 URLが存在することを確認し、ページを再読み込みしてください。</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation>%1 へ接続</translation>
+        <translation type="obsolete">%1 へ接続</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation>%1へ送信</translation>
+        <translation type="obsolete">%1へ送信</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation>%1から読み取り</translation>
+        <translation type="obsolete">%1から読み取り</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>ダウンロードに失敗しました: %1.</translation>
+        <translation type="obsolete">ダウンロードに失敗しました: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>前へ</translation>
+        <translation type="obsolete">前へ</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>進む</translation>
+        <translation type="obsolete">進む</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>ホーム</translation>
+        <translation type="obsolete">ホーム</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>更新</translation>
+        <translation type="obsolete">更新</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>コピー</translation>
+        <translation type="obsolete">コピー</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>すべて選択</translation>
+        <translation type="obsolete">すべて選択</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation>説明がありません:</translation>
+        <translation type="obsolete">説明がありません:</translation>
     </message>
 </context>
 <context>
@@ -4233,6 +4361,21 @@ Do you want to specify another directory?</source>
     </message>
 </context>
 <context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
@@ -4360,6 +4503,22 @@ Do you want to specify another directory?</source>
         <source>Activate document %1</source>
         <translation>文書の %1をアクティブにする</translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4385,6 +4544,37 @@ Do you want to specify another directory?</source>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation>ワークベンチ&apos;%1&apos;を選択</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">%1 について</translation>
     </message>
 </context>
 <context>
@@ -4522,6 +4712,10 @@ Do you want to specify another directory?</source>
         <source>Display properties</source>
         <translation>表示プロパティ</translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4625,15 +4819,15 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Docked</source>
-        <translation>ドッキング</translation>
+        <translation type="obsolete">ドッキング</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation>ドッキング解除</translation>
+        <translation type="obsolete">ドッキング解除</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation>全画面表示</translation>
+        <translation type="obsolete">全画面表示</translation>
     </message>
     <message>
         <source>files</source>
@@ -4885,6 +5079,41 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Not allowed to delete system-wide macros</source>
         <translation>システム全体のマクロを削除することはできません</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5955,6 +6184,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">標準ビュー</translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6663,6 +6907,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">標準ビュー</translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished">ドッキング</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">アクティブなビューを、全画面、ドッキング解除モード、ドッキングモードのいずれかで表示します</translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6678,6 +6937,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">標準ビュー</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished">全画面表示</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">アクティブなビューを、全画面、ドッキング解除モード、ドッキングモードのいずれかで表示します</translation>
+    </message>
+</context>
+<context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
@@ -6690,6 +6964,21 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Creates a screenshot of the active view</source>
         <translation>アクティブなビューのスクリーン ショットを作成します。</translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">標準ビュー</translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished">ドッキング解除</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">アクティブなビューを、全画面、ドッキング解除モード、ドッキングモードのいずれかで表示します</translation>
     </message>
 </context>
 <context>
@@ -6723,7 +7012,15 @@ Be aware the point where you click matters.</source>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation>このオブジェクトは他のオブジェクトによって参照されています。そのため、それらのオブジェクトは壊れる可能性があります。続行しますか？</translation>
+        <translation type="obsolete">このオブジェクトは他のオブジェクトによって参照されています。そのため、それらのオブジェクトは壊れる可能性があります。続行しますか？</translation>
+    </message>
+    <message>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6817,7 +7114,15 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation>よろしいですか？</translation>
+        <translation type="obsolete">よろしいですか？</translation>
+    </message>
+    <message>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

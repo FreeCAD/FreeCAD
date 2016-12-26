@@ -4,7 +4,7 @@
 <context>
     <name>CmdPointsConvert</name>
     <message>
-        <location filename="../../Command.cpp" line="+184"/>
+        <location filename="../../Command.cpp" line="+190"/>
         <source>Points</source>
         <translation>Pontos</translation>
     </message>
@@ -24,7 +24,7 @@
 <context>
     <name>CmdPointsExport</name>
     <message>
-        <location line="-78"/>
+        <location line="-82"/>
         <source>Points</source>
         <translation>Pontos</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>CmdPointsImport</name>
     <message>
-        <location line="-51"/>
+        <location line="-53"/>
         <source>Points</source>
         <translation>Pontos</translation>
     </message>
@@ -64,7 +64,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+203"/>
+        <location line="+211"/>
         <source>Points</source>
         <translation>Pontos</translation>
     </message>
@@ -84,7 +84,7 @@
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-125"/>
+        <location line="-129"/>
         <source>Points</source>
         <translation>Pontos</translation>
     </message>
@@ -253,19 +253,19 @@
         <translation type="obsolete">Pontos Ascii (*.asc);; Todos os Arquivos (*.*)</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-78"/>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-80"/>
+        <location line="+51"/>
         <source>Ascii Points</source>
         <translation>Pontos Ascii</translation>
     </message>
     <message>
-        <location line="-49"/>
-        <location line="+49"/>
+        <location line="-51"/>
+        <location line="+51"/>
         <source>All Files</source>
         <translation>Todos os Arquivos</translation>
     </message>
     <message>
-        <location line="+70"/>
+        <location line="+74"/>
         <source>Distance</source>
         <translation>Distância</translation>
     </message>

@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -155,27 +166,27 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation>Mennyiségi egységek számítása</translation>
+        <translation type="obsolete">Mennyiségi egységek számítása</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation>mint:</translation>
+        <translation type="obsolete">mint:</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation>=&gt;</translation>
+        <translation type="obsolete">=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Súgó</translation>
+        <translation type="obsolete">Súgó</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Másolás</translation>
+        <translation type="obsolete">Másolás</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Bezárás</translation>
+        <translation type="obsolete">Bezárás</translation>
     </message>
 </context>
 <context>
@@ -325,6 +336,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Átnevezés</translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished">Objektum átnevezése</translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished">Szerkesztés befejezése</translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished">Objektumszerkesztés befejezése</translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -352,7 +382,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>License...</source>
-        <translation>Licenc...</translation>
+        <translation type="obsolete">Licenc...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -365,6 +395,18 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Word size</source>
         <translation>Szó méret</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -530,6 +572,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>%1 at %2</source>
         <translation>%1 ezen %2</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">Párbeszédablak</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished">Szövegcimke</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -732,6 +789,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source></source>
         <translation>Program infó</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Törlés</translation>
     </message>
 </context>
 <context>
@@ -2491,6 +2552,14 @@ Kérem válasszon másik könyvtárat.</translation>
         <source>Imperial decimal (in/lb)</source>
         <translation>Császári decimális (in / lb)</translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2526,40 +2595,56 @@ Kérem válasszon másik könyvtárat.</translation>
         <source>Simple color</source>
         <translation>Egyszínű</translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PickRadius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">Nézet</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation>Napi jótanács</translation>
+        <translation type="obsolete">Napi jótanács</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation>&lt;font size=&quot;+3&quot;&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;b&gt;Tudta, hogy ...&lt;/b&gt;&lt;/font&gt;&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font size=&quot;+3&quot;&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;b&gt;Tudta, hogy ...&lt;/b&gt;&lt;/font&gt;&lt;/font&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation>Tanácsok megjeleníté&amp;se induláskor</translation>
+        <translation type="obsolete">Tanácsok megjeleníté&amp;se induláskor</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation>Alt+S</translation>
+        <translation type="obsolete">Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation>Következő tanács</translation>
+        <translation type="obsolete">Következő tanács</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation>Alt+N</translation>
+        <translation type="obsolete">Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>$Bezárás</translation>
+        <translation type="obsolete">$Bezárás</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt + C</translation>
+        <translation type="obsolete">Alt + C</translation>
     </message>
     <message>
         <source></source>
@@ -2571,11 +2656,46 @@ Kérem válasszon másik könyvtárat.</translation>
     <message>
         <source>Download failed: %1
 </source>
-        <translation>Letöltés nem sikerült: %1</translation>
+        <translation type="obsolete">Letöltés nem sikerült: %1</translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation>Ha szeretne többet megtudni FreeCAD-ről, menjen a %1, vagy nyomja meg a Súgó gombot a Súgó menüben.</translation>
+        <translation type="obsolete">Ha szeretne többet megtudni FreeCAD-ről, menjen a %1, vagy nyomja meg a Súgó gombot a Súgó menüben.</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished">Mennyiségi egységek számítása</translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished">mint:</translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished">=&gt;</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished">Súgó</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">Másolás</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Bezárás</translation>
     </message>
 </context>
 <context>
@@ -2746,43 +2866,43 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation>Letöltés</translation>
+        <translation type="obsolete">Letöltés</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Mégse</translation>
+        <translation type="obsolete">Mégse</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Bezárás</translation>
+        <translation type="obsolete">Bezárás</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation>Az %1 nevű fájl már létezik a könyvtárban. Felülírja?</translation>
+        <translation type="obsolete">Az %1 nevű fájl már létezik a könyvtárban. Felülírja?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation>Nem tudja menteni a fájlt %1: %2.</translation>
+        <translation type="obsolete">Nem tudja menteni a fájlt %1: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation>Letölti %1.</translation>
+        <translation type="obsolete">Letölti %1.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation>Letöltés megszakítva.</translation>
+        <translation type="obsolete">Letöltés megszakítva.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Letöltés sikertelen: %1.</translation>
+        <translation type="obsolete">Letöltés sikertelen: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation>Letöltve %1 a megnyitott könyvtárba.</translation>
+        <translation type="obsolete">Letöltve %1 a megnyitott könyvtárba.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation>%1 ezen %2</translation>
+        <translation type="obsolete">%1 ezen %2</translation>
     </message>
 </context>
 <context>
@@ -2928,7 +3048,7 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation>Szerzői joggal védve</translation>
+        <translation type="obsolete">Szerzői joggal védve</translation>
     </message>
 </context>
 <context>
@@ -3284,39 +3404,39 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation>Vissza</translation>
+        <translation type="obsolete">Vissza</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Tovább</translation>
+        <translation type="obsolete">Tovább</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Kezdőlap</translation>
+        <translation type="obsolete">Kezdőlap</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Megnyit</translation>
+        <translation type="obsolete">Megnyit</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation>Fájl megnyitás</translation>
+        <translation type="obsolete">Fájl megnyitás</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation>Minden HTML fájl(*.html *.htm)</translation>
+        <translation type="obsolete">Minden HTML fájl(*.html *.htm)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation>Külső böngésző</translation>
+        <translation type="obsolete">Külső böngésző</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation>Nem található külső böngésző. Kérem, adjon meg egyet a beállításoknál</translation>
+        <translation type="obsolete">Nem található külső böngésző. Kérem, adjon meg egyet a beállításoknál</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation>Az %1 elindítása sikertelen</translation>
+        <translation type="obsolete">Az %1 elindítása sikertelen</translation>
     </message>
 </context>
 <context>
@@ -3442,60 +3562,68 @@ Az &apos;Állapot&apos; oszlop tájékoztatja a visszaállítás sikerességér�
         <source>Reveals this object and its subelements in the python console.</source>
         <translation>Megmutatja a tárgyat és annak al elemeit a python konzolban.</translation>
     </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation>A fájl megnyitása sikertelen.</translation>
+        <translation type="obsolete">A fájl megnyitása sikertelen.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation>Megpróbálta a %1 címet elérni, ami jelenleg nem elérhető. Győződjön meg róla, hogy az URL létezik és frissítse az oldalt.</translation>
+        <translation type="obsolete">Megpróbálta a %1 címet elérni, ami jelenleg nem elérhető. Győződjön meg róla, hogy az URL létezik és frissítse az oldalt.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation>Csatlakozás az %1-hez</translation>
+        <translation type="obsolete">Csatlakozás az %1-hez</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation>Küldés: %1 részére</translation>
+        <translation type="obsolete">Küldés: %1 részére</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation>Olvasás az %1 -től</translation>
+        <translation type="obsolete">Olvasás az %1 -től</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Letöltés sikertelen: %1.</translation>
+        <translation type="obsolete">Letöltés sikertelen: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Vissza</translation>
+        <translation type="obsolete">Vissza</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>Ismétlés</translation>
+        <translation type="obsolete">Ismétlés</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Kezdőlap</translation>
+        <translation type="obsolete">Kezdőlap</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Frissítés</translation>
+        <translation type="obsolete">Frissítés</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Másolás</translation>
+        <translation type="obsolete">Másolás</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>Összes kijelölése</translation>
+        <translation type="obsolete">Összes kijelölése</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation>Új leírás a</translation>
+        <translation type="obsolete">Új leírás a</translation>
     </message>
 </context>
 <context>
@@ -4237,6 +4365,21 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     </message>
 </context>
 <context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
@@ -4364,6 +4507,22 @@ Meg szeretne adni egy másik könyvtárat?</translation>
         <source>Activate document %1</source>
         <translation>A %1 dokumentum aktiválása</translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4389,6 +4548,37 @@ Meg szeretne adni egy másik könyvtárat?</translation>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation>&apos;%1&apos; munkafelület kiválasztása</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">Alkotó %1</translation>
     </message>
 </context>
 <context>
@@ -4526,6 +4716,10 @@ Meg szeretne adni egy másik könyvtárat?</translation>
         <source>Display properties</source>
         <translation>Tulajdonságok megjelenítése</translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4629,15 +4823,15 @@ Folytatni kívánja?</translation>
     </message>
     <message>
         <source>Docked</source>
-        <translation>Rögzített</translation>
+        <translation type="obsolete">Rögzített</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation>Nem rögzített</translation>
+        <translation type="obsolete">Nem rögzített</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation>Teljes képernyős</translation>
+        <translation type="obsolete">Teljes képernyős</translation>
     </message>
     <message>
         <source>files</source>
@@ -4891,6 +5085,41 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
         <source>Not allowed to delete system-wide macros</source>
         <translation>Nem szabad törölni a rendszer-területi makrókat</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5961,6 +6190,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standard-nézet</translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6669,6 +6913,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standard-nézet</translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished">Rögzített</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Az aktív nézet megjelenítése teljes képernyőben, rögzített és nem rögzített módban is</translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6684,6 +6943,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     </message>
 </context>
 <context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standard-nézet</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished">Teljes képernyős</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Az aktív nézet megjelenítése teljes képernyőben, rögzített és nem rögzített módban is</translation>
+    </message>
+</context>
+<context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
@@ -6696,6 +6970,21 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
         <source>Creates a screenshot of the active view</source>
         <translation>Képernyőkép készítése az aktuális nézetről</translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standard-nézet</translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished">Nem rögzített</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Az aktív nézet megjelenítése teljes képernyőben, rögzített és nem rögzített módban is</translation>
     </message>
 </context>
 <context>
@@ -6729,7 +7018,15 @@ Legyen körültekintő, fontos melyik pontra kattint.</translation>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation>Erre az objektumra más objektumok hivatkoznak, és ezek tört objektumok lehetnek. Biztosan folytatja?</translation>
+        <translation type="obsolete">Erre az objektumra más objektumok hivatkoznak, és ezek tört objektumok lehetnek. Biztosan folytatja?</translation>
+    </message>
+    <message>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6823,7 +7120,15 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation>Biztos benne?</translation>
+        <translation type="obsolete">Biztos benne?</translation>
+    </message>
+    <message>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

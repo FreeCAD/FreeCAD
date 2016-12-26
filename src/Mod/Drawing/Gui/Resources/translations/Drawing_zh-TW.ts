@@ -42,7 +42,7 @@
 <context>
     <name>CmdDrawingDraftView</name>
     <message>
-        <location line="+183"/>
+        <location line="+185"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -61,7 +61,7 @@
 <context>
     <name>CmdDrawingExportPage</name>
     <message>
-        <location line="-90"/>
+        <location line="-92"/>
         <source>File</source>
         <translation>檔案</translation>
     </message>
@@ -80,7 +80,7 @@
 <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-        <location line="-355"/>
+        <location line="-359"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -94,7 +94,7 @@
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-185"/>
+        <location line="-181"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+219"/>
+        <location line="+216"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-255"/>
+        <location line="-252"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+378"/>
+        <location line="+377"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -163,7 +163,7 @@
 <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-        <location line="-53"/>
+        <location line="-54"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -181,7 +181,7 @@
 <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-        <location line="+284"/>
+        <location line="+287"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -200,7 +200,7 @@
 <context>
     <name>CmdDrawingSpreadsheetView</name>
     <message>
-        <location line="+62"/>
+        <location line="+64"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -219,7 +219,7 @@
 <context>
     <name>CmdDrawingSymbol</name>
     <message>
-        <location line="-176"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>工程圖</translation>
     </message>
@@ -238,7 +238,7 @@
 <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-        <location filename="../../DrawingView.cpp" line="+212"/>
+        <location filename="../../DrawingView.cpp" line="+211"/>
         <source>&amp;Background</source>
         <translation>背景(&amp;B)</translation>
     </message>
@@ -752,17 +752,17 @@ Do you want to continue?</source>
         <translation>%1%2 %3</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Insert new %1%2 %3 drawing</source>
         <translation>插入新的 %1%2 %3 圖面</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+7"/>
         <source>%1%2 %3 (%4)</source>
         <translation>%1%2 %3 (%4)</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+6"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
         <translation>插入新的 %1%2 %3 (%4) 圖面</translation>
     </message>
@@ -770,7 +770,7 @@ Do you want to continue?</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-174"/>
+        <location line="-171"/>
         <location line="+519"/>
         <source>Choose an SVG file to open</source>
         <translation>選擇要開啟的 SVG 檔</translation>
@@ -784,16 +784,16 @@ Do you want to continue?</source>
         <translation type="obsolete">可縮放向量圖形(*.svg *.svgz)</translation>
     </message>
     <message>
-        <location line="-266"/>
-        <location line="+78"/>
-        <location line="+49"/>
-        <location line="+186"/>
-        <location line="+116"/>
+        <location line="-268"/>
+        <location line="+79"/>
+        <location line="+50"/>
+        <location line="+187"/>
+        <location line="+119"/>
         <source>Wrong selection</source>
         <translation>錯誤的選取</translation>
     </message>
     <message>
-        <location line="-428"/>
+        <location line="-434"/>
         <source>Select a Part object.</source>
         <translation>選取零件物件。</translation>
     </message>
@@ -810,40 +810,40 @@ Do you want to continue?</source>
         <translation type="obsolete">建立頁面供插入視圖資訊</translation>
     </message>
     <message>
-        <location line="-253"/>
+        <location line="-251"/>
         <location line="+519"/>
-        <location line="+52"/>
+        <location line="+53"/>
         <source>Scalable Vector Graphic</source>
         <translation>可縮放向量圖檔</translation>
     </message>
     <message>
-        <location line="-310"/>
-        <location line="+78"/>
-        <location line="+80"/>
+        <location line="-313"/>
+        <location line="+79"/>
+        <location line="+81"/>
         <location line="+48"/>
         <location line="+45"/>
-        <location line="+175"/>
+        <location line="+179"/>
         <source>No page found</source>
         <translation>未發現頁面</translation>
     </message>
     <message>
-        <location line="-425"/>
-        <location line="+78"/>
-        <location line="+80"/>
+        <location line="-431"/>
+        <location line="+79"/>
+        <location line="+81"/>
         <location line="+48"/>
         <location line="+45"/>
-        <location line="+175"/>
+        <location line="+179"/>
         <source>Create a page first.</source>
         <translation>請先建立一個頁面</translation>
     </message>
     <message>
-        <location line="-357"/>
+        <location line="-362"/>
         <source>Select exactly one Part object.</source>
         <translation>請確實選取一個零件物件</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <location line="+186"/>
+        <location line="+50"/>
+        <location line="+187"/>
         <source>Select one Page object.</source>
         <translation>選取一個頁面物件。</translation>
     </message>
@@ -853,7 +853,7 @@ Do you want to continue?</source>
         <translation>所有檔案</translation>
     </message>
     <message>
-        <location line="+110"/>
+        <location line="+113"/>
         <source>Select exactly one Spreadsheet object.</source>
         <translation>請僅選擇一個試算表物件</translation>
     </message>
@@ -870,7 +870,7 @@ Do you want to continue?</source>
         <translation type="obsolete">所有檔案(*.*)</translation>
     </message>
     <message>
-        <location line="-108"/>
+        <location line="-111"/>
         <source>Export page</source>
         <translation>匯出頁面</translation>
     </message>
@@ -905,19 +905,19 @@ Do you want to continue?</source>
     </message>
     <message>
         <location filename="../../TaskOrthoViews.cpp" line="+51"/>
-        <location line="+907"/>
+        <location line="+926"/>
         <source>Make axonometric...</source>
         <translation>產生軸測...</translation>
     </message>
     <message>
-        <location line="-906"/>
-        <location line="+907"/>
+        <location line="-925"/>
+        <location line="+926"/>
         <source>Edit axonometric settings...</source>
         <translation>編輯軸測設定</translation>
     </message>
     <message>
-        <location line="-906"/>
-        <location line="+907"/>
+        <location line="-925"/>
+        <location line="+926"/>
         <source>Make orthographic</source>
         <translation>建立正投影視角</translation>
     </message>

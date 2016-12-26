@@ -736,6 +736,33 @@ Aja ensin komento jolla taitteet poistetaan</translation>
         <source>Folds</source>
         <translation>Taitteita</translation>
     </message>
+    <message>
+        <source>Settings...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshGui::DlgEvaluateSettings</name>
+    <message>
+        <source>Evaluation settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Check for non-manifold points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable check for folds on surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Only consider zero area faces as degenerated</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MeshGui::DlgRegularSolid</name>

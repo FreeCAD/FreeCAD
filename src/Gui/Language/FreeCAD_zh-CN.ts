@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -155,27 +166,27 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation>单位计算器</translation>
+        <translation type="obsolete">单位计算器</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation>如</translation>
+        <translation type="obsolete">如</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation>=&gt;</translation>
+        <translation type="obsolete">=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>帮助</translation>
+        <translation type="obsolete">帮助</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>复制</translation>
+        <translation type="obsolete">复制</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation type="obsolete">关闭</translation>
     </message>
 </context>
 <context>
@@ -325,6 +336,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">重命名</translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished">重命名对象</translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished">完成编辑</translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished">完成编辑对象</translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -352,7 +382,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>License...</source>
-        <translation>许可...</translation>
+        <translation type="obsolete">许可...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -365,6 +395,18 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Word size</source>
         <translation>字号</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -530,6 +572,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>%1 at %2</source>
         <translation type="unfinished">%1 at %2</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">对话框</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished">文本标签</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -732,6 +789,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source></source>
         <translation>关于</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">清除</translation>
     </message>
 </context>
 <context>
@@ -2487,6 +2548,14 @@ Specify another directory, please.</source>
         <source>Imperial decimal (in/lb)</source>
         <translation>美制(寸/磅)</translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2522,40 +2591,56 @@ Specify another directory, please.</source>
         <source>Simple color</source>
         <translation>简单颜色</translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PickRadius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">视图</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation>每日一帖</translation>
+        <translation type="obsolete">每日一帖</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;你知道么...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;你知道么...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation>启动时提示(&amp;S)</translation>
+        <translation type="obsolete">启动时提示(&amp;S)</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation>Alt+S</translation>
+        <translation type="obsolete">Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation>下一个(&amp;N)</translation>
+        <translation type="obsolete">下一个(&amp;N)</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation>Alt+N</translation>
+        <translation type="obsolete">Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>闭合(&amp;C)</translation>
+        <translation type="obsolete">闭合(&amp;C)</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="obsolete">Alt+C</translation>
     </message>
     <message>
         <source></source>
@@ -2567,12 +2652,47 @@ Specify another directory, please.</source>
     <message>
         <source>Download failed: %1
 </source>
-        <translation>下载失败: %1
+        <translation type="obsolete">下载失败: %1
 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation>如果您想了解更多有关FreeCAD,请访问 %1 或点击帮助菜单中的帮助文件.</translation>
+        <translation type="obsolete">如果您想了解更多有关FreeCAD,请访问 %1 或点击帮助菜单中的帮助文件.</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished">单位计算器</translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished">如</translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished">=&gt;</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished">帮助</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">复制</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">关闭</translation>
     </message>
 </context>
 <context>
@@ -2743,43 +2863,43 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation>下载</translation>
+        <translation type="obsolete">下载</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation type="obsolete">取消</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>关闭</translation>
+        <translation type="obsolete">关闭</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation>在当前目录中已经存在名为 %1 的文件. 覆盖吗?</translation>
+        <translation type="obsolete">在当前目录中已经存在名为 %1 的文件. 覆盖吗?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation>无法保存文件 %1: %2.</translation>
+        <translation type="obsolete">无法保存文件 %1: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation>正在下载 %1.</translation>
+        <translation type="obsolete">正在下载 %1.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation>下载已取消.</translation>
+        <translation type="obsolete">下载已取消.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>下载失败: %1.</translation>
+        <translation type="obsolete">下载失败: %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation>下载 %1 到当前目录.</translation>
+        <translation type="obsolete">下载 %1 到当前目录.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="obsolete">%1 at %2</translation>
     </message>
 </context>
 <context>
@@ -2925,7 +3045,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation>Copyright</translation>
+        <translation type="obsolete">Copyright</translation>
     </message>
 </context>
 <context>
@@ -3281,39 +3401,39 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation>上一个</translation>
+        <translation type="obsolete">上一个</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>下一个</translation>
+        <translation type="obsolete">下一个</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>主页</translation>
+        <translation type="obsolete">主页</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>打开</translation>
+        <translation type="obsolete">打开</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation>打开文件</translation>
+        <translation type="obsolete">打开文件</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation>所有HTML文件（*.html *.htm）</translation>
+        <translation type="obsolete">所有HTML文件（*.html *.htm）</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation>外部浏览器</translation>
+        <translation type="obsolete">外部浏览器</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation>未发现外部浏览器.请在首选项中设置</translation>
+        <translation type="obsolete">未发现外部浏览器.请在首选项中设置</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation>启动 %1 失败</translation>
+        <translation type="obsolete">启动 %1 失败</translation>
     </message>
 </context>
 <context>
@@ -3439,60 +3559,68 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
         <source>Reveals this object and its subelements in the python console.</source>
         <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
     </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation>无法打开文件.</translation>
+        <translation type="obsolete">无法打开文件.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation>您试图访问地址&apos;%1&apos;,当前不可用。请确保URL存在,并重新尝试加载该页面.</translation>
+        <translation type="obsolete">您试图访问地址&apos;%1&apos;,当前不可用。请确保URL存在,并重新尝试加载该页面.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation>连接到 %1</translation>
+        <translation type="obsolete">连接到 %1</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation>发送到 %1</translation>
+        <translation type="obsolete">发送到 %1</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation>读取&apos;%1&apos;</translation>
+        <translation type="obsolete">读取&apos;%1&apos;</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>下载失败: %1.</translation>
+        <translation type="obsolete">下载失败: %1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>上一个</translation>
+        <translation type="obsolete">上一个</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>向前</translation>
+        <translation type="obsolete">向前</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>主页</translation>
+        <translation type="obsolete">主页</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>刷新</translation>
+        <translation type="obsolete">刷新</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>复制</translation>
+        <translation type="obsolete">复制</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>全选</translation>
+        <translation type="obsolete">全选</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation>无说明</translation>
+        <translation type="obsolete">无说明</translation>
     </message>
 </context>
 <context>
@@ -4229,6 +4357,21 @@ Do you want to specify another directory?</source>
     </message>
 </context>
 <context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
@@ -4356,6 +4499,22 @@ Do you want to specify another directory?</source>
         <source>Activate document %1</source>
         <translation>激活文档 %1</translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4381,6 +4540,37 @@ Do you want to specify another directory?</source>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation>选择&apos;%1&apos;工作台</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">关于 %1</translation>
     </message>
 </context>
 <context>
@@ -4518,6 +4708,10 @@ Do you want to specify another directory?</source>
         <source>Display properties</source>
         <translation>显示属性</translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4620,15 +4814,15 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Docked</source>
-        <translation>停靠</translation>
+        <translation type="obsolete">停靠</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation>不停靠</translation>
+        <translation type="obsolete">不停靠</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation>全屏</translation>
+        <translation type="obsolete">全屏</translation>
     </message>
     <message>
         <source>files</source>
@@ -4881,6 +5075,41 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Not allowed to delete system-wide macros</source>
         <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5951,6 +6180,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">标准视图</translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6659,6 +6903,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">标准视图</translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished">停靠</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">当前视图显示模式:1.全屏,2.不停靠,3.停靠</translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6674,6 +6933,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">标准视图</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished">全屏</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">当前视图显示模式:1.全屏,2.不停靠,3.停靠</translation>
+    </message>
+</context>
+<context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
@@ -6686,6 +6960,21 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Creates a screenshot of the active view</source>
         <translation>创建当前视图的屏幕截图</translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">标准视图</translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished">不停靠</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">当前视图显示模式:1.全屏,2.不停靠,3.停靠</translation>
     </message>
 </context>
 <context>
@@ -6719,8 +7008,16 @@ Be aware the point where you click matters.</source>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
+        <translation type="obsolete">This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</translation>
+    </message>
+    <message>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6815,7 +7112,15 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished">Are you sure?</translation>
+        <translation type="obsolete">Are you sure?</translation>
+    </message>
+    <message>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

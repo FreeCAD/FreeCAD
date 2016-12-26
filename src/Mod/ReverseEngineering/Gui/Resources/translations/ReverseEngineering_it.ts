@@ -160,7 +160,7 @@
 <context>
     <name>ReenGui::FitBSplineSurfaceWidget</name>
     <message>
-        <location filename="../../FitBSplineSurface.cpp" line="+145"/>
+        <location filename="../../FitBSplineSurface.cpp" line="+146"/>
         <source>Wrong selection</source>
         <translation>Selezione errata</translation>
     </message>
@@ -203,7 +203,7 @@
         <translation>Campioni per nodo</translation>
     </message>
     <message>
-        <location filename="../../Poisson.cpp" line="+108"/>
+        <location filename="../../Poisson.cpp" line="+109"/>
         <source>Input error</source>
         <translation>Errore di input</translation>
     </message>
