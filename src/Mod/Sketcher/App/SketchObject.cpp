@@ -3235,6 +3235,100 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         return delgeometries.size(); //number of deleted elements
     }
+    else if( geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+	// if the focus-to-vertex line is constrained, then never delete the focus
+	// if the line is unconstrained, then the line may be deleted,
+	// in this case the focus may be deleted if unconstrained.
+        int majorelementindex=-1;
+        int focus1elementindex=-1;
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::ParabolaFocus:
+                        focus1elementindex=(*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+        
+        if(focus1elementindex!=-1) {
+	    // look for a line from focusgeoid:start to Geoid:mid_external
+	    std::vector<int> focusgeoidlistgeoidlist;
+	    std::vector<PointPos> focusposidlist;
+	    getDirectlyCoincidentPoints(focus1elementindex, Sketcher::start, focusgeoidlistgeoidlist,
+                                       focusposidlist);
+	    
+	    std::vector<int> parabgeoidlistgeoidlist;
+	    std::vector<PointPos> parabposidlist;
+	    getDirectlyCoincidentPoints(GeoId, Sketcher::mid, parabgeoidlistgeoidlist,
+                                       parabposidlist);
+
+	    if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
+	    
+		std::size_t i,j;
+		for(i=0;i<focusgeoidlistgeoidlist.size();i++){
+		    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
+			if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
+			    const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
+			    
+			    if ( geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+				
+				if((focusposidlist[i] == Sketcher::start && parabposidlist[j] == Sketcher::end) ||
+				     (focusposidlist[i] == Sketcher::end && parabposidlist[j] == Sketcher::start))
+			
+				    majorelementindex = focusgeoidlistgeoidlist[i];
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+        // Hide unused geometry here
+        int majorconstraints=0; // number of constraints associated to the geoid of the major axis other than the coincident ones
+        int focus1constraints=0;
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+            it != vals.end(); ++it) {
+
+            if( (*it)->Second == majorelementindex || 
+		(*it)->First == majorelementindex  || 
+		(*it)->Third == majorelementindex)
+                majorconstraints++;
+            else if( (*it)->Second == focus1elementindex || 
+		     (*it)->First == focus1elementindex ||
+		     (*it)->Third == focus1elementindex)
+                focus1constraints++;
+        }
+
+        std::vector<int> delgeometries;
+
+        if(majorelementindex !=-1 && majorconstraints<3) { // major as two coincidents to focus and vertex
+            delgeometries.push_back(majorelementindex);
+	    majorelementindex = -1;
+	}
+	
+        if(majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
+            delgeometries.push_back(focus1elementindex);
+
+        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
+
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+        return delgeometries.size(); //number of deleted elements
+    }
     else
         return -1; // not supported type
 }
