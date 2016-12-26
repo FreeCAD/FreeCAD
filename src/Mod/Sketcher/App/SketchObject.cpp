@@ -3153,8 +3153,10 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
     
     const Part::Geometry *geo = getGeometry(GeoId);            
     // Only for supported types
-    if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-       
+    if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || 
+	geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+	geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+
         int majorelementindex=-1;
         int minorelementindex=-1;
         int focus1elementindex=-1;
@@ -3168,12 +3170,15 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:
+		    case Sketcher::HyperbolaMajor:			
                         majorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseMinorDiameter:
+		    case Sketcher::HyperbolaMinor:
                         minorelementindex=(*it)->First;
                         break;
-                    case Sketcher::EllipseFocus1: 
+                    case Sketcher::EllipseFocus1:
+		    case Sketcher::HyperbolaFocus:	    
                         focus1elementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus2: 
