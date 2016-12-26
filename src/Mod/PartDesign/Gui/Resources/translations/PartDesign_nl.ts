@@ -2,6 +2,78 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="nl" sourcelanguage="en">
 <context>
+    <name>CmdPartDesignAdditiveLoft</name>
+    <message>
+        <location filename="../../Command.cpp" line="+1176"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Additive loft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sweep a selected sketch along a path or to other profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignAdditivePipe</name>
+    <message>
+        <location line="-96"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Additive pipe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sweep a selected sketch along a path or to other profiles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignBody</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="+125"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new body and make it active</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignBoolean</name>
+    <message>
+        <location filename="../../Command.cpp" line="+832"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Boolean operation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Boolean operation with two or more bodies</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignChamfer</name>
     <message>
         <source>Part</source>
@@ -12,7 +84,7 @@
         <translation type="obsolete">Afschuining ...</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+655"/>
+        <location line="-531"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -30,7 +102,7 @@
 <context>
     <name>CmdPartDesignDraft</name>
     <message>
-        <location line="+151"/>
+        <location line="+27"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -46,9 +118,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignDuplicateSelection</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="+400"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Duplicate selected object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Duplicates the selected object and adds it to the active body</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignFillet</name>
     <message>
-        <location line="-307"/>
+        <location filename="../../Command.cpp" line="-59"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -66,7 +156,7 @@
 <context>
     <name>CmdPartDesignGroove</name>
     <message>
-        <location line="-82"/>
+        <location line="-330"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -82,9 +172,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignLine</name>
+    <message>
+        <location line="-856"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a datum line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new datum line</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignLinearPattern</name>
     <message>
-        <location line="+575"/>
+        <location line="+1479"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -104,9 +212,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignMigrate</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="-296"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Migrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Migrate document to the modern partdesign workflow</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignMirrored</name>
     <message>
-        <location line="-78"/>
+        <location filename="../../Command.cpp" line="-56"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -117,25 +243,79 @@
     </message>
     <message>
         <location line="+1"/>
-        <source>Create a mirrored feature</source>
+        <source>create a mirrored feature</source>
+        <translation type="unfinished">Een gespiegeld stuk maken</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignMoveFeature</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="+348"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Move object to other body</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>create a mirrored feature</source>
-        <translation type="obsolete">Een gespiegeld stuk maken</translation>
+        <location line="+1"/>
+        <source>Moves the selected object to another body</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignMoveFeatureInTree</name>
+    <message>
+        <location line="+138"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Move object after other object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Moves the selected object and insert it after another object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignMoveTip</name>
+    <message>
+        <location line="-278"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Set tip</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Move the tip of the body</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdPartDesignMultiTransform</name>
     <message>
-        <location line="+312"/>
+        <location filename="../../Command.cpp" line="+205"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Create MultiTransform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>MultiTransform</source>
-        <translation>Multibewerking</translation>
+        <translation type="obsolete">Multibewerking</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -148,9 +328,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignNewSketch</name>
+    <message>
+        <location line="-1508"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignPad</name>
     <message>
-        <location line="-1061"/>
+        <location line="+568"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -166,9 +364,45 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignPart</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="-367"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new part and make it active</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignPlane</name>
+    <message>
+        <location filename="../../Command.cpp" line="-728"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a datum plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new datum plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignPocket</name>
     <message>
-        <location line="+84"/>
+        <location line="+782"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -188,9 +422,27 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignPoint</name>
+    <message>
+        <location line="-730"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a datum point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new datum point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdPartDesignPolarPattern</name>
     <message>
-        <location line="+816"/>
+        <location line="+1507"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -212,7 +464,7 @@
 <context>
     <name>CmdPartDesignRevolution</name>
     <message>
-        <location line="-748"/>
+        <location line="-737"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -230,7 +482,7 @@
 <context>
     <name>CmdPartDesignScaled</name>
     <message>
-        <location line="+827"/>
+        <location line="+790"/>
         <source>PartDesign</source>
         <translation>Onderdeel-ontwerp</translation>
     </message>
@@ -250,9 +502,255 @@
     </message>
 </context>
 <context>
+    <name>CmdPartDesignShapeBinder</name>
+    <message>
+        <location line="-1536"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a shape binder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a new shape binder</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignSubtractiveLoft</name>
+    <message>
+        <location line="+984"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Subtractive loft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignSubtractivePipe</name>
+    <message>
+        <location line="-96"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Subtractive pipe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sweep a selected sketch along a path or to other profiles and remove it from the body</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartDesignThickness</name>
+    <message>
+        <location line="+342"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Thickness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make a thick solid</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPrimtiveCompAdditive</name>
+    <message>
+        <location filename="../../CommandPrimitive.cpp" line="+52"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Create an additive primitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+136"/>
+        <source>Additive Box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Cylinder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Sphere</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Cone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Ellipsoid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Torus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Prism</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Additive Wedge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdPrimtiveCompSubtractive</name>
+    <message>
+        <location line="+16"/>
+        <source>PartDesign</source>
+        <translation type="unfinished">Onderdeel-ontwerp</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Create an subtractive primitive</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+146"/>
+        <source>Subtractive Box</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Cylinder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Sphere</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Cone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Ellipsoid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Torus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Prism</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Subtractive Wedge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Dialog</name>
+    <message>
+        <location filename="../../DlgReference.ui" line="+14"/>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references cancel the command.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Make independent copy (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Make dependent copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Create cross-reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FeaturePickDialog</name>
+    <message>
+        <location filename="../../FeaturePickDialog.cpp" line="+45"/>
+        <source>Valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Invalid shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No wire in sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sketch already used by other feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sketch belongs to another Body feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Feature is located after the Tip feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskWatcherCommands</name>
     <message>
-        <location filename="../../Workbench.cpp" line="+42"/>
+        <location filename="../../Workbench.cpp" line="+52"/>
         <source>Face tools</source>
         <translation>Vlakgereedschappen</translation>
     </message>
@@ -356,11 +854,291 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
 </context>
 <context>
+    <name>PartDesignGui::DlgPrimitives</name>
+    <message>
+        <location filename="../../TaskPrimitiveParameters.ui" line="+14"/>
+        <source>Geometric Primitives</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <location line="+107"/>
+        <source>Width:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-100"/>
+        <location line="+93"/>
+        <source>Length:</source>
+        <translation type="unfinished">Lengte:</translation>
+    </message>
+    <message>
+        <location line="-7"/>
+        <location line="+111"/>
+        <location line="+120"/>
+        <location line="+535"/>
+        <location line="+239"/>
+        <source>Height:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-954"/>
+        <location line="+107"/>
+        <location line="+854"/>
+        <source>Angle:</source>
+        <translation type="unfinished">Hoek:</translation>
+    </message>
+    <message>
+        <location line="-908"/>
+        <location line="+274"/>
+        <location line="+613"/>
+        <location line="+122"/>
+        <location line="+65"/>
+        <source>Radius:</source>
+        <translation type="unfinished">Straal:</translation>
+    </message>
+    <message>
+        <location line="-940"/>
+        <location line="+200"/>
+        <location line="+254"/>
+        <source>Radius 1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-447"/>
+        <location line="+200"/>
+        <location line="+240"/>
+        <source>Radius 2:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-377"/>
+        <location line="+191"/>
+        <source>U parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-184"/>
+        <source>V parameters:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+137"/>
+        <source>Radius 3:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <location line="+90"/>
+        <source>V parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-23"/>
+        <source>U Parameter:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+150"/>
+        <location line="+882"/>
+        <source>Polygon:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-862"/>
+        <location line="+882"/>
+        <source>Circumradius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-831"/>
+        <source>X min/max:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Y min/max:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Z min/max:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>X2 min/max:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Z2 min/max:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+160"/>
+        <source>Pitch:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Coordinate system:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Right-handed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Left-handed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+88"/>
+        <source>Growth:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Number of rotations:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+58"/>
+        <location line="+103"/>
+        <source>Angle 1:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-96"/>
+        <location line="+103"/>
+        <source>Angle 2:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-49"/>
+        <source>From three points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
+        <source>Major radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Minor radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+82"/>
+        <location line="+81"/>
+        <location line="+54"/>
+        <source>X:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-125"/>
+        <location line="+81"/>
+        <location line="+54"/>
+        <source>Y:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-125"/>
+        <location line="+81"/>
+        <location line="+54"/>
+        <source>Z:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-37"/>
+        <source>End point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Start point</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PartDesignGui::FeaturePickDialog</name>
     <message>
-        <location filename="../../FeaturePickDialog.ui" line="+14"/>
         <source>Choose feature</source>
-        <translation>Stuk kiezen</translation>
+        <translation type="obsolete">Stuk kiezen</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::NoDependentsSelection</name>
+    <message>
+        <location filename="../../ReferenceSelection.cpp" line="+182"/>
+        <source>Selecting this will cause circular dependency.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskBooleanParameters</name>
+    <message>
+        <location filename="../../TaskBooleanParameters.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Add body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Fuse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Cut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Common</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskBooleanParameters.cpp" line="+54"/>
+        <source>Boolean parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskBoxPrimitives</name>
+    <message>
+        <location filename="../../TaskPrimitiveParameters.cpp" line="+51"/>
+        <source>Primitive parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+538"/>
+        <location line="+7"/>
+        <source>Create primitive</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -419,106 +1197,161 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+8"/>
+        <source>Add ref</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove ref</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Size:</source>
         <translation>Grootte:</translation>
     </message>
     <message>
-        <location filename="../../TaskChamferParameters.cpp" line="+52"/>
         <source>Chamfer parameters</source>
-        <translation>Parameters voor afschuining</translation>
+        <translation type="obsolete">Parameters voor afschuining</translation>
+    </message>
+    <message>
+        <location filename="../../TaskChamferParameters.cpp" line="+86"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDatumParameters</name>
+    <message>
+        <location filename="../../TaskDatumParameters.cpp" line="+72"/>
+        <source> parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDlgBooleanParameters</name>
+    <message>
+        <location filename="../../TaskBooleanParameters.cpp" line="+253"/>
+        <source>Boolean: Accept: Input error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgChamferParameters</name>
     <message>
-        <location line="+86"/>
         <source>Edit chamfer</source>
-        <translation>Afschuining bewerken</translation>
+        <translation type="obsolete">Afschuining bewerken</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDlgDatumParameters</name>
+    <message>
+        <location filename="../../TaskDatumParameters.cpp" line="+48"/>
+        <source>Incompatible reference set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is no attachment mode that fits the current set of references. If you choose to continue, the feature will remain where it is now, and will not be moved as the references change. Continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgDraftParameters</name>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+401"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDlgFeatureParameters</name>
+    <message>
+        <location filename="../../TaskFeatureParameters.cpp" line="+114"/>
+        <source>Input error</source>
+        <translation type="unfinished">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgFilletParameters</name>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="+138"/>
         <source>Edit fillet</source>
-        <translation>Afronding bewerken</translation>
+        <translation type="obsolete">Afronding bewerken</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgLinearPatternParameters</name>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="+462"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgMirroredParameters</name>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="+362"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgMultiTransformParameters</name>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="+447"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgPadParameters</name>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+540"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDlgPipeParameters</name>
+    <message>
+        <location filename="../../TaskPipeParameters.cpp" line="+790"/>
+        <source>Input error</source>
+        <translation type="unfinished">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="+468"/>
         <source>Edit pocket</source>
-        <translation>Uitsparing bewerken</translation>
+        <translation type="obsolete">Uitsparing bewerken</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgPolarPatternParameters</name>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="+404"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgScaledParameters</name>
     <message>
-        <location filename="../../TaskScaledParameters.cpp" line="+243"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDlgShapeBinder</name>
+    <message>
+        <location filename="../../TaskShapeBinder.cpp" line="+313"/>
+        <source>Input error</source>
+        <translation type="unfinished">Invoerfout</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskDlgTransformedParameters</name>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="+264"/>
         <source>Input error</source>
-        <translation>Invoerfout</translation>
+        <translation type="obsolete">Invoerfout</translation>
     </message>
 </context>
 <context>
@@ -559,14 +1392,106 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Trekrichting omkeren</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="-347"/>
         <source>Draft parameters</source>
-        <translation>buiging kenmerken</translation>
+        <translation type="obsolete">buiging kenmerken</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location filename="../../TaskDraftParameters.cpp" line="+96"/>
         <source>Remove</source>
         <translation>Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskFeaturePick</name>
+    <message>
+        <location filename="../../TaskFeaturePick.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Allow used features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Allow external features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>From  other bodies of the same part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>From different parts or free features</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Make independent copy (recommended)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Make dependent copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Create cross-reference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskFeaturePick.cpp" line="+62"/>
+        <source>Valid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Invalid shape</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No wire in sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sketch already used by other feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Belongs to another body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Belongs to another part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Doesn&apos;t belongs to any body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Feature is located after the tip feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Select feature</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -578,61 +1503,66 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+8"/>
+        <source>Add ref</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove ref</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Radius:</source>
         <translation>Straal:</translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="-86"/>
         <source>Fillet parameters</source>
-        <translation>Afrondingsparameters</translation>
+        <translation type="obsolete">Afrondingsparameters</translation>
+    </message>
+    <message>
+        <location filename="../../TaskFilletParameters.cpp" line="+86"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
     </message>
 </context>
 <context>
     <name>PartDesignGui::TaskGrooveParameters</name>
     <message>
-        <location filename="../../TaskGrooveParameters.ui" line="+14"/>
         <source>Form</source>
-        <translation>Vorm</translation>
+        <translation type="obsolete">Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Axis:</source>
-        <translation>Assen:</translation>
+        <translation type="obsolete">Assen:</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Vertical sketch axis</source>
-        <translation>Verticale schetsas</translation>
+        <translation type="obsolete">Verticale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizontale schetsas</translation>
+        <translation type="obsolete">Horizontale schetsas</translation>
     </message>
     <message>
-        <location line="+12"/>
         <source>Angle:</source>
-        <translation>Hoek:</translation>
+        <translation type="obsolete">Hoek:</translation>
     </message>
     <message>
-        <location line="+31"/>
         <source>Symmetric to plane</source>
-        <translation>Evenwijdig aan vlak</translation>
+        <translation type="obsolete">Evenwijdig aan vlak</translation>
     </message>
     <message>
-        <location line="+7"/>
         <source>Reversed</source>
-        <translation>Omgekeerd</translation>
+        <translation type="obsolete">Omgekeerd</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>Update view</source>
-        <translation>Weergave verversen</translation>
+        <translation type="obsolete">Weergave verversen</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+52"/>
         <source>Groove parameters</source>
-        <translation>Freesparameters</translation>
+        <translation type="obsolete">Freesparameters</translation>
     </message>
 </context>
 <context>
@@ -681,34 +1611,38 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Original feature</source>
-        <translation>Oorspronkelijk stuk</translation>
+        <translation type="obsolete">Oorspronkelijk stuk</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+35"/>
         <source>Direction</source>
         <translation>Richting</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizontale schetsas</translation>
+        <translation type="obsolete">Horizontale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation>Verticale schetsas</translation>
+        <translation type="obsolete">Verticale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-267"/>
-        <location line="+57"/>
         <source>Select reference...</source>
-        <translation>Selecteer referentie...</translation>
+        <translation type="obsolete">Selecteer referentie...</translation>
+    </message>
+    <message>
+        <location line="-27"/>
+        <source>Add feature</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
+        <source>Remove feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Reverse direction</source>
         <translation>Richting omkeren</translation>
     </message>
@@ -733,14 +1667,60 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Weergave verversen</translation>
     </message>
     <message>
-        <location filename="../../TaskLinearPatternParameters.cpp" line="-63"/>
         <source>Select an edge or a face</source>
-        <translation>Selecteer een rand of een vlak</translation>
+        <translation type="obsolete">Selecteer een rand of een vlak</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Undefined</source>
-        <translation>niet gedefinieerd</translation>
+        <translation type="obsolete">niet gedefinieerd</translation>
+    </message>
+    <message>
+        <location filename="../../TaskLinearPatternParameters.cpp" line="+113"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <location line="+203"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskLoftParameters</name>
+    <message>
+        <location filename="../../TaskLoftParameters.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Ruled surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Add Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Remove Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Update view</source>
+        <translation type="unfinished">Weergave verversen</translation>
+    </message>
+    <message>
+        <location filename="../../TaskLoftParameters.cpp" line="+58"/>
+        <source>Loft parameters</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -751,9 +1731,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Original feature</source>
-        <translation>Oorspronkelijk stuk</translation>
+        <translation type="obsolete">Oorspronkelijk stuk</translation>
     </message>
     <message>
         <source>XY</source>
@@ -768,29 +1747,34 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">YZ</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+35"/>
         <source>Plane</source>
         <translation>Vlak</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Horizontal sketch axis</source>
-        <translation>Horizontale schetsas</translation>
+        <translation type="obsolete">Horizontale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
         <source>Vertical sketch axis</source>
-        <translation>Verticale schetsas</translation>
+        <translation type="obsolete">Verticale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../../TaskMirroredParameters.cpp" line="-194"/>
-        <location line="+40"/>
         <source>Select reference...</source>
-        <translation>Selecteer referentie...</translation>
+        <translation type="obsolete">Selecteer referentie...</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="-27"/>
+        <source>Add feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
@@ -804,14 +1788,22 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">selecteer een vlak</translation>
     </message>
     <message>
-        <location filename="../../TaskMirroredParameters.cpp" line="-46"/>
         <source>Select a face</source>
-        <translation>Selecteer een vlak</translation>
+        <translation type="obsolete">Selecteer een vlak</translation>
     </message>
     <message>
-        <location line="+3"/>
         <source>Undefined</source>
-        <translation>niet gedefinieerd</translation>
+        <translation type="obsolete">niet gedefinieerd</translation>
+    </message>
+    <message>
+        <location filename="../../TaskMirroredParameters.cpp" line="+110"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <location line="+134"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -822,12 +1814,21 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Original feature</source>
-        <translation>Oorspronkelijk stuk</translation>
+        <translation type="obsolete">Oorspronkelijk stuk</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+8"/>
+        <source>Add feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Transformations</source>
         <translation>Transformaties</translation>
     </message>
@@ -837,7 +1838,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Weergave verversen</translation>
     </message>
     <message>
-        <location filename="../../TaskMultiTransformParameters.cpp" line="-376"/>
+        <location filename="../../TaskMultiTransformParameters.cpp" line="+73"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -900,7 +1906,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Lengte</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+18"/>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Symmetric to plane</source>
         <translation>Evenwijdig aan vlak</translation>
     </message>
@@ -910,11 +1921,9 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>2de lengte</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <location filename="../../TaskPadParameters.cpp" line="-408"/>
-        <location line="+109"/>
-        <location line="+106"/>
-        <location line="+100"/>
+        <location line="+18"/>
+        <location filename="../../TaskPadParameters.cpp" line="+103"/>
+        <location line="+277"/>
         <source>Face</source>
         <translation>Vlak</translation>
     </message>
@@ -928,9 +1937,9 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Type:</translation>
     </message>
     <message>
-        <location line="-102"/>
-        <location filename="../../TaskPadParameters.cpp" line="-311"/>
-        <location line="+294"/>
+        <location line="-98"/>
+        <location filename="../../TaskPadParameters.cpp" line="-271"/>
+        <location line="+253"/>
         <source>Dimension</source>
         <translation>Afmeting</translation>
     </message>
@@ -943,7 +1952,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Mirrored extent</translation>
     </message>
     <message>
-        <location line="+47"/>
+        <location line="+52"/>
         <source>Reversed</source>
         <translation>Omgekeerd</translation>
     </message>
@@ -972,37 +1981,40 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">TaskPadParameters</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="-374"/>
+        <location filename="../../TaskPadParameters.cpp" line="-306"/>
         <source>Pad parameters</source>
         <translation>Opdikkingsparameters</translation>
     </message>
     <message>
-        <location line="+73"/>
-        <location line="+315"/>
+        <location line="+50"/>
+        <location line="+74"/>
+        <location line="+43"/>
+        <location line="+6"/>
+        <location line="+148"/>
         <source>No face selected</source>
         <translation>Geen vlak geselecteerd</translation>
     </message>
     <message>
-        <location line="-307"/>
-        <location line="+294"/>
+        <location line="-267"/>
+        <location line="+253"/>
         <source>To last</source>
         <translation>Naar laatste</translation>
     </message>
     <message>
-        <location line="-293"/>
-        <location line="+294"/>
+        <location line="-252"/>
+        <location line="+253"/>
         <source>To first</source>
         <translation>Naar eerste</translation>
     </message>
     <message>
-        <location line="-293"/>
-        <location line="+294"/>
+        <location line="-252"/>
+        <location line="+253"/>
         <source>Up to face</source>
         <translation>Naar oppervlak</translation>
     </message>
     <message>
-        <location line="-293"/>
-        <location line="+294"/>
+        <location line="-252"/>
+        <location line="+253"/>
         <source>Two dimensions</source>
         <translation>Twee dimensies</translation>
     </message>
@@ -1039,9 +2051,188 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
 </context>
 <context>
+    <name>PartDesignGui::TaskPipeOrientation</name>
+    <message>
+        <location filename="../../TaskPipeOrientation.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Orientation mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Standard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Fixed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Frenet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Auxillery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Binormal</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Curvelinear equivalenz</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Add Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Remove Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Set the constant binormal vector used to calculate the profiles orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>X</source>
+        <translation type="unfinished">X</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Y</source>
+        <translation type="unfinished">Y</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Z</source>
+        <translation type="unfinished">Z</translation>
+    </message>
+    <message>
+        <location filename="../../TaskPipeParameters.cpp" line="-500"/>
+        <source>Section orientation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskPipeParameters</name>
+    <message>
+        <location filename="../../TaskPipeParameters.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Corner Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Transformed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Right Corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Round Corner</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Profile</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Add Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Remove Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskPipeParameters.cpp" line="-219"/>
+        <source>Pipe parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskPipeScaling</name>
+    <message>
+        <location filename="../../TaskPipeScaling.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Transform mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Constant</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Multisection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Add Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Remove Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskPipeParameters.cpp" line="+459"/>
+        <source>Section transformation</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PartDesignGui::TaskPocketParameters</name>
     <message>
-        <location filename="../../TaskPocketParameters.ui" line="+26"/>
+        <location filename="../../TaskPocketParameters.ui" line="+14"/>
         <source>Form</source>
         <translation>Vorm</translation>
     </message>
@@ -1056,27 +2247,30 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
     <message>
         <location line="+8"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-368"/>
-        <location line="+281"/>
+        <location filename="../../TaskPocketParameters.cpp" line="+101"/>
+        <location line="+254"/>
         <source>Dimension</source>
         <translation>Afmeting</translation>
     </message>
     <message>
-        <location line="+34"/>
+        <location line="+30"/>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Symmetric to plane</source>
         <translation>Evenwijdig aan vlak</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+7"/>
         <source>Reversed</source>
         <translation>Omgekeerd</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location filename="../../TaskPocketParameters.cpp" line="-285"/>
-        <location line="+105"/>
-        <location line="+113"/>
-        <location line="+80"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-260"/>
+        <location line="+277"/>
         <source>Face</source>
         <translation>Vlak</translation>
     </message>
@@ -1086,12 +2280,12 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Weergave verversen</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-68"/>
         <source>Length</source>
         <translation>Lengte</translation>
     </message>
     <message>
-        <location filename="../../TaskPocketParameters.cpp" line="-353"/>
+        <location filename="../../TaskPocketParameters.cpp" line="-316"/>
         <source>Pocket parameters</source>
         <translation>Uitsparingsparameters</translation>
     </message>
@@ -1100,27 +2294,29 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Naar laatste</translation>
     </message>
     <message>
-        <location line="+61"/>
-        <location line="+281"/>
+        <location line="+47"/>
+        <location line="+254"/>
         <source>To first</source>
         <translation>Naar eerste</translation>
     </message>
     <message>
-        <location line="-282"/>
-        <location line="+281"/>
+        <location line="-255"/>
+        <location line="+254"/>
         <source>Through all</source>
         <translation>Langs alle</translation>
     </message>
     <message>
-        <location line="-279"/>
-        <location line="+281"/>
+        <location line="-252"/>
+        <location line="+254"/>
         <source>Up to face</source>
         <translation>Naar oppervlak</translation>
     </message>
     <message>
-        <location line="-287"/>
-        <location line="+112"/>
-        <location line="+186"/>
+        <location line="-260"/>
+        <location line="+80"/>
+        <location line="+36"/>
+        <location line="+6"/>
+        <location line="+149"/>
         <source>No face selected</source>
         <translation>Geen vlak geselecteerd</translation>
     </message>
@@ -1133,9 +2329,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Original feature</source>
-        <translation>Oorspronkelijk stuk</translation>
+        <translation type="obsolete">Oorspronkelijk stuk</translation>
     </message>
     <message>
         <source>X</source>
@@ -1154,24 +2349,30 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Richting</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+35"/>
         <source>Axis</source>
         <translation>As</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Normal sketch axis</source>
-        <translation type="unfinished">Normal sketch axis</translation>
+        <translation type="obsolete">Normal sketch axis</translation>
     </message>
     <message>
-        <location line="+5"/>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-231"/>
-        <location line="+52"/>
         <source>Select reference...</source>
-        <translation>Selecteer referentie...</translation>
+        <translation type="obsolete">Selecteer referentie...</translation>
+    </message>
+    <message>
+        <location line="-27"/>
+        <source>Add feature</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
+        <source>Remove feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Reverse direction</source>
         <translation>Richting omkeren</translation>
     </message>
@@ -1196,9 +2397,18 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Weergave verversen</translation>
     </message>
     <message>
-        <location filename="../../TaskPolarPatternParameters.cpp" line="-55"/>
         <source>Select an edge</source>
-        <translation>selecteer een rand</translation>
+        <translation type="obsolete">selecteer een rand</translation>
+    </message>
+    <message>
+        <location filename="../../TaskPolarPatternParameters.cpp" line="+111"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+    <message>
+        <location line="+206"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1214,14 +2424,38 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Assen:</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+28"/>
         <source>Vertical sketch axis</source>
         <translation>Verticale schetsas</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-5"/>
         <source>Horizontal sketch axis</source>
         <translation>Horizontale schetsas</translation>
+    </message>
+    <message>
+        <location line="-15"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+184"/>
+        <source>Base X axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
+        <source>Base Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+1"/>
+        <source>Base Z axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+7"/>
+        <source>Select reference...</source>
+        <translation type="unfinished">Selecteer referentie...</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -1252,14 +2486,13 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Hoek:</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+52"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="-132"/>
         <source>Revolution parameters</source>
         <translation>Rotatieparameters</translation>
     </message>
     <message>
-        <location line="+56"/>
         <source>Undefined</source>
-        <translation>niet gedefinieerd</translation>
+        <translation type="obsolete">niet gedefinieerd</translation>
     </message>
 </context>
 <context>
@@ -1270,12 +2503,21 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation>Vorm</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Original feature</source>
-        <translation>Oorspronkelijk stuk</translation>
+        <translation type="obsolete">Oorspronkelijk stuk</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+8"/>
+        <source>Add feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
         <source>Factor</source>
         <translation>Factor</translation>
     </message>
@@ -1294,6 +2536,120 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <source>Update view</source>
         <translation>Weergave verversen</translation>
     </message>
+    <message>
+        <location filename="../../TaskScaledParameters.cpp" line="+97"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskShapeBinder</name>
+    <message>
+        <location filename="../../TaskShapeBinder.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Add Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Remove Geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskShapeBinder.cpp" line="-252"/>
+        <source>Datum shape parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskSketchBasedParameters</name>
+    <message>
+        <location filename="../../TaskSketchBasedParameters.cpp" line="+157"/>
+        <source>Face</source>
+        <translation type="unfinished">Vlak</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>No face selected</source>
+        <translation type="unfinished">Geen vlak geselecteerd</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskThicknessParameters</name>
+    <message>
+        <location filename="../../TaskThicknessParameters.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Add face</source>
+        <translation type="unfinished">Vlak toevoegen</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Remove face</source>
+        <translation type="unfinished">Vlak verwijderen</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Thikness</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Join Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Skin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Pipe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Recto Verso</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Intersection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Make thickness inwards</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskThicknessParameters.cpp" line="+94"/>
+        <source>Remove</source>
+        <translation type="unfinished">Verwijderen</translation>
+    </message>
 </context>
 <context>
     <name>PartDesignGui::TaskTransformedMessages</name>
@@ -1304,17 +2660,192 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
     </message>
 </context>
 <context>
+    <name>PartDesignGui::TaskTransformedParameters</name>
+    <message>
+        <location filename="../../TaskTransformedParameters.cpp" line="+183"/>
+        <source>Normal sketch axis</source>
+        <translation type="unfinished">Normal sketch axis</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Vertical sketch axis</source>
+        <translation type="unfinished">Verticale schetsas</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Horizontal sketch axis</source>
+        <translation type="unfinished">Horizontale schetsas</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+36"/>
+        <source>Construction line %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-22"/>
+        <source>Base X axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base Z axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+36"/>
+        <source>Select reference...</source>
+        <translation type="unfinished">Selecteer referentie...</translation>
+    </message>
+    <message>
+        <location line="-9"/>
+        <source>Base XY plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base YZ plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Base XZ plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::ViewProviderBody</name>
+    <message>
+        <location filename="../../ViewProviderBody.cpp" line="+137"/>
+        <source>Toggle active body</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_CompPrimitiveAdditive</name>
+    <message>
+        <location filename="../../CommandPrimitive.cpp" line="-219"/>
+        <source>Create an additive box by its with, height and length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive cylinder by its radius, height and angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive sphere by its radius and varius angles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive cone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive ellipsoid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive torus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive prism</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an additive wedge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_CompPrimitiveSubtractive</name>
+    <message>
+        <location line="+164"/>
+        <source>Create an subtractive box by its with, height and length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive cylinder by its radius, height and angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive sphere by its radius and varius angles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive cone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive ellipsoid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive torus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive prism</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Create an subtractive wedge</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_MoveFeature</name>
+    <message>
+        <location filename="../../CommandBody.cpp" line="+556"/>
+        <source>Select body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select a body from the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PartDesign_MoveFeatureInTree</name>
+    <message>
+        <location line="+137"/>
+        <source>Select feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select a feature from the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-652"/>
-        <location line="+15"/>
-        <location line="+71"/>
-        <location line="+66"/>
-        <location line="+16"/>
-        <location line="+71"/>
-        <location line="+66"/>
-        <location line="+15"/>
-        <location line="+27"/>
+        <location filename="../../Command.cpp" line="-204"/>
+        <location line="+4"/>
+        <location line="+21"/>
+        <location line="+12"/>
         <source>Wrong selection</source>
         <translation>Verkeerde selectie</translation>
     </message>
@@ -1331,12 +2862,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">De vorm van het geselecteerde object is geen draad.</translation>
     </message>
     <message>
-        <location line="-663"/>
-        <location line="+84"/>
-        <location line="+74"/>
-        <location line="+84"/>
         <source>No valid sketches in this document</source>
-        <translation>Geen geldige schetsen in dit document</translation>
+        <translation type="obsolete">Geen geldige schetsen in dit document</translation>
     </message>
     <message>
         <source>Please create a sketch or 2D object first</source>
@@ -1347,15 +2874,11 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Maak eerst een schets of 2D-object. Het moet een steunvlak hebben op een voorwerp</translation>
     </message>
     <message>
-        <location line="+75"/>
-        <location line="+152"/>
         <source>Select an edge, face or body. Only one body is allowed.</source>
-        <translation>Selecteer een rand, vlak of lichaam. Slechts één lichaam is toegestaan.</translation>
+        <translation type="obsolete">Selecteer een rand, vlak of lichaam. Slechts één lichaam is toegestaan.</translation>
     </message>
     <message>
-        <location line="-147"/>
-        <location line="+152"/>
-        <location line="+153"/>
+        <location line="-22"/>
         <source>Wrong object type</source>
         <translation>Verkeerde objecttype</translation>
     </message>
@@ -1380,80 +2903,19 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Vorm van geselecteerd onderdeel is leeg</translation>
     </message>
     <message>
-        <location line="-626"/>
-        <location line="+158"/>
-        <source>Please create a sketch or 2D object first.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-156"/>
-        <location line="+158"/>
         <source>No valid sketches selected</source>
-        <translation type="unfinished">No valid sketches selected</translation>
+        <translation type="obsolete">No valid sketches selected</translation>
     </message>
     <message>
-        <location line="-157"/>
         <source>None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation type="obsolete">None of selected sketches/2D objects is valid for padding. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
-        <location line="+81"/>
-        <location line="+158"/>
-        <source>Please create a sketch or 2D object first. It must have a support face on a solid.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-81"/>
         <source>None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</source>
-        <translation type="unfinished">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
+        <translation type="obsolete">None of selected sketches/2D objects is valid for revolving. Please select a valid sketch or 2D object that is not used by any other feature.</translation>
     </message>
     <message>
-        <location line="+161"/>
-        <source>Fillet works only on parts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <location line="+153"/>
-        <source>Shape of selected part is empty.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-82"/>
-        <source>No fillet possible on selected faces/edges.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+72"/>
-        <source>Chamfer works only on parts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+81"/>
-        <source>No chamfer possible on selected faces/edges.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+72"/>
-        <source>Draft works only on parts.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Shape of selected Part is empty.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
-        <source>No draft possible on selected faces.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+87"/>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
+        <location line="+295"/>
         <source>Please create a subtractive or additive feature first.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1462,9 +2924,8 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Geen afschuining mogelijk op de geselecteerde vlakken/randen</translation>
     </message>
     <message>
-        <location line="-443"/>
         <source>Select one or more faces.</source>
-        <translation>Selecteer één of meerdere vlakken.</translation>
+        <translation type="obsolete">Selecteer één of meerdere vlakken.</translation>
     </message>
     <message>
         <source>Draft works only on parts</source>
@@ -1475,11 +2936,7 @@ Gelieve eerst één of meerdere randen te selecteren.</translation>
         <translation type="obsolete">Geen klad mogelijk op geselecteerde vlakken</translation>
     </message>
     <message>
-        <location line="+128"/>
-        <location line="+76"/>
-        <location line="+83"/>
-        <location line="+83"/>
-        <location line="+72"/>
+        <location line="-1"/>
         <source>No valid features in this document</source>
         <translation>Geen geldige functies in dit document</translation>
     </message>
@@ -1502,69 +2959,153 @@ Create the sketch on a face.</source>
 Creëer de schets op een vlak.</translation>
     </message>
     <message>
-        <location filename="../../TaskPadParameters.cpp" line="+86"/>
-        <location filename="../../ViewProviderPad.cpp" line="+64"/>
+        <location filename="../../ViewProviderPad.cpp" line="+54"/>
         <source>Edit pad</source>
         <translation>Opdikking bewerken</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPocket.cpp" line="+65"/>
+        <location filename="../../ViewProviderPocket.cpp" line="+53"/>
         <source>Edit pocket</source>
         <translation>Uitsparing bewerken</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderChamfer.cpp" line="+58"/>
         <source>Edit chamfer</source>
-        <translation>Afschuining bewerken</translation>
+        <translation type="obsolete">Afschuining bewerken</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+75"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+75"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+92"/>
-        <location filename="../../ViewProviderPad.cpp" line="+23"/>
-        <location filename="../../ViewProviderPocket.cpp" line="+17"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+92"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+179"/>
+        <location filename="../../Command.cpp" line="-1456"/>
+        <source>Invalid selection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>There are no attachment modes that fit seleted objects. Select something else.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <location line="+2"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+222"/>
+        <source>Several sub-elements selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>You have to select a single face as support for a sketch!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>No support face selected</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>You have to select a face as support for a sketch!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>No planar support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>You need a planar face as support for a sketch!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <source>No valid planes in this document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please create a plane first or select a face to sketch on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <location line="+290"/>
+        <location line="+736"/>
+        <location filename="../../ViewProvider.cpp" line="+100"/>
+        <location filename="../../ViewProviderBoolean.cpp" line="+74"/>
+        <location filename="../../ViewProviderDatum.cpp" line="+243"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="+83"/>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="+92"/>
         <source>A dialog is already open in the task panel</source>
         <translation>Een dialoog is al geopend in het taakvenster</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../../ViewProviderDraft.cpp" line="+1"/>
-        <location filename="../../ViewProviderFillet.cpp" line="+1"/>
-        <location filename="../../ViewProviderGroove.cpp" line="+1"/>
-        <location filename="../../ViewProviderPad.cpp" line="+1"/>
-        <location filename="../../ViewProviderPocket.cpp" line="+1"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
-        <location filename="../../ViewProviderTransformed.cpp" line="+1"/>
+        <location line="-1025"/>
+        <location line="+290"/>
+        <location line="+736"/>
+        <location filename="../../ViewProvider.cpp" line="+1"/>
+        <location filename="../../ViewProviderBoolean.cpp" line="+1"/>
+        <location filename="../../ViewProviderDatum.cpp" line="+1"/>
+        <location filename="../../ViewProviderPrimitive.cpp" line="+1"/>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="+1"/>
         <source>Do you want to close this dialog?</source>
         <translation>Wilt u dit dialoogvenster sluiten?</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderRevolution.cpp" line="-28"/>
+        <location line="-804"/>
+        <source>No sketch to work on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No sketch is available in the document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+511"/>
+        <source>Select an edge, face or body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Select an edge, face or body from a single body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 works only on parts.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Shape of the selected Part is empty</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source> not possible on selected faces/edges.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderRevolution.cpp" line="+51"/>
         <source>Edit revolution</source>
         <translation>Rotatie bewerken</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderGroove.cpp" line="-28"/>
         <source>Edit Groove</source>
-        <translation>Frees bewerken</translation>
+        <translation type="obsolete">Frees bewerken</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+12"/>
         <source>Lost link to base sketch</source>
-        <translation type="unfinished">Lost link to base sketch</translation>
+        <translation type="obsolete">Lost link to base sketch</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <location filename="../../ViewProviderRevolution.cpp" line="+1"/>
         <source>The object can&apos;t be edited because the link to the the base sketch is lost.</source>
-        <translation type="unfinished">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
+        <translation type="obsolete">The object can&apos;t be edited because the link to the the base sketch is lost.</translation>
     </message>
     <message>
-        <location filename="../../TaskDraftParameters.cpp" line="+284"/>
+        <location filename="../../TaskDraftParameters.cpp" line="+203"/>
         <source>Missing neutral plane</source>
         <translation type="unfinished">Missing neutral plane</translation>
     </message>
@@ -1574,18 +3115,15 @@ Creëer de schets op een vlak.</translation>
         <translation>Selecteer een vlak of een rand en een trekrichting </translation>
     </message>
     <message>
-        <location line="-17"/>
-        <location filename="../../ViewProviderDraft.cpp" line="-18"/>
         <source>Edit draft</source>
-        <translation>buiging bewerken</translation>
+        <translation type="obsolete">buiging bewerken</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderFillet.cpp" line="-18"/>
         <source>Edit fillet</source>
-        <translation>Afronding bewerken</translation>
+        <translation type="obsolete">Afronding bewerken</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderTransformed.cpp" line="+27"/>
+        <location filename="../../ViewProviderTransformed.cpp" line="+151"/>
         <source>One transformed shape does not intersect support</source>
         <translation>één van de bewerkte vormen overlappen en ondersteunen elkaar niet</translation>
     </message>
@@ -1600,14 +3138,416 @@ Creëer de schets op een vlak.</translation>
         <translation>bewerking is geslaagd</translation>
     </message>
     <message>
-        <location filename="../../TaskGrooveParameters.cpp" line="+260"/>
+        <location filename="../../ViewProviderGroove.cpp" line="+51"/>
         <source>Edit groove</source>
         <translation type="unfinished">Edit groove</translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="+204"/>
         <source>Edit revolve</source>
-        <translation type="unfinished">Edit revolve</translation>
+        <translation type="obsolete">Edit revolve</translation>
+    </message>
+    <message>
+        <location filename="../../CommandBody.cpp" line="-716"/>
+        <source>Part creation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Failed to create a part object.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+88"/>
+        <location line="+5"/>
+        <location line="+7"/>
+        <location line="+8"/>
+        <location line="+8"/>
+        <source>Bad base feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-27"/>
+        <source>Body can&apos;t be based on a PartDesign feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 already belongs to a body, can&apos;t use it as base feature for another body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Body can&apos;t be based on annother body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Base feature (%1) belongs to other part.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Body may be based no more than on one feature.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+82"/>
+        <source>Nothing to migrate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No PartDesign features which doesn&apos;t belong to a body found. Nothing to migrate.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+148"/>
+        <location line="+287"/>
+        <source>Sketch plane cannot be migrated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-286"/>
+        <location line="+287"/>
+        <source>Please edit &apos;%1&apos; and redefine it to use a Base or Datum plane as the sketch plane.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-225"/>
+        <location line="+4"/>
+        <location line="+5"/>
+        <location line="+266"/>
+        <location line="+7"/>
+        <source>Selection error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-281"/>
+        <source>Select exactly one PartDesign feature or a body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Couldn&apos;t determin a body for the selected feature &apos;%s&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Only a solid feature can be the tip of a body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+116"/>
+        <location line="+27"/>
+        <source>Features cannot be moved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-26"/>
+        <source>Some of the selected features have dependencies in the source body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>There are no other bodies to move to</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <source>Impossible to move the base feature of a body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Select one or more features from the same body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Beginning of the body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CommandPrimitive.cpp" line="-157"/>
+        <source>No previous feature found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>It is not possible to create a subtractive feature without a base feature available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="+106"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="-19"/>
+        <source>Vertical sketch axis</source>
+        <translation type="unfinished">Verticale schetsas</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="+1"/>
+        <source>Horizontal sketch axis</source>
+        <translation type="unfinished">Horizontale schetsas</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Construction line %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskSketchBasedParameters.cpp" line="-96"/>
+        <source>Face</source>
+        <translation type="unfinished">Vlak</translation>
+    </message>
+    <message>
+        <location filename="../../Utils.cpp" line="+72"/>
+        <source>No active Body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>In order to use PartDesign you need an active Body object in the document. Please make one active (double click) or create one. If you have a legacy document with PartDesign objects without Body, use the transfer function in PartDesign to put them into a Body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+27"/>
+        <source>Feature is not in a body</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>In order to use this feature it needs to belong to a body object in the document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Feature is not in a part</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>In order to use this feature it needs to belong to a part object in the document.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderBoolean.cpp" line="-17"/>
+        <source>Edit boolean</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderDatum.cpp" line="-124"/>
+        <location line="+83"/>
+        <source>Plane</source>
+        <translation type="unfinished">Vlak</translation>
+    </message>
+    <message>
+        <location line="-81"/>
+        <location line="+77"/>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-75"/>
+        <location line="+83"/>
+        <source>Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-81"/>
+        <source>CoordinateSystem</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>Edit datum </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderDressUp.cpp" line="+70"/>
+        <source>Feature error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>%1 misses a base feature.
+This feature is broken and can&apos;t be edited.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderLoft.cpp" line="+69"/>
+        <source>Edit loft</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderPipe.cpp" line="+69"/>
+        <source>Edit pipe</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderShapeBinder.cpp" line="+91"/>
+        <source>Edit shape binder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../WorkflowManager.cpp" line="+144"/>
+        <source>The document &quot;%1&quot; you are editing was design with old version of PartDesign workbench.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Do you want to migrate in order to use modern PartDesign features?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>The document &quot;%1&quot; seems to be either in the middle of the migration process from legacy PartDesign or have a slightly broken structure.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Do you want to make the migration automatically?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Note If you choose to migrate you won&apos;t be able to edit the file wtih old FreeCAD versions.
+If you refuse to migrate you won&apos;t be able to use new PartDesign features like Bodies and Parts. As a result you also won&apos;t be able to use your parts in the assembly workbench.
+Although you will be able to migrate any moment later with &apos;Part Design-&gt;Migrate...&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Migrate manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TaskHole</name>
+    <message>
+        <location filename="../../../FeatureHole/TaskHole.ui" line="+14"/>
+        <source>Form</source>
+        <translation type="unfinished">Vorm</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Face</source>
+        <translation type="unfinished">Vlak</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <location line="+38"/>
+        <source>Edge</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-24"/>
+        <location line="+38"/>
+        <source>Distance</source>
+        <translation type="unfinished">Afstand</translation>
+    </message>
+    <message>
+        <location line="+36"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Through</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+340"/>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-331"/>
+        <source>Threaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Countersink</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Counterbore</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Hole norm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Custom dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Tolerance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <location line="+119"/>
+        <location line="+106"/>
+        <source>Diameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-194"/>
+        <source>Bolt/Washer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+49"/>
+        <location line="+8"/>
+        <source>Thread norm</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source> Custom thread length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+24"/>
+        <source>Finish depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+44"/>
+        <source>Counterbore/sink dia</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Counterbore depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Countersink angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Thread length</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

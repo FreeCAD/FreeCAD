@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -155,27 +166,27 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation type="unfinished">Units calculator</translation>
+        <translation type="obsolete">Units calculator</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation type="unfinished">as:</translation>
+        <translation type="obsolete">as:</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation type="unfinished">=&gt;</translation>
+        <translation type="obsolete">=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Yardım</translation>
+        <translation type="obsolete">Yardım</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Kopyala</translation>
+        <translation type="obsolete">Kopyala</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Kapat</translation>
+        <translation type="obsolete">Kapat</translation>
     </message>
 </context>
 <context>
@@ -326,6 +337,25 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Yeniden Adlandır</translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished">Nesneyi yeniden adlandır</translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished">Düzenlemeyi tamamla</translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished">Nesneyi düzenlemeyi tamamla</translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -353,7 +383,7 @@ while doing a left or right click and move the mouse up or down</translation>
     </message>
     <message>
         <source>License...</source>
-        <translation>Lisans...</translation>
+        <translation type="obsolete">Lisans...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -366,6 +396,18 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
         <source>Word size</source>
         <translation type="unfinished">Word size</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -531,6 +573,21 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
         <source>%1 at %2</source>
         <translation type="unfinished">%1 at %2</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">Pencere</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished">MetinEtiket</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -733,6 +790,10 @@ while doing a left or right click and move the mouse up or down</translation>
     <message>
         <source></source>
         <translation>Altgrup &apos;%1&apos; zaten mevcut.</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Temizle</translation>
     </message>
 </context>
 <context>
@@ -2490,6 +2551,14 @@ Lütfen başka bir dizin belirtin.</translation>
         <source>Imperial decimal (in/lb)</source>
         <translation type="unfinished">Imperial decimal (in/lb)</translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2525,40 +2594,56 @@ Lütfen başka bir dizin belirtin.</translation>
         <source>Simple color</source>
         <translation>Basit renk</translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PickRadius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">Görünüm</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation>Günün ipucu</translation>
+        <translation type="obsolete">Günün ipucu</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Biliyor muydunuz...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Biliyor muydunuz...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation>&amp;Açılışta ipuçlarını göster</translation>
+        <translation type="obsolete">&amp;Açılışta ipuçlarını göster</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation>Alt+S</translation>
+        <translation type="obsolete">Alt+S</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation>&amp;Sonraki İpucu</translation>
+        <translation type="obsolete">&amp;Sonraki İpucu</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation>Alt+N</translation>
+        <translation type="obsolete">Alt+N</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>Kapat</translation>
+        <translation type="obsolete">Kapat</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt + C</translation>
+        <translation type="obsolete">Alt + C</translation>
     </message>
     <message>
         <source></source>
@@ -2570,11 +2655,46 @@ Lütfen başka bir dizin belirtin.</translation>
     <message>
         <source>Download failed: %1
 </source>
-        <translation>İndirme başarısız: %1 </translation>
+        <translation type="obsolete">İndirme başarısız: %1 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation>Eğer FreeCAD hakkında daha fazla öğrenmek için %1 &apos;e gidiniz veya Yardım menüsünden Yardım öğesine tıklayınız.</translation>
+        <translation type="obsolete">Eğer FreeCAD hakkında daha fazla öğrenmek için %1 &apos;e gidiniz veya Yardım menüsünden Yardım öğesine tıklayınız.</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished">Units calculator</translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished">as:</translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished">=&gt;</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished">Yardım</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">Kopyala</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Kapat</translation>
     </message>
 </context>
 <context>
@@ -2745,43 +2865,43 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation>İndir</translation>
+        <translation type="obsolete">İndir</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>İptal et</translation>
+        <translation type="obsolete">İptal et</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Kapat</translation>
+        <translation type="obsolete">Kapat</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation>Geçerli dizinde %1 adlı bir dosya zaten var. Üzerine yazılsın mı?</translation>
+        <translation type="obsolete">Geçerli dizinde %1 adlı bir dosya zaten var. Üzerine yazılsın mı?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation>%1 Dosyası kaydedilemiyor: %2.</translation>
+        <translation type="obsolete">%1 Dosyası kaydedilemiyor: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation>İndirme %1.</translation>
+        <translation type="obsolete">İndirme %1.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation>Karşıdan yükleme iptal edildi.</translation>
+        <translation type="obsolete">Karşıdan yükleme iptal edildi.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Yükleme başarısız oldu: % 1.</translation>
+        <translation type="obsolete">Yükleme başarısız oldu: % 1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation>Geçerli dizine karşıdan yüklenen %1.</translation>
+        <translation type="obsolete">Geçerli dizine karşıdan yüklenen %1.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation type="unfinished">%1 at %2</translation>
+        <translation type="obsolete">%1 at %2</translation>
     </message>
 </context>
 <context>
@@ -2927,7 +3047,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation>Telif hakkı</translation>
+        <translation type="obsolete">Telif hakkı</translation>
     </message>
 </context>
 <context>
@@ -3283,39 +3403,39 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation>Önceki</translation>
+        <translation type="obsolete">Önceki</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Sonraki</translation>
+        <translation type="obsolete">Sonraki</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Ana sayfa</translation>
+        <translation type="obsolete">Ana sayfa</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Aç</translation>
+        <translation type="obsolete">Aç</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation>Dosya aç</translation>
+        <translation type="obsolete">Dosya aç</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation>Tüm html dosyaları (*.htm, *.html)</translation>
+        <translation type="obsolete">Tüm html dosyaları (*.htm, *.html)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation>Harici tarayıcı</translation>
+        <translation type="obsolete">Harici tarayıcı</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation>Hiçbir harici tarayıcı bulunamadı. lütfen Tercihlerde belirtin</translation>
+        <translation type="obsolete">Hiçbir harici tarayıcı bulunamadı. lütfen Tercihlerde belirtin</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation>%1 başlatılırken hata oluştu</translation>
+        <translation type="obsolete">%1 başlatılırken hata oluştu</translation>
     </message>
 </context>
 <context>
@@ -3441,60 +3561,68 @@ The &apos;Status&apos; column shows whether the document could be recovered.</tr
         <source>Reveals this object and its subelements in the python console.</source>
         <translation type="unfinished">Reveals this object and its subelements in the python console.</translation>
     </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation>Dosya açılamadı.</translation>
+        <translation type="obsolete">Dosya açılamadı.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation>Şu anda erişilemeyen %1 adresine erişmeye çalıştım. Lütfen URL&apos;nin varolduğundan emin olun ve sayfayı yeniden yüklemeyi deneyin.</translation>
+        <translation type="obsolete">Şu anda erişilemeyen %1 adresine erişmeye çalıştım. Lütfen URL&apos;nin varolduğundan emin olun ve sayfayı yeniden yüklemeyi deneyin.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation>%1 e bağlanıyor</translation>
+        <translation type="obsolete">%1 e bağlanıyor</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation>%1 e gönderiyor</translation>
+        <translation type="obsolete">%1 e gönderiyor</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation>%1 den okunuyor</translation>
+        <translation type="obsolete">%1 den okunuyor</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Yükleme başarısız oldu: % 1.</translation>
+        <translation type="obsolete">Yükleme başarısız oldu: % 1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Önceki</translation>
+        <translation type="obsolete">Önceki</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>İlet</translation>
+        <translation type="obsolete">İlet</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Ana sayfa</translation>
+        <translation type="obsolete">Ana sayfa</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Yenile</translation>
+        <translation type="obsolete">Yenile</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Kopyala</translation>
+        <translation type="obsolete">Kopyala</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>Tümünü Seç</translation>
+        <translation type="obsolete">Tümünü Seç</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation>Açıklama yok</translation>
+        <translation type="obsolete">Açıklama yok</translation>
     </message>
 </context>
 <context>
@@ -4234,6 +4362,21 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     </message>
 </context>
 <context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
@@ -4361,6 +4504,22 @@ Başka bir dizin belirlemek ister misiniz?</translation>
         <source>Activate document %1</source>
         <translation>%1 Belgesini etkinleştir</translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4386,6 +4545,37 @@ Başka bir dizin belirlemek ister misiniz?</translation>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation>&apos;% 1&apos; Tezgah seçin</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">%1 Hakkında</translation>
     </message>
 </context>
 <context>
@@ -4523,6 +4713,10 @@ Başka bir dizin belirlemek ister misiniz?</translation>
         <source>Display properties</source>
         <translation>Görüntü özellikleri</translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4625,15 +4819,15 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Docked</source>
-        <translation>Yuvalanmış</translation>
+        <translation type="obsolete">Yuvalanmış</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation>yuvalanmamış</translation>
+        <translation type="obsolete">yuvalanmamış</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation>Tam ekran</translation>
+        <translation type="obsolete">Tam ekran</translation>
     </message>
     <message>
         <source>files</source>
@@ -4883,6 +5077,41 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Not allowed to delete system-wide macros</source>
         <translation type="unfinished">Not allowed to delete system-wide macros</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5953,6 +6182,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standart Görünüm</translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6661,6 +6905,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standart Görünüm</translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished">Yuvalanmış</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Etkin görünüm tam ekran, birinde yerleşik olmayan ya da yerleşik modunda görüntüleme</translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6676,6 +6935,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standart Görünüm</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished">Tam ekran</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Etkin görünüm tam ekran, birinde yerleşik olmayan ya da yerleşik modunda görüntüleme</translation>
+    </message>
+</context>
+<context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
@@ -6688,6 +6962,21 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Creates a screenshot of the active view</source>
         <translation>Etkin görünümün bir görüntüsünü yakalar</translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Standart Görünüm</translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished">yuvalanmamış</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Etkin görünüm tam ekran, birinde yerleşik olmayan ya da yerleşik modunda görüntüleme</translation>
     </message>
 </context>
 <context>
@@ -6721,8 +7010,16 @@ Be aware the point where you click matters.</source>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation type="unfinished">This object is referenced by other objects and thus these objects might get broken.
+        <translation type="obsolete">This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</translation>
+    </message>
+    <message>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6817,7 +7114,15 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation type="unfinished">Are you sure?</translation>
+        <translation type="obsolete">Are you sure?</translation>
+    </message>
+    <message>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

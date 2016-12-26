@@ -57,6 +57,17 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -155,27 +166,27 @@
     <name>DlgUnitCalculator</name>
     <message>
         <source>Units calculator</source>
-        <translation>Calculateur d&apos;unités</translation>
+        <translation type="obsolete">Calculateur d&apos;unités</translation>
     </message>
     <message>
         <source>as:</source>
-        <translation>comme :</translation>
+        <translation type="obsolete">comme :</translation>
     </message>
     <message>
         <source>=&gt;</source>
-        <translation>=&gt;</translation>
+        <translation type="obsolete">=&gt;</translation>
     </message>
     <message>
         <source>Help</source>
-        <translation>Aide</translation>
+        <translation type="obsolete">Aide</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copie</translation>
+        <translation type="obsolete">Copie</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
 </context>
 <context>
@@ -325,6 +336,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished">Renommer</translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished">Renommer un objet</translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished">Terminer l&apos;édition</translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished">Terminer l&apos;édition de l&apos;objet</translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -352,7 +382,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>License...</source>
-        <translation>Licence...</translation>
+        <translation type="obsolete">Licence...</translation>
     </message>
     <message>
         <source>Copy to clipboard</source>
@@ -365,6 +395,18 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>Word size</source>
         <translation>Taille des mots</translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -530,6 +572,21 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source>%1 at %2</source>
         <translation>%1 à %2</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished">Fenêtre de dialogue</translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished">TextLabel</translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -732,6 +789,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source></source>
         <translation>Texte source</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
     </message>
 </context>
 <context>
@@ -2490,6 +2551,14 @@ Veuillez spécifier un autre répertoire.</translation>
         <source>Imperial decimal (in/lb)</source>
         <translation>Décimales impériales (pc / lb)</translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2525,40 +2594,56 @@ Veuillez spécifier un autre répertoire.</translation>
         <source>Simple color</source>
         <translation>Couleur simple</translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PickRadius</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished">Vue</translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
     <message>
         <source>Tip of the day</source>
-        <translation>Astuce du jour</translation>
+        <translation type="obsolete">Astuce du jour</translation>
     </message>
     <message>
         <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Saviez-vous...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
+        <translation type="obsolete">&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Saviez-vous...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</translation>
     </message>
     <message>
         <source>&amp;Show tips at start up</source>
-        <translation>&amp;Afficher les astuces au démarrage</translation>
+        <translation type="obsolete">&amp;Afficher les astuces au démarrage</translation>
     </message>
     <message>
         <source>Alt+S</source>
-        <translation>Alt+M</translation>
+        <translation type="obsolete">Alt+M</translation>
     </message>
     <message>
         <source>&amp;Next Tip</source>
-        <translation>&amp;Astuce suivante</translation>
+        <translation type="obsolete">&amp;Astuce suivante</translation>
     </message>
     <message>
         <source>Alt+N</source>
-        <translation>Alt+A</translation>
+        <translation type="obsolete">Alt+A</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fermer</translation>
+        <translation type="obsolete">&amp;Fermer</translation>
     </message>
     <message>
         <source>Alt+C</source>
-        <translation>Alt+F</translation>
+        <translation type="obsolete">Alt+F</translation>
     </message>
     <message>
         <source></source>
@@ -2570,12 +2655,47 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
         <source>Download failed: %1
 </source>
-        <translation>Téléchargement échoué: %1
+        <translation type="obsolete">Téléchargement échoué: %1
 </translation>
     </message>
     <message>
         <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
-        <translation>Si vous voulez en apprendre plus à propos de FreeCAD, aller sur %1 ou choisissez &apos;Aide&apos; dans le menu Aide.</translation>
+        <translation type="obsolete">Si vous voulez en apprendre plus à propos de FreeCAD, aller sur %1 ou choisissez &apos;Aide&apos; dans le menu Aide.</translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
+    <message>
+        <source>Units calculator</source>
+        <translation type="unfinished">Calculateur d&apos;unités</translation>
+    </message>
+    <message>
+        <source>as:</source>
+        <translation type="unfinished">comme :</translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished">=&gt;</translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished">Copie</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
     </message>
 </context>
 <context>
@@ -2746,43 +2866,43 @@ La colonne « État » indique si le document peut être récupéré.</translati
     <name>Gui::Dialog::DownloadDialog</name>
     <message>
         <source>Download</source>
-        <translation>Télécharger</translation>
+        <translation type="obsolete">Télécharger</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="obsolete">Annuler</translation>
     </message>
     <message>
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="obsolete">Fermer</translation>
     </message>
     <message>
         <source>There already exists a file called %1 in the current directory. Overwrite?</source>
-        <translation>Il existe déjà un fichier nommé %1 dans le répertoire courant. Voulez-vous le remplacer par celui-ci?</translation>
+        <translation type="obsolete">Il existe déjà un fichier nommé %1 dans le répertoire courant. Voulez-vous le remplacer par celui-ci?</translation>
     </message>
     <message>
         <source>Unable to save the file %1: %2.</source>
-        <translation>Impossible d&apos;enregistrer le fichier %1: %2.</translation>
+        <translation type="obsolete">Impossible d&apos;enregistrer le fichier %1: %2.</translation>
     </message>
     <message>
         <source>Downloading %1.</source>
-        <translation>Téléchargement de %1.</translation>
+        <translation type="obsolete">Téléchargement de %1.</translation>
     </message>
     <message>
         <source>Download canceled.</source>
-        <translation>Téléchargement annulé.</translation>
+        <translation type="obsolete">Téléchargement annulé.</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Téléchargement échoué : %1.</translation>
+        <translation type="obsolete">Téléchargement échoué : %1.</translation>
     </message>
     <message>
         <source>Downloaded %1 to current directory.</source>
-        <translation>%1 téléchargé dans le répertoire actuel.</translation>
+        <translation type="obsolete">%1 téléchargé dans le répertoire actuel.</translation>
     </message>
     <message>
         <source>%1 at %2</source>
-        <translation>%1 à %2</translation>
+        <translation type="obsolete">%1 à %2</translation>
     </message>
 </context>
 <context>
@@ -2928,7 +3048,7 @@ La colonne « État » indique si le document peut être récupéré.</translati
     <name>Gui::Dialog::LicenseDialog</name>
     <message>
         <source>Copyright</source>
-        <translation>Droit d&apos;auteur</translation>
+        <translation type="obsolete">Droit d&apos;auteur</translation>
     </message>
 </context>
 <context>
@@ -3284,39 +3404,39 @@ La colonne « État » indique si le document peut être récupéré.</translati
     <name>Gui::DockWnd::HelpView</name>
     <message>
         <source>Previous</source>
-        <translation>Précédent</translation>
+        <translation type="obsolete">Précédent</translation>
     </message>
     <message>
         <source>Next</source>
-        <translation>Suivant</translation>
+        <translation type="obsolete">Suivant</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Accueil</translation>
+        <translation type="obsolete">Accueil</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation>Ouvrir</translation>
+        <translation type="obsolete">Ouvrir</translation>
     </message>
     <message>
         <source>Open file</source>
-        <translation>Ouvrir un fichier</translation>
+        <translation type="obsolete">Ouvrir un fichier</translation>
     </message>
     <message>
         <source>All HTML files (*.html *.htm)</source>
-        <translation>Tous les fichiers HTML (*.html *.htm)</translation>
+        <translation type="obsolete">Tous les fichiers HTML (*.html *.htm)</translation>
     </message>
     <message>
         <source>External browser</source>
-        <translation>Navigateur externe</translation>
+        <translation type="obsolete">Navigateur externe</translation>
     </message>
     <message>
         <source>No external browser found. Specify in preferences, please</source>
-        <translation>Aucun navigateur externe trouvé. Veuillez le spécifier dans les préférences</translation>
+        <translation type="obsolete">Aucun navigateur externe trouvé. Veuillez le spécifier dans les préférences</translation>
     </message>
     <message>
         <source>Starting of %1 failed</source>
-        <translation>Le démarrage de %1 a échoué</translation>
+        <translation type="obsolete">Le démarrage de %1 a échoué</translation>
     </message>
 </context>
 <context>
@@ -3442,60 +3562,68 @@ La colonne « État » indique si le document peut être récupéré.</translati
         <source>Reveals this object and its subelements in the python console.</source>
         <translation>Exprime cet objet et ses sous-éléments dans la console python.</translation>
     </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::DockWnd::TextBrowser</name>
     <message>
         <source>Could not open file.</source>
-        <translation>Impossible d&apos;ouvrir le fichier.</translation>
+        <translation type="obsolete">Impossible d&apos;ouvrir le fichier.</translation>
     </message>
     <message>
         <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation>Vous essayez d&apos;accéder à l&apos;adresse %1, actuellement indisponible. Assurez-vous que l&apos;URL existe et rechargez la page.</translation>
+        <translation type="obsolete">Vous essayez d&apos;accéder à l&apos;adresse %1, actuellement indisponible. Assurez-vous que l&apos;URL existe et rechargez la page.</translation>
     </message>
     <message>
         <source>Connecting to %1</source>
-        <translation>Connexion à %1</translation>
+        <translation type="obsolete">Connexion à %1</translation>
     </message>
     <message>
         <source>Sending to %1</source>
-        <translation>Envoi vers %1</translation>
+        <translation type="obsolete">Envoi vers %1</translation>
     </message>
     <message>
         <source>Reading from %1</source>
-        <translation>Lecture depuis %1</translation>
+        <translation type="obsolete">Lecture depuis %1</translation>
     </message>
     <message>
         <source>Download failed: %1.</source>
-        <translation>Téléchargement échoué : %1.</translation>
+        <translation type="obsolete">Téléchargement échoué : %1.</translation>
     </message>
     <message>
         <source>Previous</source>
-        <translation>Précédent</translation>
+        <translation type="obsolete">Précédent</translation>
     </message>
     <message>
         <source>Forward</source>
-        <translation>Suivant</translation>
+        <translation type="obsolete">Suivant</translation>
     </message>
     <message>
         <source>Home</source>
-        <translation>Accueil</translation>
+        <translation type="obsolete">Accueil</translation>
     </message>
     <message>
         <source>Refresh</source>
-        <translation>Actualiser</translation>
+        <translation type="obsolete">Actualiser</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copie</translation>
+        <translation type="obsolete">Copie</translation>
     </message>
     <message>
         <source>Select all</source>
-        <translation>Tout sélectionner</translation>
+        <translation type="obsolete">Tout sélectionner</translation>
     </message>
     <message>
         <source>No description for</source>
-        <translation>Pas de description pour</translation>
+        <translation type="obsolete">Pas de description pour</translation>
     </message>
 </context>
 <context>
@@ -4233,6 +4361,21 @@ Do you want to specify another directory?</source>
     </message>
 </context>
 <context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
@@ -4360,6 +4503,22 @@ Do you want to specify another directory?</source>
         <source>Activate document %1</source>
         <translation>Activer document %1</translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4385,6 +4544,37 @@ Do you want to specify another directory?</source>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
         <translation>Sélectionner l&apos;atelier &apos;%1&apos;</translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
+        <translation type="unfinished">À propos de %1</translation>
     </message>
 </context>
 <context>
@@ -4522,6 +4712,10 @@ Do you want to specify another directory?</source>
         <source>Display properties</source>
         <translation>Propriétés d&apos;affichage</translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4624,15 +4818,15 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Docked</source>
-        <translation>Dockée</translation>
+        <translation type="obsolete">Dockée</translation>
     </message>
     <message>
         <source>Undocked</source>
-        <translation>Non dockée</translation>
+        <translation type="obsolete">Non dockée</translation>
     </message>
     <message>
         <source>Fullscreen</source>
-        <translation>Plein écran</translation>
+        <translation type="obsolete">Plein écran</translation>
     </message>
     <message>
         <source>files</source>
@@ -4885,6 +5079,41 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Not allowed to delete system-wide macros</source>
         <translation>Pas autorisé à supprimer les macros du système</translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete it&apos;s content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5955,6 +6184,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Vue standard</translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6663,6 +6907,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Vue standard</translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished">Dockée</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Afficher la vue active soit en mode plein écran, non ancrée ou ancrée</translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6678,6 +6937,21 @@ Be aware the point where you click matters.</source>
     </message>
 </context>
 <context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Vue standard</translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
+        <translation type="unfinished">Plein écran</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Afficher la vue active soit en mode plein écran, non ancrée ou ancrée</translation>
+    </message>
+</context>
+<context>
     <name>StdViewScreenShot</name>
     <message>
         <source>Standard-View</source>
@@ -6690,6 +6964,21 @@ Be aware the point where you click matters.</source>
     <message>
         <source>Creates a screenshot of the active view</source>
         <translation>Crée une capture d&apos;écran de la vue active</translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished">Vue standard</translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished">Non dockée</translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished">Afficher la vue active soit en mode plein écran, non ancrée ou ancrée</translation>
     </message>
 </context>
 <context>
@@ -6723,7 +7012,15 @@ Be aware the point where you click matters.</source>
     <message>
         <source>This object is referenced by other objects and thus these objects might get broken.
 Are you sure to continue?</source>
-        <translation>Cet objet est référencé par d&apos;autres objets qui pourraient ainsi être cassés. Êtes-vous sûr de continuer ?</translation>
+        <translation type="obsolete">Cet objet est référencé par d&apos;autres objets qui pourraient ainsi être cassés. Êtes-vous sûr de continuer ?</translation>
+    </message>
+    <message>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6817,7 +7114,15 @@ Do you want to specify its installation path if it&apos;s already installed?</so
     </message>
     <message>
         <source>Are you sure?</source>
-        <translation>Êtes-vous sûr ?</translation>
+        <translation type="obsolete">Êtes-vous sûr ?</translation>
+    </message>
+    <message>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -52,7 +52,17 @@
         <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
         <translation type="unfinished">Maximum edge length:</translation>
     </message>
@@ -126,7 +136,7 @@
         <translation type="obsolete">Setari</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
         <translation>Abaterea suprafetei:</translation>
     </message>
@@ -135,7 +145,7 @@
         <translation type="obsolete">Lungime maxima pentru margini:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Selectati mai intai o forma pentru crearea retelei.</translation>
     </message>
