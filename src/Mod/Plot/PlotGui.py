@@ -97,8 +97,7 @@ class Grid:
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "The grid must be activated on top of a plot document",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintError(msg + "\n")
             return
         flag = plt.isGrid()
@@ -126,8 +125,7 @@ class Legend:
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "The legend must be activated on top of a plot document",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintError(msg + "\n")
             return
         flag = plt.isLegend()

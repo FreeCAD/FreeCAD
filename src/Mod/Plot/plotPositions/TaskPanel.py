@@ -121,44 +121,37 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "plot_positions",
             "Set positions and sizes",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "posLabel").setText(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "Position",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "sizeLabel").setText(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "Size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QListWidget, "items").setToolTip(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "List of modificable items",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "x").setToolTip(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "X item position",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "y").setToolTip(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "Y item position",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "size").setToolTip(
             QtGui.QApplication.translate(
                 "plot_positions",
                 "Item size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def onItem(self, row):
         """ Executed when selected item is modified. """

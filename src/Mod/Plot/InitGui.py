@@ -54,8 +54,7 @@ class PlotWorkbench(Workbench):
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "matplotlib not found, Plot module will be disabled",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintMessage(msg + '\n')
 
 

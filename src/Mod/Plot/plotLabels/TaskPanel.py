@@ -133,69 +133,57 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "plot_labels",
             "Set labels",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "axesLabel").setText(
             QtGui.QApplication.translate("plot_labels",
                                          "Active axes",
-                                         None,
-                                         QtGui.QApplication.UnicodeUTF8))
+                                         None))
         self.widget(QtGui.QLabel, "titleLabel").setText(
             QtGui.QApplication.translate("plot_labels",
                                          "Title",
-                                         None,
-                                         QtGui.QApplication.UnicodeUTF8))
+                                         None))
         self.widget(QtGui.QLabel, "xLabel").setText(
             QtGui.QApplication.translate("plot_labels",
                                          "X label",
-                                         None,
-                                         QtGui.QApplication.UnicodeUTF8))
+                                         None))
         self.widget(QtGui.QLabel, "yLabel").setText(
             QtGui.QApplication.translate("plot_labels",
                                          "Y label",
-                                         None,
-                                         QtGui.QApplication.UnicodeUTF8))
+                                         None))
         self.widget(QtGui.QSpinBox, "axesIndex").setToolTip(QtGui.QApplication.translate(
             "plot_labels",
             "Index of the active axes",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLineEdit, "title").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "Title (associated to active axes)",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QSpinBox, "titleSize").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "Title font size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLineEdit, "titleX").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "X axis title",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QSpinBox, "xSize").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "X axis title font size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLineEdit, "titleY").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "Y axis title",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QSpinBox, "ySize").setToolTip(
             QtGui.QApplication.translate(
                 "plot_labels",
                 "Y axis title font size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def onAxesId(self, value):
         """ Executed when axes index is modified. """

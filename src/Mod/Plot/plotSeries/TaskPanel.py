@@ -149,86 +149,72 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "plot_series",
             "Configure series",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QCheckBox, "isLabel").setText(
             QtGui.QApplication.translate(
                 "plot_series",
                 "No label",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QPushButton, "remove").setText(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Remove serie",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "styleLabel").setText(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Line style",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "markerLabel").setText(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Marker",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QListWidget, "items").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "List of available series",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLineEdit, "label").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Line title",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QCheckBox, "isLabel").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "If checked serie will not be considered for legend",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QComboBox, "lineStyle").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Line style",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QComboBox, "markers").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Marker style",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "lineWidth").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Line width",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QSpinBox, "markerSize").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Marker size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QPushButton, "color").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Line and marker color",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QPushButton, "remove").setToolTip(
             QtGui.QApplication.translate(
                 "plot_series",
                 "Removes this serie",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def fillStyles(self):
         """Fill the style combo boxes with the availabel ones."""
