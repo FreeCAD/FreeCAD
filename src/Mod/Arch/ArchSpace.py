@@ -600,7 +600,7 @@ class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
         self.editButton.setObjectName("editButton")
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
         self.grid.addWidget(self.editButton, 4, 0, 1, 2)
-        self.editButton.setText(QtGui.QApplication.translate("Arch", "Set text position", None, QtGui.QApplication.UnicodeUTF8))
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Set text position", None))
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.setTextPos)
         
     def setTextPos(self):

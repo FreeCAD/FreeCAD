@@ -775,15 +775,15 @@ class _RoofTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None, QtGui.QApplication.UnicodeUTF8))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the profiles of the roof:\n* Angle : slope in degrees compared to the horizontal one.\n* Run : outdistance between the wall and the ridge sheathing.\n* Thickness : thickness of the side of roof.\n* Overhang : outdistance between the sewer and the wall.\n* Height : height of the ridge sheathing (calculated automatically)\n* IdRel : Relative Id for calculations automatic.\n---\nIf Angle = 0 and Run = 0 then profile is identical to the relative profile.\nIf Angle = 0 then angle is calculated so that the height is the same one as the relative profile.\nIf Run = 0 then Run is calculated so that the height is the same one as the relative profile.", None, QtGui.QApplication.UnicodeUTF8))
-        self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Angle (deg)", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Run (mm)", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "IdRel", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None, QtGui.QApplication.UnicodeUTF8),
-                                    QtGui.QApplication.translate("Arch", "Height (mm)", None, QtGui.QApplication.UnicodeUTF8)])
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Roof", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Parameters of the profiles of the roof:\n* Angle : slope in degrees compared to the horizontal one.\n* Run : outdistance between the wall and the ridge sheathing.\n* Thickness : thickness of the side of roof.\n* Overhang : outdistance between the sewer and the wall.\n* Height : height of the ridge sheathing (calculated automatically)\n* IdRel : Relative Id for calculations automatic.\n---\nIf Angle = 0 and Run = 0 then profile is identical to the relative profile.\nIf Angle = 0 then angle is calculated so that the height is the same one as the relative profile.\nIf Run = 0 then Run is calculated so that the height is the same one as the relative profile.", None))
+        self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Id", None),
+                                    QtGui.QApplication.translate("Arch", "Angle (deg)", None),
+                                    QtGui.QApplication.translate("Arch", "Run (mm)", None),
+                                    QtGui.QApplication.translate("Arch", "IdRel", None),
+                                    QtGui.QApplication.translate("Arch", "Thickness (mm)", None),
+                                    QtGui.QApplication.translate("Arch", "Overhang (mm)", None),
+                                    QtGui.QApplication.translate("Arch", "Height (mm)", None)])
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Roof',_CommandRoof())

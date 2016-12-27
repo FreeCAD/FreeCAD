@@ -499,13 +499,13 @@ class _AxisTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None, QtGui.QApplication.UnicodeUTF8))
-        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None, QtGui.QApplication.UnicodeUTF8))
-        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.title.setText(QtGui.QApplication.translate("Arch", "Distances (mm) and angles (deg) between axes", None, QtGui.QApplication.UnicodeUTF8))
-        self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None, QtGui.QApplication.UnicodeUTF8),
-                                   QtGui.QApplication.translate("Arch", "Distance", None, QtGui.QApplication.UnicodeUTF8),
-                                   QtGui.QApplication.translate("Arch", "Angle", None, QtGui.QApplication.UnicodeUTF8)])
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Axes", None))
+        self.delButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
+        self.addButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
+        self.title.setText(QtGui.QApplication.translate("Arch", "Distances (mm) and angles (deg) between axes", None))
+        self.tree.setHeaderLabels([QtGui.QApplication.translate("Arch", "Axis", None),
+                                   QtGui.QApplication.translate("Arch", "Distance", None),
+                                   QtGui.QApplication.translate("Arch", "Angle", None)])
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Axis',_CommandAxis())

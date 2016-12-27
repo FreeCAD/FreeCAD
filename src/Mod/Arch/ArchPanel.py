@@ -932,11 +932,11 @@ class SheetTaskPanel(ArchComponent.ComponentTaskPanel):
         ArchComponent.ComponentTaskPanel.__init__(self)
         self.obj = obj
         self.optwid = QtGui.QWidget()
-        self.optwid.setWindowTitle(QtGui.QApplication.translate("Arch", "Tools", None, QtGui.QApplication.UnicodeUTF8))
+        self.optwid.setWindowTitle(QtGui.QApplication.translate("Arch", "Tools", None))
         lay = QtGui.QVBoxLayout(self.optwid)
         self.editButton = QtGui.QPushButton(self.optwid)
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
-        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit views positions", None, QtGui.QApplication.UnicodeUTF8))
+        self.editButton.setText(QtGui.QApplication.translate("Arch", "Edit views positions", None))
         lay.addWidget(self.editButton)
         QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.editNodes)
         self.form = [self.form,self.optwid]
