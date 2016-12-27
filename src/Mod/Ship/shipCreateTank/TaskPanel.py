@@ -110,8 +110,7 @@ class TaskPanel:
                 "ship_tank",
                 "Tanks objects can only be created on top of its geometry"
                 " (no objects selected)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         for obj in selObjs:
@@ -123,8 +122,7 @@ class TaskPanel:
             msg = QtGui.QApplication.translate(
                 "ship_tank",
                 "No solids found in the selected objects",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -141,8 +139,7 @@ class TaskPanel:
             msg = QtGui.QApplication.translate(
                 "ship_tank",
                 "There are not ship objects to create weights into them",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -163,14 +160,12 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_tank",
             "Create a new tank",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "ShipLabel").setText(
             QtGui.QApplication.translate(
                 "ship_tank",
                 "Ship",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
 
 def createTask():

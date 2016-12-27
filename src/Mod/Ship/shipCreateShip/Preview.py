@@ -66,8 +66,7 @@ class Preview(object):
             text = str(QtGui.QApplication.translate(
                 "ship_create",
                 "Base line",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         except:
             text = "Base line"
         self.baseLineLabel = DrawText('BaseLineText',
@@ -83,8 +82,7 @@ class Preview(object):
             text = str(QtGui.QApplication.translate(
                 "ship_create",
                 "Free surface",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         except:
             text = "Free surface"
         self.fsLineLabel = DrawText('FSText', text, Base.Vector(xEnd, 0, T))
@@ -100,8 +98,7 @@ class Preview(object):
             text = str(QtGui.QApplication.translate(
                 "ship_create",
                 "Forward perpendicular",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         except:
             text = "Forward perpendicular"
         self.fpLineLabel = DrawText('FPText',
@@ -117,8 +114,7 @@ class Preview(object):
             text = str(QtGui.QApplication.translate(
                 "ship_create",
                 "After perpendicular",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         except:
             text = "After perpendicular"
         self.apLineLabel = DrawText('APText',
@@ -134,8 +130,7 @@ class Preview(object):
             text = str(QtGui.QApplication.translate(
                 "ship_create",
                 "Main frame",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         except:
             text = "Main frame"
         self.amLineLabel = DrawText('AMText',

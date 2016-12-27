@@ -41,8 +41,7 @@ class ShipWorkbench(Workbench):
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Plot module is disabled, tools cannot graph output curves",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintMessage(msg + '\n')
         # ToolBar
         shiplist = ["Ship_LoadExample",

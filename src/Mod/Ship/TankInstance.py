@@ -50,8 +50,7 @@ class Tank:
         tooltip = str(QtGui.QApplication.translate(
             "ship_tank",
             "True if it is a valid tank instance, False otherwise",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyBool",
                         "IsTank",
                         "Tank",
@@ -130,8 +129,7 @@ class Tank:
                 "ship_console",
                 "Tank volume operation failed. The tool is retrying that"
                 " slightly moving the free surface position",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintWarning(msg + '\n')
             rand_bounds = 0.01 * dz
             i = 0

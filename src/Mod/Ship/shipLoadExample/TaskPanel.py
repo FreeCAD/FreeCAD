@@ -106,13 +106,11 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_load",
             "Load example ship",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QGroupBox, "ShipSelectionBox").setTitle(
             QtGui.QApplication.translate("ship_load",
                                          "Select ship example geometry",
-                                         None,
-                                         QtGui.QApplication.UnicodeUTF8))
+                                         None))
 
 
 def createTask():

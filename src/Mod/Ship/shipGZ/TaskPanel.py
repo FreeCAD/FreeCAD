@@ -134,8 +134,7 @@ class TaskPanel:
                 "ship_console",
                 "A loading condition instance must be selected before using"
                 " this tool (no objects selected)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         for i in range(len(selObjs)):
@@ -159,8 +158,7 @@ class TaskPanel:
                             "ship_console",
                             "Wrong Ship label! (no instances labeled as"
                             "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
+                            None)
                         App.Console.PrintError(msg + '\n'.format(
                             obj.get('B1')))
                     else:
@@ -168,8 +166,7 @@ class TaskPanel:
                             "ship_console",
                             "Ambiguous Ship label! ({} instances labeled as"
                             "'{}' found)",
-                            None,
-                            QtGui.QApplication.UnicodeUTF8)
+                            None)
                         App.Console.PrintError(msg + '\n'.format(
                             len(ships),
                             obj.get('B1')))
@@ -186,8 +183,7 @@ class TaskPanel:
                     "ship_console",
                     "More than one loading condition have been selected (the"
                     " extra loading conditions will be ignored)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintWarning(msg + '\n')
                 break
             self.lc = obj
@@ -198,8 +194,7 @@ class TaskPanel:
                 "A loading condition instance must be selected before using"
                 " this tool (no valid loading condition found at the selected"
                 " objects)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -244,34 +239,29 @@ class TaskPanel:
         form.setWindowTitle(QtGui.QApplication.translate(
             "ship_gz",
             "Plot the GZ curve",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "AngleLabel").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "Maximum angle",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "NumPointsLabel").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "Number of points",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QCheckBox, "VariableTrim").setText(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "Variable trim",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QCheckBox, "VariableTrim").setToolTip(
             QtGui.QApplication.translate(
                 "ship_gz",
                 "The ship will be rotated to the equilibrium trim angle for" + \
                 " each roll angle. It will significantly increase the" + \
                 " required computing time",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def save(self):
         """ Saves the data into ship instance. """
@@ -294,8 +284,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_gz",
                     "GZ curve tool angle selected [deg]",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "GZ curve tool angle selected [deg]"
             self.ship.addProperty("App::PropertyAngle",
@@ -310,8 +299,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_gz",
                     "GZ curve tool number of points selected",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "GZ curve tool number of points selected"
             self.ship.addProperty("App::PropertyInteger",
@@ -326,8 +314,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_gz",
                     "GZ curve tool variable trim angle selection",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "GZ curve tool variable trim angle selection"
             self.ship.addProperty("App::PropertyBool",
