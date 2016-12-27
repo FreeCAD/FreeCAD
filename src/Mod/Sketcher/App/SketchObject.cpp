@@ -2079,6 +2079,34 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
             }
+            else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+
+                Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
+                double majord=geosymaoe->getMajorRadius();
+                double minord=geosymaoe->getMinorRadius();
+                double df= sqrt(majord*majord+minord*minord);
+                Base::Vector3d f1 = cp + df * majdir;
+
+                Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
+                Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
+                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
+                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);		
+
+                geosymaoe->setMajorAxisDir(sf1-scp);
+
+                geosymaoe->setCenter(scp);
+
+                double theta1,theta2;
+                geosymaoe->closestParameter(sep,theta1);
+                geosymaoe->closestParameter(ssp,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, true)); 
+            }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
                 Base::Vector3d cp = geosympoint->getPoint();
@@ -2121,6 +2149,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
                         refpoint = geosymaoe->getStartPoint(true);
                     }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
+                        refpoint = geosymaoe->getStartPoint(true);
+                    }
                     break;
                 case Sketcher::end:
                     if(georef->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -2133,6 +2165,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     }
                     else if(georef->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
+                        refpoint = geosymaoe->getEndPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
                         refpoint = geosymaoe->getEndPoint(true);
                     }
                     break;
@@ -2151,6 +2187,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     }
                     else if(georef->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
+                        refpoint = geosymaoe->getCenter();
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
                         refpoint = geosymaoe->getCenter();
                     }
                     break;
@@ -2227,6 +2267,34 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 double majord=geosymaoe->getMajorRadius();
                 double minord=geosymaoe->getMinorRadius();
                 double df= sqrt(majord*majord-minord*minord);
+                Base::Vector3d f1 = cp + df * majdir;
+
+                Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
+                Base::Vector3d scp = cp + 2.0*(refpoint-cp);
+                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
+                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
+                
+                geosymaoe->setMajorAxisDir(sf1-scp);
+
+                geosymaoe->setCenter(scp);
+
+                double theta1,theta2;
+                geosymaoe->closestParameter(ssp,theta1);
+                geosymaoe->closestParameter(sep,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, false));
+            }
+            else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+                
+                Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
+                double majord=geosymaoe->getMajorRadius();
+                double minord=geosymaoe->getMinorRadius();
+                double df= sqrt(majord*majord+minord*minord);
                 Base::Vector3d f1 = cp + df * majdir;
 
                 Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
