@@ -74,9 +74,15 @@ MODALT = MODS[Draft.getParam("modalt",2)]
 #---------------------------------------------------------------------------
 
 
-def translate(context,text):
-    "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).encode("utf8")
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None).encode("utf8")
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
