@@ -54,8 +54,7 @@ class Preview(object):
         msg = QtGui.QApplication.translate(
             "ship_console",
             "Computing sections",
-            None,
-            QtGui.QApplication.UnicodeUTF8)
+            None)
         FreeCAD.Console.PrintMessage(msg + '...\n')
         # Destroy all previous entities
         self.clean()
@@ -128,8 +127,7 @@ class Preview(object):
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Any valid ship section found",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintWarning(msg + '\n')
             return
         obj = sections[0]

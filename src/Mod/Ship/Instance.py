@@ -44,8 +44,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "True if it is a valid ship instance, False otherwise",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyBool",
                         "IsShip",
                         "Ship",
@@ -54,8 +53,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship length [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Length",
                         "Ship",
@@ -63,8 +61,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship breadth [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Breadth",
                         "Ship",
@@ -72,8 +69,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship draft [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Draft",
                         "Ship",
@@ -83,8 +79,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of external faces of the ship hull",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("Part::PropertyPartShape",
                         "ExternalFaces",
                         "Ship",
@@ -92,8 +87,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of weight instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyStringList",
                         "Weights",
                         "Ship",
@@ -101,8 +95,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of tank instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyStringList",
                         "Tanks",
                         "Ship",
@@ -110,8 +103,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of load conditions",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyStringList",
                         "LoadConditions",
                         "Ship",

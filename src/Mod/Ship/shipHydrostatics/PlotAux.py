@@ -57,8 +57,7 @@ class Plot(object):
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Plot module is disabled, so I cannot perform the plot",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintWarning(msg + '\n')
             return True
 

@@ -117,8 +117,7 @@ def solve_point(W, COG, TW, VOLS, ship, tanks, roll, var_trim=True):
         msg = QtGui.QApplication.translate(
             "ship_console",
             "Too much weight! The ship will never displace water enough",
-            None,
-            QtGui.QApplication.UnicodeUTF8)
+            None)
         App.Console.PrintError(msg + ' ({} vs. {})\n'.format(
             (max_disp / G).UserString, ((W + TW) / G).UserString))
         return None
@@ -198,8 +197,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Wrong Ship label! (no instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('B1')))
             else:
@@ -207,8 +205,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Ambiguous Ship label! ({} instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     len(ships),
                     lc.get('B1')))
@@ -233,8 +230,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Wrong Weight label! (no instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('A{}'.format(index - 1))))
             else:
@@ -242,8 +238,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Ambiguous Weight label! ({} instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('A{}'.format(index - 1))))
@@ -255,8 +250,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Invalid Weight! (the object labeled as"
                     "'{}' is not a weight)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('A{}'.format(index - 1))))
@@ -281,8 +275,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Wrong Tank label! (no instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     lc.get('C{}'.format(index - 1))))
             else:
@@ -290,8 +283,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Ambiguous Tank label! ({} instances labeled as"
                     "'{}' found)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     len(ts),
                     lc.get('C{}'.format(index - 1))))
@@ -303,8 +295,7 @@ def gz(lc, rolls, var_trim=True):
                     "ship_console",
                     "Invalid Tank! (the object labeled as"
                     "'{}' is not a tank)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintError(msg + '\n'.format(
                     len(ws),
                     lc.get('C{}'.format(index - 1))))

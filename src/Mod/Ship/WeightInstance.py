@@ -46,8 +46,7 @@ class Weight:
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
             "True if it is a valid weight instance, False otherwise",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyBool",
                         "IsWeight",
                         "Weight",
@@ -56,8 +55,7 @@ class Weight:
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
             "Mass [kg]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyFloat",
                         "Mass",
                         "Weight",
@@ -66,8 +64,7 @@ class Weight:
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
             "Linear density [kg / m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyFloat",
                         "LineDens",
                         "Weight",
@@ -76,8 +73,7 @@ class Weight:
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
             "Area density [kg / m^2]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyFloat",
                         "AreaDens",
                         "Weight",
@@ -86,8 +82,7 @@ class Weight:
         tooltip = str(QtGui.QApplication.translate(
             "ship_weight",
             "Density [kg / m^3]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyFloat",
                         "Dens",
                         "Weight",

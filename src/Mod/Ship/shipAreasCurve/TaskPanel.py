@@ -145,8 +145,7 @@ class TaskPanel:
                 "ship_console",
                 "A ship instance must be selected before using this tool (no"
                 " objects selected)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         for i in range(0, len(selObjs)):
@@ -162,8 +161,7 @@ class TaskPanel:
                         "ship_console",
                         "More than one ship have been selected (the extra"
                         " ships will be ignored)",
-                        None,
-                        QtGui.QApplication.UnicodeUTF8)
+                        None)
                     App.Console.PrintWarning(msg + '\n')
                     break
                 self.ship = obj
@@ -172,8 +170,7 @@ class TaskPanel:
                 "ship_console",
                 "A ship instance must be selected before using this tool (no"
                 " valid ship found at the selected objects)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
 
@@ -223,26 +220,22 @@ class TaskPanel:
         form.setWindowTitle(QtGui.QApplication.translate(
             "ship_areas",
             "Plot the transversal areas curve",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "DraftLabel").setText(
             QtGui.QApplication.translate(
                 "ship_areas",
                 "Draft",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "TrimLabel").setText(
             QtGui.QApplication.translate(
                 "ship_areas",
                 "Trim angle",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "NumLabel").setText(
             QtGui.QApplication.translate(
                 "ship_areas",
                 "Number of points",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def clampValue(self, widget, val_min, val_max, val):
         if val_min <= val <= val_max:
@@ -326,8 +319,7 @@ class TaskPanel:
         dispText = QtGui.QApplication.translate(
             "ship_areas",
             'Displacement',
-            None,
-            QtGui.QApplication.UnicodeUTF8)
+            None)
         string += dispText + u' = {0}<BR>'.format(disp.UserString)
         string += u'XCB = {0}'.format(xcb.UserString)
         form.output.setHtml(string)
@@ -352,8 +344,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_areas",
                     "Areas curve tool draft selected [m]",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "Areas curve tool draft selected [m]"
             self.ship.addProperty("App::PropertyLength",
@@ -368,8 +359,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_areas",
                     "Areas curve tool trim selected [deg]",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "Areas curve tool trim selected [deg]"
             self.ship.addProperty("App::PropertyAngle",
@@ -384,8 +374,7 @@ class TaskPanel:
                 tooltip = str(QtGui.QApplication.translate(
                     "ship_areas",
                     "Areas curve tool number of points",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8))
+                    None))
             except:
                 tooltip = "Areas curve tool number of points"
             self.ship.addProperty("App::PropertyInteger",

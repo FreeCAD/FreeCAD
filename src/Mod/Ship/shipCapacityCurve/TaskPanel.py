@@ -119,8 +119,7 @@ class TaskPanel:
                 "ship_console",
                 "A tank instance must be selected before using this tool (no"
                 " objects selected)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         for i in range(0, len(selObjs)):
@@ -136,8 +135,7 @@ class TaskPanel:
                         "ship_console",
                         "More than one tank have been selected (the extra"
                         " tanks will be ignored)",
-                        None,
-                        QtGui.QApplication.UnicodeUTF8)
+                        None)
                     App.Console.PrintWarning(msg + '\n')
                     break
                 self.tank = obj
@@ -146,8 +144,7 @@ class TaskPanel:
                 "ship_console",
                 "A tank instance must be selected before using this tool (no"
                 " valid tank found at the selected objects)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         return False
@@ -159,14 +156,12 @@ class TaskPanel:
         form.setWindowTitle(QtGui.QApplication.translate(
             "ship_capacity",
             "Plot the tank capacity curve",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "PointsLabel").setText(
             QtGui.QApplication.translate(
                 "ship_capacity",
                 "Number of points",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
 def createTask():
     panel = TaskPanel()

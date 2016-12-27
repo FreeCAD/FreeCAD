@@ -41,8 +41,7 @@ def load():
             "ship_console",
             "A ship instance must be selected before using this tool (no"
             " objects selected)",
-            None,
-            QtGui.QApplication.UnicodeUTF8)
+            None)
         App.Console.PrintError(msg + '\n')
         return
     for i in range(len(selObjs)):
@@ -58,8 +57,7 @@ def load():
                     "ship_console",
                     "More than one ship have been selected (the extra"
                     " ships will be ignored)",
-                    None,
-                    QtGui.QApplication.UnicodeUTF8)
+                    None)
                 App.Console.PrintWarning(msg + '\n')
                 break
             ship = obj
@@ -69,8 +67,7 @@ def load():
             "ship_console",
             "A ship instance must be selected before using this tool (no"
             " valid ship found at the selected objects)",
-            None,
-            QtGui.QApplication.UnicodeUTF8)
+            None)
         App.Console.PrintError(msg + '\n')
         return
 
