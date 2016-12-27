@@ -584,13 +584,14 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
             vtkFiltersSources
             vtkFiltersGeometry
         )
+
         # check which modules are available
         if(UNIX AND NOT APPLE)
+            find_package(VTK COMPONENTS vtkCommonCore REQUIRED NO_MODULE)
             list(APPEND VTK_COMPONENTS vtkIOMPIParallel vtkParallelMPI vtkhdf5)
             foreach(_module ${VTK_COMPONENTS})
-                file(GLOB_RECURSE _module_exists /usr/lib*/cmake/*${_module}.cmake
-                                                 ${CMAKE_ROOT}/*${_module}.cmake)
-                if(_module_exists)
+                list (FIND VTK_MODULES_ENABLED ${_module} _index)
+                if (${_index} GREATER -1)
                     list(APPEND AVAILABLE_VTK_COMPONENTS ${_module})
                 endif()
             endforeach()
