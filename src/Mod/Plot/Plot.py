@@ -43,8 +43,7 @@ except ImportError:
     msg = PySide.QtGui.QApplication.translate(
         "plot_console",
         "matplotlib not found, so Plot module can not be loaded",
-        None,
-        PySide.QtGui.QApplication.UnicodeUTF8)
+        None)
     FreeCAD.Console.PrintMessage(msg + '\n')
     raise ImportError("matplotlib not installed")
 

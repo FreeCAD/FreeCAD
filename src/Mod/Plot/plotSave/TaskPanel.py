@@ -42,8 +42,7 @@ class TaskPanel:
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "Plot document must be selected in order to save it",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + "\n")
             return False
         mw = self.getMainWindow()
@@ -128,51 +127,43 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "plot_save",
             "Save figure",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "sizeLabel").setText(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Inches",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "dpiLabel").setText(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Dots per Inch",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLineEdit, "path").setToolTip(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Output image file path",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QPushButton, "pathButton").setToolTip(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Show a file selection dialog",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "sizeX").setToolTip(
             QtGui.QApplication.translate(
                 "plot_save",
                 "X image size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QDoubleSpinBox, "sizeY").setToolTip(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Y image size",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QSpinBox, "dpi").setToolTip(
             QtGui.QApplication.translate(
                 "plot_save",
                 "Dots per point, with size will define output image"
                 " resolution",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def updateUI(self):
         """ Setup UI controls values if possible """
