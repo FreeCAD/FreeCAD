@@ -30,10 +30,17 @@ This Script includes the GUI Commands of the OpenSCAD module
 
 import FreeCAD,FreeCADGui
 from PySide import QtCore, QtGui
-def translate(context,text):
-    "convenience function for Qt translator"
-    return QtGui.QApplication.translate(context, text, None, \
-        QtGui.QApplication.UnicodeUTF8)
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None)
+
 def utf8(unio):
     return unicode(unio).encode('UTF8')
 

@@ -29,11 +29,17 @@ This Script includes various pyhton helper functions that are shared across
 the module
 '''
 
-def translate(context,text):
-    "convenience function for Qt translator"
-    from PySide import QtGui
-    return QtGui.QApplication.translate(context, text, None, \
-        QtGui.QApplication.UnicodeUTF8)
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
+        "convenience function for Qt translator"
+        from PySide import QtGui
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        from PySide import QtGui
+        return QtGui.QApplication.translate(context, text, None)
 
 try:
     import FreeCAD

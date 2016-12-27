@@ -103,10 +103,16 @@ class todo:
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
 
-def translate(context,text):
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
         "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None,
-                                            QtGui.QApplication.UnicodeUTF8)
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None)
+
 
 #---------------------------------------------------------------------------
 # UNITS handling
@@ -1977,10 +1983,10 @@ class FacebinderTaskPanel:
         return True
 
     def retranslateUi(self, TaskPanel):
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("draft", "Faces", None, QtGui.QApplication.UnicodeUTF8))
-        self.delButton.setText(QtGui.QApplication.translate("draft", "Remove", None, QtGui.QApplication.UnicodeUTF8))
-        self.addButton.setText(QtGui.QApplication.translate("draft", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.title.setText(QtGui.QApplication.translate("draft", "Facebinder elements", None, QtGui.QApplication.UnicodeUTF8))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("draft", "Faces", None))
+        self.delButton.setText(QtGui.QApplication.translate("draft", "Remove", None))
+        self.addButton.setText(QtGui.QApplication.translate("draft", "Add", None))
+        self.title.setText(QtGui.QApplication.translate("draft", "Facebinder elements", None))
 
 
 if not hasattr(FreeCADGui,"draftToolBar"):

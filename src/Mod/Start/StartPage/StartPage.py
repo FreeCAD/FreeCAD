@@ -33,8 +33,12 @@ FreeCADGui.updateLocale()
 def translate(context,text):
     "convenience function for the Qt translator"
     # return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
-    u = QtGui.QApplication.translate(context, text, None,
-                                     QtGui.QApplication.UnicodeUTF8).encode("utf8")
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        u = QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+    except AttributeError:
+        u = QtGui.QApplication.translate(context, text, None).encode("utf8")
+        
     s = cStringIO.StringIO()
     for i in u:
         if ord(i) == 39:
