@@ -333,6 +333,8 @@ class Component:
         obj.setEditorMode("PerimeterLength",1)
 
     def execute(self,obj):
+        if self.clone(obj):
+            return
         if obj.Base:
             obj.Shape = obj.Base.Shape
 
@@ -350,7 +352,7 @@ class Component:
         "if this object is a clone, sets the shape. Returns True if this is the case"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                if Draft.getType(obj.CloneOf) == Draft.getType(obj):
+                if (Draft.getType(obj.CloneOf) == Draft.getType(obj)) or (Draft.getType(obj) == "Component"):
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
