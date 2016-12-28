@@ -59,11 +59,11 @@ DrawProjGroupItem::DrawProjGroupItem(void)
 {
     Type.setEnums(TypeEnums);
     ADD_PROPERTY(Type, ((long)0));
-    ADD_PROPERTY_TYPE(OrientBasis ,(1.0,0.0,0.0)    ,"Base",App::Prop_None,"Controls rotary orientation of item in view. ");
+    ADD_PROPERTY_TYPE(RotationVector ,(1.0,0.0,0.0)    ,"Base",App::Prop_None,"Controls rotation of item in view. ");
 
     //projection group controls these
     Direction.setStatus(App::Property::ReadOnly,true);
-    //OrientBasis.setStatus(App::Property::ReadOnly,true);
+    RotationVector.setStatus(App::Property::ReadOnly,true);
     Scale.setStatus(App::Property::ReadOnly,true);
     ScaleType.setStatus(App::Property::ReadOnly,true);
 }
@@ -73,7 +73,7 @@ short DrawProjGroupItem::mustExecute() const
     short result = 0;
     if (!isRestoring()) {
         result  =  (Direction.isTouched()  ||
-                    OrientBasis.isTouched() ||
+                    RotationVector.isTouched() ||
                     Source.isTouched()  ||
                     Scale.isTouched() ||
                     ScaleType.isTouched());
@@ -121,32 +121,43 @@ gp_Ax2 DrawProjGroupItem::getViewAxis(const Base::Vector3d& pt,
                                  const bool flip) const
 {
      gp_Ax2 viewAxis;
-     Base::Vector3d x = OrientBasis.getValue();
+     Base::Vector3d x = RotationVector.getValue();
      Base::Vector3d nx = x;
      x.Normalize();
      Base::Vector3d na = axis;
      na.Normalize();
-     
-     if (DrawUtil::checkParallel(nx,na)) {                    //parallel/antiparallel
-         viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //use default orientation
-     } else {
+     viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);        //default orientation
+
+     if (!DrawUtil::checkParallel(nx,na)) {                         //!parallel/antiparallel
          viewAxis = TechDrawGeometry::getViewAxis(pt,axis,x,flip);
      }
-     
      return viewAxis;
 }
 
-//! rotate OrientBasis by angle radians around view Direction
-Base::Vector3d DrawProjGroupItem::rotated(const double angle)
+//get the angle between the current RotationVector vector and the original X dir angle
+double DrawProjGroupItem::getRotateAngle()
 {
-    Base::Vector3d line = Direction.getValue();
-    Base::Vector3d oldBasis = OrientBasis.getValue();
-    Base::Vector3d newBasis;
+    gp_Ax2 viewAxis;
+    Base::Vector3d x = RotationVector.getValue();   //current rotation
+    Base::Vector3d nx = x;
+    x.Normalize();
+    Base::Vector3d na = Direction.getValue();
+    na.Normalize();
     Base::Vector3d org(0.0,0.0,0.0);
-    Base::Matrix4D xForm;
-    xForm.rotLine(line,angle);
-    newBasis = xForm * (oldBasis);
-    return newBasis;
+
+    viewAxis = TechDrawGeometry::getViewAxis(org,na,true);        //default orientation
+
+    gp_Dir gxDir = viewAxis.XDirection();
+    Base::Vector3d origX(gxDir.X(),gxDir.Y(),gxDir.Z());
+    origX.Normalize();
+    double dot = fabs(origX.Dot(nx));  
+    double angle = acos(dot);
+
+    Base::Vector3d rotAxis = origX.Cross(nx);
+    if (rotAxis == Direction.getValue()) {
+        angle *= -1.0;
+    }
+    return angle;
 }
 
 PyObject *DrawProjGroupItem::getPyObject(void)

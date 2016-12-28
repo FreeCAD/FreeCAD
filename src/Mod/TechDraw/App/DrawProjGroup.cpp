@@ -464,7 +464,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 
             Anchor.setValue(docObj);
             view->Direction.setValue(m_frameToStdDir.at("Front"));    //just (Base::Vector3d(0.0,-1.0,0.0))
-            view->OrientBasis.setValue(m_frameToStdRot.at("Front"));
+            view->RotationVector.setValue(m_frameToStdRot.at("Front"));
         } else {
             //TODO: really need to check with Cube to get current dir & rot this uses initial values from table
             //if (DPGI(front) and DPGI(right) exist) config = front.face + right.face
@@ -472,7 +472,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
             //else
             //   use start up values (m_frameToStdDir/m_frameToStdRot)
             view->Direction.setValue(m_frameToStdDir.at(viewProjType));
-            view->OrientBasis.setValue(m_frameToStdRot.at(viewProjType));
+            view->RotationVector.setValue(m_frameToStdRot.at(viewProjType));
         }
 
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
@@ -899,11 +899,11 @@ void DrawProjGroup::updateSecondaryDirs()
                 //TARFU invalid secondary type
                 Base::Console().Message("ERROR - DPG::updateSecondaryDirs - invalid projection type\n");
                 newDir = v->Direction.getValue();
-                newAxis = v->OrientBasis.getValue();
+                newAxis = v->RotationVector.getValue();
             }
         }
         v->Direction.setValue(newDir);
-        v->OrientBasis.setValue(newAxis);
+        v->RotationVector.setValue(newAxis);
         v->recomputeFeature();
     }
 }
@@ -955,7 +955,7 @@ void DrawProjGroup::spinCCW()
 // used in setting view to match OpenInventor
 void DrawProjGroup::setTable(Base::Vector3d dir, Base::Vector3d up)
 {
-    std::string viewFront = Cube::dirToView(dir);    //convert to closest basis vector
+    std::string viewFront = Cube::dirToView(dir);    //convert to closest basis vector?
     std::string viewUp    = Cube::dirToView(up);     //convert to closest basis vector
     std::string altKey    = viewFront + viewUp;
     std::string config;
@@ -1002,7 +1002,7 @@ void DrawProjGroup::dumpISO(char * title)
         DrawProjGroupItem* v = static_cast<DrawProjGroupItem*>(docObj);
         std::string t = v->Type.getValueAsString();
         dir = v->Direction.getValue();
-        axis = v->OrientBasis.getValue();
+        axis = v->RotationVector.getValue();
 
         Base::Console().Message("%s:  %s/%s\n", 
                                 t.c_str(),DrawUtil::formatVector(dir).c_str(),DrawUtil::formatVector(axis).c_str());
@@ -1023,7 +1023,7 @@ void DrawProjGroup::onDocumentRestored()
     } else if (hasProjection("Front")) {
        Base::Vector3d dirFront = getProjItem("Front")->Direction.getValue();
        std::string viewDir = Cube::dirToView(dirFront);
-       Base::Vector3d rotFront = getProjItem("Rot")->OrientBasis.getValue();
+       Base::Vector3d rotFront = getProjItem("Rot")->RotationVector.getValue();
        std::string viewRot = Cube::dirToView(rotFront);
        std::string config = viewDir + viewRot;
        //find(config) or try/catch

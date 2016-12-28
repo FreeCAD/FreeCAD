@@ -98,7 +98,6 @@ void initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vec
     void spinCW();
     
     void updateIsoDirs();
-    void updateIsoRots();
 
     Base::Vector3d getRight();
     Base::Vector3d getFront();
@@ -123,7 +122,6 @@ void initialize(Base::Vector3d r, Base::Vector3d rr, Base::Vector3d l, Base::Vec
     Base::Vector3d getFTRRot();
     
     static std::string dirToView(Base::Vector3d v);
-    std::string getBoardKey(void);
     void updateDirsToConfig(std::string cfg);
     void updateRotsToConfig(std::string cfg);
     bool validateBoard(std::string cfg);

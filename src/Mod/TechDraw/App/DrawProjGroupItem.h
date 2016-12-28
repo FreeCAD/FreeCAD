@@ -23,6 +23,8 @@
 #ifndef _DrawProjGroupItem_h_
 #define _DrawProjGroupItem_h_
 
+#include <gp_Ax2.hxx>
+
 #include <App/DocumentObject.h>
 #include <App/PropertyStandard.h>
 #include <App/FeaturePython.h>
@@ -54,7 +56,7 @@ public:
     ~DrawProjGroupItem();
 
     App::PropertyEnumeration Type;
-    App::PropertyVector      OrientBasis;
+    App::PropertyVector      RotationVector;
 
     short mustExecute() const;
     /** @name methods overide Feature */
@@ -65,6 +67,7 @@ public:
     //@}
 
     DrawProjGroup* getGroup(void) const;
+    double getRotateAngle();
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -72,15 +75,14 @@ public:
     }
     //return PyObject as DrawProjGroupItemPy
     virtual PyObject *getPyObject(void);
-//************************************
-    Base::Vector3d rotated(const double angle)    ;
+
     virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
                                const Base::Vector3d& direction, 
                                const bool flip=true) const override;
 
 protected:
-    /// Called by the container when a Property was changed
     void onChanged(const App::Property* prop);
+
 private:
     static const char* TypeEnums[];
 };
