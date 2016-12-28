@@ -1674,6 +1674,8 @@ def fillet(lEdges,r,chamfer=False):
                     existingCurveType = { 'Line' : [], 'Arc' : [] }
             if issubclass(type(edge.Curve),Part.LineSegment) :
                     existingCurveType['Line'] += [edge]
+            elif issubclass(type(edge.Curve),Part.Line) :
+                    existingCurveType['Line'] += [edge]
             elif issubclass(type(edge.Curve),Part.Circle) :
                     existingCurveType['Arc']  += [edge]
             else :

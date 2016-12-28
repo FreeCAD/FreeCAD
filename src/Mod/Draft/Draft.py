@@ -1512,6 +1512,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         else:
             return nr * math.cos(math.pi/obj.FacesNumber)
 
+    newwire = None
     if getType(obj) == "Circle":
         pass
     elif getType(obj) == "BSpline":
@@ -1566,8 +1567,12 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
         newobj = None
         if sym: return None
         if getType(obj) == "Wire":
-            newobj = makeWire(p)
-            newobj.Closed = obj.Closed
+            if p:
+                newobj = makeWire(p)
+                newobj.Closed = obj.Closed
+            elif newwire:
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = newwire
         elif getType(obj) == "Rectangle":
             length,height,plac = getRect(p,obj)
             newobj = makeRectangle(length,height,plac)
