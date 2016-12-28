@@ -852,6 +852,25 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
         endif(NOT PYSIDE_INCLUDE_DIR)
 
         find_package(PySide2Tools REQUIRED) # PySide2 utilities (pyside2-uic & pyside2-rcc)
+
+        file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/bin/PySide)
+        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py "# PySide wrapper\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py "from PySide2.QtCore import *\n\n"
+                                                            "#QCoreApplication.CodecForTr=0\n"
+                                                            "#QCoreApplication.UnicodeUTF8=1\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py  "from PySide2.QtGui import *\n"
+                                                            "from PySide2.QtWidgets import *\n")
+        file(WRITE ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py  "from PySide2.QtSvg import *\n")
+
+        INSTALL(
+            FILES
+                ${CMAKE_BINARY_DIR}/bin/PySide/__init__.py
+                ${CMAKE_BINARY_DIR}/bin/PySide/QtCore.py
+                ${CMAKE_BINARY_DIR}/bin/PySide/QtGui.py
+                ${CMAKE_BINARY_DIR}/bin/PySide/QtSvg.py
+            DESTINATION
+                bin/PySide
+        )
     else()
         # set(PYTHON_SUFFIX -python${PYTHON_VERSION_MAJOR}.${PYTHON_VERSION_MINOR})
         SET(PYTHON_SUFFIX -python2.7) # for shiboken
