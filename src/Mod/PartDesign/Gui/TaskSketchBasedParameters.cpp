@@ -71,7 +71,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     PartDesign::ProfileBased* pcSketchBased = static_cast<PartDesign::ProfileBased*>(vp->getObject());
     App::DocumentObject* selObj = pcSketchBased->getDocument()->getObject(msg.pObjectName);
     if (selObj == pcSketchBased)
-        return QString::fromLatin1("");
+        return QString();
     std::string subname = msg.pSubName;
     QString refStr;
 
@@ -79,7 +79,7 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
         refStr = QString::fromLatin1(selObj->getNameInDocument());
-    } else {
+    } else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
         refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
     }
@@ -178,7 +178,7 @@ QString TaskSketchBasedParameters::getFaceReference(const QString& obj, const QS
     QString o = obj.left(obj.indexOf(QString::fromLatin1(":")));
 
     if (o == tr("No face selected"))
-        return QString::fromLatin1("");
+        return QString();
     else
         return QString::fromLatin1("(App.activeDocument().") + o +
                 QString::fromLatin1(", [\"") + sub + QString::fromLatin1("\"])");
