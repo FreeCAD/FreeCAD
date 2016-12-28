@@ -2013,11 +2013,11 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
             if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
                 geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                 geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-		geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
 
                 Base::Vector3d center;
                 Base::Vector3d majdir;
-		Base::Vector3d focus;
+                Base::Vector3d focus;
                 double majord = 0;
                 double minord = 0;
                 double phi = 0;
@@ -2030,8 +2030,8 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     minord=ellipse->getMinorRadius();
                     majdir=ellipse->getMajorAxisDir();
                     phi=atan2(majdir.y, majdir.x);
-                } else
-                  if( geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
+                }
+                else if( geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
                     const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo1);
 
                     center=aoe->getCenter();
@@ -2040,23 +2040,21 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     majdir=aoe->getMajorAxisDir();
                     phi=atan2(majdir.y, majdir.x);
                 }
-                else
-		if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
-		    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
-		    
-		    center=aoh->getCenter();
-		    majord=aoh->getMajorRadius();
-		    minord=aoh->getMinorRadius();
-		    majdir=aoh->getMajorAxisDir();
-		    phi=atan2(majdir.y, majdir.x);
-		}
-		else
-		if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ){
-		    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo1);
-		    
-		    center=aop->getCenter();
-		    focus=aop->getFocus();
-		}
+                else if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+                    const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
+
+                    center=aoh->getCenter();
+                    majord=aoh->getMajorRadius();
+                    minord=aoh->getMinorRadius();
+                    majdir=aoh->getMajorAxisDir();
+                    phi=atan2(majdir.y, majdir.x);
+                }
+                else if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ){
+                    const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo1);
+
+                    center=aop->getCenter();
+                    focus=aop->getFocus();
+                }
 
                 const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geo2);
 
@@ -2076,8 +2074,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
                     PoO = point1 + direction / 2;
                 }
-		else
-		{
+                else {
                     Base::Vector3d direction=point1-center;
                     double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
 

@@ -339,7 +339,7 @@ public:
         Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
-	ArcOfParabola = 8
+        ArcOfParabola = 8
     };
 
     float SolveTime;
@@ -385,9 +385,9 @@ protected:
     std::vector<GCS::Arc>    Arcs;
     std::vector<GCS::Circle> Circles;
     std::vector<GCS::Ellipse> Ellipses;
-    std::vector<GCS::ArcOfEllipse>  ArcsOfEllipse;
-    std::vector<GCS::ArcOfHyperbola>    ArcsOfHyperbola;
-    std::vector<GCS::ArcOfParabola>    ArcsOfParabola;
+    std::vector<GCS::ArcOfEllipse> ArcsOfEllipse;
+    std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
+    std::vector<GCS::ArcOfParabola> ArcsOfParabola;
 
     bool isInitMove;
     bool isFine;

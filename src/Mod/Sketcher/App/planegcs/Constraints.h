@@ -66,8 +66,8 @@ namespace GCS
         CurveValue = 20,
         PointOnHyperbola = 21,
         InternalAlignmentPoint2Hyperbola = 22,
-	PointOnParabola = 23,
-	EqualFocalDistance = 24
+        PointOnParabola = 23,
+        EqualFocalDistance = 24
     };
     
     enum InternalAlignmentType {
