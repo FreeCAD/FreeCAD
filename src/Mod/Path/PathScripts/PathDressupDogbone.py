@@ -358,7 +358,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyEnumeration", "Side", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The side of path to insert bones"))
         obj.Side = [Side.Left, Side.Right]
         obj.Side = Side.Right
-        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The style of boness"))
+        obj.addProperty("App::PropertyEnumeration", "Style", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "The style of bones"))
         obj.Style = Style.All
         obj.Style = Style.Dogbone
         obj.addProperty("App::PropertyIntegerList", "BoneBlacklist", "Dressup", QtCore.QT_TRANSLATE_NOOP("PathDressup_Dogbone", "Bones that aren't dressed up"))
