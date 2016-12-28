@@ -120,29 +120,43 @@ PyObject* VectorPy::number_subtract_handler(PyObject *self, PyObject *other)
 
 PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
-    if (!PyObject_TypeCheck(self, &(VectorPy::Type))) {
-        PyErr_SetString(PyExc_TypeError, "First arg must be Vector");
-        return 0;
-    }
-
-    if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+    if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        Base::Vector3d b = static_cast<VectorPy*>(other)->value();
-        Py::Float mult(a * b);
-        return Py::new_reference_to(mult);
+        if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+            Base::Vector3d b = static_cast<VectorPy*>(other)->value();
+            Py::Float mult(a * b);
+            return Py::new_reference_to(mult);
+        }
+        else if (PyFloat_Check(other)) {
+            double b = PyFloat_AsDouble(other);
+            return new VectorPy(a * b);
+        }
+        else if (PyInt_Check(other)) {
+            long b = PyInt_AsLong(other);
+            return new VectorPy(a * (double)b);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+            return 0;
+        }
     }
-    else if (PyFloat_Check(other)) {
-        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        double b = PyFloat_AsDouble(other);
-        return new VectorPy(a * b);
-    }
-    else if (PyInt_Check(other)) {
-        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
-        long b = PyInt_AsLong(other);
-        return new VectorPy(a * (double)b);
+    else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+        Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
+        if (PyFloat_Check(self)) {
+            double b = PyFloat_AsDouble(self);
+            return new VectorPy(a * b);
+        }
+        else if (PyInt_Check(self)) {
+            long b = PyInt_AsLong(self);
+            return new VectorPy(a * (double)b);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+            return 0;
+        }
     }
     else {
-        PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+        PyErr_SetString(PyExc_TypeError, "First or second arg must be Vector");
         return 0;
     }
 }
