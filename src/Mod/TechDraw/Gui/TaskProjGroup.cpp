@@ -178,8 +178,9 @@ void TaskProjGroup::on3DClicked(void)
 {
     std::pair<Base::Vector3d,Base::Vector3d> dir3D = get3DViewDir();
     Base::Vector3d dir = dir3D.first;
+    dir = DrawUtil::closestBasis(dir);
     Base::Vector3d up = dir3D.second;
-    
+    up = DrawUtil::closestBasis(up);
     TechDraw::DrawProjGroupItem* front = multiView->getProjItem("Front");
     if (front) {                              //why "if front"???
         multiView->setTable(dir,up);

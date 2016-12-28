@@ -100,7 +100,6 @@ void Cube::rotateUp()
 
     updateIsoDirs();                       //calculatge iso directions from ortho dirs
     updateRotsToConfig(getCurrConfig());   //update rotations for ortho views from config table
-    updateIsoRots();                       //calculate iso rotations from iso/ortho dirs
 }    
 
 void Cube::rotateDown()
@@ -114,7 +113,6 @@ void Cube::rotateDown()
 
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
 } 
 
 void Cube::rotateRight()
@@ -128,7 +126,6 @@ void Cube::rotateRight()
 
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
 } 
    
 void Cube::rotateLeft()
@@ -142,7 +139,6 @@ void Cube::rotateLeft()
 
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
 } 
 
 void Cube::spinCCW()
@@ -156,7 +152,6 @@ void Cube::spinCCW()
 
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
 } 
 
 void Cube::spinCW()
@@ -170,7 +165,6 @@ void Cube::spinCW()
 
     updateIsoDirs();
     updateRotsToConfig(getCurrConfig());
-    updateIsoRots();
 } 
 
 void Cube::updateIsoDirs() 
@@ -183,18 +177,6 @@ void Cube::updateIsoDirs()
     m_mapFrameDir.at("FrontBottomRight") = frb;
     m_mapFrameDir.at("FrontTopLeft")     = flt;
     m_mapFrameDir.at("FrontTopRight")    = frt;
-}
-
-void Cube::updateIsoRots() 
-{
-//    Base::Vector3d flb = getFrontRot() + getLeftRot()  + getBottomRot();
-//    Base::Vector3d frb = getFrontRot() + getRightRot() + getBottomRot();
-//    Base::Vector3d flt = getFrontRot() + getLeftRot()  + getTopRot();
-////    Base::Vector3d frt = getFrontRot() + getRightRot() + getTopRot();
-//    m_mapFrameRot.at("FrontBottomLeft")  = flb;
-//    m_mapFrameRot.at("FrontBottomRight") = frb;
-//    m_mapFrameRot.at("FrontTopLeft")     = flt;
-////    m_mapFrameRot.at("FrontTopRight")    = frt;
 }
 
 std::string Cube::dirToView(Base::Vector3d v)
@@ -270,18 +252,6 @@ bool Cube::validateBoard(std::string cfg)
     if (strCfgRot != strBoardRot) {
         result = false;
     }
-    return result;
-}
-
-//dupl!!
-std::string Cube::getBoardKey()
-{
-    std::string result; 
-//    Base::Vector3d frontDir = m_mapFrameDir.at("Front");
-//    std::string frontView = dirToView(frontDir);
-//    Base::Vector3d rightDir = m_mapFrameDir.at("Right");  
-//    std::string rightView = dirToView(rightDir);
-//    result = frontView + rightView;
     return result;
 }
 
@@ -484,7 +454,6 @@ Base::Vector3d Cube::getFBLRot()
 {
     Base::Vector3d result;
     double magic1 = 157.5 * M_PI / 180.0;                // 90 + 45 + magic1
-//    double magic1 = -22.5 * M_PI / 180.0;              //45*/2
     double magic2 = -17.632 * M_PI / 180.0;              //±35.264° / 2 "magic angle"??  
                                                          // <<https://en.wikipedia.org/wiki/Isometric_projection#Overview
     Base::Vector3d up = getTop();
@@ -526,8 +495,6 @@ Base::Vector3d Cube::getFTLRot()
     double magic1 = -157.5 * M_PI / 180.0;
     double magic2 = -17.632 * M_PI / 180.0;
     
-    //+45? not quite
-    //-18?
     Base::Vector3d up = getTop();
     Base::Vector3d view = getFTL();
     Base::Vector3d cross = up.Cross(view);
@@ -676,7 +643,6 @@ void configTable::initialize(void)
     configLine cl;
 
 //Rotations
-//#include "rots.cpp"    
 // Rots - b/f/l/k/r/t
     cl = configLine( 1 , "AB", Base::Vector3d(0,0,1), Base::Vector3d(0,0,1), Base::Vector3d(0,1,0), 
                                 Base::Vector3d(0,0,-1), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,1) );
@@ -753,7 +719,6 @@ void configTable::initialize(void)
 
 
 //Directions items
-//#include "dirs.cpp"
 // Dirs  - b/f/l/k/r/t
     cl = configLine( 1 , "AB", Base::Vector3d(1,0,0), Base::Vector3d(0,-1,0), Base::Vector3d(0,0,-1), 
                                Base::Vector3d(0,1,0), Base::Vector3d(0,0,1), Base::Vector3d(-1,0,0) );
