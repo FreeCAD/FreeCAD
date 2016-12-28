@@ -934,6 +934,52 @@ void GeomArcOfConic::setAngleXU(double angle)
     }
 }
 
+/*!
+ * \brief GeomArcOfConic::getXAxisDir
+ * \return the direction vector (unit-length) of symmetry axis of the conic. The
+ * direction also points to the focus of a parabola.
+ */
+Base::Vector3d GeomArcOfConic::getXAxisDir() const
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Conic c = Handle_Geom_Conic::DownCast( curve->BasisCurve() );
+    assert(!c.IsNull());
+    gp_Dir xdir = c->XAxis().Direction();
+    return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
+}
+
+/*!
+ * \brief GeomArcOfConic::setXAxisDir Rotates the conic in its plane, so
+ * that its symmetry axis is as close as possible to the provided direction.
+ * \param newdir [in] is the new direction. If the vector is small, the
+ * orientation of the conic will be preserved. If the vector is not small,
+ * but its projection onto plane of the conic is small, an exception will be
+ * thrown.
+ */
+void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
+{
+    Handle_Geom_TrimmedCurve curve =  Handle_Geom_TrimmedCurve::DownCast(handle());
+    Handle_Geom_Conic c = Handle_Geom_Conic::DownCast( curve->BasisCurve() );
+    assert(!c.IsNull());
+#if OCC_VERSION_HEX >= 0x060504
+    if (newdir.Sqr() < Precision::SquareConfusion())
+#else
+    if (newdir.Length() < Precision::Confusion())
+#endif
+        return;//zero vector was passed. Keep the old orientation.
+
+    try {
+        gp_Ax2 pos = c->Position();
+        //OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
+        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));
+        c->SetPosition(pos);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
 // -------------------------------------------------
 
 TYPESYSTEM_SOURCE(Part::GeomCircle,Part::GeomConic)
@@ -2322,49 +2368,6 @@ void GeomArcOfParabola::setFocal(double length)
     }
 }
 
-/*!
- * \brief GeomArcOfParabola::getXAxisDir
- * \return the direction vector (unit-length) of symmetry axis of the parabola. The
- * direction also points to the focus.
- */
-Base::Vector3d GeomArcOfParabola::getXAxisDir() const
-{
-    Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast( myCurve->BasisCurve() );
-    assert(!c.IsNull());
-    gp_Dir xdir = c->XAxis().Direction();
-    return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
-}
-
-/*!
- * \brief GeomArcOfParabola::setXAxisDir Rotates the parabola in its plane, so
- * that its symmetry axis is as close as possible to the provided direction.
- * \param newdir [in] is the new direction. If the vector is small, the
- * orientation of the parabola will be preserved. If the vector is not small,
- * but its projection onto plane of the parabola is small, an exception will be
- * thrown.
- */
-void GeomArcOfParabola::setXAxisDir(Base::Vector3d newdir)
-{
-    Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast( myCurve->BasisCurve() );
-    assert(!c.IsNull());
-    #if OCC_VERSION_HEX >= 0x060504
-    if (newdir.Sqr() < Precision::SquareConfusion())
-    #else
-    if (newdir.Length() < Precision::Confusion())
-    #endif
-        return;//zero vector was passed. Keep the old orientation.
-    
-    try {
-        gp_Ax2 pos = c->Position();
-        pos.SetXDirection(gp_Dir(newdir.x, newdir.y, newdir.z));//OCC should keep the old main Direction (Z), and change YDirection to accomodate the new XDirection.
-        c->SetPosition(pos);
-    }
-    catch (Standard_Failure) {
-        Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
-    }
-}
-
 Base::Vector3d GeomArcOfParabola::getFocus(void) const
 {
     Handle_Geom_Parabola p = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
@@ -2373,10 +2376,8 @@ Base::Vector3d GeomArcOfParabola::getFocus(void) const
     return Base::Vector3d(gp.X(),gp.Y(),gp.Z());
 }
 
-
 void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
 {
-//#if 0
     try {
         if (emulateCCWXY) {
             if (isReversed()) {
@@ -2390,7 +2391,6 @@ void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
         Handle_Standard_Failure e = Standard_Failure::Caught();
         throw Base::Exception(e->GetMessageString());
     }
-//#endif
 
     u = myCurve->FirstParameter();
     v = myCurve->LastParameter();
@@ -2400,7 +2400,6 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
 {
     try {
         myCurve->SetTrim(u, v);
-//#if 0
         if (emulateCCWXY) {
             if (isReversed()) {
                 Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast(myCurve->BasisCurve());
@@ -2408,7 +2407,6 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
                 c->Reverse();
             }
         }
-//#endif
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
