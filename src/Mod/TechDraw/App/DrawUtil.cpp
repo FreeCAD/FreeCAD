@@ -354,7 +354,17 @@ Base::Vector3d  DrawUtil::closestBasis(Base::Vector3d v)
     Base::Vector3d  stdYr(0.0,-1.0,0.0);
     Base::Vector3d  stdZr(0.0,0.0,-1.0);
     double angleX,angleY,angleZ,angleXr,angleYr,angleZr, angleMin;
-
+    
+    //first check if already a basis
+    if (checkParallel(v,stdZ)) {
+        return v;
+    } else if (checkParallel(v,stdY)) {
+        return v;
+    } else if (checkParallel(v,stdX)) {
+        return v;
+    }
+    
+    //not a basis. find smallest angle with a basis.
     angleX = stdX.GetAngle(v);
     angleY = stdY.GetAngle(v);
     angleZ = stdZ.GetAngle(v);

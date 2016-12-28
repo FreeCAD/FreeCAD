@@ -156,7 +156,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
-//    Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
+    //Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
 
 
     (void) DrawView::execute();           //make sure Scale is up to date
@@ -173,6 +173,9 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 
      gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
      geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+     
+     //Base::Console().Message("TRACE - DVP::execute - u: %s v: %s w: %s\n",
+     //         DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(), DrawUtil::formatVector(getWDir()).c_str());
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
@@ -523,9 +526,9 @@ gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
      return viewAxis;
 }
 
-//this might have to be virtual for dpgi?
 void DrawViewPart::saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis)
 {
+    //Base::Console().Message("TRACE - DVP::saveParamSpace()\n");
     (void)xAxis;
     Base::Vector3d origin(0.0,0.0,0.0);
     gp_Ax2 viewAxis = getViewAxis(origin,direction);

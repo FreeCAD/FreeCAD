@@ -312,7 +312,7 @@
              <bool>true</bool>
             </property>
             <property name="toolTip">
-             <string>Set Primary Direction to match 3D</string>
+             <string>Try to match Primary Direction to 3D view</string>
             </property>
             <property name="text">
              <string>Match 3D</string>

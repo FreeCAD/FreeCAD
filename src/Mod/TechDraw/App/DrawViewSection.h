@@ -44,6 +44,7 @@ class Face;
 
 namespace TechDraw
 {
+class DrawProjGroupItem;
 
 
 /** Base class of all View Features in the drawing module
@@ -84,7 +85,9 @@ public:
 
 public:
     std::vector<TechDrawGeometry::Face*> getFaceGeometry();
-    static Base::Vector3d getSectionVector (const Base::Vector3d baseViewDir, const std::string sectionName);
+    Base::Vector3d getSectionVector (const std::string sectionName);
+    TechDraw::DrawViewPart* getBaseDVP();
+    TechDraw::DrawProjGroupItem* getBaseDPGI();
 
     static const char* SectionDirEnums[];
 
