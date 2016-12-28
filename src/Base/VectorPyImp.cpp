@@ -121,19 +121,17 @@ PyObject* VectorPy::number_subtract_handler(PyObject *self, PyObject *other)
 PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
 {
     if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
+        Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
-            Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
             Base::Vector3d b = static_cast<VectorPy*>(other)->value();
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
         else if (PyFloat_Check(other)) {
-            Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
         }
         else if (PyInt_Check(other)) {
-            Base::Vector3d a = static_cast<VectorPy*>(self) ->value();
             long b = PyInt_AsLong(other);
             return new VectorPy(a * (double)b);
         }
@@ -143,13 +141,12 @@ PyObject* VectorPy::number_multiply_handler(PyObject *self, PyObject *other)
         }
     }
     else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+        Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
         if (PyFloat_Check(self)) {
-            Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
             double b = PyFloat_AsDouble(self);
             return new VectorPy(a * b);
         }
         else if (PyInt_Check(self)) {
-            Base::Vector3d a = static_cast<VectorPy*>(other) ->value();
             long b = PyInt_AsLong(self);
             return new VectorPy(a * (double)b);
         }
