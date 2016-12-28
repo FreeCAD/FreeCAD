@@ -42,7 +42,8 @@ def makeMaterial(name="Material"):
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython",name)
     obj.Label = name
     _ArchMaterial(obj)
-    _ViewProviderArchMaterial(obj.ViewObject)
+    if FreeCAD.GuiUp:
+        _ViewProviderArchMaterial(obj.ViewObject)
     getMaterialContainer().addObject(obj)
     return obj
 
