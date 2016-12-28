@@ -824,7 +824,12 @@ QuarterWidget::redraw(void)
   // we're triggering the next paintGL(). Set a flag to remember this
   // to avoid that we process the delay queue in paintGL()
   PRIVATE(this)->processdelayqueue = false;
+#if QT_VERSION >= 0x050500 && QT_VERSION < 0x050600
+  // With Qt 5.5.x there is a major performance problem
+  this->viewport()->update();
+#else
   this->viewport()->repaint();
+#endif
 }
 
 /*!
