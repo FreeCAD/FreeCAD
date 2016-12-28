@@ -33,6 +33,7 @@
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Hypr.hxx>
+# include <gp_Parab.hxx>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRepAdaptor_Curve.hxx>
 # include <BRep_Tool.hxx>
@@ -41,6 +42,7 @@
 # include <Geom_Circle.hxx>
 # include <Geom_Ellipse.hxx>
 # include <Geom_Hyperbola.hxx>
+# include <Geom_Parabola.hxx>
 # include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -504,6 +506,14 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
             return aoh->getEndPoint();
         else if (PosId == mid)
             return aoh->getCenter();
+    } else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola*>(geo);
+        if (PosId == start)
+            return aop->getStartPoint();
+        else if (PosId == end)
+            return aop->getEndPoint();
+        else if (PosId == mid)
+            return aop->getCenter();
     }
 
     return Base::Vector3d();
@@ -560,6 +570,7 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
         geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
         geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         return true;
     }
@@ -2068,6 +2079,59 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
             }
+            else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+
+                Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
+                double majord=geosymaoe->getMajorRadius();
+                double minord=geosymaoe->getMinorRadius();
+                double df= sqrt(majord*majord+minord*minord);
+                Base::Vector3d f1 = cp + df * majdir;
+
+                Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
+                Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
+                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
+                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);		
+
+                geosymaoe->setMajorAxisDir(sf1-scp);
+
+                geosymaoe->setCenter(scp);
+
+                double theta1,theta2;
+                geosymaoe->closestParameter(sep,theta1);
+                geosymaoe->closestParameter(ssp,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, true)); 
+            }
+            else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+
+                //double df= geosymaoe->getFocal();
+                Base::Vector3d f1 = geosymaoe->getFocus();
+
+                Base::Vector3d sf1 = f1+2.0*(f1.Perpendicular(refGeoLine->getStartPoint(),vectline)-f1);
+                Base::Vector3d scp = cp+2.0*(cp.Perpendicular(refGeoLine->getStartPoint(),vectline)-cp);
+                Base::Vector3d ssp = sp+2.0*(sp.Perpendicular(refGeoLine->getStartPoint(),vectline)-sp);
+                Base::Vector3d sep = ep+2.0*(ep.Perpendicular(refGeoLine->getStartPoint(),vectline)-ep);
+
+		geosymaoe->setXAxisDir(sf1-scp);
+		
+                geosymaoe->setCenter(scp);
+		
+                double theta1,theta2;
+                geosymaoe->closestParameter(sep,theta1);
+                geosymaoe->closestParameter(ssp,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, true)); 
+            }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
                 Base::Vector3d cp = geosympoint->getPoint();
@@ -2110,6 +2174,14 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
                         refpoint = geosymaoe->getStartPoint(true);
                     }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
+                        refpoint = geosymaoe->getStartPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                        const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
+                        refpoint = geosymaoe->getStartPoint(true);
+                    }
                     break;
                 case Sketcher::end:
                     if(georef->getTypeId() == Part::GeomLineSegment::getClassTypeId()){
@@ -2122,6 +2194,14 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     }
                     else if(georef->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
+                        refpoint = geosymaoe->getEndPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
+                        refpoint = geosymaoe->getEndPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                        const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getEndPoint(true);
                     }
                     break;
@@ -2140,6 +2220,14 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     }
                     else if(georef->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()){
                         const Part::GeomArcOfEllipse *geosymaoe = static_cast<const Part::GeomArcOfEllipse *>(georef);
+                        refpoint = geosymaoe->getCenter();
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                        const Part::GeomArcOfHyperbola *geosymaoe = static_cast<const Part::GeomArcOfHyperbola *>(georef);
+                        refpoint = geosymaoe->getCenter();
+                    }
+                    else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                        const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getCenter();
                     }
                     break;
@@ -2225,6 +2313,59 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 
                 geosymaoe->setMajorAxisDir(sf1-scp);
 
+                geosymaoe->setCenter(scp);
+
+                double theta1,theta2;
+                geosymaoe->closestParameter(ssp,theta1);
+                geosymaoe->closestParameter(sep,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, false));
+            }
+            else if(geosym->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                Part::GeomArcOfHyperbola *geosymaoe = static_cast<Part::GeomArcOfHyperbola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+                
+                Base::Vector3d majdir = geosymaoe->getMajorAxisDir();
+                double majord=geosymaoe->getMajorRadius();
+                double minord=geosymaoe->getMinorRadius();
+                double df= sqrt(majord*majord+minord*minord);
+                Base::Vector3d f1 = cp + df * majdir;
+
+                Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
+                Base::Vector3d scp = cp + 2.0*(refpoint-cp);
+                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
+                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
+                
+                geosymaoe->setMajorAxisDir(sf1-scp);
+
+                geosymaoe->setCenter(scp);
+
+                double theta1,theta2;
+                geosymaoe->closestParameter(ssp,theta1);
+                geosymaoe->closestParameter(sep,theta2);
+
+                geosymaoe->setRange(theta1,theta2,true);
+                isStartEndInverted.insert(std::make_pair(*it, false));
+            }
+            else if(geosym->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                Part::GeomArcOfParabola *geosymaoe = static_cast<Part::GeomArcOfParabola *>(geosym);
+                Base::Vector3d cp = geosymaoe->getCenter();
+                Base::Vector3d sp = geosymaoe->getStartPoint(true);
+                Base::Vector3d ep = geosymaoe->getEndPoint(true);		
+
+                /*double df= geosymaoe->getFocal();*/
+		Base::Vector3d f1 = geosymaoe->getFocus();
+
+                Base::Vector3d sf1 = f1 + 2.0*(refpoint-f1);
+                Base::Vector3d scp = cp + 2.0*(refpoint-cp);
+                Base::Vector3d ssp = sp + 2.0*(refpoint-sp);
+                Base::Vector3d sep = ep + 2.0*(refpoint-ep);
+
+		geosymaoe->setXAxisDir(sf1-scp);
+		
                 geosymaoe->setCenter(scp);
 
                 double theta1,theta2;
@@ -2464,6 +2605,26 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     if(it == geoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
                 }
+                else if(geocopy->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()){
+                    Part::GeomArcOfHyperbola *geoaoe = static_cast<Part::GeomArcOfHyperbola *>(geocopy);
+                    Base::Vector3d cp = geoaoe->getCenter();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
+
+                    geoaoe->setCenter(scp);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoe->getStartPoint(true);
+                }
+                else if(geocopy->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
+                    Part::GeomArcOfParabola *geoaoe = static_cast<Part::GeomArcOfParabola *>(geocopy);
+                    Base::Vector3d cp = geoaoe->getCenter();
+                    Base::Vector3d scp = cp+double(x)*displacement+double(y)*perpendicularDisplacement;		
+
+                    geoaoe->setCenter(scp);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geoaoe->getStartPoint(true);
+                }                
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
                     Part::GeomPoint *geopoint = static_cast<Part::GeomPoint *>(geocopy);
                     Base::Vector3d cp = geopoint->getPoint();
@@ -2717,7 +2878,7 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
     if( newconstrVals.size() > constrvals.size() ) 
         Constraints.setValues(newconstrVals);
 
-    return Geometry.getSize()-1;    
+    return Geometry.getSize()-1;
     
 }
 
@@ -3000,6 +3161,137 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         
         return incrgeo; //number of added elements
     }
+    else if(geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        // First we search what has to be restored
+        bool focus=false;
+	int focusgeoid=-1;
+	bool focus_to_vertex=false;
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::ParabolaFocus:
+                        focus=true;
+			focusgeoid=(*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+
+        if(focus) {
+	    // look for a line from focusgeoid:start to Geoid:mid_external
+	    std::vector<int> focusgeoidlistgeoidlist;
+	    std::vector<PointPos> focusposidlist;
+	    getDirectlyCoincidentPoints(focusgeoid, Sketcher::start, focusgeoidlistgeoidlist,
+                                       focusposidlist);
+	    
+	    std::vector<int> parabgeoidlistgeoidlist;
+	    std::vector<PointPos> parabposidlist;
+	    getDirectlyCoincidentPoints(GeoId, Sketcher::mid, parabgeoidlistgeoidlist,
+                                       parabposidlist);
+
+	    if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
+	    
+		std::size_t i,j;
+		for(i=0;i<focusgeoidlistgeoidlist.size();i++){
+		    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
+			if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
+			    const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
+			    
+			    if ( geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+				
+				if((focusposidlist[i] == Sketcher::start && parabposidlist[j] == Sketcher::end) ||
+				     (focusposidlist[i] == Sketcher::end && parabposidlist[j] == Sketcher::start))
+			
+				focus_to_vertex=true;
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+        int currentgeoid= getHighestCurveIndex();
+        int incrgeo= 0;
+
+        const Part::GeomArcOfParabola *aoh = static_cast<const Part::GeomArcOfParabola *>(geo);
+
+        Base::Vector3d center = aoh->getCenter();
+        Base::Vector3d focusp = aoh->getFocus();
+
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+
+       if(!focus)
+        {
+            Part::GeomPoint *pf1 = new Part::GeomPoint();
+            pf1->setPoint(focusp);
+
+            igeo.push_back(pf1);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::InternalAlignment;
+            newConstr->AlignmentType = Sketcher::ParabolaFocus;
+            newConstr->First = currentgeoid+incrgeo+1;
+            newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = GeoId;
+
+	    focusgeoid = currentgeoid+incrgeo+1;
+
+            icon.push_back(newConstr);
+            incrgeo++;
+        }
+
+        if(!focus_to_vertex)
+        {
+            Part::GeomLineSegment *paxis = new Part::GeomLineSegment();
+            paxis->setPoints(center,focusp);
+
+            igeo.push_back(paxis);
+
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::Coincident;
+            newConstr->First = focusgeoid;
+	    newConstr->FirstPos = Sketcher::start;
+            newConstr->Second = currentgeoid+incrgeo+1; // just added line
+            newConstr->SecondPos = Sketcher::end;
+
+	    icon.push_back(newConstr);
+
+            Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+            newConstr2->Type = Sketcher::Coincident;
+            newConstr2->First = GeoId;
+	    newConstr2->FirstPos = Sketcher::mid;
+            newConstr2->Second = currentgeoid+incrgeo+1; // just added line
+            newConstr2->SecondPos = Sketcher::start;	    
+
+            icon.push_back(newConstr2);
+
+            incrgeo++;
+        }
+
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+
+	for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+	    if (*it) 
+		delete *it;
+
+	icon.clear();
+	igeo.clear();
+
+        return incrgeo; //number of added elements
+    }
     else
         return -1; // not supported type
 }
@@ -3011,8 +3303,10 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
     
     const Part::Geometry *geo = getGeometry(GeoId);            
     // Only for supported types
-    if(geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-       
+    if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || 
+	geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+	geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+
         int majorelementindex=-1;
         int minorelementindex=-1;
         int focus1elementindex=-1;
@@ -3026,12 +3320,15 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::EllipseMajorDiameter:
+		    case Sketcher::HyperbolaMajor:			
                         majorelementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseMinorDiameter:
+		    case Sketcher::HyperbolaMinor:
                         minorelementindex=(*it)->First;
                         break;
-                    case Sketcher::EllipseFocus1: 
+                    case Sketcher::EllipseFocus1:
+		    case Sketcher::HyperbolaFocus:	    
                         focus1elementindex=(*it)->First;
                         break;
                     case Sketcher::EllipseFocus2: 
@@ -3079,6 +3376,100 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
         
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+        return delgeometries.size(); //number of deleted elements
+    }
+    else if( geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+	// if the focus-to-vertex line is constrained, then never delete the focus
+	// if the line is unconstrained, then the line may be deleted,
+	// in this case the focus may be deleted if unconstrained.
+        int majorelementindex=-1;
+        int focus1elementindex=-1;
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::ParabolaFocus:
+                        focus1elementindex=(*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+        
+        if(focus1elementindex!=-1) {
+	    // look for a line from focusgeoid:start to Geoid:mid_external
+	    std::vector<int> focusgeoidlistgeoidlist;
+	    std::vector<PointPos> focusposidlist;
+	    getDirectlyCoincidentPoints(focus1elementindex, Sketcher::start, focusgeoidlistgeoidlist,
+                                       focusposidlist);
+	    
+	    std::vector<int> parabgeoidlistgeoidlist;
+	    std::vector<PointPos> parabposidlist;
+	    getDirectlyCoincidentPoints(GeoId, Sketcher::mid, parabgeoidlistgeoidlist,
+                                       parabposidlist);
+
+	    if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
+	    
+		std::size_t i,j;
+		for(i=0;i<focusgeoidlistgeoidlist.size();i++){
+		    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
+			if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
+			    const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
+			    
+			    if ( geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+				
+				if((focusposidlist[i] == Sketcher::start && parabposidlist[j] == Sketcher::end) ||
+				     (focusposidlist[i] == Sketcher::end && parabposidlist[j] == Sketcher::start))
+			
+				    majorelementindex = focusgeoidlistgeoidlist[i];
+			    }
+			}
+		    }
+		}
+	    }
+	}
+
+        // Hide unused geometry here
+        int majorconstraints=0; // number of constraints associated to the geoid of the major axis other than the coincident ones
+        int focus1constraints=0;
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+            it != vals.end(); ++it) {
+
+            if( (*it)->Second == majorelementindex || 
+		(*it)->First == majorelementindex  || 
+		(*it)->Third == majorelementindex)
+                majorconstraints++;
+            else if( (*it)->Second == focus1elementindex || 
+		     (*it)->First == focus1elementindex ||
+		     (*it)->Third == focus1elementindex)
+                focus1constraints++;
+        }
+
+        std::vector<int> delgeometries;
+
+        if(majorelementindex !=-1 && majorconstraints<3) { // major as two coincidents to focus and vertex
+            delgeometries.push_back(majorelementindex);
+	    majorelementindex = -1;
+	}
+	
+        if(majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
+            delgeometries.push_back(focus1elementindex);
+
+        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
+
         if(delgeometries.size()>0)
         {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
@@ -3670,6 +4061,33 @@ void SketchObject::rebuildExternalGeometry(void)
                                         aoh->Construction = true;
                                         ExternalGeo.push_back(aoh);
                                     }
+                                } else if (projCurve.GetType() == GeomAbs_Parabola) {
+                                    gp_Parab e = projCurve.Parabola();
+                                    gp_Pnt p = e.Location();
+                                    gp_Pnt P1 = projCurve.Value(projCurve.FirstParameter());
+                                    gp_Pnt P2 = projCurve.Value(projCurve.LastParameter());
+                                    
+                                    gp_Dir normal = e.Axis().Direction();
+                                    gp_Dir xdir = e.XAxis().Direction();
+                                    gp_Ax2 xdirref(p, normal);
+
+                                    if (P1.SquareDistance(P2) < Precision::Confusion()) {
+                                        Part::GeomParabola* parabola = new Part::GeomParabola();
+                                        parabola->setFocal(e.Focal());
+                                        parabola->setCenter(Base::Vector3d(p.X(),p.Y(),p.Z()));
+                                        parabola->setAngleXU(-xdir.AngleWithRef(xdirref.XDirection(),normal));
+                                        parabola->Construction = true;
+                                        ExternalGeo.push_back(parabola);
+                                    }
+                                    else {
+                                        Part::GeomArcOfParabola* aop = new Part::GeomArcOfParabola();
+                                        Handle_Geom_Curve curve = new Geom_Parabola(e);
+                                        Handle_Geom_TrimmedCurve tCurve = new Geom_TrimmedCurve(curve, projCurve.FirstParameter(),
+                                                                                                projCurve.LastParameter());
+                                        aop->setHandle(tCurve);
+                                        aop->Construction = true;
+                                        ExternalGeo.push_back(aop);
+                                    }
                                 }
                                 else if (projCurve.GetType() == GeomAbs_Ellipse) {
                                     gp_Elips e = projCurve.Ellipse();
@@ -3782,6 +4200,13 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(mid);	  
         } else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(end);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(start);
             VertexId2GeoId.push_back(i);

@@ -118,6 +118,10 @@
         <file>icons/Sketcher_Element_Line_Edge.svg</file>
         <file>icons/Sketcher_Element_Line_EndPoint.svg</file>
         <file>icons/Sketcher_Element_Line_StartingPoint.svg</file>
+        <file>icons/Sketcher_Element_Parabolic_Arc_Centre_Point.svg</file>
+        <file>icons/Sketcher_Element_Parabolic_Arc_Edge.svg</file>
+        <file>icons/Sketcher_Element_Parabolic_Arc_End_Point.svg</file>
+        <file>icons/Sketcher_Element_Parabolic_Arc_Start_Point.svg</file>
         <file>icons/Sketcher_Element_Point_StartingPoint.svg</file>
         <file>icons/Sketcher_Element_SelectionTypeInvalid.svg</file>
         <file>icons/Sketcher_Elliptical_Arc.svg</file>
@@ -130,6 +134,8 @@
         <file>icons/Sketcher_MergeSketch.svg</file>
         <file>icons/Sketcher_MirrorSketch.svg</file>
         <file>icons/Sketcher_NewSketch.svg</file>
+        <file>icons/Sketcher_Parabolic_Arc.svg</file>
+        <file>icons/Sketcher_Parabolic_Arc_Constr.svg</file>
         <file>icons/Sketcher_ProfilesHexagon1.svg</file>
         <file>icons/Sketcher_RectangularArray.svg</file>
         <file>icons/Sketcher_SelectConflictingConstraints.svg</file>

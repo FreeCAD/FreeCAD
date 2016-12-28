@@ -3779,6 +3779,357 @@ bool CmdSketcherCreateArcOfHyperbola::isActive(void)
     return isCreateGeoActive(getActiveGuiDocument());
 } 
 
+/* XPM */
+static const char *cursor_createarcofparabola[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+.........................",
+"......+.........................",
+"......+................##.......",
+"......+..............##.........",
+"......+............##...........",
+"......+...........##............",
+"................##..............",
+"...............##...............",
+"..............##................",
+".............###................",
+"............##......###.........",
+"...........##......#.#..........",
+"...........##.....###...........",
+"..........##....................",
+".........##.....................",
+"........##......................",
+"........##......................",
+"........##......................",
+"........#.....####..............",
+"........######..................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerArcOfParabola : public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerArcOfParabola() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    virtual ~DrawSketchHandlerArcOfParabola(){}
+    /// mode table
+    enum SelectMode {
+        STATUS_SEEK_First,      /**< enum value ----. */
+        STATUS_SEEK_Second,     /**< enum value ----. */
+        STATUS_SEEK_Third,     /**< enum value ----. */      
+        STATUS_SEEK_Fourth,     /**< enum value ----. */
+        STATUS_Close
+    };
+
+    virtual void activated(ViewProviderSketch * /*sketchgui*/)
+    {
+        setCursor(QPixmap(cursor_createarcofparabola),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Second) {
+            EditCurve[1]= onSketchPos;
+
+            // Display radius for user
+            float radius = (onSketchPos - focusPoint).Length();
+
+            SbString text;
+            text.sprintf(" (F%.1f)", radius);
+            setPositionText(onSketchPos, text);
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr2);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Third) {
+            double focal = (axisPoint-focusPoint).Length();
+            double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
+
+	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+	    //
+	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
+            //                      0.f);
+
+            // This is the angle at cursor point
+            double u = 
+		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+
+	    for (int i=15; i >= -15; i--) {
+		double angle=i*u/15;
+		double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+		double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+		EditCurve[15+i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+	    }
+
+	    // Display radius for user
+	    SbString text;
+	    text.sprintf(" (F%.1f)", focal);
+	    setPositionText(onSketchPos, text);
+
+	    sketchgui->drawEdit(EditCurve);
+	    
+            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr3);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_Fourth) {
+            double focal = (axisPoint-focusPoint).Length();
+            double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
+
+	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+	    //
+	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
+            //                      0.f);
+
+            // This is the angle at starting point
+            double ustartpoint = 
+		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+
+            double startAngle = ustartpoint;
+
+            double u = 
+		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+
+
+            arcAngle = u - startAngle;
+
+            if(!boost::math::isnan(arcAngle)){
+                for (int i=0; i < 33; i++) {
+                    double angle = startAngle+i*arcAngle/32.0;
+		    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+		    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+		    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+                }
+
+		SbString text;
+		text.sprintf(" (F%.1f)", focal);
+		setPositionText(onSketchPos, text);
+            }
+            else
+            {
+                arcAngle=0.;
+            }
+
+            sketchgui->drawEdit(EditCurve);
+            if (seekAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr4);
+                return;
+            }
+        }
+
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_First){
+            EditCurve[0] = onSketchPos;
+            focusPoint = onSketchPos;
+            EditCurve.resize(2);
+            Mode = STATUS_SEEK_Second;
+        } 
+        else if(Mode==STATUS_SEEK_Second) {
+            EditCurve[1] = onSketchPos;
+            axisPoint = onSketchPos;
+            EditCurve.resize(31);
+            Mode = STATUS_SEEK_Third;
+        }
+        else if(Mode==STATUS_SEEK_Third) {
+            startingPoint = onSketchPos;
+            arcAngle = 0.;
+            arcAngle_t= 0.;
+            Mode = STATUS_SEEK_Fourth;
+        } 
+        else { // Fourth
+            endPoint = onSketchPos;
+            Mode = STATUS_Close;
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    {
+        if (Mode==STATUS_Close) {
+            unsetCursor();
+            resetPositionText();
+
+            double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
+		
+            double ustartpoint = 
+		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+		
+            double uendpoint = 
+		( cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
+		
+            double startAngle = ustartpoint;
+
+            double endAngle = uendpoint;
+
+            bool isOriginalArcCCW=true;
+
+            if (arcAngle > 0)
+                endAngle = startAngle + arcAngle;
+            else {
+                endAngle = startAngle;
+                startAngle += arcAngle;
+                isOriginalArcCCW=false;
+            }
+
+            int currentgeoid = getHighestCurveIndex();
+
+            try {
+
+            Gui::Command::openCommand("Add sketch arc of Parabola");
+
+            //Add arc of parabola
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.ArcOfParabola"
+                "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
+                "%f,%f),%s)",
+                    sketchgui->getObject()->getNameInDocument(),
+                    focusPoint.x, focusPoint.y,
+                    axisPoint.x, axisPoint.y,
+                    startAngle, endAngle,
+                    geometryCreationMode==Construction?"True":"False"); 
+
+            currentgeoid++;
+
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid);
+
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                if(autoRecompute) 
+                    Gui::Command::updateActive();
+                else
+                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();            
+
+                return false;
+            }
+
+            Gui::Command::commitCommand();
+
+            // add auto constraints for the focus point
+            if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::start);
+                sugConstr1.clear();
+            }
+
+            // add suggested constraints for vertex point
+            if (sugConstr2.size() > 0) {
+                createAutoConstraints(sugConstr2, currentgeoid, Sketcher::mid);
+                sugConstr2.clear();
+            }
+
+            // add suggested constraints for start of arc
+            if (sugConstr3.size() > 0) {
+                createAutoConstraints(sugConstr3, currentgeoid, isOriginalArcCCW?Sketcher::start:Sketcher::end);
+                sugConstr3.clear();
+            }
+
+            // add suggested constraints for start of arc
+            if (sugConstr4.size() > 0) {
+                createAutoConstraints(sugConstr4, currentgeoid, isOriginalArcCCW?Sketcher::end:Sketcher::start);
+                sugConstr4.clear();
+            }
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();        
+
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode = STATUS_SEEK_First;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(34);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                 * in continuous creation mode because the 
+                 * handler is destroyed by the quit() method on pressing the
+                 * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
+        }
+        return true;
+    }
+protected:
+    SelectMode Mode;
+    std::vector<Base::Vector2d> EditCurve;
+    Base::Vector2d focusPoint, axisPoint, startingPoint, endPoint;
+    double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
+    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
+
+};
+
+DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola);
+
+CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
+  : Command("Sketcher_CreateArcOfParabola")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create an arc of parabola");
+    sToolTipText    = QT_TR_NOOP("Create an arc of parabola in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Parabolic_Arc";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateArcOfParabola::activated(int /*iMsg*/)
+{
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerArcOfParabola() );
+}
+
+bool CmdSketcherCreateArcOfParabola::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+
+
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
 DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic);
 
@@ -3811,6 +4162,8 @@ void CmdSketcherCompCreateConic::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
     } else if (iMsg == 3) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfHyperbola());
+    } else if (iMsg == 4) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfParabola());
     } else {
         return;
     }
@@ -3841,6 +4194,9 @@ Gui::Action * CmdSketcherCompCreateConic::createAction(void)
     
     QAction* arcofhyperbola = pcAction->addAction(QString());
     arcofhyperbola->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
+    
+    QAction* arcofparabola = pcAction->addAction(QString());
+    arcofparabola->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
 
     _pcAction = pcAction;
     languageChange();
@@ -3867,6 +4223,7 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
         a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
         a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
 	a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
+	a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
@@ -3874,6 +4231,7 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
         a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"));
         a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));
 	a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc_Constr"));
+	a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
@@ -3904,6 +4262,10 @@ void CmdSketcherCompCreateConic::languageChange()
     arcofhyperbola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of hyperbola by center, major radius, endpoints"));
     arcofhyperbola->setToolTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));
     arcofhyperbola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfHyperbola","Create an arc of hyperbola by its center, major radius, endpoints"));    
+    QAction* arcofparabola = a[4];
+    arcofparabola->setText(QApplication::translate("CmdSketcherCompCreateConic","Arc of parabola by focus, vertex, endpoints"));
+    arcofparabola->setToolTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));
+    arcofparabola->setStatusTip(QApplication::translate("Sketcher_CreateArcOfParabola","Create an arc of parabola by its focus, vertex, endpoints"));    
 }
 
 bool CmdSketcherCompCreateConic::isActive(void)
@@ -5977,6 +6339,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCompCreateConic());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfEllipse());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfHyperbola());
+    rcCmdMgr.addCommand(new CmdSketcherCreateArcOfParabola());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());

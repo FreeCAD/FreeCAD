@@ -779,6 +779,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                             geo->getTypeId() == Part::GeomEllipse::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()||
+                            geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
                             Gui::Command::openCommand("Drag Curve");
                             try {
@@ -2264,6 +2265,84 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 }
             }
 
+        } else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+            // Check if arc lies inside box selection
+            const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(*it);
+
+            pnt0 = aop->getStartPoint();
+            pnt1 = aop->getEndPoint();
+            pnt2 = aop->getCenter();
+
+            VertexId += 3;
+
+            Plm.multVec(pnt0, pnt0);
+            Plm.multVec(pnt1, pnt1);
+            Plm.multVec(pnt2, pnt2);
+            pnt0 = proj(pnt0);
+            pnt1 = proj(pnt1);
+            pnt2 = proj(pnt2);
+
+            bool pnt0Inside = polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y));
+            if (pnt0Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId - 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y))) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+
+            if (pnt0Inside && pnt1Inside) {
+                double startangle, endangle;
+
+                aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+
+                if (startangle > endangle) // if arc is reversed
+                    std::swap(startangle, endangle);
+
+                double range = endangle-startangle;
+                int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
+
+                float segment = float(range) / countSegments;
+		//In local coordinate system, value() of parabola is:
+		//P(U) = O + U*U/(4.*F)*XDir + U*YDir 
+                                                // circumscribed polygon radius
+                float focal = float(aop->getFocal()) / cos(segment/2);
+                float phi = float(aop->getAngleXU());
+ 
+                bool bpolyInside = true;
+                pnt0 = aop->getCenter();
+                float angle = float(startangle) + segment/2;
+                for (int i = 0; i < countSegments; ++i, angle += segment) {
+                    pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+                                         pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
+                                         0.f);
+
+                    Plm.multVec(pnt, pnt);
+                    pnt = proj(pnt);
+                    if (!polygon.Contains(Base::Vector2d(pnt.x, pnt.y))) {
+                        bpolyInside = false;
+                        break;
+                    }
+                }
+
+                if (bpolyInside) {
+                    std::stringstream ss;
+                    ss << "Edge" << GeoId + 1;
+                    Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+                }
+            }
+
         } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
             const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
             std::vector<Base::Vector3d> poles = spline->getPoles();
@@ -3229,6 +3308,39 @@ void ViewProviderSketch::draw(bool temp)
             Points.push_back(start);
             Points.push_back(end);
             Points.push_back(center);
+        } 
+        else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) { 
+            const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(*it);
+            Handle_Geom_TrimmedCurve curve = Handle_Geom_TrimmedCurve::DownCast(aop->handle());
+
+            double startangle, endangle;
+            aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+            if (startangle > endangle) // if arc is reversed
+                std::swap(startangle, endangle);
+
+            double range = endangle-startangle;
+            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            double segment = range / countSegments;
+
+            Base::Vector3d center = aop->getCenter();
+            Base::Vector3d start  = aop->getStartPoint();
+            Base::Vector3d end    = aop->getEndPoint();
+
+            for (int i=0; i < countSegments; i++) {
+                gp_Pnt pnt = curve->Value(startangle);
+                Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+                startangle += segment;
+            }
+
+            // end point
+            gp_Pnt pnt = curve->Value(endangle);
+            Coords.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+
+            Index.push_back(countSegments+1);
+            edit->CurvIdToGeoId.push_back(GeoId);
+            Points.push_back(start);
+            Points.push_back(end);
+            Points.push_back(center);
         }
         else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) { // add a bspline
             const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
@@ -3524,7 +3636,16 @@ Restart:
                                     angle1 = atan2(majdir.y, majdir.x);
                                     angle1plus = (startangle + endangle)/2;
                                     midpos1 = aoh->getCenter();
-                                }else
+                                } else if (geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                                    const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(geo1);
+                                    r1a = aop->getFocal();
+                                    double startangle, endangle;
+                                    aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = - aop->getXAxisDir();
+                                    angle1 = atan2(majdir.y, majdir.x);
+                                    angle1plus = (startangle + endangle)/2;
+                                    midpos1 = aop->getFocus();
+                                } else
                                     break;
 
                                 if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
@@ -3567,6 +3688,15 @@ Restart:
                                     angle2 = atan2(majdir.y, majdir.x);
                                     angle2plus = (startangle + endangle)/2;
                                     midpos2 = aoh->getCenter();
+                                } else if (geo2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+                                    const Part::GeomArcOfParabola *aop = dynamic_cast<const Part::GeomArcOfParabola *>(geo2);
+                                    r2a = aop->getFocal();
+                                    double startangle, endangle;
+                                    aop->getRange(startangle, endangle, /*emulateCCW=*/true);
+                                    Base::Vector3d majdir = -aop->getXAxisDir();
+                                    angle2 = atan2(majdir.y, majdir.x);
+                                    angle2plus = (startangle + endangle)/2;
+                                    midpos2 = aop->getFocus();
                                 } else
                                     break;
 

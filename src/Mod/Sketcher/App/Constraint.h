@@ -66,7 +66,8 @@ enum InternalAlignmentType {
     EllipseFocus2           = 4,
     HyperbolaMajor          = 5,
     HyperbolaMinor          = 6,
-    HyperbolaFocus          = 7
+    HyperbolaFocus          = 7,
+    ParabolaFocus	    = 8
 };
 
 /// define if you want to use the end or start point

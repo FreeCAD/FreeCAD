@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com             *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -648,6 +648,10 @@ void TaskSketcherElements::slotElementsChanged(void)
     QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
     QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
     QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point") );
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
 
     assert(sketchView);
@@ -682,7 +686,11 @@ void TaskSketcherElements::slotElementsChanged(void)
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge :
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint :
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :        
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint :
         none,
         type == Part::GeomPoint::getClassTypeId()           ? ( isNamingBoxChecked ?
                                                                 (tr("Point") + QString::fromLatin1("(Edge%1)").arg(i)):
@@ -705,6 +713,9 @@ void TaskSketcherElements::slotElementsChanged(void)
         type == Part::GeomArcOfHyperbola::getClassTypeId()    ? ( isNamingBoxChecked ? 
                                                                 (tr("Hyperbolic Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
                                                                 (QString::fromLatin1("%1-").arg(i)+tr("Hyperbolic Arc")))   :
+        type == Part::GeomArcOfParabola::getClassTypeId()    ? ( isNamingBoxChecked ? 
+                                                                (tr("Parabolic Arc") + QString::fromLatin1("(Edge%1)").arg(i)):
+                                                                (QString::fromLatin1("%1-").arg(i)+tr("Parabolic Arc")))   :
         ( isNamingBoxChecked ?
           (tr("Other") + QString::fromLatin1("(Edge%1)").arg(i)):
           (QString::fromLatin1("%1-").arg(i)+tr("Other"))),
@@ -889,6 +900,10 @@ void TaskSketcherElements::updateIcons(int element)
     QIcon Sketcher_Element_ArcOfHyperbola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Centre_Point") );
     QIcon Sketcher_Element_ArcOfHyperbola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_Start_Point") );
     QIcon Sketcher_Element_ArcOfHyperbola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Hyperbolic_Arc_End_Point") );    
+    QIcon Sketcher_Element_ArcOfParabola_Edge( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Edge") );
+    QIcon Sketcher_Element_ArcOfParabola_MidPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Centre_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_StartingPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_Start_Point") );
+    QIcon Sketcher_Element_ArcOfParabola_EndPoint( Gui::BitmapFactory().pixmap("Sketcher_Element_Parabolic_Arc_End_Point") );    
     QIcon none( Gui::BitmapFactory().pixmap("Sketcher_Element_SelectionTypeInvalid") );
     
     for (int i=0;i<ui->listWidgetElements->count(); i++) {
@@ -914,7 +929,11 @@ void TaskSketcherElements::updateIcons(int element)
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfHyperbola_Edge :
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfHyperbola_StartingPoint :
         (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfHyperbola_EndPoint :
-        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :        
+        (type == Part::GeomArcOfHyperbola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfHyperbola_MidPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==0) ? Sketcher_Element_ArcOfParabola_Edge :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==1) ? Sketcher_Element_ArcOfParabola_StartingPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==2) ? Sketcher_Element_ArcOfParabola_EndPoint :
+        (type == Part::GeomArcOfParabola::getClassTypeId()    && element==3) ? Sketcher_Element_ArcOfParabola_MidPoint :
         none);
     }
 }

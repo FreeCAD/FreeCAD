@@ -24,6 +24,8 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Geom_Parabola.hxx>
+# include <gp_Parab.hxx>
+#include <gce_MakeParab.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -35,6 +37,8 @@
 #include <Mod/Part/App/ParabolaPy.cpp>
 
 using namespace Part;
+
+extern const char* gce_ErrorStatusText(gce_ErrorType et);
 
 // returns a string which represents the object e.g. when printed in python
 std::string ParabolaPy::representation(void) const
@@ -49,14 +53,64 @@ PyObject *ParabolaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // P
 }
 
 // constructor method
-int ParabolaPy::PyInit(PyObject* args, PyObject* /*kwd*/)
+int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
 {
-    if (PyArg_ParseTuple(args, "")) {
-        Handle_Geom_Parabola c = Handle_Geom_Parabola::DownCast
-            (getGeometryPtr()->handle());
-        c->SetFocal(1.0);
+    char* keywords_n[] = {NULL};
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "", keywords_n)) {
+        Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(getGeomParabolaPtr()->handle());
+        parabola->SetFocal(1.0);
         return 0;
     }
+
+    char* keywords_e[] = {"Parabola",NULL};
+    PyErr_Clear();
+    PyObject *pParab;
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!",keywords_e, &(ParabolaPy::Type), &pParab)) {
+        ParabolaPy* pParabola = static_cast<ParabolaPy*>(pParab);
+        Handle_Geom_Parabola Parab1 = Handle_Geom_Parabola::DownCast
+            (pParabola->getGeomParabolaPtr()->handle());
+        Handle_Geom_Parabola Parab2 = Handle_Geom_Parabola::DownCast
+            (this->getGeomParabolaPtr()->handle());
+        Parab2->SetParab(Parab1->Parab());
+        return 0;
+    }
+
+    char* keywords_ssc[] = {"Focus","Center","Normal",NULL};
+    PyErr_Clear();
+    PyObject *pV1, *pV2, *pV3;
+    if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
+                                         &(Base::VectorPy::Type), &pV1,
+					 &(Base::VectorPy::Type), &pV2,
+                                         &(Base::VectorPy::Type), &pV3)) {
+        Base::Vector3d focus = static_cast<Base::VectorPy*>(pV1)->value();
+        Base::Vector3d center = static_cast<Base::VectorPy*>(pV2)->value();
+	Base::Vector3d normal = static_cast<Base::VectorPy*>(pV3)->value();
+	
+	Base::Vector3d xvect = focus-center;
+    
+	// set the geometry
+	gp_Pnt p1(center.x,center.y,center.z);
+	gp_Dir norm(normal.x,normal.y,normal.z);
+	gp_Dir xdiroce(xvect.x,xvect.y,xvect.z);
+	
+	gp_Ax2 xdir(p1, norm, xdiroce);
+	
+	gce_MakeParab mc(xdir, (Standard_Real) xvect.Length());
+        
+        if (!mc.IsDone()) {
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
+            return -1;
+        }
+
+        Handle_Geom_Parabola parabola = Handle_Geom_Parabola::DownCast(getGeomParabolaPtr()->handle());
+        parabola->SetParab(mc.Value());
+        return 0;
+    }
+    
+    PyErr_SetString(PyExc_TypeError, "Parabola constructor accepts:\n"
+    "-- empty parameter list\n"
+    "-- Parabola\n"
+    "-- Point, Point, Point");
 
     return -1;
 }

@@ -66,6 +66,8 @@ namespace GCS
         CurveValue = 20,
         PointOnHyperbola = 21,
         InternalAlignmentPoint2Hyperbola = 22,
+	PointOnParabola = 23,
+	EqualFocalDistance = 24
     };
     
     enum InternalAlignmentType {
@@ -462,7 +464,22 @@ namespace GCS
         virtual double error();
         virtual double grad(double *);
     };
-    
+
+    class ConstraintEqualFocalDistance : public Constraint
+    {
+    private:
+        ArcOfParabola * e1;
+        ArcOfParabola * e2;
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+    public:
+        ConstraintEqualFocalDistance(ArcOfParabola * a1, ArcOfParabola * a2);
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
     class ConstraintCurveValue : public Constraint
     {
     private:
@@ -505,6 +522,27 @@ namespace GCS
         ConstraintPointOnHyperbola(Point &p, ArcOfHyperbola &a);
         #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
         inline ConstraintPointOnHyperbola(){}
+        #endif
+        virtual ConstraintType getTypeId();
+        virtual void rescale(double coef=1.);
+        virtual double error();
+        virtual double grad(double *);
+    };
+
+    // PointOnParabola
+    class ConstraintPointOnParabola : public Constraint
+    {
+    private:
+        void errorgrad(double* err, double* grad, double *param); //error and gradient combined. Values are returned through pointers.
+        void ReconstructGeomPointers(); //writes pointers in pvec to the parameters of crv1, crv2 and poa
+        Parabola* parab;
+        Point p;
+    public:
+        ConstraintPointOnParabola(Point &p, Parabola &e);
+        ConstraintPointOnParabola(Point &p, ArcOfParabola &a);
+	~ConstraintPointOnParabola();
+        #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
+        inline ConstraintPointOnParabola(){}
         #endif
         virtual ConstraintType getTypeId();
         virtual void rescale(double coef=1.);
