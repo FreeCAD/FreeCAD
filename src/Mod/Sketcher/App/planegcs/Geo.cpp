@@ -504,4 +504,107 @@ ArcOfHyperbola* ArcOfHyperbola::Copy()
     return crv;
 }
 
+//---------------parabola
+
+DeriVector2 Parabola::CalculateNormal(Point &p, double* derivparam)
+{
+    //fill some vectors in
+    DeriVector2 cv (vertex, derivparam);
+    DeriVector2 f1v (focus1, derivparam);
+    DeriVector2 pv (p, derivparam);
+    
+    // the normal is the vector from the focus to the intersection of ano thru the point p and direction
+    // of the symetry axis of the parabola with the directrix.
+    // As both point to directrix and point to focus are of equal magnitude, we can work with unitary vectors
+    // to calculate the normal, substraction of those vectors.
+    
+    DeriVector2 ret = cv.subtr(f1v).getNormalized().subtr(f1v.subtr(pv).getNormalized());
+    
+    return ret;
+}
+
+DeriVector2 Parabola::Value(double u, double du, double* derivparam)
+{
+
+    //In local coordinate system, value() of parabola is:
+    //P(U) = O + U*U/(4.*F)*XDir + U*YDir 
+
+    DeriVector2 c(this->vertex, derivparam);
+    DeriVector2 f1(this->focus1, derivparam);
+    
+    DeriVector2 fv = f1.subtr(c);
+    
+    double f,df;
+    
+    f = fv.length(df);
+    
+    DeriVector2 xdir = fv.getNormalized();
+    DeriVector2 ydir = xdir.rotate90ccw();
+    
+    DeriVector2 dirx = xdir.multD(u,du).multD(u,du).divD(4*f,4*df);
+    DeriVector2 diry = ydir.multD(u,du); 
+    
+    DeriVector2 dir = dirx.sum(diry);
+    
+    DeriVector2 ret; //point of parabola at parameter value of u, in global coordinates
+    
+    ret = c.sum( dir );
+
+    return ret;
+}
+
+int Parabola::PushOwnParams(VEC_pD &pvec)
+{
+    int cnt=0;
+    pvec.push_back(vertex.x); cnt++;
+    pvec.push_back(vertex.y); cnt++;
+    pvec.push_back(focus1.x); cnt++;
+    pvec.push_back(focus1.y); cnt++;
+    return cnt;
+}
+
+void Parabola::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
+{
+    vertex.x=pvec[cnt]; cnt++;
+    vertex.y=pvec[cnt]; cnt++;
+    focus1.x=pvec[cnt]; cnt++;
+    focus1.y=pvec[cnt]; cnt++;
+}
+
+Parabola* Parabola::Copy()
+{
+    Parabola* crv = new Parabola(*this);
+    return crv;
+}
+
+//--------------- arc of hyperbola
+int ArcOfParabola::PushOwnParams(VEC_pD &pvec)
+{
+    int cnt=0;
+    cnt += Parabola::PushOwnParams(pvec);
+    pvec.push_back(start.x); cnt++;
+    pvec.push_back(start.y); cnt++;
+    pvec.push_back(end.x); cnt++;
+    pvec.push_back(end.y); cnt++;
+    pvec.push_back(startAngle); cnt++;
+    pvec.push_back(endAngle); cnt++;
+    return cnt;
+    
+}
+void ArcOfParabola::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
+{
+    Parabola::ReconstructOnNewPvec(pvec,cnt);
+    start.x=pvec[cnt]; cnt++;
+    start.y=pvec[cnt]; cnt++;
+    end.x=pvec[cnt]; cnt++;
+    end.y=pvec[cnt]; cnt++;
+    startAngle=pvec[cnt]; cnt++;
+    endAngle=pvec[cnt]; cnt++;
+}
+ArcOfParabola* ArcOfParabola::Copy()
+{
+    ArcOfParabola* crv = new ArcOfParabola(*this);
+    return crv;
+}
+
 }//namespace GCS

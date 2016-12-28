@@ -45,6 +45,8 @@
 #include <Mod/Part/App/EllipsePy.h>
 #include <Mod/Part/App/HyperbolaPy.h>
 #include <Mod/Part/App/ArcOfHyperbolaPy.h>
+#include <Mod/Part/App/ParabolaPy.h>
+#include <Mod/Part/App/ArcOfParabolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
 
 #include <TopoDS.hxx>
@@ -84,6 +86,7 @@ void Sketch::clear(void)
     Ellipses.clear();
     ArcsOfEllipse.clear();
     ArcsOfHyperbola.clear();
+    ArcsOfParabola.clear();
 
     // deleting the doubles allocated with new
     for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it)
@@ -177,6 +180,8 @@ const char* nameByType(Sketch::GeoType type)
         return "arcofellipse";
     case Sketch::ArcOfHyperbola:
         return "arcofhyperbola";
+    case Sketch::ArcOfParabola:
+        return "arcofparabola";
     case Sketch::None:
     default:
         return "unknown";
@@ -215,7 +220,12 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomArcOfHyperbola *aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
-    } else {
+    } else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) { // add an arc of parabola
+        const GeomArcOfParabola *aop = dynamic_cast<const GeomArcOfParabola*>(geo);
+        // create the definition struct for that geom
+        return addArcOfParabola(*aop, fixed);
+    }
+    else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
     }
 }
@@ -560,6 +570,82 @@ int Sketch::addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, 
     return Geoms.size()-1;
 }
 
+int Sketch::addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, bool fixed)
+{
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    GeomArcOfParabola *aop = static_cast<GeomArcOfParabola*>(parabolaSegment.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo  = aop;
+    def.type = ArcOfParabola;
+
+    Base::Vector3d vertex   = aop->getCenter();
+    Base::Vector3d startPnt = aop->getStartPoint();
+    Base::Vector3d endPnt   = aop->getEndPoint();
+    Base::Vector3d focus    = aop->getFocus();
+       
+    double startAngle, endAngle;
+    aop->getRange(startAngle, endAngle,/*emulateCCW=*/true);
+
+    GCS::Point p1, p2, p3, p4;
+    
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
+    
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size()-2];
+    p2.y = params[params.size()-1];
+    
+    params.push_back(new double(vertex.x));
+    params.push_back(new double(vertex.y));
+    p3.x = params[params.size()-2];
+    p3.y = params[params.size()-1];
+    
+    params.push_back(new double(focus.x));
+    params.push_back(new double(focus.y));
+    p4.x = params[params.size()-2];
+    p4.y = params[params.size()-1];
+    
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+    def.midPointId = Points.size();
+    Points.push_back(p3);    
+    
+    // add the radius parameters
+    params.push_back(new double(startAngle));
+    double *a1 = params[params.size()-1];
+    params.push_back(new double(endAngle));
+    double *a2 = params[params.size()-1];
+    
+    // set the arc for later constraints
+    GCS::ArcOfParabola a;
+    a.start      = p1;
+    a.end        = p2;
+    a.vertex     = p3;
+    a.focus1     = p4;
+    a.startAngle = a1;
+    a.endAngle   = a2;
+    def.index = ArcsOfParabola.size();
+    ArcsOfParabola.push_back(a);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    // arcs require an ArcRules constraint for the end points
+    if (!fixed)
+        GCSsys.addConstraintArcOfParabolaRules(a);
+
+    // return the position of the newly added geometry
+    return Geoms.size()-1;
+}
+
 int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 {
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
@@ -700,6 +786,9 @@ Py::Tuple Sketch::getPyGeometry(void) const
         } else if (it->type == ArcOfHyperbola) {
             GeomArcOfHyperbola *aoh = dynamic_cast<GeomArcOfHyperbola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfHyperbolaPy(aoh));
+        } else if (it->type == ArcOfParabola) {
+            GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo->clone());
+            tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
         } else {
             // not implemented type in the sketch!
         }
@@ -737,7 +826,10 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
         break;
         case ArcOfHyperbola:
             return &ArcsOfHyperbola[Geoms[geoId].index];
-            break;        
+            break;   
+	case ArcOfParabola:
+            return &ArcsOfParabola[Geoms[geoId].index];
+            break;
         default:
             return 0;
     };
@@ -999,6 +1091,9 @@ int Sketch::addConstraint(const Constraint *constraint)
                 break;
             case HyperbolaFocus: 
                 rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
+                break;
+	    case ParabolaFocus: 
+                rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
                 break;
             default:
                 break;
@@ -1730,6 +1825,16 @@ int Sketch::addEqualConstraint(int geoId1, int geoId2)
         }
     }
     
+    if (Geoms[geoId2].type == ArcOfParabola) {
+        if (Geoms[geoId1].type == ArcOfParabola) {
+            GCS::ArcOfParabola &a1 = ArcsOfParabola[Geoms[geoId1].index];
+            GCS::ArcOfParabola &a2 = ArcsOfParabola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintEqualFocus(a1, a2, tag);
+            return ConstraintsCounter;
+        }
+    }
+    
     if (Geoms[geoId1].type == Ellipse) {
         GCS::Ellipse &e1 = Ellipses[Geoms[geoId1].index];
         if (Geoms[geoId2].type == ArcOfEllipse) {
@@ -1791,7 +1896,13 @@ int Sketch::addPointOnObjectConstraint(int geoId1, PointPos pos1, int geoId2)
             int tag = ++ConstraintsCounter;
             GCSsys.addConstraintPointOnHyperbolicArc(p1, a, tag);
             return ConstraintsCounter;
-        }        
+        }
+        else if (Geoms[geoId2].type == ArcOfParabola) {
+            GCS::ArcOfParabola &a = ArcsOfParabola[Geoms[geoId2].index];
+            int tag = ++ConstraintsCounter;
+            GCSsys.addConstraintPointOnParabolicArc(p1, a, tag);
+            return ConstraintsCounter;
+        }
     }
     return -1;
 }
@@ -2157,6 +2268,32 @@ int Sketch::addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2)
     return -1;
 }
 
+int Sketch::addInternalAlignmentParabolaFocus(int geoId1, int geoId2)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != ArcOfParabola)
+        return -1;
+    if (Geoms[geoId2].type != Point)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, start);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Point &p1 = Points[pointId1];
+
+        GCS::ArcOfParabola &a1 = ArcsOfParabola[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentParabolaFocus(a1, p1, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
 double Sketch::calculateAngleViaPoint(int geoId1, int geoId2, double px, double py)
 {
     geoId1 = checkGeoId(geoId1);
@@ -2300,6 +2437,23 @@ bool Sketch::updateGeometry()
                 }
                 aoh->setMajorAxisDir(fd);
                 aoh->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
+            } else if (it->type == ArcOfParabola) {
+                GCS::ArcOfParabola &myArc = ArcsOfParabola[it->index];
+
+                GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo);
+                
+                Base::Vector3d vertex = Vector3d(*Points[it->midPointId].x, *Points[it->midPointId].y, 0.0);
+                Base::Vector3d f1 = Vector3d(*myArc.focus1.x, *myArc.focus1.y, 0.0);
+                
+                Base::Vector3d fd=f1-vertex;
+                
+		aop->setXAxisDir(fd);
+                
+                aop->setCenter(vertex);
+		
+		aop->setFocal(fd.Length());
+
+                aop->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             }
         } catch (Base::Exception e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
@@ -2640,6 +2794,41 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
 
         }
+    } else if (Geoms[geoId].type == ArcOfParabola) {
+        
+        GCS::Point &center = Points[Geoms[geoId].midPointId];
+        GCS::Point p0,p1;
+        if (pos == mid || pos == none) {
+            MoveParameters.resize(2); // cx,cy
+            p0.x = &MoveParameters[0];
+            p0.y = &MoveParameters[1];
+            *p0.x = *center.x;
+            *p0.y = *center.y;
+
+            GCSsys.addConstraintP2PCoincident(p0,center,-1);
+        } else if (pos == start || pos == end) {
+            
+            MoveParameters.resize(4); // x,y,cx,cy
+            if (pos == start || pos == end) {
+                GCS::Point &p = (pos == start) ? Points[Geoms[geoId].startPointId]
+                                            : Points[Geoms[geoId].endPointId];;
+                p0.x = &MoveParameters[0];
+                p0.y = &MoveParameters[1];
+                *p0.x = *p.x;
+                *p0.y = *p.y;
+
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
+            } 
+            p1.x = &MoveParameters[2];
+            p1.y = &MoveParameters[3];
+            *p1.x = *center.x;
+            *p1.y = *center.y;
+
+            int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
+            GCSsys.rescaleConstraint(i-1, 0.01);
+            GCSsys.rescaleConstraint(i, 0.01);
+
+        }
     } else if (Geoms[geoId].type == Arc) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -2738,6 +2927,11 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             MoveParameters[1] = toPoint.y;
         }
     } else if (Geoms[geoId].type == ArcOfHyperbola) {
+        if (pos == start || pos == end || pos == mid || pos == none) {
+            MoveParameters[0] = toPoint.x;
+            MoveParameters[1] = toPoint.y;
+        }
+    } else if (Geoms[geoId].type == ArcOfParabola) {
         if (pos == start || pos == end || pos == mid || pos == none) {
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
