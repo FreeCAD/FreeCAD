@@ -141,7 +141,7 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom){
             << "Sketcher_CreateEllipseBy3Points"
             << "Sketcher_CreateArcOfEllipse"
             << "Sketcher_CreateArcOfHyperbola"
-	    << "Sketcher_CreateArcOfParabola";
+            << "Sketcher_CreateArcOfParabola";
 }
 template <>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){

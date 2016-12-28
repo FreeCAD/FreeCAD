@@ -25,7 +25,7 @@
 #ifndef _PreComp_
 # include <Geom_Parabola.hxx>
 # include <gp_Parab.hxx>
-#include <gce_MakeParab.hxx>
+# include <gce_MakeParab.hxx>
 #endif
 
 #include <Base/VectorPy.h>
@@ -80,23 +80,22 @@ int ParabolaPy::PyInit(PyObject* args, PyObject* kwds)
     PyObject *pV1, *pV2, *pV3;
     if (PyArg_ParseTupleAndKeywords(args, kwds, "O!O!O!", keywords_ssc,
                                          &(Base::VectorPy::Type), &pV1,
-					 &(Base::VectorPy::Type), &pV2,
+                                         &(Base::VectorPy::Type), &pV2,
                                          &(Base::VectorPy::Type), &pV3)) {
         Base::Vector3d focus = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d center = static_cast<Base::VectorPy*>(pV2)->value();
-	Base::Vector3d normal = static_cast<Base::VectorPy*>(pV3)->value();
-	
-	Base::Vector3d xvect = focus-center;
+        Base::Vector3d normal = static_cast<Base::VectorPy*>(pV3)->value();
+
+        Base::Vector3d xvect = focus-center;
     
-	// set the geometry
-	gp_Pnt p1(center.x,center.y,center.z);
-	gp_Dir norm(normal.x,normal.y,normal.z);
-	gp_Dir xdiroce(xvect.x,xvect.y,xvect.z);
-	
-	gp_Ax2 xdir(p1, norm, xdiroce);
-	
-	gce_MakeParab mc(xdir, (Standard_Real) xvect.Length());
-        
+        // set the geometry
+        gp_Pnt p1(center.x,center.y,center.z);
+        gp_Dir norm(normal.x,normal.y,normal.z);
+        gp_Dir xdiroce(xvect.x,xvect.y,xvect.z);
+
+        gp_Ax2 xdir(p1, norm, xdiroce);
+
+        gce_MakeParab mc(xdir, (Standard_Real) xvect.Length());
         if (!mc.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(mc.Status()));
             return -1;

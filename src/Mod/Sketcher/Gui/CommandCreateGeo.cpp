@@ -4222,16 +4222,16 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
         a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse"));
         a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points"));
         a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc"));
-	a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
-	a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc"));
         getAction()->setIcon(a[index]->icon());
         break;
     case Construction:
         a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_Constr"));
         a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateEllipse_3points_Constr"));
         a[2]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Elliptical_Arc_Constr"));
-	a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc_Constr"));
-	a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc_Constr"));
+        a[3]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Hyperbolic_Arc_Constr"));
+        a[4]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Parabolic_Arc_Constr"));
         getAction()->setIcon(a[index]->icon());
         break;
     }
