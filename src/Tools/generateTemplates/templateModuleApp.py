@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # (c) 2007 Juergen Riegel 
 
-import template, templateModuleAppMain, templateModuleAppFeature
+from . import template, templateModuleAppMain, templateModuleAppFeature
 import generateBase.generateModel_Module
 import generateBase.generateTools
 
