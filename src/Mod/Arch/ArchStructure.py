@@ -577,6 +577,7 @@ class _Structure(ArchComponent.Component):
             if nodes:
                 self.nodes = [v.Point.add(offset) for v in nodes.Vertexes]
                 obj.Nodes = self.nodes
+        ArchComponent.Component.onChanged(self,obj.prop)
 
     def getNodeEdges(self,obj):
         "returns a list of edges from stuctural nodes"

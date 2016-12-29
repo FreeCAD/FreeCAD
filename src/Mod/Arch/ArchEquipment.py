@@ -261,6 +261,7 @@ class _Equipment(ArchComponent.Component):
 
     def onChanged(self,obj,prop):
         self.hideSubobjects(obj,prop)
+        ArchComponent.Component.onChanged(self,obj.prop)
 
     def execute(self,obj):
 

@@ -346,7 +346,12 @@ class Component:
             self.Type = state
 
     def onChanged(self,obj,prop):
-        pass
+        if prop == "BaseMaterial":
+            if hasattr(obj,"BaseMaterial"):
+                if obj.BaseMaterial:
+                    if Draft.getType(obj.BaseMaterial) != "Material":
+                        obj.BaseMaterial = None
+                        print "Removing bad BaseMaterial link in ",obj.Name
 
     def clone(self,obj):
         "if this object is a clone, sets the shape. Returns True if this is the case"
