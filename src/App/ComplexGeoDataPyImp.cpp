@@ -73,9 +73,15 @@ PyObject*  ComplexGeoDataPy::getFacesFromSubelement(PyObject *args)
     for (std::vector<Data::ComplexGeoData::Facet>::const_iterator
         it = facets.begin(); it != facets.end(); ++it) {
         Py::Tuple f(3);
+#if PY_MAJOR_VERSION < 3
         f.setItem(0,Py::Int((int)it->I1));
         f.setItem(1,Py::Int((int)it->I2));
         f.setItem(2,Py::Int((int)it->I3));
+#else
+        f.setItem(0,Py::Long((int)it->I1));
+        f.setItem(1,Py::Long((int)it->I2));
+        f.setItem(2,Py::Long((int)it->I3));
+#endif
         facet.append(f);
     }
     tuple.setItem(1, facet);
