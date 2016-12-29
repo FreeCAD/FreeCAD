@@ -27,6 +27,7 @@
 #if defined(__clang__)
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wdeprecated-register"
+# pragma clang diagnostic ignored "-Wself-assign"
 #endif
 namespace Swig_1_3_38 {
 #define SWIG_PYTHON_NO_BUILD_NONE
