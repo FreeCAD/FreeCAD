@@ -170,7 +170,7 @@ namespace MED{
   struct TGaussInfo;
   typedef SharedPtr<TGaussInfo> PGaussInfo;
   
-  class TGrilleInfo;
+  struct TGrilleInfo;
   typedef SharedPtr<TGrilleInfo> PGrilleInfo;
 
   struct TTimeStampValueBase;

@@ -45,7 +45,7 @@ namespace SMESH_MAT2d
 {
   class MedialAxis; // MedialAxis is the entry point
   class Branch;
-  class BranchEnd;
+  struct BranchEnd;
   class Boundary;
   struct BoundaryPoint;
 
