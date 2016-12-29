@@ -36,10 +36,17 @@ import FreeCAD
 
 def InitApplications():
 	try:
-		import sys,os,traceback,cStringIO
+		import sys,os,traceback
 	except ImportError:
 		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
+	try:
+		# Python3
+		import io as cStringIO
+	except ImportError:
+		# Python2
+		import cStringIO
+
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
 	ModDir = os.path.realpath(ModDir)
@@ -88,24 +95,26 @@ def InitApplications():
 	PathExtension = BinDir + os.pathsep
 	# prepend all module paths to Python search path
 	Log('Init:   Searching for modules...\n')
-	FreeCAD.__path__ = ModDict.values()
-	for Dir in ModDict.values():
+	FreeCAD.__path__ = list(ModDict.values())
+	for Dir in list(ModDict.values()):
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
 			PathExtension += Dir + os.pathsep
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					#execfile(InstallFile)
-					exec open(InstallFile).read()
-				except Exception, inst:
+					# XXX: This looks scary securitywise...
+					with open(InstallFile) as f:
+						exec(f.read())
+				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
 					Log('-'*100+'\n')
 					output=cStringIO.StringIO()
 					traceback.print_exc(file=output)
 					Log(output.getvalue())
 					Log('-'*100+'\n')
-					Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					#Err('During initialization the error ' + str(inst).decode('ascii','replace') + ' occurred in ' + InstallFile + '\n')
+					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
