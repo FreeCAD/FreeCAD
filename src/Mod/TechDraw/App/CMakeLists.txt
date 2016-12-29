@@ -90,6 +90,8 @@ SET(TechDraw_SRCS
     AppTechDrawPy.cpp
     DrawUtil.cpp
     DrawUtil.h
+    Cube.cpp
+    Cube.h
     PreCompiled.cpp
     PreCompiled.h
     EdgeWalker.cpp

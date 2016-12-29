@@ -32,12 +32,14 @@
 #include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 
+//#include "Cube.h"
 #include "DrawViewCollection.h"
 
 namespace TechDraw
 {
 
 class DrawProjGroupItem;
+class Cube;
 
 /**
  * Class super-container for managing a collection of DrawProjGroupItem
@@ -113,11 +115,8 @@ public:
     bool hasAnchor(void);
     void setAnchorDirection(Base::Vector3d dir);
     Base::Vector3d getAnchorDirection(void);
+    TechDraw::DrawProjGroupItem* getAnchor(void);
 
-    void makeInitialMap(TechDraw::DrawProjGroupItem* anchor);
-    std::map<std::string,Base::Vector3d>  makeUnspunMap(Base::Vector3d f, Base::Vector3d r, Base::Vector3d t);
-    std::map<std::string,Base::Vector3d>  makeUnspunMap(void);
-    void dumpMap();
     void updateSecondaryDirs();
 
     void rotateRight(void);
@@ -126,9 +125,11 @@ public:
     void rotateDown(void);
     void spinCW(void);
     void spinCCW(void);
-
-    static Base::Vector3d nameToStdDirection(std::string name);
-
+    
+    void setTable(Base::Vector3d dir, Base::Vector3d rot);
+    void setConfig(std::string cfg);
+    void resetTable(void);
+    void dumpISO(char * title);
 
 protected:
     void onChanged(const App::Property* prop);
@@ -166,8 +167,12 @@ protected:
     TechDraw::DrawPage * getPage(void) const;
     void updateChildren(double scale);
     
-    std::map<std::string,Base::Vector3d> m_viewDir;
-
+    //TechDraw::Cube m_cube;
+    TechDraw::Cube* m_cube;
+    static const std::map<std::string,Base::Vector3d> m_frameToStdDir;    //for initializing cube and
+    static const std::map<std::string,Base::Vector3d> m_frameToStdRot;    //creating DPGI's
+    static const std::map<std::string,std::string> m_dirRotToConfig;
+    static const std::map<std::string,std::string> m_frontTopToConfig;
 };
 
 } //namespace TechDraw

@@ -91,7 +91,7 @@ protected:
      * between checkboxes and viewToggled()
      */
     void setupViewCheckboxes(bool addConnections = false);
-    Base::Vector3d get3DViewDir(void);
+    std::pair<Base::Vector3d,Base::Vector3d> get3DViewDir(void);
     void setUiPrimary(void);
     QString formatVector(Base::Vector3d v);
 

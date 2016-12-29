@@ -114,6 +114,9 @@ public:
     const Base::Vector3d& getWDir(void) const {return wDir;}                       //paperspace Z
     const Base::Vector3d& getCentroid(void) const {return shapeCentroid;}
     Base::Vector3d projectPoint(const Base::Vector3d& pt) const;
+    virtual gp_Ax2 getViewAxis(const Base::Vector3d& pt,
+                               const Base::Vector3d& direction,
+                               const bool flip=true) const;
 
     virtual short mustExecute() const;
 
@@ -138,11 +141,11 @@ protected:
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
-    TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Pnt& center);
+    virtual TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
     void extractFaces();
 
     //Projection parameter space
-    void saveParamSpace(const Base::Vector3d& direction);
+    virtual void saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis=Base::Vector3d(0.0,0.0,0.0));
     Base::Vector3d uDir;                       //paperspace X
     Base::Vector3d vDir;                       //paperspace Y
     Base::Vector3d wDir;                       //paperspace Z

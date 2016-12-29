@@ -143,7 +143,6 @@ DrawViewPart::~DrawViewPart()
 
 App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
-    //Base::Console().Message("TRACE - DVP::execute() - %s\n",getNameInDocument());
     App::DocumentObject *link = Source.getValue();
     if (!link) {
         return new App::DocumentObjectExecReturn("FVP - No Source object linked");
@@ -157,6 +156,7 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
     if (shape.IsNull()) {
         return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
     }
+    //Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
 
 
     (void) DrawView::execute();           //make sure Scale is up to date
@@ -171,7 +171,11 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
                                                   inputCenter,
                                                   Scale.getValue());
 
-     geometryObject =  buildGeometryObject(mirroredShape,inputCenter);
+     gp_Ax2 viewAxis = getViewAxis(shapeCentroid,Direction.getValue());
+     geometryObject =  buildGeometryObject(mirroredShape,viewAxis);
+     
+     //Base::Console().Message("TRACE - DVP::execute - u: %s v: %s w: %s\n",
+     //         DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(), DrawUtil::formatVector(getWDir()).c_str());
 
 #if MOD_TECHDRAW_HANDLE_FACES
     if (handleFaces()) {
@@ -185,6 +189,9 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
         }
     }
 #endif //#if MOD_TECHDRAW_HANDLE_FACES
+
+//   Base::Console().Message("TRACE _ DVP::exec - %s/%s u: %s v: %s w: %s\n",getNameInDocument(),Label.getValue(),
+//                           DrawUtil::formatVector(getUDir()).c_str(), DrawUtil::formatVector(getVDir()).c_str(),DrawUtil::formatVector(getWDir()).c_str());
 
     return App::DocumentObject::StdReturn;
 }
@@ -214,7 +221,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
 }
 
 //note: slightly different than routine with same name in DrawProjectSplit
-TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Pnt& inputCenter)
+TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
     TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument());
     go->setIsoCount(IsoCount.getValue());
@@ -223,8 +230,7 @@ TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape
     saveParamSpace(baseProjDir);
 
     go->projectShape(shape,
-                     inputCenter,
-                     Direction.getValue());
+                     viewAxis);
     go->extractGeometry(TechDrawGeometry::ecHARD,                   //always show the hard&outline visible lines
                         true);
     go->extractGeometry(TechDrawGeometry::ecOUTLINE,
@@ -358,7 +364,7 @@ void DrawViewPart::extractFaces()
         return;
     }
 
-    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);
+    newEdges = DrawProjectSplit::removeDuplicateEdges(newEdges);        //<<< here
 
 //find all the wires in the pile of faceEdges
     EdgeWalker ew;
@@ -487,7 +493,7 @@ Base::Vector3d DrawViewPart::projectPoint(const Base::Vector3d& pt) const
 {
     Base::Vector3d centeredPoint = pt - shapeCentroid;
     Base::Vector3d direction = Direction.getValue();
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(centeredPoint,direction);
+    gp_Ax2 viewAxis = getViewAxis(centeredPoint,direction);
     HLRAlgo_Projector projector( viewAxis );
     gp_Pnt2d prjPnt;
     projector.Project(gp_Pnt(centeredPoint.x,centeredPoint.y,centeredPoint.z), prjPnt);
@@ -511,10 +517,21 @@ bool DrawViewPart::hasGeometry(void) const
     return result;
 }
 
-void DrawViewPart::saveParamSpace(const Base::Vector3d& direction)
+//boring here. gets more interesting in descendents.
+gp_Ax2 DrawViewPart::getViewAxis(const Base::Vector3d& pt,
+                                 const Base::Vector3d& axis,
+                                 const bool flip)  const
 {
+     gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(pt,axis,flip);
+     return viewAxis;
+}
+
+void DrawViewPart::saveParamSpace(const Base::Vector3d& direction, const Base::Vector3d& xAxis)
+{
+    //Base::Console().Message("TRACE - DVP::saveParamSpace()\n");
+    (void)xAxis;
     Base::Vector3d origin(0.0,0.0,0.0);
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(origin,direction);
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     gp_Dir xdir = viewAxis.XDirection();
     uDir = Base::Vector3d(xdir.X(),xdir.Y(),xdir.Z());

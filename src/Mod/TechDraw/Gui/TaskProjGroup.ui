@@ -312,7 +312,7 @@
              <bool>true</bool>
             </property>
             <property name="toolTip">
-             <string>Set Primary Direction to match 3D</string>
+             <string>Try to match Primary Direction to 3D view</string>
             </property>
             <property name="text">
              <string>Match 3D</string>
@@ -343,10 +343,10 @@
           <item row="2" column="0">
            <widget class="QPushButton" name="butReset">
             <property name="toolTip">
-             <string>Set Primary Direction to 3D Front</string>
+             <string>Return Primary Direction to Initial Value</string>
             </property>
             <property name="text">
-             <string>3D Front</string>
+             <string>Reset</string>
             </property>
            </widget>
           </item>
@@ -617,6 +617,19 @@ height: 24px;
              </iconset>
             </property>
            </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
           </item>
           <item>
            <widget class="QPushButton" name="butCCWRotate">

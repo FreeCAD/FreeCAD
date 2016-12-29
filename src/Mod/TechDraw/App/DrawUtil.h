@@ -37,6 +37,7 @@
 #include <TopoDS_Shape.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/Matrix.h>
 
 namespace TechDraw
 {
@@ -60,7 +61,14 @@ class TechDrawExport DrawUtil {
         static std::string formatVector(const Base::Vector3d& v);
         static int vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2);
         static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
-        static bool checkZParallel(const Base::Vector3d direction);
+        static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2);
+        //! rotate vector by angle radians around axis through org
+        static Base::Vector3d vecRotate(Base::Vector3d vec,
+                                        double angle,
+                                        Base::Vector3d axis,
+                                        Base::Vector3d org = Base::Vector3d(0.0,0.0,0.0));
+        static Base::Vector3d closestBasis(Base::Vector3d v);
+
 
 
         //debugging routines

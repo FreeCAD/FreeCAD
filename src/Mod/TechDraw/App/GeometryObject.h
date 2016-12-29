@@ -28,6 +28,7 @@
 #include <gp_Pnt.hxx>
 
 #include <Base/Vector3D.h>
+#include <Base/BoundBox.h>
 #include <string>
 #include <vector>
 
@@ -56,6 +57,10 @@ gp_Pnt TechDrawExport findCentroid(const TopoDS_Shape &shape,
 gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
                                   const Base::Vector3d& direction,
                                   const bool flip=true);
+gp_Ax2 TechDrawExport getViewAxis(const Base::Vector3d origin,
+                                  const Base::Vector3d& direction,
+                                  const Base::Vector3d& xAxis,
+                                  const bool flip=true);
 
 class TechDrawExport GeometryObject
 {
@@ -77,8 +82,8 @@ public:
     const std::vector<Face *>     & getFaceGeometry() const { return faceGeom; };
 
     void projectShape(const TopoDS_Shape &input,
-                                 const gp_Pnt& inputCenter,
-                                 const Base::Vector3d &direction);
+                      const gp_Ax2 viewAxis);
+
     void extractGeometry(edgeClass category, bool visible);
     void addFaceGeom(Face * f);
     void clearFaceGeom();

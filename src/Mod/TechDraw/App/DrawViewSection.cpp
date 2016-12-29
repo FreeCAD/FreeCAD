@@ -75,6 +75,7 @@
 #include "GeometryObject.h"
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
+#include "DrawProjGroupItem.h"
 #include "DrawProjectSplit.h"
 #include "DrawViewSection.h"
 
@@ -228,7 +229,8 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
         TopoDS_Shape mirroredShape = TechDrawGeometry::mirrorShape(rawShape,
                                                     inputCenter,
                                                     Scale.getValue());
-        geometryObject = buildGeometryObject(mirroredShape,inputCenter);   //this is original shape after cut by section prism
+        gp_Ax2 viewAxis = getViewAxis(Base::Vector3d(inputCenter.X(),inputCenter.Y(),inputCenter.Z()),Direction.getValue());
+        geometryObject = buildGeometryObject(mirroredShape,viewAxis);   //this is original shape after cut by section prism
 
 #if MOD_TECHDRAW_HANDLE_FACES
         extractFaces();
@@ -275,7 +277,7 @@ gp_Pln DrawViewSection::getSectionPlane() const
 {
     Base::Vector3d plnPnt = SectionOrigin.getValue();
     Base::Vector3d plnNorm = SectionNormal.getValue();
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(plnPnt,plnNorm,false);
+    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
     gp_Ax3 viewAxis3(viewAxis);
 
     return gp_Pln(viewAxis3);
@@ -351,7 +353,7 @@ TopoDS_Face DrawViewSection::projectFace(const TopoDS_Shape &face,
     }
 
     Base::Vector3d origin(faceCenter.X(),faceCenter.Y(),faceCenter.Z());
-    gp_Ax2 viewAxis = TechDrawGeometry::getViewAxis(origin,direction);
+    gp_Ax2 viewAxis = getViewAxis(origin,direction);
 
     HLRBRep_Algo *brep_hlr = new HLRBRep_Algo();
     brep_hlr->Add(face);
@@ -451,34 +453,43 @@ bool DrawViewSection::isReallyInBox (const Base::Vector3d v, const Base::BoundBo
 }
 
 //! calculate the section Normal/Projection Direction given baseView projection direction and section name
-/*static*/
-Base::Vector3d DrawViewSection::getSectionVector (const Base::Vector3d baseViewDir, const std::string sectionName)
+Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 {
     Base::Vector3d result;
     Base::Vector3d stdX(1.0,0.0,0.0);
     Base::Vector3d stdY(0.0,1.0,0.0);
     Base::Vector3d stdZ(0.0,0.0,1.0);
-    Base::Vector3d view = baseViewDir;
+
+    double adjustAngle = 0.0;
+    if (getBaseDPGI() != nullptr) {
+        adjustAngle = getBaseDPGI()->getRotateAngle();
+    }
+
+    Base::Vector3d view = getBaseDVP()->Direction.getValue();
     view.Normalize();
     Base::Vector3d left = view.Cross(stdZ);
-    left.Normalize();    //redundent?
-    Base::Vector3d down = view.Cross(left);
-    down.Normalize();    //redundent?
+    left.Normalize();
+    Base::Vector3d up = view.Cross(left);
+    up.Normalize();
     double dot = view.Dot(stdZ);
 
     if (sectionName == "Up") {
-        result = down;
-        if (DrawUtil::fpCompare(fabs(dot),1.0)) {
-            result  = (-1.0 * stdY);
+        result = up;
+        if (DrawUtil::fpCompare(dot,1.0)) {            //view = stdZ
+            result = (-1.0 * stdY);
+        } else if (DrawUtil::fpCompare(dot,-1.0)) {    //view = -stdZ
+            result = stdY;
         }
     } else if (sectionName == "Down") {
-        result = down * -1.0;
-        if (DrawUtil::fpCompare(fabs(dot),1.0)) {
+        result = up * -1.0;
+        if (DrawUtil::fpCompare(dot,1.0)) {            //view = stdZ
             result = stdY;
+        } else if (DrawUtil::fpCompare(dot, -1.0)) {   //view = -stdZ
+            result = (-1.0 * stdY);
         }
     } else if (sectionName == "Left") {
         result = left * -1.0;
-        if (DrawUtil::fpCompare(fabs(dot),1.0)) {
+        if (DrawUtil::fpCompare(fabs(dot),1.0)) {      //view = +/- stdZ
             result = stdX;
         }
     } else if (sectionName == "Right") {
@@ -490,8 +501,28 @@ Base::Vector3d DrawViewSection::getSectionVector (const Base::Vector3d baseViewD
         Base::Console().Log("Error - DVS::getSectionVector - bad sectionName: %s\n",sectionName.c_str());
         result = stdZ;
     }
-    
-    return result;
+    Base::Vector3d adjResult = DrawUtil::vecRotate(result,adjustAngle,view);
+    return adjResult;
+}
+
+TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
+{
+    TechDraw::DrawViewPart* baseDVP = nullptr;
+    App::DocumentObject* base = BaseView.getValue();
+    if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+    }
+    return baseDVP;
+}
+
+TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
+{
+    TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
+    App::DocumentObject* base = BaseView.getValue();
+    if (base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+        baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+    }
+    return baseDPGI;
 }
 
 void DrawViewSection::getParameters()

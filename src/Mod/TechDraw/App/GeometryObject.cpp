@@ -152,13 +152,22 @@ void GeometryObject::clear()
 
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShape(const TopoDS_Shape& input,
-                             const gp_Pnt& inputCenter,
-                             const Base::Vector3d& direction)
+                                  const gp_Ax2 viewAxis)
 {
     // Clear previous Geometry
     clear();
-    Base::Vector3d origin(inputCenter.X(),inputCenter.Y(),inputCenter.Z());
-    gp_Ax2 viewAxis = getViewAxis(origin,direction);
+
+//*******
+    gp_Dir x = viewAxis.XDirection();
+    gp_Dir y = viewAxis.YDirection();
+    gp_Dir z = viewAxis.Direction();
+    Base::Vector3d vx(x.X(),x.Y(),x.Z());
+    Base::Vector3d vy(y.X(),y.Y(),y.Z());
+    Base::Vector3d vz(z.X(),z.Y(),z.Z());
+//    Base::Console().Message("TRACE - GO::projectShape - %s viewAxis x: %s y: %s Z: %s\n",m_parentName.c_str(),
+//                            DrawUtil::formatVector(vx).c_str(), DrawUtil::formatVector(vy).c_str(), DrawUtil::formatVector(vz).c_str());
+//*******
+
     auto start = chrono::high_resolution_clock::now();
 
     Handle_HLRBRep_Algo brep_hlr = NULL;
@@ -430,8 +439,19 @@ bool GeometryObject::findVertex(Base::Vector2d v)
     return found;
 }
 
+
+//"Top" X should == "Front" X  for front = [front,rear]
+//"Top" X should == "Front" X  for front = [right]
+//"Top" X should == "Front" -X for front = [left]
+//"Top" X should == "Front" X  for front = [top,bottom]
+//view XAxis == anchor XAxis except
+//           anchor.ProjDir = (-1,0,0) then
+//              view XAxis == -Anchor XAxis
+
+
 /// utility non-class member functions
-//! gets a coordinate system
+//! gets a coordinate system that matches view system used in 3D with +Z up (or +Y up if neccessary)
+//! used for individual views, but not secondary views in projection groups
 gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
                                      const Base::Vector3d& direction,
                                      const bool flip)
@@ -455,11 +475,28 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
     gp_Ax2 viewAxis;
     viewAxis = gp_Ax2(inputCenter,
                       gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+//                      gp_Dir(1.0, 1.0, 0.0));
                       gp_Dir(cross.x, cross.y, cross.z));
     return viewAxis;
 }
 
-
+//! gets a coordinate system specified by Z and X directions
+gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
+                                     const Base::Vector3d& direction,
+                                     const Base::Vector3d& xAxis,
+                                     const bool flip)
+{
+    gp_Pnt inputCenter(origin.x,origin.y,origin.z);
+    Base::Vector3d flipDirection(direction.x,-direction.y,direction.z);
+    if (!flip) {
+        flipDirection = Base::Vector3d(direction.x,direction.y,direction.z);
+    }
+    gp_Ax2 viewAxis;
+    viewAxis = gp_Ax2(inputCenter,
+                      gp_Dir(flipDirection.x, flipDirection.y, flipDirection.z),
+                      gp_Dir(xAxis.x, xAxis.y, xAxis.z));
+    return viewAxis;
+}
 
 //! Returns the centroid of shape, as viewed according to direction
 gp_Pnt TechDrawGeometry::findCentroid(const TopoDS_Shape &shape,
