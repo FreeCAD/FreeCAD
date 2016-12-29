@@ -31,7 +31,7 @@ class SMESH_Mesh;
 class StdMeshers_FaceSide;
 class TopoDS_Edge;
 class TopoDS_Face;
-struct _QuadFaceGrid;
+class _QuadFaceGrid;
 
 /*!
  * \brief Computes hexahedral mesh on a box with composite sides

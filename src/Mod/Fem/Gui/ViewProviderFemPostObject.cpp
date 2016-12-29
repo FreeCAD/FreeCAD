@@ -409,7 +409,7 @@ void ViewProviderFemPostObject::update3D() {
 
 void ViewProviderFemPostObject::WritePointData(vtkPoints* points, vtkDataArray* normals, vtkDataArray* tcoords) {
 
-
+    Q_UNUSED(tcoords)
     double *p;
     int i;
 
@@ -618,7 +618,7 @@ void ViewProviderFemPostObject::show(void) {
 }
 
 
-void ViewProviderFemPostObject::OnChange(Base::Subject< int >& rCaller, int rcReason) {
+void ViewProviderFemPostObject::OnChange(Base::Subject< int >& /*rCaller*/, int /*rcReason*/) {
     bool ResetColorBarRange = false;
     WriteColorData(ResetColorBarRange);
 }

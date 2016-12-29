@@ -437,7 +437,7 @@ void PlaneWidget::onChange(const App::Property& p) {
     setBlockObjectUpdates(false);
 }
 
-void PlaneWidget::normalChanged(double val) {
+void PlaneWidget::normalChanged(double) {
 
      if(!blockObjectUpdates()) {
         Base::Vector3d vec(ui->normalX->value(), ui->normalY->value(), ui->normalZ->value());
@@ -445,7 +445,7 @@ void PlaneWidget::normalChanged(double val) {
      }
 }
 
-void PlaneWidget::originChanged(double val) {
+void PlaneWidget::originChanged(double) {
 
     if(!blockObjectUpdates()) {
         Base::Vector3d vec(ui->originX->value(), ui->originY->value(), ui->originZ->value());
@@ -594,7 +594,7 @@ void SphereWidget::onChange(const App::Property& p) {
     setBlockObjectUpdates(false);
 }
 
-void SphereWidget::centerChanged(double val) {
+void SphereWidget::centerChanged(double) {
 
      if(!blockObjectUpdates()) {
         Base::Vector3d vec(ui->centerX->value(), ui->centerY->value(), ui->centerZ->value());
@@ -602,7 +602,7 @@ void SphereWidget::centerChanged(double val) {
      }
 }
 
-void SphereWidget::radiusChanged(double val) {
+void SphereWidget::radiusChanged(double) {
 
     if(!blockObjectUpdates()) {
         static_cast<Fem::FemPostSphereFunction*>(getObject())->Radius.setValue(ui->radius->value());

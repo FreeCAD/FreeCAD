@@ -133,7 +133,7 @@ namespace Gui
     public:
       Edge_writer(const GraphEW &graphEWIn) : graphEW(graphEWIn) {}
       template <class EdgeW>
-      void operator()(std::ostream& out, const EdgeW& edgeW) const
+      void operator()(std::ostream& out, const EdgeW& /*edgeW*/) const
       {
         out << "[label=\"";
         out << "edge";

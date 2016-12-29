@@ -481,6 +481,9 @@ eRefType AttachEngine::getShapeType(const TopoDS_Shape& sh)
         case GeomAbs_BezierCurve:
         case GeomAbs_BSplineCurve:
         case GeomAbs_OtherCurve:
+#if OCC_VERSION_HEX >= 0x070000
+        case GeomAbs_OffsetCurve:
+#endif
             return rtCurve;
         }
     }break;

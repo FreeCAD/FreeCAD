@@ -29,6 +29,7 @@ uint32_t Gui::GUIApplicationNativeEventAware::lastButtons = 0;
 		  natural_t messageType, 
 		  void *messageArgument)
   {
+    Q_UNUSED(connection)
     //printf("tdx_drv_handler\n");
     //printf("connection: %X\n", connection);
     //printf("messageType %c%c%c%c\n", messageType/0x1000000, messageType/0x10000, messageType/0x100, messageType);

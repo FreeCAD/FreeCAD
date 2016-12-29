@@ -780,7 +780,7 @@ SMESH_Hypothesis::Hypothesis_Status
   
   // shape 
   
-  bool isAlgo = ( !anHyp->GetType() == SMESHDS_Hypothesis::PARAM_ALGO );
+  bool isAlgo =  !( anHyp->GetType() == SMESHDS_Hypothesis::PARAM_ALGO );
   int   event = isAlgo ? SMESH_subMesh::REMOVE_ALGO : SMESH_subMesh::REMOVE_HYP;
 
   SMESH_subMesh *subMesh = GetSubMesh(aSubShape);
