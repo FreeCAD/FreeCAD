@@ -36,6 +36,7 @@
 #include <Base/BoundBox.h>
 
 class gp_Pnt;
+class gp_Ax2;
 
 namespace TechDrawGeometry
 {
@@ -79,7 +80,7 @@ public:
 
 public:
     static std::vector<TopoDS_Edge> getEdgesForWalker(TopoDS_Shape shape, double scale, Base::Vector3d direction);
-    static TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
+    static TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, const gp_Ax2& viewAxis);
 
     static bool isOnEdge(TopoDS_Edge e, TopoDS_Vertex v, double& param, bool allowEnds = false);
     static std::vector<TopoDS_Edge> splitEdges(std::vector<TopoDS_Edge> orig, std::vector<splitPoint> splits);
