@@ -125,7 +125,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::getEdgesForWalker(TopoDS_Shape shape,
 
 
 TechDrawGeometry::GeometryObject* DrawProjectSplit::buildGeometryObject(TopoDS_Shape shape,
-                                                                        gp_Ax2 viewAxis)
+                                                                        const gp_Ax2& viewAxis)
 {
     TechDrawGeometry::GeometryObject* geometryObject = new TechDrawGeometry::GeometryObject("DrawProjectSplit");
 
