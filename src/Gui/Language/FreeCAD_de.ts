@@ -66,6 +66,22 @@
         <source>Visual size of the feature</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Base</source>
+        <translation>Basis</translation>
+    </message>
+    <message>
+        <source>Angle</source>
+        <translation>Winkel</translation>
+    </message>
+    <message>
+        <source>Axis</source>
+        <translation>Achse</translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation>Position</translation>
+    </message>
 </context>
 <context>
     <name>CmdTestConsoleOutput</name>
