@@ -51,7 +51,7 @@ class gp_Ax1;
 class gp_Vec;
 class gp_Pnt;
 class SMESH_MesherHelper;
-class SMESH_NodeSearcher;
+struct SMESH_NodeSearcher;
 
 // ============================================================
 /*!

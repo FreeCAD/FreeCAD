@@ -570,7 +570,7 @@ return;
 	{
 		// add a span (cw = -1 (T)   acw = 1 (A) )
 #ifdef _DEBUG
-		if(this == NULL) FAILURE(L"Kurve::Add - No Kurve Object");
+		//if(this == NULL) FAILURE(L"Kurve::Add - No Kurve Object");
 #endif
 
 		if(!m_started) {
@@ -676,7 +676,7 @@ return;
 	void Kurve::Replace(int vertexnumber, int type, const Point& p0, const Point& pc, int ID) {
 		// replace a span
 #ifdef _DEBUG
-		if(this == NULL || vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::Replace - vertexNumber out of range"));
+		if(vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::Replace - vertexNumber out of range"));
 #endif
 		SpanVertex* p = (SpanVertex*) m_spans[vertexnumber / SPANSTORAGE];
 		p->Add(vertexnumber % SPANSTORAGE, type, p0, pc, ID);
@@ -686,20 +686,20 @@ return;
 	void Kurve::ModifyIndex(int vertexnumber, WireExtraData* i) {
 		// replace an index
 #ifdef _DEBUG
-		if(this == NULL || vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::ModifyIndex - vertexNumber out of range"));
+		if(vertexnumber > m_nVertices) FAILURE(getMessage(L"Kurve::ModifyIndex - vertexNumber out of range"));
 #endif
 		SpanVertex* p = (SpanVertex*) m_spans[vertexnumber / SPANSTORAGE];
 		p->Add(vertexnumber % SPANSTORAGE, i);
 	}
 #else
 	void Kurve::AddIndex(int vertexNumber, const SpanDataObject* data) {
-		if(this == NULL || vertexNumber > m_nVertices - 1) FAILURE(L"Kurve::AddIndex - vertexNumber out of range");
+		if(vertexNumber > m_nVertices - 1) FAILURE(L"Kurve::AddIndex - vertexNumber out of range");
 		SpanVertex* p = (SpanVertex*) m_spans[vertexNumber / SPANSTORAGE];
 		p->Add(vertexNumber % SPANSTORAGE, data);
 	}
 
 	const SpanDataObject* Kurve::GetIndex(int vertexNumber)const {
-		if(this == NULL || vertexNumber > m_nVertices - 1) FAILURE(L"Kurve::GetIndex - vertexNumber out of range");
+		if(vertexNumber > m_nVertices - 1) FAILURE(L"Kurve::GetIndex - vertexNumber out of range");
 		SpanVertex* p = (SpanVertex*) m_spans[vertexNumber / SPANSTORAGE];
 		return p->GetIndex(vertexNumber % SPANSTORAGE);
 	}
