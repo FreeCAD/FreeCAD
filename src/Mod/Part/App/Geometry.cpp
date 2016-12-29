@@ -398,7 +398,7 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
     
     if (c->IsKind(STANDARD_TYPE(Geom_TrimmedCurve))){
         Handle_Geom_TrimmedCurve tc = Handle_Geom_TrimmedCurve::DownCast(handle());
-        Handle_Geom_Curve bc = Handle_Geom_Curve::DownCast(tc->BasisCurve());
+        Handle_Geom_Curve bc = tc->BasisCurve();
         try {
             if (!bc.IsNull()) {
                 gp_Pnt pnt(point.x,point.y,point.z);

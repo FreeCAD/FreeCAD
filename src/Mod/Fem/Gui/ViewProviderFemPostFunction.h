@@ -133,24 +133,24 @@ public:
 
     //creates the widget used in the task dalogs, either for the function itself or for
     //the fiter using it
-    virtual FunctionWidget* createControlWidget() {return NULL;};
+    virtual FunctionWidget* createControlWidget() {return NULL;}
 
 protected:
     virtual bool setEdit(int ModNum);
     virtual void unsetEdit(int ModNum);
     virtual void onChanged(const App::Property* prop);
 
-    void setAutoScale(bool value) {m_autoscale = value;};
-    bool autoScale()              {return m_autoscale;};
+    void setAutoScale(bool value) {m_autoscale = value;}
+    bool autoScale()              {return m_autoscale;}
 
-    bool isDragging() {return m_isDragging;};
+    bool isDragging() {return m_isDragging;}
 
     virtual SoTransformManip*   setupManipulator();
-    virtual void                draggerUpdate(SoDragger* m) {};
-    SoTransformManip*           getManipulator() {return m_manip;};
-    SoSeparator*                getGeometryNode() {return m_geometrySeperator;};
-    SoScale*                    getScaleNode() {return m_scale;};
-    SoTransform*                getTransformNode() {return m_transform;};
+    virtual void                draggerUpdate(SoDragger*) {}
+    SoTransformManip*           getManipulator() {return m_manip;}
+    SoSeparator*                getGeometryNode() {return m_geometrySeperator;}
+    SoScale*                    getScaleNode() {return m_scale;}
+    SoTransform*                getTransformNode() {return m_transform;}
 
 private:
     static void dragStartCallback(void * data, SoDragger * d);
@@ -178,8 +178,8 @@ public:
     virtual void setViewProvider(ViewProviderFemPostFunction* view);
 
 private Q_SLOTS:
-    void originChanged(double val);
-    void normalChanged(double val);
+    void originChanged(double);
+    void normalChanged(double);
 
 private:
     Ui_PlaneWidget* ui;
@@ -214,8 +214,8 @@ public:
     virtual void setViewProvider(ViewProviderFemPostFunction* view);
 
 private Q_SLOTS:
-    void centerChanged(double val);
-    void radiusChanged(double val);
+    void centerChanged(double);
+    void radiusChanged(double);
 
 private:
     Ui_SphereWidget* ui;

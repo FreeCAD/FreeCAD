@@ -233,6 +233,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     return 0;
 }
 
+#if OCC_VERSION_HEX < 0x070000
 static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
                           Handle(StepShape_ShapeRepresentation)& aSR)
 {
@@ -251,10 +252,13 @@ static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
             break;
     }
 }
+#endif
 
 bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
 {
 #if OCC_VERSION_HEX >= 0x070000
+    (void)WS;
+    (void)hash_col;
     return Standard_False;
 #else
     STEPConstruct_Styles Styles (WS);
@@ -387,6 +391,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
 bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 {
 #if OCC_VERSION_HEX >= 0x070000
+    (void)WS;
     return Standard_False;
 #else
     // get starting data

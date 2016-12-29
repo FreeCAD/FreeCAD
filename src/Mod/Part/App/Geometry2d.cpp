@@ -309,7 +309,7 @@ bool Geom2dCurve::closestParameterToBasicCurve(const Base::Vector2d& point, doub
     
     if (c->IsKind(STANDARD_TYPE(Geom2d_TrimmedCurve))){
         Handle_Geom2d_TrimmedCurve tc = Handle_Geom2d_TrimmedCurve::DownCast(handle());
-        Handle_Geom2d_Curve bc = Handle_Geom2d_Curve::DownCast(tc->BasisCurve());
+        Handle_Geom2d_Curve bc = tc->BasisCurve();
         try {
             if (!bc.IsNull()) {
                 gp_Pnt2d pnt(point.x,point.y);

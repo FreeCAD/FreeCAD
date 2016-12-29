@@ -143,6 +143,7 @@ bool EdgeWalker::setSize(int size)
     m_g.clear();
     for (int i = 0; i < size; i++) {
         boost::adjacency_list<>::vertex_descriptor vd = boost::add_vertex(m_g);
+        (void)vd;
     }
     return true;
 }

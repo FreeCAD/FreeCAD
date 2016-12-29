@@ -737,7 +737,7 @@ void FemVTKTools::exportFluidicResult(const App::DocumentObject* res, vtkSmartPo
     vars.push_back("TurbulenceDissipationRate");
     vars.push_back("TurbulenceSpecificDissipation");
     for(auto const& var: vars){
-        App::PropertyFloatList* field;
+        App::PropertyFloatList* field = nullptr;
         if (res->getPropertyByName(var))
             field = static_cast<App::PropertyFloatList*>(res->getPropertyByName(var));
         if(!field && !field->getValues().empty()) {

@@ -125,7 +125,7 @@ class TaskDlgPost : public Gui::TaskView::TaskDialog
     Q_OBJECT
 
 public:
-    TaskDlgPost(Gui::ViewProviderDocumentObject *view, bool newObj=false);
+    TaskDlgPost(Gui::ViewProviderDocumentObject *view);
     ~TaskDlgPost();
 
     void appendBox(TaskPostBox* box);
@@ -198,7 +198,7 @@ public:
     virtual void applyPythonCode();
 
 private Q_SLOTS:
-    void on_CreateButton_triggered(QAction* a);
+    void on_CreateButton_triggered(QAction*);
     void on_FunctionBox_currentIndexChanged(int idx);
     void on_InsideOut_toggled(bool val);
     void on_CutCells_toggled(bool val);
@@ -206,7 +206,7 @@ private Q_SLOTS:
 private:
     void collectImplicitFunctions();
 
-    App::PropertyLink* m_functionProperty;
+  //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     Ui_TaskPostClip* ui;
     FunctionWidget* fwidget;
@@ -276,8 +276,8 @@ public:
 private Q_SLOTS:
     void on_Slider_valueChanged(int v);
     void on_Value_valueChanged(double v);
-    void on_Max_valueChanged(double v);
-    void on_Min_valueChanged(double v);
+    void on_Max_valueChanged(double);
+    void on_Min_valueChanged(double);
     void on_Vector_currentIndexChanged(int idx);
 
 private:
@@ -298,13 +298,13 @@ public:
     virtual void applyPythonCode();
 
 private Q_SLOTS:
-    void on_CreateButton_triggered(QAction* a);
+    void on_CreateButton_triggered(QAction*);
     void on_FunctionBox_currentIndexChanged(int idx);
 
 private:
     void collectImplicitFunctions();
 
-    App::PropertyLink* m_functionProperty;
+  //App::PropertyLink* m_functionProperty;
     QWidget* proxy;
     Ui_TaskPostCut* ui;
     FunctionWidget* fwidget;

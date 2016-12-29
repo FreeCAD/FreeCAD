@@ -29,7 +29,7 @@
 #include <TColgp_HArray1OfPnt.hxx>
 #include <TColgp_HArray1OfVec.hxx>
 class SMESH_Mesh;
-class SMESH_ElementSearcher;
+struct SMESH_ElementSearcher;
 class SMDS_MeshElement;
 class SMDS_MeshNode;
 class SMDS_MeshFace;
