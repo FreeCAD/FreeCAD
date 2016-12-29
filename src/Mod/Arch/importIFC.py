@@ -1312,7 +1312,7 @@ def export(exportList,filename):
             if rgb:
                 col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
                 ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
-                iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
+                iss = ifcfile.createIfcSurfaceStyle(m.Label.encode("utf8"),"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
                 isi = ifcfile.createIfcStyledItem(None,[psa],None)
                 isr = ifcfile.createIfcStyledRepresentation(context,"Style","Material",[isi])
@@ -1717,6 +1717,7 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
         if FreeCAD.GuiUp and (not subtraction) and hasattr(obj.ViewObject,"ShapeColor"):
             # only set a surface style if the object has no material.
             # apparently not needed, no harm in having both.
+            # but they must have the same name for revit to see them
             #m = False
             #if hasattr(obj,"BaseMaterial"):
             #    if obj.BaseMaterial:
@@ -1727,9 +1728,13 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
             if rgb in surfstyles:
                 psa = surfstyles[rgb]
             else:
+                m = None
+                if hasattr(obj,"BaseMaterial"):
+                    if obj.BaseMaterial:
+                        m = obj.BaseMaterial.Label.encode("utf8")
                 col = ifcfile.createIfcColourRgb(None,rgb[0],rgb[1],rgb[2])
                 ssr = ifcfile.createIfcSurfaceStyleRendering(col,None,None,None,None,None,None,None,"FLAT")
-                iss = ifcfile.createIfcSurfaceStyle(None,"BOTH",[ssr])
+                iss = ifcfile.createIfcSurfaceStyle(m,"BOTH",[ssr])
                 psa = ifcfile.createIfcPresentationStyleAssignment([iss])
                 surfstyles[rgb] = psa
             for shape in shapes:
