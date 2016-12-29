@@ -158,6 +158,7 @@ public:
 protected:
     PropertyItem();
 
+    virtual QVariant displayName() const;
     virtual QVariant decoration(const QVariant&) const;
     virtual QVariant toolTip(const App::Property*) const;
     virtual QVariant toString(const QVariant&) const;
@@ -168,6 +169,7 @@ protected:
 
 private:
     QString propName;
+    QString displayText;
     QVariant propData;
     std::vector<App::Property*> propertyItems;
     PropertyItem *parentItem;

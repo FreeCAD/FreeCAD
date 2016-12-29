@@ -259,6 +259,11 @@ int PropertyItem::decimals() const
     return precision;
 }
 
+QVariant PropertyItem::displayName() const
+{
+    return QVariant(displayText);
+}
+
 QVariant PropertyItem::toolTip(const App::Property* prop) const
 {
     QString str = QApplication::translate("App::Property",
@@ -333,7 +338,7 @@ QVariant PropertyItem::editorData(QWidget * /*editor*/) const
 QString PropertyItem::propertyName() const
 {
     if (propName.isEmpty())
-        return QLatin1String("<empty>");
+        return QLatin1String(QT_TRANSLATE_NOOP("App::Property", "<empty>"));
     return propName;
 }
 
@@ -353,6 +358,9 @@ void PropertyItem::setPropertyName(const QString& name)
     }
 
     propName = display;
+
+    QString str = QApplication::translate("App::Property", propName.toLatin1());
+    displayText = str;
 }
 
 void PropertyItem::setPropertyValue(const QString& value)
@@ -384,7 +392,7 @@ QVariant PropertyItem::data(int column, int role) const
     // property name
     if (column == 0) {
         if (role == Qt::DisplayRole)
-            return propertyName();
+            return displayName();
         // no properties set
         if (propertyItems.empty())
             return QVariant();
@@ -1754,16 +1762,16 @@ PropertyPlacementItem::PropertyPlacementItem() : init_axis(false), changed_value
 {
     m_a = static_cast<PropertyUnitItem*>(PropertyUnitItem::create());
     m_a->setParent(this);
-    m_a->setPropertyName(QLatin1String("Angle"));
+    m_a->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Angle")));
     this->appendChild(m_a);
     m_d = static_cast<PropertyVectorItem*>(PropertyVectorItem::create());
     m_d->setParent(this);
-    m_d->setPropertyName(QLatin1String("Axis"));
+    m_d->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Axis")));
     m_d->setReadOnly(true);
     this->appendChild(m_d);
     m_p = static_cast<PropertyVectorDistanceItem*>(PropertyVectorDistanceItem::create());
     m_p->setParent(this);
-    m_p->setPropertyName(QLatin1String("Position"));
+    m_p->setPropertyName(QLatin1String(QT_TRANSLATE_NOOP("App::Property", "Position")));
     m_p->setReadOnly(true);
     this->appendChild(m_p);
 }
