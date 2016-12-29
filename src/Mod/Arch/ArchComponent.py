@@ -392,9 +392,11 @@ class Component:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
                     base,placement = self.rebase(obj.Base.Base.Shape)
-                    extrusion = obj.Base.Dir
+                    extrusion = FreeCAD.Vector(obj.Base.Dir)
                     if extrusion.Length == 0:
                         extrusion = FreeCAD.Vector(0,0,1)
+                    else:
+                        extrusion = placement.inverse().Rotation.multVec(extrusion)
                     if hasattr(obj.Base,"LengthForward"):
                         if obj.Base.LengthForward.Value:
                             extrusion = extrusion.multiply(obj.Base.LengthForward.Value)

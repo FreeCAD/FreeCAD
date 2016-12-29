@@ -330,7 +330,7 @@ def getGroupContents(objectslist,walls=False,addgroups=False):
         objectslist = [objectslist]
     for obj in objectslist:
         if obj:
-            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) == "Space") and hasattr(obj,"Group")):
+            if obj.isDerivedFrom("App::DocumentObjectGroup") or ((getType(obj) in ["Space","Site"]) and hasattr(obj,"Group")):
                 if obj.isDerivedFrom("Drawing::FeaturePage"):
                     # skip if the group is a page
                     newlist.append(obj)
@@ -1573,9 +1573,17 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
             elif newwire:
                 newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
                 newobj.Shape = newwire
+            else:
+                print("Draft.offset: Unable to duplicate this object")
         elif getType(obj) == "Rectangle":
-            length,height,plac = getRect(p,obj)
-            newobj = makeRectangle(length,height,plac)
+            if p:
+                length,height,plac = getRect(p,obj)
+                newobj = makeRectangle(length,height,plac)
+            elif newwire:
+                newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
+                newobj.Shape = newwire
+            else:
+                print("Draft.offset: Unable to duplicate this object")
         elif getType(obj) == "Circle":
             pl = obj.Placement
             newobj = makeCircle(delta)
@@ -1603,7 +1611,7 @@ def offset(obj,delta,copy=False,bind=False,sym=False,occ=False):
                 newobj = FreeCAD.ActiveDocument.addObject("Part::Feature","Offset")
                 newobj.Shape = newwire
             else:
-                print("Unable to create an offset")
+                print("Draft.offset: Unable to create an offset")
         if newobj:
             formatObject(newobj,obj)
     else:
