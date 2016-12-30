@@ -123,7 +123,15 @@ PyObject *ExtensionContainerPy::getCustomAttributes(const char* attr) const
         // we have to add new methods only once.
         PyObject* obj = (*it).second->getExtensionPyObject();
         PyMethodDef* meth = reinterpret_cast<PyMethodDef*>(obj->ob_type->tp_methods);
+#if PY_MAJOR_VERSION >= 3
+        // potential error:
+        // http://forum.freecadweb.org/viewtopic.php?f=10&t=12534&sid=bf8c7cfe816b5351f11592bf0b8dd0cd&start=220#p150297
+        PyObject *nameobj = PyUnicode_FromString(attr);
+        func = PyObject_GenericGetAttr((PyObject*) obj, nameobj);
+        Py_DECREF(nameobj);
+#else
         func = Py_FindMethod(meth, obj, attr);
+#endif
         Py_DECREF(obj);
         if (func)
             break;

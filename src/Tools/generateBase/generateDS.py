@@ -26,7 +26,7 @@
 
 
 
-#from __future__ import generators   # only needed for Python 2.2
+# from __future__ import generators   # only needed for Python 2.2
 
 import sys
 import os.path

@@ -84,6 +84,21 @@
  */
 #define PYFUNCIMP_S(CLASS,SFUNC) PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
+
+/** Macro for initialization function of Python modules. 
+ */
+#if PY_MAJOR_VERSION >= 3
+# define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
+#else
+# define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC init##name(void)
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+# define PyMOD_Return(name) return name
+#else
+# define PyMOD_Return(name) return
+#endif
+
 /**
  * Union to convert from PyTypeObject to PyObject pointer.
  */
@@ -201,13 +216,13 @@ public:
      *  If you want to implement attributes in your class, reimplement
      *  this method.
      *  You have to call the method of the base class.
-     *  Note: if you reimplement _gettattr() in a inheriting class you
+     *  Note: if you reimplement _gettattro() in a inheriting class you
      *  need to call the method of the base class! Otherwise even the 
      *  methods of the object will disappear!
      */
-    virtual PyObject *_getattr(char *attr);
-    /// static wrapper for pythons _getattr()
-    static  PyObject *__getattr(PyObject * PyObj, char *attr);
+    virtual PyObject *_getattro(PyObject *attro);
+    /// static wrapper for pythons _getattro()
+    static  PyObject *__getattro(PyObject * PyObj, PyObject *attro);
 
     /** SetAttribute implementation
      *  This method implements the setting of object attributes.
@@ -215,9 +230,9 @@ public:
      *  this method.
      *  You have to call the method of the base class.
      */
-    virtual int _setattr(char *attr, PyObject *value);    // _setattr method
-    /// static wrapper for pythons _setattr(). // This should be the entry in Type. 
-    static  int __setattr(PyObject *PyObj, char *attr, PyObject *value);
+    virtual int _setattro(PyObject *attro, PyObject *value);    // _setattro method
+    /// static wrapper for pythons _setattro(). // This should be the entry in Type. 
+    static  int __setattro(PyObject *PyObj, PyObject *attro, PyObject *value);
 
     /** _repr method
     * Override this method to return a string object with some
