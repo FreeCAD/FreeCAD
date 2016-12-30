@@ -212,6 +212,13 @@ def makeComponent(baseobj=None,name="Component",delete=False):
         elif isinstance(baseobj,Part.Shape):
             obj.Shape = baseobj
     return obj
+    
+def cloneComponent(obj):
+    '''cloneComponent(obj): Creates a clone of an object as an undefined component'''
+    c = makeComponent()
+    c.CloneOf = obj
+    c.Placement = obj.Placement
+    c.Label = obj.Label
 
 def setAsSubcomponent(obj):
     '''Sets the given object properly to become a subcomponent (addition, subtraction)
@@ -1283,6 +1290,30 @@ class _CommandComponent:
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
+
+class _CommandCloneComponent:
+    "the Arch Clone Component command definition"
+    def GetResources(self):
+        return {'Pixmap'  : 'Arch_Component_Clone',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CloneComponent","Clone component"),
+                'Accel': "C, C",
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CloneComponent","Clones an object as an undefined architectural component")}
+
+    def IsActive(self):
+        return not FreeCAD.ActiveDocument is None
+
+    def Activated(self):
+        sel = FreeCADGui.Selection.getSelection()
+        if sel:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Component"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.Control.closeDialog()
+            for o in sel:
+                FreeCADGui.doCommand("Arch.cloneComponent(FreeCAD.ActiveDocument."+o.Name+")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+
+
 def makeIfcSpreadsheet(archobj=None):
     ifc_container = None
     for obj in FreeCAD.ActiveDocument.Objects :
@@ -1371,5 +1402,6 @@ if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Arch_Survey',_CommandSurvey())
     FreeCADGui.addCommand('Arch_ToggleIfcBrepFlag',_ToggleIfcBrepFlag())
     FreeCADGui.addCommand('Arch_Component',_CommandComponent())
+    FreeCADGui.addCommand('Arch_CloneComponent',_CommandCloneComponent())
     FreeCADGui.addCommand('Arch_IfcSpreadsheet',_CommandIfcSpreadsheet())
     FreeCADGui.addCommand('Arch_ToggleSubs',_ToggleSubs())
