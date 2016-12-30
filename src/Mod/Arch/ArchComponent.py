@@ -361,10 +361,7 @@ class Component:
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
-                    if hasattr(obj,"BaseMaterial"):
-                        if hasattr(obj.CloneOf,"BaseMaterial"):
-                            obj.BaseMaterial = obj.CloneOf.BaseMaterial
-                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
+                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea","BaseMaterial","IfcAttributes"]:
                         if hasattr(obj,prop) and hasattr(obj.CloneOf,prop):
                             setattr(obj,prop,getattr(obj.CloneOf,prop))
                     return True
@@ -632,9 +629,9 @@ class ViewProviderComponent:
         #print obj.Name," : updating ",prop
         if prop == "BaseMaterial":
             if obj.BaseMaterial:
-                if 'Color' in obj.BaseMaterial.Material:
-                    if "(" in obj.BaseMaterial.Material['Color']:
-                        c = tuple([float(f) for f in obj.BaseMaterial.Material['Color'].strip("()").split(",")])
+                if 'DiffuseColor' in obj.BaseMaterial.Material:
+                    if "(" in obj.BaseMaterial.Material['DiffuseColor']:
+                        c = tuple([float(f) for f in obj.BaseMaterial.Material['DiffuseColor'].strip("()").split(",")])
                         if obj.ViewObject:
                             obj.ViewObject.ShapeColor = c
         elif prop == "Shape":
@@ -654,6 +651,10 @@ class ViewProviderComponent:
 
     def getIcon(self):
         import Arch_rc
+        if hasattr(self,"Object"):
+            if hasattr(self.Object,"CloneOf"):
+                if self.Object.CloneOf:
+                    return ":/icons/Arch_Component_Clone.svg"
         return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
