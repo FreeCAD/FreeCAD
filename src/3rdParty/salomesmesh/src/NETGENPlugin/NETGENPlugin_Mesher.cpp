@@ -890,7 +890,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
 #endif
           if ( isSeam )
           {
-            if ( helper.GetPeriodicIndex() && 1 ) {
+            if ( helper.GetPeriodicIndex() & 1 ) {
               seg.epgeominfo[ 0 ].u = otherSeamParam;
               seg.epgeominfo[ 1 ].u = otherSeamParam;
               swap (seg.epgeominfo[0].v, seg.epgeominfo[1].v);
@@ -906,7 +906,7 @@ bool NETGENPlugin_Mesher::FillNgMesh(netgen::OCCGeometry&           occgeom,
 #ifdef DUMP_SEGMENTS
             cout << "Segment: " << seg.edgenr << endl
                  << "\t is SEAM (reverse) of the previous. "
-                 << " Other " << (helper.GetPeriodicIndex() && 1 ? "U" : "V")
+                 << " Other " << (helper.GetPeriodicIndex() & 1 ? "U" : "V")
                  << " = " << otherSeamParam << endl;
 #endif
           }

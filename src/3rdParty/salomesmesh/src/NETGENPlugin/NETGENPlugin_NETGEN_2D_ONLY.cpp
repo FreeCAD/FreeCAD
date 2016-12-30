@@ -191,41 +191,41 @@ bool NETGENPlugin_NETGEN_2D_ONLY::CheckHypothesis (SMESH_Mesh&         aMesh,
   return ( aStatus == HYP_OK );
 }
 
-namespace
-{
-  inline void limitSize( netgen::Mesh* ngMesh,
-                  const double  maxh )
-  {
-    // get bnd box
-    netgen::Point3d pmin, pmax;
-    ngMesh->GetBox( pmin, pmax, 0 );
-    const double dx = pmax.X() - pmin.X();
-    const double dy = pmax.Y() - pmin.Y();
-    const double dz = pmax.Z() - pmin.Z();
+//namespace
+//{
+//  inline void limitSize( netgen::Mesh* ngMesh,
+//                  const double  maxh )
+//  {
+//    // get bnd box
+//    netgen::Point3d pmin, pmax;
+//    ngMesh->GetBox( pmin, pmax, 0 );
+//    const double dx = pmax.X() - pmin.X();
+//    const double dy = pmax.Y() - pmin.Y();
+//    const double dz = pmax.Z() - pmin.Z();
 
-    const int nbX = Max( 2, int( dx / maxh * 3 ));
-    const int nbY = Max( 2, int( dy / maxh * 3 ));
-    const int nbZ = Max( 2, int( dz / maxh * 3 ));
+//    const int nbX = Max( 2, int( dx / maxh * 3 ));
+//    const int nbY = Max( 2, int( dy / maxh * 3 ));
+//    const int nbZ = Max( 2, int( dz / maxh * 3 ));
 
-    if ( ! & ngMesh->LocalHFunction() )
-      ngMesh->SetLocalH( pmin, pmax, 0.1 );
+//    if ( ! & ngMesh->LocalHFunction() )
+//      ngMesh->SetLocalH( pmin, pmax, 0.1 );
 
-    netgen::Point3d p;
-    for ( int i = 0; i <= nbX; ++i )
-    {
-      p.X() = pmin.X() +  i * dx / nbX;
-      for ( int j = 0; j <= nbY; ++j )
-      {
-        p.Y() = pmin.Y() +  j * dy / nbY;
-        for ( int k = 0; k <= nbZ; ++k )
-        {
-          p.Z() = pmin.Z() +  k * dz / nbZ;
-          ngMesh->RestrictLocalH( p, maxh );
-        }
-      }
-    }
-  }
-}
+//    netgen::Point3d p;
+//    for ( int i = 0; i <= nbX; ++i )
+//    {
+//      p.X() = pmin.X() +  i * dx / nbX;
+//      for ( int j = 0; j <= nbY; ++j )
+//      {
+//        p.Y() = pmin.Y() +  j * dy / nbY;
+//        for ( int k = 0; k <= nbZ; ++k )
+//        {
+//          p.Z() = pmin.Z() +  k * dz / nbZ;
+//          ngMesh->RestrictLocalH( p, maxh );
+//        }
+//      }
+//    }
+//  }
+//}
 
 //=============================================================================
 /*!
