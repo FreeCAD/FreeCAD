@@ -25,7 +25,7 @@
 #include <Python.h>
 #endif
 
-#if defined(__GNUG__) && !defined(__APPLE__)
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma implementation
 #endif
 
