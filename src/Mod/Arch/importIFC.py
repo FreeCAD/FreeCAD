@@ -1523,19 +1523,34 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             elif isinstance(p.Edges[0].Curve,Part.Ellipse):
                                 # extruded ellipse
                                 profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt, p.Edges[0].Curve.MajorRadius, p.Edges[0].Curve.MinorRadius)
+                        elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
+                            # face with holes
+                            f = p.Faces[0]
+                            if DraftGeomUtils.hasCurves(f.OuterWire):
+                                outerwire = createCurve(ifcfile,f.OuterWire)
+                            else:
+                                w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
+                                pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+                                outerwire = ifcfile.createIfcPolyline(pts)
+                            innerwires = []
+                            for w in f.Wires:
+                                if w.hashCode() != f.OuterWire.hashCode():
+                                    if DraftGeomUtils.hasCurves(w):
+                                        innerwires.append(createCurve(ifcfile,w))
+                                    else:
+                                        w = Part.Wire(Part.__sortEdges__(w.Edges))
+                                        pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+                                        innerwires.append(ifcfile.createIfcPolyline(pts))
+                            profile = ifcfile.createIfcArbitraryProfileDefWithVoids("AREA",None,outerwire,innerwires)
                         else:
-                            curves = False
-                            for e in p.Edges:
-                                if isinstance(e.Curve,Part.Circle):
-                                    curves = True
-                            if not curves:
+                            if DraftGeomUtils.hasCurves(p):
+                                # extruded composite curve
+                                pol = createCurve(ifcfile,p)
+                            else:
                                 # extruded polyline
                                 w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
                                 pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
                                 pol = ifcfile.createIfcPolyline(pts)
-                            else:
-                                # extruded composite curve
-                                pol = createCurve(ifcfile,p)
                             profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
                         if profile:
                             profiledefs[pstr] = profile
