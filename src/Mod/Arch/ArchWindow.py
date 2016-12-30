@@ -688,7 +688,8 @@ class _Window(ArchComponent.Component):
                             # because of load order, but it doesn't harm...
                             pass
                         FreeCAD.ActiveDocument.recompute()
-        ArchComponent.Component.onChanged(self,obj,prop)
+            else:
+                ArchComponent.Component.onChanged(self,obj,prop)
 
 
     def execute(self,obj):

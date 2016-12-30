@@ -219,6 +219,12 @@ def cloneComponent(obj):
     c.CloneOf = obj
     c.Placement = obj.Placement
     c.Label = obj.Label
+    if hasattr(obj,"BaseMaterial"):
+        if obj.BaseMaterial:
+            c.BaseMaterial = obj.BaseMaterial
+    if hasattr(obj,"IfcAttributes"):
+        if obj.IfcAttributes:
+            c.IfcAttributes = obj.IfcAttributes
 
 def setAsSubcomponent(obj):
     '''Sets the given object properly to become a subcomponent (addition, subtraction)
