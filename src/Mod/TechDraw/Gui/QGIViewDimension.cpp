@@ -549,7 +549,7 @@ void QGIViewDimension::draw()
         double dimSpan = (dim2Tail - dim1Tip).Length();
         double fauxToDim1 = (fauxCenter - dim1Tip).Length();     //label to end #1
         double fauxToDim2 = (fauxCenter - dim2Tail).Length();
-        double tailLength = 10.f * scaler;
+        double tailLength = Rez::guiX(10.f) * scaler;
 
         //case2 - innerPlacement * text > span
         if ((lblWidth > dimSpan)  &&
