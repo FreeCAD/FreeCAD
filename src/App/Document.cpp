@@ -65,7 +65,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/graphviz.hpp>
 #include <boost/bind.hpp>
 #include <boost/regex.hpp>
-#include <boost/unordered_set.hpp>
+#include <unordered_set>
+#include <unordered_map>
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -244,6 +245,7 @@ void Document::exportGraphviz(std::ostream& out) const
             addSubgraphs();
             buildAdjacencyList();
             addEdges();
+            markCycles();
         }
 
         /**
@@ -540,6 +542,95 @@ void Document::exportGraphviz(std::ostream& out) const
 
             }
 
+        }
+
+        typedef std::unordered_multimap<Vertex, Edge> EdgeMap;
+
+        void removeEdges(EdgeMap & in_edges,
+                         EdgeMap & out_edges,
+                         std::pair<EdgeMap::iterator, EdgeMap::iterator > i_pair,
+                         std::function<Vertex (const Edge&)> select_vertex) {
+            auto i = i_pair.first;
+
+            while (i != i_pair.second) {
+                // Remove from in edges in other nodes
+                auto in_i_pair = in_edges.equal_range(select_vertex(i->second));
+                auto in_i = in_i_pair.first;
+
+                while (in_i != in_i_pair.second) {
+                    if (in_i->second == i->second)
+                        in_i = in_edges.erase(in_i);
+                    else
+                        ++in_i;
+                }
+
+                // Remove node from out_edges
+                i = out_edges.erase(i);
+            }
+        }
+
+        void markCycles() {
+            bool changed = true;
+            std::unordered_set<Vertex> in_use;
+            EdgeMap in_edges;
+            EdgeMap out_edges;
+
+            // Add all vertices to the in_use set
+            graph_traits<Graph>::vertex_iterator vi, vi_end;
+            tie(vi, vi_end) = vertices(DepList);
+            for (; vi != vi_end; ++vi)
+                in_use.insert(*vi);
+
+            // Add all edges to the in_edges and out_edges multimaps
+            graph_traits<Graph>::edge_iterator ei, ei_end;
+            tie(ei, ei_end) = edges(DepList);
+            for (; ei != ei_end; ++ei) {
+                in_edges.insert(std::make_pair<Vertex, Edge>(target(*ei, DepList), *ei));
+                out_edges.insert(std::make_pair<Vertex, Edge>(source(*ei, DepList), *ei));
+            }
+
+            // Go through dependency graph and remove nodes with either no input or output
+            // A normal DAG without any cycles will get all its edges removed.
+            // If one or more cycles exist in the graph, there will remain nodes with
+            // both in and out edges.
+
+            while (changed) {
+                auto uvi = in_use.begin();
+                auto uvi_end = in_use.end();
+
+                // Flag that no changes has occured so far. If the loop goes through
+                // without this flag being set to true, we are done.
+                changed = false;
+
+                while (uvi != uvi_end) {
+                    auto i_in_deg_pair = in_edges.equal_range(*uvi);
+                    auto i_out_deg_pair = out_edges.equal_range(*uvi);
+
+                    if (i_in_deg_pair.first == in_edges.end() && i_out_deg_pair.first == out_edges.end()) {
+                        uvi = in_use.erase(uvi);
+                        continue;
+                    }
+
+                    // Remove out edges of nodes that don't have a single edge in
+                    if (i_in_deg_pair.first == in_edges.end()) {
+                        removeEdges(in_edges, out_edges, i_out_deg_pair, [&](Edge e) { return target(e, DepList); });
+                        changed = true;
+                    }
+
+                    // Remove in edges of nodes that don't have a single edge out
+                    if (i_out_deg_pair.first == out_edges.end()) {
+                        removeEdges(out_edges, in_edges, i_in_deg_pair, [&](Edge e) { return source(e, DepList); });
+                        changed = true;
+                    }
+
+                    ++uvi;
+                }
+            }
+
+            // Update colors in graph
+            const boost::property_map<Graph, boost::edge_attribute_t>::type& edgeAttrMap = boost::get(boost::edge_attribute, DepList);
+            for (auto ei = out_edges.begin(), ei_end = out_edges.end(); ei != ei_end; ++ei)
+                edgeAttrMap[ei->second]["color"] = "red";
         }
 
         const struct DocumentP* d;
