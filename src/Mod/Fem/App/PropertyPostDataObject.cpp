@@ -22,7 +22,6 @@
 
 
 #include "PreCompiled.h"
-#include "PropertyPostDataObject.h"
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
 #include <Base/Writer.h>
@@ -43,6 +42,7 @@
 #include <vtkXMLUnstructuredGridReader.h>
 #include <vtkXMLRectilinearGridReader.h>
 #include <vtkXMLImageDataReader.h>
+#include "PropertyPostDataObject.h"
 
 #ifndef _PreComp_
 
