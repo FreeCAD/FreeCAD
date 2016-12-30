@@ -40,7 +40,11 @@
 #endif
 #endif
 
-#ifdef __GNUC__
+// class and struct used for SbkObject
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wmismatched-tags"
+#elif defined (__GNUC__)
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 #endif
@@ -81,7 +85,9 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
 # endif
 #endif
 
-#ifdef __GNUC__
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#elif defined (__GNUC__)
 # pragma GCC diagnostic pop
 #endif
 

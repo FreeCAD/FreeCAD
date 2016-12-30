@@ -1751,7 +1751,15 @@ int ExpressionParserlex(void);
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 // Scanner, defined in ExpressionParser.l
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wsign-compare"
+# pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#endif
 #include "lex.ExpressionParser.c"
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 #ifdef _MSC_VER
 # define strdup _strdup
