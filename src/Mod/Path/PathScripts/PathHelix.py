@@ -33,24 +33,17 @@ from .PathUtils import fmt
 
 """Helix Drill object and FreeCAD command"""
 
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+if FreeCAD.GuiUp:
+    try:
+        _encoding = QtGui.QApplication.UnicodeUTF8
+        def translate(context, text, disambig=None):
+            return QtGui.QApplication.translate(context, text, disambig, _encoding)
+    except AttributeError:
+        def translate(context, text, disambig=None):
+            return QtGui.QApplication.translate(context, text, disambig)
+else:
     def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-except AttributeError:
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
-
-def print_exceptions(func):
-    from functools import wraps
-    @wraps(func)
-    def wrapper(*args, **kwargs):
-        try:
-            return func(*args, **kwargs)
-        except:
-            import traceback
-            raise
-    return wrapper
+        return text
 
 def hollow_cylinder(cyl):
     """Test if this is a hollow cylinder"""
@@ -99,22 +92,6 @@ def connected(edge, face):
             return True
     return False
 
-def connected_cylinders(base, edge):
-    from Part import Cylinder
-    cylinders = []
-    for n in range(len(base.Shape.Faces)):
-        face = "Face{0}".format(n+1)
-        subobj = base.Shape.Faces[n]
-        if isinstance(subobj.Surface, Cylinder):
-            if not connected(edge, subobj):
-                continue
-            if not z_cylinder(subobj):
-                continue
-            if not full_cylinder(subobj):
-                continue
-            cylinders.append(face)
-    return cylinders
-
 def cylinders_in_selection():
     from Part import Cylinder
     selections = FreeCADGui.Selection.getSelectionEx()
@@ -130,16 +107,6 @@ def cylinders_in_selection():
                 if isinstance(subobj.Surface, Cylinder):
                     if z_cylinder(subobj):
                         cylinders[-1][1].append(feature)
-                else:
-                    # brute force triple-loop as FreeCAD does not expose
-                    # any topology information...
-                    for edge in subobj.Edges:
-                        for face in connected_cylinders(base, edge):
-                            if hollow_cylinder(getattr(base.Shape, face)):
-                                cylinders[-1][1].append(face)
-
-            if subobj.ShapeType == 'Edge':
-                cylinders.extend(connected_cylinders(base, (feature,)))
 
     return cylinders
 
@@ -282,8 +249,6 @@ class ObjectPathHelix(object):
 
         obj.addProperty("App::PropertyLength", "DeltaR", "Helix Drill",
             translate("DeltaR", "Radius increment (must be smaller than tool diameter)"))
-        obj.addProperty("App::PropertyBool", "Recursive", "Helix Drill",
-            translate("Recursive", "If True, drill holes also in any subsequent smaller holes at the bottom of a hole"))
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "Clearance", "Depths",
@@ -301,12 +266,6 @@ class ObjectPathHelix(object):
         obj.addProperty("App::PropertyDistance", "ThroughDepth", "Depths",
             translate("Through Depth","Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False"))
 
-        # Feed Properties
-        obj.addProperty("App::PropertySpeed", "VertFeed", "Feeds",
-            translate("Vert Feed","Feed rate for vertical mill moves, this includes the actual arcs"))
-        obj.addProperty("App::PropertySpeed", "HorizFeed", "Feeds",
-            translate("Horiz Feed","Feed rate for horizontal mill moves, these are mostly retractions to the safe distance above the object"))
-
         # The current tool number, read-only
         # this is apparently used internally, to keep track of tool chagnes
         obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The current tool in use"))
@@ -322,32 +281,24 @@ class ObjectPathHelix(object):
         return None
 
     def execute(self,obj):
-        import cProfile, pstats, StringIO
-        pr = cProfile.Profile()
-        pr.enable()
-
         from Part import Circle, Cylinder, Plane
         from math import sqrt
+
         if obj.Features:
             if not obj.Active:
                 obj.Path = Path.Path("(helix cut operation inactive)")
-                obj.ViewObject.Visibility = False
+                if obj.ViewObject:
+                    obj.ViewObject.Visibility = False
                 return
 
-            if not len(obj.InList) > 0:
-                FreeCAD.Console.PrintError("PathHelix: Operation is not part of a project\n")
-                obj.Path = Path.Path("(helix cut operation not part of any project)")
-                obj.ViewObject.Visibility = False
-                return
+            toolload = PathUtils.getLastToolLoad(obj)
 
-            project = obj.InList[0]
-            obj.ToolNumber = int(PathUtils.changeTool(obj,project))
-            tool = PathUtils.getTool(obj,obj.ToolNumber)
-
-            if not tool:
+            if toolload is None or toolload.ToolNumber == 0:
                 FreeCAD.Console.PrintError("PathHelix: No tool selected for helix cut operation, insert a tool change operation first\n")
                 obj.Path = Path.Path("(ERROR: no tool selected for helix cut operation)")
                 return
+
+            tool = PathUtils.getTool(obj, toolload.ToolNumber)
 
             output = '(helix cut operation'
             if obj.Comment:
@@ -360,16 +311,24 @@ class ObjectPathHelix(object):
 
             drill_jobs = []
 
-            for base, feature in sum((list((obj, feature) for feature in features) for obj, features in obj.Features), []):
-                cylinder = getattr(base.Shape, feature)
-                zsafe = cylinder.BoundBox.ZMax + obj.Clearance.Value
-                xc, yc, zc = cylinder.Surface.Center
+            for base, features in obj.Features:
+                centers = {}
 
-                if obj.Recursive:
-                    cur_z = cylinder.BoundBox.ZMax
+                for feature in features:
+                    cylinder = getattr(base.Shape, feature)
+                    xc, yc, _ = cylinder.Surface.Center
+                    if (xc, yc) not in centers:
+                        centers[xc, yc] = {}
+                    centers[xc, yc][cylinder.Surface.Radius] = cylinder
+
+                for center, by_radius in centers.items():
+                    cylinders = sorted(by_radius.values(), key = lambda cyl : cyl.Surface.Radius, reverse=True)
+
+                    zsafe = max(cyl.BoundBox.ZMax for cyl in cylinders) + obj.Clearance.Value
+                    cur_z = cylinders[0].BoundBox.ZMax
                     jobs = []
 
-                    while cylinder:
+                    for cylinder in cylinders:
                         # Find other edge of current cylinder
                         other_edge = None
                         for edge in cylinder.Edges:
@@ -396,6 +355,7 @@ class ObjectPathHelix(object):
                             if closed is None:
                                 raise Exception("Cannot determine if this cylinder is closed on the z = {0} side".format(next_z))
 
+                            xc, yc, _ = cylinder.Surface.Center
                             jobs.append(dict(xc=xc, yc=yc, zmin=next_z, zmax=cur_z, r_out=r, r_in=0.0, closed=closed, zsafe=zsafe))
 
                         elif dz > 0:
@@ -414,28 +374,10 @@ class ObjectPathHelix(object):
                                     new_jobs.append(job)
                             jobs = new_jobs
                         else:
-                            FreeCAD.Console.PrintWarning("PathHelix: Encountered cylinder with zero height\n")
+                            FreeCAD.Console.PrintError("PathHelix: Encountered cylinder with zero height\n")
                             break
 
                         cur_z = next_z
-                        cylinder = None
-                        faces = []
-                        for face in base.Shape.Faces:
-                            if connected(other_edge, face):
-                                if isinstance(face.Surface, Plane):
-                                    faces.append(face)
-                        # should only be one
-                        face, = faces
-                        for edge in face.Edges:
-                            if not edge.isSame(other_edge):
-                                for other_face in connected_cylinders(base, edge):
-                                    other_cylinder = getattr(base.Shape, other_face)
-                                    xo = other_cylinder.Surface.Center.x
-                                    yo = other_cylinder.Surface.Center.y
-                                    center_dist = sqrt((xo - xc)**2 + (yo - yc)**2)
-                                    if center_dist + other_cylinder.Surface.Radius < r:
-                                        cylinder = other_cylinder
-                                        break
 
                     if obj.UseStartDepth:
                         jobs = [job for job in jobs if job["zmin"] < obj.StartDepth.Value]
@@ -450,35 +392,17 @@ class ObjectPathHelix(object):
                             jobs[-1]["zmin"] -= obj.ThroughDepth.Value
 
                     drill_jobs.extend(jobs)
-                else:
-                    if obj.UseStartDepth:
-                        zmax = obj.StartDepth.Value
-                    else:
-                        zmax = cylinder.BoundBox.ZMax
-                    if obj.UseFinalDepth:
-                        zmin = obj.FinalDepth.Value
-                    else:
-                        zmin = cylinder.BoundBox.ZMin - obj.ThroughDepth.Value
-                    drill_jobs.append(dict(xc=xc, yc=yc, zmin=zmin, zmax=zmax, r_out=cylinder.Surface.Radius, r_in=0.0, zsafe=zsafe))
 
             for job in drill_jobs:
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,
                                     job["zmax"], job["zmin"], obj.StepDown.Value,
                                     job["zsafe"], tool.Diameter,
-                                    obj.VertFeed.Value, obj.HorizFeed.Value, obj.Direction, obj.StartSide)
+                                    toolload.VertFeed.Value, toolload.HorizFeed.Value, obj.Direction, obj.StartSide)
                 output += '\n'
 
             obj.Path = Path.Path(output)
             if obj.ViewObject:
                 obj.ViewObject.Visibility = True
-
-        pr.disable()
-        s = StringIO.StringIO()
-        sortby = 'time' #cumulative'
-        ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-        ps.print_stats(10)
-        FreeCAD.Console.PrintError(s.getvalue() + "\n\n")
-
 
 taskpanels = {}
 
@@ -513,60 +437,52 @@ class CommandPathHelix(object):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathHelix","Creates a helix cut from selected circles")}
 
     def IsActive(self):
-        return not FreeCAD.ActiveDocument is None
+        if FreeCAD.ActiveDocument is not None:
+            for o in FreeCAD.ActiveDocument.Objects:
+                if o.Name[:3] == "Job":
+                        return True
+        return False
 
     def Activated(self):
         import FreeCADGui
         import Path
         from PathScripts import PathUtils
 
-        # register the transaction for the undo stack
-        try:
-            FreeCAD.ActiveDocument.openTransaction(translate("PathHelix","Create a helix cut"))
-            FreeCADGui.addModule("PathScripts.PathHelix")
+        FreeCAD.ActiveDocument.openTransaction(translate("PathHelix","Create a helix cut"))
+        FreeCADGui.addModule("PathScripts.PathHelix")
 
-            obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","PathHelix")
-            ObjectPathHelix(obj)
-            ViewProviderPathHelix(obj.ViewObject)
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","PathHelix")
+        ObjectPathHelix(obj)
+        ViewProviderPathHelix(obj.ViewObject)
 
-            obj.Features = cylinders_in_selection()
-            obj.DeltaR = 1.0
+        obj.Features = cylinders_in_selection()
+        obj.DeltaR = 1.0
 
-            project = PathUtils.addToProject(obj)
-            tl = PathUtils.changeTool(obj,project)
-            if tl:
-                obj.ToolNumber = tl
-                tool = PathUtils.getTool(obj,obj.ToolNumber)
-                if tool:
-                    # start with 25% overlap
-                    obj.DeltaR = tool.Diameter * 0.75
+        toolLoad = PathUtils.getLastToolLoad(obj)
+        if toolLoad is not None:
+            obj.ToolNumber = toolLoad.ToolNumber
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            if tool:
+                # start with 25% overlap
+                obj.DeltaR = tool.Diameter * 0.75
 
-            obj.Active = True
-            obj.Comment = ""
+        obj.Active = True
+        obj.Comment = ""
 
-            obj.Direction = "CW"
-            obj.StartSide = "inside"
+        obj.Direction = "CW"
+        obj.StartSide = "inside"
 
-            obj.Clearance = 10.0
-            obj.StepDown = 1.0
-            obj.UseStartDepth = False
-            obj.StartDepth = 1.0
-            obj.UseFinalDepth = False
-            obj.FinalDepth = 0.0
-            obj.ThroughDepth = 0.0
-            obj.Recursive = True
+        obj.Clearance = 10.0
+        obj.StepDown = 1.0
+        obj.UseStartDepth = False
+        obj.StartDepth = 1.0
+        obj.UseFinalDepth = False
+        obj.FinalDepth = 0.0
+        obj.ThroughDepth = 0.0
 
-            obj.VertFeed = 0.0
-            obj.HorizFeed = 0.0
+        PathUtils.addToJob(obj)
 
-            obj.ViewObject.startEditing()
-
-            # commit
-            FreeCAD.ActiveDocument.commitTransaction()
-
-        except:
-            FreeCAD.ActiveDocument.abortTransaction()
-            raise
+        obj.ViewObject.startEditing()
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -692,7 +608,6 @@ class TaskPanel(object):
 
         heading("Drill parameters")
         addCheckBox("Active", "Operation is active")
-        addCheckBox("Recursive", "Also mill subsequent holes")
         tool = PathUtils.getTool(self.obj,self.obj.ToolNumber)
         if not tool:
             drmax = None
@@ -709,10 +624,6 @@ class TaskPanel(object):
 
         fdcheckbox, fdinput = addQuantity("FinalDepth", "Absolute final height", "UseFinalDepth")
         tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth\nfor open holes")
-
-        heading("Feeds")
-        addQuantity("HorizFeed", "Horizontal Feed")
-        addQuantity("VertFeed", "Vertical Feed")
 
         # make ThroughDepth and FinalDepth mutually exclusive
         def fd_change(state):
@@ -734,7 +645,6 @@ class TaskPanel(object):
         widget.setLayout(layout)
         self.form = widget
 
-    @print_exceptions
     def addCylinders(self):
         features_per_base = {}
         for base, features in self.obj.Features:
@@ -754,7 +664,6 @@ class TaskPanel(object):
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    @print_exceptions
     def delCylinders(self):
         del_features = []
         for item in self.featureList.selectedItems():
@@ -768,15 +677,10 @@ class TaskPanel(object):
                 if (obj, feature) not in del_features:
                     new_features.append((obj, feature))
 
-        FreeCAD.Console.PrintError(del_features)
-        FreeCAD.Console.PrintError("\n")
-        FreeCAD.Console.PrintError(new_features)
-        FreeCAD.Console.PrintError("\n")
         self.obj.Features = new_features
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    @print_exceptions
     def fillFeatureList(self):
         for obj, features in self.obj.Features:
             for feature in features:
@@ -786,7 +690,6 @@ class TaskPanel(object):
                 item.setData(QtCore.Qt.UserRole, (obj, feature))
                 self.featureList.addItem(item)
 
-    @print_exceptions
     def selectFeatures(self, selected, deselected):
         FreeCADGui.Selection.clearSelection()
         for item in self.featureList.selectedItems():
