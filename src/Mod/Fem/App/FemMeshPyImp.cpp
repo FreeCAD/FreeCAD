@@ -24,6 +24,11 @@
 #include "PreCompiled.h"
 #include <stdexcept>
 
+#include <Base/VectorPy.h>
+#include <Base/MatrixPy.h>
+#include <Base/PlacementPy.h>
+#include <Base/QuantityPy.h>
+
 #include <SMESH_Gen.hxx>
 #include <SMESH_Group.hxx>
 #include <SMESH_Mesh.hxx>
@@ -35,11 +40,6 @@
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS.hxx>
-
-#include <Base/VectorPy.h>
-#include <Base/MatrixPy.h>
-#include <Base/PlacementPy.h>
-#include <Base/QuantityPy.h>
 
 #include <Mod/Part/App/TopoShapePy.h>
 #include <Mod/Part/App/TopoShapeSolidPy.h>
