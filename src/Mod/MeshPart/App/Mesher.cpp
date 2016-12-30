@@ -38,6 +38,10 @@
 #include <Standard_Version.hxx>
 
 #ifdef HAVE_SMESH
+#if defined(__clang__)
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
 #include <SMESH_Gen.hxx>
 #include <StdMeshers_MaxLength.hxx>
 #include <StdMeshers_LocalLength.hxx>
@@ -59,6 +63,9 @@
 #include <NETGENPlugin_Hypothesis_2D.hxx>
 #include <NETGENPlugin_SimpleHypothesis_2D.hxx>
 #endif // HAVE_NETGEN
+#if defined(__clang__)
+# pragma clang diagnostic pop
+#endif
 #endif // HAVE_SMESH
 
 using namespace MeshPart;
