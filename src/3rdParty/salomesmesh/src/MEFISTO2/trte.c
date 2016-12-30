@@ -819,9 +819,9 @@ integer nosui3_(integer *i__)
 /*        alors il y a une erreur */
 	if (nosoar[*noar * nosoar_dim1 + 4] > 0 && nosoar[*noar * nosoar_dim1 
 		+ 5] > 0) {
-	    if (nosoar[*noar * nosoar_dim1 + 4] != *nt1 && nosoar[*noar * 
-		    nosoar_dim1 + 4] != *nt2 || nosoar[*noar * nosoar_dim1 + 
-		    5] != *nt1 && nosoar[*noar * nosoar_dim1 + 5] != *nt2) {
+	    if ((nosoar[*noar * nosoar_dim1 + 4] != *nt1 && nosoar[*noar * 
+		    nosoar_dim1 + 4] != *nt2) || (nosoar[*noar * nosoar_dim1 + 
+		    5] != *nt1 && nosoar[*noar * nosoar_dim1 + 5] != *nt2)) {
 /*                arete appartenant a plus de 2 triangles => erreur */
 		if (*ierr >= 0) {
 		 //   io___14.ciunit = unites_1.imprim;
@@ -2300,8 +2300,8 @@ L15:
 	    dmin__ = pxyd[*ns1 * 3 + 1];
 	    dmax__ = pxyd[*ns2 * 3 + 1];
 	}
-	if (xrmin <= dmin__ && dmin__ <= xrmax || xrmin <= dmax__ && dmax__ <=
-		 xrmax) {
+	if ((xrmin <= dmin__ && dmin__ <= xrmax) || (xrmin <= dmax__ && dmax__ <=
+		 xrmax)) {
 	    if (pxyd[*ns1 * 3 + 2] > pxyd[*ns3 * 3 + 2]) {
 		dmin__ = pxyd[*ns3 * 3 + 2];
 		dmax__ = pxyd[*ns1 * 3 + 2];
@@ -2309,8 +2309,8 @@ L15:
 		dmin__ = pxyd[*ns1 * 3 + 2];
 		dmax__ = pxyd[*ns3 * 3 + 2];
 	    }
-	    if (yrmin <= dmin__ && dmin__ <= yrmax || yrmin <= dmax__ && 
-		    dmax__ <= yrmax) {
+	    if ((yrmin <= dmin__ && dmin__ <= yrmax) || (yrmin <= dmax__ && 
+		    dmax__ <= yrmax)) {
 
 /*              nte est un te feuille et interne au rectangle englobant */
 /*              ======================================================= */
@@ -2688,8 +2688,8 @@ L10:
 	    dmin__ = pxyd[ns1 * 3 + 1];
 	    dmax__ = pxyd[ns2 * 3 + 1];
 	}
-	if (xrmin <= dmin__ && dmin__ <= xrmax || xrmin <= dmax__ && dmax__ <=
-		 xrmax) {
+	if ((xrmin <= dmin__ && dmin__ <= xrmax) || (xrmin <= dmax__ && dmax__ <=
+		 xrmax)) {
 	    if (pxyd[ns1 * 3 + 2] > pxyd[ns3 * 3 + 2]) {
 		dmin__ = pxyd[ns3 * 3 + 2];
 		dmax__ = pxyd[ns1 * 3 + 2];
@@ -2697,8 +2697,8 @@ L10:
 		dmin__ = pxyd[ns1 * 3 + 2];
 		dmax__ = pxyd[ns3 * 3 + 2];
 	    }
-	    if (yrmin <= dmin__ && dmin__ <= yrmax || yrmin <= dmax__ && 
-		    dmax__ <= yrmax) {
+	    if ((yrmin <= dmin__ && dmin__ <= yrmax) || (yrmin <= dmax__ && 
+		    dmax__ <= yrmax)) {
 
 /*              te minimal et interne au rectangle englobant */
 /*              -------------------------------------------- */
@@ -9057,9 +9057,9 @@ L150:
 		    if (nosoar[i__ * nosoar_dim1 + 1] > 0 && nosoar[i__ * 
 			    nosoar_dim1 + 4] > 0) {
 /*                    arete non vide */
-			if (nosoar[i__ * nosoar_dim1 + 2] == ns[k - 1] || 
-				nosoar[i__ * nosoar_dim1 + 1] == ns[k - 1] && 
-				nosoar[i__ * nosoar_dim1 + 2] > 0) {
+			if  (nosoar[i__ * nosoar_dim1 + 2] == ns[k - 1] || 
+				(nosoar[i__ * nosoar_dim1 + 1] == ns[k - 1] && 
+				 nosoar[i__ * nosoar_dim1 + 2] > 0)) {
 /*                       arete active de sommet ns(k) */
 			    noarst[ns[k - 1]] = i__;
 			    goto L8;
