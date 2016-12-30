@@ -284,6 +284,22 @@ Py::Object PythonWrapper::fromQWidget(QWidget* widget, const char* className)
 #endif
 }
 
+const char* PythonWrapper::getWrapperName(QObject* obj) const
+{
+#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+    const QMetaObject* meta = obj->metaObject();
+    while (meta) {
+        const char* typeName = meta->className();
+        PyTypeObject* exactType = Shiboken::Conversions::getPythonTypeObject(typeName);
+        if (exactType)
+            return typeName;
+        meta = meta->superClass();
+    }
+#endif
+
+    return nullptr;
+}
+
 bool PythonWrapper::loadCoreModule()
 {
 #if defined (HAVE_SHIBOKEN2) && (HAVE_PYSIDE2)
@@ -774,7 +790,8 @@ Py::Object UiLoaderPy::load(const Py::Tuple& args)
                 wrap.loadGuiModule();
                 wrap.loadWidgetsModule();
 
-                Py::Object pyWdg = wrap.fromQWidget(widget);
+                const char* typeName = wrap.getWrapperName(widget);
+                Py::Object pyWdg = wrap.fromQWidget(widget, typeName);
                 wrap.createChildrenNameAttributes(*pyWdg, widget);
                 wrap.setParent(*pyWdg, parent);
                 return pyWdg;
@@ -830,7 +847,9 @@ Py::Object UiLoaderPy::createWidget(const Py::Tuple& args)
     }
     wrap.loadGuiModule();
     wrap.loadWidgetsModule();
-    return wrap.fromQWidget(widget);
+
+    const char* typeName = wrap.getWrapperName(widget);
+    return wrap.fromQWidget(widget, typeName);
 }
 
 // ----------------------------------------------------
