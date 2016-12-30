@@ -290,7 +290,7 @@ class _Space(ArchComponent.Component):
                         obj.EquipmentPower = p
         if hasattr(obj,"Area"):
             obj.setEditorMode('Area',1)
-        ArchComponent.Component.onChanged(self,obj.prop)
+        ArchComponent.Component.onChanged(self,obj,prop)
 
     def addSubobjects(self,obj,subobjects):
         "adds subobjects to this space"
