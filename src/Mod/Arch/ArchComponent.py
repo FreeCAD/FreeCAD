@@ -361,7 +361,7 @@ class Component:
                     pl = obj.Placement
                     obj.Shape = obj.CloneOf.Shape.copy()
                     obj.Placement = pl
-                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea","BaseMaterial","IfcAttributes"]:
+                    for prop in ["Length","Width","Height","Thickness","Area","PerimeterLength","HorizontalArea","VerticalArea"]:
                         if hasattr(obj,prop) and hasattr(obj.CloneOf,prop):
                             setattr(obj,prop,getattr(obj.CloneOf,prop))
                     return True
@@ -633,20 +633,21 @@ class ViewProviderComponent:
                     if "(" in obj.BaseMaterial.Material['DiffuseColor']:
                         c = tuple([float(f) for f in obj.BaseMaterial.Material['DiffuseColor'].strip("()").split(",")])
                         if obj.ViewObject:
-                            obj.ViewObject.ShapeColor = c
+                            if obj.ViewObject.ShapeColor != c:
+                                obj.ViewObject.ShapeColor = c
         elif prop == "Shape":
             if obj.Base:
                 if obj.Base.isDerivedFrom("Part::Compound"):
                     if obj.ViewObject.DiffuseColor != obj.Base.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = obj.Base.ViewObject.DiffuseColor
                         obj.ViewObject.update()
-            self.onChanged(obj.ViewObject,"ShapeColor")
+                        self.onChanged(obj.ViewObject,"ShapeColor")
         elif prop == "CloneOf":
-            if obj.CloneOf:
+            if obj.CloneOf and not(obj.BaseMaterial):
                 if obj.ViewObject.DiffuseColor != obj.CloneOf.ViewObject.DiffuseColor:
                         obj.ViewObject.DiffuseColor = obj.CloneOf.ViewObject.DiffuseColor
                         obj.ViewObject.update()
-            self.onChanged(obj.ViewObject,"ShapeColor")
+                        self.onChanged(obj.ViewObject,"ShapeColor")
         return
 
     def getIcon(self):

@@ -639,7 +639,8 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                     obj.ViewObject.NodeType = "Area"
                 else:
                     obj.ViewObject.NodeType = "Linear"
-        ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
+        else:
+            ArchComponent.ViewProviderComponent.updateData(self,obj,prop)
 
     def onChanged(self,vobj,prop):
         if prop == "ShowNodes":
@@ -692,7 +693,8 @@ class _ViewProviderStructure(ArchComponent.ViewProviderComponent):
                 self.pointstyle.pointSize = vobj.NodeSize
         elif prop == "NodeType":
             self.updateData(vobj.Object,"Nodes")
-        ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
+        else:
+            ArchComponent.ViewProviderComponent.onChanged(self,vobj,prop)
 
     def setEdit(self,vobj,mode):
         if mode == 0:
