@@ -514,14 +514,15 @@ class TaskPanel(object):
             heading.setStyleSheet(headerStyle)
             addWidget(heading)
 
-        def addQuantity(property, label, activator=None, max=None):
+        def addQuantity(property, labelstring, activator=None, max=None):
             self.previous_value[property] = getattr(self.obj, property)
             widget = ui.createWidget("Gui::InputField")
 
             if activator:
                 self.previous_value[activator] = getattr(self.obj, activator)
                 currently_active = getattr(self.obj, activator)
-                label = QtGui.QCheckBox(label)
+                label = QtGui.QCheckBox(labelstring)
+
                 def change(state):
                     setattr(self.obj, activator, label.isChecked())
                     if label.isChecked():
@@ -530,13 +531,14 @@ class TaskPanel(object):
                         widget.setStyleSheet(grayed_out)
                     self.obj.Proxy.execute(self.obj)
                     FreeCAD.ActiveDocument.recompute()
+
                 label.stateChanged.connect(change)
                 label.setChecked(currently_active)
                 if not currently_active:
                     widget.setStyleSheet(grayed_out)
                 label.setToolTip(self.obj.getDocumentationOfProperty(activator))
             else:
-                label = QtGui.QLabel(label)
+                label = QtGui.QLabel(labelstring)
                 label.setToolTip(self.obj.getDocumentationOfProperty(property))
 
             widget.setText(str(getattr(self.obj, property)))
@@ -548,8 +550,6 @@ class TaskPanel(object):
                 widget.setProperty("maximum", max)
 
             def change(quantity):
-                if activator:
-                    label.setChecked(True)
                 setattr(self.obj, property, quantity)
                 self.obj.Proxy.execute(self.obj)
                 FreeCAD.ActiveDocument.recompute()
