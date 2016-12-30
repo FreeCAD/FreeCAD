@@ -836,31 +836,39 @@ class depth_params:
         self.final_depth = final_depth
         self.user_depths = user_depths
 
+
     def get_depths(self, equalstep=False):
         '''returns a list of depths to be used in order from first to last.
         equalstep=True: all steps down before the finish pass will be equalized.'''
 
-        depths = []
         if self.user_depths is not None:
-            depths = self.user_depths
-        else:
-            total_depth = self.start_depth - self.final_depth
-            if total_depth <= 0:
-                return depths
-            layers_required = int((total_depth - self.z_finish_step) / self.step_down)
-            partial_steplayer = (total_depth - self.z_finish_step) % self.step_down
-            if equalstep is True and partial_steplayer > 0:
-                layerstep = float((total_depth - self.z_finish_step) / (layers_required + 1))
+            return self.user_depths
+
+        total_depth = self.start_depth - self.final_depth
+
+        if total_depth < 0:
+            return []
+
+        depths = [self.final_depth]
+
+        # apply finish step if necessary
+        if self.z_finish_step > 0:
+            if self.z_finish_step < total_depth:
+                depths.append(self.z_finish_step + self.final_depth)
             else:
-                layerstep = self.step_down
+                return depths
 
-            for step in range(layers_required):
-                d = self.start_depth - ((step +1) * layerstep)
-                depths.append(d)
+        depth_to_step = total_depth - self.z_finish_step
 
-            if self.z_finish_step != 0 and depths[-1] != self.final_depth + self.z_finish_step:
-                depths.append(self.final_depth + self.z_finish_step)
-            if depths[-1] != self.final_depth:
-                depths.append(self.final_depth)
+        step_down = self.step_down
+        if equalstep is True:
+            steps_needed = math.ceil(depth_to_step / self.step_down)
+            step_down = depth_to_step / steps_needed
 
+        next_step = depths[-1] + step_down
+        while next_step < self.start_depth:
+            depths.append(next_step)
+            next_step = depths[-1] + step_down
+
+        depths.reverse()
         return depths
