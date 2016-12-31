@@ -25,14 +25,29 @@
 
 #endif
 
+#include <App/Application.h>
+#include <Base/Console.h>
+#include <Base/Parameter.h>
+
 #include "Rez.h"
 
 using namespace TechDrawGui;
 
+//*** initial static var outside methods!
+double Rez::m_rezFactor = Rez::getParameter();
+//***
+
+
 double Rez::getRezFactor()
 {
-    return 10.0;    // 1/10 mm
+    return Rez::m_rezFactor;
 }
+
+void Rez::setRezFactor(double f)
+{
+    Rez::m_rezFactor = f;
+}
+
 
 //turn App side value to Gui side value
 double Rez::guiX(double x)
@@ -84,5 +99,13 @@ QSize Rez::appSize(QSize s)
 {
     QSize result((int)appX(s.width()),(int)appX(s.height()));
     return result;
+}
+
+double Rez::getParameter()
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Rez");
+    double rezFactor  = hGrp->GetFloat("Resolution", 12.0);
+    return rezFactor;
 }
 

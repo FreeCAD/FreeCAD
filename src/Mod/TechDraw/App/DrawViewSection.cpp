@@ -115,6 +115,7 @@ DrawViewSection::DrawViewSection()
     ADD_PROPERTY_TYPE(HatchCutSurface ,(false),fgroup,App::Prop_None,"Hatch the cut surface");
     ADD_PROPERTY_TYPE(HatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
     ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color of the hatch pattern");
+    ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
 
     getParameters();
 

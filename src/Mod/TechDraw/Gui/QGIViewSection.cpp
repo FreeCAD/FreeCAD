@@ -86,9 +86,12 @@ void QGIViewSection::drawSectionFace()
         if (section->HatchCutSurface.getValue()) {
             App::Color hColor = section->HatchColor.getValue();
             newFace->setHatchColor(hColor.asCSSString());
-            newFace->setHatch(section->HatchPattern.getValue());
+            newFace->setHatchFile(section->HatchPattern.getValue());
+            newFace->setHatchScale(section->HatchScale.getValue());
+            newFace->isHatched(true);
         }
         newFace->setFill(faceColor, Qt::SolidPattern);
+        newFace->draw();
         newFace->setPrettyNormal();
         newFace->setAcceptHoverEvents(false);
         newFace->setFlag(QGraphicsItem::ItemIsSelectable, false);

@@ -67,6 +67,7 @@ public:
     App::PropertyBool   HatchCutSurface;
     App::PropertyFile   HatchPattern;
     App::PropertyColor  HatchColor;
+    App::PropertyFloat  HatchScale;
     App::PropertyString SectionSymbol;
 
     virtual short mustExecute() const;

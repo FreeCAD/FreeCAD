@@ -36,7 +36,9 @@ namespace TechDrawGui
 class TechDrawGuiExport Rez
 {
 public:
-    static double getRezFactor();
+    static double getParameter(void);
+    static double getRezFactor(void);
+    static void setRezFactor(double f);
 //turn App side value to Gui side value
     static double guiX(double x);
     static Base::Vector2d guiX(Base::Vector2d v);
@@ -48,6 +50,9 @@ public:
     static QRectF guiRect(QRectF r);
     static QSize guiSize(QSize s);
     static QSize appSize(QSize s);
+    
+private:
+    static double m_rezFactor;
 };
 
 } //end namespace TechDrawGui
