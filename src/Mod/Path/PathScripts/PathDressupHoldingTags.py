@@ -723,9 +723,9 @@ class ObjectDressup:
             self.execute(obj)
 
     def getTags(self, obj):
-        if hasattr(self, 'tags'):
-            return self.tags
-        return self.setup(obj).generateTags(obj, 4)
+        if not hasattr(self, 'tags'):
+            self.execute(obj)
+        return self.tags
 
     def setup(self, obj):
         if True or not hasattr(self, "pathData") or not self.pathData:
