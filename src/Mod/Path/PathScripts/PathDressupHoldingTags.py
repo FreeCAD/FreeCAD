@@ -142,7 +142,7 @@ class Tag:
         height = self.height
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
-            print("Part.makeCone(%f, %f)" % (r1, height))
+            debugPrint("Part.makeCone(%f, %f)" % (r1, height))
         elif self.angle > 0.0 and height > 0.0:
             tangens = math.tan(math.radians(self.angle))
             dr = height / tangens
@@ -153,17 +153,17 @@ class Tag:
                 height = r1 * tangens
                 self.actualHeight = height
             self.r2 = r2
-            print("Part.makeCone(%f, %f, %f)" % (r1, r2, height))
+            debugPrint("Part.makeCone(%f, %f, %f)" % (r1, r2, height))
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
-            print("Part.makeSphere(%f / 10000)" % (r1))
+            debugPrint("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
         if not R == 0: # testing is easier if the solid is not rotated
             angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
-            print("solid.rotate(%f)" % angle)
+            debugPrint("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
-        print("solid.translate(%s)" % self.originAt(z))
+        debugPrint("solid.translate(%s)" % self.originAt(z))
         self.solid.translate(self.originAt(z))
 
     def filterIntersections(self, pts, face):
@@ -274,13 +274,13 @@ class MapWireToTag:
 
     def cleanupEdges(self, edges, baseEdge):
         # want to remove all edges from the wire itself, and all internal struts
-        print("+cleanupEdges")
-        print(" base:")
-        debugEdge(baseEdge, '   ', True)
-        print(" edges:")
+        #print("+cleanupEdges")
+        #print(" base:")
+        debugEdge(baseEdge, '   ')
+        #print(" edges:")
         for e in edges:
-            debugEdge(e, '   ', True)
-        print(":")
+            debugEdge(e, '   ')
+        #print(":")
 
         haveEntry = False
         for e in copy.copy(edges):
@@ -296,7 +296,7 @@ class MapWireToTag:
                 elif 1 == typ:
                     haveEntry = True
 
-        print("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
+        #print("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
         # the remaininng edges for the path from xy(baseEdge) along the tags surface
         outputEdges = []
         p0 = baseEdge.valueAt(baseEdge.FirstParameter)
@@ -306,7 +306,7 @@ class MapWireToTag:
             p0 = PathGeom.xy(p0)
         lastP = p0
         while edges:
-            print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z, haveEntry, ignoreZ))
+            #print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z, haveEntry, ignoreZ))
             for e in edges:
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
@@ -331,11 +331,11 @@ class MapWireToTag:
             if lastP == p0:
                 raise ValueError("No connection to %s" % (p0))
             elif lastP:
-                print("xxxxxx (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z, lastP.x, lastP.y, lastP.z))
+                debugPrint("xxxxxx (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z, lastP.x, lastP.y, lastP.z))
             else:
-                print("xxxxxx (%.2f, %.2f, %.2f) -" % (p0.x, p0.y, p0.z))
+                debugPrint("xxxxxx (%.2f, %.2f, %.2f) -" % (p0.x, p0.y, p0.z))
             lastP = p0
-        print("-cleanupEdges")
+        #print("-cleanupEdges")
         return outputEdges
 
     def isStrut(self, edge):
@@ -454,7 +454,7 @@ class PathData:
         return (edges[0], edges[-1])
 
     def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
-        print("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
+        debugPrint("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
         #for e in self.base.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
 
@@ -716,8 +716,8 @@ class ObjectDressup:
 
     def setTags(self, obj, tags, update = True):
         print("setTags(%d, %d)" % (len(tags), update))
-        for t in tags:
-            print(" .... %s" % t.toString())
+        #for t in tags:
+        #    print(" .... %s" % t.toString())
         obj.Tags = [tag.toString() for tag in tags]
         if update:
             self.execute(obj)
