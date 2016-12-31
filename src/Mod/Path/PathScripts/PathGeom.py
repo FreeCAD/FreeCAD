@@ -83,6 +83,18 @@ class PathGeom:
         return cls.isRoughly(p1.x, p2.x, error) and cls.isRoughly(p1.y, p2.y, error) and cls.isRoughly(p1.z, p2.z, error)
 
     @classmethod
+    def edgesMatch(cls, e0, e1, error=0.0000001):
+        """(e0, e1, [error=0.0000001]
+        Return true if the edges start and end at the same point and have the same type of curve."""
+        if type(e0.Curve) != type(e1.Curve):
+            return False
+        if not cls.pointsCoincide(e0.valueAt(e0.FirstParameter), e1.valueAt(e1.FirstParameter)):
+            return False
+        if not cls.pointsCoincide(e0.valueAt(e0.LastParameter), e1.valueAt(e1.LastParameter)):
+            return False
+        return True
+
+    @classmethod
     def edgeConnectsTo(cls, edge, vector):
         """(edge, vector)
         Returns True if edge connects to given vector."""
