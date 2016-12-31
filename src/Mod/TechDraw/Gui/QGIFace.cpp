@@ -31,6 +31,9 @@
 #include <QPainterPathStroker>
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
+#include <QBitmap>
+#include <QFile>
+#include <QFileInfo>
 #endif
 
 #include <QFile>
@@ -45,6 +48,7 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include "Rez.h"
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
 #include "QGIFace.h"
@@ -57,15 +61,18 @@ QGIFace::QGIFace(int index) :
     m_styleDef(Qt::SolidPattern),
     m_styleSelect(Qt::SolidPattern)
 {
+    m_isHatched = false;
+    m_mode = 0;
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
-    //setFiltersChildEvents(true);
 
-    //setStyle(Qt::NoPen);    //don't draw face lines, just fill
+    //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
     setStyle(Qt::DashLine);
 
     m_styleNormal = m_styleDef;
+    m_fillStyle = m_styleDef;
     m_colNormalFill = m_colDefFill;
     setPrettyNormal();
+    m_texture = QPixmap();
 
     m_svg = new QGCustomSvg();
 
@@ -81,8 +88,38 @@ QGIFace::~QGIFace()
     //nothing to do. every item is a child of QGIFace & will get removed/deleted when QGIF is deleted
 }
 
+void QGIFace::draw() 
+{
+    if (isHatched()) {   
+        QFileInfo hfi(QString::fromUtf8(m_fileSpec.data(),m_fileSpec.size()));
+        if (hfi.isReadable()) {
+            QString ext = hfi.suffix();
+            if (ext.toUpper() == QString::fromUtf8("SVG")) {
+                m_mode = 1;
+                loadSvgHatch(m_fileSpec);
+                buildSvgHatch();
+                toggleSvg(true);
+            } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
+                     (ext.toUpper() == QString::fromUtf8("PNG"))   ||
+                     (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
+                     (ext.toUpper() == QString::fromUtf8("BMP")) ) {
+                m_mode = 2;
+                toggleSvg(false);
+                m_texture = textureFromBitmap(m_fileSpec);
+            }
+        }
+    }
+    show();
+}
+
 void QGIFace::setPrettyNormal() {
-    m_fillStyle = m_styleNormal;
+    if (isHatched()  &&
+        (m_mode == 2) ) {                               //hatch with bitmap fill
+        m_fillStyle = Qt::TexturePattern;
+        m_brush.setTexture(m_texture);
+    } else {
+        m_fillStyle = m_styleNormal;
+    }
     m_fillColor = m_colNormalFill;
     QGIPrimPath::setPrettyNormal();
 }
@@ -99,16 +136,6 @@ void QGIFace::setPrettySel() {
     QGIPrimPath::setPrettySel();
 }
 
-void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
-    m_colNormalFill = c;
-    m_styleNormal = s;
-}
-
-void QGIFace::setFill(QBrush b) {
-    m_colNormalFill = b.color();
-    m_styleNormal = b.style();
-}
-
 void QGIFace::setDrawEdges(bool b) {
     if (b) {
         setStyle(Qt::DashLine);
@@ -117,14 +144,14 @@ void QGIFace::setDrawEdges(bool b) {
     }
 }
 
-void QGIFace::resetFill() {
-    m_colNormalFill = m_colDefFill;
-    m_styleNormal = m_styleDef;
-}
-
-void QGIFace::setHatch(std::string fileSpec)
+void QGIFace::setHatchFile(std::string fileSpec)
 {
-    QString qfs(QString::fromStdString(fileSpec));
+    m_fileSpec = fileSpec;
+}   
+ 
+void QGIFace::loadSvgHatch(std::string fileSpec)
+{
+    QString qfs(QString::fromUtf8(fileSpec.data(),fileSpec.size()));
     QFile f(qfs);
     if (!f.open(QFile::ReadOnly | QFile::Text))  {
         Base::Console().Error("QGIFace could not read %s\n",fileSpec.c_str());
@@ -135,21 +162,18 @@ void QGIFace::setHatch(std::string fileSpec)
         Base::Console().Error("Error - Could not load hatch into SVG renderer for %s\n", fileSpec.c_str());
         return;
     }
-
-    buildHatch();
 }
 
 void QGIFace::setPath(const QPainterPath & path)
 {
     QGraphicsPathItem::setPath(path);
-    if (!m_svgXML.isEmpty()) {
-        buildHatch();
+    if ((m_mode == 1) && !m_svgXML.isEmpty()) {     // svg hatch mode and have svg hatch info loded
+        buildSvgHatch();
     }
 }
 
-void QGIFace::buildHatch()
+void QGIFace::buildSvgHatch()
 {
-    m_styleNormal = Qt::NoBrush;
     double wTile = SVGSIZEW * m_svgScale;
     double hTile = SVGSIZEH * m_svgScale;
     double w = boundingRect().width();
@@ -177,7 +201,28 @@ void QGIFace::buildHatch()
             }
         }
     }
+}
 
+void QGIFace::clearSvg()
+{
+    toggleSvg(false);
+}
+
+//this isn't used currently
+QPixmap QGIFace::textureFromSvg(std::string fileSpec)
+{
+    QPixmap result;
+    QString qs(QString::fromStdString(fileSpec));
+    QFileInfo ffi(qs);
+    if (ffi.isReadable()) {
+        QSvgRenderer renderer(qs);
+        QPixmap pixMap(renderer.defaultSize());
+        pixMap.fill(Qt::white);                                            //try  Qt::transparent?
+        QPainter painter(&pixMap);
+        renderer.render(&painter);                                         //svg texture -> bitmap
+        result = pixMap.scaled(m_svgScale,m_svgScale);
+    }  //else return empty pixmap
+    return result;
 }
 
 //c is a CSS color ie "#000000"
@@ -202,6 +247,35 @@ void QGIFace::toggleSvg(bool b)
     }
     update();
 }
+
+QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
+{
+    QPixmap pix;
+    QString qs = QString::fromUtf8(fileSpec.data(),fileSpec.size());
+    QFileInfo ffi(qs);
+    if (ffi.isReadable()) {
+        QImage img = QImage(qs);
+        img = img.scaled(Rez::guiX(m_svgScale),Rez::guiX(m_svgScale));
+        pix = QPixmap::fromImage(img);
+    }
+    return pix;
+}
+
+void QGIFace::setFill(QColor c, Qt::BrushStyle s) {
+    m_colNormalFill = c;
+    m_styleNormal = s;
+}
+
+void QGIFace::setFill(QBrush b) {
+    m_colNormalFill = b.color();
+    m_styleNormal = b.style();
+}
+
+void QGIFace::resetFill() {
+    m_colNormalFill = m_colDefFill;
+    m_styleNormal = m_styleDef;
+}
+
 
 QRectF QGIFace::boundingRect() const
 {

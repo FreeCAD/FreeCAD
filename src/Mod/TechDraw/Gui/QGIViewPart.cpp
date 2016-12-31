@@ -377,14 +377,16 @@ void QGIViewPart::drawViewPart()
             TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
             if (fHatch) {
                 if (!fHatch->HatchPattern.isEmpty()) {
+                    newFace->setHatchFile(fHatch->HatchPattern.getValue());
                     App::Color hColor = fHatch->HatchColor.getValue();
                     newFace->setHatchColor(hColor.asCSSString());
                     newFace->setHatchScale(fHatch->HatchScale.getValue());
-                    newFace->setHatch(fHatch->HatchPattern.getValue());
+                    newFace->isHatched(true);
                 }
             }
             newFace->setDrawEdges(false);
             newFace->setZValue(ZVALUE::FACE);
+            newFace->draw();
             newFace->setPrettyNormal();
         }
     }

@@ -27,6 +27,8 @@
 #include <QGraphicsItem>
 #include <QSvgRenderer>
 #include <QByteArray>
+#include <QBrush>
+#include <QPixmap>
 
 #include "QGIPrimPath.h"
 
@@ -55,22 +57,35 @@ public:
 public:
     int getProjIndex() const { return projIndex; }
 
+    void draw();
     void setPrettyNormal();
     void setPrettyPre();
     void setPrettySel();
+    void setPath(const QPainterPath & path);
+    void setDrawEdges(bool b);
+
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
-    void setHatch(std::string fileSpec);
-    void resetFill(void);
-    void setPath(const QPainterPath & path);
-    void buildHatch(void);
+    void resetFill();
+
+    void setHatchFile(std::string fileSpec);
     void setHatchColor(std::string c);
     void setHatchScale(double s);
-    void setDrawEdges(bool b);
+
+    void loadSvgHatch(std::string fileSpec);
+    void buildSvgHatch(void);
     void toggleSvg(bool b);
+    void clearSvg(void);
+
+    QPixmap textureFromBitmap(std::string fileSpec);
+    QPixmap textureFromSvg(std::string fillSpec);
+
+    void isHatched(bool s) {m_isHatched = s; }
+    bool isHatched(void) {return m_isHatched;}
+
 
 protected:
-    bool load(QByteArray *svgBytes);
+//    bool load(QByteArray *svgBytes);
 
 protected:
     int projIndex;                              //index of face in Projection. -1 for SectionFace.
@@ -79,6 +94,9 @@ protected:
     QByteArray m_svgXML;
     std::string m_svgCol;
     double m_svgScale;
+    std::string m_fileSpec;
+    bool m_isHatched;
+    int m_mode;
 
 private:
     QBrush m_brush;
@@ -90,6 +108,7 @@ private:
     Qt::BrushStyle m_styleDef;                  //default Normal fill style
     Qt::BrushStyle m_styleNormal;               //current Normal fill style
     Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+    QPixmap m_texture;                          //
 };
 
 }
