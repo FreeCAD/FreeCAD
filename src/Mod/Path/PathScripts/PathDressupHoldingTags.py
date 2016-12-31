@@ -29,6 +29,9 @@ import Part
 import copy
 import math
 
+import cProfile
+import time
+
 from PathScripts import PathUtils
 from PathScripts.PathGeom import *
 from PySide import QtCore, QtGui
@@ -57,7 +60,11 @@ def debugEdge(edge, prefix, force = False):
     pf = edge.valueAt(edge.FirstParameter)
     pl = edge.valueAt(edge.LastParameter)
     if force or debugDressup:
-        print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+        if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+            print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
+        else:
+            pm = edge.valueAt((edge.FirstParameter+edge.LastParameter)/2)
+            print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pm.x, pm.y, pm.z, pl.x, pl.y, pl.z))
 
 def debugMarker(vector, label, color = None, radius = 0.5):
     if debugDressup:
@@ -104,18 +111,18 @@ class Tag:
     def toString(self):
         return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
 
-    def __init__(self, x, y, width, height, angle, enabled=True, z=None):
-        debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d, %s)" % (x, y, width, height, angle/math.pi, enabled, z))
+    def __init__(self, x, y, width, height, angle, enabled=True):
+        debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d)" % (x, y, width, height, angle/math.pi, enabled))
         self.x = x
         self.y = y
-        self.z = z
         self.width = math.fabs(width)
         self.height = math.fabs(height)
         self.actualHeight = self.height
         self.angle = math.fabs(angle)
         self.enabled = enabled
-        if z is not None:
-            self.createSolidsAt(z)
+
+    def fullWidth(self):
+        return 2 * self.toolRadius + self.width
 
     def originAt(self, z):
         return FreeCAD.Vector(self.x, self.y, z)
@@ -126,14 +133,16 @@ class Tag:
     def top(self):
         return self.z + self.actualHeight
 
-    def createSolidsAt(self, z):
+    def createSolidsAt(self, z, R):
         self.z = z
-        r1 = self.width / 2
+        self.toolRadius = R
+        r1 = self.fullWidth() / 2
         self.r1 = r1
         self.r2 = r1
         height = self.height
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
+            print("Part.makeCone(%f, %f)" % (r1, height))
         elif self.angle > 0.0 and height > 0.0:
             tangens = math.tan(math.radians(self.angle))
             dr = height / tangens
@@ -144,10 +153,17 @@ class Tag:
                 height = r1 * tangens
                 self.actualHeight = height
             self.r2 = r2
+            print("Part.makeCone(%f, %f, %f)" % (r1, r2, height))
             self.solid = Part.makeCone(r1, r2, height)
         else:
             # degenerated case - no tag
+            print("Part.makeSphere(%f / 10000)" % (r1))
             self.solid = Part.makeSphere(r1 / 10000)
+        if not R == 0: # testing is easier if the solid is not rotated
+            angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
+            print("solid.rotate(%f)" % angle)
+            self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
+        print("solid.translate(%s)" % self.originAt(z))
         self.solid.translate(self.originAt(z))
 
     def filterIntersections(self, pts, face):
@@ -206,8 +222,9 @@ class Tag:
         return None
 
     def intersects(self, edge, param):
-        if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
-            return self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(param))
+        if self.enabled:
+            if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
+                return self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(param))
         return None
 
 class MapWireToTag:
@@ -231,105 +248,131 @@ class MapWireToTag:
         self.edges = []
         self.entry = i
         self.complete = False
-        self.wire = None
+        self.haveProblem = False
 
     def addEdge(self, edge):
         debugEdge(edge, '..........')
-        if self.wire:
-            self.wire.add(edge)
-        else:
-            self.wire = Part.Wire(edge)
+        self.edges.append(edge)
 
     def needToFlipEdge(self, edge, p):
         if PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), p):
             return True, edge.valueAt(edge.FirstParameter)
         return False, edge.valueAt(edge.LastParameter)
 
-    def isEntryOrExitStrut(self, p1, p2):
-        p = PathGeom.xy(p1)
-        pEntry0 = PathGeom.xy(self.entry)
-        pExit0 = PathGeom.xy(self.exit)
-        # it can only be an entry strut if the strut coincides with the entry point and is above it
-        if PathGeom.pointsCoincide(p, pEntry0) and p1.z >= self.entry.z and p2.z >= self.entry.z:
-            return True
-        if PathGeom.pointsCoincide(p, pExit0) and p1.z >= self.exit.z and p2.z >= self.exit.z:
-            return True
-        return False
+    def isEntryOrExitStrut(self, e):
+        p1 = e.valueAt(e.FirstParameter)
+        p2 = e.valueAt(e.LastParameter)
+        if PathGeom.pointsCoincide(p1, self.entry) and p2.z >= self.entry.z:
+            return 1
+        if PathGeom.pointsCoincide(p2, self.entry) and p1.z >= self.entry.z:
+            return 1
+        if PathGeom.pointsCoincide(p1, self.exit) and p2.z >= self.exit.z:
+            return 2
+        if PathGeom.pointsCoincide(p2, self.exit) and p1.z >= self.exit.z:
+            return 2
+        return 0
 
-
-    def cleanupEdges(self, edges):
-        # first remove all internal struts
-        debugEdge(Part.Edge(Part.LineSegment(self.entry, self.exit)), '------> cleanupEdges')
-        inputEdges = copy.copy(edges)
-        plinths = []
+    def cleanupEdges(self, edges, baseEdge):
+        # want to remove all edges from the wire itself, and all internal struts
+        print("+cleanupEdges")
+        print(" base:")
+        debugEdge(baseEdge, '   ', True)
+        print(" edges:")
         for e in edges:
-            debugEdge(e, '........ cleanup')
-            p1 = e.valueAt(e.FirstParameter)
-            p2 = e.valueAt(e.LastParameter)
-            if PathGeom.pointsCoincide(PathGeom.xy(p1), PathGeom.xy(p2)):
-                #it's a strut
-                if not self.isEntryOrExitStrut(p1, p2):
-                    debugEdge(e, '......... X0 %d/%d' % (PathGeom.edgeConnectsTo(e, self.entry), PathGeom.edgeConnectsTo(e, self.exit)))
-                    inputEdges.remove(e)
-                    if p1.z > p2.z:
-                        plinths.append(p2)
-                    else:
-                        plinths.append(p1)
-        # remove all edges that are connected to the plinths of the (former) internal struts
-        for e in copy.copy(inputEdges):
-            for p in plinths:
-                if PathGeom.edgeConnectsTo(e, p):
-                    debugEdge(e, '......... X1')
-                    inputEdges.remove(e)
-                    break
-        # if there are any edges beside a direct edge remaining, the direct edge between
-        # entry and exit is redundant
-        if len(inputEdges) > 1:
-            for e in copy.copy(inputEdges):
-                if PathGeom.edgeConnectsTo(e, self.entry) and PathGeom.edgeConnectsTo(e, self.exit):
-                    debugEdge(e, '......... X2')
-                    inputEdges.remove(e)
+            debugEdge(e, '   ', True)
+        print(":")
 
-        # the remaining edges form a walk around the tag
-        # they need to be ordered and potentially flipped though
+        haveEntry = False
+        for e in copy.copy(edges):
+            if PathGeom.edgesMatch(e, baseEdge):
+                debugEdge(e, '......... X0')
+                edges.remove(e)
+            elif self.isStrut(e):
+                typ = self.isEntryOrExitStrut(e)
+                debugEdge(e, '......... |%d' % typ)
+                if 0 == typ: # neither entry nor exit
+                    debugEdge(e, '......... X1')
+                    edges.remove(e)
+                elif 1 == typ:
+                    haveEntry = True
+
+        print("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
+        # the remaininng edges for the path from xy(baseEdge) along the tags surface
         outputEdges = []
-        p = self.entry
-        lastP = p
-        while inputEdges:
-            for e in inputEdges:
+        p0 = baseEdge.valueAt(baseEdge.FirstParameter)
+        ignoreZ = False
+        if not haveEntry:
+            ignoreZ = True
+            p0 = PathGeom.xy(p0)
+        lastP = p0
+        while edges:
+            print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z, haveEntry, ignoreZ))
+            for e in edges:
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
-                if PathGeom.pointsCoincide(p1, p):
-                    outputEdges.append((e,False))
-                    inputEdges.remove(e)
-                    lastP = p
-                    p = p2
+                if PathGeom.pointsCoincide(PathGeom.xy(p1) if ignoreZ else p1, p0):
+                    outputEdges.append((e, False))
+                    edges.remove(e)
+                    lastP = None
+                    ignoreZ = False
+                    p0 = p2
                     debugEdge(e, ">>>>> no flip")
                     break
-                elif PathGeom.pointsCoincide(p2, p):
-                    outputEdges.append((e,True))
-                    inputEdges.remove(e)
-                    lastP = p
-                    p = p1
+                elif PathGeom.pointsCoincide(PathGeom.xy(p2) if ignoreZ else p2, p0):
+                    outputEdges.append((e, True))
+                    edges.remove(e)
+                    lastP = None
+                    ignoreZ = False
+                    p0 = p1
                     debugEdge(e, ">>>>> flip")
                     break
-                #else:
-                #    debugEdge(e, "<<<<< (%.2f, %.2f, %.2f)" % (p.x, p.y, p.z))
-            if lastP == p:
-                raise ValueError("No connection to %s" % (p))
-            #else:
-            #    print("xxxxxx (%.2f, %.2f, %.2f)" % (p.x, p.y, p.z))
+                else:
+                    debugEdge(e, "<<<<< (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z))
+            if lastP == p0:
+                raise ValueError("No connection to %s" % (p0))
+            elif lastP:
+                print("xxxxxx (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z, lastP.x, lastP.y, lastP.z))
+            else:
+                print("xxxxxx (%.2f, %.2f, %.2f) -" % (p0.x, p0.y, p0.z))
+            lastP = p0
+        print("-cleanupEdges")
         return outputEdges
 
-    def shell(self):
-        shell = self.wire.extrude(FreeCAD.Vector(0, 0, 10))
-        redundant = filter(lambda f: f.Area == 0, shell.childShapes())
-        if redundant:
-            return shell.removeShape(redundant)
-        return shell
+    def isStrut(self, edge):
+        p1 = PathGeom.xy(edge.valueAt(edge.FirstParameter))
+        p2 = PathGeom.xy(edge.valueAt(edge.LastParameter))
+        return PathGeom.pointsCoincide(p1, p2)
+
+    def cmdsForEdge(self, edge):
+        cmds = []
+
+        # OCC doesn't like it very much if the shapes align with each other. So if we have a slightly
+        # extended edge for the last edge in list we'll use that instead for stable results.
+        if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), self.lastEdge.valueAt(self.lastEdge.FirstParameter)):
+            shell = self.lastEdge.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
+        else:
+            shell = edge.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
+        shape = shell.common(self.tag.solid)
+
+        if not shape.Edges:
+            self.haveProblem = True
+
+        for e,flip in self.cleanupEdges(shape.Edges, edge):
+            debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
+            cmds.extend(PathGeom.cmdsForEdge(e, flip, False))
+        return cmds
+
+    def commandsForEdges(self):
+        commands = []
+        for e in self.edges:
+            if self.isStrut(e):
+                continue
+            commands.extend(self.cmdsForEdge(e))
+        return commands
 
     def add(self, edge):
         self.tail = None
+        self.lastEdge = edge # see cmdsForEdge
         if self.tag.solid.isInside(edge.valueAt(edge.LastParameter), 0.000001, True):
             self.addEdge(edge)
         else:
@@ -341,13 +384,8 @@ class MapWireToTag:
                 self.addEdge(e)
                 self.tail = tail
             self.exit = i
-            if self.wire:
-                face = self.shell().common(self.tag.solid)
-
-                for e,flip in self.cleanupEdges(face.Edges):
-                    debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
-                    self.commands.extend(PathGeom.cmdsForEdge(e, flip, False))
             self.complete = True
+            self.commands.extend(self.commandsForEdges())
 
     def mappingComplete(self):
         return self.complete
@@ -399,9 +437,11 @@ class PathData:
 
     def findZLimits(self, edges):
         # not considering arcs and spheres in Z direction, find the highes and lowest Z values
-        minZ = edges[0].Vertexes[0].Point.z
-        maxZ = minZ
+        minZ =  99999999999
+        maxZ = -99999999999
         for e in edges:
+            if self.rapid.isRapid(e):
+                continue
             for v in e.Vertexes:
                 if v.Point.z < minZ:
                     minZ = v.Point.z
@@ -476,10 +516,11 @@ class PathData:
             debugPrint(" %d: %d" % (i, count))
             #debugMarker(edge.Vertexes[0].Point, 'base', (1.0, 0.0, 0.0), 0.2)
             #debugMarker(edge.Vertexes[1].Point, 'base', (0.0, 1.0, 0.0), 0.2)
-            distance = (edge.LastParameter - edge.FirstParameter) / count
-            for j in range(0, count):
-                tag = edge.Curve.value((j+0.5) * distance)
-                tags.append(Tag(tag.x, tag.y, W, H, angle, True))
+            if 0 != count:
+                distance = (edge.LastParameter - edge.FirstParameter) / count
+                for j in range(0, count):
+                    tag = edge.Curve.value((j+0.5) * distance)
+                    tags.append(Tag(tag.x, tag.y, W, H, angle, True))
 
         return tags
 
@@ -554,6 +595,7 @@ class ObjectDressup:
         return True
 
     def createPath(self, edges, tags, rapid):
+        print("createPath")
         commands = []
         lastEdge = 0
         lastTag = 0
@@ -562,10 +604,11 @@ class ObjectDressup:
         inters = None
         edge = None
 
+        self.mappers = []
         mapper = None
 
         while edge or lastEdge < len(edges):
-            #print("------- lastEdge = %d/%d.%d/%d" % (lastEdge, lastTag, t, len(tags)))
+            debugPrint("------- lastEdge = %d/%d.%d/%d" % (lastEdge, lastTag, t, len(tags)))
             if not edge:
                 edge = edges[lastEdge]
                 debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(edges)))
@@ -587,6 +630,7 @@ class ObjectDressup:
                 i = tags[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
                     mapper = MapWireToTag(edge, tags[tIndex], i)
+                    self.mappers.append(mapper)
                     edge = mapper.tail
 
 
@@ -606,8 +650,17 @@ class ObjectDressup:
         #    print(cmd)
         return Path.Path(commands)
 
+    def problems(self):
+        return filter(lambda m: m.haveProblem, self.mappers)
 
     def execute(self, obj):
+        #pr = cProfile.Profile()
+        #pr.enable()
+        self.doExecute(obj)
+        #pr.disable()
+        #pr.print_stats()
+
+    def doExecute(self,obj):
         if not obj.Base:
             return
         if not obj.Base.isDerivedFrom("Path::Feature"):
@@ -642,7 +695,7 @@ class ObjectDressup:
         tags = pathData.sortedTags(tags)
         self.setTags(obj, tags, False)
         for tag in tags:
-            tag.createSolidsAt(pathData.minZ)
+            tag.createSolidsAt(pathData.minZ, self.toolRadius)
 
         tagID = 0
         for tag in tags:
@@ -653,12 +706,13 @@ class ObjectDressup:
                 if tag.angle != 90:
                     debugCone(tag.originAt(pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
                 else:
-                    debugCylinder(tag.originAt(pathData.minZ), tag.width/2, tag.actualHeight, "tag-%02d" % tagID)
+                    debugCylinder(tag.originAt(pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
         self.fingerprint = [tag.toString() for tag in tags]
         self.tags = tags
 
         obj.Path = self.createPath(pathData.edges, tags, pathData.rapid)
+        print("execute - done")
 
     def setTags(self, obj, tags, update = True):
         print("setTags(%d, %d)" % (len(tags), update))
@@ -681,32 +735,16 @@ class ObjectDressup:
                 FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
                 return None
 
-            ## setup the object's properties, in case they're not set yet
-            #obj.Count = self.tagCount(obj)
-            #obj.Angle = self.tagAngle(obj)
-            #obj.Blacklist = self.tagBlacklist(obj)
-
-            # if the heigt isn't set, use the height of the path
-            #if not hasattr(obj, "Height") or not obj.Height:
-            #    obj.Height = pathData.maxZ - pathData.minZ
-            # try and take an educated guess at the width
-            #if not hasattr(obj, "Width") or not obj.Width:
-            #    width = sorted(pathData.base.Edges, key=lambda e: -e.Length)[0].Length / 10
-            #    while obj.Count > len([e for e in pathData.base.Edges if e.Length > 3*width]):
-            #        width = widht / 2
-            #    obj.Width = width
-
-            # and the tool radius, not sure yet if it's needed
-            #self.toolRadius = 5
-            #toolLoad = PathUtils.getLastToolLoad(obj)
-            #if toolLoad is None or toolLoad.ToolNumber == 0:
-            #    self.toolRadius = 5
-            #else:
-            #    tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-            #    if not tool or tool.Diameter == 0:
-            #        self.toolRadius = 5
-            #    else:
-            #        self.toolRadius = tool.Diameter / 2
+            self.toolRadius = 5
+            toolLoad = PathUtils.getLastToolLoad(obj)
+            if toolLoad is None or toolLoad.ToolNumber == 0:
+                self.toolRadius = 5
+            else:
+                tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+                if not tool or tool.Diameter == 0:
+                    self.toolRadius = 5
+                else:
+                    self.toolRadius = tool.Diameter / 2
             self.pathData = pathData
         return self.pathData
 
@@ -723,8 +761,8 @@ class ObjectDressup:
         return self.pathData.pathLength()
 
 class TaskPanel:
-    DataTag   = QtCore.Qt.ItemDataRole.UserRole
-    DataValue = QtCore.Qt.ItemDataRole.DisplayRole
+    DataX = QtCore.Qt.ItemDataRole.UserRole
+    DataY = QtCore.Qt.ItemDataRole.UserRole + 1
 
     def __init__(self, obj):
         self.obj = obj
@@ -738,6 +776,7 @@ class TaskPanel:
         FreeCADGui.Selection.removeObserver(self.s)
 
     def accept(self):
+        self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
@@ -750,40 +789,38 @@ class TaskPanel:
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def tableWidgetItem(self, tag, val):
-        item = QtGui.QTableWidgetItem()
-        item.setTextAlignment(QtCore.Qt.AlignRight)
-        item.setData(self.DataTag, tag)
-        item.setData(self.DataValue, val)
-        return item
-
     def getFields(self):
+        width = self.form.dsbWidth.value()
+        height = self.form.dsbHeight.value()
+        angle = self.form.dsbAngle.value()
         tags = []
-        for row in range(0, self.form.twTags.rowCount()):
-            x = self.form.twTags.item(row, 0).data(self.DataValue)
-            y = self.form.twTags.item(row, 1).data(self.DataValue)
-            w = self.form.twTags.item(row, 2).data(self.DataValue)
-            h = self.form.twTags.item(row, 3).data(self.DataValue)
-            a = self.form.twTags.item(row, 4).data(self.DataValue)
-            tags.append(Tag(x, y, w, h, a, True))
-        print("getFields: %d" % (len(tags)))
+        for i in range(0, self.form.lwTags.count()):
+            item = self.form.lwTags.item(i)
+            enabled = item.checkState() == QtCore.Qt.CheckState.Checked
+            x = item.data(self.DataX)
+            y = item.data(self.DataY)
+            tags.append(Tag(x, y, width, height, angle, enabled))
         self.obj.Proxy.setTags(self.obj, tags)
 
-    def updateTags(self):
+    def updateTagsView(self):
         self.tags = self.obj.Proxy.getTags(self.obj)
-        self.form.twTags.blockSignals(True)
-        self.form.twTags.setSortingEnabled(False)
-        self.form.twTags.clearSpans()
-        print("updateTags: %d" % (len(self.tags)))
-        self.form.twTags.setRowCount(len(self.tags))
-        for row, tag in enumerate(self.tags):
-            self.form.twTags.setItem(row, 0, self.tableWidgetItem(tag, tag.x))
-            self.form.twTags.setItem(row, 1, self.tableWidgetItem(tag, tag.y))
-            self.form.twTags.setItem(row, 2, self.tableWidgetItem(tag, tag.width))
-            self.form.twTags.setItem(row, 3, self.tableWidgetItem(tag, tag.height))
-            self.form.twTags.setItem(row, 4, self.tableWidgetItem(tag, tag.angle))
-        self.form.twTags.setSortingEnabled(True)
-        self.form.twTags.blockSignals(False)
+        print("updateTagsView: %d" % (len(self.tags)))
+        self.form.lwTags.blockSignals(True)
+        self.form.lwTags.clear()
+        for tag in self.tags:
+            lbl = "(%.2f, %.2f)" % (tag.x, tag.y)
+            item = QtGui.QListWidgetItem(lbl)
+            item.setData(self.DataX, tag.x)
+            item.setData(self.DataY, tag.y)
+            if tag.enabled:
+                item.setCheckState(QtCore.Qt.CheckState.Checked)
+            else:
+                item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            flags = QtCore.Qt.ItemFlag.ItemIsSelectable
+            flags |= QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+            item.setFlags(flags)
+            self.form.lwTags.addItem(item)
+        self.form.lwTags.blockSignals(False)
 
     def cleanupUI(self):
         print("cleanupUI")
@@ -792,67 +829,50 @@ class TaskPanel:
                 if obj.Name.startswith('tag'):
                     FreeCAD.ActiveDocument.removeObject(obj.Name)
 
-    def updateUI(self):
-        print("updateUI")
-        self.cleanupUI()
-        self.getFields()
-        if debugDressup:
-            FreeCAD.ActiveDocument.recompute()
-
-
-    def whenApplyClicked(self):
-        print("whenApplyClicked")
+    def generateNewTags(self):
+        print("generateNewTags")
         self.cleanupUI()
 
         count = self.form.sbCount.value()
-        spacing = self.form.dsbSpacing.value()
         width = self.form.dsbWidth.value()
         height = self.form.dsbHeight.value()
         angle = self.form.dsbAngle.value()
 
-        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle, spacing * 0.99)
+        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle)
 
         self.obj.Proxy.setTags(self.obj, tags)
-        self.updateTags()
-        if debugDressup:
-            # this causes a big of an echo and a double click on the spin buttons, don't know why though
-            FreeCAD.ActiveDocument.recompute()
+        self.updateTagsView()
+        #if debugDressup:
+        #    # this causes a big of an echo and a double click on the spin buttons, don't know why though
+        #    FreeCAD.ActiveDocument.recompute()
 
-    def autoApply(self):
-        print("autoApply")
-        if self.form.cbAutoApply.checkState() == QtCore.Qt.CheckState.Checked:
-            self.whenApplyClicked()
+#    def autoApply(self):
+#        print("autoApply")
+#        if self.form.cbAutoApply.checkState() == QtCore.Qt.CheckState.Checked:
+#            self.whenApplyClicked()
 
-    def updateTagSpacing(self, count):
-        print("updateTagSpacing")
-        if count == 0:
-            spacing = 0
-        else:
-            spacing = self.pathLength / count
-        self.form.dsbSpacing.blockSignals(True)
-        self.form.dsbSpacing.setValue(spacing)
-        self.form.dsbSpacing.blockSignals(False)
+    def updateModel(self):
+        self.getFields()
+        self.updateTagsView()
+        #FreeCAD.ActiveDocument.recompute()
 
     def whenCountChanged(self):
         print("whenCountChanged")
-        self.updateTagSpacing(self.form.sbCount.value())
-        self.autoApply()
+        count = self.form.sbCount.value()
+        self.form.pbGenerate.setEnabled(count)
 
-    def whenSpacingChanged(self):
-        print("whenSpacingChanged")
-        if self.form.dsbSpacing.value() == 0:
-            count = 0
-        else:
-            count = int(self.pathLength / self.form.dsbSpacing.value())
-        self.form.sbCount.blockSignals(True)
-        self.form.sbCount.setValue(count)
-        self.form.sbCount.blockSignals(False)
-        self.autoApply()
+    def whenTagSelectionChanged(self):
+        print('whenTagSelectionChanged')
+        item = self.form.lwTags.currentItem()
+        self.form.pbDelete.setEnabled(not item is None)
 
-    def whenOkClicked(self):
-        print("whenOkClicked")
-        self.whenApplyClicked()
-        self.form.toolBox.setCurrentWidget(self.form.tbpTags)
+    def deleteSelectedTag(self):
+        item = self.form.lwTags.currentItem()
+        x = item.data(self.DataX)
+        y = item.data(self.DataY)
+        tags = filter(lambda t: t.x != x or t.y != y, self.tags)
+        self.obj.Proxy.setTags(self.obj, tags)
+        self.updateTagsView()
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
@@ -861,29 +881,44 @@ class TaskPanel:
         widget.setValue(val)
 
     def setFields(self):
-        self.pathLength = self.obj.Proxy.getPathLength(self.obj)
-        vHeader = self.form.twTags.verticalHeader()
-        vHeader.setResizeMode(QtGui.QHeaderView.Fixed)
-        vHeader.setDefaultSectionSize(20)
-        self.updateTags()
-        self.setupSpinBox(self.form.sbCount, self.form.twTags.rowCount(), None)
-        self.setupSpinBox(self.form.dsbSpacing, 0)
+        self.updateTagsView()
+        self.setupSpinBox(self.form.sbCount, len(self.tags), None)
         self.setupSpinBox(self.form.dsbHeight, self.obj.Proxy.getHeight(self.obj))
         self.setupSpinBox(self.form.dsbWidth, self.obj.Proxy.getWidth(self.obj))
-        self.setupSpinBox(self.form.dsbAngle, self.obj.Proxy.getAngle(self.obj))
-        self.updateTagSpacing(self.form.twTags.rowCount())
+        self.setupSpinBox(self.form.dsbAngle, self.obj.Proxy.getAngle(self.obj), 0)
+        self.form.dsbAngle.setMaximum(90)
+        self.form.dsbAngle.setSingleStep(5.)
+
+    def updateModelHeight(self):
+        print('updateModelHeight')
+        self.updateModel()
+
+    def updateModelWidth(self):
+        print('updateModelWidth')
+        self.updateModel()
+
+    def updateModelAngle(self):
+        print('updateModelAngle')
+        self.updateModel()
+
+    def updateModelTags(self):
+        print('updateModelTags')
+        self.updateModel()
 
     def setupUi(self):
         self.setFields()
+        self.whenCountChanged()
+
         self.form.sbCount.valueChanged.connect(self.whenCountChanged)
-        self.form.dsbSpacing.valueChanged.connect(self.whenSpacingChanged)
-        self.form.dsbHeight.valueChanged.connect(self.autoApply)
-        self.form.dsbWidth.valueChanged.connect(self.autoApply)
-        self.form.dsbAngle.valueChanged.connect(self.autoApply)
-        #self.form.pbAdd.clicked.connect(self.)
-        self.form.buttonBox.button(QtGui.QDialogButtonBox.Apply).clicked.connect(self.whenApplyClicked)
-        self.form.buttonBox.button(QtGui.QDialogButtonBox.Ok).clicked.connect(self.whenOkClicked)
-        self.form.twTags.itemChanged.connect(self.updateUI)
+        self.form.pbGenerate.clicked.connect(self.generateNewTags)
+
+        self.form.dsbHeight.editingFinished.connect(self.updateModelHeight)
+        self.form.dsbWidth.editingFinished.connect(self.updateModelWidth)
+        self.form.dsbAngle.editingFinished.connect(self.updateModelAngle)
+        self.form.lwTags.itemChanged.connect(self.updateModelTags)
+        self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
+
+        self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
 
 class SelObserver:
     def __init__(self):

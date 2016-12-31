@@ -130,12 +130,14 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command('G0', {'X': 0}))
         commands.append(Path.Command('G1', {'Y': 0}))
 
-        wire = PathGeom.wireForPath(Path.Path(commands))
+        wire,rapid = PathGeom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0,0,0), Vector(1,0,0))
         self.assertLine(wire.Edges[1], Vector(1,0,0), Vector(1,1,0))
         self.assertLine(wire.Edges[2], Vector(1,1,0), Vector(0,1,0))
         self.assertLine(wire.Edges[3], Vector(0,1,0), Vector(0,0,0))
+        self.assertEqual(len(rapid), 1)
+        self.assertTrue(PathGeom.edgesMatch(rapid[0], wire.Edges[2]))
 
         wires = PathGeom.wiresForPath(Path.Path(commands))
         self.assertEqual(len(wires), 2)
