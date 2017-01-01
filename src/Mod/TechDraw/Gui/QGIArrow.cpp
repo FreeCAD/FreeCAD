@@ -63,11 +63,17 @@ void QGIArrow::flip(bool state) {
 void QGIArrow::draw() {
     QPainterPath path;
     if (m_style == 0) {
-        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);   //"arrow l/w sb 3/1" ??
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //"arrow l/w sb 3/1" ??
     } else if (m_style == 1) {
-        path = makeOpenArrow(m_size,m_size/3.0,isFlipped);        //broad arrow?
+        path = makeOpenArrow(m_size,m_size/3.0,isFlipped);          //broad arrow?
     } else if (m_style == 2) {
-        path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);         //big enough?
+        path = makeHashMark(m_size/2.0,m_size/2.0,isFlipped);       //big enough?
+    } else if (m_style == 3) {
+        path = makeDot(m_size/2.0,m_size/2.0,isFlipped);
+    } else if (m_style == 4) {
+        path = makeOpenDot(m_size/2.0,m_size/2.0,isFlipped);
+    } else {
+        path = makeFilledTriangle(m_size,m_size/6.0,isFlipped);     //sb a question mark or ???
     }
     setPath(path);
 }
@@ -109,7 +115,7 @@ QPainterPath QGIArrow::makeOpenArrow(double length, double width, bool flipped)
     return path;
 }
 
-QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)
+QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)   //Arch tick
 {
     double adjWidth = 1.0;
 //(0,0) is tip of arrow
@@ -123,6 +129,27 @@ QPainterPath QGIArrow::makeHashMark(double length, double width, bool flipped)
     m_fill = Qt::NoBrush;
     return path;
 }
+
+QPainterPath QGIArrow::makeDot(double length, double width, bool flipped)   //closed dot
+{
+    Q_UNUSED(flipped);
+    QPainterPath path;
+    path.moveTo(0.0,0.0);                                  ////(0,0) is Center of dot
+    path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
+    m_fill = Qt::SolidPattern;
+    return path;
+}
+
+QPainterPath QGIArrow::makeOpenDot(double length, double width, bool flipped)
+{
+    Q_UNUSED(flipped);
+    QPainterPath path;
+    path.moveTo(0.0,0.0);                                  ////(0,0) is Center of dot
+    path.addEllipse(Rez::guiX(-length/2.0), Rez::guiX(-width/2.0), Rez::guiX(length), Rez::guiX(width));
+    m_fill = Qt::NoBrush;
+    return path;
+}
+
 
 int QGIArrow::getPrefArrowStyle()
 {
