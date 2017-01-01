@@ -492,8 +492,13 @@ void InputField::setMinimum(double m)
 
 void InputField::setUnitText(const QString& str)
 {
-    Base::Quantity quant = Base::Quantity::parse(str);
-    setUnit(quant.getUnit());
+    try {
+        Base::Quantity quant = Base::Quantity::parse(str);
+        setUnit(quant.getUnit());
+    }
+    catch (...) {
+        // ignore exceptions
+    }
 }
 
 QString InputField::getUnitText(void)

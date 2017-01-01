@@ -40,7 +40,7 @@ Arguments for linuxcnc:
     --line-numbers,--no-line-numbers ... prefix with line numbers (--no-lin-numbers)
     --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
 '''
-
+import FreeCAD
 import datetime
 from PathScripts import PostUtils
 
@@ -50,7 +50,10 @@ now = datetime.datetime.now()
 OUTPUT_COMMENTS = True
 OUTPUT_HEADER = True
 OUTPUT_LINE_NUMBERS = False
-SHOW_EDITOR = True
+if FreeCAD.GuiUp:
+    SHOW_EDITOR = True
+else:
+    SHOW_EDITOR = False
 MODAL = False  # if true commands are suppressed if the same as previous line.
 COMMAND_SPACE = " "
 LINENR = 100  # line number starting value

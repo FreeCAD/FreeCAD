@@ -210,8 +210,10 @@ void DraftDxfRead::AddObject(Part::TopoShape *shape)
     vec.push_back(shape);
     layers[LayerName()] = vec;
     if (!optionGroupLayers) {
-        Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", "Shape");
-        pcFeature->Shape.setValue(*shape);
+        if(LayerName().substr(0, 6) != "BLOCKS") {
+            Part::Feature *pcFeature = (Part::Feature *)document->addObject("Part::Feature", "Shape");
+            pcFeature->Shape.setValue(shape->getShape());
+        }
     }
 }
 

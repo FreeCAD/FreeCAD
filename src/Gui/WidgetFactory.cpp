@@ -108,7 +108,7 @@ PyTypeObject** SbkPySide2_QtWidgetsTypes=NULL;
 
 using namespace Gui;
 
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
+#if defined (HAVE_SHIBOKEN)
 namespace Shiboken {
 template<> struct Converter<Base::Quantity>
 {
@@ -150,13 +150,9 @@ PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
 
 void registerTypes()
 {
-#if defined (HAVE_SHIBOKEN2)
-    //FIXME: This crashes with Shiboken2
-#else
     SbkConverter* convert = Shiboken::Conversions::createConverter(&Base::QuantityPy::Type, toPythonFuncQuantity);
     Shiboken::Conversions::setPythonToCppPointerFunctions(convert, toCppPointerConvFuncQuantity, toCppPointerCheckFuncQuantity);
     Shiboken::Conversions::registerConverterName(convert, "Base::Quantity");
-#endif
 }
 #endif
 
