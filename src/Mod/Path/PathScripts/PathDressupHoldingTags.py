@@ -768,21 +768,30 @@ class TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
         FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
+        self.jvo = PathUtils.findParentJob(obj).ViewObject
+        self.jvoVisible = self.jvo.isVisible()
+        if self.jvoVisible:
+            self.jvo.hide()
 
     def reject(self):
+        print("reject")
         FreeCAD.ActiveDocument.abortTransaction()
-        FreeCADGui.Control.closeDialog()
-        FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s)
+        self.cleanup()
 
     def accept(self):
+        print("accept")
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
+        self.cleanup()
+        FreeCAD.ActiveDocument.recompute()
+
+    def cleanup(self):
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
-        FreeCAD.ActiveDocument.recompute()
+        if self.jvoVisible:
+            self.jvo.show()
 
     def open(self):
         self.s = SelObserver()
@@ -868,11 +877,18 @@ class TaskPanel:
 
     def deleteSelectedTag(self):
         item = self.form.lwTags.currentItem()
-        x = item.data(self.DataX)
-        y = item.data(self.DataY)
-        tags = filter(lambda t: t.x != x or t.y != y, self.tags)
-        self.obj.Proxy.setTags(self.obj, tags)
-        self.updateTagsView()
+        if item:
+            x = item.data(self.DataX)
+            y = item.data(self.DataY)
+            tags = filter(lambda t: t.x != x or t.y != y, self.tags)
+            self.obj.Proxy.setTags(self.obj, tags)
+            self.updateTagsView()
+
+    def addNewTagAt(self, point, what):
+        print("%s '%s'" %( point, what.Name))
+
+    def addNewTag(self):
+        FreeCADGui.Snapper.getPoint(callback=self.addNewTagAt)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
@@ -919,6 +935,7 @@ class TaskPanel:
         self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
 
         self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.form.pbAdd.clicked.connect(self.addNewTag)
 
 class SelObserver:
     def __init__(self):
