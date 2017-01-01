@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>420</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -145,7 +145,7 @@
      <x>10</x>
      <y>190</y>
      <width>501</width>
-     <height>201</height>
+     <height>231</height>
     </rect>
    </property>
    <property name="title">
@@ -157,7 +157,7 @@
       <x>20</x>
       <y>30</y>
       <width>471</width>
-      <height>161</height>
+      <height>194</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2,1">
@@ -349,6 +349,82 @@
        </property>
       </spacer>
      </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Arrow Style</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="Gui::PrefComboBox" name="pcbArrow">
+       <property name="toolTip">
+        <string>Preferred arrowhead style</string>
+       </property>
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <property name="maxVisibleItems">
+        <number>5</number>
+       </property>
+       <property name="prefEntry" stdset="0">
+        <cstring>ArrowStyle</cstring>
+       </property>
+       <property name="prefPath" stdset="0">
+        <cstring>Mod/TechDraw/Decorations</cstring>
+       </property>
+       <item>
+        <property name="text">
+         <string>0 - Filled Triangle</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icons/arrowfilled.svg</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>1 - Open Arrowhead</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icons/arrowopen.svg</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>2 - Tick</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icons/arrowtick.svg</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>3 - Dot</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icons/arrowdot.svg</normalon>
+         </iconset>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>4 - Open Circle</string>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normalon>:/icons/arrowopendot.svg</normalon>
+         </iconset>
+        </property>
+       </item>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -385,6 +461,8 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../../Documents/CAD/DrawingModule/Resources/TechDraw.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -44,22 +44,21 @@ public:
 
 public:
     void draw();
-    //void setHighlighted(bool state);
     void flip(bool state);
     double getSize() { return m_size; }
     void setSize(double s);
     int getStyle() { return m_style; }
     void setStyle(int s) { m_style = s; }
-    //QPainterPath shape() const;
     static int getPrefArrowStyle();
 
     virtual void paint(QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget = 0 );
 
 protected:
-    //QVariant itemChange(GraphicsItemChange change, const QVariant &value);
     QPainterPath makeFilledTriangle(double length, double width, bool flipped);
     QPainterPath makeOpenArrow(double length, double width, bool flipped);
     QPainterPath makeHashMark(double length, double width, bool flipped); 
+    QPainterPath makeDot(double length, double width, bool flipped); 
+    QPainterPath makeOpenDot(double length, double width, bool flipped); 
    
 private:
     QBrush m_brush;
@@ -69,6 +68,6 @@ private:
     bool isFlipped;
 };
 
-} // namespace MDIViewPageGui
+}
 
 #endif // DRAWINGGUI_QGRAPHICSITEMARROW_H
