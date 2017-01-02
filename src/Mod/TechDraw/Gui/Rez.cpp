@@ -80,6 +80,12 @@ QPointF Rez::guiPt(QPointF p)
     return result;
 }
 
+QPointF Rez::appPt(QPointF p)
+{
+    QPointF result(appX(p.x()),appX(p.y()));
+    return result;
+}
+
 QRectF Rez::guiRect(QRectF r)
 {
     QRectF result(guiX(r.left()),
@@ -105,7 +111,7 @@ double Rez::getParameter()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Rez");
-    double rezFactor  = hGrp->GetFloat("Resolution", 12.0);
+    double rezFactor  = hGrp->GetFloat("Resolution", 1.0);
     return rezFactor;
 }
 
