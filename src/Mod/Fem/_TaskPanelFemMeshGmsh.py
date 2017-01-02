@@ -60,11 +60,16 @@ class _TaskPanelFemMeshGmsh:
         self.update()
 
     def getStandardButtons(self):
-        return int(QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Close)
-        # show a apply and a close button
-        # def reject() is called on close button
+        return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Apply | QtGui.QDialogButtonBox.Cancel)
+        # show a OK, a apply and a Cancel button
+        # def reject() is called on Cancel button
         # def clicked(self, button) is needed, to access the apply button
-        # def accept() in no longer needed, since there is no OK button
+
+    def accept(self):
+        self.set_mesh_params()
+        FreeCADGui.ActiveDocument.resetEdit()
+        FreeCAD.ActiveDocument.recompute()
+        return True
 
     def reject(self):
         FreeCADGui.ActiveDocument.resetEdit()
@@ -73,6 +78,7 @@ class _TaskPanelFemMeshGmsh:
 
     def clicked(self, button):
         if button == QtGui.QDialogButtonBox.Apply:
+            self.set_mesh_params()
             self.run_gmsh()
 
     def get_mesh_params(self):
@@ -133,7 +139,6 @@ class _TaskPanelFemMeshGmsh:
         self.gmsh_runs = True
         self.console_log("We gone start ...")
         self.get_active_analysis()
-        self.set_mesh_params()
         import FemGmshTools
         gmsh_mesh = FemGmshTools.FemGmshTools(self.obj, self.analysis)
         self.console_log("Start GMSH ...")
