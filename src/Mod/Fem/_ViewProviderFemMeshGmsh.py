@@ -63,6 +63,7 @@ class _ViewProviderFemMeshGmsh:
         return
 
     def doubleClicked(self, vobj):
+        FreeCADGui.activateWorkbench('FemWorkbench')
         # Group meshing is only active on active analysis, we should make sure the analysis the mesh belongs too is active
         gui_doc = FreeCADGui.getDocument(vobj.Object.Document)
         if not gui_doc.getInEdit():
