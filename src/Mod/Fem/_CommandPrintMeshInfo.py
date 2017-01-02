@@ -31,7 +31,6 @@ import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
 from PySide import QtCore
-from PySide import QtGui
 
 
 class _CommandPrintMeshInfo(FemCommands):
@@ -56,4 +55,4 @@ class _CommandPrintMeshInfo(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_PrintMeshInfo',_CommandPrintMeshInfo())
+FreeCADGui.addCommand('Fem_PrintMeshInfo', _CommandPrintMeshInfo())
