@@ -506,22 +506,19 @@ void QGVPage::saveSvg(QString filename)
                              docName;
 
     //Base::Console().Message("TRACE - saveSVG - page width: %d height: %d\n",width,height);    //A4 297x210
+
+    //with Rez set to 10 we make a dot 10 times/mm => 254dpi?
+    //                                 12          => 304.8 dpi?  approx printer dpi 300dpi
+    
     QSvgGenerator svgGen;
     svgGen.setFileName(filename);
-    svgGen.setSize(QSize((int) page->getPageWidth(), (int)page->getPageHeight()));
-    svgGen.setViewBox(QRect(0, 0, page->getPageWidth(), page->getPageHeight()));
-    //TODO: Exported Svg file is not quite right. <svg width="301.752mm" height="213.36mm" viewBox="0 0 297 210"... A4: 297x210
-    //      Page too small (A4 vs Letter? margins?)
-    //TODO: text in Qt is in mm (actually scene units).  text in SVG is points(?). fontsize in export file is too small by 1/2.835.
-    //      resize all textItem before export?
-    //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
-    //      duplicate all textItems and only show the appropriate one for screen/print vs export?
+    svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
+    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output 
+    // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
+    svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
+    
+    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. 1dot/mm so 25.4dpi
 
-// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI  //really "user space units/inch"?
-    svgGen.setResolution(25);    // mm/inch??  docs say this is DPI
-
-    //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
-    //svgGen.setResolution(96);     // page is ~78x55mm
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
 

@@ -116,6 +116,8 @@ void QGIViewAnnotation::draw()
     }
 }
 
+//TODO: text is position slightly high (and left??) on page save to SVG file
+
 void QGIViewAnnotation::drawAnnotation()
 {
     auto viewAnno( dynamic_cast<TechDraw::DrawViewAnnotation *>(getViewObject()) );

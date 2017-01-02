@@ -43,10 +43,12 @@ public:
     static double guiX(double x);
     static Base::Vector2d guiX(Base::Vector2d v);
     static Base::Vector3d guiX(Base::Vector3d v);
-
 //turn Gui side value to App side value
     static double appX(double x);
+
     static QPointF guiPt(QPointF p);
+    static QPointF appPt(QPointF p);
+
     static QRectF guiRect(QRectF r);
     static QSize guiSize(QSize s);
     static QSize appSize(QSize s);
