@@ -29,7 +29,7 @@ import FemToolsCcx
 import FreeCAD
 import FemAnalysis
 import FemSolverCalculix
-import MechanicalMaterial
+import FemMaterial
 import csv
 import tempfile
 import unittest
@@ -109,7 +109,7 @@ class FemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_material(self):
-        self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+        self.new_material_object = FemMaterial.makeFemMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
@@ -362,7 +362,7 @@ class TherMechFemTest(unittest.TestCase):
         self.active_doc.recompute()
 
     def create_new_material(self):
-        self.new_material_object = MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')
+        self.new_material_object = FemMaterial.makeFemMaterial('MechanicalMaterial')
         mat = self.new_material_object.Material
         mat['Name'] = "Steel-Generic"
         mat['YoungsModulus'] = "200000 MPa"
