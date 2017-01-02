@@ -53,4 +53,4 @@ class _CommandClearMesh(FemCommands):
 
         FreeCADGui.Selection.clearSelection()
 
-FreeCADGui.addCommand('Fem_ClearMesh',_CommandClearMesh())
+FreeCADGui.addCommand('Fem_ClearMesh', _CommandClearMesh())
