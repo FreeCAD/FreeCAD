@@ -20,11 +20,11 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_TaskPanelMechanicalMaterial"
+__title__ = "_TaskPanelFemMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package TaskPanelMechanicalMaterial
+## @package TaskPanelFemMaterial
 #  \ingroup FEM
 
 import FreeCAD
@@ -34,8 +34,8 @@ from PySide import QtCore
 import Units
 
 
-class _TaskPanelMechanicalMaterial:
-    '''The editmode TaskPanel for MechanicalMaterial objects'''
+class _TaskPanelFemMaterial:
+    '''The editmode TaskPanel for FemMaterial objects'''
     def __init__(self, obj):
         FreeCADGui.Selection.clearSelection()
         self.sel_server = None
@@ -50,7 +50,7 @@ class _TaskPanelMechanicalMaterial:
             self.get_references()
         self.references_shape_type = None
 
-        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelMechanicalMaterial.ui")
+        self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMaterial.ui")
         QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.input_fd_young_modulus, QtCore.SIGNAL("valueChanged(double)"), self.ym_changed)

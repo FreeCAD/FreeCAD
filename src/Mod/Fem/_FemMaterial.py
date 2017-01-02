@@ -20,20 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_MechanicalMaterial"
+__title__ = "FemMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package MechanicalMaterial
+## @package FemMaterial
 #  \ingroup FEM
 
 
-class _MechanicalMaterial:
-    "The Material object"
+class _FemMaterial:
+    "The FEM Material object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLinkSubList", "References", "Material", "List of material shapes")
         obj.Proxy = self
-        self.Type = "MechanicalMaterial"
+        self.Type = "FemMaterial"
 
     def execute(self, obj):
         return
