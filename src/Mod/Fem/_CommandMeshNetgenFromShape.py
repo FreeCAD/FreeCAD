@@ -30,6 +30,7 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 from FemCommands import FemCommands
 import FreeCADGui
+import FemGui
 from PySide import QtCore
 
 
@@ -50,6 +51,9 @@ class _CommandMeshNetgenFromShape(FemCommands):
             if(sel[0].isDerivedFrom("Part::Feature")):
                 FreeCADGui.doCommand("App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject', '" + sel[0].Name + "_Mesh')")
                 FreeCADGui.doCommand("App.activeDocument().ActiveObject.Shape = App.activeDocument()." + sel[0].Name)
+                if FemGui.getActiveAnalysis():
+                    FreeCADGui.addModule("FemGui")
+                    FreeCADGui.doCommand("FemGui.getActiveAnalysis().Member = FemGui.getActiveAnalysis().Member + [App.ActiveDocument.ActiveObject]")
                 FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
         FreeCADGui.Selection.clearSelection()
