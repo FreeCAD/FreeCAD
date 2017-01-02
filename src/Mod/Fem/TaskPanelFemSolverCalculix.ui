@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>MechanicalMaterial</class>
- <widget class="QWidget" name="MechanicalMaterial">
+ <class>SolverCalculix</class>
+ <widget class="QWidget" name="SolverCalculix">
   <property name="geometry">
    <rect>
     <x>0</x>
