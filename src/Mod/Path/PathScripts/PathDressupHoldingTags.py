@@ -586,9 +586,11 @@ class ObjectDressup:
             self.tags = self.pathData.generateTags(obj, count, obj.Width, obj.Height, obj.Angle, None)
             obj.Positions = [tag.originAt(0) for tag in self.tags]
             obj.Disabled  = []
+            return False
         else:
             self.setup(obj, count)
             self.execute(obj)
+            return True
 
     def isValidTagStartIntersection(self, edge, i):
         if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
@@ -847,7 +849,8 @@ class TaskPanel:
         self.cleanupUI()
 
         count = self.form.sbCount.value()
-        self.obj.Proxy.generateTags(self.obj, count)
+        if not self.obj.Proxy.generateTags(self.obj, count):
+            self.obj.Proxy.execute(self.obj)
 
         self.updateTagsView()
         #if debugDressup:
