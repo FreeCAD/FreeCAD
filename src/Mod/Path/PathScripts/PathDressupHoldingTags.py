@@ -32,6 +32,7 @@ import math
 import cProfile
 import time
 
+from DraftGui import todo
 from PathScripts import PathUtils
 from PathScripts.PathGeom import *
 from PySide import QtCore, QtGui
@@ -468,11 +469,11 @@ class PathData:
         if width:
             W = width
         else:
-            W = self.tagWidth()
+            W = self.defaultTagWidth()
         if height:
             H = height
         else:
-            H = self.tagHeight()
+            H = self.defaultTagHeight()
 
 
         # start assigning tags on the longest segment
@@ -539,19 +540,16 @@ class PathData:
 
         return (currentLength, lastTagLength)
 
-    def tagHeight(self):
+    def defaultTagHeight(self):
         if hasattr(self.obj, 'Base') and hasattr(self.obj.Base, 'StartDepth') and hasattr(self.obj.Base, 'FinalDepth'):
-            return self.obj.Base.StartDepth - self.obj.Base.FinalDepth
+            return (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value
         return self.maxZ - self.minZ
 
-    def tagWidth(self):
+    def defaultTagWidth(self):
         return self.shortestAndLongestPathEdge()[1].Length / 10
 
-    def tagAngle(self):
+    def defaultTagAngle(self):
         return 90
-
-    def pathLength(self):
-        return self.base.Length
 
     def sortedTags(self, tags):
         ordered = []
@@ -570,8 +568,11 @@ class ObjectDressup:
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
-        obj.addProperty("App::PropertyStringList", "Tags", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_holdingTags", "Inserted tags"))
-        obj.setEditorMode("Tags", 2)
+        obj.addProperty("App::PropertyFloat", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
+        obj.addProperty("App::PropertyFloat", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
+        obj.addProperty("App::PropertyFloat", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
+        obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of insterted holding tags"))
+        obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -580,8 +581,14 @@ class ObjectDressup:
     def __setstate__(self, state):
         return None
 
-    def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
-        return self.pathData.generateTags(obj, count, width, height, angle, spacing)
+    def generateTags(self, obj, count):
+        if hasattr(self, "pathData"):
+            self.tags = self.pathData.generateTags(obj, count, obj.Width, obj.Height, obj.Angle, None)
+            obj.Positions = [tag.originAt(0) for tag in self.tags]
+            obj.Disabled  = []
+        else:
+            self.setup(obj, count)
+            self.execute(obj)
 
     def isValidTagStartIntersection(self, edge, i):
         if PathGeom.pointsCoincide(i, edge.valueAt(edge.LastParameter)):
@@ -675,103 +682,87 @@ class ObjectDressup:
             print("execute - no pathData")
             return
 
-        if hasattr(obj, 'Tags') and obj.Tags:
-            if False and self.fingerprint == obj.Tags:
-                print("execute - cache valid")
-                return
-            print("execute - tags from property")
-            tags = [Tag.FromString(tag) for tag in obj.Tags]
-        else:
-            print("execute - default tags")
-            tags = self.generateTags(obj, 4.)
+        self.tags = []
+        if hasattr(obj, "Positions"):
+            for i, pos in enumerate(obj.Positions):
+                tag = Tag(pos.x, pos.y, obj.Width, obj.Height, obj.Angle, not i in obj.Disabled)
+                tag.createSolidsAt(pathData.minZ, self.toolRadius)
+                self.tags.append(tag)
 
-        if not tags:
+        if not self.tags:
             print("execute - no tags")
-            self.tags = []
             obj.Path = obj.Base.Path
             return
 
-        print("execute - %d tags" % (len(tags)))
-        tags = pathData.sortedTags(tags)
-        self.setTags(obj, tags, False)
-        for tag in tags:
-            tag.createSolidsAt(pathData.minZ, self.toolRadius)
-
         tagID = 0
-        for tag in tags:
-            tagID += 1
-            if tag.enabled:
-                #print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
-                #debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                if tag.angle != 90:
-                    debugCone(tag.originAt(pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
-                else:
-                    debugCylinder(tag.originAt(pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
+        if debugDressup:
+            for tag in self.tags:
+                tagID += 1
+                if tag.enabled:
+                    print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
+                    debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                    if tag.angle != 90:
+                        debugCone(tag.originAt(pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
+                    else:
+                        debugCylinder(tag.originAt(pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
-        self.fingerprint = [tag.toString() for tag in tags]
-        self.tags = tags
-
-        obj.Path = self.createPath(pathData.edges, tags, pathData.rapid)
+        obj.Path = self.createPath(pathData.edges, self.tags, pathData.rapid)
         print("execute - done")
 
-    def setTags(self, obj, tags, update = True):
-        print("setTags(%d, %d)" % (len(tags), update))
-        #for t in tags:
-        #    print(" .... %s" % t.toString())
-        obj.Tags = [tag.toString() for tag in tags]
-        if update:
-            self.execute(obj)
+    def setup(self, obj, generate=None):
+        print("setup")
+        self.obj = obj
+        try:
+            pathData = PathData(obj)
+        except ValueError:
+            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
+            return None
 
-    def getTags(self, obj):
-        if not hasattr(self, 'tags'):
-            self.execute(obj)
-        return self.tags
-
-    def setup(self, obj):
-        if True or not hasattr(self, "pathData") or not self.pathData:
-            try:
-                pathData = PathData(obj)
-            except ValueError:
-                FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
-                return None
-
+        self.toolRadius = 5
+        toolLoad = PathUtils.getLastToolLoad(obj)
+        if toolLoad is None or toolLoad.ToolNumber == 0:
             self.toolRadius = 5
-            toolLoad = PathUtils.getLastToolLoad(obj)
-            if toolLoad is None or toolLoad.ToolNumber == 0:
+        else:
+            tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
+            if not tool or tool.Diameter == 0:
                 self.toolRadius = 5
             else:
-                tool = PathUtils.getTool(obj, toolLoad.ToolNumber)
-                if not tool or tool.Diameter == 0:
-                    self.toolRadius = 5
-                else:
-                    self.toolRadius = tool.Diameter / 2
-            self.pathData = pathData
+                self.toolRadius = tool.Diameter / 2
+        self.pathData = pathData
+        if generate:
+            obj.Height = self.pathData.defaultTagHeight()
+            obj.Width  = self.pathData.defaultTagWidth()
+            obj.Angle  = self.pathData.defaultTagAngle()
+            self.generateTags(obj, generate)
         return self.pathData
 
-    def getHeight(self, obj):
-        return self.pathData.tagHeight()
-
-    def getWidth(self, obj):
-        return self.pathData.tagWidth()
-
-    def getAngle(self, obj):
-        return self.pathData.tagAngle()
-
-    def getPathLength(self, obj):
-        return self.pathData.pathLength()
+    def setXyEnabled(self, triples):
+        positions = []
+        disabled = []
+        for i, (x, y, enabled) in enumerate(triples):
+            positions.append(FreeCAD.Vector(x, y, 0))
+            if not enabled:
+                disabled.append(i)
+        self.obj.Positions = positions
+        self.obj.Disabled = disabled
+        self.execute(self.obj)
 
 class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
     DataY = QtCore.Qt.ItemDataRole.UserRole + 1
 
-    def __init__(self, obj):
+    def __init__(self, obj, jvoVisibility=None):
         self.obj = obj
+        self.obj.Proxy.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
         self.jvo = PathUtils.findParentJob(obj).ViewObject
-        self.jvoVisible = self.jvo.isVisible()
-        if self.jvoVisible:
-            self.jvo.hide()
+        if jvoVisibility is None:
+            FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
+            self.jvoVisible = self.jvo.isVisible()
+            if self.jvoVisible:
+                self.jvo.hide()
+        else:
+            self.jvoVisible = jvoVisibility
 
     def reject(self):
         print("reject")
@@ -782,51 +773,64 @@ class TaskPanel:
         print("accept")
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
-        FreeCADGui.ActiveDocument.resetEdit()
         self.cleanup()
         FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self):
+        FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.Selection.removeObserver(self.s)
         if self.jvoVisible:
             self.jvo.show()
 
+    def closeDialog(self):
+        print("closed")
+
     def open(self):
         self.s = SelObserver()
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
-    def getFields(self):
-        width = self.form.dsbWidth.value()
-        height = self.form.dsbHeight.value()
-        angle = self.form.dsbAngle.value()
+    def getTags(self, includeCurrent):
         tags = []
+        index = self.form.lwTags.currentRow()
         for i in range(0, self.form.lwTags.count()):
             item = self.form.lwTags.item(i)
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
             y = item.data(self.DataY)
-            tags.append(Tag(x, y, width, height, angle, enabled))
-        self.obj.Proxy.setTags(self.obj, tags)
+            print("(%.2f, %.2f) i=%d/%s" % (x, y, i, index))
+            if includeCurrent or i != index:
+                tags.append((x, y, enabled))
+        return tags
+
+    def getTagParameters(self):
+        self.obj.Width  = self.form.dsbWidth.value()
+        self.obj.Height = self.form.dsbHeight.value()
+        self.obj.Angle  = self.form.dsbAngle.value()
+
+    def getFields(self):
+        self.getTagParameters()
+        tags = self.getTags(True)
+        self.obj.Proxy.setXyEnabled(tags)
 
     def updateTagsView(self):
-        self.tags = self.obj.Proxy.getTags(self.obj)
-        print("updateTagsView: %d" % (len(self.tags)))
+        print("updateTagsView")
         self.form.lwTags.blockSignals(True)
         self.form.lwTags.clear()
-        for tag in self.tags:
-            lbl = "(%.2f, %.2f)" % (tag.x, tag.y)
+        for i, pos in enumerate(self.obj.Positions):
+            lbl = "%d: (%.2f, %.2f)" % (i, pos.x, pos.y)
             item = QtGui.QListWidgetItem(lbl)
-            item.setData(self.DataX, tag.x)
-            item.setData(self.DataY, tag.y)
-            if tag.enabled:
-                item.setCheckState(QtCore.Qt.CheckState.Checked)
-            else:
+            item.setData(self.DataX, pos.x)
+            item.setData(self.DataY, pos.y)
+            if i in self.obj.Disabled:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
+            else:
+                item.setCheckState(QtCore.Qt.CheckState.Checked)
             flags = QtCore.Qt.ItemFlag.ItemIsSelectable
-            flags |= QtCore.Qt.ItemFlag.ItemIsEnabled | QtCore.Qt.ItemFlag.ItemIsUserCheckable
+            flags |= QtCore.Qt.ItemFlag.ItemIsEnabled
+            flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
             item.setFlags(flags)
             self.form.lwTags.addItem(item)
         self.form.lwTags.blockSignals(False)
@@ -843,22 +847,13 @@ class TaskPanel:
         self.cleanupUI()
 
         count = self.form.sbCount.value()
-        width = self.form.dsbWidth.value()
-        height = self.form.dsbHeight.value()
-        angle = self.form.dsbAngle.value()
+        self.obj.Proxy.generateTags(self.obj, count)
 
-        tags = self.obj.Proxy.generateTags(self.obj, count, width, height, angle)
-
-        self.obj.Proxy.setTags(self.obj, tags)
         self.updateTagsView()
         #if debugDressup:
         #    # this causes a big of an echo and a double click on the spin buttons, don't know why though
         #    FreeCAD.ActiveDocument.recompute()
 
-#    def autoApply(self):
-#        print("autoApply")
-#        if self.form.cbAutoApply.checkState() == QtCore.Qt.CheckState.Checked:
-#            self.whenApplyClicked()
 
     def updateModel(self):
         self.getFields()
@@ -876,19 +871,23 @@ class TaskPanel:
         self.form.pbDelete.setEnabled(not item is None)
 
     def deleteSelectedTag(self):
-        item = self.form.lwTags.currentItem()
-        if item:
-            x = item.data(self.DataX)
-            y = item.data(self.DataY)
-            tags = filter(lambda t: t.x != x or t.y != y, self.tags)
-            self.obj.Proxy.setTags(self.obj, tags)
-            self.updateTagsView()
+        self.obj.Proxy.setXyEnabled(self.getTags(False))
+        self.updateTagsView()
 
     def addNewTagAt(self, point, what):
-        print("%s '%s'" %( point, what.Name))
+        if what == self.obj:
+            print("%s '%s'" %( point, what.Name))
+            tags = self.tags
+            tags.append((point.x, point.y, True))
+            self.obj.Proxy.setXyEnabled(tags)
+        panel = TaskPanel(self.obj, self.jvoVisible)
+        todo.delay(FreeCADGui.Control.closeDialog, None)
+        todo.delay(FreeCADGui.Control.showDialog, panel)
+        todo.delay(panel.setupUi, None)
 
     def addNewTag(self):
-        FreeCADGui.Snapper.getPoint(callback=self.addNewTagAt)
+        self.tags = self.getTags(True)
+        FreeCADGui.Snapper.getPoint(callback=self.addNewTagAt, extradlg=[self])
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
@@ -898,10 +897,10 @@ class TaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.setupSpinBox(self.form.sbCount, len(self.tags), None)
-        self.setupSpinBox(self.form.dsbHeight, self.obj.Proxy.getHeight(self.obj))
-        self.setupSpinBox(self.form.dsbWidth, self.obj.Proxy.getWidth(self.obj))
-        self.setupSpinBox(self.form.dsbAngle, self.obj.Proxy.getAngle(self.obj), 0)
+        self.setupSpinBox(self.form.sbCount, len(self.obj.Positions), None)
+        self.setupSpinBox(self.form.dsbHeight, self.obj.Height)
+        self.setupSpinBox(self.form.dsbWidth, self.obj.Width)
+        self.setupSpinBox(self.form.dsbAngle, self.obj.Angle, 0)
         self.form.dsbAngle.setMaximum(90)
         self.form.dsbAngle.setSingleStep(5.)
 
@@ -947,7 +946,7 @@ class SelObserver:
         PST.clear()
 
     def addSelection(self, doc, obj, sub, pnt):
-        FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
+        #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
 
 class ViewProviderDressup:
@@ -1029,7 +1028,7 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj)')
+        FreeCADGui.doCommand('dbo.setup(obj, 4.)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
