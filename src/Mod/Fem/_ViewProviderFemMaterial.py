@@ -20,26 +20,58 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "MechanicalMaterial"
+__title__ = "_ViewProviderFemMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
+## @package _ViewProviderFemMaterial
+#  \ingroup FEM
 
 import FreeCAD
-import _MechanicalMaterial
+import FreeCADGui
 
 
-def makeMechanicalMaterial(name):
-    '''makeMaterial(name): makes an Material
-    name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    _MechanicalMaterial._MechanicalMaterial(obj)
-    if FreeCAD.GuiUp:
-        import _ViewProviderMechanicalMaterial
-        _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
-    # FreeCAD.ActiveDocument.recompute()
-    return obj
+class _ViewProviderFemMaterial:
+    "A View Provider for the FemMaterial object"
 
-# @}
+    def __init__(self, vobj):
+        vobj.Proxy = self
+
+    def getIcon(self):
+        return ":/icons/fem-material.svg"
+
+    def attach(self, vobj):
+        self.ViewObject = vobj
+        self.Object = vobj.Object
+
+    def updateData(self, obj, prop):
+        return
+
+    def onChanged(self, vobj, prop):
+        return
+
+    def setEdit(self, vobj, mode):
+        import _TaskPanelFemMaterial
+        taskd = _TaskPanelFemMaterial._TaskPanelFemMaterial(self.Object)
+        taskd.obj = vobj.Object
+        FreeCADGui.Control.showDialog(taskd)
+        return True
+
+    def unsetEdit(self, vobj, mode):
+        FreeCADGui.Control.closeDialog()
+        return
+
+    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
+    def doubleClicked(self, vobj):
+        doc = FreeCADGui.getDocument(vobj.Object.Document)
+        if not doc.getInEdit():
+            doc.setEdit(vobj.Object.Name)
+        else:
+            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
+        return True
+
+    def __getstate__(self):
+        return None
+
+    def __setstate__(self, state):
+        return None

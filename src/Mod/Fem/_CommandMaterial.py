@@ -20,58 +20,39 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderMechanicalMaterial"
+__title__ = "_CommandMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderMechanicalMaterial
+## @package CommandMaterial
 #  \ingroup FEM
 
 import FreeCAD
+from FemCommands import FemCommands
 import FreeCADGui
+import FemGui
+from PySide import QtCore
 
 
-class _ViewProviderMechanicalMaterial:
-    "A View Provider for the MechanicalMaterial object"
+class _CommandMaterial(FemCommands):
+    "the Fem_Material command definition"
+    def __init__(self):
+        super(_CommandMaterial, self).__init__()
+        self.resources = {'Pixmap': 'fem-material',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "FEM material"),
+                          'Accel': "M, M",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_Material", "Creates a FEM material")}
+        self.is_active = 'with_analysis'
 
-    def __init__(self, vobj):
-        vobj.Proxy = self
+    def Activated(self):
+        femDoc = FemGui.getActiveAnalysis().Document
+        if FreeCAD.ActiveDocument is not femDoc:
+            FreeCADGui.setActiveDocument(femDoc)
+        FreeCAD.ActiveDocument.openTransaction("Create Material")
+        FreeCADGui.addModule("FemMaterial")
+        FreeCADGui.doCommand("FemMaterial.makeFemMaterial('FemMaterial')")
+        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
+        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
 
-    def getIcon(self):
-        return ":/icons/fem-material.svg"
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def setEdit(self, vobj, mode):
-        import _TaskPanelMechanicalMaterial
-        taskd = _TaskPanelMechanicalMaterial._TaskPanelMechanicalMaterial(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode):
-        FreeCADGui.Control.closeDialog()
-        return
-
-    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
-    def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
-        else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+FreeCADGui.addCommand('Fem_Material', _CommandMaterial())

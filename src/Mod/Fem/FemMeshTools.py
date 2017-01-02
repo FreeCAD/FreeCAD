@@ -402,7 +402,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
 
 
 def get_elset_short_name(obj, i):
-    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'MechanicalMaterial':
+    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemMaterial':
         return 'Mat' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemBeamSection':
         return 'Beam' + str(i)
