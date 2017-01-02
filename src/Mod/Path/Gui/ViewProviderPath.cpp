@@ -52,6 +52,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/SoFCBoundingBox.h>
 
+
+#define ARC_MIN_SEGMENTS   20.0  // minimum # segements to interpolate an arc
+
 #ifndef M_PI
     #define M_PI 3.14159265358979323846
     #define M_PI    3.14159265358979323846 /* pi */
@@ -306,8 +309,9 @@ void ViewProviderPath::updateData(const App::Property* prop)
                     angle = M_PI * 2 - angle;
                 if (angle == 0)
                     angle = M_PI * 2;
-                int segments = 3/(deviation/angle); //we use a rather simple rule here, provisorily
+                int segments = std::max(ARC_MIN_SEGMENTS, 3.0/(deviation/angle)); //we use a rather simple rule here, provisorily
                 double dZ = (next.z - last.z)/segments; //How far each segment will helix in Z
+
                 for (int j = 1; j < segments; j++) {
                     //std::cout << "vector " << j << std::endl;
                     Base::Vector3d inter;
