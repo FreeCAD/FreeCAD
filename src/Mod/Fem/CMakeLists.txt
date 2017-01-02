@@ -81,12 +81,12 @@ INSTALL(
         _ViewProviderFemConstraintSelfWeight.py
         _CommandConstraintSelfWeight.py
 
-        MechanicalMaterial.py
-        _MechanicalMaterial.py
-        _ViewProviderMechanicalMaterial.py
-        _CommandMechanicalMaterial.py
-        _TaskPanelMechanicalMaterial.py
-        TaskPanelMechanicalMaterial.ui
+        FemMaterial.py
+        _FemMaterial.py
+        _ViewProviderFemMaterial.py
+        _CommandMaterial.py
+        _TaskPanelFemMaterial.py
+        TaskPanelFemMaterial.ui
 
         FemMaterialMechanicalNonlinear.py
         _FemMaterialMechanicalNonlinear.py
