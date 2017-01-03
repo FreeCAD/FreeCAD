@@ -151,6 +151,7 @@ public:
 private:
     BRepExtrema_DistShapeShape* distss;
     const TopoDS_Shape& _rShape;
+    bool isSolid;
 };
 
 class InspectionExport PropertyDistanceList: public App::PropertyLists
