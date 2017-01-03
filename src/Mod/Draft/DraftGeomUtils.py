@@ -870,8 +870,10 @@ def flattenWire(wire):
     w = Part.makePolygon(verts)
     return w
 
-
 def findWires(edgeslist):
+    return [ Part.Wire(e) for e in Part.sortEdges(edgeslist)]
+    
+def findWiresOld2(edgeslist):
     '''finds connected wires in the given list of edges'''
 
     def touches(e1,e2):
