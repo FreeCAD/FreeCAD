@@ -387,9 +387,11 @@ class Component:
         "returns (shape,extrusion vector,placement) or None"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
-                if data:
-                    return data 
+                if hasattr(obj.CloneOf,"Proxy"):
+                    if hasattr(obj.CloneOf.Proxy,"getExtrusionData"):
+                        data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
+                        if data:
+                            return data 
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
