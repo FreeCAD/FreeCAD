@@ -1457,25 +1457,28 @@ PyObject* TopoShapePy::makeOffsetShape(PyObject *args, PyObject *keywds)
 
 PyObject* TopoShapePy::makeOffset2D(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {"offset", "join", "fill", "openResult", "intersection", NULL};
+    static char *kwlist[] = {"offset", "join", "fill", "openResult", "intersection", "algo", NULL};
     double offset;
     PyObject* fill = Py_False;
     PyObject* openResult = Py_False;
     PyObject* inter = Py_False;
     short join = 0;
-    if (!PyArg_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!", kwlist,
+    short algo = 0;
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "d|hO!O!O!h", kwlist,
         &offset,
         &join,
         &(PyBool_Type), &fill,
         &(PyBool_Type), &openResult,
-        &(PyBool_Type), &inter))
+        &(PyBool_Type), &inter,
+        &algo))
         return 0;
 
     try {
         TopoDS_Shape resultShape = this->getTopoShapePtr()->makeOffset2D(offset, join,
             PyObject_IsTrue(fill) ? true : false,
             PyObject_IsTrue(openResult) ? true : false,
-            PyObject_IsTrue(inter) ? true : false);
+            PyObject_IsTrue(inter) ? true : false,
+            algo);
         return new_reference_to(shape2pyshape(resultShape));
     }
     PY_CATCH_OCC;

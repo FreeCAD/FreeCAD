@@ -7,6 +7,7 @@
 #define AREA_HEADER
 
 #include "Curve.h"
+#include "clipper.hpp"
 
 enum PocketMode
 {
@@ -58,6 +59,11 @@ public:
 	static CArea UniteCurves(std::list<CCurve> &curves);
 	void Xor(const CArea& a2);
 	void Offset(double inwards_value);
+    void OffsetWithClipper(double offset, 
+                            ClipperLib::JoinType joinType=ClipperLib::jtRound, 
+                            ClipperLib::EndType endType=ClipperLib::etOpenRound,
+                            double miterLimit = 5.0, 
+                            double roundPrecision = 0.0);
 	void Thicken(double value);
 	void FitArcs();
 	unsigned int num_curves(){return static_cast<int>(m_curves.size());}

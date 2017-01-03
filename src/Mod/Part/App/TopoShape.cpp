@@ -165,6 +165,7 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
+# include <GCPnts_UniformDeflection.hxx>
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
@@ -172,6 +173,7 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 
+#include <Mod/Path/libarea/Area.h>
 
 #include "TopoShape.h"
 #include "CrossSection.h"
@@ -2081,11 +2083,163 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     return outputShape;
 }
 
-TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, bool allowOpenResult, bool intersection) const
+class Libarea {
+    std::list<CCurve> myCurves;
+    gp_Trsf myMat;
+
+public:
+    Libarea(const gp_Pln& plane) {
+        myMat.SetTransformation(plane.Position());
+    }
+
+    void Add(const TopoDS_Wire& wire, double deflection=0.01) {
+        CCurve ccurve;
+        BRepTools_WireExplorer xp(TopoDS::Wire(
+                    wire.Moved(TopLoc_Location(myMat))));
+
+        gp_Pnt p = BRep_Tool::Pnt(xp.CurrentVertex());
+        ccurve.append(CVertex(Point(p.X(),p.Y())));
+
+        for (;xp.More();xp.Next()) {
+            BRepAdaptor_Curve curve(xp.Current());
+            bool reversed = (xp.Current().Orientation()==TopAbs_REVERSED);
+
+            p = curve.Value(reversed?curve.FirstParameter():curve.LastParameter());
+
+            switch (curve.GetType()) {
+            case GeomAbs_Line: {
+                ccurve.append(CVertex(Point(p.X(),p.Y())));
+                break;
+            } case GeomAbs_Circle:{
+                double first = curve.FirstParameter();
+                double last = curve.LastParameter();
+                gp_Circ circle = curve.Circle();
+                gp_Ax1 axis = circle.Axis();
+                int dir = axis.Direction().Z()<0?-1:1;
+                if(reversed) dir = -dir;
+                gp_Pnt loc = axis.Location();
+                if(fabs(first-last)>M_PI) {
+                    // Split arc(circle) larger than half circle. This is
+                    // translated from PathUtil code. Not sure why it is
+                    // needed. 
+                    gp_Pnt mid = curve.Value((last-first)*0.5+first);
+                    ccurve.append(CVertex(dir,Point(mid.X(),mid.Y()),
+                                Point(loc.X(),loc.Y())));
+                }
+                ccurve.append(CVertex(dir,Point(p.X(),p.Y()),
+                            Point(loc.X(),loc.Y())));
+                break;
+            } default: {
+                // Discretize all other type of curves
+                GCPnts_UniformDeflection discretizer(curve, deflection, 
+                        curve.FirstParameter(), curve.LastParameter());
+                if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
+                    Py::List points;
+                    int nbPoints = discretizer.NbPoints ();
+                    for (int i=1; i<=nbPoints; i++) {
+                        gp_Pnt pt = discretizer.Value (i);
+                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
+                    }
+                }else
+                    Standard_Failure::Raise("Curve discretization failed");
+            }}
+        }
+        myCurves.push_back(ccurve);
+    }
+
+    TopoDS_Compound Offset(double offset, 
+            short algo = 1, 
+            GeomAbs_JoinType join = GeomAbs_Arc,
+            bool allowOpenResult = true)
+    {
+        CArea area;
+        ClipperLib::JoinType joinType;
+        ClipperLib::EndType endType;
+        endType=ClipperLib::etOpenSquare;
+        if(join == GeomAbs_Arc){
+            joinType = ClipperLib::jtRound;
+            endType = ClipperLib::etOpenRound;
+        }else if(join == GeomAbs_Intersection)
+            joinType = ClipperLib::jtMiter;
+        else
+            joinType = ClipperLib::jtSquare;
+
+        // TODO: Not sure what does allowOpenResult mean
+        if(!allowOpenResult)
+            endType = ClipperLib::etClosedPolygon;
+
+        area.m_curves = myCurves;
+
+        bool fit_arcs = CArea::m_fit_arcs;
+        CArea::m_fit_arcs = (algo&1)?false:true;
+        algo >>= 1;
+        if(algo==0)
+            area.Offset(-offset);
+        else if(algo==1)
+            area.OffsetWithClipper(offset,joinType,endType);
+        else{
+            CArea::m_fit_arcs = fit_arcs;
+            throw Base::ValueError("makeOffset2D: unknown algo");
+        }
+        CArea::m_fit_arcs = fit_arcs;
+        return this->ToShape(area.m_curves);
+    }
+
+    TopoDS_Compound ToShape(const std::list<CCurve> &curves) {
+        TopoDS_Compound compound;
+        BRep_Builder builder;
+        builder.MakeCompound(compound);
+        for(const CCurve &c : curves) {
+            BRepBuilderAPI_MakeWire mkWire;
+            gp_Pnt pstart,pt;
+            bool first = true;
+            for(const CVertex &v : c.m_vertices){
+                if(first){
+                    first = false;
+                    pstart = pt = gp_Pnt(v.m_p.x,v.m_p.y,0);
+                    continue;
+                }
+                gp_Pnt pnext(v.m_p.x,v.m_p.y,0);
+                if(v.m_type == 0)
+                    mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pnext).Edge());
+                else {
+                    gp_Pnt center(v.m_c.x,v.m_c.y,0);
+                    gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
+                    mkWire.Add(BRepBuilderAPI_MakeEdge(
+                        gp_Circ(axis,center.Distance(pnext)),pt,pnext).Edge());
+                }
+                pt = pnext;
+            }
+            if(c.IsClosed()){
+                if(!BRep_Tool::IsClosed(mkWire.Wire())){
+                    // This should never happen after changing libarea's
+                    // Point::tolerance to be the same as Precision::Confusion().  
+                    // Just leave it here in case.
+                    BRepAdaptor_Curve curve(mkWire.Edge());
+                    gp_Pnt p1(curve.Value(curve.FirstParameter()));
+                    gp_Pnt p2(curve.Value(curve.LastParameter()));
+                    cout << "warning: patch open wire" << 
+                        c.m_vertices.back().m_type << endl << 
+                        '(' << p1.X() << ',' << p1.Y() << ')' << endl << 
+                        '(' << p2.X() << ',' << p2.Y() << ')' << endl << 
+                        '(' << pt.X() << ',' << pt.Y() << ')' << endl <<
+                        '(' << pstart.X() << ',' <<pstart.Y() <<')' <<endl;
+                    mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
+                }
+            }
+            builder.Add(compound, mkWire.Wire());
+        }
+        compound.Move(TopLoc_Location(myMat.Inverted()));
+        return compound;
+    }
+};
+
+TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, 
+        bool allowOpenResult, bool intersection, int algo) const
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
+    if (!algo && allowOpenResult && OCC_VERSION_HEX < 0x060900)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
 
     // OUTLINE OF MAKEOFFSET2D
@@ -2112,7 +2266,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
-                shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection, algo) );
                 forceOutputCompound = true;
             }
         } else {
@@ -2121,7 +2275,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             for( ; it.More() ; it.Next()){
                 if(it.Value().ShapeType() == TopAbs_COMPOUND){
                     //recursively process subcompounds
-                    shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                    shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection,algo) );
                     forceOutputCompound = true;
                 } else {
                     shapesToProcess.push_back(it.Value());
@@ -2140,7 +2294,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
         //reassembling the faces later.
         std::vector<TopoDS_Wire> sourceWires;
         bool haveWires = false;
-        bool haveFaces = false;
+        int haveFaces = 0;
         for(TopoDS_Shape &sh : shapesToProcess){
             switch (sh.ShapeType()) {
                 case TopAbs_EDGE:
@@ -2161,7 +2315,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                     for(; it.More(); it.Next()){
                         sourceWires.push_back(TopoDS::Wire(it.Value()));
                     }
-                    haveFaces = true;
+                    ++haveFaces;
                 }break;
                 default:
                     throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
@@ -2194,29 +2348,37 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //do the offset..
         TopoDS_Shape offsetShape;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
+        if (fabs(offset) > Precision::Confusion()){
+            if(algo) {
+                Libarea area(workingPlane);
+                for(TopoDS_Wire &w : sourceWires)
+                    area.Add(w);
+                offsetShape = area.Offset(
+                        offset,algo-1,GeomAbs_JoinType(joinType),allowOpenResult);
+            }else{
+                try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+                    Base::SignalException se;
+#endif
+                    BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
 #if OCC_VERSION_HEX >= 0x060900
                                                 , allowOpenResult
 #endif
-                                               );
-        for(TopoDS_Wire &w : sourceWires)
-            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
-                mkOffset.AddWire(w);
+                                        );
+                    for(TopoDS_Wire &w : sourceWires)
+                        if (&w != &(sourceWires[0])) //filter out first wire - it's already added
+                            mkOffset.AddWire(w);
 
-        if (fabs(offset) > Precision::Confusion()){
-            try {
-    #if defined(__GNUC__) && defined (FC_OS_LINUX)
-                Base::SignalException se;
-    #endif
-                mkOffset.Perform(offset);
+                        mkOffset.Perform(offset);
+                    offsetShape = mkOffset.Shape();
+                }
+                catch (Standard_Failure &){
+                    throw;
+                }
+                catch (...) {
+                    throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+                }
             }
-            catch (Standard_Failure &){
-                throw;
-            }
-            catch (...) {
-                throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
-            }
-            offsetShape = mkOffset.Shape();
 
             if(offsetShape.IsNull())
                 throw Base::Exception("makeOffset2D: result of offseting is null!");
@@ -2316,7 +2478,6 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 //we want the connection order to be
                 //v1 -> openWire1 -> v2 -> (new edge) -> v4 -> openWire2(rev) -> v3 -> (new edge) -> v1
                 //let's check if it's the case. If not, we reverse one wire and swap its endpoints.
-
                 if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
                     openWire2.Reverse();
                     std::swap(v3, v4);
@@ -2353,18 +2514,35 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //make faces
         if (wiresForMakingFaces.size()>0){
-            FaceMakerBullseye mkFace;
-            mkFace.setPlane(workingPlane);
-            for(TopoDS_Wire &w : wiresForMakingFaces){
-                mkFace.addWire(w);
-            }
-            mkFace.Build();
-            if (mkFace.Shape().IsNull())
-                throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
-            TopoDS_Shape result = mkFace.Shape();
-            if (haveFaces && shapesToProcess.size() == 1)
-                result.Orientation(shapesToProcess[0].Orientation());
+            TopoDS_Shape result;
+            try{
+                FaceMakerBullseye mkFace;
+                mkFace.setPlane(workingPlane);
+                for(TopoDS_Wire &w : wiresForMakingFaces)
+                    mkFace.addWire(w);
+                mkFace.Build();
+                if (mkFace.Shape().IsNull())
+                    throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
+                result = mkFace.Shape();
+                if (haveFaces && shapesToProcess.size() == 1)
+                    result.Orientation(shapesToProcess[0].Orientation());
 
+                if(haveFaces == 1 && result.ShapeType()!=TopAbs_FACE) {
+                    // BRepBuilderAPI_MakeFace normally can't handle complex
+                    // face with holes and inner subfaces inside holes.
+                    // However, FaceMakerBullseye will sort out all the wire
+                    // orientations, and enables BRepBuilderAPI_MakeFace to
+                    // create a single unifying face.
+                    BRepBuilderAPI_MakeFace mkFace(workingPlane);
+                    TopExp_Explorer it;
+                    for (it.Init(result, TopAbs_WIRE); it.More(); it.Next())
+                        mkFace.Add(TopoDS::Wire(it.Current()));
+                    result = mkFace.Face();
+                }
+            }catch (Base::Exception &e){
+                Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
+                result = offsetShape;
+            }
             ShapeExtend_Explorer xp;
             Handle_TopTools_HSequenceOfShape result_leaves = xp.SeqFromCompound(result, Standard_True);
             for(int i = 0; i < result_leaves->Length(); ++i)

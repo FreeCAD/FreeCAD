@@ -66,7 +66,7 @@ file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 # this makes the Python module
 add_library(
   area
-  MODULE
+  SHARED
   ${AREA_SRC_COMMON}
   ${AREA_SRC_CLIPPER}
   ${PYAREA_SRC}

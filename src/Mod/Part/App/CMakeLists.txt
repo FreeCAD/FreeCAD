@@ -28,6 +28,7 @@ set(Part_LIBS
     ${OCC_LIBRARIES}
     ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
+    area
 )
 
 if(FREETYPE_FOUND)

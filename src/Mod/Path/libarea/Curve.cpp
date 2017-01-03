@@ -9,7 +9,10 @@
 #include "kurve/geometry.h"
 
 const Point operator*(const double &d, const Point &p){ return p * d;}
-double Point::tolerance = 0.001;
+
+// Change the tolerance to be the same as OCC Precision::Confusion()
+// double Point::tolerance = 0.001;
+double Point::tolerance = 1e-7;
 
 //static const double PI = 3.1415926535897932; duplicated in kurve/geometry.h
 

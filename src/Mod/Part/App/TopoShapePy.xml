@@ -330,8 +330,7 @@ Returns: result of offsetting.</UserDocu>
     </Methode>
     <Methode Name="makeOffset2D" Const="true"  Keyword="true">
       <Documentation>
-      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection =
-false): makes an offset shape (2d offsetting). The function supports keyword
+      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection = false, algo = 0): makes an offset shape (2d offsetting). The function supports keyword
 arguments. Input shape (self) can be edge, wire, face, or a compound of those.
 
 * offset: distance to expand the shape by. Negative value will shrink the
@@ -352,6 +351,10 @@ are offset independently. If True, and children are edges/wires, the children
 are offset in a collective manner. If compounding is nested, collectiveness
 does not spread across compounds (only direct children of a compound are taken
 collectively).
+
+* algo: specify the algorithm to use. 0 = OpenCasCade, 1 = libarea, 2 = libarea 
+without arc fitting, 3 = libarea+ClipperOffset, 4 = libarea+ClipperOffset without 
+arc fitting.
 
 Returns: result of offsetting (wire or face or compound of those). Compounding
 structure follows that of source shape.</UserDocu>
