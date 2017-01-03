@@ -55,6 +55,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
+#include <Mod/Points/App/Properties.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 
 #include "ViewProviderInspection.h"
@@ -193,7 +194,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             Base::Type propId  = App::PropertyComplexGeoData::getClassTypeId();
 
             std::vector<Base::Vector3d> points;
-            std::vector<Base::Vector3d> normals;
+            std::vector<Base::Vector3f> normals;
             std::vector<Data::ComplexGeoData::Facet> faces;
 
             // set the Distance property to the correct size to sync size of material node with number
@@ -222,7 +223,12 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                 App::Property* prop = object->getPropertyByName("Points");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
                     const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    std::vector<Base::Vector3d> normals;
                     data->getPoints(points, normals, accuracy);
+                }
+                App::Property* propN = object->getPropertyByName("Normal");
+                if (propN && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
+                    normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
                 }
             }
 
@@ -258,10 +264,8 @@ void ViewProviderInspection::updateData(const App::Property* prop)
                     SbVec3f* norm = normalNode->vector.startEditing();
 
                     std::size_t i=0;
-                    for (std::vector<Base::Vector3d>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
-                        norm[i++].setValue(static_cast<float>(it->x),
-                                           static_cast<float>(it->y),
-                                           static_cast<float>(it->z));
+                    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
+                        norm[i++].setValue(it->x, it->y, it->z);
                     }
 
                     normalNode->vector.finishEditing();
