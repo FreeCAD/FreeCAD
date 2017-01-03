@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Gui/Application.h>
 
 #include "Workbench.h"
@@ -51,15 +52,21 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace _TEMPLATE_Gui
 
 
 /* Python entry */
-PyMODINIT_FUNC init_TEMPLATE_Gui()
+PyMOD_INIT_FUNC(_TEMPLATE_Gui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // instanciating the commands
@@ -69,6 +76,7 @@ PyMODINIT_FUNC init_TEMPLATE_Gui()
     // ADD YOUR CODE HERE
     //
     //
-    new _TEMPLATE_Gui::Module();
+    PyObject* mod = _TEMPLATE_Gui::initModule();
     Base::Console().Log("Loading GUI of _TEMPLATE_ module... done\n");
+    PyMOD_Return(mod);
 }
