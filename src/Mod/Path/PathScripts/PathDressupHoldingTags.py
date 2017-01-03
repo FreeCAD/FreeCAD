@@ -542,14 +542,14 @@ class PathData:
 
     def defaultTagHeight(self):
         if hasattr(self.obj, 'Base') and hasattr(self.obj.Base, 'StartDepth') and hasattr(self.obj.Base, 'FinalDepth'):
-            return (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value
-        return self.maxZ - self.minZ
+            return (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value / 2
+        return (self.maxZ - self.minZ) / 2
 
     def defaultTagWidth(self):
         return self.shortestAndLongestPathEdge()[1].Length / 10
 
     def defaultTagAngle(self):
-        return 90
+        return 45
 
     def sortedTags(self, tags):
         ordered = []
