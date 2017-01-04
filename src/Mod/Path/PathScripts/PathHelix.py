@@ -45,34 +45,6 @@ else:
     def translate(context, text, disambig=None):
         return text
 
-def hollow_cylinder(cyl):
-    """Test if this is a hollow cylinder"""
-    from Part import Circle
-    circle1 = None
-    line = None
-    for edge in cyl.Edges:
-        if isinstance(edge.Curve, Circle):
-            if circle1 is None:
-                circle1 = edge
-            else:
-                circle2 = edge
-        else:
-            line = edge
-    center = (circle1.Curve.Center + circle2.Curve.Center).scale(0.5, 0.5, 0.5)
-    p = (circle1.valueAt(circle1.ParameterRange[0]) + circle2.valueAt(circle1.ParameterRange[0])).scale(0.5, 0.5, 0.5)
-    to_outside = (p - center).normalize()
-    u, v = cyl.Surface.parameter(p)
-    normal = cyl.normalAt(u, v).normalize()
-
-    cos_a = to_outside.dot(normal)
-
-    if cos_a > 1.0 - 1e-12:
-        return False
-    elif cos_a < -1.0 + 1e-12:
-        return True
-    else:
-        raise Exception("Strange cylinder encountered, cannot determine if it is hollow or not")
-
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""
     if cyl.Surface.Axis.x != 0.0:
@@ -80,11 +52,6 @@ def z_cylinder(cyl):
     if cyl.Surface.Axis.y != 0.0:
         return False
     return True
-
-def full_cylinder(cyl):
-    p1 = cyl.valueAt(cyl.ParameterRange[0], cyl.ParameterRange[2])
-    p2 = cyl.valueAt(cyl.ParameterRange[1], cyl.ParameterRange[2])
-    return fmt(p1.x) == fmt(p2.x) and fmt(p1.y) == fmt(p2.y) and p1.z == p2.z
 
 def connected(edge, face):
     for otheredge in face.Edges:
@@ -230,6 +197,35 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
 
     return out
 
+def features_by_centers(base, features):
+    import scipy.spatial
+    features = sorted(features,
+                key = lambda feature : getattr(base.Shape, feature).Surface.Radius,
+                reverse = True)
+
+    coordinates = [(cylinder.Surface.Center.x, cylinder.Surface.Center.y) for cylinder in
+                        [getattr(base.Shape, feature) for feature in features]]
+
+    tree = scipy.spatial.KDTree(coordinates)
+    seen = {}
+
+    by_centers = {}
+    for n, feature in enumerate(features):
+        if n in seen:
+            continue
+        seen[n] = True
+
+        cylinder = getattr(base.Shape, feature)
+        xc, yc, _ = cylinder.Surface.Center
+        by_centers[xc, yc] = {cylinder.Surface.Radius : feature}
+
+        for coord in tree.query_ball_point((xc, yc), cylinder.Surface.Radius):
+            seen[coord] = True
+            cylinder =  getattr(base.Shape, features[coord])
+            by_centers[xc, yc][cylinder.Surface.Radius] = features[coord]
+
+    return by_centers
+
 class ObjectPathHelix(object):
 
     def __init__(self,obj):
@@ -284,6 +280,12 @@ class ObjectPathHelix(object):
         from Part import Circle, Cylinder, Plane
         from math import sqrt
 
+        output = '(helix cut operation'
+        if obj.Comment:
+            output  += ', '+ str(obj.Comment)+')\n'
+        else:
+            output  += ')\n'
+
         if obj.Features:
             if not obj.Active:
                 obj.Path = Path.Path("(helix cut operation inactive)")
@@ -300,30 +302,15 @@ class ObjectPathHelix(object):
 
             tool = PathUtils.getTool(obj, toolload.ToolNumber)
 
-            output = '(helix cut operation'
-            if obj.Comment:
-                output  += ', '+ str(obj.Comment)+')\n'
-            else:
-                output  += ')\n'
-
             zsafe = max(baseobj.Shape.BoundBox.ZMax for baseobj, features in obj.Features) + obj.Clearance.Value
             output += "G0 Z" + fmt(zsafe)
 
             drill_jobs = []
 
             for base, features in obj.Features:
-                centers = {}
-
-                for feature in features:
-                    cylinder = getattr(base.Shape, feature)
-                    xc, yc, _ = cylinder.Surface.Center
-                    if (xc, yc) not in centers:
-                        centers[xc, yc] = {}
-                    centers[xc, yc][cylinder.Surface.Radius] = cylinder
-
-                for center, by_radius in centers.items():
-                    cylinders = sorted(by_radius.values(), key = lambda cyl : cyl.Surface.Radius, reverse=True)
-
+                for center, by_radius in features_by_centers(base, features).items():
+                    radii = sorted(by_radius.keys(), reverse=True)
+                    cylinders = map(lambda radius: getattr(base.Shape, by_radius[radius]), radii)
                     zsafe = max(cyl.BoundBox.ZMax for cyl in cylinders) + obj.Clearance.Value
                     cur_z = cylinders[0].BoundBox.ZMax
                     jobs = []
@@ -400,9 +387,9 @@ class ObjectPathHelix(object):
                                     toolload.VertFeed.Value, toolload.HorizFeed.Value, obj.Direction, obj.StartSide)
                 output += '\n'
 
-            obj.Path = Path.Path(output)
-            if obj.ViewObject:
-                obj.ViewObject.Visibility = True
+        obj.Path = Path.Path(output)
+        if obj.ViewObject:
+            obj.ViewObject.Visibility = True
 
 taskpanels = {}
 
@@ -486,6 +473,28 @@ class CommandPathHelix(object):
 
         FreeCAD.ActiveDocument.recompute()
 
+def print_exceptions(func):
+    from functools import wraps
+    import traceback
+    import sys
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except:
+            ex_type, ex, tb = sys.exc_info()
+            FreeCAD.Console.PrintError("".join(traceback.format_exception(ex_type, ex, tb)) + "\n")
+            raise
+    return wrapper
+
+def print_all_exceptions(cls):
+    for entry in dir(cls):
+        obj = getattr(cls, entry)
+        if not entry.startswith("__") and hasattr(obj, "__call__"):
+            setattr(cls, entry, print_exceptions(obj))
+    return cls
+
+@print_all_exceptions
 class TaskPanel(object):
 
     def __init__(self, obj):
@@ -588,15 +597,16 @@ class TaskPanel(object):
             widget.currentIndexChanged.connect(change)
             addWidgets(label, widget)
 
-        self.featureList = QtGui.QListWidget()
-        self.featureList.setMinimumHeight(200)
-        self.featureList.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        self.featureList.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
-        self.featureList.setDefaultDropAction(QtCore.Qt.MoveAction)
-        self.fillFeatureList()
-        sm = self.featureList.selectionModel()
+        self.featureTree = QtGui.QTreeWidget()
+        self.featureTree.setMinimumHeight(200)
+        self.featureTree.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
+        #self.featureTree.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        #self.featureTree.setDefaultDropAction(QtCore.Qt.MoveAction)
+        self.fillFeatureTree()
+        sm = self.featureTree.selectionModel()
         sm.selectionChanged.connect(self.selectFeatures)
-        addWidget(self.featureList)
+        addWidget(self.featureTree)
+        self.featureTree.expandAll()
 
         self.addButton = QtGui.QPushButton("Add holes")
         self.addButton.clicked.connect(self.addCylinders)
@@ -659,17 +669,65 @@ class TaskPanel(object):
                     features_per_base[base] = [feature]
 
         self.obj.Features = list(features_per_base.items())
-        self.featureList.clear()
-        self.fillFeatureList()
+        self.featureTree.clear()
+        self.fillFeatureTree()
+        self.featureTree.expandAll()
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
     def delCylinders(self):
         del_features = []
-        for item in self.featureList.selectedItems():
-            obj, feature = item.data(QtCore.Qt.UserRole)
-            del_features.append((obj, feature))
-            self.featureList.takeItem(self.featureList.row(item))
+
+        def delete_feature(item, base=None):
+            kind, feature = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "feature")
+
+            if base is None:
+                base_item = item.parent().parent()
+                _, base = base_item.data(0, QtCore.Qt.UserRole)
+
+            del_features.append((base, feature))
+            item.parent().takeChild(item.parent().indexOfChild(item))
+
+        def delete_hole(item, base=None):
+            kind, center = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "hole")
+
+            if base is None:
+                base_item = item.parent()
+                _, base = base_item.data(0, QtCore.Qt.UserRole)
+
+            for i in reversed(range(item.childCount())):
+                delete_feature(item.child(i), base=base)
+            item.parent().takeChild(item.parent().indexOfChild(item))
+
+        def delete_base(item):
+            kind, base = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "base")
+            for i in reversed(range(item.childCount())):
+                delete_hole(item.child(i), base=base)
+            self.featureTree.takeTopLevelItem(self.featureTree.indexOfTopLevelItem(item))
+
+        for item in self.featureTree.selectedItems():
+            kind, info = item.data(0, QtCore.Qt.UserRole)
+            if kind == "base":
+                delete_base(item)
+            elif kind == "hole":
+                parent = item.parent()
+                delete_hole(item)
+                if parent.childCount() == 0:
+                    self.featureTree.takeTopLevelItem(self.featureTree.indexOfTopLevelItem(parent))
+            elif kind =="feature":
+                parent = item.parent()
+                delete_feature(item)
+                if parent.childCount() == 0:
+                    parent.parent().takeChild(parent.parent().indexOfChild(parent))
+            else:
+                raise Exception("No such item kind: {0}".format(kind))
+
+        for base, features in cylinders_in_selection():
+            for feature in features:
+                del_features.append((base, feature))
 
         new_features = []
         for obj, features in self.obj.Features:
@@ -681,20 +739,64 @@ class TaskPanel(object):
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
 
-    def fillFeatureList(self):
-        for obj, features in self.obj.Features:
-            for feature in features:
-                radius = getattr(obj.Shape, feature).Surface.Radius
-                item  = QtGui.QListWidgetItem()
-                item.setText(obj.Name + "." + feature + " ({0:.2f})".format(radius))
-                item.setData(QtCore.Qt.UserRole, (obj, feature))
-                self.featureList.addItem(item)
+    def fillFeatureTree(self):
+        for base, features in self.obj.Features:
+            base_item  = QtGui.QTreeWidgetItem()
+            base_item.setText(0, base.Name)
+            base_item.setData(0, QtCore.Qt.UserRole, ("base", base))
+            self.featureTree.addTopLevelItem(base_item)
+            for center, by_radius in features_by_centers(base, features).items():
+                hole_item = QtGui.QTreeWidgetItem()
+                hole_item.setText(0, "Hole at ({0[0]:.2f}, {0[1]:.2f})".format(center))
+                hole_item.setData(0, QtCore.Qt.UserRole, ("hole", center))
+                base_item.addChild(hole_item)
+                for radius in sorted(by_radius.keys(), reverse=True):
+                    feature = by_radius[radius]
+                    cylinder = getattr(base.Shape, feature)
+                    cyl_item = QtGui.QTreeWidgetItem()
+                    cyl_item.setText(0, "Diameter {0:.2f}, {1}".format(2 * cylinder.Surface.Radius, feature))
+                    cyl_item.setData(0, QtCore.Qt.UserRole, ("feature", feature))
+                    hole_item.addChild(cyl_item)
 
     def selectFeatures(self, selected, deselected):
         FreeCADGui.Selection.clearSelection()
-        for item in self.featureList.selectedItems():
-            obj, feature = item.data(QtCore.Qt.UserRole)
-            FreeCADGui.Selection.addSelection(obj, feature)
+        def select_feature(item, base=None):
+            kind, feature = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "feature")
+
+            if base is None:
+                base_item = item.parent().parent()
+                _, base = base_item.data(0, QtCore.Qt.UserRole)
+
+            FreeCADGui.Selection.addSelection(base, feature)
+
+        def select_hole(item, base=None):
+            kind, center = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "hole")
+
+            if base is None:
+                base_item = item.parent()
+                _, base = base_item.data(0, QtCore.Qt.UserRole)
+
+            for i in range(item.childCount()):
+                select_feature(item.child(i), base=base)
+
+        def select_base(item):
+            kind, base = item.data(0, QtCore.Qt.UserRole)
+            assert(kind == "base")
+
+            for i in range(item.childCount()):
+                select_hole(item.child(i), base=base)
+
+        for item in self.featureTree.selectedItems():
+            kind, info = item.data(0, QtCore.Qt.UserRole)
+
+            if kind == "base":
+                select_base(item)
+            elif kind == "hole":
+                select_hole(item)
+            elif kind == "feature":
+                select_feature(item)
 
     def needsFullSpace(self):
         return True
