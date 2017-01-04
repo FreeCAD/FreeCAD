@@ -132,6 +132,8 @@ public:
     int addArcOfHyperbola(const Part::GeomArcOfHyperbola &hyperbolaSegment, bool fixed=false);
     /// add an arc of parabola
     int addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, bool fixed=false);
+    /// add a BSpline
+    int addBSpline(const Part::GeomBSplineCurve &spline, bool fixed=false);
     //@}
 
 
@@ -339,7 +341,8 @@ public:
         Ellipse = 5,  // 1 Point(mid), 5 Parameters(x,y,r1,r2,phi)  phi=angle xaxis of elipse with respect of sketch xaxis
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
-        ArcOfParabola = 8
+        ArcOfParabola = 8,
+	BSpline = 9
     };
 
     float SolveTime;
@@ -388,6 +391,7 @@ protected:
     std::vector<GCS::ArcOfEllipse> ArcsOfEllipse;
     std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
     std::vector<GCS::ArcOfParabola> ArcsOfParabola;
+    std::vector<GCS::BSpline> BSplines;
 
     bool isInitMove;
     bool isFine;
