@@ -140,7 +140,7 @@ double DrawProjGroupItem::getRotateAngle()
     gp_Ax2 viewAxis;
     Base::Vector3d x = RotationVector.getValue();   //current rotation
     Base::Vector3d nx = x;
-    x.Normalize();
+    nx.Normalize();
     Base::Vector3d na = Direction.getValue();
     na.Normalize();
     Base::Vector3d org(0.0,0.0,0.0);
