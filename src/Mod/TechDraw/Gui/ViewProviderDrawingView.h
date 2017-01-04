@@ -59,6 +59,7 @@ public:
 
     virtual void onChanged(const App::Property *prop);
     virtual void updateData(const App::Property*);
+    virtual void unsetEdit(int ModNum);
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;
