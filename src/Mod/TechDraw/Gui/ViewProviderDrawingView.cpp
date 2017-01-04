@@ -37,6 +37,8 @@
 #include <App/DocumentObject.h>
 
 #include <Gui/Application.h>
+#include <Gui/Command.h>
+#include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/MainWindow.h>
@@ -189,6 +191,17 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
 
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
+
+void ViewProviderDrawingView::unsetEdit(int ModNum)
+{
+    if (ModNum == ViewProvider::Default) {
+        Gui::Control().closeDialog();
+    }
+    else {
+        Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
+    }
+}
+
 
 MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {
