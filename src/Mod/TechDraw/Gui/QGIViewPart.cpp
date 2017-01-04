@@ -323,7 +323,10 @@ void QGIViewPart::updateView(bool update)
         viewPart->SmoothHidden.isTouched()    ||
         viewPart->SeamHidden.isTouched()      ||
         viewPart->IsoHidden.isTouched()       ||
-        viewPart->IsoCount.isTouched()  ) {
+        viewPart->IsoCount.isTouched()        ||
+        viewPart->ShowSectionLine.isTouched() ||
+        viewPart->HorizCenterLine.isTouched() ||
+        viewPart->VertCenterLine.isTouched() ) {
         draw();
     } else if (update ||
               viewPart->LineWidth.isTouched() ||

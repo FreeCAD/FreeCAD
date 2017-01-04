@@ -506,6 +506,11 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
     return adjResult;
 }
 
+void DrawViewSection::unsetupObject()
+{
+    getBaseDVP()->touch();
+}
+
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;

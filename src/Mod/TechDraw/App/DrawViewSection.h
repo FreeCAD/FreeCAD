@@ -89,6 +89,7 @@ public:
     Base::Vector3d getSectionVector (const std::string sectionName);
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();
+    virtual void unsetupObject();
 
     static const char* SectionDirEnums[];
 
