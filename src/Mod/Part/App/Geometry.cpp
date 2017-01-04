@@ -421,10 +421,37 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
     }
 }
 
+// -------------------------------------------------
+TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomBoundedCurve, Part::GeomCurve)
+
+GeomBoundedCurve::GeomBoundedCurve()
+{
+}
+
+GeomBoundedCurve::~GeomBoundedCurve()
+{
+}
+
+Base::Vector3d GeomBoundedCurve::getStartPoint() const
+{
+    Handle_Geom_BoundedCurve curve =  Handle_Geom_BoundedCurve::DownCast(handle());
+    gp_Pnt pnt = curve->StartPoint();
+
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
+Base::Vector3d GeomBoundedCurve::getEndPoint() const
+{
+    Handle_Geom_BoundedCurve curve =  Handle_Geom_BoundedCurve::DownCast(handle());
+    gp_Pnt pnt = curve->EndPoint();
+
+    return Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z());
+}
+
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomBezierCurve,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomBezierCurve,Part::GeomBoundedCurve)
 
 GeomBezierCurve::GeomBezierCurve()
 {
@@ -473,7 +500,7 @@ PyObject *GeomBezierCurve::getPyObject(void)
 
 // -------------------------------------------------
 
-TYPESYSTEM_SOURCE(Part::GeomBSplineCurve,Part::GeomCurve)
+TYPESYSTEM_SOURCE(Part::GeomBSplineCurve,Part::GeomBoundedCurve)
 
 GeomBSplineCurve::GeomBSplineCurve()
 {
@@ -538,6 +565,27 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     }
 }
 
+void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
+{
+    Standard_Integer index=0;
+
+    std::vector<Base::Vector3d>::const_iterator it1;
+    std::vector<double>::const_iterator it2;
+
+    for(it1 = poles.begin(), it2 = weights.begin(); it1 != poles.end() && it2 != weights.end(); ++it1, ++it2, index++){
+	setPole(index, (*it1), (*it2) );
+    }
+}
+
+void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles)
+{
+    Standard_Integer index=0;
+
+    for(std::vector<Base::Vector3d>::const_iterator it1 = poles.begin(); it1 != poles.end(); ++it1, index++){
+	setPole(index, (*it1));
+    }
+}
+
 std::vector<Base::Vector3d> GeomBSplineCurve::getPoles() const
 {
     std::vector<Base::Vector3d> poles;
@@ -550,6 +598,109 @@ std::vector<Base::Vector3d> GeomBSplineCurve::getPoles() const
         poles.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
     }
     return poles;
+}
+
+std::vector<double> GeomBSplineCurve::getWeights() const
+{
+    std::vector<double> weights;
+    weights.reserve(myCurve->NbPoles());
+    TColStd_Array1OfReal w(1,myCurve->NbPoles());
+    myCurve->Weights(w);
+
+    for (Standard_Integer i=w.Lower(); i<=w.Upper(); i++) {
+        const Standard_Real& real = w(i);
+        weights.push_back(real);
+    }
+    return weights;
+}
+
+
+void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
+{
+    try {
+	Standard_Integer index=0;
+
+	for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
+	    myCurve->SetWeight(index,(*it));
+	}
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        std::cout << e->GetMessageString() << std::endl;
+    }
+}
+
+void GeomBSplineCurve::setKnot(int index, const double val, int mult)
+{
+    try {
+        if (mult < 0)
+            myCurve->SetKnot(index+1, val);
+        else
+            myCurve->SetKnot(index+1, val, mult);
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        std::cout << e->GetMessageString() << std::endl;
+    }
+}
+
+void GeomBSplineCurve::setKnots(const std::vector<double>& knots)
+{
+    Standard_Integer index=0;
+
+    for(std::vector<double>::const_iterator it1 = knots.begin(); it1 != knots.end(); ++it1, index++){
+	setKnot(index, (*it1));
+    }
+}
+
+void GeomBSplineCurve::setKnots(const std::vector<double>& knots, const std::vector<int> multiplicities)
+{
+    Standard_Integer index=0;
+
+    std::vector<double>::const_iterator it1;
+    std::vector<int>::const_iterator it2;
+
+    for(it1 = knots.begin(), it2 = multiplicities.begin(); it1 != knots.end() && it2 != multiplicities.end(); ++it1, ++it2, index++){
+	setKnot(index, (*it1), (*it2) );
+    }
+}
+
+std::vector<double> GeomBSplineCurve::getKnots() const
+{
+    std::vector<double> knots;
+    knots.reserve(myCurve->NbKnots());
+    TColStd_Array1OfReal k(1,myCurve->NbKnots());
+    myCurve->Knots(k);
+
+    for (Standard_Integer i=k.Lower(); i<=k.Upper(); i++) {
+        const Standard_Real& real = k(i);
+        knots.push_back(real);
+    }
+    return knots;
+}
+
+std::vector<int> GeomBSplineCurve::getMultiplicities() const
+{
+    std::vector<int> mults;
+    mults.reserve(myCurve->NbKnots());
+    TColStd_Array1OfInteger m(1,myCurve->NbKnots());
+    myCurve->Multiplicities(m);
+
+    for (Standard_Integer i=m.Lower(); i<=m.Upper(); i++) {
+        const Standard_Integer& nm = m(i);
+        mults.push_back(nm);
+    }
+    return mults;
+}
+
+int GeomBSplineCurve::getDegree() const
+{
+    return myCurve->Degree();
+}
+
+bool GeomBSplineCurve::IsPeriodic() const
+{
+    return myCurve->IsPeriodic()==Standard_True;
 }
 
 bool GeomBSplineCurve::join(const Handle_Geom_BSplineCurve& spline)
