@@ -1306,6 +1306,74 @@ TopoDS_Shape TopoShape::fuse(TopoDS_Shape shape) const
     return mkFuse.Shape();
 }
 
+TopoDS_Shape TopoShape::multiCut(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiCut is available only in OCC 6.9.0 and up.");
+#else
+    BRepAlgoAPI_Cut mkCut;
+    mkCut.SetRunParallel(true);
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkCut.SetArguments(shapeArguments);
+    mkCut.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkCut.SetFuzzyValue(tolerance);
+    mkCut.Build();
+    if (!mkCut.IsDone())
+        throw Base::Exception("MultiCut failed");
+    TopoDS_Shape resShape = mkCut.Shape();
+    return resShape;
+#endif
+}
+
+TopoDS_Shape TopoShape::multiCommon(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiCommon is available only in OCC 6.9.0 and up.");
+#else
+    BRepAlgoAPI_Common mkCommon;
+    mkCommon.SetRunParallel(true);
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkCommon.SetArguments(shapeArguments);
+    mkCommon.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkCommon.SetFuzzyValue(tolerance);
+    mkCommon.Build();
+    if (!mkCommon.IsDone())
+        throw Base::Exception("MultiCommon failed");
+    TopoDS_Shape resShape = mkCommon.Shape();
+    return resShape;
+#endif
+}
+
 TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
 {
     if (this->_Shape.IsNull())
@@ -1352,6 +1420,40 @@ TopoDS_Shape TopoShape::multiFuse(const std::vector<TopoDS_Shape>& shapes, Stand
     TopoDS_Shape resShape = mkFuse.Shape();
 #endif
     return resShape;
+}
+
+TopoDS_Shape TopoShape::multiSection(const std::vector<TopoDS_Shape>& shapes, Standard_Real tolerance) const
+{
+    if (this->_Shape.IsNull())
+        Standard_Failure::Raise("Base shape is null");
+#if OCC_VERSION_HEX < 0x060900
+    (void)shapes;
+    (void)tolerance;
+    throw Base::AttributeError("multiSection is available only in OCC 6.9.0 and up.");
+#else
+    BRepAlgoAPI_Section mkSection;
+    mkSection.SetRunParallel(true);
+    TopTools_ListOfShape shapeArguments,shapeTools;
+    shapeArguments.Append(this->_Shape);
+    for (std::vector<TopoDS_Shape>::const_iterator it = shapes.begin(); it != shapes.end(); ++it) {
+        if (it->IsNull())
+            throw Base::Exception("Tool shape is null");
+        if (tolerance > 0.0)
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            shapeTools.Append(BRepBuilderAPI_Copy(*it).Shape());
+        else
+            shapeTools.Append(*it);
+    }
+    mkSection.SetArguments(shapeArguments);
+    mkSection.SetTools(shapeTools);
+    if (tolerance > 0.0)
+        mkSection.SetFuzzyValue(tolerance);
+    mkSection.Build();
+    if (!mkSection.IsDone())
+        throw Base::Exception("MultiSection failed");
+    TopoDS_Shape resShape = mkSection.Shape();
+    return resShape;
+#endif
 }
 
 TopoDS_Shape TopoShape::oldFuse(TopoDS_Shape shape) const

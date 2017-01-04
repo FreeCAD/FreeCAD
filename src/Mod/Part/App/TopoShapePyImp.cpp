@@ -779,6 +779,72 @@ PyObject*  TopoShapePy::fuse(PyObject *args)
     }
 }
 
+PyObject*  TopoShapePy::multiCut(PyObject *args)
+{
+    double tolerance = 0.0;
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance))
+        return NULL;
+    std::vector<TopoDS_Shape> shapeVec;
+    Py::Sequence shapeSeq(pcObj);
+    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+        PyObject* item = (*it).ptr();
+        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+            shapeVec.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape());
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+            return 0;
+       }
+    }
+    try {
+        TopoDS_Shape multiCutShape = this->getTopoShapePtr()->multiCut(shapeVec,tolerance);
+        return new TopoShapePy(new TopoShape(multiCutShape));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return NULL;
+    }
+}
+
+PyObject*  TopoShapePy::multiCommon(PyObject *args)
+{
+    double tolerance = 0.0;
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance))
+        return NULL;
+    std::vector<TopoDS_Shape> shapeVec;
+    Py::Sequence shapeSeq(pcObj);
+    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+        PyObject* item = (*it).ptr();
+        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+            shapeVec.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape());
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+            return 0;
+       }
+    }
+    try {
+        TopoDS_Shape multiCommonShape = this->getTopoShapePtr()->multiCommon(shapeVec,tolerance);
+        return new TopoShapePy(new TopoShape(multiCommonShape));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return NULL;
+    }
+}
+
 PyObject*  TopoShapePy::multiFuse(PyObject *args)
 {
     double tolerance = 0.0;
@@ -800,6 +866,39 @@ PyObject*  TopoShapePy::multiFuse(PyObject *args)
     try {
         TopoDS_Shape multiFusedShape = this->getTopoShapePtr()->multiFuse(shapeVec,tolerance);
         return new TopoShapePy(new TopoShape(multiFusedShape));
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        PyErr_SetString(PartExceptionOCCError, e->GetMessageString());
+        return NULL;
+    }
+    catch (const std::exception& e) {
+        PyErr_SetString(PartExceptionOCCError, e.what());
+        return NULL;
+    }
+}
+
+PyObject*  TopoShapePy::multiSection(PyObject *args)
+{
+    double tolerance = 0.0;
+    PyObject *pcObj;
+    if (!PyArg_ParseTuple(args, "O|d", &pcObj, &tolerance))
+        return NULL;
+    std::vector<TopoDS_Shape> shapeVec;
+    Py::Sequence shapeSeq(pcObj);
+    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+        PyObject* item = (*it).ptr();
+        if (PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+            shapeVec.push_back(static_cast<Part::TopoShapePy*>(item)->getTopoShapePtr()->getShape());
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+            return 0;
+       }
+    }
+    try {
+        TopoDS_Shape multiSectionShape = this->getTopoShapePtr()->multiSection(shapeVec,tolerance);
+        return new TopoShapePy(new TopoShape(multiSectionShape));
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
