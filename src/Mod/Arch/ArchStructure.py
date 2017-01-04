@@ -461,7 +461,9 @@ class _Structure(ArchComponent.Component):
         import Part,DraftGeomUtils
         data = ArchComponent.Component.getExtrusionData(self,obj)
         if data:
-            return data
+            if not isinstance(data[0],list):
+                # multifuses not considered here
+                return data
         length  = obj.Length.Value
         width = obj.Width.Value
         height = obj.Height.Value

@@ -405,6 +405,37 @@ class Component:
                         if obj.Base.LengthForward.Value:
                             extrusion = extrusion.multiply(obj.Base.LengthForward.Value)
                     return (base,extrusion,placement)
+            elif obj.Base.isDerivedFrom("Part::MultiFuse"):
+                rshapes = []
+                revs = []
+                rpls = []
+                for sub in obj.Base.Shapes:
+                    if sub.isDerivedFrom("Part::Extrusion"):
+                        if sub.Base:
+                            base,placement = self.rebase(sub.Base.Shape)
+                            extrusion = FreeCAD.Vector(sub.Dir)
+                            if extrusion.Length == 0:
+                                extrusion = FreeCAD.Vector(0,0,1)
+                            else:
+                                extrusion = placement.inverse().Rotation.multVec(extrusion)
+                            if hasattr(sub,"LengthForward"):
+                                if sub.LengthForward.Value:
+                                    extrusion = extrusion.multiply(sub.LengthForward.Value)
+                            placement = obj.Placement.multiply(placement)
+                            rshapes.append(base)
+                            revs.append(extrusion)
+                            rpls.append(placement)
+                    else:
+                        exdata = ArchCommands.getExtrusionData(sub.Shape)
+                        if exdata:
+                            base,placement = self.rebase(exdata[0])
+                            extrusion = placement.inverse().Rotation.multVec(exdata[1])
+                            placement = obj.Placement.multiply(placement)
+                            rshapes.append(base)
+                            revs.append(extrusion)
+                            rpls.append(placement)
+                if rshapes and revs and rpls:
+                    return (rshapes,revs,rpls)
         return None
         
     def rebase(self,shape):
