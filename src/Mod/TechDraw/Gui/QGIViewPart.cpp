@@ -553,6 +553,11 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         !viewSection)  {
         return;
     }
+    
+    if (!viewSection->hasGeometry()) {
+        return;
+    }
+    
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
