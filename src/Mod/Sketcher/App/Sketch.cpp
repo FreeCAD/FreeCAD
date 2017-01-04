@@ -48,6 +48,7 @@
 #include <Mod/Part/App/ParabolaPy.h>
 #include <Mod/Part/App/ArcOfParabolaPy.h>
 #include <Mod/Part/App/LineSegmentPy.h>
+#include <Mod/Part/App/BSplineCurvePy.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
@@ -87,6 +88,7 @@ void Sketch::clear(void)
     ArcsOfEllipse.clear();
     ArcsOfHyperbola.clear();
     ArcsOfParabola.clear();
+    BSplines.clear();
 
     // deleting the doubles allocated with new
     for (std::vector<double*>::iterator it = Parameters.begin(); it != Parameters.end(); ++it)
@@ -182,6 +184,8 @@ const char* nameByType(Sketch::GeoType type)
         return "arcofhyperbola";
     case Sketch::ArcOfParabola:
         return "arcofparabola";
+    case Sketch::BSpline:
+        return "bspline";	
     case Sketch::None:
     default:
         return "unknown";
@@ -224,6 +228,10 @@ int Sketch::addGeometry(const Part::Geometry *geo, bool fixed)
         const GeomArcOfParabola *aop = dynamic_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
+    } else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) { // add a bspline
+        const GeomBSplineCurve *bsp = static_cast<const GeomBSplineCurve*>(geo);
+        // create the definition struct for that geom
+        return addBSpline(*bsp, fixed);
     }
     else {
         throw Base::TypeError("Sketch::addGeometry(): Unknown or unsupported type added to a sketch");
@@ -646,6 +654,94 @@ int Sketch::addArcOfParabola(const Part::GeomArcOfParabola &parabolaSegment, boo
     return Geoms.size()-1;
 }
 
+int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
+{
+    std::vector<double *> &params = fixed ? FixParameters : Parameters;
+
+    // create our own copy
+    GeomBSplineCurve *bsp = static_cast<GeomBSplineCurve*>(bspline.clone());
+    // create the definition struct for that geom
+    GeoDef def;
+    def.geo  = bsp;
+    def.type = BSpline;
+
+    std::vector<Base::Vector3d> poles = bsp->getPoles();
+    std::vector<double> weights = bsp->getWeights();
+    std::vector<double> knots = bsp->getKnots();
+    std::vector<int> mult = bsp->getMultiplicities();
+    int degree = bsp->getDegree();
+    bool periodic = bsp->IsPeriodic();
+
+    Base::Vector3d startPnt = bsp->getStartPoint();
+    Base::Vector3d endPnt   = bsp->getEndPoint();
+
+    std::vector<GCS::Point> spoles;
+
+    for(std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it){
+	params.push_back(new double( (*it).x ));
+	params.push_back(new double( (*it).y ));
+	
+	GCS::Point p;
+	p.x = params[params.size()-2];
+	p.y = params[params.size()-1];
+	
+	spoles.push_back(p);
+    }
+
+    std::vector<double *> sweights;
+
+    for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it) {
+	params.push_back(new double( (*it) ));
+	sweights.push_back(params[params.size()-1]);
+    }
+
+    std::vector<double *> sknots;
+
+    for(std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it) {
+	params.push_back(new double( (*it) ));
+	sknots.push_back(params[params.size()-1]);
+    }
+
+    GCS::Point p1, p2;
+
+    params.push_back(new double(startPnt.x));
+    params.push_back(new double(startPnt.y));
+    p1.x = params[params.size()-2];
+    p1.y = params[params.size()-1];
+
+    params.push_back(new double(endPnt.x));
+    params.push_back(new double(endPnt.y));
+    p2.x = params[params.size()-2];
+    p2.y = params[params.size()-1];
+
+    def.startPointId = Points.size();
+    Points.push_back(p1);
+    def.endPointId = Points.size();
+    Points.push_back(p2);
+
+    GCS::BSpline bs;
+    bs.start      = p1;
+    bs.end        = p2;
+    bs.poles	  = spoles;
+    bs.weights	  = sweights;
+    bs.knots	  = sknots;
+    bs.mult	  = mult;
+    bs.degree 	  = degree;
+    bs.periodic   = periodic;	
+    def.index = BSplines.size();
+    BSplines.push_back(bs);
+
+    // store complete set
+    Geoms.push_back(def);
+
+    // arcs require an rule constraint for the end points
+    /*if (!fixed)
+        GCSsys.addConstraintArcOfParabolaRules(bs);*/
+
+    // return the position of the newly added geometry
+    return Geoms.size()-1;
+}
+
 int Sketch::addCircle(const Part::GeomCircle &cir, bool fixed)
 {
     std::vector<double *> &params = fixed ? FixParameters : Parameters;
@@ -789,6 +885,9 @@ Py::Tuple Sketch::getPyGeometry(void) const
         } else if (it->type == ArcOfParabola) {
             GeomArcOfParabola *aop = dynamic_cast<GeomArcOfParabola*>(it->geo->clone());
             tuple[i] = Py::asObject(new ArcOfParabolaPy(aop));
+        } else if (it->type == BSpline) {
+            GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo->clone());
+            tuple[i] = Py::asObject(new BSplineCurvePy(bsp));
         } else {
             // not implemented type in the sketch!
         }
@@ -829,6 +928,9 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
             break;   
 	case ArcOfParabola:
             return &ArcsOfParabola[Geoms[geoId].index];
+            break;
+	case BSpline:
+            return &BSplines[Geoms[geoId].index];
             break;
         default:
             return 0;
@@ -2454,6 +2556,37 @@ bool Sketch::updateGeometry()
 		aop->setFocal(fd.Length());
 
                 aop->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
+            } else if (it->type == BSpline) {
+                GCS::BSpline &mybsp = BSplines[it->index];
+
+                GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo);
+
+		std::vector<Base::Vector3d> poles; 
+		std::vector<double> weights;
+		
+		std::vector<GCS::Point>::const_iterator it1;
+		std::vector<double *>::const_iterator it2;
+
+		for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
+		    poles.push_back(Vector3d( *(*it1).x , *(*it1).y , 0.0));
+		    weights.push_back(*(*it2));
+		}
+		
+		bsp->setPoles(poles, weights);
+
+		std::vector<double> knots; 
+		std::vector<int> mult;
+		
+		std::vector<double *>::const_iterator it3;
+		std::vector<int>::const_iterator it4;
+
+		for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
+		    knots.push_back(*(*it3));
+		    mult.push_back((*it4));
+		}		
+		
+		bsp->setKnots(knots,mult);
+
             }
         } catch (Base::Exception e) {
             Base::Console().Error("Updating geometry: Error build geometry(%d): %s\n",
