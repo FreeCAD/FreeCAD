@@ -36,6 +36,7 @@ from DraftGui import todo
 from PathScripts import PathUtils
 from PathScripts.PathGeom import *
 from PySide import QtCore, QtGui
+from pivy import coin
 
 """Holding Tags Dressup object and FreeCAD command"""
 
@@ -753,9 +754,10 @@ class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
     DataY = QtCore.Qt.ItemDataRole.UserRole + 1
 
-    def __init__(self, obj, jvoVisibility=None):
+    def __init__(self, obj, viewProvider, jvoVisibility=None):
         self.obj = obj
         self.obj.Proxy.obj = obj
+        self.viewProvider = viewProvider
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
@@ -779,6 +781,7 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self):
+        self.viewProvider.clearTaskPanel()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
@@ -790,7 +793,7 @@ class TaskPanel:
         print("closed")
 
     def open(self):
-        self.s = SelObserver()
+        self.s = SelObserver(self.viewProvider)
         # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
@@ -836,6 +839,7 @@ class TaskPanel:
             item.setFlags(flags)
             self.form.lwTags.addItem(item)
         self.form.lwTags.blockSignals(False)
+        self.whenTagSelectionChanged()
 
     def cleanupUI(self):
         print("cleanupUI")
@@ -868,10 +872,14 @@ class TaskPanel:
         count = self.form.sbCount.value()
         self.form.pbGenerate.setEnabled(count)
 
+    def selectTagWithId(self, index):
+        self.form.lwTags.setCurrentRow(index)
+
     def whenTagSelectionChanged(self):
         print('whenTagSelectionChanged')
-        item = self.form.lwTags.currentItem()
-        self.form.pbDelete.setEnabled(not item is None)
+        index = self.form.lwTags.currentRow()
+        self.form.pbDelete.setEnabled(index != -1)
+        self.viewProvider.selectTag(index)
 
     def deleteSelectedTag(self):
         self.obj.Proxy.setXyEnabled(self.getTags(False))
@@ -883,10 +891,8 @@ class TaskPanel:
             tags = self.tags
             tags.append((point.x, point.y, True))
             self.obj.Proxy.setXyEnabled(tags)
-        panel = TaskPanel(self.obj, self.jvoVisible)
-        todo.delay(FreeCADGui.Control.closeDialog, None)
-        todo.delay(FreeCADGui.Control.showDialog, panel)
-        todo.delay(panel.setupUi, None)
+        panel = TaskPanel(self.obj, self.viewProvider, self.jvoVisible)
+        todo.delay(self.viewProvider.setupTaskPanel, panel)
 
     def addNewTag(self):
         self.tags = self.getTags(True)
@@ -938,19 +944,50 @@ class TaskPanel:
 
         self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
         self.form.pbAdd.clicked.connect(self.addNewTag)
+        self.viewProvider.turnMarkerDisplayOn(True)
 
 class SelObserver:
-    def __init__(self):
-        import PathScripts.PathSelection as PST
-        PST.eselect()
+    def __init__(self, viewProvider):
+        FreeCADGui.Selection.addSelectionGate(self)
+        self.viewProvider = viewProvider
 
     def __del__(self):
-        import PathScripts.PathSelection as PST
-        PST.clear()
+        FreeCADGui.Selection.removeSelectionGate()
+
+    def allow(self, doc, obj, sub):
+        return self.viewProvider.allowSelection(obj, sub)
 
     def addSelection(self, doc, obj, sub, pnt):
+        self.viewProvider.addSelection(pnt)
         #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
+
+class HoldingTagMarker:
+    def __init__(self, p):
+        self.point = p
+        self.sep = coin.SoSeparator()
+        self.pos = coin.SoTranslation()
+        self.pos.translation = (p.x, p.y, p.z)
+        self.sphere = coin.SoSphere()
+        self.material = coin.SoMaterial()
+        self.sep.addChild(self.pos)
+        self.sep.addChild(self.material)
+        self.sep.addChild(self.sphere)
+
+    def setSelected(self, select):
+        self.selected = select
+        self.sphere.radius = 1.5 if select else 1.0
+
+    def setEnabled(self, enabled):
+        self.enabled = enabled
+        if enabled:
+            print("green")
+            self.material.diffuseColor = coin.SbColor(0.0, 1.0, 0.0)
+            self.material.transparency = 0.0
+        else:
+            print("gray")
+            self.material.diffuseColor = coin.SbColor(0.8, 0.8, 0.8)
+            self.material.transparency = 0.6
 
 class ViewProviderDressup:
 
@@ -958,27 +995,43 @@ class ViewProviderDressup:
         vobj.Proxy = self
 
     def attach(self, vobj):
-        self.Object = vobj.Object
-        return
+        self.obj = vobj.Object
+        self.tags = []
+        self.switch = coin.SoSwitch()
+        vobj.RootNode.addChild(self.switch)
+        self.turnMarkerDisplayOn(False)
+
+    def turnMarkerDisplayOn(self, display):
+        sw = coin.SO_SWITCH_ALL if display else coin.SO_SWITCH_NONE
+        self.switch.whichChild = sw
+
 
     def claimChildren(self):
-        for i in self.Object.Base.InList:
+        for i in self.obj.Base.InList:
             if hasattr(i, "Group"):
                 group = i.Group
                 for g in group:
-                    if g.Name == self.Object.Base.Name:
+                    if g.Name == self.obj.Base.Name:
                         group.remove(g)
                 i.Group = group
                 print i.Group
         #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
-        return [self.Object.Base]
+        return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
+        panel = TaskPanel(vobj.Object, self)
+        self.setupTaskPanel(panel)
+        return True
+
+    def setupTaskPanel(self, panel):
+        self.panel = panel
         FreeCADGui.Control.closeDialog()
-        panel = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
-        return True
+
+    def clearTaskPanel(self):
+        self.panel = None
+        self.turnMarkerDisplayOn(False)
 
     def __getstate__(self):
         return None
@@ -991,6 +1044,41 @@ class ViewProviderDressup:
         FreeCADGui.ActiveDocument.getObject(arg1.Object.Base.Name).Visibility = True
         PathUtils.addToJob(arg1.Object.Base)
         return True
+
+    def updateData(self, obj, propName):
+        if 'Disabled' == propName:
+            for tag in self.tags:
+                self.switch.removeChild(tag.sep)
+            tags = []
+            for i, p in enumerate(obj.Positions):
+                tag = HoldingTagMarker(p)
+                tag.setEnabled(not i in obj.Disabled)
+                tags.append(tag)
+                self.switch.addChild(tag.sep)
+            self.tags = tags
+
+    def selectTag(self, index):
+        print("selectTag(%s)" % index)
+        for i, tag in enumerate(self.tags):
+            tag.setSelected(i == index)
+
+    def allowSelection(self, obj, sub):
+        if obj == self.obj:
+            print("allowSelection(%s, %s)" % (obj.Name, sub))
+            return True
+        return False
+
+    def tagAtPoint(self, point):
+        p = FreeCAD.Vector(point[0], point[1], point[2])
+        for i, tag in enumerate(self.tags):
+            if PathGeom.pointsCoincide(p, tag.point, tag.sphere.radius.getValue() * 1.1):
+                return i
+        return -1
+
+    def addSelection(self, point):
+        i = self.tagAtPoint(point)
+        if self.panel:
+            self.panel.selectTagWithId(i)
 
 class CommandPathDressupHoldingTags:
 
