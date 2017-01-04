@@ -944,7 +944,7 @@ namespace SketcherGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {}
 
-        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
         {
             if (pObj != this->object)
                 return false;
@@ -1019,7 +1019,7 @@ public:
         setCursor(QPixmap(cursor_createlock),7,7);
     }
 
-    virtual void mouseMove(Base::Vector2d onSketchPos)
+    virtual void mouseMove(Base::Vector2d /*onSketchPos*/)
     {
         // If preselection Point
         //int preSelPnt = sketchgui->getPreselectPoint();
@@ -1219,7 +1219,7 @@ namespace SketcherGui {
             : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
         {}
 
-        bool allow(App::Document *pDoc, App::DocumentObject *pObj, const char *sSubName)
+        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
         {
             if (pObj != this->object)
                 return false;
