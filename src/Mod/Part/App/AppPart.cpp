@@ -460,6 +460,7 @@ PyMODINIT_FUNC initPart()
     Part::Geometry                ::init();
     Part::GeomPoint               ::init();
     Part::GeomCurve               ::init();
+    Part::GeomBoundedCurve        ::init();
     Part::GeomBezierCurve         ::init();
     Part::GeomBSplineCurve        ::init();
     Part::GeomConic               ::init();
