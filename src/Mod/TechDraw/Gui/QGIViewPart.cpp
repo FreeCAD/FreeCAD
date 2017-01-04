@@ -314,6 +314,7 @@ void QGIViewPart::updateView(bool update)
         viewPart->isTouched() ||
         viewPart->Source.isTouched() ||
         viewPart->Direction.isTouched() ||
+        viewPart->Rotation.isTouched() ||
         viewPart->Scale.isTouched() ||
         viewPart->HardHidden.isTouched() ||
         viewPart->SmoothVisible.isTouched() ||
@@ -345,7 +346,8 @@ void QGIViewPart::updateView(bool update)
 void QGIViewPart::draw() {
     drawViewPart();
     drawMatting();
-    drawBorder();
+//    drawBorder();
+    QGIView::draw();
 }
 
 void QGIViewPart::drawViewPart()
@@ -601,6 +603,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setWidth(Rez::guiX(viewPart->LineWidth.getValue()));          //TODO: add fudge to make sectionLine thinner than reg lines?
         sectionLine->setFont(m_font,Rez::guiX(6.0));
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
+        sectionLine->setRotation(- viewPart->Rotation.getValue());
         sectionLine->draw();
     }
 }
@@ -630,6 +633,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             //centerLine->setWidth(viewPart->LineWidth.getValue());
             centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->setRotation(- viewPart->Rotation.getValue());
             centerLine->draw();
         }
         if (vert) {
@@ -642,6 +646,7 @@ void QGIViewPart::drawCenterLines(bool b)
             centerLine->setBounds(-xVal,-yVal,xVal,yVal);
             //centerLine->setWidth(viewPart->LineWidth.getValue());
             centerLine->setZValue(ZVALUE::SECTIONLINE);
+            centerLine->setRotation(- viewPart->Rotation.getValue());
             centerLine->draw();
         }
     }
