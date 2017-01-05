@@ -181,7 +181,7 @@ signals:
     void clicked();
     void selected();
 
-public slots:
+public Q_SLOTS:
     void setColor(const QColor &color, const QString &text = QString());
 
 protected:
@@ -224,10 +224,10 @@ signals:
     void selected(const QColor &);
     void hid();
 
-public slots:
+public Q_SLOTS:
     void getColorFromDialog();
 
-protected slots:
+protected Q_SLOTS:
     void updateSelected();
 
 protected:
