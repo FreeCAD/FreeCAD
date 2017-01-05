@@ -780,7 +780,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomEllipse::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
-                            geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                            geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
+			    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                             Gui::Command::openCommand("Drag Curve");
                             try {
                                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
@@ -3346,6 +3347,9 @@ void ViewProviderSketch::draw(bool temp)
             const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
             Handle_Geom_BSplineCurve curve = Handle_Geom_BSplineCurve::DownCast(spline->handle());
 
+            Base::Vector3d startp  = spline->getStartPoint();
+            Base::Vector3d endp    = spline->getEndPoint();
+
             double first = curve->FirstParameter();
             double last = curve->LastParameter();
             if (first > last) // if arc is reversed
@@ -3365,13 +3369,16 @@ void ViewProviderSketch::draw(bool temp)
             gp_Pnt end = curve->Value(last);
             Coords.push_back(Base::Vector3d(end.X(), end.Y(), end.Z()));
 
-            std::vector<Base::Vector3d> poles = spline->getPoles();
+	    // abdullah: Poles thought as internal geometry
+            /*std::vector<Base::Vector3d> poles = spline->getPoles();
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
                 Points.push_back(*it);
-            }
+            }*/
 
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
+            Points.push_back(startp);
+            Points.push_back(endp);
         }
         else {
         }
