@@ -32,6 +32,9 @@ using namespace Part;
 
 const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
 const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
+const char* Part::Offset::AlgoEnums[]= {"OCC","libarea", "libareaNoArcFit",
+    "ClipperOffset","ClipperNoArcFit",NULL};
+
 
 PROPERTY_SOURCE(Part::Offset, Part::Feature)
 
@@ -43,9 +46,13 @@ Offset::Offset()
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join,(long(0)),"Offset",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
+    ADD_PROPERTY_TYPE(Algo,(long(3)),"Offset",App::Prop_None,"Algorithm");
+    Algo.setEnums(AlgoEnums);
     ADD_PROPERTY_TYPE(Intersection,(false),"Offset",App::Prop_None,"Intersection");
     ADD_PROPERTY_TYPE(SelfIntersection,(false),"Offset",App::Prop_None,"Self Intersection");
     ADD_PROPERTY_TYPE(Fill,(false),"Offset",App::Prop_None,"Fill offset");
+
+    Algo.setStatus(App::Property::Status::Hidden, true);
 }
 
 Offset::~Offset()
@@ -100,6 +107,8 @@ PROPERTY_SOURCE(Part::Offset2D, Part::Offset)
 
 Offset2D::Offset2D()
 {
+    this->Algo.setStatus(App::Property::Status::Hidden, false);
+    this->Intersection.setValue(true);
     this->SelfIntersection.setStatus(App::Property::Status::Hidden, true);
     this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
@@ -123,6 +132,8 @@ short Offset2D::mustExecute() const
         return 1;
     if (Intersection.isTouched())
         return 1;
+    if (Algo.isTouched())
+        return 1;
     return 0;
 }
 
@@ -136,9 +147,10 @@ App::DocumentObjectExecReturn *Offset2D::execute(void)
     short join = (short)Join.getValue();
     bool fill = Fill.getValue();
     bool inter = Intersection.getValue();
+    short algo = (short)Algo.getValue();
     if (mode == 2)
         return new App::DocumentObjectExecReturn("Mode 'Recto-Verso' is not supported for 2D offset.");
     const TopoShape& shape = static_cast<Part::Feature*>(source)->Shape.getShape();
-    this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter));
+    this->Shape.setValue(shape.makeOffset2D(offset, join, fill, mode == 0, inter, algo));
     return App::DocumentObject::StdReturn;
 }

@@ -46,6 +46,7 @@ private Q_SLOTS:
     void on_spinOffset_valueChanged(double);
     void on_modeType_activated(int);
     void on_joinType_activated(int);
+    void on_algoType_activated(int);
     void on_intersection_toggled(bool);
     void on_selfIntersection_toggled(bool);
     void on_fillOffset_toggled(bool);

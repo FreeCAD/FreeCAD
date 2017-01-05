@@ -81,41 +81,77 @@
     </widget>
    </item>
    <item row="3" column="0">
+    <widget class="QLabel" name="labelAlgo">
+     <property name="text">
+      <string>Algorithm type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QComboBox" name="algoType">
+     <item>
+      <property name="text">
+       <string>OCC</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>libarea</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>libarea (no arc fit)</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ClipperOffset</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>ClipperOffset (no arc fit)</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
     <widget class="QCheckBox" name="intersection">
      <property name="text">
       <string>Intersection</string>
      </property>
     </widget>
    </item>
-   <item row="4" column="0" colspan="2">
+   <item row="5" column="0" colspan="2">
     <widget class="QCheckBox" name="selfIntersection">
      <property name="text">
       <string>Self-intersection</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0">
     <widget class="QCheckBox" name="fillOffset">
      <property name="text">
       <string>Fill offset</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="0" colspan="3">
+   <item row="7" column="0" colspan="3">
     <widget class="QLabel" name="labelFaces">
      <property name="text">
       <string notr="true"/>
      </property>
     </widget>
    </item>
-   <item row="7" column="0">
+   <item row="8" column="0">
     <widget class="QPushButton" name="facesButton">
      <property name="text">
       <string>Faces</string>
      </property>
     </widget>
    </item>
-   <item row="7" column="1" colspan="2">
+   <item row="8" column="1" colspan="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -128,14 +164,14 @@
      </property>
     </spacer>
    </item>
-   <item row="8" column="0" colspan="3">
+   <item row="9" column="0" colspan="3">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
    </item>
-   <item row="9" column="0">
+   <item row="10" column="0">
     <widget class="QCheckBox" name="updateView">
      <property name="text">
       <string>Update view</string>
@@ -160,6 +196,7 @@
   <tabstop>joinType</tabstop>
   <tabstop>intersection</tabstop>
   <tabstop>selfIntersection</tabstop>
+  <tabstop>algoType</tabstop>
  </tabstops>
  <resources/>
  <connections/>

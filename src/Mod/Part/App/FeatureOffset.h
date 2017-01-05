@@ -42,6 +42,7 @@ public:
     App::PropertyFloat Value;
     App::PropertyEnumeration Mode;
     App::PropertyEnumeration Join;
+    App::PropertyEnumeration Algo;
     App::PropertyBool Intersection;
     App::PropertyBool SelfIntersection;
     App::PropertyBool Fill;
@@ -59,6 +60,7 @@ public:
 private:
     static const char* ModeEnums[];
     static const char* JoinEnums[];
+    static const char* AlgoEnums[];
 };
 
 class PartExport Offset2D : public Offset
@@ -67,6 +69,7 @@ class PartExport Offset2D : public Offset
 public:
     Offset2D();
     ~Offset2D();
+
 
     /** @name methods override feature */
     //@{
