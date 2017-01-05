@@ -84,19 +84,21 @@ if(MSVC)
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
     )
-    set(area
+    set(area_LIBS
+        area-native
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
-        area-native
+        ${area_native_LIBS}
     )
 elseif(MINGW)
     set(area_native_LIBS
         Rpcrt4.lib
     )
     set(area_LIBS
+        area-native
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
-        area-native
+        ${area_native_LIBS}
     )
 else(MSVC)
     set(area_native_LIBS
