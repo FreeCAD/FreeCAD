@@ -2084,12 +2084,36 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
 }
 
 class Libarea {
-    std::list<CCurve> myCurves;
+    CArea myArea;
+    gp_Pln myPlane;
     gp_Trsf myMat;
+    bool myHaveFace;
 
 public:
-    Libarea(const gp_Pln& plane) {
+    Libarea(const gp_Pln& plane)
+        :myPlane(plane)
+        ,myHaveFace(false)
+    {
         myMat.SetTransformation(plane.Position());
+    }
+
+    void Add(const TopoDS_Shape &shape, double deflection=0.01) {
+        if (shape.ShapeType() == TopAbs_WIRE){
+            Add(TopoDS::Wire(shape),deflection);
+            return;
+        }
+        TopExp_Explorer it;
+        for (it.Init(shape, TopAbs_FACE); it.More(); it.Next())
+            Add(TopoDS::Face(it.Current()),deflection);
+    }
+
+    void Add(const TopoDS_Face &face, double deflection=0.01) {
+        TopExp_Explorer it;
+        myHaveFace = true;
+        Libarea area(myPlane);
+        for (it.Init(face, TopAbs_WIRE); it.More(); it.Next())
+            area.Add(TopoDS::Wire(it.Current()),deflection);
+        myArea.Union(area.myArea);
     }
 
     void Add(const TopoDS_Wire& wire, double deflection=0.01) {
@@ -2144,15 +2168,26 @@ public:
                     Standard_Failure::Raise("Curve discretization failed");
             }}
         }
-        myCurves.push_back(ccurve);
+        if(BRep_Tool::IsClosed(wire) && !ccurve.IsClosed()) {
+            cout << "warning: ccurve not closed" << endl;
+            ccurve.append(ccurve.m_vertices.front());
+        }
+        myArea.append(ccurve);
     }
 
-    TopoDS_Compound Offset(double offset, 
+    TopoDS_Shape Offset(double offset, 
             short algo = 1, 
             GeomAbs_JoinType join = GeomAbs_Arc,
-            bool allowOpenResult = true)
+            bool allowOpenResult = true,
+            bool fill = false)
     {
-        CArea area;
+        if(fabs(offset)<Precision::Confusion()) 
+            return this->ToShape(myArea.m_curves,fill);
+
+        // Copy so that the underlying shape is intact, and new offset can be
+        // done by repeatedly calling this function.
+        CArea area(myArea);
+
         ClipperLib::JoinType joinType;
         ClipperLib::EndType endType;
         endType=ClipperLib::etOpenSquare;
@@ -2164,31 +2199,33 @@ public:
         else
             joinType = ClipperLib::jtSquare;
 
-        // TODO: Not sure what does allowOpenResult mean
         if(!allowOpenResult)
-            endType = ClipperLib::etClosedPolygon;
-
-        area.m_curves = myCurves;
+            endType = ClipperLib::etClosedLine;
 
         bool fit_arcs = CArea::m_fit_arcs;
         CArea::m_fit_arcs = (algo&1)?false:true;
         algo >>= 1;
-        if(algo==0)
+        if(algo==0){
+            // libarea somehow fails offset without Reorder, but ClipperOffset
+            // works okay. Don't know why
+            area.Reorder();
             area.Offset(-offset);
-        else if(algo==1)
+        }else if(algo==1)
             area.OffsetWithClipper(offset,joinType,endType);
         else{
             CArea::m_fit_arcs = fit_arcs;
             throw Base::ValueError("makeOffset2D: unknown algo");
         }
         CArea::m_fit_arcs = fit_arcs;
-        return this->ToShape(area.m_curves);
+        return this->ToShape(area.m_curves,fill);
     }
 
-    TopoDS_Compound ToShape(const std::list<CCurve> &curves) {
-        TopoDS_Compound compound;
+    TopoDS_Shape ToShape(const std::list<CCurve> &curves,bool fill) {
         BRep_Builder builder;
+        TopoDS_Compound compound;
         builder.MakeCompound(compound);
+        TopLoc_Location loc(myMat.Inverted());
+
         for(const CCurve &c : curves) {
             BRepBuilderAPI_MakeWire mkWire;
             gp_Pnt pstart,pt;
@@ -2227,10 +2264,45 @@ public:
                     mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
                 }
             }
-            builder.Add(compound, mkWire.Wire());
+
+            builder.Add(compound,mkWire.Wire().Moved(loc));
         }
-        compound.Move(TopLoc_Location(myMat.Inverted()));
+        
+        if(myHaveFace || fill) {
+            try{
+                FaceMakerBullseye mkFace;
+                mkFace.setPlane(myPlane);
+                TopExp_Explorer it;
+                for (it.Init(compound, TopAbs_WIRE); it.More(); it.Next())
+                    mkFace.addWire(TopoDS::Wire(it.Current()));
+                mkFace.Build();
+                if (mkFace.Shape().IsNull())
+                    Base::Console().Warning(
+                            "FaceMakerBullseye returns null shape");
+                else
+                    return mkFace.Shape();
+            }catch (Base::Exception &e){
+                Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
+            }
+        }
         return compound;
+    }
+
+    static TopoDS_Shape makeOffset(const TopoDS_Shape &shape, 
+                                    double offset, 
+                                    short joinType, 
+                                    bool fill, 
+                                    bool allowOpenResult, 
+                                    int algo)
+    {
+        BRepLib_FindSurface planefinder(shape, -1, Standard_True);
+        if (!planefinder.Found())
+            throw Base::Exception(
+                    "makeOffset2D: wires are nonplanar or noncoplanar");
+        Libarea area(GeomAdaptor_Surface(planefinder.Surface()).Plane());
+        area.Add(shape);
+        return area.Offset(
+                offset,algo,GeomAbs_JoinType(joinType),allowOpenResult,fill);
     }
 };
 
@@ -2239,7 +2311,12 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
-    if (!algo && allowOpenResult && OCC_VERSION_HEX < 0x060900)
+
+    if(algo && intersection)
+        return Libarea::makeOffset(
+                _Shape,offset,joinType,fill,allowOpenResult,algo-1);
+
+    if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
 
     // OUTLINE OF MAKEOFFSET2D
@@ -2294,7 +2371,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
         //reassembling the faces later.
         std::vector<TopoDS_Wire> sourceWires;
         bool haveWires = false;
-        int haveFaces = 0;
+        bool haveFaces = false;
         for(TopoDS_Shape &sh : shapesToProcess){
             switch (sh.ShapeType()) {
                 case TopAbs_EDGE:
@@ -2315,7 +2392,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
                     for(; it.More(); it.Next()){
                         sourceWires.push_back(TopoDS::Wire(it.Value()));
                     }
-                    ++haveFaces;
+                    haveFaces = true;
                 }break;
                 default:
                     throw Base::TypeError("makeOffset2D: input shape is not an edge, wire or face or compound of those.");
@@ -2527,18 +2604,6 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
                 if (haveFaces && shapesToProcess.size() == 1)
                     result.Orientation(shapesToProcess[0].Orientation());
 
-                if(haveFaces == 1 && result.ShapeType()!=TopAbs_FACE) {
-                    // BRepBuilderAPI_MakeFace normally can't handle complex
-                    // face with holes and inner subfaces inside holes.
-                    // However, FaceMakerBullseye will sort out all the wire
-                    // orientations, and enables BRepBuilderAPI_MakeFace to
-                    // create a single unifying face.
-                    BRepBuilderAPI_MakeFace mkFace(workingPlane);
-                    TopExp_Explorer it;
-                    for (it.Init(result, TopAbs_WIRE); it.More(); it.Next())
-                        mkFace.Add(TopoDS::Wire(it.Current()));
-                    result = mkFace.Face();
-                }
             }catch (Base::Exception &e){
                 Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
                 result = offsetShape;

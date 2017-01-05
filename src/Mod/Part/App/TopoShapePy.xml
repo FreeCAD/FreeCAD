@@ -330,8 +330,10 @@ Returns: result of offsetting.</UserDocu>
     </Methode>
     <Methode Name="makeOffset2D" Const="true"  Keyword="true">
       <Documentation>
-      <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false, intersection = false, algo = 0): makes an offset shape (2d offsetting). The function supports keyword
-arguments. Input shape (self) can be edge, wire, face, or a compound of those.
+          <UserDocu>makeOffset2D(offset, join = 0, fill = False, openResult = false,
+intersection = false, algo = 0): makes an offset shape (2d offsetting). 
+The function supports keyword arguments. Input shape (self) can be edge, 
+wire, face, or a compound of those.
 
 * offset: distance to expand the shape by. Negative value will shrink the
 shape.
