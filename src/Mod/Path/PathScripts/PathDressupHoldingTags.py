@@ -23,7 +23,9 @@
 # ***************************************************************************
 import FreeCAD
 import FreeCADGui
+import Draft
 import DraftGeomUtils
+import DraftGui
 import Path
 import Part
 import copy
@@ -563,6 +565,12 @@ class PathData:
             raise ValueError("There's something really wrong here")
         return ordered
 
+    def pointIsOnPath(self, p):
+        for e in self.edges:
+            if DraftGeomUtils.isPtOnEdge(p, e):
+                return True
+        return False
+
 
 class ObjectDressup:
 
@@ -750,15 +758,32 @@ class ObjectDressup:
         self.obj.Disabled = disabled
         self.execute(self.obj)
 
+    def pointIsOnPath(self, obj, point):
+        if not hasattr(self, 'pathData'):
+            self.setup(obj)
+        return self.pathData.pointIsOnPath(point)
+
 class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
     DataY = QtCore.Qt.ItemDataRole.UserRole + 1
+    DataID = QtCore.Qt.ItemDataRole.UserRole + 2
 
     def __init__(self, obj, viewProvider, jvoVisibility=None):
         self.obj = obj
         self.obj.Proxy.obj = obj
         self.viewProvider = viewProvider
-        self.form = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
+        self.form = QtGui.QWidget()
+        self.formTags  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
+        self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
+        self.layout = QtGui.QVBoxLayout(self.form)
+        self.form.setGeometry(self.formTags.geometry())
+        self.form.setWindowTitle(self.formTags.windowTitle())
+        self.form.setSizePolicy(self.formTags.sizePolicy())
+        self.formTags.setParent(self.form)
+        self.formPoint.setParent(self.form)
+        self.layout.addWidget(self.formTags)
+        self.layout.addWidget(self.formPoint)
+        self.formPoint.hide()
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
             FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
@@ -781,39 +806,35 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
 
     def cleanup(self):
+        self.removeGlobalCallbacks()
         self.viewProvider.clearTaskPanel()
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
-        FreeCADGui.Selection.removeObserver(self.s)
         if self.jvoVisible:
             self.jvo.show()
 
-    def closeDialog(self):
-        print("closed")
-
     def open(self):
         self.s = SelObserver(self.viewProvider)
-        # install the function mode resident
         FreeCADGui.Selection.addObserver(self.s)
 
     def getTags(self, includeCurrent):
         tags = []
-        index = self.form.lwTags.currentRow()
-        for i in range(0, self.form.lwTags.count()):
-            item = self.form.lwTags.item(i)
+        index = self.formTags.lwTags.currentRow()
+        for i in range(0, self.formTags.lwTags.count()):
+            item = self.formTags.lwTags.item(i)
             enabled = item.checkState() == QtCore.Qt.CheckState.Checked
             x = item.data(self.DataX)
             y = item.data(self.DataY)
-            print("(%.2f, %.2f) i=%d/%s" % (x, y, i, index))
+            #print("(%.2f, %.2f) i=%d/%s" % (x, y, i, index))
             if includeCurrent or i != index:
                 tags.append((x, y, enabled))
         return tags
 
     def getTagParameters(self):
-        self.obj.Width  = self.form.dsbWidth.value()
-        self.obj.Height = self.form.dsbHeight.value()
-        self.obj.Angle  = self.form.dsbAngle.value()
+        self.obj.Width  = self.formTags.dsbWidth.value()
+        self.obj.Height = self.formTags.dsbHeight.value()
+        self.obj.Angle  = self.formTags.dsbAngle.value()
 
     def getFields(self):
         self.getTagParameters()
@@ -822,13 +843,14 @@ class TaskPanel:
 
     def updateTagsView(self):
         print("updateTagsView")
-        self.form.lwTags.blockSignals(True)
-        self.form.lwTags.clear()
+        self.formTags.lwTags.blockSignals(True)
+        self.formTags.lwTags.clear()
         for i, pos in enumerate(self.obj.Positions):
             lbl = "%d: (%.2f, %.2f)" % (i, pos.x, pos.y)
             item = QtGui.QListWidgetItem(lbl)
             item.setData(self.DataX, pos.x)
             item.setData(self.DataY, pos.y)
+            item.setData(self.DataID, i)
             if i in self.obj.Disabled:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
             else:
@@ -837,8 +859,8 @@ class TaskPanel:
             flags |= QtCore.Qt.ItemFlag.ItemIsEnabled
             flags |= QtCore.Qt.ItemFlag.ItemIsUserCheckable
             item.setFlags(flags)
-            self.form.lwTags.addItem(item)
-        self.form.lwTags.blockSignals(False)
+            self.formTags.lwTags.addItem(item)
+        self.formTags.lwTags.blockSignals(False)
         self.whenTagSelectionChanged()
 
     def cleanupUI(self):
@@ -852,7 +874,7 @@ class TaskPanel:
         print("generateNewTags")
         self.cleanupUI()
 
-        count = self.form.sbCount.value()
+        count = self.formTags.sbCount.value()
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
 
@@ -869,34 +891,109 @@ class TaskPanel:
 
     def whenCountChanged(self):
         print("whenCountChanged")
-        count = self.form.sbCount.value()
-        self.form.pbGenerate.setEnabled(count)
+        count = self.formTags.sbCount.value()
+        self.formTags.pbGenerate.setEnabled(count)
 
     def selectTagWithId(self, index):
-        self.form.lwTags.setCurrentRow(index)
+        self.formTags.lwTags.setCurrentRow(index)
 
     def whenTagSelectionChanged(self):
         print('whenTagSelectionChanged')
-        index = self.form.lwTags.currentRow()
-        self.form.pbDelete.setEnabled(index != -1)
+        index = self.formTags.lwTags.currentRow()
+        self.formTags.pbDelete.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
     def deleteSelectedTag(self):
+        print("deleteSelectedTag")
         self.obj.Proxy.setXyEnabled(self.getTags(False))
         self.updateTagsView()
 
-    def addNewTagAt(self, point, what):
-        if what == self.obj:
-            print("%s '%s'" %( point, what.Name))
+    def addNewTagAt(self, point, obj):
+        if obj == self.obj and obj.Proxy.pointIsOnPath(obj, point):
+            print("addNewTagAt(%s, %s)" % (point, obj.Name))
             tags = self.tags
             tags.append((point.x, point.y, True))
             self.obj.Proxy.setXyEnabled(tags)
-        panel = TaskPanel(self.obj, self.viewProvider, self.jvoVisible)
-        todo.delay(self.viewProvider.setupTaskPanel, panel)
+            self.updateTagsView()
+        else:
+            print("ignore new tag at %s (%s)" % (point, obj))
+        self.formPoint.hide()
+        self.formTags.show()
 
     def addNewTag(self):
         self.tags = self.getTags(True)
-        FreeCADGui.Snapper.getPoint(callback=self.addNewTagAt, extradlg=[self])
+        self.getPoint(self.addNewTagAt)
+
+    def editTagAt(self, point, obj):
+        if obj == self.obj:
+            tags = []
+            for i, (x, y, enabled) in enumerate(self.tags):
+                if i == self.editItem:
+                    tags.append((point.x, point.y, enabled))
+                else:
+                    tags.append((x, y, enabled))
+            self.obj.Proxy.setXyEnabled(tags)
+            self.updateTagsView()
+        self.formPoint.hide()
+        self.formTags.show()
+
+    def editTag(self, item):
+        self.tags = self.getTags(True)
+        self.editItem = item.data(self.DataID)
+        x = item.data(self.DataX)
+        y = item.data(self.DataY)
+        self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, 0))
+
+    def removeGlobalCallbacks(self):
+        if hasattr(self, 'view') and self.view:
+            if self.callbackClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
+                self.callbackClick = None
+            if self.callbackMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
+                self.callbackMove = None
+            self.view = None
+
+    def getPoint(self, whenDone, start=None):
+
+        def mouseMove(cb):
+            event = cb.getEvent()
+            pos = event.getPosition()
+            cntrl = event.wasCtrlDown()
+            shift = event.wasShiftDown()
+            self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
+            if cntrl:
+                p = self.pt
+            else:
+                plane = FreeCAD.DraftWorkingPlane
+                p = plane.getLocalCoords(self.pt)
+            self.formPoint.ifValueX.setText(DraftGui.displayExternal(p.x))
+            self.formPoint.ifValueY.setText(DraftGui.displayExternal(p.y))
+            self.formPoint.ifValueZ.setText(DraftGui.displayExternal(p.z))
+
+        def click(cb):
+            event = cb.getEvent()
+            if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
+                accept()
+
+        def finish(ok):
+            self.removeGlobalCallbacks();
+            obj = FreeCADGui.Snapper.lastSnappedObject
+            FreeCADGui.Snapper.off()
+            whenDone(self.pt if ok else None, obj if ok else None)
+
+        def accept():
+            finish(True)
+
+        def cancel():
+            finish(False)
+
+        self.formTags.hide()
+        self.formPoint.show()
+
+        self.view = Draft.get3DView()
+        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
+        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
@@ -906,12 +1003,12 @@ class TaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.setupSpinBox(self.form.sbCount, len(self.obj.Positions), None)
-        self.setupSpinBox(self.form.dsbHeight, self.obj.Height)
-        self.setupSpinBox(self.form.dsbWidth, self.obj.Width)
-        self.setupSpinBox(self.form.dsbAngle, self.obj.Angle, 0)
-        self.form.dsbAngle.setMaximum(90)
-        self.form.dsbAngle.setSingleStep(5.)
+        self.setupSpinBox(self.formTags.sbCount, len(self.obj.Positions), None)
+        self.setupSpinBox(self.formTags.dsbHeight, self.obj.Height)
+        self.setupSpinBox(self.formTags.dsbWidth, self.obj.Width)
+        self.setupSpinBox(self.formTags.dsbAngle, self.obj.Angle, 0)
+        self.formTags.dsbAngle.setMaximum(90)
+        self.formTags.dsbAngle.setSingleStep(5.)
 
     def updateModelHeight(self):
         print('updateModelHeight')
@@ -933,32 +1030,35 @@ class TaskPanel:
         self.setFields()
         self.whenCountChanged()
 
-        self.form.sbCount.valueChanged.connect(self.whenCountChanged)
-        self.form.pbGenerate.clicked.connect(self.generateNewTags)
+        self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
+        self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
 
-        self.form.dsbHeight.editingFinished.connect(self.updateModelHeight)
-        self.form.dsbWidth.editingFinished.connect(self.updateModelWidth)
-        self.form.dsbAngle.editingFinished.connect(self.updateModelAngle)
-        self.form.lwTags.itemChanged.connect(self.updateModelTags)
-        self.form.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
+        self.formTags.dsbHeight.editingFinished.connect(self.updateModelHeight)
+        self.formTags.dsbWidth.editingFinished.connect(self.updateModelWidth)
+        self.formTags.dsbAngle.editingFinished.connect(self.updateModelAngle)
+        self.formTags.lwTags.itemChanged.connect(self.updateModelTags)
+        self.formTags.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
+        self.formTags.lwTags.itemActivated.connect(self.editTag)
 
-        self.form.pbDelete.clicked.connect(self.deleteSelectedTag)
-        self.form.pbAdd.clicked.connect(self.addNewTag)
+        self.formTags.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.formTags.pbAdd.clicked.connect(self.addNewTag)
         self.viewProvider.turnMarkerDisplayOn(True)
 
 class SelObserver:
     def __init__(self, viewProvider):
+        print("register observer")
         FreeCADGui.Selection.addSelectionGate(self)
         self.viewProvider = viewProvider
 
     def __del__(self):
+        print("remove observer")
         FreeCADGui.Selection.removeSelectionGate()
 
     def allow(self, doc, obj, sub):
         return self.viewProvider.allowSelection(obj, sub)
 
     def addSelection(self, doc, obj, sub, pnt):
-        self.viewProvider.addSelection(pnt)
+        self.viewProvider.addSelection(doc, obj, sub, pnt)
         #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
         FreeCADGui.updateGui()
 
@@ -981,11 +1081,9 @@ class HoldingTagMarker:
     def setEnabled(self, enabled):
         self.enabled = enabled
         if enabled:
-            print("green")
             self.material.diffuseColor = coin.SbColor(0.0, 1.0, 0.0)
             self.material.transparency = 0.0
         else:
-            print("gray")
             self.material.diffuseColor = coin.SbColor(0.8, 0.8, 0.8)
             self.material.transparency = 0.6
 
@@ -1028,9 +1126,13 @@ class ViewProviderDressup:
         FreeCADGui.Control.closeDialog()
         FreeCADGui.Control.showDialog(panel)
         panel.setupUi()
+        FreeCADGui.Selection.addSelectionGate(self)
+        FreeCADGui.Selection.addObserver(self)
 
     def clearTaskPanel(self):
         self.panel = None
+        FreeCADGui.Selection.removeObserver(self)
+        FreeCADGui.Selection.removeSelectionGate()
         self.turnMarkerDisplayOn(False)
 
     def __getstate__(self):
@@ -1062,12 +1164,6 @@ class ViewProviderDressup:
         for i, tag in enumerate(self.tags):
             tag.setSelected(i == index)
 
-    def allowSelection(self, obj, sub):
-        if obj == self.obj:
-            print("allowSelection(%s, %s)" % (obj.Name, sub))
-            return True
-        return False
-
     def tagAtPoint(self, point):
         p = FreeCAD.Vector(point[0], point[1], point[2])
         for i, tag in enumerate(self.tags):
@@ -1075,10 +1171,17 @@ class ViewProviderDressup:
                 return i
         return -1
 
-    def addSelection(self, point):
+    # SelectionObserver interface
+    def allow(self, doc, obj, sub):
+        if obj == self.obj:
+            return True
+        return False
+
+    def addSelection(self, doc, obj, sub, point):
         i = self.tagAtPoint(point)
         if self.panel:
             self.panel.selectTagWithId(i)
+        FreeCADGui.updateGui()
 
 class CommandPathDressupHoldingTags:
 
