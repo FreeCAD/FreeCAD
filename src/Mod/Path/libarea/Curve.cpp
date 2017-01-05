@@ -147,9 +147,9 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 	}
 	else
 	{
-		if(arc_found)
+		if(arc_found && might_be_an_arc.size()>=(std::size_t)CArea::m_min_arc_points)
 		{
-			if(arc.AlmostALine())
+            if(arc.AlmostALine())
 			{
 				new_vertices.push_back(CVertex(arc.m_e, arc.m_user_data));
 			}
@@ -176,6 +176,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 					new_vertices.push_back(*v);
 				}
 			}
+            arc_found = false;
 			might_be_an_arc.clear();
 			if(check_for_arc)might_be_an_arc.push_back(back_vt);
 		}
@@ -283,10 +284,10 @@ void CCurve::UnFitArcs()
 				else
 					Segments=(int)ceil(-phit/dphi);
 
-				if (Segments < 1)
-					Segments=1;
-				if (Segments > 100)
-					Segments=100;
+				if (Segments < CArea::m_min_arc_points)
+					Segments = CArea::m_min_arc_points;
+				if (Segments > CArea::m_max_arc_points)
+					Segments=CArea::m_max_arc_points;
 
 				dphi=phit/(Segments);
 

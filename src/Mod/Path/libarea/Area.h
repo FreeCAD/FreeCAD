@@ -44,6 +44,9 @@ public:
 	static double m_accuracy;
 	static double m_units; // 1.0 for mm, 25.4 for inches. All points are multiplied by this before going to the engine
 	static bool m_fit_arcs;
+    static int m_min_arc_points;
+    static int m_def_arc_points;
+    static int m_max_arc_points;
 	static double m_processing_done; // 0.0 to 100.0, set inside MakeOnePocketCurve
 	static double m_single_area_processing_length;
 	static double m_after_MakeOffsets_length;
