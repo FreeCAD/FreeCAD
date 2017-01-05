@@ -43,6 +43,7 @@
 # include <Geom_Ellipse.hxx>
 # include <Geom_Hyperbola.hxx>
 # include <Geom_Parabola.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -514,6 +515,12 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
             return aop->getEndPoint();
         else if (PosId == mid)
             return aop->getCenter();
+    } else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+        if (PosId == start)
+            return bsp->getStartPoint();
+        else if (PosId == end)
+            return bsp->getEndPoint();
     }
 
     return Base::Vector3d();
@@ -571,6 +578,7 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
         geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
         geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         return true;
     }
@@ -4213,6 +4221,11 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2PosId.push_back(end);
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(end);
         }
     }
 }
