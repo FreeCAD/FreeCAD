@@ -58,6 +58,7 @@
         <file>panels/JobEdit.ui</file>
         <file>panels/MillFaceEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
+        <file>panels/PointEdit.ui</file>
         <file>panels/ProfileEdgesEdit.ui</file>
         <file>panels/ProfileEdit.ui</file>
         <file>panels/RemoteEdit.ui</file>
