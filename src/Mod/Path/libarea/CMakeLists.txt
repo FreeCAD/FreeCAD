@@ -126,10 +126,6 @@ message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE
 
 # this installs the python library
 install(
-    TARGETS area-native
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-)
-install(
-    TARGETS area
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    TARGETS area-native area
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
