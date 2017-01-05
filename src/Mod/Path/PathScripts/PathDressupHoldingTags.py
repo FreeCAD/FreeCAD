@@ -943,12 +943,12 @@ class TaskPanel:
 
     def removeGlobalCallbacks(self):
         if hasattr(self, 'view') and self.view:
-            if self.callbackClick:
-                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.callbackClick)
-                self.callbackClick = None
-            if self.callbackMove:
-                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.callbackMove)
-                self.callbackMove = None
+            if self.pointCbClick:
+                self.view.removeEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), self.pointCbClick)
+                self.pointCbClick = None
+            if self.pointCbMove:
+                self.view.removeEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), self.pointCbMove)
+                self.pointCbMove = None
             self.view = None
 
     def getPoint(self, whenDone, start=None):
@@ -990,8 +990,8 @@ class TaskPanel:
             displayPoint(FreeCAD.Vector(0,0,0))
 
         self.view = Draft.get3DView()
-        self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
-        self.callbackMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
+        self.pointCbClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
+        self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
 
     def setupSpinBox(self, widget, val, decimals = 2):
         widget.setMinimum(0)
