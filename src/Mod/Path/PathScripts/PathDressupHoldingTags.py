@@ -792,6 +792,7 @@ class TaskPanel:
                 self.jvo.hide()
         else:
             self.jvoVisible = jvoVisibility
+        self.pt = FreeCAD.Vector(0, 0, 0)
 
     def reject(self):
         print("reject")
@@ -813,10 +814,6 @@ class TaskPanel:
         FreeCAD.ActiveDocument.recompute()
         if self.jvoVisible:
             self.jvo.show()
-
-    def open(self):
-        self.s = SelObserver(self.viewProvider)
-        FreeCADGui.Selection.addObserver(self.s)
 
     def getTags(self, includeCurrent):
         tags = []
@@ -909,14 +906,14 @@ class TaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
-        if obj == self.obj and obj.Proxy.pointIsOnPath(obj, point):
-            print("addNewTagAt(%s, %s)" % (point, obj.Name))
+        if (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+            print("addNewTagAt(%s)" % (point))
             tags = self.tags
             tags.append((point.x, point.y, True))
             self.obj.Proxy.setXyEnabled(tags)
             self.updateTagsView()
         else:
-            print("ignore new tag at %s (%s)" % (point, obj))
+            print("ignore new tag at %s" % (point))
         self.formPoint.hide()
         self.formTags.show()
 
@@ -956,40 +953,41 @@ class TaskPanel:
 
     def getPoint(self, whenDone, start=None):
 
+        def displayPoint(p):
+            self.formPoint.ifValueX.setText(DraftGui.displayExternal(p.x))
+            self.formPoint.ifValueY.setText(DraftGui.displayExternal(p.y))
+            self.formPoint.ifValueZ.setText(DraftGui.displayExternal(p.z))
+            self.formPoint.ifValueX.setFocus()
+            self.formPoint.ifValueX.selectAll()
+
         def mouseMove(cb):
             event = cb.getEvent()
             pos = event.getPosition()
             cntrl = event.wasCtrlDown()
             shift = event.wasShiftDown()
             self.pt = FreeCADGui.Snapper.snap(pos, lastpoint=start, active=cntrl, constrain=shift)
-            if cntrl:
-                p = self.pt
-            else:
-                plane = FreeCAD.DraftWorkingPlane
-                p = plane.getLocalCoords(self.pt)
-            self.formPoint.ifValueX.setText(DraftGui.displayExternal(p.x))
-            self.formPoint.ifValueY.setText(DraftGui.displayExternal(p.y))
-            self.formPoint.ifValueZ.setText(DraftGui.displayExternal(p.z))
+            plane = FreeCAD.DraftWorkingPlane
+            p = plane.getLocalCoords(self.pt)
+            displayPoint(p)
 
         def click(cb):
             event = cb.getEvent()
             if event.getButton() == 1 and event.getState() == coin.SoMouseButtonEvent.DOWN:
                 accept()
 
-        def finish(ok):
-            self.removeGlobalCallbacks();
-            obj = FreeCADGui.Snapper.lastSnappedObject
-            FreeCADGui.Snapper.off()
-            whenDone(self.pt if ok else None, obj if ok else None)
-
         def accept():
-            finish(True)
+            self.pointAccept()
 
         def cancel():
-            finish(False)
+            self.pointCancel()
 
+        self.pointWhenDone = whenDone
         self.formTags.hide()
         self.formPoint.show()
+        if start:
+            displayPoint(start)
+        else:
+            displayPoint(FreeCAD.Vector(0,0,0))
 
         self.view = Draft.get3DView()
         self.callbackClick = self.view.addEventCallbackPivy(coin.SoMouseButtonEvent.getClassTypeId(), click)
@@ -1042,25 +1040,33 @@ class TaskPanel:
 
         self.formTags.pbDelete.clicked.connect(self.deleteSelectedTag)
         self.formTags.pbAdd.clicked.connect(self.addNewTag)
+
+        self.formPoint.buttonBox.accepted.connect(self.pointAccept)
+        QtCore.QObject.connect(self.formPoint.ifValueX, QtCore.SIGNAL("valueChanged(double)"), self.changeValueX)
+        QtCore.QObject.connect(self.formPoint.ifValueY, QtCore.SIGNAL("valueChanged(double)"), self.changeValueY)
+        QtCore.QObject.connect(self.formPoint.ifValueZ, QtCore.SIGNAL("valueChanged(double)"), self.changeValueZ)
+
         self.viewProvider.turnMarkerDisplayOn(True)
 
-class SelObserver:
-    def __init__(self, viewProvider):
-        print("register observer")
-        FreeCADGui.Selection.addSelectionGate(self)
-        self.viewProvider = viewProvider
+    def pointFinish(self, ok):
+        self.removeGlobalCallbacks();
+        obj = FreeCADGui.Snapper.lastSnappedObject
+        FreeCADGui.Snapper.off()
+        self.pointWhenDone(self.pt if ok else None, obj if ok else None)
 
-    def __del__(self):
-        print("remove observer")
-        FreeCADGui.Selection.removeSelectionGate()
+    def pointReject(self):
+        self.pointFinish(False)
 
-    def allow(self, doc, obj, sub):
-        return self.viewProvider.allowSelection(obj, sub)
+    def pointAccept(self):
+        self.pointFinish(True)
 
-    def addSelection(self, doc, obj, sub, pnt):
-        self.viewProvider.addSelection(doc, obj, sub, pnt)
-        #FreeCADGui.doCommand('Gui.Selection.addSelection(FreeCAD.ActiveDocument.' + obj + ')')
-        FreeCADGui.updateGui()
+    def changeValueX(self, double):
+        self.pt.x = double
+    def changeValueY(self, double):
+        self.pt.y = double
+    def changeValueZ(self, double):
+        self.pt.z = double
+
 
 class HoldingTagMarker:
     def __init__(self, p):

@@ -39,13 +39,20 @@
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="lValueZ">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Global Z</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="ifValueZ"/>
+       <widget class="Gui::InputField" name="ifValueZ">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -53,7 +60,7 @@
    <item alignment="Qt::AlignHCenter">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <set>QDialogButtonBox::Save</set>
      </property>
     </widget>
    </item>
