@@ -476,30 +476,20 @@ void CArea::OffsetWithClipper(double offset,
                               double miterLimit/*  = 5.0 */,
                               double roundPrecision/*  = 0.0 */)
 {
-    offset *= m_units;
+    offset *= m_units*Clipper4Factor;
     if(roundPrecision == 0.0) {
-        // If not specified, clip the number of steps in a circle to [6,200]
-        // based on m_accuracy, which is used to control the discretization
-        // process when adding arc to Clipper. The roundPrecision here is to
-        // control the precision of the round joint during inflation 
-        // (See http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/ClipperOffset/Properties/ArcTolerance.htm). 
-        // In other words, the m_accuracy should be set considering the raidus
-        // of the arcs added, while roundPrecision is related to offset. For
-        // better results, you should specify each precision explicitly.
-        double dphi=acos(1.0-m_accuracy*2.0/fabs(offset));
-        int n=(int)ceil(PI/dphi);
-        if (n<6)
-            n=6;
-        else if (n>200)
-            n=200;
-        dphi=PI/n;
+        // Clipper roundPrecision definition:
+        // http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/ClipperOffset/Properties/ArcTolerance.htm
+        double dphi=PI/CArea::m_def_arc_points;
         roundPrecision = (1.0-cos(dphi))*fabs(offset);
     }
-    ClipperOffset c(miterLimit,roundPrecision);
+    ClipperOffset clipper(miterLimit,roundPrecision);
 	TPolyPolygon pp, pp2;
 	MakePolyPoly(*this, pp, false);
-    c.AddPaths(pp,joinType,endType);
-    c.Execute(pp2,(long64)(offset*Clipper4Factor));
+    int i=0;
+    for(const CCurve &c : m_curves) 
+        clipper.AddPath(pp[i++],joinType,c.IsClosed()?etClosedPolygon:endType);
+    clipper.Execute(pp2,(long64)(offset));
 	SetFromResult(*this, pp2, false);
     this->Reorder();
 }
