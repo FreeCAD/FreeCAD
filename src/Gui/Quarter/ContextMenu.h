@@ -50,7 +50,7 @@ public:
 
   QMenu * getMenu(void) const;
 
-public slots:
+public Q_SLOTS:
   void changeRenderMode(QAction * action);
   void changeStereoMode(QAction * action);
   void changeTransparencyType(QAction * action);
