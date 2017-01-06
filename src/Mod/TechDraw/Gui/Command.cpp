@@ -478,7 +478,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     Gui::WaitCursor wc;
 
     openCommand("Create Projection Group");
-    std::string multiViewName = getUniqueObjectName("cView");
+    std::string multiViewName = getUniqueObjectName("ProjGroup");
     std::string SourceName = (*shapes.begin())->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",multiViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());
