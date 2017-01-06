@@ -776,7 +776,7 @@ class TaskPanel:
         self.formTags  = FreeCADGui.PySideUic.loadUi(":/panels/HoldingTagsEdit.ui")
         self.formPoint = FreeCADGui.PySideUic.loadUi(":/panels/PointEdit.ui")
         self.layout = QtGui.QVBoxLayout(self.form)
-        self.form.setGeometry(self.formTags.geometry())
+        #self.form.setGeometry(self.formTags.geometry())
         self.form.setWindowTitle(self.formTags.windowTitle())
         self.form.setSizePolicy(self.formTags.sizePolicy())
         self.formTags.setParent(self.form)
@@ -898,6 +898,7 @@ class TaskPanel:
         print('whenTagSelectionChanged')
         index = self.formTags.lwTags.currentRow()
         self.formTags.pbDelete.setEnabled(index != -1)
+        self.formTags.pbEdit.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
     def deleteSelectedTag(self):
@@ -922,7 +923,7 @@ class TaskPanel:
         self.getPoint(self.addNewTagAt)
 
     def editTagAt(self, point, obj):
-        if obj == self.obj:
+        if (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
             tags = []
             for i, (x, y, enabled) in enumerate(self.tags):
                 if i == self.editItem:
@@ -935,11 +936,15 @@ class TaskPanel:
         self.formTags.show()
 
     def editTag(self, item):
-        self.tags = self.getTags(True)
-        self.editItem = item.data(self.DataID)
-        x = item.data(self.DataX)
-        y = item.data(self.DataY)
-        self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, 0))
+        if item:
+            self.tags = self.getTags(True)
+            self.editItem = item.data(self.DataID)
+            x = item.data(self.DataX)
+            y = item.data(self.DataY)
+            self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, 0))
+
+    def editSelectedTag(self):
+        self.editTag(self.formTags.lwTags.currentItem())
 
     def removeGlobalCallbacks(self):
         if hasattr(self, 'view') and self.view:
@@ -1037,12 +1042,13 @@ class TaskPanel:
         self.formTags.lwTags.itemActivated.connect(self.editTag)
 
         self.formTags.pbDelete.clicked.connect(self.deleteSelectedTag)
+        self.formTags.pbEdit.clicked.connect(self.editSelectedTag)
         self.formTags.pbAdd.clicked.connect(self.addNewTag)
 
         self.formPoint.buttonBox.accepted.connect(self.pointAccept)
-        QtCore.QObject.connect(self.formPoint.ifValueX, QtCore.SIGNAL("valueChanged(double)"), self.changeValueX)
-        QtCore.QObject.connect(self.formPoint.ifValueY, QtCore.SIGNAL("valueChanged(double)"), self.changeValueY)
-        QtCore.QObject.connect(self.formPoint.ifValueZ, QtCore.SIGNAL("valueChanged(double)"), self.changeValueZ)
+        self.formPoint.ifValueX.editingFinished.connect(self.updatePoint)
+        self.formPoint.ifValueY.editingFinished.connect(self.updatePoint)
+        self.formPoint.ifValueZ.editingFinished.connect(self.updatePoint)
 
         self.viewProvider.turnMarkerDisplayOn(True)
 
@@ -1056,15 +1062,14 @@ class TaskPanel:
         self.pointFinish(False)
 
     def pointAccept(self):
+        print("pointAccept")
         self.pointFinish(True)
 
-    def changeValueX(self, double):
-        self.pt.x = double
-    def changeValueY(self, double):
-        self.pt.y = double
-    def changeValueZ(self, double):
-        self.pt.z = double
-
+    def updatePoint(self):
+        x = FreeCAD.Units.Quantity(self.formPoint.ifValueX.text()).Value
+        y = FreeCAD.Units.Quantity(self.formPoint.ifValueY.text()).Value
+        z = FreeCAD.Units.Quantity(self.formPoint.ifValueZ.text()).Value
+        self.pt = FreeCAD.Vector(x, y, z)
 
 class HoldingTagMarker:
     def __init__(self, p):
