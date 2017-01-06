@@ -399,7 +399,7 @@ class _RapidEdges:
     def __init__(self, rapid):
         self.rapid = rapid
 
-    def isRapid(self, edge, removeIfFound=True):
+    def isRapid(self, edge):
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
             v0 = edge.Vertexes[0]
             v1 = edge.Vertexes[1]
@@ -407,12 +407,10 @@ class _RapidEdges:
                 r0 = r.Vertexes[0]
                 r1 = r.Vertexes[1]
                 if PathGeom.isRoughly(r0.X, v0.X) and PathGeom.isRoughly(r0.Y, v0.Y) and PathGeom.isRoughly(r0.Z, v0.Z) and PathGeom.isRoughly(r1.X, v1.X) and PathGeom.isRoughly(r1.Y, v1.Y) and PathGeom.isRoughly(r1.Z, v1.Z):
-                    if removeIfFound:
-                        self.rapid.remove(r)
                     return True
         return False
 
-    def p(self):
+    def debugPrint(self):
         print('rapid:')
         for r in self.rapid:
             debugEdge(r, '  ', True)
@@ -562,8 +560,10 @@ class PathData:
             for t in sorted(ts, key=lambda t: (t.originAt(self.minZ) - edge.valueAt(edge.FirstParameter)).Length):
                 tags.remove(t)
                 ordered.append(t)
-        if tags:
-            raise ValueError("There's something really wrong here")
+        # disable all tags that are not on the base wire.
+        for tag in tags:
+            tag.enabled = False
+            ordered.append(tag)
         return ordered
 
     def pointIsOnPath(self, p):
@@ -657,7 +657,7 @@ class ObjectDressup:
                 # gone through all tags, consume edge and move on
                 if edge:
                     debugEdge(edge, '++++++++')
-                    if rapid.isRapid(edge, True):
+                    if rapid.isRapid(edge):
                         v = edge.Vertexes[1]
                         commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
                     else:
@@ -671,6 +671,43 @@ class ObjectDressup:
 
     def problems(self):
         return filter(lambda m: m.haveProblem, self.mappers)
+
+    def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
+        rawTags = []
+        print
+        for i, pos in enumerate(positionsIn):
+            print("%d: (%.2f, %.2f)" % (i, pos.x, pos.y))
+            tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in disabledIn)
+            tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
+            rawTags.append(tag)
+        # disable all tags that intersect with their previous tag
+        bb = None
+        tags = []
+        positions = []
+        disabled = []
+        print
+        for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
+            print("%d: (%.2f, %.2f) %d" % (i, tag.x, tag.y, tag.enabled))
+            if tag.enabled:
+                if bb:
+                    if bb.intersect(tag.solid.BoundBox):
+                        tag.enabled = False
+                elif self.pathData.edges:
+                    e = self.pathData.edges[0]
+                    p0 = e.valueAt(e.FirstParameter)
+                    p1 = e.valueAt(e.LastParameter)
+                    if tag.solid.BoundBox.isInside(p0) or tag.solid.BoundBox.isInside(p1):
+                        tag.enabled = False
+            if tag.enabled:
+                bb = tag.solid.BoundBox
+            else:
+                disabled.append(i)
+            tags.append(tag)
+            positions.append(tag.originAt(0))
+        print
+        print
+        print
+        return (tags, positions, disabled)
 
     def execute(self, obj):
         #pr = cProfile.Profile()
@@ -696,31 +733,33 @@ class ObjectDressup:
 
         self.tags = []
         if hasattr(obj, "Positions"):
-            tags = []
-            for i, pos in enumerate(obj.Positions):
-                tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in obj.Disabled)
-                tag.createSolidsAt(pathData.minZ, self.toolRadius)
-                tags.append(tag)
-            self.tags = pathData.sortedTags(tags)
+            self.tags, positions, disabled = self.createTagsPositionDisabled(obj, obj.Positions, obj.Disabled)
+            if obj.Disabled != disabled:
+                print("Updating properties.... %s vs. %s" % (obj.Disabled, disabled))
+                obj.Positions = positions
+                obj.Disabled = disabled
 
         if not self.tags:
             print("execute - no tags")
             obj.Path = obj.Base.Path
             return
 
+        self.processTags(obj)
+
+    def processTags(self, obj):
         tagID = 0
         if debugDressup:
             for tag in self.tags:
                 tagID += 1
                 if tag.enabled:
-                    print("x=%s, y=%s, z=%s" % (tag.x, tag.y, pathData.minZ))
-                    debugMarker(FreeCAD.Vector(tag.x, tag.y, pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                    print("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
+                    debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
                     if tag.angle != 90:
-                        debugCone(tag.originAt(pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
+                        debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
                     else:
-                        debugCylinder(tag.originAt(pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
+                        debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
-        obj.Path = self.createPath(pathData.edges, self.tags, pathData.rapid)
+        obj.Path = self.createPath(self.pathData.edges, self.tags, self.pathData.rapid)
         print("execute - done")
 
     def setup(self, obj, generate=None):
@@ -751,15 +790,17 @@ class ObjectDressup:
         return self.pathData
 
     def setXyEnabled(self, triples):
+        if not hasattr(self, 'pathData'):
+            self.setup(self.obj)
         positions = []
         disabled = []
         for i, (x, y, enabled) in enumerate(triples):
+            print("%d: (%.2f, %.2f) %d" % (i, x, y, enabled))
             positions.append(FreeCAD.Vector(x, y, 0))
             if not enabled:
                 disabled.append(i)
-        self.obj.Positions = positions
-        self.obj.Disabled = disabled
-        self.execute(self.obj)
+        self.tags, self.obj.Positions, self.obj.Disabled = self.createTagsPositionDisabled(self.obj, positions, disabled)
+        self.processTags(self.obj)
 
     def pointIsOnPath(self, obj, point):
         if not hasattr(self, 'pathData'):
@@ -911,7 +952,7 @@ class TaskPanel:
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
-        if (obj or point != FreeCAD.Vector()) and self.obj.Proxy.pointIsOnPath(self.obj, point):
+        if self.obj.Proxy.pointIsOnPath(self.obj, point):
             print("addNewTagAt(%s)" % (point))
             tags = self.tags
             tags.append((point.x, point.y, True))
