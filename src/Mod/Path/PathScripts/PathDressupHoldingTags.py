@@ -37,6 +37,7 @@ import time
 from DraftGui import todo
 from PathScripts import PathUtils
 from PathScripts.PathGeom import *
+from PathScripts.PathPreferences import *
 from PySide import QtCore, QtGui
 from pivy import coin
 
@@ -1074,28 +1075,32 @@ class TaskPanel:
         self.pt = FreeCAD.Vector(x, y, z)
 
 class HoldingTagMarker:
-    def __init__(self, p):
-        self.point = p
+    def __init__(self, point, colors):
+        self.point = point
+        self.color = colors
         self.sep = coin.SoSeparator()
         self.pos = coin.SoTranslation()
-        self.pos.translation = (p.x, p.y, p.z)
+        self.pos.translation = (point.x, point.y, point.z)
         self.sphere = coin.SoSphere()
         self.material = coin.SoMaterial()
         self.sep.addChild(self.pos)
         self.sep.addChild(self.material)
         self.sep.addChild(self.sphere)
+        self.enabled = True
+        self.selected = False
 
     def setSelected(self, select):
         self.selected = select
         self.sphere.radius = 1.5 if select else 1.0
+        self.setEnabled(self.enabled)
 
     def setEnabled(self, enabled):
         self.enabled = enabled
         if enabled:
-            self.material.diffuseColor = coin.SbColor(0.0, 1.0, 0.0)
+            self.material.diffuseColor = self.color[0] if not self.selected else self.color[2]
             self.material.transparency = 0.0
         else:
-            self.material.diffuseColor = coin.SbColor(0.8, 0.8, 0.8)
+            self.material.diffuseColor = self.color[1] if not self.selected else self.color[2]
             self.material.transparency = 0.6
 
 class ViewProviderDressup:
@@ -1103,7 +1108,20 @@ class ViewProviderDressup:
     def __init__(self, vobj):
         vobj.Proxy = self
 
+    def setupColors(self):
+        def colorForColorValue(val):
+            v = [((val >> n) & 0xff) / 255. for n in [24, 16, 8, 0]]
+            return coin.SbColor(v[0], v[1], v[2])
+
+        pref = PathPreferences.preferences()
+        #                                                      R         G          B          A
+        npc = pref.GetUnsigned("DefaultPathMarkerColor",    (( 85*256 + 255)*256 +   0)*256 + 255)
+        hpc = pref.GetUnsigned("DefaultHighlightPathColor", ((255*256 + 125)*256 +   0)*256 + 255)
+        dpc = pref.GetUnsigned("DefaultDisabledPathColor",  ((205*256 + 205)*256 + 205)*256 + 154)
+        self.colors = [colorForColorValue(npc), colorForColorValue(dpc), colorForColorValue(hpc)]
+
     def attach(self, vobj):
+        self.setupColors()
         self.obj = vobj.Object
         self.tags = []
         self.switch = coin.SoSwitch()
@@ -1164,7 +1182,7 @@ class ViewProviderDressup:
                 self.switch.removeChild(tag.sep)
             tags = []
             for i, p in enumerate(obj.Positions):
-                tag = HoldingTagMarker(p)
+                tag = HoldingTagMarker(p, self.colors)
                 tag.setEnabled(not i in obj.Disabled)
                 tags.append(tag)
                 self.switch.addChild(tag.sep)
