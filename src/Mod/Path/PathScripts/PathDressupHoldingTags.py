@@ -143,7 +143,7 @@ class Tag:
         r1 = self.fullWidth() / 2
         self.r1 = r1
         self.r2 = r1
-        height = self.height
+        height = self.height * 1.01
         if self.angle == 90 and height > 0:
             self.solid = Part.makeCylinder(r1, height)
             debugPrint("Part.makeCone(%f, %f)" % (r1, height))
@@ -154,7 +154,7 @@ class Tag:
                 r2 = r1 - dr
             else:
                 r2 = 0
-                height = r1 * tangens
+                height = r1 * tangens * 1.01
                 self.actualHeight = height
             self.r2 = r2
             debugPrint("Part.makeCone(%f, %f, %f)" % (r1, r2, height))
@@ -168,7 +168,7 @@ class Tag:
             debugPrint("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
         debugPrint("solid.translate(%s)" % self.originAt(z))
-        self.solid.translate(self.originAt(z))
+        self.solid.translate(self.originAt(z - 0.01 * height))
 
     def filterIntersections(self, pts, face):
         if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder:
@@ -695,10 +695,12 @@ class ObjectDressup:
 
         self.tags = []
         if hasattr(obj, "Positions"):
+            tags = []
             for i, pos in enumerate(obj.Positions):
                 tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in obj.Disabled)
                 tag.createSolidsAt(pathData.minZ, self.toolRadius)
-                self.tags.append(tag)
+                tags.append(tag)
+            self.tags = pathData.sortedTags(tags)
 
         if not self.tags:
             print("execute - no tags")
