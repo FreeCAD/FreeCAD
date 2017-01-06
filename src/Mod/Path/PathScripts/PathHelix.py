@@ -155,7 +155,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     if r_out < 0.0:
         msg = "r_out < 0"
     elif r_in > 0 and r_out - r_in < tool_diameter:
-        msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, tool_diamater)
+        msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, tool_diameter)
     elif r_in == 0.0 and not r_out > tool_diameter/2.:
         msg = "Cannot drill a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, tool_diameter)
     elif not startside in ["inside", "outside"]:
