@@ -202,6 +202,17 @@ void ViewProviderDrawingView::unsetEdit(int ModNum)
     }
 }
 
+bool ViewProviderDrawingView::onDelete(const std::vector<std::string> &items)
+{
+    QGIView* qv = getQView();
+    if (qv != nullptr) {
+        MDIViewPage* mdi = getMDIViewPage();
+        mdi->removeView(qv);
+    }
+
+    return ViewProviderDocumentObject::onDelete(items);
+}
+
 
 MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {

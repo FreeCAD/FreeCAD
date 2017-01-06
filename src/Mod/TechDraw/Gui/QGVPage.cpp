@@ -198,6 +198,46 @@ int QGVPage::addView(QGIView *view)
     return views.size();
 }
 
+int QGVPage::removeView(QGIView *view)
+{
+    std::vector<QGIView *> qviews = views;
+    std::vector<QGIView *> newViews;
+    
+    std::vector<QGIView *>::iterator qvit = qviews.begin();
+    std::vector<QGIView *>::iterator qvDel = qviews.end();
+    
+    for (; qvit != qviews.end(); qvit++) {
+        if ((*qvit) == view) {
+            qvDel = qvit;
+            break;
+        }
+    }
+    
+    if (qvDel == qviews.end()) {     //didn't find view in views
+        return views.size();
+    }
+
+    QGraphicsItemGroup* grp = view->group();
+    if (grp) {
+        grp->removeFromGroup(view);
+    }
+
+    if (view->parentItem()) {    //not top level
+        view->setParentItem(0);
+    }
+
+    if (view->scene()) {
+        view->scene()->removeItem(view);
+    }
+
+    qviews.erase(qvDel);
+    views = qviews;
+    delete view;
+
+    return views.size();
+}
+
+
 QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
     auto viewPart( new QGIViewPart );

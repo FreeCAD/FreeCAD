@@ -318,6 +318,11 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
     return (qview != nullptr);
 }
 
+void MDIViewPage::removeView(QGIView *view)
+{
+    (void) m_view->removeView(view);
+}
+
 
 
 void MDIViewPage::updateTemplate(bool forceUpdate)
