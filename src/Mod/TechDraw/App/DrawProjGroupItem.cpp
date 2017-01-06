@@ -160,6 +160,19 @@ double DrawProjGroupItem::getRotateAngle()
     return angle;
 }
 
+void DrawProjGroupItem::unsetupObject()
+{
+    if (getGroup() != nullptr) {
+        if (getGroup()->hasProjection(Type.getValueAsString()) ) {
+            if (getGroup()->getAnchor() == this) {
+                   Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+                                           getGroup()->getNameInDocument(),getGroup()->Label.getValue());
+                   getGroup()->Anchor.setValue(nullptr);
+             }
+        }
+    }
+}
+
 PyObject *DrawProjGroupItem::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {

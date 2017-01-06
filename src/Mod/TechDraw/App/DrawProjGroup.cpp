@@ -496,6 +496,11 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
             auto projPtr( dynamic_cast<TechDraw::DrawProjGroupItem *>(it) );
             if( projPtr ) {
                 if ( strcmp(viewProjType, projPtr->Type.getValueAsString()) == 0 ) {
+                    if( strcmp(viewProjType,"Front") == 0 ) {
+                        Base::Console().Warning("DPG - %s: Front projection deleted. Projection group may be corrupt\n",
+                                                 getNameInDocument());
+                        Anchor.setValue(nullptr);
+                    }
                     removeView(projPtr);                                        // Remove from collection
                     getDocument()->remObject( it->getNameInDocument() );        // Remove from the document
                     moveToCentre();
