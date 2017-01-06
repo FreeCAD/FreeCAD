@@ -747,7 +747,7 @@ class ObjectDressup:
             obj.Height = self.pathData.defaultTagHeight()
             obj.Width  = self.pathData.defaultTagWidth()
             obj.Angle  = self.pathData.defaultTagAngle()
-            self.generateTags(obj, generate)
+            self.generateTags(obj, min(2, generate))
         return self.pathData
 
     def setXyEnabled(self, triples):
@@ -900,7 +900,8 @@ class TaskPanel:
     def whenTagSelectionChanged(self):
         print('whenTagSelectionChanged')
         index = self.formTags.lwTags.currentRow()
-        self.formTags.pbDelete.setEnabled(index != -1)
+        count = self.formTags.lwTags.count()
+        self.formTags.pbDelete.setEnabled(index != -1 and count > 2)
         self.formTags.pbEdit.setEnabled(index != -1)
         self.viewProvider.selectTag(index)
 
@@ -1002,17 +1003,16 @@ class TaskPanel:
         self.pointCbMove = self.view.addEventCallbackPivy(coin.SoLocation2Event.getClassTypeId(), mouseMove)
 
     def setupSpinBox(self, widget, val, decimals = 2):
-        widget.setMinimum(0)
         if decimals:
             widget.setDecimals(decimals)
         widget.setValue(val)
 
     def setFields(self):
         self.updateTagsView()
-        self.setupSpinBox(self.formTags.sbCount, len(self.obj.Positions), None)
+        self.formTags.sbCount.setValue(len(self.obj.Positions))
         self.formTags.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
         self.formTags.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
-        self.setupSpinBox(self.formTags.dsbAngle, self.obj.Angle, 0)
+        self.formTags.dsbAngle.setValue(self.obj.Angle)
 
     def updateModelHeight(self):
         print('updateModelHeight')
