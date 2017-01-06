@@ -79,6 +79,7 @@ public:
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     const std::vector<QGIView *> & getViews() const { return views; }
     int addView(QGIView * view);
+    int removeView(QGIView *view);
     void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
