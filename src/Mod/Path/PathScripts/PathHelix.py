@@ -198,7 +198,11 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     return out
 
 def features_by_centers(base, features):
-    import scipy.spatial
+    try:
+        from scipy.spatial import KDTree
+    except ImportError:
+        from PathScripts.kdtree import KDTree
+
     features = sorted(features,
                 key = lambda feature : getattr(base.Shape, feature).Surface.Radius,
                 reverse = True)
@@ -206,7 +210,7 @@ def features_by_centers(base, features):
     coordinates = [(cylinder.Surface.Center.x, cylinder.Surface.Center.y) for cylinder in
                         [getattr(base.Shape, feature) for feature in features]]
 
-    tree = scipy.spatial.KDTree(coordinates)
+    tree = KDTree(coordinates)
     seen = {}
 
     by_centers = {}
