@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>380</width>
-    <height>539</height>
+    <width>399</width>
+    <height>564</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>362</width>
-        <height>485</height>
+        <width>381</width>
+        <height>510</height>
        </rect>
       </property>
       <attribute name="label">
@@ -107,7 +107,7 @@
        <item>
         <widget class="QListWidget" name="lwTags">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of current tags.&lt;/p&gt;&lt;p&gt;Edit coordinates by double click or Enter key.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;List of current tags.&lt;/p&gt;&lt;p&gt;Edit coordinates by double click or Edit button.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
         </widget>
        </item>
@@ -132,7 +132,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QPushButton" name="pushButton">
+           <widget class="QPushButton" name="pbEdit">
             <property name="enabled">
              <bool>false</bool>
             </property>
