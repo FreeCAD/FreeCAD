@@ -577,9 +577,9 @@ class ObjectDressup:
     def __init__(self, obj):
         self.obj = obj
         obj.addProperty("App::PropertyLink", "Base","Base", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "The base path to modify"))
-        obj.addProperty("App::PropertyFloat", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
-        obj.addProperty("App::PropertyFloat", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
-        obj.addProperty("App::PropertyFloat", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
+        obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
+        obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
+        obj.addProperty("App::PropertyAngle", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
         obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of insterted holding tags"))
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
         obj.Proxy = self
@@ -592,7 +592,7 @@ class ObjectDressup:
 
     def generateTags(self, obj, count):
         if hasattr(self, "pathData"):
-            self.tags = self.pathData.generateTags(obj, count, obj.Width, obj.Height, obj.Angle, None)
+            self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, None)
             obj.Positions = [tag.originAt(0) for tag in self.tags]
             obj.Disabled  = []
             return False
@@ -696,7 +696,7 @@ class ObjectDressup:
         self.tags = []
         if hasattr(obj, "Positions"):
             for i, pos in enumerate(obj.Positions):
-                tag = Tag(pos.x, pos.y, obj.Width, obj.Height, obj.Angle, not i in obj.Disabled)
+                tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in obj.Disabled)
                 tag.createSolidsAt(pathData.minZ, self.toolRadius)
                 self.tags.append(tag)
 
@@ -829,8 +829,8 @@ class TaskPanel:
         return tags
 
     def getTagParameters(self):
-        self.obj.Width  = self.formTags.dsbWidth.value()
-        self.obj.Height = self.formTags.dsbHeight.value()
+        self.obj.Width  = FreeCAD.Units.Quantity(self.formTags.ifWidth.text()).Value
+        self.obj.Height = FreeCAD.Units.Quantity(self.formTags.ifHeight.text()).Value
         self.obj.Angle  = self.formTags.dsbAngle.value()
 
     def getFields(self):
@@ -954,9 +954,9 @@ class TaskPanel:
     def getPoint(self, whenDone, start=None):
 
         def displayPoint(p):
-            self.formPoint.ifValueX.setText(DraftGui.displayExternal(p.x))
-            self.formPoint.ifValueY.setText(DraftGui.displayExternal(p.y))
-            self.formPoint.ifValueZ.setText(DraftGui.displayExternal(p.z))
+            self.formPoint.ifValueX.setText(FreeCAD.Units.Quantity(p.x, FreeCAD.Units.Length).UserString)
+            self.formPoint.ifValueY.setText(FreeCAD.Units.Quantity(p.y, FreeCAD.Units.Length).UserString)
+            self.formPoint.ifValueZ.setText(FreeCAD.Units.Quantity(p.z, FreeCAD.Units.Length).UserString)
             self.formPoint.ifValueX.setFocus()
             self.formPoint.ifValueX.selectAll()
 
@@ -1002,11 +1002,9 @@ class TaskPanel:
     def setFields(self):
         self.updateTagsView()
         self.setupSpinBox(self.formTags.sbCount, len(self.obj.Positions), None)
-        self.setupSpinBox(self.formTags.dsbHeight, self.obj.Height)
-        self.setupSpinBox(self.formTags.dsbWidth, self.obj.Width)
+        self.formTags.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
+        self.formTags.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
         self.setupSpinBox(self.formTags.dsbAngle, self.obj.Angle, 0)
-        self.formTags.dsbAngle.setMaximum(90)
-        self.formTags.dsbAngle.setSingleStep(5.)
 
     def updateModelHeight(self):
         print('updateModelHeight')
@@ -1031,8 +1029,8 @@ class TaskPanel:
         self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
         self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
 
-        self.formTags.dsbHeight.editingFinished.connect(self.updateModelHeight)
-        self.formTags.dsbWidth.editingFinished.connect(self.updateModelWidth)
+        self.formTags.ifHeight.editingFinished.connect(self.updateModelHeight)
+        self.formTags.ifWidth.editingFinished.connect(self.updateModelWidth)
         self.formTags.dsbAngle.editingFinished.connect(self.updateModelAngle)
         self.formTags.lwTags.itemChanged.connect(self.updateModelTags)
         self.formTags.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
