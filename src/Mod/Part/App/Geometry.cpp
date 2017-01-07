@@ -802,9 +802,130 @@ void GeomBSplineCurve::makeC1Continuous(double tol, double ang_tol)
 }
 
 // Persistence implementer 
-unsigned int GeomBSplineCurve::getMemSize (void) const               {assert(0); return 0;/* not implemented yet */}
-void         GeomBSplineCurve::Save       (Base::Writer &/*writer*/) const {assert(0);          /* not implemented yet */}
-void         GeomBSplineCurve::Restore    (Base::XMLReader &/*reader*/)    {assert(0);          /* not implemented yet */}
+unsigned int GeomBSplineCurve::getMemSize (void) const
+{
+    return sizeof(Geom_BSplineCurve);
+}
+
+void GeomBSplineCurve::Save(Base::Writer& writer) const
+{
+    // save the attributes of the father class
+    GeomCurve::Save(writer);
+
+    std::vector<Base::Vector3d> poles 	= this->getPoles();
+    std::vector<double> weights 	= this->getWeights();
+    std::vector<double> knots 		= this->getKnots();
+    std::vector<int> mults 		= this->getMultiplicities();
+    int degree 				= this->getDegree();
+
+    writer.Stream()
+         << writer.ind()
+             << "<BSplineCurve "
+                << "PolesCount=\"" <<  poles.size() <<
+                 "\" KnotsCount=\"" <<  knots.size() <<
+                 "\" Degree=\"" <<  degree <<
+             "\">" << endl;
+
+    writer.incInd();
+    for(std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it){
+	 writer.Stream() 
+	    << writer.ind() 
+		<< "<Pole "
+		    << "X=\"" << (*it).x <<
+		    "\" Y=\"" << (*it).y <<
+		    "\" Z=\"" << (*it).z <<
+		"\"/>" << endl;
+    }
+    for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it){
+	 writer.Stream() 
+	    << writer.ind() 
+		<< "<Weight "
+		    << "value=\"" << (*it) <<
+		"\"/>" << endl;
+    }
+    for(std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it){
+	 writer.Stream() 
+	    << writer.ind() 
+		<< "<Knot "
+		    << "value=\"" << (*it) <<
+		"\"/>" << endl;
+    }
+    for(std::vector<int>::const_iterator it = mults.begin(); it != mults.end(); ++it){
+	 writer.Stream() 
+	    << writer.ind() 
+		<< "<Mult "
+		    << "value=\"" << (*it) <<
+		"\"/>" << endl;
+    }
+    writer.decInd();
+    writer.Stream() << writer.ind() << "</BSplineCurve>" << endl ;
+}
+
+void GeomBSplineCurve::Restore(Base::XMLReader& reader)
+{
+    // read the attributes of the father class
+    GeomCurve::Restore(reader);
+
+    reader.readElement("BSplineCurve");
+    // get the value of my attribute
+    int polescount = reader.getAttributeAsInteger("PolesCount");
+    int knotscount = reader.getAttributeAsInteger("KnotsCount");
+    int degree = reader.getAttributeAsInteger("Degree");
+    
+    // You are here!!
+    // Handle_Geom_BSplineCurve spline = new 
+    // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
+    // PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
+    // PyObject_IsTrue(CheckRational) ? Standard_True : Standard_False);    
+
+    TColgp_Array1OfPnt p(1,polescount);
+    TColStd_Array1OfReal w(1,polescount);
+    TColStd_Array1OfReal k(1,knotscount);
+    TColStd_Array1OfInteger m(1,knotscount);
+    
+    for (int i = 1; i <= polescount; i++) {
+        reader.readElement("Pole");
+	double X = reader.getAttributeAsFloat("X");
+	double Y = reader.getAttributeAsFloat("Y");
+	double Z = reader.getAttributeAsFloat("Z");
+	p.SetValue(i, gp_Pnt(X,Y,Z));
+    }
+    
+    for (int i = 1; i <= polescount; i++) {
+        reader.readElement("Weight");
+	double val = reader.getAttributeAsFloat("value");
+	w.SetValue(i, val);
+    }
+    
+    for (int i = 1; i <= knotscount; i++) {
+        reader.readElement("Knot");
+	double val = reader.getAttributeAsFloat("value");
+	k.SetValue(i, val);
+    }
+    
+    for (int i = 1; i <= knotscount; i++) {
+        reader.readElement("Mult");
+	double val = reader.getAttributeAsInteger("value");
+	m.SetValue(i, val);
+    }
+    
+    reader.readEndElement("BSplineCurve");
+    // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,periodic,CheckRational
+    
+    try {
+	Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, Standard_False, Standard_False);
+    
+	if (!spline.IsNull())
+	    this->myCurve = spline;
+	else
+	    throw Base::Exception("BSpline restore failed");
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::Exception(e->GetMessageString());
+    }
+}
+
 
 PyObject *GeomBSplineCurve::getPyObject(void)
 {
