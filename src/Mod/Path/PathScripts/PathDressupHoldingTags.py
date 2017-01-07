@@ -144,14 +144,12 @@ class HoldingTagsPreferences:
         self.label = 'Holding Tags'
 
     def loadSettings(self):
-        print("holding tags - load settings")
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
         self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.defaultHeight(0), FreeCAD.Units.Length).UserString)
         self.form.dsbAngle.setValue(self.defaultAngle())
         self.form.sbCount.setValue(self.defaultCount())
 
     def saveSettings(self):
-        print("holding tags - save settings")
         pref = PathPreferences.preferences()
         pref.SetFloat(self.DefaultHoldingTagWidth, FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value)
         pref.SetFloat(self.DefaultHoldingTagHeight, FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value)
@@ -458,7 +456,7 @@ class _RapidEdges:
         return False
 
     def debugPrint(self):
-        print('rapid:')
+        debugPrint('rapid:')
         for r in self.rapid:
             debugEdge(r, '  ', True)
 
@@ -667,7 +665,7 @@ class ObjectDressup:
         return True
 
     def createPath(self, edges, tags, rapid):
-        print("createPath")
+        #print("createPath")
         commands = []
         lastEdge = 0
         lastTag = 0
@@ -727,9 +725,7 @@ class ObjectDressup:
 
     def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
         rawTags = []
-        print
         for i, pos in enumerate(positionsIn):
-            print("%d: (%.2f, %.2f)" % (i, pos.x, pos.y))
             tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in disabledIn)
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
@@ -738,9 +734,7 @@ class ObjectDressup:
         tags = []
         positions = []
         disabled = []
-        print
         for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
-            print("%d: (%.2f, %.2f) %d" % (i, tag.x, tag.y, tag.enabled))
             if tag.enabled:
                 if bb:
                     if bb.intersect(tag.solid.BoundBox):
@@ -757,9 +751,6 @@ class ObjectDressup:
                 disabled.append(i)
             tags.append(tag)
             positions.append(tag.originAt(0))
-        print
-        print
-        print
         return (tags, positions, disabled)
 
     def execute(self, obj):
@@ -788,7 +779,7 @@ class ObjectDressup:
         if hasattr(obj, "Positions"):
             self.tags, positions, disabled = self.createTagsPositionDisabled(obj, obj.Positions, obj.Disabled)
             if obj.Disabled != disabled:
-                print("Updating properties.... %s vs. %s" % (obj.Disabled, disabled))
+                printDebug("Updating properties.... %s vs. %s" % (obj.Disabled, disabled))
                 obj.Positions = positions
                 obj.Disabled = disabled
 
@@ -813,10 +804,10 @@ class ObjectDressup:
                         debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
         obj.Path = self.createPath(self.pathData.edges, self.tags, self.pathData.rapid)
-        print("execute - done")
+        #print("execute - done")
 
     def setup(self, obj, generate=False):
-        print("setup")
+        #print("setup")
         self.obj = obj
         try:
             pathData = PathData(obj)
@@ -849,7 +840,7 @@ class ObjectDressup:
         positions = []
         disabled = []
         for i, (x, y, enabled) in enumerate(triples):
-            print("%d: (%.2f, %.2f) %d" % (i, x, y, enabled))
+            #print("%d: (%.2f, %.2f) %d" % (i, x, y, enabled))
             positions.append(FreeCAD.Vector(x, y, 0))
             if not enabled:
                 disabled.append(i)
@@ -899,12 +890,10 @@ class TaskPanel:
         self.pt = FreeCAD.Vector(0, 0, 0)
 
     def reject(self):
-        print("reject")
         FreeCAD.ActiveDocument.abortTransaction()
         self.cleanup()
 
     def accept(self):
-        print("accept")
         self.getFields()
         FreeCAD.ActiveDocument.commitTransaction()
         self.cleanup()
@@ -943,7 +932,7 @@ class TaskPanel:
         self.obj.Proxy.setXyEnabled(tags)
 
     def updateTagsView(self):
-        print("updateTagsView")
+        #print("updateTagsView")
         self.formTags.lwTags.blockSignals(True)
         self.formTags.lwTags.clear()
         for i, pos in enumerate(self.obj.Positions):
@@ -964,17 +953,7 @@ class TaskPanel:
         self.formTags.lwTags.blockSignals(False)
         self.whenTagSelectionChanged()
 
-    def cleanupUI(self):
-        print("cleanupUI")
-        if debugDressup:
-            for obj in FreeCAD.ActiveDocument.Objects:
-                if obj.Name.startswith('tag'):
-                    FreeCAD.ActiveDocument.removeObject(obj.Name)
-
     def generateNewTags(self):
-        print("generateNewTags")
-        self.cleanupUI()
-
         count = self.formTags.sbCount.value()
         if not self.obj.Proxy.generateTags(self.obj, count):
             self.obj.Proxy.execute(self.obj)
@@ -991,7 +970,6 @@ class TaskPanel:
         #FreeCAD.ActiveDocument.recompute()
 
     def whenCountChanged(self):
-        print("whenCountChanged")
         count = self.formTags.sbCount.value()
         self.formTags.pbGenerate.setEnabled(count)
 
@@ -999,7 +977,6 @@ class TaskPanel:
         self.formTags.lwTags.setCurrentRow(index)
 
     def whenTagSelectionChanged(self):
-        print('whenTagSelectionChanged')
         index = self.formTags.lwTags.currentRow()
         count = self.formTags.lwTags.count()
         self.formTags.pbDelete.setEnabled(index != -1 and count > 2)
@@ -1007,13 +984,12 @@ class TaskPanel:
         self.viewProvider.selectTag(index)
 
     def deleteSelectedTag(self):
-        print("deleteSelectedTag")
         self.obj.Proxy.setXyEnabled(self.getTags(False))
         self.updateTagsView()
 
     def addNewTagAt(self, point, obj):
         if self.obj.Proxy.pointIsOnPath(self.obj, point):
-            print("addNewTagAt(%s)" % (point))
+            #print("addNewTagAt(%s)" % (point))
             tags = self.tags
             tags.append((point.x, point.y, True))
             self.obj.Proxy.setXyEnabled(tags)
@@ -1116,19 +1092,19 @@ class TaskPanel:
         self.formTags.dsbAngle.setValue(self.obj.Angle)
 
     def updateModelHeight(self):
-        print('updateModelHeight')
+        #print('updateModelHeight')
         self.updateModel()
 
     def updateModelWidth(self):
-        print('updateModelWidth')
+        #print('updateModelWidth')
         self.updateModel()
 
     def updateModelAngle(self):
-        print('updateModelAngle')
+        #print('updateModelAngle')
         self.updateModel()
 
     def updateModelTags(self):
-        print('updateModelTags')
+        #print('updateModelTags')
         self.updateModel()
 
     def setupUi(self):
@@ -1166,7 +1142,6 @@ class TaskPanel:
         self.pointFinish(False)
 
     def pointAccept(self):
-        print("pointAccept")
         self.pointFinish(True)
 
     def updatePoint(self):
@@ -1242,7 +1217,7 @@ class ViewProviderDressup:
                     if g.Name == self.obj.Base.Name:
                         group.remove(g)
                 i.Group = group
-                print i.Group
+                #print i.Group
         #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.obj.Base]
 
@@ -1290,7 +1265,7 @@ class ViewProviderDressup:
             self.tags = tags
 
     def selectTag(self, index):
-        print("selectTag(%s)" % index)
+        #print("selectTag(%s)" % index)
         for i, tag in enumerate(self.tags):
             tag.setSelected(i == index)
 
