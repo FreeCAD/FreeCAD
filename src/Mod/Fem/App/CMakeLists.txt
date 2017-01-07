@@ -71,6 +71,7 @@ SET(FemScripts_SRCS
     _CommandMaterial.py
     _CommandMeshGmshFromShape.py
     _CommandMeshNetgenFromShape.py
+    _CommandMeshGroup.py
     _CommandMeshRegion.py
     _CommandPrintMeshInfo.py
     _CommandPurgeResults.py
