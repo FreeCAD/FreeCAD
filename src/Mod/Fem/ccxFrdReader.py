@@ -266,7 +266,7 @@ def readResult(frd_input):
             mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
         if line[5:11] == "STRESS":
             mode_stress_found = True
-        # we found a displacement line in the frd file
+        # we found a stress line in the frd file
         if mode_stress_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
