@@ -31,8 +31,9 @@ class PathWorkbench (Workbench):
 
     def Initialize(self):
         # Add preferences pages - before loading PathGui to properly order pages of Path group
-        from PathScripts import PathPreferencesPathJob
-        FreeCADGui.addPreferencePage(PathPreferencesPathJob.Page, "Path")
+        from PathScripts import PathPreferencesPathJob, PathPreferencesPathDressup
+        FreeCADGui.addPreferencePage(PathPreferencesPathJob.JobPreferencesPage, "Path")
+        FreeCADGui.addPreferencePage(PathPreferencesPathDressup.DressupPreferencesPage, "Path")
 
         # load the builtin modules
         import Path
