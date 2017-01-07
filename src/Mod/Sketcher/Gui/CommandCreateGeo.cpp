@@ -4276,6 +4276,266 @@ bool CmdSketcherCompCreateConic::isActive(void)
 // ======================================================================================
 
 /* XPM */
+static const char *cursor_createbspline[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+...............###.......",
+"......+...............#.#.......",
+"......+...............###.......",
+"......+..............#..#.......",
+"......+.............#....#......",
+"....................#.+..#......",
+"..................+#+..+..#...+.",
+"................++#.....+.#..+..",
+"......+........+..#......++#+...",
+".......+......+..#.........#....",
+"........++..++..#..........###..",
+"..........++....#..........#.#..",
+"......#........#...........###..",
+".......#......#.................",
+"........#.....#.................",
+".........#...#..................",
+"..........###...................",
+"..........#.#...................",
+"..........###...................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerBSpline: public DrawSketchHandler
+{
+public:
+   DrawSketchHandlerBSpline()
+      : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
+      , EditCurve(2)
+    {
+    }
+
+    virtual ~DrawSketchHandlerBSpline() {}
+    /// modes
+    enum SELECT_MODE {
+        STATUS_SEEK_FIRST_CONTROLPOINT,
+        STATUS_SEEK_ADDITIONAL_CONTROLPOINTS,
+        STATUS_CLOSE
+    };
+
+    virtual void activated(ViewProviderSketch *)
+    {
+        setCursor(QPixmap(cursor_createbspline),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
+            setPositionText(onSketchPos);
+            /*if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr1);
+                return;
+            }*/
+        }
+        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS){
+
+	    EditCurve[EditCurve.size()-1] = onSketchPos;
+
+	    sketchgui->drawEdit(EditCurve);
+
+	    float length = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).Length();
+	    float angle = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).GetAngle(Base::Vector2d(1.f,0.f));
+
+	    SbString text;
+	    text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
+	    setPositionText(EditCurve[EditCurve.size()-1], text);
+
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
+
+            EditCurve[0] = onSketchPos;
+
+	    Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
+        }
+        else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
+	    
+	    EditCurve[EditCurve.size()-1] = onSketchPos;
+	    
+            // finish adding controlpoints on double click
+            if (EditCurve[EditCurve.size()-2] == EditCurve[EditCurve.size()-1]) {
+		EditCurve.pop_back();
+		Mode = STATUS_CLOSE;
+            }
+            else {
+		EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
+	    }
+
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    {
+        if (Mode==STATUS_CLOSE) {
+            unsetCursor();
+            resetPositionText();
+
+	    std::stringstream stream;
+
+	    for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin(); 
+		 it != EditCurve.end(); ++it) {
+		stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
+	    }
+
+    	    std::string controlpoints = stream.str();
+
+	    // remove last comma and add brackets
+	    int index = controlpoints.rfind(',');
+	    controlpoints.resize(index);
+
+	    controlpoints.insert(0,1,'[');
+	    controlpoints.append(1,']');
+
+	    int currentgeoid = getHighestCurveIndex();
+
+            try {
+
+            Gui::Command::openCommand("Add sketch BSplineCurve");
+
+            //Add arc of parabola
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
+                "(%s),"
+                "%s)",
+                    sketchgui->getObject()->getNameInDocument(),
+                    controlpoints.c_str(),
+                    geometryCreationMode==Construction?"True":"False"); 
+
+            currentgeoid++;
+
+            /*Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid);*/
+
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                if(autoRecompute) 
+                    Gui::Command::updateActive();
+                else
+                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+                return false;
+            }
+
+            Gui::Command::commitCommand();
+
+            // add auto constraints
+            /*if (sugConstr1.size() > 0) {
+                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::start);
+                sugConstr1.clear();
+            }*/
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                 * in continuous creation mode because the 
+                 * handler is destroyed by the quit() method on pressing the
+                 * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
+        }
+        return true;
+    }
+protected:
+    SELECT_MODE Mode;
+
+    std::vector<Base::Vector2d> EditCurve;
+
+    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+
+};
+
+DEF_STD_CMD_AU(CmdSketcherCreateBSpline);
+
+CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
+  : Command("Sketcher_CreateBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create B-Spline");
+    sToolTipText    = QT_TR_NOOP("Create a B-Spline via control point in the sketch.");
+    sWhatsThis      = "Sketcher_CreateBSpline";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateBSpline";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateBSpline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline() );
+}
+
+void CmdSketcherCreateBSpline::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
+        break;
+    }
+}
+
+bool CmdSketcherCreateBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+// ======================================================================================
+
+/* XPM */
 static const char *cursor_create3pointcircle[]={
 "32 32 3 1",
 "+ c white",
@@ -6340,6 +6600,7 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfEllipse());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfHyperbola());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfParabola());
+    rcCmdMgr.addCommand(new CmdSketcherCreateBSpline());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
