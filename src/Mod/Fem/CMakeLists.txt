@@ -59,6 +59,8 @@ INSTALL(
         _FemMeshGroup.py
         _ViewProviderFemMeshGroup.py
         _CommandMeshGroup.py
+        _TaskPanelFemMeshGroup.py
+        TaskPanelFemMeshGroup.ui
 
         FemMeshRegion.py
         _FemMeshRegion.py
