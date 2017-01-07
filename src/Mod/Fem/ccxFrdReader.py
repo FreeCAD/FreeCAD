@@ -54,6 +54,7 @@ def readResult(frd_input):
     elements_quad4 = {}
     elements_quad8 = {}
     elements_seg2 = {}
+    elements_seg3 = {}
     results = []
     mode_results = {}
     mode_disp = {}
@@ -250,6 +251,14 @@ def readResult(frd_input):
                 nd1 = int(line[3:13])
                 nd2 = int(line[13:23])
                 elements_seg2[elem] = (nd1, nd2)
+            elif elemType == 12:
+                # B32 CalculiX --> seg3 FreeCAD
+                # Also D element element number 
+                # N1, N3 ,N2 Order in outpufile is 1,3,2
+                nd1 = int(line[3:13])
+                nd3 = int(line[13:23])
+                nd2 = int(line[23:33])
+                elements_seg3[elem] = (nd1, nd2, nd3)
 
         # Check if we found new eigenmode
         if line[5:10] == "PMODE":
@@ -336,7 +345,7 @@ def readResult(frd_input):
     return {'Nodes': nodes,
             'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
             'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
-            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2,
+            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2, 'Seg3Elem': elements_seg3,
             'Results': results}
 
 
