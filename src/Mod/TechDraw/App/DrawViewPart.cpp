@@ -69,6 +69,7 @@
 #include <GeomLib_Tool.hxx>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <Base/BoundBox.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -103,6 +104,7 @@ DrawViewPart::DrawViewPart(void) : geometryObject(0)
     static const char *group = "Projection";
     static const char *fgroup = "Format";
     static const char *sgroup = "Show";
+    nowDeleting = false;
 
     //properties that affect Geometry
     ADD_PROPERTY_TYPE(Source ,(0),group,App::Prop_None,"3D Shape to view");
@@ -576,6 +578,25 @@ bool DrawViewPart::showSectionEdges(void)
 {
     return m_sectionEdges;
 }
+
+void DrawViewPart::unsetupObject()
+{
+    nowDeleting = true;
+
+    // Remove the View's Hatches from document
+    App::Document* doc = getDocument();
+    std::string docName = doc->getName();
+
+    std::vector<TechDraw::DrawHatch*> hatches = getHatches();
+
+    std::vector<TechDraw::DrawHatch*>::iterator it = hatches.begin();
+    for (; it != hatches.end(); it++) {
+        std::string viewName = (*it)->getNameInDocument();
+        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                          docName.c_str(), viewName.c_str());
+    }
+}
+
 
 PyObject *DrawViewPart::getPyObject(void)
 {

@@ -135,12 +135,15 @@ public:
     }
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
+    bool isDeleting(void) { return nowDeleting; }
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;
     Base::BoundBox3d bbox;
 
     void onChanged(const App::Property* prop);
+    virtual void unsetupObject();
+
     virtual TechDrawGeometry::GeometryObject*  buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis);
     void extractFaces();
 
@@ -156,6 +159,7 @@ protected:
     bool m_handleFaces;
 
 private:
+    bool nowDeleting;
 
 };
 
