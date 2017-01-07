@@ -141,7 +141,7 @@ class HoldingTagsPreferences:
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = 'Holding Tags'
+        self.label = translate('PathDressup_HoldingTags', 'Holding Tags')
 
     def loadSettings(self):
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)

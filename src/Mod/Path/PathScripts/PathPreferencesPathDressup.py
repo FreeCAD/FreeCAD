@@ -27,6 +27,18 @@ import FreeCADGui
 from PySide import QtCore, QtGui
 from PathScripts.PathPreferences import PathPreferences
 
+# Qt tanslation handling
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+
+    def translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+
+except AttributeError:
+
+    def translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text, disambig)
+
 _dressups = []
 
 def RegisterDressup(dressup):
@@ -34,9 +46,8 @@ def RegisterDressup(dressup):
 
 class DressupPreferencesPage:
     def __init__(self, parent=None):
-        print('dressup - __init__')
         self.form = QtGui.QToolBox()
-        self.form.setWindowTitle('Dressups')
+        self.form.setWindowTitle(translate('PathPreferencesPathDressup', 'Dressups'))
         pages = []
         for dressup in _dressups:
             page = dressup.preferencesPage()
@@ -48,12 +59,10 @@ class DressupPreferencesPage:
         self.pages = pages
 
     def saveSettings(self):
-        print('dressup - save settings')
         for page in self.pages:
             page.saveSettings()
 
     def loadSettings(self):
-        print('dressup - load settings')
         for page in self.pages:
             page.loadSettings()
 
