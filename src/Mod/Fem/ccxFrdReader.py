@@ -59,11 +59,14 @@ def readResult(frd_input):
     mode_results = {}
     mode_disp = {}
     mode_stress = {}
+    mode_stressv = {}
+    mode_strain = {}
     mode_temp = {}
 
     mode_disp_found = False
     nodes_found = False
     mode_stress_found = False
+    mode_strain_found = False
     mode_temp_found = False
     mode_time_found = False
     elements_found = False
@@ -285,6 +288,19 @@ def readResult(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+            mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
+        if line[5:13] == "TOSTRAIN":
+            mode_strain_found = True
+        # we found a strain line in the frd file
+        if mode_strain_found and (line[1:3] == "-1"):
+            elem = int(line[4:13])
+            strain_1 = float(line[13:25])
+            strain_2 = float(line[25:37])
+            strain_3 = float(line[37:49])
+#            strain_4 = float(line[49:61])  #Not used in vector
+#            strain_5 = float(line[61:73])
+#            strain_6 = float(line[73:85])
+            mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
         # Check if we found a time step
         if line[4:10] == "1PSTEP":
             mode_time_found = True
@@ -318,6 +334,8 @@ def readResult(frd_input):
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
                 mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_results['strainv'] = mode_strain
                 mode_results['temp'] = mode_temp
                 mode_results['time'] = timestep
                 results.append(mode_results)
@@ -331,6 +349,8 @@ def readResult(frd_input):
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
                 mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_results['strainv'] = mode_strain
                 mode_results['time'] = 0  # Dont return time if static
                 results.append(mode_results)
                 mode_disp = {}
@@ -430,6 +450,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     break
 
             disp = result_set['disp']
+            stressv = result_set['stressv']
+            strainv = result_set['strainv']
             no_of_values = len(disp)
             displacement = []
             for k, v in disp.iteritems():
@@ -447,6 +469,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
             if len(disp) > 0:
                 results.DisplacementVectors = map((lambda x: x * scale), disp.values())
+                results.StressVectors = map((lambda x: x * scale), stressv.values())
+                results.StrainVectors = map((lambda x: x * scale), strainv.values())
                 results.NodeNumbers = disp.keys()
                 if(mesh_object):
                     results.Mesh = mesh_object
