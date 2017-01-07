@@ -27,6 +27,7 @@ import Draft
 import DraftGeomUtils
 import DraftGui
 import Path
+import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
 import Part
 import copy
 import math
@@ -103,19 +104,65 @@ def debugCone(vector, r1, r2, height, label, color = None):
         if color:
             obj.ViewObject.ShapeColor = color
 
-class Tag:
+
+class HoldingTagsPreferences:
+    DefaultHoldingTagWidth  = 'DefaultHoldingTagWidth'
+    DefaultHoldingTagHeight = 'DefaultHoldingTagHeight'
+    DefaultHoldingTagAngle  = 'DefaultHoldingTagAngle'
+    DefaultHoldingTagCount  = 'DefaultHoldingTagCount'
 
     @classmethod
-    def FromString(cls, string):
-        try:
-            t = eval(string)
-            return Tag(t[0], t[1], t[2], t[3], t[4], t[5])
-        except:
-            return None
+    def defaultWidth(cls, ifNotSet):
+        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagWidth, ifNotSet)
+        if value == 0.0:
+            return ifNotSet
+        return value
 
-    def toString(self):
-        return str((self.x, self.y, self.width, self.height, self.angle, self.enabled))
+    @classmethod
+    def defaultHeight(cls, ifNotSet):
+        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagHeight, ifNotSet)
+        if value == 0.0:
+            return ifNotSet
+        return value
 
+    @classmethod
+    def defaultAngle(cls, ifNotSet = 45.0):
+        value = PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagAngle, ifNotSet)
+        if value < 10.0:
+            return ifNotSet
+        return value
+
+    @classmethod
+    def defaultCount(cls, ifNotSet = 4):
+        value = PathPreferences.preferences().GetUnsigned(cls.DefaultHoldingTagCount, ifNotSet)
+        if value < 2:
+            return float(ifNotSet)
+        return float(value)
+
+    def __init__(self):
+        self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
+        self.label = 'Holding Tags'
+
+    def loadSettings(self):
+        print("holding tags - load settings")
+        self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
+        self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.defaultHeight(0), FreeCAD.Units.Length).UserString)
+        self.form.dsbAngle.setValue(self.defaultAngle())
+        self.form.sbCount.setValue(self.defaultCount())
+
+    def saveSettings(self):
+        print("holding tags - save settings")
+        pref = PathPreferences.preferences()
+        pref.SetFloat(self.DefaultHoldingTagWidth, FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value)
+        pref.SetFloat(self.DefaultHoldingTagHeight, FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value)
+        pref.SetFloat(self.DefaultHoldingTagAngle, self.form.dsbAngle.value())
+        pref.SetUnsigned(self.DefaultHoldingTagCount, self.form.sbCount.value())
+
+    @classmethod
+    def preferencesPage(cls):
+        return HoldingTagsPreferences()
+
+class Tag:
     def __init__(self, x, y, width, height, angle, enabled=True):
         debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d)" % (x, y, width, height, angle/math.pi, enabled))
         self.x = x
@@ -456,7 +503,7 @@ class PathData:
         edges = sorted(self.base.Edges, key=lambda e: e.Length)
         return (edges[0], edges[-1])
 
-    def generateTags(self, obj, count=None, width=None, height=None, angle=90, spacing=None):
+    def generateTags(self, obj, count, width=None, height=None, angle=None, spacing=None):
         debugPrint("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
         #for e in self.base.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
@@ -544,14 +591,20 @@ class PathData:
 
     def defaultTagHeight(self):
         if hasattr(self.obj, 'Base') and hasattr(self.obj.Base, 'StartDepth') and hasattr(self.obj.Base, 'FinalDepth'):
-            return (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value / 2
-        return (self.maxZ - self.minZ) / 2
+            pathHeight = (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value
+        else:
+            pathHeight = self.maxZ - self.minZ
+        height = HoldingTagsPreferences.defaultHeight(pathHeight / 2)
+        if height > pathHeight:
+            return pathHeight
+        return height
 
     def defaultTagWidth(self):
-        return self.shortestAndLongestPathEdge()[1].Length / 10
+        width = self.shortestAndLongestPathEdge()[1].Length / 10
+        return HoldingTagsPreferences.defaultWidth(width)
 
     def defaultTagAngle(self):
-        return 45
+        return HoldingTagsPreferences.defaultAngle()
 
     def sortedTags(self, tags):
         ordered = []
@@ -762,7 +815,7 @@ class ObjectDressup:
         obj.Path = self.createPath(self.pathData.edges, self.tags, self.pathData.rapid)
         print("execute - done")
 
-    def setup(self, obj, generate=None):
+    def setup(self, obj, generate=False):
         print("setup")
         self.obj = obj
         try:
@@ -786,7 +839,8 @@ class ObjectDressup:
             obj.Height = self.pathData.defaultTagHeight()
             obj.Width  = self.pathData.defaultTagWidth()
             obj.Angle  = self.pathData.defaultTagAngle()
-            self.generateTags(obj, min(2, generate))
+            count = HoldingTagsPreferences.defaultCount()
+            self.generateTags(obj, count)
         return self.pathData
 
     def setXyEnabled(self, triples):
@@ -806,6 +860,12 @@ class ObjectDressup:
         if not hasattr(self, 'pathData'):
             self.setup(obj)
         return self.pathData.pointIsOnPath(point)
+
+    @classmethod
+    def preferencesPage(cls):
+        return HoldingTagsPreferences()
+
+PathPreferencesPathDressup.RegisterDressup(ObjectDressup)
 
 class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
@@ -1292,9 +1352,10 @@ class CommandPathDressupHoldingTags:
         FreeCADGui.doCommand('PathScripts.PathDressupHoldingTags.ViewProviderDressup(obj.ViewObject)')
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')
         FreeCADGui.doCommand('Gui.ActiveDocument.getObject(obj.Base.Name).Visibility = False')
-        FreeCADGui.doCommand('dbo.setup(obj, 4.)')
+        FreeCADGui.doCommand('dbo.setup(obj, True)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
+
 
 if FreeCAD.GuiUp:
     # register the FreeCAD command
