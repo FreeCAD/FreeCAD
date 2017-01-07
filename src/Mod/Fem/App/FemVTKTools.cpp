@@ -760,6 +760,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
     const FemResultObject* res = static_cast<const FemResultObject*>(obj);
     if(!res->StressValues.getValues().empty()) {
         const std::vector<double>& vec = res->StressValues.getValues();
+     if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Von Mises stress");
@@ -768,10 +769,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+     }}
 
     if(!res->MaxShear.getValues().empty()) {
         const std::vector<double>& vec = res->MaxShear.getValues();
+      if (vec.size()>1) {       
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Max shear stress (Tresca)");
@@ -780,10 +782,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
     if(!res->PrincipalMax.getValues().empty()) {
         const std::vector<double>& vec = res->PrincipalMax.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Maximum Principal stress");
@@ -792,10 +795,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
     if(!res->PrincipalMax.getValues().empty()) {
         const std::vector<double>& vec = res->PrincipalMin.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Minimum Principal stress");
@@ -804,10 +808,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->Temperature.getValues().empty()) {
+    if (!res->Temperature.getValues().empty())  {  
         const std::vector<double>& vec = res->Temperature.getValues();
+      if (vec.size()>1) {     
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Temperature");
@@ -816,10 +821,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->UserDefined.getValues().empty()) {
+    if (!res->UserDefined.getValues().empty())  {
         const std::vector<double>& vec = res->UserDefined.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("User Defined Results");
@@ -828,11 +834,12 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
 
     if(!res->DisplacementVectors.getValues().empty()) {
         const std::vector<Base::Vector3d>& vec = res->DisplacementVectors.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfComponents(3);
         data->SetName("Displacement");
@@ -843,7 +850,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
         }
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 }
 
 } // namespace
