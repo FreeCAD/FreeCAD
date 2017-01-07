@@ -58,6 +58,7 @@ INSTALL(
         FemMeshGroup.py
         _FemMeshGroup.py
         _ViewProviderFemMeshGroup.py
+        _CommandMeshGroup.py
 
         FemMeshRegion.py
         _FemMeshRegion.py
