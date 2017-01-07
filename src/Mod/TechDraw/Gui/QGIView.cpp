@@ -189,12 +189,8 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
-//            getViewObject()->X.setValue(tempX);
-//            getViewObject()->Y.setValue(tempY);
             getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
         } else {
-//            getViewObject()->X.setValue(x());
-//            getViewObject()->Y.setValue(getYInClip(y()));
             getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
         }
         getViewObject()->setMouseMove(false);
@@ -297,11 +293,10 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 
     viewObj = obj;
     viewName = obj->getNameInDocument();
-
-    // Set the QGIGroup initial position based on the DrawView ( wrong. new views are always at Page center)
-//    float x = obj->X.getValue();
-//    float y = obj->Y.getValue();
-//    setPosition(x, y);
+    
+    //mark the actual QGraphicsItem so we can check what's in the scene later
+    setData(0,QString::fromUtf8("QGIV"));
+    setData(1,QString::fromUtf8(obj->getNameInDocument()));
 }
 
 void QGIView::toggleCache(bool state)
@@ -410,7 +405,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect());
+    //painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }

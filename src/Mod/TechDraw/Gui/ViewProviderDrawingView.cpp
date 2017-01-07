@@ -188,7 +188,6 @@ void ViewProviderDrawingView::updateData(const App::Property* prop)
             qgiv->updateView(true);
         }
      }
-
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
@@ -201,18 +200,6 @@ void ViewProviderDrawingView::unsetEdit(int ModNum)
         Gui::ViewProviderDocumentObject::unsetEdit(ModNum);
     }
 }
-
-bool ViewProviderDrawingView::onDelete(const std::vector<std::string> &items)
-{
-    QGIView* qv = getQView();
-    if (qv != nullptr) {
-        MDIViewPage* mdi = getMDIViewPage();
-        mdi->removeView(qv);
-    }
-
-    return ViewProviderDocumentObject::onDelete(items);
-}
-
 
 MDIViewPage* ViewProviderDrawingView::getMDIViewPage() const
 {

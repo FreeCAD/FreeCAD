@@ -200,6 +200,7 @@ int QGVPage::addView(QGIView *view)
 
 int QGVPage::removeView(QGIView *view)
 {
+
     std::vector<QGIView *> qviews = views;
     std::vector<QGIView *> newViews;
     
@@ -217,6 +218,45 @@ int QGVPage::removeView(QGIView *view)
         return views.size();
     }
 
+    removeViewFromScene(view);
+
+    qviews.erase(qvDel);
+    views = qviews;
+    delete view;
+
+    return views.size();
+}
+
+int QGVPage::removeView(const TechDraw::DrawView* dv)
+{
+    std::vector<QGIView *> newViews;
+    QList<QGraphicsItem *> items = scene()->items();
+    QString qsName = QString::fromUtf8(dv->getNameInDocument());
+    bool found = false;
+    QGIView* ourItem = nullptr;
+    for (auto& i:items) {
+        if (qsName == i->data(1).toString()) {          //is there really a QGIV for this DV in scene?
+            found = true;
+            ourItem = static_cast<QGIView*>(i);
+            break;
+        }
+    }
+    if (found) {
+        for (auto&v :views) {
+            if (ourItem != v) {
+                newViews.push_back(v);
+            }
+        }
+        removeViewFromScene(ourItem);
+        delete ourItem;
+        views = newViews;
+    }
+
+    return views.size();
+}
+
+void QGVPage::removeViewFromScene(QGIView *view)
+{
     QGraphicsItemGroup* grp = view->group();
     if (grp) {
         grp->removeFromGroup(view);
@@ -229,12 +269,6 @@ int QGVPage::removeView(QGIView *view)
     if (view->scene()) {
         view->scene()->removeItem(view);
     }
-
-    qviews.erase(qvDel);
-    views = qviews;
-    delete view;
-
-    return views.size();
 }
 
 

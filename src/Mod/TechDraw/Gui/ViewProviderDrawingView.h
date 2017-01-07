@@ -60,7 +60,6 @@ public:
     virtual void onChanged(const App::Property *prop);
     virtual void updateData(const App::Property*);
     virtual void unsetEdit(int ModNum);
-    virtual bool onDelete(const std::vector<std::string> &items);
 
     QGIView* getQView(void);
     MDIViewPage* getMDIViewPage() const;
@@ -70,10 +69,12 @@ public:
     virtual void startRestoring();
     virtual void finishRestoring();
     //@}
+
     virtual TechDraw::DrawView* getViewObject() const;
 
 private:
     bool m_docReady;                                                   //sb MDI + QGraphicsScene ready
+
 };
 
 } // namespace TechDrawGui

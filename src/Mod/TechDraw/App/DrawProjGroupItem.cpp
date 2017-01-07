@@ -164,13 +164,15 @@ void DrawProjGroupItem::unsetupObject()
 {
     if (getGroup() != nullptr) {
         if (getGroup()->hasProjection(Type.getValueAsString()) ) {
-            if (getGroup()->getAnchor() == this) {
+            if ((getGroup()->getAnchor() == this) &&
+                 !getGroup()->isDeleting() )         {
                    Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
                                            getGroup()->getNameInDocument(),getGroup()->Label.getValue());
                    getGroup()->Anchor.setValue(nullptr);
              }
         }
     }
+    DrawViewPart::unsetupObject();
 }
 
 PyObject *DrawProjGroupItem::getPyObject(void)
