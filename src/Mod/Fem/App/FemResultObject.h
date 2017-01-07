@@ -51,6 +51,10 @@ public:
     App::PropertyVectorList DisplacementVectors;
     /// Lengths of displacement vectors of analysis
     App::PropertyFloatList DisplacementLengths;
+    /// Stress vectors of analysis
+    App::PropertyVectorList StressVectors;
+    /// Strain vectors of analysis
+    App::PropertyVectorList StrainVectors;
     /// Von Mises Stress values of analysis
     App::PropertyFloatList StressValues;
     /// First principal Stress values of analysis
