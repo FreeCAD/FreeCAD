@@ -851,6 +851,37 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
 
         grid->GetPointData()->AddArray(data);
       }}
+  
+   if(!res->StressVectors.getValues().empty()) {
+        const std::vector<Base::Vector3d>& vec = res->StressVectors.getValues();
+      if (vec.size()>1) { 
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfComponents(3);
+        data->SetName("Stress Vectors");
+
+        for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
+            double tuple[] = {it->x, it->y , it->z};
+            data->InsertNextTuple(tuple);
+        }
+
+        grid->GetPointData()->AddArray(data);
+      }} 
+
+   if(!res->StrainVectors.getValues().empty()) {
+        const std::vector<Base::Vector3d>& vec = res->StrainVectors.getValues();
+      if (vec.size()>1) { 
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfComponents(3);
+        data->SetName("Strain Vectors");
+
+        for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
+            double tuple[] = {it->x, it->y, it->z};
+            data->InsertNextTuple(tuple);
+        }
+
+        grid->GetPointData()->AddArray(data);
+      }}   
+  
 }
 
 } // namespace
