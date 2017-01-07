@@ -88,6 +88,7 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateConic");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateCircle");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRegularPolygon");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateBSpline");
 }
 
 void CmdSketcherToggleConstruction::activated(int iMsg)
