@@ -215,17 +215,39 @@ class FemGmshTools():
         print('  ' + self.gmsh_bin)
 
     def get_group_data(self):
+        self.group_elements = {}
+        # TODO solid, face, edge seam not work together, some print or make it work together
+        # TODO handle groups for Edges and Vertexes
+
+        # mesh groups and groups of analysis member
+        if not self.mesh_obj.MeshGroupList:
+            print ('  No mesh group objects.')
+        else:
+            print ('  Mesh group objects, we need to get the elements.')
+            for mg in self.mesh_obj.MeshGroupList:
+                new_group_elements = FemMeshTools.get_mesh_group_elements(mg, self.part_obj)
+                for ge in new_group_elements:
+                    if ge not in self.group_elements:
+                        self.group_elements[ge] = new_group_elements[ge]
+                    else:
+                        FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         if self.analysis:
             print('  Group meshing.')
-            self.group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
-            print('  {}'.format(self.group_elements))
+            new_group_elements = FemMeshTools.get_analysis_group_elements(self.analysis, self.part_obj)
+            for ge in new_group_elements:
+                if ge not in self.group_elements:
+                    self.group_elements[ge] = new_group_elements[ge]
+                else:
+                    FreeCAD.Console.PrintError("  A group with this name exists already.\n")
         else:
-            print('  NO group meshing.')
+            print('  No anlysis members for group meshing.')
+        print('  {}'.format(self.group_elements))
 
+        # mesh regions
         self.ele_length_map = {}  # { 'ElementString' : element length }
         self.ele_node_map = {}  # { 'ElementString' : [element nodes] }
         if not self.mesh_obj.MeshRegionList:
-            print ('  No Mesh regions.')
+            print ('  No mesh regions.')
         else:
             print ('  Mesh regions, we need to get the elements.')
             if self.part_obj.Shape.ShapeType == 'Compound':
@@ -279,7 +301,7 @@ class FemGmshTools():
         geo = open(self.temp_file_geo, "w")
         geo.write('Merge "' + self.temp_file_geometry + '";\n')
         geo.write("\n")
-        if self.analysis and self.group_elements:
+        if self.group_elements:
             # print('  We gone have found elements to make mesh groups for.')
             geo.write("// group data\n")
             # we use the element name of FreeCAD which starts with 1 (example: 'Face1'), same as GMSH
