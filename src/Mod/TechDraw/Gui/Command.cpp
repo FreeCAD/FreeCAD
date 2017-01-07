@@ -350,9 +350,12 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Section");
     std::string SourceName = dvp->Source.getValue()->getNameInDocument();
+    std::string BaseName = (dObj)->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),(dObj)->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
