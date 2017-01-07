@@ -176,7 +176,9 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if ( prop == &Views ) {
-            recompute();
+            if (!isDeleting()) {
+                recompute();  
+            }
         } else if (prop == &Scale) {
             updateChildren(Scale.getValue());
             //resetPositions();
@@ -808,7 +810,9 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
         //explode! DPG w/o anchor
-        Base::Console().Error("Error - DPG::getAnchor - DPG has no Anchor!!!\n");
+        if (!isDeleting()) {
+            Base::Console().Error("Error - DPG::getAnchor - DPG has no Anchor!!!\n");
+        }
     } else {
         result = static_cast<DrawProjGroupItem*>(docObj);
     }

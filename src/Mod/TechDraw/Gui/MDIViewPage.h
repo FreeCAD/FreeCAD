@@ -111,6 +111,11 @@ protected:
     QPrinter::PaperSize getPaperSize(int w, int h) const;
     void setDimensionGroups(void);
     void showStatusMsg(const char* s1, const char* s2, const char* s3) const;
+    
+    void onDeleteObject(const App::DocumentObject& obj);
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectDeletedObject;
 
 private:
     QAction *m_nativeAction;
