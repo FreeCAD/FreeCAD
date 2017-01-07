@@ -42,6 +42,8 @@ FemResultObject::FemResultObject()
     ADD_PROPERTY_TYPE(Stats,(0), "Fem",Prop_None,"Statistics of the results");
     ADD_PROPERTY_TYPE(DisplacementVectors,(), "Fem",Prop_None,"List of displacement vectors");
     ADD_PROPERTY_TYPE(DisplacementLengths,(0), "Fem",Prop_None,"List of displacement lengths");
+    ADD_PROPERTY_TYPE(StressVectors,(), "Fem",Prop_None,"List of Stress vectors");
+    ADD_PROPERTY_TYPE(StrainVectors,(), "Fem",Prop_None,"List of Strain vectors");
     ADD_PROPERTY_TYPE(StressValues,(0), "Fem",Prop_None,"List of Von Misses stress values");
     ADD_PROPERTY_TYPE(PrincipalMax,(0), "Fem",Prop_None,"List of First Principal (Max) stress values");
     ADD_PROPERTY_TYPE(PrincipalMed,(0), "Fem",Prop_None,"List of Second Principal (Med) stress values");
@@ -59,6 +61,8 @@ FemResultObject::FemResultObject()
     Stats.setStatus(App::Property::ReadOnly, true);
     DisplacementVectors.setStatus(App::Property::ReadOnly, true);
     DisplacementLengths.setStatus(App::Property::ReadOnly, true);
+    StressVectors.setStatus(App::Property::ReadOnly, true);
+    StrainVectors.setStatus(App::Property::ReadOnly, true);
     StressValues.setStatus(App::Property::ReadOnly, true);
     PrincipalMax.setStatus(App::Property::ReadOnly, true);
     PrincipalMed.setStatus(App::Property::ReadOnly, true);
