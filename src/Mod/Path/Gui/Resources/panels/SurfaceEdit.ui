@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -186,8 +186,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>395</height>
+        <width>144</width>
+        <height>56</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -236,8 +236,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>195</height>
+        <width>203</width>
+        <height>31</height>
        </rect>
       </property>
       <attribute name="icon">
