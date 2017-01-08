@@ -320,18 +320,18 @@ class TaskPanel:
     def getFields(self):
         if self.obj:
             if hasattr(self.obj, "FinalDepth"):
-                self.obj.FinalDepth = self.form.finalDepth.text()
+                self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
             if hasattr(self.obj, "SafeHeight"):
-                self.obj.SafeHeight = self.form.safeHeight.text()
+                self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
-                self.obj.ClearanceHeight = self.form.clearanceHeight.text()
+                self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
 
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value, FreeCAD.Units.Length).UserString)
 
         self.form.baseList.clear()
         for i in self.obj.Base:

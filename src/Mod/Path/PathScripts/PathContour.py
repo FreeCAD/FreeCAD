@@ -94,7 +94,7 @@ class ObjectContour:
 
         obj.addProperty("App::PropertyDistance", "RollRadius", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Radius at start and end"))
         obj.addProperty("App::PropertyDistance", "OffsetExtra", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Extra value to stay away from final Contour- good for roughing toolpath"))
-        obj.addProperty("App::PropertyLength", "SegLen", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
+        #obj.addProperty("App::PropertyLength", "SegLen", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Tesselation  value for tool paths made from beziers, bsplines, and ellipses"))
         obj.addProperty("App::PropertyAngle", "PlungeAngle", "Contour", QtCore.QT_TRANSLATE_NOOP("App::Property","Plunge angle with which the tool enters the work piece. Straight down is 90 degrees, if set small enough or zero the tool will descent exactly one layer depth down per turn"))
 
         obj.addProperty("App::PropertyVectorList", "locs", "Tags", QtCore.QT_TRANSLATE_NOOP("App::Property","List of holding tag locations"))
@@ -439,23 +439,23 @@ class TaskPanel:
     def getFields(self):
         if self.obj:
             if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = self.form.startDepth.text()
+                self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
-                self.obj.FinalDepth = self.form.finalDepth.text()
+                self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
             if hasattr(self.obj, "SafeHeight"):
-                self.obj.SafeHeight = self.form.safeHeight.text()
+                self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
-                self.obj.ClearanceHeight = self.form.clearanceHeight.text()
+                self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
             if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = self.form.stepDown.text()
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "OffsetExtra"):
-                self.obj.OffsetExtra = self.form.extraOffset.text()
-            if hasattr(self.obj, "SegLen"):
-                self.obj.SegLen = self.form.segLen.value()
+                self.obj.OffsetExtra = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
+            #if hasattr(self.obj, "SegLen"):
+            #    self.obj.SegLen = self.form.segLen.value()
             if hasattr(self.obj, "RollRadius"):
-                self.obj.RollRadius = self.form.rollRadius.text()
+                self.obj.RollRadius = FreeCAD.Units.Quantity(self.form.rollRadius.text()).Value
             if hasattr(self.obj, "PlungeAngle"):
-                self.obj.PlungeAngle = str(self.form.plungeAngle.value())
+                self.obj.PlungeAngle = FreeCAD.Units.Quantity(self.form.plungeAngle.text()).Value
             if hasattr(self.obj, "UseComp"):
                 self.obj.UseComp = self.form.useCompensation.isChecked()
             if hasattr(self.obj, "UseStartPoint"):
@@ -467,15 +467,15 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setText(str(self.obj.StepDown.Value))
-        self.form.extraOffset.setText(str(self.obj.OffsetExtra.Value))
-        self.form.segLen.setValue(self.obj.SegLen.Value)
-        self.form.rollRadius.setText(str(self.obj.RollRadius.Value))
-        self.form.plungeAngle.setValue(self.obj.PlungeAngle.Value)
+        self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.OffsetExtra.Value, FreeCAD.Units.Length).UserString)
+        #self.form.segLen.setValue(self.obj.SegLen.Value)
+        self.form.rollRadius.setText(FreeCAD.Units.Quantity(self.obj.RollRadius.Value, FreeCAD.Units.Length).UserString)
+        self.form.plungeAngle.setText(FreeCAD.Units.Quantity(self.obj.PlungeAngle.Value, FreeCAD.Units.Angle).UserString)
         self.form.useCompensation.setChecked(self.obj.UseComp)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useEndPoint.setChecked(self.obj.UseEndPoint)
@@ -609,7 +609,7 @@ class TaskPanel:
         self.form.useStartPoint.clicked.connect(self.getFields)
         self.form.useEndPoint.clicked.connect(self.getFields)
         self.form.extraOffset.editingFinished.connect(self.getFields)
-        self.form.segLen.editingFinished.connect(self.getFields)
+        #self.form.segLen.editingFinished.connect(self.getFields)
         self.form.rollRadius.editingFinished.connect(self.getFields)
 
         # Tag Form
