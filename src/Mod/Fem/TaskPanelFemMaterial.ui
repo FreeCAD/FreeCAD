@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>370</width>
-    <height>700</height>
+    <width>396</width>
+    <height>790</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,6 +26,31 @@
       <string>Material</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="2">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="text">
+           <string>Fluid</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QRadioButton" name="radioButton_2">
+          <property name="text">
+           <string>Solid</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Category</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item>
        <widget class="QComboBox" name="cb_materials">
         <item>
@@ -86,7 +111,7 @@
         <item row="1" column="2">
          <widget class="QRadioButton" name="rb_solid">
           <property name="text">
-           <string>Solid</string>
+           <string>Body (3D)</string>
           </property>
          </widget>
         </item>
@@ -94,6 +119,116 @@
          <widget class="QLabel" name="l_label_text_5">
           <property name="text">
            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selection&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupQuantities_24">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Basic Properties</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_27">
+      <item>
+       <layout class="QFormLayout" name="formLayout_20">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_26">
+          <property name="text">
+           <string>Name:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="Gui::InputField" name="input_fd_name">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>steel</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>2000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">Pa</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="Gui::InputField" name="input_fd_density">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>8000 kg/m^3</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="singleStep" stdset="0">
+           <double>2.000000000000000</double>
+          </property>
+          <property name="maximum" stdset="0">
+           <double>2000000000.000000000000000</double>
+          </property>
+          <property name="unit" stdset="0">
+           <string notr="true">kg/m^3</string>
+          </property>
+          <property name="decimals" stdset="0">
+           <number>3</number>
+          </property>
+          <property name="value" stdset="0">
+           <double>0.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Density</string>
           </property>
          </widget>
         </item>
@@ -111,7 +246,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Material Properties</string>
+      <string>Mechanical Properties</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_7">
       <item>
@@ -201,15 +336,37 @@
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="label_8">
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="GroupQuantities_14">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>1677215</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Fluidic Properties</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_17">
+      <item>
+       <layout class="QFormLayout" name="formLayout_10">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+        </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_16">
           <property name="text">
-           <string>Density</string>
+           <string>Kinetic viscosity:</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
-         <widget class="Gui::InputField" name="input_fd_density">
+        <item row="0" column="1">
+         <widget class="Gui::InputField" name="input_fd_kinetic_viscosity">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -223,7 +380,7 @@
            </size>
           </property>
           <property name="text">
-           <string>8000 kg/m^3</string>
+           <string>0.000001</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -235,7 +392,7 @@
            <double>2000000000.000000000000000</double>
           </property>
           <property name="unit" stdset="0">
-           <string notr="true">kg/m^3</string>
+           <string notr="true">Pa</string>
           </property>
           <property name="decimals" stdset="0">
            <number>3</number>
@@ -259,7 +416,7 @@
       </size>
      </property>
      <property name="title">
-      <string>Temperature-Dependant Material Properties</string>
+      <string>Thermal  Properties</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_8">
       <item>

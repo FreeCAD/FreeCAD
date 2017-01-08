@@ -32,6 +32,8 @@ class _FemMaterial:
     "The FEM Material object"
     def __init__(self, obj):
         obj.addProperty("App::PropertyLinkSubList", "References", "Material", "List of material shapes")
+        obj.addProperty("App::PropertyEnum", "Category", "Material", "Material type: fluid or solid")
+        obj.Category = ['Solid', 'Fluid']
         obj.Proxy = self
         self.Type = "FemMaterial"
 
