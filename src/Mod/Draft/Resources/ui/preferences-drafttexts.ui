@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>522</width>
-    <height>462</height>
+    <height>473</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -149,6 +149,46 @@ such as &quot;Arial:Bold&quot;</string>
             <string> text inside (3D)</string>
            </property>
           </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
+        <item>
+         <widget class="QLabel" name="label_19">
+          <property name="text">
+           <string>Number of decimals</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_5">
+          <property name="maximum">
+           <number>8</number>
+          </property>
+          <property name="value">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>dimPrecision</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
          </widget>
         </item>
        </layout>
@@ -364,7 +404,7 @@ such as &quot;Arial:Bold&quot;</string>
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser" native="true">
+         <widget class="Gui::PrefFileChooser" name="gui::preffilechooser">
           <property name="minimumSize">
            <size>
             <width>300</width>
@@ -406,6 +446,21 @@ such as &quot;Arial:Bold&quot;</string>
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
+   <class>Gui::FileChooser</class>
+   <extends>QWidget</extends>
+   <header>Gui/FileDialog.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefFileChooser</class>
+   <extends>Gui::FileChooser</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -423,16 +478,6 @@ such as &quot;Arial:Bold&quot;</string>
   <customwidget>
    <class>Gui::PrefDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::FileChooser</class>
-   <extends>QWidget</extends>
-   <header>Gui/FileDialog.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefFileChooser</class>
-   <extends>Gui::FileChooser</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

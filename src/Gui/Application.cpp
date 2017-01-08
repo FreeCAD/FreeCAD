@@ -1036,7 +1036,7 @@ bool Application::activateWorkbench(const char* name)
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toLatin1());
-        Base::Console().Log("%s\n", e.getStackTrace().c_str());
+        Base::Console().Error("%s\n", e.getStackTrace().c_str());
         if (!d->startingUp) {
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"), 
@@ -1279,10 +1279,9 @@ typedef void (*_qt_msg_handler_old)(QtMsgType type, const char *msg);
 _qt_msg_handler_old old_qtmsg_handler = 0;
 
 #if QT_VERSION >= 0x050000
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &qmsg)
+void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
-    const QChar *msg = qmsg.unicode();
 #ifdef FC_DEBUG
     switch (type)
     {
@@ -1290,26 +1289,26 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     case QtInfoMsg:
 #endif
     case QtDebugMsg:
-        Base::Console().Message("%s\n", msg);
+        Base::Console().Message("%s\n", msg.toUtf8().constData());
         break;
     case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg);
+        Base::Console().Warning("%s\n", msg.toUtf8().constData());
         break;
     case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg);
+        Base::Console().Error("%s\n", msg.toUtf8().constData());
         break;
     case QtFatalMsg:
-        Base::Console().Error("%s\n", msg);
+        Base::Console().Error("%s\n", msg.toUtf8().constData());
         abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
-        (*old_qtmsg_handler)(type, context, qmsg);
+        (*old_qtmsg_handler)(type, context, msg);
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
     Q_UNUSED(type);
-    Base::Console().Log("%s\n", msg);
+    Base::Console().Log("%s\n", msg.toUtf8().constData());
 #endif
 }
 #else

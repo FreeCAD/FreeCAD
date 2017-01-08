@@ -54,6 +54,7 @@ class FemWorkbench (Workbench):
         import _CommandFEMMesh2Mesh
         import _CommandMeshGmshFromShape
         import _CommandMeshNetgenFromShape
+        import _CommandMeshGroup
         import _CommandMeshRegion
         import _CommandAnalysis
         import _CommandShellThickness

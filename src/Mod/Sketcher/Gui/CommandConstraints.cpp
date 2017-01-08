@@ -29,6 +29,7 @@
 #endif
 
 #include <Base/Tools.h>
+#include <Base/Tools2D.h>
 #include <App/Application.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
@@ -3252,14 +3253,34 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 Base::Vector3d p1b = lineSeg1->getEndPoint();
                 Base::Vector3d p2a = lineSeg2->getStartPoint();
                 Base::Vector3d p2b = lineSeg2->getEndPoint();
-                double length = DBL_MAX;
-                for (int i=0; i <= 1; i++) {
-                    for (int j=0; j <= 1; j++) {
-                        double tmp = ((j?p2a:p2b)-(i?p1a:p1b)).Length();
-                        if (tmp < length) {
-                            length = tmp;
-                            PosId1 = i ? Sketcher::start : Sketcher::end;
-                            PosId2 = j ? Sketcher::start : Sketcher::end;
+
+                // Get the intersection point in 2d of the two lines if possible
+                Base::Line2d line1(Base::Vector2d(p1a.x, p1a.y), Base::Vector2d(p1b.x, p1b.y));
+                Base::Line2d line2(Base::Vector2d(p2a.x, p2a.y), Base::Vector2d(p2b.x, p2b.y));
+                Base::Vector2d s;
+                if (line1.Intersect(line2, s)) {
+                    // get the end points of the line segments that are closest to the intersection point
+                    Base::Vector3d s3d(s.x, s.y, p1a.z);
+                    if (Base::DistanceP2(s3d, p1a) < Base::DistanceP2(s3d, p1b))
+                        PosId1 = Sketcher::start;
+                    else
+                        PosId1 = Sketcher::end;
+                    if (Base::DistanceP2(s3d, p2a) < Base::DistanceP2(s3d, p2b))
+                        PosId2 = Sketcher::start;
+                    else
+                        PosId2 = Sketcher::end;
+                }
+                else {
+                    // if all points are collinear
+                    double length = DBL_MAX;
+                    for (int i=0; i <= 1; i++) {
+                        for (int j=0; j <= 1; j++) {
+                            double tmp = Base::DistanceP2((j?p2a:p2b), (i?p1a:p1b));
+                            if (tmp < length) {
+                                length = tmp;
+                                PosId1 = i ? Sketcher::start : Sketcher::end;
+                                PosId2 = j ? Sketcher::start : Sketcher::end;
+                            }
                         }
                     }
                 }
@@ -3280,8 +3301,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     }
                 }
 
-                double ActAngle = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
-                                        dir1.x*dir2.x+dir1.y*dir2.y);
+                double ActAngle = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
+                                        dir1.y*dir2.y+dir1.x*dir2.x);
                 if (ActAngle < 0) {
                     ActAngle *= -1;
                     std::swap(GeoId1,GeoId2);
