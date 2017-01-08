@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>303</width>
-        <height>366</height>
+        <height>374</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>303</width>
-        <height>366</height>
+        <width>109</width>
+        <height>56</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -158,8 +158,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>303</width>
-        <height>366</height>
+        <width>144</width>
+        <height>56</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -205,8 +205,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>303</width>
-        <height>366</height>
+        <width>223</width>
+        <height>31</height>
        </rect>
       </property>
       <attribute name="icon">
