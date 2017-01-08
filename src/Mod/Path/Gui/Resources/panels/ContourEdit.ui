@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>313</height>
+        <height>327</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -98,7 +98,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>313</height>
+        <height>327</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -148,7 +148,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>313</height>
+        <height>327</height>
        </rect>
       </property>
       <attribute name="label">
@@ -206,7 +206,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>313</height>
+        <height>327</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -277,30 +277,6 @@
        <item row="3" column="1">
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QGridLayout" name="gridLayout_6">
-          <item row="3" column="2">
-           <widget class="QDoubleSpinBox" name="plungeAngle"/>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Plunge Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Roll Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Segment Length</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
@@ -309,7 +285,14 @@
            </widget>
           </item>
           <item row="1" column="2">
-           <widget class="QDoubleSpinBox" name="segLen"/>
+           <widget class="Gui::InputField" name="rollRadius">
+            <property name="minimum">
+             <double>0.000000000000000</double>
+            </property>
+            <property name="unit" stdset="0">
+             <string notr="true">mm</string>
+            </property>
+           </widget>
           </item>
           <item row="0" column="2">
            <widget class="Gui::InputField" name="extraOffset">
@@ -321,13 +304,24 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="2">
-           <widget class="Gui::InputField" name="rollRadius">
-            <property name="minimum">
-             <double>0.000000000000000</double>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="text">
+             <string>Roll Radius</string>
             </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_13">
+            <property name="text">
+             <string>Plunge Angle</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="Gui::InputField" name="plungeAngle">
             <property name="unit" stdset="0">
-             <string notr="true">mm</string>
+             <string notr="true"/>
             </property>
            </widget>
           </item>
