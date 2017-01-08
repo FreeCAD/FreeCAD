@@ -91,7 +91,8 @@ INSTALL(
         FemMaterial.py
         _FemMaterial.py
         _ViewProviderFemMaterial.py
-        _CommandMaterial.py
+        _CommandMaterialSolid.py
+        _CommandMaterialFluid.py
         _TaskPanelFemMaterial.py
         TaskPanelFemMaterial.ui
 
