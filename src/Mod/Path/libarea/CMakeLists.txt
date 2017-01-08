@@ -85,7 +85,6 @@ if(MSVC)
         optimized MSVCPRT.LIB
     )
     set(area_LIBS
-        area-native
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
@@ -95,7 +94,6 @@ elseif(MINGW)
         Rpcrt4.lib
     )
     set(area_LIBS
-        area-native
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
         ${area_native_LIBS}
@@ -106,14 +104,13 @@ else(MSVC)
     set(area_LIBS
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
-        area-native
     )
 endif(MSVC)
 
 target_link_libraries(area-native ${area_native_LIBS})
-target_link_libraries(area ${area_LIBS})
-
 SET_BIN_DIR(area-native area-native)
+
+target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
 SET_BIN_DIR(area area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
