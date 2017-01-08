@@ -302,6 +302,10 @@ static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = tr
 	{
 		pts_for_AddVertex.clear();
 		const CCurve& curve = *It;
+
+        if(!curve.m_vertices.size()) continue;
+        if(!curve.IsClosed()) AddVertex(curve.m_vertices.front(),NULL);
+
 		const CVertex* prev_vertex = NULL;
 		for(std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)
 		{
@@ -337,6 +341,10 @@ static void MakePoly(const CCurve& curve, TPolygon &p)
 {
 	pts_for_AddVertex.clear();
 	const CVertex* prev_vertex = NULL;
+
+    if(!curve.m_vertices.size()) return;
+    if(!curve.IsClosed()) AddVertex(curve.m_vertices.front(),NULL);
+
 	for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)
 	{
 		const CVertex& vertex = *It2;
