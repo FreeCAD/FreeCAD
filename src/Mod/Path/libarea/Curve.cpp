@@ -147,7 +147,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 	}
 	else
 	{
-		if(arc_found && might_be_an_arc.size()>=(std::size_t)CArea::m_min_arc_points)
+		if(arc_found)
 		{
             if(arc.AlmostALine())
 			{

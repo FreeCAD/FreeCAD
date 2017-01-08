@@ -80,10 +80,10 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 		else
 			Segments=(int)ceil(-phit/dphi);
 
-		if (Segments < 1)
-			Segments=1;
-		if (Segments > 100)
-			Segments=100;
+        if (Segments < CArea::m_min_arc_points)
+            Segments = CArea::m_min_arc_points;
+        if (Segments > CArea::m_max_arc_points)
+            Segments=CArea::m_max_arc_points;
 
 		dphi=phit/(Segments);
 
