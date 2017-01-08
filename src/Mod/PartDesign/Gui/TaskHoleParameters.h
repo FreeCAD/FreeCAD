@@ -28,6 +28,7 @@
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
 
+#include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
 
 class Ui_TaskHoleParameters;
@@ -44,23 +45,58 @@ namespace PartDesignGui {
 
 
 
-class TaskHoleParameters : public Gui::TaskView::TaskBox, public Gui::SelectionSingleton::ObserverType
+class TaskHoleParameters : public TaskSketchBasedParameters
 {
     Q_OBJECT
 
 public:
-    TaskHoleParameters(QWidget *parent = 0);
+    TaskHoleParameters(ViewProviderHole *HoleView, QWidget *parent = 0);
     ~TaskHoleParameters();
-    /// Observer message from the Selection
-    void OnChange(Gui::SelectionSingleton::SubjectType &rCaller,
-                  Gui::SelectionSingleton::MessageType Reason);
+
+    bool   getThreaded() const;
+    long   getThreadType() const;
+    long   getThreadSize() const;
+    long   getThreadClass() const;
+    long   getThreadFit() const;
+    double getDiameter() const;
+    bool   getThreadDirection() const;
+    long   getHoleCutType() const;
+    double getHoleCutDiameter() const;
+    double getHoleCutDepth() const;
+    double getHoleCutCountersinkAngle() const;
+    long   getType() const;
+    double getLength() const;
+    long   getDrillPoint() const;
+    double getDrillPointAngle() const;
+    bool   getTapered() const;
+    double getTaperedAngle() const;
 
 private Q_SLOTS:
+    void threadedChanged();
+    void threadTypeChanged(int index);
+    void threadSizeChanged(int index);
+    void threadClassChanged(int index);
+    void threadFitChanged(int index);
+    void threadDiameterChanged(double value);
+    void threadDirectionChanged();
+    void holeCutChanged(int index);
+    void holeCutDiameterChanged(double value);
+    void holeCutDepthChanged(double value);
+    void holeCutCountersinkAngleChanged(int value);
+    void depthChanged(int index);
+    void depthValueChanged(double value);
+    void drillPointChanged();
+    void drillPointAngledValueChanged(int value);
+    void taperedChanged();
+    void taperedAngleChanged(double value);
 
 protected:
     void changeEvent(QEvent *e);
+    void updateHoleCutParams();
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges &msg);
+    void updateUi();
 
 private:
     QWidget* proxy;
@@ -68,7 +104,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgHoleParameters : public Gui::TaskView::TaskDialog
+class TaskDlgHoleParameters : public TaskDlgSketchBasedParameters
 {
     Q_OBJECT
 
@@ -76,30 +112,12 @@ public:
     TaskDlgHoleParameters(ViewProviderHole *HoleView);
     ~TaskDlgHoleParameters();
 
-    ViewProviderHole* getHoleView() const
-    { return HoleView; }
+    ViewProviderHole* getHoleView() const { return static_cast<ViewProviderHole*>(vp); }
 
 public:
-    /// is called the TaskView when the dialog is opened
-    virtual void open();
-    /// is called by the framework if an button is clicked which has no accept or reject role
-    virtual void clicked(int);
-    /// is called by the framework if the dialog is accepted (Ok)
     virtual bool accept();
-    /// is called by the framework if the dialog is rejected (Cancel)
-    virtual bool reject();
-    /// is called by the framework if the user presses the help button 
-    virtual void helpRequested();
-    virtual bool isAllowedAlterDocument(void) const
-    { return false; }
-
-    /// returns for Close and Help button 
-    virtual QDialogButtonBox::StandardButtons getStandardButtons(void) const
-    { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
 
 protected:
-    ViewProviderHole   *HoleView;
-
     TaskHoleParameters  *parameter;
 };
 

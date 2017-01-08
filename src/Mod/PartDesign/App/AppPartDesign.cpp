@@ -47,7 +47,7 @@
 #include "FeaturePolarPattern.h"
 #include "FeatureScaled.h"
 #include "FeatureMultiTransform.h"
-//#include "FeatureHole.h"
+#include "FeatureHole.h"
 #include "DatumPlane.h"
 #include "DatumLine.h"
 #include "DatumPoint.h"
@@ -96,7 +96,7 @@ PyMOD_INIT_FUNC(_PartDesign)
     PartDesign::PolarPattern       ::init();
     PartDesign::Scaled             ::init();
     PartDesign::MultiTransform     ::init();
-    //PartDesign::Hole               ::init();
+    PartDesign::Hole               ::init();
     PartDesign::Body               ::init();
     PartDesign::Pad                ::init();
     PartDesign::Pocket             ::init();

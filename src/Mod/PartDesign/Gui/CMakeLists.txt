@@ -40,7 +40,7 @@ set(PartDesignGui_MOC_HDRS
     TaskDraftParameters.h
     TaskThicknessParameters.h
     TaskDressUpParameters.h
-    #TaskHoleParameters.h
+    TaskHoleParameters.h
     TaskRevolutionParameters.h
     TaskTransformedMessages.h
     TaskTransformedParameters.h
@@ -74,7 +74,7 @@ set(PartDesignGui_UIC_SRCS
     TaskDraftParameters.ui
     TaskThicknessParameters.ui
     TaskBooleanParameters.ui
-    #TaskHoleParameters.ui
+    TaskHoleParameters.ui
     TaskRevolutionParameters.ui
     TaskTransformedMessages.ui
     TaskMirroredParameters.ui
@@ -106,8 +106,8 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderSketchBased.h
     ViewProviderPad.cpp
     ViewProviderPad.h
-    #ViewProviderHole.cpp
-    #ViewProviderHole.h
+    ViewProviderHole.cpp
+    ViewProviderHole.h
     ViewProviderPocket.cpp
     ViewProviderPocket.h
     ViewProviderChamfer.cpp
@@ -214,9 +214,9 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskMultiTransformParameters.ui
     TaskMultiTransformParameters.cpp
     TaskMultiTransformParameters.h
-    #TaskHoleParameters.ui
-    #TaskHoleParameters.cpp
-    #TaskHoleParameters.h
+    TaskHoleParameters.ui
+    TaskHoleParameters.cpp
+    TaskHoleParameters.h
     TaskDatumParameters.cpp
     TaskDatumParameters.h
     TaskShapeBinder.ui

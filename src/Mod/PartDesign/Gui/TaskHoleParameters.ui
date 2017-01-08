@@ -1,79 +1,479 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PartDesignGui::TaskHoleParameters</class>
- <widget class="QWidget" name="PartDesignGui::TaskHoleParameters">
+ <class>TaskHoleParameters</class>
+ <widget class="QWidget" name="TaskHoleParameters">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>137</width>
-    <height>116</height>
+    <width>374</width>
+    <height>651</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Task Hole Parameters</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="textLabel1">
-       <property name="text">
-        <string>Type:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QComboBox" name="changeMode">
-       <item>
-        <property name="text">
-         <string>Dimension</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Up to last</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Up to first</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-    </layout>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="7" column="0" colspan="2">
+    <widget class="QLabel" name="label_6">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Depth</string>
+     </property>
+    </widget>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+   <item row="7" column="2" colspan="2">
+    <widget class="QComboBox" name="depth">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Size:</string>
-       </property>
-      </widget>
+      <property name="text">
+       <string>Dimension</string>
+      </property>
      </item>
      <item>
-      <widget class="Gui::QuantitySpinBox" name="doubleSpinBox">
-       <property name="unit" stdset="0">
-        <string notr="true">mm</string>
-       </property>
-       <property name="minimum">
-        <double>0.000000000000000</double>
-       </property>
-      </widget>
+      <property name="text">
+       <string>Up to last</string>
+      </property>
      </item>
-    </layout>
+     <item>
+      <property name="text">
+       <string>Up to first</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="7" column="6">
+    <widget class="QDoubleSpinBox" name="depthValue">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="prefix">
+      <string/>
+     </property>
+     <property name="suffix">
+      <string> mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="0" colspan="2">
+    <widget class="QCheckBox" name="tapered">
+     <property name="text">
+      <string>Tapered</string>
+     </property>
+    </widget>
+   </item>
+   <item row="16" column="2" colspan="2">
+    <widget class="QDoubleSpinBox" name="taperedAngle">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="suffix">
+      <string> deg</string>
+     </property>
+     <property name="minimum">
+      <double>0.000000000000000</double>
+     </property>
+     <property name="maximum">
+      <double>179.900000000000006</double>
+     </property>
+     <property name="value">
+      <double>90.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="2" colspan="5">
+    <widget class="QWidget" name="widget_2" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="drillPointFlat">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="text">
+         <string>Flat</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QRadioButton" name="drillPointAngled">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Angled</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="drillPointAngledValue">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="suffix">
+           <string> deg</string>
+          </property>
+          <property name="maximum">
+           <number>179</number>
+          </property>
+          <property name="value">
+           <number>118</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="2" colspan="5">
+    <widget class="QComboBox" name="threadSize"/>
+   </item>
+   <item row="2" column="2">
+    <widget class="QCheckBox" name="threaded">
+     <property name="text">
+      <string>Threaded</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <widget class="QLabel" name="label_2">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Profile</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0" colspan="2">
+    <widget class="QLabel" name="label_5">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Class</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="3" colspan="2">
+    <widget class="QLabel" name="label_7">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Diameter</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
+    <widget class="QLabel" name="label_3">
+     <property name="text">
+      <string>Fit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Size</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="2" colspan="5">
+    <widget class="QComboBox" name="threadType"/>
+   </item>
+   <item row="3" column="0" colspan="2">
+    <widget class="QLabel" name="label_8">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Direction</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="2">
+    <widget class="QComboBox" name="threadClass"/>
+   </item>
+   <item row="6" column="5" colspan="2">
+    <widget class="QDoubleSpinBox" name="threadDiameter">
+     <property name="suffix">
+      <string> mm</string>
+     </property>
+     <property name="maximum">
+      <double>100.000000000000000</double>
+     </property>
+     <property name="value">
+      <double>3.000000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="2" colspan="5">
+    <widget class="QComboBox" name="threadFit">
+     <item>
+      <property name="text">
+       <string>Standard fit</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Close fit</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="2" colspan="5">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="margin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QRadioButton" name="directionLeftHand">
+        <property name="text">
+         <string>Left hand</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="directionRightHand">
+        <property name="text">
+         <string>Right hand</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="6">
+    <widget class="QLabel" name="label_13">
+     <property name="text">
+      <string>&lt;b&gt;Threading and size&lt;/b&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="4" colspan="3">
+    <widget class="QSpinBox" name="holeCutCountersinkAngle">
+     <property name="suffix">
+      <string> deg</string>
+     </property>
+     <property name="maximum">
+      <number>179</number>
+     </property>
+     <property name="value">
+      <number>90</number>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="2" colspan="2">
+    <widget class="QLabel" name="label_12">
+     <property name="text">
+      <string>Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="2" colspan="2">
+    <widget class="QLabel" name="label_10">
+     <property name="text">
+      <string>Countersink angle</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="4" colspan="3">
+    <widget class="QDoubleSpinBox" name="holeCutDiameter">
+     <property name="suffix">
+      <string> mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="4" colspan="3">
+    <widget class="QDoubleSpinBox" name="holeCutDepth">
+     <property name="suffix">
+      <string> mm</string>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="2" colspan="2">
+    <widget class="QLabel" name="label_11">
+     <property name="text">
+      <string>Diameter</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="2" colspan="5">
+    <widget class="QComboBox" name="holeCutType"/>
+   </item>
+   <item row="8" column="0" colspan="2">
+    <widget class="QLabel" name="label_14">
+     <property name="text">
+      <string>&lt;b&gt;Hole cut&lt;/b&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0" colspan="2">
+    <widget class="QLabel" name="label_15">
+     <property name="text">
+      <string>Type</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="15" column="0" colspan="2">
+    <widget class="QLabel" name="label_16">
+     <property name="text">
+      <string>&lt;b&gt;Misc&lt;/b&gt;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="label">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="13" column="0">
+    <widget class="QLabel" name="label_9">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>&lt;b&gt;Drill point&lt;/b&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item row="17" column="2">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
+  <zorder>label_6</zorder>
+  <zorder>depth</zorder>
+  <zorder>depthValue</zorder>
+  <zorder>tapered</zorder>
+  <zorder>taperedAngle</zorder>
+  <zorder>widget_2</zorder>
+  <zorder>threadSize</zorder>
+  <zorder>threaded</zorder>
+  <zorder>label_2</zorder>
+  <zorder>label_5</zorder>
+  <zorder>label_7</zorder>
+  <zorder>label_3</zorder>
+  <zorder>label_4</zorder>
+  <zorder>threadType</zorder>
+  <zorder>label_8</zorder>
+  <zorder>threadClass</zorder>
+  <zorder>threadDiameter</zorder>
+  <zorder>threadFit</zorder>
+  <zorder>widget</zorder>
+  <zorder>label_13</zorder>
+  <zorder>holeCutCountersinkAngle</zorder>
+  <zorder>label_12</zorder>
+  <zorder>label_10</zorder>
+  <zorder>holeCutDiameter</zorder>
+  <zorder>holeCutDepth</zorder>
+  <zorder>label_11</zorder>
+  <zorder>holeCutType</zorder>
+  <zorder>label_14</zorder>
+  <zorder>label_15</zorder>
+  <zorder>label_16</zorder>
+  <zorder>label</zorder>
+  <zorder>label_9</zorder>
+  <zorder>verticalSpacer</zorder>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>Gui::QuantitySpinBox</class>
-   <extends>QWidget</extends>
-   <header>Gui/QuantitySpinBox.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -27,6 +27,8 @@
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
 
+class Property;
+
 namespace PartDesign
 {
 
@@ -37,26 +39,90 @@ class PartDesignExport Hole : public ProfileBased
 public:
     Hole();
 
-    App::PropertyEnumeration    Type;
-    App::PropertyEnumeration    HoleType;
+    enum ThreadTypeEnum {
+        None,
+        ISOMetricProfile,
+        ISOMetricFineProfile,
+        UNC,
+        UNF,
+        UNEF
+    };
+
+    App::PropertyBool           Threaded;
     App::PropertyEnumeration    ThreadType;
+    App::PropertyEnumeration    ThreadSize;
+    App::PropertyEnumeration    ThreadClass;
+    App::PropertyEnumeration    ThreadFit;
+    App::PropertyFloat          Diameter;
+    App::PropertyBool           ThreadDirection;
+    App::PropertyEnumeration    HoleCutType;
+    App::PropertyFloat          HoleCutDiameter;
+    App::PropertyFloat          HoleCutDepth;
+    App::PropertyFloat          HoleCutCountersinkAngle;
+    App::PropertyEnumeration    Type;
     App::PropertyLength         Length;
-    App::PropertyFloat          ThreadSize;
+    App::PropertyEnumeration    DrillPoint;
+    App::PropertyFloat          DrillPointAngle;
+    App::PropertyBool           Tapered;
+    App::PropertyFloat          TaperedAngle;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
     App::DocumentObjectExecReturn *execute(void);
-    //short mustExecute() const;
+
     /// returns the type name of the view provider
     const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderHole";
     }
     //@}
+    short mustExecute() const;
+
+    typedef struct {
+        char * designation;
+        double diameter;
+        double pitch;
+    } ThreadDescription;
+
+    static const ThreadDescription threadDescription[][171];
+
+protected:
+    void onChanged(const App::Property* prop);
 private:
     static const char* TypeEnums[];
-    static const char* HoleTypeEnums[];
-    static const char* ThreadEnums[];
+    static const char* ThreadTypeEnums[];
+    static const char* ThreadFitEnums[];
+    static const char* DrillPointEnums[];
+
+    /* "None" thread profile */
+    static const char* HoleCutType_None_Enums[];
+    static const char* ThreadSize_None_Enums[];
+    static const char* ThreadClass_None_Enums[];
+
+    /* ISO metric coarse profile */
+    static const char* HoleCutType_ISOmetric_Enums[];
+    static const char* ThreadSize_ISOmetric_Enums[];
+    static const char* ThreadClass_ISOmetric_Enums[];
+
+    /* ISO metric fine profile */
+    static const char* HoleCutType_ISOmetricfine_Enums[];
+    static const char* ThreadSize_ISOmetricfine_Enums[];
+    static const char* ThreadClass_ISOmetricfine_Enums[];
+
+    /* UNC profile */
+    static const char* HoleCutType_UNC_Enums[];
+    static const char* ThreadSize_UNC_Enums[];
+    static const char* ThreadClass_UNC_Enums[];
+
+    /* UNF profile */
+    static const char* HoleCutType_UNF_Enums[];
+    static const char* ThreadSize_UNF_Enums[];
+    static const char* ThreadClass_UNF_Enums[];
+
+    /* UNEF profile */
+    static const char* HoleCutType_UNEF_Enums[];
+    static const char* ThreadSize_UNEF_Enums[];
+    static const char* ThreadClass_UNEF_Enums[];
 
 };
 
