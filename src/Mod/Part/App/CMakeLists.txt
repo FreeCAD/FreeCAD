@@ -361,6 +361,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    LibArea.cpp
+    LibArea.h
 )
 
 SET(Part_Scripts

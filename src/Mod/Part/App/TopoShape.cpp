@@ -165,15 +165,12 @@
 # include <APIHeaderSection_MakeHeader.hxx>
 # include <ShapeAnalysis_FreeBoundsProperties.hxx>
 # include <ShapeAnalysis_FreeBoundData.hxx>
-# include <GCPnts_UniformDeflection.hxx>
 
 #include <Base/Builder3D.h>
 #include <Base/FileInfo.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <Base/Console.h>
-
-#include <Mod/Path/libarea/Area.h>
 
 #include "TopoShape.h"
 #include "CrossSection.h"
@@ -185,6 +182,7 @@
 #include "Tools.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
+#include "LibArea.h"
 
 using namespace Part;
 
@@ -2083,229 +2081,6 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     return outputShape;
 }
 
-class Libarea {
-    CArea myArea;
-    gp_Pln myPlane;
-    gp_Trsf myMat;
-    bool myHaveFace;
-
-public:
-    Libarea(const gp_Pln& plane)
-        :myPlane(plane)
-        ,myHaveFace(false)
-    {
-        myMat.SetTransformation(plane.Position());
-    }
-
-    void Add(const TopoDS_Shape &shape, double deflection=0.01) {
-        if (shape.ShapeType() == TopAbs_WIRE){
-            Add(TopoDS::Wire(shape),deflection);
-            return;
-        }
-        TopExp_Explorer it;
-        for (it.Init(shape, TopAbs_FACE); it.More(); it.Next())
-            Add(TopoDS::Face(it.Current()),deflection);
-    }
-
-    void Add(const TopoDS_Face &face, double deflection=0.01) {
-        TopExp_Explorer it;
-        myHaveFace = true;
-        Libarea area(myPlane);
-        for (it.Init(face, TopAbs_WIRE); it.More(); it.Next())
-            area.Add(TopoDS::Wire(it.Current()),deflection);
-        myArea.Union(area.myArea);
-    }
-
-    void Add(const TopoDS_Wire& wire, double deflection=0.01) {
-        CCurve ccurve;
-        BRepTools_WireExplorer xp(TopoDS::Wire(
-                    wire.Moved(TopLoc_Location(myMat))));
-
-        gp_Pnt p = BRep_Tool::Pnt(xp.CurrentVertex());
-        ccurve.append(CVertex(Point(p.X(),p.Y())));
-
-        for (;xp.More();xp.Next()) {
-            BRepAdaptor_Curve curve(xp.Current());
-            bool reversed = (xp.Current().Orientation()==TopAbs_REVERSED);
-
-            p = curve.Value(reversed?curve.FirstParameter():curve.LastParameter());
-
-            switch (curve.GetType()) {
-            case GeomAbs_Line: {
-                ccurve.append(CVertex(Point(p.X(),p.Y())));
-                break;
-            } case GeomAbs_Circle:{
-                double first = curve.FirstParameter();
-                double last = curve.LastParameter();
-                gp_Circ circle = curve.Circle();
-                gp_Ax1 axis = circle.Axis();
-                int dir = axis.Direction().Z()<0?-1:1;
-                if(reversed) dir = -dir;
-                gp_Pnt loc = axis.Location();
-                if(fabs(first-last)>M_PI) {
-                    // Split arc(circle) larger than half circle. This is
-                    // translated from PathUtil code. Not sure why it is
-                    // needed. 
-                    gp_Pnt mid = curve.Value((last-first)*0.5+first);
-                    ccurve.append(CVertex(dir,Point(mid.X(),mid.Y()),
-                                Point(loc.X(),loc.Y())));
-                }
-                ccurve.append(CVertex(dir,Point(p.X(),p.Y()),
-                            Point(loc.X(),loc.Y())));
-                break;
-            } default: {
-                // Discretize all other type of curves
-                GCPnts_UniformDeflection discretizer(curve, deflection, 
-                        curve.FirstParameter(), curve.LastParameter());
-                if (discretizer.IsDone () && discretizer.NbPoints () > 0) {
-                    Py::List points;
-                    int nbPoints = discretizer.NbPoints ();
-                    for (int i=1; i<=nbPoints; i++) {
-                        gp_Pnt pt = discretizer.Value (i);
-                        ccurve.append(CVertex(Point(pt.X(),pt.Y())));
-                    }
-                }else
-                    Standard_Failure::Raise("Curve discretization failed");
-            }}
-        }
-        if(BRep_Tool::IsClosed(wire) && !ccurve.IsClosed()) {
-            cout << "warning: ccurve not closed" << endl;
-            ccurve.append(ccurve.m_vertices.front());
-        }
-        myArea.append(ccurve);
-    }
-
-    TopoDS_Shape Offset(double offset, 
-            short algo = 1, 
-            GeomAbs_JoinType join = GeomAbs_Arc,
-            bool allowOpenResult = true,
-            bool fill = false)
-    {
-        if(fabs(offset)<Precision::Confusion()) 
-            return this->ToShape(myArea.m_curves,fill);
-
-        // Copy so that the underlying shape is intact, and new offset can be
-        // done by repeatedly calling this function.
-        CArea area(myArea);
-
-        ClipperLib::JoinType joinType;
-        ClipperLib::EndType endType;
-        endType=ClipperLib::etOpenSquare;
-        if(join == GeomAbs_Arc){
-            joinType = ClipperLib::jtRound;
-            endType = ClipperLib::etOpenRound;
-        }else if(join == GeomAbs_Intersection)
-            joinType = ClipperLib::jtMiter;
-        else
-            joinType = ClipperLib::jtSquare;
-
-        if(!allowOpenResult)
-            endType = ClipperLib::etClosedLine;
-
-        bool fit_arcs = CArea::m_fit_arcs;
-        CArea::m_fit_arcs = (algo&1)?false:true;
-        algo >>= 1;
-        if(algo==0){
-            // libarea somehow fails offset without Reorder, but ClipperOffset
-            // works okay. Don't know why
-            area.Reorder();
-            area.Offset(-offset);
-        }else if(algo==1)
-            area.OffsetWithClipper(offset,joinType,endType);
-        else{
-            CArea::m_fit_arcs = fit_arcs;
-            throw Base::ValueError("makeOffset2D: unknown algo");
-        }
-        CArea::m_fit_arcs = fit_arcs;
-        return this->ToShape(area.m_curves,fill);
-    }
-
-    TopoDS_Shape ToShape(const std::list<CCurve> &curves,bool fill) {
-        BRep_Builder builder;
-        TopoDS_Compound compound;
-        builder.MakeCompound(compound);
-        TopLoc_Location loc(myMat.Inverted());
-
-        for(const CCurve &c : curves) {
-            BRepBuilderAPI_MakeWire mkWire;
-            gp_Pnt pstart,pt;
-            bool first = true;
-            for(const CVertex &v : c.m_vertices){
-                if(first){
-                    first = false;
-                    pstart = pt = gp_Pnt(v.m_p.x,v.m_p.y,0);
-                    continue;
-                }
-                gp_Pnt pnext(v.m_p.x,v.m_p.y,0);
-                if(v.m_type == 0)
-                    mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pnext).Edge());
-                else {
-                    gp_Pnt center(v.m_c.x,v.m_c.y,0);
-                    gp_Ax2 axis(center, gp_Dir(0,0,v.m_type));
-                    mkWire.Add(BRepBuilderAPI_MakeEdge(
-                        gp_Circ(axis,center.Distance(pnext)),pt,pnext).Edge());
-                }
-                pt = pnext;
-            }
-            if(c.IsClosed()){
-                if(!BRep_Tool::IsClosed(mkWire.Wire())){
-                    // This should never happen after changing libarea's
-                    // Point::tolerance to be the same as Precision::Confusion().  
-                    // Just leave it here in case.
-                    BRepAdaptor_Curve curve(mkWire.Edge());
-                    gp_Pnt p1(curve.Value(curve.FirstParameter()));
-                    gp_Pnt p2(curve.Value(curve.LastParameter()));
-                    cout << "warning: patch open wire" << 
-                        c.m_vertices.back().m_type << endl << 
-                        '(' << p1.X() << ',' << p1.Y() << ')' << endl << 
-                        '(' << p2.X() << ',' << p2.Y() << ')' << endl << 
-                        '(' << pt.X() << ',' << pt.Y() << ')' << endl <<
-                        '(' << pstart.X() << ',' <<pstart.Y() <<')' <<endl;
-                    mkWire.Add(BRepBuilderAPI_MakeEdge(pt,pstart).Edge());
-                }
-            }
-
-            builder.Add(compound,mkWire.Wire().Moved(loc));
-        }
-        
-        if(myHaveFace || fill) {
-            try{
-                FaceMakerBullseye mkFace;
-                mkFace.setPlane(myPlane);
-                TopExp_Explorer it;
-                for (it.Init(compound, TopAbs_WIRE); it.More(); it.Next())
-                    mkFace.addWire(TopoDS::Wire(it.Current()));
-                mkFace.Build();
-                if (mkFace.Shape().IsNull())
-                    Base::Console().Warning(
-                            "FaceMakerBullseye returns null shape");
-                else
-                    return mkFace.Shape();
-            }catch (Base::Exception &e){
-                Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
-            }
-        }
-        return compound;
-    }
-
-    static TopoDS_Shape makeOffset(const TopoDS_Shape &shape, 
-                                    double offset, 
-                                    short joinType, 
-                                    bool fill, 
-                                    bool allowOpenResult, 
-                                    int algo)
-    {
-        BRepLib_FindSurface planefinder(shape, -1, Standard_True);
-        if (!planefinder.Found())
-            throw Base::Exception(
-                    "makeOffset2D: wires are nonplanar or noncoplanar");
-        Libarea area(GeomAdaptor_Surface(planefinder.Surface()).Plane());
-        area.Add(shape);
-        return area.Offset(
-                offset,algo,GeomAbs_JoinType(joinType),allowOpenResult,fill);
-    }
-};
-
 TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, 
         bool allowOpenResult, bool intersection, int algo) const
 {
@@ -2431,7 +2206,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
                 for(TopoDS_Wire &w : sourceWires)
                     area.Add(w);
                 offsetShape = area.Offset(
-                        offset,algo-1,GeomAbs_JoinType(joinType),allowOpenResult);
+                        offset,algo-1,GeomAbs_JoinType(joinType),allowOpenResult,fill);
             }else{
                 try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)

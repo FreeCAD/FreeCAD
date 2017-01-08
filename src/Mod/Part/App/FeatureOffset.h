@@ -80,6 +80,9 @@ public:
         return "PartGui::ViewProviderOffset2D";
     }
     //@}
+
+private:
+    static const char* AlgoEnums[];
 };
 
 }

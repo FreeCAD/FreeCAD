@@ -32,8 +32,7 @@ using namespace Part;
 
 const char* Part::Offset::ModeEnums[]= {"Skin","Pipe", "RectoVerso",NULL};
 const char* Part::Offset::JoinEnums[]= {"Arc","Tangent", "Intersection",NULL};
-const char* Part::Offset::AlgoEnums[]= {"OCC","libarea", "libareaNoArcFit",
-    "ClipperOffset","ClipperNoArcFit",NULL};
+const char* Part::Offset::AlgoEnums[]= {"None", NULL};
 
 
 PROPERTY_SOURCE(Part::Offset, Part::Feature)
@@ -46,13 +45,12 @@ Offset::Offset()
     Mode.setEnums(ModeEnums);
     ADD_PROPERTY_TYPE(Join,(long(0)),"Offset",App::Prop_None,"Join type");
     Join.setEnums(JoinEnums);
-    ADD_PROPERTY_TYPE(Algo,(long(3)),"Offset",App::Prop_None,"Algorithm");
+    ADD_PROPERTY_TYPE(Algo,(long(0)),"Offset",App::Prop_None,"Algorithm");
     Algo.setEnums(AlgoEnums);
+    this->Algo.setStatus(App::Property::Status::Hidden, true);
     ADD_PROPERTY_TYPE(Intersection,(false),"Offset",App::Prop_None,"Intersection");
     ADD_PROPERTY_TYPE(SelfIntersection,(false),"Offset",App::Prop_None,"Self Intersection");
     ADD_PROPERTY_TYPE(Fill,(false),"Offset",App::Prop_None,"Fill offset");
-
-    Algo.setStatus(App::Property::Status::Hidden, true);
 }
 
 Offset::~Offset()
@@ -102,15 +100,20 @@ App::DocumentObjectExecReturn *Offset::execute(void)
 
 //-------------------------------------------------------------------------------------------------------
 
+const char* Part::Offset2D::AlgoEnums[]= {"OCC","libarea", "libareaNoArcFit",
+    "ClipperOffset","ClipperNoArcFit",NULL};
 
 PROPERTY_SOURCE(Part::Offset2D, Part::Offset)
 
 Offset2D::Offset2D()
 {
+    this->Algo.setValue(3);
+    this->Algo.setEnums(AlgoEnums);
     this->Algo.setStatus(App::Property::Status::Hidden, false);
+    this->Fill.setValue(true);
     this->Intersection.setValue(true);
     this->SelfIntersection.setStatus(App::Property::Status::Hidden, true);
-    this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
+    // this->Mode.setValue(1); //switch to Pipe mode by default, because skin mode does not function properly on closed profiles.
 }
 
 Offset2D::~Offset2D()
