@@ -270,8 +270,38 @@
           </item>
           <item>
            <widget class="QLabel" name="user_def_text">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>17</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>16777215</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="lineWidth">
+             <number>1</number>
+            </property>
             <property name="text">
-             <string>Available: Disp(x,y,z) Principal stresses (P1,P2,P3)</string>
+             <string>Available: Disp(x,y,z) Principal stresses(P1,P2,P3) Stress(sx,sy,sz) Strain (ex,ey,ez)</string>
+            </property>
+            <property name="scaledContents">
+             <bool>false</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
+            </property>
+            <property name="indent">
+             <number>-1</number>
+            </property>
+            <property name="textInteractionFlags">
+             <set>Qt::NoTextInteraction</set>
             </property>
            </widget>
           </item>

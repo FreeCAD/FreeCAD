@@ -49,8 +49,12 @@ public:
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
     App::PropertyVectorList DisplacementVectors;
-    /// Lengths of displacement vestors of analysis
+    /// Lengths of displacement vectors of analysis
     App::PropertyFloatList DisplacementLengths;
+    /// Stress vectors of analysis
+    App::PropertyVectorList StressVectors;
+    /// Strain vectors of analysis
+    App::PropertyVectorList StrainVectors;
     /// Von Mises Stress values of analysis
     App::PropertyFloatList StressValues;
     /// First principal Stress values of analysis

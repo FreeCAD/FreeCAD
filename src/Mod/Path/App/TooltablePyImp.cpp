@@ -121,12 +121,12 @@ int ToolPy::PyInit(PyObject* args, PyObject* kwd)
     else 
         getToolPtr()->Material = Tool::MATUNDEFINED;
 
-    getToolPtr()->Diameter = PyFloat_AsDouble(dia);
-    getToolPtr()->LengthOffset = PyFloat_AsDouble(len);
-    getToolPtr()->FlatRadius = PyFloat_AsDouble(fla);
-    getToolPtr()->CornerRadius = PyFloat_AsDouble(cor);
-    getToolPtr()->CuttingEdgeAngle = PyFloat_AsDouble(ang);
-    getToolPtr()->CuttingEdgeHeight = PyFloat_AsDouble(hei);
+    getToolPtr()->Diameter          = dia ? PyFloat_AsDouble(dia) : 0.0;
+    getToolPtr()->LengthOffset      = len ? PyFloat_AsDouble(len) : 0.0;
+    getToolPtr()->FlatRadius        = fla ? PyFloat_AsDouble(fla) : 0.0;
+    getToolPtr()->CornerRadius      = cor ? PyFloat_AsDouble(cor) : 0.0;
+    getToolPtr()->CuttingEdgeAngle  = ang ? PyFloat_AsDouble(ang) : 0.0;
+    getToolPtr()->CuttingEdgeHeight = hei ? PyFloat_AsDouble(hei) : 0.0;
 
     return 0;
 }

@@ -153,7 +153,7 @@ void Wizard::setCurrentIndex(int index)
         textLabel->setText(stackWidget->currentWidget()->windowTitle());
         _backButton->setEnabled(index > 0);
         _nextButton->setEnabled(index < count()-1);
-        emit currentIndexChanged(index);
+        Q_EMIT currentIndexChanged(index);
     }
 }
 
@@ -171,7 +171,7 @@ void Wizard::setPageTitle(QString const &newTitle)
 {
     stackWidget->currentWidget()->setWindowTitle(newTitle);
     textLabel->setText(newTitle);
-    emit pageTitleChanged(newTitle);
+    Q_EMIT pageTitleChanged(newTitle);
 }
 
 WizardExtension::WizardExtension(Wizard *widget, QObject *parent)

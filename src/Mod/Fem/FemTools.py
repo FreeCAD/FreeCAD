@@ -378,9 +378,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
         if self.analysis_type == "static":
             if not (self.fixed_constraints or self.displacement_constraints):
                 message += "Static analysis: Neither constraint fixed nor constraint displacement defined.\n"
-        if self.analysis_type == "static":
-            if not (self.force_constraints or self.pressure_constraints or self.selfweight_constraints):
-                message += "Static analysis: Neither constraint force nor constraint pressure or a constraint selfweight defined.\n"
+        # no check in the regard of loads (constraint force, pressure, self weight) is done because an analysis without loads at all is an valid analysis too
         if self.analysis_type == "thermomech":
             if not self.initialtemperature_constraints:
                 message += "Thermomechanical analysis: No initial temperature defined.\n"

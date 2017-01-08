@@ -776,6 +776,8 @@ non-parametric curve"""
             warn('polygon fallback on %s' %spline)
             return drawSplineIterpolation(controlpoints,closed=closed,\
                 forceShape=forceShape,alwaysDiscretize=True)
+    if fitpoints and not(controlpoints):
+        return drawSplineIterpolation(fitpoints,closed=closed,forceShape=forceShape)
     try:
         bspline=Part.BSplineCurve()
         bspline.buildFromPolesMultsKnots(poles=controlpoints,mults=multvector,\
