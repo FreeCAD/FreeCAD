@@ -2256,12 +2256,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
 
         std::list<TopoDS_Wire> wiresForMakingFaces;
         if (!fill){
-            if (haveFaces){
-                wiresForMakingFaces = offsetWires;
-            } else {
+            // if (haveFaces){
+            //     wiresForMakingFaces = offsetWires;
+            // } else
                 for(TopoDS_Wire &w : offsetWires)
                     shapesToReturn.push_back(w);
-            }
         } else {
             //fill offset
             if (fabs(offset) < Precision::Confusion())
