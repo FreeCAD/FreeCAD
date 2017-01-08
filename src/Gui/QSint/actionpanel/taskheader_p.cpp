@@ -195,7 +195,7 @@ void TaskHeader::leaveEvent ( QEvent * /*event*/ )
 void TaskHeader::fold()
 {
   if (myExpandable) {
-    emit activated();
+    Q_EMIT activated();
     // Toggling the 'm_fold' member here may lead to inconsistencies with its ActionGroup.
     // Thus, the method setFold() was added and called from ActionGroup when required.
 #if 0
@@ -254,7 +254,7 @@ void TaskHeader::changeIcons()
 void TaskHeader::mouseReleaseEvent ( QMouseEvent * event )
 {
   if (event->button() == Qt::LeftButton) {
-    emit activated();
+    Q_EMIT activated();
   }
 }
 
