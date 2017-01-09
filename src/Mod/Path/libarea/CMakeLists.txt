@@ -123,8 +123,19 @@ execute_process(
 
 message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE_INSTALL_LIBDIR})
 
+if(WIN32)
+    INSTALL(TARGETS area-native
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+else(WIN32)
+    INSTALL(TARGETS area-native
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif(WIN32)
+
 # this installs the python library
 install(
-    TARGETS area-native area
+    TARGETS area
     DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
