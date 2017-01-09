@@ -2205,8 +2205,8 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
                 Libarea area(workingPlane);
                 for(TopoDS_Wire &w : sourceWires)
                     area.Add(w);
-                offsetShape = area.Offset(
-                        offset,algo-1,GeomAbs_JoinType(joinType),allowOpenResult,fill);
+                return area.Offset(offset,algo-1,
+                        GeomAbs_JoinType(joinType),allowOpenResult,fill);
             }else{
                 try {
 #if defined(__GNUC__) && defined (FC_OS_LINUX)
@@ -2256,12 +2256,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill,
 
         std::list<TopoDS_Wire> wiresForMakingFaces;
         if (!fill){
-            // if (haveFaces){
-            //     wiresForMakingFaces = offsetWires;
-            // } else
-                for(TopoDS_Wire &w : offsetWires)
-                    shapesToReturn.push_back(w);
-        } else {
+            for(TopoDS_Wire &w : offsetWires)
+                shapesToReturn.push_back(w);
+        } else if(haveFaces){
+            wiresForMakingFaces = offsetWires;
+        }else{
             //fill offset
             if (fabs(offset) < Precision::Confusion())
                 throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
