@@ -540,7 +540,6 @@ int DrawViewDimension::getRefType2(const std::string g1, const std::string g2)
 //! validate 2D references - only checks if they exist, not if they are the right type
 bool DrawViewDimension::checkReferences2D() const
 {
-    Base::Console().Message("TRACE - DVD::checkReferences2D() - %s\n",getNameInDocument());
     bool result = true;
     //const std::vector<App::DocumentObject*> &objects = References2D.getValues();
     const std::vector<std::string> &subElements      = References2D.getSubValues();
@@ -550,20 +549,17 @@ bool DrawViewDimension::checkReferences2D() const
         if (DrawUtil::getGeomTypeFromName(s) == "Edge") {
             TechDrawGeometry::BaseGeom* geom = getViewPart()->getProjEdgeByIndex(idx);
             if (geom == nullptr) {
-                Base::Console().Message("TRACE - DVD::checkRef2D - %s is invalid\n",s.c_str());
                 result = false;
                 break;
             }
         } else if (DrawUtil::getGeomTypeFromName(s) == "Vertex") {
             TechDrawGeometry::Vertex* v = getViewPart()->getProjVertexByIndex(idx);
             if (v == nullptr) {
-                Base::Console().Message("TRACE - DVD::checkRef2D - %s is invalid\n",s.c_str());
                 result = false;
                 break;
             }
         }
     }
-    Base::Console().Message("TRACE - DVD::checkReferences2D returns %d\n",result);
     return result;
 }
 
