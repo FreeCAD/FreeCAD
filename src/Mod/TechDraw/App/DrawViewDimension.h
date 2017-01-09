@@ -94,11 +94,12 @@ public:
     int getRefType() const;                                                     //Vertex-Vertex, Edge, Edge-Edge
     void setAll3DMeasurement();
     void clear3DMeasurements(void);
+    bool checkReferences2D(void) const;
 
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
-    int getIndexFromName(std::string geomName) const;
+//    int getIndexFromName(std::string geomName) const;   //obs? replaced by DrawUtil??
     bool showUnits() const;
 
 protected:
