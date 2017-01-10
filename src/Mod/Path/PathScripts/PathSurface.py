@@ -410,7 +410,7 @@ class CommandPathSurfacing:
         FreeCADGui.doCommand('obj.StartDepth = ' + str(ztop))
         FreeCADGui.doCommand('obj.SafeHeight = ' + str(ztop + 2))
         FreeCADGui.doCommand('obj.StepDown = ' + str((ztop - zbottom) / 8))
-        FreeCADGui.doCommand('obj.SampleInterval = 0.4')
+        FreeCADGui.doCommand('obj.SampleInterval = 1.4')
 
         FreeCADGui.doCommand('obj.FinalDepth=' + str(zbottom))
         FreeCADGui.doCommand('PathScripts.PathUtils.addToJob(obj)')

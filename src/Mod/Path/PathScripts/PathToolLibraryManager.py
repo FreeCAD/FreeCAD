@@ -218,7 +218,7 @@ class ToolLibraryManager():
                 itemName =  QtGui.QStandardItem(t.Name)
                 itemToolType =  QtGui.QStandardItem(t.ToolType)
                 itemMaterial =  QtGui.QStandardItem(t.Material)
-                itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))   
+                itemDiameter =  QtGui.QStandardItem(unitconv(t.Diameter))
                 itemLengthOffset =  QtGui.QStandardItem(unitconv(t.LengthOffset))
                 itemFlatRadius =  QtGui.QStandardItem(unitconv(t.FlatRadius))
                 itmCornerRadius =  QtGui.QStandardItem(unitconv(t.CornerRadius))
@@ -411,14 +411,14 @@ class EditorPanel():
         r = editform.exec_()
         if r:
             if editform.NameField.text():
-                t.Name = str(editform.NameField.text())
+                t.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
             t.ToolType = self.getType(editform.TypeField.currentIndex())
             t.Material = self.getMaterial(editform.MaterialField.currentIndex())
             t.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
             t.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
             t.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
             t.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            t.CuttingEdgeAngle = editform.CuttingEdgeAngleField.value()
+            t.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
             t.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
 
             listname = self.form.listView.selectedIndexes()[0].data()
@@ -480,30 +480,31 @@ class EditorPanel():
         editform.NameField.setText(tool.Name)
         editform.TypeField.setCurrentIndex(self.getType(tool.ToolType))
         editform.MaterialField.setCurrentIndex(self.getMaterial(tool.Material))
-        editform.DiameterField.setText(str(tool.Diameter))
-        editform.LengthOffsetField.setText(str(tool.LengthOffset))
-        editform.FlatRadiusField.setText(str(tool.FlatRadius))
-        editform.CornerRadiusField.setText(str(tool.CornerRadius))
-        editform.CuttingEdgeAngleField.setValue(tool.CuttingEdgeAngle)
-        editform.CuttingEdgeHeightField.setText(str(tool.CuttingEdgeHeight))
+        editform.DiameterField.setText(FreeCAD.Units.Quantity(tool.Diameter, FreeCAD.Units.Length).UserString)
+        editform.LengthOffsetField.setText(FreeCAD.Units.Quantity(tool.LengthOffset, FreeCAD.Units.Length).UserString)
+        editform.FlatRadiusField.setText(FreeCAD.Units.Quantity(tool.FlatRadius, FreeCAD.Units.Length).UserString)
+        editform.CornerRadiusField.setText(FreeCAD.Units.Quantity(tool.CornerRadius, FreeCAD.Units.Length).UserString)
+        editform.CuttingEdgeAngleField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeAngle, FreeCAD.Units.Angle).UserString)
+        editform.CuttingEdgeHeightField.setText(FreeCAD.Units.Quantity(tool.CuttingEdgeHeight, FreeCAD.Units.Length).UserString)
 
         r = editform.exec_()
         if r:
             if editform.NameField.text():
-                tool.Name = str(editform.NameField.text())
+                tool.Name = str(editform.NameField.text()) #FIXME: not unicode safe!
             tool.ToolType = self.getType(editform.TypeField.currentIndex())
             tool.Material = self.getMaterial(editform.MaterialField.currentIndex())
             tool.Diameter = FreeCAD.Units.parseQuantity(editform.DiameterField.text())
             tool.LengthOffset = FreeCAD.Units.parseQuantity(editform.LengthOffsetField.text())
             tool.FlatRadius = FreeCAD.Units.parseQuantity(editform.FlatRadiusField.text())
             tool.CornerRadius = FreeCAD.Units.parseQuantity(editform.CornerRadiusField.text())
-            tool.CuttingEdgeAngle = editform.CuttingEdgeAngleField.value()
+            tool.CuttingEdgeAngle = FreeCAD.Units.Quantity(editform.CuttingEdgeAngleField.text())
             tool.CuttingEdgeHeight = FreeCAD.Units.parseQuantity(editform.CuttingEdgeHeightField.text())
 
             if self.TLM.updateTool(listname, toolnum, tool) is True:
                 self.loadTable(self.form.listView.selectedIndexes()[0])
 
     def importFile(self):
+        #sebste: filenames are Qstrings and should be cast to uicode as early as possible to prevent ascii decoding issues
         "imports a tooltable from a file"
         filename = QtGui.QFileDialog.getOpenFileName(self.form, _translate(
                 "TooltableEditor", "Open tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
