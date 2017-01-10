@@ -45,16 +45,8 @@ from pivy import coin
 """Holding Tags Dressup object and FreeCAD command"""
 
 # Qt tanslation handling
-try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
-
-except AttributeError:
-
-    def translate(context, text, disambig=None):
-        return QtGui.QApplication.translate(context, text, disambig)
+def translate(text, context = "PathDressup_HoldingTags", disambig=None):
+    return QtCore.QCoreApplication.translate(context, text, disambig)
 
 debugDressup = False
 
@@ -106,10 +98,11 @@ def debugCone(vector, r1, r2, height, label, color = None):
 
 
 class HoldingTagsPreferences:
-    DefaultHoldingTagWidth  = 'DefaultHoldingTagWidth'
-    DefaultHoldingTagHeight = 'DefaultHoldingTagHeight'
-    DefaultHoldingTagAngle  = 'DefaultHoldingTagAngle'
-    DefaultHoldingTagCount  = 'DefaultHoldingTagCount'
+    DefaultHoldingTagWidth   = 'DefaultHoldingTagWidth'
+    DefaultHoldingTagHeight  = 'DefaultHoldingTagHeight'
+    DefaultHoldingTagAngle   = 'DefaultHoldingTagAngle'
+    DefaultHoldingTagRadius  = 'DefaultHoldingTagRadius'
+    DefaultHoldingTagCount   = 'DefaultHoldingTagCount'
 
     @classmethod
     def defaultWidth(cls, ifNotSet):
@@ -139,14 +132,20 @@ class HoldingTagsPreferences:
             return float(ifNotSet)
         return float(value)
 
+    @classmethod
+    def defaultRadius(cls, ifNotSet = 0.0):
+        return PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
+        
+
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
-        self.label = translate('PathDressup_HoldingTags', 'Holding Tags')
+        self.label = translate('Holding Tags')
 
     def loadSettings(self):
         self.form.ifWidth.setText(FreeCAD.Units.Quantity(self.defaultWidth(0), FreeCAD.Units.Length).UserString)
         self.form.ifHeight.setText(FreeCAD.Units.Quantity(self.defaultHeight(0), FreeCAD.Units.Length).UserString)
         self.form.dsbAngle.setValue(self.defaultAngle())
+        self.form.ifRadius.setText(FreeCAD.Units.Quantity(self.defaultRadius(), FreeCAD.Units.Length).UserString)
         self.form.sbCount.setValue(self.defaultCount())
 
     def saveSettings(self):
@@ -154,6 +153,7 @@ class HoldingTagsPreferences:
         pref.SetFloat(self.DefaultHoldingTagWidth, FreeCAD.Units.Quantity(self.form.ifWidth.text()).Value)
         pref.SetFloat(self.DefaultHoldingTagHeight, FreeCAD.Units.Quantity(self.form.ifHeight.text()).Value)
         pref.SetFloat(self.DefaultHoldingTagAngle, self.form.dsbAngle.value())
+        pref.SetFloat(self.DefaultHoldingTagRadius, FreeCAD.Units.Quantity(self.form.ifRadius.text()))
         pref.SetUnsigned(self.DefaultHoldingTagCount, self.form.sbCount.value())
 
     @classmethod
@@ -161,14 +161,15 @@ class HoldingTagsPreferences:
         return HoldingTagsPreferences()
 
 class Tag:
-    def __init__(self, x, y, width, height, angle, enabled=True):
-        debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %d)" % (x, y, width, height, angle/math.pi, enabled))
+    def __init__(self, x, y, width, height, angle, radius, enabled=True):
+        debugPrint("Tag(%.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %d)" % (x, y, width, height, angle, radius, enabled))
         self.x = x
         self.y = y
         self.width = math.fabs(width)
         self.height = math.fabs(height)
         self.actualHeight = self.height
         self.angle = math.fabs(angle)
+        self.radius = radius
         self.enabled = enabled
 
     def fullWidth(self):
@@ -190,15 +191,24 @@ class Tag:
         self.r1 = r1
         self.r2 = r1
         height = self.height * 1.01
+        radius = 0
         if self.angle == 90 and height > 0:
+            # cylinder
             self.solid = Part.makeCylinder(r1, height)
+            radius = min(min(self.radius, r1), self.height)
             debugPrint("Part.makeCone(%f, %f)" % (r1, height))
         elif self.angle > 0.0 and height > 0.0:
-            tangens = math.tan(math.radians(self.angle))
+            # cone
+            rad = math.radians(self.angle)
+            tangens = math.tan(rad)
             dr = height / tangens
             if dr < r1:
+                # with top
                 r2 = r1 - dr
+                s = height / math.sin(rad)
+                radius = min(r2, s) * math.tan((math.pi - rad)/2) * 0.95
             else:
+                # triangular
                 r2 = 0
                 height = r1 * tangens * 1.01
                 self.actualHeight = height
@@ -215,9 +225,13 @@ class Tag:
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
         debugPrint("solid.translate(%s)" % self.originAt(z))
         self.solid.translate(self.originAt(z - 0.01 * height))
+        self.realRadius = radius
+        if radius != 0:
+            debugPrint("makeFillet(%.4f)" % radius)
+            self.solid = self.solid.makeFillet(radius, [self.solid.Edges[0]])
 
     def filterIntersections(self, pts, face):
-        if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder:
+        if type(face.Surface) == Part.Cone or type(face.Surface) == Part.Cylinder or type(face.Surface) == Part.Toroid:
             #print("it's a cone/cylinder, checking z")
             return filter(lambda pt: pt.z >= self.bottom() and pt.z <= self.top(), pts)
         if type(face.Surface) == Part.Plane:
@@ -225,7 +239,7 @@ class Tag:
             c = face.Edges[0].Curve
             if (type(c) == Part.Circle):
                 return filter(lambda pt: (pt - c.Center).Length <= c.Radius or PathGeom.isRoughly((pt - c.Center).Length, c.Radius), pts)
-        #print("==== we got a %s" % face.Surface)
+        print("==== we got a %s" % face.Surface)
 
     def isPointOnEdge(self, pt, edge):
         param = edge.Curve.parameter(pt)
@@ -249,26 +263,9 @@ class Tag:
         el = edge.valueAt(edge.LastParameter)
         #print("-------- intersect %s (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)  refp=(%.2f, %.2f, %.2f)" % (type(edge.Curve), ef.x, ef.y, ef.z, em.x, em.y, em.z, el.x, el.y, el.z, refPt.x, refPt.y, refPt.z))
 
-        pts = []
-        for index, face in enumerate(solid.Faces):
-            i = edge.Curve.intersect(face.Surface)[0]
-            #print i
-            ps = self.filterIntersections([FreeCAD.Vector(p.X, p.Y, p.Z) for p in i], face)
-            pts.extend(filter(lambda pt: self.isPointOnEdge(pt, edge), ps))
-            if len(ps)  != len(filter(lambda pt: self.isPointOnEdge(pt, edge), ps)):
-                filtered = filter(lambda pt: self.isPointOnEdge(pt, edge), ps)
-                #print("-------- ++ len(ps)=%d, len(filtered)=%d" % (len(ps), len(filtered)))
-                for p in ps:
-                    included = '+' if p in filtered else '-'
-                    #print("--------     %s (%.2f, %.2f, %.2f)" % (included, p.x, p.y, p.z))
-        if pts:
-            closest = sorted(pts, key=lambda pt: (pt - refPt).Length)[0]
-            #for p in pts:
-            #    print("-------- - intersect pt : (%.2f, %.2f, %.2f)" % (p.x, p.y, p.z))
-            #print("-------- -> (%.2f, %.2f, %.2f)" % (closest.x, closest.y, closest.z))
-            return closest
-        
-        #print("-------- -> None")
+        vertexes = edge.common(solid).Vertexes
+        if vertexes:
+            return sorted(vertexes, key=lambda v: (v.Point - refPt).Length)[0].Point
         return None
 
     def intersects(self, edge, param):
@@ -276,6 +273,18 @@ class Tag:
             if edge.valueAt(edge.FirstParameter).z < self.top() or edge.valueAt(edge.LastParameter).z < self.top():
                 return self.nextIntersectionClosestTo(edge, self.solid, edge.valueAt(param))
         return None
+
+    def bbEdges(self):
+        edges = []
+        for i in range(12):
+            p1, p2 = self.solid.BoundBox.getEdge(i)
+            edges.append(Part.Edge(Part.LineSegment(p1, p2)))
+        return edges
+
+    def bbShow(self):
+        for e in self.bbEdges():
+            Part.show(e)
+
 
 class MapWireToTag:
     def __init__(self, edge, tag, i):
@@ -294,9 +303,14 @@ class MapWireToTag:
             debugEdge(e, '++++++++ .')
             self.commands = PathGeom.cmdsForEdge(e)
             debugEdge(tail, '.........-')
+            self.initialEdge = edge
         self.tail = tail
         self.edges = []
         self.entry = i
+        if tail:
+            debugPrint("MapWireToTag(%s - %s)" % (i, tail.valueAt(tail.FirstParameter)))
+        else:
+            debugPrint("MapWireToTag(%s - )" % i)
         self.complete = False
         self.haveProblem = False
 
@@ -322,63 +336,114 @@ class MapWireToTag:
             return 2
         return 0
 
-    def cleanupEdges(self, edges, baseEdge):
+    def cleanupEdges(self, edges):
         # want to remove all edges from the wire itself, and all internal struts
         #print("+cleanupEdges")
-        #print(" base:")
-        debugEdge(baseEdge, '   ')
         #print(" edges:")
         for e in edges:
             debugEdge(e, '   ')
         #print(":")
+        self.edgesCleanup = [copy.copy(edges)]
 
-        haveEntry = False
+        # remove any edge that has a point inside the tag solid
+        # and collect all edges that are connected to the entry and/or exit
+        self.entryEdges = []
+        self.exitEdges = []
+        self.edgePoints = []
         for e in copy.copy(edges):
-            if PathGeom.edgesMatch(e, baseEdge):
-                debugEdge(e, '......... X0')
+            p1 = e.valueAt(e.FirstParameter)
+            p2 = e.valueAt(e.LastParameter)
+            self.edgePoints.append(p1)
+            self.edgePoints.append(p2)
+            if self.tag.solid.isInside(p1, PathGeom.Tolerance, False) or self.tag.solid.isInside(p2, PathGeom.Tolerance, False):
                 edges.remove(e)
-            elif self.isStrut(e):
-                typ = self.isEntryOrExitStrut(e)
-                debugEdge(e, '......... |%d' % typ)
-                if 0 == typ: # neither entry nor exit
-                    debugEdge(e, '......... X1')
-                    edges.remove(e)
-                elif 1 == typ:
-                    haveEntry = True
+                debugEdge(e, '......... X0', False)
+            else:
+                if PathGeom.pointsCoincide(p1, self.entry) or PathGeom.pointsCoincide(p2, self.entry):
+                    self.entryEdges.append(e)
+                if PathGeom.pointsCoincide(p1, self.exit) or PathGeom.pointsCoincide(p2, self.exit):
+                    self.exitEdges.append(e)
+        self.edgesCleanup.append(copy.copy(edges))
 
+        # if there are no edges connected to entry/exit, it means the plunge in/out is vertical
+        # we need to add in the missing segment and collect the new entry/exit edges.
+        if not self.entryEdges:
+            print("fill entryEdges ...")
+            self.realEntry = sorted(self.edgePoints, key=lambda p: (p - self.entry).Length)[0]
+            self.entryEdges = filter(lambda e: PathGeom.edgeConnectsTo(e, self.realEntry), edges)
+            edges.append(Part.Edge(Part.LineSegment(self.entry, self.realEntry)))
+        else:
+            self.realEntry = None
+        if not self.exitEdges:
+            print("fill exitEdges ...")
+            self.realExit = sorted(self.edgePoints, key=lambda p: (p - self.exit).Length)[0]
+            self.exitEdges = filter(lambda e: PathGeom.edgeConnectsTo(e, self.realExit), edges)
+            edges.append(Part.Edge(Part.LineSegment(self.realExit, self.exit)))
+        else:
+            self.realExit = None
+        self.edgesCleanup.append(copy.copy(edges))
+
+        # if there are 2 edges attached to entry/exit, throw away the one that is "lower"
+        if len(self.entryEdges) > 1:
+            debugEdge(self.entryEdges[0], ' entry[0]', False)
+            debugEdge(self.entryEdges[1], ' entry[1]', False)
+            if self.entryEdges[0].BoundBox.ZMax < self.entryEdges[1].BoundBox.ZMax:
+                edges.remove(self.entryEdges[0])
+                debugEdge(e, '......... X1', False)
+            else:
+                edges.remove(self.entryEdges[1])
+                debugEdge(e, '......... X2', False)
+        if len(self.exitEdges) > 1:
+            debugEdge(self.exitEdges[0], ' exit[0]', False)
+            debugEdge(self.exitEdges[1], ' exit[1]', False)
+            if self.exitEdges[0].BoundBox.ZMax < self.exitEdges[1].BoundBox.ZMax:
+                if self.exitEdges[0] in edges:
+                    edges.remove(self.exitEdges[0])
+                debugEdge(e, '......... X3', False)
+            else:
+                if self.exitEdges[1] in edges:
+                    edges.remove(self.exitEdges[1])
+                debugEdge(e, '......... X4', False)
+
+        self.edgesCleanup.append(copy.copy(edges))
+        return edges
+
+    def orderAndFlipEdges(self, edges):
         #print("entry(%.2f, %.2f, %.2f), exit(%.2f, %.2f, %.2f)" % (self.entry.x, self.entry.y, self.entry.z, self.exit.x, self.exit.y, self.exit.z))
-        # the remaininng edges for the path from xy(baseEdge) along the tags surface
+        self.edgesOrder = []
         outputEdges = []
-        p0 = baseEdge.valueAt(baseEdge.FirstParameter)
-        ignoreZ = False
-        if not haveEntry:
-            ignoreZ = True
-            p0 = PathGeom.xy(p0)
+        p0 = self.entry
         lastP = p0
         while edges:
-            #print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z, haveEntry, ignoreZ))
+            #print("(%.2f, %.2f, %.2f) %d %d" % (p0.x, p0.y, p0.z))
             for e in edges:
                 p1 = e.valueAt(e.FirstParameter)
                 p2 = e.valueAt(e.LastParameter)
-                if PathGeom.pointsCoincide(PathGeom.xy(p1) if ignoreZ else p1, p0):
+                if PathGeom.pointsCoincide(p1, p0):
                     outputEdges.append((e, False))
                     edges.remove(e)
                     lastP = None
-                    ignoreZ = False
                     p0 = p2
                     debugEdge(e, ">>>>> no flip")
                     break
-                elif PathGeom.pointsCoincide(PathGeom.xy(p2) if ignoreZ else p2, p0):
+                elif PathGeom.pointsCoincide(p2, p0):
                     outputEdges.append((e, True))
                     edges.remove(e)
                     lastP = None
-                    ignoreZ = False
                     p0 = p1
                     debugEdge(e, ">>>>> flip")
                     break
                 else:
                     debugEdge(e, "<<<<< (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z))
             if lastP == p0:
+                self.edgesOrder.append(outputEdges)
+                self.edgesOrder.append(edges)
+                print('ordered edges:')
+                for e, flip in outputEdges:
+                    debugEdge(e, '  %c ' % ('<' if flip else '>'), False)
+                print('remaining edges:')
+                for e in edges:
+                    debugEdge(e, '    ', False)
                 raise ValueError("No connection to %s" % (p0))
             elif lastP:
                 debugPrint("xxxxxx (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f)" % (p0.x, p0.y, p0.z, lastP.x, lastP.y, lastP.z))
@@ -393,40 +458,50 @@ class MapWireToTag:
         p2 = PathGeom.xy(edge.valueAt(edge.LastParameter))
         return PathGeom.pointsCoincide(p1, p2)
 
-    def cmdsForEdge(self, edge):
-        cmds = []
-
-        # OCC doesn't like it very much if the shapes align with each other. So if we have a slightly
-        # extended edge for the last edge in list we'll use that instead for stable results.
-        if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), self.lastEdge.valueAt(self.lastEdge.FirstParameter)):
-            shell = self.lastEdge.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
+    def shell(self):
+        if len(self.edges) > 1:
+            wire = Part.Wire(self.initialEdge)
         else:
-            shell = edge.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
-        shape = shell.common(self.tag.solid)
+            edge = self.edges[0]
+            if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), self.finalEdge.valueAt(self.finalEdge.FirstParameter)):
+                wire = Part.Wire(self.finalEdge)
+            elif hasattr(self, 'initialEdge') and PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), self.initialEdge.valueAt(self.initialEdge.FirstParameter)):
+                wire = Part.Wire(self.initialEdge)
+            else:
+                wire = Part.Wire(edge)
 
-        if not shape.Edges:
-            self.haveProblem = True
+        for edge in self.edges[1:]:
+            if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), self.finalEdge.valueAt(self.finalEdge.FirstParameter)):
+                wire.add(self.finalEdge)
+            else:
+                wire.add(edge)
 
-        for e,flip in self.cleanupEdges(shape.Edges, edge):
-            debugEdge(e, '++++++++ %s' % ('.' if not flip else '@'))
-            cmds.extend(PathGeom.cmdsForEdge(e, flip, False))
-        return cmds
+        shell = wire.extrude(FreeCAD.Vector(0, 0, self.tag.height + 1))
+        return shell.removeShape(filter(lambda f: PathGeom.isRoughly(f.Area, 0), shell.Faces))
 
     def commandsForEdges(self):
-        commands = []
-        for e in self.edges:
-            if self.isStrut(e):
-                continue
-            commands.extend(self.cmdsForEdge(e))
-        return commands
+        if self.edges:
+            shape = self.shell().common(self.tag.solid)
+            commands = []
+            for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
+                debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
+                commands.extend(PathGeom.cmdsForEdge(e, flip, False))
+            return commands
+        return []
 
     def add(self, edge):
         self.tail = None
-        self.lastEdge = edge # see cmdsForEdge
-        if self.tag.solid.isInside(edge.valueAt(edge.LastParameter), 0.000001, True):
+        self.finalEdge = edge
+        if self.tag.solid.isInside(edge.valueAt(edge.LastParameter), PathGeom.Tolerance, True):
             self.addEdge(edge)
         else:
             i = self.tag.intersects(edge, edge.LastParameter)
+            if not i:
+                self.offendingEdge = edge
+                debugEdge(edge, 'offending Edge:', False)
+                o = self.tag.originAt(self.tag.z)
+                print('originAt: (%.2f, %.2f, %.2f)' % (o.x, o.y, o.z))
+                i = edge.valueAt(edge.FirstParameter)
             if PathGeom.pointsCoincide(i, edge.valueAt(edge.FirstParameter)):
                 self.tail = edge
             else:
@@ -458,7 +533,7 @@ class _RapidEdges:
     def debugPrint(self):
         debugPrint('rapid:')
         for r in self.rapid:
-            debugEdge(r, '  ', True)
+            debugEdge(r, '  ')
 
 class PathData:
     def __init__(self, obj):
@@ -501,7 +576,7 @@ class PathData:
         edges = sorted(self.base.Edges, key=lambda e: e.Length)
         return (edges[0], edges[-1])
 
-    def generateTags(self, obj, count, width=None, height=None, angle=None, spacing=None):
+    def generateTags(self, obj, count, width=None, height=None, angle=None, radius=None, spacing=None):
         debugPrint("generateTags(%s, %s, %s, %s, %s)" % (count, width, height, angle, spacing))
         #for e in self.base.Edges:
         #    debugMarker(e.Vertexes[0].Point, 'base', (0.0, 1.0, 1.0), 0.2)
@@ -509,18 +584,12 @@ class PathData:
         if spacing:
             tagDistance = spacing
         else:
-            if count:
-                tagDistance = self.base.Length / count
-            else:
-                tagDistance = self.base.Length / 4
-        if width:
-            W = width
-        else:
-            W = self.defaultTagWidth()
-        if height:
-            H = height
-        else:
-            H = self.defaultTagHeight()
+            tagDistance = self.base.Length / (count if count else 4)
+
+        W = width if width else self.defaultTagWidth()
+        H = height if height else self.defaultTagHeight()
+        A = angle if angle else self.defaultTagAngle()
+        R = radius if radius else self.defaultTagRadius()
 
 
         # start assigning tags on the longest segment
@@ -568,7 +637,7 @@ class PathData:
                 distance = (edge.LastParameter - edge.FirstParameter) / count
                 for j in range(0, count):
                     tag = edge.Curve.value((j+0.5) * distance)
-                    tags.append(Tag(tag.x, tag.y, W, H, angle, True))
+                    tags.append(Tag(tag.x, tag.y, W, H, A, R, True))
 
         return tags
 
@@ -604,6 +673,9 @@ class PathData:
     def defaultTagAngle(self):
         return HoldingTagsPreferences.defaultAngle()
 
+    def defaultTagRadius(self):
+        return HoldingTagsPreferences.defaultRadius()
+
     def sortedTags(self, tags):
         ordered = []
         for edge in self.base.Edges:
@@ -613,6 +685,7 @@ class PathData:
                 ordered.append(t)
         # disable all tags that are not on the base wire.
         for tag in tags:
+            FreeCAD.Console.PrintMessage("Tag #%d not on base wire - disabling\n" % len(ordered))
             tag.enabled = False
             ordered.append(tag)
         return ordered
@@ -632,6 +705,7 @@ class ObjectDressup:
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
         obj.addProperty("App::PropertyAngle", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
+        obj.addProperty("App::PropertyLength", "Radius", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Radius of the fillet on the top the tag."))
         obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of insterted holding tags"))
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
         obj.Proxy = self
@@ -644,7 +718,7 @@ class ObjectDressup:
 
     def generateTags(self, obj, count):
         if hasattr(self, "pathData"):
-            self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, None)
+            self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
             obj.Positions = [tag.originAt(0) for tag in self.tags]
             obj.Disabled  = []
             return False
@@ -726,27 +800,31 @@ class ObjectDressup:
     def createTagsPositionDisabled(self, obj, positionsIn, disabledIn):
         rawTags = []
         for i, pos in enumerate(positionsIn):
-            tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, not i in disabledIn)
+            tag = Tag(pos.x, pos.y, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius, not i in disabledIn)
             tag.createSolidsAt(self.pathData.minZ, self.toolRadius)
             rawTags.append(tag)
         # disable all tags that intersect with their previous tag
-        bb = None
+        prev = None
         tags = []
         positions = []
         disabled = []
         for i, tag in enumerate(self.pathData.sortedTags(rawTags)):
             if tag.enabled:
-                if bb:
-                    if bb.intersect(tag.solid.BoundBox):
+                if prev:
+                    if prev.solid.common(tag.solid).Faces:
+                        FreeCAD.Console.PrintMessage("Tag #%d intersects with previous tag - disabling\n" % i)
+                        debugPrint("this tag = %d [%s]" % (i, tag.solid.BoundBox))
                         tag.enabled = False
                 elif self.pathData.edges:
                     e = self.pathData.edges[0]
                     p0 = e.valueAt(e.FirstParameter)
                     p1 = e.valueAt(e.LastParameter)
-                    if tag.solid.BoundBox.isInside(p0) or tag.solid.BoundBox.isInside(p1):
+                    if tag.solid.isInside(p0, PathGeom.Tolerance, True) or tag.solid.isInside(p1, PathGeom.Tolerance, True):
+                        FreeCAD.Console.PrintMessage("Tag #%d intersects with starting point - disabling\n" % i)
                         tag.enabled = False
             if tag.enabled:
-                bb = tag.solid.BoundBox
+                prev = tag
+                debugPrint("previousTag = %d [%s]" % (i, prev))
             else:
                 disabled.append(i)
             tags.append(tag)
@@ -779,7 +857,7 @@ class ObjectDressup:
         if hasattr(obj, "Positions"):
             self.tags, positions, disabled = self.createTagsPositionDisabled(obj, obj.Positions, obj.Disabled)
             if obj.Disabled != disabled:
-                printDebug("Updating properties.... %s vs. %s" % (obj.Disabled, disabled))
+                debugPrint("Updating properties.... %s vs. %s" % (obj.Disabled, disabled))
                 obj.Positions = positions
                 obj.Disabled = disabled
 
@@ -796,23 +874,23 @@ class ObjectDressup:
             for tag in self.tags:
                 tagID += 1
                 if tag.enabled:
-                    print("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
-                    debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
-                    if tag.angle != 90:
-                        debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
-                    else:
-                        debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
+                    debugPrint("x=%s, y=%s, z=%s" % (tag.x, tag.y, self.pathData.minZ))
+                    #debugMarker(FreeCAD.Vector(tag.x, tag.y, self.pathData.minZ), "tag-%02d" % tagID , (1.0, 0.0, 1.0), 0.5)
+                    #if tag.angle != 90:
+                    #    debugCone(tag.originAt(self.pathData.minZ), tag.r1, tag.r2, tag.actualHeight, "tag-%02d" % tagID)
+                    #else:
+                    #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
         obj.Path = self.createPath(self.pathData.edges, self.tags, self.pathData.rapid)
         #print("execute - done")
 
     def setup(self, obj, generate=False):
-        #print("setup")
+        debugPrint("setup")
         self.obj = obj
         try:
             pathData = PathData(obj)
         except ValueError:
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Cannot insert holding tags for this path - please select a Profile path\n"))
+            FreeCAD.Console.PrintError(translate("Cannot insert holding tags for this path - please select a Profile path\n"))
             return None
 
         self.toolRadius = 5
@@ -830,11 +908,13 @@ class ObjectDressup:
             obj.Height = self.pathData.defaultTagHeight()
             obj.Width  = self.pathData.defaultTagWidth()
             obj.Angle  = self.pathData.defaultTagAngle()
+            obj.Radius = self.pathData.defaultTagRadius()
             count = HoldingTagsPreferences.defaultCount()
             self.generateTags(obj, count)
         return self.pathData
 
     def setXyEnabled(self, triples):
+        debugPrint("setXyEnabled")
         if not hasattr(self, 'pathData'):
             self.setup(self.obj)
         positions = []
@@ -881,7 +961,7 @@ class TaskPanel:
         self.formPoint.hide()
         self.jvo = PathUtils.findParentJob(obj).ViewObject
         if jvoVisibility is None:
-            FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Edit HoldingTags Dress-up"))
+            FreeCAD.ActiveDocument.openTransaction(translate("Edit HoldingTags Dress-up"))
             self.jvoVisible = self.jvo.isVisible()
             if self.jvoVisible:
                 self.jvo.hide()
@@ -925,6 +1005,7 @@ class TaskPanel:
         self.obj.Width  = FreeCAD.Units.Quantity(self.formTags.ifWidth.text()).Value
         self.obj.Height = FreeCAD.Units.Quantity(self.formTags.ifHeight.text()).Value
         self.obj.Angle  = self.formTags.dsbAngle.value()
+        self.obj.Radius = FreeCAD.Units.Quantity(self.formTags.ifRadius.text()).Value
 
     def getFields(self):
         self.getTagParameters()
@@ -1090,22 +1171,7 @@ class TaskPanel:
         self.formTags.ifHeight.setText(FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString)
         self.formTags.ifWidth.setText(FreeCAD.Units.Quantity(self.obj.Width, FreeCAD.Units.Length).UserString)
         self.formTags.dsbAngle.setValue(self.obj.Angle)
-
-    def updateModelHeight(self):
-        #print('updateModelHeight')
-        self.updateModel()
-
-    def updateModelWidth(self):
-        #print('updateModelWidth')
-        self.updateModel()
-
-    def updateModelAngle(self):
-        #print('updateModelAngle')
-        self.updateModel()
-
-    def updateModelTags(self):
-        #print('updateModelTags')
-        self.updateModel()
+        self.formTags.ifRadius.setText(FreeCAD.Units.Quantity(self.obj.Radius, FreeCAD.Units.Length).UserString)
 
     def setupUi(self):
         self.setFields()
@@ -1114,10 +1180,11 @@ class TaskPanel:
         self.formTags.sbCount.valueChanged.connect(self.whenCountChanged)
         self.formTags.pbGenerate.clicked.connect(self.generateNewTags)
 
-        self.formTags.ifHeight.editingFinished.connect(self.updateModelHeight)
-        self.formTags.ifWidth.editingFinished.connect(self.updateModelWidth)
-        self.formTags.dsbAngle.editingFinished.connect(self.updateModelAngle)
-        self.formTags.lwTags.itemChanged.connect(self.updateModelTags)
+        self.formTags.ifHeight.editingFinished.connect(self.updateModel)
+        self.formTags.ifWidth.editingFinished.connect(self.updateModel)
+        self.formTags.dsbAngle.editingFinished.connect(self.updateModel)
+        self.formTags.ifRadius.editingFinished.connect(self.updateModel)
+        self.formTags.lwTags.itemChanged.connect(self.updateModel)
         self.formTags.lwTags.itemSelectionChanged.connect(self.whenTagSelectionChanged)
         self.formTags.lwTags.itemActivated.connect(self.editTag)
 
@@ -1307,18 +1374,18 @@ class CommandPathDressupHoldingTags:
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Please select one path object\n"))
+            FreeCAD.Console.PrintError(translate("Please select one path object\n"))
             return
         baseObject = selection[0]
         if not baseObject.isDerivedFrom("Path::Feature"):
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "The selected object is not a path\n"))
+            FreeCAD.Console.PrintError(translate("The selected object is not a path\n"))
             return
         if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            FreeCAD.Console.PrintError(translate("PathDressup_HoldingTags", "Please select a Profile object"))
+            FreeCAD.Console.PrintError(translate("Please select a Profile object"))
             return
 
         # everything ok!
-        FreeCAD.ActiveDocument.openTransaction(translate("PathDressup_HoldingTags", "Create HoldingTags Dress-up"))
+        FreeCAD.ActiveDocument.openTransaction(translate("Create HoldingTags Dress-up"))
         FreeCADGui.addModule("PathScripts.PathDressupHoldingTags")
         FreeCADGui.addModule("PathScripts.PathUtils")
         FreeCADGui.doCommand('obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "HoldingTagsDressup")')
