@@ -813,10 +813,11 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
     GeomCurve::Save(writer);
 
     std::vector<Base::Vector3d> poles 	= this->getPoles();
-    std::vector<double> weights 	= this->getWeights();
-    std::vector<double> knots 		= this->getKnots();
-    std::vector<int> mults 		= this->getMultiplicities();
-    int degree 				= this->getDegree();
+    std::vector<double> weights 	    = this->getWeights();
+    std::vector<double> knots 		    = this->getKnots();
+    std::vector<int> mults 		        = this->getMultiplicities();
+    int degree 				            = this->getDegree();
+    bool isperiodic                     = this->IsPeriodic();
 
     writer.Stream()
          << writer.ind()
@@ -824,39 +825,37 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
                 << "PolesCount=\"" <<  poles.size() <<
                  "\" KnotsCount=\"" <<  knots.size() <<
                  "\" Degree=\"" <<  degree <<
+                 "\" IsPeriodic=\"" <<  (int) isperiodic <<
              "\">" << endl;
 
     writer.incInd();
-    for(std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it){
+    
+    std::vector<Base::Vector3d>::const_iterator itp;
+    std::vector<double>::const_iterator itw;
+    
+    for(itp = poles.begin(), itw = weights.begin(); itp != poles.end() && itw != weights.end(); ++itp, ++itw){
 	 writer.Stream() 
 	    << writer.ind() 
 		<< "<Pole "
-		    << "X=\"" << (*it).x <<
-		    "\" Y=\"" << (*it).y <<
-		    "\" Z=\"" << (*it).z <<
+		    << "X=\"" << (*itp).x <<
+		    "\" Y=\"" << (*itp).y <<
+		    "\" Z=\"" << (*itp).z <<
+		    "\" Weight=\"" << (*itw) <<		    
 		"\"/>" << endl;
     }
-    for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it){
-	 writer.Stream() 
-	    << writer.ind() 
-		<< "<Weight "
-		    << "value=\"" << (*it) <<
-		"\"/>" << endl;
-    }
-    for(std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it){
+
+    std::vector<double>::const_iterator itk;
+    std::vector<int>::const_iterator itm;
+
+    for(itk = knots.begin(), itm = mults.begin(); itk != knots.end() && itm != mults.end(); ++itk, ++itm){
 	 writer.Stream() 
 	    << writer.ind() 
 		<< "<Knot "
-		    << "value=\"" << (*it) <<
+		    << "Value=\"" << (*itk)
+		    << "\" Mult=\"" << (*itm) <<
 		"\"/>" << endl;
     }
-    for(std::vector<int>::const_iterator it = mults.begin(); it != mults.end(); ++it){
-	 writer.Stream() 
-	    << writer.ind() 
-		<< "<Mult "
-		    << "value=\"" << (*it) <<
-		"\"/>" << endl;
-    }
+
     writer.decInd();
     writer.Stream() << writer.ind() << "</BSplineCurve>" << endl ;
 }
@@ -871,8 +870,8 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     int polescount = reader.getAttributeAsInteger("PolesCount");
     int knotscount = reader.getAttributeAsInteger("KnotsCount");
     int degree = reader.getAttributeAsInteger("Degree");
-    
-    // You are here!!
+    bool isperiodic = (bool) reader.getAttributeAsInteger("IsPeriodic");
+
     // Handle_Geom_BSplineCurve spline = new 
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,
     // PyObject_IsTrue(periodic) ? Standard_True : Standard_False,
@@ -882,39 +881,31 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     TColStd_Array1OfReal w(1,polescount);
     TColStd_Array1OfReal k(1,knotscount);
     TColStd_Array1OfInteger m(1,knotscount);
-    
+
     for (int i = 1; i <= polescount; i++) {
         reader.readElement("Pole");
-	double X = reader.getAttributeAsFloat("X");
-	double Y = reader.getAttributeAsFloat("Y");
-	double Z = reader.getAttributeAsFloat("Z");
-	p.SetValue(i, gp_Pnt(X,Y,Z));
+        double X = reader.getAttributeAsFloat("X");
+        double Y = reader.getAttributeAsFloat("Y");
+        double Z = reader.getAttributeAsFloat("Z");
+        double W = reader.getAttributeAsFloat("Weight");
+        p.SetValue(i, gp_Pnt(X,Y,Z));
+        w.SetValue(i, W);
     }
-    
-    for (int i = 1; i <= polescount; i++) {
-        reader.readElement("Weight");
-	double val = reader.getAttributeAsFloat("value");
-	w.SetValue(i, val);
-    }
-    
+
     for (int i = 1; i <= knotscount; i++) {
         reader.readElement("Knot");
-	double val = reader.getAttributeAsFloat("value");
-	k.SetValue(i, val);
+        double val = reader.getAttributeAsFloat("Value");
+        Standard_Integer mult = reader.getAttributeAsInteger("Mult");
+        k.SetValue(i, val);
+        m.SetValue(i, mult);
     }
-    
-    for (int i = 1; i <= knotscount; i++) {
-        reader.readElement("Mult");
-	double val = reader.getAttributeAsInteger("value");
-	m.SetValue(i, val);
-    }
-    
+
     reader.readEndElement("BSplineCurve");
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,periodic,CheckRational
-    
+
     try {
-	Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, Standard_False, Standard_False);
-    
+        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic==true?Standard_True:Standard_False, Standard_False);
+
 	if (!spline.IsNull())
 	    this->myCurve = spline;
 	else
