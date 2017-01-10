@@ -110,7 +110,7 @@ public:
     PointPos FirstPos;
     int Second;
     PointPos SecondPos;
-    int Third;
+    int Third; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline), thirdpos remains unused. It is not a GeoId. 
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
