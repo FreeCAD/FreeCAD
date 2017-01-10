@@ -3300,6 +3300,86 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
         return incrgeo; //number of added elements
     }
+    else if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+        // First we search what has to be restored
+        std::vector<bool> controlpoints(bsp->countPoles());
+        std::vector<int> controlpointgeoids(bsp->countPoles());
+        
+        std::vector<bool>::iterator itb;
+        std::vector<int>::iterator it;
+        
+        for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb) {
+            (*it)=-1;
+            (*itb)=false;
+        }
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::BSplineControlPoint:
+                        controlpoints[(*it)->Third] = true;
+                        controlpointgeoids[(*it)->Third] = (*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+
+        int currentgeoid = getHighestCurveIndex();
+        int incrgeo = 0;
+
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+        
+        std::vector<Base::Vector3d> poles = bsp->getPoles();
+        
+        int index=0;
+        
+        for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb, index++) {
+
+            if(!(*itb)) // if controlpoint not existing
+            {
+                Part::GeomCircle *pc = new Part::GeomCircle();
+                pc->setCenter(poles[index]);
+
+                igeo.push_back(pc);
+
+                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                newConstr->Type = Sketcher::InternalAlignment;
+                newConstr->AlignmentType = Sketcher::BSplineControlPoint;
+                newConstr->First = currentgeoid+incrgeo+1;
+                newConstr->FirstPos = Sketcher::mid;
+                newConstr->Second = GeoId;
+                newConstr->Third = index;
+
+                icon.push_back(newConstr);
+                incrgeo++;
+            }
+        }
+
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+            if (*it) 
+                delete *it;
+
+        icon.clear();
+        igeo.clear();
+
+        return incrgeo; //number of added elements
+    }
     else
         return -1; // not supported type
 }
