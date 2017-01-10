@@ -314,6 +314,7 @@ public:
     int addInternalAlignmentHyperbolaMinorDiameter(int geoId1, int geoId2);
     int addInternalAlignmentHyperbolaFocus(int geoId1, int geoId2);
     int addInternalAlignmentParabolaFocus(int geoId1, int geoId2);
+    int addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex);
     //@}
 public:
     //This func is to be used during angle-via-point constraint creation. It calculates
