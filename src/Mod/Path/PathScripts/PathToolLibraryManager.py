@@ -239,29 +239,37 @@ class ToolLibraryManager():
             Handler = HeeksTooltableHandler()
         else:
             Handler = FreeCADTooltableHandler()
-        parser.setContentHandler(Handler)
-        parser.parse(str(filename[0]))
-        if not Handler.tooltable:
-            return None
 
-        ht = Handler.tooltable
-        tt = self._findList(listname)
-        for t in ht.Tools:
-            newt = ht.getTool(t).copy()
-            tt.addTools(newt)
-        if listname == "<Main>":
-            self.saveMainLibrary(tt)
-        return True
+        try:
+            parser.setContentHandler(Handler)
+            parser.parse(unicode(filename[0]))
+            if not Handler.tooltable:
+                return None
+
+            ht = Handler.tooltable
+            tt = self._findList(listname)
+            for t in ht.Tools:
+                newt = ht.getTool(t).copy()
+                tt.addTools(newt)
+            if listname == "<Main>":
+                self.saveMainLibrary(tt)
+            return True
+        except Exception, e:
+            print "could not parse file", e
 
     def write(self, filename, listname):
         "exports the tooltable to a file"
         tt = self._findList(listname)
         if tt:
-            fil = open(str(filename[0]), "wb")
-            fil.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            fil.write(tt.Content)
-            fil.close()
-            print "Written ", filename[0]
+            try:
+                file = open(unicode(filename[0]), "wb")
+                file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+                file.write(tt.Content)
+                file.close()
+                print "Written ", unicode(filename[0])
+
+            except Exception, e:
+                print "Could not write file:", e
 
     def addnew(self, listname, tool, position = None):
         "adds a new tool at the end of the table"
@@ -504,11 +512,9 @@ class EditorPanel():
                 self.loadTable(self.form.listView.selectedIndexes()[0])
 
     def importFile(self):
-        #sebste: filenames are Qstrings and should be cast to uicode as early as possible to prevent ascii decoding issues
         "imports a tooltable from a file"
-        filename = QtGui.QFileDialog.getOpenFileName(self.form, _translate(
-                "TooltableEditor", "Open tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
-        if filename:
+        filename = QtGui.QFileDialog.getOpenFileName(self.form, _translate( "TooltableEditor", "Open tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml);;HeeksCAD tooltable (*.tooltable)", None))
+        if filename[0]:
             listname = self.form.listView.selectedIndexes()[0].data()
             if self.TLM.read(filename, listname):
                 self.loadTable(self.form.listView.selectedIndexes()[0])
@@ -518,7 +524,7 @@ class EditorPanel():
         "imports a tooltable from a file"
         filename = QtGui.QFileDialog.getSaveFileName(self.form, _translate("TooltableEditor", "Save tooltable", None), None, _translate("TooltableEditor", "Tooltable XML (*.xml)", None))
 
-        if filename:
+        if filename[0]:
             listname = self.form.listView.selectedIndexes()[0].data()
             self.TLM.write(filename, listname)
 
