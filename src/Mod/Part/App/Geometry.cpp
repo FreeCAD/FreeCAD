@@ -653,7 +653,7 @@ void GeomBSplineCurve::setKnots(const std::vector<double>& knots)
     }
 }
 
-void GeomBSplineCurve::setKnots(const std::vector<double>& knots, const std::vector<int> multiplicities)
+void GeomBSplineCurve::setKnots(const std::vector<double>& knots, const std::vector<int>& multiplicities)
 {
     Standard_Integer index=0;
 
@@ -698,7 +698,7 @@ int GeomBSplineCurve::getDegree() const
     return myCurve->Degree();
 }
 
-bool GeomBSplineCurve::IsPeriodic() const
+bool GeomBSplineCurve::isPeriodic() const
 {
     return myCurve->IsPeriodic()==Standard_True;
 }
@@ -817,7 +817,7 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
     std::vector<double> knots 		    = this->getKnots();
     std::vector<int> mults 		        = this->getMultiplicities();
     int degree 				            = this->getDegree();
-    bool isperiodic                     = this->IsPeriodic();
+    bool isperiodic                     = this->isPeriodic();
 
     writer.Stream()
          << writer.ind()

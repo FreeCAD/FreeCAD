@@ -200,13 +200,13 @@ public:
     void setWeights(const std::vector<double>& weights);
     void setKnot(int index, const double val, int mult=-1);
     void setKnots(const std::vector<double>& knots);
-    void setKnots(const std::vector<double>& knots, const std::vector<int> multiplicities);
+    void setKnots(const std::vector<double>& knots, const std::vector<int>& multiplicities);
     std::vector<Base::Vector3d> getPoles() const;
     std::vector<double> getWeights() const;
     std::vector<double> getKnots() const;
     std::vector<int> getMultiplicities() const;
     int getDegree() const;
-    bool IsPeriodic() const;
+    bool isPeriodic() const;
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;

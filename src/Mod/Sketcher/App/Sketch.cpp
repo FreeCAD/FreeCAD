@@ -670,7 +670,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     std::vector<double> knots = bsp->getKnots();
     std::vector<int> mult = bsp->getMultiplicities();
     int degree = bsp->getDegree();
-    bool periodic = bsp->IsPeriodic();
+    bool periodic = bsp->isPeriodic();
 
     Base::Vector3d startPnt = bsp->getStartPoint();
     Base::Vector3d endPnt   = bsp->getEndPoint();
