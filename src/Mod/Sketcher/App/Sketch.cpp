@@ -1197,6 +1197,8 @@ int Sketch::addConstraint(const Constraint *constraint)
 	    case ParabolaFocus: 
                 rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
                 break;
+        case BSplineControlPoint:
+                rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->Third);
             default:
                 break;
         }
@@ -2391,6 +2393,32 @@ int Sketch::addInternalAlignmentParabolaFocus(int geoId1, int geoId2)
 
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintInternalAlignmentParabolaFocus(a1, p1, tag);
+        return ConstraintsCounter;
+    }
+    return -1;
+}
+
+int Sketch::addInternalAlignmentBSplineControlPoint(int geoId1, int geoId2, int poleindex)
+{
+    std::swap(geoId1, geoId2);
+
+    geoId1 = checkGeoId(geoId1);
+    geoId2 = checkGeoId(geoId2);
+
+    if (Geoms[geoId1].type != BSpline)
+        return -1;
+    if (Geoms[geoId2].type != Circle)
+        return -1;
+
+    int pointId1 = getPointId(geoId2, mid);
+
+    if (pointId1 >= 0 && pointId1 < int(Points.size())) {
+        GCS::Circle &c = Circles[Geoms[geoId2].index];
+
+        GCS::BSpline &b = BSplines[Geoms[geoId1].index];
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintInternalAlignmentBSplineControlPoint(b, c, poleindex, tag);
         return ConstraintsCounter;
     }
     return -1;
