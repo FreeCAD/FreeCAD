@@ -1010,7 +1010,8 @@ int System::addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, 
 int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tagId)
 {
     addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId);
-    return addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId);
+    addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId);
+    return addConstraintEqual(b.weights[poleindex], c.rad, tagId);
 }
 
 
