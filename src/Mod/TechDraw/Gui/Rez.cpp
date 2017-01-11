@@ -73,6 +73,20 @@ double Rez::appX(double x)
    return x / getRezFactor();
 }
 
+Base::Vector2d Rez::appX(Base::Vector2d v)
+{
+    Base::Vector2d result(appX(v.y),appX(v.y));
+    return result;
+}
+
+Base::Vector3d Rez::appX(Base::Vector3d v)
+{
+    Base::Vector3d result(appX(v.x),appX(v.y),appX(v.z));
+    return result;
+}
+
+
+//Misc conversions
 QPointF Rez::guiPt(QPointF p)
 {
     QPointF result = p;
