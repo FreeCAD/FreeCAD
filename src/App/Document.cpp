@@ -615,6 +615,7 @@ void Document::exportGraphviz(std::ostream& out) const
                     if (i_in_deg_pair.first == in_edges.end()) {
                         removeEdges(in_edges, out_edges, i_out_deg_pair, [&](Edge e) { return target(e, DepList); });
                         changed = true;
+                        i_out_deg_pair = out_edges.equal_range(*uvi);
                     }
 
                     // Remove in edges of nodes that don't have a single edge out
