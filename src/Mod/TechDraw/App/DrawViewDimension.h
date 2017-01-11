@@ -65,9 +65,6 @@ public:
     App::PropertyFloat   LineWidth;
     //App::PropertyBool    CentreLines;
 
-    //TODO: do we need a property for the actual dimension value? how else to access from Py?
-    //wf: expose getValue & getFormatedValue
-
     short mustExecute() const;
     bool has2DReferences(void) const;
     bool has3DReferences(void) const;
@@ -85,8 +82,8 @@ public:
     //return PyObject as DrawViewDimensionPy
     virtual PyObject *getPyObject(void);
 
-    virtual std::string getFormatedValue() const;
-    virtual double getDimValue() const;
+    virtual std::string getFormatedValue();
+    virtual double getDimValue();
     DrawViewPart* getViewPart() const;
     virtual QRectF getRect() const { return QRectF(0,0,1,1);}                   //pretend dimensions always fit!
     static int getRefType1(const std::string s);
@@ -99,7 +96,6 @@ public:
 protected:
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
-//    int getIndexFromName(std::string geomName) const;   //obs? replaced by DrawUtil??
     bool showUnits() const;
 
 protected:
