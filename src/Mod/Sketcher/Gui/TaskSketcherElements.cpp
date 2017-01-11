@@ -27,6 +27,7 @@
 # include <QContextMenuEvent>
 # include <QMenu>
 # include <QRegExp>
+# include <QShortcut>
 # include <QString>
 #endif
 
@@ -249,7 +250,10 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
 #ifdef Q_OS_MAC
     QString cmdKey = QString::fromUtf8("\xe2\x8c\x98"); // U+2318
 #else
-    QString cmdKey = qApp->translate("QShortcut", "Ctrl");
+    // translate the text (it's offered by Qt's translation files)
+    // but avoid being picked up by lupdate
+    const char* ctrlKey = "Ctrl";
+    QString cmdKey = QShortcut::tr(ctrlKey);
 #endif
     QString zKey = QString::fromLatin1("Z");
     ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
