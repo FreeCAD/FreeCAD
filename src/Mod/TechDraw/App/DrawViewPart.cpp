@@ -225,7 +225,7 @@ void DrawViewPart::onChanged(const App::Property* prop)
 //note: slightly different than routine with same name in DrawProjectSplit
 TechDrawGeometry::GeometryObject* DrawViewPart::buildGeometryObject(TopoDS_Shape shape, gp_Ax2 viewAxis)
 {
-    TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument());
+    TechDrawGeometry::GeometryObject* go = new TechDrawGeometry::GeometryObject(getNameInDocument(), this);
     go->setIsoCount(IsoCount.getValue());
 
     Base::Vector3d baseProjDir = Direction.getValue();
@@ -428,7 +428,11 @@ TechDrawGeometry::BaseGeom* DrawViewPart::getProjEdgeByIndex(int idx) const
         Base::Console().Log("INFO - getProjEdgeByIndex(%d) - no Edge Geometry. Probably restoring?\n",idx);
         return NULL;
     }
-    return geoms[idx];
+    if ((unsigned)idx >= geoms.size()) {
+        Base::Console().Log("INFO - getProjEdgeByIndex(%d) - invalid index\n",idx);
+        return NULL;
+    }
+    return geoms.at(idx);
 }
 
 //! returns existing geometry of 2D Vertex(idx)
@@ -439,13 +443,18 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
         Base::Console().Log("INFO - getProjVertexByIndex(%d) - no Vertex Geometry. Probably restoring?\n",idx);
         return NULL;
     }
-    return geoms[idx];
+    if ((unsigned)idx >= geoms.size()) {
+        Base::Console().Log("INFO - getProjVertexByIndex(%d) - invalid index\n",idx);
+        return NULL;
+    }
+    return geoms.at(idx);
 }
 
 //! returns existing geometry of 2D Face(idx)
 //version 1 Face has 1 wire
-std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int /*idx*/) const
+std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int idx) const
 {
+    (void) idx;
     std::vector<TechDrawGeometry::BaseGeom*> result;
     const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();
     for (auto& f:faces) {

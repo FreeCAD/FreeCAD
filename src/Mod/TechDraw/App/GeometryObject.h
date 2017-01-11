@@ -37,6 +37,7 @@
 namespace TechDraw
 {
 class DrawViewPart;
+class DrawViewDetail;
 class DrawView;
 }
 
@@ -66,12 +67,10 @@ class TechDrawExport GeometryObject
 {
 public:
     /// Constructor
-    GeometryObject(const std::string& parent);
+    GeometryObject(const std::string& parent, TechDraw::DrawView* parentObj);
     virtual ~GeometryObject();
 
     void clear();
-
-    void setScale(double value);
 
     //! Returns 2D bounding box
     Base::BoundBox3d calcBoundingBox() const;
@@ -104,7 +103,7 @@ protected:
     TopoDS_Shape hidIso;
 
     void addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass category, bool visible);
-
+    TechDraw::DrawViewDetail* isParentDetail(void);
 
     //similar function in Geometry?
     /*!
@@ -120,9 +119,8 @@ protected:
 
     bool findVertex(Base::Vector2d v);
 
-    double Scale;
-
     std::string m_parentName;
+    TechDraw::DrawView* m_parent;
     int m_isoCount;
 };
 
