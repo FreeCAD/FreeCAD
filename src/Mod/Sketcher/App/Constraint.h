@@ -111,11 +111,12 @@ public:
     PointPos FirstPos;
     int Second;
     PointPos SecondPos;
-    int Third; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline), thirdpos remains unused. It is not a GeoId. 
+    int Third; 
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;
     bool isDriving;
+    int InternalAlignmentIndex; // Note: for InternalAlignment Type this index indexes equal internal geometry elements (e.g. index of pole in a bspline). It is not a GeoId!! 
 
 protected:
     boost::uuids::uuid tag;

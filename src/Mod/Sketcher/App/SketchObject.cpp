@@ -3326,8 +3326,8 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             {
                 switch((*it)->AlignmentType){
                     case Sketcher::BSplineControlPoint:
-                        controlpoints[(*it)->Third] = true;
-                        controlpointgeoids[(*it)->Third] = (*it)->First;
+                        controlpoints[(*it)->InternalAlignmentIndex] = true;
+                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
                         break;
                     default:
                         return -1;
@@ -3373,7 +3373,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                 newConstr->First = currentgeoid+incrgeo+1;
                 newConstr->FirstPos = Sketcher::mid;
                 newConstr->Second = GeoId;
-                newConstr->Third = index;
+                newConstr->InternalAlignmentIndex = index;
 
                 icon.push_back(newConstr);
 
