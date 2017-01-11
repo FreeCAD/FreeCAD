@@ -1198,7 +1198,7 @@ int Sketch::addConstraint(const Constraint *constraint)
                 rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
                 break;
         case BSplineControlPoint:
-                rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->Third);
+                rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
             default:
                 break;
         }
