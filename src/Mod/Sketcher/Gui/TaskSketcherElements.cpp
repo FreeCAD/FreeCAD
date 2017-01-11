@@ -231,6 +231,8 @@ void ElementView::keyPressEvent(QKeyEvent * event)
 
 // ----------------------------------------------------------------------------
 
+/* TRANSLATOR SketcherGui::TaskSketcherElements */
+
 TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"),tr("Elements"),true, 0)
     , sketchView(sketchView)
@@ -244,6 +246,15 @@ TaskSketcherElements::TaskSketcherElements(ViewProviderSketch *sketchView)
     // we need a separate container widget to add all controls to
     proxy = new QWidget(this);
     ui->setupUi(proxy);
+#ifdef Q_OS_MAC
+    QString cmdKey = QString::fromUtf8("\xe2\x8c\x98"); // U+2318
+#else
+    QString cmdKey = qApp->translate("QShortcut", "Ctrl");
+#endif
+    QString zKey = QString::fromLatin1("Z");
+    ui->Explanation->setText(tr("<html><head/><body><p>&quot;%1&quot;: multiple selection</p>"
+                                "<p>&quot;%2&quot;: switch to next valid type</p></body></html>")
+                             .arg(cmdKey).arg(zKey));
     ui->listWidgetElements->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->listWidgetElements->setEditTriggers(QListWidget::NoEditTriggers);
     ui->listWidgetElements->setMouseTracking(true);
