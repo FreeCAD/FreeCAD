@@ -3307,6 +3307,8 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         std::vector<bool> controlpoints(bsp->countPoles());
         std::vector<int> controlpointgeoids(bsp->countPoles());
         
+        bool isfirstweightconstrained = false;
+        
         std::vector<bool>::iterator itb;
         std::vector<int>::iterator it;
         
@@ -3317,6 +3319,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
 
+        // search for existing poles
         for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
              it != vals.end(); ++it) {
             if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
@@ -3331,6 +3334,16 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                 }
             }
         }
+        
+        if(controlpoints[0]) {
+            // search for first pole weight constraint
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+                if((*it)->Type == Sketcher::Radius && (*it)->First == controlpointgeoids[0]) {
+                    isfirstweightconstrained = true ;
+                }
+            }
+        }
 
         int currentgeoid = getHighestCurveIndex();
         int incrgeo = 0;
@@ -3340,6 +3353,8 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         
         std::vector<Base::Vector3d> poles = bsp->getPoles();
         
+        double distance_p0_p1 = (poles[1]-poles[0]).Length(); // for visual purposes only
+        
         int index=0;
         
         for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb, index++) {
@@ -3348,6 +3363,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
             {
                 Part::GeomCircle *pc = new Part::GeomCircle();
                 pc->setCenter(poles[index]);
+                pc->setRadius(distance_p0_p1/6);
 
                 igeo.push_back(pc);
 
@@ -3360,8 +3376,37 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                 newConstr->Third = index;
 
                 icon.push_back(newConstr);
+
+                if(it != controlpointgeoids.begin()) {
+                    // if pole-weight newly created make it equal to first weight by default
+                    Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+                    newConstr2->Type = Sketcher::Equal;
+                    newConstr2->First = currentgeoid+incrgeo+1;
+                    newConstr2->FirstPos = Sketcher::none;
+                    newConstr2->Second = controlpointgeoids[0];
+                    newConstr2->SecondPos = Sketcher::none;
+
+                    icon.push_back(newConstr2);
+                }
+                else {
+                    controlpointgeoids[0] = currentgeoid+incrgeo+1;
+                }
+                
                 incrgeo++;
             }
+        }
+        
+        // constraint the first weight to allow for seamless weight modification and proper visualization
+        if(!isfirstweightconstrained) {
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::Radius;
+            newConstr->First = controlpointgeoids[0];
+            newConstr->FirstPos = Sketcher::none;
+            newConstr->setValue( round(distance_p0_p1/6)); // 1/6 is just an estimation for acceptable general visualization
+
+            icon.push_back(newConstr);
+
         }
 
         this->addGeometry(igeo,true);
