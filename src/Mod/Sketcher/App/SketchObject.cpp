@@ -3612,7 +3612,98 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         return delgeometries.size(); //number of deleted elements
     }
-    else
+    else if( geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+        
+        // First we search existing IA 
+        std::vector<int> controlpointgeoids(bsp->countPoles());
+        std::vector<int> associatedcontraints(bsp->countPoles());
+        
+        std::vector<int>::iterator it;
+        std::vector<int>::iterator ita;
+        
+        for(it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+            (*it) = -1;
+            (*ita) = 0;
+        }
+        
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+        
+        // search for existing poles
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::BSplineControlPoint:
+                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+        
+        std::vector<int> delgeometries;
+        bool firstpoledeleted = false;
+
+        for( it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+            if((*it) != -1) {
+                // look for a circle at geoid index
+                for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
+                     itc != vals.end(); ++itc) {
+
+                    if((*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it))
+                        (*ita)++;
+                 }
+
+                 if((*ita)<3 ) { // IA + Weight
+                     delgeometries.push_back((*it));
+
+                     if (it == controlpointgeoids.begin())
+                         firstpoledeleted = true;
+                 }
+            }
+        }
+
+        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
+
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+        // retest the first pole after removal of equality constraints from other poles
+        associatedcontraints[0] = 0;
+        delgeometries.clear();
+        
+        if(controlpointgeoids[0] != -1 && !firstpoledeleted) {
+            // look for a circle at geoid index
+            for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
+                    itc != vals.end(); ++itc) {
+                
+                if((*itc)->Second == controlpointgeoids[0] || (*itc)->First == controlpointgeoids[0] || (*itc)->Third == controlpointgeoids[0])
+                    associatedcontraints[0]++;
+            }
+            
+            if(associatedcontraints[0]<4 ) // IA + Weight + Radius
+                delgeometries.push_back(controlpointgeoids[0]);
+        }
+
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+
+        return delgeometries.size(); //number of deleted elements
+    }
+    else 
         return -1; // not supported type
 }
 
