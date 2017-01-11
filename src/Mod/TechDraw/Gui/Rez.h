@@ -45,6 +45,8 @@ public:
     static Base::Vector3d guiX(Base::Vector3d v);
 //turn Gui side value to App side value
     static double appX(double x);
+    static Base::Vector2d appX(Base::Vector2d v);
+    static Base::Vector3d appX(Base::Vector3d v);
 
     static QPointF guiPt(QPointF p);
     static QPointF appPt(QPointF p);
