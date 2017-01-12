@@ -23,7 +23,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>3</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="Depths">
       <property name="geometry">
@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>327</height>
+        <height>347</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -98,7 +98,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>327</height>
+        <height>347</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -142,71 +142,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Holding">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>334</width>
-        <height>327</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Holding</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="addTag">
-         <property name="text">
-          <string>Add New</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="deleteTag">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QTreeWidget" name="tagTree">
-         <column>
-          <property name="text">
-           <string>Tag</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Height</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Length</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Angle</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>327</height>
+        <height>347</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -308,20 +250,6 @@
            <widget class="QLabel" name="label_11">
             <property name="text">
              <string>Roll Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Plunge Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="Gui::InputField" name="plungeAngle">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
             </property>
            </widget>
           </item>
