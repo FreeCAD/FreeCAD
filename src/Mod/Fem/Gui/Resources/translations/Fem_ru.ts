@@ -32,12 +32,12 @@
     <message>
       <location filename="_CommandFemFromShape.py" line="39"/>
       <source>Create FEM mesh</source>
-      <translation>Создать МКЭ сетку</translation>
+      <translation>Создать МКЭ-сетку</translation>
     </message>
     <message>
       <location filename="_CommandFemFromShape.py" line="40"/>
       <source>Create FEM mesh from shape</source>
-      <translation>Создать МКЭ сетку из формы</translation>
+      <translation>Создать МКЭ-сетку из формы</translation>
     </message>
   </context>
   <context>
@@ -207,7 +207,7 @@
       <location filename="../../Command.cpp" line="166"/>
       <location filename="../../Command.cpp" line="167"/>
       <source>Add a part to the Analysis</source>
-      <translation>Добавить новую часть в Анализ</translation>
+      <translation>Добавить новую часть в анализ</translation>
     </message>
   </context>
   <context>
@@ -225,7 +225,7 @@
     <message>
       <location filename="../../Command.cpp" line="275"/>
       <source>Create FEM constraint for a bearing</source>
-      <translation>Создать МКЭ ограничения для подшипника</translation>
+      <translation>Создать МКЭ-ограничения для подшипника</translation>
     </message>
   </context>
   <context>
@@ -292,12 +292,12 @@
     <message>
       <location filename="../../Command.cpp" line="446"/>
       <source>Create FEM gear constraint</source>
-      <translation>Создать МКЭ передач с ограничениями</translation>
+      <translation>Создать передаточное МКЭ-ограничение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
       <source>Create FEM constraint for a gear</source>
-      <translation>Создать МКЭ с ограничениями для передач</translation>
+      <translation>Создать МКЭ-ограничение для передачи</translation>
     </message>
   </context>
   <context>
@@ -328,12 +328,12 @@
     <message>
       <location filename="../../Command.cpp" line="487"/>
       <source>Create FEM pulley constraint</source>
-      <translation>Создать МКЭ с ограничениями для шкивов</translation>
+      <translation>Создать шкивовое МКЭ-ограничение</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="488"/>
       <source>Create FEM constraint for a pulley</source>
-      <translation type="unfinished">Create FEM constraint for a pulley</translation>
+      <translation>Создать МКЭ-ограничение для шкива</translation>
     </message>
   </context>
   <context>
@@ -347,7 +347,7 @@
       <location filename="../../Command.cpp" line="104"/>
       <location filename="../../Command.cpp" line="105"/>
       <source>Create a FEM analysis</source>
-      <translation>Создать МКЭ анализ</translation>
+      <translation>Создать МКЭ-анализ</translation>
     </message>
   </context>
   <context>
@@ -358,11 +358,11 @@
     </message>
     <message>
       <source>Create FEM mesh</source>
-      <translation>Создать МКЭ сетку</translation>
+      <translation>Создать МКЭ-сетку</translation>
     </message>
     <message>
       <source>Create FEM mesh from shape</source>
-      <translation>Создать МКЭ сетку из формы</translation>
+      <translation>Создать МКЭ-сетку из формы</translation>
     </message>
   </context>
   <context>
@@ -386,7 +386,7 @@
     <message>
       <location filename="../../Command.cpp" line="750"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
-      <translation type="unfinished">Select a single FEM mesh or nodes set, please.</translation>
+      <translation>Выберите одну МКЭ-сетку или набор узлов, пожалуйста.</translation>
     </message>
   </context>
   <context>
@@ -488,12 +488,12 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="274"/>
       <source>High frequency limit</source>
-      <translation>Ограничение высокой частоты</translation>
+      <translation>Верхнее ограничение частоты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="303"/>
       <source>Low frequency limit</source>
-      <translation>Ограничение низкой частоты</translation>
+      <translation>Нижнее ограничение частоты</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="335"/>
@@ -519,7 +519,7 @@
     <message>
       <location filename="../../DlgSettingsFem.ui" line="394"/>
       <source>Use materials from user defined directory</source>
-      <translation type="unfinished">Use materials from user defined directory</translation>
+      <translation>Использовать материалы из каталога, определённого пользователем</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFem.ui" line="449"/>
@@ -535,7 +535,7 @@
     </message>
     <message>
       <source>Quadrangle</source>
-      <translation>Четырехугольник</translation>
+      <translation>Четырёхугольник</translation>
     </message>
     <message>
       <source>Maximum length</source>
@@ -645,7 +645,7 @@
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="75"/>
       <source>Edit FEM mesh</source>
-      <translation type="unfinished">Edit FEM mesh</translation>
+      <translation>Редактировать МКЭ-сеть</translation>
     </message>
     <message>
       <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="106"/>
@@ -666,7 +666,7 @@
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="67"/>
       <source>FEM constraint parameters</source>
-      <translation>Параметры зависимостей МКЭ</translation>
+      <translation>Параметры ограничений МКЭ</translation>
     </message>
   </context>
   <context>
@@ -689,7 +689,7 @@
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
       <source>Please use only a single reference for bearing constraint</source>
-      <translation>Пожалуйста, используйте только одну ссылку для подшипников с ограничениями</translation>
+      <translation>Пожалуйста, используйте только одну ссылку для ограничений подшипника</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="178"/>
@@ -761,12 +761,12 @@
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="135"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Не возможны смешанные типы формы. Вместо этого используйте второе ограничение</translation>
+      <translation>Не разрешены смешанные типы формы. Вместо этого используйте второе ограничение</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="140"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Можно выбрать только грани, ребра и вершины</translation>
+      <translation>Можно выбрать только грани, рёбра и вершины</translation>
     </message>
   </context>
   <context>
@@ -803,12 +803,12 @@
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="176"/>
       <source>Mixed shape types are not possible. Use a second constraint instead</source>
-      <translation>Не возможны смешанные типы формы. Вместо этого используйте второе ограничение</translation>
+      <translation>Не разрешены смешанные типы формы. Вместо этого используйте второе ограничение</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="182"/>
       <source>Only faces, edges and vertices can be picked</source>
-      <translation>Можно выбрать только грани, ребра и вершины</translation>
+      <translation>Можно выбрать только грани, рёбра и вершины</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="213"/>
@@ -965,7 +965,7 @@
       <location filename="../../../TaskPanelFemBeamSection.ui" line="55"/>
       <location filename="../../../TaskPanelFemShellThickness.ui" line="55"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Оставить ссылки пустыми </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemBeamSection.ui" line="62"/>
@@ -1000,7 +1000,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="20"/>
       <source>Working directory</source>
-      <translation type="unfinished">Working directory</translation>
+      <translation>Рабочий каталог</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="45"/>
@@ -1010,12 +1010,12 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="55"/>
       <source>Analysis type</source>
-      <translation type="unfinished">Analysis type</translation>
+      <translation>Тип анализа</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="67"/>
       <source>Static</source>
-      <translation type="unfinished">Static</translation>
+      <translation>Статический</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="77"/>
@@ -1025,7 +1025,7 @@
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="89"/>
       <source>Write .inp file</source>
-      <translation type="unfinished">Write .inp file</translation>
+      <translation>Записать файл .inp</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelFemSolverCalculix.ui" line="99"/>
@@ -1063,7 +1063,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="33"/>
       <source>choose...</source>
-      <translation>выберете...</translation>
+      <translation>выберите...</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="41"/>
@@ -1078,7 +1078,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="60"/>
       <source>Leave references blank </source>
-      <translation type="unfinished">Leave references blank </translation>
+      <translation>Оставить ссылки пустыми </translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="67"/>
@@ -1088,7 +1088,7 @@
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="77"/>
       <source>Add reference</source>
-      <translation type="unfinished">Add reference</translation>
+      <translation>Добавить ссылку</translation>
     </message>
     <message>
       <location filename="../../../TaskPanelMechanicalMaterial.ui" line="96"/>
@@ -1126,7 +1126,7 @@
     </message>
     <message>
       <source>Pa</source>
-      <translation>ПА</translation>
+      <translation>Па</translation>
     </message>
   </context>
   <context>
@@ -1134,7 +1134,7 @@
     <message>
       <location filename="../../Command.cpp" line="71"/>
       <source>No active Analysis</source>
-      <translation>Анализ не активен</translation>
+      <translation>Нет активного анализа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="72"/>
@@ -1192,7 +1192,7 @@
     </message>
     <message>
       <source>Combo View</source>
-      <translation>Комбо панель</translation>
+      <translation>Комбинированный вид</translation>
     </message>
     <message>
       <source>combiTab</source>
@@ -1711,7 +1711,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
-      <translation type="unfinished">Max. Size:</translation>
+      <translation>Макс. размер:</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="44"/>
@@ -1726,17 +1726,17 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="64"/>
       <source>VeryCoarse</source>
-      <translation type="unfinished">VeryCoarse</translation>
+      <translation>ОченьГрубо</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="69"/>
       <source>Coarse</source>
-      <translation type="unfinished">Coarse</translation>
+      <translation type="unfinished">Грубо</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="74"/>
       <source>Moderate</source>
-      <translation type="unfinished">Moderate</translation>
+      <translation type="unfinished">Средне</translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="79"/>
@@ -1776,7 +1776,7 @@
     <message>
       <location filename="../../TaskTetParameter.ui" line="166"/>
       <source>Node count: </source>
-      <translation>Счетчик узлов: </translation>
+      <translation>Счётчик узлов: </translation>
     </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="180"/>
