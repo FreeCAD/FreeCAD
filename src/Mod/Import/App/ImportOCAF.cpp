@@ -70,6 +70,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
@@ -193,21 +194,28 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
+    std::vector<App::DocumentObject*> lValue;
+
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0;
+
+        Part::Compound *pcCompound = static_cast<Part::Compound*>(doc->addObject
+                            ("Part::Compound",name.c_str() ));
         for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++)
-            createShape(xp.Current(), loc, name);
+            createShape(xp.Current(), loc, name, lValue);
         for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++)
-            createShape(xp.Current(), loc, name);
+            createShape(xp.Current(), loc, name, lValue);
+        pcCompound->Links.setValues(lValue);
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
 
-    createShape(aShape, loc, name);
+    createShape(aShape, loc, name, lValue);
 }
 
-void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name)
+void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
+                             std::vector<App::DocumentObject*>& lvalue)
 {
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
     if (!loc.IsIdentity())
@@ -215,6 +223,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     else
         part->Shape.setValue(aShape);
     part->Label.setValue(name);
+    lvalue.push_back(part);
 
     Quantity_Color aColor;
     App::Color color(0.8f,0.8f,0.8f);

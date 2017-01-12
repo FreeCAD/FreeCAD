@@ -22,12 +22,47 @@
 # *                                                                         *
 # ***************************************************************************
 
-import TestApp
+import FreeCAD
+import FreeCADGui
+from PySide import QtCore, QtGui
+from PathScripts.PathPreferences import PathPreferences
 
-from PathTests.TestPathCore import TestPathCore
-from PathTests.TestPathPost import PathPostTestCases
+# Qt tanslation handling
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
 
-from PathTests.TestPathGeom import TestPathGeom
-from PathTests.TestPathDepthParams import depthTestCases
+    def translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
 
-from PathTests.TestPathDressupHoldingTags import TestHoldingTags
+except AttributeError:
+
+    def translate(context, text, disambig=None):
+        return QtGui.QApplication.translate(context, text, disambig)
+
+_dressups = []
+
+def RegisterDressup(dressup):
+    _dressups.append(dressup)
+
+class DressupPreferencesPage:
+    def __init__(self, parent=None):
+        self.form = QtGui.QToolBox()
+        self.form.setWindowTitle(translate('PathPreferencesPathDressup', 'Dressups'))
+        pages = []
+        for dressup in _dressups:
+            page = dressup.preferencesPage()
+            if hasattr(page, 'icon') and page.icon:
+                self.form.addItem(page.form, page.icon, page.label)
+            else:
+                self.form.addItem(page.form, page.label)
+            pages.append(page)
+        self.pages = pages
+
+    def saveSettings(self):
+        for page in self.pages:
+            page.saveSettings()
+
+    def loadSettings(self):
+        for page in self.pages:
+            page.loadSettings()
+

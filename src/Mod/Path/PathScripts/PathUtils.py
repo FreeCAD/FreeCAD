@@ -35,6 +35,7 @@ from DraftGeomUtils import geomType
 import PathScripts
 from PathScripts import PathJob
 # import itertools
+import numpy
 
 def cleanedges(splines, precision):
     '''cleanedges([splines],precision). Convert BSpline curves, Beziers, to arcs that can be used for cnc paths.
@@ -840,27 +841,53 @@ class depth_params:
         '''returns a list of depths to be used in order from first to last.
         equalstep=True: all steps down before the finish pass will be equalized.'''
 
-        depths = []
         if self.user_depths is not None:
-            depths = self.user_depths
-        else:
-            total_depth = self.start_depth - self.final_depth
-            if total_depth <= 0:
-                return depths
-            layers_required = int((total_depth - self.z_finish_step) / self.step_down)
-            partial_steplayer = (total_depth - self.z_finish_step) % self.step_down
-            if equalstep is True and partial_steplayer > 0:
-                layerstep = float((total_depth - self.z_finish_step) / (layers_required + 1))
+            return self.user_depths
+
+        total_depth = self.start_depth - self.final_depth
+
+        if total_depth < 0:
+            return []
+
+        depths = [self.final_depth]
+
+        # apply finish step if necessary
+        if self.z_finish_step > 0:
+            if self.z_finish_step < total_depth:
+                depths.append(self.z_finish_step + self.final_depth)
             else:
-                layerstep = self.step_down
+                return depths
 
-            for step in range(layers_required):
-                d = self.start_depth - ((step +1) * layerstep)
-                depths.append(d)
+        if equalstep:
+            depths += self.__equal_steps(self.start_depth, depths[-1], self.step_down)[1:]
+        else:
+            depths += self.__fixed_steps(self.start_depth, depths[-1], self.step_down)[1:]
 
-            if self.z_finish_step != 0 and depths[-1] != self.final_depth + self.z_finish_step:
-                depths.append(self.final_depth + self.z_finish_step)
-            if depths[-1] != self.final_depth:
-                depths.append(self.final_depth)
-
+        depths.reverse()
         return depths
+
+    def __equal_steps(self, start, stop, max_size):
+        '''returns a list of depths beginning with the bottom (included), ending
+        with the top (not included).
+        all steps are of equal size, which is as big as possible but not bigger
+        than max_size.'''
+
+        steps_needed = math.ceil((start - stop) / max_size)
+        depths = numpy.linspace(stop, start, steps_needed, endpoint=False)
+
+        return depths.tolist()
+
+    def __fixed_steps(self, start, stop, size):
+        '''returns a list of depths beginning with the bottom (included), ending
+        with the top (not included).
+        all steps are of size 'size' except the one at the bottom wich can be
+        smaller.'''
+
+        fullsteps = int((start - stop) / size)
+        last_step = start - (fullsteps * size)
+        depths = numpy.linspace(last_step, start, fullsteps, endpoint=False)
+
+        if last_step == stop:
+            return depths.tolist()
+        else:
+            return [stop] + depths.tolist()
