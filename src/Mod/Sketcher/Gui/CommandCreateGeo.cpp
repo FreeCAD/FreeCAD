@@ -4022,7 +4022,6 @@ public:
                                     "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
                                     sketchgui->getObject()->getNameInDocument(),
                                     currentgeoid);
-
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4320,7 +4319,10 @@ public:
    DrawSketchHandlerBSpline()
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
       , EditCurve(2)
+      , CurrentConstraint(0)
     {
+        std::vector<AutoConstraint> sugConstr1;
+        sugConstr.push_back(sugConstr1);
     }
 
     virtual ~DrawSketchHandlerBSpline() {}
@@ -4340,23 +4342,28 @@ public:
     {
         if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
             setPositionText(onSketchPos);
-            /*if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f,0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
+            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
                 return;
-            }*/
+            }
         }
         else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS){
 
-	    EditCurve[EditCurve.size()-1] = onSketchPos;
+            EditCurve[EditCurve.size()-1] = onSketchPos;
 
-	    sketchgui->drawEdit(EditCurve);
+            sketchgui->drawEdit(EditCurve);
 
-	    float length = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).Length();
-	    float angle = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).GetAngle(Base::Vector2d(1.f,0.f));
+            float length = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).Length();
+            float angle = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).GetAngle(Base::Vector2d(1.f,0.f));
 
-	    SbString text;
-	    text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
-	    setPositionText(EditCurve[EditCurve.size()-1], text);
+            SbString text;
+            text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
+            setPositionText(EditCurve[EditCurve.size()-1], text);
+            
+            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
+                return;
+            }
 
         }
         applyCursor();
@@ -4368,20 +4375,27 @@ public:
 
             EditCurve[0] = onSketchPos;
 
-	    Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
+            Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
+            
+            std::vector<AutoConstraint> sugConstrN;
+            sugConstr.push_back(sugConstrN);
+            CurrentConstraint++;
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
 	    
-	    EditCurve[EditCurve.size()-1] = onSketchPos;
-	    
-            // finish adding controlpoints on double click
+            EditCurve[EditCurve.size()-1] = onSketchPos;
+            
+                // finish adding controlpoints on double click
             if (EditCurve[EditCurve.size()-2] == EditCurve[EditCurve.size()-1]) {
-		EditCurve.pop_back();
-		Mode = STATUS_CLOSE;
+                EditCurve.pop_back();
+                Mode = STATUS_CLOSE;
             }
             else {
-		EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
-	    }
+                EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
+                std::vector<AutoConstraint> sugConstrN;
+                sugConstr.push_back(sugConstrN);
+                CurrentConstraint++;
+            }
 
         }
         return true;
@@ -4397,10 +4411,10 @@ public:
 
 	    for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin(); 
 		 it != EditCurve.end(); ++it) {
-		stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
+            stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
 	    }
 
-    	    std::string controlpoints = stream.str();
+    	std::string controlpoints = stream.str();
 
 	    // remove last comma and add brackets
 	    int index = controlpoints.rfind(',');
@@ -4449,11 +4463,14 @@ public:
 
             Gui::Command::commitCommand();
 
-            // add auto constraints
-            /*if (sugConstr1.size() > 0) {
-                createAutoConstraints(sugConstr1, currentgeoid+1, Sketcher::start);
-                sugConstr1.clear();
-            }*/
+            int poleindex=0;
+            for(std::vector<std::vector<AutoConstraint>>::iterator it=sugConstr.begin(); it != sugConstr.end(); it++, poleindex++) {
+                // add auto constraints
+                if ((*it).size() > 0) {
+                    createAutoConstraints((*it), currentgeoid+1+poleindex, Sketcher::mid);
+                    (*it).clear();
+                }
+            }
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
@@ -4488,7 +4505,9 @@ protected:
 
     std::vector<Base::Vector2d> EditCurve;
 
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
+    std::vector<std::vector<AutoConstraint>> sugConstr;
+    
+    int CurrentConstraint;
 
 };
 
