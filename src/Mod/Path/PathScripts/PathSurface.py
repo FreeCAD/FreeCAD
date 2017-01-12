@@ -442,19 +442,19 @@ class TaskPanel:
 
     def getFields(self):
         if self.obj:
-            if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = self.form.startDepth.text()
-            if hasattr(self.obj, "FinalDepth"):
-                self.obj.FinalDepth = self.form.finalDepth.text()
-            if hasattr(self.obj, "FinishDepth"):
-                self.obj.FinishDepth = self.form.finishDepth.text()
-            if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = self.form.stepDown.value()
 
+            if hasattr(self.obj, "StartDepth"):
+                self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
+            if hasattr(self.obj, "FinalDepth"):
+                self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
+            if hasattr(self.obj, "FinishDepth"):
+                self.obj.FinishDepth = FreeCAD.Units.Quantity(self.form.finishDepth.text()).Value
+            if hasattr(self.obj, "StepDown"):
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "SafeHeight"):
-                self.obj.SafeHeight = self.form.safeHeight.text()
+                self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
-                self.obj.ClearanceHeight = self.form.clearanceHeight.text()
+                self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
             if hasattr(self.obj, "Algorithm"):
                 self.obj.Algorithm = str(
                     self.form.algorithmSelect.currentText())
@@ -462,13 +462,12 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.finishDepth.setText(str(self.obj.FinishDepth.Value))
-        self.form.stepDown.setValue(self.obj.StepDown)
-
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
+        self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finishDepth.setText(FreeCAD.Units.Quantity(self.obj.FinishDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown, FreeCAD.Units.Length).UserString)
+        self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
 
         for i in self.obj.Base:
             self.form.baseList.addItem(i[0].Name)

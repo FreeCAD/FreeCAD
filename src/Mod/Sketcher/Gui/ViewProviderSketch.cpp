@@ -1283,6 +1283,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     else if (Constr->Type == Angle) {
 
         Base::Vector3d p0(0.,0.,0.);
+        double factor = 0.5;
         if (Constr->Second != Constraint::GeoUndef) { // line to line angle
             Base::Vector3d dir1, dir2;
             if(Constr->Third == Constraint::GeoUndef) { //angle between two lines
@@ -1310,7 +1311,11 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                     double c2 = dir2.y*pnt2.x - dir2.x*pnt2.y;
                     double x = (dir1.x*c2 - dir2.x*c1)/det;
                     double y = (dir1.y*c2 - dir2.y*c1)/det;
+                    // intersection point
                     p0 = Base::Vector3d(x,y,0);
+
+                    Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
+                    factor = factor * Base::sgn<double>((dir1+dir2) * vec);
                 }
             } else {//angle-via-point
                 Base::Vector3d p = getSketchObject()->getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
@@ -1319,6 +1324,9 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
                 dir1.RotateZ(-M_PI/2);//convert to vector of tangency by rotating
                 dir2 = getSketchObject()->getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
                 dir2.RotateZ(-M_PI/2);
+
+                Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
+                factor = factor * Base::sgn<double>((dir1+dir2) * vec);
             }
 
         } else if (Constr->First != Constraint::GeoUndef) { // line/arc angle
@@ -1338,7 +1346,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
             return;
 
         Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
-        Constr->LabelDistance = vec.Length()/2;
+        Constr->LabelDistance = factor * vec.Length();
     }
 
     // delete the cloned objects
@@ -4090,7 +4098,7 @@ Restart:
                             }
 
                             startangle = atan2(dir1.y,dir1.x);
-                            range = atan2(-dir1.y*dir2.x+dir1.x*dir2.y,
+                            range = atan2(dir1.x*dir2.y-dir1.y*dir2.x,
                                           dir1.x*dir2.x+dir1.y*dir2.y);
                             endangle = startangle + range;
 

@@ -186,7 +186,7 @@ Intersection of this and a given list of topo shapes.
 
 Supports:
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
-- Support of multiple arguments for a single Boolean operation (s1 AND (s2 OR s2))
+- Support of multiple arguments for a single Boolean operation (s1 AND (s2 OR s3))
 - Parallelization of Boolean Operations algorithm
 
 OCC 6.9.0 or later is required.</UserDocu>
@@ -203,7 +203,7 @@ Section of this and a given list of topo shapes.
 
 Supports:
 - Fuzzy Boolean operations (global tolerance for a Boolean operation)
-- Support of multiple arguments for a single Boolean operation
+- Support of multiple arguments for a single Boolean operation (s1 AND (s2 OR s3))
 - Parallelization of Boolean Operations algorithm
 
 OCC 6.9.0 or later is required.</UserDocu>

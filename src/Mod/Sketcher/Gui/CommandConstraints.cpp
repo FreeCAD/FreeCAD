@@ -3249,23 +3249,24 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
 
                 // find the two closest line ends
                 Sketcher::PointPos PosId1,PosId2;
-                Base::Vector3d p1a = lineSeg1->getStartPoint();
-                Base::Vector3d p1b = lineSeg1->getEndPoint();
-                Base::Vector3d p2a = lineSeg2->getStartPoint();
-                Base::Vector3d p2b = lineSeg2->getEndPoint();
+                Base::Vector3d p1[2], p2[2];
+                p1[0] = lineSeg1->getStartPoint();
+                p1[1] = lineSeg1->getEndPoint();
+                p2[0] = lineSeg2->getStartPoint();
+                p2[1] = lineSeg2->getEndPoint();
 
                 // Get the intersection point in 2d of the two lines if possible
-                Base::Line2d line1(Base::Vector2d(p1a.x, p1a.y), Base::Vector2d(p1b.x, p1b.y));
-                Base::Line2d line2(Base::Vector2d(p2a.x, p2a.y), Base::Vector2d(p2b.x, p2b.y));
+                Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y), Base::Vector2d(p1[1].x, p1[1].y));
+                Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y), Base::Vector2d(p2[1].x, p2[1].y));
                 Base::Vector2d s;
                 if (line1.Intersect(line2, s)) {
                     // get the end points of the line segments that are closest to the intersection point
-                    Base::Vector3d s3d(s.x, s.y, p1a.z);
-                    if (Base::DistanceP2(s3d, p1a) < Base::DistanceP2(s3d, p1b))
+                    Base::Vector3d s3d(s.x, s.y, p1[0].z);
+                    if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1]))
                         PosId1 = Sketcher::start;
                     else
                         PosId1 = Sketcher::end;
-                    if (Base::DistanceP2(s3d, p2a) < Base::DistanceP2(s3d, p2b))
+                    if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1]))
                         PosId2 = Sketcher::start;
                     else
                         PosId2 = Sketcher::end;
@@ -3275,11 +3276,11 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                     double length = DBL_MAX;
                     for (int i=0; i <= 1; i++) {
                         for (int j=0; j <= 1; j++) {
-                            double tmp = Base::DistanceP2((j?p2a:p2b), (i?p1a:p1b));
+                            double tmp = Base::DistanceP2(p2[j], p1[i]);
                             if (tmp < length) {
                                 length = tmp;
-                                PosId1 = i ? Sketcher::start : Sketcher::end;
-                                PosId2 = j ? Sketcher::start : Sketcher::end;
+                                PosId1 = i ? Sketcher::end : Sketcher::start;
+                                PosId2 = j ? Sketcher::end : Sketcher::start;
                             }
                         }
                     }
@@ -3293,7 +3294,7 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 // check if the two lines are parallel, in this case an angle is not possible
                 Base::Vector3d dir3 = dir1 % dir2;
                 if (dir3.Length() < Precision::Intersection()) {
-                    Base::Vector3d dist = (p1a - p2a) % dir1;
+                    Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
                     if (dist.Sqr() > Precision::Intersection()) {
                         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Parallel lines"),
                             QObject::tr("An angle constraint cannot be set for two parallel lines."));
