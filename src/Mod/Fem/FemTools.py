@@ -307,6 +307,7 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 self.shell_thicknesses.append(shell_thickness_dict)
 
     def check_prerequisites(self):
+        import Units
         message = ""
         # analysis
         if not self.analysis:
@@ -352,20 +353,27 @@ class FemTools(QtCore.QRunnable, QtCore.QObject):
                 has_no_references = True
         for m in self.materials_linear:
             mat_map = m['Object'].Material
-            if 'YoungsModulus' not in mat_map:
+            if 'YoungsModulus' in mat_map:
+                # print Units.Quantity(mat_map['YoungsModulus']).Value
+                if not Units.Quantity(mat_map['YoungsModulus']).Value:
+                    message += "Value of YoungsModulus is set to 0.0.\n"
+            else:
                 message += "No YoungsModulus defined for at least one material.\n"
             if 'PoissonRatio' not in mat_map:
-                message += "No PoissonRatio defined for at least one material.\n"
+                message += "No PoissonRatio defined for at least one material.\n"  # PoissonRatio is allowed to be 0.0 (in ccx), but it should be set anyway.
             if self.analysis_type == "frequency" or self.selfweight_constraints:
                 if 'Density' not in mat_map:
                     message += "No Density defined for at least one material.\n"
             if self.analysis_type == "thermomech":
-                if 'ThermalConductivity' not in mat_map:
+                if 'ThermalConductivity' in mat_map:
+                    if not Units.Quantity(mat_map['ThermalConductivity']).Value:
+                        message += "Value of ThermalConductivity is set to 0.0.\n"
+                else:
                     message += "Thermomechanical analysis: No ThermalConductivity defined for at least one material.\n"
                 if 'ThermalExpansionCoefficient' not in mat_map:
-                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"
+                    message += "Thermomechanical analysis: No ThermalExpansionCoefficient defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
                 if 'SpecificHeat' not in mat_map:
-                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"
+                    message += "Thermomechanical analysis: No SpecificHeat defined for at least one material.\n"  # allowed to be 0.0 (in ccx)
         for m in self.materials_linear:
             has_nonlinear_material = False
             for nlm in self.materials_nonlinear:
