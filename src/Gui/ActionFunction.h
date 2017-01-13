@@ -86,6 +86,29 @@ private:
     Q_DECLARE_PRIVATE(ActionFunction)
 };
 
+class TimerFunctionPrivate;
+
+class GuiExport TimerFunction : public QObject
+{
+    Q_OBJECT
+
+public:
+    /// Constructor
+    TimerFunction(QObject* = 0);
+    virtual ~TimerFunction();
+
+    void setFunction(boost::function<void()> func);
+    void setAutoDelete(bool);
+
+private Q_SLOTS:
+    void timeout();
+
+private:
+    QScopedPointer<TimerFunctionPrivate> d_ptr;
+    Q_DISABLE_COPY(TimerFunction)
+    Q_DECLARE_PRIVATE(TimerFunction)
+};
+
 } //namespace Gui
 
 
