@@ -1023,21 +1023,27 @@ void DrawProjGroup::onDocumentRestored()
     } else if (hasProjection("Front")) {
        Base::Vector3d dirFront = getProjItem("Front")->Direction.getValue();
        std::string viewDir = Cube::dirToView(dirFront);
-       Base::Vector3d rotFront = getProjItem("Rot")->RotationVector.getValue();
+       Base::Vector3d rotFront(1.0,0.0,0.0);
+       App::Property* prop = getPropertyByName("RotationVector");
+       if (prop) {
+          Base::Console().Log("INFO - DPG::onRestore - DPG has RotationVector property\n");
+          rotFront = getProjItem("Front")->RotationVector.getValue();
+       } else {
+          Base::Console().Log("INFO - DPG::onRestore - DPG has NO RotationVector property\n");
+       }
        std::string viewRot = Cube::dirToView(rotFront);
        std::string config = viewDir + viewRot;
-       //find(config) or try/catch
        try {
            config = m_dirRotToConfig.at(config);
            setConfig(config);
        }
        catch (...) {
-           Base::Console().Message("ERROR: DPG cannot set configuration: %s using AD\n",config.c_str());
+           Base::Console().Message("PROBLEM: DPG cannot set configuration: %s using default instead\n",config.c_str());
            setConfig("AD");
        }
     } else {
-       Base::Console().Message("ERROR: DPG cannot find Front view on restore\n");
-       setConfig("AD");     // set to default config??
+       Base::Console().Message("PROBLEM: DPG cannot find Front view on restore. Using default instead.\n");
+       setConfig("AD"); 
     }
 }
 
