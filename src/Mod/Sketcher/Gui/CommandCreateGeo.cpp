@@ -4316,9 +4316,10 @@ static const char *cursor_createbspline[]={
 class DrawSketchHandlerBSpline: public DrawSketchHandler
 {
 public:
-   DrawSketchHandlerBSpline()
+    DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
       , EditCurve(2)
+      , ConstrMethod(constructionMethod)
       , CurrentConstraint(0)
     {
         std::vector<AutoConstraint> sugConstr1;
@@ -4432,10 +4433,11 @@ public:
             //Add arc of parabola
             Gui::Command::doCommand(Gui::Command::Doc,
                 "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
-                "(%s),"
+                "(%s,%s),"
                 "%s)",
                     sketchgui->getObject()->getNameInDocument(),
                     controlpoints.c_str(),
+                    ConstrMethod == 0 ?"False":"True",
                     geometryCreationMode==Construction?"True":"False"); 
 
             currentgeoid++;
@@ -4508,10 +4510,11 @@ protected:
     std::vector<std::vector<AutoConstraint>> sugConstr;
     
     int CurrentConstraint;
+    int ConstrMethod;
 
 };
 
-DEF_STD_CMD_AU(CmdSketcherCreateBSpline);
+DEF_STD_CMD_A(CmdSketcherCreateBSpline);
 
 CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
   : Command("Sketcher_CreateBSpline")
@@ -4529,10 +4532,10 @@ CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
 void CmdSketcherCreateBSpline::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline() );
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline(0) );
 }
 
-void CmdSketcherCreateBSpline::updateAction(int mode)
+/*void CmdSketcherCreateBSpline::updateAction(int mode)
 {
     switch (mode) {
     case Normal:
@@ -4544,9 +4547,150 @@ void CmdSketcherCreateBSpline::updateAction(int mode)
             getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
         break;
     }
-}
+}*/
 
 bool CmdSketcherCreateBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateBSpline'
+DEF_STD_CMD_A(CmdSketcherCreatePeriodicBSpline);
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
+: Command("Sketcher_CreatePeriodicBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create periodic B-Spline");
+    sToolTipText    = QT_TR_NOOP("Create a periodic B-Spline via control point in the sketch.");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Create_Periodic_BSpline";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(1) );
+}
+
+bool CmdSketcherCreatePeriodicBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateBSpline'
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateBSpline);
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
+: Command("Sketcher_CompCreateBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create a bspline");
+    sToolTipText    = QT_TR_NOOP("Create a bspline in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the bspline handler when the bspline command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateBSpline::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+    } else {
+        return;
+    }
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateBSpline::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* bspline = pcAction->addAction(QString());
+    bspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+
+    QAction* periodicbspline = pcAction->addAction(QString());
+    periodicbspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    // default
+    pcAction->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateBSpline::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+        case Normal:
+            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+            getAction()->setIcon(a[index]->icon());
+            break;
+        case Construction:
+            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
+            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline_Constr"));
+            getAction()->setIcon(a[index]->icon());
+            break;
+    }
+}
+
+void CmdSketcherCompCreateBSpline::languageChange()
+{
+    Command::languageChange();
+    
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    QAction* bspline = a[0];
+    bspline->setText(QApplication::translate("Sketcher_CreateBSpline","BSpline by control points or poles"));
+    bspline->setToolTip(QApplication::translate("Sketcher_CreateBSpline","Create a BSpline by control points or poles"));
+    bspline->setStatusTip(QApplication::translate("Sketcher_CreateBSpline","Create a BSpline by control points or poles"));
+    QAction* periodicbspline = a[1];
+    periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline","Periodic BSpline by control points or poles"));
+    periodicbspline->setToolTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic BSpline by control points or poles"));
+    periodicbspline->setStatusTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic BSpline by control points or poles"));
+}
+
+bool CmdSketcherCompCreateBSpline::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
@@ -6620,6 +6764,8 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfHyperbola());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfParabola());
     rcCmdMgr.addCommand(new CmdSketcherCreateBSpline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSpline());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateBSpline());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());
