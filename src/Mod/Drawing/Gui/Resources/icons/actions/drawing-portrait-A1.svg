@@ -151,7 +151,7 @@
        x2="12.000004"
        y2="44"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-16.000004,-64)" />
+       gradientTransform="translate(-1.8530273e-7,-16)" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3775-1">
@@ -197,9 +197,9 @@
      borderopacity="0.32941176"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16.548117"
-     inkscape:cx="14.790914"
-     inkscape:cy="21.350501"
+     inkscape:zoom="8.2740585"
+     inkscape:cx="34.850202"
+     inkscape:cy="31.079032"
      inkscape:current-layer="layer6"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -229,7 +229,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -285,20 +285,18 @@
        id="rect2987"
        width="45.999996"
        height="58.000004"
-       x="-7"
-       y="-61.000004"
-       transform="matrix(0,1,-1,0,0,0)" />
+       x="9.0000038"
+       y="-13.000004" />
     <rect
        style="fill:url(#linearGradient3781-9);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;display:inline"
        id="rect2987-1"
        width="41.999996"
        height="54.000004"
-       x="-5"
-       y="-59.000004"
-       transform="matrix(0,1,-1,0,0,0)" />
+       x="11.000004"
+       y="-11.000004" />
     <g
-       transform="matrix(0.87216211,0,0,1.25081,-0.5454545,0)"
-       style="font-size:40.16712952000000314px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
+       transform="matrix(0.87216211,0,0,1.25081,5.454546,8)"
+       style="font-size:40.16712952px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
        id="text3093">
       <path
          d="m 20.920054,1.2345772 -5.420502,14.7550618 10.767458,0 -5.346956,-14.7550618 m -3.408714,-4.4325049 6.25405,0 11.25729,30.3803137 -5.00324,0 -2.50162,-7.99482 -13.199453,0 -1.810267,7.99482 -5.00324,0 10.00648,-30.3803137"
@@ -308,8 +306,8 @@
          style="fill:#2e3436" />
     </g>
     <g
-       transform="scale(0.84432033,1.1843846)"
-       style="font-size:43.65569686999999988px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
+       transform="matrix(0.84432033,0,0,1.1843846,4,8)"
+       style="font-size:43.65569687px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
        id="text3195">
       <path
          d="m 37.900307,25.32961 7.106307,0 0,-24.48528967 -7.106307,1.68864067 0,-4.2216017 7.106307,-1.6886406 4.737539,0 0.07194,28.7068913 7.034365,0 -2e-6,3.37728 -18.950152,10e-7 0,-3.377281"
