@@ -34,7 +34,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>330</height>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>109</width>
-        <height>82</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -181,8 +181,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>144</width>
-        <height>56</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -226,71 +226,13 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="Holding">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>160</width>
-        <height>111</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Holding</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="addTag">
-         <property name="text">
-          <string>Add New</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="deleteTag">
-         <property name="text">
-          <string>Delete</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0" colspan="2">
-        <widget class="QTreeWidget" name="tagTree">
-         <column>
-          <property name="text">
-           <string>Tag</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Location</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Height</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Length</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Angle</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
      <widget class="QWidget" name="page_3">
       <property name="geometry">
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>278</width>
-        <height>214</height>
+        <width>334</width>
+        <height>348</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -304,87 +246,6 @@
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
-       <item row="2" column="1">
-        <widget class="QWidget" name="widget_2" native="true">
-         <layout class="QGridLayout" name="gridLayout_4">
-          <item row="0" column="0">
-           <widget class="QCheckBox" name="useStartPoint">
-            <property name="text">
-             <string>Use Start Point</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QCheckBox" name="useCompensation">
-            <property name="text">
-             <string>Use Compensation</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QCheckBox" name="useEndPoint">
-            <property name="text">
-             <string>Use End Point</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QWidget" name="widget_4" native="true">
-         <layout class="QGridLayout" name="gridLayout_6">
-          <item row="2" column="2">
-           <widget class="Gui::InputField" name="plungeAngle">
-            <property name="unit" stdset="0">
-             <string notr="true"/>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="Gui::InputField" name="extraOffset">
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Roll Radius</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="label_13">
-            <property name="text">
-             <string>Plunge Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>Extra Offset</string>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="Gui::InputField" name="rollRadius">
-            <property name="minimum">
-             <double>0.000000000000000</double>
-            </property>
-            <property name="unit" stdset="0">
-             <string notr="true">mm</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QGridLayout" name="gridLayout_5">
@@ -440,6 +301,46 @@
           </item>
          </layout>
         </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QWidget" name="widget_2" native="true">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="0" column="0">
+           <widget class="QCheckBox" name="useStartPoint">
+            <property name="text">
+             <string>Use Start Point</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QCheckBox" name="useCompensation">
+            <property name="text">
+             <string>Use Compensation</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="useEndPoint">
+            <property name="text">
+             <string>Use End Point</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
