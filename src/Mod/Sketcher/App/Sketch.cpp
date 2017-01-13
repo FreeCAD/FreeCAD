@@ -691,28 +691,44 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     std::vector<double *> sweights;
 
     for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it) {
-	params.push_back(new double( (*it) ));
-	sweights.push_back(params[params.size()-1]);
+        params.push_back(new double( (*it) ));
+        sweights.push_back(params[params.size()-1]);
     }
 
     std::vector<double *> sknots;
 
     for(std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it) {
-	params.push_back(new double( (*it) ));
-	sknots.push_back(params[params.size()-1]);
+        double * knot = new double( (*it) );
+        //params.push_back(knot);
+        sknots.push_back(knot);
     }
 
     GCS::Point p1, p2;
 
-    params.push_back(new double(startPnt.x));
-    params.push_back(new double(startPnt.y));
-    p1.x = params[params.size()-2];
-    p1.y = params[params.size()-1];
+    double * p1x = new double(startPnt.x);
+    double * p1y = new double(startPnt.y);
 
-    params.push_back(new double(endPnt.x));
-    params.push_back(new double(endPnt.y));
-    p2.x = params[params.size()-2];
-    p2.y = params[params.size()-1];
+    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecesarry DoF of determining where in the curve
+    // the start and the stop should be
+    if(!periodic) {
+        params.push_back(p1x);
+        params.push_back(p1y);
+    }
+
+    p1.x = p1x;
+    p1.y = p1y;
+
+    double * p2x = new double(endPnt.x);
+    double * p2y = new double(endPnt.y);
+    
+    // if periodic, startpoint and endpoint do not play a role in the solver, this removes unnecesarry DoF of determining where in the curve
+    // the start and the stop should be
+    if(!periodic) {
+        params.push_back(p2x);
+        params.push_back(p2y);
+    }
+    p2.x = p2x;
+    p2.y = p2y;
 
     def.startPointId = Points.size();
     Points.push_back(p1);
@@ -734,10 +750,13 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // store complete set
     Geoms.push_back(def);
 
-    // arcs require an rule constraint for the end points
-    /*if (!fixed)
-        GCSsys.addConstraintArcOfParabolaRules(bs);*/
-
+    // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
+    // only then the startpoint is the first control point and the endpoint is the last control point
+    // accordingly, it is never the case for a periodic BSpline.
+    if(!bs.periodic) {
+        GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
+        GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
+    }
     // return the position of the newly added geometry
     return Geoms.size()-1;
 }
