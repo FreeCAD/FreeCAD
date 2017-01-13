@@ -142,14 +142,15 @@ inline void SketcherAddWorkspaceArcs<Gui::MenuItem>(Gui::MenuItem& geom){
             << "Sketcher_CreateArcOfEllipse"
             << "Sketcher_CreateArcOfHyperbola"
             << "Sketcher_CreateArcOfParabola"
-	    << "Sketcher_CreateBSpline";
+            << "Sketcher_CreateBSpline"
+            << "Sketcher_CreatePeriodicBSpline";
 }
 template <>
 inline void SketcherAddWorkspaceArcs<Gui::ToolBarItem>(Gui::ToolBarItem& geom){
     geom    << "Sketcher_CompCreateArc"
             << "Sketcher_CompCreateCircle"
             << "Sketcher_CompCreateConic"
-	    << "Sketcher_CreateBSpline";
+            << "Sketcher_CompCreateBSpline";
 }
 template <typename T>
 void SketcherAddWorkspaceRegularPolygon(T& geom);
