@@ -49,6 +49,7 @@
         <file>icons/actions/techdraw-saveSVG.svg</file>
         <file>icons/actions/techdraw-viewsection.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
+        <file>icons/actions/techdraw-crosshatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
         <file>icons/actions/techdraw-projgroup.svg</file>
         <file>icons/actions/techdraw-spreadsheet.svg</file>

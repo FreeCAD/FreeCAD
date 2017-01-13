@@ -379,12 +379,12 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
     // WF: the QGVP views list may still not be 100% reliable
     // TODO: build list of QGIV's from scene everytime? 
     //logging counters
-    int qgvpIn = 0;
-    int qgvpValid = 0;
-    int qgvpClean = 0;
-    int dpIn = 0;
+//    int qgvpIn = 0;
+//    int qgvpValid = 0;
+//    int qgvpClean = 0;
+//    int dpIn = 0;
     const std::vector<QGIView *> &graphicsList = m_view->getViews();
-    qgvpIn = graphicsList.size();
+//    qgvpIn = graphicsList.size();
     const std::vector<App::DocumentObject*> &pageChildren  = m_vpPage->getDrawPage()->Views.getValues();
    
     // Count total # DocumentObjects in Page
@@ -397,7 +397,7 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
         }
         docObjCount += 1;
     }
-    dpIn = docObjCount;
+//    dpIn = docObjCount;
     
     
     //TODO: should prune QGVP.views first always, then check if view in Page missing QGIVP
@@ -426,7 +426,7 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
                 }
             }
         }
-        qgvpValid = newGraphicsList.size();
+//        qgvpValid = newGraphicsList.size();
         //newGraphicsList now only contains valid QGIV's
         //now prune the ones without docObjs
         std::vector<QGIView *> cleanItems;
@@ -452,10 +452,10 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
                cleanItems.push_back(v);
            }
         }
-    qgvpClean = cleanItems.size();
+//    qgvpClean = cleanItems.size();
     m_view->setViews(cleanItems);       
-    Base::Console().Message("Log - MDIVP::updateDrawing pruning: docObjs: %d views in: %d valid views: %d views out: %d\n",
-                            dpIn,qgvpIn,qgvpValid, qgvpClean);
+//    Base::Console().Message("Log - MDIVP::updateDrawing pruning: docObjs: %d views in: %d valid views: %d views out: %d\n",
+//                            dpIn,qgvpIn,qgvpValid, qgvpClean);
     }
     
     // Update all the QGIVxxxx

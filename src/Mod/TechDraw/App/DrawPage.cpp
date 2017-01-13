@@ -292,6 +292,10 @@ void DrawPage::onDocumentRestored()
         if (part != nullptr &&
             !part->hasGeometry()) {
             part->execute();
+//            std::vector<App::DocumentObject*> parent = part->getInList();
+//            for (auto& p: parent) {
+//                p->touch();
+//            }
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References

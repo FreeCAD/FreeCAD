@@ -1042,6 +1042,7 @@ void DrawProjGroup::onDocumentRestored()
        }
        std::string viewRot = Cube::dirToView(rotFront);
        std::string config = viewDir + viewRot;
+       //find(config) or try/catch
        try {
            config = m_dirRotToConfig.at(config);
            setConfig(config);

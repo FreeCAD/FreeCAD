@@ -161,7 +161,8 @@ void GeometryObject::projectShape(const TopoDS_Shape& input,
         HLRAlgo_Projector projector( viewAxis );
         brep_hlr->Projector(projector);
         brep_hlr->Update();
-        brep_hlr->Hide();
+        brep_hlr->Hide();                           //XXXX: what happens if we don't call Hide()?? and only look at VCompound?
+                                                    // WF: you get back all the edges in the shape, but very fast!!
     }
     catch (...) {
         Standard_Failure::Raise("GeometryObject::projectShape - error occurred while projecting shape");

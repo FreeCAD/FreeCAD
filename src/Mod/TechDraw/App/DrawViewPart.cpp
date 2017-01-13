@@ -33,6 +33,7 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepLib.hxx>
 #include <BRepLProp_CurveTool.hxx>
 #include <BRepLProp_CLProps.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -83,6 +84,7 @@
 #include "GeometryObject.h"
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
+#include "DrawCrosshatch.h"
 #include "EdgeWalker.h"
 
 
@@ -147,19 +149,17 @@ App::DocumentObjectExecReturn *DrawViewPart::execute(void)
 {
     App::DocumentObject *link = Source.getValue();
     if (!link) {
-        return new App::DocumentObjectExecReturn("FVP - No Source object linked");
+        return new App::DocumentObjectExecReturn("DVP - No Source object linked");
     }
 
     if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        return new App::DocumentObjectExecReturn("FVP - Linked object is not a Part object");
+        return new App::DocumentObjectExecReturn("DVP - Linked object is not a Part object");
     }
 
     TopoDS_Shape shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();
     if (shape.IsNull()) {
-        return new App::DocumentObjectExecReturn("FVP - Linked shape object is empty");
+        return new App::DocumentObjectExecReturn("DVP - Linked shape object is empty");
     }
-    //Base::Console().Message("TRACE - DVP::execute() - %s - %s - dir: %s\n",getNameInDocument(), Label.getValue(),DrawUtil::formatVector(Direction.getValue()).c_str());
-
 
     (void) DrawView::execute();           //make sure Scale is up to date
 
@@ -391,7 +391,6 @@ void DrawViewPart::extractFaces()
     }
 }
 
-
 std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
 {
     std::vector<TechDraw::DrawHatch*> result;
@@ -400,6 +399,19 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
         if ((*it)->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId())) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(*it);
             result.push_back(hatch);
+        }
+    }
+    return result;
+}
+
+std::vector<TechDraw::DrawCrosshatch*> DrawViewPart::getCrosshatches() const
+{
+    std::vector<TechDraw::DrawCrosshatch*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawCrosshatch::getClassTypeId())) {
+            TechDraw::DrawCrosshatch* cross = dynamic_cast<TechDraw::DrawCrosshatch*>(*it);
+            result.push_back(cross);
         }
     }
     return result;
@@ -450,6 +462,8 @@ TechDrawGeometry::Vertex* DrawViewPart::getProjVertexByIndex(int idx) const
     return geoms.at(idx);
 }
 
+
+//this is never used!!
 //! returns existing geometry of 2D Face(idx)
 //version 1 Face has 1 wire
 std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int idx) const
@@ -467,6 +481,29 @@ std::vector<TechDrawGeometry::BaseGeom*> DrawViewPart::getProjFaceByIndex(int id
     return result;
 }
 
+std::vector<TopoDS_Wire> DrawViewPart::getWireForFace(int idx) const
+{
+//    Base::Console().Message("TRACE - DVP::getWireForFace(%d)\n",idx);
+    std::vector<TopoDS_Wire> result;
+    std::vector<TopoDS_Edge> edges;
+    const std::vector<TechDrawGeometry::Face *>& faces = getFaceGeometry();
+    TechDrawGeometry::Face * ourFace = faces.at(idx);
+    for (auto& w:ourFace->wires) {
+        edges.clear();
+        int i = 0;
+        for (auto& g:w->geoms) {
+            edges.push_back(g->occEdge);
+//            DrawUtil::dumpEdge("DVP Face edge",i,g->occEdge);
+            i++;
+        }
+        TopoDS_Wire occwire = EdgeWalker::makeCleanWire(edges);
+//        BRepLib::BuildCurves3d(occwire);   //probably don't need this
+        result.push_back(occwire);
+    }
+ 
+//    Base::Console().Message("TRACE - DVP::getWireForFace(%d) returns %d wires\n",idx,result.size());
+    return result;
+}
 
 Base::BoundBox3d DrawViewPart::getBoundingBox() const
 {
@@ -570,12 +607,24 @@ const std::vector<TechDrawGeometry::BaseGeom  *> DrawViewPart::getVisibleFaceEdg
     return geometryObject->getVisibleFaceEdges(SmoothVisible.getValue(),SeamVisible.getValue());
 }
 
+//is this really the projection plane??
+gp_Pln DrawViewPart::getProjPlane() const
+{
+    Base::Vector3d plnPnt(0.0,0.0,0.0);
+    Base::Vector3d plnNorm = Direction.getValue();
+    gp_Ax2 viewAxis = getViewAxis(plnPnt,plnNorm,false);
+    gp_Ax3 viewAxis3(viewAxis);
+
+    return gp_Pln(viewAxis3);
+}
+
 void DrawViewPart::getRunControl()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/RunControl");
     m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 1l);
     m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
+    //Base::Console().Message("TRACE - DVP::getRunControl - handleFaces: %d\n",m_handleFaces);
 }
 
 bool DrawViewPart::handleFaces(void)

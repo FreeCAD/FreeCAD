@@ -49,6 +49,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawCrosshatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
@@ -120,6 +121,69 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 }
 
 bool CmdTechDrawNewHatch::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_NewCrosshatch
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewCrosshatch);
+
+CmdTechDrawNewCrosshatch::CmdTechDrawNewCrosshatch()
+  : Command("TechDraw_NewCrosshatch")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Insert a crosshatched area into a view");
+    sToolTipText    = QT_TR_NOOP("Insert a crosshatched area into a view");
+    sWhatsThis      = "TechDraw_NewCrosshatch";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-crosshatch";
+}
+
+void CmdTechDrawNewCrosshatch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return;
+    }
+    const std::vector<std::string> &subNames = selection[0].getSubNames();
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
+
+    std::string FeatName = getUniqueObjectName("Crosshatch");
+    std::stringstream featLabel;
+    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+
+    Base::Console().Message("TRACE - cmd::newCrossHatch - %s - %s\n",featLabel.str().c_str(), FeatName.c_str());
+
+    openCommand("Create Crosshatch");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawCrosshatch','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
+
+    auto crosshatch( static_cast<TechDraw::DrawCrosshatch *>(getDocument()->getObject(FeatName.c_str())) );
+    crosshatch->Source.setValue(objFeat, subNames);
+
+    commitCommand();
+    Base::Console().Message("TRACE - cmd::newCrossHatch - complete\n");
+
+    //Horrible hack to force Tree update  ??still required??
+    double x = objFeat->X.getValue();
+    objFeat->X.setValue(x);
+    getDocument()->recompute();
+}
+
+bool CmdTechDrawNewCrosshatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -230,6 +294,7 @@ void CreateTechDrawCommandsDecorate(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawNewCrosshatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 }
