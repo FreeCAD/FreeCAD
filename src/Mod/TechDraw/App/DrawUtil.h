@@ -59,7 +59,7 @@ class TechDrawExport DrawUtil {
         static bool fpCompare(const double& d1, const double& d2);
         static Base::Vector3d vertex2Vector(const TopoDS_Vertex& v);
         static std::string formatVector(const Base::Vector3d& v);
-        static int vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2);
+        static bool vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2);
         static Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
         static bool checkParallel(const Base::Vector3d v1, const Base::Vector3d v2);
         //! rotate vector by angle radians around axis through org
