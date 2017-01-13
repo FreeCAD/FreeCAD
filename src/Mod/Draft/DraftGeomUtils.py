@@ -96,10 +96,14 @@ def isNull(something):
 def isPtOnEdge(pt,edge) :
     '''isPtOnEdge(Vector,edge): Tests if a point is on an edge'''
     v = Part.Vertex(pt)
-    d = v.distToShape(edge)
-    if d:
-        if round(d[0],precision()) == 0:
-            return True
+    try:
+        d = v.distToShape(edge)
+    except:
+        return False
+    else:
+        if d:
+            if round(d[0],precision()) == 0:
+                return True
     return False
 
 def hasCurves(shape):

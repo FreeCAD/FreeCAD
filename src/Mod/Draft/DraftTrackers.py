@@ -245,6 +245,20 @@ class rectangleTracker(Tracker):
     def getNormal(self):
         "returns the normal of the rectangle"
         return (self.u.cross(self.v)).normalize()
+        
+    def isInside(self,point):
+        "returns True if the given point is inside the rectangle"
+        vp = point.sub(self.p1())
+        uv = self.p2().sub(self.p1())
+        vv = self.p4().sub(self.p1())
+        uvp = DraftVecUtils.project(vp,uv)
+        vvp = DraftVecUtils.project(vp,vv)
+        if uvp.getAngle(uv) < 1:
+            if vvp.getAngle(vv) < 1:
+                if uvp.Length <= uv.Length:
+                    if vvp.Length <= vv.Length:
+                        return True
+        return False
                 
 class dimTracker(Tracker):
     "A Dimension tracker, used by the dimension tool"
