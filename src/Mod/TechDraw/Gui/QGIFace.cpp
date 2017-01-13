@@ -48,12 +48,15 @@
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 
+#include <Mod/TechDraw/App/DrawUtil.h>
+
 #include "Rez.h"
 #include "QGCustomSvg.h"
 #include "QGCustomRect.h"
 #include "QGIFace.h"
 
 using namespace TechDrawGui;
+using namespace TechDraw;
 
 QGIFace::QGIFace(int index) :
     projIndex(index),
@@ -61,8 +64,8 @@ QGIFace::QGIFace(int index) :
     m_styleDef(Qt::SolidPattern),
     m_styleSelect(Qt::SolidPattern)
 {
-    m_isHatched = false;
-    m_mode = 0;
+    setFillMode(NoFill);
+    isHatched(false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape,true);
 
     //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
@@ -71,8 +74,11 @@ QGIFace::QGIFace(int index) :
     m_styleNormal = m_styleDef;
     m_fillStyle = m_styleDef;
     m_colNormalFill = m_colDefFill;
+    setCrosshatchColor(QColor(Qt::black));
+    setCrosshatchWeight(0.5);                   //0 = cosmetic
+    
     setPrettyNormal();
-    m_texture = QPixmap();
+    m_texture = nullptr;                      //empty texture
 
     m_svg = new QGCustomSvg();
 
@@ -80,7 +86,7 @@ QGIFace::QGIFace(int index) :
     m_rect->setParentItem(this);
 
     m_svgCol = SVGCOLDEFAULT;
-    m_svgScale = 1.0;
+    m_fillScale = 1.0;
 }
 
 QGIFace::~QGIFace()
@@ -90,22 +96,47 @@ QGIFace::~QGIFace()
 
 void QGIFace::draw() 
 {
+    setPath(m_outline);                         //Face boundary
+
     if (isHatched()) {   
-        QFileInfo hfi(QString::fromUtf8(m_fileSpec.data(),m_fileSpec.size()));
-        if (hfi.isReadable()) {
-            QString ext = hfi.suffix();
-            if (ext.toUpper() == QString::fromUtf8("SVG")) {
-                m_mode = 1;
-                loadSvgHatch(m_fileSpec);
-                buildSvgHatch();
-                toggleSvg(true);
-            } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
-                     (ext.toUpper() == QString::fromUtf8("PNG"))   ||
-                     (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
-                     (ext.toUpper() == QString::fromUtf8("BMP")) ) {
-                m_mode = 2;
-                toggleSvg(false);
-                m_texture = textureFromBitmap(m_fileSpec);
+        if (m_mode == CrosshatchFill) {                             //crosshatch
+            if (!m_crossHatchPaths.empty()) {                                  //surrogate for LineSets.empty
+                m_brush.setTexture(nullptr);
+                m_fillStyle = m_styleDef;
+                m_styleNormal = m_fillStyle;
+                int pathNo = 0;
+                for (auto& pp: m_crossHatchPaths) {
+                    QGraphicsPathItem* fillItem = m_fillItems.at(pathNo);  
+                    fillItem->setPath(pp);                  
+                    QPen crossPen = setCrossPen(pathNo);
+                    fillItem->setPen(crossPen);
+                    pathNo++;
+                }
+            }
+        } else if ((m_mode == FromFile) ||
+                   (m_mode == SvgFill)  ||
+                   (m_mode == BitmapFill)) {  
+            QFileInfo hfi(QString::fromUtf8(m_fileSpec.data(),m_fileSpec.size()));
+            if (hfi.isReadable()) {
+                QString ext = hfi.suffix();
+                if (ext.toUpper() == QString::fromUtf8("SVG")) {
+                    setFillMode(SvgFill);
+                    m_brush.setTexture(nullptr);
+                    m_fillStyle = m_styleDef;
+                    m_styleNormal = m_fillStyle;
+                    loadSvgHatch(m_fileSpec);
+                    buildSvgHatch();
+                    toggleSvg(true);
+                } else if ((ext.toUpper() == QString::fromUtf8("JPG"))   ||
+                         (ext.toUpper() == QString::fromUtf8("PNG"))   ||
+                         (ext.toUpper() == QString::fromUtf8("JPEG"))  ||
+                         (ext.toUpper() == QString::fromUtf8("BMP")) ) {
+                    setFillMode(BitmapFill);
+                    toggleSvg(false);
+                    m_fillStyle   = Qt::TexturePattern;
+                    m_texture = textureFromBitmap(m_fileSpec);
+                    m_brush.setTexture(m_texture);
+                }
             }
         }
     }
@@ -114,23 +145,27 @@ void QGIFace::draw()
 
 void QGIFace::setPrettyNormal() {
     if (isHatched()  &&
-        (m_mode == 2) ) {                               //hatch with bitmap fill
+        (m_mode == BitmapFill) ) {                               //hatch with bitmap fill
         m_fillStyle = Qt::TexturePattern;
         m_brush.setTexture(m_texture);
     } else {
         m_fillStyle = m_styleNormal;
+        m_brush.setTexture(nullptr);
+        m_brush.setStyle(m_fillStyle);
+        m_fillColor = m_colNormalFill;
     }
-    m_fillColor = m_colNormalFill;
     QGIPrimPath::setPrettyNormal();
 }
 
 void QGIFace::setPrettyPre() {
+    m_brush.setTexture(nullptr);
     m_fillStyle = m_styleSelect;
     m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
+    m_brush.setTexture(nullptr);
     m_fillStyle = m_styleSelect;
     m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
@@ -164,21 +199,110 @@ void QGIFace::loadSvgHatch(std::string fileSpec)
     }
 }
 
-void QGIFace::setPath(const QPainterPath & path)
+void QGIFace::setFillMode(QGIFace::fillMode m)
 {
-    QGraphicsPathItem::setPath(path);
-    if ((m_mode == 1) && !m_svgXML.isEmpty()) {     // svg hatch mode and have svg hatch info loded
-        buildSvgHatch();
+    m_mode = m;
+    if ((m_mode == NoFill) ||
+        (m_mode == PlainFill)) {
+        isHatched(false);
+    } else {
+        isHatched(true);
     }
+}
+
+void QGIFace::setOutline(const QPainterPath & path)
+{
+    m_outline = path;
+}
+
+void QGIFace::clearLineSets(void) 
+{
+    m_crossHatchPaths.clear();
+    m_dashSpecs.clear();
+    clearFillItems();
+}
+
+//each line set needs a painterpath, a dashspec and a QGPItem to show them
+void QGIFace::addLineSet(QPainterPath pp, std::vector<double> dp)
+{
+    m_crossHatchPaths.push_back(pp);
+    m_dashSpecs.push_back(DashSpec(dp));
+    addFillItem();
+}   
+
+QGraphicsPathItem*  QGIFace::addFillItem()
+{
+    QGraphicsPathItem* fillItem = new QGraphicsPathItem();
+    fillItem->setParentItem(this);
+    m_fillItems.push_back(fillItem);
+    return fillItem;
+}
+  
+void QGIFace::clearFillItems(void)
+{
+    for (auto& f: m_fillItems) {
+        f->setParentItem(nullptr);
+        this->scene()->removeItem(f);
+        delete f;
+    }
+}
+
+void QGIFace::setCrosshatchColor(const QColor& c)
+{
+    m_crossColor = c;
+} 
+
+//convert from PAT style "-1,0,-1,+1" to Qt style "mark,space,mark,space"
+QVector<qreal> QGIFace::decodeDashSpec(DashSpec patDash)
+{
+    //Rez::guiX(something)?
+    double dotLength = 3.0;    //guess work!
+    double unitLength = 6.0;
+    //double penWidth = m_crossWeight;
+    std::vector<double> result;
+    for (auto& d: patDash.get()) {
+        double strokeLength;
+        if (DrawUtil::fpCompare(d,0.0)) {                       //pat dot
+             strokeLength = dotLength;
+             result.push_back(strokeLength);
+        } else if (Rez::guiX(d) < 0) {                          //pat space
+             strokeLength = fabs(Rez::guiX(d)) * unitLength;
+             result.push_back(strokeLength);
+        } else {                                                //pat dash
+             strokeLength = Rez::guiX(d) * unitLength;
+             result.push_back(strokeLength);
+        }
+    }
+    return QVector<qreal>::fromStdVector( result ); 
+}
+
+
+QPen QGIFace::setCrossPen(int i)
+{
+    //m_dashSpecs[i].dump("spec test");
+    DashSpec ourSpec = m_dashSpecs.at(i);
+    //ourSpec.dump("our spec");
+    
+    QPen result;
+//    result.setWidthF(m_crossWeight);
+    result.setWidthF(Rez::guiX(0.09));
+    result.setColor(m_crossColor);
+    if (ourSpec.empty()) {
+       result.setStyle(Qt::SolidLine);
+    } else {
+       result.setStyle(Qt::CustomDashLine);
+       result.setDashPattern(decodeDashSpec(ourSpec));
+    }
+    return result;
 }
 
 void QGIFace::buildSvgHatch()
 {
-    double wTile = SVGSIZEW * m_svgScale;
-    double hTile = SVGSIZEH * m_svgScale;
-    double w = boundingRect().width();
-    double h = boundingRect().height();
-    QRectF r = boundingRect();
+    double wTile = SVGSIZEW * m_fillScale;
+    double hTile = SVGSIZEH * m_fillScale;
+    double w = m_outline.boundingRect().width();
+    double h = m_outline.boundingRect().height();
+    QRectF r = m_outline.boundingRect();
     QPointF fCenter = r.center();
     double nw = ceil(w / wTile);
     double nh = ceil(h / hTile);
@@ -194,7 +318,7 @@ void QGIFace::buildSvgHatch()
     for (int iw = 0; iw < int(nw); iw++) {
         for (int ih = 0; ih < int(nh); ih++) {
             QGCustomSvg* tile = new QGCustomSvg();
-            tile->setScale(m_svgScale);
+            tile->setScale(m_fillScale);
             if (tile->load(&colorXML)) {
                 tile->setParentItem(m_rect);
                 tile->setPos(iw*wTile,-h + ih*hTile);
@@ -220,7 +344,7 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
         pixMap.fill(Qt::white);                                            //try  Qt::transparent?
         QPainter painter(&pixMap);
         renderer.render(&painter);                                         //svg texture -> bitmap
-        result = pixMap.scaled(m_svgScale,m_svgScale);
+        result = pixMap.scaled(m_fillScale,m_fillScale);
     }  //else return empty pixmap
     return result;
 }
@@ -234,7 +358,7 @@ void QGIFace::setHatchColor(std::string c)
 
 void QGIFace::setHatchScale(double s)
 {
-    m_svgScale = s;
+    m_fillScale = s;
 }
 
 //QtSvg does not handle clipping, so we must be able to turn the hatching on/off
@@ -255,7 +379,7 @@ QPixmap QGIFace::textureFromBitmap(std::string fileSpec)
     QFileInfo ffi(qs);
     if (ffi.isReadable()) {
         QImage img = QImage(qs);
-        img = img.scaled(Rez::guiX(m_svgScale),Rez::guiX(m_svgScale));
+        img = img.scaled(Rez::guiX(m_fillScale),Rez::guiX(m_fillScale));
         pix = QPixmap::fromImage(img);
     }
     return pix;
@@ -296,3 +420,4 @@ void QGIFace::paint ( QPainter * painter, const QStyleOptionGraphicsItem * optio
     setBrush(m_brush);
     QGIPrimPath::paint (painter, &myOption, widget);
 }
+

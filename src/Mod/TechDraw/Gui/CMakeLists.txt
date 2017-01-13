@@ -199,6 +199,8 @@ SET(TechDrawGuiViewProvider_SRCS
     ViewProviderViewClip.h
     ViewProviderHatch.cpp
     ViewProviderHatch.h
+    ViewProviderCrosshatch.cpp
+    ViewProviderCrosshatch.h
     ViewProviderImage.cpp
     ViewProviderImage.h
 )

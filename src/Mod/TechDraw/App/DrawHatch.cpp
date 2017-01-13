@@ -69,7 +69,7 @@ DrawHatch::DrawHatch(void)
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("PatternFile",defaultFileName.c_str()));
+    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
         patternFileName = QString::fromStdString(defaultFileName);
     }

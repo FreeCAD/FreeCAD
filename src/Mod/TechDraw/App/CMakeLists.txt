@@ -37,6 +37,7 @@ generate_from_xml(DrawViewSymbolPy)
 generate_from_xml(DrawViewClipPy)
 generate_from_xml(DrawViewDimensionPy)
 generate_from_xml(DrawHatchPy)
+generate_from_xml(DrawCrosshatchPy)
 generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
@@ -74,6 +75,8 @@ SET(Draw_SRCS
     DrawViewSection.h
     DrawHatch.cpp
     DrawHatch.h
+    DrawCrosshatch.cpp
+    DrawCrosshatch.h
     DrawViewDraft.cpp
     DrawViewDraft.h
     DrawViewArch.cpp
@@ -92,6 +95,8 @@ SET(TechDraw_SRCS
     DrawUtil.h
     Cube.cpp
     Cube.h
+    HatchLine.cpp
+    HatchLine.h
     PreCompiled.cpp
     PreCompiled.h
     EdgeWalker.cpp
@@ -128,6 +133,8 @@ SET(Python_SRCS
     DrawViewDimensionPyImp.cpp
     DrawHatchPy.xml
     DrawHatchPyImp.cpp
+    DrawCrosshatchPy.xml
+    DrawCrosshatchPyImp.cpp
     DrawViewCollectionPy.xml
     DrawViewCollectionPyImp.cpp
     DrawProjGroupPy.xml

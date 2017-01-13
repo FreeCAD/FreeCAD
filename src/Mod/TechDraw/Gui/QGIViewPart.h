@@ -34,6 +34,7 @@ namespace TechDraw {
 class DrawViewPart;
 class DrawViewSection;
 class DrawHatch;
+class DrawCrosshatch;
 }
 
 namespace TechDrawGui
@@ -89,6 +90,7 @@ protected:
     virtual QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
     TechDraw::DrawHatch* faceIsHatched(int i,std::vector<TechDraw::DrawHatch*> hatchObjs) const;
+    TechDraw::DrawCrosshatch* faceIsCrosshatched(int i,std::vector<TechDraw::DrawCrosshatch*> crossObjs) const;
     void dumpPath(const char* text,QPainterPath path);
     void removePrimitives(void);
     void removeDecorations(void);

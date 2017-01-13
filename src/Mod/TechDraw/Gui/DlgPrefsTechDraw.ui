@@ -82,7 +82,7 @@
      <item row="2" column="1">
       <widget class="Gui::PrefFileChooser" name="pfc_HatchFile">
        <property name="prefEntry" stdset="0">
-        <cstring>PatternFile</cstring>
+        <cstring>FileHatch</cstring>
        </property>
        <property name="prefPath" stdset="0">
         <cstring>/Mod/TechDraw/Files</cstring>

@@ -48,6 +48,7 @@
 #include "ViewProviderSymbol.h"
 #include "ViewProviderViewClip.h"
 #include "ViewProviderHatch.h"
+#include "ViewProviderCrosshatch.h"
 #include "ViewProviderSpreadsheet.h"
 #include "ViewProviderImage.h"
 
@@ -102,6 +103,7 @@ void TechDrawGuiExport initTechDrawGui()
     TechDrawGui::ViewProviderDraft::init();
     TechDrawGui::ViewProviderArch::init();
     TechDrawGui::ViewProviderHatch::init();
+    TechDrawGui::ViewProviderCrosshatch::init();
     TechDrawGui::ViewProviderSpreadsheet::init();
     TechDrawGui::ViewProviderImage::init();
 

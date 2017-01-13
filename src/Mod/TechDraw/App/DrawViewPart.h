@@ -40,6 +40,7 @@
 #include "DrawProjectSplit.h"
 
 class gp_Pnt;
+class gp_Pln;
 
 namespace TechDrawGeometry
 {
@@ -51,6 +52,7 @@ class Face;
 
 namespace TechDraw {
 class DrawHatch;
+class DrawCrosshatch;
 }
 
 namespace TechDraw
@@ -91,6 +93,7 @@ public:
 
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
+    std::vector<TechDraw::DrawCrosshatch*> getCrosshatches(void) const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???
 
@@ -136,6 +139,10 @@ public:
     //return PyObject as DrawViewPartPy
     virtual PyObject *getPyObject(void);
     bool isDeleting(void) { return nowDeleting; }
+    
+    gp_Pln getProjPlane(void) const;
+    std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+
 
 protected:
     TechDrawGeometry::GeometryObject *geometryObject;

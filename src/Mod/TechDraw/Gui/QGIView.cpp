@@ -44,6 +44,10 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
+
 
 #include "Rez.h"
 #include "QGCustomBorder.h"
@@ -450,6 +454,15 @@ QGIView* QGIView::getQGIVByName(std::string name)
     }
     return 0;
 }
+
+/* static */
+Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
+{
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+    Gui::ViewProvider* result = guiDoc->getViewProvider(obj);
+    return result;
+}
+
 
 QColor QGIView::getNormalColor()
 {
