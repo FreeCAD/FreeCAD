@@ -58,6 +58,7 @@
         <file>panels/JobEdit.ui</file>
         <file>panels/MillFaceEdit.ui</file>
         <file>panels/PocketEdit.ui</file>
+        <file>panels/PointEdit.ui</file>
         <file>panels/ProfileEdgesEdit.ui</file>
         <file>panels/ProfileEdit.ui</file>
         <file>panels/RemoteEdit.ui</file>
@@ -65,6 +66,7 @@
         <file>panels/ToolControl.ui</file>
         <file>panels/ToolEdit.ui</file>
         <file>panels/ToolLibraryEditor.ui</file>
+        <file>preferences/PathDressupHoldingTags.ui</file>
         <file>preferences/PathJob.ui</file>
         <file>translations/Path_af.qm</file>
         <file>translations/Path_cs.qm</file>
