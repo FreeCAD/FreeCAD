@@ -15,7 +15,7 @@
    id="svg249"
    sodipodi:version="0.32"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="drawing-landscape-A1.svg"
+   sodipodi:docname="drawing-landscape-A2.svg"
    inkscape:export-filename="/home/jimmac/gfx/novell/pdes/trunk/docs/BIGmime-text.png"
    inkscape:export-xdpi="240.00000"
    inkscape:export-ydpi="240.00000"
@@ -151,7 +151,7 @@
        x2="12.000004"
        y2="44"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-16.000004,-64)" />
+       gradientTransform="translate(-1.8530273e-7,-16)" />
     <linearGradient
        inkscape:collect="always"
        id="linearGradient3775-1">
@@ -197,9 +197,9 @@
      borderopacity="0.32941176"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="16.548117"
-     inkscape:cx="14.790914"
-     inkscape:cy="21.350501"
+     inkscape:zoom="10.843541"
+     inkscape:cx="54.827288"
+     inkscape:cy="16.704362"
      inkscape:current-layer="layer6"
      showgrid="true"
      inkscape:grid-bbox="true"
@@ -229,7 +229,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
         <dc:creator>
           <cc:Agent>
             <dc:title>[agryson] Alexander Gryson</dc:title>
@@ -238,7 +238,7 @@
         <dc:source>http://agryson.net</dc:source>
         <cc:license
            rdf:resource="https://www.gnu.org/licenses/lgpl.html" />
-        <dc:title>drawing-landscape-A1</dc:title>
+        <dc:title>drawing-landscape-A2</dc:title>
         <dc:date>2011-10-10</dc:date>
         <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
@@ -246,7 +246,7 @@
             <dc:title>FreeCAD</dc:title>
           </cc:Agent>
         </dc:publisher>
-        <dc:identifier>FreeCAD/src/Mod/Drawing/Gui/Resources/icons/actions/drawing-landscape-A1.svg</dc:identifier>
+        <dc:identifier>FreeCAD/src/Mod/Drawing/Gui/Resources/icons/actions/drawing-landscape-A2.svg</dc:identifier>
         <dc:rights>
           <cc:Agent>
             <dc:title>FreeCAD LGPL2+</dc:title>
@@ -285,20 +285,18 @@
        id="rect2987"
        width="45.999996"
        height="58.000004"
-       x="-7"
-       y="-61.000004"
-       transform="matrix(0,1,-1,0,0,0)" />
+       x="9.0000038"
+       y="-13.000004" />
     <rect
        style="fill:url(#linearGradient3781-9);fill-opacity:1;stroke:#ffffff;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;display:inline"
        id="rect2987-1"
        width="41.999996"
        height="54.000004"
-       x="-5"
-       y="-59.000004"
-       transform="matrix(0,1,-1,0,0,0)" />
+       x="11.000004"
+       y="-11.000004" />
     <g
-       transform="matrix(0.87216211,0,0,1.25081,-0.5454545,0)"
-       style="font-size:40.16712952000000314px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
+       transform="matrix(0.72680178,0,0,1.25081,6.5454544,8)"
+       style="font-size:40.16712952px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
        id="text3093">
       <path
          d="m 20.920054,1.2345772 -5.420502,14.7550618 10.767458,0 -5.346956,-14.7550618 m -3.408714,-4.4325049 6.25405,0 11.25729,30.3803137 -5.00324,0 -2.50162,-7.99482 -13.199453,0 -1.810267,7.99482 -5.00324,0 10.00648,-30.3803137"
@@ -308,14 +306,14 @@
          style="fill:#2e3436" />
     </g>
     <g
-       transform="scale(0.84432033,1.1843846)"
-       style="font-size:43.65569686999999988px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
-       id="text3195">
+       style="font-size:51.20000076px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#2e3436;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Clean"
+       id="text3261"
+       transform="matrix(0.83333328,0,0,1,55.333332,8)">
       <path
-         d="m 37.900307,25.32961 7.106307,0 0,-24.48528967 -7.106307,1.68864067 0,-4.2216017 7.106307,-1.6886406 4.737539,0 0.07194,28.7068913 7.034365,0 -2e-6,3.37728 -18.950152,10e-7 0,-3.377281"
-         id="path3200"
+         d="m -22,30 18,0 1.6e-6,4 L -28,34 l 0,-4 c 1.916661,-1.983327 4.824993,-4.891658 8.125001,-8.225 3.316652,-3.349985 5.399983,-5.508316 6.25,-6.475 1.616648,-1.816646 2.741647,-3.349978 3.375,-4.6 0.6499786,-1.2666425 0.9749783,-2.5083079 0.9750005,-3.7250004 -2.22e-5,-1.9833044 -0.7000215,-3.5999694 -2.1000005,-4.8500001 -1.383352,-1.24996687 -3.191683,-1.87496625 -5.425,-1.875 -1.583346,3.375e-5 -3.258344,0.27503348 -5.025,0.825 C -23.575007,1.6250319 -26.000006,2.8833649 -28,4 l 0,-5.1 c 2.033328,-0.8166304 4.483327,-1.8582969 6.250001,-2.2750006 1.766656,-0.4166288 3.383321,-0.624962 4.85,-0.625 3.866649,3.8e-5 6.949979,0.9667037 9.2500005,2.9000001 C -5.3500246,0.83336601 -4,4 -4,7 c 0,2 -0.4916921,2.6416907 -1.0749985,4.025 -0.5666924,1.366688 -1.6083581,2.983353 -3.125,4.85 -0.4166895,0.483351 -1.7416882,1.883349 -3.9750005,4.2 C -14.408349,22.375011 -17.933347,25.850008 -22,30"
+         id="path3269"
          inkscape:connector-curvature="0"
-         sodipodi:nodetypes="cccccccccccc"
+         sodipodi:nodetypes="cccccccccccccccccccccc"
          style="fill:#2e3436" />
     </g>
     <path
