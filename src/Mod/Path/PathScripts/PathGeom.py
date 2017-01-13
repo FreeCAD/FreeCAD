@@ -145,15 +145,15 @@ class PathGeom:
         return Vector(point.x, point.y, 0)
 
     @classmethod
-    def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True):
-        """(edge, flip = False, useHelixForBSpline = True) -> List(Path.Command)
+    def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True, segm = 50):
+        """(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
         Returns a list of Path.Command representing the given edge.
         If flip is True the edge is considered to be backwards.
         If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
         to represent a helix and results in G2 or G3 command. Otherwise edge has
         no direct Path.Command mapping and will be approximated by straight segments.
-        Approximation is also the approach for edges that are neither straight lines
-        nor arcs (nor helixes)."""
+        segm is a factor for the segmentation of arbitrary curves not mapped to G1/2/3
+        commands. The higher the value the more segments will be used."""
         pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
         params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
@@ -166,12 +166,12 @@ class PathGeom:
                 p1 = pt
                 p3 = edge.valueAt(edge.LastParameter)
             p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-            if (type(edge.Curve) == Part.Circle and cls.pointsCoincide(edge.Curve.Axis, Vector(0, 0, 1))) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+            if (type(edge.Curve) == Part.Circle and cls.isRoughly(edge.Curve.Axis.x, 0) and cls.isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
                 if Side.Left == Side.of(p2 - p1, p3 - p2):
                     cmd = 'G3'
                 else:
                     cmd = 'G2'
-                print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
+                #print("**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)" % (p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z))
                 pd = Part.Circle(PathGeom.xy(p1), PathGeom.xy(p2), PathGeom.xy(p3)).Center
 
                 pa = PathGeom.xy(p1)
@@ -191,7 +191,7 @@ class PathGeom:
                     return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
                 # at this point pixellation is all we can do
                 commands = []
-                segments = int(math.ceil((deviation / eStraight.Length) * 1000))
+                segments = int(math.ceil((deviation / eStraight.Length) * segm))
                 #print("**** pixellation with %d segments" % segments)
                 dParameter = (edge.LastParameter - edge.FirstParameter) / segments
                 for i in range(0, segments):
