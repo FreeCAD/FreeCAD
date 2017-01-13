@@ -287,21 +287,22 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i):
+    def __init__(self, edge, tag, i, segm):
         debugEdge(edge, 'MapWireToTag(%.2f, %.2f, %.2f)' % (i.x, i.y, i.z))
         self.tag = tag
+        self.segm = segm
         if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
             debugEdge(tail, '.........=')
         elif PathGeom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, '++++++++ .')
-            self.commands = PathGeom.cmdsForEdge(edge)
+            self.commands = PathGeom.cmdsForEdge(edge, segm=segm)
             tail = None
         else:
             e, tail = PathGeom.splitEdgeAt(edge, i)
             debugEdge(e, '++++++++ .')
-            self.commands = PathGeom.cmdsForEdge(e)
+            self.commands = PathGeom.cmdsForEdge(e, segm=segm)
             debugEdge(tail, '.........-')
             self.initialEdge = edge
         self.tail = tail
@@ -485,7 +486,7 @@ class MapWireToTag:
             commands = []
             for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
                 debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
-                commands.extend(PathGeom.cmdsForEdge(e, flip, False))
+                commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
             return commands
         return []
 
@@ -705,9 +706,10 @@ class ObjectDressup:
         obj.addProperty("App::PropertyLength", "Width", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Width of tags."))
         obj.addProperty("App::PropertyLength", "Height", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Height of tags."))
         obj.addProperty("App::PropertyAngle", "Angle", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Angle of tag plunge and ascent."))
-        obj.addProperty("App::PropertyLength", "Radius", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Radius of the fillet on the top the tag."))
+        obj.addProperty("App::PropertyLength", "Radius", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Radius of the fillet for the tag."))
         obj.addProperty("App::PropertyVectorList", "Positions", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Locations of insterted holding tags"))
         obj.addProperty("App::PropertyIntegerList", "Disabled", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Ids of disabled holding tags"))
+        obj.addProperty("App::PropertyInteger", "SegmentationFactor", "Tag", QtCore.QT_TRANSLATE_NOOP("PathDressup_HoldingTags", "Factor determining the # segments used to approximate rounded tags."))
         obj.Proxy = self
 
     def __getstate__(self):
@@ -738,7 +740,7 @@ class ObjectDressup:
                 return False
         return True
 
-    def createPath(self, edges, tags, rapid):
+    def createPath(self, obj, edges, tags, rapid):
         #print("createPath")
         commands = []
         lastEdge = 0
@@ -747,6 +749,13 @@ class ObjectDressup:
         t = 0
         inters = None
         edge = None
+
+        segm = 50
+        if hasattr(obj, 'SegmentationFactor'):
+            segm = obj.SegmentationFactor
+            if segm <= 0:
+                segm = 50
+                obj.SegmentationFactor = 50
 
         self.mappers = []
         mapper = None
@@ -773,7 +782,7 @@ class ObjectDressup:
                 t += 1
                 i = tags[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
-                    mapper = MapWireToTag(edge, tags[tIndex], i)
+                    mapper = MapWireToTag(edge, tags[tIndex], i, segm)
                     self.mappers.append(mapper)
                     edge = mapper.tail
 
@@ -786,7 +795,7 @@ class ObjectDressup:
                         v = edge.Vertexes[1]
                         commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
                     else:
-                        commands.extend(PathGeom.cmdsForEdge(edge))
+                        commands.extend(PathGeom.cmdsForEdge(edge, segm=segm))
                 edge = None
                 t = 0
 
@@ -881,7 +890,7 @@ class ObjectDressup:
                     #else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
-        obj.Path = self.createPath(self.pathData.edges, self.tags, self.pathData.rapid)
+        obj.Path = self.createPath(obj, self.pathData.edges, self.tags, self.pathData.rapid)
         #print("execute - done")
 
     def setup(self, obj, generate=False):
