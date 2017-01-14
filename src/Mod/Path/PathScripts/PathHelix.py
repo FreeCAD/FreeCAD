@@ -105,7 +105,8 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         return
 
     out = "(helix_cut <{0}, {1}>, {2})".format(center[0], center[1],
-                ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vfeed, hfeed, direction, startside))))
+                ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z,
+                                    tool_diameter, vfeed, hfeed, direction, startside))))
 
     x0, y0 = center
     nz = max(int(ceil((zmax - zmin)/dz)), 2)
@@ -527,14 +528,28 @@ class TaskPanel(object):
     def __init__(self, obj):
         from Units import Quantity
         self.obj = obj
+        self.previous_value = {}
+        self.form = QtGui.QToolBox()
 
         ui = FreeCADGui.UiLoader()
-        layout = QtGui.QGridLayout()
 
-        headerStyle = "QLabel { font-weight: bold; font-size: large; }"
         grayed_out = "background-color: #d0d0d0;"
 
-        self.previous_value = {}
+        def nextToolBoxItem(label, iconFile):
+            widget = QtGui.QWidget()
+            layout = QtGui.QGridLayout()
+            widget.setLayout(layout)
+            icon = QtGui.QIcon(iconFile)
+            self.form.addItem(widget, icon, label)
+            return layout
+
+        def addFiller():
+            row = layout.rowCount()
+            widget = QtGui.QWidget()
+            layout.addWidget(widget, row, 0, 1, 2)
+            layout.setRowStretch(row, 1)
+
+        layout = nextToolBoxItem("Geometry", ":/icons/PartDesign_InternalExternalGear.svg")
 
         def addWidget(widget):
             row = layout.rowCount()
@@ -544,11 +559,6 @@ class TaskPanel(object):
             row = layout.rowCount()
             layout.addWidget(widget1, row, 0)
             layout.addWidget(widget2, row, 1)
-
-        def heading(label):
-            heading = QtGui.QLabel(label)
-            heading.setStyleSheet(headerStyle)
-            addWidget(heading)
 
         def addQuantity(property, labelstring, activator=None, max=None):
             self.previous_value[property] = getattr(self.obj, property)
@@ -645,7 +655,9 @@ class TaskPanel(object):
 
         addWidgets(self.addButton, self.delButton)
 
-        heading("Drill parameters")
+        # End of "Features" section
+
+        layout = nextToolBoxItem("Drill parameters", ":/icons/Path-OperationB.svg")
         addCheckBox("Active", "Operation is active")
         tool = PathUtils.getTool(self.obj, self.obj.ToolNumber)
         if not tool:
@@ -659,12 +671,18 @@ class TaskPanel(object):
         addEnumeration("StartSide", "Start Side",
                        [("Start from inside", "inside"), ("Start from outside", "outside")])
 
-        heading("Cutting Depths")
+        # End of "Drill parameters" section
+        addFiller()
+
+        layout = nextToolBoxItem("Cutting Depths", ":/icons/Path-Depths.svg")
         addQuantity("Clearance", "Clearance Distance")
         addQuantity("StartDepth", "Absolute start height", "UseStartDepth")
 
         fdcheckbox, fdinput = addQuantity("FinalDepth", "Absolute final height", "UseFinalDepth")
         tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth\nfor open holes")
+
+        # End of "Cutting Depths" section
+        addFiller()
 
         # make ThroughDepth and FinalDepth mutually exclusive
         def fd_change(state):
@@ -680,11 +698,6 @@ class TaskPanel(object):
 
         if obj.UseFinalDepth:
             tdinput.setStyleSheet(grayed_out)
-
-        # add
-        widget = QtGui.QWidget()
-        widget.setLayout(layout)
-        self.form = widget
 
     def addCylinders(self):
         features_per_base = {}
