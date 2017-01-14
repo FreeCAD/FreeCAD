@@ -611,7 +611,49 @@ ArcOfParabola* ArcOfParabola::Copy()
 DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
 {
     // place holder
-    DeriVector2 ret = DeriVector2();
+    DeriVector2 ret;
+    
+    if (mult[0] > degree && mult[mult.size()-1] > degree) {
+    // if endpoints thru end poles    
+        if(*p.x == *start.x && *p.y == *start.y) {
+            // and you are asking about the normal at start point
+            // then tangency is defined by first to second poles
+            DeriVector2 endpt(this->poles[1], derivparam);
+            DeriVector2 spt(this->poles[0], derivparam);
+            DeriVector2 npt(this->poles[2], derivparam); // next pole to decide normal direction
+            
+            DeriVector2 tg = endpt.subtr(spt);
+            DeriVector2 nv = npt.subtr(spt);
+            
+            if ( tg.scalarProd(nv) > 0 )
+                ret = tg.rotate90cw();
+            else
+                ret = tg.rotate90ccw();
+        }
+        else if(*p.x == *end.x && *p.y == *end.y) {
+            // and you are asking about the normal at end point
+            // then tangency is defined by last to last but one poles
+            DeriVector2 endpt(this->poles[poles.size()-1], derivparam);
+            DeriVector2 spt(this->poles[poles.size()-2], derivparam);
+            DeriVector2 npt(this->poles[poles.size()-3], derivparam); // next pole to decide normal direction
+            
+            DeriVector2 tg = endpt.subtr(spt);
+            DeriVector2 nv = npt.subtr(spt);
+            
+            if ( tg.scalarProd(nv) > 0 )
+                ret = tg.rotate90ccw();
+            else
+                ret = tg.rotate90cw();
+        } else {
+           // another point and we have no clue until we implement De Boor
+            ret = DeriVector2();
+        }
+    }
+    else {
+      // either periodic or abnormal endpoint multiplicity, we have no clue so currently unsupported
+        ret = DeriVector2();
+    }
+
 
     return ret;
 }
