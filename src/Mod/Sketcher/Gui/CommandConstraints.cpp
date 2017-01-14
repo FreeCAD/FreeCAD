@@ -2340,6 +2340,15 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                     QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
                 return;
             }
+            
+            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+            
+            if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
+                // unsupported until tangent to BSpline at any point implemented.
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Tangency to BSpline edge currently unsupported."));
+                return;
+            }
 
             openCommand("add tangent constraint");
             Gui::Command::doCommand(
@@ -2360,6 +2369,17 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
             const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+
+            if( geom1 && geom2 &&
+                ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+                
+                // unsupported until tangent to BSpline at any point implemented.
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Tangency to BSpline edge currently unsupported."));
+                return;
+            }
+            
 
             if( geom1 && geom2 &&
                 ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
