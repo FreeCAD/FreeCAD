@@ -3009,6 +3009,41 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             GCSsys.rescaleConstraint(i, 0.01);
 
         }
+    } else if (Geoms[geoId].type == BSpline) {
+        if (pos == start || pos == end) {
+            MoveParameters.resize(2); // x,y
+            GCS::Point p0;
+            p0.x = &MoveParameters[0];
+            p0.y = &MoveParameters[1];
+            if (pos == start) {
+                GCS::Point &p = Points[Geoms[geoId].startPointId];
+                *p0.x = *p.x;
+                *p0.y = *p.y;
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
+            } else if (pos == end) {
+                GCS::Point &p = Points[Geoms[geoId].endPointId];
+                *p0.x = *p.x;
+                *p0.y = *p.y;
+                GCSsys.addConstraintP2PCoincident(p0,p,-1);
+            }
+        } else if (pos == none || pos == mid) {
+            GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
+            MoveParameters.resize(bsp.poles.size()*2); // x0,y0,x1,y1,....xp,yp
+
+            int mvindex = 0;
+            for(std::vector<GCS::Point>::iterator it = bsp.poles.begin(); it != bsp.poles.end() ; it++, mvindex++) {
+                GCS::Point p1;
+                p1.x = &MoveParameters[mvindex];
+                mvindex++;
+                p1.y = &MoveParameters[mvindex];
+                
+                *p1.x = *(*it).x;
+                *p1.y = *(*it).y;
+
+                GCSsys.addConstraintP2PCoincident(p1,(*it),-1);
+            }
+            
+        }
     } else if (Geoms[geoId].type == Arc) {
         GCS::Point &center = Points[Geoms[geoId].midPointId];
         GCS::Point p0,p1;
@@ -3116,7 +3151,30 @@ int Sketch::movePoint(int geoId, PointPos pos, Base::Vector3d toPoint, bool rela
             MoveParameters[0] = toPoint.x;
             MoveParameters[1] = toPoint.y;
         }
-    }    
+    } else if (Geoms[geoId].type == BSpline) {
+        if (pos == start || pos == end) {
+            MoveParameters[0] = toPoint.x;
+            MoveParameters[1] = toPoint.y;
+        } else if (pos == none || pos == mid) {
+            GCS::BSpline &bsp = BSplines[Geoms[geoId].index];
+
+            double cx = 0, cy = 0; // geometric center
+            for (int i=0; i < int(InitParameters.size()-1); i+=2) {
+                cx += InitParameters[i];
+                cy += InitParameters[i+1];
+            }
+
+            cx /= bsp.poles.size();
+            cy /= bsp.poles.size();
+
+            for (int i=0; i < int(MoveParameters.size()-1); i+=2) {
+ 
+                MoveParameters[i]       = toPoint.x + InitParameters[i] - cx;
+                MoveParameters[i+1]     = toPoint.y + InitParameters[i+1] - cy;
+            }
+
+        }
+    }
 
     return solve();
 }
