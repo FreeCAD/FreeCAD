@@ -2346,9 +2346,37 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
 
         } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
             const Part::GeomBSplineCurve *spline = static_cast<const Part::GeomBSplineCurve *>(*it);
-            std::vector<Base::Vector3d> poles = spline->getPoles();
-            VertexId += poles.size();
-            // TODO
+            //std::vector<Base::Vector3d> poles = spline->getPoles();
+            VertexId += 2;
+ 
+            Plm.multVec(spline->getStartPoint(), pnt1);
+            Plm.multVec(spline->getEndPoint(), pnt2);
+            pnt1 = proj(pnt1);
+            pnt2 = proj(pnt2);
+
+            bool pnt1Inside = polygon.Contains(Base::Vector2d(pnt1.x, pnt1.y));
+            bool pnt2Inside = polygon.Contains(Base::Vector2d(pnt2.x, pnt2.y));
+            if (pnt1Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+            
+            if (pnt2Inside) {
+                std::stringstream ss;
+                ss << "Vertex" << VertexId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
+            
+            // This is a rather approximated approach. No it does not guarantie that the whole curve is boxed, specially
+            // for periodic curves, but it works reasonably well. Including all poles, which could be done, generally
+            // forces the user to select much more than the curve (all the poles) and it would not select the curve in cases
+            // where it is indeed comprised in the box.
+            if (pnt1Inside && pnt2Inside) {
+                std::stringstream ss;
+                ss << "Edge" << GeoId + 1;
+                Gui::Selection().addSelection(doc->getName(), sketchObject->getNameInDocument(), ss.str().c_str());
+            }
         }
     }
 
