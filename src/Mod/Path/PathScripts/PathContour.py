@@ -127,6 +127,7 @@ class ObjectContour:
             obj.StartDepth = bb.ZMax
             obj.ClearanceHeight = bb.ZMax + 5.0
             obj.SafeHeight = bb.ZMax + 3.0
+            obj.FinalDepth = bb.ZMin
 
         except:
             obj.StartDepth = 5.0
