@@ -50,9 +50,9 @@ def isConnected(shape1, shape2, shape_dim = -1):
     if shape_dim == -1:
         shape_dim = dimensionOfShapes([shape1, shape2])
     extractor = {0: None,
-                 1: (lambda(sh): sh.Vertexes),
-                 2: (lambda(sh): sh.Edges),
-                 3: (lambda(sh): sh.Faces)    }[shape_dim]
+                 1: (lambda sh: sh.Vertexes),
+                 2: (lambda sh: sh.Edges),
+                 3: (lambda sh: sh.Faces)    }[shape_dim]
     return len(findSharedElements([shape1, shape2], extractor))>0
 
 def splitIntoGroupsBySharing(list_of_shapes, element_extractor, split_connections = []):
@@ -132,7 +132,7 @@ def mergeSolids(list_of_solids_compsolids, flag_single = False, split_connection
     else:
         if len(solids)==0:
             return Part.Compound([])
-        groups = splitIntoGroupsBySharing(solids, lambda(sh): sh.Faces, split_connections)
+        groups = splitIntoGroupsBySharing(solids, lambda sh: sh.Faces, split_connections)
         if bool_compsolid:
             merged_solids = [Part.CompSolid(group) for group in groups]
         else:
@@ -146,7 +146,7 @@ def mergeShells(list_of_faces_shells, flag_single = False, split_connections = [
     if flag_single:
         return Part.makeShell(faces)
     else:
-        groups = splitIntoGroupsBySharing(faces, lambda(sh): sh.Edges, split_connections)
+        groups = splitIntoGroupsBySharing(faces, lambda sh: sh.Edges, split_connections)
         return Part.makeCompound([Part.Shell(group) for group in groups])
 
 def mergeWires(list_of_edges_wires, flag_single = False, split_connections = []):
@@ -156,7 +156,7 @@ def mergeWires(list_of_edges_wires, flag_single = False, split_connections = [])
     if flag_single:
         return Part.Wire(edges)
     else:
-        groups = splitIntoGroupsBySharing(edges, lambda(sh): sh.Vertexes, split_connections)
+        groups = splitIntoGroupsBySharing(edges, lambda sh: sh.Vertexes, split_connections)
         return Part.makeCompound([Part.Wire(Part.getSortedClusters(group)[0]) for group in groups])
 
 def mergeVertices(list_of_vertices, flag_single = False, split_connections = []):
