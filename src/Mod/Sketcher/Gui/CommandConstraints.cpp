@@ -2298,6 +2298,21 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 return;
             }
 
+            // This code supports simple bspline endpoint tangency to any other geometric curve
+            const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+
+            if( geom1 && geom2 &&
+                ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+
+                if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+                    std::swap(GeoId1,GeoId2);
+                    std::swap(PosId1,PosId2);
+                }
+                // GeoId1 is the bspline now
+            } // end of code supports simple bspline endpoint tangency
+
             openCommand("add tangent constraint");
             Gui::Command::doCommand(
                 Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
