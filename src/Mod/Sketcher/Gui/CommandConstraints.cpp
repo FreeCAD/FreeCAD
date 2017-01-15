@@ -3201,8 +3201,16 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
             else
                 hasAlreadyExternal = true;
         }
-
+        
         const Part::Geometry *geo = Obj->getGeometry(GeoId);
+        
+        if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            // unsupported as they are generally hereogeneus shapes
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Equality for BSpline edge currently unsupported."));
+            return;
+        }
+        
         if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId())
             lineSel = true;
         else if (geo->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())
