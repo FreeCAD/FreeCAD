@@ -251,6 +251,7 @@ class DraftToolBar:
         self.mask = None
         self.alock = False
         self.angle = None
+        self.avalue = None
         self.x = 0
         self.y = 0
         self.z = 0
@@ -1791,16 +1792,24 @@ class DraftToolBar:
         
     def changeLengthValue(self,d):
         v = FreeCAD.Vector(self.x,self.y,self.z)
+        if not v.Length:
+            if self.angle:
+                v = FreeCAD.Vector(self.angle)
+            else:
+                v = FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u)
+                if self.avalue:
+                    v = DraftVecUtils.rotate(v,math.radians(d),FreeCAD.DraftWorkingPlane.axis)
         v = DraftVecUtils.scaleTo(v,d)
         self.xValue.setText(displayExternal(v.x,None,'Length'))
         self.yValue.setText(displayExternal(v.y,None,'Length'))
         self.zValue.setText(displayExternal(v.z,None,'Length'))
         
     def changeAngleValue(self,d):
+        self.avalue = d
         v = FreeCAD.Vector(self.x,self.y,self.z)
         a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
         a = math.radians(d)+a
-        v=DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
+        v = DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
         self.angle = v
         self.xValue.setText(displayExternal(v.x,None,'Length'))
         self.yValue.setText(displayExternal(v.y,None,'Length'))
