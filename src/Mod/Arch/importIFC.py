@@ -1463,6 +1463,53 @@ def createCurve(ifcfile,wire):
     return pol
 
 
+def getProfile(ifcfile,p):
+    """returns an IFC profile definition from a shape"""
+
+    import Part,DraftGeomUtils
+    profile = None
+    if len(p.Edges) == 1:
+        pxvc = ifcfile.createIfcDirection((1.0,0.0))
+        povc = ifcfile.createIfcCartesianPoint((0.0,0.0))
+        pt = ifcfile.createIfcAxis2Placement2D(povc,pxvc)
+        if isinstance(p.Edges[0].Curve,Part.Circle):
+            # extruded circle
+            profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt,p.Edges[0].Curve.Radius)
+        elif isinstance(p.Edges[0].Curve,Part.Ellipse):
+            # extruded ellipse
+            profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt,p.Edges[0].Curve.MajorRadius,p.Edges[0].Curve.MinorRadius)
+    elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
+        # face with holes
+        f = p.Faces[0]
+        if DraftGeomUtils.hasCurves(f.OuterWire):
+            outerwire = createCurve(ifcfile,f.OuterWire)
+        else:
+            w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
+            pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+            outerwire = ifcfile.createIfcPolyline(pts)
+        innerwires = []
+        for w in f.Wires:
+            if w.hashCode() != f.OuterWire.hashCode():
+                if DraftGeomUtils.hasCurves(w):
+                    innerwires.append(createCurve(ifcfile,w))
+                else:
+                    w = Part.Wire(Part.__sortEdges__(w.Edges))
+                    pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+                    innerwires.append(ifcfile.createIfcPolyline(pts))
+        profile = ifcfile.createIfcArbitraryProfileDefWithVoids("AREA",None,outerwire,innerwires)
+    else:
+        if DraftGeomUtils.hasCurves(p):
+            # extruded composite curve
+            pol = createCurve(ifcfile,p)
+        else:
+            # extruded polyline
+            w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
+            pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
+            pol = ifcfile.createIfcPolyline(pts)
+        profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
+    return profile
+
+
 def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tessellation=1):
     """returns an IfcShapeRepresentation object or None"""
 
@@ -1497,81 +1544,55 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
 
     if (not shapes) and (not forcebrep):
         profile = None
+        ev = FreeCAD.Vector()
         if hasattr(obj,"Proxy"):
             if hasattr(obj.Proxy,"getExtrusionData"):
                 extdata = obj.Proxy.getExtrusionData(obj)
                 if extdata:
                     # convert to meters
                     p = extdata[0]
-                    p.scale(0.001)
+                    if not isinstance(p,list):
+                        p = [p]
                     ev = extdata[1]
-                    ev.multiply(0.001)
+                    if not isinstance(ev,list):
+                        ev = [ev]
                     pl = extdata[2]
-                    pl.Base = pl.Base.multiply(0.001)
-                    pstr = str([v.Point for v in extdata[0].Vertexes])
-                    if pstr in profiledefs:
-                        profile = profiledefs[pstr]
-                        shapetype = "reusing profile"
-                    else:
-                        if len(p.Edges) == 1:
-                            pxvc = ifcfile.createIfcDirection((1.0,0.0))
-                            povc = ifcfile.createIfcCartesianPoint((0.0,0.0))
-                            pt = ifcfile.createIfcAxis2Placement2D(povc,pxvc)
-                            if isinstance(p.Edges[0].Curve,Part.Circle):
-                                # extruded circle
-                                profile = ifcfile.createIfcCircleProfileDef("AREA",None,pt, p.Edges[0].Curve.Radius)
-                            elif isinstance(p.Edges[0].Curve,Part.Ellipse):
-                                # extruded ellipse
-                                profile = ifcfile.createIfcEllipseProfileDef("AREA",None,pt, p.Edges[0].Curve.MajorRadius, p.Edges[0].Curve.MinorRadius)
-                        elif (len(p.Faces) == 1) and (len(p.Wires) > 1):
-                            # face with holes
-                            f = p.Faces[0]
-                            if DraftGeomUtils.hasCurves(f.OuterWire):
-                                outerwire = createCurve(ifcfile,f.OuterWire)
-                            else:
-                                w = Part.Wire(Part.__sortEdges__(f.OuterWire.Edges))
-                                pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-                                outerwire = ifcfile.createIfcPolyline(pts)
-                            innerwires = []
-                            for w in f.Wires:
-                                if w.hashCode() != f.OuterWire.hashCode():
-                                    if DraftGeomUtils.hasCurves(w):
-                                        innerwires.append(createCurve(ifcfile,w))
-                                    else:
-                                        w = Part.Wire(Part.__sortEdges__(w.Edges))
-                                        pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-                                        innerwires.append(ifcfile.createIfcPolyline(pts))
-                            profile = ifcfile.createIfcArbitraryProfileDefWithVoids("AREA",None,outerwire,innerwires)
+                    if not isinstance(pl,list):
+                        pl = [pl]
+                    if (len(p) != len(ev)) or (len(p) != len(pl)):
+                        raise ValueError("importIFC: Extrusion data length mismatch: "+obj.Label)
+                    for i in range(len(p)):
+                        pi = p[i]
+                        pi.scale(0.001)
+                        evi = ev[i]
+                        evi.multiply(0.001)
+                        pli = pl[i]
+                        pli.Base = pli.Base.multiply(0.001)
+                        pstr = str([v.Point for v in p[i].Vertexes])
+                        if pstr in profiledefs:
+                            profile = profiledefs[pstr]
+                            shapetype = "reusing profile"
                         else:
-                            if DraftGeomUtils.hasCurves(p):
-                                # extruded composite curve
-                                pol = createCurve(ifcfile,p)
-                            else:
-                                # extruded polyline
-                                w = Part.Wire(Part.__sortEdges__(p.Wires[0].Edges))
-                                pts = [ifcfile.createIfcCartesianPoint(tuple(v.Point)[:2]) for v in w.Vertexes+[w.Vertexes[0]]]
-                                pol = ifcfile.createIfcPolyline(pts)
-                            profile = ifcfile.createIfcArbitraryClosedProfileDef("AREA",None,pol)
-                        if profile:
-                            profiledefs[pstr] = profile
-
-        if profile and not(DraftVecUtils.isNull(ev)):
-            #ev = pl.Rotation.inverted().multVec(ev)
-            #print "ev:",ev
-            if not tostore:
-                # add the object placement to the profile placement. Otherwise it'll be done later at map insert
-                pl2 = FreeCAD.Placement(obj.Placement)
-                pl2.Base = pl2.Base.multiply(0.001)
-                pl = pl2.multiply(pl)
-            xvc =       ifcfile.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(1,0,0))))
-            zvc =       ifcfile.createIfcDirection(tuple(pl.Rotation.multVec(FreeCAD.Vector(0,0,1))))
-            ovc =       ifcfile.createIfcCartesianPoint(tuple(pl.Base))
-            lpl =       ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
-            edir =      ifcfile.createIfcDirection(tuple(FreeCAD.Vector(ev).normalize()))
-            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,ev.Length)
-            shapes.append(shape)
-            solidType = "SweptSolid"
-            shapetype = "extrusion"
+                            profile = getProfile(ifcfile,pi)
+                            if profile:
+                                profiledefs[pstr] = profile
+                        if profile and not(DraftVecUtils.isNull(evi)):
+                            #ev = pl.Rotation.inverted().multVec(evi)
+                            #print "evi:",evi
+                            if not tostore:
+                                # add the object placement to the profile placement. Otherwise it'll be done later at map insert
+                                pl2 = FreeCAD.Placement(obj.Placement)
+                                pl2.Base = pl2.Base.multiply(0.001)
+                                pli = pl2.multiply(pli)
+                            xvc =       ifcfile.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(1,0,0))))
+                            zvc =       ifcfile.createIfcDirection(tuple(pli.Rotation.multVec(FreeCAD.Vector(0,0,1))))
+                            ovc =       ifcfile.createIfcCartesianPoint(tuple(pli.Base))
+                            lpl =       ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
+                            edir =      ifcfile.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
+                            shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,evi.Length)
+                            shapes.append(shape)
+                            solidType = "SweptSolid"
+                            shapetype = "extrusion"
 
     if not shapes:
         # brep representation
@@ -1832,6 +1853,7 @@ def setRepresentation(representation,scaling=1000):
                 else:
                     result = preresult
     return result
+
 
 def getRotation(entity):
     "returns a FreeCAD rotation from an IfcProduct with a IfcMappedItem representation"

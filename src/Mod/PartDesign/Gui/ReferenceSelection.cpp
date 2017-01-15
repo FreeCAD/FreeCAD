@@ -115,7 +115,7 @@ bool ReferenceSelection::allow(App::Document* pDoc, App::DocumentObject* pObj, c
 
         if (!body) { // Allow selecting Part::Datum features from the active Body
             return false;
-        } else if (!allowOtherBody && !body->hasFeature(pObj)) {
+        } else if (!allowOtherBody && !body->hasObject(pObj)) {
             return false;
         }
 
@@ -229,7 +229,7 @@ void getReferencedSelection(const App::DocumentObject* thisObj, const Gui::Selec
 
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(selObj, subname, dlg.radioIndependent->isChecked());
                     if(selBody)
-                        body->addFeature(copy);
+                        body->addObject(copy);
                     else
                         pcActivePart->addObject(copy);
 

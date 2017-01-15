@@ -35,19 +35,14 @@
 namespace Part {
 
 
-PROPERTY_SOURCE(Part::BodyBase, Part::Feature)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Part::BodyBase, Part::Feature)
 
 BodyBase::BodyBase()
 {
-    ADD_PROPERTY(Model       , (0) );
     ADD_PROPERTY(Tip         , (0) );
     ADD_PROPERTY(BaseFeature , (0) );
-}
-
-bool BodyBase::hasFeature(const App::DocumentObject* f) const
-{
-    const std::vector<App::DocumentObject*> &features = Model.getValues();
-    return f == BaseFeature.getValue() || std::find(features.begin(), features.end(), f) != features.end();
+    
+    App::OriginGroupExtension::initExtension(this);
 }
 
 BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
@@ -57,7 +52,7 @@ BodyBase* BodyBase::findBodyOf(const App::DocumentObject* f)
         std::vector<App::DocumentObject*> bodies = doc->getObjectsOfType(BodyBase::getClassTypeId());
         for (std::vector<App::DocumentObject*>::const_iterator b = bodies.begin(); b != bodies.end(); b++) {
             BodyBase* body = static_cast<BodyBase*>(*b);
-            if (body->hasFeature(f))
+            if (body->hasObject(f))
                 return body;
         }
     }
@@ -73,10 +68,10 @@ bool BodyBase::isAfter(const App::DocumentObject *feature, const App::DocumentOb
     }
 
     if (!target || target == BaseFeature.getValue() ) {
-        return hasFeature (feature);
+        return hasObject (feature);
     }
 
-    const std::vector<App::DocumentObject *> & features = Model.getValues();
+    const std::vector<App::DocumentObject *> & features = Group.getValues();
     auto featureIt = std::find(features.begin(), features.end(), feature);
     auto targetIt = std::find(features.begin(), features.end(), target);
 

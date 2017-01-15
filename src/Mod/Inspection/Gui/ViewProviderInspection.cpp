@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Base/Exception.h>
@@ -54,6 +55,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
+#include <Mod/Points/App/Properties.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 
 #include "ViewProviderInspection.h"
@@ -191,68 +193,86 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             Base::Type pointId = Base::Type::fromName("Points::Feature");
             Base::Type propId  = App::PropertyComplexGeoData::getClassTypeId();
 
+            std::vector<Base::Vector3d> points;
+            std::vector<Base::Vector3f> normals;
+            std::vector<Data::ComplexGeoData::Facet> faces;
+
             // set the Distance property to the correct size to sync size of material node with number
             // of vertices/points of the referenced geometry
-            const Data::ComplexGeoData* data = 0;
             if (object->getTypeId().isDerivedFrom(meshId)) {
                 App::Property* prop = object->getPropertyByName("Mesh");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(shapeId)) {
                 App::Property* prop = object->getPropertyByName("Shape");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                         ("User parameter:BaseApp/Preferences/Mod/Part");
                     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
 
                     Base::BoundBox3d bbox = data->getBoundBox();
                     accuracy = (float)((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+                    data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(pointId)) {
                 App::Property* prop = object->getPropertyByName("Points");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    std::vector<Base::Vector3d> normals;
+                    data->getPoints(points, normals, accuracy);
+                }
+                App::Property* propN = object->getPropertyByName("Normal");
+                if (propN && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
+                    normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
                 }
             }
 
-            if (data) {
-                this->pcLinkRoot->removeAllChildren();
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Facet> faces;
-                data->getFaces(points, faces, accuracy);
+            this->pcLinkRoot->removeAllChildren();
+            this->pcLinkRoot->addChild(this->pcCoords);
+            this->pcCoords->point.setNum(points.size());
+            SbVec3f* pts = this->pcCoords->point.startEditing();
+            for (size_t i=0; i < points.size(); i++) {
+                const Base::Vector3d& p = points[i];
+                pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
+            }
+            this->pcCoords->point.finishEditing();
 
-                this->pcLinkRoot->addChild(this->pcCoords);
-                this->pcCoords->point.setNum(points.size());
-                SbVec3f* pts = this->pcCoords->point.startEditing();
-                for (size_t i=0; i < points.size(); i++) {
-                    const Base::Vector3d& p = points[i];
-                    pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
+            if (!faces.empty()) {
+                SoIndexedFaceSet* face = new SoIndexedFaceSet();
+                this->pcLinkRoot->addChild(face);
+                face->coordIndex.setNum(4*faces.size());
+                int32_t* indices = face->coordIndex.startEditing();
+                unsigned long j=0;
+                std::vector<Data::ComplexGeoData::Facet>::iterator it;
+                for (it = faces.begin(); it != faces.end(); ++it,j++) {
+                    indices[4*j+0] = it->I1;
+                    indices[4*j+1] = it->I2;
+                    indices[4*j+2] = it->I3;
+                    indices[4*j+3] = SO_END_FACE_INDEX;
                 }
-                this->pcCoords->point.finishEditing();
+                face->coordIndex.finishEditing();
+            }
+            else {
+                if (!normals.empty() && normals.size() == points.size()) {
+                    SoNormal* normalNode = new SoNormal();
+                    normalNode->vector.setNum(normals.size());
+                    SbVec3f* norm = normalNode->vector.startEditing();
 
-                if (!faces.empty()) {
-                    SoIndexedFaceSet* face = new SoIndexedFaceSet();
-                    this->pcLinkRoot->addChild(face);
-                    face->coordIndex.setNum(4*faces.size());
-                    int32_t* indices = face->coordIndex.startEditing();
-                    unsigned long j=0;
-                    std::vector<Data::ComplexGeoData::Facet>::iterator it;
-                    for (it = faces.begin(); it != faces.end(); ++it,j++) {
-                        indices[4*j+0] = it->I1;
-                        indices[4*j+1] = it->I2;
-                        indices[4*j+2] = it->I3;
-                        indices[4*j+3] = SO_END_FACE_INDEX;
+                    std::size_t i=0;
+                    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
+                        norm[i++].setValue(it->x, it->y, it->z);
                     }
-                    face->coordIndex.finishEditing();
+
+                    normalNode->vector.finishEditing();
+                    this->pcLinkRoot->addChild(normalNode);
                 }
-                else {
-                    this->pcLinkRoot->addChild(this->pcPointStyle);
-                    this->pcLinkRoot->addChild(new SoPointSet());
-                }
+                this->pcLinkRoot->addChild(this->pcPointStyle);
+                this->pcLinkRoot->addChild(new SoPointSet());
             }
         }
     }

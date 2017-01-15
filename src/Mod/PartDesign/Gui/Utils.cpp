@@ -88,7 +88,7 @@ PartDesign::Body *getBodyFor(const App::DocumentObject* obj, bool messageIfNot)
         return nullptr;
 
     PartDesign::Body * rv = getBody( /*messageIfNot =*/ false);
-    if(rv && rv->hasFeature(obj))
+    if(rv && rv->hasObject(obj))
         return rv;
 
     rv = PartDesign::Body::findBodyOf(obj);
@@ -221,7 +221,7 @@ void fixSketchSupport (Sketcher::SketchObject* sketch)
         Gui::Command::doCommand(Gui::Command::Doc,"App.activeDocument().%s.superPlacement.Base.z = %f",
                 Datum.c_str(), offset);
         Gui::Command::doCommand(Gui::Command::Doc,
-                "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s)",
+                "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s)",
                 body->getNameInDocument(), Datum.c_str(), sketch->getNameInDocument());
         Gui::Command::doCommand(Gui::Command::Doc,
                 "App.activeDocument().%s.Support = (App.activeDocument().%s,[''])",

@@ -54,18 +54,18 @@ class TaskHole:
             sketch = groove.Sketch
             plane = sketch.Support[0]
             axis = plane.References[0][0]     
-            body.removeFeature(self.feature)
+            body.removeObject(self.feature)
             document.removeObject(self.feature.Name)                      
-            body.removeFeature(groove)
+            body.removeObject(groove)
             document.removeObject(groove.Name)
-            body.removeFeature(sketch)
+            body.removeObject(sketch)
             try:
                 document.removeObject(sketch.Name)      
             except:
                 pass # This always throws an exception: "Sketch support has been deleted" from SketchObject::execute()
-            body.removeFeature(plane)
+            body.removeObject(plane)
             document.removeObject(plane.Name)
-            body.removeFeature(axis)
+            body.removeObject(axis)
             document.removeObject(axis.Name)            
         FreeCADGui.ActiveDocument.resetEdit()
         FreeCADGui.Control.closeDialog(self)

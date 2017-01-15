@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,26 +20,21 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "MechanicalMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "_FemMeshGroup"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## \addtogroup FEM
-#  @{
-
-import FreeCAD
-import _MechanicalMaterial
+## @package FemMeshGroup
+#  \ingroup FEM
 
 
-def makeMechanicalMaterial(name):
-    '''makeMaterial(name): makes an Material
-    name there fore is a material name or an file name for a FCMat file'''
-    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
-    _MechanicalMaterial._MechanicalMaterial(obj)
-    if FreeCAD.GuiUp:
-        import _ViewProviderMechanicalMaterial
-        _ViewProviderMechanicalMaterial._ViewProviderMechanicalMaterial(obj.ViewObject)
-    # FreeCAD.ActiveDocument.recompute()
-    return obj
+class _FemMeshGroup:
+    "The FemMeshGroup object"
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyBool", "UseLabel", "MeshGroupProperties", "The identifier used for export (True: Label, False: Name)")
+        obj.addProperty("App::PropertyLinkSubList", "References", "MeshGroupShapes", "List of FEM mesh group shapes")
+        obj.Proxy = self
+        self.Type = "FemMeshGroup"
 
-# @}
+    def execute(self, obj):
+        return

@@ -165,111 +165,6 @@ struct ApplicationP
     CommandManager commandManager;
 };
 
-/** Observer that watches relabeled objects and make sure that the labels inside
- * a document are unique.
- * @note In the FreeCAD design it is explicitly allowed to have duplicate labels
- * (i.e. the user visible text e.g. in the tree view) while the internal names
- * are always guaranteed to be unique.
- */
-class ObjectLabelObserver
-{
-public:
-    /// The one and only instance.
-    static ObjectLabelObserver* instance();
-    /// Destructs the sole instance.
-    static void destruct ();
-
-    /** Checks the new label of the object and relabel it if needed
-     * to make it unique document-wide
-     */
-    void slotRelabelObject(const App::DocumentObject&, const App::Property&);
-
-private:
-    static ObjectLabelObserver* _singleton;
-
-    ObjectLabelObserver();
-    ~ObjectLabelObserver();
-    const App::DocumentObject* current;
-    ParameterGrp::handle _hPGrp;
-};
-
-ObjectLabelObserver* ObjectLabelObserver::_singleton = 0;
-
-ObjectLabelObserver* ObjectLabelObserver::instance()
-{
-    if (!_singleton)
-        _singleton = new ObjectLabelObserver;
-    return _singleton;
-}
-
-void ObjectLabelObserver::destruct ()
-{
-    delete _singleton;
-    _singleton = 0;
-}
-
-void ObjectLabelObserver::slotRelabelObject(const App::DocumentObject& obj, const App::Property& prop)
-{
-    // observe only the Label property
-    if (&prop == &obj.Label) {
-        // have we processed this (or another?) object right now?
-        if (current) {
-            return;
-        }
-
-        std::string label = obj.Label.getValue();
-        App::Document* doc = obj.getDocument();
-        if (doc && !_hPGrp->GetBool("DuplicateLabels")) {
-            std::vector<std::string> objectLabels;
-            std::vector<App::DocumentObject*>::const_iterator it;
-            std::vector<App::DocumentObject*> objs = doc->getObjects();
-            bool match = false;
-
-            for (it = objs.begin();it != objs.end();++it) {
-                if (*it == &obj)
-                    continue; // don't compare object with itself
-                std::string objLabel = (*it)->Label.getValue();
-                if (!match && objLabel == label)
-                    match = true;
-                objectLabels.push_back(objLabel);
-            }
-
-            // make sure that there is a name conflict otherwise we don't have to do anything
-            if (match && !label.empty()) {
-                // remove number from end to avoid lengthy names
-                size_t lastpos = label.length()-1;
-                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
-                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
-                    // the complete label again
-                    if (lastpos == 0) {
-                        lastpos = label.length()-1;
-                        break;
-                    }
-                    lastpos--;
-                }
-
-                label = label.substr(0, lastpos+1);
-                label = Base::Tools::getUniqueName(label, objectLabels, 3);
-                this->current = &obj;
-                const_cast<App::DocumentObject&>(obj).Label.setValue(label);
-                this->current = 0;
-            }
-        }
-    }
-}
-
-ObjectLabelObserver::ObjectLabelObserver() : current(0)
-{
-    App::GetApplication().signalChangedObject.connect(boost::bind
-        (&ObjectLabelObserver::slotRelabelObject, this, _1, _2));
-    _hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
-    _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
-}
-
-ObjectLabelObserver::~ObjectLabelObserver()
-{
-}
-
 static PyObject *
 FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
 {
@@ -460,7 +355,6 @@ Application::Application(bool GUIenabled)
         createStandardOperations();
         MacroCommand::load();
     }
-    ObjectLabelObserver::instance();
 }
 
 Application::~Application()
@@ -1142,7 +1036,7 @@ bool Application::activateWorkbench(const char* name)
         }
 
         Base::Console().Error("%s\n", (const char*)msg.toLatin1());
-        Base::Console().Log("%s\n", e.getStackTrace().c_str());
+        Base::Console().Error("%s\n", e.getStackTrace().c_str());
         if (!d->startingUp) {
             wc.restoreCursor();
             QMessageBox::critical(getMainWindow(), QObject::tr("Workbench failure"), 
@@ -1385,10 +1279,9 @@ typedef void (*_qt_msg_handler_old)(QtMsgType type, const char *msg);
 _qt_msg_handler_old old_qtmsg_handler = 0;
 
 #if QT_VERSION >= 0x050000
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &qmsg)
+void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
     Q_UNUSED(context);
-    const QChar *msg = qmsg.unicode();
 #ifdef FC_DEBUG
     switch (type)
     {
@@ -1396,26 +1289,26 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     case QtInfoMsg:
 #endif
     case QtDebugMsg:
-        Base::Console().Message("%s\n", msg);
+        Base::Console().Message("%s\n", msg.toUtf8().constData());
         break;
     case QtWarningMsg:
-        Base::Console().Warning("%s\n", msg);
+        Base::Console().Warning("%s\n", msg.toUtf8().constData());
         break;
     case QtCriticalMsg:
-        Base::Console().Error("%s\n", msg);
+        Base::Console().Error("%s\n", msg.toUtf8().constData());
         break;
     case QtFatalMsg:
-        Base::Console().Error("%s\n", msg);
+        Base::Console().Error("%s\n", msg.toUtf8().constData());
         abort();                    // deliberately core dump
     }
 #ifdef FC_OS_WIN32
     if (old_qtmsg_handler)
-        (*old_qtmsg_handler)(type, context, qmsg);
+        (*old_qtmsg_handler)(type, context, msg);
 #endif
 #else
     // do not stress user with Qt internals but write to log file if enabled
     Q_UNUSED(type);
-    Base::Console().Log("%s\n", msg);
+    Base::Console().Log("%s\n", msg.toUtf8().constData());
 #endif
 }
 #else

@@ -402,7 +402,7 @@ def get_femelement_sets_from_group_data(femmesh, fem_objects):
 
 
 def get_elset_short_name(obj, i):
-    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'MechanicalMaterial':
+    if hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemMaterial':
         return 'Mat' + str(i)
     elif hasattr(obj, "Proxy") and obj.Proxy.Type == 'FemBeamSection':
         return 'Beam' + str(i)
@@ -995,60 +995,80 @@ def get_ref_shape_node_sum_geom_table(node_geom_table):
     return node_sum_geom_table
 
 
+def get_mesh_group_elements(mesh_group_obj, aPart):
+    '''the Reference shapes of the mesh_group_object are searched in the Shape of aPart. If found in shape they are added to a dict
+    {MeshGroupIdentifier : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
+    '''
+    group_elements = {}  # { name : [element, element, ... , element]}
+    if mesh_group_obj.References:
+        grp_ele = get_reference_group_elements(mesh_group_obj, aPart)
+        group_elements[grp_ele[0]] = grp_ele[1]
+    else:
+        FreeCAD.Console.PrintError('  Empty reference in mesh group object: ' + mesh_group_obj.Name + ' ' + mesh_group_obj.Label)
+    return group_elements
+
+
 def get_analysis_group_elements(aAnalysis, aPart):
     ''' all Reference shapes of all Analysis member are searched in the Shape of aPart. If found in shape they are added to a dict
     {ConstraintName : ['ShapeType of the Elements'], [ElementID, ElementID, ...], ...}
     '''
-    aShape = aPart.Shape
     group_elements = {}  # { name : [element, element, ... , element]}
     empty_references = []
     for m in aAnalysis.Member:
         if hasattr(m, "References"):
-            # print(m.Name)
-            key = m.Name
-            elements = []
-            stype = None
             if m.References:
-                for r in m.References:
-                    parent = r[0]
-                    childs = r[1]
-                    # print(parent)
-                    # print(childs)
-                    for child in childs:
-                        ref_shape = get_element(parent, child)  # the method getElement(element) does not return Solid elements
-                        if not stype:
-                            stype = ref_shape.ShapeType
-                        elif stype != ref_shape.ShapeType:
-                            FreeCAD.Console.PrintError('Error, two refschapes in References with different ShapeTypes.\n')
-                        # print(ref_shape)
-                        found_element = find_element_in_shape(aShape, ref_shape)
-                        if found_element is not None:
-                            elements.append(found_element)
-                        else:
-                            FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
-                            print('    ' + m.Name)
-                            print('    ' + str(m.References))
-                            print('    ' + r[0].Name)
-                group_elements[key] = sorted(elements)
+                grp_ele = get_reference_group_elements(m, aPart)
+                group_elements[grp_ele[0]] = grp_ele[1]
             else:
                 print('  Empty reference: ' + m.Name)
                 empty_references.append(m)
     if empty_references:
         if len(empty_references) == 1:
-            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
+            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
         else:
             FreeCAD.Console.PrintError('Problem: more than one object with empty references.\n')
             print('We gone try to get the empty material references anyway.\n')
             # ShellThickness and BeamSection could have empty references, but on solid meshes only materials should have empty references
             for er in empty_references:
                 print(er.Name)
-            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape)
+            group_elements = get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aPart.Shape)
     # check if all groups have elements:
     for g in group_elements:
         # print(group_elements[g])
         if len(group_elements[g]) == 0:
             FreeCAD.Console.PrintError('Error: shapes for: ' + g + 'not found!\n')
     return group_elements
+
+
+def get_reference_group_elements(obj, aPart):
+    aShape = aPart.Shape
+    if hasattr(obj, "UseLabel") and obj.UseLabel:
+        key = obj.Label  # TODO check the character of the Label, only allow underline and standard english character
+    else:
+        key = obj.Name
+    elements = []
+    stype = None
+    for r in obj.References:
+        parent = r[0]
+        childs = r[1]
+        # print(parent)
+        # print(childs)
+        for child in childs:
+            ref_shape = get_element(parent, child)  # the method getElement(element) does not return Solid elements
+            if not stype:
+                stype = ref_shape.ShapeType
+            elif stype != ref_shape.ShapeType:
+                FreeCAD.Console.PrintError('Error, two refschapes in References with different ShapeTypes.\n')
+            # print(ref_shape)
+            found_element = find_element_in_shape(aShape, ref_shape)
+            if found_element is not None:
+                elements.append(found_element)
+            else:
+                FreeCAD.Console.PrintError('Problem: No element found for: ' + str(ref_shape) + '\n')
+                print('    ' + obj.Name)
+                print('    ' + str(obj.References))
+                print('    ' + r[0].Name)
+    return (key, sorted(elements))
 
 
 def get_anlysis_empty_references_group_elements(group_elements, aAnalysis, aShape):

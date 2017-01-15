@@ -54,11 +54,12 @@ class FemWorkbench (Workbench):
         import _CommandFEMMesh2Mesh
         import _CommandMeshGmshFromShape
         import _CommandMeshNetgenFromShape
+        import _CommandMeshGroup
         import _CommandMeshRegion
         import _CommandAnalysis
         import _CommandShellThickness
         import _CommandBeamSection
-        import _CommandMechanicalMaterial
+        import _CommandMaterial
         import _CommandMaterialMechanicalNonlinear
         import _CommandSolverCalculix
         import _CommandSolverZ88

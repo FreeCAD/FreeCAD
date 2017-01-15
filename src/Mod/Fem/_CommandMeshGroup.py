@@ -1,6 +1,6 @@
 # ***************************************************************************
 # *                                                                         *
-# *   Copyright (c) 2013 - Juergen Riegel <FreeCAD@juergen-riegel.net>      *
+# *   Copyright (c) 2016 - Bernd Hahnebach <bernd@bimstatik.org>            *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -20,58 +20,38 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_ViewProviderMechanicalMaterial"
-__author__ = "Juergen Riegel, Bernd Hahnebach"
+__title__ = "_CommandMeshGroup"
+__author__ = "Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package ViewProviderMechanicalMaterial
+## @package CommandMeshGroup
 #  \ingroup FEM
 
 import FreeCAD
+from FemCommands import FemCommands
 import FreeCADGui
+from PySide import QtCore
 
 
-class _ViewProviderMechanicalMaterial:
-    "A View Provider for the MechanicalMaterial object"
+class _CommandMeshGroup(FemCommands):
+    "The Fem_MeshGroup command definition"
+    def __init__(self):
+        super(_CommandMeshGroup, self).__init__()
+        self.resources = {'Pixmap': 'fem-femmesh-from-shape',
+                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "FEM mesh group"),
+                          'Accel': "M, G",
+                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MeshGroup", "Creates a FEM mesh group")}
+        self.is_active = 'with_gmsh_femmesh'
 
-    def __init__(self, vobj):
-        vobj.Proxy = self
+    def Activated(self):
+        FreeCAD.ActiveDocument.openTransaction("Create FemMeshGroup")
+        FreeCADGui.addModule("FemMeshGroup")
+        sel = FreeCADGui.Selection.getSelection()
+        if (len(sel) == 1):
+            sobj = sel[0]
+            if len(sel) == 1 and hasattr(sobj, "Proxy") and sobj.Proxy.Type == "FemMeshGmsh":
+                FreeCADGui.doCommand("FemMeshGroup.makeFemMeshGroup(App.ActiveDocument." + sobj.Name + ")")
 
-    def getIcon(self):
-        return ":/icons/fem-material.svg"
+        FreeCADGui.Selection.clearSelection()
 
-    def attach(self, vobj):
-        self.ViewObject = vobj
-        self.Object = vobj.Object
-
-    def updateData(self, obj, prop):
-        return
-
-    def onChanged(self, vobj, prop):
-        return
-
-    def setEdit(self, vobj, mode):
-        import _TaskPanelMechanicalMaterial
-        taskd = _TaskPanelMechanicalMaterial._TaskPanelMechanicalMaterial(self.Object)
-        taskd.obj = vobj.Object
-        FreeCADGui.Control.showDialog(taskd)
-        return True
-
-    def unsetEdit(self, vobj, mode):
-        FreeCADGui.Control.closeDialog()
-        return
-
-    # overwrite the doubleClicked to make sure no other Material taskd (and thus no selection observer) is still active
-    def doubleClicked(self, vobj):
-        doc = FreeCADGui.getDocument(vobj.Object.Document)
-        if not doc.getInEdit():
-            doc.setEdit(vobj.Object.Name)
-        else:
-            FreeCAD.Console.PrintError('Active Task Dialog found! Please close this one first!\n')
-        return True
-
-    def __getstate__(self):
-        return None
-
-    def __setstate__(self, state):
-        return None
+FreeCADGui.addCommand('Fem_MeshGroup', _CommandMeshGroup())

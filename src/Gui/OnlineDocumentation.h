@@ -69,7 +69,7 @@ public:
     void pause();
     void resume();
 
-private slots:
+private Q_SLOTS:
     void readClient();
     void discardClient();
 

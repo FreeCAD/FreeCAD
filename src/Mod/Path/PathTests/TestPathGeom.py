@@ -130,12 +130,14 @@ class TestPathGeom(PathTestBase):
         commands.append(Path.Command('G0', {'X': 0}))
         commands.append(Path.Command('G1', {'Y': 0}))
 
-        wire = PathGeom.wireForPath(Path.Path(commands))
+        wire,rapid = PathGeom.wireForPath(Path.Path(commands))
         self.assertEqual(len(wire.Edges), 4)
         self.assertLine(wire.Edges[0], Vector(0,0,0), Vector(1,0,0))
         self.assertLine(wire.Edges[1], Vector(1,0,0), Vector(1,1,0))
         self.assertLine(wire.Edges[2], Vector(1,1,0), Vector(0,1,0))
         self.assertLine(wire.Edges[3], Vector(0,1,0), Vector(0,0,0))
+        self.assertEqual(len(rapid), 1)
+        self.assertTrue(PathGeom.edgesMatch(rapid[0], wire.Edges[2]))
 
         wires = PathGeom.wiresForPath(Path.Path(commands))
         self.assertEqual(len(wires), 2)
@@ -145,3 +147,96 @@ class TestPathGeom(PathTestBase):
         self.assertEqual(len(wires[1].Edges), 1)
         self.assertLine(wires[1].Edges[0], Vector(0,1,0), Vector(0,0,0))
 
+
+    def test60(self):
+        """Verify arcToHelix returns proper helix."""
+        p1 = Vector(10,-10,0)
+        p2 = Vector(0,0,0)
+        p3 = Vector(10,10,0)
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 0, 2)
+        self.assertCurve(e, p1, p2 + Vector(0,0,1), p3 + Vector(0,0,2))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 3, 7)
+        self.assertCurve(e, p1 + Vector(0,0,3), p2 + Vector(0,0,5), p3 + Vector(0,0,7))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 9, 1)
+        self.assertCurve(e, p1 + Vector(0,0,9), p2 + Vector(0,0,5), p3 + Vector(0,0,1))
+
+        dz = Vector(0,0,3)
+        p11 = p1 + dz
+        p12 = p2 + dz
+        p13 = p3 + dz
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 0, 8)
+        self.assertCurve(e, p1, p2 + Vector(0,0,4), p3 + Vector(0,0,8))
+
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p11, p12, p13)), 2, -2)
+        self.assertCurve(e, p1 + Vector(0,0,2), p2, p3 + Vector(0,0,-2))
+
+        o = 10*math.sin(math.pi/4)
+        p1 = Vector(10, -10, 1)
+        p2 = Vector(10 - 10*math.sin(math.pi/4), -10*math.cos(math.pi/4), 1)
+        p3 = Vector(0, 0, 1)
+        e = PathGeom.arcToHelix(Part.Edge(Part.Arc(p1, p2, p3)), 0, 5)
+        self.assertCurve(e, Vector(10,-10,0), Vector(p2.x,p2.y,2.5), Vector(0, 0, 5))
+
+
+    def test62(self):
+        """Verify splitArcAt returns proper subarcs."""
+        p1 = Vector(10,-10,0)
+        p2 = Vector(0,0,0)
+        p3 = Vector(10,10,0)
+
+        arc = Part.Edge(Part.Arc(p1, p2, p3))
+
+        o = 10*math.sin(math.pi/4)
+        p12 = Vector(10 - o, -o, 0)
+        p23 = Vector(10 - o, +o, 0)
+
+        e = PathGeom.splitArcAt(arc, p2)
+        self.assertCurve(e[0], p1, p12, p2)
+        self.assertCurve(e[1], p2, p23, p3)
+
+        p34 = Vector(10 - 10*math.sin(1*math.pi/8), -10*math.cos(1*math.pi/8), 0)
+        p45 = Vector(10 - 10*math.sin(5*math.pi/8), -10*math.cos(5*math.pi/8), 0)
+
+        e = PathGeom.splitArcAt(arc, p12)
+        self.assertCurve(e[0], p1, p34, p12)
+        self.assertCurve(e[1], p12, p45, p3)
+
+
+    def test65(self):
+        """Verify splitEdgeAt."""
+        e = PathGeom.splitEdgeAt(Part.Edge(Part.LineSegment(Vector(), Vector(2, 4, 6))), Vector(1, 2, 3))
+        self.assertLine(e[0], Vector(), Vector(1,2,3))
+        self.assertLine(e[1], Vector(1,2,3), Vector(2,4,6))
+
+        # split an arc
+        p1 = Vector(10,-10,1)
+        p2 = Vector(0,0,1)
+        p3 = Vector(10,10,1)
+        arc = Part.Edge(Part.Arc(p1, p2, p3))
+        e = PathGeom.splitEdgeAt(arc, p2)
+        o = 10*math.sin(math.pi/4)
+        p12 = Vector(10 - o, -o, 1)
+        p23 = Vector(10 - o, +o, 1)
+        self.assertCurve(e[0], p1, p12, p2)
+        self.assertCurve(e[1], p2, p23, p3)
+
+
+        # split a helix
+        p1 = Vector(10,-10,0)
+        p2 = Vector(0,0,5)
+        p3 = Vector(10,10,10)
+        h = PathGeom.arcToHelix(arc, 0, 10)
+        self.assertCurve(h, p1, p2, p3)
+
+        e = PathGeom.splitEdgeAt(h, p2)
+        o = 10*math.sin(math.pi/4)
+        p12 = Vector(10 - o, -o, 2.5)
+        p23 = Vector(10 - o, +o, 7.5)
+        pf = e[0].valueAt((e[0].FirstParameter + e[0].LastParameter)/2)
+        pl = e[1].valueAt((e[1].FirstParameter + e[1].LastParameter)/2)
+        self.assertCurve(e[0], p1, p12, p2)
+        self.assertCurve(e[1], p2, p23, p3)

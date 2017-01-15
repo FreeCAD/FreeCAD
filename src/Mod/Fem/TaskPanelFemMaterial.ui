@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ThermalMechanicalMaterial</class>
- <widget class="QWidget" name="ThermalMechanicalMaterial">
+ <class>FemMaterial</class>
+ <widget class="QWidget" name="FemMaterial">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Mechanical material</string>
+   <string>FEM material</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

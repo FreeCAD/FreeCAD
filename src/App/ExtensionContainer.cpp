@@ -35,11 +35,11 @@
  
 using namespace App;
 
-TYPESYSTEM_SOURCE(App::ExtensionContainer, App::PropertyContainer);
+TYPESYSTEM_SOURCE(App::ExtensionContainer, App::PropertyContainer)
 
 ExtensionContainer::ExtensionContainer() {
 
-};
+}
 
 ExtensionContainer::~ExtensionContainer() {
 
@@ -48,7 +48,7 @@ ExtensionContainer::~ExtensionContainer() {
         if(entry.second->isPythonExtension())
             delete entry.second;
     }
-};
+}
 
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
 
@@ -361,7 +361,7 @@ void ExtensionContainer::restoreExtensions(Base::XMLReader& reader) {
     for (int i=0 ;i<Cnt ;i++) {
         reader.readElement("Extension");
         const char* Type = reader.getAttribute("type");
-        const char* Name = reader.getAttribute("type");
+        const char* Name = reader.getAttribute("name");
         try {
             App::Extension* ext = getExtension(Name);
             if(!ext) {
