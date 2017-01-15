@@ -1362,6 +1362,16 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
                 }
                 if (points[iPnt].GeoId == curves[iCrv].GeoId)
                     continue; //constraining a point of an element onto the element is a bad idea...
+
+                const Part::Geometry *geom = Obj->getGeometry(curves[iCrv].GeoId);
+
+                if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
+                    // unsupported until normal to BSpline at any point implemented.
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                         QObject::tr("Point on BSpline edge currently unsupported."));
+                    continue;
+                }
+
                 cnt++;
                 Gui::Command::doCommand(
                     Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
