@@ -1,49 +1,55 @@
 # -*- coding: utf-8 -*-
 
-#***************************************************************************
-#*                                                                         *
-#*   Copyright (c) 2016 Lorenz Hüdepohl <dev@stellardeath.org>             *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   This program is distributed in the hope that it will be useful,       *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Library General Public License for more details.                  *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with this program; if not, write to the Free Software   *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2016 Lorenz Hüdepohl <dev@stellardeath.org>             *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
 
-import FreeCAD, Path
+from . import PathUtils
+from .PathUtils import fmt
+
+import FreeCAD
+import Path
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
-
-from . import PathUtils
-from .PathUtils import fmt
 
 """Helix Drill object and FreeCAD command"""
 
 if FreeCAD.GuiUp:
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
+
         def translate(context, text, disambig=None):
-            return QtGui.QApplication.translate(context, text, disambig, _encoding)
+            return QtGui.QApplication.translate(context, text, disambig,
+                                                _encoding)
+
     except AttributeError:
+
         def translate(context, text, disambig=None):
             return QtGui.QApplication.translate(context, text, disambig)
 else:
     def translate(context, text, disambig=None):
         return text
+
 
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""
@@ -53,11 +59,13 @@ def z_cylinder(cyl):
         return False
     return True
 
+
 def connected(edge, face):
     for otheredge in face.Edges:
         if edge.isSame(otheredge):
             return True
     return False
+
 
 def cylinders_in_selection():
     from Part import Cylinder
@@ -70,7 +78,7 @@ def cylinders_in_selection():
         cylinders.append((base, []))
         for feature in selection.SubElementNames:
             subobj = getattr(base.Shape, feature)
-            if subobj.ShapeType =='Face':
+            if subobj.ShapeType == 'Face':
                 if isinstance(subobj.Surface, Cylinder):
                     if z_cylinder(subobj):
                         cylinders[-1][1].append(feature)
@@ -81,7 +89,7 @@ def cylinders_in_selection():
 def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vfeed, hfeed, direction, startside):
     """
     center: 2-tuple
-      (x0,y0) coordinates of center
+      (x0, y0) coordinates of center
     r_out, r_in: floats
       radial range, cut from outer radius r_out in layers of dr to inner radius r_in
     zmax, zmin: floats
@@ -97,7 +105,8 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         return
 
     out = "(helix_cut <{0}, {1}>, {2})".format(center[0], center[1],
-                ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vfeed, hfeed, direction, startside))))
+                ", ".join(map(str, (r_out, r_in, dr, zmax, zmin, dz, safe_z,
+                                    tool_diameter, vfeed, hfeed, direction, startside))))
 
     x0, y0 = center
     nz = max(int(ceil((zmax - zmin)/dz)), 2)
@@ -118,15 +127,15 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
         return out
 
     def rapid(x=None, y=None, z=None):
-        return "G0" + xyz(x,y,z) + "\n"
+        return "G0" + xyz(x, y, z) + "\n"
 
     def F(f=None):
         return (" F" + fmt(f) if f else "")
 
     def feed(x=None, y=None, z=None, f=None):
-        return "G1" + xyz(x,y,z) + F(f) + "\n"
+        return "G1" + xyz(x, y, z) + F(f) + "\n"
 
-    def arc(x,y,i,j,z,f):
+    def arc(x, y, i, j, z, f):
         if direction == "CW":
             code = "G2"
         elif direction == "CCW":
@@ -135,30 +144,30 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
 
     def helix_cut_r(r):
         out = ""
-        out += rapid(x=x0+r,y=y0)
+        out += rapid(x=x0+r, y=y0)
         out += rapid(z=zmax + tool_diameter)
-        out += feed(z=zmax,f=vfeed)
-        z=zmin
-        for i in range(1,nz+1):
-            out += arc(x0-r, y0, i=-r, j=0.0, z = zi[2*i-1], f=hfeed)
-            out += arc(x0+r, y0, i= r, j=0.0, z = zi[2*i],   f=hfeed)
-        out += arc(x0-r, y0, i=-r, j=0.0, z = zmin, f=hfeed)
-        out += arc(x0+r, y0, i=r,  j=0.0, z = zmin, f=hfeed)
+        out += feed(z=zmax, f=vfeed)
+        z = zmin
+        for i in range(1, nz+1):
+            out += arc(x0-r, y0, i=-r, j=0.0, z=zi[2*i-1], f=hfeed)
+            out += arc(x0+r, y0, i= r, j=0.0, z=zi[2*i],   f=hfeed)
+        out += arc(x0-r, y0, i=-r, j=0.0, z=zmin, f=hfeed)
+        out += arc(x0+r, y0, i=r,  j=0.0, z=zmin, f=hfeed)
         out += feed(z=zmax + tool_diameter, f=vfeed)
         out += rapid(z=safe_z)
         return out
 
     assert(r_out > 0.0)
-    assert(r_in >=  0.0)
+    assert(r_in >= 0.0)
 
     msg = None
     if r_out < 0.0:
         msg = "r_out < 0"
     elif r_in > 0 and r_out - r_in < tool_diameter:
-        msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, tool_diamater)
+        msg = "r_out - r_in = {0} is < tool diameter of {1}".format(r_out - r_in, tool_diameter)
     elif r_in == 0.0 and not r_out > tool_diameter/2.:
         msg = "Cannot drill a hole of diameter {0} with a tool of diameter {1}".format(2 * r_out, tool_diameter)
-    elif not startside in ["inside", "outside"]:
+    elif startside not in ["inside", "outside"]:
         msg = "Invalid value for parameter 'startside'"
 
     if msg:
@@ -169,7 +178,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     if r_in > 0:
         out += "(annulus mode)\n"
         r_out = r_out - tool_diameter/2
-        r_in  = r_in  + tool_diameter/2
+        r_in = r_in + tool_diameter/2
         if abs((r_out - r_in) / dr) < 1e-5:
             radii = [(r_out + r_in)/2]
         else:
@@ -182,7 +191,7 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
     else:
         out += "(full hole mode)\n"
         r_out = r_out - tool_diameter/2
-        r_in  = dr/2
+        r_in = dr/2
 
         nr = max(1 + int(ceil((r_out - r_in)/dr)), 2)
         radii = linspace(r_out, r_in, nr)
@@ -197,16 +206,21 @@ def helix_cut(center, r_out, r_in, dr, zmax, zmin, dz, safe_z, tool_diameter, vf
 
     return out
 
+
 def features_by_centers(base, features):
-    import scipy.spatial
+    try:
+        from scipy.spatial import KDTree
+    except ImportError:
+        from PathScripts.kdtree import KDTree
+
     features = sorted(features,
-                key = lambda feature : getattr(base.Shape, feature).Surface.Radius,
-                reverse = True)
+                      key=lambda feature: getattr(base.Shape, feature).Surface.Radius,
+                      reverse=True)
 
     coordinates = [(cylinder.Surface.Center.x, cylinder.Surface.Center.y) for cylinder in
-                        [getattr(base.Shape, feature) for feature in features]]
+                   [getattr(base.Shape, feature) for feature in features]]
 
-    tree = scipy.spatial.KDTree(coordinates)
+    tree = KDTree(coordinates)
     seen = {}
 
     by_centers = {}
@@ -217,74 +231,80 @@ def features_by_centers(base, features):
 
         cylinder = getattr(base.Shape, feature)
         xc, yc, _ = cylinder.Surface.Center
-        by_centers[xc, yc] = {cylinder.Surface.Radius : feature}
+        by_centers[xc, yc] = {cylinder.Surface.Radius: feature}
 
         for coord in tree.query_ball_point((xc, yc), cylinder.Surface.Radius):
             seen[coord] = True
-            cylinder =  getattr(base.Shape, features[coord])
+            cylinder = getattr(base.Shape, features[coord])
             by_centers[xc, yc][cylinder.Surface.Radius] = features[coord]
 
     return by_centers
 
+
 class ObjectPathHelix(object):
 
-    def __init__(self,obj):
+    def __init__(self, obj):
         # Basic
-        obj.addProperty("App::PropertyLinkSubList","Features","Path",translate("Features","Selected features for the drill operation"))
-        obj.addProperty("App::PropertyBool","Active","Path",translate("Active","Set to False to disable code generation"))
-        obj.addProperty("App::PropertyString","Comment","Path",translate("Comment","An optional comment for this profile, will appear in G-Code"))
+        obj.addProperty("App::PropertyLinkSubList", "Features", "Path",
+                        translate("Features", "Selected features for the drill operation"))
+        obj.addProperty("App::PropertyBool", "Active", "Path",
+                        translate("Active", "Set to False to disable code generation"))
+        obj.addProperty("App::PropertyString", "Comment", "Path",
+                        translate("Comment", "An optional comment for this profile, will appear in G-Code"))
 
         # Helix specific
         obj.addProperty("App::PropertyEnumeration", "Direction", "Helix Drill",
-            translate("Direction", "The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)"))
-        obj.Direction = ['CW','CCW']
+                        translate("Direction", "The direction of the circular cuts, clockwise (CW), or counter clockwise (CCW)"))
+        obj.Direction = ['CW', 'CCW']
 
         obj.addProperty("App::PropertyEnumeration", "StartSide", "Helix Drill",
-            translate("Direction", "Start cutting from the inside or outside"))
-        obj.StartSide = ['inside','outside']
+                        translate("Direction", "Start cutting from the inside or outside"))
+        obj.StartSide = ['inside', 'outside']
 
         obj.addProperty("App::PropertyLength", "DeltaR", "Helix Drill",
-            translate("DeltaR", "Radius increment (must be smaller than tool diameter)"))
+                        translate("DeltaR", "Radius increment (must be smaller than tool diameter)"))
 
         # Depth Properties
         obj.addProperty("App::PropertyDistance", "Clearance", "Depths",
-            translate("Clearance","Safe distance above the top of the hole to which to retract the tool"))
+                        translate("Clearance", "Safe distance above the top of the hole to which to retract the tool"))
         obj.addProperty("App::PropertyLength", "StepDown", "Depths",
-            translate("StepDown","Incremental Step Down of Tool"))
-        obj.addProperty("App::PropertyBool","UseStartDepth","Depths",
-            translate("Use Start Depth","Set to True to manually specify a start depth"))
+                        translate("StepDown", "Incremental Step Down of Tool"))
+        obj.addProperty("App::PropertyBool", "UseStartDepth", "Depths",
+                        translate("Use Start Depth", "Set to True to manually specify a start depth"))
         obj.addProperty("App::PropertyDistance", "StartDepth", "Depths",
-            translate("Start Depth","Starting Depth of Tool - first cut depth in Z"))
-        obj.addProperty("App::PropertyBool","UseFinalDepth","Depths",
-            translate("Use Final Depth","Set to True to manually specify a final depth"))
+                        translate("Start Depth", "Starting Depth of Tool - first cut depth in Z"))
+        obj.addProperty("App::PropertyBool", "UseFinalDepth", "Depths",
+                        translate("Use Final Depth", "Set to True to manually specify a final depth"))
         obj.addProperty("App::PropertyDistance", "FinalDepth", "Depths",
-            translate("Final Depth","Final Depth of Tool - lowest value in Z"))
+                        translate("Final Depth", "Final Depth of Tool - lowest value in Z"))
         obj.addProperty("App::PropertyDistance", "ThroughDepth", "Depths",
-            translate("Through Depth","Add this amount of additional cutting depth to open-ended holes. Only used if UseFinalDepth is False"))
+                        translate("Through Depth", "Add this amount of additional cutting depth "
+                                  "to open-ended holes. Only used if UseFinalDepth is False"))
 
         # The current tool number, read-only
         # this is apparently used internally, to keep track of tool chagnes
-        obj.addProperty("App::PropertyIntegerConstraint","ToolNumber","Tool",translate("PathProfile","The current tool in use"))
-        obj.ToolNumber = (0,0,1000,1)
-        obj.setEditorMode('ToolNumber',1) #make this read only
+        obj.addProperty("App::PropertyIntegerConstraint", "ToolNumber", "Tool",
+                        translate("PathProfile", "The current tool in use"))
+        obj.ToolNumber = (0, 0, 1000, 1)
+        obj.setEditorMode('ToolNumber', 1)  # make this read only
 
         obj.Proxy = self
 
     def __getstate__(self):
         return None
 
-    def __setstate__(self,state):
+    def __setstate__(self, state):
         return None
 
-    def execute(self,obj):
+    def execute(self, obj):
         from Part import Circle, Cylinder, Plane
         from math import sqrt
 
         output = '(helix cut operation'
         if obj.Comment:
-            output  += ', '+ str(obj.Comment)+')\n'
+            output += ', ' + str(obj.Comment) + ')\n'
         else:
-            output  += ')\n'
+            output += ')\n'
 
         if obj.Features:
             if not obj.Active:
@@ -328,8 +348,9 @@ class ObjectPathHelix(object):
                         r = cylinder.Surface.Radius
 
                         if dz < 0:
-                            # This is a closed hole if the face connected to the current cylinder at next_z has
-                            # the cylinder's edge as its OuterWire
+                            # This is a closed hole if the face connected to
+                            # the current cylinder at next_z has the cylinder's
+                            # edge as its OuterWire
                             closed = None
                             for face in base.Shape.Faces:
                                 if connected(other_edge, face) and not face.isSame(cylinder.Faces[0]):
@@ -343,7 +364,9 @@ class ObjectPathHelix(object):
                                 raise Exception("Cannot determine if this cylinder is closed on the z = {0} side".format(next_z))
 
                             xc, yc, _ = cylinder.Surface.Center
-                            jobs.append(dict(xc=xc, yc=yc, zmin=next_z, zmax=cur_z, r_out=r, r_in=0.0, closed=closed, zsafe=zsafe))
+                            jobs.append(dict(xc=xc, yc=yc,
+                                             zmin=next_z, zmax=cur_z, zsafe=zsafe,
+                                             r_out=r, r_in=0.0, closed=closed))
 
                         elif dz > 0:
                             new_jobs = []
@@ -384,20 +407,20 @@ class ObjectPathHelix(object):
                 output += helix_cut((job["xc"], job["yc"]), job["r_out"], job["r_in"], obj.DeltaR.Value,
                                     job["zmax"], job["zmin"], obj.StepDown.Value,
                                     job["zsafe"], tool.Diameter,
-                                    toolload.VertFeed.Value, toolload.HorizFeed.Value, obj.Direction, obj.StartSide)
+                                    toolload.VertFeed.Value, toolload.HorizFeed.Value,
+                                    obj.Direction, obj.StartSide)
                 output += '\n'
 
         obj.Path = Path.Path(output)
         if obj.ViewObject:
             obj.ViewObject.Visibility = True
 
-taskpanels = {}
 
 class ViewProviderPathHelix(object):
-    def __init__(self,vobj):
+    def __init__(self, vobj):
         vobj.Proxy = self
 
-    def attach(self,vobj):
+    def attach(self, vobj):
         self.Object = vobj.Object
         return
 
@@ -408,7 +431,6 @@ class ViewProviderPathHelix(object):
         FreeCADGui.Control.closeDialog()
         taskpanel = TaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskpanel)
-        taskpanels[0] = taskpanel
         return True
 
     def __getstate__(self):
@@ -417,11 +439,12 @@ class ViewProviderPathHelix(object):
     def __setstate__(self, state):
         return None
 
+
 class CommandPathHelix(object):
     def GetResources(self):
-        return {'Pixmap'  : 'Path-Helix',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathHelix","PathHelix"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("PathHelix","Creates a helix cut from selected circles")}
+        return {'Pixmap':  'Path-Helix',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("PathHelix", "PathHelix"),
+                'ToolTip':  QtCore.QT_TRANSLATE_NOOP("PathHelix", "Creates a helix cut from selected circles")}
 
     def IsActive(self):
         if FreeCAD.ActiveDocument is not None:
@@ -435,10 +458,10 @@ class CommandPathHelix(object):
         import Path
         from PathScripts import PathUtils
 
-        FreeCAD.ActiveDocument.openTransaction(translate("PathHelix","Create a helix cut"))
+        FreeCAD.ActiveDocument.openTransaction(translate("PathHelix", "Create a helix cut"))
         FreeCADGui.addModule("PathScripts.PathHelix")
 
-        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython","PathHelix")
+        obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "PathHelix")
         ObjectPathHelix(obj)
         ViewProviderPathHelix(obj.ViewObject)
 
@@ -473,10 +496,12 @@ class CommandPathHelix(object):
 
         FreeCAD.ActiveDocument.recompute()
 
+
 def print_exceptions(func):
     from functools import wraps
     import traceback
     import sys
+
     @wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -485,7 +510,9 @@ def print_exceptions(func):
             ex_type, ex, tb = sys.exc_info()
             FreeCAD.Console.PrintError("".join(traceback.format_exception(ex_type, ex, tb)) + "\n")
             raise
+
     return wrapper
+
 
 def print_all_exceptions(cls):
     for entry in dir(cls):
@@ -494,20 +521,35 @@ def print_all_exceptions(cls):
             setattr(cls, entry, print_exceptions(obj))
     return cls
 
+
 @print_all_exceptions
 class TaskPanel(object):
 
     def __init__(self, obj):
         from Units import Quantity
         self.obj = obj
+        self.previous_value = {}
+        self.form = QtGui.QToolBox()
 
         ui = FreeCADGui.UiLoader()
-        layout = QtGui.QGridLayout()
 
-        headerStyle = "QLabel { font-weight: bold; font-size: large; }"
         grayed_out = "background-color: #d0d0d0;"
 
-        self.previous_value = {}
+        def nextToolBoxItem(label, iconFile):
+            widget = QtGui.QWidget()
+            layout = QtGui.QGridLayout()
+            widget.setLayout(layout)
+            icon = QtGui.QIcon(iconFile)
+            self.form.addItem(widget, icon, label)
+            return layout
+
+        def addFiller():
+            row = layout.rowCount()
+            widget = QtGui.QWidget()
+            layout.addWidget(widget, row, 0, 1, 2)
+            layout.setRowStretch(row, 1)
+
+        layout = nextToolBoxItem("Geometry", ":/icons/PartDesign_InternalExternalGear.svg")
 
         def addWidget(widget):
             row = layout.rowCount()
@@ -517,11 +559,6 @@ class TaskPanel(object):
             row = layout.rowCount()
             layout.addWidget(widget1, row, 0)
             layout.addWidget(widget2, row, 1)
-
-        def heading(label):
-            heading = QtGui.QLabel(label)
-            heading.setStyleSheet(headerStyle)
-            addWidget(heading)
 
         def addQuantity(property, labelstring, activator=None, max=None):
             self.previous_value[property] = getattr(self.obj, property)
@@ -590,18 +627,20 @@ class TaskPanel(object):
             widget.setToolTip(self.obj.getDocumentationOfProperty(property))
             for option_label, option_value in options:
                 widget.addItem(option_label)
+
             def change(index):
                 setattr(self.obj, property, options[index][1])
                 self.obj.Proxy.execute(self.obj)
                 FreeCAD.ActiveDocument.recompute()
+
             widget.currentIndexChanged.connect(change)
             addWidgets(label, widget)
 
         self.featureTree = QtGui.QTreeWidget()
         self.featureTree.setMinimumHeight(200)
         self.featureTree.setSelectionMode(QtGui.QAbstractItemView.ExtendedSelection)
-        #self.featureTree.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
-        #self.featureTree.setDefaultDropAction(QtCore.Qt.MoveAction)
+        # self.featureTree.setDragDropMode(QtGui.QAbstractItemView.DragDrop)
+        # self.featureTree.setDefaultDropAction(QtCore.Qt.MoveAction)
         self.fillFeatureTree()
         sm = self.featureTree.selectionModel()
         sm.selectionChanged.connect(self.selectFeatures)
@@ -616,24 +655,34 @@ class TaskPanel(object):
 
         addWidgets(self.addButton, self.delButton)
 
-        heading("Drill parameters")
+        # End of "Features" section
+
+        layout = nextToolBoxItem("Drill parameters", ":/icons/Path-OperationB.svg")
         addCheckBox("Active", "Operation is active")
-        tool = PathUtils.getTool(self.obj,self.obj.ToolNumber)
+        tool = PathUtils.getTool(self.obj, self.obj.ToolNumber)
         if not tool:
             drmax = None
         else:
             drmax = tool.Diameter
         addQuantity("DeltaR", "Step in Radius", max=drmax)
         addQuantity("StepDown", "Step in Z")
-        addEnumeration("Direction", "Cut direction", [("Clockwise", "CW"), ("Counter-Clockwise", "CCW")])
-        addEnumeration("StartSide", "Start Side", [("Start from inside", "inside"), ("Start from outside", "outside")])
+        addEnumeration("Direction", "Cut direction",
+                       [("Clockwise", "CW"), ("Counter-Clockwise", "CCW")])
+        addEnumeration("StartSide", "Start Side",
+                       [("Start from inside", "inside"), ("Start from outside", "outside")])
 
-        heading("Cutting Depths")
+        # End of "Drill parameters" section
+        addFiller()
+
+        layout = nextToolBoxItem("Cutting Depths", ":/icons/Path-Depths.svg")
         addQuantity("Clearance", "Clearance Distance")
         addQuantity("StartDepth", "Absolute start height", "UseStartDepth")
 
         fdcheckbox, fdinput = addQuantity("FinalDepth", "Absolute final height", "UseFinalDepth")
         tdlabel, tdinput = addQuantity("ThroughDepth", "Extra drill depth\nfor open holes")
+
+        # End of "Cutting Depths" section
+        addFiller()
 
         # make ThroughDepth and FinalDepth mutually exclusive
         def fd_change(state):
@@ -650,11 +699,6 @@ class TaskPanel(object):
         if obj.UseFinalDepth:
             tdinput.setStyleSheet(grayed_out)
 
-        # add
-        widget = QtGui.QWidget()
-        widget.setLayout(layout)
-        self.form = widget
-
     def addCylinders(self):
         features_per_base = {}
         for base, features in self.obj.Features:
@@ -663,7 +707,7 @@ class TaskPanel(object):
         for base, features in cylinders_in_selection():
             for feature in features:
                 if base in features_per_base:
-                    if not feature in features_per_base[base]:
+                    if feature not in features_per_base[base]:
                         features_per_base[base].append(feature)
                 else:
                     features_per_base[base] = [feature]
@@ -717,7 +761,7 @@ class TaskPanel(object):
                 delete_hole(item)
                 if parent.childCount() == 0:
                     self.featureTree.takeTopLevelItem(self.featureTree.indexOfTopLevelItem(parent))
-            elif kind =="feature":
+            elif kind == "feature":
                 parent = item.parent()
                 delete_feature(item)
                 if parent.childCount() == 0:
@@ -741,7 +785,7 @@ class TaskPanel(object):
 
     def fillFeatureTree(self):
         for base, features in self.obj.Features:
-            base_item  = QtGui.QTreeWidgetItem()
+            base_item = QtGui.QTreeWidgetItem()
             base_item.setText(0, base.Name)
             base_item.setData(0, QtCore.Qt.UserRole, ("base", base))
             self.featureTree.addTopLevelItem(base_item)
@@ -754,12 +798,14 @@ class TaskPanel(object):
                     feature = by_radius[radius]
                     cylinder = getattr(base.Shape, feature)
                     cyl_item = QtGui.QTreeWidgetItem()
-                    cyl_item.setText(0, "Diameter {0:.2f}, {1}".format(2 * cylinder.Surface.Radius, feature))
+                    cyl_item.setText(0, "Diameter {0:.2f}, {1}".format(
+                                           2 * cylinder.Surface.Radius, feature))
                     cyl_item.setData(0, QtCore.Qt.UserRole, ("feature", feature))
                     hole_item.addChild(cyl_item)
 
     def selectFeatures(self, selected, deselected):
         FreeCADGui.Selection.clearSelection()
+
         def select_feature(item, base=None):
             kind, feature = item.data(0, QtCore.Qt.UserRole)
             assert(kind == "feature")
@@ -815,4 +861,4 @@ class TaskPanel(object):
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    FreeCADGui.addCommand('Path_Helix',CommandPathHelix())
+    FreeCADGui.addCommand('Path_Helix', CommandPathHelix())

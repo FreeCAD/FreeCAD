@@ -55,6 +55,7 @@ SET(PathScripts_SRCS
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathHelix.py
+    PathScripts/kdtree.py
     PathScripts/PathSurface.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py
