@@ -3517,6 +3517,15 @@ void CmdSketcherConstrainSnellsLaw::activated(int iMsg)
             strError = QObject::tr("Incompatible geometry is selected!", dmbg);
             throw(Base::Exception(""));
         };
+        
+        const Part::Geometry *geo = Obj->getGeometry(GeoId3);
+        
+        if( geo && geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
+            // unsupported until normal to BSpline at any point implemented.
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("SnellsLaw on BSpline edge currently unsupported."));
+            return;
+        }
 
         double n2divn1=0;
         
