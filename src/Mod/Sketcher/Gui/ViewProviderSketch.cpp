@@ -1081,7 +1081,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 edit->DragCurve = edit->PreselectCurve;
                 getSketchObject()->getSolvedSketch().initMove(edit->DragCurve, Sketcher::none, false);
                 const Part::Geometry *geo = getSketchObject()->getGeometry(edit->DragCurve);
-                if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId() ||
+                    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
                     relative = true;
                     //xInit = x;
                     //yInit = y;
