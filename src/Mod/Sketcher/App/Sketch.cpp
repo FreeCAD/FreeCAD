@@ -678,14 +678,14 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     std::vector<GCS::Point> spoles;
 
     for(std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it){
-	params.push_back(new double( (*it).x ));
-	params.push_back(new double( (*it).y ));
-	
-	GCS::Point p;
-	p.x = params[params.size()-2];
-	p.y = params[params.size()-1];
-	
-	spoles.push_back(p);
+        params.push_back(new double( (*it).x ));
+        params.push_back(new double( (*it).y ));
+        
+        GCS::Point p;
+        p.x = params[params.size()-2];
+        p.y = params[params.size()-1];
+        
+        spoles.push_back(p);
     }
 
     std::vector<double *> sweights;
@@ -736,15 +736,15 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     Points.push_back(p2);
 
     GCS::BSpline bs;
-    bs.start      = p1;
-    bs.end        = p2;
-    bs.poles	  = spoles;
-    bs.weights	  = sweights;
-    bs.knots	  = sknots;
-    bs.mult	  = mult;
-    bs.degree 	  = degree;
-    bs.periodic   = periodic;	
-    def.index = BSplines.size();
+    bs.start        = p1;
+    bs.end          = p2;
+    bs.poles	    = spoles;
+    bs.weights	    = sweights;
+    bs.knots	    = sknots;
+    bs.mult	        = mult;
+    bs.degree 	    = degree;
+    bs.periodic     = periodic;	
+    def.index       = BSplines.size();
     BSplines.push_back(bs);
 
     // store complete set
@@ -753,7 +753,7 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     // WARNING: This is only valid where the multiplicity of the endpoints conforms with a BSpline
     // only then the startpoint is the first control point and the endpoint is the last control point
     // accordingly, it is never the case for a periodic BSpline.
-    if(!bs.periodic) {
+    if(!bs.periodic && bs.mult[0] > bs.degree && bs.mult[mult.size()-1] > bs.degree) {
         GCSsys.addConstraintP2PCoincident(*(bs.poles.begin()),bs.start);
         GCSsys.addConstraintP2PCoincident(*(bs.poles.end()-1),bs.end);
     }
