@@ -1948,6 +1948,21 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
                 return;
             }
+            
+            // This code supports simple bspline endpoint perp to any other geometric curve
+            const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+
+            if( geom1 && geom2 &&
+                ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+
+                if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+                    std::swap(GeoId1,GeoId2);
+                    std::swap(PosId1,PosId2);
+                }
+                // GeoId1 is the bspline now
+            } // end of code supports simple bspline endpoint tangency
 
             openCommand("add perpendicular constraint");
             Gui::Command::doCommand(
@@ -1976,6 +1991,15 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
                     QObject::tr("Cannot add a perpendicularity constraint at an unconnected point!"));
                 return;
             }
+            
+            const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+            
+            if( geom2 && geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
+                // unsupported until normal to BSpline at any point implemented.
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Perpendicular to BSpline edge currently unsupported."));
+                return;
+            }
 
             openCommand("add perpendicularity constraint");
             Gui::Command::doCommand(
@@ -1996,10 +2020,21 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
             const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+            
             if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
                 geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
                     QObject::tr("One of the selected edges should be a line."));
+                return;
+            }
+            
+            if( geo1 && geo2 &&
+                ( geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+                  geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+                
+                // unsupported until tangent to BSpline at any point implemented.
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                     QObject::tr("Perpendicular to BSpline edge currently unsupported."));
                 return;
             }
 
