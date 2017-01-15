@@ -2699,7 +2699,7 @@ class Stretch(Modifier):
             self.ui.pointUi("Stretch")
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent",self.action)
-            self.rectracker = rectangleTracker()
+            self.rectracker = rectangleTracker(dotted=True,scolor=(0.0,0.0,1.0),swidth=2)
             self.nodetracker = []
             self.displacement = None
             msg(translate("draft", "Pick first point of selection rectangle:\n"))
@@ -2752,13 +2752,28 @@ class Stretch(Modifier):
                             nodes.append(p)
                     if iso:
                         self.ops.append([o,np])
-                elif tp == "Circle":
-                    self.ops.append([o])
-                    nodes.append(o.Placement.Base)
+                elif tp in ["Rectangle"]:
+                    p1 = Vector(0,0,0)
+                    p2 = Vector(o.Length.Value,0,0)
+                    p3 = Vector(o.Length.Value,o.Height.Value,0)
+                    p4 = Vector(0,o.Height.Value,0)
+                    np = []
+                    iso = False
+                    for p in [p1,p2,p3,p4]:
+                        p = o.Placement.multVec(p)
+                        isi = self.rectracker.isInside(p)
+                        np.append(isi)
+                        if isi:
+                            iso = True
+                            nodes.append(p)
+                    if iso:
+                        self.ops.append([o,np])
                 else:
-                    print "Draft Stretch: Skipping unsupported object: ",o.Label
+                    if self.rectracker.isInside(o.Placement.Base):
+                        self.ops.append([o])
+                        nodes.append(o.Placement.Base)
             for n in nodes:
-                nt = editTracker(n)
+                nt = editTracker(n,inactive=True)
                 nt.on()
                 self.nodetracker.append(nt)
             self.step = 3
@@ -2804,7 +2819,108 @@ class Stretch(Modifier):
                                 pts.append(ops[0].Points[i].add(self.displacement))
                         pts = str(pts).replace("Vector","FreeCAD.Vector")
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Points="+pts)
-                    elif tp == "Circle":
+                    elif tp in ["Rectangle"]:
+                        p1 = Vector(0,0,0)
+                        p2 = Vector(ops[0].Length.Value,0,0)
+                        p3 = Vector(ops[0].Length.Value,ops[0].Height.Value,0)
+                        p4 = Vector(0,ops[0].Height.Value,0)
+                        if ops[1] == [False,True,True,False]:
+                            optype = 1
+                        elif ops[1] == [False,False,True,True]:
+                            optype = 2
+                        elif ops[1] == [True,False,False,True]:
+                            optype = 3
+                        elif ops[1] == [True,True,False,False]:
+                            optype = 4
+                        else:
+                            optype = 0
+                        print "length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement
+                        done = False
+                        if optype > 0:
+                            v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
+                            a1 = round(self.displacement.getAngle(v1),4)
+                            v2 = ops[0].Placement.multVec(p4).sub(ops[0].Placement.multVec(p1))
+                            a2 = round(self.displacement.getAngle(v2),4)
+                            # check if the displacement is along one of the rectangle directions
+                            if a1 == 0:
+                                if optype == 1:
+                                    if ops[0].Length.Value >= 0:
+                                        d = ops[0].Length.Value + self.displacement.Length
+                                    else:
+                                        d = ops[0].Length.Value - self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Length="+str(d))
+                                    done = True
+                                elif optype == 3:
+                                    if ops[0].Length.Value >= 0:
+                                        d = ops[0].Length.Value - self.displacement.Length
+                                    else:
+                                        d = ops[0].Length.Value + self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Length="+str(d))
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
+                                    done = True
+                            elif a1 == 3.1416:
+                                if optype == 1:
+                                    if ops[0].Length.Value >= 0:
+                                        d = ops[0].Length.Value - self.displacement.Length
+                                    else:
+                                        d = ops[0].Length.Value + self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Length="+str(d))
+                                    done = True
+                                elif optype == 3:
+                                    if ops[0].Length.Value >= 0:
+                                        d = ops[0].Length.Value + self.displacement.Length
+                                    else:
+                                        d = ops[0].Length.Value - self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Length="+str(d))
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
+                                    done = True
+                            elif a2 == 0:
+                                if optype == 2:
+                                    if ops[0].Height.Value >= 0:
+                                        d = ops[0].Height.Value + self.displacement.Length
+                                    else:
+                                        d = ops[0].Height.Value - self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Height="+str(d))
+                                    done = True
+                                elif optype == 4:
+                                    if ops[0].Height.Value >= 0:
+                                        d = ops[0].Height.Value - self.displacement.Length
+                                    else:
+                                        d = ops[0].Height.Value + self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Height="+str(d))
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
+                                    done = True
+                            elif a2 == 3.1416:
+                                if optype == 2:
+                                    if ops[0].Height.Value >= 0:
+                                        d = ops[0].Height.Value - self.displacement.Length
+                                    else:
+                                        d = ops[0].Height.Value + self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Height="+str(d))
+                                    done = True
+                                elif optype == 4:
+                                    if ops[0].Height.Value >= 0:
+                                        d = ops[0].Height.Value + self.displacement.Length
+                                    else:
+                                        d = ops[0].Height.Value - self.displacement.Length
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Height="+str(d))
+                                    commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
+                                    done = True
+                        if not done:
+                            # otherwise create a wire copy and stretch it instead
+                            FreeCAD.Console.PrintMessage(translate("draft","Turning one Rectangle into a Wire \n"))
+                            pts = []
+                            opts = [p1,p2,p3,p4]
+                            for i in range(4):
+                                if ops[1][i] == False:
+                                    pts.append(opts[i])
+                                else:
+                                    pts.append(opts[i].add(self.displacement))
+                            pts = str([pts]).replace("Vector","FreeCAD.Vector")
+                            commitops.append("w = Draft.makeWire("+pts+",closed=True)")
+                            commitops.append("Draft.formatObject(w,FreeCAD.ActiveDocument."+ops[0].Name+")")
+                            commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".ViewObject.hide()")
+                    else:
                         commitops.append("FreeCAD.ActiveDocument."+ops[0].Name+".Placement.Base=FreeCAD."+str(ops[0].Placement.Base.add(self.displacement)))
         if commitops:
             commitops.append("FreeCAD.ActiveDocument.recompute()")
