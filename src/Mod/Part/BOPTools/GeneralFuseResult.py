@@ -110,12 +110,14 @@ def myCustomFusionRoutine(list_of_shapes):
                 types.add(piece.ShapeType)
 
             types_to_extract = types.intersection(nonaggregate_types)
-            extractor = lambda(sh):(
-                    (sh.Vertexes if "Vertex" in types_to_extract else [])
-                    + (sh.Edges if "Edge" in types_to_extract else [])
-                    + (sh.Faces if "Face" in types_to_extract else [])
-                    + (sh.Solids if "Solid" in types_to_extract else [])
-                    )
+
+            def extractor(sh):
+                return (
+                    (sh.Vertexes if "Vertex" in types_to_extract else []) +
+                    (sh.Edges if "Edge" in types_to_extract else []) +
+                    (sh.Faces if "Face" in types_to_extract else []) +
+                    (sh.Solids if "Solid" in types_to_extract else [])
+                )
 
             aggregate_sources_indexes = [self.indexOfSource(sh) for sh in self.source_shapes if sh.ShapeType in aggregate_types]
             aggregate_pieces = [sh for sh in self.pieces if sh.ShapeType in aggregate_types]
@@ -298,14 +300,14 @@ def myCustomFusionRoutine(list_of_shapes):
         original shape."""
 
         if shape.ShapeType == "Wire":
-            bit_extractor = lambda(sh): sh.Edges
-            joint_extractor = lambda(sh): sh.Vertexes
+            bit_extractor = lambda sh: sh.Edges
+            joint_extractor = lambda sh: sh.Vertexes
         elif shape.ShapeType == "Shell":
-            bit_extractor = lambda(sh): sh.Faces
-            joint_extractor = lambda(sh): sh.Edges
+            bit_extractor = lambda sh: sh.Faces
+            joint_extractor = lambda sh: sh.Edges
         elif shape.ShapeType == "CompSolid":
-            bit_extractor = lambda(sh): sh.Solids
-            joint_extractor = lambda(sh): sh.Faces
+            bit_extractor = lambda sh: sh.Solids
+            joint_extractor = lambda sh: sh.Faces
         else:
             #can't split the shape
             return [shape]
