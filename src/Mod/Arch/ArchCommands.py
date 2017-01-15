@@ -968,7 +968,7 @@ def getExtrusionData(shape):
         return None
     if not shape.Solids:
         return None
-    if len(shape.Faces) < 5:
+    if len(shape.Faces) < 3:
         return None
     # build faces list with normals
     faces = []

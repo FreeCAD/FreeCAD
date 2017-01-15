@@ -24,8 +24,10 @@
 
 import TestApp
 
+from PathTests.TestPathCore import TestPathCore
 from PathTests.TestPathPost import PathPostTestCases
 
 from PathTests.TestPathGeom import TestPathGeom
 from PathTests.TestPathDepthParams import depthTestCases
 
+from PathTests.TestPathDressupHoldingTags import TestHoldingTags

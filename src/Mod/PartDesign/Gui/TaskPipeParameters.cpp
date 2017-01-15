@@ -720,13 +720,13 @@ bool TaskDlgPipeParameters::accept()
     std::vector<App::DocumentObject*> copies;
 
     bool ext = false;
-    if(!pcActiveBody->hasFeature(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
+    if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue()))
         ext = true;
-    else if(!pcActiveBody->hasFeature(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
+    else if(!pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue()))
             ext = true;
     else {
         for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
-            if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
+            if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj))
                 ext = true;
         }
     }
@@ -741,12 +741,12 @@ bool TaskDlgPipeParameters::accept()
             return false;
         else if(!dlg.radioXRef->isChecked()) {
 
-            if(!pcActiveBody->hasFeature(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue())) {
+            if(!pcActiveBody->hasObject(pcPipe->Spine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->Spine.getValue())) {
                 pcPipe->Spine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->Spine.getValue(), "", dlg.radioIndependent->isChecked()),
                                         pcPipe->Spine.getSubValues());
                 copies.push_back(pcPipe->Spine.getValue());
             }
-            else if(!pcActiveBody->hasFeature(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue())){
+            else if(!pcActiveBody->hasObject(pcPipe->AuxillerySpine.getValue()) && !pcActiveBody->getOrigin()->hasObject(pcPipe->AuxillerySpine.getValue())){
                 pcPipe->AuxillerySpine.setValue(PartDesignGui::TaskFeaturePick::makeCopy(pcPipe->AuxillerySpine.getValue(), "", dlg.radioIndependent->isChecked()),
                                         pcPipe->AuxillerySpine.getSubValues());
                 copies.push_back(pcPipe->AuxillerySpine.getValue());
@@ -756,7 +756,7 @@ bool TaskDlgPipeParameters::accept()
             int index = 0;
             for(App::DocumentObject* obj : pcPipe->Sections.getValues()) {
 
-                if(!pcActiveBody->hasFeature(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
+                if(!pcActiveBody->hasObject(obj) && !pcActiveBody->getOrigin()->hasObject(obj)) {
                     objs.push_back(PartDesignGui::TaskFeaturePick::makeCopy(obj, "", dlg.radioIndependent->isChecked()));
                     copies.push_back(objs.back());
                 }
@@ -781,7 +781,7 @@ bool TaskDlgPipeParameters::accept()
         for(auto obj : copies) {
             //Dead code: pcActiveBody was previously used without checking for null, so it won't be null here either.
             //if(pcActiveBody)
-            pcActiveBody->addFeature(obj);
+            pcActiveBody->addObject(obj);
             //else if (pcActivePart)
             //    pcActivePart->addObject(obj);
         }

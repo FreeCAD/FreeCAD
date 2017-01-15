@@ -46,6 +46,9 @@ public:
     virtual void extensionAttach(App::DocumentObject *pcObject) override;
     virtual void extensionUpdateData(const App::Property* prop) override;
 
+    virtual void extensionDragObject(App::DocumentObject*) override;
+    virtual void extensionDropObject(App::DocumentObject*);
+    
     void updateOriginSize();
 
 protected:

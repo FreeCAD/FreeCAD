@@ -55,6 +55,13 @@ INSTALL(
         FemMesh2Mesh.py
         _CommandFEMMesh2Mesh.py
 
+        FemMeshGroup.py
+        _FemMeshGroup.py
+        _ViewProviderFemMeshGroup.py
+        _CommandMeshGroup.py
+        _TaskPanelFemMeshGroup.py
+        TaskPanelFemMeshGroup.ui
+
         FemMeshRegion.py
         _FemMeshRegion.py
         _ViewProviderFemMeshRegion.py
@@ -81,12 +88,12 @@ INSTALL(
         _ViewProviderFemConstraintSelfWeight.py
         _CommandConstraintSelfWeight.py
 
-        MechanicalMaterial.py
-        _MechanicalMaterial.py
-        _ViewProviderMechanicalMaterial.py
-        _CommandMechanicalMaterial.py
-        _TaskPanelMechanicalMaterial.py
-        TaskPanelMechanicalMaterial.ui
+        FemMaterial.py
+        _FemMaterial.py
+        _ViewProviderFemMaterial.py
+        _CommandMaterial.py
+        _TaskPanelFemMaterial.py
+        TaskPanelFemMaterial.ui
 
         FemMaterialMechanicalNonlinear.py
         _FemMaterialMechanicalNonlinear.py

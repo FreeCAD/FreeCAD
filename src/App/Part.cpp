@@ -35,7 +35,7 @@
 using namespace App;
 
 
-PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::DocumentObject)
+PROPERTY_SOURCE_WITH_EXTENSIONS(App::Part, App::GeoFeature)
 
 
 //===========================================================================

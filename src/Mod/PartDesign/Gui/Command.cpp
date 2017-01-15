@@ -125,7 +125,7 @@ void UnifiedDatumCommand(Gui::Command &cmd, Base::Type type, std::string name)
                 }
             }
             if (pcActiveBody) {
-                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                cmd.doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                                pcActiveBody->getNameInDocument(), FeatName.c_str());
             }
             cmd.doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
@@ -278,7 +278,7 @@ void CmdPartDesignShapeBinder::activated(int iMsg)
             doCommand(Gui::Command::Doc,"App.activeDocument().%s.Support = %s",
                     FeatName.c_str(), support.getPyReprString().c_str());
         }
-        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+        doCommand(Gui::Command::Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                 pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Gui::Command::Doc,"App.activeDocument().recompute()");  // recompute the feature based on its references
         doCommand(Gui::Command::Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -385,7 +385,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             supportString = std::string("(App.activeDocument().") + obj->getNameInDocument() + ", '')";
         }
 
-        if (!pcActiveBody->hasFeature(obj)) {
+        if (!pcActiveBody->hasObject(obj)) {
             if ( !obj->isDerivedFrom ( App::Plane::getClassTypeId() ) )  {
                 // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
 
@@ -409,7 +409,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
                     auto copy = PartDesignGui::TaskFeaturePick::makeCopy(obj, sub, dlg.radioIndependent->isChecked());
 
                     if(pcActiveBody)
-                        pcActiveBody->addFeature(copy);
+                        pcActiveBody->addObject(copy);
                     else if (pcActivePart)
                         pcActivePart->addObject(copy);
 
@@ -429,7 +429,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         doCommand(Doc,"App.activeDocument().addObject('Sketcher::SketchObject','%s')",FeatName.c_str());
         doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
         doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
-        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                        pcActiveBody->getNameInDocument(), FeatName.c_str());
         doCommand(Gui,"App.activeDocument().recompute()");  // recompute the sketch placement based on its support
         //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
@@ -466,7 +466,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
         for (auto plane: datumPlanes) {
             planes.push_back ( plane );
             // Check whether this plane belongs to the active body
-            if ( pcActiveBody && pcActiveBody->hasFeature(plane) ) {
+            if ( pcActiveBody && pcActiveBody->hasObject(plane) ) {
                 if ( !pcActiveBody->isAfterInsertPoint ( plane ) ) {
                     validPlanes++;
                     status.push_back(PartDesignGui::TaskFeaturePick::validFeature);
@@ -521,7 +521,7 @@ void CmdPartDesignNewSketch::activated(int iMsg)
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.Support = %s",FeatName.c_str(),supportString.c_str());
             Gui::Command::doCommand(Doc,"App.activeDocument().%s.MapMode = '%s'",FeatName.c_str(),Attacher::AttachEngine::getModeName(Attacher::mmFlatFace).c_str());
             Gui::Command::updateActive(); // Make sure the Support's Placement property is updated
-            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+            Gui::Command::doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                         pcActiveBody->getNameInDocument(), FeatName.c_str());
             //doCommand(Gui,"Gui.activeDocument().activeView().setCamera('%s')",cam.c_str());
             Gui::Command::doCommand(Gui,"Gui.activeDocument().setEdit('%s')",FeatName.c_str());
@@ -584,13 +584,13 @@ void finishFeature(const Gui::Command* cmd, const std::string& FeatName,
         App::DocumentObject* lastSolidFeature = pcActiveBody->Tip.getValue();
         if (!prevSolidFeature || prevSolidFeature == lastSolidFeature) {
             // If the previous feature not given or is the Tip add Feature after it.
-            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+            cmd->doCommand(cmd->Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                     pcActiveBody->getNameInDocument(), FeatName.c_str());
             prevSolidFeature = lastSolidFeature;
         } else {
             // Insert the feature into the body after the given one.
             cmd->doCommand(cmd->Doc,
-                    "App.activeDocument().%s.insertFeature(App.activeDocument().%s, App.activeDocument().%s, True)",
+                    "App.activeDocument().%s.insertObject(App.activeDocument().%s, App.activeDocument().%s, True)",
                     pcActiveBody->getNameInDocument(), FeatName.c_str(), prevSolidFeature->getNameInDocument());
         }
     }
@@ -640,7 +640,7 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
                 status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
                 continue;
             }
-        } else if (!pcActiveBody->hasFeature(*s)) {
+        } else if (!pcActiveBody->hasObject(*s)) {
             // Check whether this plane belongs to a body of the same part
             PartDesign::Body* b = PartDesign::Body::findBodyOf(*s);
             if(!b)
@@ -807,7 +807,7 @@ void prepareProfileBased(Gui::Command* cmd, const std::string& which,
                 auto copy = PartDesignGui::TaskFeaturePick::makeCopy(sketches[0], "", dlg.radioIndependent->isChecked());
                 auto oBody = PartDesignGui::getBodyFor(sketches[0], false);
                 if(oBody)
-                    pcActiveBody->addFeature(copy);
+                    pcActiveBody->addObject(copy);
                 else
                     pcActivePart->addObject(copy);
 
@@ -1855,7 +1855,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
 
         // Remove the Transformed feature from the Body
         if(pcActiveBody)
-            doCommand(Doc, "App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+            doCommand(Doc, "App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                       pcActiveBody->getNameInDocument(), trFeat->getNameInDocument());
 
         // Create a MultiTransform feature and move the Transformed feature inside it

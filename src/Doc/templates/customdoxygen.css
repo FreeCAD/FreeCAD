@@ -1,3 +1,19 @@
+@font-face {
+    font-family: 'Fira Sans';
+    src: url('/fonts/FiraSans-Regular.eot');
+    src: local('☺'), url('/fonts/FiraSans-Regular.woff') format('woff'), url('/fonts/FiraSans-Regular.ttf') format('truetype'), url('/fonts/FiraSans-Regular.svg') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto.eot');
+    src: local('☺'), url('/fonts/Roboto.woff') format('woff'), url('/fonts/Roboto.ttf') format('truetype'), url('/fonts/Roboto.svg') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+
 h1, .h1, h2, .h2, h3, .h3{
     font-weight: 200 !important;
 }
@@ -388,4 +404,7 @@ pre.fragment {
 }
 .memdoc p {
     text-align: left;
+}
+body, table, div, p, dl {
+    font: 400 16px/22px Fira Sans,sans-serif;
 }

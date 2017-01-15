@@ -25,6 +25,7 @@
 
 #ifndef _PreComp_
 # include <QPixmap>
+# include <QTimer>
 # include <Inventor/SoPickedPoint.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoSwitch.h>
@@ -44,6 +45,7 @@
 
 #include "ViewProvider.h"
 #include "Application.h"
+#include "ActionFunction.h"
 #include "Document.h"
 #include "ViewProviderPy.h"
 #include "BitmapFactory.h"
@@ -51,6 +53,8 @@
 #include "View3DInventorViewer.h"
 #include "SoFCDB.h"
 #include "ViewProviderExtension.h"
+
+#include <boost/bind.hpp>
 
 using namespace std;
 using namespace Gui;
@@ -171,10 +175,16 @@ void ViewProvider::eventCallback(void * ud, SoEventCallback * node)
             const SbBool press = ke->getState() == SoButtonEvent::DOWN ? true : false;
             switch (ke->getKey()) {
             case SoKeyboardEvent::ESCAPE:
-                if (self->keyPressed (press, ke->getKey()))
+                if (self->keyPressed (press, ke->getKey())) {
                     node->setHandled();
-                else
-                    Gui::Application::Instance->activeDocument()->resetEdit();
+                }
+                else {
+                    Gui::TimerFunction* func = new Gui::TimerFunction();
+                    func->setAutoDelete(true);
+                    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+                    func->setFunction(boost::bind(&Document::resetEdit, doc));
+                    QTimer::singleShot(0, func, SLOT(timeout()));
+                }
                 break;
             default:
                 // call the virtual method

@@ -147,6 +147,34 @@ using namespace Base;
 using namespace App;
 using namespace std;
 
+/** Observer that watches relabeled objects and make sure that the labels inside
+ * a document are unique.
+ * @note In the FreeCAD design it is explicitly allowed to have duplicate labels
+ * (i.e. the user visible text e.g. in the tree view) while the internal names
+ * are always guaranteed to be unique.
+ */
+class ObjectLabelObserver
+{
+public:
+    /// The one and only instance.
+    static ObjectLabelObserver* instance();
+    /// Destructs the sole instance.
+    static void destruct ();
+
+    /** Checks the new label of the object and relabel it if needed
+     * to make it unique document-wide
+     */
+    void slotRelabelObject(const App::DocumentObject&, const App::Property&);
+
+private:
+    static ObjectLabelObserver* _singleton;
+
+    ObjectLabelObserver();
+    ~ObjectLabelObserver();
+    const App::DocumentObject* current;
+    ParameterGrp::handle _hPGrp;
+};
+
 
 //==========================================================================
 // Application
@@ -159,7 +187,6 @@ Base::ConsoleObserverFile *Application::_pConsoleObserverFile =0;
 
 AppExport std::map<std::string,std::string> Application::mConfig;
 BaseExport extern PyObject* Base::BaseExceptionFreeCADError;
-
 
 //**************************************************************************
 // Construction and destruction
@@ -1346,6 +1373,8 @@ void Application::initApplication(void)
     Console().Log("Run App init script\n");
     Interpreter().runString(Base::ScriptFactory().ProduceScript("CMakeVariables"));
     Interpreter().runString(Base::ScriptFactory().ProduceScript("FreeCADInit"));
+
+    ObjectLabelObserver::instance();
 }
 
 std::list<std::string> Application::getCmdLineFiles()
@@ -2261,3 +2290,80 @@ std::string Application::FindHomePath(const char* sCall)
 #else
 # error "std::string Application::FindHomePath(const char*) not implemented"
 #endif
+
+ObjectLabelObserver* ObjectLabelObserver::_singleton = 0;
+
+ObjectLabelObserver* ObjectLabelObserver::instance()
+{
+    if (!_singleton)
+        _singleton = new ObjectLabelObserver;
+    return _singleton;
+}
+
+void ObjectLabelObserver::destruct ()
+{
+    delete _singleton;
+    _singleton = 0;
+}
+
+void ObjectLabelObserver::slotRelabelObject(const App::DocumentObject& obj, const App::Property& prop)
+{
+    // observe only the Label property
+    if (&prop == &obj.Label) {
+        // have we processed this (or another?) object right now?
+        if (current) {
+            return;
+        }
+
+        std::string label = obj.Label.getValue();
+        App::Document* doc = obj.getDocument();
+        if (doc && !_hPGrp->GetBool("DuplicateLabels")) {
+            std::vector<std::string> objectLabels;
+            std::vector<App::DocumentObject*>::const_iterator it;
+            std::vector<App::DocumentObject*> objs = doc->getObjects();
+            bool match = false;
+
+            for (it = objs.begin();it != objs.end();++it) {
+                if (*it == &obj)
+                    continue; // don't compare object with itself
+                std::string objLabel = (*it)->Label.getValue();
+                if (!match && objLabel == label)
+                    match = true;
+                objectLabels.push_back(objLabel);
+            }
+
+            // make sure that there is a name conflict otherwise we don't have to do anything
+            if (match && !label.empty()) {
+                // remove number from end to avoid lengthy names
+                size_t lastpos = label.length()-1;
+                while (label[lastpos] >= 48 && label[lastpos] <= 57) {
+                    // if 'lastpos' becomes 0 then all characters are digits. In this case we use
+                    // the complete label again
+                    if (lastpos == 0) {
+                        lastpos = label.length()-1;
+                        break;
+                    }
+                    lastpos--;
+                }
+
+                label = label.substr(0, lastpos+1);
+                label = Base::Tools::getUniqueName(label, objectLabels, 3);
+                this->current = &obj;
+                const_cast<App::DocumentObject&>(obj).Label.setValue(label);
+                this->current = 0;
+            }
+        }
+    }
+}
+
+ObjectLabelObserver::ObjectLabelObserver() : current(0)
+{
+    App::GetApplication().signalChangedObject.connect(boost::bind
+        (&ObjectLabelObserver::slotRelabelObject, this, _1, _2));
+    _hPGrp = App::GetApplication().GetUserParameter().GetGroup("BaseApp");
+    _hPGrp = _hPGrp->GetGroup("Preferences")->GetGroup("Document");
+}
+
+ObjectLabelObserver::~ObjectLabelObserver()
+{
+}

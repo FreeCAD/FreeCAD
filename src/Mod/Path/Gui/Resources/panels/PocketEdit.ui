@@ -29,7 +29,7 @@
    <item row="0" column="0">
     <widget class="QToolBox" name="toolBox">
      <property name="currentIndex">
-      <number>5</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="Geometry">
       <property name="enabled">
@@ -40,7 +40,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>321</height>
+        <height>343</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -117,8 +117,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>321</height>
+        <width>114</width>
+        <height>108</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -195,8 +195,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>321</height>
+        <width>144</width>
+        <height>56</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -245,8 +245,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>321</height>
+        <width>94</width>
+        <height>24</height>
        </rect>
       </property>
       <attribute name="label">
@@ -259,8 +259,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>321</height>
+        <width>178</width>
+        <height>120</height>
        </rect>
       </property>
       <attribute name="label">
@@ -299,6 +299,9 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QFormLayout" name="formLayout_4">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::ExpandingFieldsGrow</enum>
+          </property>
           <item row="0" column="0" colspan="2">
            <widget class="QCheckBox" name="useZigZag">
             <property name="text">
@@ -313,13 +316,17 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QSpinBox" name="zigZagAngle"/>
-          </item>
           <item row="2" column="1">
            <widget class="QLabel" name="label_10">
             <property name="text">
              <string>ZigZag Angle</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="Gui::InputField" name="zigZagAngle">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
             </property>
            </widget>
           </item>
@@ -334,7 +341,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>321</height>
+        <height>343</height>
        </rect>
       </property>
       <attribute name="icon">

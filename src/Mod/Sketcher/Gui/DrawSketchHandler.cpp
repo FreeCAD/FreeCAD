@@ -61,16 +61,9 @@ using namespace Sketcher;
 //**************************************************************************
 // Construction/Destruction
 
-DrawSketchHandler::DrawSketchHandler()
-        : sketchgui(0)
-{
+DrawSketchHandler::DrawSketchHandler() : sketchgui(0) {}
 
-}
-
-DrawSketchHandler::~DrawSketchHandler()
-{
-
-}
+DrawSketchHandler::~DrawSketchHandler() {}
 
 void DrawSketchHandler::quit(void)
 {

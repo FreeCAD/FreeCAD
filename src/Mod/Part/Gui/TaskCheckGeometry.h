@@ -99,7 +99,7 @@ public:
     ~TaskCheckGeometryResults();
     QString getShapeContentString();
 
-private slots:
+private Q_SLOTS:
     void currentRowChanged (const QModelIndex &current, const QModelIndex &previous);
 
 private:

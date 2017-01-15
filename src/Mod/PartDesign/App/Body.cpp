@@ -60,15 +60,15 @@ Body::Body() {
 
 /*
 // Note: The following code will catch Python Document::removeObject() modifications. If the object removed is
-// a member of the Body::Model, then it will be automatically removed from the Model property which triggers the
+// a member of the Body::Group, then it will be automatically removed from the Group property which triggers the
 // following two methods
-// But since we require the Python user to call both Document::addObject() and Body::addFeature(), we should
+// But since we require the Python user to call both Document::addObject() and Body::addObject(), we should
 // also require calling both Document::removeObject and Body::removeFeature() in order to be consistent
 void Body::onBeforeChange(const App::Property *prop)
 {
     // Remember the feature before the current Tip. If the Tip is already at the first feature, remember the next feature
-    if (prop == &Model) {
-        std::vector<App::DocumentObject*> features = Model.getValues();
+    if (prop == &Group) {
+        std::vector<App::DocumentObject*> features = Group.getValues();
         if (features.empty()) {
             rememberTip = NULL;
         } else {
@@ -91,8 +91,8 @@ void Body::onBeforeChange(const App::Property *prop)
 
 void Body::onChanged(const App::Property *prop)
 {
-    if (prop == &Model) {
-        std::vector<App::DocumentObject*> features = Model.getValues();
+    if (prop == &Group) {
+        std::vector<App::DocumentObject*> features = Group.getValues();
         if (features.empty()) {
             Tip.setValue(NULL);
         } else {
@@ -119,7 +119,7 @@ short Body::mustExecute() const
 
 App::DocumentObject* Body::getPrevFeature(App::DocumentObject *start) const
 {
-    std::vector<App::DocumentObject*> features = Model.getValues();
+    std::vector<App::DocumentObject*> features = Group.getValues();
     if (features.empty()) return NULL;
     App::DocumentObject* st = (start == NULL ? Tip.getValue() : start);
     if (st == NULL)
@@ -146,9 +146,9 @@ App::DocumentObject* Body::getPrevSolidFeature(App::DocumentObject *start)
         return nullptr;
     }
 
-    assert ( hasFeature ( start ) );
+    assert ( hasObject ( start ) );
 
-    const std::vector<App::DocumentObject*> & features = Model.getValues();
+    const std::vector<App::DocumentObject*> & features = Group.getValues();
 
     auto startIt = std::find ( features.rbegin(), features.rend(), start );
     assert ( startIt != features.rend() );
@@ -169,13 +169,13 @@ App::DocumentObject* Body::getNextSolidFeature(App::DocumentObject *start)
         start = Tip.getValue();
     }
 
-    if ( !start ) { // no tip
+    if ( !start || !hasObject(start) ) { // no or faulty tip
         return nullptr;
     }
 
-    assert ( hasFeature ( start ) );
+    assert ( hasObject ( start ) );
 
-    const std::vector<App::DocumentObject*> & features = Model.getValues();
+    const std::vector<App::DocumentObject*> & features = Group.getValues();
     std::vector<App::DocumentObject*>::const_iterator startIt;
 
     if ( start == baseFeature ) {
@@ -264,9 +264,17 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 }
 
 
-void Body::addFeature(App::DocumentObject *feature)
+void Body::addObject(App::DocumentObject *feature)
 {
-    insertFeature (feature, getNextSolidFeature (), /*after = */ false);
+    if(!isAllowed(feature))
+        throw Base::Exception("Body: object is not allowed");
+       
+    //only one group per object
+    auto *group = App::GroupExtension::getGroupOfObject(feature);
+    if(group && group != getExtendedObject())
+        group->getExtensionByType<App::GroupExtension>()->removeObject(feature);
+       
+    insertObject (feature, getNextSolidFeature (), /*after = */ false);
     // Move the Tip if we added a solid
     if (isSolidFeature(feature)) {
         Tip.setValue (feature);
@@ -274,7 +282,7 @@ void Body::addFeature(App::DocumentObject *feature)
 }
 
 
-void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* target, bool after)
+void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after)
 {
     if (target) {
         if (target == BaseFeature.getValue()) {
@@ -284,13 +292,16 @@ void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* targ
             } else {
                 throw Base::Exception("Body: impossible to insert before the base object");
             }
-        } else if (!hasFeature (target)) {
+        } else if (!hasObject (target)) {
             // Check if the target feature belongs to the body
             throw Base::Exception("Body: the feature we should insert relative to is not part of that body");
         }
     }
+    
+    //ensure that all origin links are ok
+    relinkToOrigin(feature);
 
-    std::vector<App::DocumentObject*> model = Model.getValues();
+    std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator insertInto;
 
     // Find out the position there to insert the feature
@@ -313,7 +324,7 @@ void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* targ
     // Insert the new feature after the given
     model.insert (insertInto, feature);
 
-    Model.setValues (model);
+    Group.setValues (model);
 
     // Set the BaseFeature property
     if (Body::isSolidFeature(feature)) {
@@ -333,7 +344,7 @@ void Body::insertFeature(App::DocumentObject* feature, App::DocumentObject* targ
 }
 
 
-void Body::removeFeature(App::DocumentObject* feature)
+void Body::removeObject(App::DocumentObject* feature)
 {
     App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
     App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
@@ -348,7 +359,7 @@ void Body::removeFeature(App::DocumentObject* feature)
         }
     }
 
-    std::vector<App::DocumentObject*> model = Model.getValues();
+    std::vector<App::DocumentObject*> model = Group.getValues();
     std::vector<App::DocumentObject*>::iterator it = std::find(model.begin(), model.end(), feature);
 
     // Adjust Tip feature if it is pointing to the deleted object
@@ -360,9 +371,9 @@ void Body::removeFeature(App::DocumentObject* feature)
         }
     }
 
-    // Erase feature from Model
+    // Erase feature from Group
     model.erase(it);
-    Model.setValues(model);
+    Group.setValues(model);
 }
 
 
@@ -372,8 +383,8 @@ App::DocumentObjectExecReturn *Body::execute(void)
     Base::Console().Error("Body '%s':\n", getNameInDocument());
     App::DocumentObject* tip = Tip.getValue();
     Base::Console().Error("   Tip: %s\n", (tip == NULL) ? "None" : tip->getNameInDocument());
-    std::vector<App::DocumentObject*> model = Model.getValues();
-    Base::Console().Error("   Model:\n");
+    std::vector<App::DocumentObject*> model = Group.getValues();
+    Base::Console().Error("   Group:\n");
     for (std::vector<App::DocumentObject*>::const_iterator m = model.begin(); m != model.end(); m++) {
         if (*m == NULL) continue;
         Base::Console().Error("      %s", (*m)->getNameInDocument());
@@ -422,14 +433,6 @@ void Body::onSettingDocument() {
     Part::BodyBase::onSettingDocument();
 }
 
-void Body::removeModelFromDocument() {
-    //delete all child objects if needed
-    std::set<DocumentObject*> grp ( Model.getValues().begin (), Model.getValues().end() );
-    for (auto obj : grp) {
-        this->getDocument()->remObject(obj->getNameInDocument());
-    }
-}
-
 void Body::onChanged (const App::Property* prop) {
     if ( prop == &BaseFeature ) {
         App::DocumentObject *baseFeature = BaseFeature.getValue();
@@ -443,45 +446,11 @@ void Body::onChanged (const App::Property* prop) {
     Part::BodyBase::onChanged ( prop );
 }
 
-App::Origin *Body::getOrigin () const {
-    App::DocumentObject *originObj = Origin.getValue ();
-
-    if ( !originObj ) {
-        std::stringstream err;
-        err << "Can't find Origin for \"" << getNameInDocument () << "\"";
-        throw Base::Exception ( err.str().c_str () );
-
-    } else if (! originObj->isDerivedFrom ( App::Origin::getClassTypeId() ) ) {
-        std::stringstream err;
-        err << "Bad object \"" << originObj->getNameInDocument () << "\"(" << originObj->getTypeId().getName()
-            << ") linked to the Origin of \"" << getNameInDocument () << "\"";
-        throw Base::Exception ( err.str().c_str () );
-    } else {
-            return static_cast<App::Origin *> ( originObj );
-    }
-}
-
 void Body::setupObject () {
-    // NOTE: the code shared with App::OriginGroup
-    App::Document *doc = getDocument ();
-
-    std::string objName = std::string ( getNameInDocument() ).append ( "Origin" );
-
-    App::DocumentObject *originObj = doc->addObject ( "App::Origin", objName.c_str () );
-
-    assert ( originObj && originObj->isDerivedFrom ( App::Origin::getClassTypeId () ) );
-    Origin.setValue ( originObj );
-
     Part::BodyBase::setupObject ();
 }
 
 void Body::unsetupObject () {
-    App::DocumentObject *origin = Origin.getValue ();
-
-    if (origin && !origin->isDeleting ()) {
-        origin->getDocument ()->remObject (origin->getNameInDocument());
-    }
-
     Part::BodyBase::unsetupObject ();
 }
 

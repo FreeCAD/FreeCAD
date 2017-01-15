@@ -421,7 +421,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
         item.startAngle = DrawUtil::angleWithX(e,v1);
         item.endAngle = DrawUtil::angleWithX(e,v2);
         //catch reverse-duplicates
-        if (DrawUtil::vectorCompare(item.start,item.end) > 0) {
+        if (DrawUtil::vectorLess(item.end,item.start)) {
              Base::Vector3d vTemp = item.start;
              item.start  = item.end;
              item.end    = vTemp;
@@ -453,7 +453,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
 std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>& e, bool ascend)
 {
     std::vector<edgeSortItem> sorted = e;
-    std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeCompare);
+    std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeLess);
     if (ascend) {
         std::reverse(sorted.begin(),sorted.end());
     }
@@ -476,24 +476,23 @@ std::string edgeSortItem::dump(void)
 
 
 //true if "e1 < e2" - for sorting
-/*static*/bool edgeSortItem::edgeCompare(const edgeSortItem& e1, const edgeSortItem& e2)
+/*static*/bool edgeSortItem::edgeLess(const edgeSortItem& e1, const edgeSortItem& e2)
 {
     bool result = false;
-    int vCompare = DrawUtil::vectorCompare(e1.start, e2.start);
-    if ( vCompare == -1) {
-        result = true;
-    } else if (vCompare == 0) {
-        if (e1.startAngle < e2.startAngle) {
-                result = true;
-        } else if (DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
-            if (e1.endAngle < e2.startAngle) {
-                result = true;
-            } else if (DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
-                if (e1.idx < e2.idx) {
-                    result = true;
-                }
-            }
+    if (e1.start != e2.start) {
+        if ( DrawUtil::vectorLess(e1.start, e2.start)) {
+            result = true;
         }
+    } else if (!DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
+        if (e1.startAngle < e2.startAngle) {
+            result = true;
+        }
+    } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
+        if (e1.endAngle < e2.startAngle) {
+            result = true;
+        } 
+    } else if (e1.idx < e2.idx) {
+        result = true;
     }
     return result;
 }

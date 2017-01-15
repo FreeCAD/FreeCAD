@@ -401,7 +401,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                 PartDesign::ProfileBased *sketchBased = static_cast<PartDesign::ProfileBased *> ( feature );
                 Part::Part2DObject *sketch = sketchBased->getVerifiedSketch( /*silent =*/ true);
                 if ( sketch ) {
-                    doCommand ( Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                    doCommand ( Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                             bodyName.c_str (), sketch->getNameInDocument() );
 
                     if ( sketch->isDerivedFrom ( Sketcher::SketchObject::getClassTypeId() ) ) {
@@ -419,7 +419,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                     }
                 }
             }
-            doCommand ( Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+            doCommand ( Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                     bodyName.c_str (), feature->getNameInDocument() );
 
             PartDesignGui::relinkToBody ( feature );
@@ -552,7 +552,7 @@ void CmdPartDesignDuplicateSelection::activated(int iMsg)
 
         for (auto feature : newFeatures) {
             if (PartDesign::Body::isAllowed(feature)) {
-                doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+                doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                           pcActiveBody->getNameInDocument(), feature->getNameInDocument());
                 doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", feature->getNameInDocument());
             }
@@ -658,14 +658,14 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         // Remove from the source body if the feature belonged to a body
         if (source) {
             featureWasTip = (source->Tip.getValue() == feat);
-            doCommand(Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+            doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                       source->getNameInDocument(), (feat)->getNameInDocument());
         }
 
         App::DocumentObject* targetOldTip = target->Tip.getValue();
 
         // Add to target body (always at the Tip)
-        doCommand(Doc,"App.activeDocument().%s.addFeature(App.activeDocument().%s)",
+        doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
                       target->getNameInDocument(), (feat)->getNameInDocument());
         // Recompute to update the shape
         doCommand(Gui,"App.activeDocument().recompute()");
@@ -742,7 +742,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     if ( body ) {
         bodyBase= body->BaseFeature.getValue();
         for ( auto feat: features ) {
-            if ( !body->hasFeature ( feat ) ) {
+            if ( !body->hasObject ( feat ) ) {
                 allFeaturesFromSameBody = false;
                 break;
             }
@@ -760,7 +760,7 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     }
 
     // Create a list of all features in this body
-    const std::vector<App::DocumentObject*> & model = body->Model.getValues();
+    const std::vector<App::DocumentObject*> & model = body->Group.getValues();
 
     // Ask user to select the target feature
     bool ok;
@@ -798,9 +798,9 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         // Remove and re-insert the feature to/from the Body
         // TODO if tip was moved the new position of tip is quite undetermined (2015-08-07, Fat-Zer)
         // TODO warn the user if we are moving an object to some place before the object's link (2015-08-07, Fat-Zer)
-        doCommand ( Doc,"App.activeDocument().%s.removeFeature(App.activeDocument().%s)",
+        doCommand ( Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
                 body->getNameInDocument(), feat->getNameInDocument() );
-        doCommand ( Doc, "App.activeDocument().%s.insertFeature(App.activeDocument().%s, %s, True)",
+        doCommand ( Doc, "App.activeDocument().%s.insertObject(App.activeDocument().%s, %s, True)",
                 body->getNameInDocument(), feat->getNameInDocument(), targetStr.c_str () );
     }
 

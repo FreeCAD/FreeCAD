@@ -20,39 +20,20 @@
 # *                                                                         *
 # ***************************************************************************
 
-__title__ = "_CommandMechanicalMaterial"
+__title__ = "FemMaterial"
 __author__ = "Juergen Riegel, Bernd Hahnebach"
 __url__ = "http://www.freecadweb.org"
 
-## @package CommandMechanicalMaterial
+## @package FemMaterial
 #  \ingroup FEM
 
-import FreeCAD
-from FemCommands import FemCommands
-import FreeCADGui
-import FemGui
-from PySide import QtCore
 
+class _FemMaterial:
+    "The FEM Material object"
+    def __init__(self, obj):
+        obj.addProperty("App::PropertyLinkSubList", "References", "Material", "List of material shapes")
+        obj.Proxy = self
+        self.Type = "FemMaterial"
 
-class _CommandMechanicalMaterial(FemCommands):
-    "the Fem_MechanicalMaterial command definition"
-    def __init__(self):
-        super(_CommandMechanicalMaterial, self).__init__()
-        self.resources = {'Pixmap': 'fem-material',
-                          'MenuText': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Mechanical material"),
-                          'Accel': "M, M",
-                          'ToolTip': QtCore.QT_TRANSLATE_NOOP("Fem_MechanicalMaterial", "Creates a mechanical material")}
-        self.is_active = 'with_analysis'
-
-    def Activated(self):
-        femDoc = FemGui.getActiveAnalysis().Document
-        if FreeCAD.ActiveDocument is not femDoc:
-            FreeCADGui.setActiveDocument(femDoc)
-        FreeCAD.ActiveDocument.openTransaction("Create MechanicalMaterial")
-        FreeCADGui.addModule("MechanicalMaterial")
-        FreeCADGui.doCommand("MechanicalMaterial.makeMechanicalMaterial('MechanicalMaterial')")
-        FreeCADGui.doCommand("App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member = App.activeDocument()." + FemGui.getActiveAnalysis().Name + ".Member + [App.ActiveDocument.ActiveObject]")
-        FreeCADGui.doCommand("Gui.activeDocument().setEdit(App.ActiveDocument.ActiveObject.Name)")
-
-
-FreeCADGui.addCommand('Fem_MechanicalMaterial', _CommandMechanicalMaterial())
+    def execute(self, obj):
+        return
