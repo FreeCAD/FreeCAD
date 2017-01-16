@@ -39,7 +39,18 @@ if(HOMEBREW_PREFIX)
     endforeach(PTH_FILE)
 endif()
 
-install(DIRECTORY ${QT_PLUGINS_DIR}/ DESTINATION ${CMAKE_INSTALL_LIBDIR}/qtplugins)
+if(BUILD_QT5)
+  set(QT_PLUGINS_DIR "${Qt5Core_DIR}/../../../plugins")
+  execute_process(COMMAND "xcode-select" "--print-path"
+                  OUTPUT_VARIABLE XCODE_PATH
+                  ERROR_QUIET
+		 )
+  string(STRIP ${XCODE_PATH} XCODE_PATH)
+
+  set(XCTEST_PATH "${XCODE_PATH}/Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework/Versions/A")
+endif(BUILD_QT5)
+
+install(DIRECTORY ${QT_PLUGINS_DIR}/ DESTINATION ${CMAKE_INSTALL_LIBDIR}/qtplugins )
 
 #files installed by homebrew do not have write permission for regular user
 install(CODE "execute_process(COMMAND chmod -R a+w ${CMAKE_INSTALL_LIBDIR})")
@@ -53,6 +64,6 @@ install(CODE
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE}
         ${CMAKE_SOURCE_DIR}/src/Tools/MakeMacBundleRelocatable.py
-        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib
+        ${APP_PATH} ${HOMEBREW_PREFIX}${MACPORTS_PREFIX}/lib ${XCTEST_PATH}
     )"
 )
