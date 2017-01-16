@@ -2140,6 +2140,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
             }
+            else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
+
+                std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
+
+                for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+
+                    (*it) = (*it) + 2.0*((*it).Perpendicular(refGeoLine->getStartPoint(),vectline)-(*it));
+                }
+
+                geosymbsp->setPoles(poles);
+
+                isStartEndInverted.insert(std::make_pair(*it, false)); 
+            }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
                 Base::Vector3d cp = geosympoint->getPoint();
@@ -2189,6 +2203,9 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                         const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getStartPoint(true);
+                    } else if(georef->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                        const Part::GeomBSplineCurve *geosymbsp = static_cast<const Part::GeomBSplineCurve *>(georef);
+                        refpoint = geosymbsp->getStartPoint();
                     }
                     break;
                 case Sketcher::end:
@@ -2211,6 +2228,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                         const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getEndPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                        const Part::GeomBSplineCurve *geosymbsp = static_cast<const Part::GeomBSplineCurve *>(georef);
+                        refpoint = geosymbsp->getEndPoint();
                     }
                     break;
                 case Sketcher::mid:
@@ -2382,6 +2403,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
+            }
+            else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
+                
+                std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
+                
+                for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+                    
+                    (*it) = (*it) + 2.0*(refpoint-(*it));
+                }
+                
+                geosymbsp->setPoles(poles);
+
+                //isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
