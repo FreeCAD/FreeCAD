@@ -3530,7 +3530,8 @@ public:
             arcAngle = angleatpoint - startAngle;
             
             //if(!boost::math::isnan(angle1) && !boost::math::isnan(angle2)){
-            if(!boost::math::isnan(arcAngle)){                
+            if (!boost::math::isnan(arcAngle)) {
+                EditCurve.resize(33);
                 for (int i=0; i < 33; i++) {
                     // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
                     //double angle=i*angleatpoint/16;
@@ -3545,8 +3546,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", a, b);
                 setPositionText(onSketchPos, text);
             }
-            else
-            {
+            else {
                 arcAngle=0.;
             }
 
@@ -3821,13 +3821,17 @@ static const char *cursor_createarcofparabola[]={
 class DrawSketchHandlerArcOfParabola : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerArcOfParabola() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    DrawSketchHandlerArcOfParabola()
+        : Mode(STATUS_SEEK_First)
+        , EditCurve(34)
+    {
+    }
     virtual ~DrawSketchHandlerArcOfParabola(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
-        STATUS_SEEK_Third,     /**< enum value ----. */      
+        STATUS_SEEK_Third,      /**< enum value ----. */
         STATUS_SEEK_Fourth,     /**< enum value ----. */
         STATUS_Close
     };
@@ -3866,30 +3870,30 @@ public:
             double focal = (axisPoint-focusPoint).Length();
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
 
-	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-	    //
-	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+            //
+            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
             //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
             //                      0.f);
 
             // This is the angle at cursor point
             double u = 
-		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
 
-	    for (int i=15; i >= -15; i--) {
-		double angle=i*u/15;
-		double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-		double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-		EditCurve[15+i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
-	    }
+            for (int i=15; i >= -15; i--) {
+                double angle=i*u/15;
+                double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+                double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+                EditCurve[15+i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+            }
 
-	    // Display radius for user
-	    SbString text;
-	    text.sprintf(" (F%.1f)", focal);
-	    setPositionText(onSketchPos, text);
+            // Display radius for user
+            SbString text;
+            text.sprintf(" (F%.1f)", focal);
+            setPositionText(onSketchPos, text);
 
-	    sketchgui->drawEdit(EditCurve);
-	    
+            sketchgui->drawEdit(EditCurve);
+
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -3899,38 +3903,38 @@ public:
             double focal = (axisPoint-focusPoint).Length();
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
 
-	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-	    //
-	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+            //
+            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
             //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
             //                      0.f);
 
             // This is the angle at starting point
             double ustartpoint = 
-		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
 
             double startAngle = ustartpoint;
 
             double u = 
-		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
 
 
             arcAngle = u - startAngle;
 
-            if(!boost::math::isnan(arcAngle)){
-                for (int i=0; i < 33; i++) {
+            if (!boost::math::isnan(arcAngle)) {
+                EditCurve.resize(33);
+                for (std::size_t i=0; i < 33; i++) {
                     double angle = startAngle+i*arcAngle/32.0;
-		    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-		    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-		    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+                    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+                    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+                    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
                 }
 
-		SbString text;
-		text.sprintf(" (F%.1f)", focal);
-		setPositionText(onSketchPos, text);
+                SbString text;
+                text.sprintf(" (F%.1f)", focal);
+                setPositionText(onSketchPos, text);
             }
-            else
-            {
+            else {
                 arcAngle=0.;
             }
 
@@ -3978,21 +3982,22 @@ public:
             resetPositionText();
 
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
-		
+
             double ustartpoint = 
-		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
-		
+            ( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+
             double uendpoint = 
-		( cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
-		
+            ( cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
+
             double startAngle = ustartpoint;
 
             double endAngle = uendpoint;
 
             bool isOriginalArcCCW=true;
 
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -4002,27 +4007,25 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
+                Gui::Command::openCommand("Add sketch arc of Parabola");
 
-            Gui::Command::openCommand("Add sketch arc of Parabola");
+                //Add arc of parabola
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addGeometry(Part.ArcOfParabola"
+                    "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
+                    "%f,%f),%s)",
+                        sketchgui->getObject()->getNameInDocument(),
+                        focusPoint.x, focusPoint.y,
+                        axisPoint.x, axisPoint.y,
+                        startAngle, endAngle,
+                        geometryCreationMode==Construction?"True":"False");
 
-            //Add arc of parabola
-            Gui::Command::doCommand(Gui::Command::Doc,
-                "App.ActiveDocument.%s.addGeometry(Part.ArcOfParabola"
-                "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
-                "%f,%f),%s)",
-                    sketchgui->getObject()->getNameInDocument(),
-                    focusPoint.x, focusPoint.y,
-                    axisPoint.x, axisPoint.y,
-                    startAngle, endAngle,
-                    geometryCreationMode==Construction?"True":"False"); 
+                currentgeoid++;
 
-            currentgeoid++;
-
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid);
-
+                Gui::Command::doCommand(Gui::Command::Doc,
+                                        "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        currentgeoid);
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4031,7 +4034,7 @@ public:
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
-                if(autoRecompute) 
+                if (autoRecompute)
                     Gui::Command::updateActive();
                 else
                     static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();            
@@ -4075,7 +4078,7 @@ public:
 
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
-            if(continuousMode){
+            if (continuousMode) {
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
@@ -4087,22 +4090,22 @@ public:
                  * handler is destroyed by the quit() method on pressing the
                  * right button of the mouse */                
             }
-            else{
+            else {
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
             }
         }
         return true;
     }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d focusPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
-
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola);
+DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola)
 
 CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
   : Command("Sketcher_CreateArcOfParabola")
