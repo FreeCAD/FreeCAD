@@ -2632,7 +2632,22 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     if(it == geoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
-                }                
+                }
+                else if(geocopy->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                    Part::GeomBSplineCurve *geobsp = static_cast<Part::GeomBSplineCurve *>(geocopy);
+                    
+                    std::vector<Base::Vector3d> poles = geobsp->getPoles();
+
+                    for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+
+                        (*it) = (*it) + double(x)*displacement + double(y)*perpendicularDisplacement;
+                    }
+
+                    geobsp->setPoles(poles);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geobsp->getStartPoint();
+                }
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
                     Part::GeomPoint *geopoint = static_cast<Part::GeomPoint *>(geocopy);
                     Base::Vector3d cp = geopoint->getPoint();
