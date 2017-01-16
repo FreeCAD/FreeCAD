@@ -39,15 +39,6 @@ class PartDesignExport Hole : public ProfileBased
 public:
     Hole();
 
-    enum ThreadTypeEnum {
-        None,
-        ISOMetricProfile,
-        ISOMetricFineProfile,
-        UNC,
-        UNF,
-        UNEF
-    };
-
     App::PropertyBool           Threaded;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;

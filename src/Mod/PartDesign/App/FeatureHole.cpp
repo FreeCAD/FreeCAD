@@ -464,32 +464,34 @@ void Hole::onChanged(const App::Property *prop)
 {
     ProfileBased::onChanged(prop);
     if (prop == &ThreadType) {
-        if (ThreadType.getValue() == None ) {
+        std::string type(ThreadType.getValueAsString());
+
+        if (type == "None" ) {
             ThreadSize.setEnums(ThreadSize_None_Enums);
             ThreadClass.setEnums(ThreadClass_None_Enums);
             HoleCutType.setEnums(HoleCutType_None_Enums);
         }
-        else if ( ThreadType.getValue() == ISOMetricProfile ) {
+        else if ( type == "ISOMetricProfile" ) {
             ThreadSize.setEnums(ThreadSize_ISOmetric_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetric_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetric_Enums);
         }
-        else if ( ThreadType.getValue() == ISOMetricFineProfile ) {
+        else if ( type == "ISOMetricFineProfile" ) {
             ThreadSize.setEnums(ThreadSize_ISOmetricfine_Enums);
             ThreadClass.setEnums(ThreadClass_ISOmetricfine_Enums);
             HoleCutType.setEnums(HoleCutType_ISOmetricfine_Enums);
         }
-        else if ( ThreadType.getValue() == UNC ) {
+        else if ( type == "UNC" ) {
             ThreadSize.setEnums(ThreadSize_UNC_Enums);
             ThreadClass.setEnums(ThreadClass_UNC_Enums);
             HoleCutType.setEnums(HoleCutType_UNC_Enums);
         }
-        else if ( ThreadType.getValue() == UNF ) {
+        else if ( type == "UNF" ) {
             ThreadSize.setEnums(ThreadSize_UNF_Enums);
             ThreadClass.setEnums(ThreadClass_UNF_Enums);
             HoleCutType.setEnums(HoleCutType_UNF_Enums);
         }
-        else if ( ThreadType.getValue() == UNEF ) {
+        else if ( type == "UNEF" ) {
             ThreadSize.setEnums(ThreadSize_UNEF_Enums);
             ThreadClass.setEnums(ThreadClass_UNEF_Enums);
             HoleCutType.setEnums(HoleCutType_UNEF_Enums);
