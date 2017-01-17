@@ -122,7 +122,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     # 3. Getting the bigger mesh from the planar segments
     if largestonly:
         c = cleanmesh.getSeparateComponents()
-        #print c
+        #print(c)
         cleanmesh = c[0]
         segs = cleanmesh.getPlanarSegments(1)
         meshes = []
@@ -142,7 +142,7 @@ def createMeshView(obj,direction=FreeCAD.Vector(0,0,-1),outeronly=False,largesto
     shape = None
     for f in cleanmesh.Facets:
         p = Part.makePolygon(f.Points+[f.Points[0]])
-        #print p,len(p.Vertexes),p.isClosed()
+        #print(p,len(p.Vertexes),p.isClosed())
         try:
             p = Part.Face(p)
             if shape:

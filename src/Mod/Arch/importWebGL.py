@@ -155,7 +155,7 @@ def getCameraData():
     else:
         result += "camera.position.set(0,0,1000);\n"
     result += tab+"camera.lookAt( scene.position );\n"+tab
-    # print result
+    # print(result)
     return result
     
 def getObjectData(obj,wireframeMode=wireframeStyle):

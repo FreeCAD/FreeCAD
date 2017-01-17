@@ -99,7 +99,7 @@ def getIndices(shape,offset):
             else:
                 fi = ""
                 for e in f.OuterWire.OrderedEdges:
-                    #print e.Vertexes[0].Point,e.Vertexes[1].Point
+                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
                     v = e.Vertexes[0]
                     ind = findVert(v,shape.Vertexes)
                     if ind == None:
