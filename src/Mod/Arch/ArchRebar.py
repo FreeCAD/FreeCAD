@@ -136,7 +136,7 @@ class _CommandRebar:
                         if len(obj.Support) != 0:
                             sup = obj.Support[0][0]
                         else:
-                            print "Arch: error: couldn't extract a base object"
+                            print("Arch: error: couldn't extract a base object")
                             return
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
                         FreeCADGui.addModule("Arch")
