@@ -40,7 +40,7 @@ else:
 
 p = Draft.precision()
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 def findVert(aVertex,aList):
@@ -99,7 +99,7 @@ def getIndices(shape,offset):
             else:
                 fi = ""
                 for e in f.OuterWire.OrderedEdges:
-                    #print e.Vertexes[0].Point,e.Vertexes[1].Point
+                    #print(e.Vertexes[0].Point,e.Vertexes[1].Point)
                     v = e.Vertexes[0]
                     ind = findVert(v,shape.Vertexes)
                     if ind == None:
