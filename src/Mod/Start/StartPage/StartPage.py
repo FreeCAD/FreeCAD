@@ -23,9 +23,14 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,cStringIO
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
 from PySide import QtGui
 from xml.etree.ElementTree import parse
+
+try:
+    import io as cStringIO
+except:
+    import cStringIO
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
@@ -41,10 +46,16 @@ def translate(context,text):
         
     s = cStringIO.StringIO()
     for i in u:
-        if i == 39:
-            s.write("\\'")
+        if sys.version_info.major > 2: #below only works correctly in python3
+            if i == 39:
+                s.write("\\'")
+            else:
+                s.write(chr(i))
         else:
-            s.write(chr(i))
+            if ord(i) == 39:
+                s.write(unicode("\\'"))
+            else:
+                s.write(unicode(i))
     t = s.getvalue()
     s.close()
     return t
@@ -612,7 +623,7 @@ def getFeed(url,numitems=3):
         resp += item['title']
         resp += '</a></li>'
     resp += '</ul>'
-    print resp
+    print(resp)
     return resp
 
 def getCustomBlocks():
