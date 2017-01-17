@@ -1,6 +1,7 @@
 FreeCAD
 -------
 
+[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
