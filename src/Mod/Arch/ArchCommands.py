@@ -900,7 +900,7 @@ def makeCompoundFromSelected(objects=None):
         Part.show(c)
 
 
-def cleanArchSplitter(objecs=None):
+def cleanArchSplitter(objects=None):
     """cleanArchSplitter([objects]): removes the splitters from the base shapes
     of the given Arch objects or selected Arch objects if objects is None"""
     import FreeCAD,FreeCADGui
