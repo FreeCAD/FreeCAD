@@ -14,8 +14,8 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.91 r"
-   sodipodi:docname="Toggle.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Sketcher_ToggleConstraint.svg">
   <defs
      id="defs2818">
     <linearGradient
@@ -756,18 +756,26 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1"
-     inkscape:cx="32"
-     inkscape:cy="32"
-     inkscape:current-layer="layer1"
+     inkscape:zoom="4"
+     inkscape:cx="35.512526"
+     inkscape:cy="65.917632"
+     inkscape:current-layer="g3134-7"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="688"
+     inkscape:window-width="1920"
+     inkscape:window-height="1137"
      inkscape:window-x="0"
-     inkscape:window-y="24"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3105"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -785,35 +793,53 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <g
-       id="g4312">
-      <path
-         transform="matrix(1.0452195,0,0,1.0452195,0.2861081,-1.7260972)"
-         inkscape:connector-curvature="0"
-         id="path4469"
-         d="m 24.558574,7.4735431 0,32.4088829 33.968336,0 0,-32.4088829 -33.968336,0 z m 7.014343,7.2390959 19.821431,0 0,18.895903 -19.821431,0 0,-18.895903 z"
-         style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.59111559;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;filter:url(#filter4483);enable-background:accumulate" />
-      <path
-         style="display:inline;overflow:visible;visibility:visible;opacity:1;fill:url(#linearGradient4429);fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.19;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate"
-         d="m 23.573533,3.831533 0,33.874398 35.504367,0 0,-33.874398 -35.504367,0 z m 7.331528,7.566445 20.717746,0 0,19.750367 -20.717746,0 0,-19.750367 z"
-         id="path4427"
-         inkscape:connector-curvature="0" />
+       transform="translate(22,-22)"
+       id="g3134-7">
+      <rect
+         y="28"
+         x="6"
+         height="30"
+         width="30"
+         id="rect3107-5"
+         style="fill:none;stroke:#0b1521;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         y="28"
+         x="6"
+         height="30"
+         width="30"
+         id="rect3107-3-3"
+         style="fill:none;stroke:#3465a4;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         y="27"
+         x="5"
+         height="32"
+         width="32"
+         id="rect3107-6-5"
+         style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none" />
     </g>
     <g
-       id="g4316">
-      <g
-         transform="matrix(1.0555556,0,0,1.0555556,-1.8333336,-0.8333356)"
-         id="g3444">
-        <path
-           inkscape:connector-curvature="0"
-           id="path4433"
-           d="m 7.4735742,26.117542 0,32.408884 33.9683358,0 0,-32.408884 -33.9683358,0 z m 7.0143428,7.239097 19.821431,0 0,18.895903 -19.821431,0 0,-18.895903 z"
-           style="display:inline;overflow:visible;visibility:visible;opacity:0.6;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.59111559;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:0.29019608;marker:none;marker-start:none;marker-mid:none;marker-end:none;filter:url(#filter4453);enable-background:accumulate" />
-      </g>
-      <path
-         inkscape:connector-curvature="0"
-         id="rect2663"
-         d="m 3.8397555,24.839755 0,34.209378 35.8554675,0 0,-34.209378 -35.8554675,0 z m 7.4040295,7.641269 20.922622,0 0,19.945676 -20.922622,0 0,-19.945676 z"
-         style="display:inline;overflow:visible;visibility:visible;opacity:1;fill:url(#linearGradient3524);fill-opacity:1;fill-rule:nonzero;stroke:#731200;stroke-width:2.19;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none;enable-background:accumulate" />
+       id="g3134">
+      <rect
+         y="28"
+         x="6"
+         height="30"
+         width="30"
+         id="rect3107"
+         style="fill:none;stroke:#280000;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         y="28"
+         x="6"
+         height="30"
+         width="30"
+         id="rect3107-3"
+         style="fill:none;stroke:#cc0000;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
+      <rect
+         y="27"
+         x="5"
+         height="32"
+         width="32"
+         id="rect3107-6"
+         style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.5;stroke-opacity:1;stroke-dasharray:none" />
     </g>
   </g>
 </svg>

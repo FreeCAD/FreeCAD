@@ -14,13 +14,25 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="Selection_Type_Invalid.svg"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Sketcher_Element_SelectionTypeInvalid.svg"
    inkscape:export-filename="/home/user/Downloads/cad/mystuff/icons/sketcher/other_Abdullah/Selection_Type_Invalid_32px.png"
    inkscape:export-xdpi="45"
    inkscape:export-ydpi="45">
   <defs
      id="defs2818">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3846">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3848" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3850" />
+    </linearGradient>
     <linearGradient
        id="linearGradient3602">
       <stop
@@ -476,14 +488,15 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <filter
+    <linearGradient
        inkscape:collect="always"
-       id="filter8824">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.985625"
-         id="feGaussianBlur8826" />
-    </filter>
+       xlink:href="#linearGradient3846"
+       id="linearGradient3852"
+       x1="36"
+       y1="57"
+       x2="22"
+       y2="8"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -493,17 +506,27 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="8.625"
-     inkscape:cx="32"
-     inkscape:cy="32"
+     inkscape:cx="13.565217"
+     inkscape:cy="32.057971"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="758"
-     inkscape:window-x="0"
-     inkscape:window-y="19"
-     inkscape:window-maximized="0" />
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-bbox="false"
+     inkscape:snap-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3058"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -512,7 +535,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -521,9 +544,15 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
     <path
-       style="color:#000000;fill:#ff2000;fill-opacity:1;fill-rule:nonzero;stroke:#731200;stroke-width:1.92547667;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       d="M 5.7325823,13.431254 22.896018,32.192215 5.7593743,47.626469 13.114317,56.365063 31.005035,39.82019 49.042931,57.394117 57.921408,49.112971 39.553507,31.672405 58.171114,14.231839 50.120519,5.7251298 31.464068,24.151629 13.550632,5.6406682 z"
+       style="color:#000000;fill:url(#linearGradient3852);fill-opacity:1;fill-rule:nonzero;stroke:#280000;stroke-width:1.99999988000000010;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 3,13 22,32 3,51 13,61 32,42 51,61 61,51 42,32 61,13 51,3 32,22 13,3 z"
        id="rect8776"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccc" />
+    <path
+       style="color:#000000;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#ef2929;stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="M 6,13 25,32 6,51 13,58 32,39 51,59 59,51 39,32 58,13 51,6 32,25 13,6 z"
+       id="rect8776-1"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="ccccccccccccc" />
   </g>

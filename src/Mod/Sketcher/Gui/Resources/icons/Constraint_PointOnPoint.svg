@@ -14,7 +14,7 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.47 r22583"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="Constraint_PointOnPoint.svg">
   <defs
      id="defs2818">
@@ -235,14 +235,6 @@
          offset="1"
          id="stop3606-4-7" />
     </linearGradient>
-    <filter
-       inkscape:collect="always"
-       id="filter7548">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.35927271"
-         id="feGaussianBlur7550" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -251,18 +243,28 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.7499999"
-     inkscape:cx="39.421314"
-     inkscape:cy="23.682331"
-     inkscape:current-layer="layer1"
+     inkscape:zoom="11"
+     inkscape:cx="4.7207527"
+     inkscape:cy="37.821078"
+     inkscape:current-layer="g3813"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1280"
      inkscape:window-height="758"
      inkscape:window-x="0"
-     inkscape:window-y="19"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:snap-bbox="true"
+     inkscape:snap-nodes="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3023"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -279,27 +281,29 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <path
-       sodipodi:type="arc"
-       style="opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.5999999;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter7548);enable-background:accumulate"
-       id="path2826-6-2"
-       sodipodi:cx="14.363636"
-       sodipodi:cy="14.363636"
-       sodipodi:rx="9.454545"
-       sodipodi:ry="9.454545"
-       d="m 23.818181,14.363636 a 9.454545,9.454545 0 1 1 -18.90909,0 9.454545,9.454545 0 1 1 18.90909,0 z"
-       transform="matrix(1.1912715,0,0,1.1912715,17.601526,17.31909)" />
-    <path
-       sodipodi:type="arc"
-       style="color:#000000;fill:url(#linearGradient5061);fill-opacity:1;stroke:#731200;stroke-width:2.5999999;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="path2826-6"
-       sodipodi:cx="14.363636"
-       sodipodi:cy="14.363636"
-       sodipodi:rx="9.454545"
-       sodipodi:ry="9.454545"
-       d="m 23.818181,14.363636 a 9.454545,9.454545 0 1 1 -18.90909,0 9.454545,9.454545 0 1 1 18.90909,0 z"
-       transform="matrix(1.1912715,0,0,1.1912715,14.561922,13.257998)" />
+    <g
+       id="g3813"
+       transform="matrix(0.76131688,0,0,0.75952158,-18.203518,9.2360918)">
+      <path
+         transform="translate(35,-1)"
+         d="m 43,31 c 0,6.627417 -5.372583,12 -12,12 -6.627417,0 -12,-5.372583 -12,-12 0,-6.627417 5.372583,-12 12,-12 6.627417,0 12,5.372583 12,12 z"
+         sodipodi:ry="12"
+         sodipodi:rx="12"
+         sodipodi:cy="31"
+         sodipodi:cx="31"
+         id="path3025"
+         style="fill:#ef2929;fill-opacity:1;stroke:#280000;stroke-width:2.63012981000000012;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+      <path
+         transform="matrix(0.76621621,0,0,0.76802732,42.190296,6.1625307)"
+         d="m 43,31 a 12,12 0 1 1 -24,0 12,12 0 1 1 24,0 z"
+         sodipodi:ry="12"
+         sodipodi:rx="12"
+         sodipodi:cy="31"
+         sodipodi:cx="31"
+         id="path3025-3"
+         style="fill:#cc0000;stroke:#ef2929;stroke-width:3.42857170000000000;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4.50000000000000000;stroke-opacity:1;stroke-dasharray:none"
+         sodipodi:type="arc" />
+    </g>
   </g>
 </svg>
-
- 	  	 

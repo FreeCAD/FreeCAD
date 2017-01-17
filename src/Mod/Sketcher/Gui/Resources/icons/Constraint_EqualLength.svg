@@ -14,8 +14,8 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="Constraint_LineLength.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="Constraint_EqualLength.svg">
   <defs
      id="defs2818">
     <linearGradient
@@ -289,14 +289,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <filter
-       inkscape:collect="always"
-       id="filter8219">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="1.0168915"
-         id="feGaussianBlur8221" />
-    </filter>
     <inkscape:perspective
        id="perspective8233"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -318,14 +310,6 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 0.5 : 1"
        sodipodi:type="inkscape:persp3d" />
-    <filter
-       inkscape:collect="always"
-       id="filter8294">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.75257812"
-         id="feGaussianBlur8296" />
-    </filter>
   </defs>
   <sodipodi:namedview
      id="base"
@@ -334,18 +318,26 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8284271"
-     inkscape:cx="38.057041"
-     inkscape:cy="16.03577"
+     inkscape:zoom="3.4244234"
+     inkscape:cx="1.4967823"
+     inkscape:cy="64.566978"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1280"
-     inkscape:window-height="758"
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
      inkscape:window-x="0"
-     inkscape:window-y="19"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid3035"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2821">
     <rdf:RDF>
@@ -354,7 +346,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -362,29 +354,41 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
-    <path
-       style="opacity:0.6;color:#000000;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2.64629388;marker:none;visibility:visible;display:inline;overflow:visible;filter:url(#filter8294);enable-background:accumulate"
-       d="m 15.373764,14.948539 c -0.08746,0 -0.15625,0.03638 -0.15625,0.09375 l 0,12.875 c 0,0.05737 0.06879,0.09375 0.15625,0.09375 l 37.84375,0 c 0.08746,0 0.15625,-0.03638 0.15625,-0.09375 l 0,-12.875 c 0,-0.05737 -0.06879,-0.09375 -0.15625,-0.09375 l -37.84375,0 z m 0,28 c -0.08746,0 -0.15625,0.03638 -0.15625,0.09375 l 0,12.875 c 0,0.05737 0.06879,0.09375 0.15625,0.09375 l 37.84375,0 c 0.08746,0 0.15625,-0.03638 0.15625,-0.09375 l 0,-12.875 c 0,-0.05737 -0.06879,-0.09375 -0.15625,-0.09375 l -37.84375,0 z"
-       id="rect8223-2" />
     <rect
-       style="color:#000000;fill:#ff2600;fill-opacity:1;fill-rule:nonzero;stroke:#731200;stroke-width:2.64629388;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       style="color:#000000;fill:#cc0000;fill-opacity:1;fill-rule:nonzero;stroke:#280000;stroke-width:1.99999988000000006;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
        id="rect8223"
-       width="38.183765"
-       height="13.081475"
-       x="12.727922"
-       y="10.966991"
-       rx="0.1578715"
-       ry="0.10354951" />
+       width="38"
+       height="12"
+       x="13"
+       y="15"
+       rx="0"
+       ry="0" />
     <rect
-       style="color:#000000;fill:#ff2600;fill-opacity:1;fill-rule:nonzero;stroke:#731200;stroke-width:2.64629388;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
-       id="rect8223-7"
-       width="38.183765"
-       height="13.081475"
-       x="12.727922"
-       y="38.966995"
-       rx="0.1578715"
-       ry="0.10354951" />
+       style="color:#000000;fill:none;stroke:#ef2929;stroke-width:1.99999988;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect8223-3"
+       width="34"
+       height="8"
+       x="15"
+       y="17"
+       rx="0"
+       ry="0" />
+    <rect
+       style="color:#000000;fill:#cc0000;fill-opacity:1;fill-rule:nonzero;stroke:#280000;stroke-width:1.99999988000000006;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect8223-5"
+       width="38"
+       height="12"
+       x="13"
+       y="37"
+       rx="0"
+       ry="0" />
+    <rect
+       style="color:#000000;fill:none;stroke:#ef2929;stroke-width:1.99999988;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect8223-3-3"
+       width="34"
+       height="8"
+       x="15"
+       y="39"
+       rx="0"
+       ry="0" />
   </g>
 </svg>
-
- 	  	 
