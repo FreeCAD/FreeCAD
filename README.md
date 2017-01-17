@@ -1,7 +1,6 @@
 FreeCAD
 -------
 
-[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 ![screenshot](http://www.freecadweb.org/wiki/images/thumb/7/72/Freecad016_screenshot1.jpg/800px-Freecad016_screenshot1.jpg)
 
 FreeCAD is a general purpose feature-based, parametric 3D modeler for 
@@ -75,6 +74,8 @@ For MinGW:   http://www.freecadweb.org/wiki/?title=CompileOnMinGW
 
 Usage & Getting help
 --------------------
+
+[![Gitter](https://img.shields.io/gitter/room/freecad/freecad.svg)](https://gitter.im/freecad/freecad?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 The FreeCAD documentation wiki contains a lot of documentation on 
 general FreeCAD usage, python scripting, and development. The following
