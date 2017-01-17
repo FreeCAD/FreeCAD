@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -13,11 +14,24 @@
    height="64px"
    id="svg2726"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="0.48.5 r10040"
    sodipodi:docname="Sketcher_ConstrainHorizontal.svg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.1">
   <defs
      id="defs2728">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient3788">
+      <stop
+         style="stop-color:#c4a000;stop-opacity:1"
+         offset="0"
+         id="stop3790" />
+      <stop
+         style="stop-color:#fce94f;stop-opacity:1"
+         offset="1"
+         id="stop3792" />
+    </linearGradient>
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
        inkscape:vp_x="0 : 32 : 1"
@@ -77,6 +91,16 @@
        inkscape:vp_y="0 : 1000 : 0"
        inkscape:vp_x="0 : 32 : 1"
        sodipodi:type="inkscape:persp3d" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3788"
+       id="linearGradient3794"
+       x1="28"
+       y1="60"
+       x2="20"
+       y2="3"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(10,0)" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -85,17 +109,26 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8.046875"
-     inkscape:cx="32"
-     inkscape:cy="32"
+     inkscape:zoom="5.2476251"
+     inkscape:cx="39.883548"
+     inkscape:cy="32.289456"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1092"
-     inkscape:window-height="722"
-     inkscape:window-x="69"
-     inkscape:window-y="42" />
+     inkscape:window-width="1600"
+     inkscape:window-height="837"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid2998"
+       empspacing="2"
+       visible="true"
+       enabled="true"
+       snapvisiblegridlinesonly="true" />
+  </sodipodi:namedview>
   <metadata
      id="metadata2731">
     <rdf:RDF>
@@ -115,27 +148,17 @@
        inkscape:label="Layer 1"
        id="g3436"
        transform="translate(107.50353,10.589633)" />
-    <text
-       xml:space="preserve"
-       style="font-size:64.32894897px;font-style:normal;font-weight:normal;fill:#4d4d4d;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="10.588164"
-       y="57.828312"
-       id="text3590"
-       transform="scale(1.0110691,0.989052)"><tspan
-         sodipodi:role="line"
-         id="tspan3592"
-         x="10.588164"
-         y="57.828312">H</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:64.32894897px;font-style:normal;font-weight:normal;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="7.1312051"
-       y="54.154034"
-       id="text3586"
-       transform="scale(1.0110691,0.989052)"><tspan
-         sodipodi:role="line"
-         id="tspan3588"
-         x="7.1312051"
-         y="54.154034">H</tspan></text>
+    <path
+       style="fill:url(#linearGradient3794);fill-opacity:1;stroke:#302b00;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1"
+       d="m 11,3 8,0 0,24 26,0 0,-24 8,0 0,58 -8,0 0,-26 -26,0 0,26 -8,0 z"
+       id="path3000"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccc" />
+    <path
+       style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 13,5 4,0 0,24 30,0 0,-24 4,0 0,54 -4,0 0,-26 -30,0 0,26 -4,0 z"
+       id="path3000-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccccccccc" />
   </g>
 </svg>
