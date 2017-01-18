@@ -1574,45 +1574,63 @@ public:
     {
         Q_UNUSED(onSketchPos);
         int VtId = sketchgui->getPreselectPoint();
+        int CrsId = sketchgui->getPreselectCross();
+        std::stringstream ss;
+        int GeoId_temp;
+        Sketcher::PointPos PosId_temp;
+
+
         if (VtId != -1) {
-            if (GeoId1 == Constraint::GeoUndef) {
-                sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId1,PosId1);
-                std::stringstream ss;
-                ss << "Vertex" << VtId + 1;
-                Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                              sketchgui->getSketchObject()->getNameInDocument(),
-                                              ss.str().c_str(),
-                                              onSketchPos.x,
-                                              onSketchPos.y,
-                                              0.f);
-            }
-            else {
-                sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId2,PosId2);
-
-                // Apply the constraint
-                Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
-
-                // undo command open
-                Gui::Command::openCommand("add coincident constraint");
-
-                // check if this coincidence is already enforced (even indirectly)
-                bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
-                if (!constraintExists && (GeoId1 != GeoId2)) {
-                    Gui::Command::doCommand(
-                        Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                        sketchgui->getObject()->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
-                    Gui::Command::commitCommand();
-                }
-                else {
-                    Gui::Command::abortCommand();
-                }
-            }
+            sketchgui->getSketchObject()->getGeoVertexIndex(VtId,GeoId_temp,PosId_temp);
+            ss << "Vertex" << VtId + 1;
+        }
+        else if (CrsId == 0){
+            GeoId_temp = Sketcher::GeoEnum::RtPnt;
+            PosId_temp = Sketcher::start;
+            ss << "RootPoint";
         }
         else {
             GeoId1 = GeoId2 = Constraint::GeoUndef;
             PosId1 = PosId2 = Sketcher::none;
             Gui::Selection().clearSelection();
+
+            return true;
         }
+
+
+        if (GeoId1 == Constraint::GeoUndef) {
+            GeoId1 = GeoId_temp;
+            PosId1 = PosId_temp;
+            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                          sketchgui->getSketchObject()->getNameInDocument(),
+                                          ss.str().c_str(),
+                                          onSketchPos.x,
+                                          onSketchPos.y,
+                                          0.f);
+        }
+        else {
+            GeoId2 = GeoId_temp;
+            PosId2 = PosId_temp;
+
+            // Apply the constraint
+            Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+
+            // undo command open
+            Gui::Command::openCommand("add coincident constraint");
+
+            // check if this coincidence is already enforced (even indirectly)
+            bool constraintExists = Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
+            if (!constraintExists && (GeoId1 != GeoId2)) {
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
+                    sketchgui->getObject()->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
+                Gui::Command::commitCommand();
+            }
+            else {
+                Gui::Command::abortCommand();
+            }
+        }
+
         return true;
     }
 protected:
