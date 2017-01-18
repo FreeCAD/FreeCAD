@@ -33,7 +33,7 @@ software center application.
 
 Other options are described at the [wiki Download page](http://www.freecadweb.org/wiki/index.php?title=Download).
 
-Build Status <img src="https://cdn.travis-ci.org/images/travis-mascot-150-3791701416eeee8479e23fe4bb7edf4f.png" height="30"/>
+Build Status <img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" height="30"/>
 ------------
 
 | Master | 0.16 |
