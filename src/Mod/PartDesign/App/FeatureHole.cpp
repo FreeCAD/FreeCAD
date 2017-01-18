@@ -41,7 +41,7 @@
 # include <Geom_Plane.hxx>
 # include <Geom_Circle.hxx>
 # include <Geom2d_Curve.hxx>
-# include <Handle_Geom_Surface.hxx>
+//# include <Handle_Geom_Surface.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Wire.hxx>
