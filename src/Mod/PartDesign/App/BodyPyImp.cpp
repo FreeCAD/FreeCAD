@@ -52,32 +52,7 @@ int BodyPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-PyObject* BodyPy::addFeature(PyObject *args)
-{
-    PyObject* featurePy;
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
-        return 0;
-
-    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
-
-    if (!Body::isAllowed(feature)) {
-        PyErr_SetString(PyExc_SystemError, "Only PartDesign features, datum features and sketches can be inserted into a Body");
-        return 0;
-    }
-
-    Body* body = this->getBodyPtr();
-
-    try {
-        body->addFeature(feature);
-    } catch (Base::Exception& e) {
-        PyErr_SetString(PyExc_SystemError, e.what());
-        return 0;
-    }
-
-    Py_Return;
-}
-
-PyObject* BodyPy::insertFeature(PyObject *args)
+PyObject* BodyPy::insertObject(PyObject *args)
 {
     PyObject* featurePy;
     PyObject* targetPy;
@@ -107,7 +82,7 @@ PyObject* BodyPy::insertFeature(PyObject *args)
     Body* body = this->getBodyPtr();
 
     try {
-        body->insertFeature(feature, target, after);
+        body->insertObject(feature, target, after);
     } catch (Base::Exception& e) {
         PyErr_SetString(PyExc_SystemError, e.what());
         return 0;
@@ -115,32 +90,3 @@ PyObject* BodyPy::insertFeature(PyObject *args)
 
     Py_Return;
 }
-
-PyObject* BodyPy::removeFeature(PyObject *args)
-{
-    PyObject* featurePy;
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &featurePy))
-        return 0;
-
-    App::DocumentObject* feature = static_cast<App::DocumentObjectPy*>(featurePy)->getDocumentObjectPtr();
-    Body* body = this->getBodyPtr();
-
-    try {
-        body->removeFeature(feature);
-    } catch (Base::Exception& e) {
-        PyErr_SetString(PyExc_SystemError, e.what());
-        return 0;
-    }
-
-    Py_Return;
-}
-
-PyObject*  BodyPy::removeModelFromDocument(PyObject *args)
-{
-    if (!PyArg_ParseTuple(args, ""))
-        return 0;
-
-    getBodyPtr()->removeModelFromDocument();
-    Py_Return;
-}
-

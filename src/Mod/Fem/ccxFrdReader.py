@@ -54,15 +54,19 @@ def readResult(frd_input):
     elements_quad4 = {}
     elements_quad8 = {}
     elements_seg2 = {}
+    elements_seg3 = {}
     results = []
     mode_results = {}
     mode_disp = {}
     mode_stress = {}
+    mode_stressv = {}
+    mode_strain = {}
     mode_temp = {}
 
     mode_disp_found = False
     nodes_found = False
     mode_stress_found = False
+    mode_strain_found = False
     mode_temp_found = False
     mode_time_found = False
     elements_found = False
@@ -250,6 +254,14 @@ def readResult(frd_input):
                 nd1 = int(line[3:13])
                 nd2 = int(line[13:23])
                 elements_seg2[elem] = (nd1, nd2)
+            elif elemType == 12:
+                # B32 CalculiX --> seg3 FreeCAD
+                # Also D element element number
+                # N1, N3 ,N2 Order in outpufile is 1,3,2
+                nd1 = int(line[3:13])
+                nd3 = int(line[13:23])
+                nd2 = int(line[23:33])
+                elements_seg3[elem] = (nd1, nd2, nd3)
 
         # Check if we found new eigenmode
         if line[5:10] == "PMODE":
@@ -266,7 +278,7 @@ def readResult(frd_input):
             mode_disp[elem] = FreeCAD.Vector(mode_disp_x, mode_disp_y, mode_disp_z)
         if line[5:11] == "STRESS":
             mode_stress_found = True
-        # we found a displacement line in the frd file
+        # we found a stress line in the frd file
         if mode_stress_found and (line[1:3] == "-1"):
             elem = int(line[4:13])
             stress_1 = float(line[13:25])
@@ -276,6 +288,19 @@ def readResult(frd_input):
             stress_5 = float(line[61:73])
             stress_6 = float(line[73:85])
             mode_stress[elem] = (stress_1, stress_2, stress_3, stress_4, stress_5, stress_6)
+            mode_stressv[elem] = FreeCAD.Vector(stress_1, stress_2, stress_3)
+        if line[5:13] == "TOSTRAIN":
+            mode_strain_found = True
+        # we found a strain line in the frd file
+        if mode_strain_found and (line[1:3] == "-1"):
+            elem = int(line[4:13])
+            strain_1 = float(line[13:25])
+            strain_2 = float(line[25:37])
+            strain_3 = float(line[37:49])
+#            strain_4 = float(line[49:61])  #Not used in vector
+#            strain_5 = float(line[61:73])
+#            strain_6 = float(line[73:85])
+            mode_strain[elem] = FreeCAD.Vector(strain_1, strain_2, strain_3)
         # Check if we found a time step
         if line[4:10] == "1PSTEP":
             mode_time_found = True
@@ -309,6 +334,8 @@ def readResult(frd_input):
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
                 mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_results['strainv'] = mode_strain
                 mode_results['temp'] = mode_temp
                 mode_results['time'] = timestep
                 results.append(mode_results)
@@ -322,6 +349,8 @@ def readResult(frd_input):
                 mode_results['number'] = eigenmode
                 mode_results['disp'] = mode_disp
                 mode_results['stress'] = mode_stress
+                mode_results['stressv'] = mode_stressv
+                mode_results['strainv'] = mode_strain
                 mode_results['time'] = 0  # Dont return time if static
                 results.append(mode_results)
                 mode_disp = {}
@@ -336,7 +365,7 @@ def readResult(frd_input):
     return {'Nodes': nodes,
             'Hexa8Elem': elements_hexa8, 'Penta6Elem': elements_penta6, 'Tetra4Elem': elements_tetra4, 'Tetra10Elem': elements_tetra10,
             'Penta15Elem': elements_penta15, 'Hexa20Elem': elements_hexa20, 'Tria3Elem': elements_tria3, 'Tria6Elem': elements_tria6,
-            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2,
+            'Quad4Elem': elements_quad4, 'Quad8Elem': elements_quad8, 'Seg2Elem': elements_seg2, 'Seg3Elem': elements_seg3,
             'Results': results}
 
 
@@ -384,7 +413,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
         if 'Nodes' in m:
             positions = []
-            for k, v in m['Nodes'].iteritems():
+            for k, v in m['Nodes'].items():
                 positions.append(v)
             p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
             p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
@@ -421,9 +450,11 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
                     break
 
             disp = result_set['disp']
+            stressv = result_set['stressv']
+            strainv = result_set['strainv']
             no_of_values = len(disp)
             displacement = []
-            for k, v in disp.iteritems():
+            for k, v in disp.items():
                 displacement.append(v)
 
             x_max, y_max, z_max = map(max, zip(*displacement))
@@ -438,6 +469,8 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
             if len(disp) > 0:
                 results.DisplacementVectors = map((lambda x: x * scale), disp.values())
+                results.StressVectors = map((lambda x: x * scale), stressv.values())
+                results.StrainVectors = map((lambda x: x * scale), strainv.values())
                 results.NodeNumbers = disp.keys()
                 if(mesh_object):
                     results.Mesh = mesh_object

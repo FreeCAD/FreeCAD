@@ -108,7 +108,7 @@ template<class TWriter> void writeVTKFile(const char* filename, vtkSmartPointer<
   writer->SetInputData(dataset);
   writer->Write();
 }
-  
+
 void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* mesh)
 {
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
@@ -184,7 +184,7 @@ FemMesh* FemVTKTools::readVTKMesh(const char* filename, FemMesh* mesh)
     Base::TimeInfo Start;
     Base::Console().Log("Start: read FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
-      
+
     if(f.hasExtension("vtu"))
     {
         vtkSmartPointer<vtkDataSet> dataset  = readVTKFile<vtkXMLUnstructuredGridReader>(filename);
@@ -236,7 +236,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Fa
             quad->GetPointIds()->SetId(1, aFace->GetNode(1)->GetID()-1);
             quad->GetPointIds()->SetId(2, aFace->GetNode(2)->GetID()-1);
             quad->GetPointIds()->SetId(3, aFace->GetNode(3)->GetID()-1);
-            
+
             quadArray->InsertNextCell(quad);
         }
         //quadratic triangle
@@ -263,7 +263,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Fa
             quad->GetPointIds()->SetId(5, aFace->GetNode(5)->GetID()-1);
             quad->GetPointIds()->SetId(6, aFace->GetNode(6)->GetID()-1);
             quad->GetPointIds()->SetId(7, aFace->GetNode(7)->GetID()-1);
-            
+
             quadQuadArray->InsertNextCell(quad);
         }
      }
@@ -275,7 +275,7 @@ void exportFemMeshFaces(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Fa
 
      if(quadTriangleArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_QUADRATIC_TRIANGLE, quadTriangleArray);
-        
+
      if(quadQuadArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_QUADRATIC_QUAD, quadQuadArray);
 
@@ -291,7 +291,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
     // quadratic elemnts with 13 and 15 nodes are not added yet
     vtkSmartPointer<vtkCellArray> quadTetraArray = vtkSmartPointer<vtkCellArray>::New();
     vtkSmartPointer<vtkCellArray> quadHexaArray = vtkSmartPointer<vtkCellArray>::New();
-     
+
     for (;aVolIter->more();)
     {
         const SMDS_MeshVolume* aVol = aVolIter->next();
@@ -314,7 +314,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
             cell->GetPointIds()->SetId(2, aVol->GetNode(2)->GetID()-1);
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID()-1);
             cell->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID()-1);
-        
+
             pyramidArray->InsertNextCell(cell);
         }
         if(aVol->NbNodes() == 6) {
@@ -325,7 +325,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
             cell->GetPointIds()->SetId(3, aVol->GetNode(3)->GetID()-1);
             cell->GetPointIds()->SetId(4, aVol->GetNode(4)->GetID()-1);
             cell->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID()-1);
-        
+
             wedgeArray->InsertNextCell(cell);
         }
         if(aVol->NbNodes() == 8) {
@@ -338,7 +338,7 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
             cell->GetPointIds()->SetId(5, aVol->GetNode(5)->GetID()-1);
             cell->GetPointIds()->SetId(6, aVol->GetNode(6)->GetID()-1);
             cell->GetPointIds()->SetId(7, aVol->GetNode(7)->GetID()-1);
-        
+
             hexaArray->InsertNextCell(cell);
         }
         //quadratic tetrahedra
@@ -371,10 +371,10 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
     if(hexaArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_HEXAHEDRON, hexaArray);
-        
+
     if(quadTetraArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_QUADRATIC_TETRA, quadTetraArray);
-        
+
     if(quadHexaArray->GetNumberOfCells()>0)
         grid->SetCells(VTK_QUADRATIC_HEXAHEDRON, quadHexaArray);
 
@@ -382,11 +382,11 @@ void exportFemMeshCells(vtkSmartPointer<vtkUnstructuredGrid> grid, const SMDS_Vo
 
 void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstructuredGrid> grid)
 {
-        
+
     SMESH_Mesh* smesh = const_cast<SMESH_Mesh*>(mesh->getSMesh());
     SMESHDS_Mesh* meshDS = smesh->GetMeshDS();
     const SMDS_MeshInfo& info = meshDS->GetMeshInfo();
-    
+
     //start with the nodes
     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
     SMDS_NodeIteratorPtr aNodeIter = meshDS->nodesIterator();
@@ -409,11 +409,11 @@ void FemVTKTools::exportVTKMesh(const FemMesh* mesh, vtkSmartPointer<vtkUnstruct
 
 void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
 {
-    
+
     Base::TimeInfo Start;
     Base::Console().Log("Start: write FemMesh from VTK unstructuredGrid ======================\n");
     Base::FileInfo f(filename);
-      
+
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     exportVTKMesh(mesh, grid);
     //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
@@ -426,7 +426,7 @@ void FemVTKTools::writeVTKMesh(const char* filename, const FemMesh* mesh)
     else{
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
-    
+
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
@@ -487,7 +487,7 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     Base::TimeInfo Start;
     Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
-      
+
     vtkSmartPointer<vtkDataSet> ds;
     if(f.hasExtension("vtu"))
     {
@@ -501,7 +501,7 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     {
         Base::Console().Error("file name extension is not supported\n");
     }
-    
+
     App::Document* pcDoc = App::GetApplication().getActiveDocument();
     if(!pcDoc)
     {
@@ -532,12 +532,12 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     // PropertyLink is the property type to store DocumentObject pointer
-    
+
     importFluidicResult(dataset, result);
     pcDoc->recompute();
-    
+
     Base::Console().Log("    %f: Done \n", Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
-    
+
     return result;
 }
 
@@ -561,12 +561,12 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     Base::TimeInfo Start;
     Base::Console().Log("Start: write FemResult or CfdResult to VTK unstructuredGrid dataset =======\n");
     Base::FileInfo f(filename);
-      
+
     vtkSmartPointer<vtkUnstructuredGrid> grid = vtkSmartPointer<vtkUnstructuredGrid>::New();
     App::DocumentObject* mesh = static_cast<App::PropertyLink*>(res->getPropertyByName("Mesh"))->getValue();
     const FemMesh& fmesh = static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->getValue();
     FemVTKTools::exportVTKMesh(&fmesh, grid);
-    
+
     if(res->getPropertyByName("Velocity")){
         FemVTKTools::exportFluidicResult(res, grid);
     }
@@ -576,7 +576,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     else{
         return;
     }
-    
+
     //vtkSmartPointer<vtkDataSet> dataset = vtkDataSet::SafeDownCast(grid);
     if(f.hasExtension("vtu")){
         writeVTKFile<vtkXMLUnstructuredGridWriter>(filename, grid);
@@ -587,7 +587,7 @@ void FemVTKTools::writeResult(const char* filename, const App::DocumentObject* r
     else{
         Base::Console().Error("file name extension is not supported to write VTK\n");
     }
-    
+
     Base::Console().Log("    %f: Done \n",Base::TimeInfo::diffTimeF(Start, Base::TimeInfo()));
 }
 
@@ -604,7 +604,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     vars["TurbulenceEnergy"] = "k";
     vars["TurbulenceDissipationRate"] = "epsilon";
     vars["TurbulenceSpecificDissipation"] = "omega";
-    
+
     const int max_var_index = 11;
     std::vector<double> stats(3*max_var_index, 0.0);
 
@@ -620,10 +620,10 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     varids["TurbulenceDissipationRate"] = 8;
     //varids["TurbulenceThermalDiffusivity"] = 9;
     //varids["TurbulenceSpecificDissipation"] = 10;
-    
+
     double ts = 0.0;  // t=0.0 for static simulation
     static_cast<App::PropertyFloat*>(res->getPropertyByName("Time"))->setValue(ts);
-    
+
     vtkSmartPointer<vtkPointData> pd = dataset->GetPointData();
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     if(pd->GetNumberOfArrays() == 0) {
@@ -631,7 +631,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
         // if pointData is empty, data may be in cellDate, cellData -> pointData interpolation is possible in VTK
         return;
     }
-    
+
     std::vector<long> nodeIds(nPoints);
     vtkSmartPointer<vtkDataArray> vel = pd->GetArray(vars["Velocity"]);
     if(nPoints && vel && vel->GetNumberOfComponents() == 3) {
@@ -692,7 +692,7 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
             stats[index*3] = vmin;
             stats[index*3 + 2] = vmax;
             stats[index*3 + 1] = vmean/nPoints;
-            
+
             Base::Console().Message("field  \"%s\" has been loaded \n", kv.first);
         }
     }
@@ -760,6 +760,7 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
     const FemResultObject* res = static_cast<const FemResultObject*>(obj);
     if(!res->StressValues.getValues().empty()) {
         const std::vector<double>& vec = res->StressValues.getValues();
+     if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Von Mises stress");
@@ -768,10 +769,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+     }}
 
-    if(!res->StressValues.getValues().empty()) {
+    if(!res->MaxShear.getValues().empty()) {
         const std::vector<double>& vec = res->MaxShear.getValues();
+      if (vec.size()>1) {       
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Max shear stress (Tresca)");
@@ -780,10 +782,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->StressValues.getValues().empty()) {
+    if(!res->PrincipalMax.getValues().empty()) {
         const std::vector<double>& vec = res->PrincipalMax.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Maximum Principal stress");
@@ -792,10 +795,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->StressValues.getValues().empty()) {
+    if(!res->PrincipalMax.getValues().empty()) {
         const std::vector<double>& vec = res->PrincipalMin.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Minimum Principal stress");
@@ -804,10 +808,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->StressValues.getValues().empty()) {
+    if (!res->Temperature.getValues().empty())  {  
         const std::vector<double>& vec = res->Temperature.getValues();
+      if (vec.size()>1) {     
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("Temperature");
@@ -816,10 +821,11 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
-    if(!res->StressValues.getValues().empty()) {
+    if (!res->UserDefined.getValues().empty())  {
         const std::vector<double>& vec = res->UserDefined.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfValues(vec.size());
         data->SetName("User Defined Results");
@@ -828,11 +834,12 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
             data->SetValue(i, vec[i]);
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
 
 
-    if(!res->StressValues.getValues().empty()) {
+    if(!res->DisplacementVectors.getValues().empty()) {
         const std::vector<Base::Vector3d>& vec = res->DisplacementVectors.getValues();
+      if (vec.size()>1) { 
         vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
         data->SetNumberOfComponents(3);
         data->SetName("Displacement");
@@ -843,7 +850,38 @@ void FemVTKTools::exportMechanicalResult(const App::DocumentObject* obj, vtkSmar
         }
 
         grid->GetPointData()->AddArray(data);
-    }
+      }}
+
+   if(!res->StressVectors.getValues().empty()) {
+        const std::vector<Base::Vector3d>& vec = res->StressVectors.getValues();
+      if (vec.size()>1) { 
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfComponents(3);
+        data->SetName("Stress Vectors");
+
+        for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
+            double tuple[] = {it->x, it->y , it->z};
+            data->InsertNextTuple(tuple);
+        }
+
+        grid->GetPointData()->AddArray(data);
+      }}
+
+   if(!res->StrainVectors.getValues().empty()) {
+        const std::vector<Base::Vector3d>& vec = res->StrainVectors.getValues();
+      if (vec.size()>1) { 
+        vtkSmartPointer<vtkDoubleArray> data = vtkSmartPointer<vtkDoubleArray>::New();
+        data->SetNumberOfComponents(3);
+        data->SetName("Strain Vectors");
+
+        for(std::vector<Base::Vector3d>::const_iterator it=vec.begin(); it!=vec.end(); ++it) {
+            double tuple[] = {it->x, it->y, it->z};
+            data->InsertNextTuple(tuple);
+        }
+
+        grid->GetPointData()->AddArray(data);
+      }}
+
 }
 
 } // namespace

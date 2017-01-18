@@ -38,7 +38,7 @@ EXTENSION_PROPERTY_SOURCE(App::GroupExtension, App::DocumentObjectExtension)
 
 GroupExtension::GroupExtension()
 {
-    initExtension(GroupExtension::getExtensionClassTypeId());
+    initExtensionType(GroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE(Group,(0),"Base",(App::PropertyType)(Prop_Output),"List of referenced objects");
 }
@@ -62,6 +62,11 @@ void GroupExtension::addObject(DocumentObject* obj)
 {
     if(!allowObject(obj))
         return;
+    
+    //only one group per object
+    auto *group = App::GroupExtension::getGroupOfObject(obj);
+    if(group && group != getExtendedObject())
+        group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
     
     if (!hasObject(obj)) {
         std::vector<DocumentObject*> grp = Group.getValues();
@@ -180,9 +185,9 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GroupExtension::getExtensionClassTypeId());
+    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension(GroupExtension::getExtensionClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GroupExtension* grp = (GroupExtension*)(*it);
+        GroupExtension* grp = (*it)->getExtensionByType<GroupExtension>();
         if (grp->hasObject(obj))
             return *it;
     }

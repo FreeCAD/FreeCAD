@@ -27,6 +27,7 @@ import Part
 import math
 import unittest
 
+from FreeCAD import Vector
 from PathScripts.PathGeom import Side
 
 class PathTestBase(unittest.TestCase):
@@ -44,27 +45,38 @@ class PathTestBase(unittest.TestCase):
 
     def assertLine(self, edge, pt1, pt2):
         """Verify that edge is a line from pt1 to pt2."""
-        self.assertIs(type(edge.Curve), Part.LineSegment)
-        self.assertCoincide(edge.Curve.StartPoint, pt1)
-        self.assertCoincide(edge.Curve.EndPoint, pt2)
+        self.assertIs(type(edge.Curve), Part.Line)
+        self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
+        self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
+
+    def assertLines(self, edgs, tail, points):
+        """Verify that the edges match the polygon resulting from points."""
+        edges = list(edgs)
+        if tail:
+            edges.append(tail)
+        self.assertEqual(len(edges), len(points) - 1)
+
+        for i in range(0, len(edges)):
+            self.assertLine(edges[i], points[i], points[i+1])
 
     def assertArc(self, edge, pt1, pt2, direction = 'CW'):
         """Verify that edge is an arc between pt1 and pt2 with the given direction."""
-        # If an Arc is wrapped into edge, then it's curve is represented as a circle
-        # and not as an Arc (GeomTrimmedCurve)
-        #self.assertIs(type(edge.Curve), Part.Arc)
         self.assertIs(type(edge.Curve), Part.Circle)
         self.assertCoincide(edge.valueAt(edge.FirstParameter), pt1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), pt2)
         ptm = edge.valueAt((edge.LastParameter + edge.FirstParameter)/2)
         side = Side.of(pt2 - pt1, ptm - pt1)
-        #print("(%.2f, %.2f)  (%.2f, %.2f)  (%.2f, %.2f)" % (pt1.x, pt1.y, ptm.x, ptm.y, pt2.x, pt2.y))
-        #print("    (%.2f, %.2f)  (%.2f, %.2f)  ->  %s" % ((pt2-pt1).x, (pt2-pt1).y, (ptm-pt1).x, (ptm-pt1).y, Side.toString(side)))
-        #print("    (%.2f, %.2f)  (%.2f, %.2f)  ->  (%.2f, %.2f)" % (pf.x,pf.y, pl.x,pl.y, pm.x, pmy))
         if 'CW' == direction:
             self.assertEqual(side, Side.Left)
         else:
             self.assertEqual(side, Side.Right)
+
+    def assertCircle(self, edge, pt, r):
+        """Verivy that edge is a circle at given location."""
+        curve = edge.Curve
+        self.assertIs(type(curve), Part.Circle)
+        self.assertCoincide(curve.Center, Vector(pt.x, pt.y, pt.z))
+        self.assertRoughly(curve.Radius, r)
 
 
     def assertCurve(self, edge, p1, p2, p3):
@@ -72,4 +84,28 @@ class PathTestBase(unittest.TestCase):
         self.assertCoincide(edge.valueAt(edge.FirstParameter), p1)
         self.assertCoincide(edge.valueAt(edge.LastParameter), p3)
         self.assertCoincide(edge.valueAt((edge.FirstParameter + edge.LastParameter)/2), p2)
+
+    def assertCylinderAt(self, solid, pt, r, h):
+        """Verify that solid is a cylinder at the specified location."""
+        self.assertEqual(len(solid.Edges), 3)
+
+        lid  = solid.Edges[0]
+        hull = solid.Edges[1]
+        base = solid.Edges[2]
+
+        self.assertCircle(lid, Vector(pt.x, pt.y, pt.z+h), r)
+        self.assertLine(hull, Vector(pt.x+r, pt.y, pt.z), Vector(pt.x+r, pt.y, pt.z+h))
+        self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r)
+
+    def assertConeAt(self, solid, pt, r1, r2, h):
+        """Verify that solid is a cone at the specified location."""
+        self.assertEqual(len(solid.Edges), 3)
+
+        lid  = solid.Edges[0]
+        hull = solid.Edges[1]
+        base = solid.Edges[2]
+
+        self.assertCircle(lid, Vector(pt.x, pt.y, pt.z+h), r2)
+        self.assertLine(hull, Vector(pt.x+r1, pt.y, pt.z), Vector(pt.x+r2, pt.y, pt.z+h))
+        self.assertCircle(base, Vector(pt.x, pt.y, pt.z), r1)
 

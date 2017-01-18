@@ -215,7 +215,7 @@ public:
     Extension();
     virtual ~Extension();
 
-    void initExtension(App::ExtensionContainer* obj);
+    virtual void initExtension(App::ExtensionContainer* obj);
     
     App::ExtensionContainer*       getExtendedContainer() {return m_base;}
     const App::ExtensionContainer* getExtendedContainer() const {return m_base;}
@@ -272,7 +272,7 @@ protected:
     friend class App::ExtensionContainer;
 
 protected:     
-    void initExtension(Base::Type type);
+    void initExtensionType(Base::Type type);
     bool m_isPythonExtension = false;
     Py::Object ExtensionPythonObject;
   
@@ -309,7 +309,7 @@ public:
     
     ExtensionPythonT() {
         ExtensionT::m_isPythonExtension = true;
-        ExtensionT::initExtension(ExtensionPythonT::getExtensionClassTypeId());
+        ExtensionT::initExtensionType(ExtensionPythonT::getExtensionClassTypeId());
         
         EXTENSION_ADD_PROPERTY(ExtensionProxy,(Py::Object()));
     }

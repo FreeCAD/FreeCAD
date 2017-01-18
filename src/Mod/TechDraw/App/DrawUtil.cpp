@@ -277,33 +277,22 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
     return result;
 }
 
-//! compare 2 vectors for sorting purposes ( -1 -> v1<v2, 0 -> v1 == v2, 1 -> v1 > v2)
-int DrawUtil::vectorCompare(const Base::Vector3d& v1, const Base::Vector3d& v2)
+//! compare 2 vectors for sorting - true if v1 < v2
+bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  
 {
-    int result = 0;
-    if (v1 == v2) {
-        return result;
-    }
-
-    if (v1.x < v2.x) {
-        result = -1;
-    } else if (DrawUtil::fpCompare(v1.x, v2.x)) {
-        if (v1.y < v2.y) {
-            result = -1;
-        } else if (DrawUtil::fpCompare(v1.y, v2.y)) {
-            if (v1.z < v2.z) {
-                result = -1;
-            } else {
-                result = 1;
-            }
+    bool result = false;
+    if (v1 != v2) {
+        if (!DrawUtil::fpCompare(v1.x,v2.x)) {
+            result = v1.x < v2.x;
+        } else if (!DrawUtil::fpCompare(v1.y,v2.y)) {
+            result = v1.y < v2.y;
         } else {
-            result = 1;  //v2y > v1y
+            result = v1.z < v2.z;
         }
-    } else {
-        result = 1; //v1x > v2x
     }
     return result;
-}
+}  
+
 
 //!convert fromPoint in coordinate system fromSystem to reference coordinate system
 Base::Vector3d DrawUtil::toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint)

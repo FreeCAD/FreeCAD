@@ -182,7 +182,7 @@ void FileChooser::chooseFile()
 
     if (!fn.isEmpty()) {
         lineEdit->setText(fn);
-        emit fileNameSelected(fn);
+        Q_EMIT fileNameSelected(fn);
     }
 }
 
@@ -1032,7 +1032,7 @@ void ColorButton::onChooseColor()
     if ( c.isValid() )
     {
         setColor( c );
-        emit changed();
+        Q_EMIT changed();
     }
 }
 

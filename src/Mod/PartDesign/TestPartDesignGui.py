@@ -72,14 +72,14 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.BoxObj.Length=10.0
         self.BoxObj.Width=10.0
         self.BoxObj.Height=10.0
-        self.BodySource.addFeature(self.BoxObj)
+        self.BodySource.addObject(self.BoxObj)
 
         App.ActiveDocument.recompute()
 
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.Sketch.Support = (self.BoxObj, ('Face3',))
         self.Sketch.MapMode = 'FlatFace'
-        self.BodySource.addFeature(self.Sketch)
+        self.BodySource.addObject(self.Sketch)
 
         geoList = []
         geoList.append(Part.LineSegment(App.Vector(2.0,8.0,0),App.Vector(8.0,8.0,0)))
@@ -108,7 +108,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Midplane = 0
         self.Pad.Offset = 0.000000
 
-        self.BodySource.addFeature(self.Pad)
+        self.BodySource.addObject(self.Pad)
 
         self.Doc.recompute()
         Gui.SendMsgToActiveView("ViewFit")
@@ -120,8 +120,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         QtCore.QTimer.singleShot(500, cobj)
         Gui.runCommand('PartDesign_MoveFeature')
         #assert depenedencies of the Sketch
-        self.assertEqual(len(self.BodySource.Model), 3, "Source body feature count is wrong")
-        self.assertEqual(len(self.BodyTarget.Model), 0, "Target body feature count is wrong")
+        self.assertEqual(len(self.BodySource.Group), 3, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Group), 0, "Target body feature count is wrong")
 
     def testMoveSingleFeature(self):
         FreeCAD.Console.PrintMessage('Testing moving one feature from one body to another\n')
@@ -131,7 +131,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Sketch = self.Doc.addObject('Sketcher::SketchObject','Sketch')
         self.Sketch.Support = (self.Doc.XY_Plane, [''])
         self.Sketch.MapMode = 'FlatFace'
-        self.BodySource.addFeature(self.Sketch)
+        self.BodySource.addObject(self.Sketch)
 
         geoList = []
         geoList.append(Part.LineSegment(App.Vector(-10.000000,10.000000,0),App.Vector(10.000000,10.000000,0)))
@@ -160,7 +160,7 @@ class PartDesignGuiTestCases(unittest.TestCase):
         self.Pad.Midplane = 0
         self.Pad.Offset = 0.000000
 
-        self.BodySource.addFeature(self.Pad)
+        self.BodySource.addObject(self.Pad)
 
         self.Doc.recompute()
         Gui.SendMsgToActiveView("ViewFit")
@@ -176,8 +176,8 @@ class PartDesignGuiTestCases(unittest.TestCase):
         
         self.assertFalse(self.Sketch.Support[0][0] in self.BodySource.Origin.OriginFeatures)
         self.assertTrue(self.Sketch.Support[0][0] in self.BodyTarget.Origin.OriginFeatures)
-        self.assertEqual(len(self.BodySource.Model), 0, "Source body feature count is wrong")
-        self.assertEqual(len(self.BodyTarget.Model), 2, "Target body feature count is wrong")
+        self.assertEqual(len(self.BodySource.Group), 0, "Source body feature count is wrong")
+        self.assertEqual(len(self.BodyTarget.Group), 2, "Target body feature count is wrong")
 
     def tearDown(self):
         FreeCAD.closeDocument("SketchGuiTest")

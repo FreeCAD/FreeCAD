@@ -68,7 +68,7 @@ public:
      * Add the feature into the body at the current insert point.
      * The insertion poin is the before next solid after the Tip feature
      */
-    void addFeature(App::DocumentObject* feature);
+    virtual void addObject(App::DocumentObject*) override;
 
     /**
      * Insert the feature into the body after the given feature.
@@ -79,15 +79,12 @@ public:
      *                 and into the begin if where is InsertAfter.
      * @param after    if true insert the feature after the target. Default is false.
      *
-     * @note the methode doesn't modifies the Tip unlike addFeature()
+     * @note the methode doesn't modifies the Tip unlike addObject()
      */
-    void insertFeature(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
+    void insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
 
     /// Remove the feature from the body
-    void removeFeature(App::DocumentObject* feature);
-
-    /// Delets all the objects linked to the model.
-    void removeModelFromDocument();
+    virtual void removeObject(DocumentObject* obj) override;
 
     /**
      * Checks if the given document object lays after the current insert point
@@ -110,6 +107,7 @@ public:
       * all features derived from PartDesign::Feature and Part::Datum and sketches
       */
     static bool isAllowed(const App::DocumentObject* f);
+    virtual bool allowObject(DocumentObject* f) {return isAllowed(f);};
 
     /**
      * Return the body which this feature belongs too, or NULL
@@ -117,13 +115,8 @@ public:
      */
     static Body *findBodyOf(const App::DocumentObject* feature);
 
-    /// Returns the origin link or throws an exception
-    App::Origin *getOrigin () const;
-
     PyObject *getPyObject(void);
 
-    /// Origin linked to the property, please use getOrigin () to access it
-    App::PropertyLink Origin;
 
 protected:
     virtual void onSettingDocument();

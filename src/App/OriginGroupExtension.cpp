@@ -39,7 +39,7 @@ EXTENSION_PROPERTY_SOURCE(App::OriginGroupExtension, App::GeoFeatureGroupExtensi
 
 OriginGroupExtension::OriginGroupExtension () {
     
-    initExtension(OriginGroupExtension::getExtensionClassTypeId());
+    initExtensionType(OriginGroupExtension::getExtensionClassTypeId());
     
     EXTENSION_ADD_PROPERTY_TYPE ( Origin, (0), 0, App::Prop_Hidden, "Origin linked to the group" );
 }
@@ -127,6 +127,69 @@ void OriginGroupExtension::onExtendedUnsetupObject () {
     }
 
     GeoFeatureGroupExtension::onExtendedUnsetupObject ();
+}
+
+void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
+{
+    //we get all links and replace the origin objects if needed (subnames need not to change, they
+    //would stay the same)
+    std::vector< App::DocumentObject* > result;
+    std::vector<App::Property*> list;
+    obj->getPropertyList(list);
+    for(App::Property* prop : list) {
+        if(prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+            
+            auto p = static_cast<App::PropertyLink*>(prop);
+            if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                continue;
+        
+            p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
+        }            
+        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+            auto p = static_cast<App::PropertyLinkList*>(prop);
+            auto vec = p->getValues();
+            std::vector<App::DocumentObject*> result;
+            bool changed = false;
+            for(App::DocumentObject* o : vec) {
+                if(!o || !o->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                    result.push_back(o);
+                else {
+                    result.push_back(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(o)->Role.getValue()));
+                    changed = true;
+                }
+            }
+            if(changed)
+                static_cast<App::PropertyLinkList*>(prop)->setValues(result);
+        }
+        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId())) {
+            auto p = static_cast<App::PropertyLinkSub*>(prop);
+            if(!p->getValue() || !p->getValue()->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                continue;
+        
+            p->setValue(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(p->getValue())->Role.getValue()));
+        }
+        else if(prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())) {
+            auto p = static_cast<App::PropertyLinkList*>(prop);
+            auto vec = p->getValues();
+            std::vector<App::DocumentObject*> result;
+            bool changed = false;
+            for(App::DocumentObject* o : vec) {
+                if(!o || !o->isDerivedFrom(App::OriginFeature::getClassTypeId()))
+                    result.push_back(o);
+                else {
+                    result.push_back(getOrigin()->getOriginFeature(static_cast<OriginFeature*>(o)->Role.getValue()));
+                    changed = true;
+                }
+            }
+            if(changed)
+                static_cast<App::PropertyLinkList*>(prop)->setValues(result);
+        }
+    }
+}
+
+void OriginGroupExtension::addObject(DocumentObject* obj) {
+    relinkToOrigin(obj);
+    App::GeoFeatureGroupExtension::addObject(obj);
 }
 
 

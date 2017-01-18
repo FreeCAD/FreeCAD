@@ -30,10 +30,10 @@ the module
 '''
 
 try:
+    from PySide import QtGui
     _encoding = QtGui.QApplication.UnicodeUTF8
     def translate(context, text):
         "convenience function for Qt translator"
-        from PySide import QtGui
         return QtGui.QApplication.translate(context, text, None, _encoding)
 except AttributeError:
     def translate(context, text):

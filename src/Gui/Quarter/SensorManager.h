@@ -48,7 +48,7 @@ public:
   SensorManager(void);
   ~SensorManager();
 
-public slots:
+public Q_SLOTS:
   void idleTimeout(void);
   void delayTimeout(void);
   void timerQueueTimeout(void);

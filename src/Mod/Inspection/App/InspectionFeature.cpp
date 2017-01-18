@@ -25,6 +25,9 @@
 #include <gp_Pnt.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
+#include <BRepClass3d_SolidClassifier.hxx>
+#include <BRepGProp_Face.hxx>
+#include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 
 #include <QEventLoop>
@@ -419,10 +422,24 @@ float InspectNominalPoints::getDistance(const Base::Vector3f& point)
 
 // ----------------------------------------------------------------
 
-InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float /*radius*/) : _rShape(shape)
+InspectNominalShape::InspectNominalShape(const TopoDS_Shape& shape, float /*radius*/)
+    : _rShape(shape)
+    , isSolid(false)
 {
     distss = new BRepExtrema_DistShapeShape();
     distss->LoadS1(_rShape);
+
+    // When having a solid then use its shell because otherwise the distance
+    // for inner points will always be zero
+    if (!_rShape.IsNull() && _rShape.ShapeType() == TopAbs_SOLID) {
+        TopExp_Explorer xp;
+        xp.Init(_rShape, TopAbs_SHELL);
+        if (xp.More()) {
+           distss->LoadS1(xp.Current());
+           isSolid = true;
+        }
+
+    }
     //distss->SetDeflection(radius);
 }
 
@@ -433,11 +450,45 @@ InspectNominalShape::~InspectNominalShape()
 
 float InspectNominalShape::getDistance(const Base::Vector3f& point)
 {
-    BRepBuilderAPI_MakeVertex mkVert(gp_Pnt(point.x,point.y,point.z));
+    gp_Pnt pnt3d(point.x,point.y,point.z);
+    BRepBuilderAPI_MakeVertex mkVert(pnt3d);
     distss->LoadS2(mkVert.Vertex());
+
     float fMinDist=FLT_MAX;
-    if (distss->Perform() && distss->NbSolution() > 0)
+    if (distss->Perform() && distss->NbSolution() > 0) {
         fMinDist = (float)distss->Value();
+        // the shape is a solid, check if the vertex is inside
+        if (isSolid) {
+            const Standard_Real tol = 0.001;
+            BRepClass3d_SolidClassifier classifier(_rShape);
+            classifier.Perform(pnt3d, tol);
+            if (classifier.State() == TopAbs_IN) {
+                fMinDist = -fMinDist;
+            }
+
+        }
+        else if (fMinDist > 0) {
+            // check if the distance was compued from a face
+            for (Standard_Integer index = 1; index <= distss->NbSolution(); index++) {
+                if (distss->SupportTypeShape1(index) == BRepExtrema_IsInFace) {
+                    TopoDS_Shape face = distss->SupportOnShape1(index);
+                    Standard_Real u, v;
+                    distss->ParOnFaceS1(index, u, v);
+                    //gp_Pnt pnt = distss->PointOnShape1(index);
+                    BRepGProp_Face props(TopoDS::Face(face));
+                    gp_Vec normal;
+                    gp_Pnt center;
+                    props.Normal(u, v, center, normal);
+                    gp_Vec dir(center, pnt3d);
+                    Standard_Real scalar = normal.Dot(dir);
+                    if (scalar < 0) {
+                        fMinDist = -fMinDist;
+                    }
+                    break;
+                }
+            }
+        }
+    }
     return fMinDist;
 }
 

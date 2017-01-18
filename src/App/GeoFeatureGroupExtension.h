@@ -41,7 +41,9 @@ class AppExport GeoFeatureGroupExtension : public App::GroupExtension
     EXTENSION_PROPERTY_HEADER(App::GeoFeatureGroupExtension);
 
 public:
-    PropertyPlacement Placement;
+    PropertyPlacement& placement();
+    
+    virtual void initExtension(ExtensionContainer* obj);
 
     /**
      * @brief transformPlacement applies transform to placement of this shape.
@@ -71,7 +73,8 @@ public:
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj) {
-        return obj->hasExtension(GroupExtension::getExtensionClassTypeId());
+        return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) & 
+               !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
 };
 

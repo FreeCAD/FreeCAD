@@ -37,7 +37,7 @@ EXTENSION_PROPERTY_SOURCE(App::DocumentObjectExtension, App::Extension)
 
 DocumentObjectExtension::DocumentObjectExtension() 
 {
-    initExtension(App::DocumentObjectExtension::getExtensionClassTypeId());
+    initExtensionType(App::DocumentObjectExtension::getExtensionClassTypeId());
 }
 
 DocumentObjectExtension::~DocumentObjectExtension()

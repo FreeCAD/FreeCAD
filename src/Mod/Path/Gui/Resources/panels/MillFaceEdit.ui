@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>374</width>
+    <width>340</width>
     <height>453</height>
    </rect>
   </property>
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>340</width>
-        <height>277</height>
+        <width>322</width>
+        <height>259</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -111,8 +111,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>356</width>
-        <height>124</height>
+        <width>322</width>
+        <height>108</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -123,6 +123,9 @@
        <string>Depths</string>
       </attribute>
       <layout class="QFormLayout" name="formLayout_3">
+       <property name="fieldGrowthPolicy">
+        <enum>QFormLayout::ExpandingFieldsGrow</enum>
+       </property>
        <item row="0" column="0">
         <widget class="Gui::InputField" name="startDepth">
          <property name="unit" stdset="0">
@@ -165,23 +168,20 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QDoubleSpinBox" name="stepDown">
-         <property name="decimals">
-          <number>3</number>
-         </property>
-         <property name="minimum">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="Gui::InputField" name="stepDown">
+         <property name="text">
+          <string>0 mm</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
          </property>
         </widget>
        </item>
@@ -192,8 +192,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>356</width>
-        <height>95</height>
+        <width>144</width>
+        <height>56</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -242,8 +242,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>356</width>
-        <height>296</height>
+        <width>261</width>
+        <height>191</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -309,6 +309,13 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_6">
+          <item row="0" column="2">
+           <widget class="Gui::QuantitySpinBox" name="zigZagAngle">
+            <property name="unit" stdset="0">
+             <string notr="true"/>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="useZigZag">
             <property name="text">
@@ -316,20 +323,17 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>ZigZag Angle</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <widget class="QSpinBox" name="zigZagAngle"/>
-          </item>
           <item row="1" column="0" colspan="2">
            <widget class="QCheckBox" name="zigZagUnidirectional">
             <property name="text">
              <string>ZigZag Unidirectional</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_10">
+            <property name="text">
+             <string>ZigZag Angle</string>
             </property>
            </widget>
           </item>
@@ -408,6 +412,11 @@
    <class>Gui::InputField</class>
    <extends>QLineEdit</extends>
    <header>Gui/InputField.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::QuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/QuantitySpinBox.h</header>
   </customwidget>
  </customwidgets>
  <resources>

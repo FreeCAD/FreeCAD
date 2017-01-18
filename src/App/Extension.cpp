@@ -71,7 +71,7 @@ Extension::~Extension()
     }
 }
 
-void Extension::initExtension(Base::Type type) {
+void Extension::initExtensionType(Base::Type type) {
 
     m_extensionType = type;
     if(m_extensionType.isBad())

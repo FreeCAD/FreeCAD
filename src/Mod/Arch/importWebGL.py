@@ -116,7 +116,7 @@ template = """<!DOCTYPE html>
         </html>"""
 
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
     pythonopen = open
     
 def export(exportList,filename):
@@ -155,7 +155,7 @@ def getCameraData():
     else:
         result += "camera.position.set(0,0,1000);\n"
     result += tab+"camera.lookAt( scene.position );\n"+tab
-    # print result
+    # print(result)
     return result
     
 def getObjectData(obj,wireframeMode=wireframeStyle):

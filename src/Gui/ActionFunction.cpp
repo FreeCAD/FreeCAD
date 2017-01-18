@@ -112,4 +112,45 @@ void ActionFunction::hovered()
     }
 }
 
+// ----------------------------------------------------------------------------
+
+namespace Gui {
+class TimerFunctionPrivate
+{
+public:
+    boost::function<void()> timeoutFunc;
+    bool autoDelete;
+};
+}
+
+TimerFunction::TimerFunction(QObject* parent)
+  : QObject(parent), d_ptr(new TimerFunctionPrivate())
+{
+    d_ptr->autoDelete = false;
+}
+
+TimerFunction::~TimerFunction()
+{
+}
+
+void TimerFunction::setFunction(boost::function<void()> func)
+{
+    Q_D(TimerFunction);
+    d->timeoutFunc = func;
+}
+
+void TimerFunction::setAutoDelete(bool on)
+{
+    Q_D(TimerFunction);
+    d->autoDelete = on;
+}
+
+void TimerFunction::timeout()
+{
+    Q_D(TimerFunction);
+    d->timeoutFunc();
+    if (d->autoDelete)
+        deleteLater();
+}
+
 #include "moc_ActionFunction.cpp"
