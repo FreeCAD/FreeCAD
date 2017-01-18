@@ -56,4 +56,5 @@ def makeFluidMaterial(name):
     # FreeCAD.ActiveDocument.recompute()
     return obj
 
+makeFemMaterial = makeSolidMaterial  # alias to be compatible for FemTest.py
 # @}
