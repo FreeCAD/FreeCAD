@@ -142,7 +142,7 @@ Part::TopoShape ShapeBinder::buildShapeFromReferences( Part::Feature* obj, std::
 
     try {
         if(!operators.empty() && !base.isNull())
-            return base.multiFuse(operators);
+            return base.fuse(operators);
     }
     catch(...) {
         return base;

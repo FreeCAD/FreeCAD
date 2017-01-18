@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cfloat>
 #include <stdio.h>
 #include <list>
 #include <vector>
@@ -198,7 +199,8 @@ inline Vector2d& Vector2d::operator= (const Vector2d &rclVct)
 
 inline bool Vector2d::operator== (const Vector2d &rclVct) const
 {
-  return (x == rclVct.x) && (y == rclVct.y);
+  return (fabs (x - rclVct.x) <= DBL_EPSILON) &&
+         (fabs (y - rclVct.y) <= DBL_EPSILON);
 }
 
 inline Vector2d Vector2d::operator+ (const Vector2d &rclVct) const
@@ -364,11 +366,10 @@ inline BoundBox2d& BoundBox2d::operator= (const BoundBox2d& rclBB)
 
 inline bool BoundBox2d::operator== (const BoundBox2d& rclBB) const
 {
-  return 
-      (MinX == rclBB.MinX) &&
-      (MinY == rclBB.MinY) &&
-      (MaxX == rclBB.MaxX) &&
-      (MaxY == rclBB.MaxY);
+  return (fabs (MinX - rclBB.MinX) <= DBL_EPSILON) &&
+         (fabs (MinY - rclBB.MinY) <= DBL_EPSILON) &&
+         (fabs (MaxX - rclBB.MaxX) <= DBL_EPSILON) &&
+         (fabs (MaxY - rclBB.MaxY) <= DBL_EPSILON);
 }
 
 inline void BoundBox2d::Add(const Vector2d &rclVct)

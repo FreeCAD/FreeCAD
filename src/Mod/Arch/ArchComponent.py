@@ -387,9 +387,11 @@ class Component:
         "returns (shape,extrusion vector,placement) or None"
         if hasattr(obj,"CloneOf"):
             if obj.CloneOf:
-                data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
-                if data:
-                    return data 
+                if hasattr(obj.CloneOf,"Proxy"):
+                    if hasattr(obj.CloneOf.Proxy,"getExtrusionData"):
+                        data = obj.CloneOf.Proxy.getExtrusionData(obj.CloneOf)
+                        if data:
+                            return data 
         if obj.Base:
             if obj.Base.isDerivedFrom("Part::Extrusion"):
                 if obj.Base.Base:
@@ -403,6 +405,37 @@ class Component:
                         if obj.Base.LengthForward.Value:
                             extrusion = extrusion.multiply(obj.Base.LengthForward.Value)
                     return (base,extrusion,placement)
+            elif obj.Base.isDerivedFrom("Part::MultiFuse"):
+                rshapes = []
+                revs = []
+                rpls = []
+                for sub in obj.Base.Shapes:
+                    if sub.isDerivedFrom("Part::Extrusion"):
+                        if sub.Base:
+                            base,placement = self.rebase(sub.Base.Shape)
+                            extrusion = FreeCAD.Vector(sub.Dir)
+                            if extrusion.Length == 0:
+                                extrusion = FreeCAD.Vector(0,0,1)
+                            else:
+                                extrusion = placement.inverse().Rotation.multVec(extrusion)
+                            if hasattr(sub,"LengthForward"):
+                                if sub.LengthForward.Value:
+                                    extrusion = extrusion.multiply(sub.LengthForward.Value)
+                            placement = obj.Placement.multiply(placement)
+                            rshapes.append(base)
+                            revs.append(extrusion)
+                            rpls.append(placement)
+                    else:
+                        exdata = ArchCommands.getExtrusionData(sub.Shape)
+                        if exdata:
+                            base,placement = self.rebase(exdata[0])
+                            extrusion = placement.inverse().Rotation.multVec(exdata[1])
+                            placement = obj.Placement.multiply(placement)
+                            rshapes.append(base)
+                            revs.append(extrusion)
+                            rpls.append(placement)
+                if rshapes and revs and rpls:
+                    return (rshapes,revs,rpls)
         return None
         
     def rebase(self,shape):
@@ -437,7 +470,7 @@ class Component:
     def processSubShapes(self,obj,base,placement=None):
         "Adds additions and subtractions to a base shape"
         import Draft,Part
-        #print "Processing subshapes of ",obj.Label, " : ",obj.Additions
+        #print("Processing subshapes of ",obj.Label, " : ",obj.Additions)
 
         if placement:
             if placement.isNull():
@@ -487,7 +520,7 @@ class Component:
                                             try:
                                                 base = base.fuse(s)
                                             except Part.OCCError:
-                                                print "Arch: unable to fuse object ",obj.Name, " with ", o.Name
+                                                print("Arch: unable to fuse object ", obj.Name, " with ", o.Name)
                                     else:
                                         base = s
 
@@ -525,7 +558,7 @@ class Component:
                                     try:
                                         base = base.cut(s)
                                     except Part.OCCError:
-                                        print "Arch: unable to cut object ",o.Name, " from ", obj.Name
+                                        print("Arch: unable to cut object ",o.Name, " from ", obj.Name)
         return base
 
     def applyShape(self,obj,shape,placement,allowinvalid=False,allownosolid=False):
@@ -600,7 +633,7 @@ class Component:
                     except Part.OCCError:
                         # error in computing the areas. Better set them to zero than show a wrong value
                         if obj.HorizontalArea.Value != 0:
-                            print "Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")"
+                            print("Debug: Error computing areas for ",obj.Label,": unable to project face: ",str([v.Point for v in f.Vertexes])," (face normal:",f.normalAt(0,0),")")
                             obj.HorizontalArea = 0
                         if hasattr(obj,"PerimeterLength"):
                             if obj.PerimeterLength.Value != 0:
@@ -626,7 +659,7 @@ class ViewProviderComponent:
         self.Object = vobj.Object
 
     def updateData(self,obj,prop):
-        #print obj.Name," : updating ",prop
+        #print(obj.Name," : updating ",prop)
         if prop == "BaseMaterial":
             if obj.BaseMaterial:
                 if 'DiffuseColor' in obj.BaseMaterial.Material:
@@ -659,7 +692,7 @@ class ViewProviderComponent:
         return ":/icons/Arch_Component.svg"
 
     def onChanged(self,vobj,prop):
-        #print vobj.Object.Name, " : changing ",prop
+        #print(vobj.Object.Name, " : changing ",prop)
         if prop == "Visibility":
             #for obj in vobj.Object.Additions+vobj.Object.Subtractions:
             #    if (Draft.getType(obj) == "Window") or (Draft.isClone(obj,"Window",True)):

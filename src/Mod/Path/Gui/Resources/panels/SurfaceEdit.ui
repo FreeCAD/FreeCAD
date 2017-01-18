@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>352</width>
-    <height>525</height>
+    <width>268</width>
+    <height>440</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -33,8 +33,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>334</width>
-        <height>387</height>
+        <width>250</width>
+        <height>310</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -112,7 +112,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>387</height>
+        <height>395</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -165,23 +165,17 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QDoubleSpinBox" name="stepDown">
-         <property name="decimals">
-          <number>3</number>
-         </property>
-         <property name="minimum">
-          <double>0.100000000000000</double>
-         </property>
-         <property name="value">
-          <double>1.000000000000000</double>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="1">
         <widget class="QLabel" name="label_2">
          <property name="text">
           <string>Step Down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="Gui::InputField" name="stepDown">
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
          </property>
         </widget>
        </item>
@@ -193,7 +187,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>387</height>
+        <height>395</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -243,7 +237,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>387</height>
+        <height>132</height>
        </rect>
       </property>
       <attribute name="icon">

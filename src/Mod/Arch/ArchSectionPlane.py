@@ -97,7 +97,7 @@ def getCutShapes(objs,section,showHidden):
                 if o.Shape.isValid():
                     shapes.extend(o.Shape.Solids)
                 else:
-                    print section.Label,": Skipping invalid object:",o.Label
+                    print(section.Label,": Skipping invalid object:",o.Label)
             else:
                 shapes.append(o.Shape)
     cutface,cutvolume,invcutvolume = ArchCommands.getCutVolume(section.Shape.copy(),shapes)
@@ -188,7 +188,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
         if showHidden:
             svg += render.getHiddenSVG(linewidth="LWPlaceholder")
         svg += '</g>\n'
-        # print render.info()
+        # print(render.info())
 
     else:
         # render using the Drawing module
@@ -622,7 +622,7 @@ class _ArchDrawingView:
     def getDXF(self,obj):
         "returns a DXF representation of the view"
         if obj.RenderingMode == "Solid":
-            print "Unable to get DXF from Solid mode: ",obj.Label
+            print("Unable to get DXF from Solid mode: ",obj.Label)
             return ""
         result = []
         import Drawing

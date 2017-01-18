@@ -45,21 +45,36 @@ EXTENSION_PROPERTY_SOURCE(App::GeoFeatureGroupExtension, App::GroupExtension)
 
 GeoFeatureGroupExtension::GeoFeatureGroupExtension(void)
 {
-    initExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
-    
-    EXTENSION_ADD_PROPERTY(Placement,(Base::Placement()));
+    initExtensionType(GeoFeatureGroupExtension::getExtensionClassTypeId());
 }
 
 GeoFeatureGroupExtension::~GeoFeatureGroupExtension(void)
 {
 }
 
+void GeoFeatureGroupExtension::initExtension(ExtensionContainer* obj) {
+    
+    if(!obj->isDerivedFrom(App::GeoFeature::getClassTypeId()))
+        throw Base::Exception("GeoFeatureGroupExtension can only be applied to GeoFeatures");
+        
+    App::GroupExtension::initExtension(obj);
+}
+
+PropertyPlacement& GeoFeatureGroupExtension::placement() {
+
+    if(!getExtendedContainer())
+        throw Base::Exception("GeoFeatureGroupExtension was not applied to GeoFeature");
+    
+    return static_cast<App::GeoFeature*>(getExtendedContainer())->Placement;
+}
+
+
 void GeoFeatureGroupExtension::transformPlacement(const Base::Placement &transform)
 {
     // NOTE: Keep in sync with APP::GeoFeature
-    Base::Placement plm = this->Placement.getValue();
+    Base::Placement plm = this->placement().getValue();
     plm = transform * plm;
-    this->Placement.setValue(plm);
+    this->placement().setValue(plm);
 }
 
 std::vector<App::DocumentObject*> GeoFeatureGroupExtension::getGeoSubObjects () const {
@@ -128,9 +143,9 @@ bool GeoFeatureGroupExtension::geoHasObject (const DocumentObject* obj) const {
 DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj, bool indirect)
 {
     const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType(GeoFeatureGroupExtension::getExtensionClassTypeId());
+    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GeoFeatureGroupExtension* grp = (GeoFeatureGroupExtension*)(*it);
+        GeoFeatureGroupExtension* grp = (*it)->getExtensionByType<GeoFeatureGroupExtension>();
         if ( indirect ) {
             if (grp->geoHasObject(obj)) {
                 return dynamic_cast<App::DocumentObject*>(grp);

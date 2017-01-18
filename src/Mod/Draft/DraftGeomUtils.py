@@ -96,10 +96,14 @@ def isNull(something):
 def isPtOnEdge(pt,edge) :
     '''isPtOnEdge(Vector,edge): Tests if a point is on an edge'''
     v = Part.Vertex(pt)
-    d = v.distToShape(edge)
-    if d:
-        if round(d[0],precision()) == 0:
-            return True
+    try:
+        d = v.distToShape(edge)
+    except:
+        return False
+    else:
+        if d:
+            if round(d[0],precision()) == 0:
+                return True
     return False
 
 def hasCurves(shape):
@@ -454,7 +458,7 @@ def findIntersection(edge1,edge2,infinite1=False,infinite2=False,ex1=False,ex2=F
 
         return int
     else:
-    #    print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
+        print("DraftGeomUtils: Unsupported curve type: (" + str(edge1.Curve) + ", " + str(edge2.Curve) + ")")
         return []
 
 def wiresIntersect(wire1,wire2):
@@ -870,8 +874,10 @@ def flattenWire(wire):
     w = Part.makePolygon(verts)
     return w
 
-
 def findWires(edgeslist):
+    return [ Part.Wire(e) for e in Part.sortEdges(edgeslist)]
+    
+def findWiresOld2(edgeslist):
     '''finds connected wires in the given list of edges'''
 
     def touches(e1,e2):

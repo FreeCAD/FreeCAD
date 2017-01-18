@@ -265,13 +265,13 @@ PyObject *PropertyVectorList::getPyObject(void)
 
 void PropertyVectorList::setPyObject(PyObject *value)
 {
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<Base::Vector3d> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item = PySequence_GetItem(value, i);
             PropertyVector val;
             val.setPyObject( item );
             values[i] = val.getValue();

@@ -70,7 +70,7 @@ SignalThread::run(void)
     // just wait, and trigger every time we receive a signal
     this->waitcond.wait(&this->mutex);
     if (!this->isstopped) {
-      emit triggerSignal();
+      Q_EMIT triggerSignal();
     }
   }
 }

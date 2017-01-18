@@ -61,6 +61,11 @@
           <string>Black</string>
          </property>
         </item>
+        <item>
+         <property name="text" >
+          <string>Transparent</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>

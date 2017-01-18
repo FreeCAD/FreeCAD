@@ -26,7 +26,7 @@
 
     \mainpage FreeCAD source documentation
 
-    This is the source documentation of <a href=http//www.freecadweb.org>FreeCAD</a>. 
+    This is the source documentation of <a href=http://www.freecadweb.org>FreeCAD</a>. 
     It is automatically generated from the source code, and describes the different 
     components of the FreeCAD source code, for both the parts written in C++ and Python. 
     

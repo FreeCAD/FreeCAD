@@ -36,13 +36,16 @@
 #include "ViewProviderDatumCS.h"
 #include <Mod/PartDesign/App/FeaturePrimitive.h>
 #include <Mod/PartDesign/App/DatumCS.h>
+#include <Mod/PartDesign/App/Body.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Command.h>
 #include <Gui/BitmapFactory.h>
+#include <Gui/ViewProviderOrigin.h>
 #include <Base/Interpreter.h>
 #include <Base/Console.h>
+#include <App/Origin.h>
 #include <boost/bind.hpp>
 
 using namespace PartDesignGui;
@@ -217,6 +220,19 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         if(i != index)
             ui.widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
+    
+    //show the parts coordinate system axis for selection
+    PartDesign::Body * body = PartDesign::Body::findBodyOf(vp->getObject());
+    if(body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            Gui::ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->setTemporaryVisibility(true, true);
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
+    }
 }
 
 /*  
@@ -224,6 +240,18 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
  */
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
+    //hide the parts coordinate system axis for selection
+    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject() );
+    if(body) {
+        try {
+            App::Origin *origin = body->getOrigin();
+            Gui::ViewProviderOrigin* vpOrigin;
+            vpOrigin = static_cast<Gui::ViewProviderOrigin*>(Gui::Application::Instance->getViewProvider(origin));
+            vpOrigin->resetTemporaryVisibility();
+        } catch (const Base::Exception &ex) {
+            Base::Console().Error ("%s\n", ex.what () );
+        }
+    }
 }
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v) {

@@ -55,7 +55,7 @@ else: gui = True
 try: draftui = FreeCADGui.draftToolBar
 except AttributeError: draftui = None
 
-if open.__module__ == '__builtin__':
+if open.__module__ in ['__builtin__','io']:
   pythonopen = open
 
 svgcolors = {

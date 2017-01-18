@@ -198,7 +198,7 @@ protected:
   QPixmap *stepActive;
   QPixmap *stepDone;
   
-private slots:
+private Q_SLOTS:
   void selectionSlot(bool checked);
   void buildPixmaps();
   
@@ -229,7 +229,7 @@ class DimensionControl : public QWidget
 public:
     explicit DimensionControl(QWidget* parent);
     QPushButton *resetButton;
-public slots:
+public Q_SLOTS:
   void toggle3dSlot(bool);
   void toggleDeltaSlot(bool);
   void clearAllSlot(bool);
@@ -250,7 +250,7 @@ public:
 protected:
   virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     
-protected slots:
+protected Q_SLOTS:
   void selection1Slot(bool checked);
   void selection2Slot(bool checked);
   void resetDialogSlot(bool);
@@ -326,7 +326,7 @@ public:
 protected:
   virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
     
-protected slots:
+protected Q_SLOTS:
   void selection1Slot(bool checked);
   void selection2Slot(bool checked);
   void resetDialogSlot(bool);

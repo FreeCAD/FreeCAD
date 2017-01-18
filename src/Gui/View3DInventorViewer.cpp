@@ -92,6 +92,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "View3DInventorViewer.h"
 #include "ViewProviderDocumentObject.h"
@@ -1545,35 +1546,18 @@ void View3DInventorViewer::printDimension()
         else if (dimX < dimY)
             fHeight *= ((float)dimY)/((float)dimX);
 
-        float fLog = float(log10(fWidth)), fFac;
-        int   nExp = int(fLog);
-        QString unit;
+        // Translate screen units into user's unit schema
+        Base::Quantity qWidth(Base::Quantity::MilliMetre);
+        Base::Quantity qHeight(Base::Quantity::MilliMetre);
+        qWidth.setValue(fWidth);
+        qHeight.setValue(fHeight);
+        QString wStr = Base::UnitsApi::schemaTranslate(qWidth);
+        QString hStr = Base::UnitsApi::schemaTranslate(qHeight);
 
-        if (nExp >= 6) {
-            fFac = 1.0e+6f;
-            unit = QLatin1String("km");
-        }
-        else if (nExp >= 3) {
-            fFac = 1.0e+3f;
-            unit = QLatin1String("m");
-        }
-        else if ((nExp >= 0) && (fLog > 0.0f)) {
-            fFac = 1.0e+0f;
-            unit = QLatin1String("mm");
-        }
-        else if (nExp >= -3) {
-            fFac = 1.0e-3f;
-            unit = QLatin1String("um");
-        }
-        else {
-            fFac = 1.0e-6f;
-            unit = QLatin1String("nm");
-        }
-
-        QString dim = QString::fromLatin1("%1 x %2 %3")
-                      .arg(fWidth / fFac,0,'f',2)
-                      .arg(fHeight / fFac,0,'f',2)
-                      .arg(unit);
+        // Create final string and update window
+        QString dim = QString::fromLatin1("%1 x %2")
+                      .arg(wStr)
+                      .arg(hStr);
         getMainWindow()->setPaneText(2, dim);
     }
     else

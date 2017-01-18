@@ -275,7 +275,7 @@ class Chord (object):
         return dir == 'Back' or dir == side
 
     def connectsTo(self, chord):
-        return PathGeom.isRoughly(self.End, chord.Start)
+        return PathGeom.pointsCoincide(self.End, chord.Start)
 
 class Bone:
     def __init__(self, boneId, obj, lastCommand, inChord, outChord, smooth):

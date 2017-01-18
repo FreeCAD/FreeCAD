@@ -245,6 +245,20 @@ class rectangleTracker(Tracker):
     def getNormal(self):
         "returns the normal of the rectangle"
         return (self.u.cross(self.v)).normalize()
+        
+    def isInside(self,point):
+        "returns True if the given point is inside the rectangle"
+        vp = point.sub(self.p1())
+        uv = self.p2().sub(self.p1())
+        vv = self.p4().sub(self.p1())
+        uvp = DraftVecUtils.project(vp,uv)
+        vvp = DraftVecUtils.project(vp,vv)
+        if uvp.getAngle(uv) < 1:
+            if vvp.getAngle(vv) < 1:
+                if uvp.Length <= uv.Length:
+                    if vvp.Length <= vv.Length:
+                        return True
+        return False
                 
 class dimTracker(Tracker):
     "A Dimension tracker, used by the dimension tool"
@@ -637,7 +651,7 @@ class ghostTracker(Tracker):
 class editTracker(Tracker):
     "A node edit tracker"
     def __init__(self,pos=Vector(0,0,0),name="None",idx=0,objcol=None,\
-            marker=coin.SoMarkerSet.SQUARE_FILLED_9_9):
+            marker=coin.SoMarkerSet.SQUARE_FILLED_9_9,inactive=False):
         color = coin.SoBaseColor()
         if objcol:
             color.rgb = objcol[:3]
@@ -647,16 +661,20 @@ class editTracker(Tracker):
         self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3() # this is the coordinate
         self.coords.point.setValue((pos.x,pos.y,pos.z))
-        selnode = coin.SoType.fromName("SoFCSelection").createInstance()
-        selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
-        selnode.objectName.setValue(name)
-        selnode.subElementName.setValue("EditNode"+str(idx))
+        if inactive:
+            selnode = coin.SoSeparator()
+        else:
+            selnode = coin.SoType.fromName("SoFCSelection").createInstance()
+            selnode.documentName.setValue(FreeCAD.ActiveDocument.Name)
+            selnode.objectName.setValue(name)
+            selnode.subElementName.setValue("EditNode"+str(idx))
         node = coin.SoAnnotation()
         selnode.addChild(self.coords)
         selnode.addChild(color)
         selnode.addChild(self.marker)
         node.addChild(selnode)
-        Tracker.__init__(self,children=[node],ontop=True,name="editTracker")
+        ontop = not inactive
+        Tracker.__init__(self,children=[node],ontop=ontop,name="editTracker")
         self.on()
 
     def set(self,pos):

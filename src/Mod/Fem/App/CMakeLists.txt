@@ -71,6 +71,7 @@ SET(FemScripts_SRCS
     _CommandMaterial.py
     _CommandMeshGmshFromShape.py
     _CommandMeshNetgenFromShape.py
+    _CommandMeshGroup.py
     _CommandMeshRegion.py
     _CommandPrintMeshInfo.py
     _CommandPurgeResults.py
@@ -83,6 +84,7 @@ SET(FemScripts_SRCS
     _FemConstraintSelfWeight.py
     _FemMaterialMechanicalNonlinear.py
     _FemMeshGmsh.py
+    _FemMeshGroup.py
     _FemMeshRegion.py
     _FemShellThickness.py
     _FemSolverCalculix.py
@@ -90,6 +92,7 @@ SET(FemScripts_SRCS
     _FemMaterial.py
     _TaskPanelFemBeamSection.py
     _TaskPanelFemMeshGmsh.py
+    _TaskPanelFemMeshGroup.py
     _TaskPanelFemMeshRegion.py
     _TaskPanelFemShellThickness.py
     _TaskPanelFemSolverCalculix.py
@@ -99,6 +102,7 @@ SET(FemScripts_SRCS
     _ViewProviderFemConstraintSelfWeight.py
     _ViewProviderFemMaterialMechanicalNonlinear.py
     _ViewProviderFemMeshGmsh.py
+    _ViewProviderFemMeshGroup.py
     _ViewProviderFemMeshRegion.py
     _ViewProviderFemShellThickness.py
     _ViewProviderFemSolverCalculix.py
@@ -122,6 +126,7 @@ SET(FemScripts_SRCS
     FemMaterialMechanicalNonlinear.py
     FemMesh2Mesh.py
     FemMeshGmsh.py
+    FemMeshGroup.py
     FemMeshRegion.py
     FemMeshTools.py
     FemShellThickness.py
@@ -136,6 +141,7 @@ SET(FemScripts_SRCS
     z88DispReader.py
     TaskPanelFemBeamSection.ui
     TaskPanelFemMeshGmsh.ui
+    TaskPanelFemMeshGroup.ui
     TaskPanelFemMeshRegion.ui
     TaskPanelFemShellThickness.ui
     TaskPanelFemSolverCalculix.ui

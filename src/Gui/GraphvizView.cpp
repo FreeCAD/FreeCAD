@@ -67,12 +67,33 @@ public:
     GraphvizWorker(QObject * parent = 0)
         : QThread(parent)
     {
+#if QT_VERSION < 0x050000
         proc.moveToThread(this);
+#endif
+    }
+
+    virtual ~GraphvizWorker()
+    {
+#if QT_VERSION >= 0x050000
+        proc.moveToThread(this);
+#endif
     }
 
     void setData(const QByteArray & data)
     {
         str = data;
+    }
+
+    void startThread() {
+#if QT_VERSION >= 0x050000
+        // This doesn't actually run a thread but calls the function
+        // directly in the main thread.
+        // This is needed because embedding a QProcess into a QThread
+        // causes some problems with Qt5.
+        run();
+#else
+        start();
+#endif
     }
 
     void run() {
@@ -210,7 +231,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
 
     // Update worker thread, and start it
     thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
-    thread->start();
+    thread->startThread();
 }
 
 void GraphvizView::svgFileRead(const QByteArray & data)
