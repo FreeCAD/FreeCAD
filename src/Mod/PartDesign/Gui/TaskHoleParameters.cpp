@@ -464,7 +464,7 @@ void TaskHoleParameters::changeEvent(QEvent *e)
 
 void TaskHoleParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-
+    Q_UNUSED(msg)
 }
 
 bool   TaskHoleParameters::getThreaded() const {

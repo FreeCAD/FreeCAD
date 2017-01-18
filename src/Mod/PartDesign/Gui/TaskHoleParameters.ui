@@ -440,39 +440,6 @@
     </spacer>
    </item>
   </layout>
-  <zorder>label_6</zorder>
-  <zorder>depth</zorder>
-  <zorder>depthValue</zorder>
-  <zorder>tapered</zorder>
-  <zorder>taperedAngle</zorder>
-  <zorder>widget_2</zorder>
-  <zorder>threadSize</zorder>
-  <zorder>threaded</zorder>
-  <zorder>label_2</zorder>
-  <zorder>label_5</zorder>
-  <zorder>label_7</zorder>
-  <zorder>label_3</zorder>
-  <zorder>label_4</zorder>
-  <zorder>threadType</zorder>
-  <zorder>label_8</zorder>
-  <zorder>threadClass</zorder>
-  <zorder>threadDiameter</zorder>
-  <zorder>threadFit</zorder>
-  <zorder>widget</zorder>
-  <zorder>label_13</zorder>
-  <zorder>holeCutCountersinkAngle</zorder>
-  <zorder>label_12</zorder>
-  <zorder>label_10</zorder>
-  <zorder>holeCutDiameter</zorder>
-  <zorder>holeCutDepth</zorder>
-  <zorder>label_11</zorder>
-  <zorder>holeCutType</zorder>
-  <zorder>label_14</zorder>
-  <zorder>label_15</zorder>
-  <zorder>label_16</zorder>
-  <zorder>label</zorder>
-  <zorder>label_9</zorder>
-  <zorder>verticalSpacer</zorder>
  </widget>
  <resources/>
  <connections/>
