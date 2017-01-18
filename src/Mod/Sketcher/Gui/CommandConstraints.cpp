@@ -739,6 +739,23 @@ int SketchSelection::setUp(void)
 
 /* Constrain commands =======================================================*/
 
+class CmdSketcherConstraint : public Gui::Command
+{
+public:
+    CmdSketcherConstraint();
+    virtual ~CmdSketcherConstraint(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstraint"; }
+
+protected:
+    virtual void applyConstraint();
+    virtual void activated(int iMsg);
+    virtual bool isActive(void)
+    { return isCreateGeoActive(getActiveGuiDocument()); }
+};
+
+// ======================================================================================
+
 namespace SketcherGui {
     class HoriVertConstraintSelection : public Gui::SelectionFilterGate
     {
@@ -974,7 +991,7 @@ bool CmdSketcherConstrainHorizontal::isActive(void)
     return isCreateGeoActive( getActiveGuiDocument() );
 }
 
-// ======================================================================================
+// ============================================================================
 
 static const char *cursor_createvertconstraint[]={
 "32 32 3 1",
@@ -1698,6 +1715,7 @@ bool CmdSketcherConstrainCoincident::isActive(void)
     return isCreateGeoActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_AU(CmdSketcherConstrainDistance);
 
@@ -1880,6 +1898,7 @@ bool CmdSketcherConstrainDistance::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainPointOnObject);
 
@@ -1977,6 +1996,8 @@ bool CmdSketcherConstrainPointOnObject::isActive(void)
 {
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
+
+// ======================================================================================
 
 DEF_STD_CMD_AU(CmdSketcherConstrainDistanceX);
 
@@ -2136,6 +2157,7 @@ bool CmdSketcherConstrainDistanceX::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_AU(CmdSketcherConstrainDistanceY);
 
@@ -2294,6 +2316,7 @@ bool CmdSketcherConstrainDistanceY::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+//=================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainParallel);
 
@@ -2394,6 +2417,7 @@ bool CmdSketcherConstrainParallel::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainPerpendicular);
 
@@ -2778,6 +2802,7 @@ bool CmdSketcherConstrainPerpendicular::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainTangent);
 
@@ -3121,6 +3146,7 @@ bool CmdSketcherConstrainTangent::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_AU(CmdSketcherConstrainRadius);
 
@@ -3445,6 +3471,8 @@ bool CmdSketcherConstrainRadius::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
+
 DEF_STD_CMD_AU(CmdSketcherConstrainAngle);
 
 CmdSketcherConstrainAngle::CmdSketcherConstrainAngle()
@@ -3741,6 +3769,8 @@ bool CmdSketcherConstrainAngle::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
+
 DEF_STD_CMD_A(CmdSketcherConstrainEqual);
 
 CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
@@ -3868,6 +3898,7 @@ bool CmdSketcherConstrainEqual::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainSymmetric);
 
@@ -4040,6 +4071,8 @@ bool CmdSketcherConstrainSymmetric::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
+
 DEF_STD_CMD_A(CmdSketcherConstrainSnellsLaw);
 
 CmdSketcherConstrainSnellsLaw::CmdSketcherConstrainSnellsLaw()
@@ -4197,6 +4230,7 @@ bool CmdSketcherConstrainSnellsLaw::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 
 DEF_STD_CMD_A(CmdSketcherConstrainInternalAlignment);
 
@@ -4621,6 +4655,7 @@ bool CmdSketcherConstrainInternalAlignment::isActive(void)
     return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
+// ======================================================================================
 /*** Creation Mode / Toggle to or from Reference ***/
 DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint);
 
@@ -4743,7 +4778,7 @@ void CmdSketcherToggleDrivingConstraint::activated(int iMsg)
 
 bool CmdSketcherToggleDrivingConstraint::isActive(void)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    return isCreateGeoActive( getActiveGuiDocument() );
 }
 
 void CreateSketcherCommandsConstraints(void)
