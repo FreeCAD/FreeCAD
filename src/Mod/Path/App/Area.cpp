@@ -111,22 +111,47 @@ Area::~Area() {
 }
 
 void Area::setPlane(const TopoDS_Shape &shape) {
+    if(shape.IsNull()) {
+        myWorkPlane.Nullify();
+        return;
+    }
+    BRepLib_FindSurface planeFinder(shape,-1,Standard_True);
+    if (!planeFinder.Found())
+        throw Base::ValueError("shape is not coplanar");
     myWorkPlane = shape;
+    myTrsf.SetTransformation(GeomAdaptor_Surface(
+                planeFinder.Surface()).Plane().Position());
+    clean();
 }
 
-void Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf, 
-                double deflection, CArea *areaOpen, bool to_edges, bool reorder) 
+bool Area::isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2) {
+    TopoDS_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+    builder.Add(comp,s1);
+    builder.Add(comp,s2);
+    BRepLib_FindSurface planeFinder(comp,-1,Standard_True);
+    return planeFinder.Found();
+}
+
+int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf, 
+                double deflection, const TopoDS_Shape *plane, bool force_coplanar,
+                CArea *areaOpen, bool to_edges, bool reorder) 
 {
     bool haveShape = false;
-
+    int skipped = 0;
     for (TopExp_Explorer it(shape, TopAbs_FACE); it.More(); it.Next()) {
         haveShape = true;
         const TopoDS_Face &face = TopoDS::Face(it.Current());
+        if(plane && !isCoplanar(face,*plane)) {
+            ++skipped;
+            if(force_coplanar) continue;
+        }
         for (TopExp_Explorer it(face, TopAbs_WIRE); it.More(); it.Next())
             add(area,TopoDS::Wire(it.Current()),trsf,deflection);
     }
 
-    if(haveShape) return;
+    if(haveShape) return skipped;
 
     CArea _area;
     CArea _areaOpen;
@@ -134,6 +159,10 @@ void Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
     for (TopExp_Explorer it(shape, TopAbs_WIRE); it.More(); it.Next()) {
         haveShape = true;
         const TopoDS_Wire &wire = TopoDS::Wire(it.Current());
+        if(plane && !isCoplanar(wire,*plane)) {
+            ++skipped;
+            if(force_coplanar) continue;
+        }
         if(BRep_Tool::IsClosed(wire))
             add(_area,wire,trsf,deflection);
         else if(to_edges) {
@@ -146,6 +175,10 @@ void Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
 
     if(!haveShape) {
         for (TopExp_Explorer it(shape, TopAbs_EDGE); it.More(); it.Next()) {
+            if(plane && !isCoplanar(it.Current(),*plane)) {
+                ++skipped;
+                if(force_coplanar) continue;
+            }
             add(_areaOpen,BRepBuilderAPI_MakeWire(
                 TopoDS::Edge(it.Current())).Wire(),trsf,deflection);
         }
@@ -158,6 +191,7 @@ void Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
         areaOpen->m_curves.splice(areaOpen->m_curves.end(),_areaOpen.m_curves);
     else
         area.m_curves.splice(area.m_curves.end(),_areaOpen.m_curves);
+    return skipped;
 }
 
 void Area::add(CArea &area, const TopoDS_Wire& wire,
@@ -227,16 +261,16 @@ void Area::clean(bool deleteShapes) {
     myArea = NULL;
     delete myAreaOpen;
     myAreaOpen = NULL;
-    if(deleteShapes)
+    if(deleteShapes){
+        myShapePlane.Nullify();
         myShapes.clear();
+        myHaveFace = false;
+    }
 }
 
 void Area::add(const TopoDS_Shape &shape,short op) {
 #define AREA_SRC_OP(_v) op
     PARAM_ENUM_CONVERT(AREA_SRC_OP,,PARAM_ENUM_EXCEPT,AREA_PARAMS_OPCODE);
-    TopExp_Explorer it(shape, TopAbs_SHELL); 
-    if(it.More()) 
-        throw Base::ValueError("not a 2D shape");
     clean();
     if(myShapes.empty())
         Operation = ClipperLib::ctUnion;
@@ -258,8 +292,14 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
         TopExp_Explorer it(shape, TopAbs_FACE);
         myHaveFace = it.More();
     }
+    const TopoDS_Shape *plane;
+    if(myParams.Coplanar == CoplanarNone)
+        plane = NULL;
+    else
+        plane = myWorkPlane.IsNull()?&myShapePlane:&myWorkPlane;
     CArea areaOpen;
-    add(area,shape,&myTrsf,myParams.Deflection,&areaOpen,
+    mySkippedShapes += add(area,shape,&myTrsf,myParams.Deflection,plane,
+            myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorder);
     if(areaOpen.m_curves.size()) {
         if(&area == myArea || myParams.OpenMode == OpenModeNone)
@@ -278,48 +318,75 @@ void Area::build() {
 #define AREA_SRC(_v) myParams._v
     PARAM_ENUM_CONVERT(AREA_SRC,,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
 
-    TopoDS_Builder builder;
-    TopoDS_Compound comp;
-    builder.MakeCompound(comp);
-    if(!myWorkPlane.IsNull())
-        builder.Add(comp,myWorkPlane);
-    else {
-        for(const Shape &s : myShapes)
-            builder.Add(comp, s.shape);
+    if(myWorkPlane.IsNull()) {
+        myShapePlane.Nullify();
+        for(const Shape &s : myShapes) {
+            bool haveFace = false;
+            for(TopExp_Explorer it(s.shape, TopAbs_FACE); it.More(); it.Next()) {
+                haveFace = true;
+                BRepLib_FindSurface planeFinder(it.Current(),-1,Standard_True);
+                if (!planeFinder.Found())
+                    continue;
+                myShapePlane = it.Current();
+                myTrsf.SetTransformation(GeomAdaptor_Surface(
+                            planeFinder.Surface()).Plane().Position());
+                break;
+            }
+            if(!myShapePlane.IsNull()) break;
+            if(haveFace) continue;
+            for(TopExp_Explorer it(s.shape, TopAbs_WIRE); it.More(); it.Next()) {
+                BRepLib_FindSurface planeFinder(it.Current(),-1,Standard_True);
+                if (!planeFinder.Found())
+                    continue;
+                myShapePlane = it.Current();
+                myTrsf.SetTransformation(GeomAdaptor_Surface(
+                            planeFinder.Surface()).Plane().Position());
+                break;
+            }
+            if(!myShapePlane.IsNull()) break;
+        }
+
+        if(myShapePlane.IsNull())
+            throw Base::ValueError("shapes are not planar");
     }
-    BRepLib_FindSurface planeFinder(comp,-1,Standard_True);
-    if (!planeFinder.Found())
-        throw Base::ValueError("shapes are not coplanar");
 
-    myTrsf.SetTransformation(GeomAdaptor_Surface(
-                planeFinder.Surface()).Plane().Position());
+    try {
+        myArea = new CArea();
+        myAreaOpen = new CArea();
 
-    myArea = new CArea();
-    myAreaOpen = new CArea();
+        CAreaConfig conf(myParams);
+        CArea areaClip;
 
-    CAreaConfig conf(myParams);
-    CArea areaClip;
+        mySkippedShapes = 0;
+        short op = ClipperLib::ctUnion;
+        bool pending = false;
+        for(const Shape &s : myShapes) {
+            if(op!=s.op) {
+                if(myParams.OpenMode!=OpenModeNone)
+                    myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
+                pending = false;
+                myArea->Clip((ClipperLib::ClipType)op,&areaClip,SubjectFill,ClipFill);
+                areaClip.m_curves.clear();
+                op=s.op;
+            }
+            addToBuild(op==ClipperLib::ctUnion?*myArea:areaClip,s.shape);
+            pending = true;
+        }
+        if(mySkippedShapes)
+            Base::Console().Warning("%s %d non coplanar shapes\n",
+                myParams.Coplanar==CoplanarForce?"Skipped":"Found",mySkippedShapes);
 
-    short op = ClipperLib::ctUnion;
-    bool pending = false;
-    for(const Shape &s : myShapes) {
-        if(op!=s.op) {
+        if(pending){
             if(myParams.OpenMode!=OpenModeNone)
                 myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
-            pending = false;
             myArea->Clip((ClipperLib::ClipType)op,&areaClip,SubjectFill,ClipFill);
-            areaClip.m_curves.clear();
-            op=s.op;
         }
-        addToBuild(op==ClipperLib::ctUnion?*myArea:areaClip,s.shape);
-        pending = true;
+        myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
+
+    }catch(...) {
+        clean();
+        throw;
     }
-    if(pending){
-        if(myParams.OpenMode!=OpenModeNone)
-            myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
-        myArea->Clip((ClipperLib::ClipType)op,&areaClip,SubjectFill,ClipFill);
-    }
-    myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
 }
 
 TopoDS_Shape Area::toShape(CArea &area, short fill) {

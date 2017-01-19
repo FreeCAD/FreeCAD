@@ -109,9 +109,11 @@ protected:
     CArea *myAreaOpen;
     gp_Trsf myTrsf;
     AreaParams myParams;
+    TopoDS_Shape myShapePlane;
     TopoDS_Shape myWorkPlane;
     TopoDS_Shape myShape;
     bool myHaveFace;
+    int mySkippedShapes;
 
     /** Called internally to combine children shapes for further processing */
     void build();
@@ -205,7 +207,7 @@ public:
      * \arg \c deflection: for defecting non circular curves
      * */
     static void add(CArea &area, const TopoDS_Wire &wire, 
-            const gp_Trsf *trsf=NULL,double deflection=0.01);
+            const gp_Trsf *trsf=NULL, double deflection=0.01);
 
     /** Add a OCC generic shape to CArea 
      *
@@ -214,13 +216,20 @@ public:
      * \arg \c trsf: optional transform matrix to transform the wire shape into
      * XY0 plane.
      * \arg \c deflection: for defecting non circular curves
+     * \arg \c plane: a shape for testing coplanar
+     * \arg \c force_coplaner: if true, discard non-coplanar shapes.
      * \arg \c areaOpen: for collecting open curves. If not supplied, open
      * curves are added to \c area
      * \arg \c to_edges: separate open wires to individual edges
      * \arg \c reorder: reorder closed wires for wire only shape
+     *
+     * \return Returns the number of non coplaner. Planar testing only happens
+     * if \c plane is supplied
      * */
-    static void add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
-            double deflection=0.01,CArea *areaOpen=NULL, bool to_edges=false, bool reorder=true);
+    static int add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
+            double deflection=0.01,const TopoDS_Shape *plane = NULL,
+            bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false, 
+            bool reorder=true);
 
     /** Convert curves in CArea into an OCC shape
      *
@@ -231,6 +240,8 @@ public:
      * */
     static TopoDS_Shape toShape(const CArea &area, bool fill, 
             const gp_Trsf *trsf=NULL);
+
+    static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
 };
 
 } //namespace Path
