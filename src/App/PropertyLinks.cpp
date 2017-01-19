@@ -72,9 +72,6 @@ PropertyLink::~PropertyLink()
 
 void PropertyLink::setValue(App::DocumentObject * lValue)
 {
-    if (lValue == _pcLink)
-        return; // nothing to do
-
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
@@ -376,10 +373,7 @@ PropertyLinkSub::~PropertyLinkSub()
 // Base class implementer
 
 void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList)
-{
-    if(lValue == _pcLinkSub)
-        return; //nothing to do
-    
+{   
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     if(_pcLinkSub)
