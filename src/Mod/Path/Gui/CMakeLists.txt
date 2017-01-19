@@ -81,6 +81,8 @@ SET(PathGui_SRCS_ViewProvider
     ViewProviderPathCompound.h
     ViewProviderPathShape.cpp
     ViewProviderPathShape.h
+    ViewProviderArea.cpp
+    ViewProviderArea.h
 )
 
 SOURCE_GROUP("ViewProvider" FILES ${PathGui_SRCS_ViewProvider})
