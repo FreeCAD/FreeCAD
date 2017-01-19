@@ -31,6 +31,8 @@
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepBndLib.hxx>
 #include <Bnd_Box.hxx>
+#include <ShapeAnalysis.hxx>
+#include <BRep_Tool.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <ShapeExtend_WireData.hxx>
 #include <ShapeFix_Wire.hxx>
@@ -358,76 +360,26 @@ int EdgeWalker::findUniqueVert(TopoDS_Vertex vx, std::vector<TopoDS_Vertex> &uni
 
 std::vector<TopoDS_Wire> EdgeWalker::sortStrip(std::vector<TopoDS_Wire> fw, bool includeBiggest)
 {
-    //Base::Console().Message("TRACE - EW::sortStrip()\n");
-    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(fw,false);           //biggest 1st
+    std::vector<TopoDS_Wire> closedWires;                  //all the wires should be closed, but anomalies happen
+    for (auto& w: fw) {
+        if (BRep_Tool::IsClosed(w)) {
+            closedWires.push_back(w);
+        }
+    }        
+    std::vector<TopoDS_Wire> sortedWires = sortWiresBySize(closedWires,false);           //biggest 1st
     if (!sortedWires.size()) {
         Base::Console().Log("INFO - EW::sortStrip - no sorted Wires!\n");
         return sortedWires;                                     // might happen in the middle of changes?
     }
 
-    //find the largest wire (OuterWire of graph) using bbox
-    Bnd_Box bigBox;
-    if (sortedWires.size() && !sortedWires.front().IsNull()) {
-        BRepBndLib::Add(sortedWires.front(), bigBox);
-        bigBox.SetGap(0.0);
+    if (!includeBiggest) {
+        sortedWires.erase(sortedWires.begin());
     }
-    std::vector<std::size_t> toBeChecked;
-    std::vector<TopoDS_Wire>::iterator it = sortedWires.begin() + 1;
-    for (; it != sortedWires.end(); it++) {
-        if (!(*it).IsNull()) {
-            Bnd_Box littleBox;
-            BRepBndLib::Add((*it), littleBox);
-            littleBox.SetGap(0.0);
-            if (bigBox.SquareExtent() > littleBox.SquareExtent()) {
-                break;
-            } else {
-                auto position = std::distance( sortedWires.begin(), it );    //get an index from iterator
-                toBeChecked.push_back(position);
-            }
-        }
-    }
-
-    //unfortuneately, faces can have same bbox, but not be same size.  need to weed out biggest
-    if (toBeChecked.size() == 0) {
-        //nobody had as big a bbox as first element of sortedWires
-        if (!includeBiggest) {
-            sortedWires.erase(sortedWires.begin());
-        }
-    } else if (toBeChecked.size() > 0) {
-        BRepBuilderAPI_MakeFace mkFace(sortedWires.front());
-        const TopoDS_Face& face = mkFace.Face();
-        GProp_GProps props;
-        BRepGProp::SurfaceProperties(face, props);
-        double bigArea = props.Mass();
-        unsigned int bigIndex = 0;
-        for (unsigned int idx = 0; idx < toBeChecked.size(); idx++) {
-            int iCheck = toBeChecked.at(idx);
-            BRepBuilderAPI_MakeFace mkFace2(sortedWires.at(iCheck));
-            const TopoDS_Face& face2 = mkFace2.Face();
-            BRepGProp::SurfaceProperties(face2, props);
-            double area = props.Mass();
-            if (area > bigArea) {
-                bigArea = area;
-                bigIndex = iCheck;
-            }
-        }
-        if (bigIndex == 0) {                    //first wire is the biggest
-            if (!includeBiggest) {
-                sortedWires.erase(sortedWires.begin());
-            }
-        } else {                                  //first wire is not the biggest
-            TopoDS_Wire bigWire = *(sortedWires.begin() + bigIndex);
-            sortedWires.erase(sortedWires.begin() + bigIndex);
-            if (includeBiggest) {
-                sortedWires.insert(sortedWires.begin(),bigWire);               //doesn't happen often
-            }
-        }
-
-    }
+    
     return sortedWires;
 }
 
-//sort wires in order of bbox diagonal.
+// sort (closed) wires in order of enclosed area
 std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w, bool ascend)
 {
     //Base::Console().Message("TRACE - EW::sortWiresBySize()\n");
@@ -439,22 +391,12 @@ std::vector<TopoDS_Wire> EdgeWalker::sortWiresBySize(std::vector<TopoDS_Wire>& w
     return wires;
 }
 
-//! return true if w1 bbox is bigger than w2 bbox
-//NOTE: this won't necessarily sort the OuterWire correctly (ex smaller wire, same bbox)
+//! return true if w1 enclosed area is bigger than w2 enclosed area
 /*static*/bool EdgeWalker::wireCompare(const TopoDS_Wire& w1, const TopoDS_Wire& w2)
 {
-    Bnd_Box box1, box2;
-    if (!w1.IsNull()) {
-        BRepBndLib::Add(w1, box1);
-        box1.SetGap(0.0);
-    }
-
-    if (!w2.IsNull()) {
-        BRepBndLib::Add(w2, box2);
-        box2.SetGap(0.0);
-    }
-
-    return box1.SquareExtent() > box2.SquareExtent();
+    double area1 = ShapeAnalysis::ContourArea(w1);
+    double area2 = ShapeAnalysis::ContourArea(w2);
+    return area1 > area2;
 }
 
 std::vector<embedItem> EdgeWalker::makeEmbedding(const std::vector<TopoDS_Edge> edges,
