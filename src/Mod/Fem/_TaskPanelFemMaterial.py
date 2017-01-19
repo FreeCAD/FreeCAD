@@ -264,7 +264,7 @@ class _TaskPanelFemMaterial:
             if not (1 - variation < float(old_vtec) / value < 1 + variation):
                 # VolumetricThermalExpansionCoefficient has changed
                 material = self.material
-                value_in_one_per_K = value * 1e6  # To compensate for use of SI units
+                value_in_one_per_K = value
                 material['VolumetricThermalExpansionCoefficient'] = unicode(value_in_one_per_K) + " m/m/K"
                 self.material = material
 
@@ -275,7 +275,7 @@ class _TaskPanelFemMaterial:
             if not (1 - variation < float(old_nu) / value < 1 + variation):
                 # KinematicViscosity has changed
                 material = self.material
-                value_in_m2_per_second = value * 1e6  # To compensate for use of SI units
+                value_in_m2_per_second = value
                 material['KinematicViscosity'] = unicode(value_in_m2_per_second) + " m^2/s"
                 self.material = material
 
