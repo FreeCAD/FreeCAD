@@ -141,7 +141,7 @@ def export(objectslist, filename, argstring):
 
     # Write the output
     gfile = pythonopen(filename, "wb")
-    gfile.write(gcode)
+    gfile.write(final)
     gfile.close()
 
 
@@ -325,5 +325,3 @@ def linenumber():
 
 
 print(__name__ + " gcode postprocessor loaded.")
-
-# eof

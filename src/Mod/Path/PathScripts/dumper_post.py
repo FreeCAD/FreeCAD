@@ -69,6 +69,7 @@ def export(objectslist, filename,argstring):
         final = output
 
     print("done postprocessing.")
+    return final
 
 
 def parse(pathobj):
