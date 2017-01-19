@@ -803,8 +803,8 @@ class gridTracker(Tracker):
     def update(self):
         "redraws the grid"
         # resize the grid to make sure it fits an exact pair number of main lines
-        numlines = self.numlines/self.mainlines/2*2*self.mainlines
-        bound = (numlines/2)*self.space
+        numlines = self.numlines//self.mainlines//2*2*self.mainlines
+        bound = (numlines//2)*self.space
         pts = []
         mpts = []
         apts = []
