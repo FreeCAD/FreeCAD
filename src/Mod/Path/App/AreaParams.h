@@ -48,6 +48,9 @@
 #define AREA_PARAMS_BASE \
     ((enum,fill,Fill,2,"Fill the output wires to make a face. \n"\
         "Auto means make a face if any of the children has a face.",(None)(Face)(Auto)))\
+    ((enum,coplanar,Coplanar,2,"Specifies the way to check coplanar.\n"\
+                               "'Force' will discard non coplaner shapes, but 'Check' only gives warning.",\
+                               (None)(Check)(Force)))\
     ((bool,reorder,Reorder,false,"Re-orient closed wires in wire only shapes so that inner wires become holes."))\
     ((enum,open_mode,OpenMode,0,"Specify how to handle open wires.\n"\
                         "'None' means combin without openeration.\n"\
