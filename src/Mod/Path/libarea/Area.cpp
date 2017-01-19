@@ -10,7 +10,11 @@
 
 double CArea::m_accuracy = 0.01;
 double CArea::m_units = 1.0;
+bool CArea::m_clipper_simple = false;
+double CArea::m_clipper_clean_distance = 0.0;
 bool CArea::m_fit_arcs = true;
+int CArea::m_min_arc_points = 4;
+int CArea::m_max_arc_points = 100;
 double CArea::m_single_area_processing_length = 0.0;
 double CArea::m_processing_done = 0.0;
 bool CArea::m_please_abort = false;
