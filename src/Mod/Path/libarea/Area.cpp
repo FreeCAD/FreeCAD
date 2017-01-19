@@ -92,9 +92,13 @@ void CArea::Reorder()
 	// returns 1, if the curves are overlapping
 
 	CAreaOrderer ao;
-	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++)
+    std::list<CCurve>::iterator ItLast = m_curves.end();
+	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); ++It)
 	{
 		CCurve& curve = *It;
+        if(!It->IsClosed())
+            continue;
+        ItLast = It;
 		ao.Insert(&curve);
 		if(m_set_processing_length_in_split)
 		{
@@ -102,7 +106,19 @@ void CArea::Reorder()
 		}
 	}
 
-	*this = ao.ResultArea();
+    if(ItLast == m_curves.end())
+        return;
+
+    if(ao.m_top_level)
+        ao.m_top_level->GetArea(*this);
+
+    ++ItLast;
+	for(std::list<CCurve>::iterator It=m_curves.begin(), ItNext=It; It!=ItLast; It=ItNext)
+	{
+        ++ItNext;
+        if(It->IsClosed())
+            m_curves.erase(It);
+    }
 }
 
 class ZigZag
