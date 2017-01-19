@@ -99,6 +99,13 @@ public:
     CAREA_PARAM_DECLARE(short,min_arc_points);
     CAREA_PARAM_DECLARE(short,max_arc_points);
     CAREA_PARAM_DECLARE(double,clipper_scale);
+
+    // Following functions is add to operate on possible open curves
+	void PopulateClipper(ClipperLib::Clipper &c, ClipperLib::PolyType type) const;
+	void Clip(ClipperLib::ClipType op, 
+              const CArea *a,
+              ClipperLib::PolyFillType subjFillType = ClipperLib::pftEvenOdd,
+              ClipperLib::PolyFillType clipFillType = ClipperLib::pftEvenOdd);
 };
 
 enum eOverlapType
