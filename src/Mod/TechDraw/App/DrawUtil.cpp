@@ -281,7 +281,7 @@ std::string DrawUtil::formatVector(const Base::Vector3d& v)
 bool DrawUtil::vectorLess(const Base::Vector3d& v1, const Base::Vector3d& v2)  
 {
     bool result = false;
-    if (v1 != v2) {
+    if ((v1 - v2).Length() > Precision::Confusion()) {      //ie v1 != v2
         if (!DrawUtil::fpCompare(v1.x,v2.x)) {
             result = v1.x < v2.x;
         } else if (!DrawUtil::fpCompare(v1.y,v2.y)) {
