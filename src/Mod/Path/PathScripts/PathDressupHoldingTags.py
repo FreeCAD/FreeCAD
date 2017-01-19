@@ -171,6 +171,7 @@ class Tag:
         self.angle = math.fabs(angle)
         self.radius = radius
         self.enabled = enabled
+        self.isSquare = False
 
     def fullWidth(self):
         return 2 * self.toolRadius + self.width
@@ -194,6 +195,7 @@ class Tag:
         radius = 0
         if self.angle == 90 and height > 0:
             # cylinder
+            self.isSquare = True
             self.solid = Part.makeCylinder(r1, height)
             radius = min(min(self.radius, r1), self.height)
             debugPrint("Part.makeCone(%f, %f)" % (r1, height))
@@ -224,7 +226,7 @@ class Tag:
             debugPrint("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
         debugPrint("solid.translate(%s)" % self.originAt(z))
-        self.solid.translate(self.originAt(z - 0.01 * height))
+        self.solid.translate(self.originAt(z - 0.01 * self.actualHeight))
         self.realRadius = radius
         if radius != 0:
             debugPrint("makeFillet(%.4f)" % radius)
@@ -287,10 +289,11 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, segm):
+    def __init__(self, edge, tag, i, segm, maxZ):
         debugEdge(edge, 'MapWireToTag(%.2f, %.2f, %.2f)' % (i.x, i.y, i.z))
         self.tag = tag
         self.segm = segm
+        self.maxZ = maxZ
         if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), i):
             tail = edge
             self.commands = []
@@ -484,9 +487,21 @@ class MapWireToTag:
         if self.edges:
             shape = self.shell().common(self.tag.solid)
             commands = []
+            rapid = None
             for e,flip in self.orderAndFlipEdges(self.cleanupEdges(shape.Edges)):
                 debugEdge(e, '++++++++ %s' % ('<' if flip else '>'), False)
-                commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+                p1 = e.valueAt(e.FirstParameter)
+                p2 = e.valueAt(e.LastParameter)
+                if self.tag.isSquare and (PathGeom.isRoughly(p1.z, self.maxZ) or p1.z > self.maxZ) and (PathGeom.isRoughly(p2.z, self.maxZ) or p2.z > self.maxZ):
+                    rapid = p1 if flip else p2
+                else:
+                    if rapid:
+                        commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                        rapid = None
+                    commands.extend(PathGeom.cmdsForEdge(e, flip, False, self.segm))
+            if rapid:
+                commands.append(Path.Command('G0', {'X': rapid.x, 'Y': rapid.y, 'Z': rapid.z}))
+                rapid = None
             return commands
         return []
 
@@ -551,7 +566,7 @@ class PathData:
         (minZ, maxZ) = self.findZLimits(edges)
         self.minZ = minZ
         self.maxZ = maxZ
-        bottom = [e for e in edges if e.Vertexes[0].Point.z == minZ and e.Vertexes[1].Point.z == minZ]
+        bottom = [e for e in edges if PathGeom.isRoughly(e.Vertexes[0].Point.z, minZ) and PathGeom.isRoughly(e.Vertexes[1].Point.z, minZ)]
         wire = Part.Wire(bottom)
         if wire.isClosed():
             return wire
@@ -721,7 +736,7 @@ class ObjectDressup:
     def generateTags(self, obj, count):
         if hasattr(self, "pathData"):
             self.tags = self.pathData.generateTags(obj, count, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value, None)
-            obj.Positions = [tag.originAt(0) for tag in self.tags]
+            obj.Positions = [tag.originAt(self.pathData.minZ) for tag in self.tags]
             obj.Disabled  = []
             return False
         else:
@@ -740,7 +755,7 @@ class ObjectDressup:
                 return False
         return True
 
-    def createPath(self, obj, edges, tags, rapid):
+    def createPath(self, obj, pathData, tags):
         #print("createPath")
         commands = []
         lastEdge = 0
@@ -760,11 +775,11 @@ class ObjectDressup:
         self.mappers = []
         mapper = None
 
-        while edge or lastEdge < len(edges):
+        while edge or lastEdge < len(pathData.edges):
             debugPrint("------- lastEdge = %d/%d.%d/%d" % (lastEdge, lastTag, t, len(tags)))
             if not edge:
-                edge = edges[lastEdge]
-                debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(edges)))
+                edge = pathData.edges[lastEdge]
+                debugEdge(edge, "=======  new edge: %d/%d" % (lastEdge, len(pathData.edges)))
                 lastEdge += 1
                 sameTag = None
 
@@ -782,7 +797,7 @@ class ObjectDressup:
                 t += 1
                 i = tags[tIndex].intersects(edge, edge.FirstParameter)
                 if i and self.isValidTagStartIntersection(edge, i):
-                    mapper = MapWireToTag(edge, tags[tIndex], i, segm)
+                    mapper = MapWireToTag(edge, tags[tIndex], i, segm, pathData.maxZ)
                     self.mappers.append(mapper)
                     edge = mapper.tail
 
@@ -791,7 +806,7 @@ class ObjectDressup:
                 # gone through all tags, consume edge and move on
                 if edge:
                     debugEdge(edge, '++++++++')
-                    if rapid.isRapid(edge):
+                    if pathData.rapid.isRapid(edge):
                         v = edge.Vertexes[1]
                         commands.append(Path.Command('G0', {'X': v.X, 'Y': v.Y, 'Z': v.Z}))
                     else:
@@ -837,7 +852,7 @@ class ObjectDressup:
             else:
                 disabled.append(i)
             tags.append(tag)
-            positions.append(tag.originAt(0))
+            positions.append(tag.originAt(self.pathData.minZ))
         return (tags, positions, disabled)
 
     def execute(self, obj):
@@ -890,7 +905,7 @@ class ObjectDressup:
                     #else:
                     #    debugCylinder(tag.originAt(self.pathData.minZ), tag.fullWidth()/2, tag.actualHeight, "tag-%02d" % tagID)
 
-        obj.Path = self.createPath(obj, self.pathData.edges, self.tags, self.pathData.rapid)
+        obj.Path = self.createPath(obj, self.pathData, self.tags)
         #print("execute - done")
 
     def setup(self, obj, generate=False):
@@ -950,7 +965,8 @@ PathPreferencesPathDressup.RegisterDressup(ObjectDressup)
 class TaskPanel:
     DataX = QtCore.Qt.ItemDataRole.UserRole
     DataY = QtCore.Qt.ItemDataRole.UserRole + 1
-    DataID = QtCore.Qt.ItemDataRole.UserRole + 2
+    DataZ = QtCore.Qt.ItemDataRole.UserRole + 2
+    DataID = QtCore.Qt.ItemDataRole.UserRole + 3
 
     def __init__(self, obj, viewProvider, jvoVisibility=None):
         self.obj = obj
@@ -1030,6 +1046,7 @@ class TaskPanel:
             item = QtGui.QListWidgetItem(lbl)
             item.setData(self.DataX, pos.x)
             item.setData(self.DataY, pos.y)
+            item.setData(self.DataZ, pos.z)
             item.setData(self.DataID, i)
             if i in self.obj.Disabled:
                 item.setCheckState(QtCore.Qt.CheckState.Unchecked)
@@ -1112,7 +1129,8 @@ class TaskPanel:
             self.editItem = item.data(self.DataID)
             x = item.data(self.DataX)
             y = item.data(self.DataY)
-            self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, 0))
+            z = item.data(self.DataZ)
+            self.getPoint(self.editTagAt, FreeCAD.Vector(x, y, z))
 
     def editSelectedTag(self):
         self.editTag(self.formTags.lwTags.currentItem())
