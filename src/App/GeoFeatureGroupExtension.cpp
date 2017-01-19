@@ -92,7 +92,7 @@ std::vector<App::DocumentObject*> GeoFeatureGroupExtension::getGeoSubObjects () 
         std::set<App::DocumentObject*> nextSearchSet;
         for ( auto obj: curSearchSet) {
             if ( isNonGeoGroup (obj) ) {
-                const App::DocumentObjectGroup *grp = static_cast<const App::DocumentObjectGroup *> (obj);
+                auto *grp = obj->getExtensionByType<App::GroupExtension>();
                 // Check if we havent already processed the element may happen in case of nontree structure
                 // Note: if the condition is false this generally indicates malformed structure
                 if ( processedGroups.find (grp) == processedGroups.end() ) {
@@ -127,7 +127,7 @@ bool GeoFeatureGroupExtension::geoHasObject (const DocumentObject* obj) const {
         std::set<const App::DocumentObject*> nextSearchSet;
         for ( auto obj: curSearchSet) {
             if ( isNonGeoGroup (obj) ) {
-                const App::DocumentObjectGroup *grp = static_cast<const App::DocumentObjectGroup *> (obj);
+                auto *grp = obj->getExtensionByType<App::GroupExtension>();
                 if ( processedGroups.find (grp) == processedGroups.end() ) {
                     processedGroups.insert ( grp );
                     const auto & objs = grp->Group.getValues();
@@ -148,11 +148,11 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
         GeoFeatureGroupExtension* grp = (*it)->getExtensionByType<GeoFeatureGroupExtension>();
         if ( indirect ) {
             if (grp->geoHasObject(obj)) {
-                return dynamic_cast<App::DocumentObject*>(grp);
+                return grp->getExtendedObject();
             }
         } else {
             if (grp->hasObject(obj)) {
-                return dynamic_cast<App::DocumentObject*>(grp);
+                return grp->getExtendedObject();
             }
         }
     }
