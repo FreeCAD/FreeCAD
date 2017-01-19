@@ -99,7 +99,12 @@ std::vector< App::DocumentObject* > ViewProviderGeoFeatureGroupExtension::getLin
     if(!obj)
         return std::vector< App::DocumentObject* >();
 
-    //we get all linked objects, and that recursively
+    //if the object is a geofeaturegroup than all dependencies belong to that CS, we are not allowed 
+    //to grap them
+    if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        return std::vector< App::DocumentObject* >();
+    
+    //we get all linked objects
     std::vector< App::DocumentObject* > result;
     std::vector<App::Property*> list;
     obj->getPropertyList(list);
@@ -123,7 +128,7 @@ std::vector< App::DocumentObject* > ViewProviderGeoFeatureGroupExtension::getLin
 
     //collect all dependencies of those objects
     std::vector< App::DocumentObject* > links;
-    for(App::DocumentObject *obj : result) {
+    for(App::DocumentObject *obj : result) { 
         auto vec = getLinkedObjects(obj);
         links.insert(links.end(), vec.begin(), vec.end());
     }
