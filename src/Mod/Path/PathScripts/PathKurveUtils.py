@@ -344,7 +344,9 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
                             curve_cw = curve.IsClockwise()
                             if cw != curve_cw:
                                 curve.Reverse()
-                            set_good_start_point(curve, False)
+                            # once we know how what a good start point is
+                            # we might want to set it here
+                            #set_good_start_point(curve, False)
                             profile(curve, direction, 0.0, 0.0, roll_radius, roll_on, roll_off, depthparams,
                                     extend_at_start, extend_at_end, lead_in_line_len, lead_out_line_len)
                         using_area_for_offset = False
