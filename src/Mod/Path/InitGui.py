@@ -86,7 +86,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_HoldingTags"]
-        extracmdlist = ["Path_SelectLoop"]
+        extracmdlist = ["Path_SelectLoop", "Path_Area"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 

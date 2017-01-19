@@ -35,6 +35,7 @@
 #include "DlgSettingsPathColor.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
+#include "ViewProviderArea.h"
 
 // use a different name to CreateCommand()
 void CreatePathCommands(void);
@@ -77,6 +78,8 @@ PyMODINIT_FUNC initPathGui()
     PathGui::ViewProviderPathCompoundPython ::init();
     PathGui::ViewProviderPathShape          ::init();
     PathGui::ViewProviderPathPython         ::init();
+    PathGui::ViewProviderArea               ::init();
+    PathGui::ViewProviderAreaPython         ::init();
 
      // add resources and reloads the translators
     loadPathResource();

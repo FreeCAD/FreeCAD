@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport 
+      Father="BaseClassPy" 
+      Name="AreaPy" 
+      Twin="Area" 
+      TwinPointer="Area" 
+      Include="Mod/Path/App/Area.h" 
+      Namespace="Path" 
+      FatherInclude="Base/BaseClassPy.h" 
+      FatherNamespace="Base"
+      Constructor="true"
+      Delete="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Zheng, Lei" EMail="realthunder.dev@gmail.com" />
+      <UserDocu>FreeCAD python wrapper of libarea</UserDocu>
+    </Documentation>
+    <Methode Name="add" Keyword='true'>
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setPlane">
+      <Documentation>
+          <UserDocu>setPlane(shape): Set the working plane. The shape will not be used for
+any operation</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="toShape" Keyword='true'>
+      <Documentation>
+        <UserDocu>toShape(rebuild=False): Return the resulting shape</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeOffset" Keyword='true'>
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makePocket" Keyword='true'>
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="setParams" Keyword="true">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getParamsDesc" Keyword="true">
+      <Documentation>
+          <UserDocu>getParamsDesc(as_string=True): Returns a list of supported parameters and their descriptions.\n
+* as_string: if False, then return a dictionary of documents of all supported parameters.
+          </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getParams">
+      <Documentation>
+        <UserDocu>Get current algorithm parameters as a dictionary.</UserDocu>
+      </Documentation>
+    </Methode>
+  </PythonExport>
+</GenerateModel>

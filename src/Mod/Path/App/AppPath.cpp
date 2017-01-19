@@ -41,6 +41,8 @@
 #include "PropertyTooltable.h"
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
+#include "AreaPy.h"
+#include "FeatureArea.h"
 
 namespace Path {
 extern PyObject* initModule();
@@ -49,15 +51,24 @@ extern PyObject* initModule();
 /* Python entry */
 PyMODINIT_FUNC initPath()
 {
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Part");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        return;
+    }
+
     PyObject* pathModule = Path::initModule();
     Base::Console().Log("Loading Path module... done\n");
-
 
     // Add Types to module
     Base::Interpreter().addType(&Path::CommandPy    ::Type, pathModule, "Command");
     Base::Interpreter().addType(&Path::PathPy       ::Type, pathModule, "Path");
     Base::Interpreter().addType(&Path::ToolPy       ::Type, pathModule, "Tool");
     Base::Interpreter().addType(&Path::TooltablePy  ::Type, pathModule, "Tooltable");
+    Base::Interpreter().addType(&Path::AreaPy       ::Type, pathModule, "Area");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
@@ -74,4 +85,7 @@ PyMODINIT_FUNC initPath()
     Path::FeatureCompoundPython  ::init();
     Path::FeatureShape           ::init();
     Path::FeatureShapePython     ::init();
+    Path::Area                   ::init();
+    Path::FeatureArea            ::init();
+    Path::FeatureAreaPython      ::init();
 }
