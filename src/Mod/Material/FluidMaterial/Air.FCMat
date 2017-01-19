@@ -1,0 +1,15 @@
+[FCMat]
+Name = Air
+Description = Standard air properties at 20 Degrees Celsius and 1 atm
+MolarMass = 28.965
+
+Density = 1.20 kg/m^3
+DynamicViscosity = 1.80e-5 kg/m/s
+KinematicViscosity = 1.511e-5 m^2/s
+
+VolumetricThermalExpansionCoefficient = 3.43e-3 m/m/K
+PrandtlNumber = 0.7
+
+SpecificHeat = 1.005 J/kg/K
+ThermalConductivity = 0.0257 W/m/K
+

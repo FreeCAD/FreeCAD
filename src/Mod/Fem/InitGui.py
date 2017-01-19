@@ -59,7 +59,8 @@ class FemWorkbench (Workbench):
         import _CommandAnalysis
         import _CommandShellThickness
         import _CommandBeamSection
-        import _CommandMaterial
+        import _CommandMaterialSolid
+        import _CommandMaterialFluid
         import _CommandMaterialMechanicalNonlinear
         import _CommandSolverCalculix
         import _CommandSolverZ88
