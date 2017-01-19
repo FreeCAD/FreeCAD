@@ -142,8 +142,7 @@ public:
     std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
-#if USE_OLD_DAG
-#else
+
     /// test if this object is in the InList and recursive further down
     bool isInInListRecursive(DocumentObject* objToTest) const;
     /// test if this object is directly (non recursive) in the InList
@@ -156,7 +155,6 @@ public:
     void _removeBackLink(DocumentObject*);
     /// internal, used by ProperyLink to maintain DAG back links
     void _addBackLink(DocumentObject*);
-#endif //USE_OLD_DAG
     //@}
 
     /**
