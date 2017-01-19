@@ -62,7 +62,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <boost/graph/subgraph.hpp>
 #include <boost/graph/graphviz.hpp>
 
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
 #include <boost/graph/topological_sort.hpp>
 #include <boost/graph/depth_first_search.hpp>
 #include <boost/graph/dijkstra_shortest_paths.hpp>
@@ -150,7 +150,7 @@ struct DocumentP
     int iUndoMode;
     unsigned int UndoMemSize;
     unsigned int UndoMaxStackSize;
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
     DependencyList DepList;
     std::map<DocumentObject*,Vertex> VertexObjectList;
     std::map<Vertex,DocumentObject*> vertexMap;
@@ -1675,7 +1675,7 @@ std::vector<App::DocumentObject*> Document::getInList(const DocumentObject* me) 
     return result;
 }
 
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
 namespace boost {
 // recursive helper function to get all dependencies
 void out_edges_recursive(const Vertex& v, const DependencyList& g, std::set<Vertex>& out)
@@ -1761,9 +1761,11 @@ Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
         ary.push_back(VertexMap[*it]);
     return ary;
 }
+#endif
 
 void Document::_rebuildDependencyList(void)
 {
+#ifdef USE_OLD_DAG
     d->VertexObjectList.clear();
     d->DepList.clear();
     // Filling up the adjacency List
@@ -1793,10 +1795,10 @@ void Document::_rebuildDependencyList(void)
                 add_edge(d->VertexObjectList[It->second],d->VertexObjectList[*It2],d->DepList);
         }
     }
+#endif
 }
 
-#else
-
+#ifndef USE_OLD_DAG
 std::vector<App::DocumentObject*> Document::getDependencyList(const std::vector<App::DocumentObject*>& objs) const
 {
     std::vector<App::DocumentObject*> dep;
@@ -1841,7 +1843,7 @@ void Document::renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App
         (*it)->renameObjectIdentifiers(extendedPaths);
 }
 
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
 int Document::recompute()
 {
     int objectCount = 0;
@@ -1961,7 +1963,7 @@ int Document::recompute()
     return objectCount;
 }
 
-#else // USE_OLD_DAG
+#else //ifdef USE_OLD_DAG
 
 std::vector<App::DocumentObject*> Document::topologicalSort() const
 {
@@ -2302,7 +2304,7 @@ void Document::remObject(const char* sName)
         signalTransactionRemove(*pos->second, 0);
     }
 
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
     if (!d->vertexMap.empty()) {
         // recompute of document is running
         for (std::map<Vertex,DocumentObject*>::iterator it = d->vertexMap.begin(); it != d->vertexMap.end(); ++it) {

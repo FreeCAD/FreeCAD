@@ -123,7 +123,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
 
     AtomicPropertyChange signaller(*this);
 
-#if USE_OLD_DAG == 0
+#ifndef USE_OLD_DAG
     //maintain backlinks
     ExpressionMap::const_iterator i = expressions.begin();
     while (i != expressions.end()) {
@@ -148,7 +148,7 @@ void PropertyExpressionEngine::Paste(const Property &from)
     for (ExpressionMap::const_iterator it = fromee->expressions.begin(); it != fromee->expressions.end(); ++it) {
         expressions[it->first] = ExpressionInfo(boost::shared_ptr<Expression>(it->second.expression->copy()), it->second.comment.c_str());
         
-#if USE_OLD_DAG == 0
+#ifndef USE_OLD_DAG
         //maintain backlinks
         std::set<ObjectIdentifier> deps;
         it->second.expression->getDeps(deps);
@@ -404,7 +404,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         AtomicPropertyChange signaller(*this);
         expressions[usePath] = ExpressionInfo(expr, comment);
         
-#if USE_OLD_DAG == 0
+#ifndef USE_OLD_DAG
         //maintain the backlinks in the documentobject graph datastructure
         std::set<ObjectIdentifier> deps;
         expr->getDeps(deps);
@@ -425,7 +425,7 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier & path, boost::sh
         AtomicPropertyChange signaller(*this);
         expressions.erase(usePath);
         
-#if USE_OLD_DAG == 0
+#ifndef USE_OLD_DAG
         //maintain the backlinks in the documentobject graph datastructure
         std::set<ObjectIdentifier> deps;
         expressions[usePath].expression->getDeps(deps);

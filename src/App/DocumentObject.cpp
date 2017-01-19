@@ -182,7 +182,7 @@ std::vector<DocumentObject*> DocumentObject::getOutList(void) const
     return ret;
 }
 
-#if USE_OLD_DAG
+#ifdef USE_OLD_DAG
 std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 {
     if (_pDoc)
@@ -191,7 +191,7 @@ std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
         return std::vector<App::DocumentObject*>();
 }
 
-#else // if USE_OLD_DAG
+#else // ifndef USE_OLD_DAG
 
 std::vector<App::DocumentObject*> DocumentObject::getInList(void) const
 {
@@ -303,10 +303,9 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub &linkTo) const
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
-#if USE_OLD_DAG
-#else
 bool DocumentObject::_isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
 {
+#ifndef  USE_OLD_DAG
     if (std::find(_inList.begin(), _inList.end(), test) != _inList.end())
         return true;
 
@@ -322,23 +321,29 @@ bool DocumentObject::_isInInListRecursive(const DocumentObject *act, const Docum
     }
 
     return false;
+#endif
 }
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
+#ifndef  USE_OLD_DAG
     return _isInInListRecursive(this, linkTo, this, getDocument()->countObjects());
+#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
 {
+#ifndef  USE_OLD_DAG
     if (std::find(_inList.begin(), _inList.end(), linkTo) != _inList.end())
         return true;
     else
         return false;
+#endif
 }
 
 bool DocumentObject::_isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
 {
+#ifndef  USE_OLD_DAG
     std::vector <DocumentObject*> outList = act->getOutList();
 
     if (std::find(outList.begin(), outList.end(), test) != outList.end())
@@ -356,13 +361,15 @@ bool DocumentObject::_isInOutListRecursive(const DocumentObject *act, const Docu
     }
 
     return false;
+#endif
 }
 
 bool DocumentObject::isInOutListRecursive(DocumentObject *linkTo) const
 {
+#ifndef  USE_OLD_DAG
     return _isInOutListRecursive(this, linkTo, this, getDocument()->countObjects());
+#endif
 }
-#endif //USE_OLD_DAG
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
 {
@@ -541,16 +548,17 @@ void DocumentObject::unsetupObject()
         ext->onExtendedUnsetupObject();
 }
 
-#if USE_OLD_DAG
-#else
 void App::DocumentObject::_removeBackLink(DocumentObject* rmfObj)
 {
+#ifndef USE_OLD_DAG
        _inList.erase(std::remove(_inList.begin(), _inList.end(), rmfObj), _inList.end());
+#endif
 }
 
 void App::DocumentObject::_addBackLink(DocumentObject* newObje)
 {
+#ifndef USE_OLD_DAG
     if ( std::find(_inList.begin(), _inList.end(), newObje) == _inList.end() )
        _inList.push_back(newObje);
+#endif //USE_OLD_DAG    
 }
-#endif //USE_OLD_DAG
