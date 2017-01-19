@@ -13,6 +13,12 @@ double Point::tolerance = 0.001;
 
 //static const double PI = 3.1415926535897932; duplicated in kurve/geometry.h
 
+//This function is moved from header here to solve windows DLL not export
+//static variable problem
+bool Point::operator==(const Point& p)const{
+    return fabs(x-p.x)<tolerance && fabs(y-p.y)<tolerance;
+}
+
 double Point::length()const
 {
     return sqrt( x*x + y*y );

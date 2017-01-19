@@ -84,6 +84,21 @@ public:
 	void SpanIntersections(const Span& span, std::list<Point> &pts)const; 
 	void CurveIntersections(const CCurve& curve, std::list<Point> &pts)const; 
 	void InsideCurves(const CCurve& curve, std::list<CCurve> &curves_inside)const;
+
+    //Avoid outside direct accessing static member variable because of Windows DLL issue
+#define CAREA_PARAM_DECLARE(_type,_name) \
+    static _type get_##_name();\
+    static void set_##_name(_type _name);
+
+    CAREA_PARAM_DECLARE(double,tolerance);
+    CAREA_PARAM_DECLARE(bool,fit_arcs)
+    CAREA_PARAM_DECLARE(bool,clipper_simple);
+    CAREA_PARAM_DECLARE(double,clipper_clean_distance);
+    CAREA_PARAM_DECLARE(double,accuracy);
+    CAREA_PARAM_DECLARE(double,units);
+    CAREA_PARAM_DECLARE(short,min_arc_points);
+    CAREA_PARAM_DECLARE(short,max_arc_points);
+    CAREA_PARAM_DECLARE(double,clipper_scale);
 };
 
 enum eOverlapType
