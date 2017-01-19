@@ -356,7 +356,7 @@ def closeHole(shape):
     for face in shape.Faces:
         for edge in face.Edges:
             hc = edge.hashCode()
-            if lut.has_key(hc):
+            if hc in lut:
                 lut[hc] = lut[hc] + 1
             else:
                 lut[hc] = 1
