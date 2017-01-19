@@ -93,7 +93,6 @@ def parse(inputstring):
     movecommand = ['G1', 'G0', 'G02', 'G03']
 
     for l in lines:
-        # print l
         # remove any leftover trailing and preceding spaces
         l = l.strip()
         if not l:

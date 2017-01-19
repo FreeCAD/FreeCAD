@@ -27,7 +27,6 @@ TOOLTIP=''' example post for Centroid CNC mill'''
 import FreeCAD
 import datetime
 now = datetime.datetime.now()
-import Path, PathScripts
 from PathScripts import PostUtils
 
 
