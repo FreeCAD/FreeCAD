@@ -105,7 +105,9 @@ PyObject* Curve2dPy::reverse(PyObject * args)
     return 0;
 }
 
+namespace Part {
 extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+}
 
 PyObject* Curve2dPy::toShape(PyObject *args)
 {
