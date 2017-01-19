@@ -44,10 +44,6 @@ using namespace App;
 using namespace Base;
 using namespace std;
 
-
-/// helper function for DAG back link handling
-void _maintainBackLink(DocumentObject *me, DocumentObject *oldObj, DocumentObject *newObj);
-
 //**************************************************************************
 //**************************************************************************
 // PropertyLink
