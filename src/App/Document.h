@@ -355,10 +355,9 @@ protected:
     /// helper which Recompute only this feature
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
-#if USE_OLD_DAG
+
     /// refresh the internal dependency graph
     void _rebuildDependencyList(void);
-#endif
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;
 
 

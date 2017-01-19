@@ -80,7 +80,7 @@ void PropertyLink::setValue(App::DocumentObject * lValue)
         return; // nothing to do
 
     aboutToSetValue();
-#if USE_OLD_DAG==0
+#ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
     if(_pcLink)
         _pcLink->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -212,7 +212,7 @@ int PropertyLinkList::getSize(void) const
 
 void PropertyLinkList::setValue(DocumentObject* lValue)
 {
-#if USE_OLD_DAG == 0    
+#ifndef USE_OLD_DAG   
     //maintain the back link in the DocumentObject class
     for(auto *obj : _lValueList)
         obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -236,7 +236,7 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
 void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
 {
     aboutToSetValue();
-#if USE_OLD_DAG == 0 
+#ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
     for(auto *obj : _lValueList)
         obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -385,7 +385,7 @@ void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<s
         return; //nothing to do
     
     aboutToSetValue();
-#if USE_OLD_DAG == 0 
+#ifndef USE_OLD_DAG
     if(_pcLinkSub)
         _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
     if(lValue)
@@ -580,7 +580,7 @@ int PropertyLinkSubList::getSize(void) const
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
-#if USE_OLD_DAG == 0 
+#ifndef USE_OLD_DAG
     //maintain backlinks
     for(auto *obj : _lValueList)
         obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
@@ -609,7 +609,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (lValue.size() != lSubNames.size())
         throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
-#if USE_OLD_DAG == 0 
+#ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
     for(auto *obj : _lValueList)
@@ -635,7 +635,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (lValue.size() != lSubNames.size())
         throw Base::Exception("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
-#if USE_OLD_DAG == 0 
+#ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
     for(auto *obj : _lValueList)
@@ -655,7 +655,7 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
-#if USE_OLD_DAG == 0     
+#ifndef USE_OLD_DAG    
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
     for(auto *obj : _lValueList)
