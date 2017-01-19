@@ -155,7 +155,7 @@ class RollbackImporter:
         
     def rollbackImports(self):
         for modname in sys.modules.keys():
-            if not self.previousModules.has_key(modname):
+            if modname not in self.previousModules:
                 # Force reload when modname next imported
                 del(sys.modules[modname])
 
