@@ -70,7 +70,7 @@ class ENUMERATION(object):
     """
     def __init__(self,*kargs,**args):
         # first defining the scope
-        if args.has_key('scope'):
+        if 'scope' in args:
             self._scope = args['scope']
         else:
             self._scope = None
@@ -96,7 +96,7 @@ class ENUMERATION(object):
         # has the same name as an enum id, it will replace it in the current scope.
         #
         for enum_id_name in self._enum_id_names:
-            if not vars(self._scope).has_key(enum_id_name):
+            if enum_id_name not in vars(self._scope):
                 vars(self._scope)[enum_id_name] = self.__getattribute__(enum_id_name)
 
     def get_enum_ids(self):
@@ -109,7 +109,7 @@ class SELECT(object):
     """
     def __init__(self,*kargs,**args):
         # first defining the scope
-        if args.has_key('scope'):
+        if 'scope' in args:
             self._scope = args['scope']
         else:
             self._scope = None

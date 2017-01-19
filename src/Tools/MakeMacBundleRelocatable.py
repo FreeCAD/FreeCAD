@@ -55,7 +55,7 @@ class DepsGraph:
         self.graph[node.name] = node
 
     def get_node(self, name):
-        if self.graph.has_key(name):
+        if name in self.graph:
             return self.graph[name]
         return None
 
