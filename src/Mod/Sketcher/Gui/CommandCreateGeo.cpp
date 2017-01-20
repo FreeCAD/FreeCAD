@@ -4388,7 +4388,6 @@ public:
             CurrentConstraint++;
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
-	    
             EditCurve[EditCurve.size()-1] = onSketchPos;
             
                 // finish adding controlpoints on double click
@@ -4413,23 +4412,23 @@ public:
             unsetCursor();
             resetPositionText();
 
-	    std::stringstream stream;
+            std::stringstream stream;
 
-	    for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin(); 
-		 it != EditCurve.end(); ++it) {
-            stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
-	    }
+            for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin();
+                it != EditCurve.end(); ++it) {
+                stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
+            }
 
-    	std::string controlpoints = stream.str();
+            std::string controlpoints = stream.str();
 
-	    // remove last comma and add brackets
-	    int index = controlpoints.rfind(',');
-	    controlpoints.resize(index);
+            // remove last comma and add brackets
+            int index = controlpoints.rfind(',');
+            controlpoints.resize(index);
 
-	    controlpoints.insert(0,1,'[');
-	    controlpoints.append(1,']');
+            controlpoints.insert(0,1,'[');
+            controlpoints.append(1,']');
 
-	    int currentgeoid = getHighestCurveIndex();
+            int currentgeoid = getHighestCurveIndex();
 
             try {
 

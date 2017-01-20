@@ -781,7 +781,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                             geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()||
                             geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()||
-			    geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                            geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
                             Gui::Command::openCommand("Drag Curve");
                             try {
                                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.movePoint(%i,%i,App.Vector(%f,%f,0),%i)"
@@ -2324,8 +2324,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
                 int countSegments = std::max(2, int(12.0 * range / (2 * M_PI)));
 
                 float segment = float(range) / countSegments;
-		//In local coordinate system, value() of parabola is:
-		//P(U) = O + U*U/(4.*F)*XDir + U*YDir 
+                //In local coordinate system, value() of parabola is:
+                //P(U) = O + U*U/(4.*F)*XDir + U*YDir
                                                 // circumscribed polygon radius
                 float focal = float(aop->getFocal()) / cos(segment/2);
                 float phi = float(aop->getAngleXU());
@@ -3406,7 +3406,7 @@ void ViewProviderSketch::draw(bool temp)
             gp_Pnt end = curve->Value(last);
             Coords.push_back(Base::Vector3d(end.X(), end.Y(), end.Z()));
 
-	    // abdullah: Poles thought as internal geometry
+            // abdullah: Poles thought as internal geometry
             /*std::vector<Base::Vector3d> poles = spline->getPoles();
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
                 Points.push_back(*it);

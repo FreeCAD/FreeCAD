@@ -809,11 +809,11 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
     // save the attributes of the father class
     GeomCurve::Save(writer);
 
-    std::vector<Base::Vector3d> poles 	= this->getPoles();
-    std::vector<double> weights 	    = this->getWeights();
-    std::vector<double> knots 		    = this->getKnots();
-    std::vector<int> mults 		        = this->getMultiplicities();
-    int degree 				            = this->getDegree();
+    std::vector<Base::Vector3d> poles   = this->getPoles();
+    std::vector<double> weights         = this->getWeights();
+    std::vector<double> knots           = this->getKnots();
+    std::vector<int> mults              = this->getMultiplicities();
+    int degree                          = this->getDegree();
     bool isperiodic                     = this->isPeriodic();
 
     writer.Stream()
@@ -830,27 +830,27 @@ void GeomBSplineCurve::Save(Base::Writer& writer) const
     std::vector<Base::Vector3d>::const_iterator itp;
     std::vector<double>::const_iterator itw;
     
-    for(itp = poles.begin(), itw = weights.begin(); itp != poles.end() && itw != weights.end(); ++itp, ++itw){
-	 writer.Stream() 
-	    << writer.ind() 
-		<< "<Pole "
-		    << "X=\"" << (*itp).x <<
-		    "\" Y=\"" << (*itp).y <<
-		    "\" Z=\"" << (*itp).z <<
-		    "\" Weight=\"" << (*itw) <<		    
-		"\"/>" << endl;
+    for (itp = poles.begin(), itw = weights.begin(); itp != poles.end() && itw != weights.end(); ++itp, ++itw) {
+        writer.Stream()
+            << writer.ind()
+            << "<Pole "
+            << "X=\"" << (*itp).x <<
+            "\" Y=\"" << (*itp).y <<
+            "\" Z=\"" << (*itp).z <<
+            "\" Weight=\"" << (*itw) <<
+        "\"/>" << endl;
     }
 
     std::vector<double>::const_iterator itk;
     std::vector<int>::const_iterator itm;
 
-    for(itk = knots.begin(), itm = mults.begin(); itk != knots.end() && itm != mults.end(); ++itk, ++itm){
-	 writer.Stream() 
-	    << writer.ind() 
-		<< "<Knot "
-		    << "Value=\"" << (*itk)
-		    << "\" Mult=\"" << (*itm) <<
-		"\"/>" << endl;
+    for (itk = knots.begin(), itm = mults.begin(); itk != knots.end() && itm != mults.end(); ++itk, ++itm) {
+        writer.Stream()
+            << writer.ind()
+            << "<Knot "
+            << "Value=\"" << (*itk)
+            << "\" Mult=\"" << (*itm) <<
+        "\"/>" << endl;
     }
 
     writer.decInd();

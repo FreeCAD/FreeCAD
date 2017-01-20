@@ -82,8 +82,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     addSketcherWorkbenchSketchActions( *sketch );
     *sketch << geom
-	    << cons
-	    << consaccel;
+            << cons
+            << consaccel;
 
     return root;
 }
@@ -241,21 +241,20 @@ inline void SketcherAddWorkbenchTools(T& consaccel);
 
 template <>
 inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel){
-    consaccel 	<< "Sketcher_CloseShape"
-		<< "Sketcher_ConnectLines"
-		<< "Sketcher_SelectConstraints"
-		<< "Sketcher_SelectOrigin"
-		<< "Sketcher_SelectVerticalAxis"
-		<< "Sketcher_SelectHorizontalAxis"
-        << "Sketcher_SelectRedundantConstraints"
-        << "Sketcher_SelectConflictingConstraints"
-        << "Sketcher_SelectElementsAssociatedWithConstraints"
-        << "Sketcher_RestoreInternalAlignmentGeometry" 
-        << "Sketcher_Symmetry"
-        << "Sketcher_Clone"
-        << "Sketcher_Copy"
-        << "Sketcher_RectangularArray";
-    
+    consaccel   << "Sketcher_CloseShape"
+                << "Sketcher_ConnectLines"
+                << "Sketcher_SelectConstraints"
+                << "Sketcher_SelectOrigin"
+                << "Sketcher_SelectVerticalAxis"
+                << "Sketcher_SelectHorizontalAxis"
+                << "Sketcher_SelectRedundantConstraints"
+                << "Sketcher_SelectConflictingConstraints"
+                << "Sketcher_SelectElementsAssociatedWithConstraints"
+                << "Sketcher_RestoreInternalAlignmentGeometry"
+                << "Sketcher_Symmetry"
+                << "Sketcher_Clone"
+                << "Sketcher_Copy"
+                << "Sketcher_RectangularArray";
 }
 template <>
 inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consaccel){

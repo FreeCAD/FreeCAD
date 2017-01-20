@@ -67,7 +67,7 @@ enum InternalAlignmentType {
     HyperbolaMajor          = 5,
     HyperbolaMinor          = 6,
     HyperbolaFocus          = 7,
-    ParabolaFocus	        = 8,
+    ParabolaFocus           = 8,
     BSplineControlPoint     = 9 // in this constraint "Third" is used to indicate the index of the control point (0-poles), it is not a GeoId
 };
 
@@ -111,7 +111,7 @@ public:
     PointPos FirstPos;
     int Second;
     PointPos SecondPos;
-    int Third; 
+    int Third;
     PointPos ThirdPos;
     float LabelDistance;
     float LabelPosition;

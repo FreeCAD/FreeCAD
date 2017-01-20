@@ -185,7 +185,7 @@ const char* nameByType(Sketch::GeoType type)
     case Sketch::ArcOfParabola:
         return "arcofparabola";
     case Sketch::BSpline:
-        return "bspline";	
+        return "bspline";
     case Sketch::None:
     default:
         return "unknown";
@@ -738,12 +738,12 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     GCS::BSpline bs;
     bs.start        = p1;
     bs.end          = p2;
-    bs.poles	    = spoles;
-    bs.weights	    = sweights;
-    bs.knots	    = sknots;
-    bs.mult	        = mult;
-    bs.degree 	    = degree;
-    bs.periodic     = periodic;	
+    bs.poles        = spoles;
+    bs.weights      = sweights;
+    bs.knots        = sknots;
+    bs.mult         = mult;
+    bs.degree       = degree;
+    bs.periodic     = periodic;
     def.index       = BSplines.size();
     BSplines.push_back(bs);
 
@@ -945,10 +945,10 @@ GCS::Curve* Sketch::getGCSCurveByGeoId(int geoId)
         case ArcOfHyperbola:
             return &ArcsOfHyperbola[Geoms[geoId].index];
             break;   
-	case ArcOfParabola:
+        case ArcOfParabola:
             return &ArcsOfParabola[Geoms[geoId].index];
             break;
-	case BSpline:
+        case BSpline:
             return &BSplines[Geoms[geoId].index];
             break;
         default:
@@ -1213,10 +1213,10 @@ int Sketch::addConstraint(const Constraint *constraint)
             case HyperbolaFocus: 
                 rtn = addInternalAlignmentHyperbolaFocus(constraint->First,constraint->Second);
                 break;
-	    case ParabolaFocus: 
+            case ParabolaFocus:
                 rtn = addInternalAlignmentParabolaFocus(constraint->First,constraint->Second);
                 break;
-        case BSplineControlPoint:
+            case BSplineControlPoint:
                 rtn = addInternalAlignmentBSplineControlPoint(constraint->First,constraint->Second, constraint->InternalAlignmentIndex);
             default:
                 break;
@@ -2596,43 +2596,40 @@ bool Sketch::updateGeometry()
                 
                 Base::Vector3d fd=f1-vertex;
                 
-		aop->setXAxisDir(fd);
-                
+                aop->setXAxisDir(fd);
                 aop->setCenter(vertex);
-		
-		aop->setFocal(fd.Length());
-
+                aop->setFocal(fd.Length());
                 aop->setRange(*myArc.startAngle, *myArc.endAngle, /*emulateCCW=*/true);
             } else if (it->type == BSpline) {
                 GCS::BSpline &mybsp = BSplines[it->index];
 
                 GeomBSplineCurve *bsp = dynamic_cast<GeomBSplineCurve*>(it->geo);
 
-		std::vector<Base::Vector3d> poles; 
-		std::vector<double> weights;
-		
-		std::vector<GCS::Point>::const_iterator it1;
-		std::vector<double *>::const_iterator it2;
+                std::vector<Base::Vector3d> poles;
+                std::vector<double> weights;
 
-		for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
-		    poles.push_back(Vector3d( *(*it1).x , *(*it1).y , 0.0));
-		    weights.push_back(*(*it2));
-		}
-		
-		bsp->setPoles(poles, weights);
+                std::vector<GCS::Point>::const_iterator it1;
+                std::vector<double *>::const_iterator it2;
 
-		std::vector<double> knots; 
-		std::vector<int> mult;
-		
-		std::vector<double *>::const_iterator it3;
-		std::vector<int>::const_iterator it4;
+                for( it1 = mybsp.poles.begin(), it2 = mybsp.weights.begin(); it1 != mybsp.poles.end() && it2 != mybsp.weights.end(); ++it1, ++it2) {
+                    poles.push_back(Vector3d( *(*it1).x , *(*it1).y , 0.0));
+                    weights.push_back(*(*it2));
+                }
 
-		for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
-		    knots.push_back(*(*it3));
-		    mult.push_back((*it4));
-		}		
-		
-		bsp->setKnots(knots,mult);
+                bsp->setPoles(poles, weights);
+
+                std::vector<double> knots;
+                std::vector<int> mult;
+
+                std::vector<double *>::const_iterator it3;
+                std::vector<int>::const_iterator it4;
+
+                for( it3 = mybsp.knots.begin(), it4 = mybsp.mult.begin(); it3 != mybsp.knots.end() && it4 != mybsp.mult.end(); ++it3, ++it4) {
+                    knots.push_back(*(*it3));
+                    mult.push_back((*it4));
+                }
+
+                bsp->setKnots(knots,mult);
 
             }
         } catch (Base::Exception e) {
@@ -2937,8 +2934,7 @@ int Sketch::initMove(int geoId, PointPos pos, bool fine)
             int i=GCSsys.addConstraintP2PCoincident(p1,center,-1);
             GCSsys.rescaleConstraint(i-1, 0.01);
             GCSsys.rescaleConstraint(i, 0.01);
-	}
-
+        }
     } else if (Geoms[geoId].type == ArcOfHyperbola) {
         
         GCS::Point &center = Points[Geoms[geoId].midPointId];
