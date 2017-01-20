@@ -4135,7 +4135,7 @@ bool CmdSketcherCreateArcOfParabola::isActive(void)
 
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic)
 
 /**
  * @brief ctor
@@ -4432,7 +4432,7 @@ public:
 
             try {
 
-            Gui::Command::openCommand("Add sketch BSplineCurve");
+            Gui::Command::openCommand("Add B-spline curve");
 
             //Add arc of parabola
             Gui::Command::doCommand(Gui::Command::Doc,
@@ -4518,15 +4518,15 @@ protected:
 
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateBSpline);
+DEF_STD_CMD_A(CmdSketcherCreateBSpline)
 
 CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
   : Command("Sketcher_CreateBSpline")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create B-Spline");
-    sToolTipText    = QT_TR_NOOP("Create a B-Spline via control point in the sketch.");
+    sMenuText       = QT_TR_NOOP("Create B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline via control point in the sketch.");
     sWhatsThis      = "Sketcher_CreateBSpline";
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_CreateBSpline";
@@ -4559,7 +4559,7 @@ bool CmdSketcherCreateBSpline::isActive(void)
 }
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateBSpline'
-DEF_STD_CMD_A(CmdSketcherCreatePeriodicBSpline);
+DEF_STD_CMD_A(CmdSketcherCreatePeriodicBSpline)
 
 /**
  * @brief ctor
@@ -4569,8 +4569,8 @@ CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create periodic B-Spline");
-    sToolTipText    = QT_TR_NOOP("Create a periodic B-Spline via control point in the sketch.");
+    sMenuText       = QT_TR_NOOP("Create periodic B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control point in the sketch.");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     sPixmap         = "Sketcher_Create_Periodic_BSpline";
@@ -4590,7 +4590,7 @@ bool CmdSketcherCreatePeriodicBSpline::isActive(void)
 
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateBSpline'
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateBSpline);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateBSpline)
 
 /**
  * @brief ctor
@@ -4600,8 +4600,8 @@ CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Create a bspline");
-    sToolTipText    = QT_TR_NOOP("Create a bspline in the sketch");
+    sMenuText       = QT_TR_NOOP("Create a B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline in the sketch");
     sWhatsThis      = sToolTipText;
     sStatusTip      = sToolTipText;
     eType           = ForEdit;
@@ -4685,13 +4685,13 @@ void CmdSketcherCompCreateBSpline::languageChange()
     QList<QAction*> a = pcAction->actions();
     
     QAction* bspline = a[0];
-    bspline->setText(QApplication::translate("Sketcher_CreateBSpline","BSpline by control points or poles"));
-    bspline->setToolTip(QApplication::translate("Sketcher_CreateBSpline","Create a BSpline by control points or poles"));
-    bspline->setStatusTip(QApplication::translate("Sketcher_CreateBSpline","Create a BSpline by control points or poles"));
+    bspline->setText(QApplication::translate("Sketcher_CreateBSpline","B-spline by control points or poles"));
+    bspline->setToolTip(QApplication::translate("Sketcher_CreateBSpline","Create a B-spline by control points or poles"));
+    bspline->setStatusTip(QApplication::translate("Sketcher_CreateBSpline","Create a B-spline by control points or poles"));
     QAction* periodicbspline = a[1];
-    periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline","Periodic BSpline by control points or poles"));
-    periodicbspline->setToolTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic BSpline by control points or poles"));
-    periodicbspline->setStatusTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic BSpline by control points or poles"));
+    periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline","Periodic B-spline by control points or poles"));
+    periodicbspline->setToolTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic B-spline by control points or poles"));
+    periodicbspline->setStatusTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic B-spline by control points or poles"));
 }
 
 bool CmdSketcherCompCreateBSpline::isActive(void)
