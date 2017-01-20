@@ -792,10 +792,89 @@ namespace SketcherGui {
             if (0 < types && types < 64) this->allowedSelTypes = types;
         }
 
-    private:
+    protected:
         int allowedSelTypes;
     };
 }
+
+class DrawSketchHandlerGenConstraint: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerGenConstraint(const char* cursor[]) : constraintCursor(cursor) {}
+    virtual ~DrawSketchHandlerGenConstraint()
+    {
+        Gui::Selection().rmvSelectionGate();
+    }
+
+    virtual void activated(ViewProviderSketch *)
+    {
+        Gui::Selection().rmvSelectionGate();
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelEdge);
+        Gui::Selection().addSelectionGate(selFilterGate);
+        setCursor(QPixmap(constraintCursor), 7, 7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        return false;
+    }
+
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
+    {
+        Q_UNUSED(onSketchPos);
+        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+
+        const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
+
+        int CrvId = sketchgui->getPreselectCurve();
+        if (CrvId != -1) {
+            const Part::Geometry *geo = Obj->getGeometry(CrvId);
+            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                     QObject::tr("The selected edge is not a line segment"));
+                return false;
+            }
+
+            // check if the edge has already a Horizontal or Vertical constraint
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                 it != vals.end(); ++it) {
+                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
+                        QObject::tr("The selected edge has already a horizontal constraint!"));
+                    return false;
+                }
+                if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                         QObject::tr("The selected edge has already a vertical constraint!"));
+                    return false;
+                }
+            }
+
+            // undo command open
+            Gui::Command::openCommand("add horizontal constraint");
+            // issue the actual commands to create the constraint
+            Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
+                      sketchgui->getObject()->getNameInDocument(),CrvId);
+            // finish the transaction and update
+            Gui::Command::commitCommand();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+        }
+        return false;
+    }
+
+protected:
+    const char** constraintCursor;
+};
+
 
 /**
  * @brief The CmdSketcherConstraint class
@@ -936,10 +1015,21 @@ public:
     }
 };
 
-DEF_STD_CMD_A(CmdSketcherConstrainHorizontal);
+//DEF_STD_CMD_A(CmdSketcherConstrainHorizontal);
+
+class CmdSketcherConstrainHorizontal : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainHorizontal();
+    virtual ~CmdSketcherConstrainHorizontal(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainLock"; }
+protected:
+    virtual void activated(int);
+};
 
 CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
-    :Command("Sketcher_ConstrainHorizontal")
+    :CmdSketcherConstraint("Sketcher_ConstrainHorizontal")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -952,11 +1042,9 @@ CmdSketcherConstrainHorizontal::CmdSketcherConstrainHorizontal()
     eType           = ForEdit;
 }
 
-void CmdSketcherConstrainHorizontal::activated(int iMsg)
+void CmdSketcherConstrainHorizontal::activated(int /*iMsg*/)
 {
-    Q_UNUSED(iMsg);
-
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerHoriConstraint());
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerGenConstraint(cursor_createhoriconstraint));
 
     // get the selection
     std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
@@ -1031,10 +1119,10 @@ void CmdSketcherConstrainHorizontal::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherConstrainHorizontal::isActive(void)
-{
-    return isCreateGeoActive( getActiveGuiDocument() );
-}
+//bool CmdSketcherConstrainHorizontal::isActive(void)
+//{
+//    return isCreateGeoActive( getActiveGuiDocument() );
+//}
 
 // ============================================================================
 
