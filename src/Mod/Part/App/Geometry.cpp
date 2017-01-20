@@ -385,10 +385,9 @@ bool GeomCurve::closestParameter(const Base::Vector3d& point, double &u) const
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        std::cout << e->GetMessageString() << std::endl;
-        return false;
+        throw Base::RuntimeError(e->GetMessageString());
     }
-    
+
     return false;
 }
 
@@ -409,12 +408,10 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
         }
         catch (Standard_Failure) {
             Handle_Standard_Failure e = Standard_Failure::Caught();
-            std::cout << e->GetMessageString() << std::endl;
-            return false;
+            throw Base::RuntimeError(e->GetMessageString());
         }
-        
+
         return false;        
-        
     } 
     else {
         return this->closestParameter(point, u);
@@ -561,7 +558,7 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        std::cout << e->GetMessageString() << std::endl;
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -573,7 +570,7 @@ void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const 
     std::vector<double>::const_iterator it2;
 
     for(it1 = poles.begin(), it2 = weights.begin(); it1 != poles.end() && it2 != weights.end(); ++it1, ++it2, index++){
-	setPole(index, (*it1), (*it2) );
+        setPole(index, (*it1), (*it2) );
     }
 }
 
@@ -582,7 +579,7 @@ void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles)
     Standard_Integer index=0;
 
     for(std::vector<Base::Vector3d>::const_iterator it1 = poles.begin(); it1 != poles.end(); ++it1, index++){
-	setPole(index, (*it1));
+        setPole(index, (*it1));
     }
 }
 
@@ -618,15 +615,15 @@ std::vector<double> GeomBSplineCurve::getWeights() const
 void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
 {
     try {
-	Standard_Integer index=0;
+        Standard_Integer index=0;
 
-	for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
-	    myCurve->SetWeight(index,(*it));
-	}
+        for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
+            myCurve->SetWeight(index,(*it));
+        }
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        std::cout << e->GetMessageString() << std::endl;
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -640,7 +637,7 @@ void GeomBSplineCurve::setKnot(int index, const double val, int mult)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        std::cout << e->GetMessageString() << std::endl;
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -649,7 +646,7 @@ void GeomBSplineCurve::setKnots(const std::vector<double>& knots)
     Standard_Integer index=0;
 
     for(std::vector<double>::const_iterator it1 = knots.begin(); it1 != knots.end(); ++it1, index++){
-	setKnot(index, (*it1));
+        setKnot(index, (*it1));
     }
 }
 
@@ -906,14 +903,14 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     try {
         Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic==true?Standard_True:Standard_False, Standard_False);
 
-	if (!spline.IsNull())
-	    this->myCurve = spline;
-	else
-	    throw Base::Exception("BSpline restore failed");
+        if (!spline.IsNull())
+            this->myCurve = spline;
+        else
+            throw Base::RuntimeError("BSpline restore failed");
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -953,7 +950,7 @@ void GeomConic::setLocation(const Base::Vector3d& Center)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -975,7 +972,7 @@ void GeomConic::setCenter(const Base::Vector3d& Center)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1024,7 +1021,7 @@ void GeomConic::setAngleXU(double angle)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1116,7 +1113,7 @@ void GeomArcOfConic::setCenter(const Base::Vector3d& Center)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1131,7 +1128,7 @@ void GeomArcOfConic::setLocation(const Base::Vector3d& Center)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1193,7 +1190,7 @@ void GeomArcOfConic::setAngleXU(double angle)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1239,7 +1236,7 @@ void GeomArcOfConic::setXAxisDir(const Base::Vector3d& newdir)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1291,7 +1288,7 @@ void GeomCircle::setRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1351,7 +1348,7 @@ void GeomCircle::Restore(Base::XMLReader& reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1417,7 +1414,7 @@ void GeomArcOfCircle::setRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1490,7 +1487,7 @@ void GeomArcOfCircle::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1564,7 +1561,7 @@ void GeomArcOfCircle::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1619,7 +1616,7 @@ void GeomEllipse::setMajorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1638,7 +1635,7 @@ void GeomEllipse::setMinorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1676,7 +1673,7 @@ void GeomEllipse::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1758,7 +1755,7 @@ void GeomEllipse::Restore(Base::XMLReader& reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1827,7 +1824,7 @@ void GeomArcOfEllipse::setMajorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1846,7 +1843,7 @@ void GeomArcOfEllipse::setMinorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1888,7 +1885,7 @@ void GeomArcOfEllipse::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -1935,7 +1932,7 @@ void GeomArcOfEllipse::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2028,7 +2025,7 @@ void GeomArcOfEllipse::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2083,7 +2080,7 @@ void GeomHyperbola::setMajorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2102,7 +2099,7 @@ void GeomHyperbola::setMinorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2178,7 +2175,7 @@ void GeomHyperbola::Restore(Base::XMLReader& reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2242,7 +2239,7 @@ void GeomArcOfHyperbola::setMajorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2261,7 +2258,7 @@ void GeomArcOfHyperbola::setMinorRadius(double Radius)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2304,7 +2301,7 @@ void GeomArcOfHyperbola::setMajorAxisDir(Base::Vector3d newdir)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2321,7 +2318,7 @@ void GeomArcOfHyperbola::getRange(double& u, double& v, bool emulateCCWXY) const
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 
     u = myCurve->FirstParameter();
@@ -2343,7 +2340,7 @@ void GeomArcOfHyperbola::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2435,7 +2432,7 @@ void GeomArcOfHyperbola::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2489,7 +2486,7 @@ void GeomParabola::setFocal(double length)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2563,7 +2560,7 @@ void GeomParabola::Restore(Base::XMLReader& reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2627,7 +2624,7 @@ void GeomArcOfParabola::setFocal(double length)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2652,7 +2649,7 @@ void GeomArcOfParabola::getRange(double& u, double& v, bool emulateCCWXY) const
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 
     u = myCurve->FirstParameter();
@@ -2673,7 +2670,7 @@ void GeomArcOfParabola::setRange(double u, double v, bool emulateCCWXY)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2763,7 +2760,7 @@ void GeomArcOfParabola::Restore(Base::XMLReader &reader)
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
@@ -2953,7 +2950,7 @@ void GeomLineSegment::setPoints(const Base::Vector3d& Start, const Base::Vector3
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
-        throw Base::Exception(e->GetMessageString());
+        throw Base::RuntimeError(e->GetMessageString());
     }
 }
 
