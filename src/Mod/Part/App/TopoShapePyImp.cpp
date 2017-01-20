@@ -159,7 +159,7 @@ int TopoShapePy::PyInit(PyObject* args, PyObject*)
 
 namespace Part {
 //common code.. maybe put somewhere else?
-Py::Object PartExport shape2pyshape(const TopoDS_Shape &shape)
+PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
 {
     PyObject* ret = 0;
     if (!shape.IsNull()) {
