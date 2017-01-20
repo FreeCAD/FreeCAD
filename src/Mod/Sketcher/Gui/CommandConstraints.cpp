@@ -740,6 +740,28 @@ int SketchSelection::setUp(void)
 /* Constrain commands =======================================================*/
 
 namespace SketcherGui {
+    /**
+     * @brief The SelType enum
+     * Types of sketch elements that can be (pre)selected. The root/origin and the
+     * axes are put up separately so that they can be specifically disallowed, for
+     * example, when in lock, horizontal, or vertical constraint modes.
+     */
+    enum SelType {
+        SelVertex = 1,
+        SelRoot = 2,
+        SelEdge = 4,
+        SelHAxis = 8,
+        SelVAxis = 16,
+        SelExternalEdge = 32
+    };
+
+    /**
+     * @brief The GenericConstraintSelection class
+     * SelectionFilterGate with changeable filters. In a constraint creation mode
+     * like point on object, if the first selection object can be a point, the next
+     * has to be a curve for the constraint to make sense. Thus filters are
+     * changeable so taht same filter can be kept on while in one mode.
+     */
     class GenericConstraintSelection : public Gui::SelectionFilterGate
     {
         App::DocumentObject* object;
@@ -755,19 +777,31 @@ namespace SketcherGui {
             if (!sSubName || sSubName[0] == '\0')
                 return false;
             std::string element(sSubName);
-            if (    element.substr(0,9) == "RootPoint" ||
-                    element.substr(0,6) == "Vertex" ||
-                    element.substr(0,4) == "Edge" ||
-                    element.substr(0,6) == "H_Axis" ||
-                    element.substr(0,6) == "H_Axis" ||
-                    element.substr(0,12) == "ExternalEdge")
+            if (    (allowedSelTypes & SketcherGui::SelRoot && element.substr(0,9) == "RootPoint") ||
+                    (allowedSelTypes & SketcherGui::SelVertex && element.substr(0,6) == "Vertex") ||
+                    (allowedSelTypes & SketcherGui::SelEdge && element.substr(0,4) == "Edge") ||
+                    (allowedSelTypes & SketcherGui::SelHAxis && element.substr(0,6) == "H_Axis") ||
+                    (allowedSelTypes & SketcherGui::SelVAxis && element.substr(0,6) == "H_Axis") ||
+                    (allowedSelTypes & SketcherGui::SelExternalEdge && element.substr(0,12) == "ExternalEdge"))
                 return true;
 
             return false;
         }
+
+        void setAllowedSelTypes(int types) {
+            if (0 < types && types < 64) this->allowedSelTypes = types;
+        }
+
+    private:
+        int allowedSelTypes;
     };
 }
 
+/**
+ * @brief The CmdSketcherConstraint class
+ * Superclass for all sketcher constraints to ease generation of constraint
+ * creation modes.
+ */
 class CmdSketcherConstraint : public Gui::Command
 {
 public:
@@ -781,35 +815,12 @@ public:
 
 protected:
     virtual void applyConstraint() {}
-    virtual void activated(int iMsg) {}
+    virtual void activated(int /*iMsg*/) {}
     virtual bool isActive(void)
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
 
 // ======================================================================================
-
-namespace SketcherGui {
-    class HoriVertConstraintSelection : public Gui::SelectionFilterGate
-    {
-        App::DocumentObject* object;
-    public:
-        HoriVertConstraintSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
-        {}
-
-        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
-        {
-            if (pObj != this->object)
-                return false;
-            if (!sSubName || sSubName[0] == '\0')
-                return false;
-            std::string element(sSubName);
-            if (element.substr(0,4) == "Edge")
-                return true;
-            return false;
-        }
-    };
-}
 
 /* XPM */
 static const char *cursor_createhoriconstraint[]={
@@ -862,7 +873,9 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new HoriVertConstraintSelection(sketchgui->getObject()));
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelEdge);
+        Gui::Selection().addSelectionGate(selFilterGate);
         setCursor(QPixmap(cursor_createhoriconstraint), 7, 7);
     }
 
@@ -1075,7 +1088,9 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new HoriVertConstraintSelection(sketchgui->getObject()));
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelEdge);
+        Gui::Selection().addSelectionGate(selFilterGate);
         setCursor(QPixmap(cursor_createvertconstraint), 7, 7);
     }
 
@@ -1238,29 +1253,6 @@ bool CmdSketcherConstrainVertical::isActive(void)
 
 // ======================================================================================
 
-namespace SketcherGui {
-    class LockConstraintSelection : public Gui::SelectionFilterGate
-    {
-        App::DocumentObject* object;
-    public:
-        LockConstraintSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
-        {}
-
-        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
-        {
-            if (pObj != this->object)
-                return false;
-            if (!sSubName || sSubName[0] == '\0')
-                return false;
-            std::string element(sSubName);
-            if (element.substr(0,6) == "Vertex")
-                return true;
-            return false;
-        }
-    };
-}
-
 /* XPM */
 static const char *cursor_createlock[]={
 "32 32 3 1",
@@ -1318,21 +1310,14 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new LockConstraintSelection(sketchgui->getObject()));
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelVertex);
+        Gui::Selection().addSelectionGate(selFilterGate);
         setCursor(QPixmap(cursor_createlock),7,7);
     }
 
     virtual void mouseMove(Base::Vector2d /*onSketchPos*/)
-    {
-        // If preselection Point
-        //int preSelPnt = sketchgui->getPreselectPoint();
-//        if (sketchgui->getPreselectPoint() != -1) {
-//            setPositionText(onSketchPos);
-//            return;
-//        }
-//        resetPositionText();
-//        applyCursor();
-    }
+    {}
 
     virtual bool pressButton(Base::Vector2d onSketchPos)
     {
@@ -1524,29 +1509,6 @@ void CmdSketcherConstrainLock::updateAction(int mode)
 
 // ======================================================================================
 
-namespace SketcherGui {
-    class CoincidentConstraintSelection : public Gui::SelectionFilterGate
-    {
-        App::DocumentObject* object;
-    public:
-        CoincidentConstraintSelection(App::DocumentObject* obj)
-            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
-        {}
-
-        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
-        {
-            if (pObj != this->object)
-                return false;
-            if (!sSubName || sSubName[0] == '\0')
-                return false;
-            std::string element(sSubName);
-            if (element.substr(0,6) == "Vertex" || element.substr(0,9) == "RootPoint")
-                return true;
-            return false;
-        }
-    };
-}
-
 /* XPM */
 static const char *cursor_createcoincident[]={
 "32 32 3 1",
@@ -1602,7 +1564,9 @@ public:
     virtual void activated(ViewProviderSketch *)
     {
         Gui::Selection().rmvSelectionGate();
-        Gui::Selection().addSelectionGate(new CoincidentConstraintSelection(sketchgui->getObject()));
+        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
+        selFilterGate->setAllowedSelTypes(SelVertex|SelRoot);
+        Gui::Selection().addSelectionGate(selFilterGate);
         setCursor(QPixmap(cursor_createcoincident), 7, 7);
     }
 
