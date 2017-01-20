@@ -63,6 +63,8 @@
 
 
 #include "PrimitiveFeature.h"
+#include <Mod/Part/App/PartFeaturePy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Reader.h>
@@ -105,6 +107,19 @@ App::DocumentObjectExecReturn* Primitive::execute(void) {
     return Part::Feature::execute();
 }
 
+namespace Part {
+    PYTHON_TYPE_DEF(PrimitivePy, PartFeaturePy)
+    PYTHON_TYPE_IMP(PrimitivePy, PartFeaturePy)
+}
+
+PyObject* Primitive::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new PrimitivePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
 
 void Primitive::Restore(Base::XMLReader &reader)
 {
