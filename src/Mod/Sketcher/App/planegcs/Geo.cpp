@@ -672,8 +672,8 @@ int BSpline::PushOwnParams(VEC_pD &pvec)
     int cnt=0;
 
     for(VEC_P::const_iterator it = poles.begin(); it != poles.end(); ++it) {
-	pvec.push_back( (*it).x );
-	pvec.push_back( (*it).y );
+        pvec.push_back( (*it).x );
+        pvec.push_back( (*it).y );
     }
 
     cnt = cnt + poles.size() * 2;
@@ -695,16 +695,16 @@ int BSpline::PushOwnParams(VEC_pD &pvec)
 void BSpline::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
 {
     for(VEC_P::iterator it = poles.begin(); it != poles.end(); ++it) {
-	(*it).x = pvec[cnt]; cnt++;
-	(*it).y = pvec[cnt]; cnt++;
+        (*it).x = pvec[cnt]; cnt++;
+        (*it).y = pvec[cnt]; cnt++;
     }
 
     for(VEC_pD::iterator it = weights.begin(); it != weights.end(); ++it) {
-	(*it) = pvec[cnt]; cnt++;
+        (*it) = pvec[cnt]; cnt++;
     }
 
     for(VEC_pD::iterator it = knots.begin(); it != knots.end(); ++it) {
-	(*it) = pvec[cnt]; cnt++;
+        (*it) = pvec[cnt]; cnt++;
     }
     
     start.x=pvec[cnt]; cnt++;

@@ -343,7 +343,7 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-	BSpline = 9
+        BSpline = 9
     };
 
     float SolveTime;

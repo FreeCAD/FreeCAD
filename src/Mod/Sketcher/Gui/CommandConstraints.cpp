@@ -3078,8 +3078,8 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
                 geom1 = Obj->getGeometry(GeoId1);
                 geom2 = Obj->getGeometry(GeoId2);
 
-                if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
-		    geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+                    geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
                     geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
