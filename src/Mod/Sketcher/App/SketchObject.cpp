@@ -43,6 +43,7 @@
 # include <Geom_Ellipse.hxx>
 # include <Geom_Hyperbola.hxx>
 # include <Geom_Parabola.hxx>
+# include <Geom_BSplineCurve.hxx>
 # include <Geom_TrimmedCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
 # include <BRepOffsetAPI_NormalProjection.hxx>
@@ -514,6 +515,12 @@ Base::Vector3d SketchObject::getPoint(int GeoId, PointPos PosId) const
             return aop->getEndPoint();
         else if (PosId == mid)
             return aop->getCenter();
+    } else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
+        if (PosId == start)
+            return bsp->getStartPoint();
+        else if (PosId == end)
+            return bsp->getEndPoint();
     }
 
     return Base::Vector3d();
@@ -571,6 +578,7 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry *geo) const
         geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
         geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
         geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
         return true;
     }
@@ -2132,6 +2140,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, true)); 
             }
+            else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
+
+                std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
+
+                for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+
+                    (*it) = (*it) + 2.0*((*it).Perpendicular(refGeoLine->getStartPoint(),vectline)-(*it));
+                }
+
+                geosymbsp->setPoles(poles);
+
+                isStartEndInverted.insert(std::make_pair(*it, false)); 
+            }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
                 Base::Vector3d cp = geosympoint->getPoint();
@@ -2181,6 +2203,9 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                         const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getStartPoint(true);
+                    } else if(georef->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                        const Part::GeomBSplineCurve *geosymbsp = static_cast<const Part::GeomBSplineCurve *>(georef);
+                        refpoint = geosymbsp->getStartPoint();
                     }
                     break;
                 case Sketcher::end:
@@ -2203,6 +2228,10 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
                     else if(georef->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()){
                         const Part::GeomArcOfParabola *geosymaoe = static_cast<const Part::GeomArcOfParabola *>(georef);
                         refpoint = geosymaoe->getEndPoint(true);
+                    }
+                    else if(georef->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                        const Part::GeomBSplineCurve *geosymbsp = static_cast<const Part::GeomBSplineCurve *>(georef);
+                        refpoint = geosymbsp->getEndPoint();
                     }
                     break;
                 case Sketcher::mid:
@@ -2374,6 +2403,20 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 geosymaoe->setRange(theta1,theta2,true);
                 isStartEndInverted.insert(std::make_pair(*it, false));
+            }
+            else if(geosym->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                Part::GeomBSplineCurve *geosymbsp = static_cast<Part::GeomBSplineCurve *>(geosym);
+                
+                std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
+                
+                for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+                    
+                    (*it) = (*it) + 2.0*(refpoint-(*it));
+                }
+                
+                geosymbsp->setPoles(poles);
+
+                //isStartEndInverted.insert(std::make_pair(*it, false));
             }
             else if(geosym->getTypeId() == Part::GeomPoint::getClassTypeId()){
                 Part::GeomPoint *geosympoint = static_cast<Part::GeomPoint *>(geosym);
@@ -2624,7 +2667,22 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
 
                     if(it == geoIdList.begin())
                         iterfirstpoint = geoaoe->getStartPoint(true);
-                }                
+                }
+                else if(geocopy->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()){
+                    Part::GeomBSplineCurve *geobsp = static_cast<Part::GeomBSplineCurve *>(geocopy);
+                    
+                    std::vector<Base::Vector3d> poles = geobsp->getPoles();
+
+                    for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+
+                        (*it) = (*it) + double(x)*displacement + double(y)*perpendicularDisplacement;
+                    }
+
+                    geobsp->setPoles(poles);
+
+                    if(it == geoIdList.begin())
+                        iterfirstpoint = geobsp->getStartPoint();
+                }
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
                     Part::GeomPoint *geopoint = static_cast<Part::GeomPoint *>(geocopy);
                     Base::Vector3d cp = geopoint->getPoint();
@@ -3292,6 +3350,131 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
 
         return incrgeo; //number of added elements
     }
+    else if(geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+        // First we search what has to be restored
+        std::vector<bool> controlpoints(bsp->countPoles());
+        std::vector<int> controlpointgeoids(bsp->countPoles());
+        
+        bool isfirstweightconstrained = false;
+        
+        std::vector<bool>::iterator itb;
+        std::vector<int>::iterator it;
+        
+        for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb) {
+            (*it)=-1;
+            (*itb)=false;
+        }
+
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+
+        // search for existing poles
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::BSplineControlPoint:
+                        controlpoints[(*it)->InternalAlignmentIndex] = true;
+                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+        
+        if(controlpoints[0]) {
+            // search for first pole weight constraint
+            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+                it != vals.end(); ++it) {
+                if((*it)->Type == Sketcher::Radius && (*it)->First == controlpointgeoids[0]) {
+                    isfirstweightconstrained = true ;
+                }
+            }
+        }
+
+        int currentgeoid = getHighestCurveIndex();
+        int incrgeo = 0;
+
+        std::vector<Part::Geometry *> igeo;
+        std::vector<Constraint *> icon;
+        
+        std::vector<Base::Vector3d> poles = bsp->getPoles();
+        
+        double distance_p0_p1 = (poles[1]-poles[0]).Length(); // for visual purposes only
+        
+        int index=0;
+        
+        for(it=controlpointgeoids.begin(), itb=controlpoints.begin(); it!=controlpointgeoids.end() && itb!=controlpoints.end(); ++it, ++itb, index++) {
+
+            if(!(*itb)) // if controlpoint not existing
+            {
+                Part::GeomCircle *pc = new Part::GeomCircle();
+                pc->setCenter(poles[index]);
+                pc->setRadius(distance_p0_p1/6);
+
+                igeo.push_back(pc);
+
+                Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+                newConstr->Type = Sketcher::InternalAlignment;
+                newConstr->AlignmentType = Sketcher::BSplineControlPoint;
+                newConstr->First = currentgeoid+incrgeo+1;
+                newConstr->FirstPos = Sketcher::mid;
+                newConstr->Second = GeoId;
+                newConstr->InternalAlignmentIndex = index;
+
+                icon.push_back(newConstr);
+
+                if(it != controlpointgeoids.begin()) {
+                    // if pole-weight newly created make it equal to first weight by default
+                    Sketcher::Constraint *newConstr2 = new Sketcher::Constraint();
+                    newConstr2->Type = Sketcher::Equal;
+                    newConstr2->First = currentgeoid+incrgeo+1;
+                    newConstr2->FirstPos = Sketcher::none;
+                    newConstr2->Second = controlpointgeoids[0];
+                    newConstr2->SecondPos = Sketcher::none;
+
+                    icon.push_back(newConstr2);
+                }
+                else {
+                    controlpointgeoids[0] = currentgeoid+incrgeo+1;
+                }
+                
+                incrgeo++;
+            }
+        }
+        
+        // constraint the first weight to allow for seamless weight modification and proper visualization
+        if(!isfirstweightconstrained) {
+            
+            Sketcher::Constraint *newConstr = new Sketcher::Constraint();
+            newConstr->Type = Sketcher::Radius;
+            newConstr->First = controlpointgeoids[0];
+            newConstr->FirstPos = Sketcher::none;
+            newConstr->setValue( round(distance_p0_p1/6)); // 1/6 is just an estimation for acceptable general visualization
+
+            icon.push_back(newConstr);
+
+        }
+
+        this->addGeometry(igeo,true);
+        this->addConstraints(icon);
+
+        for (std::vector<Part::Geometry *>::iterator it=igeo.begin(); it != igeo.end(); ++it)
+            if (*it) 
+                delete *it;
+
+        for (std::vector<Constraint *>::iterator it=icon.begin(); it != icon.end(); ++it)
+            if (*it) 
+                delete *it;
+
+        icon.clear();
+        igeo.clear();
+
+        return incrgeo; //number of added elements
+    }
     else
         return -1; // not supported type
 }
@@ -3479,7 +3662,98 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         return delgeometries.size(); //number of deleted elements
     }
-    else
+    else if( geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+
+        const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
+        
+        // First we search existing IA 
+        std::vector<int> controlpointgeoids(bsp->countPoles());
+        std::vector<int> associatedcontraints(bsp->countPoles());
+        
+        std::vector<int>::iterator it;
+        std::vector<int>::iterator ita;
+        
+        for(it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+            (*it) = -1;
+            (*ita) = 0;
+        }
+        
+        const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
+        
+        // search for existing poles
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+             it != vals.end(); ++it) {
+            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
+            {
+                switch((*it)->AlignmentType){
+                    case Sketcher::BSplineControlPoint:
+                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
+                        break;
+                    default:
+                        return -1;
+                }
+            }
+        }
+        
+        std::vector<int> delgeometries;
+        bool firstpoledeleted = false;
+
+        for( it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+            if((*it) != -1) {
+                // look for a circle at geoid index
+                for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
+                     itc != vals.end(); ++itc) {
+
+                    if((*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it))
+                        (*ita)++;
+                 }
+
+                 if((*ita)<3 ) { // IA + Weight
+                     delgeometries.push_back((*it));
+
+                     if (it == controlpointgeoids.begin())
+                         firstpoledeleted = true;
+                 }
+            }
+        }
+
+        std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
+
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+        // retest the first pole after removal of equality constraints from other poles
+        associatedcontraints[0] = 0;
+        delgeometries.clear();
+        
+        if(controlpointgeoids[0] != -1 && !firstpoledeleted) {
+            // look for a circle at geoid index
+            for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
+                    itc != vals.end(); ++itc) {
+                
+                if((*itc)->Second == controlpointgeoids[0] || (*itc)->First == controlpointgeoids[0] || (*itc)->Third == controlpointgeoids[0])
+                    associatedcontraints[0]++;
+            }
+            
+            if(associatedcontraints[0]<4 ) // IA + Weight + Radius
+                delgeometries.push_back(controlpointgeoids[0]);
+        }
+
+        if(delgeometries.size()>0)
+        {
+            for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
+                delGeometry(*it);
+            }
+        }
+
+
+        return delgeometries.size(); //number of deleted elements
+    }
+    else 
         return -1; // not supported type
 }
 
@@ -4213,6 +4487,11 @@ void SketchObject::rebuildVertexIndex(void)
             VertexId2PosId.push_back(end);
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(mid);
+        } else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(end);
         }
     }
 }
