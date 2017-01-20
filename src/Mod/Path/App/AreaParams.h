@@ -51,7 +51,7 @@
     ((enum,coplanar,Coplanar,2,"Specifies the way to check coplanar.\n"\
                                "'Force' will discard non coplaner shapes, but 'Check' only gives warning.",\
                                (None)(Check)(Force)))\
-    ((bool,reorder,Reorder,false,"Re-orient closed wires in wire only shapes so that inner wires become holes."))\
+    ((bool,reorder,Reorder,true,"Re-orient closed wires in wire only shapes so that inner wires become holes."))\
     ((enum,open_mode,OpenMode,0,"Specify how to handle open wires.\n"\
                         "'None' means combin without openeration.\n"\
                         "'Edges' means separate to edges before Union.\n"\
