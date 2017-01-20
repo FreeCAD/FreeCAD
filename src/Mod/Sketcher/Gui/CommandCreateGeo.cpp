@@ -4324,8 +4324,8 @@ public:
     DrawSketchHandlerBSpline(int constructionMethod)
       : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
       , EditCurve(2)
-      , ConstrMethod(constructionMethod)
       , CurrentConstraint(0)
+      , ConstrMethod(constructionMethod)
     {
         std::vector<AutoConstraint> sugConstr1;
         sugConstr.push_back(sugConstr1);
@@ -4515,7 +4515,6 @@ protected:
     
     int CurrentConstraint;
     int ConstrMethod;
-
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateBSpline)

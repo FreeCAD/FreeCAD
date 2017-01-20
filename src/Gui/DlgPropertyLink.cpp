@@ -155,7 +155,7 @@ void DlgPropertyLink::on_checkObjectType_toggled(bool on)
     findObjects(on);
 }
 
-void DlgPropertyLink::on_searchBox_textChanged(const QString& search)
+void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
 {
     ui->listWidget->clear();
     bool on = ui->checkObjectType->isChecked();

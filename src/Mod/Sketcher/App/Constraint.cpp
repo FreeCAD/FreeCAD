@@ -86,8 +86,8 @@ Constraint::Constraint(const Constraint& from)
   LabelDistance(from.LabelDistance),
   LabelPosition(from.LabelPosition),
   isDriving(from.isDriving),
-  tag(from.tag),
-  InternalAlignmentIndex(from.InternalAlignmentIndex)
+  InternalAlignmentIndex(from.InternalAlignmentIndex),
+  tag(from.tag)
 {
 }
 

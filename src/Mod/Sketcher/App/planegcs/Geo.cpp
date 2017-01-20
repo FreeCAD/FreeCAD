@@ -658,9 +658,8 @@ DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
     return ret;
 }
 
-DeriVector2 BSpline::Value(double u, double du, double* derivparam)
+DeriVector2 BSpline::Value(double /*u*/, double /*du*/, double* /*derivparam*/)
 {
-
     // place holder
     DeriVector2 ret = DeriVector2();
 
