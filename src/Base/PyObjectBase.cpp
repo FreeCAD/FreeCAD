@@ -148,6 +148,22 @@ PyObject* PyObjectBase::__getattr(PyObject * obj, char *attr)
         if (!static_cast<PyObjectBase*>(value)->isConst())
             static_cast<PyObjectBase*>(value)->setAttributeOf(attr, pyObj);
     }
+    else if (value && PyCFunction_Check(value)) {
+        // ExtensionContainerPy::initialization() transfers the methods of an
+        // extension object by creating PyCFunction objects.
+        // At this point no 'self' object is passed but is handled and determined
+        // in ExtensionContainerPy::getCustomAttributes().
+        // So, if we come through this section then it's an indication that
+        // something is wrong with the Python types. For example, a C++ class
+        // that adds an extension uses the same Python type as a wrapper than
+        // another C++ class without this extension.
+        PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(value);
+        if (!cfunc->m_self) {
+            Py_DECREF(cfunc);
+            value = 0;
+            PyErr_Format(PyExc_AttributeError, "<no object bound to built-in method %s>", attr);
+        }
+    }
 #endif
     return value;
 }
