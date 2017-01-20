@@ -42,6 +42,7 @@ public:
 
 private Q_SLOTS:
     void on_checkObjectType_toggled(bool);
+    void on_searchBox_textChanged(const QString&);
 
 private:
     void findObjects(bool on);
