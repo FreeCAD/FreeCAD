@@ -47,10 +47,11 @@ def translate(text, context = "PathDressup_HoldingTags", disambig=None):
     return QtCore.QCoreApplication.translate(context, text, disambig)
 
 
-#PathLog.setLevel(PathLog.Level.DEBUG)
+LOG_MODULE = 'PathDressupHoldingTags'
+#PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
 
 def debugEdge(edge, prefix, force = False):
-    if force or PathLog.getLevel() == PathLog.Level.DEBUG:
+    if force or PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
         pf = edge.valueAt(edge.FirstParameter)
         pl = edge.valueAt(edge.LastParameter)
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
@@ -60,7 +61,7 @@ def debugEdge(edge, prefix, force = False):
             print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pm.x, pm.y, pm.z, pl.x, pl.y, pl.z))
 
 def debugMarker(vector, label, color = None, radius = 0.5):
-    if PathLog.getLevel() == PathLog.Level.DEBUG:
+    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Sphere", label)
         obj.Label = label
         obj.Radius = radius
@@ -69,7 +70,7 @@ def debugMarker(vector, label, color = None, radius = 0.5):
             obj.ViewObject.ShapeColor = color
 
 def debugCylinder(vector, r, height, label, color = None):
-    if PathLog.getLevel() == PathLog.Level.DEBUG:
+    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cylinder", label)
         obj.Label = label
         obj.Radius = r
@@ -80,7 +81,7 @@ def debugCylinder(vector, r, height, label, color = None):
             obj.ViewObject.ShapeColor = color
 
 def debugCone(vector, r1, r2, height, label, color = None):
-    if PathLog.getLevel() == PathLog.Level.DEBUG:
+    if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
         obj = FreeCAD.ActiveDocument.addObject("Part::Cone", label)
         obj.Label = label
         obj.Radius1 = r1
@@ -885,7 +886,7 @@ class ObjectDressup:
 
     def processTags(self, obj):
         tagID = 0
-        if PathLog.getLevel() == PathLog.Level.DEBUG:
+        if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
             for tag in self.tags:
                 tagID += 1
                 if tag.enabled:
@@ -1056,7 +1057,7 @@ class TaskPanel:
             self.obj.Proxy.execute(self.obj)
 
         self.updateTagsView()
-        #if PathLog.getLevel() == PathLog.Level.DEBUG:
+        #if PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
         #    # this causes a big of an echo and a double click on the spin buttons, don't know why though
         #    FreeCAD.ActiveDocument.recompute()
 
