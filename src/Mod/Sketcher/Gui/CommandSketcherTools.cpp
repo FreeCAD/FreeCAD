@@ -765,7 +765,8 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
             if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || 
 		geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
 		geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-		geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+		geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+		geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
 
 		int currentgeoid = Obj->getHighestCurveIndex();
 

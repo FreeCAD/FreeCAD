@@ -1007,6 +1007,13 @@ int System::addConstraintInternalAlignmentParabolaFocus(Parabola &e, Point &p1, 
     return addConstraintEqual(e.focus1.y, p1.y, tagId);
 }
 
+int System::addConstraintInternalAlignmentBSplineControlPoint(BSpline &b, Circle &c, int poleindex, int tagId)
+{
+    addConstraintEqual(b.poles[poleindex].x, c.center.x, tagId);
+    addConstraintEqual(b.poles[poleindex].y, c.center.y, tagId);
+    return addConstraintEqual(b.weights[poleindex], c.rad, tagId);
+}
+
 
 //calculates angle between two curves at point of their intersection p. If two
 //points are supplied, p is used for first curve and p2 for second, yielding a
