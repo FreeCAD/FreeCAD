@@ -2144,9 +2144,9 @@ int SketchObject::addSymmetric(const std::vector<int> &geoIdList, int refGeoId, 
 
                 std::vector<Base::Vector3d> poles = geosymbsp->getPoles();
 
-                for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+                for(std::vector<Base::Vector3d>::iterator jt = poles.begin(); jt != poles.end(); ++jt){
 
-                    (*it) = (*it) + 2.0*((*it).Perpendicular(refGeoLine->getStartPoint(),vectline)-(*it));
+                    (*jt) = (*jt) + 2.0*((*jt).Perpendicular(refGeoLine->getStartPoint(),vectline)-(*jt));
                 }
 
                 geosymbsp->setPoles(poles);
@@ -2671,14 +2671,14 @@ int SketchObject::addCopy(const std::vector<int> &geoIdList, const Base::Vector3
                     
                     std::vector<Base::Vector3d> poles = geobsp->getPoles();
 
-                    for(std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it){
+                    for(std::vector<Base::Vector3d>::iterator jt = poles.begin(); jt != poles.end(); ++jt){
 
-                        (*it) = (*it) + double(x)*displacement + double(y)*perpendicularDisplacement;
+                        (*jt) = (*jt) + double(x)*displacement + double(y)*perpendicularDisplacement;
                     }
 
                     geobsp->setPoles(poles);
 
-                    if(it == geoIdList.begin())
+                    if (it == geoIdList.begin())
                         iterfirstpoint = geobsp->getStartPoint();
                 }
                 else if(geocopy->getTypeId() == Part::GeomPoint::getClassTypeId()){
@@ -3440,7 +3440,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
                 incrgeo++;
             }
         }
-        
+
         // constraint the first weight to allow for seamless weight modification and proper visualization
         if(!isfirstweightconstrained) {
             
@@ -3492,7 +3492,7 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
         
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
+        for (std::vector< Sketcher::Constraint * >::const_iterator it = vals.begin();
                 it != vals.end(); ++it) {
             if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
             {
@@ -3540,22 +3540,21 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         std::vector<int> delgeometries;
         
         // those with less than 2 constraints must be removed       
-        if(focus2constraints<2)
+        if (focus2constraints<2)
             delgeometries.push_back(focus2elementindex);
         
-        if(focus1constraints<2) 
+        if (focus1constraints<2)
             delgeometries.push_back(focus1elementindex);
         
-        if(minorconstraints<2) 
+        if (minorconstraints<2)
             delgeometries.push_back(minorelementindex);
               
-        if(majorconstraints<2) 
+        if (majorconstraints<2)
             delgeometries.push_back(majorelementindex);
         
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
         
-        if(delgeometries.size()>0)
-        {
+        if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it);
             }
@@ -3572,21 +3571,19 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
 
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-                it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
-            {
-                switch((*it)->AlignmentType){
-                    case Sketcher::ParabolaFocus:
-                        focus1elementindex=(*it)->First;
-                        break;
-                    default:
-                        return -1;
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
+            if ((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId) {
+                switch ((*it)->AlignmentType) {
+                case Sketcher::ParabolaFocus:
+                    focus1elementindex = (*it)->First;
+                    break;
+                default:
+                    return -1;
                 }
             }
         }
         
-        if(focus1elementindex!=-1) {
+        if (focus1elementindex!=-1) {
             // look for a line from focusgeoid:start to Geoid:mid_external
             std::vector<int> focusgeoidlistgeoidlist;
             std::vector<PointPos> focusposidlist;
@@ -3600,9 +3597,9 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
             if (!focusgeoidlistgeoidlist.empty() && !parabgeoidlistgeoidlist.empty()) {
                 std::size_t i,j;
-                for(i=0;i<focusgeoidlistgeoidlist.size();i++){
-                    for(j=0;j<parabgeoidlistgeoidlist.size();j++) {
-                        if(focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
+                for (i=0;i<focusgeoidlistgeoidlist.size();i++) {
+                    for (j=0;j<parabgeoidlistgeoidlist.size();j++) {
+                        if (focusgeoidlistgeoidlist[i] == parabgeoidlistgeoidlist[j]) {
                             const Part::Geometry * geo = getGeometry(focusgeoidlistgeoidlist[i]);
                             if (geo && geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                                 if((focusposidlist[i] == Sketcher::start && parabposidlist[j] == Sketcher::end) ||
@@ -3619,9 +3616,7 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         int majorconstraints=0; // number of constraints associated to the geoid of the major axis other than the coincident ones
         int focus1constraints=0;
 
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-            it != vals.end(); ++it) {
-
+        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin(); it != vals.end(); ++it) {
             if( (*it)->Second == majorelementindex || 
                 (*it)->First == majorelementindex  ||
                 (*it)->Third == majorelementindex)
@@ -3639,13 +3634,12 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
             majorelementindex = -1;
         }
 
-        if(majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
+        if (majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
             delgeometries.push_back(focus1elementindex);
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if(delgeometries.size()>0)
-        {
+        if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it);
             }
@@ -3653,53 +3647,51 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         return delgeometries.size(); //number of deleted elements
     }
-    else if( geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
 
         const Part::GeomBSplineCurve *bsp = static_cast<const Part::GeomBSplineCurve *>(geo);
-        
+
         // First we search existing IA 
         std::vector<int> controlpointgeoids(bsp->countPoles());
         std::vector<int> associatedcontraints(bsp->countPoles());
-        
+
         std::vector<int>::iterator it;
         std::vector<int>::iterator ita;
-        
-        for(it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+
+        for (it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
             (*it) = -1;
             (*ita) = 0;
         }
-        
+
         const std::vector< Sketcher::Constraint * > &vals = Constraints.getValues();
-        
+
         // search for existing poles
-        for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-             it != vals.end(); ++it) {
-            if((*it)->Type == Sketcher::InternalAlignment && (*it)->Second == GeoId)
-            {
-                switch((*it)->AlignmentType){
-                    case Sketcher::BSplineControlPoint:
-                        controlpointgeoids[(*it)->InternalAlignmentIndex] = (*it)->First;
-                        break;
-                    default:
-                        return -1;
+        for (std::vector< Sketcher::Constraint * >::const_iterator jt = vals.begin(); jt != vals.end(); ++jt) {
+            if ((*jt)->Type == Sketcher::InternalAlignment && (*jt)->Second == GeoId) {
+                switch ((*jt)->AlignmentType) {
+                case Sketcher::BSplineControlPoint:
+                    controlpointgeoids[(*jt)->InternalAlignmentIndex] = (*jt)->First;
+                    break;
+                default:
+                    return -1;
                 }
             }
         }
-        
+
         std::vector<int> delgeometries;
         bool firstpoledeleted = false;
 
-        for( it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
-            if((*it) != -1) {
+        for (it=controlpointgeoids.begin(), ita=associatedcontraints.begin(); it!=controlpointgeoids.end() && ita!=associatedcontraints.end(); ++it, ++ita) {
+            if ((*it) != -1) {
                 // look for a circle at geoid index
                 for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
                      itc != vals.end(); ++itc) {
 
-                    if((*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it))
+                    if ((*itc)->Second == (*it) || (*itc)->First == (*it) || (*itc)->Third == (*it))
                         (*ita)++;
                  }
 
-                 if((*ita)<3 ) { // IA + Weight
+                 if ((*ita)<3 ) { // IA + Weight
                      delgeometries.push_back((*it));
 
                      if (it == controlpointgeoids.begin())
@@ -3710,8 +3702,7 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
-        if(delgeometries.size()>0)
-        {
+        if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it);
             }
@@ -3721,31 +3712,30 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         associatedcontraints[0] = 0;
         delgeometries.clear();
         
-        if(controlpointgeoids[0] != -1 && !firstpoledeleted) {
+        if (controlpointgeoids[0] != -1 && !firstpoledeleted) {
             // look for a circle at geoid index
-            for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin();
-                    itc != vals.end(); ++itc) {
-                
-                if((*itc)->Second == controlpointgeoids[0] || (*itc)->First == controlpointgeoids[0] || (*itc)->Third == controlpointgeoids[0])
+            for (std::vector< Sketcher::Constraint * >::const_iterator itc= vals.begin(); itc != vals.end(); ++itc) {
+                if ((*itc)->Second == controlpointgeoids[0] ||
+                    (*itc)->First == controlpointgeoids[0] ||
+                    (*itc)->Third == controlpointgeoids[0])
                     associatedcontraints[0]++;
             }
             
-            if(associatedcontraints[0]<4 ) // IA + Weight + Radius
+            if (associatedcontraints[0]<4 ) // IA + Weight + Radius
                 delgeometries.push_back(controlpointgeoids[0]);
         }
 
-        if(delgeometries.size()>0)
-        {
+        if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
                 delGeometry(*it);
             }
         }
 
-
         return delgeometries.size(); //number of deleted elements
     }
-    else 
+    else {
         return -1; // not supported type
+    }
 }
 
 int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
@@ -3766,13 +3756,13 @@ int SketchObject::addExternal(App::DocumentObject *Obj, const char* SubName)
         Base::Console().Error("Internal error: counts of objects and subelements in external geometry links do not match\n");
         return -1;
     }
+
     for (size_t i = 0  ;  i < Objects.size()  ;  ++i){
         if (Objects[i] == Obj   &&   std::string(SubName) == SubElements[i]){
             Base::Console().Error("Link to %s already exists in this sketch.\n",SubName);
             return -1;
         }
     }
-
 
     // add the new ones
     Objects.push_back(Obj);

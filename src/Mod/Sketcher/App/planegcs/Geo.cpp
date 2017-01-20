@@ -669,7 +669,7 @@ DeriVector2 BSpline::Value(double u, double du, double* derivparam)
 
 int BSpline::PushOwnParams(VEC_pD &pvec)
 {
-    int cnt=0;
+    std::size_t cnt=0;
 
     for(VEC_P::const_iterator it = poles.begin(); it != poles.end(); ++it) {
         pvec.push_back( (*it).x );
@@ -689,7 +689,7 @@ int BSpline::PushOwnParams(VEC_pD &pvec)
     pvec.push_back(end.x); cnt++;
     pvec.push_back(end.y); cnt++;
 
-    return cnt;
+    return static_cast<int>(cnt);
 }
 
 void BSpline::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
