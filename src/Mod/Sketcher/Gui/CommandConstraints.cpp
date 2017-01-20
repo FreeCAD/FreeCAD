@@ -739,17 +739,49 @@ int SketchSelection::setUp(void)
 
 /* Constrain commands =======================================================*/
 
+namespace SketcherGui {
+    class GenericConstraintSelection : public Gui::SelectionFilterGate
+    {
+        App::DocumentObject* object;
+    public:
+        GenericConstraintSelection(App::DocumentObject* obj)
+            : Gui::SelectionFilterGate((Gui::SelectionFilter*)0), object(obj)
+        {}
+
+        bool allow(App::Document *, App::DocumentObject *pObj, const char *sSubName)
+        {
+            if (pObj != this->object)
+                return false;
+            if (!sSubName || sSubName[0] == '\0')
+                return false;
+            std::string element(sSubName);
+            if (    element.substr(0,9) == "RootPoint" ||
+                    element.substr(0,6) == "Vertex" ||
+                    element.substr(0,4) == "Edge" ||
+                    element.substr(0,6) == "H_Axis" ||
+                    element.substr(0,6) == "H_Axis" ||
+                    element.substr(0,12) == "ExternalEdge")
+                return true;
+
+            return false;
+        }
+    };
+}
+
 class CmdSketcherConstraint : public Gui::Command
 {
 public:
-    CmdSketcherConstraint();
+    CmdSketcherConstraint(const char* name)
+            : Command(name) {}
+
     virtual ~CmdSketcherConstraint(){}
+
     virtual const char* className() const
     { return "CmdSketcherConstraint"; }
 
 protected:
-    virtual void applyConstraint();
-    virtual void activated(int iMsg);
+    virtual void applyConstraint() {}
+    virtual void activated(int iMsg) {}
     virtual bool isActive(void)
     { return isCreateGeoActive(getActiveGuiDocument()); }
 };
@@ -1371,10 +1403,22 @@ protected:
     std::vector<AutoConstraint> sugConstr;
 };
 
-DEF_STD_CMD_AU(CmdSketcherConstrainLock);
+//DEF_STD_CMD_AU(CmdSketcherConstrainLock);
+
+class CmdSketcherConstrainLock : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainLock();
+    virtual ~CmdSketcherConstrainLock(){}
+    virtual void updateAction(int mode);
+    virtual const char* className() const
+    { return "CmdSketcherConstrainLock"; }
+protected:
+    virtual void activated(int iMsg);
+};
 
 CmdSketcherConstrainLock::CmdSketcherConstrainLock()
-    :Command("Sketcher_ConstrainLock")
+    :CmdSketcherConstraint("Sketcher_ConstrainLock")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -1473,10 +1517,10 @@ void CmdSketcherConstrainLock::updateAction(int mode)
     }
 }
 
-bool CmdSketcherConstrainLock::isActive(void)
-{
-    return isCreateGeoActive( getActiveGuiDocument() );
-}
+//bool CmdSketcherConstrainLock::isActive(void)
+//{
+//    return isCreateGeoActive( getActiveGuiDocument() );
+//}
 
 // ======================================================================================
 
