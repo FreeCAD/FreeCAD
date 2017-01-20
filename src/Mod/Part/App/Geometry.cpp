@@ -419,6 +419,7 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
 }
 
 // -------------------------------------------------
+
 TYPESYSTEM_SOURCE_ABSTRACT(Part::GeomBoundedCurve, Part::GeomCurve)
 
 GeomBoundedCurve::GeomBoundedCurve()
@@ -552,9 +553,9 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
     try {
         gp_Pnt pnt(pole.x,pole.y,pole.z);
         if (weight < 0.0)
-            myCurve->SetPole(index+1,pnt);
+            myCurve->SetPole(index,pnt);
         else
-            myCurve->SetPole(index+1,pnt,weight);
+            myCurve->SetPole(index,pnt,weight);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -564,22 +565,22 @@ void GeomBSplineCurve::setPole(int index, const Base::Vector3d& pole, double wei
 
 void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights)
 {
-    Standard_Integer index=0;
+    if (poles.size() != weights.size())
+        throw Base::ValueError("knots and multiplicities mismatch");
 
-    std::vector<Base::Vector3d>::const_iterator it1;
-    std::vector<double>::const_iterator it2;
+    Standard_Integer index=1;
 
-    for(it1 = poles.begin(), it2 = weights.begin(); it1 != poles.end() && it2 != weights.end(); ++it1, ++it2, index++){
-        setPole(index, (*it1), (*it2) );
+    for (std::size_t it = 0; it < poles.size(); it++, index++) {
+        setPole(index, poles[it], weights[it]);
     }
 }
 
 void GeomBSplineCurve::setPoles(const std::vector<Base::Vector3d>& poles)
 {
-    Standard_Integer index=0;
+    Standard_Integer index=1;
 
-    for(std::vector<Base::Vector3d>::const_iterator it1 = poles.begin(); it1 != poles.end(); ++it1, index++){
-        setPole(index, (*it1));
+    for (std::vector<Base::Vector3d>::const_iterator it = poles.begin(); it != poles.end(); ++it, index++){
+        setPole(index, *it);
     }
 }
 
@@ -611,14 +612,13 @@ std::vector<double> GeomBSplineCurve::getWeights() const
     return weights;
 }
 
-
 void GeomBSplineCurve::setWeights(const std::vector<double>& weights)
 {
     try {
-        Standard_Integer index=0;
+        Standard_Integer index=1;
 
-        for(std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
-            myCurve->SetWeight(index,(*it));
+        for (std::vector<double>::const_iterator it = weights.begin(); it != weights.end(); ++it, index++){
+            myCurve->SetWeight(index, *it);
         }
     }
     catch (Standard_Failure) {
@@ -631,9 +631,9 @@ void GeomBSplineCurve::setKnot(int index, const double val, int mult)
 {
     try {
         if (mult < 0)
-            myCurve->SetKnot(index+1, val);
+            myCurve->SetKnot(index, val);
         else
-            myCurve->SetKnot(index+1, val, mult);
+            myCurve->SetKnot(index, val, mult);
     }
     catch (Standard_Failure) {
         Handle_Standard_Failure e = Standard_Failure::Caught();
@@ -643,22 +643,22 @@ void GeomBSplineCurve::setKnot(int index, const double val, int mult)
 
 void GeomBSplineCurve::setKnots(const std::vector<double>& knots)
 {
-    Standard_Integer index=0;
+    Standard_Integer index=1;
 
-    for(std::vector<double>::const_iterator it1 = knots.begin(); it1 != knots.end(); ++it1, index++){
-        setKnot(index, (*it1));
+    for (std::vector<double>::const_iterator it = knots.begin(); it != knots.end(); ++it, index++) {
+        setKnot(index, *it);
     }
 }
 
 void GeomBSplineCurve::setKnots(const std::vector<double>& knots, const std::vector<int>& multiplicities)
 {
-    Standard_Integer index=0;
+    if (knots.size() != multiplicities.size())
+        throw Base::ValueError("knots and multiplicities mismatch");
 
-    std::vector<double>::const_iterator it1;
-    std::vector<int>::const_iterator it2;
+    Standard_Integer index=1;
 
-    for(it1 = knots.begin(), it2 = multiplicities.begin(); it1 != knots.end() && it2 != multiplicities.end(); ++it1, ++it2, index++){
-	setKnot(index, (*it1), (*it2) );
+    for (std::size_t it = 0; it < knots.size(); it++, index++) {
+        setKnot(index, knots[it], multiplicities[it]);
     }
 }
 
@@ -901,7 +901,7 @@ void GeomBSplineCurve::Restore(Base::XMLReader& reader)
     // Geom_BSplineCurve(occpoles,occweights,occknots,occmults,degree,periodic,CheckRational
 
     try {
-        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic==true?Standard_True:Standard_False, Standard_False);
+        Handle_Geom_BSplineCurve spline = new Geom_BSplineCurve(p, w, k, m, degree, isperiodic ? Standard_True : Standard_False, Standard_False);
 
         if (!spline.IsNull())
             this->myCurve = spline;
