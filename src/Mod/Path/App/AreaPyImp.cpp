@@ -65,6 +65,7 @@ static const AreaDoc myDocs[] = {
         "makeOffset",
 
         "makeOffset(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OFFSET) "):\n"
+        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         "Make an 2D offset of the shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_OFFSET),
     },
@@ -73,6 +74,7 @@ static const AreaDoc myDocs[] = {
 
         "makePocket(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_POCKET) "):\n"
         "Generate pocket toolpath of the shape.\n"
+        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_POCKET),
     },
 };
@@ -94,7 +96,7 @@ struct AreaPyDoc {
 static AreaPyDoc doc;
 
 namespace Part {
-    extern Py::Object shape2pyshape(const TopoDS_Shape &shape);
+extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
 }
 
 using namespace Path;
@@ -128,29 +130,30 @@ PyObject* AreaPy::setPlane(PyObject *args) {
     return Py_None;
 }
 
-PyObject* AreaPy::toShape(PyObject *args, PyObject *keywds)
+PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
 {
     PyObject *pcObj = Py_True;
-    static char *kwlist[] = {"rebuild", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|O",kwlist,&pcObj))
+    short index=-1;
+    static char *kwlist[] = {"index","rebuild", NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&pcObj))
         Py_Error(Base::BaseExceptionFreeCADError, "This method accepts no argument");
 
     try {
         if(PyObject_IsTrue(pcObj))
             getAreaPtr()->clean(true);
-        return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape()));
+        return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
     }
     PY_CATCH_OCC;
 }
 
 PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
 {
-    PARAM_PY_DECLARE_INIT(ARG,AREA_PARAMS_OPCODE)
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_OPCODE)
     PyObject *pcObj;
     static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OPCODE), NULL};
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "O|" PARAM_PY_KWDS(AREA_PARAMS_OPCODE), 
-                kwlist,&pcObj,PARAM_REF(ARG,AREA_PARAMS_OPCODE)))
+                kwlist,&pcObj,PARAM_REF(PARAM_FARG,AREA_PARAMS_OPCODE)))
         Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
 
     if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
@@ -168,7 +171,7 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
     for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it){
         PyObject* item = (*it).ptr();
         getAreaPtr()->add(GET_TOPOSHAPE(item),
-                PARAM_PY_FIELDS(ARG,AREA_PARAMS_OPCODE));
+                PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
     }
     return Py_None;
 }
@@ -176,22 +179,23 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
 PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
 {
     //Generate a keyword string defined in the ARG field of OFFSET parameter list
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OFFSET), NULL};
+    static char *kwlist[] = {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OFFSET), NULL};
+    short index = -1;
 
     //Declare variables defined in the ARG field of the OFFSET parameter list with
     //initialization to defaults
-    PARAM_PY_DECLARE_INIT(ARG,AREA_PARAMS_OFFSET)
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_OFFSET)
 
     //Parse arguments to overwrite the defaults
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
-                "|" PARAM_PY_KWDS(AREA_PARAMS_OFFSET), kwlist, 
-                PARAM_REF(ARG,AREA_PARAMS_OFFSET)))
+                "|h" PARAM_PY_KWDS(AREA_PARAMS_OFFSET), kwlist, 
+                &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_OFFSET)))
         Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
 
     try {
         //Expand the variable as function call arguments
-        TopoDS_Shape resultShape = getAreaPtr()->makeOffset(
-                            PARAM_PY_FIELDS(ARG,AREA_PARAMS_OFFSET));
+        TopoDS_Shape resultShape = getAreaPtr()->makeOffset(index,
+                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
         return Py::new_reference_to(Part::shape2pyshape(resultShape));
     }
     PY_CATCH_OCC;
@@ -199,18 +203,19 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
 
 PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
 {
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_POCKET), NULL};
+    static char *kwlist[] = {"index",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_POCKET), NULL};
+    short index = -1;
 
-    PARAM_PY_DECLARE_INIT(ARG,AREA_PARAMS_POCKET)
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_POCKET)
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
-                "|" PARAM_PY_KWDS(AREA_PARAMS_POCKET), kwlist, 
-                PARAM_REF(ARG,AREA_PARAMS_POCKET)))
+                "|h" PARAM_PY_KWDS(AREA_PARAMS_POCKET), kwlist, 
+                &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET)))
         Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
 
     try {
-        TopoDS_Shape resultShape = getAreaPtr()->makePocket(
-                            PARAM_PY_FIELDS(ARG,AREA_PARAMS_POCKET));
+        TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
+                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
         return Py::new_reference_to(Part::shape2pyshape(resultShape));
     }
     PY_CATCH_OCC;
@@ -222,7 +227,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
 
     //Declare variables defined in the NAME field of the CONF parameter list
-    PARAM_PY_DECLARE(NAME,AREA_PARAMS_CONF);
+    PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_CONF);
 
     AreaParams params = getAreaPtr()->getParams();
 
@@ -235,7 +240,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     //Parse arguments to overwrite CONF variables 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
-                PARAM_REF(NAME,AREA_PARAMS_CONF)))
+                PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         Py_Error(Base::BaseExceptionFreeCADError, 
             "Wrong parameters, call getParamsDesc() to get supported params");
 
@@ -257,8 +262,8 @@ PyObject* AreaPy::getParams(PyObject *args)
     const AreaParams &params =getAreaPtr()->getParams();
 
     PyObject *dict = PyDict_New();
-#define AREA_SRC(_v) params._v
-    PARAM_PY_DICT_SET_VALUE(dict,AREA_SRC,AREA_PARAMS_CONF)
+#define AREA_SRC(_param) params.PARAM_FNAME(_param)
+    PARAM_PY_DICT_SET_VALUE(dict,NAME,AREA_SRC,AREA_PARAMS_CONF)
     return dict;
 }
 
@@ -273,7 +278,7 @@ PyObject* AreaPy::getParamsDesc(PyObject *args, PyObject *keywds)
         return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_CONF));
 
     PyObject *dict = PyDict_New();
-    PARAM_PY_DICT_SET_DOC(dict,AREA_PARAMS_CONF)
+    PARAM_PY_DICT_SET_DOC(dict,NAME,AREA_PARAMS_CONF)
     return dict;
 }
 

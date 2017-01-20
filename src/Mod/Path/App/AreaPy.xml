@@ -26,9 +26,11 @@
 any operation</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="toShape" Keyword='true'>
+    <Methode Name="getShape" Keyword='true'>
       <Documentation>
-        <UserDocu>toShape(rebuild=False): Return the resulting shape</UserDocu>
+          <UserDocu>getShape(index=-1,rebuild=False): Return the resulting shape\n
+\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n
+\n* rebuild: clean the internal cache and rebuild</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makeOffset" Keyword='true'>

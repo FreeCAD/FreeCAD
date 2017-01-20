@@ -51,6 +51,10 @@
 #include <gp_GTrsf.hxx>
 #include <Standard_Version.hxx>
 #include <GCPnts_UniformDeflection.hxx>
+#include <BRepBndLib.hxx>
+#include <BRepLib_MakeFace.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepAlgoAPI_Section.hxx>
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -64,11 +68,11 @@
 using namespace Path;
 
 CAreaParams::CAreaParams()
-    :PARAM_INIT(NAME,AREA_PARAMS_CAREA)
+    :PARAM_INIT(PARAM_FNAME,AREA_PARAMS_CAREA)
 {}
 
 AreaParams::AreaParams()
-    :PARAM_INIT(NAME,AREA_PARAMS_BASE)
+    :PARAM_INIT(PARAM_FNAME,AREA_PARAMS_AREA)
 {}
 
 CAreaConfig::CAreaConfig(const CAreaParams &p, bool noFitArcs)
@@ -98,9 +102,9 @@ CAreaConfig::~CAreaConfig() {
 TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass);
 
 Area::Area(const AreaParams *params)
-:myArea(NULL)
-,myAreaOpen(NULL)
-,myHaveFace(false)
+:myHaveFace(false)
+,myHaveSolid(false)
+,myShapeDone(false)
 {
     if(params)
         setParams(*params);
@@ -256,35 +260,51 @@ void Area::add(CArea &area, const TopoDS_Wire& wire,
 
 
 void Area::clean(bool deleteShapes) {
+    myShapeDone = false;
+    mySections.clear();
     myShape.Nullify();
-    delete myArea;
-    myArea = NULL;
-    delete myAreaOpen;
-    myAreaOpen = NULL;
+    myArea.reset();
+    myAreaOpen.reset();
     if(deleteShapes){
         myShapePlane.Nullify();
         myShapes.clear();
         myHaveFace = false;
+        myHaveSolid = false;
     }
 }
 
 void Area::add(const TopoDS_Shape &shape,short op) {
-#define AREA_SRC_OP(_v) op
-    PARAM_ENUM_CONVERT(AREA_SRC_OP,,PARAM_ENUM_EXCEPT,AREA_PARAMS_OPCODE);
+#define AREA_SRC_OP(_param) op
+    PARAM_ENUM_CONVERT(AREA_SRC_OP,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OPCODE);
+    Q_UNUSED(Operation);
+
+    bool haveSolid = false;
+    for(TopExp_Explorer it(shape, TopAbs_SOLID);it.More();) {
+        haveSolid = true;
+        break;
+    }
+    //TODO: shall we support Shells?
+    if((!haveSolid && myHaveSolid) ||
+        (haveSolid && !myHaveSolid && !myShapes.empty()))
+        throw Base::ValueError("mixing solid and planar shapes is not allowed");
+
+    myHaveSolid = haveSolid;
+
     clean();
     if(myShapes.empty())
-        Operation = ClipperLib::ctUnion;
-    myShapes.push_back(Shape((short)Operation,shape));
+        op = OperationUnion;
+    myShapes.push_back(Shape(op,shape));
 }
 
 
 void Area::setParams(const AreaParams &params) {
-#define AREA_SRC2(_v) params._v
+#define AREA_SRC2(_param) params.PARAM_FNAME(_param)
     // Validate all enum type of parameters
     PARAM_ENUM_CHECK(AREA_SRC2,PARAM_ENUM_EXCEPT,AREA_PARAMS_CONF);
-    if(params!=myParams)
+    if(params!=myParams) {
         clean();
-    myParams = params;
+        myParams = params;
+    }
 }
 
 void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
@@ -299,24 +319,28 @@ void Area::addToBuild(CArea &area, const TopoDS_Shape &shape) {
         plane = myWorkPlane.IsNull()?&myShapePlane:&myWorkPlane;
     CArea areaOpen;
     mySkippedShapes += add(area,shape,&myTrsf,myParams.Deflection,plane,
-            myParams.Coplanar==CoplanarForce,&areaOpen,
+            myHaveSolid||myParams.Coplanar==CoplanarForce,&areaOpen,
             myParams.OpenMode==OpenModeEdges,myParams.Reorder);
     if(areaOpen.m_curves.size()) {
-        if(&area == myArea || myParams.OpenMode == OpenModeNone)
+        if(&area == myArea.get() || myParams.OpenMode == OpenModeNone)
             myAreaOpen->m_curves.splice(myAreaOpen->m_curves.end(),areaOpen.m_curves);
         else
             Base::Console().Warning("open wires discarded in clipping shapes\n");
     }
 }
 
+namespace Part {
+extern PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges);
+}
+
 void Area::build() {
-    if(myArea) return;
+    if(myArea || mySections.size()) return;
 
     if(myShapes.empty())
         throw Base::ValueError("Null shape");
 
-#define AREA_SRC(_v) myParams._v
-    PARAM_ENUM_CONVERT(AREA_SRC,,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
+#define AREA_SRC(_param) myParams.PARAM_FNAME(_param)
+    PARAM_ENUM_CONVERT(AREA_SRC,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
 
     if(myWorkPlane.IsNull()) {
         myShapePlane.Nullify();
@@ -350,36 +374,139 @@ void Area::build() {
             throw Base::ValueError("shapes are not planar");
     }
 
+    if(myHaveSolid && myParams.SectionCount) {
+
+        if(myParams.SectionOffset < 0)
+            throw Base::ValueError("invalid section offset");
+        if(myParams.SectionCount>1 && myParams.Stepdown<Precision::Confusion())
+            throw Base::ValueError("invalid stepdown");
+
+        TopLoc_Location loc(myTrsf);
+        Bnd_Box bounds;
+        for(const Shape &s : myShapes) 
+            BRepBndLib::Add(s.shape.Moved(loc), bounds);
+
+        bounds.SetGap(0.0);
+        Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
+        bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+        zMax -= myParams.SectionOffset;
+        if(zMax <= zMin)
+            throw Base::ValueError("section offset too big");
+        
+        int error = 0;
+        int count = myParams.SectionCount;
+        if(count<0 || count*myParams.Stepdown > zMax-zMin)
+            count = ceil((zMax-zMin)/myParams.Stepdown);
+        for(int i=0;i<count;++i,zMax-=myParams.Stepdown) {
+            if(zMax < zMin) zMax = zMin;
+
+            // gp_Pnt p1(xMax,yMin,zMax);
+            // gp_Pnt p2(xMax,yMax,zMax);
+            // gp_Pnt p3(xMin,yMax,zMax);
+            // gp_Pnt p4(xMin,yMin,zMax);
+            // mkWire.Add(BRepBuilderAPI_MakeEdge(p1,p2).Edge());
+            // mkWire.Add(BRepBuilderAPI_MakeEdge(p2,p3).Edge());
+            // mkWire.Add(BRepBuilderAPI_MakeEdge(p3,p4).Edge());
+            // mkWire.Add(BRepBuilderAPI_MakeEdge(p4,p1).Edge());
+            gp_Pln pln(gp_Pnt(0,0,zMax),gp_Dir(0,0,1));
+            BRepLib_MakeFace mkFace(pln,xMin,xMax,yMin,yMax);
+            const TopoDS_Shape &face = mkFace.Face();
+
+            shared_ptr<Area> area(new Area(&myParams));
+            area->setPlane(face);
+            for(const Shape &s : myShapes) {
+                BRep_Builder builder;
+                TopoDS_Compound comp;
+                builder.MakeCompound(comp);
+                for(TopExp_Explorer it(s.shape, TopAbs_SOLID); it.More(); it.Next()) {
+                    BRepAlgoAPI_Section section(it.Current().Moved(loc),face);
+                    if(!section.IsDone()) {
+                        ++error;
+                        continue;
+                    }
+                    const TopoDS_Shape &shape = section.Shape();
+                    if(shape.IsNull()) continue;
+
+                    Part::FaceMakerBullseye mkFace;
+                    mkFace.setPlane(pln);
+
+                    std::list<TopoDS_Edge> edges;
+                    for(TopExp_Explorer it(shape, TopAbs_EDGE); it.More(); it.Next())
+                        edges.push_back(TopoDS::Edge(it.Current()));
+                    bool open = false;
+                    std::list<TopoDS_Wire> wires;
+                    while(edges.size()) {
+                        const std::list<TopoDS_Edge> sorted = 
+                                Part::sort_Edges(Precision::Confusion(),edges);
+                        BRepBuilderAPI_MakeWire mkWire;
+                        for(const TopoDS_Edge &e : sorted)
+                            mkWire.Add(e);
+                        const TopoDS_Wire &wire = mkWire.Wire();
+                        if(!BRep_Tool::IsClosed(wire))
+                            open = true;
+                        wires.push_back(wire);
+                    }
+                    if(!open) {
+                        for(const TopoDS_Wire &wire : wires)
+                            mkFace.addWire(wire);
+                        try {
+                            mkFace.Build();
+                            if (mkFace.Shape().IsNull())
+                                continue;
+                            builder.Add(comp,mkFace.Shape());
+                            continue;
+                        }catch (Base::Exception &e){
+                            Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
+                        }
+                    }
+                    //Shouldn't have any open wire, so count as error
+                    ++error;
+                    for(const TopoDS_Wire &wire : wires)
+                        builder.Add(comp,wire);
+                }
+                if(comp.IsNull()) continue;
+                area->add(comp,s.op);
+            }
+            mySections.push_back(area);
+        }
+        if(error)
+            Base::Console().Warning("Some errors occured during operation\n");
+        return;
+    }
+
     try {
-        myArea = new CArea();
-        myAreaOpen = new CArea();
+        myArea.reset(new CArea());
+        myAreaOpen.reset(new CArea());
 
         CAreaConfig conf(myParams);
         CArea areaClip;
 
         mySkippedShapes = 0;
-        short op = ClipperLib::ctUnion;
+        short op = OperationUnion;
         bool pending = false;
         for(const Shape &s : myShapes) {
             if(op!=s.op) {
                 if(myParams.OpenMode!=OpenModeNone)
                     myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
                 pending = false;
-                myArea->Clip((ClipperLib::ClipType)op,&areaClip,SubjectFill,ClipFill);
+                PARAM_ENUM_CONVERT(AREA_SRC_OP,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OPCODE);
+                myArea->Clip(Operation,&areaClip,SubjectFill,ClipFill);
                 areaClip.m_curves.clear();
                 op=s.op;
             }
-            addToBuild(op==ClipperLib::ctUnion?*myArea:areaClip,s.shape);
+            addToBuild(op==OperationUnion?*myArea:areaClip,s.shape);
             pending = true;
         }
-        if(mySkippedShapes)
+        if(mySkippedShapes && !myHaveSolid)
             Base::Console().Warning("%s %d non coplanar shapes\n",
                 myParams.Coplanar==CoplanarForce?"Skipped":"Found",mySkippedShapes);
 
         if(pending){
             if(myParams.OpenMode!=OpenModeNone)
                 myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
-            myArea->Clip((ClipperLib::ClipType)op,&areaClip,SubjectFill,ClipFill);
+            PARAM_ENUM_CONVERT(AREA_SRC_OP,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OPCODE);
+            myArea->Clip(Operation,&areaClip,SubjectFill,ClipFill);
         }
         myArea->m_curves.splice(myArea->m_curves.end(),myAreaOpen->m_curves);
 
@@ -403,7 +530,7 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
         bFill = false;
     }
     if(myParams.FitArcs) {
-        if(&area == myArea) {
+        if(&area == myArea.get()) {
             CArea copy(area);
             copy.FitArcs();
             return toShape(copy,bFill,&trsf);
@@ -413,47 +540,132 @@ TopoDS_Shape Area::toShape(CArea &area, short fill) {
     return toShape(area,bFill,&trsf);
 }
 
-const TopoDS_Shape &Area::getShape() {
-    if(myShape.IsNull()) {
-        build();
-        CAreaConfig conf(myParams);
-        myShape = toShape(*myArea,myParams.Fill);
-    }
-    return myShape;
-}
+#define AREA_SECTION(_op,_index,...) do {\
+    if(mySections.size()) {\
+        if(_index>=(int)mySections.size())\
+            throw Base::ValueError("index out of bound");\
+        TopLoc_Location loc(myTrsf.Inverted());\
+        if(_index<0) {\
+            BRep_Builder builder;\
+            TopoDS_Compound compound;\
+            builder.MakeCompound(compound);\
+            for(shared_ptr<Area> area : mySections)\
+                builder.Add(compound,area->_op(-1, ## __VA_ARGS__).Moved(loc));\
+            return compound;\
+        }\
+        return mySections[_index]->_op(-1, ## __VA_ARGS__).Moved(loc);\
+    }\
+}while(0)
 
-TopoDS_Shape Area::makeOffset(PARAM_ARGS(ARG,AREA_PARAMS_OFFSET)) {
-    std::list<TopoDS_Shape> shapes;
-    makeOffset(shapes,PARAM_FIELDS(ARG,AREA_PARAMS_OFFSET));
-    if(shapes.empty())
-        return TopoDS_Shape();
-    if(shapes.size()==1)
-        return shapes.front();
+TopoDS_Shape Area::getShape(int index) {
+    build();
+    AREA_SECTION(getShape,index);
+
+    if(myShapeDone) return myShape;
+
+    CAreaConfig conf(myParams);
+
+#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
+
+    // if no offset or thicken, try pocket
+    if(fabs(myParams.Offset) < Precision::Confusion() && !myParams.Thicken) {
+        if(myParams.PocketMode == PocketModeNone) {
+            myShape = toShape(*myArea,myParams.Fill);
+            myShapeDone = true;
+            return myShape;
+        }
+        myShape = makePocket(-1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET));
+        myShapeDone = true;
+        return myShape;
+    }
+
+    // if no pocket, do offset or thicken
+    if(myParams.PocketMode == PocketModeNone){
+        myShape = makeOffset(-1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
+        myShapeDone = true;
+        return myShape;
+    }
+
+    // do offset first, then pocket the inner most offseted shape
+    std::list<shared_ptr<CArea> > areas;
+    makeOffset(areas,PARAM_FIELDS(AREA_MY,AREA_PARAMS_OFFSET));
+
+    if(areas.empty()) 
+        areas.push_back(make_shared<CArea>(*myArea));
+
+    Area areaPocket(&myParams);
+    bool front = true;
+    if(areas.size()>1) {
+        double step = myParams.Stepover;
+        if(fabs(step)<Precision::Confusion())
+            step = myParams.Offset;
+        front = step>0;
+    }
+
+    // for pocketing, we discard the outer most offset wire in order to achieve
+    // the effect of offseting shape first than pocket, where the actual offset
+    // path is not wanted. For extra outline profiling, add extra_offset
+    if(front) {
+        areaPocket.add(toShape(*areas.front(),myParams.Fill));
+        areas.pop_back();
+    }else{
+        areaPocket.add(toShape(*areas.back(),myParams.Fill));
+        areas.pop_front();
+    }
+
     BRep_Builder builder;
     TopoDS_Compound compound;
     builder.MakeCompound(compound);
-    for(const TopoDS_Shape &s : shapes)
-        builder.Add(compound,s);
+
+    short fill = myParams.Thicken?FillFace:FillNone;
+    for(shared_ptr<CArea> area : areas) {
+        if(myParams.Thicken)
+            area->Thicken(myParams.ToolRadius);
+        builder.Add(compound,toShape(*area,fill));
+    }
+    builder.Add(compound,areaPocket.makePocket(
+                -1,PARAM_FIELDS(AREA_MY,AREA_PARAMS_POCKET)));
+    myShape = compound;
+    myShapeDone = true;
+    return myShape;
+}
+
+TopoDS_Shape Area::makeOffset(int index,PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET)) {
+    build();
+    AREA_SECTION(makeOffset,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+
+    std::list<shared_ptr<CArea> > areas;
+    makeOffset(areas,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+    if(areas.empty()) {
+        if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion()) {
+            CArea area(*myArea);
+            area.Thicken(myParams.ToolRadius);
+            return toShape(area,FillFace);
+        }
+        return TopoDS_Shape();
+    }
+    BRep_Builder builder;
+    TopoDS_Compound compound;
+    builder.MakeCompound(compound);
+    for(shared_ptr<CArea> area : areas) {
+        short fill;
+        if(myParams.Thicken && myParams.ToolRadius>Precision::Confusion()) {
+            area->Thicken(myParams.ToolRadius);
+            fill = FillFace;
+        }else if(areas.size()==1)
+            fill = myParams.Fill;
+        else
+            fill = FillNone;
+        builder.Add(compound,toShape(*area,fill));
+    }
     return compound;
 }
 
-void Area::makeOffset(std::list<TopoDS_Shape> &shapes,
-                      PARAM_ARGS(ARG,AREA_PARAMS_OFFSET))
+void Area::makeOffset(list<shared_ptr<CArea> > &areas,
+                      PARAM_ARGS(PARAM_FARG,AREA_PARAMS_OFFSET))
 {
-    if(fabs(offset)<Precision::Confusion()){
-        shapes.push_back(getShape());
+    if(fabs(offset)<Precision::Confusion())
         return;
-    }
-
-    build();
-    CAreaConfig conf(myParams);
-
-    if(myParams.Thicken) {
-        CArea area(*myArea);
-        area.Thicken(fabs(offset));
-        shapes.push_back(toShape(area,myParams.Fill));
-        return;
-    }
 
     long count = 1;
     if(extra_pass) {
@@ -469,13 +681,14 @@ void Area::makeOffset(std::list<TopoDS_Shape> &shapes,
         }
     }
 
-    PARAM_ENUM_CONVERT(AREA_SRC,,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
+    PARAM_ENUM_CONVERT(AREA_SRC,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_OFFSET_CONF);
 #ifdef AREA_OFFSET_ALGO
-    PARAM_ENUM_CONVERT(AREA_SRC,,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
+    PARAM_ENUM_CONVERT(AREA_SRC,PARAM_FNAME,PARAM_ENUM_EXCEPT,AREA_PARAMS_CLIPPER_FILL);
 #endif
 
     for(int i=0;count<0||i<count;++i,offset+=stepover) {
-        CArea area;
+        areas.push_back(make_shared<CArea>());
+        CArea &area = *areas.back();
         CArea areaOpen;
 #ifdef AREA_OFFSET_ALGO
         if(myParams.Algo == Area::Algolibarea) {
@@ -512,16 +725,10 @@ void Area::makeOffset(std::list<TopoDS_Shape> &shapes,
 
         if(area.m_curves.empty())
             return;
-
-        if(count == 1) {
-            shapes.push_back(toShape(area,myParams.Fill));
-            return;
-        }
-        shapes.push_back(toShape(area,Area::FillNone));
     }
 }
 
-TopoDS_Shape Area::makePocket(PARAM_ARGS(ARG,AREA_PARAMS_POCKET)) {
+TopoDS_Shape Area::makePocket(int index, PARAM_ARGS(PARAM_FARG,AREA_PARAMS_POCKET)) {
     if(tool_radius < Precision::Confusion()) 
         throw Base::ValueError("tool radius too small");
 
@@ -534,6 +741,9 @@ TopoDS_Shape Area::makePocket(PARAM_ARGS(ARG,AREA_PARAMS_POCKET)) {
     if(mode == Area::PocketModeNone)
         return TopoDS_Shape();
 
+    build();
+    AREA_SECTION(makePocket,index,PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
+
     PocketMode pm;
     switch(mode) {
     case Area::PocketModeZigZag:
@@ -543,11 +753,11 @@ TopoDS_Shape Area::makePocket(PARAM_ARGS(ARG,AREA_PARAMS_POCKET)) {
         pm = SpiralPocketMode;
         break;
     case Area::PocketModeOffset: {
-        PARAM_DECLARE_INIT(NAME,AREA_PARAMS_OFFSET);
+        PARAM_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_OFFSET);
         Offset = -tool_radius-extra_offset;
         ExtraPass = -1;
         Stepover = -stepover;
-        return makeOffset(PARAM_FIELDS(NAME,AREA_PARAMS_OFFSET));
+        return makeOffset(index,PARAM_FIELDS(PARAM_FNAME,AREA_PARAMS_OFFSET));
     }case Area::PocketModeZigZagOffset:
 	    pm = ZigZagThenSingleOffsetPocketMode;
         break;
@@ -564,7 +774,12 @@ TopoDS_Shape Area::makePocket(PARAM_ARGS(ARG,AREA_PARAMS_POCKET)) {
     // reorder before input, otherwise nothing is shown.
     in.Reorder();
     in.MakePocketToolpath(out.m_curves,params);
-    return toShape(out,FillNone);
+
+    if(myParams.Thicken){
+        out.Thicken(tool_radius);
+        return toShape(out,FillFace);
+    }else
+        return toShape(out,FillNone);
 }
 
 static inline bool IsLeft(const gp_Pnt &a, const gp_Pnt &b, const gp_Pnt &c) {
