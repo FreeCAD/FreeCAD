@@ -86,6 +86,9 @@
 	((bool,from_center,FromCenter,true,"Start pocketing from center"))\
 	((double,zig_angle,ZigAngle,45,"Zig angle in degree"))
 
+#define AREA_PARAMS_POCKET_CONF \
+    ((bool,thicken,Thicken,false,"Thicken the resulting wires with ToolRadius"))
+
 /** Operation code */
 #define AREA_PARAMS_OPCODE \
     ((enum2,op,Operation,0,"Boolean operation",\
@@ -97,6 +100,12 @@
     ((long,extra_pass,ExtraPass,0,"Number of extra offset pass to generate."))\
     ((double,stepover,Stepover,0.0,"Cutter diameter to step over on each pass. If =0, use Offset"))
 
+/** Section parameters */
+#define AREA_PARAMS_SECTION \
+    ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
+    ((double,stepdown,Stepdown,1.0,"Step down distance for each section"))\
+    ((double,offset,SectionOffset,0.0,"Offset for the first section"))
+
 #ifdef AREA_OFFSET_ALGO
 #   define AREA_PARAMS_OFFSET_ALGO \
     ((enum,algo,Algo,0,"Offset algorithm type",(Clipper)(libarea)))
@@ -107,7 +116,6 @@
 /** Offset configuration parameters */
 #define AREA_PARAMS_OFFSET_CONF \
     AREA_PARAMS_OFFSET_ALGO \
-    ((bool,thicken,Thicken,false,"Thicken the resulting wires with Offset"))\
     ((enum2,join_type,JoinType,0,"ClipperOffset join type. \nSee https://goo.gl/4odfQh",\
         (Round)(Square)(Miter),(ClipperLib::JoinType,ClipperLib::jt)))\
     ((enum2,end_type,EndType,0,"\nClipperOffset end type. See https://goo.gl/tj7gkX",\
@@ -116,17 +124,23 @@
     ((double,round_precision,RoundPreceision,0.0,\
         "Round joint precision. If =0, it defaults to Accuracy. \nSee https://goo.gl/4odfQh"))
 
+/** Group of all Area configuration parameters except CArea's*/
+#define AREA_PARAMS_AREA \
+    AREA_PARAMS_BASE \
+    AREA_PARAMS_OFFSET \
+    AREA_PARAMS_OFFSET_CONF \
+    AREA_PARAMS_POCKET \
+    AREA_PARAMS_POCKET_CONF \
+    AREA_PARAMS_SECTION
+
 /** Group of all Area configuration parameters */
 #define AREA_PARAMS_CONF \
     AREA_PARAMS_CAREA \
-    AREA_PARAMS_BASE \
-    AREA_PARAMS_OFFSET_CONF
+    AREA_PARAMS_AREA
 
 /** Group of all Area parameters */
 #define AREA_PARAMS_ALL \
     AREA_PARAMS_CONF \
-    AREA_PARAMS_OPCODE \
-    AREA_PARAMS_OFFSET \
-    AREA_PARAMS_POCKET
+    AREA_PARAMS_OPCODE
 
 #endif //PATH_AreaParam_H

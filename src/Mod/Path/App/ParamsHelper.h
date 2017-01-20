@@ -315,42 +315,52 @@
 
 
 /** Helper for #PARAM_DECLARE */
-#define PARAM_DECLARE_(_1,_field,_param) \
-    PARAM_TYPE(_param) PARAM_FIELD(_field,_param);
+#define PARAM_DECLARE_(_1,_src,_param) \
+    PARAM_TYPE(_param) _src(_param);
 
 /**
  * Delcares parameters using the given field as name
  *
- * \arg \c _field: specifies the \ref ParamField "field" to use as name
+ * \arg \c _src: \anchor ParamSrc Macro to generate source variable. The
+ * signature must be <tt>_src(_param)<\tt>, where \c _param is the tuple
+ * defining the parameter.  You pass any of the \ref ParamAccessor "parameter
+ * accessors" to directly access the field. Or, supply your own macro to append
+ * any prefix as you like. For example:
+ * \code{.unparsed}
+ *      #define MY_SRC(_param) BOOST_PP_CAT(my,PARAM_FNAME(_param))
+ *      ->
+ *          my##<name>
+ * \endcode 
  *
  * Expands to:
  * \code{.unparsed}
- *         type1 _field1;type2 _field2; ...
+ *         type1 _src(_param1);type2 _src(_param2); ...
  * \endcode 
  * \ingroup ParamCommon
  */
-#define PARAM_DECLARE(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_DECLARE_,_field,_seq)
+#define PARAM_DECLARE(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_DECLARE_,_src,_seq)
  
 
 /** Helper for #PARAM_DECLARE_INIT */
-#define PARAM_DECLARE_INIT_(_1,_field,_param) \
-    PARAM_TYPE(_param) PARAM_FIELD(_field,_param) = PARAM_FDEF(_param);
+#define PARAM_DECLARE_INIT_(_1,_src,_param) \
+    PARAM_TYPE(_param) _src(_param) = PARAM_FDEF(_param);
 
 /**
  * Delcares parameters with initialization to default using the given field as
  * name
  *
- * \arg \c _field: \ref ParamField "field" to use as name
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * Expands to:
  * \code{.unparsed}
- *         type1 _field1=_def1;type2 _field2=_def2; ...
+ *         type1 _src(_param1)=_def1;type2 _src(_param2)=_def2; ...
  * \endcode 
  * \ingroup ParamCommon
  */
-#define PARAM_DECLARE_INIT(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_DECLARE_INIT_,_field,_seq)
+#define PARAM_DECLARE_INIT(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_DECLARE_INIT_,_src,_seq)
 
 
 #define PARAM_ENUM_DECLARE_enum_(_1,_name,_i,_elem) \
@@ -394,8 +404,7 @@
 
 #define PARAM_ENUM_CONVERT_enum_(_dst,_name,_prefix,_elem) \
         case BOOST_PP_CAT(_name,_elem):\
-            _dst(_name) = \
-                    BOOST_PP_CAT(_prefix,_elem);\
+            _dst = BOOST_PP_CAT(_prefix,_elem);\
             break;
 
 #define PARAM_ENUM_CONVERT__(_1,_args,_i,_elem) \
@@ -418,10 +427,10 @@
  * i.e. not double but single parathesis
  */
 #define PARAM_ENUM_CONVERT_SINGLE(_src,_dst,_default,_param) \
-        PARAM_FENUM_TYPE(_param) _dst(PARAM_FNAME(_param));\
-        switch(_src(PARAM_FNAME(_param))) {\
+        PARAM_FENUM_TYPE(_param) _dst(_param);\
+        switch(_src(_param)) {\
         BOOST_PP_SEQ_FOR_EACH_I(PARAM_ENUM_CONVERT__,\
-                (_dst,PARAM_FNAME(_param),PARAM_FENUM_PREFIX(_param)),PARAM_FSEQ(_param))\
+                (_dst(_param),PARAM_FNAME(_param),PARAM_FENUM_PREFIX(_param)),PARAM_FSEQ(_param))\
         default: \
             _default(_param);\
         }
@@ -441,11 +450,12 @@
  *
  * \ingroup ParamEnumHelper
  *
- * \arg \c _src: Optional macro to generate source variable. The signature must
- * be <tt>_src(_name)<\tt>, where \c _name will be the parameters \a name field.
- * In case you just want \c _name as the source variable name, you can simply
- * omit this argument, because newer C++ preprocessor allows empty argument.
- * \arg \c _dst: Optional macro to generate destination variable. Same as above.
+ * \arg \c _src: Macro to generate source variable. The signature must be
+ * <tt>_src(_param)<\tt>, where \c _param is the tuple defining the parameter.
+ * You pass any of the \ref ParamAccessor "parameter accessors" to directly
+ * access the field. Or, supply your own macro to append any prefix as you
+ * like.
+ * \arg \c _dst: Same as above.
  * \arg \c _default: A macro to call for invalid value. Signature should be 
  * <tt>_default(_param)<\tt>, where \c _param is the parameter definition. You
  * can use #PARAM_ENUM_EXCEPT to throw Base::ValueError exception in FreeCAD
@@ -457,12 +467,12 @@
  *      ((enum,test1,Test1,0,"it's a test",(Foo)(Bar),(MyEnum1,myEnum1)) \
  *      ((enum,test2,Test2,0,"it's a test",(Foo)(Bar),(MyEnum2,myEnum2)))
  *
- *  #define MY_DST(_v) BOOST_PP_CAT(my,_v)
+ *  #define MY_DST(_param) BOOST_PP_CAT(my,PARAM_FNAME(_param))
  * \code{.unparsed}
  *
- * calling (note that the \c _src macro is omitted)
+ * calling
  * \code{.unparsed}
- *      PARAM_ENUM_CONVERT(,MY_DST,My,PARAM_ENUM_EXCEP,MY_PARAM_TEST)
+ *      PARAM_ENUM_CONVERT(PARAM_FNAME,MY_DST,My,PARAM_ENUM_EXCEP,MY_PARAM_TEST)
  * \code{.unparsed}
  *
  * expands to
@@ -514,7 +524,7 @@
                                               _param)
 
 #define PARAM_ENUM_CHECK_SINGLE(_src,_default,_param) \
-        switch(_src(PARAM_FNAME(_param))) {\
+        switch(_src(_param)) {\
         BOOST_PP_SEQ_FOR_EACH_I(PARAM_ENUM_CHECK_enum_,\
                                 PARAM_FNAME(_param),PARAM_FSEQ(_param))\
         default: \
@@ -528,10 +538,11 @@
  *
  * \ingroup ParamEnumHelper
  *
- * \arg \c _src: Optional macro to generate source variable. The signature must
- * be <tt>_src(_name)<\tt>, where \c _name will be the parameters \a name field.
- * In case you just want \c _name as the source variable name, you can simply
- * omit this argument, because newer C++ preprocessor allows empty argument.
+ * \arg \c _src: Macro to generate source variable. The signature must be
+ * <tt>_src(_param)<\tt>, where \c _param is the tuple defining the parameter.
+ * You pass any of the \ref ParamAccessor "parameter accessors" to directly
+ * access the field. Or, supply your own macro to append any prefix as you
+ * like.
  *
  * \arg \c _default: A macro to call for invalid value. Signature should be 
  * <tt>_default(_param)<\tt>, where \c _param is the parameter definition. You
@@ -574,57 +585,86 @@
 
 
 /** Helper for #PARAM_INIT */
-#define PARAM_INIT_(_,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) PARAM_FIELD(_field,_param)(PARAM_FDEF(_param))
+#define PARAM_INIT_(_,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) _src(_param)(PARAM_FDEF(_param))
 
 /** Constructor initialization
  *
- * \arg \c _field: specifies the \ref ParamField "field" to use as name
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * Expand to,
  * \code{.unparsed}
- *       field1(def1), field2(def2)...  
+ *       _src(_param1)(def1), _src(_param1)(def2)...  
  * \endcode
  * \ingroup ParamCommon
  */
-#define PARAM_INIT(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_INIT_,_field,_seq)
+#define PARAM_INIT(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_INIT_,_src,_seq)
+
+
+/** Helper for #PARAM_OP */
+#define PARAM_OP_(_,_args,_param) \
+     BOOST_PP_TUPLE_ELEM(0,_args)(_param) BOOST_PP_TUPLE_ELEM(1,_args) \
+            BOOST_PP_TUPLE_ELEM(2,_args)(_param);
+
+/** Perform operation on two instance of each parameter in a sequence
+ *
+ * \arg \c _src: Macro to generate source variable. The signature must be
+ * <tt>_src(_param)<\tt>, where \c _param is the tuple defining the parameter.
+ * You pass any of the \ref ParamAccessor "parameter accessors" to directly
+ * access the field. Or, supply your own macro to append any prefix as you
+ * like.
+ * \arg \c _op: a boolean operator
+ * \arg \c _dst: Same as \c _src above.
+ *
+ * Expands to:
+ * \code{.unparsed}
+ *      _src(_param1) _op _src(_param2);
+ * \endcode
+ *
+ * \ingroup ParamCommon
+ */
+#define PARAM_OP(_src,_op,_dst,_seq) \
+     BOOST_PP_SEQ_FOR_EACH(PARAM_COPY_,(_src,_op,_dst),_seq)
 
 
 /** Helper for #PARAM_ARGS_DEF */
-#define PARAM_ARGS_DEF_(_,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) PARAM_FIELD(_field,_param)=PARAM_FDEF(_param)
+#define PARAM_ARGS_DEF_(_,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) _src(_param)=PARAM_FDEF(_param)
 
 /** Delcare the parameters as function argument list with defaults.
  *
- * \arg \c _field: specifies the \ref ParamField "field" to use as name
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * Expand to:
  * \code{.unparsed}
- *      type1 field1=def1, type2 field2=def2 ...
+ *      type1 _src(_param1)=def1, type2 _src(_param1)=def2 ...
  * \endcode
  * \ingroup ParamCommon
  */
-#define PARAM_ARGS_DEF(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_ARGS_DEF_,_field,_seq)
+#define PARAM_ARGS_DEF(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_ARGS_DEF_,_src,_seq)
 
 
 /** Helper for #PARAM_ARGS */
-#define PARAM_ARGS_(_,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) PARAM_FIELD(_field,_param)
+#define PARAM_ARGS_(_,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) PARAM_TYPE(_param) _src(_param)
 
 /** Delcare the parameters as function argument list without defaults. 
  *
- * \arg \c _field: specifies the \ref ParamField "field" to use as name
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * Expand to:
  * \code{.unparsed}
- *      type1 field1, type2 field2 ... 
+ *      type1 _src(_param1), type2 _src(_param2) ... 
  * \endcode
  * \ingroup ParamCommon
  */
-#define PARAM_ARGS(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_ARGS_,_field,_seq)
+#define PARAM_ARGS(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_ARGS_,_src,_seq)
 
 
 /** \defgroup ParamPy Python helper
@@ -685,19 +725,22 @@
 
 
 /** Helper for #PARAM_FIELDS */
-#define PARAM_FIELDS_(_1,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) PARAM_FIELD(_field,_param)
+#define PARAM_FIELDS_(_1,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) _src(_param)
 
 /** Expand to a list of the given field in the parameter sequence 
  *
- * For example, PARAM_FIELDS(ARG, _seq) expands to:
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
+ *
+ * For example, PARAM_FIELDS(PARAM_FARG, _seq) expands to:
  * \code{.unparsed}
  *      arg1,arg2 ...
  * \endcode
  * \ingroup ParamCommon ParamPy
  */
-#define PARAM_FIELDS(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_FIELDS_,_field,_seq)
+#define PARAM_FIELDS(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_FIELDS_,_src,_seq)
 
 
 #define PARAM_PY_CAST_short(_v)  (_v)
@@ -716,16 +759,19 @@
 
 
 /** Helper for #PARAM_PY_FIELDS */
-#define PARAM_PY_FIELDS_(_1,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FIELD(_field,_param))
+#define PARAM_PY_FIELDS_(_1,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) PARAM_TYPED(PARAM_CAST_PY_,_param)(_src(_param))
 
-/** Expand to a list of the given field in the sequence
+/** Expand to a comma separated list of the given field in the sequence
+ *
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * The field will be casted from python C to C type 
  * \ingroup ParamCommon ParamPy
  */
-#define PARAM_PY_FIELDS(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_PY_FIELDS_,_field,_seq)
+#define PARAM_PY_FIELDS(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_PY_FIELDS_,_src,_seq)
 
 
 /** Helper for #PARAM_FIELD_STRINGS */
@@ -733,7 +779,7 @@
     BOOST_PP_COMMA_IF(_i) PARAM_FIELD_STR(_field,_param)
 
 /** Expand to a list of stringified fields
- * \ingroup ParamCommon ParamPy
+ * \ingroup ParamStringizer ParamPy
  */
 #define PARAM_FIELD_STRINGS(_field,_seq) \
     BOOST_PP_SEQ_FOR_EACH_I(PARAM_FIELD_STRINGS_,_field,_seq)
@@ -764,14 +810,14 @@
 #define PARAM_PY_TYPE_enum2     short
 
 /** Helper for #PARAM_PY_DECLARE */
-#define PARAM_PY_DECLARE_(_1,_field,_param) \
-    PARAM_TYPED(PARAM_PY_TYPE_,_param) PARAM_FIELD(_field,_param);
+#define PARAM_PY_DECLARE_(_1,_src,_param) \
+    PARAM_TYPED(PARAM_PY_TYPE_,_param) _src(_param);
 
 /** Declare field variables for Python C type without initialization 
  * \ingroup ParamPy
  */
-#define PARAM_PY_DECLARE(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DECLARE_,_field,_seq)
+#define PARAM_PY_DECLARE(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DECLARE_,_src,_seq)
 
 #define PARAM_PY_INIT_short(_v)     _v
 #define PARAM_PY_INIT_long(_v)      _v
@@ -781,31 +827,34 @@
 #define PARAM_PY_INIT_enum2(_v)      _v
 
 /** Helper for #PARAM_PY_DECLARE_INIT */
-#define PARAM_PY_DECLARE_INIT_(_1,_field,_param) \
-    PARAM_TYPED(PARAM_PY_TYPE_,_param) PARAM_FIELD(_field,_param) = \
+#define PARAM_PY_DECLARE_INIT_(_1,_src,_param) \
+    PARAM_TYPED(PARAM_PY_TYPE_,_param) _src(_param) = \
         PARAM_TYPED(PARAM_PY_INIT_,_param)(PARAM_FDEF(_param));
 
 /** Declare field variables of Python c type with initialization to default
  * \ingroup ParamPy
  */
-#define PARAM_PY_DECLARE_INIT(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DECLARE_INIT_,_field,_seq)
+#define PARAM_PY_DECLARE_INIT(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DECLARE_INIT_,_src,_seq)
 
 
 /** Helper for #PARAM_REF */
-#define PARAM_REF_(_1,_field,_i,_param) \
-    BOOST_PP_COMMA_IF(_i) &PARAM_FIELD(_field,_param)
+#define PARAM_REF_(_1,_src,_i,_param) \
+    BOOST_PP_COMMA_IF(_i) &_src(_param)
 
 /** Generate a list of field references
  *
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ *
+ * more details
  * Expand to:
  * \code{.unparsed}
- *      &_field1, &_field2 ... 
+ *      &_src(_param1), &_src(_param1) ... 
  * \endcode
  * \ingroup ParamPy
  */
-#define PARAM_REF(_field,_seq) \
-    BOOST_PP_SEQ_FOR_EACH_I(PARAM_REF_,_field,_seq)
+#define PARAM_REF(_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH_I(PARAM_REF_,_src,_seq)
 
 
 #define PARAM_CAST_PYOBJ_short(_v)   PyInt_FromLong(_v)
@@ -816,35 +865,36 @@
 #define PARAM_CAST_PYOBJ_enum2       PARAM_CAST_PYOBJ_short
 
 
-/** Stringize field to a Python string */
-#define PARAM_PY_STRINGIZE(_field,_param)  \
+/** Stringize field to a Python string 
+ * \ingroup ParamPy ParamStringizer
+ */
+#define PARAM_PY_STR(_field,_param)  \
     PyString_FromString(PARAM_FIELD_STR(_field,_param))
 
 /** Helper for #PARAM_PY_DICT_SET_VALUE */
 #define PARAM_PY_DICT_SET_VALUE_(_1,_args,_param) \
     PyDict_SetItem(BOOST_PP_TUPLE_ELEM(0,_args), \
-            PARAM_PY_STRINGIZE(NAME,_param),\
+            PARAM_PY_STR(BOOST_PP_TUPLE_ELEM(1,_args),_param),\
             PARAM_TYPED(PARAM_CAST_PYOBJ_,_param)(\
-                BOOST_PP_TUPLE_ELEM(1,_args)(PARAM_FIELD(NAME,_param))));
+                BOOST_PP_TUPLE_ELEM(2,_args)(_param)));
 
 /** Populate a Python dict with a structure variable
  *
  * \arg \c _dict: the Python dictionary object
- * \arg \c _src: Optional macro to generate source variable. The signature must
- * be <tt>_src(_name)<\tt>, where \c _name will be the parameters \a name field.
- * In case you just want \c _name as the source variable name, you can simply
- * omit this argument, because newer C++ preprocessor allows empty argument.
+ * \arg \c _field: specifies the \ref ParamField "field" to use as key
+ * \arg \c _src: macro to generate source field. See \ref ParamSrc "here" for
+ * more details
  *
  * Roughly translated to:
  * \code{.unparsed}
- *      PyDict_SetItem(_dict,#name1,_src(name1));
- *      PyDict_SetItem(_dict,#name2,_src(name2)); 
+ *      PyDict_SetItem(_dict,#_field1,_src(_param));
+ *      PyDict_SetItem(_dict,#_field2,_src(_param)); 
  *      ... 
  * \endcode
  * \ingroup ParamPy
  */
-#define PARAM_PY_DICT_SET_VALUE(_dict,_src,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DICT_SET_VALUE_,(_dict,_src),_seq)
+#define PARAM_PY_DICT_SET_VALUE(_dict,_field,_src,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DICT_SET_VALUE_,(_dict,_field,_src),_seq)
 
 
 #define PARAM_PY_DICT_DOC_enum_(_i,_elem) \
@@ -868,22 +918,26 @@
 #define PARAM_PY_DICT_DOC_enum2 PARAM_PY_DICT_DOC_enum
 
 /** Helper for #PARAM_PY_DICT_SET_DOC */
-#define PARAM_PY_DICT_SET_DOC_(_1,_dict,_param) \
-    PyDict_SetItem(_dict, PARAM_PY_STRINGIZE(NAME,_param),\
-        PyString_FromString(PARAM_TYPED(PARAM_PY_DICT_DOC_,_param)(_param)));
+#define PARAM_PY_DICT_SET_DOC_(_1,_args,_param) \
+    PyDict_SetItem(BOOST_PP_TUPLE_ELEM(0,_args), \
+            PARAM_PY_STR(BOOST_PP_TUPLE_ELEM(1,_args),_param),\
+            PyString_FromString(PARAM_TYPED(PARAM_PY_DICT_DOC_,_param)(_param)));
 
 /** Populate a Python dict with the doc field of the parameter sequence
  *
+ * \arg \c _dict: the Python dictionary object
+ * \arg \c _field: specifies the \ref ParamField "field" to use as key
+ *
  * Roughly translated to:
  * \code{.unparsed}
- *      PyDict_SetItem(_dict,#name1,doc1);
- *      PyDict_SetItem(_dict,#name2,doc2); 
+ *      PyDict_SetItem(_dict,#_field1,doc1);
+ *      PyDict_SetItem(_dict,#_field1,doc2); 
  *      ... 
  * \endcode
  * \ingroup ParamDoc
  */
-#define PARAM_PY_DICT_SET_DOC(_dict,_seq) \
-    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DICT_SET_DOC_,_dict,_seq)
+#define PARAM_PY_DICT_SET_DOC(_dict,_field,_seq) \
+    BOOST_PP_SEQ_FOR_EACH(PARAM_PY_DICT_SET_DOC_,(_dict,_field),_seq)
 
 
 /** \defgroup ParamProperty Property Macros

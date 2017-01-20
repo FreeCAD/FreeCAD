@@ -37,15 +37,14 @@ namespace Path
 
 /** Store libarea algorithm configuration */
 struct PathExport CAreaParams {
-    PARAM_DECLARE(NAME,AREA_PARAMS_CAREA)
+    PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_CAREA)
     CAreaParams();
 };
 
 /** Store all Area configurations */
 struct PathExport AreaParams: CAreaParams {
 
-    PARAM_DECLARE(NAME,AREA_PARAMS_BASE)
-    PARAM_DECLARE(NAME,AREA_PARAMS_OFFSET_CONF)
+    PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_AREA)
 
     bool operator==(const AreaParams &other) const {
 #define AREA_COMPARE(_param) \
@@ -68,7 +67,7 @@ struct PathExport AreaParams: CAreaParams {
 struct PathExport CAreaConfig {
 
     /** Stores current libarea settings */
-    PARAM_DECLARE(NAME,AREA_PARAMS_CAREA)
+    PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_CAREA)
 
     /** Stores user defined setting */
     CAreaParams params;
@@ -105,14 +104,17 @@ protected:
     };
 
     std::list<Shape> myShapes;
-    CArea *myArea;
-    CArea *myAreaOpen;
+    std::unique_ptr<CArea> myArea;
+    std::unique_ptr<CArea> myAreaOpen;
     gp_Trsf myTrsf;
     AreaParams myParams;
     TopoDS_Shape myShapePlane;
     TopoDS_Shape myWorkPlane;
     TopoDS_Shape myShape;
+    std::vector<std::shared_ptr<Area> > mySections;
     bool myHaveFace;
+    bool myHaveSolid;
+    bool myShapeDone;
     int mySkippedShapes;
 
     /** Called internally to combine children shapes for further processing */
@@ -126,7 +128,19 @@ protected:
     /** Called internally to obtain the combained children shapes */
     TopoDS_Shape toShape(CArea &area, short fill);
 
-public:
+    /** Obtain a list of offseted areas
+     *
+     * See #AREA_PARAMS_OFFSET for description of the arguments.
+     */
+    void makeOffset(std::list<std::shared_ptr<CArea> > &areas,
+                    PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
+
+    /** Make a pocket of the combined shape
+     *
+     * User #AREA_PARAMS_POCKET setting in myParams.
+     */
+    TopoDS_Shape makePocket();
+
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
@@ -153,7 +167,8 @@ public:
      * \arg \c shape: the child shape
      * \arg \c op: operation code, see #AREA_PARAMS_OPCODE
      */
-    void add(const TopoDS_Shape &shape,PARAM_ARGS_DEF(ARG,AREA_PARAMS_OPCODE));
+    void add(const TopoDS_Shape &shape,PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OPCODE));
+
 
     /** Generate an offset of the combined shape
      *
@@ -161,20 +176,13 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(PARAM_ARGS_DEF(ARG,AREA_PARAMS_OFFSET));
-
-    /** Obtain a list of offset shapes of the combined shape,
-     *
-     * See #AREA_PARAMS_OFFSET for description of the arguments.
-     */
-    void makeOffset(std::list<TopoDS_Shape> &shapes,
-                    PARAM_ARGS_DEF(ARG,AREA_PARAMS_OFFSET));
+    TopoDS_Shape makeOffset(int index, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
 
     /** Make a pocket of the combined shape
      *
      * See #AREA_PARAMS_POCKET for description of the arguments.
      */
-    TopoDS_Shape makePocket(PARAM_ARGS_DEF(ARG,AREA_PARAMS_POCKET));
+    TopoDS_Shape makePocket(int index, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
 
     /** Config this Area object */
@@ -196,7 +204,7 @@ public:
     void clean(bool deleteShapes=false);
 
     /** Get the combined shape */
-    const TopoDS_Shape &getShape();
+    TopoDS_Shape getShape(int index);
 
     /** Add a OCC wire shape to CArea 
      *

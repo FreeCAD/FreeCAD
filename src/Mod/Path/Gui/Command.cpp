@@ -66,44 +66,37 @@ CmdPathArea::CmdPathArea()
 void CmdPathArea::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionObject> Sel = 
-            getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId());
     std::list<std::string> cmds;
     std::ostringstream sources;
-    if (Sel.size() > 0) {
-        for(const Gui::SelectionObject &selObj : Sel) {
-            const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
-            if(selObj.getSubNames().empty()) {
-                const TopoDS_Shape &shape = pcObj->Shape.getShape().getShape();
-                TopExp_Explorer it(shape, TopAbs_SHELL); 
-                if(it.More()) {
-                    Base::Console().Error("Selected shape is not 2D\n");
-                    return;
-                }
-                sources << "FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ",";
-                continue;
+    for(const Gui::SelectionObject &selObj :
+        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+    {
+        const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
+        const std::vector<std::string> &subnames = selObj.getSubNames();
+        if(subnames.empty()) {
+            sources << "FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ",";
+            continue;
+        }
+        for(const std::string &name : subnames) {
+            if(!name.compare(0,4,"Face") &&
+                !name.compare(0,4,"Edge")) 
+            {
+                Base::Console().Error("Selected shape is not 2D\n");
+                return;
             }
 
-            for(const std::string &name : selObj.getSubNames()) {
-                if(!name.compare(0,4,"Face") &&
-                   !name.compare(0,4,"Edge")) 
-                {
-                    Base::Console().Error("Selected shape is not 2D\n");
-                    return;
-                }
+            int index = atoi(name.substr(4).c_str());
 
-                int index = atoi(name.substr(4).c_str());
+            std::ostringstream subname;
+            subname << pcObj->getNameInDocument() << '_' << name;
+            std::string sub_fname = getUniqueObjectName(subname.str().c_str());
 
-                std::ostringstream subname;
-                subname << pcObj->getNameInDocument() << '_' << name;
-                std::string sub_fname = getUniqueObjectName(subname.str().c_str());
-
-                std::ostringstream cmd;
-                cmd << "FreeCAD.activeDocument().addObject('Path::Feature','" << sub_fname << "').Shape = " <<
-                    pcObj->getNameInDocument() << '.' << name.substr(0,4) << '[' << index-1 << ']';
-                cmds.push_back(cmd.str());
-                sources << "FreeCAD.activeDocument()." << sub_fname << ",";
-            }
+            std::ostringstream cmd;
+            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname << 
+                "').Shape = FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ".Shape." << 
+                name.substr(0,4) << "s[" << index-1 << ']';
+            cmds.push_back(cmd.str());
+            sources << "FreeCAD.activeDocument()." << sub_fname << ",";
         }
     }
     std::string FeatName = getUniqueObjectName("FeatureArea");
@@ -120,6 +113,101 @@ bool CmdPathArea::isActive(void)
 {
     return hasActiveDocument();
 }
+
+
+DEF_STD_CMD_A(CmdPathAreaWorkplane)
+
+CmdPathAreaWorkplane::CmdPathAreaWorkplane()
+    :Command("Path_Area_Workplane")
+{
+    sAppModule      = "Path";
+    sGroup          = QT_TR_NOOP("Path");
+    sMenuText       = QT_TR_NOOP("Area workplane");
+    sToolTipText    = QT_TR_NOOP("Select a workplane for a FeatureArea");
+    sWhatsThis      = "Path_Area_Workplane";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Path-Area-Workplane";
+    sAccel          = "P,W";
+
+}
+
+void CmdPathAreaWorkplane::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::string areaName;
+    std::string planeSubname;
+    std::string planeName;
+    
+    for(Gui::SelectionObject &selObj :
+        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+    {
+        const std::vector<std::string> &subnames = selObj.getSubNames();
+        if(subnames.size()>1) {
+            Base::Console().Error("Please select one sub shape object for plane only\n");
+            return;
+        }
+        const Part::Feature *pcObj = static_cast<Part::Feature*>(selObj.getObject());
+        if(subnames.empty()) {
+            if(pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))  {
+                if(areaName.size()){
+                    Base::Console().Error("Please select one FeatureArea only\n");
+                    return;
+                }
+                areaName = pcObj->getNameInDocument();
+                continue;
+            }
+            for (TopExp_Explorer it(pcObj->Shape.getShape().getShape(), TopAbs_SHELL); it.More(); it.Next()) {
+                Base::Console().Error("Selected shape is not 2D\n");
+                return;
+            }
+        }
+        if(planeName.size()){
+            Base::Console().Error("Please select one shape object for plane only\n");
+            return;
+        }else{
+            planeSubname = planeName = pcObj->getNameInDocument();
+            planeSubname += ".Shape";
+        }
+
+        for(const std::string &name : subnames) {
+            if(!name.compare(0,4,"Face") &&
+                !name.compare(0,4,"Edge")) 
+            {
+                Base::Console().Error("Selected shape is not 2D\n");
+                return;
+            }
+
+            int index = atoi(name.substr(4).c_str());
+
+            std::ostringstream subname;
+            subname << planeSubname << '.' << name.substr(0,4) << "s[" << index-1 << ']';
+            planeSubname = subname.str();
+        }
+    }
+    if(areaName.empty()) {
+        Base::Console().Error("Please select one FeatureArea\n");
+        return;
+    }
+    if(planeName.empty()) {
+        Base::Console().Error("Please select one shape object\n");
+        return;
+    }
+
+    openCommand("Select Workplane for Path Area");
+    doCommand(Doc,"FreeCAD.activeDocument().%s.WorkPlane = FreeCAD.activeDocument().%s",
+                    areaName.c_str(),planeSubname.c_str());
+    doCommand(Doc,"FreeCAD.activeDocument().%s.ViewObject.Visibility = True",areaName.c_str());
+    // doCommand(Doc,"FreeCAD.activeDocument().%s.ViewObject.Visibility = False",planeName.c_str());
+    commitCommand();
+    updateActive();
+}
+
+bool CmdPathAreaWorkplane::isActive(void)
+{
+    return !getSelection().getSelectionEx(NULL, Path::FeatureArea::getClassTypeId()).empty();
+}
+
 
 // Path compound #####################################################################################################
 
@@ -229,4 +317,5 @@ void CreatePathCommands(void)
     rcCmdMgr.addCommand(new CmdPathCompound());
     rcCmdMgr.addCommand(new CmdPathShape());
     rcCmdMgr.addCommand(new CmdPathArea());
+    rcCmdMgr.addCommand(new CmdPathAreaWorkplane());
 }

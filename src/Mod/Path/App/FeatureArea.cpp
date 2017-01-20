@@ -48,6 +48,8 @@ FeatureArea::FeatureArea()
     PARAM_PROP_ADD("Area",AREA_PARAMS_BASE);
     PARAM_PROP_ADD("Offset",AREA_PARAMS_OFFSET);
     PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET);
+    PARAM_PROP_ADD("Pocket",AREA_PARAMS_POCKET_CONF);
+    PARAM_PROP_ADD("Section",AREA_PARAMS_SECTION);
     PARAM_PROP_ADD("Offset Settings", AREA_PARAMS_OFFSET_CONF);
     PARAM_PROP_ADD("libarea Settings",AREA_PARAMS_CAREA);
 
@@ -77,7 +79,6 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
 
 #define AREA_PROP_GET(_param) \
     params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
-
     PARAM_FOREACH(AREA_PROP_GET,AREA_PARAMS_CONF)
 
     Area area(&params);
@@ -86,45 +87,12 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     if(!workPlane.IsNull())
         area.setPlane(workPlane);
 
-    area.clean(true);
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
         area.add(static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
                 PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
     }
 
-    std::list<TopoDS_Shape> shapes;
-    if(fabs(Offset.getValue())>Precision::Confusion())
-        area.makeOffset(shapes,PARAM_PROP_ARGS(AREA_PARAMS_OFFSET));
-
-    if(PocketMode.getValue()) {
-        Area areaPocket(&params);
-        if(shapes.empty())
-            areaPocket.add(area.getShape());
-        else{
-            bool front = true;
-            if(shapes.size()>1) {
-                double step = Stepover.getValue();
-                if(fabs(step)<Precision::Confusion())
-                    step = Offset.getValue();
-                front = step>0;
-            }
-            areaPocket.add(front?shapes.front():shapes.back());
-        }
-        shapes.push_back(areaPocket.makePocket(PARAM_PROP_ARGS(AREA_PARAMS_POCKET)));
-    }
-
-    if(shapes.empty())
-        this->Shape.setValue(area.getShape());
-    else if(shapes.size()==1)
-        this->Shape.setValue(shapes.front());
-    else {
-        BRep_Builder builder;
-        TopoDS_Compound compound;
-        builder.MakeCompound(compound);
-        for(const TopoDS_Shape &s : shapes)
-            builder.Add(compound,s);
-        this->Shape.setValue(compound);
-    }
+    this->Shape.setValue(area.getShape(-1));
     return Part::Feature::execute();
 }
 
