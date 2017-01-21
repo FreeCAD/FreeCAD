@@ -303,7 +303,9 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub &linkTo) const
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
 }
 
-bool DocumentObject::_isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
+bool DocumentObject::_isInInListRecursive(const DocumentObject* /*act*/,
+                                          const DocumentObject* test,
+                                          const DocumentObject* checkObj, int depth) const
 {
 #ifndef  USE_OLD_DAG
     if (std::find(_inList.begin(), _inList.end(), test) != _inList.end())
