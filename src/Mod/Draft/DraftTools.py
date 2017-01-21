@@ -919,15 +919,15 @@ class Rectangle(Creator):
         try:
             # building command string
             rot,sup,pts,fil = self.getStrings()
+            base = p1
+            if length < 0:
+                length = -length
+                base = base.add((p1.sub(p4)).negative())
+            if height < 0:
+                height = -height
+                base = base.add((p1.sub(p2)).negative())
             if Draft.getParam("UsePartPrimitives",False):
                 # Use Part Primitive
-                base = p1
-                if length < 0:
-                    length = -length
-                    base = base.add((p1.sub(p4)).negative())
-                if height < 0:
-                    height = -height
-                    base = base.add((p1.sub(p2)).negative())
                 self.commit(translate("draft","Create Plane"),
                             ['plane = FreeCAD.ActiveDocument.addObject("Part::Plane","Plane")',
                              'plane.Length = '+str(length),
@@ -941,7 +941,7 @@ class Rectangle(Creator):
                 self.commit(translate("draft","Create Rectangle"),
                             ['pl = FreeCAD.Placement()',
                              'pl.Rotation.Q = '+rot,
-                             'pl.Base = '+DraftVecUtils.toString(p1),
+                             'pl.Base = '+DraftVecUtils.toString(base),
                              'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
         except:
             print("Draft: error delaying commit")
