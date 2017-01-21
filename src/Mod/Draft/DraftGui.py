@@ -334,13 +334,14 @@ class DraftToolBar:
         return lineedit
 
     def _inputfield (self,name, layout, hide=True, width=None):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)-2
         inputfield = self.uiloader.createWidget("Gui::InputField")
         inputfield.setObjectName(name)
         if hide: inputfield.hide()
-        if not width: width = 800
-        inputfield.setMaximumSize(QtCore.QSize(width,bsize))
+        if not width:
+            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+            inputfield.setSizePolicy(sizePolicy)
+        else:
+            inputfield.setMaximumWidth(width)
         layout.addWidget(inputfield)
         return inputfield
 
