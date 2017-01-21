@@ -64,15 +64,15 @@ static const AreaDoc myDocs[] = {
     {
         "makeOffset",
 
-        "makeOffset(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OFFSET) "):\n"
-        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
+        "makeOffset(index=-1, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OFFSET) "):\n"
         "Make an 2D offset of the shape.\n"
+        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_OFFSET),
     },
     {
         "makePocket",
 
-        "makePocket(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_POCKET) "):\n"
+        "makePocket(index=-1, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_POCKET) "):\n"
         "Generate pocket toolpath of the shape.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_POCKET),
@@ -115,8 +115,9 @@ PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Pytho
 }
 
 // constructor method
-int AreaPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+int AreaPy::PyInit(PyObject* args, PyObject* kwd)
 {
+    setParams(args,kwd);
     return 0;
 }
 
@@ -132,15 +133,15 @@ PyObject* AreaPy::setPlane(PyObject *args) {
 
 PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
 {
-    PyObject *pcObj = Py_True;
+    PyObject *pcObj = Py_False;
     short index=-1;
     static char *kwlist[] = {"index","rebuild", NULL};
     if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&pcObj))
-        Py_Error(Base::BaseExceptionFreeCADError, "This method accepts no argument");
+        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
 
     try {
         if(PyObject_IsTrue(pcObj))
-            getAreaPtr()->clean(true);
+            getAreaPtr()->clean();
         return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
     }
     PY_CATCH_OCC;
@@ -150,7 +151,12 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
 {
     PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_OPCODE)
     PyObject *pcObj;
-    static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OPCODE), NULL};
+
+    //Strangely, PyArg_ParseTupleAndKeywords requires all arguments to be keyword based,
+    //even non-optional ones? That doesn't make sense in python. Seems only in python 3
+    //they added '$' to address that issue.
+    static char *kwlist[] = {"shape",PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_OPCODE), NULL};
+
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "O|" PARAM_PY_KWDS(AREA_PARAMS_OPCODE), 
                 kwlist,&pcObj,PARAM_REF(PARAM_FARG,AREA_PARAMS_OPCODE)))
@@ -207,6 +213,8 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
     short index = -1;
 
     PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_POCKET)
+    //Override pocket mode default
+    mode = Area::PocketModeZigZagOffset;
 
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|h" PARAM_PY_KWDS(AREA_PARAMS_POCKET), kwlist, 

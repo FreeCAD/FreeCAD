@@ -79,7 +79,7 @@
  * These parameters cooresponds to CAreaPocketParams in libarea
  * */
 #define AREA_PARAMS_POCKET \
-    ((enum,mode,PocketMode,1,"Selects the pocket toolpath pattern",(None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)))\
+    ((enum,mode,PocketMode,0,"Selects the pocket toolpath pattern",(None)(ZigZag)(Offset)(Spiral)(ZigZagOffset)))\
 	((double,tool_radius,ToolRadius,1.0,"Tool radius for pocketing"))\
 	((double,extra_offset,PocketExtraOffset,0.0,"Extra offset for pocketing"))\
 	((double,stepover,PocketStepover,0.0,"Cutter diameter to step over on each pass. If =0, use ToolRadius."))\
