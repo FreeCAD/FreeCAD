@@ -342,5 +342,4 @@ typedef unsigned __int64    uint64_t;
 //#	define _PreComp_                  // use precompiled header
 #endif
 
-
 #endif //FC_CONFIG_H
