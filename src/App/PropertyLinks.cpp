@@ -373,12 +373,12 @@ PropertyLinkSub::~PropertyLinkSub()
 // Base class implementer
 
 void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList)
-{   
+{
     aboutToSetValue();
 #ifndef USE_OLD_DAG
-    if(_pcLinkSub)
+    if (_pcLinkSub)
         _pcLinkSub->_removeBackLink(static_cast<App::DocumentObject*>(getContainer()));
-    if(lValue)
+    if (lValue)
         lValue->_addBackLink(static_cast<App::DocumentObject*>(getContainer()));
 #endif
     _pcLinkSub=lValue;
@@ -574,7 +574,7 @@ void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
     //maintain backlinks
     for(auto *obj : _lValueList)
         obj->_removeBackLink(static_cast<DocumentObject*>(getContainer()));
-    if(lValue)
+    if (lValue)
         lValue->_addBackLink(static_cast<DocumentObject*>(getContainer()));
 #endif
     

@@ -341,7 +341,9 @@ bool DocumentObject::isInInList(DocumentObject *linkTo) const
 #endif
 }
 
-bool DocumentObject::_isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const
+bool DocumentObject::_isInOutListRecursive(const DocumentObject *act,
+                                           const DocumentObject* test,
+                                           const DocumentObject* checkObj, int depth) const
 {
 #ifndef  USE_OLD_DAG
     std::vector <DocumentObject*> outList = act->getOutList();

@@ -1967,7 +1967,8 @@ int Document::recompute()
 
 std::vector<App::DocumentObject*> Document::topologicalSort() const
 {
-    // topological sort algorithm described here: https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
+    // topological sort algorithm described here:
+    // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
     vector < App::DocumentObject* > ret;
     ret.reserve(d->objectArray.size());
     map < App::DocumentObject*,int > countMap;
@@ -2004,7 +2005,7 @@ int Document::recompute()
 {
     int objectCount = 0;
     // delete recompute log
-    for( auto LogEntry: _RecomputeLog)
+    for (auto LogEntry: _RecomputeLog)
         delete LogEntry;
     _RecomputeLog.clear();
 
@@ -2035,9 +2036,10 @@ int Document::recompute()
     }
 #ifdef FC_DEBUG
     // check if all objects are recalculated which were thouched 
-    for (auto objectIt : d->objectArray)
+    for (auto objectIt : d->objectArray) {
         if (objectIt->isTouched())
             cerr << "Document::recompute(): " << objectIt->getNameInDocument() << " still touched after recompute" << endl;
+    }
 #endif
 
         return objectCount;
@@ -2692,11 +2694,12 @@ PyObject * Document::getPyObject(void)
 
 std::vector<App::DocumentObject*> Document::getRootObjects() const
 {
-        std::vector < App::DocumentObject* > ret;
+    std::vector < App::DocumentObject* > ret;
 
-        for (auto objectIt : d->objectArray)
-                if (objectIt->getInList().size() == 0)
-                        ret.push_back(objectIt);
+    for (auto objectIt : d->objectArray) {
+        if (objectIt->getInList().empty())
+            ret.push_back(objectIt);
+    }
 
-        return ret;
+    return ret;
 }
