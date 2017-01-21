@@ -41,20 +41,22 @@ temp_dir = tempfile.gettempdir()
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
-frequency_base_name = 'cube_frequency'
-thermomech_base_name = 'spine_thermomech'
 static_analysis_dir = temp_dir + '/FEM_static'
-frequency_analysis_dir = temp_dir + '/FEM_frequency'
-thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
+static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
 static_analysis_inp_file = test_file_dir + '/' + static_base_name + '.inp'
 static_expected_values = test_file_dir + "/cube_static_expected_values"
+
+frequency_base_name = 'cube_frequency'
+frequency_analysis_dir = temp_dir + '/FEM_frequency'
+frequency_save_fc_file = frequency_analysis_dir + '/' + frequency_base_name + '.fcstd'
 frequency_analysis_inp_file = test_file_dir + '/' + frequency_base_name + '.inp'
 frequency_expected_values = test_file_dir + "/cube_frequency_expected_values"
+
+thermomech_base_name = 'spine_thermomech'
+thermomech_analysis_dir = temp_dir + '/FEM_thermomech'
+thermomech_save_fc_file = thermomech_analysis_dir + '/' + thermomech_base_name + '.fcstd'
 thermomech_analysis_inp_file = test_file_dir + '/' + thermomech_base_name + '.inp'
 thermomech_expected_values = test_file_dir + "/spine_thermomech_expected_values"
-static_save_fc_file = static_analysis_dir + '/' + static_base_name + '.fcstd'
-frequency_save_fc_file = frequency_analysis_dir + '/' + frequency_base_name + '.fcstd'
-thermomech_save_fc_file = thermomech_analysis_dir + '/' + thermomech_base_name + '.fcstd'
 
 mesh_points_file = test_file_dir + '/mesh_points.csv'
 mesh_volumes_file = test_file_dir + '/mesh_volumes.csv'
