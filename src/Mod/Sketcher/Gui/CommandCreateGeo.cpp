@@ -4495,6 +4495,14 @@ public:
                 sketchgui->drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
+                
+                sugConstr.clear();
+                
+                std::vector<AutoConstraint> sugConstr1;
+                sugConstr.push_back(sugConstr1);
+                
+                CurrentConstraint=0;
+                
                 /* It is ok not to call to purgeHandler
                  * in continuous creation mode because the 
                  * handler is destroyed by the quit() method on pressing the
@@ -4506,6 +4514,47 @@ public:
         }
         return true;
     }
+    
+    virtual void quit(void) {
+        // We must see if we need to create a BSpline before cancelling everything
+        // and now just like any other Handler,
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+        if (CurrentConstraint > 1) {
+            // create bspline from existing poles
+            Mode=STATUS_CLOSE;
+            EditCurve.pop_back();
+            this->releaseButton(Base::Vector2d(0.f,0.f));
+        }
+        else if(CurrentConstraint == 1) {
+            // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
+            if(!continuousMode){
+                DrawSketchHandler::quit();
+            }
+            else {
+                // This code disregards existing data and enables the continuous creation mode.
+                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                
+                sugConstr.clear();
+                
+                std::vector<AutoConstraint> sugConstr1;
+                sugConstr.push_back(sugConstr1);
+                
+                CurrentConstraint=0;
+            }
+        }
+        else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
+            DrawSketchHandler::quit();
+        }
+    }
+    
 protected:
     SELECT_MODE Mode;
 
