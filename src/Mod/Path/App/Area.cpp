@@ -121,7 +121,7 @@ void Area::setPlane(const TopoDS_Shape &shape) {
     }
     BRepLib_FindSurface planeFinder(shape,-1,Standard_True);
     if (!planeFinder.Found())
-        throw Base::ValueError("shape is not coplanar");
+        throw Base::ValueError("shape is not planar");
     myWorkPlane = shape;
     myTrsf.SetTransformation(GeomAdaptor_Surface(
                 planeFinder.Surface()).Plane().Position());

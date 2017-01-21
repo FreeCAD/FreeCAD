@@ -141,10 +141,10 @@ protected:
      */
     TopoDS_Shape makePocket();
 
+public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
-public:
     Area(const AreaParams *params = NULL);
     virtual ~Area();
 
