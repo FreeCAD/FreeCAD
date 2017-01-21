@@ -213,7 +213,7 @@ class FemInputWriterCcx(FemInputWriter.FemInputWriter):
         inpfileMain.write('** written by write_node_sets_constraints_fixed\n')
         inpfileMain.write('** written by write_node_sets_constraints_displacement\n')
         inpfileMain.write('** written by write_node_sets_constraints_planerotation\n')
-        if self.fixed_objects:
+        if self.fixed_objects or self.displacement_objects or self.planerotation_objects:
             inpfileMain.write('*INCLUDE,INPUT=' + include_name + "_Node_sets.inp \n")
 
         inpfileMain.write('\n***********************************************************\n')
