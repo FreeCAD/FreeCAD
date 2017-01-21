@@ -24,6 +24,7 @@
 #define APP_FEATUREPYTHONPYIMP_H
 
 #include <Base/BaseClass.h>
+#include <Base/Interpreter.h>
 #include <App/PropertyContainerPy.h>
 
 #define PYTHON_TYPE_DEF(_class_, _subclass_) \
