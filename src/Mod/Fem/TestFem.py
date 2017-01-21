@@ -37,7 +37,7 @@ import unittest
 mesh_name = 'Mesh'
 
 home_path = FreeCAD.getHomePath()
-temp_dir = tempfile.gettempdir()
+temp_dir = tempfile.gettempdir() + '/FEM_unittests'
 test_file_dir = home_path + 'Mod/Fem/test_files/ccx'
 
 static_base_name = 'cube_static'
@@ -659,12 +659,12 @@ def create_test_results():
 
 
 '''
-update the results in FEM untit tests:
+update the results of FEM unit tests:
 
 import TestFem
 TestFem.create_test_results()
 
-copy result files from FEM test directories into the src dirctory
+copy result files from your_temp_directory/FEM_unittests/   test directories into the src dirctory
 compare the results with git difftool
 run make
 start FreeCAD and run FEM unit test
