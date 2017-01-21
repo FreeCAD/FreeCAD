@@ -84,12 +84,14 @@ template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::FeaturePythonPyT(Base::BaseClass *pcObject, PyTypeObject *T)
     : FeaturePyT(reinterpret_cast<typename FeaturePyT::PointerType>(pcObject), T)
 {
+    Base::PyGILStateLocker lock;
     dict_methods = PyDict_New();
 }
 
 template<class FeaturePyT>
 FeaturePythonPyT<FeaturePyT>::~FeaturePythonPyT()
 {
+    Base::PyGILStateLocker lock;
     Py_DECREF(dict_methods);
 }
 
