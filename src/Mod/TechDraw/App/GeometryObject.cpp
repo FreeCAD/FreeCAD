@@ -300,8 +300,8 @@ void GeometryObject::addGeomFromCompound(TopoDS_Shape edgeCompound, edgeClass ca
                 TechDraw::DrawViewDetail* detail = isParentDetail();
                 if (detail != nullptr) {
                     double scale = m_parent->Scale.getValue();
-                    if ((circle->center == Base::Vector2d(0.0,0.0)) &&
-                        (DrawUtil::fpCompare(circle->radius, scale * detail->getFudgeRadius()))) {
+                    if ( ((circle->center - Base::Vector2d(0.0,0.0)).Length() < Precision::Confusion()) &&
+                        (DrawUtil::fpCompare(circle->radius, scale * detail->getFudgeRadius())) ) {
                         skipDetail = true;
                     } else {
                         c1 = new TechDrawGeometry::Vertex(circle->center);
@@ -466,9 +466,9 @@ gp_Ax2 TechDrawGeometry::getViewAxis(const Base::Vector3d origin,
     }
     Base::Vector3d cross = flipDirection;
     //special cases
-    if (flipDirection == stdZ) {
+    if ((flipDirection - stdZ).Length() < Precision::Confusion()) {
         cross = Base::Vector3d(1.0,0.0,0.0);
-    } else if (flipDirection == (stdZ * -1.0)) {
+    } else if ((flipDirection - (stdZ * -1.0)).Length() < Precision::Confusion()) {
         cross = Base::Vector3d(1.0,0.0,0.0);
     } else {
         cross.Normalize();

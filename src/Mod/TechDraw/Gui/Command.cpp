@@ -456,7 +456,7 @@ CmdTechDrawProjGroup::CmdTechDrawProjGroup()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Projection Group");
-    sToolTipText    = QT_TR_NOOP("Insert 2D Projections of a 3D part into the active drawing");
+    sToolTipText    = QT_TR_NOOP("Insert multiple views of a single part into the active drawing");
     sWhatsThis      = "TechDraw_ProjGroup";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-projgroup";

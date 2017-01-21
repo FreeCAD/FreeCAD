@@ -165,8 +165,6 @@ void CmdTechDrawNewCrosshatch::activated(int iMsg)
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    Base::Console().Message("TRACE - cmd::newCrossHatch - %s - %s\n",featLabel.str().c_str(), FeatName.c_str());
-
     openCommand("Create Crosshatch");
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawCrosshatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
