@@ -76,9 +76,11 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 
+#ifdef HAVE_TBB
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
 #include <tbb/task_group.h>
+#endif
 
 
 
@@ -109,8 +111,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                             const std::string& defaultname, const std::string& /*assembly*/, bool isRef, std::vector<App::DocumentObject*>& lValue)
 {
     int hash = 0;
+#ifdef HAVE_TBB
     using namespace tbb;
     task_group g;
+#endif
     TopoDS_Shape aShape;
 
     std::vector<App::DocumentObject *> localValue;
@@ -216,7 +220,9 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
 void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name, std::vector<App::DocumentObject*>& lValue)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
+#ifdef HAVE_TBB
     using namespace tbb;
+#endif
     task_group g;
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
