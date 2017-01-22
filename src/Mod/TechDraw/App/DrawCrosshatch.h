@@ -28,15 +28,20 @@
 # include <App/PropertyLinks.h>
 #include <App/PropertyFile.h>
 
-#include "HatchLine.h"
-#include "Geometry.h"
-
 class TopoDS_Edge;
 class Bnd_Box;
+
+namespace TechDrawGeometry
+{
+class BaseGeom;
+}
 
 namespace TechDraw
 {
 class DrawViewPart;
+class HatchLine;
+class LineSet;
+class DashSet;
 
 class TechDrawExport DrawCrosshatch : public App::DocumentObject
 {
@@ -46,14 +51,10 @@ public:
     DrawCrosshatch();
     virtual ~DrawCrosshatch();
 
-    App::PropertyVector      DirProjection;                            //Source is only valid for original projection?
-    App::PropertyLinkSub     Source;                                   //the dvp & face this crosshatch belongs to
+    App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
     App::PropertyString      NamePattern;
     App::PropertyFloat       ScalePattern;
-//    App::PropertyFloat       WeightPattern;
-//    App::PropertyColor       ColorPattern;
-//    App::PropertyStringList  LineSpecs;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -63,15 +64,18 @@ public:
     }
     virtual PyObject *getPyObject(void);
 
-    std::vector<LineSet> getDrawableLines();
     DrawViewPart* getSourceView(void) const;
-    void adviseParent(void) const;               //don't like this!
- 
+
+    std::vector<LineSet> getDrawableLines(int i = 0);
+    static std::vector<LineSet> getDrawableLines(DrawViewPart* dvp, std::vector<LineSet> lineSets, int iface, double scale);
+
+    static std::vector<TopoDS_Edge> makeEdgeOverlay(HatchLine hl, Bnd_Box bBox, double scale);
+    static TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
+    static std::vector<HatchLine> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
 protected:
-    TopoDS_Edge makeLine(Base::Vector3d s, Base::Vector3d e);
+    void getParameters(void);
     std::vector<HatchLine> getDecodedSpecsFromFile();
-    std::vector<TopoDS_Edge> makeEdgeOverlay(HatchLine hl, Bnd_Box bBox);
     std::vector<LineSet> m_lineSets;
 
 private:

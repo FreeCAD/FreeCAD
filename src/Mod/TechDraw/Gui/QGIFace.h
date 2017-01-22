@@ -87,25 +87,25 @@ public:
     void setFill(QColor c, Qt::BrushStyle s);
     void setFill(QBrush b);
     void resetFill();
+
+    //general hatch parms & methods
+    void setHatchColor(App::Color c);
+    void setHatchScale(double s);
     
     //svg fill parms & methods
     void setHatchFile(std::string fileSpec);
-    void setHatchColor(std::string c);
-    void setHatchScale(double s);
     void loadSvgHatch(std::string fileSpec);
     void buildSvgHatch(void);
     void toggleSvg(bool b);
     void clearSvg(void);
     
     //PAT fill parms & methods
-//    void setCrosshatch(const QPainterPath& p);
-    void setCrosshatchColor(const QColor& c);
     void setCrosshatchWeight(double w) { m_crossWeight = w; }
-    //void setLineSets(std::vector<LineSet> ls);
     void clearLineSets(void);
     void addLineSet(QPainterPath pp, std::vector<double> dp);
     QGraphicsPathItem* addFillItem();
     void clearFillItems(void);
+    void setLineWeight(double w);
 
     //bitmap texture fill parms method
     QPixmap textureFromBitmap(std::string fileSpec);
@@ -126,7 +126,6 @@ protected:
 
     QPen setCrossPen(int i);
     QVector<qreal> decodeDashSpec(DashSpec d);
-//    QGraphicsPathItem* m_fillItem;
     std::vector<QGraphicsPathItem*> m_fillItems;
     std::vector<QPainterPath> m_crossHatchPaths;     // 0/1 dashspec per crosshatchpath
     std::vector<DashSpec> m_dashSpecs;

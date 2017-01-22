@@ -31,6 +31,7 @@
 
 #include <Gui/ViewProviderFeature.h>
 
+
 namespace TechDraw{
     class DrawCrosshatch;
 }
@@ -59,6 +60,8 @@ public:
     virtual bool useNewSelectionModel(void) const {return false;}
     virtual void setDisplayMode(const char* ModeName);
     virtual std::vector<std::string> getDisplayModes(void) const;
+    void updateGraphic(void);
+    void getParameters(void);
 
     TechDraw::DrawCrosshatch* getViewObject() const;
 };

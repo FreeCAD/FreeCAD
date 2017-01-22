@@ -74,8 +74,8 @@ QGIFace::QGIFace(int index) :
     m_styleNormal = m_styleDef;
     m_fillStyle = m_styleDef;
     m_colNormalFill = m_colDefFill;
-    setCrosshatchColor(QColor(Qt::black));
-    setCrosshatchWeight(0.5);                   //0 = cosmetic
+    m_crossColor = QColor(Qt::black);
+    setLineWeight(0.5);                   //0 = cosmetic
     
     setPrettyNormal();
     m_texture = nullptr;                      //empty texture
@@ -247,31 +247,27 @@ void QGIFace::clearFillItems(void)
     }
 }
 
-void QGIFace::setCrosshatchColor(const QColor& c)
-{
-    m_crossColor = c;
-} 
-
 //convert from PAT style "-1,0,-1,+1" to Qt style "mark,space,mark,space"
 QVector<qreal> QGIFace::decodeDashSpec(DashSpec patDash)
 {
     //Rez::guiX(something)?
-    double dotLength = 3.0;    //guess work!
+    double dotLength = 3.0;
     double unitLength = 6.0;
-    //double penWidth = m_crossWeight;
+//    double penWidth = m_crossWeight;    //mark, space and dot lengths are to be in terms of penWidth(Qt) or mm(PAT)??
+//                                        //if we want it in terms of mm, we need to divide by penWidth?
+//    double minPen = 0.01;               //avoid trouble with cosmetic pen (zero width)
     std::vector<double> result;
+    std::string prim;
     for (auto& d: patDash.get()) {
         double strokeLength;
         if (DrawUtil::fpCompare(d,0.0)) {                       //pat dot
              strokeLength = dotLength;
-             result.push_back(strokeLength);
         } else if (Rez::guiX(d) < 0) {                          //pat space
              strokeLength = fabs(Rez::guiX(d)) * unitLength;
-             result.push_back(strokeLength);
         } else {                                                //pat dash
              strokeLength = Rez::guiX(d) * unitLength;
-             result.push_back(strokeLength);
         }
+        result.push_back(strokeLength);
     }
     return QVector<qreal>::fromStdVector( result ); 
 }
@@ -284,8 +280,8 @@ QPen QGIFace::setCrossPen(int i)
     //ourSpec.dump("our spec");
     
     QPen result;
-//    result.setWidthF(m_crossWeight);
-    result.setWidthF(Rez::guiX(0.09));
+    result.setWidthF(Rez::guiX(m_crossWeight));    //Rez::guiX() ?? line weights are in mm?
+//    result.setWidthF(Rez::guiX(0.09));
     result.setColor(m_crossColor);
     if (ourSpec.empty()) {
        result.setStyle(Qt::SolidLine);
@@ -349,11 +345,10 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
     return result;
 }
 
-//c is a CSS color ie "#000000"
-//set hatch color before building hatch
-void QGIFace::setHatchColor(std::string c)
+void QGIFace::setHatchColor(App::Color c)
 {
-    m_svgCol = c;
+    m_svgCol = c.asCSSString();
+    m_crossColor = c.asValue<QColor>();
 }
 
 void QGIFace::setHatchScale(double s)
@@ -398,6 +393,10 @@ void QGIFace::setFill(QBrush b) {
 void QGIFace::resetFill() {
     m_colNormalFill = m_colDefFill;
     m_styleNormal = m_styleDef;
+}
+
+void QGIFace::setLineWeight(double w) {
+    m_crossWeight = w;
 }
 
 

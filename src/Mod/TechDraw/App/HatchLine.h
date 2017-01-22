@@ -31,7 +31,12 @@
 
 #include <Base/Vector3D.h>
 
-#include "Geometry.h"
+class TopoDS_Edge;
+
+namespace TechDrawGeometry
+{
+class BaseGeom;
+}
 
 namespace TechDraw
 {
@@ -40,6 +45,7 @@ class DrawUtil;
 
 
 // HatchLine is the result of parsing a line from PAT file into accessible parameters
+// e /HatchLine/PATSpecLine/
 class HatchLine
 {
 public:
@@ -65,7 +71,7 @@ public:
 private: 
     void init(void);
     std::vector<double> split(std::string line);
-    
+    //PAT line extracted tokens
     double m_angle;
     Base::Vector3d m_origin;
     double m_interval;
@@ -73,7 +79,7 @@ private:
     std::vector<double> m_dashParms;   //why isn't this a DashSpec object?
 };
 
-// a LineSet is all the generated edges for a HatchLine 
+// a LineSet is all the generated edges for 1 HatchLine for 1 Face
 class LineSet
 {
 public:
@@ -88,6 +94,7 @@ public:
     std::vector<double> getDashSpec(void) { return m_hatchLine.getDashParms();}
     std::vector<TopoDS_Edge> getEdges(void) { return m_edges; }
     std::vector<TechDrawGeometry::BaseGeom*> getGeoms(void) { return m_geoms; }
+    //void clearGeom(void);
     
 private:
     std::vector<TopoDS_Edge> m_edges;

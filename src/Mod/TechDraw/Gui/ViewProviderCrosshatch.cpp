@@ -36,11 +36,23 @@
 #include <Base/Exception.h>
 #include <Base/Sequencer.h>
 
-//#include <Gui/SoFCSelection.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
 #include <Gui/Selection.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObject.h>
+#include <Gui/Application.h>
+#include <Gui/Selection.h>
+#include <Gui/MainWindow.h>
+#include <Gui/Utilities.h>
+#include <Gui/Control.h>
+
 #include <Mod/TechDraw/App/DrawCrosshatch.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawView.h>
+#include "ViewProviderDrawingView.h"
 #include "ViewProviderCrosshatch.h"
 
 using namespace TechDrawGui;
@@ -55,11 +67,11 @@ ViewProviderCrosshatch::ViewProviderCrosshatch()
     static const char *vgroup = "Format";
 
     sPixmap = "actions/techdraw-crosshatch";
-    App::Color fcColor;
-    fcColor.setPackedValue(0x00000000);
 
-    ADD_PROPERTY_TYPE(ColorPattern,(fcColor),vgroup,App::Prop_None,"The color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0.0),vgroup,App::Prop_None,"Crosshatch pattern line thickness");
+    ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"The color of the pattern");
+    ADD_PROPERTY_TYPE(WeightPattern,(0.1),vgroup,App::Prop_None,"Crosshatch pattern line thickness");
+
+    getParameters();
 
 }
 
@@ -89,7 +101,10 @@ std::vector<std::string> ViewProviderCrosshatch::getDisplayModes(void) const
 //for VP properties
 void ViewProviderCrosshatch::onChanged(const App::Property* prop)
 {
-//    Base::Console().Message("TRACE - VPC::onChanged(%s)\n",prop->getName());
+    if (prop == &WeightPattern   ||
+        prop == &ColorPattern ) {
+        updateGraphic();   
+    }
 
     Gui::ViewProviderDocumentObject::onChanged(prop);
 }
@@ -97,27 +112,44 @@ void ViewProviderCrosshatch::onChanged(const App::Property* prop)
 //for feature properties
 void ViewProviderCrosshatch::updateData(const App::Property* prop)
 {
-//    Base::Console().Message("TRACE - VPC::updateData(%s)\n",prop->getName());
-    if (prop == &WeightPattern   ||
-        prop == &ColorPattern     ||
-        prop == &(getViewObject()->ScalePattern)) {
-        //Base::Console().Message("TRACE - VPC::updateData - should update parent now\n");
-        //how does QGIVP find this VP to get properties?
-//        Gui::ViewProvider* view = Application::Instance->getDocument(it->pDoc)->getViewProvider(it->pObject);
-//        TechDraw::DrawPage* fp = dynamic_cast<TechDraw::DrawPage*>(getDocument()->getObject(PageName.c_str()));
-//        Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(fp);
-//        TechDrawGui::ViewProviderPage* dvp = dynamic_cast<TechDrawGui::ViewProviderPage*>(vp);
-//        if (dvp) {
-//            dvp->show();
-
-        // redraw QGIVP
-        //QGIView* qgiv = getQView();    this will be different have to find source's QView
-//        if (qgiv) {
-//            qgiv->updateView(true);
-//        }
-     }
-
+    if (prop == &(getViewObject()->ScalePattern)) {
+        updateGraphic();
+    }
     Gui::ViewProviderDocumentObject::updateData(prop);
+}
+
+void ViewProviderCrosshatch::updateGraphic(void)
+{
+    TechDraw::DrawCrosshatch* dc = getViewObject();
+    if (dc) {
+        TechDraw::DrawViewPart* dvp = dc->getSourceView();
+        if (dvp) {
+            Gui::ViewProvider* view = Gui::Application::Instance->getDocument(dvp->getDocument())->getViewProvider(dvp);
+            TechDrawGui::ViewProviderDrawingView* vpDV = dynamic_cast<TechDrawGui::ViewProviderDrawingView*>(view);
+            if (vpDV) {
+                vpDV->show();
+                QGIView* qgiv = vpDV->getQView();
+                if (qgiv) {
+                    qgiv->updateView(true);
+                }
+            }
+        }
+   }
+}
+
+
+void ViewProviderCrosshatch::getParameters(void)
+{
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
+    App::Color fcColor;
+    fcColor.setPackedValue(hGrp->GetUnsigned("Crosshatch", 0x00000000));
+    ColorPattern.setValue(fcColor);
+   
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT"); 
+    double lineWeight = hGrp->GetFloat("GeomWeight",0.1);
+    WeightPattern.setValue(lineWeight);
 }
 
 TechDraw::DrawCrosshatch* ViewProviderCrosshatch::getViewObject() const

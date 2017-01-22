@@ -34,6 +34,7 @@
 
 #include "Geometry.h"
 
+
 namespace TechDraw
 {
 class DrawViewPart;
@@ -43,6 +44,10 @@ class DrawView;
 
 namespace TechDrawGeometry
 {
+class BaseGeom;
+class Vector;
+class Face;
+class Vertex;
 
 //! scales & mirrors a shape about a center
 TopoDS_Shape TechDrawExport mirrorShape(const TopoDS_Shape &input,

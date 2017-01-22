@@ -388,36 +388,39 @@ void QGIViewPart::drawViewPart()
             TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
             TechDraw::DrawCrosshatch* fCross = faceIsCrosshatched(i,crossObjs);
             if (fCross) {
-                std::vector<LineSet> lineSets = fCross->getDrawableLines();
-                if (!lineSets.empty()) {
-                    newFace->clearLineSets();
-                    for (auto& ls: lineSets) {
-                        QPainterPath bigPath;
-                        for (auto& g: ls.getGeoms()) {
-                            QPainterPath smallPath = drawPainterPath(g);
-                            bigPath.addPath(smallPath);
+                const std::vector<std::string> &sourceNames = fCross->Source.getSubValues();
+                if (!sourceNames.empty()) {
+                    int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
+                    std::vector<LineSet> lineSets = fCross->getDrawableLines(fdx);
+                    if (!lineSets.empty()) {
+                        newFace->clearLineSets();
+                        for (auto& ls: lineSets) {
+                            QPainterPath bigPath;
+                            for (auto& g: ls.getGeoms()) {
+                                QPainterPath smallPath = drawPainterPath(g);
+                                bigPath.addPath(smallPath);
+                            }
+                            newFace->addLineSet(bigPath,ls.getDashSpec());
                         }
-                        newFace->addLineSet(bigPath,ls.getDashSpec());
-                    }
-                    newFace->isHatched(true);
-                    newFace->setFillMode(QGIFace::CrosshatchFill);
-                    newFace->setHatchScale(fCross->ScalePattern.getValue());
-                    Gui::ViewProvider* gvp = QGIView::getViewProvider(fCross);
-                    ViewProviderCrosshatch* crossVp = dynamic_cast<ViewProviderCrosshatch*>(gvp);
-                    if (crossVp != nullptr) {
-                        App::Color hColor = crossVp->ColorPattern.getValue();
-                        newFace->setCrosshatchColor(hColor.asValue<QColor>());
-//                        newFace->setLineWeight(crossVp->WeightPattern.getValue());
+                        newFace->isHatched(true);
+                        newFace->setFillMode(QGIFace::CrosshatchFill);
+                        newFace->setHatchScale(fCross->ScalePattern.getValue());
+                        newFace->setHatchFile(fCross->FilePattern.getValue());
+                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fCross);
+                        ViewProviderCrosshatch* crossVp = dynamic_cast<ViewProviderCrosshatch*>(gvp);
+                        if (crossVp != nullptr) {
+                            newFace->setHatchColor(crossVp->ColorPattern.getValue());
+                            newFace->setLineWeight(crossVp->WeightPattern.getValue());
+                        }
                     }
                 }
             } else if (fHatch) {
                 if (!fHatch->HatchPattern.isEmpty()) {
-                    newFace->setHatchFile(fHatch->HatchPattern.getValue());
-                    App::Color hColor = fHatch->HatchColor.getValue();
-                    newFace->setHatchColor(hColor.asCSSString());
-                    newFace->setHatchScale(fHatch->HatchScale.getValue());
                     newFace->isHatched(true);
                     newFace->setFillMode(QGIFace::FromFile);
+                    newFace->setHatchFile(fHatch->HatchPattern.getValue());
+                    newFace->setHatchScale(fHatch->HatchScale.getValue());
+                    newFace->setHatchColor(fHatch->HatchColor.getValue());
                 }
             } 
             newFace->setDrawEdges(true);

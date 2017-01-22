@@ -37,13 +37,9 @@
 #include <App/DocumentObject.h>
 
 #include <Gui/Application.h>
-#include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/Selection.h>
-#include <Gui/MainWindow.h>
 #include <Gui/ViewProvider.h>
-#include <Gui/WaitCursor.h>
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 #include <Mod/TechDraw/App/DrawPage.h>
@@ -143,13 +139,16 @@ QGIView* ViewProviderDrawingView::getQView(void)
 {
     QGIView *qView = nullptr;
     if (m_docReady){
-        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-        Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
-        ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
-        if (dvp) {
-            if (dvp->getMDIViewPage()) {
-                if (dvp->getMDIViewPage()->getQGVPage()) {
-                    qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findView(getViewObject()));
+        TechDraw::DrawView* dv = getViewObject();
+        if (dv) {
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(getViewObject()->findParentPage());
+            ViewProviderPage* dvp = dynamic_cast<ViewProviderPage*>(vp);
+            if (dvp) {
+                if (dvp->getMDIViewPage()) {
+                    if (dvp->getMDIViewPage()->getQGVPage()) {
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findView(getViewObject()));
+                    }
                 }
             }
         }
