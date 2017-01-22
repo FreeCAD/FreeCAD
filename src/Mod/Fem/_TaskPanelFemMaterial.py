@@ -434,7 +434,7 @@ class _TaskPanelFemMaterial:
         if not Config.has_section(grp):
             Config.add_section(grp)
         for x in matDict.keys():
-            Config.set(grp,x,matDict[x])
+            Config.set(grp, x, matDict[x])
 
         Preamble = "# This is a FreeCAD material-card file\n\n"
         # Writing our configuration file to 'example.cfg'
@@ -449,8 +449,8 @@ class _TaskPanelFemMaterial:
         else:
             MaterialDir = 'Material'
         _UseMaterialsFromCustomDir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
-        _dir =self.fem_prefs.GetString("CustomMaterialsDir", "")
-        if  _UseMaterialsFromCustomDir and _dir != "" and os.path.isdir(_dir): 
+        _dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        if _UseMaterialsFromCustomDir and _dir != "" and os.path.isdir(_dir):
             TargetDir = self.fem_prefs.GetString("CustomMaterialsDir", "")
         elif self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True):
             TargetDir = FreeCAD.getUserAppDataDir() + os.path.sep + MaterialDir  # $HOME/.FreeCAD
@@ -459,17 +459,17 @@ class _TaskPanelFemMaterial:
         if not os.path.exists(TargetDir):
             os.mkdir(TargetDir)
 
-        saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir,  "*.FCMat")
+        saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir, "*.FCMat")
         if not saveName == "":
             print(saveName)
             knownMaterials = [self.form.cb_materials.itemText(i) for i in range(self.form.cb_materials.count())]
             material_name = os.path.basename(saveName[:-len('.FCMat')])
             if material_name not in knownMaterials:
                 self.export_FCMat(saveName, self.obj.Material)
-                FreeCAD.Console.PrintMessage("Sucessfully save the Material property file: "+ saveName + "\n")
+                FreeCAD.Console.PrintMessage("Sucessfully save the Material property file: " + saveName + "\n")
             else:
                 self.export_FCMat(saveName, self.obj.Material)
-                FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: "+ saveName + "\n")
+                FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: " + saveName + "\n")
                 """
                 msgBox = QMessageBox()
                 msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
