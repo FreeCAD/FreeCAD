@@ -224,7 +224,6 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
     using namespace tbb;
     task_group g;
 #endif
-    std::vector<App::DocumentObject*> lValue;
 
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
