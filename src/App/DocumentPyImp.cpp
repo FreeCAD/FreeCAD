@@ -492,7 +492,6 @@ Py::List DocumentPy::getObjects(void) const
 
 Py::List DocumentPy::getToplogicalSortedObjects(void) const
 {
-#ifndef USE_OLD_DAG
     std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
     Py::List res;
 
@@ -501,9 +500,6 @@ Py::List DocumentPy::getToplogicalSortedObjects(void) const
         res.append(Py::Object((*It)->getPyObject(), true));
 
     return res;
-#else
-    return Py::List();
-#endif
 }
 
 Py::List DocumentPy::getRootObjects(void) const

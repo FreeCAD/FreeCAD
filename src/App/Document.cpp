@@ -1965,42 +1965,6 @@ int Document::recompute()
 
 #else //ifdef USE_OLD_DAG
 
-std::vector<App::DocumentObject*> Document::topologicalSort() const
-{
-    // topological sort algorithm described here:
-    // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
-    vector < App::DocumentObject* > ret;
-    ret.reserve(d->objectArray.size());
-    map < App::DocumentObject*,int > countMap;
-
-    for (auto objectIt : d->objectArray)
-        countMap[objectIt] = objectIt->getInList().size();
-
-    auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool { 
-        return count.second == 0; 
-    });
-
-    if (rootObjeIt == countMap.end()){
-        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << endl;
-        return ret;
-    }
-
-    while (rootObjeIt != countMap.end()){
-        rootObjeIt->second = rootObjeIt->second - 1;
-        for (auto outListIt : rootObjeIt->first->getOutList()){
-            auto outListMapIt = countMap.find(outListIt);
-            outListMapIt->second = outListMapIt->second - 1;
-        }
-        ret.push_back(rootObjeIt->first);
-
-        rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool { 
-            return count.second == 0; 
-        });
-    }
-
-    return ret;
-}
-
 int Document::recompute()
 {
     int objectCount = 0;
@@ -2046,6 +2010,42 @@ int Document::recompute()
 }
 
 #endif // USE_OLD_DAG
+
+std::vector<App::DocumentObject*> Document::topologicalSort() const
+{
+    // topological sort algorithm described here:
+    // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
+    vector < App::DocumentObject* > ret;
+    ret.reserve(d->objectArray.size());
+    map < App::DocumentObject*,int > countMap;
+
+    for (auto objectIt : d->objectArray)
+        countMap[objectIt] = objectIt->getInList().size();
+
+    auto rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
+        return count.second == 0;
+    });
+
+    if (rootObjeIt == countMap.end()){
+        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << endl;
+        return ret;
+    }
+
+    while (rootObjeIt != countMap.end()){
+        rootObjeIt->second = rootObjeIt->second - 1;
+        for (auto outListIt : rootObjeIt->first->getOutList()){
+            auto outListMapIt = countMap.find(outListIt);
+            outListMapIt->second = outListMapIt->second - 1;
+        }
+        ret.push_back(rootObjeIt->first);
+
+        rootObjeIt = find_if(countMap.begin(), countMap.end(), [](pair < App::DocumentObject*, int > count)->bool {
+            return count.second == 0;
+        });
+    }
+
+    return ret;
+}
 
 const char * Document::getErrorDescription(const App::DocumentObject*Obj) const
 {
