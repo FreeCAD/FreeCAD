@@ -45,6 +45,7 @@ SET(PathScripts_SRCS
     PathScripts/PathPost.py
     PathScripts/PathPostProcessor.py
     PathScripts/PathPreferences.py
+    PathScripts/PathPreferencesPathDressup.py
     PathScripts/PathPreferencesPathJob.py
     PathScripts/PathProfile.py
     PathScripts/PathProfileEdges.py
@@ -54,6 +55,7 @@ SET(PathScripts_SRCS
     PathScripts/PathStock.py
     PathScripts/PathStop.py
     PathScripts/PathHelix.py
+    PathScripts/kdtree.py
     PathScripts/PathSurface.py
     PathScripts/PathToolLenOffset.py
     PathScripts/PathToolLibraryManager.py

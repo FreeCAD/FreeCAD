@@ -384,8 +384,8 @@ PyObject*  DocumentPy::recompute(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))     // convert args: Python->C 
         return NULL;                    // NULL triggers exception 
-    getDocumentPtr()->recompute();
-    Py_Return;
+    int objectCount = getDocumentPtr()->recompute();
+    return Py::new_reference_to(Py::Int(objectCount));
 }
 
 PyObject*  DocumentPy::getObject(PyObject *args)
@@ -484,6 +484,30 @@ Py::List DocumentPy::getObjects(void) const
     Py::List res;
 
     for (std::vector<DocumentObject*>::const_iterator It = objs.begin();It != objs.end();++It)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object((*It)->getPyObject(), true));
+
+    return res;
+}
+
+Py::List DocumentPy::getToplogicalSortedObjects(void) const
+{
+    std::vector<DocumentObject*> objs = getDocumentPtr()->topologicalSort();
+    Py::List res;
+
+    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
+        //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
+        res.append(Py::Object((*It)->getPyObject(), true));
+
+    return res;
+}
+
+Py::List DocumentPy::getRootObjects(void) const
+{
+    std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
+    Py::List res;
+
+    for (std::vector<DocumentObject*>::const_iterator It = objs.begin(); It != objs.end(); ++It)
         //Note: Here we must force the Py::Object to own this Python object as getPyObject() increments the counter
         res.append(Py::Object((*It)->getPyObject(), true));
 

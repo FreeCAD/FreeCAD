@@ -160,12 +160,10 @@ Gui::Action * CmdDrawingNewPage::createAction(void)
             lastPaper = paper;
             lastId = id;
 
-            QFile file(QString::fromLatin1(":/icons/actions/drawing-landscape-A0.svg"));
+            QFile file(QString::fromLatin1(":/icons/actions/drawing-%1-%2%3.svg").arg(orientation.toLower()).arg(paper).arg(id));
             QAction* a = pcAction->addAction(QString());
             if (file.open(QFile::ReadOnly)) {
-                QString s = QString::fromLatin1("style=\"font-size:22px\">%1%2</tspan></text>").arg(paper).arg(id);
                 QByteArray data = file.readAll();
-                data.replace("style=\"font-size:22px\">A0</tspan></text>", s.toLatin1());
                 a->setIcon(Gui::BitmapFactory().pixmapFromSvg(data, QSize(64,64)));
             }
 

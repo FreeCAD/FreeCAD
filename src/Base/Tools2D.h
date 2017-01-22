@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cfloat>
 #include <stdio.h>
 #include <list>
 #include <vector>
@@ -55,6 +56,8 @@ public:
 
   // methods
   inline double Length (void) const;
+  inline double Distance(const Vector2d&) const;
+  inline bool IsEqual(const Vector2d&, double tolerance) const;
 
   // operators
   inline Vector2d& operator= (const Vector2d &rclVct);
@@ -85,6 +88,7 @@ public:
   inline BoundBox2d (const BoundBox2d &rclBB);
   inline BoundBox2d (double fX1, double fY1, double fX2, double fY2);
   inline bool IsValid (void);
+  inline bool IsEqual(const BoundBox2d&, double tolerance) const;
   
   // operators
   inline BoundBox2d& operator= (const BoundBox2d& rclBB);
@@ -187,6 +191,18 @@ inline Vector2d::Vector2d (const Vector2d &rclVct)
 inline double Vector2d::Length (void) const
 {
   return sqrt ((x * x) + (y * y));
+}
+
+inline double Vector2d::Distance(const Vector2d& v) const
+{
+  double dx = (x - v.x);
+  double dy = (y - v.y);
+  return sqrt(dx*dx + dy*dy);
+}
+
+inline bool Vector2d::IsEqual(const Vector2d& v, double tolerance) const
+{
+  return Distance (v) <= tolerance;
 }
 
 inline Vector2d& Vector2d::operator= (const Vector2d &rclVct)
@@ -353,6 +369,12 @@ inline bool BoundBox2d::IsValid (void)
   return (MaxX >= MinX) && (MaxY >= MinY);
 }
 
+inline bool BoundBox2d::IsEqual(const BoundBox2d& b, double tolerance) const
+{
+  return Vector2d(MinX,MinY).IsEqual(Vector2d(b.MinX,b.MinY), tolerance) &&
+         Vector2d(MaxX,MaxY).IsEqual(Vector2d(b.MaxX,b.MaxY), tolerance);
+}
+
 inline BoundBox2d& BoundBox2d::operator= (const BoundBox2d& rclBB)
 {
   MinX = rclBB.MinX;
@@ -364,11 +386,10 @@ inline BoundBox2d& BoundBox2d::operator= (const BoundBox2d& rclBB)
 
 inline bool BoundBox2d::operator== (const BoundBox2d& rclBB) const
 {
-  return 
-      (MinX == rclBB.MinX) &&
-      (MinY == rclBB.MinY) &&
-      (MaxX == rclBB.MaxX) &&
-      (MaxY == rclBB.MaxY);
+  return (MinX == rclBB.MinX) &&
+         (MinY == rclBB.MinY) &&
+         (MaxX == rclBB.MaxX) &&
+         (MaxY == rclBB.MaxY);
 }
 
 inline void BoundBox2d::Add(const Vector2d &rclVct)

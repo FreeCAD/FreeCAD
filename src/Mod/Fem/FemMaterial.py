@@ -31,15 +31,30 @@ import FreeCAD
 import _FemMaterial
 
 
-def makeFemMaterial(name):
-    '''makeFemMaterial(name): makes an FEM Material
+def makeSolidMaterial(name):
+    '''makeSolidMaterial(name): makes an FEM Material for solid
     '''
     obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
     _FemMaterial._FemMaterial(obj)
+    obj.Category = 'Solid'
     if FreeCAD.GuiUp:
         import _ViewProviderFemMaterial
         _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
     # FreeCAD.ActiveDocument.recompute()
     return obj
 
+
+def makeFluidMaterial(name):
+    '''makeFluidMaterial(name): makes an FEM Material for fluid
+    '''
+    obj = FreeCAD.ActiveDocument.addObject("App::MaterialObjectPython", name)
+    _FemMaterial._FemMaterial(obj)
+    obj.Category = 'Fluid'
+    if FreeCAD.GuiUp:
+        import _ViewProviderFemMaterial
+        _ViewProviderFemMaterial._ViewProviderFemMaterial(obj.ViewObject)
+    # FreeCAD.ActiveDocument.recompute()
+    return obj
+
+makeFemMaterial = makeSolidMaterial  # alias to be compatible for FemTest.py
 # @}

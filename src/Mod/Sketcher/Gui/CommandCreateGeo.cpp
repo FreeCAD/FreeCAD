@@ -3530,7 +3530,8 @@ public:
             arcAngle = angleatpoint - startAngle;
             
             //if(!boost::math::isnan(angle1) && !boost::math::isnan(angle2)){
-            if(!boost::math::isnan(arcAngle)){                
+            if (!boost::math::isnan(arcAngle)) {
+                EditCurve.resize(33);
                 for (int i=0; i < 33; i++) {
                     // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
                     //double angle=i*angleatpoint/16;
@@ -3545,8 +3546,7 @@ public:
                 text.sprintf(" (%.1fR,%.1fR)", a, b);
                 setPositionText(onSketchPos, text);
             }
-            else
-            {
+            else {
                 arcAngle=0.;
             }
 
@@ -3821,13 +3821,17 @@ static const char *cursor_createarcofparabola[]={
 class DrawSketchHandlerArcOfParabola : public DrawSketchHandler
 {
 public:
-    DrawSketchHandlerArcOfParabola() : Mode(STATUS_SEEK_First),EditCurve(34){}
+    DrawSketchHandlerArcOfParabola()
+        : Mode(STATUS_SEEK_First)
+        , EditCurve(34)
+    {
+    }
     virtual ~DrawSketchHandlerArcOfParabola(){}
     /// mode table
     enum SelectMode {
         STATUS_SEEK_First,      /**< enum value ----. */
         STATUS_SEEK_Second,     /**< enum value ----. */
-        STATUS_SEEK_Third,     /**< enum value ----. */      
+        STATUS_SEEK_Third,      /**< enum value ----. */
         STATUS_SEEK_Fourth,     /**< enum value ----. */
         STATUS_Close
     };
@@ -3866,30 +3870,30 @@ public:
             double focal = (axisPoint-focusPoint).Length();
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
 
-	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-	    //
-	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+            //
+            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
             //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
             //                      0.f);
 
             // This is the angle at cursor point
             double u = 
-		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
 
-	    for (int i=15; i >= -15; i--) {
-		double angle=i*u/15;
-		double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-		double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-		EditCurve[15+i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
-	    }
+            for (int i=15; i >= -15; i--) {
+                double angle=i*u/15;
+                double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+                double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+                EditCurve[15+i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+            }
 
-	    // Display radius for user
-	    SbString text;
-	    text.sprintf(" (F%.1f)", focal);
-	    setPositionText(onSketchPos, text);
+            // Display radius for user
+            SbString text;
+            text.sprintf(" (F%.1f)", focal);
+            setPositionText(onSketchPos, text);
 
-	    sketchgui->drawEdit(EditCurve);
-	    
+            sketchgui->drawEdit(EditCurve);
+
             if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f,0.f))) {
                 renderSuggestConstraintsCursor(sugConstr3);
                 return;
@@ -3899,38 +3903,38 @@ public:
             double focal = (axisPoint-focusPoint).Length();
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
 
-	    // P(U) = O + U*U/(4.*F)*XDir + U*YDir
-	    //
-	    // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
+            // P(U) = O + U*U/(4.*F)*XDir + U*YDir
+            //
+            // pnt = Base::Vector3d(pnt0.x + angle * angle / 4 / focal * cos(phi) - angle * sin(phi),
             //                      pnt0.y + angle * angle / 4 / focal * sin(phi) + angle * cos(phi),
             //                      0.f);
 
             // This is the angle at starting point
             double ustartpoint = 
-		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
 
             double startAngle = ustartpoint;
 
             double u = 
-		( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
+            ( cos(phi) * (onSketchPos.y - axisPoint.y) - (onSketchPos.x - axisPoint.x) * sin(phi));
 
 
             arcAngle = u - startAngle;
 
-            if(!boost::math::isnan(arcAngle)){
-                for (int i=0; i < 33; i++) {
+            if (!boost::math::isnan(arcAngle)) {
+                EditCurve.resize(33);
+                for (std::size_t i=0; i < 33; i++) {
                     double angle = startAngle+i*arcAngle/32.0;
-		    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
-		    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
-		    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
+                    double rx = angle * angle / 4 / focal * cos(phi) - angle * sin(phi);
+                    double ry = angle * angle / 4 / focal * sin(phi) + angle * cos(phi);
+                    EditCurve[i] = Base::Vector2d(axisPoint.x + rx, axisPoint.y + ry);
                 }
 
-		SbString text;
-		text.sprintf(" (F%.1f)", focal);
-		setPositionText(onSketchPos, text);
+                SbString text;
+                text.sprintf(" (F%.1f)", focal);
+                setPositionText(onSketchPos, text);
             }
-            else
-            {
+            else {
                 arcAngle=0.;
             }
 
@@ -3978,21 +3982,22 @@ public:
             resetPositionText();
 
             double phi = atan2(focusPoint.y-axisPoint.y,focusPoint.x-axisPoint.x);
-		
+
             double ustartpoint = 
-		( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
-		
+            ( cos(phi) * (startingPoint.y - axisPoint.y) - (startingPoint.x - axisPoint.x) * sin(phi));
+
             double uendpoint = 
-		( cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
-		
+            ( cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
+
             double startAngle = ustartpoint;
 
             double endAngle = uendpoint;
 
             bool isOriginalArcCCW=true;
 
-            if (arcAngle > 0)
+            if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
+            }
             else {
                 endAngle = startAngle;
                 startAngle += arcAngle;
@@ -4002,27 +4007,26 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
+                Gui::Command::openCommand("Add sketch arc of Parabola");
 
-            Gui::Command::openCommand("Add sketch arc of Parabola");
+                //Add arc of parabola
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addGeometry(Part.ArcOfParabola"
+                    "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
+                    "%f,%f),%s)",
+                        sketchgui->getObject()->getNameInDocument(),
+                        focusPoint.x, focusPoint.y,
+                        axisPoint.x, axisPoint.y,
+                        startAngle, endAngle,
+                        geometryCreationMode==Construction?"True":"False");
 
-            //Add arc of parabola
-            Gui::Command::doCommand(Gui::Command::Doc,
-                "App.ActiveDocument.%s.addGeometry(Part.ArcOfParabola"
-                "(Part.Parabola(App.Vector(%f,%f,0),App.Vector(%f,%f,0),App.Vector(0,0,1)),"
-                "%f,%f),%s)",
+                currentgeoid++;
+
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
                     sketchgui->getObject()->getNameInDocument(),
-                    focusPoint.x, focusPoint.y,
-                    axisPoint.x, axisPoint.y,
-                    startAngle, endAngle,
-                    geometryCreationMode==Construction?"True":"False"); 
-
-            currentgeoid++;
-
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid);
-
+                    currentgeoid);
+                    
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4031,7 +4035,7 @@ public:
                 ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
                 bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
-                if(autoRecompute) 
+                if (autoRecompute)
                     Gui::Command::updateActive();
                 else
                     static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();            
@@ -4075,7 +4079,7 @@ public:
 
             bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
 
-            if(continuousMode){
+            if (continuousMode) {
                 // This code enables the continuous creation mode.
                 Mode = STATUS_SEEK_First;
                 EditCurve.clear();
@@ -4087,22 +4091,22 @@ public:
                  * handler is destroyed by the quit() method on pressing the
                  * right button of the mouse */                
             }
-            else{
+            else {
                 sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
             }
         }
         return true;
     }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d focusPoint, axisPoint, startingPoint, endPoint;
     double rx, ry, startAngle, endAngle, arcAngle, arcAngle_t;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
-
 };
 
-DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola);
+DEF_STD_CMD_A(CmdSketcherCreateArcOfParabola)
 
 CmdSketcherCreateArcOfParabola::CmdSketcherCreateArcOfParabola()
   : Command("Sketcher_CreateArcOfParabola")
@@ -4131,7 +4135,7 @@ bool CmdSketcherCreateArcOfParabola::isActive(void)
 
 
 /// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateEllipse'
-DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic);
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateConic)
 
 /**
  * @brief ctor
@@ -4272,6 +4276,428 @@ bool CmdSketcherCompCreateConic::isActive(void)
 {
     return isCreateGeoActive(getActiveGuiDocument());
 }
+
+// ======================================================================================
+
+/* XPM */
+static const char *cursor_createbspline[]={
+"32 32 3 1",
+"+ c white",
+"# c red",
+". c None",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"......+.........................",
+"................................",
+"+++++...+++++...................",
+"................................",
+"......+...............###.......",
+"......+...............#.#.......",
+"......+...............###.......",
+"......+..............#..#.......",
+"......+.............#....#......",
+"....................#.+..#......",
+"..................+#+..+..#...+.",
+"................++#.....+.#..+..",
+"......+........+..#......++#+...",
+".......+......+..#.........#....",
+"........++..++..#..........###..",
+"..........++....#..........#.#..",
+"......#........#...........###..",
+".......#......#.................",
+"........#.....#.................",
+".........#...#..................",
+"..........###...................",
+"..........#.#...................",
+"..........###...................",
+"................................",
+"................................",
+"................................",
+"................................",
+"................................"};
+
+class DrawSketchHandlerBSpline: public DrawSketchHandler
+{
+public:
+    DrawSketchHandlerBSpline(int constructionMethod)
+      : Mode(STATUS_SEEK_FIRST_CONTROLPOINT)
+      , EditCurve(2)
+      , CurrentConstraint(0)
+      , ConstrMethod(constructionMethod)
+    {
+        std::vector<AutoConstraint> sugConstr1;
+        sugConstr.push_back(sugConstr1);
+    }
+
+    virtual ~DrawSketchHandlerBSpline() {}
+    /// modes
+    enum SELECT_MODE {
+        STATUS_SEEK_FIRST_CONTROLPOINT,
+        STATUS_SEEK_ADDITIONAL_CONTROLPOINTS,
+        STATUS_CLOSE
+    };
+
+    virtual void activated(ViewProviderSketch *)
+    {
+        setCursor(QPixmap(cursor_createbspline),7,7);
+    }
+
+    virtual void mouseMove(Base::Vector2d onSketchPos)
+    {
+        if (Mode==STATUS_SEEK_FIRST_CONTROLPOINT) {
+            setPositionText(onSketchPos);
+            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
+                return;
+            }
+        }
+        else if (Mode==STATUS_SEEK_ADDITIONAL_CONTROLPOINTS){
+
+            EditCurve[EditCurve.size()-1] = onSketchPos;
+
+            sketchgui->drawEdit(EditCurve);
+
+            float length = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).Length();
+            float angle = (EditCurve[EditCurve.size()-1] - EditCurve[EditCurve.size()-2]).GetAngle(Base::Vector2d(1.f,0.f));
+
+            SbString text;
+            text.sprintf(" (%.1f,%.1fdeg)", length, angle * 180 / M_PI);
+            setPositionText(EditCurve[EditCurve.size()-1], text);
+            
+            if (seekAutoConstraint(sugConstr[CurrentConstraint], onSketchPos, Base::Vector2d(0.f,0.f))) {
+                renderSuggestConstraintsCursor(sugConstr[CurrentConstraint]);
+                return;
+            }
+
+        }
+        applyCursor();
+    }
+
+    virtual bool pressButton(Base::Vector2d onSketchPos)
+    {
+        if (Mode == STATUS_SEEK_FIRST_CONTROLPOINT) {
+
+            EditCurve[0] = onSketchPos;
+
+            Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
+            
+            std::vector<AutoConstraint> sugConstrN;
+            sugConstr.push_back(sugConstrN);
+            CurrentConstraint++;
+        }
+        else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
+            EditCurve[EditCurve.size()-1] = onSketchPos;
+            
+                // finish adding controlpoints on double click
+            if (EditCurve[EditCurve.size()-2] == EditCurve[EditCurve.size()-1]) {
+                EditCurve.pop_back();
+                Mode = STATUS_CLOSE;
+            }
+            else {
+                EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
+                std::vector<AutoConstraint> sugConstrN;
+                sugConstr.push_back(sugConstrN);
+                CurrentConstraint++;
+            }
+
+        }
+        return true;
+    }
+
+    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    {
+        if (Mode==STATUS_CLOSE) {
+            unsetCursor();
+            resetPositionText();
+
+            std::stringstream stream;
+
+            for (std::vector<Base::Vector2d>::const_iterator it=EditCurve.begin();
+                it != EditCurve.end(); ++it) {
+                stream << "App.Vector(" << (*it).x << "," << (*it).y << "),";
+            }
+
+            std::string controlpoints = stream.str();
+
+            // remove last comma and add brackets
+            int index = controlpoints.rfind(',');
+            controlpoints.resize(index);
+
+            controlpoints.insert(0,1,'[');
+            controlpoints.append(1,']');
+
+            int currentgeoid = getHighestCurveIndex();
+
+            try {
+
+            Gui::Command::openCommand("Add B-spline curve");
+
+            //Add arc of parabola
+            Gui::Command::doCommand(Gui::Command::Doc,
+                "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
+                "(%s,%s),"
+                "%s)",
+                    sketchgui->getObject()->getNameInDocument(),
+                    controlpoints.c_str(),
+                    ConstrMethod == 0 ?"False":"True",
+                    geometryCreationMode==Construction?"True":"False"); 
+
+            currentgeoid++;
+
+            Gui::Command::doCommand(Gui::Command::Doc,
+                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                                    sketchgui->getObject()->getNameInDocument(),
+                                    currentgeoid);
+
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                if(autoRecompute) 
+                    Gui::Command::updateActive();
+                else
+                    static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+                return false;
+            }
+
+            Gui::Command::commitCommand();
+
+            int poleindex=0;
+            for(std::vector<std::vector<AutoConstraint>>::iterator it=sugConstr.begin(); it != sugConstr.end(); it++, poleindex++) {
+                // add auto constraints
+                if ((*it).size() > 0) {
+                    createAutoConstraints((*it), currentgeoid+1+poleindex, Sketcher::mid);
+                    (*it).clear();
+                }
+            }
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
+            bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+            if(continuousMode){
+                // This code enables the continuous creation mode.
+                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                /* It is ok not to call to purgeHandler
+                 * in continuous creation mode because the 
+                 * handler is destroyed by the quit() method on pressing the
+                 * right button of the mouse */                
+            }
+            else{
+                sketchgui->purgeHandler(); // no code after this line, Handler get deleted in ViewProvider    
+            }
+        }
+        return true;
+    }
+protected:
+    SELECT_MODE Mode;
+
+    std::vector<Base::Vector2d> EditCurve;
+
+    std::vector<std::vector<AutoConstraint>> sugConstr;
+    
+    int CurrentConstraint;
+    int ConstrMethod;
+};
+
+DEF_STD_CMD_A(CmdSketcherCreateBSpline)
+
+CmdSketcherCreateBSpline::CmdSketcherCreateBSpline()
+  : Command("Sketcher_CreateBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline via control point in the sketch.");
+    sWhatsThis      = "Sketcher_CreateBSpline";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_CreateBSpline";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreateBSpline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerBSpline(0) );
+}
+
+/*void CmdSketcherCreateBSpline::updateAction(int mode)
+{
+    switch (mode) {
+    case Normal:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+        break;
+    case Construction:
+        if (getAction())
+            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
+        break;
+    }
+}*/
+
+bool CmdSketcherCreateBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCreateBSpline'
+DEF_STD_CMD_A(CmdSketcherCreatePeriodicBSpline)
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCreatePeriodicBSpline::CmdSketcherCreatePeriodicBSpline()
+: Command("Sketcher_CreatePeriodicBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create periodic B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a periodic B-spline via control point in the sketch.");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_Create_Periodic_BSpline";
+    eType           = ForEdit;
+}
+
+void CmdSketcherCreatePeriodicBSpline::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(),new DrawSketchHandlerEllipse(1) );
+}
+
+bool CmdSketcherCreatePeriodicBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
+
+/// @brief Macro that declares a new sketcher command class 'CmdSketcherCompCreateBSpline'
+DEF_STD_CMD_ACLU(CmdSketcherCompCreateBSpline)
+
+/**
+ * @brief ctor
+ */
+CmdSketcherCompCreateBSpline::CmdSketcherCompCreateBSpline()
+: Command("Sketcher_CompCreateBSpline")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Create a B-spline");
+    sToolTipText    = QT_TR_NOOP("Create a B-spline in the sketch");
+    sWhatsThis      = sToolTipText;
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+/**
+ * @brief Instantiates the bspline handler when the bspline command activated
+ * @param int iMsg
+ */
+void CmdSketcherCompCreateBSpline::activated(int iMsg)
+{
+    if (iMsg == 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+    } else if (iMsg == 1) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerBSpline(iMsg));
+    } else {
+        return;
+    }
+
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompCreateBSpline::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+
+    QAction* bspline = pcAction->addAction(QString());
+    bspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+
+    QAction* periodicbspline = pcAction->addAction(QString());
+    periodicbspline->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+
+    _pcAction = pcAction;
+    languageChange();
+
+    // default
+    pcAction->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+    int defaultId = 0;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+
+    return pcAction;
+}
+
+void CmdSketcherCompCreateBSpline::updateAction(int mode)
+{
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+    if (!pcAction)
+        return;
+
+    QList<QAction*> a = pcAction->actions();
+    int index = pcAction->property("defaultAction").toInt();
+    switch (mode) {
+        case Normal:
+            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline"));
+            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline"));
+            getAction()->setIcon(a[index]->icon());
+            break;
+        case Construction:
+            a[0]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateBSpline_Constr"));
+            a[1]->setIcon(Gui::BitmapFactory().pixmap("Sketcher_Create_Periodic_BSpline_Constr"));
+            getAction()->setIcon(a[index]->icon());
+            break;
+    }
+}
+
+void CmdSketcherCompCreateBSpline::languageChange()
+{
+    Command::languageChange();
+    
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    QAction* bspline = a[0];
+    bspline->setText(QApplication::translate("Sketcher_CreateBSpline","B-spline by control points or poles"));
+    bspline->setToolTip(QApplication::translate("Sketcher_CreateBSpline","Create a B-spline by control points or poles"));
+    bspline->setStatusTip(QApplication::translate("Sketcher_CreateBSpline","Create a B-spline by control points or poles"));
+    QAction* periodicbspline = a[1];
+    periodicbspline->setText(QApplication::translate("Sketcher_Create_Periodic_BSpline","Periodic B-spline by control points or poles"));
+    periodicbspline->setToolTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic B-spline by control points or poles"));
+    periodicbspline->setStatusTip(QApplication::translate("Sketcher_Create_Periodic_BSpline","Create a periodic B-spline by control points or poles"));
+}
+
+bool CmdSketcherCompCreateBSpline::isActive(void)
+{
+    return isCreateGeoActive(getActiveGuiDocument());
+}
+
 
 // ======================================================================================
 
@@ -6340,6 +6766,9 @@ void CreateSketcherCommandsCreateGeo(void)
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfEllipse());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfHyperbola());
     rcCmdMgr.addCommand(new CmdSketcherCreateArcOfParabola());
+    rcCmdMgr.addCommand(new CmdSketcherCreateBSpline());
+    rcCmdMgr.addCommand(new CmdSketcherCreatePeriodicBSpline());
+    rcCmdMgr.addCommand(new CmdSketcherCompCreateBSpline());
     rcCmdMgr.addCommand(new CmdSketcherCreateLine());
     rcCmdMgr.addCommand(new CmdSketcherCreatePolyline());
     rcCmdMgr.addCommand(new CmdSketcherCreateRectangle());

@@ -62,6 +62,8 @@
         <file>icons/Sketcher_Create3PointCircle_Constr.svg</file>
         <file>icons/Sketcher_CreateArc.svg</file>
         <file>icons/Sketcher_CreateArc_Constr.svg</file>
+        <file>icons/Sketcher_CreateBSpline.svg</file>
+        <file>icons/Sketcher_CreateBSpline_Constr.svg</file>
         <file>icons/Sketcher_CreateCircle.svg</file>
         <file>icons/Sketcher_CreateCircle_Constr.svg</file>
         <file>icons/Sketcher_CreateEllipse.svg</file>
@@ -91,12 +93,17 @@
         <file>icons/Sketcher_CreateText.svg</file>
         <file>icons/Sketcher_CreateTriangle.svg</file>
         <file>icons/Sketcher_CreateTriangle_Constr.svg</file>
+        <file>icons/Sketcher_Create_Periodic_BSpline.svg</file>
+        <file>icons/Sketcher_Create_Periodic_BSpline_Constr.svg</file>
         <file>icons/Sketcher_DraftLine.svg</file>
         <file>icons/Sketcher_EditSketch.svg</file>
         <file>icons/Sketcher_Element_Arc_Edge.svg</file>
         <file>icons/Sketcher_Element_Arc_EndPoint.svg</file>
         <file>icons/Sketcher_Element_Arc_MidPoint.svg</file>
         <file>icons/Sketcher_Element_Arc_StartingPoint.svg</file>
+        <file>icons/Sketcher_Element_BSpline_Edge.svg</file>
+        <file>icons/Sketcher_Element_BSpline_EndPoint.svg</file>
+        <file>icons/Sketcher_Element_BSpline_StartPoint.svg</file>
         <file>icons/Sketcher_Element_Circle_Edge.svg</file>
         <file>icons/Sketcher_Element_Circle_MidPoint.svg</file>
         <file>icons/Sketcher_Element_Ellipse_All.svg</file>

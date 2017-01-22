@@ -69,7 +69,7 @@ template <>
 struct float_traits<double> {
     typedef double float_type;
     static inline float_type pi() { return D_PI; }
-    static inline float_type epsilon() { return FLT_EPSILON; }
+    static inline float_type epsilon() { return DBL_EPSILON; }
     static inline float_type maximum() { return DBL_MAX; }
 };
 

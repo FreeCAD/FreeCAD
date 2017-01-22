@@ -338,7 +338,7 @@ class ObjectPocket:
                         else:
                             output += "G3"
                         output += " X" + fmt(point.x) + " Y" + fmt(point.y) + " Z" + fmt(vpos)
-                        output += " I" + fmt(relcenter.x) + " J" + fmt(relcenter.y) + " K" + fmt(relcenter.z)  + " F" + fmt(self.horizFeed) 
+                        output += " I" + fmt(relcenter.x) + " J" + fmt(relcenter.y) + " K" + fmt(relcenter.z)  + " F" + fmt(self.horizFeed)
                         output += "\n"
                         last = point
                     else:
@@ -545,17 +545,17 @@ class TaskPanel:
     def getFields(self):
         if self.obj:
             if hasattr(self.obj, "StartDepth"):
-                self.obj.StartDepth = self.form.startDepth.text()
+                self.obj.StartDepth = FreeCAD.Units.Quantity(self.form.startDepth.text()).Value
             if hasattr(self.obj, "FinalDepth"):
-                self.obj.FinalDepth = self.form.finalDepth.text()
+                self.obj.FinalDepth = FreeCAD.Units.Quantity(self.form.finalDepth.text()).Value
             if hasattr(self.obj, "SafeHeight"):
-                self.obj.SafeHeight = self.form.safeHeight.text()
+                self.obj.SafeHeight = FreeCAD.Units.Quantity(self.form.safeHeight.text()).Value
             if hasattr(self.obj, "ClearanceHeight"):
-                self.obj.ClearanceHeight = self.form.clearanceHeight.text()
+                self.obj.ClearanceHeight = FreeCAD.Units.Quantity(self.form.clearanceHeight.text()).Value
             if hasattr(self.obj, "StepDown"):
-                self.obj.StepDown = self.form.stepDown.text()
+                self.obj.StepDown = FreeCAD.Units.Quantity(self.form.stepDown.text()).Value
             if hasattr(self.obj, "MaterialAllowance"):
-                self.obj.MaterialAllowance = self.form.extraOffset.text()
+                self.obj.MaterialAllowance = FreeCAD.Units.Quantity(self.form.extraOffset.text()).Value
             if hasattr(self.obj, "UseStartPoint"):
                 self.obj.UseStartPoint = self.form.useStartPoint.isChecked()
             if hasattr(self.obj, "Algorithm"):
@@ -567,23 +567,23 @@ class TaskPanel:
             if hasattr(self.obj, "ZigUnidirectional"):
                 self.obj.ZigUnidirectional = self.form.zigZagUnidirectional.isChecked()
             if hasattr(self.obj, "ZigZagAngle"):
-                self.obj.ZigZagAngle = self.form.zigZagAngle.value()
+                self.obj.ZigZagAngle = FreeCAD.Units.Quantity(self.form.zigZagAngle.text()).Value
             if hasattr(self.obj, "StepOver"):
                 self.obj.StepOver = self.form.stepOverPercent.value()
 
         self.obj.Proxy.execute(self.obj)
 
     def setFields(self):
-        self.form.startDepth.setText(str(self.obj.StartDepth.Value))
-        self.form.finalDepth.setText(str(self.obj.FinalDepth.Value))
-        self.form.safeHeight.setText(str(self.obj.SafeHeight.Value))
-        self.form.clearanceHeight.setText(str(self.obj.ClearanceHeight.Value))
-        self.form.stepDown.setText(str(self.obj.StepDown))
-        self.form.extraOffset.setText(str(self.obj.MaterialAllowance.Value))
+        self.form.startDepth.setText(FreeCAD.Units.Quantity(self.obj.StartDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.finalDepth.setText(FreeCAD.Units.Quantity(self.obj.FinalDepth.Value, FreeCAD.Units.Length).UserString)
+        self.form.safeHeight.setText(FreeCAD.Units.Quantity(self.obj.SafeHeight.Value, FreeCAD.Units.Length).UserString)
+        self.form.clearanceHeight.setText(FreeCAD.Units.Quantity(self.obj.ClearanceHeight.Value,  FreeCAD.Units.Length).UserString)
+        self.form.stepDown.setText(FreeCAD.Units.Quantity(self.obj.StepDown.Value, FreeCAD.Units.Length).UserString)
+        self.form.extraOffset.setText(FreeCAD.Units.Quantity(self.obj.MaterialAllowance, FreeCAD.Units.Length).UserString)
         self.form.useStartPoint.setChecked(self.obj.UseStartPoint)
         self.form.useZigZag.setChecked(self.obj.UseZigZag)
         self.form.zigZagUnidirectional.setChecked(self.obj.ZigUnidirectional)
-        self.form.zigZagAngle.setValue(self.obj.ZigZagAngle)
+        self.form.zigZagAngle.setText(FreeCAD.Units.Quantity(self.obj.ZigZagAngle, FreeCAD.Units.Angle).UserString)
         self.form.stepOverPercent.setValue(self.obj.StepOver)
 
         index = self.form.algorithmSelect.findText(self.obj.Algorithm, QtCore.Qt.MatchFixedString)

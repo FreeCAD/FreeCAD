@@ -29,6 +29,8 @@ import Path
 
 from FreeCAD import Vector
 
+PathGeomTolerance = 0.000001
+
 class Side:
     """Class to determine and define the side a Path is on, or Vectors are in relation to each other."""
     Left  = +1
@@ -70,22 +72,24 @@ class PathGeom:
     CmdMoveArc      = CmdMoveCW + CmdMoveCCW
     CmdMove         = CmdMoveStraight + CmdMoveArc
 
+    Tolerance = PathGeomTolerance
+
     @classmethod
-    def isRoughly(cls, float1, float2, error=0.0000001):
-        """(float1, float2, [error=0.0000001])
-        Returns true if the two values are the same within a given error."""
+    def isRoughly(cls, float1, float2, error=PathGeomTolerance):
+        """(float1, float2, [error=%s])
+        Returns true if the two values are the same within a given error.""" % PathGeomTolerance
         return math.fabs(float1 - float2) <= error
 
     @classmethod
-    def pointsCoincide(cls, p1, p2, error=0.0000001):
-        """(p1, p2, [error=0.0000001])
-        Return True if two points are roughly identical (see also isRoughly)."""
+    def pointsCoincide(cls, p1, p2, error=PathGeomTolerance):
+        """(p1, p2, [error=%s])
+        Return True if two points are roughly identical (see also isRoughly).""" % PathGeomTolerance
         return cls.isRoughly(p1.x, p2.x, error) and cls.isRoughly(p1.y, p2.y, error) and cls.isRoughly(p1.z, p2.z, error)
 
     @classmethod
-    def edgesMatch(cls, e0, e1, error=0.0000001):
-        """(e0, e1, [error=0.0000001]
-        Return true if the edges start and end at the same point and have the same type of curve."""
+    def edgesMatch(cls, e0, e1, error=PathGeomTolerance):
+        """(e0, e1, [error=%s]
+        Return true if the edges start and end at the same point and have the same type of curve.""" % PathGeomTolerance
         if type(e0.Curve) != type(e1.Curve):
             return False
         if not cls.pointsCoincide(e0.valueAt(e0.FirstParameter), e1.valueAt(e1.FirstParameter)):
@@ -95,9 +99,9 @@ class PathGeom:
         return True
 
     @classmethod
-    def edgeConnectsTo(cls, edge, vector):
-        """(edge, vector)
-        Returns True if edge connects to given vector."""
+    def edgeConnectsTo(cls, edge, vector, error=PathGeomTolerance):
+        """(edge, vector, error=%f)
+        Returns True if edge connects to given vector.""" % PathGeomTolerance
         return cls.pointsCoincide(edge.valueAt(edge.FirstParameter), vector) or cls.pointsCoincide(edge.valueAt(edge.LastParameter), vector)
 
     @classmethod
@@ -106,7 +110,7 @@ class PathGeom:
         Returns the angle [-pi,pi] of a vector using the X-axis as the reference.
         Positive angles for vertexes in the upper hemishpere (positive y values)
         and negative angles for the lower hemishpere."""
-        a = vector.getAngle(FreeCAD.Vector(1,0,0))
+        a = vector.getAngle(Vector(1,0,0))
         if vector.y < 0:
             return -a
         return a
@@ -132,7 +136,7 @@ class PathGeom:
         x = cmd.Parameters.get(X, defaultPoint.x)
         y = cmd.Parameters.get(Y, defaultPoint.y)
         z = cmd.Parameters.get(Z, defaultPoint.z)
-        return FreeCAD.Vector(x, y, z)
+        return Vector(x, y, z)
 
     @classmethod
     def xy(cls, point):
@@ -141,15 +145,15 @@ class PathGeom:
         return Vector(point.x, point.y, 0)
 
     @classmethod
-    def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True):
-        """(edge, flip = False, useHelixForBSpline = True) -> List(Path.Command)
+    def cmdsForEdge(cls, edge, flip = False, useHelixForBSpline = True, segm = 50):
+        """(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
         Returns a list of Path.Command representing the given edge.
         If flip is True the edge is considered to be backwards.
         If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
         to represent a helix and results in G2 or G3 command. Otherwise edge has
         no direct Path.Command mapping and will be approximated by straight segments.
-        Approximation is also the approach for edges that are neither straight lines
-        nor arcs (nor helixes)."""
+        segm is a factor for the segmentation of arbitrary curves not mapped to G1/2/3
+        commands. The higher the value the more segments will be used."""
         pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
         params = {'X': pt.x, 'Y': pt.y, 'Z': pt.z}
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
@@ -162,7 +166,7 @@ class PathGeom:
                 p1 = pt
                 p3 = edge.valueAt(edge.LastParameter)
             p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
-            if type(edge.Curve) == Part.Circle or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
+            if (type(edge.Curve) == Part.Circle and cls.isRoughly(edge.Curve.Axis.x, 0) and cls.isRoughly(edge.Curve.Axis.y, 0)) or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve):
                 if Side.Left == Side.of(p2 - p1, p3 - p2):
                     cmd = 'G3'
                 else:
@@ -187,7 +191,7 @@ class PathGeom:
                     return [ Path.Command('G1', {'X': p3.x, 'Y': p3.y, 'Z': p3.z}) ]
                 # at this point pixellation is all we can do
                 commands = []
-                segments = int(math.ceil((deviation / eStraight.Length) * 1000))
+                segments = int(math.ceil((deviation / eStraight.Length) * segm))
                 #print("**** pixellation with %d segments" % segments)
                 dParameter = (edge.LastParameter - edge.FirstParameter) / segments
                 for i in range(0, segments):
@@ -232,7 +236,7 @@ class PathGeom:
             #print("arc: A=(%.2f, %.2f) B=(%.2f, %.2f) -> d=%.2f" % (A.x, A.y, B.x, B.y, d))
             #print("arc: R=%.2f angle=%.2f" % (R, angle/math.pi))
             if startPoint.z == endPoint.z:
-                midPoint = center + FreeCAD.Vector(math.cos(angle), math.sin(angle), 0) * R
+                midPoint = center + Vector(math.cos(angle), math.sin(angle), 0) * R
                 return Part.Edge(Part.Arc(startPoint, midPoint, endPoint))
 
             # It's a Helix
@@ -255,7 +259,7 @@ class PathGeom:
         return None
 
     @classmethod
-    def wireForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
+    def wireForPath(cls, path, startPoint = Vector(0, 0, 0)):
         """(path, [startPoint=Vector(0,0,0)])
         Returns a wire representing all move commands found in the given path."""
         edges = []
@@ -271,7 +275,7 @@ class PathGeom:
         return (Part.Wire(edges), rapid)
 
     @classmethod
-    def wiresForPath(cls, path, startPoint = FreeCAD.Vector(0, 0, 0)):
+    def wiresForPath(cls, path, startPoint = Vector(0, 0, 0)):
         """(path, [startPoint=Vector(0,0,0)])
         Returns a collection of wires, each representing a continuous cutting Path in path."""
         wires = []
@@ -306,7 +310,7 @@ class PathGeom:
         #print("- (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f): %.2f:%.2f" % (edge.Vertexes[0].X, edge.Vertexes[0].Y, edge.Vertexes[0].Z, edge.Vertexes[1].X, edge.Vertexes[1].Y, edge.Vertexes[1].Z, z0, z1))
         #print("- %s -> %s" % (cmd, command))
 
-        return cls.edgeForCmd(command, FreeCAD.Vector(p1.x, p1.y, z0))
+        return cls.edgeForCmd(command, Vector(p1.x, p1.y, z0))
 
 
     @classmethod
@@ -316,9 +320,9 @@ class PathGeom:
         p1 = edge.valueAt(edge.FirstParameter)
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter)/2)
         p3 = edge.valueAt(edge.LastParameter)
-        p01 = FreeCAD.Vector(p1.x, p1.y, z)
-        p02 = FreeCAD.Vector(p2.x, p2.y, z)
-        p03 = FreeCAD.Vector(p3.x, p3.y, z)
+        p01 = Vector(p1.x, p1.y, z)
+        p02 = Vector(p2.x, p2.y, z)
+        p03 = Vector(p3.x, p3.y, z)
         return Part.Edge(Part.Arc(p01, p02, p03))
 
     @classmethod
@@ -364,6 +368,6 @@ class PathGeom:
         else:
             # it's a helix
             arc = cls.helixToArc(edge, 0)
-            aes = cls.splitArcAt(arc, FreeCAD.Vector(pt.x, pt.y, 0))
+            aes = cls.splitArcAt(arc, Vector(pt.x, pt.y, 0))
             return [cls.arcToHelix(aes[0], p1.z, p2.z), cls.arcToHelix(aes[1], p2.z, p3.z)]
 

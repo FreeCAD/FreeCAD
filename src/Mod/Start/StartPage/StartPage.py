@@ -23,9 +23,14 @@
 
 # This is the start page template
 
-import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,cStringIO
+import os,FreeCAD,FreeCADGui,tempfile,time,zipfile,urllib,re,sys
 from PySide import QtGui
 from xml.etree.ElementTree import parse
+
+try:
+    import io as cStringIO
+except:
+    import cStringIO
 
 FreeCADGui.addLanguagePath(":/translations")
 FreeCADGui.updateLocale()
@@ -35,19 +40,30 @@ def translate(context,text):
     # return str(QtGui.QApplication.translate(context, text, None, QtGui.QApplication.UnicodeUTF8).toUtf8())
     try:
         _encoding = QtGui.QApplication.UnicodeUTF8
-        u = QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+        u = QtGui.QApplication.translate(context, text, None, _encoding)
     except AttributeError:
-        u = QtGui.QApplication.translate(context, text, None).encode("utf8")
-        
-    s = cStringIO.StringIO()
-    for i in u:
-        if ord(i) == 39:
-            s.write("\\'")
-        else:
-            s.write(i)
-    t = s.getvalue()
-    s.close()
-    return t
+        u = QtGui.QApplication.translate(context, text, None)
+
+    if sys.version_info.major < 3:
+        u = u.encode("utf8")
+
+    # s = cStringIO.StringIO()
+    # for i in u:
+    #     if sys.version_info.major > 2: #below only works correctly in python3
+    #         if i == 39:
+    #             s.write("\\'")
+    #         else:
+    #             s.write(chr(i))
+    #     else:
+    #         if ord(i) == 39:
+    #             s.write(unicode("\\'"))
+    #         else:
+    #             s.write(unicode(i))
+    # t = s.getvalue()
+    # s.close()
+    # return t
+    
+    return u.replace(chr(39), "\\'")
 
 # texts to be translated
 
@@ -612,7 +628,7 @@ def getFeed(url,numitems=3):
         resp += item['title']
         resp += '</a></li>'
     resp += '</ul>'
-    print resp
+    print(resp)
     return resp
 
 def getCustomBlocks():
@@ -638,7 +654,7 @@ def setColors(html):
         defaults["#textcolor"] = palette.text().color().name()
         defaults["#windowcolor"] = palette.window().color().name()
         defaults["#windowtextcolor"] = palette.windowText().color().name()
-    for k,v in defaults.iteritems():
+    for k,v in defaults.items():
         html = html.replace(k,str(v))
     return html
 

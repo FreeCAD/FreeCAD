@@ -405,7 +405,6 @@ std::vector<splitPoint> DrawProjectSplit::sortSplits(std::vector<splitPoint>& s,
     return result;
 }
 
-
 std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges)
 {
     std::vector<TopoDS_Edge> result;
@@ -421,7 +420,7 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
         item.startAngle = DrawUtil::angleWithX(e,v1);
         item.endAngle = DrawUtil::angleWithX(e,v2);
         //catch reverse-duplicates
-        if (DrawUtil::vectorCompare(item.start,item.end) > 0) {
+        if (DrawUtil::vectorLess(item.end,item.start)) {
              Base::Vector3d vTemp = item.start;
              item.start  = item.end;
              item.end    = vTemp;
@@ -446,14 +445,13 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
             Base::Console().Message("ERROR - DPS::removeDuplicateEdges - access: %d inEdges: %d\n",e.idx,inEdges.size());
         }
     }
-
     return result;
 }
 
 std::vector<edgeSortItem> DrawProjectSplit::sortEdges(std::vector<edgeSortItem>& e, bool ascend)
 {
     std::vector<edgeSortItem> sorted = e;
-    std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeCompare);
+    std::sort(sorted.begin(), sorted.end(), edgeSortItem::edgeLess);
     if (ascend) {
         std::reverse(sorted.begin(),sorted.end());
     }
@@ -476,24 +474,23 @@ std::string edgeSortItem::dump(void)
 
 
 //true if "e1 < e2" - for sorting
-/*static*/bool edgeSortItem::edgeCompare(const edgeSortItem& e1, const edgeSortItem& e2)
+/*static*/bool edgeSortItem::edgeLess(const edgeSortItem& e1, const edgeSortItem& e2)
 {
     bool result = false;
-    int vCompare = DrawUtil::vectorCompare(e1.start, e2.start);
-    if ( vCompare == -1) {
-        result = true;
-    } else if (vCompare == 0) {
-        if (e1.startAngle < e2.startAngle) {
-                result = true;
-        } else if (DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
-            if (e1.endAngle < e2.startAngle) {
-                result = true;
-            } else if (DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
-                if (e1.idx < e2.idx) {
-                    result = true;
-                }
-            }
+    if (!((e1.start - e2.start).Length() < Precision::Confusion())) {  //e1 != e2
+        if ( DrawUtil::vectorLess(e1.start, e2.start)) {
+            result = true;
         }
+    } else if (!DrawUtil::fpCompare(e1.startAngle, e2.startAngle)) {
+        if (e1.startAngle < e2.startAngle) {
+            result = true;
+        }
+    } else if (!DrawUtil::fpCompare(e1.endAngle, e2.endAngle)) {
+        if (e1.endAngle < e2.startAngle) {
+            result = true;
+        } 
+    } else if (e1.idx < e2.idx) {
+        result = true;
     }
     return result;
 }
@@ -502,8 +499,10 @@ std::string edgeSortItem::dump(void)
 /*static*/bool edgeSortItem::edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2)
 {
     bool result = false;
-    if ( (e1.start == e2.start) &&
-         (e1.end   == e2.end)   &&
+    double startDif = (e1.start - e2.start).Length();
+    double endDif   = (e1.end   - e2.end).Length();
+    if ( (startDif < Precision::Confusion()) &&
+         (endDif   < Precision::Confusion()) &&
          (DrawUtil::fpCompare(e1.startAngle,e2.startAngle)) &&
          (DrawUtil::fpCompare(e1.endAngle,e2.endAngle)) ) {
         result = true;

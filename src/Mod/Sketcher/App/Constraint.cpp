@@ -56,7 +56,8 @@ Constraint::Constraint()
   ThirdPos(none),
   LabelDistance(10.f),
   LabelPosition(0.f),
-  isDriving(true)
+  isDriving(true),
+  InternalAlignmentIndex(-1)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -85,6 +86,7 @@ Constraint::Constraint(const Constraint& from)
   LabelDistance(from.LabelDistance),
   LabelPosition(from.LabelPosition),
   isDriving(from.isDriving),
+  InternalAlignmentIndex(from.InternalAlignmentIndex),
   tag(from.tag)
 {
 }
@@ -114,6 +116,7 @@ Constraint *Constraint::copy(void) const
     temp->LabelDistance = this->LabelDistance;
     temp->LabelPosition = this->LabelPosition;
     temp->isDriving = this->isDriving;
+    temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
     return temp;
 }
@@ -172,22 +175,24 @@ unsigned int Constraint::getMemSize (void) const
 void Constraint::Save (Writer &writer) const
 {
     writer.Stream() << writer.ind()     << "<Constrain "
-    << "Name=\""                        <<  Name                << "\" "
-    << "Type=\""                        <<  (int)Type           << "\" ";
+    << "Name=\""                        <<  Name                    << "\" "
+    << "Type=\""                        <<  (int)Type               << "\" ";
     if(this->Type==InternalAlignment)
         writer.Stream() 
-        << "InternalAlignmentType=\""   <<  (int)AlignmentType  << "\" ";
+        << "InternalAlignmentType=\""   <<  (int)AlignmentType      << "\" "
+        << "InternalAlignmentIndex=\""  <<  InternalAlignmentIndex  << "\" ";
     writer.Stream()     
-    << "Value=\""                       <<  Value               << "\" "
-    << "First=\""                       <<  First               << "\" "
-    << "FirstPos=\""                    <<  (int)  FirstPos     << "\" "
-    << "Second=\""                      <<  Second              << "\" "
-    << "SecondPos=\""                   <<  (int) SecondPos     << "\" "
-    << "Third=\""                       <<  Third               << "\" "
-    << "ThirdPos=\""                    <<  (int) ThirdPos      << "\" "
-    << "LabelDistance=\""               <<  LabelDistance       << "\" "
-    << "LabelPosition=\""               <<  LabelPosition       << "\" "
-    << "IsDriving=\""                   <<  (int)isDriving      << "\" />"
+    << "Value=\""                       <<  Value                   << "\" "
+    << "First=\""                       <<  First                   << "\" "
+    << "FirstPos=\""                    <<  (int)  FirstPos         << "\" "
+    << "Second=\""                      <<  Second                  << "\" "
+    << "SecondPos=\""                   <<  (int) SecondPos         << "\" "
+    << "Third=\""                       <<  Third                   << "\" "
+    << "ThirdPos=\""                    <<  (int) ThirdPos          << "\" "
+    << "LabelDistance=\""               <<  LabelDistance           << "\" "
+    << "LabelPosition=\""               <<  LabelPosition           << "\" "
+    << "IsDriving=\""                   <<  (int)isDriving          << "\" />"
+
     << std::endl;
 }
 
@@ -202,10 +207,15 @@ void Constraint::Restore(XMLReader &reader)
     Second    = reader.getAttributeAsInteger("Second");
     SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
 
-    if(this->Type==InternalAlignment)
+    if(this->Type==InternalAlignment) {
         AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
-    else
+
+        if (reader.hasAttribute("InternalAlignmentIndex"))
+            InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
+    }
+    else {
         AlignmentType = Undef;
+    }
 
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {

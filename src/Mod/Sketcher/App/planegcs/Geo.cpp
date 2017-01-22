@@ -607,4 +607,116 @@ ArcOfParabola* ArcOfParabola::Copy()
     return crv;
 }
 
+// bspline
+DeriVector2 BSpline::CalculateNormal(Point& p, double* derivparam)
+{
+    // place holder
+    DeriVector2 ret;
+    
+    if (mult[0] > degree && mult[mult.size()-1] > degree) {
+    // if endpoints thru end poles    
+        if(*p.x == *start.x && *p.y == *start.y) {
+            // and you are asking about the normal at start point
+            // then tangency is defined by first to second poles
+            DeriVector2 endpt(this->poles[1], derivparam);
+            DeriVector2 spt(this->poles[0], derivparam);
+            DeriVector2 npt(this->poles[2], derivparam); // next pole to decide normal direction
+            
+            DeriVector2 tg = endpt.subtr(spt);
+            DeriVector2 nv = npt.subtr(spt);
+            
+            if ( tg.scalarProd(nv) > 0 )
+                ret = tg.rotate90cw();
+            else
+                ret = tg.rotate90ccw();
+        }
+        else if(*p.x == *end.x && *p.y == *end.y) {
+            // and you are asking about the normal at end point
+            // then tangency is defined by last to last but one poles
+            DeriVector2 endpt(this->poles[poles.size()-1], derivparam);
+            DeriVector2 spt(this->poles[poles.size()-2], derivparam);
+            DeriVector2 npt(this->poles[poles.size()-3], derivparam); // next pole to decide normal direction
+            
+            DeriVector2 tg = endpt.subtr(spt);
+            DeriVector2 nv = npt.subtr(spt);
+            
+            if ( tg.scalarProd(nv) > 0 )
+                ret = tg.rotate90ccw();
+            else
+                ret = tg.rotate90cw();
+        } else {
+           // another point and we have no clue until we implement De Boor
+            ret = DeriVector2();
+        }
+    }
+    else {
+      // either periodic or abnormal endpoint multiplicity, we have no clue so currently unsupported
+        ret = DeriVector2();
+    }
+
+
+    return ret;
+}
+
+DeriVector2 BSpline::Value(double /*u*/, double /*du*/, double* /*derivparam*/)
+{
+    // place holder
+    DeriVector2 ret = DeriVector2();
+
+    return ret;
+}
+
+int BSpline::PushOwnParams(VEC_pD &pvec)
+{
+    std::size_t cnt=0;
+
+    for(VEC_P::const_iterator it = poles.begin(); it != poles.end(); ++it) {
+        pvec.push_back( (*it).x );
+        pvec.push_back( (*it).y );
+    }
+
+    cnt = cnt + poles.size() * 2;
+
+    pvec.insert(pvec.end(), weights.begin(), weights.end());
+    cnt = cnt + weights.size();
+
+    pvec.insert(pvec.end(), knots.begin(), knots.end());
+    cnt = cnt + knots.size();
+    
+    pvec.push_back(start.x); cnt++;
+    pvec.push_back(start.y); cnt++;
+    pvec.push_back(end.x); cnt++;
+    pvec.push_back(end.y); cnt++;
+
+    return static_cast<int>(cnt);
+}
+
+void BSpline::ReconstructOnNewPvec(VEC_pD &pvec, int &cnt)
+{
+    for(VEC_P::iterator it = poles.begin(); it != poles.end(); ++it) {
+        (*it).x = pvec[cnt]; cnt++;
+        (*it).y = pvec[cnt]; cnt++;
+    }
+
+    for(VEC_pD::iterator it = weights.begin(); it != weights.end(); ++it) {
+        (*it) = pvec[cnt]; cnt++;
+    }
+
+    for(VEC_pD::iterator it = knots.begin(); it != knots.end(); ++it) {
+        (*it) = pvec[cnt]; cnt++;
+    }
+    
+    start.x=pvec[cnt]; cnt++;
+    start.y=pvec[cnt]; cnt++;
+    end.x=pvec[cnt]; cnt++;
+    end.y=pvec[cnt]; cnt++;
+
+}
+
+BSpline* BSpline::Copy()
+{
+    BSpline* crv = new BSpline(*this);
+    return crv;
+}
+
 }//namespace GCS

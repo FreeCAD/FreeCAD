@@ -256,7 +256,7 @@ def readResult(frd_input):
                 elements_seg2[elem] = (nd1, nd2)
             elif elemType == 12:
                 # B32 CalculiX --> seg3 FreeCAD
-                # Also D element element number 
+                # Also D element element number
                 # N1, N3 ,N2 Order in outpufile is 1,3,2
                 nd1 = int(line[3:13])
                 nd3 = int(line[13:23])
@@ -413,7 +413,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
 
         if 'Nodes' in m:
             positions = []
-            for k, v in m['Nodes'].iteritems():
+            for k, v in m['Nodes'].items():
                 positions.append(v)
             p_x_max, p_y_max, p_z_max = map(max, zip(*positions))
             p_x_min, p_y_min, p_z_min = map(min, zip(*positions))
@@ -454,7 +454,7 @@ def importFrd(filename, analysis=None, result_name_prefix=None):
             strainv = result_set['strainv']
             no_of_values = len(disp)
             displacement = []
-            for k, v in disp.iteritems():
+            for k, v in disp.items():
                 displacement.append(v)
 
             x_max, y_max, z_max = map(max, zip(*displacement))
