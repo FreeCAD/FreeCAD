@@ -508,7 +508,6 @@ Py::List DocumentPy::getToplogicalSortedObjects(void) const
 
 Py::List DocumentPy::getRootObjects(void) const
 {
-#ifndef USE_OLD_DAG   
     std::vector<DocumentObject*> objs = getDocumentPtr()->getRootObjects();
     Py::List res;
 
@@ -517,9 +516,6 @@ Py::List DocumentPy::getRootObjects(void) const
         res.append(Py::Object((*It)->getPyObject(), true));
 
     return res;
-#else
-    return Py::List();
-#endif
 }
 
 Py::Int DocumentPy::getUndoMode(void) const
