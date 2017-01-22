@@ -228,22 +228,22 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0;
+        std::vector<App::DocumentObject *> localValue;
 
         Part::Compound *pcCompound = static_cast<Part::Compound*>(doc->addObject
                             ("Part::Compound",name.c_str() ));
         for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++)
         {
-            createShape(xp.Current(), loc, name, lValue);
+            createShape(xp.Current(), loc, name, localValue);
         }
         for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++)
-            createShape(xp.Current(), loc, name, lValue);
-        pcCompound->Links.setValues(lValue);
+            createShape(xp.Current(), loc, name, localValue);
+        pcCompound->Links.setValues(localValue);
+	lValue.push_back(pcCompound);
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
-//    printf("Shape Type %d Shape Name %s\n",aShape.ShapeType(), name.c_str());
-
-    createShape(aShape, loc, name, lValue);
+   	createShape(aShape, loc, name, lValue);
 }
 
 void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
