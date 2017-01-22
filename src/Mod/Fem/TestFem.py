@@ -640,7 +640,7 @@ def create_test_results():
     stats_thermomech = []  # we only have one result object so we are fine
     for s in stat_types:
         stats_thermomech.append("{}: {}\n".format(s, fea.get_stats(s)))
-    thermomech_expected_values_file = thermomech_analysis_dir + '/expected_values_thermomech'
+    thermomech_expected_values_file = thermomech_analysis_dir + '/spine_thermomech_expected_values'
     f = open(thermomech_expected_values_file, 'w')
     for s in stats_thermomech:
         f.write(s)
