@@ -559,17 +559,21 @@ void DocumentObject::unsetupObject()
         ext->onExtendedUnsetupObject();
 }
 
-void App::DocumentObject::_removeBackLink(DocumentObject* rmfObj)
+void App::DocumentObject::_removeBackLink(DocumentObject* rmvObj)
 {
 #ifndef USE_OLD_DAG
-       _inList.erase(std::remove(_inList.begin(), _inList.end(), rmfObj), _inList.end());
+       _inList.erase(std::remove(_inList.begin(), _inList.end(), rmvObj), _inList.end());
+#else
+    (void)rmvObj;
 #endif
 }
 
-void App::DocumentObject::_addBackLink(DocumentObject* newObje)
+void App::DocumentObject::_addBackLink(DocumentObject* newObj)
 {
 #ifndef USE_OLD_DAG
-    if ( std::find(_inList.begin(), _inList.end(), newObje) == _inList.end() )
-       _inList.push_back(newObje);
+    if ( std::find(_inList.begin(), _inList.end(), newObj) == _inList.end() )
+       _inList.push_back(newObj);
+#else
+    (void)newObj;
 #endif //USE_OLD_DAG    
 }
