@@ -31,7 +31,7 @@ import FreeCAD
 import FreeCADGui
 from PySide import QtGui
 from PySide.QtGui import QFileDialog
-from PySide.QtGui import QMessageBox
+# from PySide.QtGui import QMessageBox
 from PySide import QtCore
 import Units
 
@@ -425,7 +425,7 @@ class _TaskPanelFemMaterial:
             import ConfigParser as configparser
         except:
             import configparser  # Python 3
-        import string
+        # himport string
         Config = configparser.ConfigParser()
         Config.optionxform = str  # disable conversion all uppercase leter in key into lower case
 
