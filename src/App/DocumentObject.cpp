@@ -321,16 +321,18 @@ bool DocumentObject::_isInInListRecursive(const DocumentObject* /*act*/,
         if (_isInInListRecursive(obj, test, checkObj, depth - 1))
             return true;
     }
+#else
+    (void)test;
+    (void)checkObj;
+    (void)depth;
+#endif
 
     return false;
-#endif
 }
 
 bool DocumentObject::isInInListRecursive(DocumentObject *linkTo) const
 {
-#ifndef  USE_OLD_DAG
     return _isInInListRecursive(this, linkTo, this, getDocument()->countObjects());
-#endif
 }
 
 bool DocumentObject::isInInList(DocumentObject *linkTo) const
@@ -340,10 +342,13 @@ bool DocumentObject::isInInList(DocumentObject *linkTo) const
         return true;
     else
         return false;
+#else
+    (void)linkTo;
+    return false;
 #endif
 }
 
-bool DocumentObject::_isInOutListRecursive(const DocumentObject *act,
+bool DocumentObject::_isInOutListRecursive(const DocumentObject* act,
                                            const DocumentObject* test,
                                            const DocumentObject* checkObj, int depth) const
 {
@@ -363,16 +368,19 @@ bool DocumentObject::_isInOutListRecursive(const DocumentObject *act,
         if (_isInOutListRecursive(obj, test, checkObj, depth - 1))
             return true;
     }
+#else
+    (void)act;
+    (void)test;
+    (void)checkObj;
+    (void)depth;
+#endif
 
     return false;
-#endif
 }
 
 bool DocumentObject::isInOutListRecursive(DocumentObject *linkTo) const
 {
-#ifndef  USE_OLD_DAG
     return _isInOutListRecursive(this, linkTo, this, getDocument()->countObjects());
-#endif
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
@@ -393,7 +401,6 @@ void DocumentObject::setDocument(App::Document* doc)
 
 void DocumentObject::onBeforeChange(const Property* prop)
 {
-
     // Store current name in oldLabel, to be able to easily retrieve old name of document object later
     // when renaming expressions.
     if (prop == &Label)
