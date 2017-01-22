@@ -64,6 +64,7 @@
 #include "DrawUtil.h"
 #include "Geometry.h"
 #include "DrawViewPart.h"
+#include "DrawViewSection.h"
 #include "DrawCrosshatch.h"
 
 #include <Mod/TechDraw/App/DrawCrosshatchPy.h>  // generated from DrawCrosshatchPy.xml
@@ -78,41 +79,13 @@ PROPERTY_SOURCE(TechDraw::DrawCrosshatch, App::DocumentObject)
 DrawCrosshatch::DrawCrosshatch(void)
 {
     static const char *vgroup = "Crosshatch";
-    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Crosshatch", 0x00000000));
 
-    ADD_PROPERTY_TYPE(DirProjection ,(0,0,1.0)    ,vgroup,App::Prop_None,"Projection direction when Crosshatch was defined");     //sb RO?
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
     ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"Crosshatch pattern size adjustment");
-//    ADD_PROPERTY_TYPE(ColorPattern,(fcColor),vgroup,App::Prop_None,"The color of the pattern");   //to vp?
-//    ADD_PROPERTY_TYPE(WeightPattern,(0.0),vgroup,App::Prop_None,"Crosshatch pattern line thickness");
-//    ADD_PROPERTY_TYPE(LineSpecs,(""),vgroup,App::Prop_None,"Pattern line specifications"); //this sb RO or removed?
 
-    DirProjection.setStatus(App::Property::ReadOnly,true);
-
-//this is probably "/build/data/Mod/TechDraw/PAT"
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-
-    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
-    std::string defaultFileName = defaultDir + "FCStd.pat";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FilePattern",defaultFileName.c_str()));
-    if (patternFileName.isEmpty()) {
-        patternFileName = QString::fromStdString(defaultFileName);
-    }
-    QFileInfo tfi(patternFileName);
-        if (tfi.isReadable()) {
-            FilePattern.setValue(patternFileName.toUtf8().constData());
-        }
-    hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
-
-    std::string defaultNamePattern = "Diamond";
-    NamePattern.setValue(hGrp->GetASCII("NamePattern",defaultNamePattern.c_str()));
+    getParameters();
 
 }
 
@@ -144,12 +117,6 @@ void DrawCrosshatch::onChanged(const App::Property* prop)
           }
     }
     
-    if (prop == &ScalePattern) {
-        if (!isRestoring()) {
-            adviseParent();                    //just need to have the parent redraw on Gui side. handle through VPDC::updateData
-        }
-    }
-    
     App::DocumentObject::onChanged(prop);
 }
 
@@ -171,35 +138,8 @@ short DrawCrosshatch::mustExecute() const
 
 App::DocumentObjectExecReturn *DrawCrosshatch::execute(void)
 {
-    DrawViewPart* source = getSourceView();
-    if (!source) {
-        return App::DocumentObject::StdReturn;
-    }
-    
-    if (!source->hasGeometry()) {
-        return App::DocumentObject::StdReturn;
-    }
-    
-    Base::Vector3d sourceDir = source->Direction.getValue();
-    Base::Vector3d ourDir    = DirProjection.getValue();
-    if (sourceDir != ourDir) {
-        Base::Console().Warning("Pattern %s may be incorrect due to source %d Direction change.\n",
-                                getNameInDocument(),source->getNameInDocument());
-    }
-
-    adviseParent();
     
     return App::DocumentObject::StdReturn;
-}
-
-void DrawCrosshatch::adviseParent(void) const
-{
-    //if the hatch changes, the source has to change too. actually only the source's QGVI has to change.
-    DrawViewPart* parent = getSourceView();
-    if (parent) {
-        parent->touch();
-        parent->recomputeFeature();
-    }
 }
 
 DrawViewPart* DrawCrosshatch::getSourceView(void) const
@@ -209,12 +149,19 @@ DrawViewPart* DrawCrosshatch::getSourceView(void) const
     return result;
 }
 
-//!get all the specification lines and decode them into HatchLine structures
 std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile()
 {
-    std::vector<HatchLine> result;
     std::string fileSpec = FilePattern.getValue();
     std::string myPattern = NamePattern.getValue();
+    return getDecodedSpecsFromFile(fileSpec,myPattern);
+}
+
+     
+//!get all the specification lines and decode them into HatchLine structures
+/*static*/
+std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern)
+{
+    std::vector<HatchLine> result;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
         Base::Console().Error("DrawCrosshatch::getDecodedSpecsFromFile not able to open %s!\n",fileSpec.c_str());
@@ -225,29 +172,46 @@ std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile()
     return result;
 }
 
-std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
+std::vector<LineSet>  DrawCrosshatch::getDrawableLines(int i)   //get the drawable lines for face i
 {
     std::vector<LineSet> result;
-
     DrawViewPart* source = getSourceView();
     if (!source ||
         !source->hasGeometry()) {
         Base::Console().Message("TRACE - DC::getDrawableLines - no source geometry\n");
         return result;
     }
+    return getDrawableLines(source, m_lineSets,i, ScalePattern.getValue());
+}
+
+/* static */
+std::vector<LineSet> DrawCrosshatch::getDrawableLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
+{
+    std::vector<LineSet> result;
+
+    //is source is a section?
+    DrawViewSection* section = dynamic_cast<DrawViewSection*>(source);
+    bool usingSection = false;
+    if (section != nullptr) {
+        usingSection = true;
+    }
     
-    if (m_lineSets.empty()) {
-        Base::Console().Message("TRACE - DC::getDrawableLines - no LineSets!\n");
+    if (lineSets.empty()) {
+        Base::Console().Log("INFO - DC::getDrawableLines - no LineSets!\n");
         return result;
     }
 
-    //get geometry for linked Face
-    const std::vector<std::string> &subElements = Source.getSubValues();
-    int idx = DrawUtil::getIndexFromName(subElements[0]);
+    std::vector<TopoDS_Wire> faceWires;
+    if (usingSection) { 
+        faceWires = section->getWireForFace(iface);
+    } else { 
+        faceWires = source->getWireForFace(iface);
+    }
 
-    //build wire(s) from geometry
-    std::vector<TopoDS_Wire> faceWires = source->getWireForFace(idx);
-    gp_Pln plane = source->getProjPlane();
+    //build face(s) from geometry
+    gp_Pnt gOrg(0.0,0.0,0.0);
+    gp_Dir gDir(0.0,0.0,1.0);
+    gp_Pln plane(gOrg,gDir);
     
     BRepBuilderAPI_MakeFace mkFace(plane, faceWires.front(), true);
     std::vector<TopoDS_Wire>::iterator itWire = ++faceWires.begin();            //starting with second wire
@@ -255,7 +219,7 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
         mkFace.Add(*itWire);
     }
     if (!mkFace.IsDone()) {
-         Base::Console().Message("TRACE - DC::getDrawableLines - face creation failed\n");
+         Base::Console().Log("INFO - DC::getDrawableLines - face creation failed\n");
          return result;
     }
     TopoDS_Face face = mkFace.Face();
@@ -263,11 +227,10 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
     Bnd_Box bBox;
     BRepBndLib::Add(face, bBox);
     bBox.SetGap(0.0);
-// face & box are done!
-
-    for (auto& ls: m_lineSets) {
+    
+    for (auto& ls: lineSets) {
         HatchLine hl = ls.getHatchLine();
-        std::vector<TopoDS_Edge> candidates = DrawCrosshatch::makeEdgeOverlay(hl, bBox);
+        std::vector<TopoDS_Edge> candidates = DrawCrosshatch::makeEdgeOverlay(hl, bBox, scale);
 
         //make Compound for this linespec
         BRep_Builder builder;
@@ -281,7 +244,7 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
         BRepAlgoAPI_Common mkCommon(face, Comp);
         if ((!mkCommon.IsDone())  ||
             (mkCommon.Shape().IsNull()) ) {
-            Base::Console().Message("TRACE - DC::getDrawableLines - Common creation failed\n");
+            Base::Console().Log("INFO - DC::getDrawableLines - Common creation failed\n");
             return result;
         }
         TopoDS_Shape common = mkCommon.Shape();
@@ -294,12 +257,12 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
         for ( int i = 1 ; i <= mapOfEdges.Extent() ; i++ ) {
             const TopoDS_Edge& edge = TopoDS::Edge(mapOfEdges(i));
             if (edge.IsNull()) {
-                Base::Console().Message("TRACE - DC::getDrawableLines - edge: %d is NULL\n",i);
+                Base::Console().Log("INFO - DC::getDrawableLines - edge: %d is NULL\n",i);
                 continue;
             }
             TechDrawGeometry::BaseGeom* base = BaseGeom::baseFactory(edge);
             if (base == nullptr) {
-                Base::Console().Message("TRACE - DC::getDrawableLines - baseFactory failed for edge: %d\n",i);
+                Base::Console().Log("FAIL - DC::getDrawableLines - baseFactory failed for edge: %d\n",i);
                 throw Base::Exception("GeometryObject::addGeomFromCompound - baseFactory failed");
             }
             resultGeoms.push_back(base);
@@ -311,8 +274,8 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines()
    }
     return result;
 }
-
-std::vector<TopoDS_Edge> DrawCrosshatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b)
+/* static */
+std::vector<TopoDS_Edge> DrawCrosshatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b, double scale)
 {
     std::vector<TopoDS_Edge> result;
 
@@ -322,7 +285,8 @@ std::vector<TopoDS_Edge> DrawCrosshatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b
     Base::Vector3d start;
     Base::Vector3d end;
     Base::Vector3d origin = hl.getOrigin();
-    double interval = hl.getInterval() * ScalePattern.getValue();
+//    double interval = hl.getInterval() * ScalePattern.getValue();
+    double interval = hl.getInterval() * scale;
     double angle = hl.getAngle();
 
     //only dealing with angles -180:180 for now
@@ -421,6 +385,30 @@ TopoDS_Edge DrawCrosshatch::makeLine(Base::Vector3d s, Base::Vector3d e)
     result = makeEdge1.Edge();
     return result;
 }
+
+void DrawCrosshatch::getParameters(void)
+{
+//this is probably "/build/data/Mod/TechDraw/PAT"
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
+    std::string defaultFileName = defaultDir + "FCStd.pat";
+    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FilePattern",defaultFileName.c_str()));
+    if (patternFileName.isEmpty()) {
+        patternFileName = QString::fromStdString(defaultFileName);
+    }
+    QFileInfo tfi(patternFileName);
+        if (tfi.isReadable()) {
+            FilePattern.setValue(patternFileName.toUtf8().constData());
+        }
+    hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
+    std::string defaultNamePattern = "Diamond";
+    NamePattern.setValue(hGrp->GetASCII("NamePattern",defaultNamePattern.c_str()));
+
+}
+
 
 PyObject *DrawCrosshatch::getPyObject(void)
 {

@@ -58,16 +58,20 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Face.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopoDS_Wire.hxx>
+
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <GeomLib_Tool.hxx>
 
 #endif
 
 #include <limits>
 #include <algorithm>
 #include <cmath>
-#include <GeomLib_Tool.hxx>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -80,6 +84,7 @@
 
 #include "DrawUtil.h"
 #include "DrawViewSection.h"
+#include "DrawProjectSplit.h"
 #include "Geometry.h"
 #include "GeometryObject.h"
 #include "DrawViewPart.h"

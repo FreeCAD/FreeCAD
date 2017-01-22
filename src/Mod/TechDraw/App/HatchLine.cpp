@@ -30,7 +30,12 @@
 #include <stdexcept>
 #endif
 
+#include <TopoDS_Edge.hxx>
+
 #include <Base/Console.h>
+#include <Base/Vector3D.h>
+
+#include "Geometry.h"
 
 #include "DrawUtil.h"
 #include "HatchLine.h"

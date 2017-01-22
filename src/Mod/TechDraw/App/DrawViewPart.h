@@ -37,10 +37,14 @@
 #include <Base/BoundBox.h>
 
 #include "DrawView.h"
-#include "DrawProjectSplit.h"
 
 class gp_Pnt;
 class gp_Pln;
+class gp_Ax2;
+//class TopoDS_Edge;
+//class TopoDS_Vertex;
+//class TopoDS_Wire;
+//class TopoDS_Shape;
 
 namespace TechDrawGeometry
 {
@@ -53,6 +57,8 @@ class Face;
 namespace TechDraw {
 class DrawHatch;
 class DrawCrosshatch;
+class DrawProjectSplit;
+class DrawViewSection;
 }
 
 namespace TechDraw
@@ -141,7 +147,7 @@ public:
     bool isDeleting(void) { return nowDeleting; }
     
     gp_Pln getProjPlane(void) const;
-    std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
 
 
 protected:
