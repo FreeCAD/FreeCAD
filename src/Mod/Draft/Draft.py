@@ -2484,9 +2484,9 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeSketch(objectslist,autoconstraints=False,radiusPrecision=-1,addTo=None,
-        delete=False,name="Sketch"):
-    '''makeSketch(objectslist,[autoconstraints],[radiusPrecision],[addTo],[delete],[name]): 
+def makeSketch(objectslist,autoconstraints=False,addTo=None,
+        delete=False,name="Sketch",radiusPrecision=-1):
+    '''makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name],[radiusPrecision]): 
 
     Makes a Sketch objectslist with the given Draft objects. 
 
@@ -2496,11 +2496,6 @@ def makeSketch(objectslist,autoconstraints=False,radiusPrecision=-1,addTo=None,
     * autoconstraints(False): if True, constraints will be automatically added to
         wire nodes, rectangles and circles. 
     
-    * radiusPrecision(-1): If <0, disable radius constraint. If =0, add indiviaul
-        radius constraint. If >0, the radius will be rounded according to this
-        precision, and 'Equal' constraint will be added to curve with equal
-        radius within precision.
-
     * addTo(None) : if set to an existing sketch, geometry will be added to it
         instead of creating a new one.
     
@@ -2508,7 +2503,12 @@ def makeSketch(objectslist,autoconstraints=False,radiusPrecision=-1,addTo=None,
         If set to a string 'all' the object and all its linked object will be
         deleted
     
-    * name('Sketch'): the name for the new sketch object'''
+    * name('Sketch'): the name for the new sketch object
+
+    * radiusPrecision(-1): If <0, disable radius constraint. If =0, add indiviaul
+        radius constraint. If >0, the radius will be rounded according to this
+        precision, and 'Equal' constraint will be added to curve with equal
+        radius within precision.'''
 
     import Part, DraftGeomUtils
     from Sketcher import Constraint
