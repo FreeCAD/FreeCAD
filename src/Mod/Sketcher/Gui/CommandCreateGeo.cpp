@@ -4457,6 +4457,14 @@ public:
                                         sketchgui->getObject()->getNameInDocument(),
                                         EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
                 
+                if(EditCurve.size() == 2) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
+                }
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                                        sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
+
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4533,15 +4541,6 @@ public:
                 for(size_t i = 0; i < EditCurve.size(); i++) {
                     Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',%d,%d,%d,%d)) ",
                                             sketchgui->getObject()->getNameInDocument(),FirstPoleGeoId+i,Sketcher::mid,currentgeoid,i);
-                    
-                    if(i == 0) {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                                                sketchgui->getObject()->getNameInDocument(),FirstPoleGeoId,round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
-                    }
-                    else {
-                        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
-                                                sketchgui->getObject()->getNameInDocument(),FirstPoleGeoId,FirstPoleGeoId+i);
-                    }
                 }
                 
 
@@ -4563,28 +4562,6 @@ public:
             }
 
             Gui::Command::commitCommand();
-
-            /*int poleindex=0;
-            for(std::vector<std::vector<AutoConstraint>>::iterator it=sugConstr.begin(); it != sugConstr.end(); it++, poleindex++) {
-                // add auto constraints
-                if ((*it).size() > 0) {
-                    createAutoConstraints((*it), currentgeoid+1+poleindex, Sketcher::mid);
-                    (*it).clear();
-                }
-            }
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();*/
-            
-            /*if (IsClosed && ConstrMethod == 0) { // closed but not periodic
-                Gui::Command::openCommand("Add endpoint coincident constraints");
-                
-                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%i,%i,%i,%i)) "
-                    ,sketchgui->getObject()->getNameInDocument()
-                    ,currentgeoid, Sketcher::start, currentgeoid, Sketcher::end);
-                
-                Gui::Command::commitCommand();
-            }*/
-            
-            
 
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
