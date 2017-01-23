@@ -535,7 +535,7 @@ def pocket2d(shape,offset):
     offsetWires = [o for o in offsetWires if o != None]
     return offsetWires
 
-def orientEdge(edge, normal=None):
+def orientEdge(edge, normal=None, make_arc=False):
     """Re-orients 'edge' such that it is in the x-y plane. If 'normal' is passed, this
     is used as the basis for the rotation, otherwise the Placement property of 'edge'
     is used"""
@@ -555,6 +555,9 @@ def orientEdge(edge, normal=None):
         edge.rotate(base, axis, angle)
     if isinstance(edge.Curve,Part.Line):
         return Part.LineSegment(edge.Curve,edge.FirstParameter,edge.LastParameter)
+    elif make_arc and isinstance(edge.Curve,Part.Circle) and not edge.Closed:
+        return Part.ArcOfCircle(edge.Curve, edge.FirstParameter,
+                                    edge.LastParameter,edge.Curve.Axis.z>0)
     return edge.Curve
 
 def mirror (point, edge):
