@@ -433,7 +433,7 @@ def formatObject(target,origin=None):
         fcol = (float(fcol[0]),float(fcol[1]),float(fcol[2]),0.0)
         lw = ui.linewidth
         fs = ui.fontsize
-        if not origin:
+        if not origin or not hasattr(origin,'ViewObject'):
             if "FontSize" in obrep.PropertiesList: obrep.FontSize = fs
             if "TextColor" in obrep.PropertiesList: obrep.TextColor = col
             if "LineWidth" in obrep.PropertiesList: obrep.LineWidth = lw
@@ -2484,12 +2484,32 @@ def makeShape2DView(baseobj,projectionVector=None,facenumbers=[]):
     FreeCAD.ActiveDocument.recompute()
     return obj
 
-def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="Sketch"):
-    '''makeSketch(objectslist,[autoconstraints],[addTo],[delete],[name]): makes a Sketch
-    objectslist with the given Draft objects. If autoconstraints is True,
-    constraints will be automatically added to wire nodes, rectangles
-    and circles. If addTo is an existing sketch, geometry will be added to it instead of
-    creating a new one. If delete is True, the original object will be deleted'''
+def makeSketch(objectslist,autoconstraints=False,radiusPrecision=-1,addTo=None,
+        delete=False,name="Sketch"):
+    '''makeSketch(objectslist,[autoconstraints],[radiusPrecision],[addTo],[delete],[name]): 
+
+    Makes a Sketch objectslist with the given Draft objects. 
+
+    * objectlist: can be single or list of objects of Draft type objects,
+        Part::Feature, Part.Shape, or mix of them.
+
+    * autoconstraints(False): if True, constraints will be automatically added to
+        wire nodes, rectangles and circles. 
+    
+    * radiusPrecision(-1): If <0, disable radius constraint. If =0, add indiviaul
+        radius constraint. If >0, the radius will be rounded according to this
+        precision, and 'Equal' constraint will be added to curve with equal
+        radius within precision.
+
+    * addTo(None) : if set to an existing sketch, geometry will be added to it
+        instead of creating a new one.
+    
+    * delete(False): if True, the original object will be deleted. 
+        If set to a string 'all' the object and all its linked object will be
+        deleted
+    
+    * name('Sketch'): the name for the new sketch object'''
+
     import Part, DraftGeomUtils
     from Sketcher import Constraint
     import Sketcher
@@ -2501,20 +2521,46 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
     MiddlePoint = 3
     deletable = None
 
-    if not isinstance(objectslist,list):
+    if not isinstance(objectslist,(list,tuple)):
         objectslist = [objectslist]
     for obj in objectslist:
-        if not DraftGeomUtils.isPlanar(obj.Shape):
+        if isinstance(obj,Part.Shape):
+            shape = obj
+        elif not obj.isDerivedFrom("Part::Feature"):
+            FreeCAD.Console.PrintError(translate("draft","not shape found"))
+            return None
+        else:
+            shape = obj.Shape
+        if not DraftGeomUtils.isPlanar(shape):
             FreeCAD.Console.PrintError(translate("draft","All Shapes must be co-planar"))
             return None
     if addTo:
         nobj = addTo
     else:
-        nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "Sketch")
+        nobj = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", name)
         deletable = nobj
         nobj.ViewObject.Autoconstraints = False
-        startc = 0
-        endc = 0
+
+    # Collect constraints and add in one go to improve performance
+    constraints = []
+    radiuses = {}
+
+    def addRadiusConstraint(edge):
+        try:
+            if radiusPrecision<0:
+                return
+            if radiusPrecision==0:
+                constraints.append(Constraint('Radius',
+                        nobj.GeometryCount-1, edge.Curve.Radius))
+                return
+            r = round(edge.Curve.Radius,radiusPrecision)
+            constraints.append(Constraint('Equal',
+                    radiuses[r],nobj.GeometryCount-1))
+        except KeyError:
+            radiuses[r] = nobj.GeometryCount-1
+            constraints.append(Constraint('Radius',nobj.GeometryCount-1, r))
+        except AttributeError:
+            pass
 
     rotation = None
     for obj in objectslist:
@@ -2541,8 +2587,7 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                 last   = math.radians(obj.LastAngle)
                 arc    = Part.ArcOfCircle(circle, first, last)
                 nobj.addGeometry(arc)
-
-            # TODO add Radius constraits
+            addRadiusConstraint(edge)
             ok = True
         elif tp == "Rectangle":
             if rotation is None:
@@ -2554,14 +2599,14 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     last = nobj.GeometryCount - 1
                     segs = [last-3,last-2,last-1,last]
                     if obj.Placement.Rotation.Q == (0,0,0,1):
-                        nobj.addConstraint(Constraint("Coincident",last-3,EndPoint,last-2,StartPoint))
-                        nobj.addConstraint(Constraint("Coincident",last-2,EndPoint,last-1,StartPoint))
-                        nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,last,StartPoint))
-                        nobj.addConstraint(Constraint("Coincident",last,EndPoint,last-3,StartPoint))
-                    nobj.addConstraint(Constraint("Horizontal",last-3))
-                    nobj.addConstraint(Constraint("Vertical",last-2))
-                    nobj.addConstraint(Constraint("Horizontal",last-1))
-                    nobj.addConstraint(Constraint("Vertical",last))
+                        constraints.append(Constraint("Coincident",last-3,EndPoint,last-2,StartPoint))
+                        constraints.append(Constraint("Coincident",last-2,EndPoint,last-1,StartPoint))
+                        constraints.append(Constraint("Coincident",last-1,EndPoint,last,StartPoint))
+                        constraints.append(Constraint("Coincident",last,EndPoint,last-3,StartPoint))
+                    constraints.append(Constraint("Horizontal",last-3))
+                    constraints.append(Constraint("Vertical",last-2))
+                    constraints.append(Constraint("Horizontal",last-1))
+                    constraints.append(Constraint("Vertical",last))
                 ok = True
         elif tp in ["Wire","Polygon"]:
             if obj.FilletRadius.Value == 0:
@@ -2592,67 +2637,112 @@ def makeSketch(objectslist,autoconstraints=False,addTo=None,delete=False,name="S
                     last = nobj.GeometryCount
                     segs = list(range(last-len(obj.Shape.Edges),last-1))
                     for seg in segs:
-                        nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
+                        constraints.append(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
                         if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                            nobj.addConstraint(Constraint("Vertical",seg))
+                            constraints.append(Constraint("Vertical",seg))
                         elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                            nobj.addConstraint(Constraint("Horizontal",seg))
+                            constraints.append(Constraint("Horizontal",seg))
                     if closed:
-                        nobj.addConstraint(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
+                        constraints.append(Constraint("Coincident",last-1,EndPoint,segs[0],StartPoint))
                 ok = True
-        elif obj.isDerivedFrom("Part::Feature"):
-            if not DraftGeomUtils.isPlanar(obj.Shape):
+        elif tp == 'Shape' or obj.isDerivedFrom("Part::Feature"):
+            shape = obj if tp == 'Shape' else obj.Shape
+
+            if not DraftGeomUtils.isPlanar(shape):
                 FreeCAD.Console.PrintError(translate("draft","The given object is not planar and cannot be converted into a sketch."))
                 return None
             if rotation is None:
                 #rotation = obj.Placement.Rotation
-                norm = DraftGeomUtils.getNormal(obj.Shape)
+                norm = DraftGeomUtils.getNormal(shape)
                 if norm:
                     rotation = FreeCAD.Rotation(FreeCAD.Vector(0,0,1),norm)
                 else:
                     FreeCAD.Console.PrintWarning(translate("draft","Unable to guess the normal direction of this object"))
                     rotation = FreeCAD.Rotation()
                     norm = obj.Placement.Rotation.Axis
-            for e in obj.Shape.Edges:
+            for e in shape.Edges:
                 if DraftGeomUtils.geomType(e) in ["BSplineCurve","BezierCurve"]:
                     FreeCAD.Console.PrintError(translate("draft","BSplines and Bezier curves are not supported by this tool"))
                     return None
             # if not addTo:
-                # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(obj.Shape).Rotation
+                # nobj.Placement.Rotation = DraftGeomUtils.calculatePlacement(shape).Rotation
+
             if autoconstraints:
-                for wire in obj.Shape.Wires:
-                    for edge in wire.OrderedEdges:
-                        nobj.addGeometry(DraftGeomUtils.orientEdge(edge))
-                        endc += 1
-                    segs = list(range(startc,endc))
-                    for seg in segs:
+                for wire in shape.Wires:
+                    last_count = nobj.GeometryCount
+                    edges = wire.OrderedEdges
+                    for edge in edges:
+                        nobj.addGeometry(DraftGeomUtils.orientEdge(
+                                            edge,norm,make_arc=True))
+                        addRadiusConstraint(edge)
+                    for i,g in enumerate(nobj.Geometry[last_count:]):
+                        if edges[i].Closed:
+                            continue
+                        seg = last_count+i
+
+                        if DraftGeomUtils.isAligned(g,"x"):
+                            constraints.append(Constraint("Vertical",seg))
+                        elif DraftGeomUtils.isAligned(g,"y"):
+                            constraints.append(Constraint("Horizontal",seg))
+
                         if seg == nobj.GeometryCount-1:
-                            if wire.isClosed:
-                                if nobj.Geometry[seg].EndPoint == nobj.Geometry[startc].StartPoint:
-                                    nobj.addConstraint(Constraint("Coincident",seg,EndPoint,startc,StartPoint))
-                                elif nobj.Geometry[seg].StartPoint == nobj.Geometry[startc].EndPoint:
-                                    nobj.addConstraint(Constraint("Coincident",seg,StartPoint,startc,EndPoint))
+                            if not wire.isClosed():
+                                break
+                            g2 = nobj.Geometry[last_count]
+                            seg2 = last_count
                         else:
-                            if nobj.Geometry[seg].EndPoint == nobj.Geometry[seg+1].StartPoint:
-                                nobj.addConstraint(Constraint("Coincident",seg,EndPoint,seg+1,StartPoint))
-                            elif nobj.Geometry[seg].StartPoint == nobj.Geometry[seg+1].EndPoint:
-                                nobj.addConstraint(Constraint("Coincident",seg,StartPoint,seg+1,EndPoint))
-                        if DraftGeomUtils.isAligned(nobj.Geometry[seg],"x"):
-                            nobj.addConstraint(Constraint("Vertical",seg))
-                        elif DraftGeomUtils.isAligned(nobj.Geometry[seg],"y"):
-                            nobj.addConstraint(Constraint("Horizontal",seg))
-                    startc = endc
+                            seg2 = seg+1
+                            g2 = nobj.Geometry[seg2]
+
+                        end1 = g.value(g.LastParameter)
+                        start2 = g2.value(g2.FirstParameter)
+                        if DraftVecUtils.equals(end1,start2) :
+                            constraints.append(Constraint(
+                                "Coincident",seg,EndPoint,seg2,StartPoint))
+                            continue
+                        end2 = g2.value(g2.LastParameter)
+                        start1 = g.value(g.FirstParameter)
+                        if DraftVecUtils.equals(end2,start1):
+                            constraints.append(Constraint(
+                                "Coincident",seg,StartPoint,seg2,EndPoint))
+                        elif DraftVecUtils.equals(start1,start2):
+                            constraints.append(Constraint(
+                                "Coincident",seg,StartPoint,seg2,StartPoint))
+                        elif DraftVecUtils.equals(end1,end2):
+                            constraints.append(Constraint(
+                                "Coincident",seg,EndPoint,seg2,EndPoint))
             else:
-                for edge in obj.Shape.Edges:
-                    nobj.addGeometry(DraftGeomUtils.orientEdge(edge,norm))
+                for wire in shape.Wires:
+                    for edge in wire.OrderedEdges:
+                        nobj.addGeometry(DraftGeomUtils.orientEdge(
+                                                edge,norm,make_arc=True))
             ok = True
         formatObject(nobj,obj)
-        if ok and delete:
-            FreeCAD.ActiveDocument.removeObject(obj.Name)
+        if ok and delete and obj.isDerivedFrom("Part::Feature"):
+            doc = obj.Document
+            def delObj(obj):
+                if obj.InList:
+                    FreeCAD.Console.PrintWarning(translate("draft",
+                        "Cannot delete object {} with dependency\n".format(obj.Label)))
+                else:
+                    doc.removeObject(obj.Name)
+            try:
+                if delete == 'all':
+                    objs = [obj]
+                    while objs:
+                        obj = objs[0]
+                        objs = objs[1:] + obj.OutList
+                        delObj(obj)
+                else:
+                    delObj(obj)
+            except Exception as ex:
+                FreeCAD.Console.PrintWarning(translate("draft",
+                    "Failed to delete object {}: {}\n".format(obj.Label,ex)))
     if rotation:
         nobj.Placement.Rotation = rotation
     else:
         print("-----error!!! rotation is still None...")
+    nobj.addConstraint(constraints)
     FreeCAD.ActiveDocument.recompute()
     return nobj
 
