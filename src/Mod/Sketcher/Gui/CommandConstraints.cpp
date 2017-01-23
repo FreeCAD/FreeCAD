@@ -1744,7 +1744,7 @@ bool CmdSketcherConstrainDistance::isActive(void)
 // ======================================================================================
 
 /* XPM */
-static char * cursor_createpointonobj[] = {
+static const char * cursor_createpointonobj[] = {
 "32 32 3 1",
 " 	c None",
 ".	c #FFFFFF",
@@ -1782,11 +1782,22 @@ static char * cursor_createpointonobj[] = {
 " ++                             ",
 " ++                             "};
 
+class CmdSketcherConstrainPointOnObject : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainPointOnObject();
+    virtual ~CmdSketcherConstrainPointOnObject(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainPointOnObject"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
-DEF_STD_CMD_A(CmdSketcherConstrainPointOnObject);
+//DEF_STD_CMD_A(CmdSketcherConstrainPointOnObject);
 
 CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
-    :Command("Sketcher_ConstrainPointOnObject")
+    :CmdSketcherConstraint("Sketcher_ConstrainPointOnObject")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -1797,6 +1808,13 @@ CmdSketcherConstrainPointOnObject::CmdSketcherConstrainPointOnObject()
     sPixmap         = "Constraint_PointOnObject";
     sAccel          = "SHIFT+O";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelVertex, SelEdge}, {SelEdge, SelVertex},
+                           {SelRoot, SelEdge}, {SelEdge, SelRoot},
+                           {SelVertex, SelHAxis}, {SelHAxis, SelVertex},
+                           {SelVertex, SelVAxis}, {SelVAxis, SelVertex}};
+    constraintCursor = cursor_createpointonobj;
+
 }
 
 void CmdSketcherConstrainPointOnObject::activated(int iMsg)
@@ -1807,8 +1825,11 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select vertexes from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select vertexes from the sketch."));
+
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
         return;
     }
 
@@ -1875,9 +1896,73 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
     return;
 }
 
-bool CmdSketcherConstrainPointOnObject::isActive(void)
+void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    int GeoIdVt, GeoIdCrv;
+    Sketcher::PointPos PosIdVt, PosIdCrv;
+
+    switch (seqIndex) {
+    case 0: // {SelVertex, SelEdge}
+    case 2: // {SelRoot, SelEdge}
+    case 4: // {SelVertex, SelHAxis}
+    case 6: // {SelVertex, SelVAxis}
+        GeoIdVt = selSeq.at(0).GeoId; GeoIdCrv = selSeq.at(1).GeoId;
+        PosIdVt = selSeq.at(0).PosId; PosIdCrv = selSeq.at(1).PosId;
+
+        break;
+    case 1: // {SelEdge, SelVertex}
+    case 3: // {SelEdge, SelRoot}
+    case 5: // {SelHAxis, SelVertex}
+    case 7: // {SelVAxis, SelVertex}
+        GeoIdVt = selSeq.at(1).GeoId; GeoIdCrv = selSeq.at(0).GeoId;
+        PosIdVt = selSeq.at(1).PosId; PosIdCrv = selSeq.at(0).PosId;
+
+        break;
+    default:
+        return;
+    }
+
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    openCommand("add point on object constraint");
+    bool allOK = true;
+    if (checkBothExternal(GeoIdVt, GeoIdCrv)){
+        showNoConstraintBetweenExternal();
+        allOK = false;
+    }
+    if (GeoIdVt == GeoIdCrv)
+        allOK = false; //constraining a point of an element onto the element is a bad idea...
+
+    const Part::Geometry *geom = Obj->getGeometry(GeoIdCrv);
+
+    if( geom && geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ){
+        // unsupported until normal to BSpline at any point implemented.
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                             QObject::tr("Point on BSpline edge currently unsupported."));
+        allOK = false;
+    }
+
+
+    if (allOK) {
+        Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                sketchgui->getObject()->getNameInDocument(), GeoIdVt, PosIdVt, GeoIdCrv);
+
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+    } else {
+        abortCommand();
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("None of the selected points were constrained onto the respective curves, either "
+                        "because they are parts of the same element, or because they are both external geometry."));
+    }
+    return;
 }
 
 // ======================================================================================
