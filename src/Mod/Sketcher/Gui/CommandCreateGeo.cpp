@@ -4407,7 +4407,7 @@ public:
             
             Gui::Command::commitCommand();
             
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
             
             FirstPoleGeoId = getHighestCurveIndex();
             
@@ -4469,7 +4469,7 @@ public:
             
             Gui::Command::commitCommand();
             
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
             
             // add auto constraints on pole
             if (sugConstr[CurrentConstraint].size() > 0) {
