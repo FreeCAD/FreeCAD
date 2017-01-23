@@ -45,7 +45,17 @@ TaskFeatureParameters::TaskFeatureParameters(PartDesignGui::ViewProvider *vp, QW
                                                      const std::string& pixmapname, const QString& parname)
     : TaskBox(Gui::BitmapFactory().pixmap(pixmapname.c_str()),parname,true, parent),
       vp(vp), blockUpdate(false)
-{ }
+{
+    Gui::Document* doc = vp->getDocument();
+    this->attachDocument(doc);
+    this->enableNotifications(DocumentObserver::Delete);
+}
+
+void TaskFeatureParameters::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    if (this->vp == &Obj)
+        this->vp = nullptr;
+}
 
 void TaskFeatureParameters::onUpdateView(bool on)
 {
