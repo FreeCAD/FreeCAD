@@ -52,8 +52,8 @@ LOG_MODULE = 'PathDressupHoldingTags'
 
 def debugEdge(edge, prefix, force = False):
     if force or PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
-        pf = edge.valueAt(edge.FirstParameter)
-        pl = edge.valueAt(edge.LastParameter)
+    pf = edge.valueAt(edge.FirstParameter)
+    pl = edge.valueAt(edge.LastParameter)
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
             print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
         else:
@@ -221,8 +221,10 @@ class Tag:
             angle = -PathGeom.getAngle(self.originAt(0)) * 180 / math.pi
             PathLog.debug("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
-        PathLog.debug("solid.translate(%s)" % self.originAt(z))
-        self.solid.translate(self.originAt(z - 0.01 * self.actualHeight))
+        orig = self.originAt(z - 0.01 * self.actualHeight)
+        PathLog.debug("solid.translate(%s)" % oric)
+        self.solid.translate(oric)
+        radius = min(self.radius, radius)
         self.realRadius = radius
         if radius != 0:
             PathLog.debug("makeFillet(%.4f)" % radius)
