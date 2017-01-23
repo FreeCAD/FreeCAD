@@ -152,7 +152,12 @@ def editor(gcode):
     '''pops up a handy little editor to look at the code output '''
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
-    # result = dia.exec_()
+    result = dia.exec_()
+    if result:  # If user selected 'OK' get modified G Code
+        final = dia.editor.toPlainText()
+    else:
+        final = gcode
+    return final
 
 def fcoms(string,commentsym):
     ''' filter and rebuild comments with user preferred comment symbol'''
