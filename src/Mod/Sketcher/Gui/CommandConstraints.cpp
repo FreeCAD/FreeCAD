@@ -788,7 +788,7 @@ namespace SketcherGui {
         }
 
         void setAllowedSelTypes(int types) {
-            if (0 < types && types < 64) this->allowedSelTypes = types;
+            if (0 <= types && types < 64) allowedSelTypes = types;
         }
 
     protected:
@@ -862,11 +862,12 @@ public:
         return false;
     }
 
-    virtual bool releaseButton(Base::Vector2d /*onSketchPos*/)
+    virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
         SelIdPair selIdPair;
         selIdPair.GeoId = Constraint::GeoUndef;
         selIdPair.PosId = Sketcher::none;
+        std::stringstream ss;
         SelType newSelType;
 
         //For each SelType allowed, check if button is released there and assign it to selIdPair
@@ -877,24 +878,29 @@ public:
             selIdPair.GeoId = Sketcher::GeoEnum::RtPnt;
             selIdPair.PosId = Sketcher::start;
             newSelType = SelRoot;
+            ss << "RootPoint";
         }
         else if (allowedSelTypes & SketcherGui::SelVertex && VtId != -1) {
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId,
                                                             selIdPair.GeoId,
                                                             selIdPair.PosId);
             newSelType = SelVertex;
+            ss << "Vertex" << VtId + 1;
         }
         else if (allowedSelTypes & SketcherGui::SelEdge && CrvId != -1) {
             selIdPair.GeoId = CrvId;
             newSelType = SelEdge;
+            ss << "Edge" << CrvId + 1;
         }
         else if (allowedSelTypes & SketcherGui::SelHAxis && CrsId == 1) {
             selIdPair.GeoId = Sketcher::GeoEnum::HAxis;
             newSelType = SelHAxis;
+            ss << "H_Axis";
         }
         else if (allowedSelTypes & SketcherGui::SelVAxis && CrsId == 2) {
             selIdPair.GeoId = Sketcher::GeoEnum::VAxis;
             newSelType = SelVAxis;
+            ss << "V_Axis";
         }
         else if (allowedSelTypes & SketcherGui::SelExternalEdge) {
             //TODO: Figure out how this works
@@ -910,7 +916,12 @@ public:
         else {
             // TODO: If mouse is released on something allowed, select it and move forward
             selSeq.push_back(selIdPair);
-
+            Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
+                                          sketchgui->getSketchObject()->getNameInDocument(),
+                                          ss.str().c_str(),
+                                          onSketchPos.x,
+                                          onSketchPos.y,
+                                          0.f);
             _tempOnSequences->clear();
             allowedSelTypes = 0;
             for (std::set<int>::iterator token = ongoingSequences->begin();
@@ -933,6 +944,7 @@ public:
             // TODO: Progress to next seqIndex
             std::swap(_tempOnSequences, ongoingSequences);
             seqIndex++;
+            selFilterGate->setAllowedSelTypes(allowedSelTypes);
         }
 
         return false;
@@ -966,6 +978,8 @@ protected:
             allowedSelTypes = allowedSelTypes | (*it).at(seqIndex);
         }
         selFilterGate->setAllowedSelTypes(allowedSelTypes);
+
+        Gui::Selection().clearSelection();
     }
 };
 
@@ -1139,65 +1153,71 @@ static const char *cursor_createvertconstraint[]={
 "................................",
 "................................"};
 
-class DrawSketchHandlerVertConstraint: public DrawSketchHandler
+class CmdSketcherConstrainVertical : public CmdSketcherConstraint
 {
 public:
-    DrawSketchHandlerVertConstraint() {}
-    virtual ~DrawSketchHandlerVertConstraint()
-    {
-        Gui::Selection().rmvSelectionGate();
-    }
+    CmdSketcherConstrainVertical();
+    virtual ~CmdSketcherConstrainVertical(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainVertical"; }
+protected:
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
 
-    virtual void activated(ViewProviderSketch *)
-    {
-        Gui::Selection().rmvSelectionGate();
-        GenericConstraintSelection* selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
-        selFilterGate->setAllowedSelTypes(SelEdge);
-        Gui::Selection().addSelectionGate(selFilterGate);
-        setCursor(QPixmap(cursor_createvertconstraint), 7, 7);
-    }
+};
 
-    virtual void mouseMove(Base::Vector2d onSketchPos) {Q_UNUSED(onSketchPos);}
+CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
+    :CmdSketcherConstraint("Sketcher_ConstrainVertical")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Constrain vertically");
+    sToolTipText    = QT_TR_NOOP("Create a vertical constraint on the selected item");
+    sWhatsThis      = "Sketcher_ConstrainVertical";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Constraint_Vertical";
+    sAccel          = "V";
+    eType           = ForEdit;
 
-    virtual bool pressButton(Base::Vector2d onSketchPos)
-    {
-        Q_UNUSED(onSketchPos);
-        return false;
-    }
+    allowedSelSequences = {{SelEdge}};
+    constraintCursor = cursor_createvertconstraint;
+}
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos)
-    {
-        Q_UNUSED(onSketchPos);
-        Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(sketchgui->getObject());
+void CmdSketcherConstrainVertical::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    switch (seqIndex) {
+    case 0: // {Edge}
+        // TODO: create the constraint
+        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
         const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
 
-        int CrvId = sketchgui->getPreselectCurve();
+        int CrvId = selSeq.front().GeoId;
         if (CrvId != -1) {
             const Part::Geometry *geo = Obj->getGeometry(CrvId);
             if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                                      QObject::tr("The selected edge is not a line segment"));
-                return false;
+                return;
             }
 
             // check if the edge has already a Horizontal or Vertical constraint
             for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
                  it != vals.end(); ++it) {
                 if ((*it)->Type == Sketcher::Horizontal && (*it)->First == CrvId){
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge has already a horizontal constraint!"));
-                    return false;
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                                         QObject::tr("The selected edge has already a horizontal constraint!"));
+                    return;
                 }
                 if ((*it)->Type == Sketcher::Vertical && (*it)->First == CrvId) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
+                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
                                          QObject::tr("The selected edge has already a vertical constraint!"));
-                    return false;
+                    return;
                 }
             }
 
             // undo command open
-            Gui::Command::openCommand("add horizontal constraint");
+            Gui::Command::openCommand("add vertical constraint");
             // issue the actual commands to create the constraint
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d)) ",
                       sketchgui->getObject()->getNameInDocument(),CrvId);
@@ -1210,108 +1230,9 @@ public:
             if(autoRecompute)
                 Gui::Command::updateActive();
         }
-        return false;
+
+        break;
     }
-};
-
-DEF_STD_CMD_A(CmdSketcherConstrainVertical);
-
-CmdSketcherConstrainVertical::CmdSketcherConstrainVertical()
-    :Command("Sketcher_ConstrainVertical")
-{
-    sAppModule      = "Sketcher";
-    sGroup          = QT_TR_NOOP("Sketcher");
-    sMenuText       = QT_TR_NOOP("Constrain vertically");
-    sToolTipText    = QT_TR_NOOP("Create a vertical constraint on the selected item");
-    sWhatsThis      = "Sketcher_ConstrainVertical";
-    sStatusTip      = sToolTipText;
-    sPixmap         = "Constraint_Vertical";
-    sAccel          = "V";
-    eType           = ForEdit;
-}
-
-void CmdSketcherConstrainVertical::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerVertConstraint());
-
-    // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
-
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select an edge from the sketch."));
-        return;
-    }
-
-    // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector< Sketcher::Constraint * > &vals = Obj->Constraints.getValues();
-
-     std::vector<int> ids;
-    // go through the selected subelements
-    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
-        // only handle edges
-        if (it->size() > 4 && it->substr(0,4) == "Edge") {
-            int GeoId = std::atoi(it->substr(4,4000).c_str()) - 1;
-
-            const Part::Geometry *geo = Obj->getGeometry(GeoId);
-            if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                                     QObject::tr("The selected edge is not a line segment"));
-                return;
-            }
-
-            // check if the edge has already a Horizontal or Vertical constraint
-            for (std::vector< Sketcher::Constraint * >::const_iterator it= vals.begin();
-                 it != vals.end(); ++it) {
-                if ((*it)->Type == Sketcher::Horizontal && (*it)->First == GeoId) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                        QObject::tr("The selected edge has already a horizontal constraint!"));
-                    return;
-                }
-                if ((*it)->Type == Sketcher::Vertical && (*it)->First == GeoId) {
-                    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Double constraint"),
-                        QObject::tr("The selected edge has already a vertical constraint!"));
-                    return;
-                }
-            }
-            ids.push_back(GeoId);
-        }
-    }
-
-    if (ids.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
-                             QObject::tr("The selected item(s) can't accept a vertical constraint!"));
-        return;
-    }
-
-    // undo command open
-    openCommand("add vertical constraint");
-    for (std::vector<int>::iterator it=ids.begin(); it != ids.end(); it++) {
-        // issue the actual command to create the constraint
-        doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Vertical',%d))"
-                 ,selection[0].getFeatName(),*it);
-    }
-    // finish the transaction and update
-    commitCommand();
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-    if(autoRecompute)
-        Gui::Command::updateActive();
-
-    // clear the selection (convenience)
-    getSelection().clearSelection();
-}
-
-bool CmdSketcherConstrainVertical::isActive(void)
-{
-    return isCreateGeoActive( getActiveGuiDocument() );
 }
 
 // ======================================================================================
@@ -1512,7 +1433,6 @@ public:
 
     virtual bool releaseButton(Base::Vector2d onSketchPos)
     {
-        Q_UNUSED(onSketchPos);
         int VtId = sketchgui->getPreselectPoint();
         int CrsId = sketchgui->getPreselectCross();
         std::stringstream ss;
@@ -1577,10 +1497,19 @@ protected:
     Sketcher::PointPos PosId1, PosId2;
 };
 
-DEF_STD_CMD_A(CmdSketcherConstrainCoincident);
+class CmdSketcherConstrainCoincident : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainCoincident();
+    virtual ~CmdSketcherConstrainCoincident(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainCoincident"; }
+protected:
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
-    :Command("Sketcher_ConstrainCoincident")
+    :CmdSketcherConstraint("Sketcher_ConstrainCoincident")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -1591,85 +1520,42 @@ CmdSketcherConstrainCoincident::CmdSketcherConstrainCoincident()
     sPixmap         = "Constraint_PointOnPoint";
     sAccel          = "C";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelVertex, SelVertex}, {SelVertex, SelRoot},
+                           {SelRoot, SelVertex}};
+    constraintCursor = cursor_createcoincident;
 }
 
-void CmdSketcherConstrainCoincident::activated(int iMsg)
+void CmdSketcherConstrainCoincident::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCoincident());
+    switch (seqIndex) {
+    case 0: // {SelVertex, SelVertex}
+    case 1: // {SelVertex, SelRoot}
+    case 2: // {SelRoot, SelVertex}
+        // TODO: create the constraint
+        SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+        Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
 
-    // get the selection
-    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+        int GeoId1 = selSeq.at(0).GeoId, GeoId2 = selSeq.at(1).GeoId;
+        Sketcher::PointPos PosId1 = selSeq.at(0).PosId, PosId2 = selSeq.at(1).PosId;
 
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select vertexes from the sketch."));
-        return;
-    }
-
-    // get the needed lists and objects
-    const std::vector<std::string> &SubNames = selection[0].getSubNames();
-    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-
-    if (SubNames.size() < 2) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two or more vertexes from the sketch."));
-        return;
-    }
-
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
-        int GeoId;
-        Sketcher::PointPos PosId;
-        getIdsFromName(*it, Obj, GeoId, PosId);
-        if (isEdge(GeoId,PosId)) {
-            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                QObject::tr("Select two or more vertexes from the sketch."));
-            return;
-        }
-    }
-
-    int GeoId1, GeoId2;
-    Sketcher::PointPos PosId1, PosId2;
-    getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
-
-    // undo command open
-    bool constraintsAdded = false;
-    openCommand("add coincident constraint");
-    for (std::size_t i=1; i<SubNames.size(); i++) {
-        getIdsFromName(SubNames[i], Obj, GeoId2, PosId2);
+        // undo command open
+        Gui::Command::openCommand("add coincident constraint");
 
         // check if this coincidence is already enforced (even indirectly)
-        bool constraintExists=Obj->arePointsCoincident(GeoId1,PosId1,GeoId2,PosId2);
-
-        if (!constraintExists) {
-            constraintsAdded = true;
+        bool constraintExists = Obj->arePointsCoincident(GeoId1, PosId1, GeoId2, PosId2);
+        if (!constraintExists && (GeoId1 != GeoId2)) {
             Gui::Command::doCommand(
-                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident',%d,%d,%d,%d)) ",
-                selection[0].getFeatName(),GeoId1,PosId1,GeoId2,PosId2);
+                Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Coincident', %d, %d, %d, %d)) ",
+                sketchgui->getObject()->getNameInDocument(), GeoId1, PosId1, GeoId2, PosId2);
+            Gui::Command::commitCommand();
         }
+        else {
+            Gui::Command::abortCommand();
+        }
+
+        break;
     }
-
-    // finish or abort the transaction and update
-    if (constraintsAdded)
-        commitCommand();
-    else
-        abortCommand();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-
-    if(autoRecompute)
-        Gui::Command::updateActive();
-
-    // clear the selection (convenience)
-    getSelection().clearSelection();
-}
-
-bool CmdSketcherConstrainCoincident::isActive(void)
-{
-    //    return isCreateConstraintActive( getActiveGuiDocument() );
-    return isCreateGeoActive( getActiveGuiDocument() );
 }
 
 // ======================================================================================
