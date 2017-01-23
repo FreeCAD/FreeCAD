@@ -183,11 +183,11 @@ void ViewProviderGroupExtension::extensionHide(void) {
 bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::string >& ) {
 
     auto* group = getExtendedViewProvider()->getObject()->getExtensionByType<App::GroupExtension>();
-    // If the group is nonempty ask the user if he wants to delete it's content
+    // If the group is nonempty ask the user if he wants to delete its content
     if ( group->Group.getSize () ) {
         QMessageBox::StandardButton choice = 
             QMessageBox::question ( 0, QObject::tr ( "Delete group content?" ), 
-                QObject::tr ( "The %1 is not empty, delete it's content as well?")
+                QObject::tr ( "The %1 is not empty, delete its content as well?")
                     .arg ( QString::fromUtf8 ( getExtendedViewProvider()->getObject()->Label.getValue () ) ), 
                 QMessageBox::Yes | QMessageBox::No, QMessageBox::Yes );
 
