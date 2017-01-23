@@ -183,8 +183,9 @@ int Area::add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf,
                 ++skipped;
                 if(force_coplanar) continue;
             }
-            add(_areaOpen,BRepBuilderAPI_MakeWire(
-                TopoDS::Edge(it.Current())).Wire(),trsf,deflection);
+            TopoDS_Wire wire = BRepBuilderAPI_MakeWire(
+                                    TopoDS::Edge(it.Current())).Wire();
+            add(BRep_Tool::IsClosed(wire)?_area:_areaOpen,wire,trsf,deflection);
         }
     }
 
