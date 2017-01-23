@@ -124,7 +124,7 @@ int AreaPy::PyInit(PyObject* args, PyObject* kwd)
 PyObject* AreaPy::setPlane(PyObject *args) {
     PyObject *pcObj;
     if (!PyArg_ParseTuple(args, "O!", &(Part::TopoShapePy::Type), &pcObj))
-        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
+        return 0;
 
 #define GET_TOPOSHAPE(_p) static_cast<Part::TopoShapePy*>(_p)->getTopoShapePtr()->getShape()
     getAreaPtr()->setPlane(GET_TOPOSHAPE(pcObj));
@@ -137,7 +137,7 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     short index=-1;
     static char *kwlist[] = {"index","rebuild", NULL};
     if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&pcObj))
-        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
+        return 0;
 
     try {
         if(PyObject_IsTrue(pcObj))
@@ -160,26 +160,31 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "O|" PARAM_PY_KWDS(AREA_PARAMS_OPCODE), 
                 kwlist,&pcObj,PARAM_REF(PARAM_FARG,AREA_PARAMS_OPCODE)))
-        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
+        return 0;
 
     if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
         getAreaPtr()->add(GET_TOPOSHAPE(pcObj),op);
         return Py_None;
-    }
-    Py::Sequence shapeSeq(pcObj);
-    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
-        PyObject* item = (*it).ptr();
-        if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
-            PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
-            return 0;
+    } else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
+             PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        Py::Sequence shapeSeq(pcObj);
+        for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+            PyObject* item = (*it).ptr();
+            if(!PyObject_TypeCheck(item, &(Part::TopoShapePy::Type))) {
+                PyErr_SetString(PyExc_TypeError, "non-shape object in sequence");
+                return 0;
+            }
         }
+        for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it){
+            PyObject* item = (*it).ptr();
+            getAreaPtr()->add(GET_TOPOSHAPE(item),
+                    PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
+        }
+        return Py_None;
     }
-    for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it){
-        PyObject* item = (*it).ptr();
-        getAreaPtr()->add(GET_TOPOSHAPE(item),
-                PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
-    }
-    return Py_None;
+
+    PyErr_SetString(PyExc_TypeError, "shape must be 'TopoShape' or list of 'TopoShape'");
+    return 0;
 }
 
 PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
@@ -196,7 +201,7 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|h" PARAM_PY_KWDS(AREA_PARAMS_OFFSET), kwlist, 
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_OFFSET)))
-        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
+        return 0;
 
     try {
         //Expand the variable as function call arguments
@@ -219,7 +224,7 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|h" PARAM_PY_KWDS(AREA_PARAMS_POCKET), kwlist, 
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET)))
-        Py_Error(Base::BaseExceptionFreeCADError, "Wrong parameters");
+        return 0;
 
     try {
         TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
@@ -265,7 +270,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 PyObject* AreaPy::getParams(PyObject *args)
 {
     if (!PyArg_ParseTuple(args, ""))
-        Py_Error(Base::BaseExceptionFreeCADError, "This method accepts no argument");
+        return 0;
 
     const AreaParams &params =getAreaPtr()->getParams();
 
@@ -280,7 +285,7 @@ PyObject* AreaPy::getParamsDesc(PyObject *args, PyObject *keywds)
     PyObject *pcObj = Py_True;
     static char *kwlist[] = {"as_string", NULL};
     if (!PyArg_ParseTupleAndKeywords(args, keywds,"|O",kwlist,&pcObj))
-        Py_Error(Base::BaseExceptionFreeCADError, "This method accepts no argument");
+        return 0;
 
     if(PyObject_IsTrue(pcObj)) 
         return PyString_FromString(PARAM_PY_DOC(NAME,AREA_PARAMS_CONF));
