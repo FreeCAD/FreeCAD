@@ -26,6 +26,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 
 #include "TaskSketchBasedParameters.h"
@@ -49,7 +50,8 @@ namespace PartDesignGui {
 
 namespace s = boost::signals;
 
-class TaskBoxPrimitives : public Gui::TaskView::TaskBox
+class TaskBoxPrimitives : public Gui::TaskView::TaskBox,
+                          public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -98,7 +100,11 @@ public Q_SLOTS:
     void onWedgeX2inChanged(double);
     void onWedgeZ2maxChanged(double);
     void onWedgeZ2inChanged(double);
-    
+
+private:
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
+
 private:
     QWidget* proxy;
     Ui_DlgPrimitives ui;
