@@ -82,8 +82,10 @@ public:
     int seekAutoConstraint(std::vector<AutoConstraint> &suggestedConstraints,
                            const Base::Vector2d &Pos, const Base::Vector2d &Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
+    // createowncommand indicates whether a separate command shall be create and committed (for example for undo purposes) or not
+    // is not it is the responsibility of the developer to create and commit the command appropriately.
     void createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
-                               int geoId, Sketcher::PointPos pointPos=Sketcher::none);
+                               int geoId, Sketcher::PointPos pointPos=Sketcher::none, bool createowncommand = true);
 
     void setPositionText(const Base::Vector2d &Pos, const SbString &text);
     void setPositionText(const Base::Vector2d &Pos);
