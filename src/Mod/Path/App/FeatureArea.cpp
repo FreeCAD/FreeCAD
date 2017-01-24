@@ -29,6 +29,7 @@
 #include <TopoDS_Compound.hxx>
 
 #include "FeatureArea.h"
+#include "FeatureAreaPy.h"
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -81,18 +82,18 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
     PARAM_FOREACH(AREA_PROP_GET,AREA_PARAMS_CONF)
 
-    Area area(&params);
+    myArea.clean(true);
+    myArea.setParams(params);
 
     TopoDS_Shape workPlane = WorkPlane.getShape().getShape();
-    if(!workPlane.IsNull())
-        area.setPlane(workPlane);
+    myArea.setPlane(workPlane);
 
     for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
-        area.add(static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
+        myArea.add(static_cast<Part::Feature*>(*it)->Shape.getShape().getShape(),
                 PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
     }
 
-    this->Shape.setValue(area.getShape(-1));
+    this->Shape.setValue(myArea.getShape(-1));
     return Part::Feature::execute();
 }
 
@@ -107,6 +108,16 @@ short FeatureArea::mustExecute(void) const
 
     return Part::Feature::mustExecute();
 }
+
+PyObject *FeatureArea::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new FeatureAreaPy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
+}
+
 
 // Python Area feature ---------------------------------------------------------
 
