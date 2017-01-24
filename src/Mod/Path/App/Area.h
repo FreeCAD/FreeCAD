@@ -206,6 +206,12 @@ public:
     /** Get the combined shape */
     TopoDS_Shape getShape(int index);
 
+    /** Return the number of sections */
+    std::size_t getSectionCount() {
+        build();
+        return mySections.size();
+    }
+
     /** Add a OCC wire shape to CArea 
      *
      * \arg \c area: output converted curved object to here
