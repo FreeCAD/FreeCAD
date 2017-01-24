@@ -40,6 +40,8 @@ class PathExport FeatureArea : public Part::Feature
     PROPERTY_HEADER(Path::FeatureArea);
 
 public:
+    Area myArea;
+
     /// Constructor
     FeatureArea(void);
     virtual ~FeatureArea();
@@ -50,6 +52,7 @@ public:
     }
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual short mustExecute(void) const;
+    virtual PyObject *getPyObject(void);
 
     App::PropertyLinkList   Sources;
     Part::PropertyPartShape WorkPlane;

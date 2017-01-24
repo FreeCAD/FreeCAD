@@ -110,6 +110,27 @@ Area::Area(const AreaParams *params)
         setParams(*params);
 }
 
+Area::Area(const Area &other, bool deep_copy)
+:Base::BaseClass(other)
+,myShapes(other.myShapes)
+,myTrsf(other.myTrsf)
+,myParams(other.myParams)
+,myWorkPlane(other.myWorkPlane)
+,myHaveFace(other.myHaveFace)
+,myHaveSolid(other.myHaveSolid)
+,myShapeDone(false)
+{
+    if(!deep_copy) return;
+    if(other.myArea)
+        myArea.reset(new CArea(*other.myArea));
+    myShapePlane = other.myShapePlane;
+    myShape = other.myShape;
+    myShapeDone = other.myShapeDone;
+    mySections.reserve(other.mySections.size());
+    for(shared_ptr<Area> area:mySections)
+        mySections.push_back(make_shared<Area>(*area,true));
+}
+
 Area::~Area() {
     clean();
 }

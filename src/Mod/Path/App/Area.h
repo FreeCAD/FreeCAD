@@ -146,6 +146,7 @@ public:
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
 
     Area(const AreaParams *params = NULL);
+    Area(const Area &other, bool deep_copy=true);
     virtual ~Area();
 
     /** Set a working plane 
