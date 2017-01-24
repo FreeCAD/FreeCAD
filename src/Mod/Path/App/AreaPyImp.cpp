@@ -109,15 +109,17 @@ std::string AreaPy::representation(void) const
     return str.str();
 }
 
-PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *AreaPy::PyMake(struct _typeobject *, PyObject *args, PyObject *kwd)  // Python wrapper
 {
-    return new AreaPy(new Area);
+    std::unique_ptr<AreaPy> ret(new AreaPy(new Area));
+    if(!ret->setParams(args,kwd))
+        return 0;
+    return ret.release();
 }
 
 // constructor method
-int AreaPy::PyInit(PyObject* args, PyObject* kwd)
+int AreaPy::PyInit(PyObject* , PyObject* )
 {
-    setParams(args,kwd);
     return 0;
 }
 
@@ -254,8 +256,7 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds, 
                 "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-        Py_Error(Base::BaseExceptionFreeCADError, 
-            "Wrong parameters, call getParamsDesc() to get supported params");
+        return 0;
 
 #define AREA_GET(_param) \
     params.PARAM_FNAME(_param) = \
