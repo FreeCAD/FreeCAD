@@ -166,7 +166,7 @@ class _TaskPanelFemMeshGmsh:
         if self.analysis:
             for m in FemGui.getActiveAnalysis().Member:
                 if m.Name == self.mesh_obj.Name:
-                    print(self.analysis.Name)
+                    print('Active analysis found: ' + self.analysis.Name)
                     return
             else:
                 # print('Mesh is not member of active analysis, means no group meshing')
