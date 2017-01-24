@@ -4623,6 +4623,7 @@ public:
         }
         else if(CurrentConstraint == 1) {
             // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
+            sketchgui->getDocument()->undo(1);
             if(!continuousMode){
                 DrawSketchHandler::quit();
             }
