@@ -346,29 +346,23 @@ void Area::build() {
     if(myWorkPlane.IsNull()) {
         myShapePlane.Nullify();
         for(const Shape &s : myShapes) {
-            bool haveFace = false;
-            for(TopExp_Explorer it(s.shape, TopAbs_FACE); it.More(); it.Next()) {
-                haveFace = true;
-                BRepLib_FindSurface planeFinder(it.Current(),-1,Standard_True);
-                if (!planeFinder.Found())
-                    continue;
-                myShapePlane = it.Current();
-                myTrsf.SetTransformation(GeomAdaptor_Surface(
-                            planeFinder.Surface()).Plane().Position());
-                break;
-            }
-            if(!myShapePlane.IsNull()) break;
-            if(haveFace) continue;
-            for(TopExp_Explorer it(s.shape, TopAbs_WIRE); it.More(); it.Next()) {
-                BRepLib_FindSurface planeFinder(it.Current(),-1,Standard_True);
-                if (!planeFinder.Found())
-                    continue;
-                myShapePlane = it.Current();
-                myTrsf.SetTransformation(GeomAdaptor_Surface(
-                            planeFinder.Surface()).Plane().Position());
-                break;
-            }
-            if(!myShapePlane.IsNull()) break;
+            bool haveShape = false;
+#define AREA_CHECK_PLANE(_type) \
+            for(TopExp_Explorer it(s.shape, TopAbs_##_type); it.More(); it.Next()) {\
+                haveShape = true;\
+                BRepLib_FindSurface planeFinder(it.Current(),-1,Standard_True);\
+                if (!planeFinder.Found())\
+                    continue;\
+                myShapePlane = it.Current();\
+                myTrsf.SetTransformation(GeomAdaptor_Surface(\
+                            planeFinder.Surface()).Plane().Position());\
+                break;\
+            }\
+            if(!myShapePlane.IsNull()) break;\
+            if(haveShape) continue;
+            AREA_CHECK_PLANE(FACE)
+            AREA_CHECK_PLANE(WIRE)
+            AREA_CHECK_PLANE(EDGE)
         }
 
         if(myShapePlane.IsNull())
