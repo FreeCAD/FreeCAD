@@ -63,5 +63,11 @@ any operation</UserDocu>
         <UserDocu>Get current algorithm parameters as a dictionary.</UserDocu>
       </Documentation>
     </Methode>
+    <Attribute Name="Sections" ReadOnly="true">
+        <Documentation>
+            <UserDocu>List of sections in this area.</UserDocu>
+        </Documentation>
+        <Parameter Name="Sections" Type="List"/>
+    </Attribute>
   </PythonExport>
 </GenerateModel>

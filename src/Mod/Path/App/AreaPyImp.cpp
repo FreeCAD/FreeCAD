@@ -295,6 +295,14 @@ PyObject* AreaPy::getParamsDesc(PyObject *args, PyObject *keywds)
     return dict;
 }
 
+Py::List AreaPy::getSections(void) const {
+    Py::List ret;
+	Area *area = getAreaPtr();
+    for(size_t i=0,count=area->getSectionCount(); i<count;++i)
+        ret.append(Part::shape2pyshape(getAreaPtr()->getShape(i)));
+    return ret;
+}
+
 // custom attributes get/set
 
 PyObject *AreaPy::getCustomAttributes(const char* /*attr*/) const
