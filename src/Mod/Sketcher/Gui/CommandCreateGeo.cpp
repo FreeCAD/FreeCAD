@@ -4538,13 +4538,19 @@ public:
                 currentgeoid++;
 
                 // Constraint pole circles to bspline.
-                for(size_t i = 0; i < EditCurve.size(); i++) {
-                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',%d,%d,%d,%d)) ",
-                                            sketchgui->getObject()->getNameInDocument(),FirstPoleGeoId+i,Sketcher::mid,currentgeoid,i);
+                std::stringstream cstream;
+                
+                cstream << "conList = []\n";
+                
+                for (size_t i = 0; i < EditCurve.size(); i++) {
+                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint'," << FirstPoleGeoId+i 
+                        << "," << Sketcher::mid << "," << currentgeoid << "," << i << "))\n";
                 }
                 
-
-
+                cstream << "App.ActiveDocument."<< sketchgui->getObject()->getNameInDocument() << ".addConstraint(conList)\n";
+                
+                Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
+                
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
