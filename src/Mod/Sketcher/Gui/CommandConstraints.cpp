@@ -859,7 +859,7 @@ public:
 
     virtual bool pressButton(Base::Vector2d /*onSketchPos*/)
     {
-        return false;
+        return true;
     }
 
     virtual bool releaseButton(Base::Vector2d onSketchPos)
@@ -934,7 +934,7 @@ public:
                         selSeq.clear();
                         resetOngoingSequences();
 
-                        return false;
+                        return true;
                     }
                     _tempOnSequences->insert(*token);
                     allowedSelTypes = allowedSelTypes | (cmd->allowedSelSequences).at(*token).at(seqIndex+1);
@@ -947,7 +947,7 @@ public:
             selFilterGate->setAllowedSelTypes(allowedSelTypes);
         }
 
-        return false;
+        return true;
     }
 
 protected:
