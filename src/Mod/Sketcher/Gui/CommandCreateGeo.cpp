@@ -4405,7 +4405,7 @@ public:
                 return false;
             }
             
-            Gui::Command::commitCommand();
+            //Gui::Command::commitCommand();
             
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
             
@@ -4413,7 +4413,7 @@ public:
             
             // add auto constraints on pole
             if (sugConstr[CurrentConstraint].size() > 0) {
-                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId, Sketcher::mid);
+                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId, Sketcher::mid, false);
             }
 
             static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
@@ -4450,7 +4450,7 @@ public:
             // insert circle point for pole, defer internal alignment constraining.
             try {
                 
-                Gui::Command::openCommand("Add Pole circle");
+                //Gui::Command::openCommand("Add Pole circle");
                 
                 //Add pole
                 Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
@@ -4475,16 +4475,16 @@ public:
                 return false;
             }
             
-            Gui::Command::commitCommand();
+            //Gui::Command::commitCommand();
             
             //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
             
             // add auto constraints on pole
             if (sugConstr[CurrentConstraint].size() > 0) {
-                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId + EditCurve.size()-1, Sketcher::mid);
+                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId + EditCurve.size()-1, Sketcher::mid, false);
             }
             
-            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
             
             if (!IsClosed) {
                 EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
@@ -4523,7 +4523,7 @@ public:
 
             try {
 
-                Gui::Command::openCommand("Add B-spline curve");
+                //Gui::Command::openCommand("Add B-spline curve");
 
                 //Add arc of parabola
                 Gui::Command::doCommand(Gui::Command::Doc,
@@ -4623,7 +4623,18 @@ public:
         }
         else if(CurrentConstraint == 1) {
             // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
-            sketchgui->getDocument()->undo(1);
+            //sketchgui->getDocument()->undo(1);
+            
+            Gui::Command::abortCommand();
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+            if(autoRecompute) 
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            
             if(!continuousMode){
                 DrawSketchHandler::quit();
             }
