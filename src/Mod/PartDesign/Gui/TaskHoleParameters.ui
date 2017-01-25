@@ -28,7 +28,7 @@
     </widget>
    </item>
    <item row="7" column="2" colspan="2">
-    <widget class="QComboBox" name="depth">
+    <widget class="QComboBox" name="DepthType">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -52,48 +52,10 @@
      </item>
     </widget>
    </item>
-   <item row="7" column="6">
-    <widget class="QDoubleSpinBox" name="depthValue">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="prefix">
-      <string/>
-     </property>
-     <property name="suffix">
-      <string> mm</string>
-     </property>
-    </widget>
-   </item>
    <item row="16" column="0" colspan="2">
-    <widget class="QCheckBox" name="tapered">
+    <widget class="QCheckBox" name="Tapered">
      <property name="text">
       <string>Tapered</string>
-     </property>
-    </widget>
-   </item>
-   <item row="16" column="2" colspan="2">
-    <widget class="QDoubleSpinBox" name="taperedAngle">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="suffix">
-      <string> deg</string>
-     </property>
-     <property name="minimum">
-      <double>0.000000000000000</double>
-     </property>
-     <property name="maximum">
-      <double>179.900000000000006</double>
-     </property>
-     <property name="value">
-      <double>90.000000000000000</double>
      </property>
     </widget>
    </item>
@@ -103,7 +65,16 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
@@ -135,23 +106,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="drillPointAngledValue">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="suffix">
-           <string> deg</string>
-          </property>
-          <property name="maximum">
-           <number>179</number>
-          </property>
-          <property name="value">
-           <number>118</number>
-          </property>
-         </widget>
+         <widget class="Gui::PrefQuantitySpinBox" name="DrillPointAngle" native="true"/>
         </item>
         <item>
          <spacer name="horizontalSpacer">
@@ -172,10 +127,10 @@
     </widget>
    </item>
    <item row="4" column="2" colspan="5">
-    <widget class="QComboBox" name="threadSize"/>
+    <widget class="QComboBox" name="ThreadSize"/>
    </item>
    <item row="2" column="2">
-    <widget class="QCheckBox" name="threaded">
+    <widget class="QCheckBox" name="Threaded">
      <property name="text">
       <string>Threaded</string>
      </property>
@@ -241,7 +196,7 @@
     </widget>
    </item>
    <item row="1" column="2" colspan="5">
-    <widget class="QComboBox" name="threadType"/>
+    <widget class="QComboBox" name="ThreadType"/>
    </item>
    <item row="3" column="0" colspan="2">
     <widget class="QLabel" name="label_8">
@@ -260,23 +215,10 @@
     </widget>
    </item>
    <item row="6" column="2">
-    <widget class="QComboBox" name="threadClass"/>
-   </item>
-   <item row="6" column="5" colspan="2">
-    <widget class="QDoubleSpinBox" name="threadDiameter">
-     <property name="suffix">
-      <string> mm</string>
-     </property>
-     <property name="maximum">
-      <double>100.000000000000000</double>
-     </property>
-     <property name="value">
-      <double>3.000000000000000</double>
-     </property>
-    </widget>
+    <widget class="QComboBox" name="ThreadClass"/>
    </item>
    <item row="5" column="2" colspan="5">
-    <widget class="QComboBox" name="threadFit">
+    <widget class="QComboBox" name="ThreadFit">
      <item>
       <property name="text">
        <string>Standard fit</string>
@@ -295,20 +237,29 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QRadioButton" name="directionLeftHand">
-        <property name="text">
-         <string>Left hand</string>
-        </property>
-       </widget>
-      </item>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
       <item>
        <widget class="QRadioButton" name="directionRightHand">
         <property name="text">
          <string>Right hand</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="directionLeftHand">
+        <property name="text">
+         <string>Left hand</string>
         </property>
        </widget>
       </item>
@@ -319,19 +270,6 @@
     <widget class="QLabel" name="label_13">
      <property name="text">
       <string>&lt;b&gt;Threading and size&lt;/b&gt;</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="4" colspan="3">
-    <widget class="QSpinBox" name="holeCutCountersinkAngle">
-     <property name="suffix">
-      <string> deg</string>
-     </property>
-     <property name="maximum">
-      <number>179</number>
-     </property>
-     <property name="value">
-      <number>90</number>
      </property>
     </widget>
    </item>
@@ -349,20 +287,6 @@
      </property>
     </widget>
    </item>
-   <item row="10" column="4" colspan="3">
-    <widget class="QDoubleSpinBox" name="holeCutDiameter">
-     <property name="suffix">
-      <string> mm</string>
-     </property>
-    </widget>
-   </item>
-   <item row="11" column="4" colspan="3">
-    <widget class="QDoubleSpinBox" name="holeCutDepth">
-     <property name="suffix">
-      <string> mm</string>
-     </property>
-    </widget>
-   </item>
    <item row="10" column="2" colspan="2">
     <widget class="QLabel" name="label_11">
      <property name="text">
@@ -371,7 +295,7 @@
     </widget>
    </item>
    <item row="9" column="2" colspan="5">
-    <widget class="QComboBox" name="holeCutType"/>
+    <widget class="QComboBox" name="HoleCutType"/>
    </item>
    <item row="8" column="0" colspan="2">
     <widget class="QLabel" name="label_14">
@@ -439,8 +363,33 @@
      </property>
     </spacer>
    </item>
+   <item row="6" column="5" colspan="2">
+    <widget class="Gui::PrefQuantitySpinBox" name="Diameter" native="true"/>
+   </item>
+   <item row="7" column="5" colspan="2">
+    <widget class="Gui::PrefQuantitySpinBox" name="Depth" native="true"/>
+   </item>
+   <item row="10" column="4" colspan="3">
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDiameter" native="true"/>
+   </item>
+   <item row="11" column="4" colspan="3">
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutDepth" native="true"/>
+   </item>
+   <item row="12" column="4" colspan="3">
+    <widget class="Gui::PrefQuantitySpinBox" name="HoleCutCountersinkAngle" native="true"/>
+   </item>
+   <item row="16" column="2">
+    <widget class="Gui::PrefQuantitySpinBox" name="TaperedAngle" native="true"/>
+   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::PrefQuantitySpinBox</class>
+   <extends>QWidget</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

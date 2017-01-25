@@ -27,6 +27,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskDialog.h>
+#include <App/DocumentObserver.h>
+#include <boost/bind.hpp>
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderHole.h"
@@ -39,6 +41,10 @@ class Property;
 
 namespace Gui {
 class ViewProvider;
+}
+
+namespace PartDesign {
+class Hole;
 }
 
 namespace PartDesignGui { 
@@ -58,18 +64,18 @@ public:
     long   getThreadSize() const;
     long   getThreadClass() const;
     long   getThreadFit() const;
-    double getDiameter() const;
+    Base::Quantity getDiameter() const;
     bool   getThreadDirection() const;
     long   getHoleCutType() const;
-    double getHoleCutDiameter() const;
-    double getHoleCutDepth() const;
-    double getHoleCutCountersinkAngle() const;
+    Base::Quantity getHoleCutDiameter() const;
+    Base::Quantity getHoleCutDepth() const;
+    Base::Quantity getHoleCutCountersinkAngle() const;
     long   getType() const;
-    double getLength() const;
+    Base::Quantity getLength() const;
     long   getDrillPoint() const;
-    double getDrillPointAngle() const;
+    Base::Quantity getDrillPointAngle() const;
     bool   getTapered() const;
-    double getTaperedAngle() const;
+    Base::Quantity getTaperedAngle() const;
 
 private Q_SLOTS:
     void threadedChanged();
@@ -82,23 +88,37 @@ private Q_SLOTS:
     void holeCutChanged(int index);
     void holeCutDiameterChanged(double value);
     void holeCutDepthChanged(double value);
-    void holeCutCountersinkAngleChanged(int value);
+    void holeCutCountersinkAngleChanged(double value);
     void depthChanged(int index);
     void depthValueChanged(double value);
     void drillPointChanged();
-    void drillPointAngledValueChanged(int value);
+    void drillPointAngledValueChanged(double value);
     void taperedChanged();
     void taperedAngleChanged(double value);
 
+private:
+    class Observer : public App::DocumentObjectObserver {
+    public:
+        Observer(TaskHoleParameters * _owner, PartDesign::Hole * hole);
+    private:
+        virtual void slotChangedObject(const App::DocumentObject& Obj, const App::Property& Prop);
+        TaskHoleParameters * owner;
+    };
+
 protected:
     void changeEvent(QEvent *e);
-    void updateHoleCutParams();
+    void changedObject(const App::Property& Prop);
 
 private:
     void onSelectionChanged(const Gui::SelectionChanges &msg);
     void updateUi();
 
 private:
+
+    typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
+    Connection connectPropChanged;
+
+    std::unique_ptr<Observer> observer;
     QWidget* proxy;
     Ui_TaskHoleParameters* ui;
 };

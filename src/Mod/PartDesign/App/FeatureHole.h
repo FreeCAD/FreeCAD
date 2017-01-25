@@ -39,23 +39,23 @@ class PartDesignExport Hole : public ProfileBased
 public:
     Hole();
 
-    App::PropertyBool           Threaded;
+    App::PropertyEnumeration    Threaded;
     App::PropertyEnumeration    ThreadType;
     App::PropertyEnumeration    ThreadSize;
     App::PropertyEnumeration    ThreadClass;
     App::PropertyEnumeration    ThreadFit;
-    App::PropertyFloat          Diameter;
-    App::PropertyBool           ThreadDirection;
+    App::PropertyLength         Diameter;
+    App::PropertyEnumeration    ThreadDirection;
     App::PropertyEnumeration    HoleCutType;
-    App::PropertyFloat          HoleCutDiameter;
-    App::PropertyFloat          HoleCutDepth;
-    App::PropertyFloat          HoleCutCountersinkAngle;
-    App::PropertyEnumeration    Type;
-    App::PropertyLength         Length;
+    App::PropertyLength         HoleCutDiameter;
+    App::PropertyLength         HoleCutDepth;
+    App::PropertyAngle          HoleCutCountersinkAngle;
+    App::PropertyEnumeration    DepthType;
+    App::PropertyLength         Depth;
     App::PropertyEnumeration    DrillPoint;
-    App::PropertyFloat          DrillPointAngle;
+    App::PropertyAngle          DrillPointAngle;
     App::PropertyBool           Tapered;
-    App::PropertyFloat          TaperedAngle;
+    App::PropertyAngle          TaperedAngle;
 
     /** @name methods override feature */
     //@{
@@ -80,10 +80,12 @@ public:
 protected:
     void onChanged(const App::Property* prop);
 private:
-    static const char* TypeEnums[];
+    static const char* DepthTypeEnums[];
+    static const char* ThreadedEnums[];
     static const char* ThreadTypeEnums[];
     static const char* ThreadFitEnums[];
     static const char* DrillPointEnums[];
+    static const char* ThreadDirectionEnums[];
 
     /* "None" thread profile */
     static const char* HoleCutType_None_Enums[];
@@ -115,6 +117,7 @@ private:
     static const char* ThreadSize_UNEF_Enums[];
     static const char* ThreadClass_UNEF_Enums[];
 
+    void updateHoleCutParams();
 };
 
 } //namespace PartDesign
