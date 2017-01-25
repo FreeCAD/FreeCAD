@@ -42,7 +42,7 @@
 #include <Base/Console.h>
 #include <App/Material.h>
 
-#include <Mod/TechDraw/App/DrawCrosshatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 
 
@@ -113,7 +113,7 @@ void QGIViewSection::drawSectionFace()
                 QString ext = hfi.suffix();
                 if ((ext.toUpper() == QString::fromUtf8("PAT")) &&
                     !patternName.empty() )  {
-                    newFace->setFillMode(QGIFace::CrosshatchFill);
+                    newFace->setFillMode(QGIFace::GeomHatchFill);
                     newFace->setLineWeight(sectionVp->WeightPattern.getValue());
                     std::vector<LineSet> lineSets = section->getDrawableLines(i);
                     if (!lineSets.empty()) {

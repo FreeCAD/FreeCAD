@@ -81,7 +81,7 @@
 #include "DrawUtil.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjectSplit.h"
-#include "DrawCrosshatch.h"
+#include "DrawGeomHatch.h"
 #include "DrawViewSection.h"
 
 using namespace TechDraw;
@@ -174,7 +174,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
       if ((!FileHatchPattern.isEmpty())  &&
           (!NameGeomPattern.isEmpty())) {
               std::vector<HatchLine> specs = 
-                               DrawCrosshatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+                               DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
               m_lineSets.clear();
               for (auto& hl: specs) {
                   //hl.dump("hl from section");
@@ -539,7 +539,7 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
 std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
 {
     std::vector<LineSet> result;
-    result = DrawCrosshatch::getDrawableLines(this,m_lineSets,i,HatchScale.getValue());
+    result = DrawGeomHatch::getDrawableLines(this,m_lineSets,i,HatchScale.getValue());
     return result;
 }
 

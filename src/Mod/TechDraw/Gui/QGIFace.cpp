@@ -74,7 +74,7 @@ QGIFace::QGIFace(int index) :
     m_styleNormal = m_styleDef;
     m_fillStyle = m_styleDef;
     m_colNormalFill = m_colDefFill;
-    m_crossColor = QColor(Qt::black);
+    m_geomColor = QColor(Qt::black);
     setLineWeight(0.5);                   //0 = cosmetic
     
     setPrettyNormal();
@@ -99,17 +99,17 @@ void QGIFace::draw()
     setPath(m_outline);                         //Face boundary
 
     if (isHatched()) {   
-        if (m_mode == CrosshatchFill) {                             //crosshatch
-            if (!m_crossHatchPaths.empty()) {                                  //surrogate for LineSets.empty
+        if (m_mode == GeomHatchFill) {                             //crosshatch
+            if (!m_geomHatchPaths.empty()) {                                  //surrogate for LineSets.empty
                 m_brush.setTexture(nullptr);
                 m_fillStyle = m_styleDef;
                 m_styleNormal = m_fillStyle;
                 int pathNo = 0;
-                for (auto& pp: m_crossHatchPaths) {
+                for (auto& pp: m_geomHatchPaths) {
                     QGraphicsPathItem* fillItem = m_fillItems.at(pathNo);  
                     fillItem->setPath(pp);                  
-                    QPen crossPen = setCrossPen(pathNo);
-                    fillItem->setPen(crossPen);
+                    QPen geomPen = setGeomPen(pathNo);
+                    fillItem->setPen(geomPen);
                     pathNo++;
                 }
             }
@@ -217,7 +217,7 @@ void QGIFace::setOutline(const QPainterPath & path)
 
 void QGIFace::clearLineSets(void) 
 {
-    m_crossHatchPaths.clear();
+    m_geomHatchPaths.clear();
     m_dashSpecs.clear();
     clearFillItems();
 }
@@ -225,7 +225,7 @@ void QGIFace::clearLineSets(void)
 //each line set needs a painterpath, a dashspec and a QGPItem to show them
 void QGIFace::addLineSet(QPainterPath pp, std::vector<double> dp)
 {
-    m_crossHatchPaths.push_back(pp);
+    m_geomHatchPaths.push_back(pp);
     m_dashSpecs.push_back(DashSpec(dp));
     addFillItem();
 }   
@@ -253,7 +253,7 @@ QVector<qreal> QGIFace::decodeDashSpec(DashSpec patDash)
     //Rez::guiX(something)?
     double dotLength = 3.0;
     double unitLength = 6.0;
-//    double penWidth = m_crossWeight;    //mark, space and dot lengths are to be in terms of penWidth(Qt) or mm(PAT)??
+//    double penWidth = m_geomWeight;    //mark, space and dot lengths are to be in terms of penWidth(Qt) or mm(PAT)??
 //                                        //if we want it in terms of mm, we need to divide by penWidth?
 //    double minPen = 0.01;               //avoid trouble with cosmetic pen (zero width)
     std::vector<double> result;
@@ -273,16 +273,15 @@ QVector<qreal> QGIFace::decodeDashSpec(DashSpec patDash)
 }
 
 
-QPen QGIFace::setCrossPen(int i)
+QPen QGIFace::setGeomPen(int i)
 {
     //m_dashSpecs[i].dump("spec test");
     DashSpec ourSpec = m_dashSpecs.at(i);
     //ourSpec.dump("our spec");
     
     QPen result;
-    result.setWidthF(Rez::guiX(m_crossWeight));    //Rez::guiX() ?? line weights are in mm?
-//    result.setWidthF(Rez::guiX(0.09));
-    result.setColor(m_crossColor);
+    result.setWidthF(Rez::guiX(m_geomWeight));    //Rez::guiX() ?? line weights are in mm?
+    result.setColor(m_geomColor);
     if (ourSpec.empty()) {
        result.setStyle(Qt::SolidLine);
     } else {
@@ -348,7 +347,7 @@ QPixmap QGIFace::textureFromSvg(std::string fileSpec)
 void QGIFace::setHatchColor(App::Color c)
 {
     m_svgCol = c.asCSSString();
-    m_crossColor = c.asValue<QColor>();
+    m_geomColor = c.asValue<QColor>();
 }
 
 void QGIFace::setHatchScale(double s)
@@ -396,7 +395,7 @@ void QGIFace::resetFill() {
 }
 
 void QGIFace::setLineWeight(double w) {
-    m_crossWeight = w;
+    m_geomWeight = w;
 }
 
 

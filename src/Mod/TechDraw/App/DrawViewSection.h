@@ -45,7 +45,7 @@ class Face;
 namespace TechDraw
 {
 class DrawProjGroupItem;
-class DrawCrosshatch;
+class DrawGeomHatch;
 class HatchLine;
 class LineSet;
 class DashSet;

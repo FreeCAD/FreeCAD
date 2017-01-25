@@ -65,39 +65,39 @@
 #include "Geometry.h"
 #include "DrawViewPart.h"
 #include "DrawViewSection.h"
-#include "DrawCrosshatch.h"
+#include "DrawGeomHatch.h"
 
-#include <Mod/TechDraw/App/DrawCrosshatchPy.h>  // generated from DrawCrosshatchPy.xml
+#include <Mod/TechDraw/App/DrawGeomHatchPy.h>  // generated from DrawGeomHatchPy.xml
 
 using namespace TechDraw;
 using namespace TechDrawGeometry;
 using namespace std;
 
-PROPERTY_SOURCE(TechDraw::DrawCrosshatch, App::DocumentObject)
+PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
 
-DrawCrosshatch::DrawCrosshatch(void)
+DrawGeomHatch::DrawGeomHatch(void)
 {
-    static const char *vgroup = "Crosshatch";
+    static const char *vgroup = "GeomHatch";
 
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be crosshatched");
     ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
-    ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"Crosshatch pattern size adjustment");
+    ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
 
     getParameters();
 
 }
 
-DrawCrosshatch::~DrawCrosshatch()
+DrawGeomHatch::~DrawGeomHatch()
 {
 }
 
-void DrawCrosshatch::onChanged(const App::Property* prop)
+void DrawGeomHatch::onChanged(const App::Property* prop)
 {
     if (prop == &Source ) {
         if (!isRestoring()) {
-              DrawCrosshatch::execute();
+              DrawGeomHatch::execute();
         }
     }
 
@@ -120,7 +120,7 @@ void DrawCrosshatch::onChanged(const App::Property* prop)
     App::DocumentObject::onChanged(prop);
 }
 
-short DrawCrosshatch::mustExecute() const
+short DrawGeomHatch::mustExecute() const
 {
     short result = 0;
     if (!isRestoring()) {
@@ -136,20 +136,20 @@ short DrawCrosshatch::mustExecute() const
 }
 
 
-App::DocumentObjectExecReturn *DrawCrosshatch::execute(void)
+App::DocumentObjectExecReturn *DrawGeomHatch::execute(void)
 {
     
     return App::DocumentObject::StdReturn;
 }
 
-DrawViewPart* DrawCrosshatch::getSourceView(void) const
+DrawViewPart* DrawGeomHatch::getSourceView(void) const
 {
     App::DocumentObject* obj = Source.getValue();
     DrawViewPart* result = dynamic_cast<DrawViewPart*>(obj);
     return result;
 }
 
-std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile()
+std::vector<HatchLine> DrawGeomHatch::getDecodedSpecsFromFile()
 {
     std::string fileSpec = FilePattern.getValue();
     std::string myPattern = NamePattern.getValue();
@@ -159,12 +159,12 @@ std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile()
      
 //!get all the specification lines and decode them into HatchLine structures
 /*static*/
-std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern)
+std::vector<HatchLine> DrawGeomHatch::getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern)
 {
     std::vector<HatchLine> result;
     Base::FileInfo fi(fileSpec);
     if (!fi.isReadable()) {
-        Base::Console().Error("DrawCrosshatch::getDecodedSpecsFromFile not able to open %s!\n",fileSpec.c_str());
+        Base::Console().Error("DrawGeomHatch::getDecodedSpecsFromFile not able to open %s!\n",fileSpec.c_str());
         return result;
     }
     result = HatchLine::getSpecsForPattern(fileSpec,myPattern);
@@ -172,7 +172,7 @@ std::vector<HatchLine> DrawCrosshatch::getDecodedSpecsFromFile(std::string fileS
     return result;
 }
 
-std::vector<LineSet>  DrawCrosshatch::getDrawableLines(int i)   //get the drawable lines for face i
+std::vector<LineSet>  DrawGeomHatch::getDrawableLines(int i)   //get the drawable lines for face i
 {
     std::vector<LineSet> result;
     DrawViewPart* source = getSourceView();
@@ -185,7 +185,7 @@ std::vector<LineSet>  DrawCrosshatch::getDrawableLines(int i)   //get the drawab
 }
 
 /* static */
-std::vector<LineSet> DrawCrosshatch::getDrawableLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
+std::vector<LineSet> DrawGeomHatch::getDrawableLines(DrawViewPart* source, std::vector<LineSet> lineSets, int iface, double scale )
 {
     std::vector<LineSet> result;
 
@@ -230,7 +230,7 @@ std::vector<LineSet> DrawCrosshatch::getDrawableLines(DrawViewPart* source, std:
     
     for (auto& ls: lineSets) {
         HatchLine hl = ls.getHatchLine();
-        std::vector<TopoDS_Edge> candidates = DrawCrosshatch::makeEdgeOverlay(hl, bBox, scale);
+        std::vector<TopoDS_Edge> candidates = DrawGeomHatch::makeEdgeOverlay(hl, bBox, scale);
 
         //make Compound for this linespec
         BRep_Builder builder;
@@ -275,7 +275,7 @@ std::vector<LineSet> DrawCrosshatch::getDrawableLines(DrawViewPart* source, std:
     return result;
 }
 /* static */
-std::vector<TopoDS_Edge> DrawCrosshatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b, double scale)
+std::vector<TopoDS_Edge> DrawGeomHatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b, double scale)
 {
     std::vector<TopoDS_Edge> result;
 
@@ -374,7 +374,7 @@ std::vector<TopoDS_Edge> DrawCrosshatch::makeEdgeOverlay(HatchLine hl, Bnd_Box b
     return result;
 }
 
-TopoDS_Edge DrawCrosshatch::makeLine(Base::Vector3d s, Base::Vector3d e)
+TopoDS_Edge DrawGeomHatch::makeLine(Base::Vector3d s, Base::Vector3d e)
 {
     TopoDS_Edge result;
     gp_Pnt start(s.x,s.y,0.0);
@@ -386,7 +386,7 @@ TopoDS_Edge DrawCrosshatch::makeLine(Base::Vector3d s, Base::Vector3d e)
     return result;
 }
 
-void DrawCrosshatch::getParameters(void)
+void DrawGeomHatch::getParameters(void)
 {
 //this is probably "/build/data/Mod/TechDraw/PAT"
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
@@ -410,10 +410,10 @@ void DrawCrosshatch::getParameters(void)
 }
 
 
-PyObject *DrawCrosshatch::getPyObject(void)
+PyObject *DrawGeomHatch::getPyObject(void)
 {
     if (PythonObject.is(Py::_None())) {
-        PythonObject = Py::Object(new DrawCrosshatchPy(this),true);
+        PythonObject = Py::Object(new DrawGeomHatchPy(this),true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -422,12 +422,12 @@ PyObject *DrawCrosshatch::getPyObject(void)
 
 namespace App {
 /// @cond DOXERR
-PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawCrosshatchPython, TechDraw::DrawCrosshatch)
-template<> const char* TechDraw::DrawCrosshatchPython::getViewProviderName(void) const {
-    return "TechDrawGui::ViewProviderCrosshatch";
+PROPERTY_SOURCE_TEMPLATE(TechDraw::DrawGeomHatchPython, TechDraw::DrawGeomHatch)
+template<> const char* TechDraw::DrawGeomHatchPython::getViewProviderName(void) const {
+    return "TechDrawGui::ViewProviderGeomHatch";
 }
 /// @endcond
 
 // explicit template instantiation
-template class TechDrawExport FeaturePythonT<TechDraw::DrawCrosshatch>;
+template class TechDrawExport FeaturePythonT<TechDraw::DrawGeomHatch>;
 }

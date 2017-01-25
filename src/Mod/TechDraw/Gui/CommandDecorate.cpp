@@ -49,7 +49,7 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawCrosshatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
@@ -128,24 +128,24 @@ bool CmdTechDrawNewHatch::isActive(void)
 }
 
 //===========================================================================
-// TechDraw_NewCrosshatch
+// TechDraw_NewGeomHatch
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawNewCrosshatch);
+DEF_STD_CMD_A(CmdTechDrawNewGeomHatch);
 
-CmdTechDrawNewCrosshatch::CmdTechDrawNewCrosshatch()
-  : Command("TechDraw_NewCrosshatch")
+CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
+  : Command("TechDraw_NewGeomHatch")
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
     sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
-    sWhatsThis      = "TechDraw_NewCrosshatch";
+    sWhatsThis      = "TechDraw_NewGeomHatch";
     sStatusTip      = sToolTipText;
-    sPixmap         = "actions/techdraw-crosshatch";
+    sPixmap         = "actions/techdraw-geomhatch";
 }
 
-void CmdTechDrawNewCrosshatch::activated(int iMsg)
+void CmdTechDrawNewGeomHatch::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
@@ -161,16 +161,16 @@ void CmdTechDrawNewCrosshatch::activated(int iMsg)
     TechDraw::DrawPage* page = objFeat->findParentPage();
     std::string PageName = page->getNameInDocument();
 
-    std::string FeatName = getUniqueObjectName("Crosshatch");
+    std::string FeatName = getUniqueObjectName("GeomHatch");
     std::stringstream featLabel;
     featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
 
-    openCommand("Create Crosshatch");
-    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawCrosshatch','%s')",FeatName.c_str());
+    openCommand("Create GeomHatch");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
 
-    auto crosshatch( static_cast<TechDraw::DrawCrosshatch *>(getDocument()->getObject(FeatName.c_str())) );
-    crosshatch->Source.setValue(objFeat, subNames);
+    auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
+    geomhatch->Source.setValue(objFeat, subNames);
 
     commitCommand();
 
@@ -180,7 +180,7 @@ void CmdTechDrawNewCrosshatch::activated(int iMsg)
     getDocument()->recompute();
 }
 
-bool CmdTechDrawNewCrosshatch::isActive(void)
+bool CmdTechDrawNewGeomHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -291,7 +291,7 @@ void CreateTechDrawCommandsDecorate(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
-    rcCmdMgr.addCommand(new CmdTechDrawNewCrosshatch());
+    rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 }
