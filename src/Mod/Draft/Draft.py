@@ -233,7 +233,7 @@ def getGroupNames():
     glist = []
     doc = FreeCAD.ActiveDocument
     for obj in doc.Objects:
-        if obj.TypeId == "App::DocumentObjectGroup":
+        if obj.isDerivedFrom("App::DocumentObjectGroup") or (getType(obj) in ["Floor","Building","Site"]):
             glist.append(obj.Name)
     return glist
 
@@ -243,6 +243,23 @@ def ungroup(obj):
         grp = FreeCAD.ActiveDocument.getObject(g)
         if grp.hasObject(obj):
             grp.removeObject(obj)
+            
+def autogroup(obj):
+    "adds a given object to the autogroup, if applicable"
+    if FreeCAD.GuiUp:
+        if hasattr(FreeCADGui,"draftToolBar"):
+            if hasattr(FreeCADGui.draftToolBar,"autogroup") and (not FreeCADGui.draftToolBar.isConstructionMode()):
+                if FreeCADGui.draftToolBar.autogroup != None:
+                    g = FreeCAD.ActiveDocument.getObject(FreeCADGui.draftToolBar.autogroup)
+                    if g:
+                        found = False
+                        for o in g.Group:
+                            if o.Name == obj.Name:
+                                found = True
+                        if not found:
+                            gr = g.Group
+                            gr.append(obj)
+                            g.Group = gr
 
 def dimSymbol(symbol=None,invert=False):
     "returns the current dim symbol from the preferences as a pivy SoMarkerSet"
@@ -1168,6 +1185,7 @@ def extrude(obj,vector,solid=False):
     if gui:
         obj.ViewObject.Visibility = False
         formatObject(newobj,obj)
+        select(newobj)
     FreeCAD.ActiveDocument.recompute()
     return newobj
 
@@ -1203,6 +1221,7 @@ def fuse(object1,object2):
         object1.ViewObject.Visibility = False
         object2.ViewObject.Visibility = False
         formatObject(obj,object1)
+        select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -1215,6 +1234,7 @@ def cut(object1,object2):
     object1.ViewObject.Visibility = False
     object2.ViewObject.Visibility = False
     formatObject(obj,object1)
+    select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -1282,7 +1302,7 @@ def move(objectslist,vector,copy=False):
     if copy and getParam("selectBaseObjects",False):
         select(objectslist)
     else:
-        select(newobjlist)
+        select(newobjlist) 
     if len(newobjlist) == 1: return newobjlist[0]
     return newobjlist
 
@@ -1438,7 +1458,8 @@ def scale(objectslist,delta=Vector(1,1,1),center=Vector(0,0,0),copy=False,legacy
             elif (obj.TypeId == "App::Annotation"):
                 factor = delta.x * delta.y * delta.z * obj.ViewObject.FontSize.Value
                 obj.ViewObject.Fontsize = factor
-            if copy: formatObject(newobj,obj)
+            if copy: 
+                formatObject(newobj,obj)
             newobjlist.append(newobj)
         if copy and getParam("selectBaseObjects",False):
             select(objectslist)
@@ -2775,6 +2796,7 @@ def makePoint(X=0, Y=0, Z=0,color=None,name = "Point", point_size= 5):
         obj.ViewObject.PointColor = (float(color[0]), float(color[1]), float(color[2]))
         obj.ViewObject.PointSize = point_size
         obj.ViewObject.Visibility = True
+    select(obj)
     FreeCAD.ActiveDocument.recompute()
     return obj
 
@@ -2968,6 +2990,7 @@ def makeFacebinder(selectionset,name="Facebinder"):
         _ViewProviderFacebinder(fb.ViewObject)
     faces = []
     fb.Proxy.addSubobjects(fb,selectionset)
+    select(fb)
     return fb
 
 
@@ -3330,7 +3353,6 @@ def upgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
-
     return [addList,deleteList]
 
 def downgrade(objects,delete=False,force=None):
@@ -3531,7 +3553,6 @@ def downgrade(objects,delete=False,force=None):
         deleteList = []
         for n in names:
             FreeCAD.ActiveDocument.removeObject(n)
-
     return [addList,deleteList]
 
 

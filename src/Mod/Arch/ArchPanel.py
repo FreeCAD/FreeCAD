@@ -151,8 +151,10 @@ class CommandPanel:
                     return
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Panel")))
             FreeCADGui.addModule("Arch")
+            FreeCADGui.addModule("Draft")
             for obj in sel:
-                FreeCADGui.doCommand("Arch.makePanel(FreeCAD.ActiveDocument." + obj.Name + ",thickness=" + str(self.Thickness) + ")")
+                FreeCADGui.doCommand("obj = Arch.makePanel(FreeCAD.ActiveDocument." + obj.Name + ",thickness=" + str(self.Thickness) + ")")
+                FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             return
