@@ -70,7 +70,6 @@ PropertyView::PropertyView(QWidget *parent)
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
     tabs->setTabPosition(QTabWidget::South);
-    tabs->setTabShape(QTabWidget::Triangular);
     pLayout->addWidget(tabs, 0, 0);
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
