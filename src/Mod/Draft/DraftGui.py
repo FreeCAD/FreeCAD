@@ -256,6 +256,7 @@ class DraftToolBar:
         self.y = 0
         self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
+        self.autogroup = None
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -604,6 +605,8 @@ class DraftToolBar:
         self.widthButton.setSuffix("px")
         self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 3,bsize))
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
+        self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
+        self.autoGroupButton.setText("None")
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -612,6 +615,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
         QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
         QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
+        QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
 
     def setupStyle(self):
         style = "#constrButton:Checked {background-color: "
@@ -725,6 +729,7 @@ class DraftToolBar:
             self.fontsizeButton.setToolTip(translate("draft", "Font Size"))
             self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
             self.constrButton.setToolTip(translate("draft", "Toggles Construction Mode"))
+            self.autoGroupButton.setToolTip(translate("draft", "Sets/unsets auto-grouping"))
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -1728,6 +1733,27 @@ class DraftToolBar:
         self.radiusValue.setText(t)
         self.radiusValue.setFocus()
         
+    def runAutoGroup(self):
+        FreeCADGui.runCommand("Draft_AutoGroup")
+        
+    def setAutoGroup(self,value=None):
+        if value == None:
+            self.autogroup = None
+            self.autoGroupButton.setText("None")
+            self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setDown(False)
+        else:
+            obj = FreeCAD.ActiveDocument.getObject(value)
+            if obj:
+                self.autogroup = value
+                self.autoGroupButton.setText(obj.Label)
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setDown(False)
+            else:
+                self.autogroup = None
+                self.autoGroupButton.setText("None")
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setDown(False)
 
     def show(self):
         if not self.taskmode:

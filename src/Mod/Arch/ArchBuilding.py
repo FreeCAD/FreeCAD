@@ -244,7 +244,9 @@ Building creation aborted.\n" )
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Building"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeBuilding("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeBuilding("+ss+")")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 

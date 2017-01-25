@@ -290,7 +290,9 @@ Site creation aborted." )
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Site"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeSite("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeSite("+ss+")")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
