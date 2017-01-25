@@ -31,7 +31,7 @@
 #include "DrawViewSymbol.h"
 #include "DrawViewClip.h"
 #include "DrawHatch.h"
-#include "DrawCrosshatch.h"
+#include "DrawGeomHatch.h"
 #include "DrawViewDraft.h"
 #include "DrawViewArch.h"
 #include "DrawViewSpreadsheet.h"
@@ -85,7 +85,7 @@ PyMODINIT_FUNC initTechDraw()
 
     TechDraw::DrawViewClip        ::init();
     TechDraw::DrawHatch           ::init();
-    TechDraw::DrawCrosshatch      ::init();
+    TechDraw::DrawGeomHatch      ::init();
     TechDraw::DrawViewDraft       ::init();
     TechDraw::DrawViewArch        ::init();
     TechDraw::DrawViewImage       ::init();

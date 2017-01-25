@@ -49,48 +49,48 @@
 #include <Gui/Utilities.h>
 #include <Gui/Control.h>
 
-#include <Mod/TechDraw/App/DrawCrosshatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawView.h>
 #include "ViewProviderDrawingView.h"
-#include "ViewProviderCrosshatch.h"
+#include "ViewProviderGeomHatch.h"
 
 using namespace TechDrawGui;
 
-PROPERTY_SOURCE(TechDrawGui::ViewProviderCrosshatch, Gui::ViewProviderDocumentObject)
+PROPERTY_SOURCE(TechDrawGui::ViewProviderGeomHatch, Gui::ViewProviderDocumentObject)
 
 //**************************************************************************
 // Construction/Destruction
 
-ViewProviderCrosshatch::ViewProviderCrosshatch()
+ViewProviderGeomHatch::ViewProviderGeomHatch()
 {
     static const char *vgroup = "Format";
 
-    sPixmap = "actions/techdraw-crosshatch";
+    sPixmap = "actions/techdraw-geomhatch";
 
     ADD_PROPERTY_TYPE(ColorPattern,(0),vgroup,App::Prop_None,"The color of the pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0.1),vgroup,App::Prop_None,"Crosshatch pattern line thickness");
+    ADD_PROPERTY_TYPE(WeightPattern,(0.1),vgroup,App::Prop_None,"GeomHatch pattern line thickness");
 
     getParameters();
 
 }
 
-ViewProviderCrosshatch::~ViewProviderCrosshatch()
+ViewProviderGeomHatch::~ViewProviderGeomHatch()
 {
 }
 
-void ViewProviderCrosshatch::attach(App::DocumentObject *pcFeat)
+void ViewProviderGeomHatch::attach(App::DocumentObject *pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
 }
 
-void ViewProviderCrosshatch::setDisplayMode(const char* ModeName)
+void ViewProviderGeomHatch::setDisplayMode(const char* ModeName)
 {
     ViewProviderDocumentObject::setDisplayMode(ModeName);
 }
 
-std::vector<std::string> ViewProviderCrosshatch::getDisplayModes(void) const
+std::vector<std::string> ViewProviderGeomHatch::getDisplayModes(void) const
 {
     // get the modes of the father
     std::vector<std::string> StrList = ViewProviderDocumentObject::getDisplayModes();
@@ -99,7 +99,7 @@ std::vector<std::string> ViewProviderCrosshatch::getDisplayModes(void) const
 }
 
 //for VP properties
-void ViewProviderCrosshatch::onChanged(const App::Property* prop)
+void ViewProviderGeomHatch::onChanged(const App::Property* prop)
 {
     if (prop == &WeightPattern   ||
         prop == &ColorPattern ) {
@@ -110,7 +110,7 @@ void ViewProviderCrosshatch::onChanged(const App::Property* prop)
 }
 
 //for feature properties
-void ViewProviderCrosshatch::updateData(const App::Property* prop)
+void ViewProviderGeomHatch::updateData(const App::Property* prop)
 {
     if (prop == &(getViewObject()->ScalePattern)) {
         updateGraphic();
@@ -118,9 +118,9 @@ void ViewProviderCrosshatch::updateData(const App::Property* prop)
     Gui::ViewProviderDocumentObject::updateData(prop);
 }
 
-void ViewProviderCrosshatch::updateGraphic(void)
+void ViewProviderGeomHatch::updateGraphic(void)
 {
-    TechDraw::DrawCrosshatch* dc = getViewObject();
+    TechDraw::DrawGeomHatch* dc = getViewObject();
     if (dc) {
         TechDraw::DrawViewPart* dvp = dc->getSourceView();
         if (dvp) {
@@ -138,12 +138,12 @@ void ViewProviderCrosshatch::updateGraphic(void)
 }
 
 
-void ViewProviderCrosshatch::getParameters(void)
+void ViewProviderGeomHatch::getParameters(void)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
     App::Color fcColor;
-    fcColor.setPackedValue(hGrp->GetUnsigned("Crosshatch", 0x00000000));
+    fcColor.setPackedValue(hGrp->GetUnsigned("GeomHatch", 0x00000000));
     ColorPattern.setValue(fcColor);
    
     hGrp = App::GetApplication().GetUserParameter()
@@ -152,7 +152,7 @@ void ViewProviderCrosshatch::getParameters(void)
     WeightPattern.setValue(lineWeight);
 }
 
-TechDraw::DrawCrosshatch* ViewProviderCrosshatch::getViewObject() const
+TechDraw::DrawGeomHatch* ViewProviderGeomHatch::getViewObject() const
 {
-    return dynamic_cast<TechDraw::DrawCrosshatch*>(pcObject);
+    return dynamic_cast<TechDraw::DrawGeomHatch*>(pcObject);
 }

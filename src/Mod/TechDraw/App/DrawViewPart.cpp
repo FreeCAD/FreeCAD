@@ -89,7 +89,7 @@
 #include "GeometryObject.h"
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
-#include "DrawCrosshatch.h"
+#include "DrawGeomHatch.h"
 #include "EdgeWalker.h"
 
 
@@ -409,14 +409,14 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     return result;
 }
 
-std::vector<TechDraw::DrawCrosshatch*> DrawViewPart::getCrosshatches() const
+std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
 {
-    std::vector<TechDraw::DrawCrosshatch*> result;
+    std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawCrosshatch::getClassTypeId())) {
-            TechDraw::DrawCrosshatch* cross = dynamic_cast<TechDraw::DrawCrosshatch*>(*it);
-            result.push_back(cross);
+        if ((*it)->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())) {
+            TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(*it);
+            result.push_back(geom);
         }
     }
     return result;

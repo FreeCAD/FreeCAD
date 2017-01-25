@@ -126,7 +126,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
-    *decor << "TechDraw_NewCrosshatch";
+    *decor << "TechDraw_NewGeomHatch";
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";
@@ -176,7 +176,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     Gui::ToolBarItem *decor = new Gui::ToolBarItem(root);
     decor->setCommand("TechDraw Decoration");
     *decor << "TechDraw_NewHatch";
-    *decor << "TechDraw_NewCrosshatch";
+    *decor << "TechDraw_NewGeomHatch";
     *decor << "TechDraw_Symbol";
     *decor << "TechDraw_Image";
     *decor << "TechDraw_ToggleFrame";

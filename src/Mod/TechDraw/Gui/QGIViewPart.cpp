@@ -52,7 +52,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
-#include <Mod/TechDraw/App/DrawCrosshatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawViewDetail.h>
 
 #include "Rez.h"
@@ -68,7 +68,7 @@
 #include "QGCustomRect.h"
 #include "QGIMatting.h"
 #include "QGIViewPart.h"
-#include "ViewProviderCrosshatch.h"
+#include "ViewProviderGeomHatch.h"
 
 using namespace TechDrawGui;
 using namespace TechDrawGeometry;
@@ -378,7 +378,7 @@ void QGIViewPart::drawViewPart()
     if (viewPart->handleFaces()) {
         // Draw Faces
         std::vector<TechDraw::DrawHatch*> hatchObjs = viewPart->getHatches();
-        std::vector<TechDraw::DrawCrosshatch*> crossObjs = viewPart->getCrosshatches();
+        std::vector<TechDraw::DrawGeomHatch*> geomObjs = viewPart->getGeomHatches();
         const std::vector<TechDrawGeometry::Face *> &faceGeoms = viewPart->getFaceGeometry();
         std::vector<TechDrawGeometry::Face *>::const_iterator fit = faceGeoms.begin();
         for(int i = 0 ; fit != faceGeoms.end(); fit++, i++) {
@@ -386,12 +386,12 @@ void QGIViewPart::drawViewPart()
             newFace->isHatched(false);
             newFace->setFillMode(QGIFace::PlainFill);
             TechDraw::DrawHatch* fHatch = faceIsHatched(i,hatchObjs);
-            TechDraw::DrawCrosshatch* fCross = faceIsCrosshatched(i,crossObjs);
-            if (fCross) {
-                const std::vector<std::string> &sourceNames = fCross->Source.getSubValues();
+            TechDraw::DrawGeomHatch* fGeom = faceIsGeomHatched(i,geomObjs);
+            if (fGeom) {
+                const std::vector<std::string> &sourceNames = fGeom->Source.getSubValues();
                 if (!sourceNames.empty()) {
                     int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
-                    std::vector<LineSet> lineSets = fCross->getDrawableLines(fdx);
+                    std::vector<LineSet> lineSets = fGeom->getDrawableLines(fdx);
                     if (!lineSets.empty()) {
                         newFace->clearLineSets();
                         for (auto& ls: lineSets) {
@@ -403,14 +403,14 @@ void QGIViewPart::drawViewPart()
                             newFace->addLineSet(bigPath,ls.getDashSpec());
                         }
                         newFace->isHatched(true);
-                        newFace->setFillMode(QGIFace::CrosshatchFill);
-                        newFace->setHatchScale(fCross->ScalePattern.getValue());
-                        newFace->setHatchFile(fCross->FilePattern.getValue());
-                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fCross);
-                        ViewProviderCrosshatch* crossVp = dynamic_cast<ViewProviderCrosshatch*>(gvp);
-                        if (crossVp != nullptr) {
-                            newFace->setHatchColor(crossVp->ColorPattern.getValue());
-                            newFace->setLineWeight(crossVp->WeightPattern.getValue());
+                        newFace->setFillMode(QGIFace::GeomHatchFill);
+                        newFace->setHatchScale(fGeom->ScalePattern.getValue());
+                        newFace->setHatchFile(fGeom->FilePattern.getValue());
+                        Gui::ViewProvider* gvp = QGIView::getViewProvider(fGeom);
+                        ViewProviderGeomHatch* geomVp = dynamic_cast<ViewProviderGeomHatch*>(gvp);
+                        if (geomVp != nullptr) {
+                            newFace->setHatchColor(geomVp->ColorPattern.getValue());
+                            newFace->setLineWeight(geomVp->WeightPattern.getValue());
                         }
                     }
                 }
@@ -887,10 +887,10 @@ TechDraw::DrawHatch* QGIViewPart::faceIsHatched(int i,std::vector<TechDraw::Draw
     return result;
 }
 
-TechDraw::DrawCrosshatch* QGIViewPart::faceIsCrosshatched(int i,std::vector<TechDraw::DrawCrosshatch*> crossObjs) const
+TechDraw::DrawGeomHatch* QGIViewPart::faceIsGeomHatched(int i,std::vector<TechDraw::DrawGeomHatch*> geomObjs) const
 {
-    TechDraw::DrawCrosshatch* result = nullptr;
-    for (auto& h:crossObjs) {
+    TechDraw::DrawGeomHatch* result = nullptr;
+    for (auto& h:geomObjs) {
         const std::vector<std::string> &sourceNames = h->Source.getSubValues();
         int fdx = TechDraw::DrawUtil::getIndexFromName(sourceNames.at(0));
         if (fdx == i) {

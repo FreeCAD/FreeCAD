@@ -33,21 +33,21 @@
 
 
 namespace TechDraw{
-    class DrawCrosshatch;
+    class DrawGeomHatch;
 }
 
 namespace TechDrawGui {
 
 
-class TechDrawGuiExport ViewProviderCrosshatch : public Gui::ViewProviderDocumentObject
+class TechDrawGuiExport ViewProviderGeomHatch : public Gui::ViewProviderDocumentObject
 {
-    PROPERTY_HEADER(TechDrawGui::ViewProviderCrosshatch);
+    PROPERTY_HEADER(TechDrawGui::ViewProviderGeomHatch);
 
 public:
     /// constructor
-    ViewProviderCrosshatch();
+    ViewProviderGeomHatch();
     /// destructor
-    virtual ~ViewProviderCrosshatch();
+    virtual ~ViewProviderGeomHatch();
 
     App::PropertyFloat       WeightPattern;
     App::PropertyColor       ColorPattern;
@@ -63,7 +63,7 @@ public:
     void updateGraphic(void);
     void getParameters(void);
 
-    TechDraw::DrawCrosshatch* getViewObject() const;
+    TechDraw::DrawGeomHatch* getViewObject() const;
 };
 
 } // namespace TechDrawGui

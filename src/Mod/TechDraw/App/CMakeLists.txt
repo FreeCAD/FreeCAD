@@ -37,7 +37,7 @@ generate_from_xml(DrawViewSymbolPy)
 generate_from_xml(DrawViewClipPy)
 generate_from_xml(DrawViewDimensionPy)
 generate_from_xml(DrawHatchPy)
-generate_from_xml(DrawCrosshatchPy)
+generate_from_xml(DrawGeomHatchPy)
 generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
@@ -75,8 +75,8 @@ SET(Draw_SRCS
     DrawViewSection.h
     DrawHatch.cpp
     DrawHatch.h
-    DrawCrosshatch.cpp
-    DrawCrosshatch.h
+    DrawGeomHatch.cpp
+    DrawGeomHatch.h
     DrawViewDraft.cpp
     DrawViewDraft.h
     DrawViewArch.cpp
@@ -133,8 +133,8 @@ SET(Python_SRCS
     DrawViewDimensionPyImp.cpp
     DrawHatchPy.xml
     DrawHatchPyImp.cpp
-    DrawCrosshatchPy.xml
-    DrawCrosshatchPyImp.cpp
+    DrawGeomHatchPy.xml
+    DrawGeomHatchPyImp.cpp
     DrawViewCollectionPy.xml
     DrawViewCollectionPyImp.cpp
     DrawProjGroupPy.xml

@@ -55,7 +55,7 @@ ViewProviderViewSection::ViewProviderViewSection()
     ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),sgroup,App::Prop_None,"The color to shade the cut surface");
     ADD_PROPERTY_TYPE(HatchCutSurface ,(false),hgroup,App::Prop_None,"Hatch the cut surface");
     ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),hgroup,App::Prop_None,"The color of the hatch pattern");
-    ADD_PROPERTY_TYPE(WeightPattern,(0.1),hgroup,App::Prop_None,"Crosshatch pattern line thickness");
+    ADD_PROPERTY_TYPE(WeightPattern,(0.1),hgroup,App::Prop_None,"GeomHatch pattern line thickness");
 
     getParameters();
 

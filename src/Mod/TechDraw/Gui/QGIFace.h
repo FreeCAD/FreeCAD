@@ -64,7 +64,7 @@ public:
         FromFile,
         SvgFill,
         BitmapFill,
-        CrosshatchFill,
+        GeomHatchFill,
         PlainFill
     };
 
@@ -100,7 +100,7 @@ public:
     void clearSvg(void);
     
     //PAT fill parms & methods
-    void setCrosshatchWeight(double w) { m_crossWeight = w; }
+    void setGeomHatchWeight(double w) { m_geomWeight = w; }
     void clearLineSets(void);
     void addLineSet(QPainterPath pp, std::vector<double> dp);
     QGraphicsPathItem* addFillItem();
@@ -124,10 +124,10 @@ protected:
     bool m_isHatched;
     QGIFace::fillMode m_mode;
 
-    QPen setCrossPen(int i);
+    QPen setGeomPen(int i);
     QVector<qreal> decodeDashSpec(DashSpec d);
     std::vector<QGraphicsPathItem*> m_fillItems;
-    std::vector<QPainterPath> m_crossHatchPaths;     // 0/1 dashspec per crosshatchpath
+    std::vector<QPainterPath> m_geomHatchPaths;     // 0/1 dashspec per hatchpath
     std::vector<DashSpec> m_dashSpecs;
 
 
@@ -146,10 +146,10 @@ private:
  
     QPainterPath m_outline;                     //
  
-    QPainterPath m_crosshatch;                  //crosshatch fill lines
+    QPainterPath m_geomhatch;                  //crosshatch fill lines
  
-    QColor m_crossColor;                        //color for crosshatch lines
-    double m_crossWeight;                       //lineweight for crosshatch lines
+    QColor m_geomColor;                        //color for crosshatch lines
+    double m_geomWeight;                       //lineweight for crosshatch lines
 };
 
 }

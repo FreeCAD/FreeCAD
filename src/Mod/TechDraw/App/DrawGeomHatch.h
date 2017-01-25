@@ -20,8 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _TechDraw_DrawCrosshatch_h_
-#define _TechDraw_DrawCrosshatch_h_
+#ifndef _TechDraw_DrawGeomHatch_h_
+#define _TechDraw_DrawGeomHatch_h_
 
 # include <App/DocumentObject.h>
 # include <App/FeaturePython.h>
@@ -43,13 +43,13 @@ class HatchLine;
 class LineSet;
 class DashSet;
 
-class TechDrawExport DrawCrosshatch : public App::DocumentObject
+class TechDrawExport DrawGeomHatch : public App::DocumentObject
 {
-    PROPERTY_HEADER(TechDraw::DrawCrosshatch);
+    PROPERTY_HEADER(TechDraw::DrawGeomHatch);
 
 public:
-    DrawCrosshatch();
-    virtual ~DrawCrosshatch();
+    DrawGeomHatch();
+    virtual ~DrawGeomHatch();
 
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
@@ -60,7 +60,7 @@ public:
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);
     virtual const char* getViewProviderName(void) const {
-        return "TechDrawGui::ViewProviderCrosshatch";
+        return "TechDrawGui::ViewProviderGeomHatch";
     }
     virtual PyObject *getPyObject(void);
 
@@ -81,7 +81,7 @@ protected:
 private:
 };
 
-typedef App::FeaturePythonT<DrawCrosshatch> DrawCrosshatchPython;
+typedef App::FeaturePythonT<DrawGeomHatch> DrawGeomHatchPython;
 
 
 
