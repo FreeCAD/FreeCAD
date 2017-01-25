@@ -239,10 +239,10 @@ void DlgGeneralImp::loadSettings()
     }
 
     int current = getMainWindow()->iconSize().width();
-    this->toolbarIconSize->addItem(tr("Small (%1)").arg(16), QVariant((int)16));
-    this->toolbarIconSize->addItem(tr("Medium (%1)").arg(24), QVariant((int)24));
-    this->toolbarIconSize->addItem(tr("Large (%1)").arg(32), QVariant((int)32));
-    this->toolbarIconSize->addItem(tr("Extra large (%1)").arg(48), QVariant((int)48));
+    this->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
+    this->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
+    this->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
+    this->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
     index = this->toolbarIconSize->findData(QVariant(current));
     if (index > -1) this->toolbarIconSize->setCurrentIndex(index);
 
