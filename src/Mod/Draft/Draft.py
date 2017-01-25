@@ -1851,6 +1851,8 @@ def getSVG(obj,scale=1,linewidth=0.35,fontsize=12,fillstyle="shape color",direct
 
     def getDiscretized(edge):
         ml = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetFloat("svgDiscretization",10.0)
+        if ml == 0:
+            ml = 10
         d = int(edge.Length/ml)
         if d == 0:
             d = 1
