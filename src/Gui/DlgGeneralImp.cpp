@@ -238,12 +238,11 @@ void DlgGeneralImp::loadSettings()
         }
     }
 
-    int size = QApplication::style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     int current = getMainWindow()->iconSize().width();
-    this->toolbarIconSize->addItem(tr("Default (%1 x %1)").arg(size), QVariant((int)size));
-    this->toolbarIconSize->addItem(tr("Small (%1 x %1)").arg(16), QVariant((int)16));
-    this->toolbarIconSize->addItem(tr("Large (%1 x %1)").arg(32), QVariant((int)32));
-    this->toolbarIconSize->addItem(tr("Extra large (%1 x %1)").arg(48), QVariant((int)48));
+    this->toolbarIconSize->addItem(tr("Small (%1)").arg(16), QVariant((int)16));
+    this->toolbarIconSize->addItem(tr("Medium (%1)").arg(24), QVariant((int)24));
+    this->toolbarIconSize->addItem(tr("Large (%1)").arg(32), QVariant((int)32));
+    this->toolbarIconSize->addItem(tr("Extra large (%1)").arg(48), QVariant((int)48));
     index = this->toolbarIconSize->findData(QVariant(current));
     if (index > -1) this->toolbarIconSize->setCurrentIndex(index);
 
