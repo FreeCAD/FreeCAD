@@ -76,8 +76,8 @@ CmdTechDrawNewHatch::CmdTechDrawNewHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a hatched area into a view");
-    sToolTipText    = QT_TR_NOOP("Insert a hatched area into a view");
+    sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
+    sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
     sWhatsThis      = "TechDraw_NewHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
@@ -138,8 +138,8 @@ CmdTechDrawNewCrosshatch::CmdTechDrawNewCrosshatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a crosshatched area into a view");
-    sToolTipText    = QT_TR_NOOP("Insert a crosshatched area into a view");
+    sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
+    sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
     sWhatsThis      = "TechDraw_NewCrosshatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-crosshatch";
@@ -173,7 +173,6 @@ void CmdTechDrawNewCrosshatch::activated(int iMsg)
     crosshatch->Source.setValue(objFeat, subNames);
 
     commitCommand();
-    Base::Console().Message("TRACE - cmd::newCrossHatch - complete\n");
 
     //Horrible hack to force Tree update  ??still required??
     double x = objFeat->X.getValue();
