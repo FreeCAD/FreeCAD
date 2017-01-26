@@ -64,7 +64,7 @@ namespace SketcherGui
     };
 }
 
-ConstraintCreationMode constraintCreationMode=Driving;
+ConstraintCreationMode constraintCreationMode = Driving;
 
 void ActivateHandler(Gui::Document *doc, DrawSketchHandler *handler);
 
@@ -73,7 +73,7 @@ bool isCreateGeoActive(Gui::Document *doc);
 bool isCreateConstraintActive(Gui::Document *doc)
 {
     if (doc) {
-        // checks if a Sketch Viewprovider is in Edit and is in no special mode
+        // checks if a Sketch View provider is in Edit and is in no special mode
         if (doc->getInEdit() && doc->getInEdit()->isDerivedFrom(SketcherGui::ViewProviderSketch::getClassTypeId())) {
             if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())
                 ->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
@@ -817,7 +817,7 @@ protected:
     /**
      * @brief allowedSelSequences
      * Each element is a vector representing sequence of selections allowable.
-     * TODO: Introduce structs to
+     * TODO: Introduce structs to allow keeping first selection
      */
     std::vector<std::vector<SketcherGui::SelType> > allowedSelSequences;
 
@@ -1899,7 +1899,7 @@ void CmdSketcherConstrainPointOnObject::activated(int iMsg)
 void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
     int GeoIdVt, GeoIdCrv;
-    Sketcher::PointPos PosIdVt, PosIdCrv;
+    Sketcher::PointPos PosIdVt;
 
     switch (seqIndex) {
     case 0: // {SelVertex, SelEdge}
@@ -1907,7 +1907,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     case 4: // {SelVertex, SelHAxis}
     case 6: // {SelVertex, SelVAxis}
         GeoIdVt = selSeq.at(0).GeoId; GeoIdCrv = selSeq.at(1).GeoId;
-        PosIdVt = selSeq.at(0).PosId; PosIdCrv = selSeq.at(1).PosId;
+        PosIdVt = selSeq.at(0).PosId;
 
         break;
     case 1: // {SelEdge, SelVertex}
@@ -1915,7 +1915,7 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
     case 5: // {SelHAxis, SelVertex}
     case 7: // {SelVAxis, SelVertex}
         GeoIdVt = selSeq.at(1).GeoId; GeoIdCrv = selSeq.at(0).GeoId;
-        PosIdVt = selSeq.at(1).PosId; PosIdCrv = selSeq.at(0).PosId;
+        PosIdVt = selSeq.at(1).PosId;
 
         break;
     default:
@@ -2335,7 +2335,7 @@ public:
     virtual const char* className() const
     { return "CmdSketcherConstrainParallel"; }
 protected:
-//    virtual void activated(int iMsg);
+    virtual void activated(int iMsg);
     virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
 };
 
@@ -2359,83 +2359,86 @@ CmdSketcherConstrainParallel::CmdSketcherConstrainParallel()
     constraintCursor = cursor_createparallel;
 }
 
-//void CmdSketcherConstrainParallel::activated(int iMsg)
-//{
-//    Q_UNUSED(iMsg);
-//    // get the selection
-//    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+void CmdSketcherConstrainParallel::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
 
-//    // only one sketch with its subelements are allowed to be selected
-//    if (selection.size() != 1) {
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
 //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
 //            QObject::tr("Select two or more lines from the sketch."));
-//        return;
-//    }
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
+        return;
+    }
 
-//    // get the needed lists and objects
-//    const std::vector<std::string> &SubNames = selection[0].getSubNames();
-//    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    // get the needed lists and objects
+    const std::vector<std::string> &SubNames = selection[0].getSubNames();
+    Sketcher::SketchObject* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
 
-//    // go through the selected subelements
+    // go through the selected subelements
 
-//    if (SubNames.size() < 2) {
-//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//            QObject::tr("Select at least two lines from the sketch."));
-//        return;
-//    }
+    if (SubNames.size() < 2) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+            QObject::tr("Select at least two lines from the sketch."));
+        return;
+    }
 
-//    std::vector<int> ids;
-//    bool hasAlreadyExternal=false;
-//    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
+    std::vector<int> ids;
+    bool hasAlreadyExternal=false;
+    for (std::vector<std::string>::const_iterator it=SubNames.begin();it!=SubNames.end();++it) {
 
-//        int GeoId;
-//        Sketcher::PointPos PosId;
-//        getIdsFromName(*it, Obj, GeoId, PosId);
+        int GeoId;
+        Sketcher::PointPos PosId;
+        getIdsFromName(*it, Obj, GeoId, PosId);
 
-//        if (!isEdge(GeoId,PosId)) {
-//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//                                 QObject::tr("Select a valid line"));
-//            return;
-//        }
-//        else if (GeoId < 0) {
-//            if (hasAlreadyExternal) {
-//                showNoConstraintBetweenExternal();
-//                return;
-//            }
-//            else
-//                hasAlreadyExternal = true;
-//        }
+        if (!isEdge(GeoId,PosId)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Select a valid line"));
+            return;
+        }
+        else if (GeoId < 0) {
+            if (hasAlreadyExternal) {
+                showNoConstraintBetweenExternal();
+                return;
+            }
+            else
+                hasAlreadyExternal = true;
+        }
 
-//        // Check that the curve is a line segment
-//        const Part::Geometry *geo = Obj->getGeometry(GeoId);
-//        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
-//            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-//                                QObject::tr("The selected edge is not a valid line"));
-//            return;
-//        }
-//        ids.push_back(GeoId);
-//    }
+        // Check that the curve is a line segment
+        const Part::Geometry *geo = Obj->getGeometry(GeoId);
+        if (geo->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                QObject::tr("The selected edge is not a valid line"));
+            return;
+        }
+        ids.push_back(GeoId);
+    }
 
-//    // undo command open
-//    openCommand("add parallel constraint");
-//    for (int i=0; i < int(ids.size()-1); i++) {
-//        Gui::Command::doCommand(
-//            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
-//            selection[0].getFeatName(),ids[i],ids[i+1]);
-//    }
-//    // finish the transaction and update
-//    commitCommand();
+    // undo command open
+    openCommand("add parallel constraint");
+    for (int i=0; i < int(ids.size()-1); i++) {
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Parallel',%d,%d)) ",
+            selection[0].getFeatName(),ids[i],ids[i+1]);
+    }
+    // finish the transaction and update
+    commitCommand();
     
-//    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-//    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
-//    if(autoRecompute)
-//        Gui::Command::updateActive();
+    if(autoRecompute)
+        Gui::Command::updateActive();
 
 
-//    // clear the selection (convenience)
-//    getSelection().clearSelection();
-//}
+    // clear the selection (convenience)
+    getSelection().clearSelection();
+}
 
 void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
@@ -2475,17 +2478,62 @@ void CmdSketcherConstrainParallel::applyConstraint(std::vector<SelIdPair> &selSe
     }
 }
 
-//bool CmdSketcherConstrainParallel::isActive(void)
-//{
-//    return isCreateConstraintActive( getActiveGuiDocument() );
-//}
-
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainPerpendicular);
+/* XPM */
+static const char *cursor_createperpconstraint[] = {
+"32 32 3 1",
+" 	c None",
+".	c #FFFFFF",
+"+	c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .         ++              ",
+"      .         ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"                ++              ",
+"       ++++++++++++++++++++     ",
+"       ++++++++++++++++++++     ",
+"                                ",
+"                                "};
+
+//DEF_STD_CMD_A(CmdSketcherConstrainPerpendicular);
+class CmdSketcherConstrainPerpendicular : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainPerpendicular();
+    virtual ~CmdSketcherConstrainPerpendicular(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainPerpendicular"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
-    :Command("Sketcher_ConstrainPerpendicular")
+    :CmdSketcherConstraint("Sketcher_ConstrainPerpendicular")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -2496,6 +2544,23 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     sPixmap         = "Constraint_Perpendicular";
     sAccel          = "N";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge, SelEdge}, {SelEdge, SelHAxis}, {SelEdge, SelVAxis},
+                           {SelHAxis, SelEdge}, {SelVAxis, SelEdge},
+                           {SelVertex, SelEdge, SelEdge}, {SelVertex, SelEdge, SelHAxis},
+                           {SelVertex, SelEdge, SelVAxis}, {SelVertex, SelHAxis, SelEdge},
+                           {SelVertex, SelVAxis, SelEdge},
+                           {SelRoot, SelEdge, SelEdge}, {SelRoot, SelEdge, SelHAxis},
+                           {SelRoot, SelEdge, SelVAxis}, {SelRoot, SelHAxis, SelEdge},
+                           {SelRoot, SelVAxis, SelEdge},
+                           {SelEdge, SelVertex, SelEdge}, {SelEdge, SelVertex, SelHAxis},
+                           {SelEdge, SelVertex, SelVAxis}, {SelHAxis, SelVertex, SelEdge},
+                           {SelVAxis, SelVertex, SelEdge},
+                           {SelEdge, SelRoot, SelEdge}, {SelEdge, SelRoot, SelHAxis},
+                           {SelEdge, SelRoot, SelVAxis}, {SelHAxis, SelRoot, SelEdge},
+                           {SelVAxis, SelRoot, SelEdge}};
+;
+    constraintCursor = cursor_createperpconstraint;
 }
 
 void CmdSketcherConstrainPerpendicular::activated(int iMsg)
@@ -2860,9 +2925,39 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     return;
 }
 
-bool CmdSketcherConstrainPerpendicular::isActive(void)
+void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    switch (seqIndex) {
+    case 0: // {SelEdge, SelEdge}
+    case 1: // {SelEdge, SelHAxis}
+    case 2: // {SelEdge, SelVAxis}
+    case 3: // {SelHAxis, SelEdge}
+    case 4: // {SelVAxis, SelEdge}
+    case 5: // {SelVertex, SelEdge, SelEdge}
+    case 6: // {SelVertex, SelEdge, SelHAxis}
+    case 7: // {SelVertex, SelEdge, SelVAxis}
+    case 8: // {SelVertex, SelHAxis, SelEdge}
+    case 9: // {SelVertex, SelVAxis, SelEdge}
+    case 10: // {SelRoot, SelEdge, SelEdge}
+    case 11: // {SelRoot, SelEdge, SelHAxis}
+    case 12: // {SelRoot, SelEdge, SelVAxis}
+    case 13: // {SelRoot, SelHAxis, SelEdge}
+    case 14: // {SelRoot, SelVAxis, SelEdge}
+    case 15: // {SelEdge, SelVertex, SelEdge}
+    case 16: // {SelEdge, SelVertex, SelHAxis}
+    case 17: // {SelEdge, SelVertex, SelVAxis}
+    case 18: // {SelHAxis, SelVertex, SelEdge}
+    case 19: // {SelVAxis, SelVertex, SelEdge}
+    case 20: // {SelEdge, SelRoot, SelEdge}
+    case 21: // {SelEdge, SelRoot, SelHAxis}
+    case 22: // {SelEdge, SelRoot, SelVAxis}
+    case 23: // {SelHAxis, SelRoot, SelEdge}
+    case 24: // {SelVAxis, SelRoot, SelEdge}
+
+        break;
+    default:
+        break;
+    }
 }
 
 // ======================================================================================
