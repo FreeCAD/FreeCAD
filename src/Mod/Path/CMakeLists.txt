@@ -39,6 +39,7 @@ SET(PathScripts_SRCS
     PathScripts/PathJob.py
     PathScripts/PathKurveUtils.py
     PathScripts/PathLoadTool.py
+    PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathPlane.py
     PathScripts/PathPocket.py
@@ -79,6 +80,7 @@ SET(PathScripts_SRCS
     PathTests/TestPathDepthParams.py
     PathTests/TestPathDressupHoldingTags.py
     PathTests/TestPathGeom.py
+    PathTests/TestPathLog.py
     PathTests/TestPathPost.py
     PathTests/__init__.py
     PathTests/test_linuxcnc_00.ngc
