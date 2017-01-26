@@ -137,24 +137,14 @@
         <property name="fieldGrowthPolicy">
          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
         </property>
-        <item row="3" column="0">
+        <item row="4" column="0">
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Density</string>
+           <string>Density                     </string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QPushButton" name="pushButton_saveas">
-          <property name="text">
-           <string>save as name</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="edit_name"/>
-        </item>
-        <item row="3" column="1">
+        <item row="4" column="1">
          <widget class="Gui::InputField" name="input_fd_density">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -576,6 +566,13 @@
       <string>External material resources</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <widget class="QPushButton" name="pushButton_saveas">
+        <property name="text">
+         <string>save customed material</string>
+        </property>
+       </widget>
+      </item>
       <item>
        <widget class="QPushButton" name="pushButton_MatWeb">
         <property name="text">

@@ -281,7 +281,7 @@ def process_emp(doc,filename,placement,board_thickness):
    comps=dict(comps)
    grp=doc.addObject("App::DocumentObjectGroup", "EMP Models")
    for place_item in placement:
-     if comps.has_key(place_item[1]):
+     if place_item[1] in comps:
        doc_comp=doc.addObject("Part::Feature",place_item[0])
        FreeCAD.Console.PrintMessage("Adding EMP model "+str(place_item[0])+"\n")
        doc_comp.Shape=comps[place_item[1]][0]
@@ -362,7 +362,7 @@ def place_steps(doc,placement,board_thickness):
     step_dict=dict(step_dict)
     grp=doc.addObject("App::DocumentObjectGroup", "Step Models")
     for place_item in placement:
-      if step_dict.has_key(place_item[2]):
+      if place_item[2] in step_dict:
         step_model=doc.addObject("Part::Feature",place_item[0]+"_s")
         FreeCAD.Console.PrintMessage("Adding STEP model "+str(place_item[0])+"\n")
         #if prev_step!=place_item[2]:

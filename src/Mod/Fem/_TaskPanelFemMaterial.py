@@ -30,6 +30,8 @@ __url__ = "http://www.freecadweb.org"
 import FreeCAD
 import FreeCADGui
 from PySide import QtGui
+from PySide.QtGui import QFileDialog
+# from PySide.QtGui import QMessageBox
 from PySide import QtCore
 import Units
 
@@ -51,8 +53,8 @@ class _TaskPanelFemMaterial:
         self.references_shape_type = None
 
         self.form = FreeCADGui.PySideUic.loadUi(FreeCAD.getHomePath() + "Mod/Fem/TaskPanelFemMaterial.ui")
-        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goMatWeb)
-        QtCore.QObject.connect(self.form.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.saveas_material)
+        QtCore.QObject.connect(self.form.pushButton_MatWeb, QtCore.SIGNAL("clicked()"), self.goto_MatWeb)
+        QtCore.QObject.connect(self.form.pushButton_saveas, QtCore.SIGNAL("clicked()"), self.export_material)
         QtCore.QObject.connect(self.form.cb_materials, QtCore.SIGNAL("activated(int)"), self.choose_material)
         QtCore.QObject.connect(self.form.pushButton_Reference, QtCore.SIGNAL("clicked()"), self.add_references)
         QtCore.QObject.connect(self.form.rb_standard, QtCore.SIGNAL("toggled(bool)"), self.choose_selection_mode_standard)
@@ -154,7 +156,7 @@ class _TaskPanelFemMaterial:
                 return False
         return True
 
-    def goMatWeb(self):
+    def goto_MatWeb(self):
         import webbrowser
         webbrowser.open("http://matweb.com")
 
@@ -353,6 +355,7 @@ class _TaskPanelFemMaterial:
         self.form.cb_materials.addItem(QtGui.QIcon(":/icons/help-browser.svg"), material_name, material_name)
         self.materials[material_name] = material
 
+    ######################## material import and export ###################
     def import_materials(self):
         self.materials = {}
         self.pathList = []
@@ -388,7 +391,7 @@ class _TaskPanelFemMaterial:
 
         use_mat_from_config_dir = self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True)
         if use_mat_from_config_dir:
-            user_mat_dirname = FreeCAD.getUserAppDataDir() + "Materials"
+            user_mat_dirname = FreeCAD.getUserAppDataDir() + "FluidMaterial"
             self.add_mat_dir(user_mat_dirname, ":/icons/preferences-general.svg")
 
         use_mat_from_custom_dir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
@@ -413,10 +416,71 @@ class _TaskPanelFemMaterial:
         for mat in material_name_list:
             self.form.cb_materials.addItem(QtGui.QIcon(icon), mat[0], mat[1])
 
-    def saveas_material(self):
-        import Material
-        mat_file_extension = ".FCMat"
-        # overwritinig warning, save to customed dir,  material name check
+    def export_FCMat(self, fileName, matDict):
+        """
+        Write a material dictionary to a FCMat file, a version without group support, with Python3
+        <https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Material/Material.py>
+        """
+        try:
+            import ConfigParser as configparser
+        except:
+            import configparser  # Python 3
+        # himport string
+        Config = configparser.ConfigParser()
+        Config.optionxform = str  # disable conversion all uppercase leter in key into lower case
+
+        # ignore creating group, just fill all into group 'FCMat'
+        grp = 'FCMat'
+        if not Config.has_section(grp):
+            Config.add_section(grp)
+        for x in matDict.keys():
+            Config.set(grp, x, matDict[x])
+
+        Preamble = "# This is a FreeCAD material-card file\n\n"
+        # Writing our configuration file to 'example.cfg'
+        with open(fileName, 'wb') as configfile:
+            configfile.write(Preamble)
+            Config.write(configfile)
+
+    def export_material(self):
+        import os
+        if self.obj.Category == 'Fluid':
+            MaterialDir = 'FluidMaterial'
+        else:
+            MaterialDir = 'Material'
+        _UseMaterialsFromCustomDir = self.fem_prefs.GetBool("UseMaterialsFromCustomDir", True)
+        _dir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        if _UseMaterialsFromCustomDir and _dir != "" and os.path.isdir(_dir):
+            TargetDir = self.fem_prefs.GetString("CustomMaterialsDir", "")
+        elif self.fem_prefs.GetBool("UseMaterialsFromConfigDir", True):
+            TargetDir = FreeCAD.getUserAppDataDir() + os.path.sep + MaterialDir  # $HOME/.FreeCAD
+        else:
+            FreeCAD.Console.PrintMessage("Customed material saving directory is not setup in Fem preference")
+        if not os.path.exists(TargetDir):
+            os.mkdir(TargetDir)
+
+        saveName, Filter = QFileDialog.getSaveFileName(None, "Save a Material property file", TargetDir, "*.FCMat")
+        if not saveName == "":
+            print(saveName)
+            knownMaterials = [self.form.cb_materials.itemText(i) for i in range(self.form.cb_materials.count())]
+            material_name = os.path.basename(saveName[:-len('.FCMat')])
+            if material_name not in knownMaterials:
+                self.export_FCMat(saveName, self.obj.Material)
+                FreeCAD.Console.PrintMessage("Sucessfully save the Material property file: " + saveName + "\n")
+            else:
+                self.export_FCMat(saveName, self.obj.Material)
+                FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: " + saveName + "\n")
+                """
+                msgBox = QMessageBox()
+                msgBox.setText("FcMat file name {} has existed in {} or system folder, overwriting?\n".format(saveName, TargetDir))
+                msgBox.addButton(QMessageBox.Yes)
+                msgBox.addButton(QMessageBox.No)
+                msgBox.setDefaultButton(QMessageBox.No)
+                ret = msgBox.exec_()
+                if ret == QMessageBox.Yes:
+                    self.export_FCMat(saveName, self.obj.Material)
+                    FreeCAD.Console.PrintMessage("Sucessfully overwritren the Material property file: "+ saveName + "\n")
+                """
 
     ###################geometry reference selection #################
     def references_list_right_clicked(self, QPos):

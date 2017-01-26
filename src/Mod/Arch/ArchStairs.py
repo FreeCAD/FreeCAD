@@ -91,9 +91,11 @@ class _CommandStairs:
         FreeCADGui.addModule("Arch")
         if len(FreeCADGui.Selection.getSelection()) == 1:
             n = FreeCADGui.Selection.getSelection()[0].Name
-            FreeCADGui.doCommand("Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
+            FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=FreeCAD.ActiveDocument."+n+")")
         else:
-            FreeCADGui.doCommand("Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
+            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

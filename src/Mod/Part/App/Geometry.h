@@ -130,7 +130,19 @@ public:
     bool closestParameterToBasicCurve(const Base::Vector3d& point, double &u) const;
 };
 
-class PartExport GeomBezierCurve : public GeomCurve
+class PartExport GeomBoundedCurve : public GeomCurve
+{
+    TYPESYSTEM_HEADER();
+public:
+    GeomBoundedCurve();
+    virtual ~GeomBoundedCurve();
+
+    // Geometry helper
+    virtual Base::Vector3d getStartPoint() const;
+    virtual Base::Vector3d getEndPoint() const;
+};
+
+class PartExport GeomBezierCurve : public GeomBoundedCurve
 {
     TYPESYSTEM_HEADER();
 public:
@@ -153,7 +165,7 @@ private:
     Handle_Geom_BezierCurve myCurve;
 };
 
-class PartExport GeomBSplineCurve : public GeomCurve
+class PartExport GeomBSplineCurve : public GeomBoundedCurve
 {
     TYPESYSTEM_HEADER();
 public:
@@ -183,7 +195,18 @@ public:
 
     int countPoles() const;
     void setPole(int index, const Base::Vector3d&, double weight=-1);
+    void setPoles(const std::vector<Base::Vector3d>& poles, const std::vector<double>& weights);
+    void setPoles(const std::vector<Base::Vector3d>& poles);
+    void setWeights(const std::vector<double>& weights);
+    void setKnot(int index, const double val, int mult=-1);
+    void setKnots(const std::vector<double>& knots);
+    void setKnots(const std::vector<double>& knots, const std::vector<int>& multiplicities);
     std::vector<Base::Vector3d> getPoles() const;
+    std::vector<double> getWeights() const;
+    std::vector<double> getKnots() const;
+    std::vector<int> getMultiplicities() const;
+    int getDegree() const;
+    bool isPeriodic() const;
     bool join(const Handle_Geom_BSplineCurve&);
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;

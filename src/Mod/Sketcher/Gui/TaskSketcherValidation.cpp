@@ -245,6 +245,18 @@ void SketcherValidation::on_findButton_clicked()
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
+        else if (g->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(g);
+            VertexIds id;
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::start;
+            id.v = segm->getStartPoint();
+            vertexIds.push_back(id);
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::end;
+            id.v = segm->getEndPoint();
+            vertexIds.push_back(id);
+        }
     }
 
     std::set<ConstraintIds, Constraint_Less> coincidences;

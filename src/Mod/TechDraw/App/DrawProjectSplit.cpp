@@ -405,7 +405,6 @@ std::vector<splitPoint> DrawProjectSplit::sortSplits(std::vector<splitPoint>& s,
     return result;
 }
 
-
 std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<TopoDS_Edge>& inEdges)
 {
     std::vector<TopoDS_Edge> result;
@@ -446,7 +445,6 @@ std::vector<TopoDS_Edge> DrawProjectSplit::removeDuplicateEdges(std::vector<Topo
             Base::Console().Message("ERROR - DPS::removeDuplicateEdges - access: %d inEdges: %d\n",e.idx,inEdges.size());
         }
     }
-
     return result;
 }
 
@@ -479,7 +477,7 @@ std::string edgeSortItem::dump(void)
 /*static*/bool edgeSortItem::edgeLess(const edgeSortItem& e1, const edgeSortItem& e2)
 {
     bool result = false;
-    if (e1.start != e2.start) {
+    if (!((e1.start - e2.start).Length() < Precision::Confusion())) {  //e1 != e2
         if ( DrawUtil::vectorLess(e1.start, e2.start)) {
             result = true;
         }
@@ -501,8 +499,10 @@ std::string edgeSortItem::dump(void)
 /*static*/bool edgeSortItem::edgeEqual(const edgeSortItem& e1, const edgeSortItem& e2)
 {
     bool result = false;
-    if ( (e1.start == e2.start) &&
-         (e1.end   == e2.end)   &&
+    double startDif = (e1.start - e2.start).Length();
+    double endDif   = (e1.end   - e2.end).Length();
+    if ( (startDif < Precision::Confusion()) &&
+         (endDif   < Precision::Confusion()) &&
          (DrawUtil::fpCompare(e1.startAngle,e2.startAngle)) &&
          (DrawUtil::fpCompare(e1.endAngle,e2.endAngle)) ) {
         result = true;

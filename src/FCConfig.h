@@ -37,90 +37,90 @@
 
 // First check for *WIN64* since the *WIN32* are also set on 64-bit platforms
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
-#	ifndef FC_OS_WIN64
-#	define FC_OS_WIN64
-#	endif
+#   ifndef FC_OS_WIN32
+#   define FC_OS_WIN32
+#   endif
+#   ifndef FC_OS_WIN64
+#   define FC_OS_WIN64
+#   endif
 #elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
-#	if defined(__MINGW32__)
-#	if HAVE_CONFIG_H
-#	include <config.h>
-#	endif // HAVE_CONFIG_H
-//#	define HAVE_INT8_T
-//#	define HAVE_UINT8_T
-//#	define HAVE_INT16_T
-//#	define HAVE_UINT16_T
-//#	define HAVE_INT32_T
-//#	define HAVE_UINT32_T
-//#	define HAVE_INT64_T
-//#	define HAVE_UINT64_T
-//#	define HAVE_INTPTR_T
-//#	define HAVE_UINTPTR_T
-#	endif
+#   ifndef FC_OS_WIN32
+#   define FC_OS_WIN32
+#   endif
+#   if defined(__MINGW32__)
+#   if HAVE_CONFIG_H
+#   include <config.h>
+#   endif // HAVE_CONFIG_H
+//# define HAVE_INT8_T
+//# define HAVE_UINT8_T
+//# define HAVE_INT16_T
+//# define HAVE_UINT16_T
+//# define HAVE_INT32_T
+//# define HAVE_UINT32_T
+//# define HAVE_INT64_T
+//# define HAVE_UINT64_T
+//# define HAVE_INTPTR_T
+//# define HAVE_UINTPTR_T
+#   endif
 #elif defined(__MWERKS__) && defined(__INTEL__)
-#	ifndef FC_OS_WIN32
-#	define FC_OS_WIN32
-#	endif
+#   ifndef FC_OS_WIN32
+#   define FC_OS_WIN32
+#   endif
 #elif defined(__APPLE__)
-#	ifndef FC_OS_MACOSX
-#	define FC_OS_MACOSX
-#	endif
+#   ifndef FC_OS_MACOSX
+#   define FC_OS_MACOSX
+#   endif
 #elif defined(linux) || defined(__linux) || defined(__linux__) || defined(__GLIBC__)
-#	ifndef FC_OS_LINUX
-#	define FC_OS_LINUX
-#	endif
+#   ifndef FC_OS_LINUX
+#   define FC_OS_LINUX
+#   endif
 #elif defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
-#	ifndef FC_OS_BSD
-#	define FC_OS_BSD
-#	endif
+#   ifndef FC_OS_BSD
+#   define FC_OS_BSD
+#   endif
 #elif defined(__CYGWIN__)
-#	ifndef FC_OS_CYGWIN
-#	define FC_OS_CYGWIN
+#   ifndef FC_OS_CYGWIN
+#   define FC_OS_CYGWIN
 // Avoid conflicts with Inventor
-#	define HAVE_INT8_T
-#	define HAVE_UINT8_T
-#	define HAVE_INT16_T
-#	define HAVE_UINT16_T
-#	define HAVE_INT32_T
-#	define HAVE_UINT32_T
-#	define HAVE_INT64_T
-#	define HAVE_UINT64_T
-#	define HAVE_INTPTR_T
-#	define HAVE_UINTPTR_T
+#   define HAVE_INT8_T
+#   define HAVE_UINT8_T
+#   define HAVE_INT16_T
+#   define HAVE_UINT16_T
+#   define HAVE_INT32_T
+#   define HAVE_UINT32_T
+#   define HAVE_INT64_T
+#   define HAVE_UINT64_T
+#   define HAVE_INTPTR_T
+#   define HAVE_UINTPTR_T
 #endif
 //#elif defined(sun) || defined(__sun) || defined(__sun__)
-//#	if defined(__SVR4)
-//#		define _FC_OS_SOLARIS
-//#	else
-//#		define _FC_OS_SUN_
-//#	endif
+//# if defined(__SVR4)
+//#     define _FC_OS_SOLARIS
+//# else
+//#     define _FC_OS_SUN_
+//# endif
 //#elif defined(hpux) || defined(__hpux) || defined(__hpux__)
-//#	define FC_OS_HPUX_
+//# define FC_OS_HPUX_
 //#elif defined(__FreeBSD__)
-//#	define FC_OS_FREEBSD
+//# define FC_OS_FREEBSD
 //#elif defined(__NetBSD__)
-//#	define FC_OS_NETBSD
+//# define FC_OS_NETBSD
 //#elif defined(__OpenBSD__)
-//#	define FC_OS_OPENBSD
+//# define FC_OS_OPENBSD
 //#elif defined(sgi) || defined(__sgi)
-//#	define FC_OS_IRIX
+//# define FC_OS_IRIX
 //#elif defined(_AIX)
-//#	define FC_OS_AIX
+//# define FC_OS_AIX
 //#elif defined(__GNU__)
-//#	define FC_OS_GNU
+//# define FC_OS_GNU
 #else
-#	error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
+#   error "FreeCAD is not ported to this OS yet. For help see www.freecadweb.org"
 #endif
 
 #ifdef FC_OS_WIN32
-#	define PATHSEP '\\'
+#   define PATHSEP '\\'
 #else
-#	define PATHSEP '/'
+#   define PATHSEP '/'
 #endif
 
 //**************************************************************************
@@ -132,7 +132,7 @@
 
 #ifndef HAVE_INT8_T
 #define HAVE_INT8_T
-typedef signed char                int8_t;
+typedef signed char         int8_t;
 #endif
 
 #ifndef HAVE_UINT8_T
@@ -178,20 +178,20 @@ typedef unsigned __int64    uint64_t;
 // Open CasCade
 
 #ifdef _MSC_VER
-#	ifndef WNT
-#	define WNT
-#	endif
-#	ifndef WIN32
-#	define WIN32
-#	endif
-#	ifndef _WINDOWS
-#	define _WINDOWS
-#	endif
+#   ifndef WNT
+#   define WNT
+#   endif
+#   ifndef WIN32
+#   define WIN32
+#   endif
+#   ifndef _WINDOWS
+#   define _WINDOWS
+#   endif
 #endif
 
 #ifdef FC_OS_LINUX
-#	define LIN
-#	define LININTEL
+#   define LIN
+#   define LININTEL
 //#       define NO_CXX_EXCEPTION
 #endif
 
@@ -199,19 +199,19 @@ typedef unsigned __int64    uint64_t;
 
 /// enables the use of the OCC DocumentBrowser
 #ifndef FC_OS_LINUX
-#	define FC_USE_OCAFBROWSER
+#   define FC_USE_OCAFBROWSER
 #endif
 
 
 #ifdef FC_OCC_DEBUG
-#	ifdef FC_DEBUG
-#		define DEBUG 1
-#	else
-#		undef  DEBUG
-#	ifndef NDEBUG
-#		define NDEBUG
-#	endif
-#	endif
+#   ifdef FC_DEBUG
+#       define DEBUG 1
+#   else
+#       undef  DEBUG
+#   ifndef NDEBUG
+#       define NDEBUG
+#   endif
+#   endif
 #endif
 
 
@@ -281,49 +281,49 @@ typedef unsigned __int64    uint64_t;
 // Don't catch C++ exceptions in DEBUG!
 #ifdef FC_DEBUG
 # define DONT_CATCH_CXX_EXCEPTIONS 1
-#	define DBG_TRY
-#	define DBG_CATCH(X)  
+# define DBG_TRY
+# define DBG_CATCH(X)
 #else
 /// used to switch a catch with the debug state
-#	define DBG_TRY try	{
+# define DBG_TRY try {
 /// see docu DBGTRY
-#	define DBG_CATCH(X) }catch(...) { X }
+# define DBG_CATCH(X) } catch (...) { X }
 #endif
 
 
 //**************************************************************************
 // Windows import export DLL defines
 #if defined (FC_OS_WIN32) || defined(FC_OS_CYGWIN)
-#	ifdef FCApp
-#		define AppExport   __declspec(dllexport)
-#		define DataExport  __declspec(dllexport)
-#	else
-#		define AppExport   __declspec(dllimport)
-#		define DataExport  __declspec(dllimport)
-#	endif
-#	ifdef FCBase
-#		define BaseExport  __declspec(dllexport)
-#	else
-#		define BaseExport  __declspec(dllimport)
-#	endif
-#	ifdef FCGui
-#		define GuiExport   __declspec(dllexport)
-#	else
-#		define GuiExport   __declspec(dllimport)
-#	endif
+#   ifdef FCApp
+#       define AppExport   __declspec(dllexport)
+#       define DataExport  __declspec(dllexport)
+#   else
+#       define AppExport   __declspec(dllimport)
+#       define DataExport  __declspec(dllimport)
+#   endif
+#   ifdef FCBase
+#       define BaseExport  __declspec(dllexport)
+#   else
+#       define BaseExport  __declspec(dllimport)
+#   endif
+#   ifdef FCGui
+#       define GuiExport   __declspec(dllexport)
+#   else
+#       define GuiExport   __declspec(dllimport)
+#   endif
 #else
-#	ifndef BaseExport
-#		define BaseExport
-#	endif
-#	ifndef GuiExport
-#		define GuiExport
-#	endif
-#	ifndef AppExport
-#		define AppExport
-#	endif
-#	ifndef DataExport
-#		define DataExport
-#	endif
+#   ifndef BaseExport
+#       define BaseExport
+#   endif
+#   ifndef GuiExport
+#       define GuiExport
+#   endif
+#   ifndef AppExport
+#       define AppExport
+#   endif
+#   ifndef DataExport
+#       define DataExport
+#   endif
 #endif
 
 
@@ -341,6 +341,5 @@ typedef unsigned __int64    uint64_t;
 #endif
 //#	define _PreComp_                  // use precompiled header
 #endif
-
 
 #endif //FC_CONFIG_H

@@ -100,6 +100,10 @@ def convertToDxf(dwgfilename):
         basename = os.path.basename(dwgfilename)
         cmdline = '"%s" "%s" "%s" "ACAD2000" "DXF" "0" "1" "%s"' % (teigha, indir, outdir, basename)
         print("Converting: " + cmdline)
+        if isinstance(cmdline,unicode):
+            import sys
+            encoding = sys.getfilesystemencoding()
+            cmdline = cmdline.encode(encoding)
         subprocess.call(cmdline,  shell=True)     #os.system(cmdline)
         result = outdir + os.sep + os.path.splitext(basename)[0] + ".dxf"
         if os.path.exists(result):

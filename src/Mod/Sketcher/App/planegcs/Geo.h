@@ -36,6 +36,8 @@ namespace GCS
         double *y;
     };
 
+    typedef std::vector<Point> VEC_P;
+    
     ///Class DeriVector2 holds a vector value and its derivative on the
     ///parameter that the derivatives are being calculated for now. x,y is the
     ///actual vector (v). dx,dy is a derivative of the vector by a parameter
@@ -229,12 +231,12 @@ namespace GCS
     public:
         ArcOfHyperbola(){startAngle=0;endAngle=0;radmin = 0;}
         virtual ~ArcOfHyperbola(){}
-	// parameters
+        // parameters
         double *startAngle;
         double *endAngle;
         Point start;
         Point end;
-	// interface helpers
+        // interface helpers
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfHyperbola* Copy();
@@ -259,17 +261,43 @@ namespace GCS
     public:
         ArcOfParabola(){startAngle=0;endAngle=0;}
         virtual ~ArcOfParabola(){}
-	// parameters
+        // parameters
         double *startAngle;
         double *endAngle;
         Point start;
         Point end;
-	// interface helpers
+        // interface helpers
         virtual int PushOwnParams(VEC_pD &pvec);
         virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
         virtual ArcOfParabola* Copy();
     };
 
+    class BSpline: public Curve
+    {
+    public:
+        BSpline(){periodic=false;degree=2;}
+        virtual ~BSpline(){}
+        // parameters
+        VEC_P poles;
+        VEC_pD weights;
+        VEC_pD knots;
+        // dependent parameters (depends on previous parameters,
+        // but an "arcrules" constraint alike would be required to gain the commodity of simple coincident
+        // with endpoint constraints)
+        Point start;
+        Point end;
+        // not solver parameters
+        VEC_I mult;
+        int degree;
+        bool periodic;
+        // interface helpers
+        DeriVector2 CalculateNormal(Point &p, double* derivparam = 0);
+        virtual DeriVector2 Value(double u, double du, double* derivparam = 0);
+        virtual int PushOwnParams(VEC_pD &pvec);
+        virtual void ReconstructOnNewPvec (VEC_pD &pvec, int &cnt);
+        virtual BSpline* Copy();
+    };
+    
 } //namespace GCS
 
 #endif // PLANEGCS_GEO_H

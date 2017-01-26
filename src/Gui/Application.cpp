@@ -230,10 +230,10 @@ struct PyMethodDef FreeCADGui_methods[] = {
 
 Gui::MDIView* Application::activeView(void) const
 {
-	if (activeDocument())
-		return activeDocument()->getActiveView();
-	else
-		return NULL;
+    if (activeDocument())
+        return activeDocument()->getActiveView();
+    else
+        return NULL;
 }
 
 } // namespace Gui

@@ -24,7 +24,39 @@
 #define APP_FEATUREPYTHONPYIMP_H
 
 #include <Base/BaseClass.h>
+#include <Base/Interpreter.h>
 #include <App/PropertyContainerPy.h>
+
+#define PYTHON_TYPE_DEF(_class_, _subclass_) \
+    class _class_ : public _subclass_ \
+    { \
+    public: \
+        static PyTypeObject Type; \
+    public: \
+        _class_(Base::BaseClass *pcObject, PyTypeObject *T = &Type); \
+        virtual ~_class_(); \
+    };
+
+#define PYTHON_TYPE_IMP(_class_, _subclass_) \
+    PyTypeObject _class_::Type = { \
+        PyObject_HEAD_INIT(&PyType_Type) \
+        0, \
+        ""#_class_"",  \
+        sizeof(_class_),  \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_CLASS, \
+        ""#_class_"", \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, \
+        &_subclass_::Type, \
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 \
+    }; \
+    _class_::_class_(Base::BaseClass *pcObject, PyTypeObject *T) \
+        : _subclass_(reinterpret_cast<_subclass_::PointerType>(pcObject), T) \
+    { \
+    } \
+    _class_::~_class_() \
+    { \
+    }
 
 namespace App
 {
