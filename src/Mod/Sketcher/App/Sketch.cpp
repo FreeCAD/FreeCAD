@@ -671,6 +671,32 @@ int Sketch::addBSpline(const Part::GeomBSplineCurve &bspline, bool fixed)
     std::vector<int> mult = bsp->getMultiplicities();
     int degree = bsp->getDegree();
     bool periodic = bsp->isPeriodic();
+    
+    // OCC hack
+    // c means there is a constraint on that weight, nc no constraint
+    // OCC provides normalized weights when polynomic [1 1 1] [c c c] and unnormalized weights when rational [5 1 5] [c nc c]
+    // then when changing from polynomic to rational, after the first solve any not-constrained pole circle gets normalized to 1.
+    // This only happens when changing from polynomic to rational, any subsequent change remains unnormalized [5 1 5] [c nc nc]
+    // This creates a visual problem that one of the poles shrinks to 1 mm when deleting an equality constraint.
+    
+    int lastoneindex = -1;
+    int countones = 0;
+    double lastnotone = 1.0;
+    
+    for(size_t i = 0; i < weights.size(); i++) {
+        if(weights[i] != 1.0) {
+            lastnotone = weights[i];
+        }
+        else { // is 1.0
+            lastoneindex = i;
+            countones++;
+        }
+    }
+    
+    if (countones == 1)
+        weights[lastoneindex] = (lastnotone * 0.99);
+    
+    // end hack
 
     Base::Vector3d startPnt = bsp->getStartPoint();
     Base::Vector3d endPnt   = bsp->getEndPoint();
