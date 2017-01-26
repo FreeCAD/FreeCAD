@@ -35,8 +35,8 @@ import math
 
 from DraftGui import todo
 from PathScripts import PathUtils
-from PathScripts.PathGeom import *
-from PathScripts.PathPreferences import *
+from PathScripts.PathGeom import PathGeom
+from PathScripts.PathPreferences import PathPreferences
 from PySide import QtCore, QtGui
 from pivy import coin
 
