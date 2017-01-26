@@ -93,6 +93,7 @@ void DlgPropertyLink::findObjects(bool on)
     QString docName = link[0];
     QString objName = link[1];
     QString parName = link[3];
+    QString searchText = ui->searchBox->text();
 
     App::Document* doc = App::GetApplication().getDocument((const char*)docName.toLatin1());
     if (doc) {
@@ -128,7 +129,13 @@ void DlgPropertyLink::findObjects(bool on)
         std::vector<App::DocumentObject*> obj = doc->getObjectsOfType(baseType);
         for (std::vector<App::DocumentObject*>::iterator it = obj.begin(); it != obj.end(); ++it) {
             Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(*it);
-            if (vp) {
+            bool nameOk = true;
+            if (!searchText.isEmpty()) { 
+                QString label = QString::fromUtf8((*it)->Label.getValue());
+                if (!label.contains(searchText,Qt::CaseInsensitive))
+                    nameOk = false;
+            }
+            if (vp && nameOk) {
                 // filter out the objects
                 if (std::find(outList.begin(), outList.end(), *it) == outList.end()) {
                     QListWidgetItem* item = new QListWidgetItem(ui->listWidget);
@@ -145,6 +152,13 @@ void DlgPropertyLink::findObjects(bool on)
 void DlgPropertyLink::on_checkObjectType_toggled(bool on)
 {
     ui->listWidget->clear();
+    findObjects(on);
+}
+
+void DlgPropertyLink::on_searchBox_textChanged(const QString& /*search*/)
+{
+    ui->listWidget->clear();
+    bool on = ui->checkObjectType->isChecked();
     findObjects(on);
 }
 

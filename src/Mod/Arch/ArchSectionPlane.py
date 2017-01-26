@@ -137,7 +137,7 @@ def getSVG(section,allOn=False,renderMode="Wireframe",showHidden=False,showFill=
     If showFill is True, the cut areas get filled with a pattern"""
 
     if not section.Objects:
-        return
+        return ""
     import Part,DraftGeomUtils
     p = FreeCAD.Placement(section.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0,0,1))

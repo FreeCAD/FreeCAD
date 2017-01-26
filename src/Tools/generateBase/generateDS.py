@@ -212,7 +212,7 @@ class XschemaElement:
     def getRawType(self): return self.type
     def getType(self):
         returnType = self.type
-        if ElementDict.has_key(self.type):
+        if self.type in ElementDict:
             typeObj = ElementDict[self.type]
             typeObjType = typeObj.getRawType()
             if typeObjType in StringType or \
@@ -427,7 +427,7 @@ class XschemaElement:
     #   attributeGroup dictionary.
     def replace_attributeGroup_names(self):
         for groupName in self.attributeGroupNameList:
-            if AttributeGroups.has_key(groupName):
+            if groupName in AttributeGroups:
                 attrGroup = AttributeGroups[groupName]
                 for name in attrGroup.getKeys():
                     attr = attrGroup.get(name)
@@ -505,7 +505,7 @@ class XschemaAttributeGroup:
     def setGroup(self, group): self.group = group
     def getGroup(self): return self.group
     def get(self, name, default=None):
-        if self.group.has_key(name):
+        if name in self.group:
             return self.group[name]
         else:
             return default
@@ -514,7 +514,8 @@ class XschemaAttributeGroup:
     def add(self, name, attr):
         self.group[name] = attr
     def delete(self, name):
-        if has_key(self.group, name):
+        # if has_key(self.group, name):
+        if name in self.group:
             del self.group[name]
             return 1
         else:

@@ -127,12 +127,35 @@ public:
     void setStatus(ObjectStatus pos, bool on) {StatusBits.set((size_t)pos, on);}
     //@}
 
+    /** DAG handling
+        This part of the interface deals with viewing the document as
+        an DAG (directed acyclic graph). 
+    */
+    //@{
     /// returns a list of objects this object is pointing to by Links
     std::vector<App::DocumentObject*> getOutList(void) const;
+    /// returns a list of objects this object is pointing to by Links and all further descended 
+    std::vector<App::DocumentObject*> getOutListRecursive(void) const;
     /// get all objects link to this object
     std::vector<App::DocumentObject*> getInList(void) const;
+    /// get all objects link directly or indirectly to this object 
+    std::vector<App::DocumentObject*> getInListRecursive(void) const;
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
+
+    /// test if this object is in the InList and recursive further down
+    bool isInInListRecursive(DocumentObject* objToTest) const;
+    /// test if this object is directly (non recursive) in the InList
+    bool isInInList(DocumentObject* objToTest) const;
+    /// test if the given object is in the OutList and recursive further down
+    bool isInOutListRecursive(DocumentObject* objToTest) const;
+    /// test if this object is directly (non recursive) in the OutList
+    bool isInOutList(DocumentObject* objToTest) const;
+    /// internal, used by ProperyLink to maintain DAG back links
+    void _removeBackLink(DocumentObject*);
+    /// internal, used by ProperyLink to maintain DAG back links
+    void _addBackLink(DocumentObject*);
+    //@}
 
     /**
      * @brief testIfLinkIsDAG tests a link that is about to be created for
@@ -148,7 +171,6 @@ public:
     bool testIfLinkDAGCompatible(const std::vector<DocumentObject *> &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList &linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub &linkTo) const;
-
 
 public:
     /** mustExecute
@@ -259,6 +281,15 @@ protected: // attributes
 
     // pointer to the document name string (for performance)
     const std::string *pcNameInDocument;
+    
+private:
+    // Back pointer to all the fathers in a DAG of the document
+    // this is used by the document (via friend) to have a effective DAG handling
+    std::vector<App::DocumentObject*> _inList;
+    // helper for isInInListRecursive()
+    bool _isInInListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
+    // helper for isInOutListRecursive()
+    bool _isInOutListRecursive(const DocumentObject *act, const DocumentObject* test, const DocumentObject* checkObj, int depth) const;
 };
 
 class AppExport ObjectStatusLocker

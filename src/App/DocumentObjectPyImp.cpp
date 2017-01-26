@@ -207,6 +207,22 @@ Py::List DocumentObjectPy::getInList(void) const
     return ret;
 }
 
+Py::List DocumentObjectPy::getInListRecursive(void) const
+{
+    Py::List ret;
+    try {
+        std::vector<DocumentObject*> list = getDocumentObjectPtr()->getInListRecursive();
+
+        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
+            ret.append(Py::Object((*It)->getPyObject(), true));
+ 
+    }
+    catch (const Base::Exception& e) {
+        throw Py::IndexError(e.what());
+    }
+    return ret;    
+}
+
 Py::List DocumentObjectPy::getOutList(void) const
 {
     Py::List ret;
@@ -214,6 +230,23 @@ Py::List DocumentObjectPy::getOutList(void) const
 
     for (std::vector<DocumentObject*>::iterator It=list.begin();It!=list.end();++It)
         ret.append(Py::Object((*It)->getPyObject(), true));
+
+    return ret;
+}
+
+Py::List DocumentObjectPy::getOutListRecursive(void) const
+{
+    Py::List ret;
+    try {
+        std::vector<DocumentObject*> list = getDocumentObjectPtr()->getOutListRecursive();
+
+        // creat the python list for the output
+        for (std::vector<DocumentObject*>::iterator It = list.begin(); It != list.end(); ++It)
+            ret.append(Py::Object((*It)->getPyObject(), true));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::IndexError(e.what());
+    }
 
     return ret;
 }

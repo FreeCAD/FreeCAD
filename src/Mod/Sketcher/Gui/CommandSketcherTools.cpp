@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com	   *
+ *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com      *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -136,7 +136,7 @@ void CmdSketcherCloseShape::activated(int iMsg)
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge" &&
-            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
+            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge") {
 
             int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
             int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
@@ -149,9 +149,9 @@ void CmdSketcherCloseShape::activated(int iMsg)
             const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
             const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
             if ((geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-                geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()	) ||
+                geo1->getTypeId() != Part::GeomArcOfCircle::getClassTypeId()) ||
                 (geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
-                geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())	) {
+                geo2->getTypeId() != Part::GeomArcOfCircle::getClassTypeId())) {
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Impossible constraint"),
                       QObject::tr("One selected edge is not connectable"));
                 abortCommand();
@@ -244,7 +244,7 @@ void CmdSketcherConnect::activated(int iMsg)
     for (unsigned int i=0; i<(SubNames.size()-1); i++ ) {
         // only handle edges
         if (SubNames[i].size() > 4 && SubNames[i].substr(0,4) == "Edge" &&
-            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge"	) {
+            SubNames[i+1].size() > 4 && SubNames[i+1].substr(0,4) == "Edge") {
 
             int GeoId1 = std::atoi(SubNames[i].substr(4,4000).c_str()) - 1;
             int GeoId2 = std::atoi(SubNames[i+1].substr(4,4000).c_str()) - 1;
@@ -762,57 +762,56 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
             
             const Part::Geometry *geo = Obj->getGeometry(GeoId);            
             // Only for supported types
-            if( geo->getTypeId() == Part::GeomEllipse::getClassTypeId() || 
-		geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
-		geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
-		geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+            if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+                geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ) {
 
-		int currentgeoid = Obj->getHighestCurveIndex();
+                int currentgeoid = Obj->getHighestCurveIndex();
 
-		try {
-		    Gui::Command::openCommand("Exposing Internal Geometry");
+                try {
+                    Gui::Command::openCommand("Exposing Internal Geometry");
+                    Gui::Command::doCommand(Gui::Command::Doc,
+                        "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
+                        Obj->getNameInDocument(),
+                        GeoId);
 
-		    Gui::Command::doCommand(Gui::Command::Doc,
-					    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
-					    Obj->getNameInDocument(),
-					    GeoId);
-		    
-		    int aftergeoid = Obj->getHighestCurveIndex();
-		    
-		    if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
-			Gui::Command::doCommand(Gui::Command::Doc,
-			"App.ActiveDocument.%s.DeleteUnusedInternalGeometry(%d)",
-			Obj->getNameInDocument(),
-			GeoId);			
-		    }
-		    
-		}
-		catch (const Base::Exception& e) {
-		    Base::Console().Error("%s\n", e.what());
-		    Gui::Command::abortCommand();
+                    int aftergeoid = Obj->getHighestCurveIndex();
 
-		    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-		    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-		    
-		    if(autoRecompute) 
-			Gui::Command::updateActive();
-		    else
-			static_cast<Sketcher::SketchObject *>(Obj)->solve();
+                    if(aftergeoid == currentgeoid) { // if we did not expose anything, deleteunused
+                        Gui::Command::doCommand(Gui::Command::Doc,
+                            "App.ActiveDocument.%s.DeleteUnusedInternalGeometry(%d)",
+                            Obj->getNameInDocument(),
+                            GeoId);
+                    }
+                }
+                catch (const Base::Exception& e) {
+                    Base::Console().Error("%s\n", e.what());
+                    Gui::Command::abortCommand();
 
-		    return;
-		}
+                    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
-		Gui::Command::commitCommand();
+                    if(autoRecompute)
+                        Gui::Command::updateActive();
+                    else
+                        static_cast<Sketcher::SketchObject *>(Obj)->solve();
 
-		ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
-		bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
-		
-		if(autoRecompute) 
-		    Gui::Command::updateActive();
-		else
-		    static_cast<Sketcher::SketchObject *>(Obj)->solve();
-	    }
-	}
+                    return;
+                }
+
+                Gui::Command::commitCommand();
+
+                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+                bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+                if (autoRecompute)
+                    Gui::Command::updateActive();
+                else
+                    static_cast<Sketcher::SketchObject *>(Obj)->solve();
+            }
+        }
     }
 }
 
@@ -909,7 +908,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
 
                 // points to make symmetric
                 if(LastGeoId>=0) {
-                    geoids++;	    
+                    geoids++;
                     stream << LastGeoId << ",";
                 }
             }

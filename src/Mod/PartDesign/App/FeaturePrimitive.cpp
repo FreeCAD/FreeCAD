@@ -30,10 +30,13 @@
 #include "DatumPoint.h"
 #include "DatumCS.h"
 #include <Mod/Part/App/modelRefine.h>
+#include <Mod/Part/App/PartFeaturePy.h>
 #include <Base/Exception.h>
 #include <Base/Tools.h>
 #include <App/Document.h>
 #include <App/Application.h>
+#include <App/FeaturePythonPyImp.h>
+
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <BRepBuilderAPI_GTransform.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
@@ -150,6 +153,18 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 void FeaturePrimitive::onChanged(const App::Property* prop)
 {
     FeatureAddSub::onChanged(prop);
+}
+
+PYTHON_TYPE_DEF(PrimitivePy, Part::PartFeaturePy)
+PYTHON_TYPE_IMP(PrimitivePy, Part::PartFeaturePy)
+
+PyObject* FeaturePrimitive::getPyObject()
+{
+    if (PythonObject.is(Py::_None())){
+        // ref counter is set to 1
+        PythonObject = Py::Object(new PrimitivePy(this),true);
+    }
+    return Py::new_reference_to(PythonObject);
 }
 
 PROPERTY_SOURCE(PartDesign::Box, PartDesign::FeaturePrimitive)

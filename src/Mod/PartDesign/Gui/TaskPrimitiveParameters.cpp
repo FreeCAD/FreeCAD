@@ -220,7 +220,11 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
         if(i != index)
             ui.widgetStack->widget(i)->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
     }
-    
+
+    Gui::Document* doc = vp->getDocument();
+    this->attachDocument(doc);
+    this->enableNotifications(DocumentObserver::Delete);
+
     //show the parts coordinate system axis for selection
     PartDesign::Body * body = PartDesign::Body::findBodyOf(vp->getObject());
     if(body) {
@@ -241,8 +245,8 @@ TaskBoxPrimitives::TaskBoxPrimitives(ViewProviderPrimitive* vp, QWidget* parent)
 TaskBoxPrimitives::~TaskBoxPrimitives()
 {
     //hide the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject() );
-    if(body) {
+    PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+    if (body) {
         try {
             App::Origin *origin = body->getOrigin();
             Gui::ViewProviderOrigin* vpOrigin;
@@ -252,6 +256,12 @@ TaskBoxPrimitives::~TaskBoxPrimitives()
             Base::Console().Error ("%s\n", ex.what () );
         }
     }
+}
+
+void TaskBoxPrimitives::slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj)
+{
+    if (this->vp == &Obj)
+        this->vp = nullptr;
 }
 
 void TaskBoxPrimitives::onBoxHeightChanged(double v) {

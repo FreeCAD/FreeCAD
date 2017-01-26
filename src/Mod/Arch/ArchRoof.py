@@ -139,7 +139,9 @@ class _CommandRoof:
                     idx = int(sel.SubElementNames[0][4:])
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
+                    FreeCADGui.doCommand("obj = Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+","+str(idx)+")")
+                    FreeCADGui.addModule("Draft")
+                    FreeCADGui.doCommand("Draft.autogroup(obj)")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return
@@ -147,7 +149,9 @@ class _CommandRoof:
                 if obj.Shape.Wires:
                     FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Roof"))
                     FreeCADGui.addModule("Arch")
-                    FreeCADGui.doCommand("Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.doCommand("obj = Arch.makeRoof(FreeCAD.ActiveDocument."+obj.Name+")")
+                    FreeCADGui.addModule("Draft")
+                    FreeCADGui.doCommand("Draft.autogroup(obj)")
                     FreeCAD.ActiveDocument.commitTransaction()
                     FreeCAD.ActiveDocument.recompute()
                     return

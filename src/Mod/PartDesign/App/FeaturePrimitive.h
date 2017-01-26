@@ -54,14 +54,15 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "PartDesignGui::ViewProviderPrimitive";
     }
-    Type         getPrimitiveType() {return primitiveType;};      
+    Type         getPrimitiveType() {return primitiveType;}
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape& oldShape) const;    
     virtual void onChanged(const App::Property* prop);
+    virtual PyObject* getPyObject();
     
     /// Do nothing, just to suppress warning, must be redefined in derived classes
     virtual App::DocumentObjectExecReturn* execute() {
         return PartDesign::FeatureAddSub::execute();
-    };
+    }
 protected:
     //make the boolean ops with the primitives provided by the derived features
     App::DocumentObjectExecReturn* execute(const TopoDS_Shape& primitiveShape);

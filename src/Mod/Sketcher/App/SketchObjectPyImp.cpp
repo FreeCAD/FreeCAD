@@ -114,6 +114,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                  geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+                 geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
                  geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
             ret = this->getSketchObjectPtr()->addGeometry(geo,isConstruction);
         }
@@ -167,6 +168,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject *args)
                          geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+                         geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
                          geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
                     geoList.push_back(geo);
                 }
@@ -882,17 +884,15 @@ PyObject* SketchObjectPy::addRectangularArray(PyObject *args)
         std::vector<int> geoIdList;
         Py::Sequence list(pcObj);
         for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-	    if (PyInt_Check((*it).ptr()))
-		geoIdList.push_back(PyInt_AsLong((*it).ptr()));
+            if (PyInt_Check((*it).ptr()))
+                geoIdList.push_back(PyInt_AsLong((*it).ptr()));
         }
 
         int ret = this->getSketchObjectPtr()->addCopy(geoIdList,vect, PyObject_IsTrue(clone) ? true : false, 
                                                       rows, cols, PyObject_IsTrue(constraindisplacement) ? true : false, perpscale) + 1;
     
-	if(ret == -1)
-	    throw Py::TypeError("Copy operation unsuccessful!");    
-    
-
+        if(ret == -1)
+            throw Py::TypeError("Copy operation unsuccessful!");
         Py_Return;
     }
 

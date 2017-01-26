@@ -41,6 +41,7 @@
 #include <Base/TimeInfo.h>
 #include <Base/Console.h>
 #include <Base/Type.h>
+#include <Base/Parameter.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -109,7 +110,13 @@ template<class TWriter> void writeVTKFile(const char* filename, vtkSmartPointer<
   writer->Write();
 }
 
-void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* mesh)
+/*
+            double scale = 1000;
+            p[0] = p[0]* scale;           // scale back to mm
+            p[1] = p[1]* scale; 
+            p[1] = p[1]* scale; 
+            */
+void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* mesh, float scale)
 {
     const vtkIdType nPoints = dataset->GetNumberOfPoints();
     const vtkIdType nCells = dataset->GetNumberOfCells();
@@ -126,7 +133,7 @@ void FemVTKTools::importVTKMesh(vtkSmartPointer<vtkDataSet> dataset, FemMesh* me
     for(vtkIdType i=0; i<nPoints; i++)
     {   
         double* p = dataset->GetPoint(i);
-        meshds->AddNodeWithID(p[0], p[1], p[2], i+1);
+        meshds->AddNodeWithID(p[0]*scale, p[1]*scale, p[2]*scale, i+1);
     }
 
     for(vtkIdType iCell=0; iCell<nCells; iCell++)
@@ -487,7 +494,14 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
     Base::TimeInfo Start;
     Base::Console().Log("Start: read FemResult with FemMesh from VTK file ======================\n");
     Base::FileInfo f(filename);
-
+    
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    int unitSchema = hGrp->GetInt("UserSchema",0);
+    float scale = 1.0;
+    if(unitSchema == 0)  // standard mm
+    {
+        scale = 1000.0;  // convert from meter in length of CFD result file
+    }
     vtkSmartPointer<vtkDataSet> ds;
     if(f.hasExtension("vtu"))
     {
@@ -528,7 +542,7 @@ App::DocumentObject* FemVTKTools::readFluidicResult(const char* filename, App::D
 
     App::DocumentObject* mesh = pcDoc->addObject("Fem::FemMeshObject", "ResultMesh");
     FemMesh* fmesh = new FemMesh(); // PropertyFemMesh instance is responsible to relase FemMesh ??
-    importVTKMesh(dataset, fmesh);
+    importVTKMesh(dataset, fmesh, scale);
     static_cast<PropertyFemMesh*>(mesh->getPropertyByName("FemMesh"))->setValue(*fmesh);
     static_cast<App::PropertyLink*>(result->getPropertyByName("Mesh"))->setValue(mesh);
     // PropertyLink is the property type to store DocumentObject pointer
@@ -636,20 +650,37 @@ void FemVTKTools::importFluidicResult(vtkSmartPointer<vtkDataSet> dataset, App::
     vtkSmartPointer<vtkDataArray> vel = pd->GetArray(vars["Velocity"]);
     if(nPoints && vel && vel->GetNumberOfComponents() == 3) {
         std::vector<Base::Vector3d> vec(nPoints);
-        double vmin=1.0e100, vmean=0.0, vmax=0.0;  // only velocity magnitude is calc in c++
+        double vmin=1.0e100, vmean=0.0, vmax=0.0;
+        //stat of Vx, Vy, Vz is not necessary
+        double vmins[3] = {0.0, 0.0, 0.0};
+        double vmeans[3] = {0.0, 0.0, 0.0}; 
+        double vmaxs[3] = {0.0, 0.0, 0.0};
         for(vtkIdType i=0; i<nPoints; ++i) {
             double *p = vel->GetTuple(i); // both vtkFloatArray and vtkDoubleArray return double* for GetTuple(i)
             double vmag = std::sqrt(p[0]*p[0] + p[1]*p[1] + p[2]*p[2]);
+            for(int ii=0; ii<3; ii++) {
+                vmeans[ii] += p[ii];
+                if(p[ii] > vmaxs[ii]) vmaxs[ii] = p[ii]; 
+                if(p[ii] < vmins[ii]) vmins[ii] = p[ii];                
+            }
             vmean += vmag;
             if(vmag > vmax) vmax = vmag;
             if(vmag < vmin) vmin = vmag;
+            
             vec[i] = (Base::Vector3d(p[0], p[1], p[2]));
             nodeIds[i] = i;
+        }
+        
+        for(int ii=0; ii<3; ii++) {
+            stats[ii*3] = vmins[ii];
+            stats[ii*3 + 2] = vmaxs[ii];
+            stats[ii*3 + 1] = vmeans[ii]/nPoints;
         }
         int index = varids["Umag"];
         stats[index*3] = vmin;
         stats[index*3 + 2] = vmax;
         stats[index*3 + 1] = vmean/nPoints;
+
         App::PropertyVectorList* velocity = static_cast<App::PropertyVectorList*>(res->getPropertyByName("Velocity"));
         if(velocity) {
             //PropertyVectorList will not show up in PropertyEditor

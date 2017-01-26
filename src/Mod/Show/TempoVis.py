@@ -76,7 +76,7 @@ class TempoVis(FrozenClass):
                 oldval = getattr(doc_obj.ViewObject, prop_name)
                 setattr(doc_obj.ViewObject, prop_name, new_value)
                 self.restore_on_delete = True
-                if not self.data.has_key((doc_obj.Name,prop_name)):
+                if (doc_obj.Name,prop_name) not in self.data:
                     self.data[(doc_obj.Name,prop_name)] = oldval
 
     def show(self, doc_obj_or_list):
@@ -225,7 +225,7 @@ class TempoVis(FrozenClass):
                 if actual_pick_style != oldval:
                     self._setPickStyle(doc_obj.ViewObject, actual_pick_style)
                     self.restore_on_delete = True
-                if not self.data_pickstyle.has_key(doc_obj.Name):
+                if doc_obj.Name not in self.data_pickstyle:
                     self.data_pickstyle[doc_obj.Name] = oldval
                     
     def restoreUnpickable(self):

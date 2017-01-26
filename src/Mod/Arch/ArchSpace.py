@@ -229,9 +229,11 @@ class _CommandSpace:
         if sel:
             FreeCADGui.Control.closeDialog()
             if len(sel) == 1:
-                FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelection())")
+                FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelection())")
             else:
-                FreeCADGui.doCommand("Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
+                FreeCADGui.doCommand("obj = Arch.makeSpace(FreeCADGui.Selection.getSelectionEx())")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         else:

@@ -460,6 +460,12 @@ PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject
 PyObject * @self.export.Name@::staticCallback_@i.Name@ (PyObject *self, PyObject *args)
 -
 {
+    // make sure that not a null pointer is passed
+    if (!self) {
+        PyErr_SetString(PyExc_TypeError, "descriptor '@i.Name@' of '@self.export.Namespace@.@self.export.Twin@' object needs an argument");
+        return NULL;
+    }
+
     // test if twin object not allready deleted
     if (!static_cast<PyObjectBase*>(self)->isValid()) {
         PyErr_SetString(PyExc_ReferenceError, "This object is already deleted most likely through closing a document. This reference is no longer valid!");

@@ -37,8 +37,6 @@
 #include <stack>
 
 #include <boost/signals.hpp>
-#include <boost/graph/adjacency_list.hpp>
-
 
 namespace Base {
     class Writer;
@@ -246,8 +244,8 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
-    /// Recompute all touched features
-    void recompute();
+    /// Recompute all touched features and return the amount of recalculated features
+    int recompute();
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat);
     /// get the error log from the recompute run
@@ -311,10 +309,15 @@ public:
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
     /// Get a complete list of all objects the given objects depend on. The list
     /// also contains the given objects!
+    /// deprecated! Use In- and OutList mimic in the DocumentObject instead!
     std::vector<App::DocumentObject*> getDependencyList
         (const std::vector<App::DocumentObject*>&) const;
     // set Changed
     //void setChanged(DocumentObject* change);
+    /// get a list of topological sorted objects (https://en.wikipedia.org/wiki/Topological_sorting)
+    std::vector<App::DocumentObject*> topologicalSort() const;
+    /// get all root objects (objects no other one reference too)
+    std::vector<App::DocumentObject*> getRootObjects() const;
     //@}
 
     /// Function called to signal that an object identifier has been renamed
@@ -352,6 +355,7 @@ protected:
     /// helper which Recompute only this feature
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
+
     /// refresh the internal dependency graph
     void _rebuildDependencyList(void);
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;

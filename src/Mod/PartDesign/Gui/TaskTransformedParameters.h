@@ -30,6 +30,7 @@
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection.h>
+#include <Gui/DocumentObserver.h>
 
 #include "TaskFeatureParameters.h"
 #include "TaskTransformedMessages.h"
@@ -114,7 +115,9 @@ private:
   Because in the second case there is no ViewProvider, some special methods are required to
   access the underlying FeatureTransformed object in two different ways.
   **/
-class TaskTransformedParameters : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskTransformedParameters : public Gui::TaskView::TaskBox,
+                                  public Gui::SelectionObserver,
+                                  public Gui::DocumentObserver
 {
     Q_OBJECT
 
@@ -184,6 +187,8 @@ protected:
     int getUpdateViewTimeout() const;
 
 protected:
+    /** Notifies when the object is about to be removed. */
+    virtual void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj);
     virtual void changeEvent(QEvent *e) = 0;
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg) = 0;
     virtual void clearButtons()=0;
