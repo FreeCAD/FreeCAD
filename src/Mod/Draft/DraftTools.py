@@ -2857,7 +2857,7 @@ class Stretch(Modifier):
                             optype = 4
                         else:
                             optype = 0
-                        print "length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement
+                        print("length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement)
                         done = False
                         if optype > 0:
                             v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
