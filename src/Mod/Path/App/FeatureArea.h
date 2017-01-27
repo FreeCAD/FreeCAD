@@ -40,11 +40,12 @@ class PathExport FeatureArea : public Part::Feature
     PROPERTY_HEADER(Path::FeatureArea);
 
 public:
-    Area myArea;
-
     /// Constructor
     FeatureArea(void);
     virtual ~FeatureArea();
+
+    Area &getArea();
+    std::list<TopoDS_Shape> getShapes();
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -58,9 +59,35 @@ public:
     Part::PropertyPartShape WorkPlane;
 
     PARAM_PROP_DECLARE(AREA_PARAMS_ALL)
+
+private:
+    bool myBuild;
+    Area myArea;
 };
 
 typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;
+
+class PathExport FeatureAreaView : public Part::Feature
+{
+    PROPERTY_HEADER(Path::FeatureAreaView);
+
+public:
+    /// Constructor
+    FeatureAreaView(void);
+
+    std::list<TopoDS_Shape> getShapes();
+
+    virtual const char* getViewProviderName(void) const {
+        return "PathGui::ViewProviderAreaView";
+    }
+    virtual App::DocumentObjectExecReturn *execute(void);
+
+    App::PropertyLink       Source;
+    App::PropertyInteger    SectionIndex;
+    App::PropertyInteger    SectionCount;
+};
+
+typedef App::FeaturePythonT<FeatureAreaView> FeatureAreaViewPython;
 
 } //namespace Path
 

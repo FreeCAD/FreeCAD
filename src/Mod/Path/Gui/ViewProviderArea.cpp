@@ -115,11 +115,83 @@ bool ViewProviderArea::onDelete(const std::vector<std::string> &)
 
 // Python object -----------------------------------------------------------------------
 
+PROPERTY_SOURCE(PathGui::ViewProviderAreaView, PartGui::ViewProviderPlaneParametric)
+
+ViewProviderAreaView::ViewProviderAreaView()
+{
+    sPixmap = "Path-Area-View.svg";
+}
+
+ViewProviderAreaView::~ViewProviderAreaView()
+{
+}
+
+std::vector<App::DocumentObject*> ViewProviderAreaView::claimChildren(void) const
+{
+    std::vector<App::DocumentObject*> ret;
+    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    if(feature->Source.getValue())
+        ret.push_back(feature->Source.getValue());
+    return ret;
+}
+
+bool ViewProviderAreaView::canDragObjects() const
+{
+    return true;
+}
+
+bool ViewProviderAreaView::canDragObject(App::DocumentObject* obj) const
+{
+    return obj && obj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId());
+}
+
+void ViewProviderAreaView::dragObject(App::DocumentObject* )
+{
+    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    feature->Source.setValue(NULL);
+}
+
+bool ViewProviderAreaView::canDropObjects() const
+{
+    return true;
+}
+
+bool ViewProviderAreaView::canDropObject(App::DocumentObject* obj) const
+{
+    return canDragObject(obj);
+}
+
+void ViewProviderAreaView::dropObject(App::DocumentObject* obj)
+{
+    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    feature->Source.setValue(obj);
+}
+
+void ViewProviderAreaView::updateData(const App::Property* prop)
+{
+    PartGui::ViewProviderPlaneParametric::updateData(prop);
+    if (prop->getTypeId() == App::PropertyLink::getClassTypeId())
+        Gui::Application::Instance->hideViewProvider(
+                static_cast<const App::PropertyLink*>(prop)->getValue());
+}
+
+bool ViewProviderAreaView::onDelete(const std::vector<std::string> &)
+{
+    Path::FeatureAreaView* feature = static_cast<Path::FeatureAreaView*>(getObject());
+    Gui::Application::Instance->showViewProvider(feature->Source.getValue());
+    return true;
+}
+
+// Python object -----------------------------------------------------------------------
+
 namespace Gui {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderAreaPython, PathGui::ViewProviderArea)
+PROPERTY_SOURCE_TEMPLATE(PathGui::ViewProviderAreaViewPython, PathGui::ViewProviderAreaView)
 /// @endcond
 
 // explicit template instantiation
 template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderArea>;
+template class PathGuiExport ViewProviderPythonFeatureT<PathGui::ViewProviderAreaView>;
 }
+

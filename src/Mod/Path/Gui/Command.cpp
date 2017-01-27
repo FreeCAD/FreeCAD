@@ -68,24 +68,26 @@ void CmdPathArea::activated(int iMsg)
     Q_UNUSED(iMsg);
     std::list<std::string> cmds;
     std::ostringstream sources;
+    std::string areaName;
+    bool addView = true;
     for(const Gui::SelectionObject &selObj :
         getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
     {
         const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
         const std::vector<std::string> &subnames = selObj.getSubNames();
+        if(addView && areaName.size()) addView = false;
+
         if(subnames.empty()) {
+            if(addView && pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))
+                areaName = pcObj->getNameInDocument();
             sources << "FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ",";
             continue;
         }
         for(const std::string &name : subnames) {
-            if(!name.compare(0,4,"Face") &&
-                !name.compare(0,4,"Edge")) 
-            {
+            if(name.compare(0,4,"Face") && name.compare(0,4,"Edge")) {
                 Base::Console().Error("Selected shape is not 2D\n");
                 return;
             }
-
-            int index = atoi(name.substr(4).c_str());
 
             std::ostringstream subname;
             subname << pcObj->getNameInDocument() << '_' << name;
@@ -93,14 +95,28 @@ void CmdPathArea::activated(int iMsg)
 
             std::ostringstream cmd;
             cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname << 
-                "').Shape = FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ".Shape." << 
-                name.substr(0,4) << "s[" << index-1 << ']';
+                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." << 
+                pcObj->getNameInDocument() << ".Shape,'" << name << "'"; 
+            if(!name.compare(0,4,"Edge"))
+                cmd << ",'Wires'";
+            cmd << ')';
             cmds.push_back(cmd.str());
             sources << "FreeCAD.activeDocument()." << sub_fname << ",";
         }
     }
+    if(addView && areaName.size()) {
+        std::string FeatName = getUniqueObjectName("FeatureAreaView");
+        openCommand("Create Path Area View");
+        doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureAreaView','%s')",FeatName.c_str());
+        doCommand(Doc,"FreeCAD.activeDocument().%s.Source = FreeCAD.activeDocument().%s",
+                FeatName.c_str(),areaName.c_str());
+        commitCommand();
+        updateActive();
+        return;
+    }
     std::string FeatName = getUniqueObjectName("FeatureArea");
     openCommand("Create Path Area");
+    doCommand(Doc,"import PathCommands");
     for(const std::string &cmd : cmds)
         doCommand(Doc,cmd.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureArea','%s')",FeatName.c_str());
@@ -171,17 +187,12 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         }
 
         for(const std::string &name : subnames) {
-            if(!name.compare(0,4,"Face") &&
-                !name.compare(0,4,"Edge")) 
-            {
+            if(name.compare(0,4,"Face") && name.compare(0,4,"Edge")) {
                 Base::Console().Error("Selected shape is not 2D\n");
                 return;
             }
-
-            int index = atoi(name.substr(4).c_str());
-
             std::ostringstream subname;
-            subname << planeSubname << '.' << name.substr(0,4) << "s[" << index-1 << ']';
+            subname << planeSubname << ",'" << name << "','Wires'";
             planeSubname = subname.str();
         }
     }
@@ -195,10 +206,10 @@ void CmdPathAreaWorkplane::activated(int iMsg)
     }
 
     openCommand("Select Workplane for Path Area");
-    doCommand(Doc,"FreeCAD.activeDocument().%s.WorkPlane = FreeCAD.activeDocument().%s",
-                    areaName.c_str(),planeSubname.c_str());
+    doCommand(Doc,"import PathCommands");
+    doCommand(Doc,"FreeCAD.activeDocument().%s.WorkPlane = PathCommands.findShape("
+            "FreeCAD.activeDocument().%s)", areaName.c_str(),planeSubname.c_str());
     doCommand(Doc,"FreeCAD.activeDocument().%s.ViewObject.Visibility = True",areaName.c_str());
-    // doCommand(Doc,"FreeCAD.activeDocument().%s.ViewObject.Visibility = False",planeName.c_str());
     commitCommand();
     updateActive();
 }
@@ -284,24 +295,48 @@ CmdPathShape::CmdPathShape()
 void CmdPathShape::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
-    if (Sel.size() == 1) {
-        if (Sel[0].pObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            Part::Feature *pcPartObject = static_cast<Part::Feature*>(Sel[0].pObject);
-            std::string FeatName = getUniqueObjectName("PathShape");
-            openCommand("Create Path Compound");
-            doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')",FeatName.c_str());
-            doCommand(Doc,"FreeCAD.activeDocument().%s.Shape = FreeCAD.activeDocument().%s.Shape.copy()",FeatName.c_str(),pcPartObject->getNameInDocument());
-            commitCommand();
-            updateActive();
-        } else {
-            Base::Console().Error("Exactly one shape object must be selected\n");
-            return;
+    std::list<std::string> cmds;
+    std::ostringstream sources;
+    for(const Gui::SelectionObject &selObj :
+        getSelection().getSelectionEx(NULL, Part::Feature::getClassTypeId()))
+    {
+        const Part::Feature *pcObj = static_cast<const Part::Feature*>(selObj.getObject());
+        const std::vector<std::string> &subnames = selObj.getSubNames();
+        if(subnames.empty()) {
+            sources << "FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ",";
+            continue;
         }
-    } else {
-        Base::Console().Error("Exactly one shape object must be selected\n");
-        return;
+        for(const std::string &name : subnames) {
+            if(name.compare(0,4,"Face") && name.compare(0,4,"Edge")) {
+                Base::Console().Warning("Ignored shape %s %s\n",
+                        pcObj->getNameInDocument(), name.c_str());
+                continue;
+            }
+
+            std::ostringstream subname;
+            subname << pcObj->getNameInDocument() << '_' << name;
+            std::string sub_fname = getUniqueObjectName(subname.str().c_str());
+
+            std::ostringstream cmd;
+            cmd << "FreeCAD.activeDocument().addObject('Part::Feature','" << sub_fname << 
+                "').Shape = PathCommands.findShape(FreeCAD.activeDocument()." << 
+                pcObj->getNameInDocument() << ".Shape,'" << name << "'";
+            if(!name.compare(0,4,"Edge"))
+                cmd << ",'Wires'";
+            cmd << ')';
+            cmds.push_back(cmd.str());
+            sources << "FreeCAD.activeDocument()." << sub_fname << ",";
+        }
     }
+    std::string FeatName = getUniqueObjectName("PathShape");
+    openCommand("Create Path Shape");
+    doCommand(Doc,"import PathCommands");
+    for(const std::string &cmd : cmds)
+        doCommand(Doc,cmd.c_str());
+    doCommand(Doc,"FreeCAD.activeDocument().addObject('Path::FeatureShape','%s')",FeatName.c_str());
+    doCommand(Doc,"FreeCAD.activeDocument().%s.Sources = [ %s ]",FeatName.c_str(),sources.str().c_str());
+    commitCommand();
+    updateActive();
 }
 
 bool CmdPathShape::isActive(void)

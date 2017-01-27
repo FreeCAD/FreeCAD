@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 
-#include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
+#include <Base/VectorPy.h>
 
-#include "Mod/Path/App/Area.h"
+#include "Area.h"
 
 // inclusion of the generated files (generated out of AreaPy.xml)
 #include "AreaPy.h"
@@ -76,6 +76,16 @@ static const AreaDoc myDocs[] = {
         "Generate pocket toolpath of the shape.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_POCKET),
+    },
+    {
+        "sortWires",
+
+        "sortWires(index=-1, count=0, start=Vector()" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_MIN_DIST) "):\n"
+        "Returns a tuple (wires,end): sorted wires with minimized travel distance, and the endpoint of the wires.\n"
+        "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
+        "\n* count (0): the number of sections to return. <=0 means all sections starting from index.\n"
+        "\n* start (Vector()): a vector specifies the start point.\n"
+        PARAM_PY_DOC(ARG,AREA_PARAMS_MIN_DIST),
     },
 };
 
@@ -141,12 +151,42 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
     if (!PyArg_ParseTupleAndKeywords(args, keywds,"|hO",kwlist,&pcObj))
         return 0;
 
-    try {
-        if(PyObject_IsTrue(pcObj))
-            getAreaPtr()->clean();
-        return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
+    if(PyObject_IsTrue(pcObj))
+        getAreaPtr()->clean();
+    return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->getShape(index)));
+}
+
+PyObject* AreaPy::sortWires(PyObject *args, PyObject *keywds){
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_MIN_DIST)
+    short index = -1;
+    short count = 0;
+    PyObject *start = NULL;
+
+    static char *kwlist[] = {"index","count","start",
+        PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_MIN_DIST), NULL};
+    if (!PyArg_ParseTupleAndKeywords(args, keywds,
+                "|hhO!" PARAM_PY_KWDS(AREA_PARAMS_MIN_DIST),
+                kwlist,&index,&count,&(Base::VectorPy::Type),&start,
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_MIN_DIST)))
+        return 0;
+
+    gp_Pnt pstart,pend;
+    if(start) {
+        Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
+        pstart.SetCoord(vec.x, vec.y, vec.z);
     }
-    PY_CATCH_OCC;
+    std::list<TopoDS_Shape> wires = getAreaPtr()->sortWires(
+            index,count,&pstart,&pend,
+            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_MIN_DIST));
+    PyObject *list = PyList_New(0);
+    for(auto &wire : wires)
+        PyList_Append(list,Py::new_reference_to(
+                        Part::shape2pyshape(TopoDS::Wire(wire))));
+    PyObject *ret = PyTuple_New(2);
+    PyTuple_SetItem(ret,0,list);
+    PyTuple_SetItem(ret,1,new Base::VectorPy(
+                Base::Vector3d(pend.X(),pend.Y(),pend.Z())));
+    return ret;
 }
 
 PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
@@ -205,13 +245,10 @@ PyObject* AreaPy::makeOffset(PyObject *args, PyObject *keywds)
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_OFFSET)))
         return 0;
 
-    try {
-        //Expand the variable as function call arguments
-        TopoDS_Shape resultShape = getAreaPtr()->makeOffset(index,
-                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
-        return Py::new_reference_to(Part::shape2pyshape(resultShape));
-    }
-    PY_CATCH_OCC;
+    //Expand the variable as function call arguments
+    TopoDS_Shape resultShape = getAreaPtr()->makeOffset(index,
+                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OFFSET));
+    return Py::new_reference_to(Part::shape2pyshape(resultShape));
 }
 
 PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
@@ -228,14 +265,10 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
                 &index,PARAM_REF(PARAM_FARG,AREA_PARAMS_POCKET)))
         return 0;
 
-    try {
-        TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
-                            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
-        return Py::new_reference_to(Part::shape2pyshape(resultShape));
-    }
-    PY_CATCH_OCC;
+    TopoDS_Shape resultShape = getAreaPtr()->makePocket(index,
+                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_POCKET));
+    return Py::new_reference_to(Part::shape2pyshape(resultShape));
 }
-
 
 PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 {

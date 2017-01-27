@@ -468,16 +468,23 @@ void CArea::Offset(double inwards_value)
 
 void CArea::PopulateClipper(Clipper &c, PolyType type) const
 {
+    int skipped = 0;
 	for (std::list<CCurve>::const_iterator It = m_curves.begin(); It != m_curves.end(); It++)
 	{
 		const CCurve &curve = *It;
         bool closed = curve.IsClosed();
-        if(type == ptClip && !closed)
-            continue;
+        if(!closed) {
+            if(type == ptClip){
+                ++skipped;
+                continue;
+            }
+        }
 		TPolygon p;
 		MakePoly(curve, p, false);
         c.AddPath(p, type, closed);
 	}
+    if(skipped) 
+        std::cout << "libarea: warning skipped " << skipped << " open wires" << std::endl;
 }
 
 void CArea::Clip(ClipType op, const CArea *a,

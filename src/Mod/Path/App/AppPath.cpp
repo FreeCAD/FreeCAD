@@ -88,4 +88,6 @@ PyMODINIT_FUNC initPath()
     Path::Area                   ::init();
     Path::FeatureArea            ::init();
     Path::FeatureAreaPython      ::init();
+    Path::FeatureAreaView        ::init();
+    Path::FeatureAreaViewPython  ::init();
 }
