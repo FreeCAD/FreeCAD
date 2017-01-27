@@ -96,7 +96,7 @@
 #if PY_MAJOR_VERSION >= 3
 # define PyMOD_Return(name) return name
 #else
-# define PyMOD_Return(name) return
+# define PyMOD_Return(name) return (void)name
 #endif
 
 /**
