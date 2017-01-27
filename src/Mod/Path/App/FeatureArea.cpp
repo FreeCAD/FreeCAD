@@ -146,8 +146,8 @@ PROPERTY_SOURCE(Path::FeatureAreaView, Part::Feature)
 FeatureAreaView::FeatureAreaView()
 {
     ADD_PROPERTY(Source,(0));
-    ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show");
-    ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show");
+    ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show, negative value for reverse index from bottom");
+    ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show, 0 to show all section starting from SectionIndex");
 }
 
 std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
@@ -158,25 +158,29 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
         return shapes;
     Area &area = static_cast<FeatureArea*>(pObj)->getArea();
 
+    if(!area.getSectionCount()) {
+        shapes.push_back(area.getShape());
+        return shapes;
+    }
+
     int index=SectionIndex.getValue(),count=SectionCount.getValue();
     if(index<0) {
-        index = 0;
-        count = area.getSectionCount();
-    }
-    if(index >= (int)area.getSectionCount())
+        index += ((int)area.getSectionCount());
+        if(index<0) return shapes;
+        if(count<=0 || index+1-count<0) {
+            count = index+1;
+            index = 0;
+        }else
+            index -= count-1;
+    }else if(index >= (int)area.getSectionCount())
         return shapes;
 
-    if(count<=0)
-        count = (int)area.getSectionCount();
-    if(count==1) 
-        shapes.push_back(area.getShape(index));
-    else{
-        count += index;
-        if(count>(int)area.getSectionCount())
-            count = area.getSectionCount();
-        for(int i=index;i<count;++i)
-            shapes.push_back(area.getShape(i));
-    }
+    if(count<=0) count = area.getSectionCount();
+    count += index;
+    if(count>(int)area.getSectionCount())
+        count = area.getSectionCount();
+    for(int i=index;i<count;++i)
+        shapes.push_back(area.getShape(i));
     return shapes;
 }
 
