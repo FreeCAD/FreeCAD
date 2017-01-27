@@ -383,15 +383,18 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint> &suggested
 }
 
 void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> &autoConstrs,
-                                              int geoId1, Sketcher::PointPos posId1)
+                                              int geoId1, Sketcher::PointPos posId1, bool createowncommand /*= true*/)
 {
     if (!sketchgui->Autoconstraints.getValue())
         return; // If Autoconstraints property is not set quit
 
     if (autoConstrs.size() > 0) {
-        // Open the Command
-        Gui::Command::openCommand("Add auto constraints");
-
+        
+        if(createowncommand) {
+            // Open the Command
+            Gui::Command::openCommand("Add auto constraints");
+        }
+        
         // Iterate through constraints
         std::vector<AutoConstraint>::const_iterator it = autoConstrs.begin();
         for (; it != autoConstrs.end(); ++it) {
@@ -512,7 +515,9 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint> 
                 break;
             }
 
-            Gui::Command::commitCommand();
+            if(createowncommand) {
+                Gui::Command::commitCommand();
+            }
             //Gui::Command::updateActive(); // There is already an recompute in each command creation, this is redundant.
         }
     }
