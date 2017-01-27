@@ -26,6 +26,7 @@ import Part
 import math
 import area
 from PathScripts import PathUtils
+from PathScripts.PathGeom import PathGeom
 from nc.nc import *
 import PathScripts.nc.iso
 from PathScripts.nc.nc import *
@@ -71,7 +72,8 @@ def makeAreaCurve(edges, direction, startpt=None, endpt=None):
         # We first compare the last parameter of the first segment to see if it
         # matches either end of the second segment. If not, it must need
         # flipping.
-        if cleanededges[0].valueAt(cleanededges[0].LastParameter) in [cleanededges[1].valueAt(cleanededges[1].FirstParameter), cleanededges[1].valueAt(cleanededges[1].LastParameter)]:
+        p0L = cleanededges[0].valueAt(cleanededges[0].LastParameter)
+        if PathGeom.pointsCoincide(p0L, cleanededges[1].valueAt(cleanededges[1].FirstParameter)) or PathGeom.pointsCoincide(p0L, cleanededges[1].valueAt(cleanededges[1].LastParameter)):
             edge0 = cleanededges[0]
         else:
             edge0 = PathUtils.reverseEdge(cleanededges[0])
@@ -81,8 +83,7 @@ def makeAreaCurve(edges, direction, startpt=None, endpt=None):
         # Now iterate the rest of the edges matching the last parameter of the
         # previous segment.
         for edge in cleanededges[1:]:
-
-            if edge.valueAt(edge.FirstParameter) == edgelist[-1].valueAt(edgelist[-1].LastParameter):
+            if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), edgelist[-1].valueAt(edgelist[-1].LastParameter)):
                 nextedge = edge
             else:
                 nextedge = PathUtils.reverseEdge(edge)

@@ -117,12 +117,16 @@ class _CommandPipe:
                     if len(obj.Shape.Wires) == 1:
                         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Pipe"))
                         FreeCADGui.addModule("Arch")
-                        FreeCADGui.doCommand("Arch.makePipe(FreeCAD.ActiveDocument."+obj.Name+")")
+                        FreeCADGui.doCommand("obj = Arch.makePipe(FreeCAD.ActiveDocument."+obj.Name+")")
+                        FreeCADGui.addModule("Draft")
+                        FreeCADGui.doCommand("Draft.autogroup(obj)")
                         FreeCAD.ActiveDocument.commitTransaction()
         else:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Pipe"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makePipe()")
+            FreeCADGui.doCommand("obj = Arch.makePipe()")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -159,7 +163,9 @@ class _CommandPipeConnector:
         o += "]"
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Connector"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("Arch.makePipeConnector("+o+")")
+        FreeCADGui.doCommand("obj = Arch.makePipeConnector("+o+")")
+        FreeCADGui.addModule("Draft")
+        FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 

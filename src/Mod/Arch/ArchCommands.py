@@ -1290,9 +1290,11 @@ class _CommandComponent:
         if sel:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Component"))
             FreeCADGui.addModule("Arch")
+            FreeCADGui.addModule("Draft")
             FreeCADGui.Control.closeDialog()
             for o in sel:
-                FreeCADGui.doCommand("Arch.makeComponent(FreeCAD.ActiveDocument."+o.Name+")")
+                FreeCADGui.doCommand("obj = Arch.makeComponent(FreeCAD.ActiveDocument."+o.Name+")")
+                FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 
@@ -1313,9 +1315,11 @@ class _CommandCloneComponent:
         if sel:
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Component"))
             FreeCADGui.addModule("Arch")
+            FreeCADGui.addModule("Draft")
             FreeCADGui.Control.closeDialog()
             for o in sel:
-                FreeCADGui.doCommand("Arch.cloneComponent(FreeCAD.ActiveDocument."+o.Name+")")
+                FreeCADGui.doCommand("obj = Arch.cloneComponent(FreeCAD.ActiveDocument."+o.Name+")")
+                FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 

@@ -361,8 +361,8 @@ bool   TaskRevolutionParameters::getReversed(void) const
 TaskRevolutionParameters::~TaskRevolutionParameters()
 {
     //hide the parts coordinate system axis for selection
-    PartDesign::Body * body = PartDesign::Body::findBodyOf ( vp->getObject() );
-    if ( body ) {
+    PartDesign::Body * body = vp ? PartDesign::Body::findBodyOf(vp->getObject()) : 0;
+    if (body) {
         try {
             App::Origin *origin = body->getOrigin();
             ViewProviderOrigin* vpOrigin;
@@ -375,7 +375,7 @@ TaskRevolutionParameters::~TaskRevolutionParameters()
 
     delete ui;
 
-    for(size_t i = 0  ;  i < axesInList.size()  ;  i++ ){
+    for (size_t i = 0; i < axesInList.size(); i++) {
         delete axesInList[i];
     }
 }

@@ -57,7 +57,6 @@ CombiView::CombiView(Gui::Document* pcDocument, QWidget *parent)
     tabs = new QTabWidget ();
     tabs->setObjectName(QString::fromUtf8("combiTab"));
     tabs->setTabPosition(QTabWidget::North);
-    //tabs->setTabShape(QTabWidget::Triangular);
     pLayout->addWidget( tabs, 0, 0 );
 
     // splitter between tree and property view

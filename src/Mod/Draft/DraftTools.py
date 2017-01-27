@@ -475,14 +475,16 @@ class Line(Creator):
                              'line.Z1 = '+str(p1.z),
                              'line.X2 = '+str(p2.x),
                              'line.Y2 = '+str(p2.y),
-                             'line.Z2 = '+str(p2.z)])
+                             'line.Z2 = '+str(p2.z),
+                             'Draft.autogroup(line)'])
             else:
                 # building command string
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create DWire"),
                             ['points='+pts,
-                             'Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
+                             'line = Draft.makeWire(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
+                             'Draft.autogroup(line)'])
         Creator.finish(self)
         if self.ui:
             if self.ui.continueMode:
@@ -609,7 +611,7 @@ class Wire(Line):
                     rems = ["FreeCAD.ActiveDocument.removeObject(\""+o.Name+"\")" for o in FreeCADGui.Selection.getSelection()]
                     FreeCADGui.addModule("Draft")
                     todo.delayCommit([(translate("draft","Convert to Wire"),
-                            ['Draft.makeWire(['+pts+'])']+rems)])
+                            ['wire = Draft.makeWire(['+pts+'])']+rems+['Draft.autogroup(wire)'])])
                     return
 
         Line.Activated(self,name=translate("draft","DWire"))
@@ -703,8 +705,9 @@ class BSpline(Line):
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BSpline"),
-                            ['points='+pts,
-                             'Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')'])
+                            ['points = '+pts,
+                             'spline = Draft.makeBSpline(points,closed='+str(closed)+',face='+fil+',support='+sup+')',
+                             'Draft.autogroup(spline)'])
             except:
                 print("Draft: error delaying commit")
         Creator.finish(self)
@@ -806,8 +809,9 @@ class BezCurve(Line):
                 rot,sup,pts,fil = self.getStrings()
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create BezCurve"),
-                            ['points='+pts,
-                             'Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')'])
+                            ['points = '+pts,
+                             'bez = Draft.makeBezCurve(points,closed='+str(closed)+',support='+sup+')',
+                             'Draft.autogroup(bez)'])
             except:
                 print("Draft: error delaying commit")
         Creator.finish(self)
@@ -935,14 +939,16 @@ class Rectangle(Creator):
                              'pl = FreeCAD.Placement()',
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(base),
-                             'plane.Placement = pl'])
+                             'plane.Placement = pl',
+                             'Draft.autogroup(plane)'])
             else:
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Rectangle"),
                             ['pl = FreeCAD.Placement()',
                              'pl.Rotation.Q = '+rot,
                              'pl.Base = '+DraftVecUtils.toString(base),
-                             'Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')'])
+                             'rec = Draft.makeRectangle(length='+str(length)+',height='+str(height)+',placement=pl,face='+fil+',support='+sup+')',
+                             'Draft.autogroup(rec)'])
         except:
             print("Draft: error delaying commit")
         self.finish(cont=True)
@@ -1193,7 +1199,8 @@ class Arc(Creator):
                                  'pl = FreeCAD.Placement()',
                                  'pl.Rotation.Q = '+rot,
                                  'pl.Base = '+DraftVecUtils.toString(self.center),
-                                 'circle.Placement = pl'])
+                                 'circle.Placement = pl',
+                                 'Draft.autogroup(circle)'])
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
@@ -1201,7 +1208,8 @@ class Arc(Creator):
                                 ['pl=FreeCAD.Placement()',
                                  'pl.Rotation.Q='+rot,
                                  'pl.Base='+DraftVecUtils.toString(self.center),
-                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')'])
+                                 'circle = Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',support='+sup+')',
+                                 'Draft.autogroup(circle)'])
             except:
                 print("Draft: error delaying commit")
         else:
@@ -1226,7 +1234,8 @@ class Arc(Creator):
                                  'pl = FreeCAD.Placement()',
                                  'pl.Rotation.Q = '+rot,
                                  'pl.Base = '+DraftVecUtils.toString(self.center),
-                                 'circle.Placement = pl'])
+                                 'circle.Placement = pl',
+                                 'Draft.autogroup(circle)'])
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
@@ -1234,7 +1243,8 @@ class Arc(Creator):
                                 ['pl=FreeCAD.Placement()',
                                  'pl.Rotation.Q='+rot,
                                  'pl.Base='+DraftVecUtils.toString(self.center),
-                                 'Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')'])
+                                 'circle = Draft.makeCircle(radius='+str(self.rad)+',placement=pl,face='+fil+',startangle='+str(sta)+',endangle='+str(end)+',support='+sup+')',
+                                 'Draft.autogroup(circle)'])
             except:
                     print("Draft: error delaying commit")
         self.finish(cont=True)
@@ -1449,15 +1459,17 @@ class Polygon(Creator):
                          'pol.Polygon = ' + str(self.ui.numFaces.value()),
                          'pol.Circumradius = ' + str(self.rad),
                          'pol.Placement = pl',
+                         'Draft.autogroup(pol)'
                          'FreeCAD.ActiveDocument.recompute()'])
         else:
             # building command string
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Create Polygon"),
                         ['pl=FreeCAD.Placement()',
-                         'pl.Rotation.Q=' + rot,
-                         'pl.Base=' + DraftVecUtils.toString(self.center),
-                         'Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')'])
+                         'pl.Rotation.Q = ' + rot,
+                         'pl.Base = ' + DraftVecUtils.toString(self.center),
+                         'pol = Draft.makePolygon(' + str(self.ui.numFaces.value()) + ',radius=' + str(self.rad) + ',inscribed=True,placement=pl,face=' + fil + ',support=' + sup + ')',
+                         'Draft.autogroup(pol)'])
         FreeCAD.ActiveDocument.recompute()
         self.finish(cont=True)
 
@@ -1553,14 +1565,16 @@ class Ellipse(Creator):
                              'pl = FreeCAD.Placement()',
                              'pl.Rotation.Q='+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
-                             'ellipse.Placement = pl'])
+                             'ellipse.Placement = pl',
+                             'Draft.autogroup(ellipse)'])
             else:
                 FreeCADGui.addModule("Draft")
                 self.commit(translate("draft","Create Ellipse"),
                             ['pl = FreeCAD.Placement()',
-                             'pl.Rotation.Q='+rot,
+                             'pl.Rotation.Q = '+rot,
                              'pl.Base = '+DraftVecUtils.toString(center),
-                             'Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')'])
+                             'ellipse = Draft.makeEllipse('+str(r1)+','+str(r2)+',placement=pl,face='+fil+',support='+sup+')',
+                             'Draft.autogroup(ellipse)'])
         except:
             print("Draft: Error: Unable to create object.")
         self.finish(cont=True)
@@ -1646,7 +1660,8 @@ class Text(Creator):
         tx += ']'
         FreeCADGui.addModule("Draft")
         self.commit(translate("draft","Create Text"),
-                    ['Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')'])
+                    ['text = Draft.makeText('+tx+',point='+DraftVecUtils.toString(self.node[0])+')',
+                    'Draft.autogroup(text)'])
 
         self.finish(cont=True)
 
@@ -1779,8 +1794,9 @@ class Dimension(Creator):
             p3 = Vector(pt.point.getValues()[2].getValue())
             FreeCADGui.addModule("Draft")
             self.commit(translate("draft","Create Dimension"),
-                        ['Draft.makeDimension('+DraftVecUtils.toString(p1)+','+DraftVecUtils.toString(p2)+','+DraftVecUtils.toString(p3)+')',
-                         'FreeCAD.ActiveDocument.removeObject("'+o.Name+'")'])
+                        ['dim = Draft.makeDimension('+DraftVecUtils.toString(p1)+','+DraftVecUtils.toString(p2)+','+DraftVecUtils.toString(p3)+')',
+                         'FreeCAD.ActiveDocument.removeObject("'+o.Name+'")',
+                         'Draft.autogroup(dim)'])
 
     def createObject(self):
         "creates an object in the current doc"
@@ -1793,24 +1809,30 @@ class Dimension(Creator):
                 v2 = DraftGeomUtils.vec(self.edges[1])
                 normal = DraftVecUtils.toString((v1.cross(v2)).normalize())
             self.commit(translate("draft","Create Dimension"),
-                        ['Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')'])
+                        ['dim = Draft.makeAngularDimension(center='+DraftVecUtils.toString(self.center)+',angles=['+str(self.angledata[0])+','+str(self.angledata[1])+'],p3='+DraftVecUtils.toString(self.node[-1])+',normal='+normal+')',
+                        'Draft.autogroup(dim)'])
         elif self.link and (not self.arcmode):
             ops = []
             if self.force == 1:
                 self.commit(translate("draft","Create Dimension"),
-                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(0,1,0)'])
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(0,1,0)',
+                        'Draft.autogroup(dim)'])
             elif self.force == 2:
                 self.commit(translate("draft","Create Dimension"),
-                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(1,0,0)'])
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')','dim.Direction=FreeCAD.Vector(1,0,0)',
+                        'Draft.autogroup(dim)'])
             else:
                 self.commit(translate("draft","Create Dimension"),
-                        ['Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')'])
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+','+str(self.link[2])+','+DraftVecUtils.toString(self.node[2])+')',
+                        'Draft.autogroup(dim)'])
         elif self.arcmode:
             self.commit(translate("draft","Create Dimension"),
-                        ['Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+',"'+str(self.arcmode)+'",'+DraftVecUtils.toString(self.node[2])+')'])
+                        ['dim = Draft.makeDimension(FreeCAD.ActiveDocument.'+self.link[0].Name+','+str(self.link[1])+',"'+str(self.arcmode)+'",'+DraftVecUtils.toString(self.node[2])+')',
+                        'Draft.autogroup(dim)'])
         else:
             self.commit(translate("draft","Create Dimension"),
-                        ['Draft.makeDimension('+DraftVecUtils.toString(self.node[0])+','+DraftVecUtils.toString(self.node[1])+','+DraftVecUtils.toString(self.node[2])+')'])
+                        ['dim = Draft.makeDimension('+DraftVecUtils.toString(self.node[0])+','+DraftVecUtils.toString(self.node[1])+','+DraftVecUtils.toString(self.node[2])+')',
+                        'Draft.autogroup(dim)'])
         if self.ui.continueMode:
             self.cont = self.node[2]
             if not self.dir:
@@ -2064,7 +2086,8 @@ class ShapeString(Creator):
                          'plm.Base='+DraftVecUtils.toString(self.ssBase),
                          'plm.Rotation.Q='+qr,
                          'ss.Placement=plm',
-                         'ss.Support='+sup])
+                         'ss.Support='+sup,
+                         'Draft.autogroup(ss)'])
         except Exception as e:
             msg("Draft_ShapeString: error delaying commit", "error")
         self.finish()
@@ -4609,16 +4632,18 @@ class Point(Creator):
                 commitlist = []
                 if Draft.getParam("UsePartPrimitives",False):
                     # using
-                    commitlist.append((translate("draft","Create Point"),
+                    commitlist.append(translate("draft","Create Point"),
                                         ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
                                          'point.X = '+str(self.stack[0][0]),
                                          'point.Y = '+str(self.stack[0][1]),
-                                         'point.Z = '+str(self.stack[0][2])]))
+                                         'point.Z = '+str(self.stack[0][2]),
+                                         'Draft.autogroup(point)'])
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
-                    commitlist.append((translate("draft","Create Point"),
-                                        ['Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')']))
+                    commitlist.append(translate("draft","Create Point"),
+                                        ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
+                                        'Draft.autogroup(point)'])
                 todo.delayCommit(commitlist)
                 FreeCADGui.Snapper.off()
             self.finish()
@@ -4740,7 +4765,8 @@ class Draft_Facebinder(Creator):
             FreeCAD.ActiveDocument.openTransaction("Facebinder")
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
-            FreeCADGui.doCommand("Draft.makeFacebinder(s)")
+            FreeCADGui.doCommand("f = Draft.makeFacebinder(s)")
+            FreeCADGui.doCommand('Draft.autogroup(f)')
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
         self.finish()
@@ -4772,11 +4798,13 @@ class VisGroup():
         FreeCADGui.addModule("Draft")
         if len(s) == 1:
             if s[0].isDerivedFrom("App::DocumentObjectGroup"):
-                FreeCADGui.doCommand("Draft.makeVisGroup(FreeCAD.ActiveDocument."+s[0].Name+")")
+                FreeCADGui.doCommand("v = Draft.makeVisGroup(FreeCAD.ActiveDocument."+s[0].Name+")")
+                FreeCADGui.doCommand('Draft.autogroup(v)')
                 FreeCAD.ActiveDocument.commitTransaction()
                 FreeCAD.ActiveDocument.recompute()
                 return
-        FreeCADGui.doCommand("Draft.makeVisGroup()")
+        FreeCADGui.doCommand("v = Draft.makeVisGroup()")
+        FreeCADGui.doCommand('Draft.autogroup(v)')
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
@@ -4956,6 +4984,51 @@ class Draft_Slope():
             FreeCAD.ActiveDocument.commitTransaction()
         FreeCADGui.Control.closeDialog()
         FreeCAD.ActiveDocument.recompute()
+
+
+class SetAutoGroup():
+    "The SetAutoGroup FreeCAD command definition"
+
+    def GetResources(self):
+        return {'Pixmap'  : 'Draft_AutoGroup',
+                'MenuText': QtCore.QT_TRANSLATE_NOOP("Draft_AutoGroup", "AutoGroup"),
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_AutoGroup", "Select a group to automatically add all Draft & Arch objects to")}
+
+    def IsActive(self):
+        if FreeCADGui.ActiveDocument:
+            return True
+        else:
+            return False
+
+    def Activated(self):
+        if hasattr(FreeCADGui,"draftToolBar"):
+            self.ui = FreeCADGui.draftToolBar
+            s = FreeCADGui.Selection.getSelection()
+            if len(s) == 1:
+                if s[0].isDerivedFrom("App::DocumentObjectGroup") or (Draft.getType(s[0]) in ["Site","Building","Floor"]):
+                    self.ui.setAutoGroup(s[0].Name)
+                    return
+            self.groups = ["None"]
+            gn = Draft.getGroupNames()
+            if gn:
+                self.groups.extend(gn)
+                self.labels = ["None"]
+                for g in gn:
+                    o = FreeCAD.ActiveDocument.getObject(g)
+                    if o: 
+                        self.labels.append(o.Label)
+                self.ui.sourceCmd = self
+                self.ui.popupMenu(self.labels)
+
+    def proceed(self,labelname):
+        self.ui.sourceCmd = None
+        if labelname == "None":
+            self.ui.setAutoGroup(None)
+        else:
+            if labelname in self.labels:
+                i = self.labels.index(labelname)
+                self.ui.setAutoGroup(self.groups[i])
+
 
 #---------------------------------------------------------------------------
 # Snap tools
@@ -5198,6 +5271,7 @@ FreeCADGui.addCommand('Draft_Shape2DView',Shape2DView())
 FreeCADGui.addCommand('Draft_ShowSnapBar',ShowSnapBar())
 FreeCADGui.addCommand('Draft_ToggleGrid',ToggleGrid())
 FreeCADGui.addCommand('Draft_FlipDimension',Draft_FlipDimension())
+FreeCADGui.addCommand('Draft_AutoGroup',SetAutoGroup())
 
 # snap commands
 FreeCADGui.addCommand('Draft_Snap_Lock',Draft_Snap_Lock())

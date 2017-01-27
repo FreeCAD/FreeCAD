@@ -103,7 +103,9 @@ Floor creation aborted.\n" )
             ss += "]"
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Floor"))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeFloor("+ss+")")
+            FreeCADGui.doCommand("obj = Arch.makeFloor("+ss+")")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
 

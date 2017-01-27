@@ -192,7 +192,9 @@ class _CommandEquipment:
             base = s[0].Name
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Equipment")))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("Arch.makeEquipment(FreeCAD.ActiveDocument." + base + ")")
+            FreeCADGui.doCommand("obj = Arch.makeEquipment(FreeCAD.ActiveDocument." + base + ")")
+            FreeCADGui.addModule("Draft")
+            FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             # get diffuse color info from base object

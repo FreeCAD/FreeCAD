@@ -74,11 +74,11 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initCompleteGui()
+PyMOD_INIT_FUNC(CompleteGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // try to load dependent modules, currently not (AssemblyGui, CamGui)
@@ -136,7 +136,7 @@ PyMODINIT_FUNC initCompleteGui()
     }
 #   endif
 
-    (void) CompleteGui::initModule();
+    PyObject* mod = CompleteGui::initModule();
     Base::Console().Log("Loading GUI of Complete module... done\n");
 
     // instantiating the commands
@@ -145,4 +145,6 @@ PyMODINIT_FUNC initCompleteGui()
 
      // add resources and reloads the translators
     loadCompleteResource();
+
+    PyMOD_Return(mod);
 }

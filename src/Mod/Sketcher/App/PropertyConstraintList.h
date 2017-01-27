@@ -86,7 +86,11 @@ public:
     */
     void setValues(const std::vector<Constraint*>&);
 
-    /// index operator
+    /*!
+     Index operator
+     \note If the geometry is invalid then the index operator
+           returns null. This must be checked by the caller.
+    */
     const Constraint *operator[] (const int idx) const {
         return invalidGeometry ? 0 : _lValueList[idx];
     }
@@ -112,7 +116,6 @@ public:
     void acceptGeometry(const std::vector<Part::Geometry *> &GeoList);
     void checkGeometry(const std::vector<Part::Geometry *> &GeoList);
     bool scanGeometry(const std::vector<Part::Geometry *> &GeoList) const;
-    bool isGeometryInvalid(){return invalidGeometry;}
 
     /// Return status of geometry for better error reporting
     bool hasInvalidGeometry() const { return invalidGeometry; }

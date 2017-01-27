@@ -72,6 +72,9 @@
         <file>icons/Draft_Slope.svg</file>
         <file>icons/DraftWorkbench.svg</file>
         <file>icons/Draft_Stretch.svg</file>
+        <file>icons/Draft_AutoGroup.svg</file>
+        <file>icons/Draft_AutoGroup_on.svg</file>
+        <file>icons/Draft_AutoGroup_off.svg</file>
         <file>patterns/concrete.svg</file>
         <file>patterns/cross.svg</file>
         <file>patterns/line.svg</file>
