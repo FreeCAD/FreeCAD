@@ -75,7 +75,7 @@ Point CArea::NearestPoint(const Point& p)const
 
 void CArea::ChangeStartToNearest(const Point *point, double min_dist) {
 
-	for(std::list<CCurve>::const_iterator It=m_curves.begin(),ItNext=It; 
+	for(std::list<CCurve>::iterator It=m_curves.begin(),ItNext=It; 
             It != m_curves.end(); It=ItNext) 
     {
         ++ItNext;
