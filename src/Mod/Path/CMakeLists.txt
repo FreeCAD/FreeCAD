@@ -10,6 +10,7 @@ INSTALL(
         Init.py
         InitGui.py
         PathCommands.py
+        TestPathApp.py
     DESTINATION
         Mod/Path
 )
@@ -76,15 +77,6 @@ SET(PathScripts_SRCS
     PathScripts/opensbp_pre.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
-    PathTests/PathTestUtils.py
-    PathTests/TestPathDepthParams.py
-    PathTests/TestPathDressupHoldingTags.py
-    PathTests/TestPathGeom.py
-    PathTests/TestPathLog.py
-    PathTests/TestPathPost.py
-    PathTests/__init__.py
-    PathTests/test_linuxcnc_00.ngc
-    TestPathApp.py
 )
 
 SET(PathScripts_NC_SRCS
@@ -95,9 +87,23 @@ SET(PathScripts_NC_SRCS
     PathScripts/nc/iso_codes.py
 )
 
+SET(PathTests_SRCS
+    PathTests/PathTestUtils.py
+    PathTests/TestPathCore.py
+    PathTests/TestPathDepthParams.py
+    PathTests/TestPathDressupHoldingTags.py
+    PathTests/TestPathGeom.py
+    PathTests/TestPathLog.py
+    PathTests/TestPathPost.py
+    PathTests/__init__.py
+    PathTests/test_linuxcnc_00.ngc
+    TestPathApp.py
+)
+
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_NC_SRCS}
+    ${PathTests_SRCS}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
@@ -118,5 +124,12 @@ INSTALL(
         ${PathScripts_NC_SRCS}
     DESTINATION
         Mod/Path/PathScripts/nc
+)
+
+INSTALL(
+    FILES
+        ${PathTests_SRCS}
+    DESTINATION
+        Mod/Path/PathTests
 )
 
