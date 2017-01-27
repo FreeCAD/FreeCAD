@@ -2859,6 +2859,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
     sAccel          = "N";
     eType           = ForEdit;
 
+    // TODO: there are two more combos: endpoint then curve and endpoint then endpoint
     allowedSelSequences = {{SelEdge, SelEdge}, {SelEdge, SelHAxis}, {SelEdge, SelVAxis},
                            {SelHAxis, SelEdge}, {SelVAxis, SelEdge},
                            {SelVertex, SelEdge, SelEdge}, {SelVertex, SelEdge, SelHAxis},
@@ -2892,10 +2893,14 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
-        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            strError+strBasicHelp);
+//        strError = QObject::tr("Select some geometry from the sketch.", "perpendicular constraint");
+//        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            strError+strBasicHelp);
+
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -2916,7 +2921,7 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
     getIdsFromName(SubNames[0], Obj, GeoId1, PosId1);
     getIdsFromName(SubNames[1], Obj, GeoId2, PosId2);
 
-    if (checkBothExternal(GeoId1, GeoId2)){ //checkBothExternal displays error message
+    if (checkBothExternal(GeoId1, GeoId2)) { //checkBothExternal displays error message
         showNoConstraintBetweenExternal();
         return;
     }
@@ -3241,12 +3246,173 @@ void CmdSketcherConstrainPerpendicular::activated(int iMsg)
 
 void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+    QString strError;
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
+
     switch (seqIndex) {
     case 0: // {SelEdge, SelEdge}
     case 1: // {SelEdge, SelHAxis}
     case 2: // {SelEdge, SelVAxis}
     case 3: // {SelHAxis, SelEdge}
     case 4: // {SelVAxis, SelEdge}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        const Part::Geometry *geo1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geo2 = Obj->getGeometry(GeoId2);
+
+        if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId() &&
+            geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("One of the selected edges should be a line."));
+            return;
+        }
+
+        if( geo1 && geo2 &&
+            ( geo1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+              geo2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+
+            // unsupported until tangent to BSpline at any point implemented.
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Perpendicular to BSpline edge currently unsupported."));
+            return;
+        }
+
+        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+            std::swap(GeoId1,GeoId2);
+
+        // GeoId2 is the line
+        geo1 = Obj->getGeometry(GeoId1);
+        geo2 = Obj->getGeometry(GeoId2);
+
+        if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+            geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+            geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+            geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+
+            Base::Vector3d center;
+            Base::Vector3d majdir;
+            Base::Vector3d focus;
+            double majord = 0;
+            double minord = 0;
+            double phi = 0;
+
+            if( geo1->getTypeId() == Part::GeomEllipse::getClassTypeId() ){
+                const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(geo1);
+
+                center=ellipse->getCenter();
+                majord=ellipse->getMajorRadius();
+                minord=ellipse->getMinorRadius();
+                majdir=ellipse->getMajorAxisDir();
+                phi=atan2(majdir.y, majdir.x);
+            }
+            else if( geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ){
+                const Part::GeomArcOfEllipse *aoe = static_cast<const Part::GeomArcOfEllipse *>(geo1);
+
+                center=aoe->getCenter();
+                majord=aoe->getMajorRadius();
+                minord=aoe->getMinorRadius();
+                majdir=aoe->getMajorAxisDir();
+                phi=atan2(majdir.y, majdir.x);
+            }
+            else if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ){
+                const Part::GeomArcOfHyperbola *aoh = static_cast<const Part::GeomArcOfHyperbola *>(geo1);
+
+                center=aoh->getCenter();
+                majord=aoh->getMajorRadius();
+                minord=aoh->getMinorRadius();
+                majdir=aoh->getMajorAxisDir();
+                phi=atan2(majdir.y, majdir.x);
+            }
+            else if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ){
+                const Part::GeomArcOfParabola *aop = static_cast<const Part::GeomArcOfParabola *>(geo1);
+
+                center=aop->getCenter();
+                focus=aop->getFocus();
+            }
+
+            const Part::GeomLineSegment *line = static_cast<const Part::GeomLineSegment *>(geo2);
+
+            Base::Vector3d point1=line->getStartPoint();
+            Base::Vector3d PoO;
+
+            if( geo1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
+                double df=sqrt(majord*majord+minord*minord);
+                Base::Vector3d direction=point1-(center+majdir*df); // towards the focus
+                double tapprox=atan2(direction.y,direction.x)-phi;
+
+                PoO = Base::Vector3d(center.x+majord*cosh(tapprox)*cos(phi)-minord*sinh(tapprox)*sin(phi),
+                                     center.y+majord*cosh(tapprox)*sin(phi)+minord*sinh(tapprox)*cos(phi), 0);
+            }
+            else if( geo1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                Base::Vector3d direction=point1-focus; // towards the focus
+
+                PoO = point1 + direction / 2;
+            }
+            else {
+                Base::Vector3d direction=point1-center;
+                double tapprox=atan2(direction.y,direction.x)-phi; // we approximate the eccentric anomally by the polar
+
+                PoO = Base::Vector3d(center.x+majord*cos(tapprox)*cos(phi)-minord*sin(tapprox)*sin(phi),
+                                                    center.y+majord*cos(tapprox)*sin(phi)+minord*sin(tapprox)*cos(phi), 0);
+            }
+            openCommand("add perpendicular constraint");
+
+            try {
+                // Add a point
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Point(App.Vector(%f,%f,0)))",
+                    Obj->getNameInDocument(), PoO.x,PoO.y);
+                int GeoIdPoint = Obj->getHighestCurveIndex();
+
+                // Point on first object (ellipse, arc of ellipse)
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,GeoId1);
+                // Point on second object
+                Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoIdPoint,Sketcher::start,GeoId2);
+
+                // add constraint: Perpendicular-via-point
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d))",
+                    Obj->getNameInDocument(), GeoId1, GeoId2 ,GeoIdPoint, Sketcher::start);
+
+                commitCommand();
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+            }
+
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+
+            getSelection().clearSelection();
+            return;
+
+        }
+
+        openCommand("add perpendicular constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Perpendicular',%d,%d)) ",
+            Obj->getNameInDocument(),GeoId1,GeoId2);
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        return;
+    }
     case 5: // {SelVertex, SelEdge, SelEdge}
     case 6: // {SelVertex, SelEdge, SelHAxis}
     case 7: // {SelVertex, SelEdge, SelVAxis}
@@ -3257,6 +3423,13 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     case 12: // {SelRoot, SelEdge, SelVAxis}
     case 13: // {SelRoot, SelHAxis, SelEdge}
     case 14: // {SelRoot, SelVAxis, SelEdge}
+    {
+        //let's sink the point to be GeoId3.
+        GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
+        PosId3 = selSeq.at(0).PosId;
+
+        break;
+    }
     case 15: // {SelEdge, SelVertex, SelEdge}
     case 16: // {SelEdge, SelVertex, SelHAxis}
     case 17: // {SelEdge, SelVertex, SelVAxis}
@@ -3267,11 +3440,75 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
     case 22: // {SelEdge, SelRoot, SelVAxis}
     case 23: // {SelHAxis, SelRoot, SelEdge}
     case 24: // {SelVAxis, SelRoot, SelEdge}
+    {
+        //let's sink the point to be GeoId3.
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId3 = selSeq.at(1).PosId;
 
         break;
-    default:
-        break;
     }
+    default:
+        return;
+    }
+
+    if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        openCommand("add perpendicular constraint");
+
+        try{
+            //add missing point-on-object constraints
+            if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            };
+
+            if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+            };
+
+            if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            };
+
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PerpendicularViaPoint',%d,%d,%d,%d)) ",
+                Obj->getNameInDocument(),GeoId1,GeoId2,GeoId3,PosId3);
+        } catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Error"),
+                                 QString::fromLatin1(e.what()));
+            Gui::Command::abortCommand();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                Gui::Command::updateActive();
+
+            return;
+        }
+
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        getSelection().clearSelection();
+
+        return;
+
+    };
+    strError = QObject::tr("With 3 objects, there must be 2 curves and 1 point.", "tangent constraint");
+
 }
 
 // ======================================================================================
