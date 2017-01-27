@@ -34,6 +34,10 @@
 # include <Inventor/C/basic.h>
 #endif
 
+#if QT_VERSION < 0x050000
+# include <QGLContext>
+#endif
+
 #include <LibraryVersions.h>
 
 #include "Splashscreen.h"
@@ -140,10 +144,16 @@ public:
                 return;
         }
 
-        splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
-        QMutex mutex;
-        QMutexLocker ml(&mutex);
-        QWaitCondition().wait(&mutex, 50);
+#if QT_VERSION < 0x050000
+        const QGLContext* ctx = QGLContext::currentContext();
+        if (!ctx)
+#endif
+        {
+            splash->showMessage(msg.replace(QLatin1String("\n"), QString()), alignment, textColor);
+            QMutex mutex;
+            QMutexLocker ml(&mutex);
+            QWaitCondition().wait(&mutex, 50);
+        }
     }
 
 private:
