@@ -23,14 +23,19 @@
 #ifndef PATH_AREA_H
 #define PATH_AREA_H
 
+#include <memory>
+#include <vector>
+#include <list>
 #include <TopoDS.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Circ.hxx>
 #include <gp_GTrsf.hxx>
 
+#include "Path.h"
 #include "AreaParams.h"
 
 class CArea;
+class CCurve;
 
 namespace Path
 {
@@ -152,8 +157,12 @@ public:
     /** Set a working plane 
      *
      * If no working plane are set, Area will try to find a working plane from
-     * all the added children shapes. The purpose of this function is in case
-     * the child shapes are all colinear edges
+     * individual children faces, wires or edges. By right, we should create a
+     * compound of all shapes and then findplane on it. However, because we
+     * supports solid, and also because OCC may hang for a long time if
+     * something goes a bit off, we opt to find plane on each individual shape.
+     * If you intend to pass individual edges, you must supply a workplane shape
+     * manually
      *
      * \arg \c shape: a shape defining a working plane
      */
@@ -177,13 +186,13 @@ public:
      * If more than one offset is requested, a compound shape is return
      * containing all offset shapes as wires regardless of \c Fill setting.
      */
-    TopoDS_Shape makeOffset(int index, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
+    TopoDS_Shape makeOffset(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_OFFSET));
 
     /** Make a pocket of the combined shape
      *
      * See #AREA_PARAMS_POCKET for description of the arguments.
      */
-    TopoDS_Shape makePocket(int index, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
+    TopoDS_Shape makePocket(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
 
     /** Config this Area object */
@@ -204,8 +213,11 @@ public:
      */
     void clean(bool deleteShapes=false);
 
-    /** Get the combined shape */
-    TopoDS_Shape getShape(int index);
+    /** Get the combined shape
+     * \arg \c index: index of the section, -1 for all sections. No effect on
+     * non-sectioned area.
+     */
+    TopoDS_Shape getShape(int index=-1);
 
     /** Return the number of sections */
     std::size_t getSectionCount() {
@@ -219,10 +231,30 @@ public:
      * \arg \c wire: input wire object
      * \arg \c trsf: optional transform matrix to transform the wire shape into
      * XY0 plane.
-     * \arg \c deflection: for defecting non circular curves
+     * \arg \c deflection: for discretizing non circular curves
+     * \arg \c to_edges: if true, discretize all curves, and insert as open
+     * line segments
      * */
-    static void add(CArea &area, const TopoDS_Wire &wire, 
-            const gp_Trsf *trsf=NULL, double deflection=0.01);
+    static void add(CArea &area, const TopoDS_Wire &wire, const gp_Trsf *trsf=NULL, 
+            double deflection=0.01, bool to_edges=false); 
+
+    /** Output a list or sorted wire with minimize traval distance
+     *
+     * \arg \c index: index of the section, -1 for all sections. No effect on
+     * non-sectioned area.
+     * \arg \c count: number of the sections to return, <=0 for all sections
+     * after \c index. No effect on non-sectioned area.
+     * \arg \c pstart: optional start point
+     * \arg \c pend: optional output containing the ending point of the returned
+     * wires
+     *
+     * See #AREA_PARAMS_MIN_DIST for other arguments
+     *
+     * \return sorted wires
+     * */
+    std::list<TopoDS_Shape> sortWires(int index=-1, int count=0, 
+            const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL, 
+            PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_MIN_DIST));
 
     /** Add a OCC generic shape to CArea 
      *
@@ -236,7 +268,7 @@ public:
      * \arg \c areaOpen: for collecting open curves. If not supplied, open
      * curves are added to \c area
      * \arg \c to_edges: separate open wires to individual edges
-     * \arg \c reorder: reorder closed wires for wire only shape
+     * \arg \c reorient: reorient closed wires for wire only shape
      *
      * \return Returns the number of non coplaner. Planar testing only happens
      * if \c plane is supplied
@@ -244,7 +276,7 @@ public:
     static int add(CArea &area, const TopoDS_Shape &shape, const gp_Trsf *trsf=NULL,
             double deflection=0.01,const TopoDS_Shape *plane = NULL,
             bool force_coplanar=true, CArea *areaOpen=NULL, bool to_edges=false, 
-            bool reorder=true);
+            bool reorient=true);
 
     /** Convert curves in CArea into an OCC shape
      *
@@ -256,7 +288,48 @@ public:
     static TopoDS_Shape toShape(const CArea &area, bool fill, 
             const gp_Trsf *trsf=NULL);
 
+    /** Convert a single curve into an OCC wire
+     *
+     * \arg \c curve: input curve object
+     * \arg \c trsf: optional transform matrix to transform the shape back into
+     * its original position.
+     * */
+    static TopoDS_Wire toShape(const CCurve &curve, const gp_Trsf *trsf=NULL);
+
+    /** Check if two OCC shape is coplanar */
     static bool isCoplanar(const TopoDS_Shape &s1, const TopoDS_Shape &s2);
+
+    /** Group shapes by their plane, and return a list of sorted wires
+     *
+     * The output wires is ordered by its occupied plane, and sorted to
+     * minimize traval distance
+     *
+     * \arg \c shapes: input list of shapes.
+     * \arg \c params: optional Area parameters for the Area object internally
+     * used for sorting
+     * \arg \c pstart: optional start point
+     * \arg \c pend: optional output containing the ending point of the returned
+     * maybe broken if the algorithm see fits.
+     *
+     * See #AREA_PARAMS_SORT_WIRES for other arguments
+     *
+     * \return sorted wires
+     */
+    static std::list<TopoDS_Shape> sortWires(const std::list<TopoDS_Shape> &shapes,
+            const AreaParams *params = NULL, const gp_Pnt *pstart=NULL, 
+            gp_Pnt *pend=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SORT_WIRES));
+
+    /** Convert a list of wires to gcode
+     *
+     * \arg \c path: output toolpath
+     * \arg \c shapes: input list of shapes
+     * \arg \c pstart: output start point,
+     * 
+     * See #AREA_PARAMS_PATH for other arguments
+     */
+    static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
+            const gp_Pnt *pstart=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
+
 };
 
 } //namespace Path

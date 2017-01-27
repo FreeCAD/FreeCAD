@@ -58,6 +58,11 @@ any operation</UserDocu>
           </UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="sortWires" Keyword="true">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getParams">
       <Documentation>
         <UserDocu>Get current algorithm parameters as a dictionary.</UserDocu>

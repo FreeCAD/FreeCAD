@@ -44,20 +44,32 @@
     ((enum2,clip_fill,ClipFill,0,\
         "ClipperLib clip fill type. \nSee https://goo.gl/5pYQQP",AREA_CLIPPER_FILL_TYPE))
 
+/** Deflection parameter */
+#define AREA_PARAMS_DEFLECTION \
+    ((double,deflection,Deflection,0.01,\
+        "Deflection for non circular curve discretization. It also also used for\n"\
+        "discretizing circular wires when you 'Explode' the shape for wire operations"))
+
 /** Base parameters */
 #define AREA_PARAMS_BASE \
     ((enum,fill,Fill,2,"Fill the output wires to make a face. \n"\
         "Auto means make a face if any of the children has a face.",(None)(Face)(Auto)))\
-    ((enum,coplanar,Coplanar,2,"Specifies the way to check coplanar.\n"\
-                               "'Force' will discard non coplaner shapes, but 'Check' only gives warning.",\
-                               (None)(Check)(Force)))\
-    ((bool,reorder,Reorder,true,"Re-orient closed wires in wire only shapes so that inner wires become holes."))\
-    ((enum,open_mode,OpenMode,0,"Specify how to handle open wires.\n"\
-                        "'None' means combin without openeration.\n"\
-                        "'Edges' means separate to edges before Union.\n"\
-                        "ClipperLib seems to have an urge to close open wires.",(None)(Union)(Edges)))\
-    AREA_PARAMS_CLIPPER_FILL \
-    ((double,deflection,Deflection,0.01,"Deflection for non circular curve discretization"))
+    ((enum,coplanar,Coplanar,2,\
+        "Specifies the way to check coplanar. 'Force' will discard non coplaner shapes,\n"\
+        "but 'Check' only gives warning.",(None)(Check)(Force)))\
+    ((bool,reorient,Reorient,true,\
+        "Re-orient closed wires in wire only shapes so that inner wires become holes."))\
+    ((bool,explode,Explode,false,\
+        "If true, Area will explode the first shape into disconnected open edges, \n"\
+        "with all curves discretized, so that later operations like 'Difference' \n"\
+        "behave like wire cutting. Without exploding, 'Difference' in ClipperLib\n"\
+        "behave like face cutting."))\
+    ((enum,open_mode,OpenMode,0,\
+        "Specify how to handle open wires. 'None' means combin without openeration.\n"\
+        "'Edges' means separate to edges before Union. ClipperLib seems to have an.\n"\
+        "urge to close open wires.",(None)(Union)(Edges)))\
+    AREA_PARAMS_DEFLECTION \
+    AREA_PARAMS_CLIPPER_FILL 
 
 /** libarea algorithm option parameters */
 #define AREA_PARAMS_CAREA \
@@ -72,7 +84,8 @@
     ((short,min_arc_points,MinArcPoints,4,"Minimum segments for arc discretization"))\
     ((short,max_arc_points,MaxArcPoints,100,"Maximum segments for arc discretization"))\
     ((double,clipper_scale,ClipperScale,10000.0,\
-        "ClipperLib operate on intergers. This is the scale factor to \nconvert floating points."))
+        "ClipperLib operate on intergers. This is the scale factor to convert\n"\
+        "floating points."))
 
 /** Pocket parameters 
  *
@@ -91,8 +104,10 @@
 
 /** Operation code */
 #define AREA_PARAMS_OPCODE \
-    ((enum2,op,Operation,0,"Boolean operation",\
-        (Union)(Difference)(Intersection)(Xor),(ClipperLib::ClipType,ClipperLib::ct)))
+    ((enum,op,Operation,0,\
+        "Boolean operation. For the first four operation, see https://goo.gl/Gj8RUu.\n"\
+        "'Compound' means no operation, normal used to do Area.sortWires().",\
+        (Union)(Difference)(Intersection)(Xor)(Compound)))
 
 /** Offset parameters */
 #define AREA_PARAMS_OFFSET \
@@ -123,6 +138,36 @@
     ((double,miter_limit,MiterLimit,2.0,"Miter limit for joint type Miter. See https://goo.gl/K8xX9h"))\
     ((double,round_precision,RoundPreceision,0.0,\
         "Round joint precision. If =0, it defaults to Accuracy. \nSee https://goo.gl/4odfQh"))
+
+/** Area path generation parameters */
+#define AREA_PARAMS_PATH \
+    ((bool, sort, SortShape, true, \
+        "Whether to sort the shapes to optimize travel distance. You can customize wire\n"\
+        "sorting by calling sortWires() manually."))\
+    ((double, threshold, RetractThreshold, 0.0,\
+        "If two wire's end points are separated within this threshold, they are consider\n"\
+        "as connected. You may want to set this to the tool diameter to keep the tool down."))\
+    ((double, height, RetractHeight, 0.0,"Tool retraction absolute height"))\
+    ((double, clearance, Clearance, 0.0,\
+        "When return from last retraction, this gives the pause height relative to the Z\n"\
+        "value of the next move"))\
+    AREA_PARAMS_DEFLECTION
+
+#define AREA_PARAMS_MIN_DIST \
+    ((double, min_dist, MinDistance, 1.0, \
+        "minimum distance for the generate new wires. Wires maybe broken if the\n"\
+        "algorithm see fits."))\
+
+/** Area wire sorting parameters */
+#define AREA_PARAMS_SORT_WIRES \
+    ((bool, explode, Explode, true,\
+        "If ture, the input shape will be exploded into wires before doing planar checking.\n"\
+        "Otherwise, and whole shape is considered to be in one plane without checking."))\
+    ((bool, top_z, TopZ, false, \
+        "If ture, the planes is ordered by the first the shapes first vertex Z value.\n"\
+        "Otherwise, by the highest Z of all of its vertexes."))\
+    AREA_PARAMS_MIN_DIST
+
 
 /** Group of all Area configuration parameters except CArea's*/
 #define AREA_PARAMS_AREA \

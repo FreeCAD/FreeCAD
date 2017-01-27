@@ -73,6 +73,58 @@ Point CArea::NearestPoint(const Point& p)const
 	return best_point;
 }
 
+void CArea::ChangeStartToNearest(const Point *point, double min_dist) {
+
+	for(std::list<CCurve>::const_iterator It=m_curves.begin(),ItNext=It; 
+            It != m_curves.end(); It=ItNext) 
+    {
+        ++ItNext;
+        if(It->m_vertices.size()<=1)
+            m_curves.erase(It);
+    }
+
+    if(m_curves.empty()) return;
+
+    std::list<CCurve> curves;
+    Point p;
+    if(point) p =*point;
+    if(min_dist < Point::tolerance) 
+        min_dist = Point::tolerance;
+
+    while(m_curves.size()) {
+        std::list<CCurve>::iterator It=m_curves.begin();
+        std::list<CCurve>::iterator ItBest=It++;
+        Point best_point = ItBest->NearestPoint(p);
+        double best_dist = p.dist(best_point);
+        for(; It != m_curves.end(); ++It)
+        {
+            const CCurve& curve = *It;
+            Point near_point = curve.NearestPoint(p);
+            double dist = near_point.dist(p);
+            if(dist < best_dist)
+            {
+                best_dist = dist;
+                best_point = near_point;
+                ItBest = It;
+            }
+        }
+        if(ItBest->IsClosed()) {
+            ItBest->ChangeStart(best_point);
+        }else if(ItBest->m_vertices.back().m_p.dist(best_point)<=min_dist) {
+            ItBest->Reverse();
+        }else if(ItBest->m_vertices.front().m_p.dist(best_point)>min_dist) {
+            ItBest->Break(best_point);
+            m_curves.push_back(*ItBest);
+            m_curves.back().ChangeEnd(best_point);
+            ItBest->ChangeStart(best_point);
+        }
+        curves.splice(curves.end(),m_curves,ItBest);
+        p = curves.back().m_vertices.back().m_p;
+    }
+    m_curves.splice(m_curves.end(),curves);
+}
+
+
 void CArea::GetBox(CBox2D &box)
 {
 	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++)

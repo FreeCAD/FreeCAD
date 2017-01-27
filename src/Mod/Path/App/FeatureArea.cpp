@@ -41,6 +41,7 @@ PROPERTY_SOURCE(Path::FeatureArea, Part::Feature)
 PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_ALL)
 
 FeatureArea::FeatureArea()
+    :myBuild(false)
 {
     ADD_PROPERTY(Sources,(0));
     ADD_PROPERTY(WorkPlane,(TopoDS_Shape()));
@@ -60,6 +61,14 @@ FeatureArea::FeatureArea()
 
 FeatureArea::~FeatureArea()
 {
+}
+
+Area &FeatureArea::getArea() {
+    if(!myBuild) {
+        myBuild = true;
+        execute();
+    }
+    return myArea;
 }
 
 App::DocumentObjectExecReturn *FeatureArea::execute(void)
@@ -97,6 +106,17 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
     return Part::Feature::execute();
 }
 
+std::list<TopoDS_Shape> FeatureArea::getShapes() {
+    std::list<TopoDS_Shape> shapes;
+    Area &area = getArea();
+    if(area.getSectionCount()) {
+        for(int i=0;i<(int)area.getSectionCount();++i)
+            shapes.push_back(area.getShape(i));
+    }else
+        shapes.push_back(area.getShape());
+    return shapes;
+}
+
 short FeatureArea::mustExecute(void) const
 {
     if (Sources.isTouched())
@@ -119,14 +139,85 @@ PyObject *FeatureArea::getPyObject()
 }
 
 
-// Python Area feature ---------------------------------------------------------
+// FeatureAreaView -------------------------------------------------------------
+//
+PROPERTY_SOURCE(Path::FeatureAreaView, Part::Feature)
+
+FeatureAreaView::FeatureAreaView()
+{
+    ADD_PROPERTY(Source,(0));
+    ADD_PROPERTY_TYPE(SectionIndex,(0),"Section",App::Prop_None,"The start index of the section to show");
+    ADD_PROPERTY_TYPE(SectionCount,(1),"Section",App::Prop_None,"Number of sections to show");
+}
+
+std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
+    std::list<TopoDS_Shape> shapes;
+    App::DocumentObject* pObj = Source.getValue();
+    if (!pObj) return shapes;
+    if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
+        return shapes;
+    Area &area = static_cast<FeatureArea*>(pObj)->getArea();
+
+    int index=SectionIndex.getValue(),count=SectionCount.getValue();
+    if(index<0) {
+        index = 0;
+        count = area.getSectionCount();
+    }
+    if(index >= (int)area.getSectionCount())
+        return shapes;
+
+    if(count<=0)
+        count = (int)area.getSectionCount();
+    if(count==1) 
+        shapes.push_back(area.getShape(index));
+    else{
+        count += index;
+        if(count>(int)area.getSectionCount())
+            count = area.getSectionCount();
+        for(int i=index;i<count;++i)
+            shapes.push_back(area.getShape(i));
+    }
+    return shapes;
+}
+
+App::DocumentObjectExecReturn *FeatureAreaView::execute(void)
+{
+    App::DocumentObject* pObj = Source.getValue();
+    if (!pObj)
+        return new App::DocumentObjectExecReturn("No shape linked");
+
+    if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
+            return new App::DocumentObjectExecReturn("Linked object is not a FeatureArea");
+
+    std::list<TopoDS_Shape> shapes = getShapes();
+    if(shapes.empty())
+        Shape.setValue(TopoDS_Shape());
+    else if(shapes.size()==1) {
+        Shape.setValue(shapes.front());
+    }else{
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for(auto &shape : shapes) 
+            builder.Add(compound,shape);
+        Shape.setValue(compound);
+    }
+
+    return Part::Feature::execute();
+}
+
+// Python feature ---------------------------------------------------------
 
 namespace App {
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaPython, Path::FeatureArea)
+PROPERTY_SOURCE_TEMPLATE(Path::FeatureAreaViewPython, Path::FeatureAreaView)
 
 template<> const char* Path::FeatureAreaPython::getViewProviderName(void) const {
-    return "PathGui::ViewProviderArea";
+    return "PathGui::ViewProviderAreaPython";
+}
+template<> const char* Path::FeatureAreaViewPython::getViewProviderName(void) const {
+    return "PathGui::ViewProviderAreaViewPython";
 }
 /// @endcond
 

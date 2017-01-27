@@ -46,7 +46,7 @@ PyObject* FeatureAreaPy::getArea(PyObject *args)
     if (!PyArg_ParseTuple(args, ""))
         return NULL;
 
-    return new AreaPy(new Area(getFeatureAreaPtr()->myArea));
+    return new AreaPy(new Area(getFeatureAreaPtr()->getArea()));
 }
 
 PyObject* FeatureAreaPy::setParams(PyObject *args, PyObject *keywds)

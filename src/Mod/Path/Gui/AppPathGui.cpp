@@ -80,6 +80,8 @@ PyMODINIT_FUNC initPathGui()
     PathGui::ViewProviderPathPython         ::init();
     PathGui::ViewProviderArea               ::init();
     PathGui::ViewProviderAreaPython         ::init();
+    PathGui::ViewProviderAreaView           ::init();
+    PathGui::ViewProviderAreaViewPython     ::init();
 
      // add resources and reloads the translators
     loadPathResource();
