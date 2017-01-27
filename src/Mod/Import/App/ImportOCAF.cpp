@@ -64,7 +64,6 @@
 # endif
 #endif
 
-// #include "ImportOCAF.h"
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
@@ -104,11 +103,12 @@ void ImportOCAF::loadShapes()
 {
     std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false,lValue);
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
 }
 
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
-                            const std::string& defaultname, const std::string& /*assembly*/, bool isRef, std::vector<App::DocumentObject*>& lValue)
+                            const std::string& defaultname, const std::string& /*assembly*/, bool isRef,
+                            std::vector<App::DocumentObject*>& lValue)
 {
     int hash = 0;
 #ifdef HAVE_TBB
@@ -123,7 +123,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
         hash = aShape.HashCode(HashUpper);
     }
 
-    Handle(TDataStd_Name) name;
+    Handle_TDataStd_Name name;
     std::string part_name = defaultname;
     if (label.FindAttribute(TDataStd_Name::GetID(),name)) {
         TCollection_ExtendedString extstr = name->Get();
@@ -148,7 +148,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
     }
 
     TopLoc_Location part_loc = loc;
-    Handle(XCAFDoc_Location) hLoc;
+    Handle_XCAFDoc_Location hLoc;
     if (label.FindAttribute(XCAFDoc_Location::GetID(), hLoc)) {
         if (isRef)
             part_loc = part_loc * hLoc->Get();
@@ -200,24 +200,27 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                 createShape(label, part_loc, part_name, localValue);
         }
         else {
-	    // This is probably an Assembly let's try to create a Compound with the name
-	    Part::Compound *pcCompound = NULL;
-	    if (aShapeTool->IsAssembly(label)) {
-   	    	pcCompound = static_cast<Part::Compound*>(doc->addObject
-                            ("Part::Compound",asm_name.c_str() ));
-	    }
-	    
+            // This is probably an Assembly let's try to create a Compound with the name
+            Part::Compound *pcCompound = NULL;
+            if (aShapeTool->IsAssembly(label)) {
+                pcCompound = static_cast<Part::Compound*>(doc->addObject
+                            ("Part::Compound",asm_name.c_str()));
+            }
+
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
                 loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
             }
-	    if (pcCompound)
+
+            if (pcCompound)
                 pcCompound->Links.setValues(localValue);
-	    lValue.push_back(pcCompound);
+
+            lValue.push_back(pcCompound);
         }
     }
 }
 
-void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name, std::vector<App::DocumentObject*>& lValue)
+void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name,
+                             std::vector<App::DocumentObject*>& lValue)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
 #ifdef HAVE_TBB
@@ -232,18 +235,20 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 
         Part::Compound *pcCompound = static_cast<Part::Compound*>(doc->addObject
                             ("Part::Compound",name.c_str() ));
-        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++)
-        {
+        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
             createShape(xp.Current(), loc, name, localValue);
         }
-        for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++)
+        for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
             createShape(xp.Current(), loc, name, localValue);
+        }
+
         pcCompound->Links.setValues(localValue);
-	lValue.push_back(pcCompound);
+        lValue.push_back(pcCompound);
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
-   	createShape(aShape, loc, name, lValue);
+
+    createShape(aShape, loc, name, lValue);
 }
 
 void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
