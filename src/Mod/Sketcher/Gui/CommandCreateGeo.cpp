@@ -4326,6 +4326,8 @@ public:
       , EditCurve(2)
       , CurrentConstraint(0)
       , ConstrMethod(constructionMethod)
+      , IsClosed(false)
+      , FirstPoleGeoId(-2000)
     {
         std::vector<AutoConstraint> sugConstr1;
         sugConstr.push_back(sugConstr1);
@@ -4382,20 +4384,109 @@ public:
             EditCurve[0] = onSketchPos;
 
             Mode = STATUS_SEEK_ADDITIONAL_CONTROLPOINTS;
+
+            // insert circle point for pole, defer internal alignment constraining.
+            try {
             
+                Gui::Command::openCommand("Add Pole circle");
+                
+                //Add pole
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        EditCurve[0].x,EditCurve[0].y);
+                
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                
+                return false;
+            }
+            
+            //Gui::Command::commitCommand();
+            
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            
+            FirstPoleGeoId = getHighestCurveIndex();
+            
+            // add auto constraints on pole
+            if (sugConstr[CurrentConstraint].size() > 0) {
+                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId, Sketcher::mid, false);
+            }
+
+            static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+
             std::vector<AutoConstraint> sugConstrN;
             sugConstr.push_back(sugConstrN);
             CurrentConstraint++;
+
         }
         else if (Mode == STATUS_SEEK_ADDITIONAL_CONTROLPOINTS) {
             EditCurve[EditCurve.size()-1] = onSketchPos;
             
-                // finish adding controlpoints on double click
-            if (EditCurve[EditCurve.size()-2] == EditCurve[EditCurve.size()-1]) {
-                EditCurve.pop_back();
-                Mode = STATUS_CLOSE;
+            // check if coincident with first pole
+            for(std::vector<AutoConstraint>::const_iterator it = sugConstr[CurrentConstraint].begin(); it != sugConstr[CurrentConstraint].end(); it++) {
+                if( (*it).Type == Sketcher::Coincident && (*it).GeoId == FirstPoleGeoId && (*it).PosId == Sketcher::mid ) {
+                    
+                    IsClosed = true;
+                    }
             }
-            else {
+
+            if (IsClosed) {
+                Mode = STATUS_CLOSE;
+                
+                if (ConstrMethod == 1) { // if periodic we do not need the last pole
+                    EditCurve.pop_back();
+                    sugConstr.pop_back();
+
+                    return true;
+                }
+                
+                
+            }
+            
+            // insert circle point for pole, defer internal alignment constraining.
+            try {
+                
+                //Gui::Command::openCommand("Add Pole circle");
+                
+                //Add pole
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addGeometry(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),10),True)",
+                                        sketchgui->getObject()->getNameInDocument(),
+                                        EditCurve[EditCurve.size()-1].x,EditCurve[EditCurve.size()-1].y);
+                
+                if(EditCurve.size() == 2) {
+                    Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                            sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, round( (EditCurve[1]-EditCurve[0]).Length()/6 ));                        
+                }
+
+                Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+                                        sketchgui->getObject()->getNameInDocument(), FirstPoleGeoId, FirstPoleGeoId+ EditCurve.size()-1);
+
+            }
+            catch (const Base::Exception& e) {
+                Base::Console().Error("%s\n", e.what());
+                Gui::Command::abortCommand();
+                
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+                
+                return false;
+            }
+            
+            //Gui::Command::commitCommand();
+            
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            
+            // add auto constraints on pole
+            if (sugConstr[CurrentConstraint].size() > 0) {
+                createAutoConstraints(sugConstr[CurrentConstraint], FirstPoleGeoId + EditCurve.size()-1, Sketcher::mid, false);
+            }
+            
+            //static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            
+            if (!IsClosed) {
                 EditCurve.resize(EditCurve.size() + 1); // add one place for a pole
                 std::vector<AutoConstraint> sugConstrN;
                 sugConstr.push_back(sugConstrN);
@@ -4432,25 +4523,34 @@ public:
 
             try {
 
-            Gui::Command::openCommand("Add B-spline curve");
+                //Gui::Command::openCommand("Add B-spline curve");
 
-            //Add arc of parabola
-            Gui::Command::doCommand(Gui::Command::Doc,
-                "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
-                "(%s,%s),"
-                "%s)",
-                    sketchgui->getObject()->getNameInDocument(),
-                    controlpoints.c_str(),
-                    ConstrMethod == 0 ?"False":"True",
-                    geometryCreationMode==Construction?"True":"False"); 
+                //Add arc of parabola
+                Gui::Command::doCommand(Gui::Command::Doc,
+                    "App.ActiveDocument.%s.addGeometry(Part.BSplineCurve"
+                    "(%s,%s),"
+                    "%s)",
+                        sketchgui->getObject()->getNameInDocument(),
+                        controlpoints.c_str(),
+                        ConstrMethod == 0 ?"False":"True",
+                        geometryCreationMode==Construction?"True":"False"); 
 
-            currentgeoid++;
+                currentgeoid++;
 
-            Gui::Command::doCommand(Gui::Command::Doc,
-                                    "App.ActiveDocument.%s.ExposeInternalGeometry(%d)",
-                                    sketchgui->getObject()->getNameInDocument(),
-                                    currentgeoid);
-
+                // Constraint pole circles to bspline.
+                std::stringstream cstream;
+                
+                cstream << "conList = []\n";
+                
+                for (size_t i = 0; i < EditCurve.size(); i++) {
+                    cstream << "conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint'," << FirstPoleGeoId+i 
+                        << "," << Sketcher::mid << "," << currentgeoid << "," << i << "))\n";
+                }
+                
+                cstream << "App.ActiveDocument."<< sketchgui->getObject()->getNameInDocument() << ".addConstraint(conList)\n";
+                
+                Gui::Command::doCommand(Gui::Command::Doc, cstream.str().c_str());
+                
             }
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
@@ -4469,15 +4569,6 @@ public:
 
             Gui::Command::commitCommand();
 
-            int poleindex=0;
-            for(std::vector<std::vector<AutoConstraint>>::iterator it=sugConstr.begin(); it != sugConstr.end(); it++, poleindex++) {
-                // add auto constraints
-                if ((*it).size() > 0) {
-                    createAutoConstraints((*it), currentgeoid+1+poleindex, Sketcher::mid);
-                    (*it).clear();
-                }
-            }
-
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
             bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
 
@@ -4495,6 +4586,15 @@ public:
                 sketchgui->drawEdit(EditCurve);
                 EditCurve.resize(2);
                 applyCursor();
+                
+                sugConstr.clear();
+                
+                std::vector<AutoConstraint> sugConstr1;
+                sugConstr.push_back(sugConstr1);
+                
+                CurrentConstraint=0;
+                IsClosed=false;
+                
                 /* It is ok not to call to purgeHandler
                  * in continuous creation mode because the 
                  * handler is destroyed by the quit() method on pressing the
@@ -4506,6 +4606,60 @@ public:
         }
         return true;
     }
+    
+    virtual void quit(void) {
+        // We must see if we need to create a BSpline before cancelling everything
+        // and now just like any other Handler,
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+
+        if (CurrentConstraint > 1) {
+            // create bspline from existing poles
+            Mode=STATUS_CLOSE;
+            EditCurve.pop_back();
+            this->releaseButton(Base::Vector2d(0.f,0.f));
+        }
+        else if(CurrentConstraint == 1) {
+            // if we just have one point and we can not close anything, then cancel this creation but continue according to continuous mode
+            //sketchgui->getDocument()->undo(1);
+            
+            Gui::Command::abortCommand();
+            
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+            
+            if(autoRecompute) 
+                Gui::Command::updateActive();
+            else
+                static_cast<Sketcher::SketchObject *>(sketchgui->getObject())->solve();
+            
+            if(!continuousMode){
+                DrawSketchHandler::quit();
+            }
+            else {
+                // This code disregards existing data and enables the continuous creation mode.
+                Mode = STATUS_SEEK_FIRST_CONTROLPOINT;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+                
+                sugConstr.clear();
+                
+                std::vector<AutoConstraint> sugConstr1;
+                sugConstr.push_back(sugConstr1);
+                
+                CurrentConstraint=0;
+                IsClosed=false;
+            }
+        }
+        else { // we have no data (CurrentConstraint == 0) so user when right-clicking really wants to exit
+            DrawSketchHandler::quit();
+        }
+    }
+    
 protected:
     SELECT_MODE Mode;
 
@@ -4515,6 +4669,8 @@ protected:
     
     int CurrentConstraint;
     int ConstrMethod;
+    bool IsClosed;
+    int FirstPoleGeoId;
 };
 
 DEF_STD_CMD_A(CmdSketcherCreateBSpline)
