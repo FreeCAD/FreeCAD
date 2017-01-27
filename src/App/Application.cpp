@@ -1776,6 +1776,9 @@ void Application::ParseOptions(int ac, char ** av)
         else if (strcmp(av[i],"-session") == 0) {
             merge = true;
         }
+        else if (strcmp(av[i],"-graphicssystem") == 0) {
+            merge = true;
+        }
     }
 
     // 0000659: SIGABRT on startup in boost::program_options (Boost 1.49)
