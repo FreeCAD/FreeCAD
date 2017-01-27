@@ -25,7 +25,6 @@ import FreeCAD
 import FreeCADGui
 import Draft
 import DraftGeomUtils
-import DraftGui
 import Path
 import PathScripts.PathLog as PathLog
 import PathScripts.PathPreferencesPathDressup as PathPreferencesPathDressup
@@ -33,7 +32,6 @@ import Part
 import copy
 import math
 
-from DraftGui import todo
 from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
@@ -52,8 +50,8 @@ LOG_MODULE = 'PathDressupHoldingTags'
 
 def debugEdge(edge, prefix, force = False):
     if force or PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
-    pf = edge.valueAt(edge.FirstParameter)
-    pl = edge.valueAt(edge.LastParameter)
+        pf = edge.valueAt(edge.FirstParameter)
+        pl = edge.valueAt(edge.LastParameter)
         if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
             print("%s %s((%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f))" % (prefix, type(edge.Curve), pf.x, pf.y, pf.z, pl.x, pl.y, pl.z))
         else:
@@ -131,7 +129,7 @@ class HoldingTagsPreferences:
     @classmethod
     def defaultRadius(cls, ifNotSet = 0.0):
         return PathPreferences.preferences().GetFloat(cls.DefaultHoldingTagRadius, ifNotSet)
-        
+
 
     def __init__(self):
         self.form = FreeCADGui.PySideUic.loadUi(":/preferences/PathDressupHoldingTags.ui")
@@ -222,8 +220,8 @@ class Tag:
             PathLog.debug("solid.rotate(%f)" % angle)
             self.solid.rotate(FreeCAD.Vector(0,0,0), FreeCAD.Vector(0,0,1), angle)
         orig = self.originAt(z - 0.01 * self.actualHeight)
-        PathLog.debug("solid.translate(%s)" % oric)
-        self.solid.translate(oric)
+        PathLog.debug("solid.translate(%s)" % orig)
+        self.solid.translate(orig)
         radius = min(self.radius, radius)
         self.realRadius = radius
         if radius != 0:
