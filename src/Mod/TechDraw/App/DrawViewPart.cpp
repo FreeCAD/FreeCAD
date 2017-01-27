@@ -626,8 +626,8 @@ gp_Pln DrawViewPart::getProjPlane() const
 void DrawViewPart::getRunControl()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/RunControl");
-    m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 1l);
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    m_sectionEdges = hGrp->GetBool("ShowSectionEdges", 0l);
     m_handleFaces = hGrp->GetBool("HandleFaces", 1l);
     //Base::Console().Message("TRACE - DVP::getRunControl - handleFaces: %d\n",m_handleFaces);
 }
