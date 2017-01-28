@@ -296,7 +296,7 @@ class DocumentBasicCases(unittest.TestCase):
     i = 0
     for obj in self.Doc.ToplogicalSortedObjects:
         seqDic[obj] = i
-        print obj
+        print(obj)
         i += 1
         
     self.failUnless(seqDic[L2] > seqDic[L1])
