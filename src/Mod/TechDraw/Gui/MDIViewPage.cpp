@@ -481,7 +481,7 @@ void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
     std::string dvName = dv->getNameInDocument();
     const std::vector<QGIView *> &upviews = m_view->getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-        std::string qgivName = (*it)->getViewObject()->getNameInDocument();
+        std::string qgivName = (*it)->getViewName();
         if(dvName == qgivName) {
             (*it)->updateView(true);
         }
@@ -517,7 +517,7 @@ bool MDIViewPage::hasQView(App::DocumentObject *obj)
 
     while(qview != views.end()) {
         // Unsure if we can compare pointers so rely on name
-        if(strcmp((*qview)->getViewObject()->getNameInDocument(), obj->getNameInDocument()) == 0) {
+        if(strcmp((*qview)->getViewName(), obj->getNameInDocument()) == 0) {
             return true;
         }
         qview++;

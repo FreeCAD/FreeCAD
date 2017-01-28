@@ -417,8 +417,7 @@ QGIView * QGVPage::findView(App::DocumentObject *obj) const
   if(obj) {
     const std::vector<QGIView *> qviews = views;
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-          TechDraw::DrawView *fview = (*it)->getViewObject();
-          if(fview && strcmp(obj->getNameInDocument(), fview->getNameInDocument()) == 0)
+          if(strcmp(obj->getNameInDocument(), (*it)->getViewName()) == 0)
               return *it;
       }
   }
@@ -441,8 +440,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-                TechDraw::DrawView *viewObj = (*it)->getViewObject();
-                if(strcmp(viewObj->getNameInDocument(), objs.at(0)->getNameInDocument()) == 0) {
+                if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
                     return *it;
                 }
             }
