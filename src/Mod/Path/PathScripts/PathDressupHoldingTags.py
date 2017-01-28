@@ -35,8 +35,7 @@ import math
 from PathScripts import PathUtils
 from PathScripts.PathGeom import PathGeom
 from PathScripts.PathPreferences import PathPreferences
-from PySide import QtCore, QtGui
-from pivy import coin
+from PySide import QtCore
 
 """Holding Tags Dressup object and FreeCAD command"""
 
@@ -47,6 +46,10 @@ def translate(text, context = "PathDressup_HoldingTags", disambig=None):
 
 LOG_MODULE = 'PathDressupHoldingTags'
 #PathLog.setLevel(PathLog.Level.DEBUG, LOG_MODULE)
+
+if FreeCAD.GuiUp:
+    from pivy import coin
+    from PySide import QtCore
 
 def debugEdge(edge, prefix, force = False):
     if force or PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
