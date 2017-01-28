@@ -244,7 +244,11 @@ void DlgGeneralImp::loadSettings()
     this->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
     this->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
     index = this->toolbarIconSize->findData(QVariant(current));
-    if (index > -1) this->toolbarIconSize->setCurrentIndex(index);
+    if (index < 0) {
+        this->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
+        index = this->toolbarIconSize->findData(QVariant(current));
+    } 
+    this->toolbarIconSize->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
