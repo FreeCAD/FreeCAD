@@ -157,6 +157,10 @@ SET(TechDraw_Templates
     Templates/A4_Portrait_ISO7200TD.svg
 )
 
+SET(TechDraw_PATFile
+    PAT/FCPAT.pat
+)
+
 if(MSVC)
     #add_definitions(-D_PreComp_)
     #GET_MSVC_PRECOMPILED_SOURCE("PreCompiled.cpp" TechDrawCPP_SRCS ${TechDraw_SRCS} ${Draw_SRCS} )
@@ -181,6 +185,11 @@ fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_Templates})
+
+fc_target_copy_resource(TechDraw
+    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_PATFile})
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)
