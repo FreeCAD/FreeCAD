@@ -168,7 +168,7 @@ void DrawProjGroupItem::unsetupObject()
                  !getGroup()->isDeleting() )         {
                    Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
                                            getGroup()->getNameInDocument(),getGroup()->Label.getValue());
-                   getGroup()->Anchor.setValue(nullptr);
+                   getGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
              }
         }
     }
