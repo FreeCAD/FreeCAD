@@ -1,131 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64px"
-   height="64px"
-   id="svg2726"
-   sodipodi:version="0.32"
-   inkscape:version="0.46"
-   sodipodi:docname="Sketcher_ConstrainVerticalsvg"
-   inkscape:output_extension="org.inkscape.output.svg.inkscape">
-  <defs
-     id="defs2728">
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       id="perspective2734" />
-    <inkscape:perspective
-       id="perspective3045"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 32 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <linearGradient
-       id="linearGradient3841">
-      <stop
-         id="stop3843"
-         offset="0"
-         style="stop-color:#0619c0;stop-opacity:1;" />
-      <stop
-         id="stop3845"
-         offset="1"
-         style="stop-color:#379cfb;stop-opacity:1;" />
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64px" height="64px" id="svg2726" sodipodi:version="0.32" inkscape:version="0.48.5 r10040" sodipodi:docname="Sketcher_ConstrainVertical.svg" inkscape:output_extension="org.inkscape.output.svg.inkscape" version="1.1">
+  <defs id="defs2728">
+    <linearGradient inkscape:collect="always" id="linearGradient3791">
+      <stop style="stop-color:#c4a000;stop-opacity:1" offset="0" id="stop3793"/>
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3795"/>
     </linearGradient>
-    <inkscape:perspective
-       id="perspective2971"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 32 : 1"
-       sodipodi:type="inkscape:persp3d" />
-    <linearGradient
-       id="linearGradient3354">
-      <stop
-         id="stop3356"
-         offset="0"
-         style="stop-color:#2157c7;stop-opacity:1;" />
-      <stop
-         id="stop3358"
-         offset="1"
-         style="stop-color:#6daaff;stop-opacity:1;" />
+    <inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="64 : 32 : 1" inkscape:persp3d-origin="32 : 21.333333 : 1" id="perspective2734"/>
+    <inkscape:perspective id="perspective3045" inkscape:persp3d-origin="32 : 21.333333 : 1" inkscape:vp_z="64 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_x="0 : 32 : 1" sodipodi:type="inkscape:persp3d"/>
+    <linearGradient id="linearGradient3841">
+      <stop id="stop3843" offset="0" style="stop-color:#0619c0;stop-opacity:1;"/>
+      <stop id="stop3845" offset="1" style="stop-color:#379cfb;stop-opacity:1;"/>
     </linearGradient>
-    <inkscape:perspective
-       id="perspective3238"
-       inkscape:persp3d-origin="32 : 21.333333 : 1"
-       inkscape:vp_z="64 : 32 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_x="0 : 32 : 1"
-       sodipodi:type="inkscape:persp3d" />
+    <inkscape:perspective id="perspective2971" inkscape:persp3d-origin="32 : 21.333333 : 1" inkscape:vp_z="64 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_x="0 : 32 : 1" sodipodi:type="inkscape:persp3d"/>
+    <linearGradient id="linearGradient3354">
+      <stop id="stop3356" offset="0" style="stop-color:#2157c7;stop-opacity:1;"/>
+      <stop id="stop3358" offset="1" style="stop-color:#6daaff;stop-opacity:1;"/>
+    </linearGradient>
+    <inkscape:perspective id="perspective3238" inkscape:persp3d-origin="32 : 21.333333 : 1" inkscape:vp_z="64 : 32 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_x="0 : 32 : 1" sodipodi:type="inkscape:persp3d"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3791" id="linearGradient3797" x1="32.545582" y1="61.636627" x2="28.716692" y2="4.1787543" gradientUnits="userSpaceOnUse"/>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="8.046875"
-     inkscape:cx="35.107161"
-     inkscape:cy="32"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:document-units="px"
-     inkscape:grid-bbox="true"
-     inkscape:window-width="1092"
-     inkscape:window-height="722"
-     inkscape:window-x="69"
-     inkscape:window-y="42" />
-  <metadata
-     id="metadata2731">
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="11.38" inkscape:cx="28.480022" inkscape:cy="39.843895" inkscape:current-layer="layer1" showgrid="true" inkscape:document-units="px" inkscape:grid-bbox="true" inkscape:window-width="1920" inkscape:window-height="1137" inkscape:window-x="0" inkscape:window-y="27" inkscape:snap-bbox="false" inkscape:snap-nodes="true" inkscape:window-maximized="1">
+    <inkscape:grid type="xygrid" id="grid2997" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <metadata id="metadata2731">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Sketcher_ConstrainVertical</dc:title>
+        <dc:date>2011-10-10</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_ConstrainVertical.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
-    <g
-       inkscape:label="Layer 1"
-       id="g3436"
-       transform="translate(107.50353,10.589633)" />
-    <text
-       xml:space="preserve"
-       style="font-size:68.35467529px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="13.44701"
-       y="60.135727"
-       id="text3644"
-       transform="scale(1.0187466,0.9815984)"><tspan
-         sodipodi:role="line"
-         id="tspan3646"
-         x="13.44701"
-         y="60.135727">V</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:68.35467529000000300px;font-style:normal;font-weight:normal;fill:#ffff00;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="8.7929401"
-       y="57.507835"
-       id="text3648"
-       transform="scale(1.0187466,0.9815984)"><tspan
-         sodipodi:role="line"
-         id="tspan3650"
-         x="8.7929401"
-         y="57.507835">V</tspan></text>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
+    <g inkscape:label="Layer 1" id="g3436" transform="translate(107.50353,10.589633)"/>
+    <g transform="scale(1.0446886,0.95722304)" style="font-size:83.11606598000000190px;font-style:normal;font-weight:normal;fill:url(#linearGradient3797);fill-opacity:1;stroke:#302b00;font-family:Bitstream Vera Sans;stroke-width:2;stroke-linejoin:round" id="text3648">
+      <path d="M 26.004559,63.726006 2.8716691,3.1340688 l 8.5632279,0 19.196239,51.0141092 19.236824,-51.0141092 8.522644,0 -23.092306,60.5919372 -9.293739,0" id="path3000" inkscape:connector-curvature="0" style="fill:url(#linearGradient3797);stroke:#302b00;stroke-width:2;stroke-linejoin:round;fill-opacity:1"/>
+    </g>
+    <g transform="scale(1.0446886,0.95722304)" style="font-size:83.11606598000000190px;font-style:normal;font-weight:normal;fill:none;fill-opacity:1;stroke:#fce94f;stroke-width:2;stroke-linejoin:round;font-family:Bitstream Vera Sans" id="text3648-3">
+      <path d="m 5.7433383,5.223443 4.4032257,0 20.484573,52.756774 20.484573,-52.756774 4.403226,0 -21.441796,56.413185 -6.796283,0 z" id="path3000-6" inkscape:connector-curvature="0" style="fill:none;stroke:#fce94f;stroke-width:2;stroke-linejoin:miter;stroke-miterlimit:1.89999998000000003;stroke-dasharray:none" sodipodi:nodetypes="cccccccc"/>
+    </g>
   </g>
 </svg>
