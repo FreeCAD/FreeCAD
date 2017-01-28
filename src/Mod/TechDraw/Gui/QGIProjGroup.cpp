@@ -181,9 +181,9 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             Gui::Command::openCommand("Drag Projection Group");
             //TODO: See if these commands actually handle the horizontal/vertical constraints properly...
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
-                                    getViewObject()->getNameInDocument(), Rez::appX(x()));
+                                    getViewName(), Rez::appX(x()));
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                    getViewObject()->getNameInDocument(), Rez::appX(getY()));// inverts Y
+                                    getViewName(), Rez::appX(getY()));// inverts Y
             Gui::Command::commitCommand();
             //Gui::Command::updateActive();
         }
