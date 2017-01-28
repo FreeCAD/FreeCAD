@@ -393,7 +393,7 @@ void DrawGeomHatch::getParameters(void)
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/PAT/";
-    std::string defaultFileName = defaultDir + "FCStd.pat";
+    std::string defaultFileName = defaultDir + "FCPAT.pat";
     QString patternFileName = QString::fromStdString(hGrp->GetASCII("FilePattern",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
         patternFileName = QString::fromStdString(defaultFileName);
@@ -401,6 +401,8 @@ void DrawGeomHatch::getParameters(void)
     QFileInfo tfi(patternFileName);
         if (tfi.isReadable()) {
             FilePattern.setValue(patternFileName.toUtf8().constData());
+        } else {
+            Base::Console().Error("DrawGeomHatch: PAT file: %s Not Found\n",patternFileName.toUtf8().constData());
         }
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/PAT");
