@@ -97,20 +97,28 @@ SET(PathTests_SRCS
     PathTests/TestPathPost.py
     PathTests/__init__.py
     PathTests/test_linuxcnc_00.ngc
-    TestPathApp.py
 )
 
 SET(all_files
     ${PathScripts_SRCS}
     ${PathScripts_NC_SRCS}
-    ${PathTests_SRCS}
 )
 
 ADD_CUSTOM_TARGET(PathScripts ALL
     SOURCES ${all_files}
 )
 
+SET(test_files
+  TestPathApp.py
+  ${PathTests_SRCS}
+)
+
+ADD_CUSTOM_TARGET(PathTests ALL
+    SOURCES ${test_files}
+)
+
 fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/Path" ${all_files})
+fc_copy_sources(PathTests "${CMAKE_BINARY_DIR}/Mod/Path" ${test_files})
 
 INSTALL(
     FILES
