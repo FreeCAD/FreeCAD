@@ -455,17 +455,6 @@ std::string OperatorExpression::toString() const
     bool needsParens;
     Operator leftOperator(NONE), rightOperator(NONE);
 
-    switch (op) {
-    case NEG:
-        s << "-" << left->toString();
-        return s.str();
-    case POS:
-        s << "+" << left->toString();
-        return s.str();
-    default:
-        break;
-    }
-
     needsParens = false;
     if (freecad_dynamic_cast<OperatorExpression>(left))
         leftOperator = static_cast<OperatorExpression*>(left)->op;
@@ -476,6 +465,17 @@ std::string OperatorExpression::toString() const
             needsParens = true;
         //else if (!isCommutative())
         //    needsParens = true;
+    }
+
+    switch (op) {
+    case NEG:
+        s << "-" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
+        return s.str();
+    case POS:
+        s << "+" << (needsParens ? "(" : "") << left->toString() << (needsParens ? ")" : "");
+        return s.str();
+    default:
+        break;
     }
 
     if (needsParens)
