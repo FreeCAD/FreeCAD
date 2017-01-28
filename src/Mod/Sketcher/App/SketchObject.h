@@ -91,7 +91,7 @@ public:
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction=false);
     /// delete geometry
-    int delGeometry(int GeoId);
+    int delGeometry(int GeoId, bool deleteinternalgeo = true);
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// add constraint
@@ -188,7 +188,7 @@ public:
     /*!
      * \return -1 on error
      */
-    int DeleteUnusedInternalGeometry(int GeoId);
+    int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
