@@ -160,6 +160,25 @@ DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject*
     return 0;
 }
 
+Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
+    
+    return recursiveGroupPlacement(this);
+}
+
+
+Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGroupExtension* group) {
+
+    
+    auto inList = group->getExtendedObject()->getInList();
+    for(auto* link : inList) {
+        if(link->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+            return recursiveGroupPlacement(link->getExtensionByType<GeoFeatureGroupExtension>()) * group->placement().getValue();
+    }
+    
+    return group->placement().getValue();
+}
+
+
 // Python feature ---------------------------------------------------------
 
 namespace App {
