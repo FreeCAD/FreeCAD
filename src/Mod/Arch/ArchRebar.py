@@ -183,6 +183,56 @@ class _Rebar(ArchComponent.Component):
                     v = DraftGeomUtils.vec(e).normalize()
                     return e.Vertexes[0].Point,v
         return None,None
+        
+    def getRebarData(self,obj):
+        if len(obj.InList) != 1:
+            return
+        if Draft.getType(obj.InList[0]) != "Structure":
+            return
+        if not obj.InList[0].Shape:
+            return
+        if not obj.Base:
+            return
+        if not obj.Base.Shape:
+            return
+        if not obj.Base.Shape.Wires:
+            return
+        if not obj.Diameter.Value:
+            return
+        if not obj.Amount:
+            return
+        father = obj.InList[0]
+        wire = obj.Base.Shape.Wires[0]
+        axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
+        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if hasattr(obj,"Rounding"):
+            if obj.Rounding:
+                radius = obj.Rounding * obj.Diameter.Value
+                import DraftGeomUtils
+                wire = DraftGeomUtils.filletWire(wire,radius)
+        wires = []
+        if obj.Amount == 1:
+            offset = DraftVecUtils.scaleTo(axis,size/2)
+            wire.translate(offset)
+            wires.append(wire)
+        else:
+            if obj.OffsetStart.Value:
+                baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
+            else:
+                baseoffset = None
+            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            interval = interval / (obj.Amount - 1)
+            vinterval = DraftVecUtils.scaleTo(axis,interval)
+            for i in range(obj.Amount):
+                if i == 0:
+                    if baseoffset:
+                        wire.translate(baseoffset)
+                    wires.append(wire)
+                else:
+                    wire = wire.copy()
+                    wire.translate(vinterval)
+                    wires.append(wire)
+        return [wires,obj.Diameter.Value/2]
 
     def execute(self,obj):
         
