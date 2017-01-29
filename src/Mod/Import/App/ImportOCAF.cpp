@@ -75,6 +75,9 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+
 #ifdef HAVE_TBB
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
@@ -214,6 +217,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             if (pcCompound) {
                 pcCompound->Links.setValues(localValue);
                 lValue.push_back(pcCompound);
+                Node_Shapes.push_back(pcCompound->getNameInDocument());
             }
         }
     }
@@ -244,6 +248,7 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
 
         pcCompound->Links.setValues(localValue);
         lValue.push_back(pcCompound);
+        Node_Shapes.push_back(pcCompound->getNameInDocument());
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
@@ -260,6 +265,7 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
     else
         part->Shape.setValue(aShape);
     part->Label.setValue(name);
+    Leaf_Shapes.push_back(part->getNameInDocument());
     lvalue.push_back(part);
 
     Quantity_Color aColor;
