@@ -745,7 +745,7 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initReverseEngineering()
+PyMOD_INIT_FUNC(ReverseEngineering)
 {
     // load dependent module
     try {
