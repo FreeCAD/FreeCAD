@@ -19,6 +19,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Import_LIBS
     Part
+    FreeCADGui
     #Assembly
     ${OCC_OCAF_LIBRARIES}
     ${OCC_OCAF_DEBUG_LIBRARIES}

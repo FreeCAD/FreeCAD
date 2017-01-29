@@ -75,6 +75,18 @@
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
 
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/Transactions.h>
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Selection.h>
+#include <Gui/Command.h>
+
 #ifdef HAVE_TBB
 #include <tbb/parallel_for.h>
 #include <tbb/blocked_range.h>
@@ -99,11 +111,20 @@ ImportOCAF::~ImportOCAF()
 {
 }
 
+std::vector<const char *> Leaf_Shapes;
+
 void ImportOCAF::loadShapes()
 {
     std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
     loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
+    Gui::Document *pcDoc = Gui::Application::Instance->activeDocument();
+    // This is hiding the root and non leaf node from the UI tree
+    for (std::vector<const char *>::iterator it = Leaf_Shapes.begin() ; it != Leaf_Shapes.end(); ++it)
+    {
+              pcDoc->setShow((*it));
+    }
+
 }
 
 void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
@@ -195,7 +216,9 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             if (!asm_name.empty())
                 part_name = asm_name;
             if (isRef)
+	    {
                 createShape(label, loc, part_name, lValue);
+	    }
             else
                 createShape(label, part_loc, part_name, localValue);
         }
@@ -212,7 +235,13 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
             }
 
             if (pcCompound)
+	    {
                 pcCompound->Links.setValues(localValue);
+		Gui::Document *pcDoc = Gui::Application::Instance->activeDocument();
+		// That stuff works
+		pcDoc->setHide(asm_name.c_str());
+	    	// pcCompound->Shape.setValue(aShape);
+	    }
 
             lValue.push_back(pcCompound);
         }
@@ -243,22 +272,76 @@ void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc,
         }
 
         pcCompound->Links.setValues(localValue);
+	Gui::Document *pcDoc = Gui::Application::Instance->activeDocument();
+	pcDoc->setHide(name.c_str());
         lValue.push_back(pcCompound);
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
    	createShape(aShape, loc, name, lValue);
 }
+// This routine is providing a Coin compliant string name as a Label
+char *clean_name( const std::string& name)
+{
+    char *output,*input;
+    output=(char *)malloc(2*(sizeof(char))*name.length());
+    input=(char *)malloc((sizeof(char))*name.length()+1);
+    strcpy(input,name.c_str());
+    strcpy(output,"");
+    int output_ptr=0;
+    for (std::string::size_type i = 0; i < name.length(); i++)
+    {
+	if ( i == 0 )
+        {
+		if (( input[i] >= '0' ) && ( input[i] <= '9' ) )
+		{
+			output[output_ptr++]='_';
+			output[output_ptr++]=input[i];
+		}
+		else
+			if (    
+	                        (  (input[i] >= '0' ) && ( input[i] <= '9' )) ||
+	                        (  (input[i] >= 'a' ) && ( input[i] <= 'z' )) ||
+	                        (  (input[i] >= 'A' ) && ( input[i] <= 'Z' )) ||
+	                        (  input[i] == '_' )
+	                   )       
+	                        output[output_ptr++]=input[i];
+       		        else    
+                 	       if (    
+	                                  input[i] == '-' 
+	                          )       
+        	                        output[output_ptr++]= '_';
+        }
+	else
+		if ( 
+			(  (input[i] >= '0' ) && ( input[i] <= '9' )) ||
+			(  (input[i] >= 'a' ) && ( input[i] <= 'z' )) ||
+			(  (input[i] >= 'A' ) && ( input[i] <= 'Z' )) ||
+			(  input[i] == '_' )
+   		   )
+			output[output_ptr++]=input[i];
+		else
+			if ( 
+				  input[i] == '-' 
+   			   ) 
+				output[output_ptr++]= '_';
+    }
+    output[output_ptr++]='\0';
+    return output;
+}
 
 void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
                              std::vector<App::DocumentObject*>& lvalue)
 {
-    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    char *new_name = clean_name(name.c_str());
+    // Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+    Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature",new_name));
     if (!loc.IsIdentity())
         part->Shape.setValue(aShape.Moved(loc));
     else
         part->Shape.setValue(aShape);
-    part->Label.setValue(name);
+    part->Label.setValue(new_name);
+    Leaf_Shapes.push_back(part->getNameInDocument());
     lvalue.push_back(part);
 
     Quantity_Color aColor;
@@ -273,6 +356,8 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
         colors.push_back(color);
         applyColors(part, colors);
 #if 0//TODO
+        using namespace Gui;
+	using namespace PartGui;
         Gui::ViewProvider* vp = Gui::Application::Instance->getViewProvider(part);
         if (vp && vp->isDerivedFrom(PartGui::ViewProviderPart::getClassTypeId())) {
             color.r = aColor.Red();
