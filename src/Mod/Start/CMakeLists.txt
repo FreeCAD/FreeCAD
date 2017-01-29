@@ -16,6 +16,7 @@ if(BUILD_GUI)
         LoadMRU0.py
         LoadMRU1.py
         LoadMRU2.py
+        LoadMRU3.py
         LoadArchExample.py
         LoadFemExample2D.py
         LoadFemExample3D.py
