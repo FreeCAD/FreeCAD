@@ -148,6 +148,10 @@ protected:
 
     bool isBuilt() const;
 
+    static bool findPlane(const TopoDS_Shape &shape, int type,
+                TopoDS_Shape &plane, gp_Trsf &trsf, double &top_z);
+    TopoDS_Shape findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf);
+
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
@@ -350,42 +354,6 @@ public:
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const gp_Pnt *pstart=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
-
-    /** Explore the shape to find a planar element, and return its transformation
-     *
-     * \arg \c shape: shape to explore
-     * \arg \c type: OCC shape type (TopAbs_ShapeEnum) to explore
-     * \arg \c plane: returns the sub planar shape found
-     * \arg \c trsf: the transformation of the plane which will transform the
-     * plane into XY0 plane.
-     *
-     * If there are multiple subshapes on different planes. It will prefer the
-     * top XY plane. If there is no XY parallel plane, the first planar shape
-     * encountered will be returned
-     *
-     * \return Returns true is there is any subshape of the give type found.
-     * You should use plane.IsNull() to see if there is any planar shape found. 
-     */
-    static bool findPlane(const TopoDS_Shape &shape, int type, 
-                          TopoDS_Shape &plane, gp_Trsf &trsf);
-
-    /** Explore the shape with subtype FACE, WIRE and EDGE to find a planar
-     * subshape
-     *
-     * \arg \c shape: shape to explore
-     * \arg \c plane: returns the sub planar shape found
-     * \arg \c trsf: the transformation of the plane which will transform the
-     * plane into XY0 plane.
-     *
-     * If there are multiple subshapes on different planes. It will prefer the
-     * top XY plane. If there is no XY parallel plane, the first planar shape
-     * encountered will be returned
-     *
-     * \return Returns true is there is any subshape is found. You should use
-     * plane.IsNull() to see if there is any planar shape found. 
-     */
-    static bool findPlane(const TopoDS_Shape &shape,  
-                          TopoDS_Shape &plane, gp_Trsf &trsf);
 };
 
 } //namespace Path
