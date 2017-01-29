@@ -491,14 +491,13 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
                 z = BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z();
                 break;
             }
-            if(origin.Z() != z) {
+            if(fabs(origin.Z()-z)>Precision::Confusion()) {
                 Base::Console().Warning("XY plane has wrong Z height %lf, %lf\n",origin.Z(),z);
-                origin.SetZ(z);
                 gp_Trsf trsf2;
-                trsf2.SetTranslationPart(gp_XYZ(0,0,-origin.Z()));
+                trsf2.SetTranslationPart(gp_XYZ(0,0,origin.Z()-z));
                 trsf.Multiply(trsf2);
             }
-            if(top_found && top_z > origin.Z())
+            if(top_found && top_z > z)
                 continue;
             top_found = true;
             top_z = origin.Z();
