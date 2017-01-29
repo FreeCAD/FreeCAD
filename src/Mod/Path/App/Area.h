@@ -54,7 +54,8 @@ struct PathExport AreaParams: CAreaParams {
     bool operator==(const AreaParams &other) const {
 #define AREA_COMPARE(_param) \
          if(PARAM_FIELD(NAME,_param)!=other.PARAM_FIELD(NAME,_param)) return false;
-        PARAM_FOREACH(AREA_COMPARE,AREA_PARAMS_CONF)
+        PARAM_FOREACH(AREA_COMPARE,AREA_PARAMS_CAREA)
+        PARAM_FOREACH(AREA_COMPARE,AREA_PARAMS_AREA)
         return true;
     }
     bool operator!=(const AreaParams &other) const {
@@ -71,11 +72,8 @@ struct PathExport AreaParams: CAreaParams {
  */
 struct PathExport CAreaConfig {
 
-    /** Stores current libarea settings */
+    /** For saving current libarea settings */
     PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_CAREA)
-
-    /** Stores user defined setting */
-    CAreaParams params;
 
     /** The constructor automatically saves current setting and apply user defined ones 
      *
@@ -96,8 +94,7 @@ class PathExport Area: public Base::BaseClass {
 
     TYPESYSTEM_HEADER();
 
-protected:
-
+public:
     struct Shape {
         short op;
         TopoDS_Shape shape;
@@ -108,6 +105,7 @@ protected:
         {}
     };
 
+protected:
     std::list<Shape> myShapes;
     std::unique_ptr<CArea> myArea;
     std::unique_ptr<CArea> myAreaOpen;
@@ -146,6 +144,10 @@ protected:
      */
     TopoDS_Shape makePocket();
 
+    void explode(const TopoDS_Shape &shape);
+
+    bool isBuilt() const;
+
 public:
     /** Declare all parameters defined in #AREA_PARAMS_ALL as member variable */
     PARAM_ENUM_DECLARE(AREA_PARAMS_ALL)
@@ -156,17 +158,26 @@ public:
 
     /** Set a working plane 
      *
-     * If no working plane are set, Area will try to find a working plane from
-     * individual children faces, wires or edges. By right, we should create a
-     * compound of all shapes and then findplane on it. However, because we
-     * supports solid, and also because OCC may hang for a long time if
-     * something goes a bit off, we opt to find plane on each individual shape.
-     * If you intend to pass individual edges, you must supply a workplane shape
-     * manually
+     * \arg \c shape: a shape defining a working plane.
      *
-     * \arg \c shape: a shape defining a working plane
+     * The supplied shape does not need to be planar. Area will try to find planar
+     * sub-shape (face, wire or edge). If more than one planar sub-shape is found, 
+     * it will prefer the top plane parallel to XY0 plane. 
+     *
+     * If no working plane are set, Area will try to find a working plane from
+     * the added children shape using the same algorithm
      */
     void setPlane(const TopoDS_Shape &shape);
+
+    /** Return the current active workplane
+     *
+     * \arg \c trsf: optional return of a transformation matrix that will bring the
+     * found plane to XY0 plane.
+     *
+     * If no workplane is set using setPlane(), the active workplane is derived from
+     * the added children shapes using the same algorithm empolyed by setPlane().
+     */
+    TopoDS_Shape getPlane(gp_Trsf *trsf = NULL);
 
     /** Add a child shape with given operation code 
      *
@@ -195,9 +206,18 @@ public:
     TopoDS_Shape makePocket(int index=-1, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_POCKET));
 
 
+    std::vector<std::shared_ptr<Area> > makeSections(
+            PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
+            const std::vector<double> &_heights = std::vector<double>(),
+            const TopoDS_Shape &plane = TopoDS_Shape());
+
     /** Config this Area object */
     void setParams(const AreaParams &params);
 
+
+    const std::list<Shape> getChildren() const {
+        return myShapes;
+    }
 
     /** Get the current configuration */
     const AreaParams &getParams() const {
@@ -330,6 +350,42 @@ public:
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const gp_Pnt *pstart=NULL, PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
+
+    /** Explore the shape to find a planar element, and return its transformation
+     *
+     * \arg \c shape: shape to explore
+     * \arg \c type: OCC shape type (TopAbs_ShapeEnum) to explore
+     * \arg \c plane: returns the sub planar shape found
+     * \arg \c trsf: the transformation of the plane which will transform the
+     * plane into XY0 plane.
+     *
+     * If there are multiple subshapes on different planes. It will prefer the
+     * top XY plane. If there is no XY parallel plane, the first planar shape
+     * encountered will be returned
+     *
+     * \return Returns true is there is any subshape of the give type found.
+     * You should use plane.IsNull() to see if there is any planar shape found. 
+     */
+    static bool findPlane(const TopoDS_Shape &shape, int type, 
+                          TopoDS_Shape &plane, gp_Trsf &trsf);
+
+    /** Explore the shape with subtype FACE, WIRE and EDGE to find a planar
+     * subshape
+     *
+     * \arg \c shape: shape to explore
+     * \arg \c plane: returns the sub planar shape found
+     * \arg \c trsf: the transformation of the plane which will transform the
+     * plane into XY0 plane.
+     *
+     * If there are multiple subshapes on different planes. It will prefer the
+     * top XY plane. If there is no XY parallel plane, the first planar shape
+     * encountered will be returned
+     *
+     * \return Returns true is there is any subshape is found. You should use
+     * plane.IsNull() to see if there is any planar shape found. 
+     */
+    static bool findPlane(const TopoDS_Shape &shape,  
+                          TopoDS_Shape &plane, gp_Trsf &trsf);
 };
 
 } //namespace Path

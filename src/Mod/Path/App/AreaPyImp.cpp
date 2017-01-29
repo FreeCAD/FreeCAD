@@ -54,11 +54,11 @@ static const AreaDoc myDocs[] = {
         "add((shape...)," PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OPCODE) "):\n"
         "Add TopoShape(s) with given operation code\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_OPCODE)
-        "\nThe first shape's wires will be fused together regardless of the op code given.\n"
-        "Subsequent shape's wire will be combined using the op code. All shape wires\n"
-        "shall be coplanar, and are used to determine a working plane for face making and\n"
-        "offseting. You can call setPlane() to supply a reference shape to determin the\n"
-        "working plane in case the added shapes are all colinear lines.\n",
+        "\nThe first shape's wires will be unioned together regardless of the op code given\n"
+        "(except for 'Compound'). Subsequent shape's wire will be combined using the op code.\n"
+        "All shape wires shall be coplanar, and are used to determine a working plane for face\n"
+        "making and offseting. You can call setPlane() to supply a reference shape to determin\n"
+        "the workplane in case the added shapes are all colinear lines.\n",
     },
 
     {
@@ -76,6 +76,17 @@ static const AreaDoc myDocs[] = {
         "Generate pocket toolpath of the shape.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_POCKET),
+    },
+    {
+        "makeSections",
+
+        "makeSections(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SECTION_EXTRA) ", heights=[], plane=None):\n"
+        "Make a list of area holding the sectioned children shapes on given heights\n"
+        PARAM_PY_DOC(ARG,AREA_PARAMS_SECTION_EXTRA)
+        "\n* heights ([]): a list of section heights, the meaning of the value is determined by 'mode'.\n"
+        "If not specified, the current SectionCount, and SectionOffset of this Area is used.\n"
+        "\n* plane (None): optional shape to specify a section plane. If not give, the current workplane\n"
+        "of this Area is used.",
     },
     {
         "sortWires",
@@ -270,6 +281,53 @@ PyObject* AreaPy::makePocket(PyObject *args, PyObject *keywds)
     return Py::new_reference_to(Part::shape2pyshape(resultShape));
 }
 
+PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
+{
+    static char *kwlist[] = {PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SECTION_EXTRA), 
+                            "heights", "plane", NULL};
+    PyObject *heights = NULL;
+    PyObject *plane = NULL;
+
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA)
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, 
+                "|" PARAM_PY_KWDS(AREA_PARAMS_SECTION_EXTRA) "OO!", kwlist, 
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
+                &heights, &(Part::TopoShapePy::Type), &plane))
+        return 0;
+
+    std::vector<double> h;
+    if(heights) {
+        if (PyObject_TypeCheck(heights, &(PyFloat_Type)))
+            h.push_back(PyFloat_AsDouble(heights));
+        else if (PyObject_TypeCheck(heights, &(PyList_Type)) ||
+            PyObject_TypeCheck(heights, &(PyTuple_Type))) {
+            Py::Sequence shapeSeq(heights);
+            h.reserve(shapeSeq.size());
+            for (Py::Sequence::iterator it = shapeSeq.begin(); it != shapeSeq.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if(!PyObject_TypeCheck(item, &(PyFloat_Type))) {
+                    PyErr_SetString(PyExc_TypeError, "heights must only contain float type");
+                    return 0;
+                }
+                h.push_back(PyFloat_AsDouble(item));
+            }
+        }else{
+            PyErr_SetString(PyExc_TypeError, "heights must be of type float or list/tuple of float");
+            return 0;
+        }
+    }
+
+    std::vector<std::shared_ptr<Area> > sections = getAreaPtr()->makeSections(
+                        PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
+                        h,plane?GET_TOPOSHAPE(plane):TopoDS_Shape());
+
+    Py::List ret;
+    for(auto &area : sections) 
+        ret.append(Py::asObject(new AreaPy(new Area(*area,false))));
+    return Py::new_reference_to(ret);
+}
+
 PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 {
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
@@ -336,6 +394,20 @@ Py::List AreaPy::getSections(void) const {
         ret.append(Part::shape2pyshape(getAreaPtr()->getShape(i)));
     return ret;
 }
+
+Py::List AreaPy::getShapes(void) const {
+    Py::List ret;
+	Area *area = getAreaPtr();
+    const std::list<Area::Shape> &shapes = area->getChildren();
+    for(auto &s : shapes)
+        ret.append(Py::TupleN(Part::shape2pyshape(s.shape),Py::Int(s.op)));
+    return ret;
+}
+
+Py::Object AreaPy::getWorkplane(void) const {
+    return Part::shape2pyshape(getAreaPtr()->getPlane());
+}
+
 
 // custom attributes get/set
 

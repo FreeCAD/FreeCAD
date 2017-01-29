@@ -25,8 +25,12 @@ All arguments are optional.</UserDocu>
     </Methode>
     <Methode Name="setPlane">
       <Documentation>
-          <UserDocu>setPlane(shape): Set the working plane. The shape will not be used for
-any operation</UserDocu>
+          <UserDocu>setPlane(shape): Set the working plane.\n
+The supplied shape does not need to be planar. Area will try to find planar
+sub-shape (face, wire or edge). If more than one planar sub-shape is found, it
+will prefer the top plane parallel to XY0 plane. If no working plane are set,
+Area will try to find a working plane from the added children shape using the
+same algorithm</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="getShape" Keyword='true'>
@@ -42,6 +46,11 @@ any operation</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="makePocket" Keyword='true'>
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="makeSections" Keyword="true">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>
@@ -73,6 +82,18 @@ any operation</UserDocu>
             <UserDocu>List of sections in this area.</UserDocu>
         </Documentation>
         <Parameter Name="Sections" Type="List"/>
+    </Attribute>
+    <Attribute Name="Workplane" ReadOnly="true">
+        <Documentation>
+            <UserDocu>The current workplane. If no plane is set, it is derived from the added shapes.</UserDocu>
+        </Documentation>
+        <Parameter Name="Workplane" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Shapes" ReadOnly="true">
+        <Documentation>
+            <UserDocu>A list of tuple: [(shape,op), ...] containing the added shapes together with their operation code</UserDocu>
+        </Documentation>
+        <Parameter Name="Shapes" Type="List"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>
