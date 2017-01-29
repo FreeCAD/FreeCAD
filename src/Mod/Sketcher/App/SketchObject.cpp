@@ -644,13 +644,25 @@ int SketchObject::addGeometry(const Part::Geometry *geo, bool construction/*=fal
     return Geometry.getSize()-1;
 }
 
-int SketchObject::delGeometry(int GeoId)
+int SketchObject::delGeometry(int GeoId, bool deleteinternalgeo)
 {
     const std::vector< Part::Geometry * > &vals = getInternalGeometry();
     if (GeoId < 0 || GeoId >= int(vals.size()))
         return -1;
 
-    this->DeleteUnusedInternalGeometry(GeoId);
+    const Part::Geometry *geo = getGeometry(GeoId);            
+    // Only for supported types
+    if ((geo->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+        geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId())) {
+    
+        if(deleteinternalgeo) {
+            this->DeleteUnusedInternalGeometry(GeoId, true);
+            return 0;
+        }
+    }
     
     std::vector< Part::Geometry * > newVals(vals);
     newVals.erase(newVals.begin()+GeoId);
@@ -3474,7 +3486,7 @@ int SketchObject::ExposeInternalGeometry(int GeoId)
         return -1; // not supported type
 }
 
-int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
+int SketchObject::DeleteUnusedInternalGeometry(int GeoId, bool delgeoid)
 {
    if (GeoId < 0 || GeoId > getHighestCurveIndex())
         return -1;
@@ -3552,11 +3564,14 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         if (majorconstraints<2)
             delgeometries.push_back(majorelementindex);
         
+        if(delgeoid)
+            delgeometries.push_back(GeoId);
+        
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
         
         if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
-                delGeometry(*it);
+                delGeometry(*it,false);
             }
         }
 
@@ -3637,11 +3652,14 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
         if (majorelementindex == -1 && focus1elementindex !=-1 && focus1constraints<3) // focus has one coincident and one internal align
             delgeometries.push_back(focus1elementindex);
 
+        if(delgeoid)
+            delgeometries.push_back(GeoId);
+        
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
         if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
-                delGeometry(*it);
+                delGeometry(*it,false);
             }
         }
 
@@ -3700,11 +3718,14 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
             }
         }
 
+        if(delgeoid)
+            delgeometries.push_back(GeoId);
+        
         std::sort(delgeometries.begin(), delgeometries.end()); // indices over an erased element get automatically updated!!
 
         if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
-                delGeometry(*it);
+                delGeometry(*it,false);
             }
         }
 
@@ -3727,7 +3748,7 @@ int SketchObject::DeleteUnusedInternalGeometry(int GeoId)
 
         if (delgeometries.size()>0) {
             for (std::vector<int>::reverse_iterator it=delgeometries.rbegin(); it!=delgeometries.rend(); ++it) {
-                delGeometry(*it);
+                delGeometry(*it,false);
             }
         }
 
