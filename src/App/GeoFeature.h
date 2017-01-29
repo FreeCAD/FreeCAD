@@ -66,6 +66,20 @@ public:
      * @return the Python binding object
      */
     virtual PyObject* getPyObject(void);
+       
+    /**
+     * @brief Calculates the placement in the global reference coordinate system
+     * 
+     * In FreeCAD the GeoFeature placement describes the local placement of the object in its parent
+     * coordinate system. This is however not always the same as the global reference system. If the
+     * object is in a GeoFeatureGroup, hence in annother local coordinate system, the Placement 
+     * property does only give the local transformation. This function can be used to calculate the 
+     * placement of the object in the global reference coordinate system taking all stacked local 
+     * system into account.
+     * 
+     * @return Base::Placement The transformation from the global reference coordinate system
+     */
+    Base::Placement globalPlacement();
 };
 
 } //namespace App
