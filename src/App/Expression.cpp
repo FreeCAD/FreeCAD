@@ -1116,39 +1116,29 @@ Expression * FunctionExpression::eval() const
 
 Expression *FunctionExpression::simplify() const
 {
-    Expression * v1 = args[0]->simplify();
+    size_t numerics = 0;
+    std::vector<Expression*> a;
 
-    // Argument simplified to numeric expression? Then return evaluate and return
-    if (freecad_dynamic_cast<NumberExpression>(v1)) {
-        switch (f) {
-        case ATAN2:
-        case MOD:
-        case POW: {
-            Expression * v2 = args[1]->simplify();
+    // Try to simplify each argument to function
+    for (auto it = args.begin(); it != args.end(); ++it) {
+        Expression * v = (*it)->simplify();
 
-            if (freecad_dynamic_cast<NumberExpression>(v2)) {
-                delete v1;
-                delete v2;
-                return eval();
-            }
-            else {
-                std::vector<Expression*> a;
-                a.push_back(v1);
-                a.push_back(v2);
-                return new FunctionExpression(owner, f, a);
-            }
-        }
-        default:
-            break;
-        }
-        delete v1;
+        if (freecad_dynamic_cast<NumberExpression>(v))
+            ++numerics;
+        a.push_back(v);
+    }
+
+    if (numerics == args.size()) {
+        // All constants, then evaluation must also be constant
+
+        // Clean-up
+        for (auto it = args.begin(); it != args.end(); ++it)
+            delete *it;
+
         return eval();
     }
-    else {
-        std::vector<Expression*> a;
-        a.push_back(v1);
+    else
         return new FunctionExpression(owner, f, a);
-    }
 }
 
 /**
