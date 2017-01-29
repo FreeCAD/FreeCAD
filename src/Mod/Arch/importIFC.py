@@ -21,6 +21,8 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
+
 __title__ =  "FreeCAD IFC importer - Enhanced ifcopenshell-only version"
 __author__ = "Yorik van Havre","Jonathan Wiedemann"
 __url__ =    "http://www.freecadweb.org"
@@ -622,7 +624,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                                     obj.Placement.Rotation = r
                                     obj.Placement.move(v)
                             else:
-                                print "failed to compute placement ",
+                                print ("failed to compute placement ",)
                     else:
                         obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
                         if store:
@@ -792,7 +794,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                         Arch.addComponents(cobs,objects[host])
                         if DEBUG: FreeCAD.ActiveDocument.recompute()
 
-        if DEBUG: print "done"
+        if DEBUG: print ("done")
 
         if MERGE_MODE_ARCH > 2:  # if ArchObj is compound or ArchObj not imported
             FreeCAD.ActiveDocument.recompute()
@@ -809,7 +811,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ifcfile[host].Name:
                 grp_name = ifcfile[host].Name
             else:
-                if DEBUG: print "no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!"
+                if DEBUG: print ("no group name specified for entity: #", ifcfile[host].id(), ", entity type is used!")
                 grp_name = ifcfile[host].is_a() + "_" + str(ifcfile[host].id())
             grp =  FreeCAD.ActiveDocument.addObject("App::DocumentObjectGroup",grp_name.encode("utf8"))
             objects[host] = grp
@@ -845,7 +847,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             obj = FreeCAD.ActiveDocument.addObject("Part::Feature","UnclaimedArch")
             obj.Shape = Part.makeCompound(shapes.values())
 
-        if DEBUG: print "done"
+        if DEBUG: print ("done")
 
     else:
 
@@ -947,7 +949,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
                     if hasattr(objects[o],"BaseMaterial"):
                         objects[o].BaseMaterial = mat
 
-    if DEBUG and materials: print "done"
+    if DEBUG and materials: print ("done")
 
     FreeCAD.ActiveDocument.recompute()
 
@@ -1356,7 +1358,7 @@ def export(exportList,filename):
 
     if EXPORT_2D:
         curvestyles = {}
-        if annotations and DEBUG: print "exporting 2D objects..."
+        if annotations and DEBUG: print ("exporting 2D objects...")
         for anno in annotations:
             xvc = ifcfile.createIfcDirection((1.0,0.0,0.0))
             zvc = ifcfile.createIfcDirection((0.0,0.0,1.0))
@@ -1594,6 +1596,19 @@ def getRepresentation(ifcfile,context,obj,forcebrep=False,subtraction=False,tess
                             lpl =       ifcfile.createIfcAxis2Placement3D(ovc,zvc,xvc)
                             edir =      ifcfile.createIfcDirection(tuple(FreeCAD.Vector(evi).normalize()))
                             shape =     ifcfile.createIfcExtrudedAreaSolid(profile,lpl,edir,evi.Length)
+                            shapes.append(shape)
+                            solidType = "SweptSolid"
+                            shapetype = "extrusion"
+                elif hasattr(obj.Proxy,"getRebarData"):
+                    # export rebars as IfcSweptDiskSolid
+                    rdata = obj.Proxy.getRebarData(obj)
+                    if rdata:
+                        # convert to meters
+                        r = rdata[1] * 0.001
+                        for w in rdata[0]:
+                            w.scale(0.001)
+                            cur =       createCurve(ifcfile,w)
+                            shape =     ifcfile.createIfcSweptDiskSolid(cur,r)
                             shapes.append(shape)
                             solidType = "SweptSolid"
                             shapetype = "extrusion"
