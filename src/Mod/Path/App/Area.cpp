@@ -486,11 +486,8 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
             // Probably another OCC bug, sometimes pos.Location().Z() for XY
             // plane is stuck at zero, even though the plane is at above. So we
             // double check the first vertex Z value
-            double z;
-            for(TopExp_Explorer it(plane,TopAbs_VERTEX);it.More();) {
-                z = BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z();
-                break;
-            }
+            TopExp_Explorer it(plane,TopAbs_VERTEX);
+            double z = BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z();
             if(fabs(origin.Z()-z)>Precision::Confusion()) {
                 Base::Console().Warning("XY plane has wrong Z height %lf, %lf\n",origin.Z(),z);
                 gp_Trsf trsf2;
@@ -958,7 +955,8 @@ TopoDS_Shape Area::getShape(int index) {
         if(myParams.Thicken)
             area->Thicken(myParams.ToolRadius);
         const TopoDS_Shape &shape = toShape(*area,fill);
-        builder.Add(compound,toShape(*area,fill));
+        if(shape.IsNull()) continue;
+        builder.Add(compound,shape);
     }
     // make sure the compound has at least one edge
     for(TopExp_Explorer it(compound,TopAbs_EDGE);it.More();) {
