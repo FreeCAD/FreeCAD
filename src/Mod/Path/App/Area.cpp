@@ -123,7 +123,6 @@ Area::Area(const Area &other, bool deep_copy)
 ,myShapes(other.myShapes)
 ,myTrsf(other.myTrsf)
 ,myParams(other.myParams)
-,myShapePlane(other.myShapePlane)
 ,myWorkPlane(other.myWorkPlane)
 ,myHaveFace(other.myHaveFace)
 ,myHaveSolid(other.myHaveSolid)
@@ -133,6 +132,7 @@ Area::Area(const Area &other, bool deep_copy)
         return;
     if(other.myArea)
         myArea.reset(new CArea(*other.myArea));
+    myShapePlane = other.myShapePlane;
     myShape = other.myShape;
     myShapeDone = other.myShapeDone;
     mySections.reserve(other.mySections.size());
@@ -149,9 +149,8 @@ void Area::setPlane(const TopoDS_Shape &shape) {
         myWorkPlane.Nullify();
         return;
     }
-    TopoDS_Shape plane;
     gp_Trsf trsf;
-    findPlane(shape,plane,trsf);
+    TopoDS_Shape plane = findPlane(shape,trsf);
     if (plane.IsNull())
         throw Base::ValueError("shape is not planar");
     myWorkPlane = plane;
@@ -325,8 +324,8 @@ void Area::clean(bool deleteShapes) {
     myShape.Nullify();
     myArea.reset();
     myAreaOpen.reset();
+    myShapePlane.Nullify();
     if(deleteShapes){
-        myShapePlane.Nullify();
         myShapes.clear();
         myHaveFace = false;
         myHaveSolid = false;
@@ -453,20 +452,21 @@ static void show(const TopoDS_Shape &shape, const char *name) {
 }
 #endif
 
-bool Area::findPlane(const TopoDS_Shape &shape,
-                    TopoDS_Shape &plane, gp_Trsf &trsf) 
+TopoDS_Shape Area::findPlane(const TopoDS_Shape &shape, gp_Trsf &trsf) 
 {
-    return findPlane(shape,TopAbs_FACE,plane,trsf) ||
-           findPlane(shape,TopAbs_WIRE,plane,trsf) ||
-           findPlane(shape,TopAbs_EDGE,plane,trsf);
+    TopoDS_Shape plane;
+    double top_z;
+    if(!findPlane(shape,TopAbs_FACE,plane,trsf,top_z) &&
+       !findPlane(shape,TopAbs_WIRE,plane,trsf,top_z))
+        findPlane(shape,TopAbs_EDGE,plane,trsf,top_z);
+    return plane;
 }
 
 bool Area::findPlane(const TopoDS_Shape &shape, int type, 
-                    TopoDS_Shape &dst, gp_Trsf &dst_trsf) 
+        TopoDS_Shape &dst, gp_Trsf &dst_trsf, double &top_z) 
 {
     bool haveShape = false;
-    double top_z;
-    bool top_found = false;
+    bool top_found = !dst.IsNull();
     gp_Trsf trsf;
     for(TopExp_Explorer it(shape,(TopAbs_ShapeEnum)type); it.More(); it.Next()) {
         haveShape = true;
@@ -478,17 +478,26 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
         gp_Dir dir(pos.Direction());
         trsf.SetTransformation(pos);
 
-        //pos.Location().Z() is always 0, why? As a walk around, use the first vertex Z
         gp_Pnt origin = pos.Location();
-
-        for(TopExp_Explorer it(plane.Moved(trsf),TopAbs_VERTEX);it.More();) {
-            origin.SetZ(BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z());
-            break;
-        }
 
         if(fabs(dir.X())<Precision::Confusion() &&
            fabs(dir.Y())<Precision::Confusion()) 
         {
+            // Probably another OCC bug, sometimes pos.Location().Z() for XY
+            // plane is stuck at zero, even though the plane is at above. So we
+            // double check the first vertex Z value
+            double z;
+            for(TopExp_Explorer it(plane,TopAbs_VERTEX);it.More();) {
+                z = BRep_Tool::Pnt(TopoDS::Vertex(it.Current())).Z();
+                break;
+            }
+            if(origin.Z() != z) {
+                Base::Console().Warning("XY plane has wrong Z height %lf, %lf\n",origin.Z(),z);
+                origin.SetZ(z);
+                gp_Trsf trsf2;
+                trsf2.SetTranslationPart(gp_XYZ(0,0,-origin.Z()));
+                trsf.Multiply(trsf2);
+            }
             if(top_found && top_z > origin.Z())
                 continue;
             top_found = true;
@@ -496,12 +505,8 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
         }else if(!dst.IsNull())
             continue;
         dst = plane;
+        dst_trsf = trsf;
 
-        //Some how the plane returned by BRepLib_FindSurface has Z always set to 0.
-        //We need to manually translate Z to its actual value
-        gp_Trsf trsf2;
-        trsf2.SetTranslationPart(gp_XYZ(0,0,-origin.Z()));
-        dst_trsf = trsf.Multiplied(trsf2);
     }
     return haveShape;
 }
@@ -509,13 +514,13 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
 std::vector<shared_ptr<Area> > Area::makeSections(
         PARAM_ARGS(PARAM_FARG,AREA_PARAMS_SECTION_EXTRA),
         const std::vector<double> &_heights,
-        const TopoDS_Shape &_plane)
+        const TopoDS_Shape &section_plane)
 {
     TopoDS_Shape plane;
     gp_Trsf trsf;
 
-    if(!_plane.IsNull())
-        findPlane(_plane,plane,trsf);
+    if(!section_plane.IsNull())
+        plane = findPlane(section_plane,trsf);
     else
         plane = getPlane(&trsf);
 
@@ -660,10 +665,15 @@ TopoDS_Shape Area::getPlane(gp_Trsf *trsf) {
         if(trsf) *trsf = myTrsf;
         return myWorkPlane;
     }
-    if(!isBuilt()) {
-        myShapePlane.Nullify();
-        for(const Shape &s : myShapes)
-            findPlane(s.shape,myShapePlane,myTrsf);
+    if(myShapePlane.IsNull()) {
+        if(myShapes.empty())
+            throw Base::ValueError("no shape added");
+        double top_z;
+        for(auto &s : myShapes) {
+            if(!findPlane(s.shape,TopAbs_FACE,myShapePlane,myTrsf,top_z) &&
+               !findPlane(s.shape,TopAbs_WIRE,myShapePlane,myTrsf,top_z))
+                findPlane(s.shape,TopAbs_EDGE,myShapePlane,myTrsf,top_z);
+        }
         if(myShapePlane.IsNull())
             throw Base::ValueError("shapes are not planar");
     }
