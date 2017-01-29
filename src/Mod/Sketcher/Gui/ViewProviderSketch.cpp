@@ -531,7 +531,7 @@ void ViewProviderSketch::getCoordsOnSketchPlane(double &u, double &v,const SbVec
     Base::Vector3d R0(0,0,0),RN(0,0,1),RX(1,0,0),RY(0,1,0);
 
     // move to position of Sketch
-    Base::Placement Plz = getPlacement();
+    Base::Placement Plz = getSketchObject()->globalPlacement();
     R0 = Plz.getPosition() ;
     Base::Rotation tmp(Plz.getRotation());
     tmp.multVec(RN,RN);
@@ -1931,7 +1931,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s &startPos, const SbVec2s &
     Sketcher::SketchObject *sketchObject = getSketchObject();
     App::Document *doc = sketchObject->getDocument();
 
-    Base::Placement Plm = getPlacement();
+    Base::Placement Plm = getSketchObject()->globalPlacement();
 
     int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
     int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -4804,7 +4804,7 @@ void ViewProviderSketch::rebuildConstraintsVisual(void)
         Base::Vector3d RN(0,0,1);
 
         // move to position of Sketch
-        Base::Placement Plz = getPlacement();
+        Base::Placement Plz = getSketchObject()->globalPlacement();
         Base::Rotation tmp(Plz.getRotation());
         tmp.multVec(RN,RN);
         Plz.setRotation(tmp);
@@ -5017,13 +5017,6 @@ void ViewProviderSketch::setupContextMenu(QMenu *menu, QObject *receiver, const 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
     Q_UNUSED(ModNum);
-    //find the Part and body object the feature belongs to for placement calculations
-    //TODO: this needs to be replaced with GRAPH methods to get the real stacked placement
-    parentBody = Part::BodyBase::findBodyOf(getSketchObject());
-    if(parentBody) 
-        parentPart = App::Part::getPartOfObject(parentBody);
-    else 
-        parentPart = App::Part::getPartOfObject(getSketchObject());
     
     // always change to sketcher WB, remember where we come from 
     oldWb = Gui::Command::assureWorkbench("SketcherWorkbench");
@@ -5540,7 +5533,7 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         }
     }
 
-    Base::Placement plm = getPlacement();
+    Base::Placement plm = getSketchObject()->globalPlacement();
     Base::Rotation tmp(plm.getRotation());
 
     SbRotation rot((float)tmp[0],(float)tmp[1],(float)tmp[2],(float)tmp[3]);
@@ -5826,21 +5819,9 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
     return PartGui::ViewProviderPart::onDelete(subList);
 }
 
-Base::Placement ViewProviderSketch::getPlacement() {
-    //TODO: use GRAPH placement handling, as this function right now only works with one parent 
-    //part object
-    Base::Placement Plz = getSketchObject()->Placement.getValue();
-    if(parentBody)
-        Plz = parentBody->Placement.getValue()*Plz;
-    if(parentPart)
-        Plz = parentPart->Placement.getValue()*Plz;
-    
-    return Plz;
 }
 
 void ViewProviderSketch::showRestoreInformationLayer() {
 
     visibleInformationChanged = true ;
     draw(false,false);
-}
-
