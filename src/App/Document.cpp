@@ -107,6 +107,8 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include "Application.h"
 #include "Transactions.h"
 #include "GeoFeatureGroupExtension.h"
+#include "Origin.h"
+#include "OriginGroupExtension.h"
 
 using Base::Console;
 using Base::streq;
@@ -371,13 +373,17 @@ void Document::exportGraphviz(std::ostream& out) const
                 return;
                        
             //find the correct graph to add the vertex too. Check first expressions graphs, afterwards 
-            //the parent CS graphs
+            //the parent CS and origin graphs
             Graph * sgraph = GraphList[docObj];
             if(!sgraph) {
                 auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
                 if(group)
                     sgraph = GraphList[group];
             }
+            if(!sgraph) {
+                if(docObj->isDerivedFrom(OriginFeature::getClassTypeId()))
+                    sgraph = GraphList[static_cast<OriginFeature*>(docObj)->getOrigin()];
+            }                
             if(!sgraph)
                 sgraph = &DepList;
             
@@ -453,12 +459,18 @@ void Document::exportGraphviz(std::ostream& out) const
             auto& sub = graph->create_subgraph();
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
-            std::string name(cs->getNameInDocument());
-            std::string label(cs->Label.getValue());
  
             for(auto obj : cs->getOutList()) {
                 if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
                     recursiveCSSubgraphs(obj, cs);
+            }
+            
+            //setup the origin if available 
+            if(cs->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId())) {
+                auto origin = cs->getExtensionByType<OriginGroupExtension>()->Origin.getValue();
+                auto& osub = sub.create_subgraph();
+                GraphList[origin] = &osub;
+                get_property(osub, graph_name) = getClusterName(origin);
             }
         }
         
@@ -469,7 +481,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()) && objectIt->getInList().empty())
                     recursiveCSSubgraphs(objectIt, nullptr);
             }
-            
+                        
             // Internal document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
                 addExpressionSubgraphIfNeeded(It->second);
@@ -554,7 +566,15 @@ void Document::exportGraphviz(std::ostream& out) const
 
             // Add edges between document objects
             for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
-                               
+                             
+                //coordinate systems are represented by subgraphs
+                if(It->second->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    continue;
+                
+                //as well as origins
+                if(It->second->isDerivedFrom(Origin::getClassTypeId()))
+                    continue;
+                
                 std::map<DocumentObject*, int> dups;
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 const DocumentObject * docObj = It->second;
