@@ -90,8 +90,13 @@ public:
     int addGeometry(const Part::Geometry *geo, bool construction=false);
     /// add unspecified geometry
     int addGeometry(const std::vector<Part::Geometry *> &geoList, bool construction=false);
-    /// delete geometry
-    int delGeometry(int GeoId);
+    /*!
+     \brief Deletes indicated geometry (by geoid).
+     \param GeoId - the geometry to delete
+     \param deleteinternalgeo - if true deletes the associated and unconstraint internal geometry, otherwise deletes only the GeoId
+     \retval int - 0 if successful
+     */
+    int delGeometry(int GeoId, bool deleteinternalgeo = true);
     /// add all constraints in the list
     int addConstraints(const std::vector<Constraint *> &ConstraintList);
     /// add constraint
@@ -184,11 +189,13 @@ public:
      * \return -1 on error
      */
     int ExposeInternalGeometry(int GeoId);
-    /// Deletes all unused (not further constrained) internal geometry
     /*!
-     * \return -1 on error
+     \brief Deletes all unused (not further constrained) internal geometry
+     \param GeoId - the geometry having the internal geometry to delete
+     \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
+     \retval int - returns -1 on error
      */
-    int DeleteUnusedInternalGeometry(int GeoId);
+    int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
 
     /// retrieves for a Vertex number the corresponding GeoId and PosId
     void getGeoVertexIndex(int VertexId, int &GeoId, PointPos &PosId) const;
