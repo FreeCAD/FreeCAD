@@ -230,6 +230,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     graphCode = stream.str();
 
     // Update worker thread, and start it
+    std::cout<<graphCode<<std::endl;
     thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
     thread->startThread();
 }

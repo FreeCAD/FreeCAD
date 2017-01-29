@@ -106,6 +106,7 @@ recompute path. Also enables more complicated dependencies beyond trees.
 
 #include "Application.h"
 #include "Transactions.h"
+#include "GeoFeatureGroupExtension.h"
 
 using Base::Console;
 using Base::streq;
@@ -290,9 +291,9 @@ void Document::exportGraphviz(std::ostream& out) const
 
         void setGraphAttributes(const DocumentObject * obj) {
             assert(GraphList[obj] != 0);
-            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
-            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
-            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
         }
 
         /**
@@ -310,19 +311,27 @@ void Document::exportGraphviz(std::ostream& out) const
         }
 
         /**
-         * @brief addSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
+         * @brief addExpressionSubgraphIfNeeded Add a subgraph to the main graph if it is needed, i.e there are defined at least one expression in hte
          *                            document object, or other objects are referencing properties in it.
          * @param obj DocumentObject to assess.
          */
 
-        void addSubgraphIfNeeded(DocumentObject * obj) {
-            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();
+        void addExpressionSubgraphIfNeeded(DocumentObject * obj) {
+
+            //coordinate systems already have a subgraph
+            if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                return;
+
+            boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = obj->ExpressionEngine.getExpressions();             
 
             if (expressions.size() > 0) {
+                
+                auto group = GeoFeatureGroupExtension::getGroupOfObject(obj);
+                auto graph = group ? GraphList[group] : &DepList;
 
                 // If documentObject has an expression, create a subgraph for it
                 if (!GraphList[obj]) {
-                    GraphList[obj] = &DepList.create_subgraph();
+                    GraphList[obj] = &graph->create_subgraph();
                     setGraphAttributes(obj);
                 }
 
@@ -339,7 +348,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
                         // Doesn't exist already?
                         if (!GraphList[o]) {
-                            GraphList[o] = &DepList.create_subgraph();
+                            GraphList[o] = &graph->create_subgraph();
                             setGraphAttributes(o);
                         }
                         ++j;
@@ -356,8 +365,22 @@ void Document::exportGraphviz(std::ostream& out) const
          */
 
         void add(DocumentObject * docObj, const std::string & name, const std::string & label) {
-            Graph * sgraph = GraphList[docObj] ? GraphList[docObj] : &DepList;
-
+            
+            //don't add objects twice
+            if(std::find(objects.begin(), objects.end(), docObj) != objects.end())
+                return;
+                       
+            //find the correct graph to add the vertex too. Check first expressions graphs, afterwards 
+            //the parent CS graphs
+            Graph * sgraph = GraphList[docObj];
+            if(!sgraph) {
+                auto group = GeoFeatureGroupExtension::getGroupOfObject(docObj);
+                if(group)
+                    sgraph = GraphList[group];
+            }
+            if(!sgraph)
+                sgraph = &DepList;
+            
             // Keep a list of all added document objects.
             objects.insert(docObj);
 
@@ -370,14 +393,15 @@ void Document::exportGraphviz(std::ostream& out) const
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
             else
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
-
-            // If node is in main graph, style it with rounded corners. If not, remove the border as the subgraph will contain it.
-            if (sgraph == &DepList) {
+                
+            // If node is in main graph, style it with rounded corners. If not, make it invisible.
+            if (!GraphList[docObj]) {
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
             }
-            else
+            else {
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["color"] = "none";
+            }
 
             // Add expressions and its dependencies
             boost::unordered_map<const App::ObjectIdentifier, const PropertyExpressionEngine::ExpressionInfo> expressions = docObj->ExpressionEngine.getExpressions();
@@ -421,13 +445,34 @@ void Document::exportGraphviz(std::ostream& out) const
                 }
                 ++i;
             }
-
         }
 
+        void recursiveCSSubgraphs(DocumentObject* cs, DocumentObject* parent) {
+            
+            auto graph = parent ? GraphList[parent] : &DepList;
+            auto& sub = graph->create_subgraph();
+            GraphList[cs] = &sub;
+            get_property(sub, graph_name) = getClusterName(cs);
+            std::string name(cs->getNameInDocument());
+            std::string label(cs->Label.getValue());
+ 
+            for(auto obj : cs->getOutList()) {
+                if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
+                    recursiveCSSubgraphs(obj, cs);
+            }
+        }
+        
         void addSubgraphs() {
+            
+            //first build up the coordinate system subgraphs
+            for (auto objectIt : d->objectArray) {
+                if (objectIt->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()) && objectIt->getInList().empty())
+                    recursiveCSSubgraphs(objectIt, nullptr);
+            }
+            
             // Internal document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It)
-                addSubgraphIfNeeded(It->second);
+                addExpressionSubgraphIfNeeded(It->second);
 
             // Add external document objects
             for (std::map<std::string,DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
@@ -437,7 +482,7 @@ void Document::exportGraphviz(std::ostream& out) const
                         std::map<std::string,Vertex>::const_iterator item = GlobalVertexList.find(getId(*It2));
 
                         if (item == GlobalVertexList.end())
-                            addSubgraphIfNeeded(*It2);
+                            addExpressionSubgraphIfNeeded(*It2);
                     }
                 }
             }
@@ -509,6 +554,7 @@ void Document::exportGraphviz(std::ostream& out) const
 
             // Add edges between document objects
             for (std::map<std::string, DocumentObject*>::const_iterator It = d->objectMap.begin(); It != d->objectMap.end();++It) {
+                               
                 std::map<DocumentObject*, int> dups;
                 std::vector<DocumentObject*> OutList = It->second->getOutList();
                 const DocumentObject * docObj = It->second;
