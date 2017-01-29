@@ -70,12 +70,27 @@ public:
      *                  default is true
      */
     static DocumentObject* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
+    
+    /**
+     * @brief Calculates the global placement of this group
+     * 
+     * The returned placement describes the transformation from the global reference coordinate 
+     * system to the local coordinate system of this geo feature group. If this group has a no parent
+     * GeoFeatureGroup the returned placement is the one of this group. For multiple stacked 
+     * GeoFeatureGroups the returned Placement is the combination of all parent placements including 
+     * ths one of this group.
+     * @return Base::Placement The transformation from global reference system to the groups local system
+     */
+    Base::Placement globalGroupPlacement();
 
     /// Returns true if the given DocumentObject is DocumentObjectGroup but not GeoFeatureGroup
     static bool isNonGeoGroup(const DocumentObject* obj) {
         return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+    
+private:
+    Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
