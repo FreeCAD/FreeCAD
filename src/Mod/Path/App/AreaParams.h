@@ -104,9 +104,9 @@
 
 /** Operation code */
 #define AREA_PARAMS_OPCODE \
-    ((enum,op,Operation,0,\
-        "Boolean operation. For the first four operation, see https://goo.gl/Gj8RUu.\n"\
-        "'Compound' means no operation, normal used to do Area.sortWires().",\
+    ((enum,op,Operation,0,"Boolean operation.\n"\
+        "For the first four operations, see https://goo.gl/Gj8RUu.\n"\
+        "'Compound' means no operation, normally used to do Area.sortWires().",\
         (Union)(Difference)(Intersection)(Xor)(Compound)))
 
 /** Offset parameters */
@@ -115,11 +115,22 @@
     ((long,extra_pass,ExtraPass,0,"Number of extra offset pass to generate."))\
     ((double,stepover,Stepover,0.0,"Cutter diameter to step over on each pass. If =0, use Offset"))
 
+#define AREA_PARAMS_SECTION_EXTRA \
+    ((enum,mode,SectionMode,2,"Section offset coordinate mode.\n"\
+        "'Absolute' means the absolute Z height to start section.\n"\
+        "'BoundBox' means relative Z height to the bounding box of all the children shape. Only\n"\
+        "positive value is allowed, which specifies the offset below the top Z of the bounding box.\n"\
+        "Note that OCC has trouble getting the minimumi bounding box of some solids, particually\n"\
+        "those with non-planar surface.\n"\
+        "'Workplane' means relative to workplane.",\
+        (Absolute)(BoundBox)(Workplane)))
+
 /** Section parameters */
 #define AREA_PARAMS_SECTION \
     ((long,count,SectionCount,0,"Number of sections to generate. -1 means full sections."))\
     ((double,stepdown,Stepdown,1.0,"Step down distance for each section"))\
-    ((double,offset,SectionOffset,0.0,"Offset for the first section"))
+    ((double,offset,SectionOffset,0.0,"Offset for the first section"))\
+    AREA_PARAMS_SECTION_EXTRA
 
 #ifdef AREA_OFFSET_ALGO
 #   define AREA_PARAMS_OFFSET_ALGO \
