@@ -124,6 +124,9 @@ INSTALL(
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
 
+	# result related import and export
+        FemResultVTK.py
+
     DESTINATION
         Mod/Fem
 )
