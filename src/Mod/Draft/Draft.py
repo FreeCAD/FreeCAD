@@ -217,6 +217,8 @@ def isClone(obj,objtype,recursive=False):
     """isClone(obj,objtype,[recursive]): returns True if the given object is
     a clone of an object of the given type. If recursive is True, also check if
     the clone is a clone of clone (of clone...)  of the given type."""
+    if isinstance(objtype,list):
+        return any([isClone(obj,t,recursive) for t in objtype])
     if getType(obj) == "Clone":
         if len(obj.Objects) == 1:
             if getType(obj.Objects[0]) == objtype:
@@ -331,14 +333,14 @@ def shapify(obj):
 def getGroupContents(objectslist,walls=False,addgroups=False):
     '''getGroupContents(objectlist,[walls,addgroups]): if any object of the given list
     is a group, its content is appened to the list, which is returned. If walls is True,
-    walls are also scanned for included windows. If addgroups is true, the group itself
-    is also included in the list.'''
+    walls and structures are also scanned for included windows or rebars. If addgroups 
+    is true, the group itself is also included in the list.'''
     def getWindows(obj):
         l = []
         if getType(obj) in ["Wall","Structure"]:
             for o in obj.OutList:
                 l.extend(getWindows(o))
-        elif (getType(obj) == "Window") or isClone(obj,"Window"):
+        elif (getType(obj) in ["Window","Rebar"]) or isClone(obj,["Window","Rebar"]):
             l.append(obj)
         return l
 
