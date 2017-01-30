@@ -176,7 +176,9 @@ void DrawProjGroup::onChanged(const App::Property* prop)
     TechDraw::DrawPage *page = getPage();
     if (!isRestoring() && page) {
         if ( prop == &Views ) {
-            recompute();
+            if (!isDeleting()) {
+                recompute();  
+            }
         } else if (prop == &Scale) {
             updateChildren(Scale.getValue());
             //resetPositions();
@@ -185,7 +187,8 @@ void DrawProjGroup::onChanged(const App::Property* prop)
             App::DocumentObject* sourceObj = Source.getValue();
             if (sourceObj != nullptr) {
                 if (!hasAnchor()) {
-                    addProjection("Front");
+                    // if we have a Source, but no Anchor, make an anchor
+                    Anchor.setValue(addProjection("Front"));
                 }
             } else {
                 //Source has been changed to null! Why? What to do?
@@ -214,9 +217,9 @@ App::DocumentObjectExecReturn *DrawProjGroup::execute(void)
         return DrawViewCollection::execute();
     }
 
-    docObj = Anchor.getValue();                     //must have an anchor, so create one as soon as we have a Page and Source
+    docObj = Anchor.getValue();
     if (docObj == nullptr) {
-       docObj = addProjection("Front");
+        return DrawViewCollection::execute();
     }
 
     double newScale = Scale.getValue();
@@ -441,8 +444,6 @@ bool DrawProjGroup::hasProjection(const char *viewProjType) const
 
 App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
 {
-    //if this is the first Projection added, it should automatically be the Anchor/front view
-    // or if viewProjType == "Front" Anchor.setValue(view)
     DrawProjGroupItem *view( nullptr );
 
     if ( checkViewProjType(viewProjType) && !hasProjection(viewProjType) ) {
@@ -460,21 +461,8 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
         view->Type.setValue( viewProjType );
         view->Label.setValue( viewProjType );
         view->Source.setValue( Source.getValue() );
-        if( strcmp(viewProjType,"Front") == 0 ) {
-
-            Anchor.setValue(docObj);
-            view->Direction.setValue(m_frameToStdDir.at("Front"));    //just (Base::Vector3d(0.0,-1.0,0.0))
-            view->RotationVector.setValue(m_frameToStdRot.at("Front"));
-        } else {
-            //TODO: really need to check with Cube to get current dir & rot this uses initial values from table
-            //if (DPGI(front) and DPGI(right) exist) config = front.face + right.face
-            //    
-            //else
-            //   use start up values (m_frameToStdDir/m_frameToStdRot)
-            view->Direction.setValue(m_frameToStdDir.at(viewProjType));
-            view->RotationVector.setValue(m_frameToStdRot.at(viewProjType));
-        }
-
+        view->Direction.setValue(m_frameToStdDir.at(viewProjType));
+        view->RotationVector.setValue(m_frameToStdRot.at(viewProjType));
         addView(view);         //from DrawViewCollection - add to ProjGroup Views
         moveToCentre();
         view->recomputeFeature();
@@ -483,6 +471,7 @@ App::DocumentObject * DrawProjGroup::addProjection(const char *viewProjType)
     return view;
 }
 
+//NOTE: projections can be deleted without using removeProjection - ie regular DocObject deletion process.
 int DrawProjGroup::removeProjection(const char *viewProjType)
 {
     // TODO: shouldn't be able to delete "Front" unless deleting whole group
@@ -508,6 +497,7 @@ int DrawProjGroup::removeProjection(const char *viewProjType)
     return -1;
 }
 
+//removes all DPGI - used when deleting DPG
 int DrawProjGroup::purgeProjections()
 {
     while (!Views.getValues().empty())   {
@@ -803,7 +793,9 @@ TechDraw::DrawProjGroupItem* DrawProjGroup::getAnchor(void)
     App::DocumentObject* docObj = Anchor.getValue();
     if (docObj == nullptr) {
         //explode! DPG w/o anchor
-        Base::Console().Error("Error - DPG::getAnchor - DPG has no Anchor!!!\n");
+        if (!isDeleting()) {
+            Base::Console().Error("Error - DPG::getAnchor - DPG has no Anchor!!!\n");
+        }
     } else {
         result = static_cast<DrawProjGroupItem*>(docObj);
     }
@@ -1033,6 +1025,7 @@ void DrawProjGroup::onDocumentRestored()
        }
        std::string viewRot = Cube::dirToView(rotFront);
        std::string config = viewDir + viewRot;
+       //find(config) or try/catch
        try {
            config = m_dirRotToConfig.at(config);
            setConfig(config);

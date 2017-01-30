@@ -33,6 +33,7 @@
 #include <Base/Parameter.h>
 
 #include <qmath.h>
+#include "Rez.h"
 #include "QGIView.h"
 #include "QGISectionLine.h"
 
@@ -40,7 +41,7 @@ using namespace TechDrawGui;
 
 QGISectionLine::QGISectionLine()
 {
-    m_extLen = 8.0;
+    m_extLen = Rez::guiX(8.0);
     m_arrowSize = 0.0;
 
     m_line = new QGraphicsPathItem();
@@ -54,7 +55,7 @@ QGISectionLine::QGISectionLine()
     m_symbol2 = new QGCustomText();
     addToGroup(m_symbol2);
 
-    setWidth(0.75);
+    setWidth(Rez::guiX(0.75));
     setStyle(getSectionStyle());
     setColor(getSectionColor());
 
@@ -74,7 +75,7 @@ void QGISectionLine::makeLine()
     QPainterPath pp;
     QPointF extLineStart,extLineEnd;
     QPointF offset(m_arrowDir.x,-m_arrowDir.y);
-    offset = 0.80 * m_extLen * offset;                  //0.80 is hack to hide line end behind arrowhead
+    offset = 0.75 * m_extLen * offset;                  //0.75 is hack to hide line end behind arrowhead
     extLineStart = m_start + offset;
     extLineEnd = m_end + offset;
     pp.moveTo(extLineStart);
@@ -100,6 +101,8 @@ void QGISectionLine::makeArrows()
     extLineStart = m_start + offset;
     extLineEnd = m_end + offset;
 
+    m_arrow1->setStyle(0);
+    m_arrow2->setStyle(0);
     m_arrow1->setPos(extLineStart);
     //m_arrow1->flip(true);
     m_arrow1->draw();
@@ -121,9 +124,15 @@ void QGISectionLine::makeSymbols()
     m_symFont.setPointSize(m_symSize);
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
+    if (m_arrowDir.y < 0.0) {         //pointing down
+        extLineStart  -= QPointF (0.0,m_symSize);  //move text up a bit
+    }
     m_symbol1->centerAt(extLineStart);
     m_symbol2->setFont(m_symFont);
     m_symbol2->setPlainText(QString::fromUtf8(m_symbol));
+    if (m_arrowDir.y < 0.0) {         //pointing down
+        extLineEnd  -= QPointF (0.0,m_symSize);
+    }
     m_symbol2->centerAt(extLineEnd);
 }
 

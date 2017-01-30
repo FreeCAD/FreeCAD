@@ -37,6 +37,7 @@ generate_from_xml(DrawViewSymbolPy)
 generate_from_xml(DrawViewClipPy)
 generate_from_xml(DrawViewDimensionPy)
 generate_from_xml(DrawHatchPy)
+generate_from_xml(DrawGeomHatchPy)
 generate_from_xml(DrawViewCollectionPy)
 generate_from_xml(DrawProjGroupPy)
 generate_from_xml(DrawProjGroupItemPy)
@@ -74,6 +75,8 @@ SET(Draw_SRCS
     DrawViewSection.h
     DrawHatch.cpp
     DrawHatch.h
+    DrawGeomHatch.cpp
+    DrawGeomHatch.h
     DrawViewDraft.cpp
     DrawViewDraft.h
     DrawViewArch.cpp
@@ -92,6 +95,8 @@ SET(TechDraw_SRCS
     DrawUtil.h
     Cube.cpp
     Cube.h
+    HatchLine.cpp
+    HatchLine.h
     PreCompiled.cpp
     PreCompiled.h
     EdgeWalker.cpp
@@ -128,6 +133,8 @@ SET(Python_SRCS
     DrawViewDimensionPyImp.cpp
     DrawHatchPy.xml
     DrawHatchPyImp.cpp
+    DrawGeomHatchPy.xml
+    DrawGeomHatchPyImp.cpp
     DrawViewCollectionPy.xml
     DrawViewCollectionPyImp.cpp
     DrawProjGroupPy.xml
@@ -148,6 +155,10 @@ SET(TechDraw_Templates
     Templates/A4_LandscapeTD.svg
     Templates/A4_Landscape_ISO7200TD.svg
     Templates/A4_Portrait_ISO7200TD.svg
+)
+
+SET(TechDraw_PATFile
+    PAT/FCPAT.pat
 )
 
 if(MSVC)
@@ -174,6 +185,11 @@ fc_target_copy_resource(TechDraw
     ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_Templates})
+
+fc_target_copy_resource(TechDraw
+    ${CMAKE_SOURCE_DIR}/src/Mod/TechDraw
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_PATFile})
 
 SET_BIN_DIR(TechDraw TechDraw /Mod/TechDraw)
 SET_PYTHON_PREFIX_SUFFIX(TechDraw)

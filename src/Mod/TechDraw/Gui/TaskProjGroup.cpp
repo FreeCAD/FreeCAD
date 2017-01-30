@@ -480,6 +480,8 @@ bool TaskProjGroup::reject()
                                 PageName.c_str(),multiViewName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",multiViewName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+        //make sure any dangling objects are cleaned up 
+        Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().recompute()");
     } else {
         if (Gui::Command::hasPendingCommand()) {
             std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();

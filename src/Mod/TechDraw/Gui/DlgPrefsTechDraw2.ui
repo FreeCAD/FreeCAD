@@ -7,351 +7,473 @@
     <x>0</x>
     <y>0</y>
     <width>521</width>
-    <height>420</height>
+    <height>463</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>TechDraw 2</string>
   </property>
-  <widget class="QGroupBox" name="gbDim">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>20</y>
-     <width>501</width>
-     <height>161</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Dimensions</string>
-   </property>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>471</width>
-      <height>125</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="1,2,1">
-     <item row="0" column="0">
-      <widget class="Gui::PrefCheckBox" name="cbShowUnits">
-       <property name="text">
-        <string>Show Units</string>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>ShowUnits</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Dimensions</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Color</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Font Size</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <spacer name="horizontalSpacer">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="1" column="2">
-      <widget class="Gui::PrefDoubleSpinBox" name="dsbFontSize">
-       <property name="decimals">
-        <number>1</number>
-       </property>
-       <property name="value">
-        <double>4.000000000000000</double>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>FontSize</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Dimensions</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="Gui::PrefColorButton" name="colDimColor">
-       <property name="color">
-        <color>
-         <red>0</red>
-         <green>0</green>
-         <blue>0</blue>
-        </color>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>Color</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Dimensions</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string>Diameter Symbol</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="Gui::PrefLineEdit" name="leDiameter">
-       <property name="font">
-        <font>
-         <pointsize>12</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>⌀</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>DiameterSymbol</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Dimensions</cstring>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>190</y>
-     <width>501</width>
-     <height>201</height>
-    </rect>
-   </property>
-   <property name="title">
-    <string>Decorations</string>
-   </property>
-   <widget class="QWidget" name="gridLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>471</width>
-      <height>161</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2,1">
-     <item row="0" column="2">
-      <widget class="Gui::PrefComboBox" name="pcbMatting">
-       <property name="prefEntry" stdset="0">
-        <cstring>MattingStyle</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Decorations</cstring>
-       </property>
-       <item>
-        <property name="text">
-         <string>Round</string>
+  <layout class="QGridLayout" name="gridLayout_5">
+   <item row="0" column="0">
+    <widget class="QGroupBox" name="gbDim">
+     <property name="title">
+      <string>Dimensions</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,2,1">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowUnits">
+          <property name="text">
+           <string>Show Units</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowUnits</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_3">
+          <property name="text">
+           <string>Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>Font Size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="dsbFontSize">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="decimals">
+           <number>1</number>
+          </property>
+          <property name="value">
+           <double>4.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>FontSize</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefColorButton" name="colDimColor">
+          <property name="color">
+           <color>
+            <red>0</red>
+            <green>0</green>
+            <blue>0</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>Color</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>Diameter Symbol</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefLineEdit" name="leDiameter">
+          <property name="font">
+           <font>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>⌀</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>DiameterSymbol</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Square</string>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
         </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="label_6">
-       <property name="text">
-        <string>Section Line Style</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Center Line Style</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Matting Style</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="Gui::PrefColorButton" name="colCenterLine">
-       <property name="color">
-        <color>
-         <red>175</red>
-         <green>175</green>
-         <blue>175</blue>
-        </color>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>CenterColor</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Decorations</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="Gui::PrefComboBox" name="pcbCenterStyle">
-       <property name="currentIndex">
-        <number>2</number>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>CenterLine</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Decorations</cstring>
-       </property>
-       <item>
-        <property name="text">
-         <string>NeverShow</string>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Decorations</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
+       <layout class="QGridLayout" name="gridLayout_2" columnstretch="1,2,1">
+        <item row="0" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbMatting">
+          <property name="prefEntry" stdset="0">
+           <cstring>MattingStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Round</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Square</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="text">
+           <string>Section Line Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Center Line Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Matting Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="Gui::PrefColorButton" name="colCenterLine">
+          <property name="color">
+           <color>
+            <red>175</red>
+            <green>175</green>
+            <blue>175</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CenterColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbCenterStyle">
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CenterLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>NeverShow</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Sollid</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dash</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDotDot</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbSectionStyle">
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionLine</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>NeverShow</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Solid</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dash</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Dot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDot</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>DashDotDot</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Center Line Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Section Line Color</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="2">
+         <widget class="Gui::PrefColorButton" name="colSectionLine">
+          <property name="color">
+           <color>
+            <red>175</red>
+            <green>175</green>
+            <blue>175</blue>
+           </color>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionColor</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>Arrow Style</string>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbArrow">
+          <property name="toolTip">
+           <string>Preferred arrowhead style</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <property name="maxVisibleItems">
+           <number>5</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ArrowStyle</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>0 - Filled Triangle</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowfilled.svg</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>1 - Open Arrowhead</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowopen.svg</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>2 - Tick</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowtick.svg</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>3 - Dot</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowdot.svg</normalon>
+            </iconset>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>4 - Open Circle</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/icons/arrowopendot.svg</normalon>
+            </iconset>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_10">
+          <property name="toolTip">
+           <string>Default weight for GeomHatch lines</string>
+          </property>
+          <property name="text">
+           <string>Hatch Weight</string>
+          </property>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>GeomWeight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/PAT</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Sollid</string>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dash</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDotDot</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="Gui::PrefComboBox" name="pcbSectionStyle">
-       <property name="currentIndex">
-        <number>2</number>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>SectionLine</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Decorations</cstring>
-       </property>
-       <item>
-        <property name="text">
-         <string>NeverShow</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Solid</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dash</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Dot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDot</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>DashDotDot</string>
-        </property>
-       </item>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Center Line Color</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label_7">
-       <property name="text">
-        <string>Section Line Color</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="Gui::PrefColorButton" name="colSectionLine">
-       <property name="color">
-        <color>
-         <red>175</red>
-         <green>175</green>
-         <blue>175</blue>
-        </color>
-       </property>
-       <property name="prefEntry" stdset="0">
-        <cstring>SectionColor</cstring>
-       </property>
-       <property name="prefPath" stdset="0">
-        <cstring>/Mod/TechDraw/Decorations</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-    </layout>
-   </widget>
-  </widget>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <spacer name="verticalSpacer_3">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
  </widget>
  <customwidgets>
   <customwidget>
@@ -385,6 +507,8 @@
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../../../../../Documents/CAD/DrawingModule/Resources/TechDraw.qrc"/>
+ </resources>
  <connections/>
 </ui>

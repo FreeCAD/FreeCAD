@@ -60,7 +60,7 @@
 #include <Mod/TechDraw/App/DrawViewSpreadsheet.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
-
+#include "Rez.h"
 #include "QGIDrawingTemplate.h"
 #include "QGITemplate.h"
 #include "QGISVGTemplate.h"
@@ -150,8 +150,8 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
           pageHeight = 297;
 
     if ( m_vpPage->getDrawPage()->hasValidTemplate() ) {
-        pageWidth = m_vpPage->getDrawPage()->getPageWidth();
-        pageHeight = m_vpPage->getDrawPage()->getPageHeight();
+        pageWidth = Rez::guiX(m_vpPage->getDrawPage()->getPageWidth());
+        pageHeight = Rez::guiX(m_vpPage->getDrawPage()->getPageHeight());
     }
 
     // Draw the white page
@@ -180,8 +180,8 @@ int QGVPage::addView(QGIView *view)
     QGIView *parent = 0;
     parent = findParent(view);
 
-    QPointF viewPos(view->getViewObject()->X.getValue(),
-                    view->getViewObject()->Y.getValue() * -1);
+    QPointF viewPos(Rez::guiX(view->getViewObject()->X.getValue()),
+                    Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
     if(parent) {
         // Transfer the child vierw to the parent
@@ -197,6 +197,80 @@ int QGVPage::addView(QGIView *view)
 
     return views.size();
 }
+
+int QGVPage::removeView(QGIView *view)
+{
+
+    std::vector<QGIView *> qviews = views;
+    std::vector<QGIView *> newViews;
+    
+    std::vector<QGIView *>::iterator qvit = qviews.begin();
+    std::vector<QGIView *>::iterator qvDel = qviews.end();
+    
+    for (; qvit != qviews.end(); qvit++) {
+        if ((*qvit) == view) {
+            qvDel = qvit;
+            break;
+        }
+    }
+    
+    if (qvDel == qviews.end()) {     //didn't find view in views
+        return views.size();
+    }
+
+    removeViewFromScene(view);
+
+    qviews.erase(qvDel);
+    views = qviews;
+    delete view;
+
+    return views.size();
+}
+
+int QGVPage::removeView(const TechDraw::DrawView* dv)
+{
+    std::vector<QGIView *> newViews;
+    QList<QGraphicsItem *> items = scene()->items();
+    QString qsName = QString::fromUtf8(dv->getNameInDocument());
+    bool found = false;
+    QGIView* ourItem = nullptr;
+    for (auto& i:items) {
+        if (qsName == i->data(1).toString()) {          //is there really a QGIV for this DV in scene?
+            found = true;
+            ourItem = static_cast<QGIView*>(i);
+            break;
+        }
+    }
+    if (found) {
+        for (auto&v :views) {
+            if (ourItem != v) {
+                newViews.push_back(v);
+            }
+        }
+        removeViewFromScene(ourItem);
+        delete ourItem;
+        views = newViews;
+    }
+
+    return views.size();
+}
+
+void QGVPage::removeViewFromScene(QGIView *view)
+{
+    QGraphicsItemGroup* grp = view->group();
+    if (grp) {
+        grp->removeFromGroup(view);
+    }
+
+    if (view->parentItem()) {    //not top level
+        view->setParentItem(0);
+    }
+
+    if (view->scene()) {
+        view->scene()->removeItem(view);
+    }
+}
+
 
 QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 {
@@ -258,7 +332,7 @@ QGIView * QGVPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view)
 
 QGIView * QGVPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
 {
-    QPoint qp(view->X.getValue(),view->Y.getValue());
+    //QPoint qp(view->X.getValue(),view->Y.getValue());
     // This essentially adds a null view feature to ensure view size is consistent
     auto qview( new QGIViewSymbol );
 
@@ -272,7 +346,7 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
 {
     auto qview( new QGIViewClip );
 
-    qview->setPosition(view->X.getValue(), view->Y.getValue());
+    qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->setViewFeature(view);
 
     addView(qview);
@@ -291,7 +365,7 @@ QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 
 QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 {
-    QPoint qp(view->X.getValue(),view->Y.getValue());
+    //QPoint qp(view->X.getValue(),view->Y.getValue());
     auto qview( new QGIViewImage );
 
     qview->setViewFeature(view);
@@ -343,8 +417,7 @@ QGIView * QGVPage::findView(App::DocumentObject *obj) const
   if(obj) {
     const std::vector<QGIView *> qviews = views;
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-          TechDraw::DrawView *fview = (*it)->getViewObject();
-          if(fview && strcmp(obj->getNameInDocument(), fview->getNameInDocument()) == 0)
+          if(strcmp(obj->getNameInDocument(), (*it)->getViewName()) == 0)
               return *it;
       }
   }
@@ -367,8 +440,7 @@ QGIView * QGVPage::findParent(QGIView *view) const
             std::vector<App::DocumentObject *> objs = dim->References2D.getValues();
             // Attach the dimension to the first object's group
             for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-                TechDraw::DrawView *viewObj = (*it)->getViewObject();
-                if(strcmp(viewObj->getNameInDocument(), objs.at(0)->getNameInDocument()) == 0) {
+                if(strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
                     return *it;
                 }
             }
@@ -506,22 +578,19 @@ void QGVPage::saveSvg(QString filename)
                              docName;
 
     //Base::Console().Message("TRACE - saveSVG - page width: %d height: %d\n",width,height);    //A4 297x210
+
+    //with Rez set to 10 we make a dot 10 times/mm => 254dpi?
+    //                                 12          => 304.8 dpi?  approx printer dpi 300dpi
+    
     QSvgGenerator svgGen;
     svgGen.setFileName(filename);
-    svgGen.setSize(QSize((int) page->getPageWidth(), (int)page->getPageHeight()));
-    svgGen.setViewBox(QRect(0, 0, page->getPageWidth(), page->getPageHeight()));
-    //TODO: Exported Svg file is not quite right. <svg width="301.752mm" height="213.36mm" viewBox="0 0 297 210"... A4: 297x210
-    //      Page too small (A4 vs Letter? margins?)
-    //TODO: text in Qt is in mm (actually scene units).  text in SVG is points(?). fontsize in export file is too small by 1/2.835.
-    //      resize all textItem before export?
-    //      postprocess generated file to mult all font-size attrib by 2.835 to get pts?
-    //      duplicate all textItems and only show the appropriate one for screen/print vs export?
+    svgGen.setSize(QSize((int) Rez::guiX(page->getPageWidth()), (int) Rez::guiX(page->getPageHeight())));   //expects pixels, gets mm
+    //"By default this property is set to QSize(-1, -1), which indicates that the generator should not output 
+    // the width and height attributes of the <svg> element."  >> but Inkscape won't read it without size info??
+    svgGen.setViewBox(QRect(0, 0, Rez::guiX(page->getPageWidth()), Rez::guiX(page->getPageHeight())));
+    
+    svgGen.setResolution(Rez::guiX(25.4));    // docs say this is DPI. 1dot/mm so 25.4dpi
 
-// TODO: Was    svgGen.setResolution(25.4000508);    // mm/inch??  docs say this is DPI  //really "user space units/inch"?
-    svgGen.setResolution(25);    // mm/inch??  docs say this is DPI
-
-    //svgGen.setResolution(600);    // resulting page is ~12.5x9mm
-    //svgGen.setResolution(96);     // page is ~78x55mm
     svgGen.setTitle(QObject::tr("FreeCAD SVG Export"));
     svgGen.setDescription(svgDescription);
 
@@ -532,8 +601,8 @@ void QGVPage::saveSvg(QString filename)
     scene()->update();
     viewport()->repaint();
 
-    double width  =  page->getPageWidth();
-    double height =  page->getPageHeight();
+    double width  =  Rez::guiX(page->getPageWidth());
+    double height =  Rez::guiX(page->getPageHeight());
     QRectF sourceRect(0.0,-height,width,height);
     QRectF targetRect;
 

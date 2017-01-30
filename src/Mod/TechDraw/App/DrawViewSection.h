@@ -45,16 +45,16 @@ class Face;
 namespace TechDraw
 {
 class DrawProjGroupItem;
+class DrawGeomHatch;
+class HatchLine;
+class LineSet;
+class DashSet;
 
-
-/** Base class of all View Features in the drawing module
- */
 class TechDrawExport DrawViewSection : public DrawViewPart
 {
     PROPERTY_HEADER(Part::DrawViewSection);
 
 public:
-    /// Constructor
     DrawViewSection(void);
     virtual ~DrawViewSection();
 
@@ -62,23 +62,16 @@ public:
     App::PropertyVector SectionNormal;
     App::PropertyVector SectionOrigin;
     App::PropertyEnumeration SectionDirection;
-    App::PropertyBool   ShowCutSurface;
-    App::PropertyColor  CutSurfaceColor;
-    App::PropertyBool   HatchCutSurface;
-    App::PropertyFile   HatchPattern;
-    App::PropertyColor  HatchColor;
+    App::PropertyFile   FileHatchPattern;
+    App::PropertyString NameGeomPattern;
+    App::PropertyFloat  HatchScale;
     App::PropertyString SectionSymbol;
 
     virtual short mustExecute() const;
     bool isReallyInBox (const Base::Vector3d v, const Base::BoundBox3d bb) const;
-    /** @name methods overide Feature */
-    //@{
-    /// recalculate the Feature
+
     virtual App::DocumentObjectExecReturn *execute(void);
     virtual void onChanged(const App::Property* prop);
-    //@}
-
-    /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
         return "TechDrawGui::ViewProviderViewSection";
     }
@@ -88,11 +81,22 @@ public:
     Base::Vector3d getSectionVector (const std::string sectionName);
     TechDraw::DrawViewPart* getBaseDVP();
     TechDraw::DrawProjGroupItem* getBaseDPGI();
+    virtual void unsetupObject();
+
+    virtual std::vector<TopoDS_Wire> getWireForFace(int idx) const;
+    TopoDS_Compound getSectionFaces() { return sectionFaces;};
+    std::vector<TopoDS_Wire> getSectionFaceWires(void) { return sectionFaceWires; }
+
+    std::vector<LineSet> getDrawableLines(int i = 0);
+    std::vector<HatchLine> getDecodedSpecsFromFile(std::string fileSpec, std::string myPattern);
 
     static const char* SectionDirEnums[];
 
 protected:
     TopoDS_Compound sectionFaces;
+    std::vector<TopoDS_Wire> sectionFaceWires;
+    std::vector<LineSet> m_lineSets;
+
 
     gp_Pln getSectionPlane() const;
     TopoDS_Compound findSectionPlaneIntersections(const TopoDS_Shape& shape);

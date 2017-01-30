@@ -140,7 +140,7 @@ double DrawProjGroupItem::getRotateAngle()
     gp_Ax2 viewAxis;
     Base::Vector3d x = RotationVector.getValue();   //current rotation
     Base::Vector3d nx = x;
-    x.Normalize();
+    nx.Normalize();
     Base::Vector3d na = Direction.getValue();
     na.Normalize();
     Base::Vector3d org(0.0,0.0,0.0);
@@ -158,6 +158,21 @@ double DrawProjGroupItem::getRotateAngle()
         angle *= -1.0;
     }
     return angle;
+}
+
+void DrawProjGroupItem::unsetupObject()
+{
+    if (getGroup() != nullptr) {
+        if (getGroup()->hasProjection(Type.getValueAsString()) ) {
+            if ((getGroup()->getAnchor() == this) &&
+                 !getGroup()->isDeleting() )         {
+                   Base::Console().Warning("Warning - DPG (%s/%s) may be corrupt - Anchor deleted\n",
+                                           getGroup()->getNameInDocument(),getGroup()->Label.getValue());
+                   getGroup()->Anchor.setValue(nullptr);    //this catches situation where DPGI is deleted w/o DPG::removeProjection
+             }
+        }
+    }
+    DrawViewPart::unsetupObject();
 }
 
 PyObject *DrawProjGroupItem::getPyObject(void)

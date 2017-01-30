@@ -61,13 +61,15 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(Source,(0),vgroup,(App::PropertyType)(App::Prop_None),"The View + Face to be hatched");
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(HatchColor,(fcColor),vgroup,App::Prop_None,"The color of the hatch pattern");
+    ADD_PROPERTY_TYPE(HatchScale,(1.0),vgroup,App::Prop_None,"Hatch pattern size adjustment");
+    DirProjection.setStatus(App::Property::ReadOnly,true);
 
     hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Files");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("PatternFile",defaultFileName.c_str()));
+    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
         patternFileName = QString::fromStdString(defaultFileName);
     }
@@ -84,7 +86,8 @@ DrawHatch::~DrawHatch()
 void DrawHatch::onChanged(const App::Property* prop)
 {
     if (prop == &Source         ||
-        prop == &HatchPattern  ||
+        prop == &HatchPattern  ||              //sb VP property?
+        prop == &HatchScale  ||
         prop == &HatchColor) {
         if (!isRestoring()) {
               DrawHatch::execute();

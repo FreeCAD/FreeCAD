@@ -30,6 +30,11 @@
         <file>icons/TechDraw_Dimension_Vertical.svg</file>
         <file>icons/TechDraw_Dimension_Link.svg</file>
         <file>icons/preferences-techdraw.svg</file>
+        <file>icons/arrowdot.svg</file>
+        <file>icons/arrowopendot.svg</file>
+        <file>icons/arrowfilled.svg</file>
+        <file>icons/arrowopen.svg</file>
+        <file>icons/arrowtick.svg</file>
         <file>icons/actions/techdraw-new-default.svg</file>
         <file>icons/actions/techdraw-new-pick.svg</file>
         <file>icons/actions/techdraw-view.svg</file>
@@ -44,6 +49,7 @@
         <file>icons/actions/techdraw-saveSVG.svg</file>
         <file>icons/actions/techdraw-viewsection.svg</file>
         <file>icons/actions/techdraw-hatch.svg</file>
+        <file>icons/actions/techdraw-geomhatch.svg</file>
         <file>icons/actions/techdraw-toggleframe.svg</file>
         <file>icons/actions/techdraw-projgroup.svg</file>
         <file>icons/actions/techdraw-spreadsheet.svg</file>
