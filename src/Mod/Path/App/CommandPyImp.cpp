@@ -74,15 +74,28 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
         PyObject *key, *value;
         Py_ssize_t pos = 0;
         while (parameters && PyDict_Next(parameters, &pos, &key, &value)) {
+#if PY_MAJOR_VERSION >= 3
+            if ( !PyObject_TypeCheck(key,&(PyBytes_Type)) || (!PyObject_TypeCheck(value,&(PyFloat_Type)) && !PyObject_TypeCheck(value,&(PyLong_Type))) ) {
+#else
             if ( !PyObject_TypeCheck(key,&(PyString_Type)) || (!PyObject_TypeCheck(value,&(PyFloat_Type)) && !PyObject_TypeCheck(value,&(PyInt_Type))) ) {
+#endif
                 PyErr_SetString(PyExc_TypeError, "The dictionary can only contain string:number pairs");
                 return -1;
             }
+#if PY_MAJOR_VERSION >= 3
+            std::string ckey = PyBytes_AsString(key);
+#else
             std::string ckey = PyString_AsString(key);
+#endif
             boost::to_upper(ckey);
             double cvalue;
+#if PY_MAJOR_VERSION >= 3
+            if (PyObject_TypeCheck(value,&(PyLong_Type))) {
+                cvalue = (double)PyLong_AsLong(value);
+#else
             if (PyObject_TypeCheck(value,&(PyInt_Type))) {
                 cvalue = (double)PyInt_AsLong(value);
+#endif
             } else {
                 cvalue = PyFloat_AsDouble(value);
             }
@@ -124,7 +137,11 @@ Py::Dict CommandPy::getParameters(void) const
 {
     PyObject *dict = PyDict_New();
     for(std::map<std::string,double>::iterator i = getCommandPtr()->Parameters.begin(); i != getCommandPtr()->Parameters.end(); ++i) {
+#if PY_MAJOR_VERSION >= 3
+        PyDict_SetItem(dict,PyBytes_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
+#else
         PyDict_SetItem(dict,PyString_FromString(i->first.c_str()),PyFloat_FromDouble(i->second));
+#endif
     }
     return Py::Dict(dict);
 }
@@ -135,12 +152,22 @@ void CommandPy::setParameters(Py::Dict arg)
     PyObject *key, *value;
     Py_ssize_t pos = 0;
     while (PyDict_Next(dict_copy, &pos, &key, &value)) {
+#if PY_MAJOR_VERSION >= 3
+        if ( PyObject_TypeCheck(key,&(PyBytes_Type)) && (PyObject_TypeCheck(value,&(PyFloat_Type)) || PyObject_TypeCheck(value,&(PyLong_Type)) ) ) {
+            std::string ckey = PyBytes_AsString(key);
+#else
         if ( PyObject_TypeCheck(key,&(PyString_Type)) && (PyObject_TypeCheck(value,&(PyFloat_Type)) || PyObject_TypeCheck(value,&(PyInt_Type)) ) ) {
             std::string ckey = PyString_AsString(key);
+#endif
             boost::to_upper(ckey);
             double cvalue;
+#if PY_MAJOR_VERSION >= 3
+            if (PyObject_TypeCheck(value,&(PyLong_Type))) {
+                cvalue = (double)PyLong_AsLong(value);
+#else
             if (PyObject_TypeCheck(value,&(PyInt_Type))) {
                 cvalue = (double)PyInt_AsLong(value);
+#endif
             } else {
                 cvalue = PyFloat_AsDouble(value);
             }
@@ -156,7 +183,11 @@ void CommandPy::setParameters(Py::Dict arg)
 PyObject* CommandPy::toGCode(PyObject *args)
 {
     if (PyArg_ParseTuple(args, "")) {
+#if PY_MAJOR_VERSION >= 3
+        return PyBytes_FromString(getCommandPtr()->toGCode().c_str());
+#else
         return PyString_FromString(getCommandPtr()->toGCode().c_str());
+#endif
     }
     throw Py::Exception("This method accepts no argument");
 }
@@ -226,8 +257,13 @@ int CommandPy::setCustomAttributes(const char* attr, PyObject* obj)
         if (isalpha(satt[0])) {
             boost::to_upper(satt);
             double cvalue;
+#if PY_MAJOR_VERSION >= 3
+            if (PyObject_TypeCheck(obj,&(PyLong_Type))) {
+                cvalue = (double)PyLong_AsLong(obj);
+#else
             if (PyObject_TypeCheck(obj,&(PyInt_Type))) {
                 cvalue = (double)PyInt_AsLong(obj);
+#endif
             } else if (PyObject_TypeCheck(obj,&(PyFloat_Type))) {
                 cvalue = PyFloat_AsDouble(obj);
             } else {

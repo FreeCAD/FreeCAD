@@ -82,8 +82,9 @@ def _caller():
     file, line, func, text = traceback.extract_stack(limit=3)[0]
     return os.path.splitext(os.path.basename(file))[0], line, func
 
-def _log(level, (module, line, func), msg):
+def _log(level, module_line_func, msg):
     """internal function to do the logging"""
+    module, line, func = module_line_func
     if getLevel(module) >= level:
         message = "%s.%s: %s" % (module, Level.toString(level), msg)
         if _useConsole:

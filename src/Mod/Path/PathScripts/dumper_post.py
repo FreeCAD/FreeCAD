@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-
+from __future__ import print_function
 
 TOOLTIP='''
 Dumper is an extremely simple postprocessor file for the Path workbench. It is used
@@ -52,9 +52,9 @@ def export(objectslist, filename,argstring):
     for obj in objectslist:
 
         if not hasattr(obj, "Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
-        print "postprocessing..."
+        print("postprocessing...")
         output += parse(obj)
 
     if SHOW_EDITOR:
@@ -68,7 +68,7 @@ def export(objectslist, filename,argstring):
     else:
         final = output
 
-    print "done postprocessing."
+    print("done postprocessing.")
 
 
 def parse(pathobj):
@@ -90,4 +90,4 @@ def parse(pathobj):
             out += str(c) + "\n"
         return out
 
-print __name__ + " gcode postprocessor loaded."
+print(__name__ + " gcode postprocessor loaded.")

@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
 import FreeCAD
 import Path
 from PathScripts import PathUtils
@@ -145,7 +146,7 @@ class ObjectSurface:
                     str(fmt(p.x)) + " Y" + str(fmt(p.y)) + \
                     " Z" + str(fmt(zheight)) + "\n"
                 loopstring += "(loop end)" + "\n"
-                print "    loop ", nloop, " with ", len(loop), " points"
+                print("    loop ", nloop, " with ", len(loop), " points")
                 nloop = nloop + 1
                 waterlinestring += loopstring
             waterlinestring += "(waterline end)" + "\n"
@@ -174,7 +175,7 @@ class ObjectSurface:
         # (see c++ code)
         all_loops = []
         for zh in zheights:
-            print "calculating Waterline at z= ", zh
+            print("calculating Waterline at z= ", zh)
             wl.reset()
             wl.setZ(zh)  # height for this waterline
             wl.run()
@@ -184,10 +185,10 @@ class ObjectSurface:
         n = 0
         output = ""
         for loops in all_loops:  # at each z-height, we may get many loops
-            print "  %d/%d:" % (n, len(all_loops))
+            print("  %d/%d:" % (n, len(all_loops)))
             output += drawLoops(loops)
             n = n + 1
-        print "(" + str(calctime) + ")"
+        print("(" + str(calctime) + ")")
         return output
 
     def _dropcutter(self, obj, s, bb):
@@ -231,11 +232,11 @@ class ObjectSurface:
         t_before = time.time()
         pdc.run()
         t_after = time.time()
-        print "calculation took ", t_after - t_before, " s"
+        print("calculation took ", t_after - t_before, " s")
 
         # retrieve the points
         clp = pdc.getCLPoints()
-        print "points received: " + str(len(clp))
+        print("points received: " + str(len(clp)))
 
         # generate the path commands
         output = ""
@@ -296,7 +297,7 @@ class ObjectSurface:
         mesh = parentJob.Base
         if mesh is None:
             return
-        print "base object: " + mesh.Name
+        print("base object: " + mesh.Name)
 
 
 
@@ -499,13 +500,13 @@ class TaskPanel:
         # get type of object
         if sel.TypeId.startswith('Mesh'):
             # it is a mesh already
-            print 'was already mesh'
+            print('was already mesh')
 
         elif sel.TypeId.startswith('Part') and \
                 (sel.Shape.BoundBox.XLength > 0) and \
                 (sel.Shape.BoundBox.YLength > 0) and \
                 (sel.Shape.BoundBox.ZLength > 0):
-            print 'this is a solid Part object'
+            print('this is a solid Part object')
 
         else:
             FreeCAD.Console.PrintError(
