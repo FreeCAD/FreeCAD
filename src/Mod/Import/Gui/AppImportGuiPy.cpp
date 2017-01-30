@@ -112,6 +112,15 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
+
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/BitmapFactory.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/WaitCursor.h>
+#include <Gui/Selection.h>
+#include <Gui/Command.h>
+
 class OCAFBrowser
 {
 public:
@@ -403,6 +412,19 @@ private:
 
             ImportOCAFExt ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.loadShapes();
+	    // Shape are loaded we must now sort the one we want to display and he one we do 
+	    // want to hide
+            Gui::Document *guiDoc = Gui::Application::Instance->activeDocument();
+	    std::vector<const char *>keep_leaf= ocaf.return_leaf();
+  	    for (std::vector<const char *>::iterator it = keep_leaf.begin() ; it != keep_leaf.end(); ++it)
+    	    {
+              guiDoc->setShow((*it));
+            }
+	    std::vector<const char *>hide_node= ocaf.return_node();
+            for (std::vector<const char *>::iterator it = hide_node.begin() ; it != hide_node.end(); ++it)
+            {
+              guiDoc->setHide((*it));
+            }
             pcDoc->recompute();
         }
         catch (Standard_Failure) {
