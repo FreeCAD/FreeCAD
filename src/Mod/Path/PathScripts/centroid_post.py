@@ -21,6 +21,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+from __future__ import print_function
 TOOLTIP=''' example post for Centroid CNC mill'''
 
 import FreeCAD
@@ -73,7 +74,7 @@ def export(selection,filename,argstring):
     params = ['X','Y','Z','A','B','I','J','F','H','S','T','Q','R','L'] #Using XY plane most of the time so skipping K
     for obj in selection:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
     myMachine = None
     for pathobj in selection:
@@ -85,7 +86,7 @@ def export(selection,filename,argstring):
             else:
                UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this selection"
+        print("No machine found in this selection")
 
     gcode =''
     gcode+= HEADER % (FreeCAD.ActiveDocument.FileName)

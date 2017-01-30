@@ -21,6 +21,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from __future__ import print_function
 import DraftGeomUtils
 import FreeCAD
 import FreeCADGui
@@ -951,7 +952,7 @@ class ViewProviderDressup:
                     if g.Name == self.Object.Base.Name:
                         group.remove(g)
                 i.Group = group
-                print i.Group
+                print(i.Group)
         #FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return [self.Object.Base]
 

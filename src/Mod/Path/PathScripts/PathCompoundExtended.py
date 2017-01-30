@@ -20,6 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
+from __future__ import print_function
 
 import FreeCAD
 import FreeCADGui
@@ -57,7 +58,7 @@ class ObjectCompoundExtended:
 
     def onChanged(self, obj, prop):
         if prop == "Group":
-            print 'check order'
+            print('check order')
         for child in obj.Group:
             if child.isDerivedFrom("Path::Feature"):
                 child.touch()
