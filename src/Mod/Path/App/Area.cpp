@@ -475,6 +475,10 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
         if (!planeFinder.Found())
             continue;
         gp_Ax3 pos = GeomAdaptor_Surface(planeFinder.Surface()).Plane().Position();
+
+        //force plane to be right handed
+        if(!pos.Direct())
+            pos = gp_Ax3(pos.Ax2());
         gp_Dir dir(pos.Direction());
         trsf.SetTransformation(pos);
 
@@ -494,10 +498,17 @@ bool Area::findPlane(const TopoDS_Shape &shape, int type,
                 trsf2.SetTranslationPart(gp_XYZ(0,0,origin.Z()-z));
                 trsf.Multiply(trsf2);
             }
+            gp_Pnt pt = origin.Transformed(TopLoc_Location(trsf));
+            if(fabs(pt.X()) > Precision::Confusion() ||
+               fabs(pt.Y()) > Precision::Confusion() ||
+               fabs(pt.Z()) > Precision::Confusion()) {
+                Base::Console().Warning("wrong transformation %lf, %lf, %lf\n",pt.X(),pt.Y(),pt.Z());
+            }
+
             if(top_found && top_z > z)
                 continue;
             top_found = true;
-            top_z = origin.Z();
+            top_z = z;
         }else if(!dst.IsNull())
             continue;
         dst = plane;
@@ -619,7 +630,7 @@ std::vector<shared_ptr<Area> > Area::makeSections(
                 Part::CrossSection section(a,b,c,it.Current());
                 std::list<TopoDS_Wire> wires = section.slice(-d);
                 if(wires.empty()) {
-                    Base::Console().Warning("Section return no wires\n");
+                    Base::Console().Log("Section returns no wires\n");
                     continue;
                 }
 
