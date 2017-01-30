@@ -431,7 +431,10 @@ class _Site(ArchFloor._Floor):
                 if obj.Perimeter.Value != l:
                     obj.Perimeter = l
         # compute volumes
-        shapesolid = obj.Terrain.Shape.extrude(obj.ExtrusionVector)
+        if obj.Terrain.Shape.Solids:
+            shapesolid = obj.Terrain.Shape.copy()
+        else:
+            shapesolid = obj.Terrain.Shape.extrude(obj.ExtrusionVector)
         addvol = 0
         subvol = 0
         for sub in obj.Subtractions:
