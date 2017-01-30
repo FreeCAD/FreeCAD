@@ -285,6 +285,15 @@ void Document::exportGraphviz(std::ostream& out) const
         std::string getClusterName(const DocumentObject * docObj) const {
             return std::string("cluster") + docObj->getNameInDocument();
         }
+        
+        void setGraphLabel(Graph& g, const DocumentObject* obj) const {
+            std::string name(obj->getNameInDocument());
+            std::string label(obj->Label.getValue());
+            if (name == label)
+                get_property(g, graph_graph_attribute)["label"] = name;
+            else
+                get_property(g, graph_graph_attribute)["label"] = name + "&#92;n(" + label + ")";
+        }
 
         /**
          * @brief setGraphAttributes Set graph attributes on a subgraph for a DocumentObject node.
@@ -295,7 +304,8 @@ void Document::exportGraphviz(std::ostream& out) const
             assert(GraphList[obj] != 0);
             get_property(*GraphList[obj], graph_name) = getClusterName(obj);
             get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
-            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+            get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
+            setGraphLabel(*GraphList[obj], obj);
         }
 
         /**
@@ -393,20 +403,22 @@ void Document::exportGraphviz(std::ostream& out) const
             // Add vertex to graph. Track global and local index
             LocalVertexList[getId(docObj)] = add_vertex(*sgraph);
             GlobalVertexList[getId(docObj)] = vertex_no++;
-
-            // Set node label
-            if (name == label)
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
-            else
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
-                
+               
             // If node is in main graph, style it with rounded corners. If not, make it invisible.
             if (!GraphList[docObj]) {
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "filled";
                 get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["shape"] = "Mrecord";
+                // Set node label
+                if (name == label)
+                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name;
+                else
+                    get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["label"] = name + "&#92;n(" + label + ")";
             }
             else {
-                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["color"] = "none";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["style"] = "invis";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["fixedsize"] = "true";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["width"] = "0";
+                get(vertex_attribute, *sgraph)[LocalVertexList[getId(docObj)]]["height"] = "0";
             }
 
             // Add expressions and its dependencies
@@ -459,6 +471,7 @@ void Document::exportGraphviz(std::ostream& out) const
             auto& sub = graph->create_subgraph();
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
+            setGraphLabel(sub, cs);
  
             for(auto obj : cs->getOutList()) {
                 if(obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId()))
@@ -471,6 +484,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 auto& osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);
+                setGraphLabel(osub, origin);
             }
         }
         
