@@ -78,7 +78,7 @@ QGIFace::QGIFace(int index) :
     setLineWeight(0.5);                   //0 = cosmetic
     
     setPrettyNormal();
-    m_texture = nullptr;                      //empty texture
+    m_texture = QPixmap();                      //empty texture
 
     m_svg = new QGCustomSvg();
 
@@ -101,7 +101,7 @@ void QGIFace::draw()
     if (isHatched()) {   
         if (m_mode == GeomHatchFill) {                             //crosshatch
             if (!m_geomHatchPaths.empty()) {                                  //surrogate for LineSets.empty
-                m_brush.setTexture(nullptr);
+                m_brush.setTexture(QPixmap());
                 m_fillStyle = m_styleDef;
                 m_styleNormal = m_fillStyle;
                 int pathNo = 0;
@@ -121,7 +121,7 @@ void QGIFace::draw()
                 QString ext = hfi.suffix();
                 if (ext.toUpper() == QString::fromUtf8("SVG")) {
                     setFillMode(SvgFill);
-                    m_brush.setTexture(nullptr);
+                    m_brush.setTexture(QPixmap());
                     m_fillStyle = m_styleDef;
                     m_styleNormal = m_fillStyle;
                     loadSvgHatch(m_fileSpec);
@@ -150,7 +150,7 @@ void QGIFace::setPrettyNormal() {
         m_brush.setTexture(m_texture);
     } else {
         m_fillStyle = m_styleNormal;
-        m_brush.setTexture(nullptr);
+        m_brush.setTexture(QPixmap());
         m_brush.setStyle(m_fillStyle);
         m_fillColor = m_colNormalFill;
     }
@@ -158,14 +158,14 @@ void QGIFace::setPrettyNormal() {
 }
 
 void QGIFace::setPrettyPre() {
-    m_brush.setTexture(nullptr);
+    m_brush.setTexture(QPixmap());
     m_fillStyle = m_styleSelect;
     m_fillColor = getPreColor();
     QGIPrimPath::setPrettyPre();
 }
 
 void QGIFace::setPrettySel() {
-    m_brush.setTexture(nullptr);
+    m_brush.setTexture(QPixmap());
     m_fillStyle = m_styleSelect;
     m_fillColor = getSelectColor();
     QGIPrimPath::setPrettySel();
