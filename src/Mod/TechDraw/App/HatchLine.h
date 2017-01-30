@@ -46,7 +46,7 @@ class DrawUtil;
 
 // HatchLine is the result of parsing a line from PAT file into accessible parameters
 // e /HatchLine/PATSpecLine/
-class HatchLine
+class TechDrawExport HatchLine
 {
 public:
     HatchLine();
@@ -59,7 +59,7 @@ public:
     Base::Vector3d getOrigin(void) {return m_origin;}
     double getInterval(void) {return m_interval;}
     double getOffset(void)  {return m_offset;}
-    std::vector<double> getDashParms(void) {return m_dashParms;};
+    std::vector<double> getDashParms(void) {return m_dashParms;}
 
     static std::vector<HatchLine> getSpecsForPattern(std::string& parmFile, std::string& parmName);
     static bool  findPatternStart(std::ifstream& inFile, std::string& parmName);
@@ -80,7 +80,7 @@ private:
 };
 
 // a LineSet is all the generated edges for 1 HatchLine for 1 Face
-class LineSet
+class TechDrawExport LineSet
 {
 public:
     LineSet() {}
@@ -102,7 +102,7 @@ private:
     HatchLine m_hatchLine;
 };
 
-class DashSpec
+class TechDrawExport DashSpec
 {
 public: 
       DashSpec() {}
