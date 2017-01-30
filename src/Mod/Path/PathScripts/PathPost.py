@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 ''' Post Process command that will make use of the Output File and Post Processor entries in PathJob '''
+from __future__ import print_function
 import FreeCAD
 import FreeCADGui
 from PySide import QtCore, QtGui
@@ -190,7 +191,7 @@ class CommandPathPost:
         FreeCADGui.addModule("PathScripts.PathPost")
         # select the Path Job that you want to post output from
         selected = FreeCADGui.Selection.getCompleteSelection()
-        print "in activated %s" %(selected)
+        print("in activated %s" %(selected))
 
         # try to find the job, if it's not directly selected ...
         jobs = set()

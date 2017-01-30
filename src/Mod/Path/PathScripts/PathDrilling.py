@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
 import FreeCAD
 import Path
 import Part
@@ -304,7 +305,7 @@ class ObjectDrilling:
                 else:
                     baselist.append(item)
 
-        print baselist
+        print(baselist)
         obj.Base = baselist
         self.execute(obj)
 

@@ -21,6 +21,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+from __future__ import print_function
 TOOLTIP=''' example post for Centroid CNC mill'''
 
 import FreeCAD
@@ -85,7 +86,7 @@ def export(selection,filename,argstring):
             else:
                UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this selection"
+        print("No machine found in this selection")
 
     gcode =''
     gcode+= HEADER % (FreeCAD.ActiveDocument.FileName)

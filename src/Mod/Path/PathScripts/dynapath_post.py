@@ -24,7 +24,7 @@
 #*   (c) Linden (Linden@aktfast.net) 2016                                  *
 #*                                                                         *
 #***************************************************************************/
-
+from __future__ import print_function
 
 TOOLTIP='''
 This is a postprocessor file for the Path workbench. It is used to
@@ -114,10 +114,10 @@ def export(objectslist,filename,argstring):
     global UNITS
     for obj in objectslist:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
 
-    print "postprocessing..."
+    print("postprocessing...")
     gcode = ""
 
     #Find the machine.
@@ -132,7 +132,7 @@ def export(objectslist,filename,argstring):
             else:
                UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this selection"
+        print("No machine found in this selection")
 
     # write header
     if OUTPUT_HEADER:
@@ -177,7 +177,7 @@ def export(objectslist,filename,argstring):
     else:
         final = gcode
 
-    print "done postprocessing."
+    print("done postprocessing.")
 
     gfile = pythonopen(filename,"wb")
     gfile.write(gcode)
@@ -259,5 +259,5 @@ def parse(pathobj):
 
         return out
 
-print __name__ + " gcode postprocessor loaded."
+print(__name__ + " gcode postprocessor loaded.")
 

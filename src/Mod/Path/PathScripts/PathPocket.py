@@ -154,7 +154,7 @@ class ObjectPocket:
         else:
             baselist.append(item)
         obj.Base = baselist
-        print "this base is: " + str(baselist)
+        print("this base is: " + str(baselist))
         self.execute(obj)
 
     def getStock(self, obj):
@@ -316,7 +316,7 @@ class ObjectPocket:
                             # Otherwise, straight plunge... Don't want to, but sometimes you might not have a choice.
                             # FIXME: At least not with the lazy ramp programming above...
                             else:
-                                print "WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp"
+                                print("WARNING: Straight-plunging... probably not good, but we didn't find a place to helix or ramp")
                                 startPoint = edge.Vertexes[0].Point
                                 output += "G0 Z" + fmt(obj.ClearanceHeight.Value) + "F " + PathUtils.fmt(self.vertRapid) + "\n"
                                 output += "G0 X" + fmt(startPoint.x) + " Y" + fmt(startPoint.y) +\
