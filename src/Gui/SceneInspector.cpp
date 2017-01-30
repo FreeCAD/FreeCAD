@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Inventor/nodes/SoGroup.h>
+# include <Inventor/nodes/SoSeparator.h>
 # include <QHeaderView>
 #endif
 
