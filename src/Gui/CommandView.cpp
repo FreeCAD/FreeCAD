@@ -2519,13 +2519,12 @@ StdCmdSceneInspector::StdCmdSceneInspector()
 void StdCmdSceneInspector::activated(int iMsg)
 {
     Q_UNUSED(iMsg); 
-    View3DInventor* child = qobject_cast<View3DInventor*>(getMainWindow()->activeWindow());
-    if (child) {
-        View3DInventorViewer* viewer = child->getViewer();
+    Gui::Document* doc = Application::Instance->activeDocument();
+    if (doc) {
         static QPointer<Gui::Dialog::DlgInspector> dlg = 0;
         if (!dlg)
             dlg = new Gui::Dialog::DlgInspector(getMainWindow());
-        dlg->setNode(viewer->getSceneGraph());
+        dlg->setDocument(doc);
         dlg->setAttribute(Qt::WA_DeleteOnClose);
         dlg->show();
     }
