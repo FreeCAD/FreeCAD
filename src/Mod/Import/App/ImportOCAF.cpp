@@ -211,10 +211,10 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
                 loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
             }
 
-            if (pcCompound)
+            if (pcCompound) {
                 pcCompound->Links.setValues(localValue);
-
-            lValue.push_back(pcCompound);
+                lValue.push_back(pcCompound);
+            }
         }
     }
 }
