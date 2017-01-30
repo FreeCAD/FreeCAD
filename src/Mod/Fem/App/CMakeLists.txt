@@ -113,8 +113,8 @@ SET(FemScripts_SRCS
     ccxFrdReader.py
     convert2TetGen.py
     importInpMesh.py
+    importVTKResults.py
     importZ88Mesh.py
-    FemResultVTK.py
     Init.py
     InitGui.py
     FemAnalysis.py
