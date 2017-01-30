@@ -27,6 +27,7 @@
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 #include <QGraphicsPathItem>
+#include <QGraphicsRectItem>
 #include <QColor>
 #include <Base/Vector3D.h>
 #include "QGIView.h"

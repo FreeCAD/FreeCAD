@@ -127,11 +127,13 @@ void ViewProviderPage::hide(void)
 void ViewProviderPage::updateData(const App::Property* prop)
 {
     if (prop == &(getDrawPage()->Views)) {
-        if(m_mdiView) {
+        if(m_mdiView &&
+           !getDrawPage()->isDeleting()) {
             m_mdiView->updateDrawing();
         }
     } else if (prop == &(getDrawPage()->Template)) {
-       if(m_mdiView) {
+       if(m_mdiView && 
+          !getDrawPage()->isDeleting()) {
             m_mdiView->updateTemplate();
         }
     }

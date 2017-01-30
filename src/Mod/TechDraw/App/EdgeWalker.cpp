@@ -265,7 +265,7 @@ std::vector<TopoDS_Wire> EdgeWalker::getResultNoDups()
     return fw;
 }
 
-
+//* static *//
 //! make a clean wire with sorted, oriented, connected, etc edges
 TopoDS_Wire EdgeWalker::makeCleanWire(std::vector<TopoDS_Edge> edges, double tol)
 {

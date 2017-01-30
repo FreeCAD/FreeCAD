@@ -41,6 +41,7 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawProjGroup.h>
 
+#include "Rez.h"
 #include "QGIProjGroup.h"
 
 using namespace TechDrawGui;
@@ -180,9 +181,9 @@ void QGIProjGroup::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
             Gui::Command::openCommand("Drag Projection Group");
             //TODO: See if these commands actually handle the horizontal/vertical constraints properly...
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.X = %f",
-                                    getViewObject()->getNameInDocument(), x());
+                                    getViewName(), Rez::appX(x()));
             Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Y = %f",
-                                    getViewObject()->getNameInDocument(), getY());// inverts Y
+                                    getViewName(), Rez::appX(getY()));// inverts Y
             Gui::Command::commitCommand();
             //Gui::Command::updateActive();
         }
