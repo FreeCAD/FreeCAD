@@ -573,7 +573,7 @@ def getInfo(filename):
             if files[0] == "Document.xml":
                 html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
-                doc = zfile.read(files[0])
+                doc = str(zfile.read(files[0]))
                 doc = doc.replace("\n"," ")
                 author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
                 if author: 
