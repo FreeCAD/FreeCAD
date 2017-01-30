@@ -35,12 +35,12 @@ class PostProcessor:
     def load(cls, processor):
         postname = processor + "_post"
 
-        exec "import %s as current_post" % postname
+        exec("import %s as current_post" % postname)
         # make sure the script is reloaded if it was previously loaded
         # should the script have been imported for the first time above
         # then the initialization code of the script gets executed twice
         # resulting in 2 load messages if the script outputs one of those.
-        exec "reload(%s)" % 'current_post'
+        exec("reload(%s)" % 'current_post')
 
         instance = PostProcessor(current_post)
         instance.units = None

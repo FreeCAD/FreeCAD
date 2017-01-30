@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
 import FreeCAD
 import xml.sax
 import FreeCADGui
@@ -254,8 +255,8 @@ class ToolLibraryManager():
             if listname == "<Main>":
                 self.saveMainLibrary(tt)
             return True
-        except Exception, e:
-            print "could not parse file", e
+        except Exception as e:
+            print("could not parse file", e)
 
     def write(self, filename, listname):
         "exports the tooltable to a file"
@@ -266,14 +267,14 @@ class ToolLibraryManager():
                 file.write('<?xml version="1.0" encoding="UTF-8"?>\n')
                 file.write(tt.Content)
                 file.close()
-                print "Written ", unicode(filename[0])
+                print("Written ", unicode(filename[0]))
 
-            except Exception, e:
-                print "Could not write file:", e
+            except Exception as e:
+                print("Could not write file:", e)
 
     def addnew(self, listname, tool, position = None):
         "adds a new tool at the end of the table"
-        print listname, tool, position
+        print(listname, tool, position)
         tt = self._findList(listname)
         if position is None:
             tt.addTools(tool)
@@ -413,7 +414,7 @@ class EditorPanel():
 
     def addTool(self):
         t = Path.Tool()
-        print ("adding a new tool")
+        print("adding a new tool")
         editform = FreeCADGui.PySideUic.loadUi(":/panels/ToolEdit.ui")
 
         r = editform.exec_()

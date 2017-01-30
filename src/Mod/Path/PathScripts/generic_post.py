@@ -22,6 +22,7 @@
 #*                                                                         *
 #***************************************************************************
 
+from __future__ import print_function
 TOOLTIP='''Post processor for Maho M 600E mill
 
 Machines with Philips or Heidenhain control should be very easy to adapt.
@@ -285,7 +286,7 @@ def export(selection,filename,argstring):
         modalParamsDict[mp] = None
     for obj in selection:
         if not hasattr(obj,"Path"):
-            print "the object " + obj.Name + " is not a path. Please select only path and Compounds."
+            print("the object " + obj.Name + " is not a path. Please select only path and Compounds.")
             return
     myMachine = None
     for pathobj in selection:
@@ -297,7 +298,7 @@ def export(selection,filename,argstring):
             else:
                UNITS = "G20"
     if myMachine is None:
-        print "No machine found in this selection"
+        print("No machine found in this selection")
 
     gcode =''
     gcode+= mkHeader(selection)

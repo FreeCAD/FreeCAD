@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 '''PathKurveUtils - functions needed for using libarea (created by Dan Heeks) for making simple CNC profile paths '''
+from __future__ import print_function
 import Part
 import math
 import area
@@ -142,7 +143,7 @@ def profile(curve, side_of_line, radius=1.0, vertfeed=0.0, horizfeed=0.0, offset
 
     output = ""
     output += "G0 Z" + str(clearance) + "\n"
-    print "in profile: 151"
+    print("in profile: 151")
     offset_curve = area.Curve(curve)
     if offset_curve.getNumVertices() <= 1:
         raise Exception, "Sketch has no elements!"
@@ -338,10 +339,10 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
                         using_area_for_offset = True
                         a = area.Area()
                         a.append(curve)
-                        print "curve, offset: " , str(curve), str(offset)
+                        print("curve, offset: " , str(curve), str(offset))
                         a.Offset(-offset)
                         for curve in a.getCurves():
-                            print "result curve: ", curve
+                            print("result curve: ", curve)
                             curve_cw = curve.IsClockwise()
                             if cw != curve_cw:
                                 curve.Reverse()
