@@ -57,6 +57,8 @@ def insert(filename, docname):
 def import_z88_disp(filename, analysis=None, result_name_prefix=None):
     '''insert a FreeCAD FEM Result object in the ActiveDocument
     '''
+    if result_name_prefix is None:
+        result_name_prefix = ''
     m = read_z88_disp(filename)
     if(len(m['Nodes']) > 0):
         if analysis is None:
