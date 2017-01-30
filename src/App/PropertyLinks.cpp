@@ -291,8 +291,14 @@ void PropertyLinkList::Save(Base::Writer &writer) const
 {
     writer.Stream() << writer.ind() << "<LinkList count=\"" << getSize() << "\">" << endl;
     writer.incInd();
-    for (int i = 0; i<getSize(); i++)
-        writer.Stream() << writer.ind() << "<Link value=\"" << _lValueList[i]->getNameInDocument() << "\"/>" << endl;;
+    for (int i = 0; i<getSize(); i++) {
+        DocumentObject* obj = _lValueList[i];
+        if (obj)
+            writer.Stream() << writer.ind() << "<Link value=\"" << obj->getNameInDocument() << "\"/>" << endl;
+        else
+            writer.Stream() << writer.ind() << "<Link value=\"\"/>" << endl;
+    }
+
     writer.decInd();
     writer.Stream() << writer.ind() << "</LinkList>" << endl;
 }
