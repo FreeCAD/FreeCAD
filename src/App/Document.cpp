@@ -77,7 +77,6 @@ recompute path. Also enables more complicated dependencies beyond trees.
 #include <QCoreApplication>
 #include <QCryptographicHash>
 
-
 #include "Document.h"
 #include "Application.h"
 #include "DocumentObject.h"
@@ -242,7 +241,7 @@ void Document::exportGraphviz(std::ostream& out) const
     class GraphCreator {
     public:
 
-        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0) {
+        GraphCreator(struct DocumentP* _d) : d(_d), vertex_no(0), seed(std::random_device()()), distribution(0,255) {
             build();
         }
 
@@ -471,6 +470,11 @@ void Document::exportGraphviz(std::ostream& out) const
             auto& sub = graph->create_subgraph();
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
+            
+            std::stringstream stream;
+            stream << "#" << std::hex << distribution(seed) << distribution(seed) << distribution(seed) << 80;
+            get_property(sub, graph_graph_attribute)["bgcolor"] = stream.str();
+            get_property(sub, graph_graph_attribute)["style"] = "rounded,filled";
             setGraphLabel(sub, cs);
  
             for(auto obj : cs->getOutList()) {
@@ -484,6 +488,7 @@ void Document::exportGraphviz(std::ostream& out) const
                 auto& osub = sub.create_subgraph();
                 GraphList[origin] = &osub;
                 get_property(osub, graph_name) = getClusterName(origin);
+                get_property(osub, graph_graph_attribute)["bgcolor"] = "none";
                 setGraphLabel(osub, origin);
             }
         }
@@ -730,6 +735,9 @@ void Document::exportGraphviz(std::ostream& out) const
         std::map<std::string, Vertex> GlobalVertexList;
         std::set<const DocumentObject*> objects;
         std::map<const DocumentObject*, Graph*> GraphList;
+        //random color generation
+        std::mt19937 seed;
+        std::uniform_int_distribution<int> distribution;
     };
 
     GraphCreator g(d);
