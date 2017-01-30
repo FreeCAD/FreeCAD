@@ -26,15 +26,16 @@ __title__ = "FreeCAD Result import and export VTK file library"
 __author__ = "Qingfeng Xia"
 __url__ = "http://www.freecadweb.org"
 
+## @package FemResultVTK
+#  \ingroup FEM
 
 import os
-from math import pow, sqrt
-import numpy as np
-
 import FreeCAD
+
 
 if open.__module__ == '__builtin__':
     pyopen = open  # because we'll redefine open below
+
 
 def insert(filename, docname):
     "called when freecad wants to import a file"
@@ -51,8 +52,10 @@ def open(filename):
     docname = os.path.splitext(os.path.basename(filename))[0]
     insert(filename, docname)
 
+
 def importFemResult(filename):
     FreeCAD.Console.PrintError("FemResult import is not implemented, actually not necessary\n")
+
 
 def export(objectslist, filename):
     "called when freecad exports a fem result object"
