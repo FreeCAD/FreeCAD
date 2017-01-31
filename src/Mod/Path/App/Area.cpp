@@ -729,7 +729,10 @@ void Area::build() {
         return;
     }
 
+#ifdef AREA_TRACE_ENABLE
     TIME_INIT(t);
+#endif
+
     getPlane();
 
     try {
@@ -806,7 +809,7 @@ void Area::build() {
             myArea = std::move(area.myArea);
         }
 
-        TIME_PRINT(t,"prepare");
+        TIME_TRACE(t,"prepare");
 
     }catch(...) {
         clean();
@@ -1283,7 +1286,7 @@ TopoDS_Shape Area::toShape(const CArea &area, bool fill, const gp_Trsf *trsf) {
 }
 
 struct WireInfo {
-    TopoDS_Shape wire;
+    TopoDS_Wire wire;
     gp_Pnt pend;
     gp_Pnt pstart;
 };
@@ -1296,15 +1299,14 @@ struct GetWires {
     void operator()(const TopoDS_Shape &shape, int type) {
         WireInfo info;
         if(type == TopAbs_WIRE)
-            info.wire = shape;
+            info.wire = TopoDS::Wire(shape);
         else
             info.wire = BRepBuilderAPI_MakeWire(TopoDS::Edge(shape)).Wire();
 
-        BRepTools_WireExplorer xp(TopoDS::Wire(shape));
+        BRepTools_WireExplorer xp(info.wire);
         info.pstart = BRep_Tool::Pnt(xp.CurrentVertex());
         for(;xp.More();xp.Next());
         info.pend = BRep_Tool::Pnt(xp.CurrentVertex());
-        info.wire = shape;
         wires.push_back(info);
     }
 };
@@ -1349,18 +1351,16 @@ struct ShapeInfo{
                 BRepExtrema_DistShapeShape extss(v,wire);
                 if(extss.IsDone() && extss.NbSolution()) {
                     d = extss.Value();
-                    p = extss.PointOnShape2(0);
-                    support = extss.SupportOnShape2(0);
-                    support_edge = extss.SupportTypeShape2(0)==BRepExtrema_IsOnEdge;
+                    p = extss.PointOnShape2(1);
+                    support = extss.SupportOnShape2(1);
+                    support_edge = extss.SupportTypeShape2(1)==BRepExtrema_IsOnEdge;
                     done = true;
                 }else
                     AREA_WARN("BRepExtrema_DistShapeShape failed");
             }
             if(!done){
-                double d1 = p.Distance(it->pstart);
-                double d2 = p.Distance(it->pend);
-                AREA_TRACE("start "<<AREA_PT(it->pstart)<<", " << d1 <<
-                        AREA_PT(it->pend)<<", " <<d2);
+                double d1 = pt.Distance(it->pstart);
+                double d2 = pt.Distance(it->pend);
                 if(d1<d2) {
                     d = d1;
                     p = it->pstart;
@@ -1388,24 +1388,31 @@ struct ShapeInfo{
 
     //Assumes nearest() has been called. Rebased the best wire
     //to begin with the best point. Currently only works with closed wire
-    TopoDS_Shape rebaseWire(gp_Pnt &pend) {
+    TopoDS_Shape rebaseWire(gp_Pnt &pend, double min_dist) {
+        AREA_TRACE("rebase wire");
         BRepBuilderAPI_MakeWire mkWire;
         TopoDS_Shape estart;
         TopoDS_Edge eend;
+
+        if(min_dist < Precision::Confusion())
+            min_dist = Precision::Confusion();
+
         for(int state=0;state<3;++state) {
             BRepTools_WireExplorer xp(TopoDS::Wire(myBestWire->wire));
             pend = BRep_Tool::Pnt(xp.CurrentVertex());
 
             //checking the case of bestpoint == wire start
             if(state==0 && !mySupportEdge && pend.Distance(myBestPt)<Precision::Confusion()) {
+                AREA_TRACE("keep start");
                 pend = myBestWire->pend;
                 return myBestWire->wire;
             }
 
             gp_Pnt pt;
             for(;xp.More();xp.Next(),pend=pt) {
-                //state==2 means we are in second pass. estart marks the new start of the wire
-                if(state==2 && estart.IsSame(xp.Current()))
+                //state==2 means we are in second pass. estart marks the new start of the wire.
+                //so seeing estart means we're done
+                if(state==2 && estart.IsEqual(xp.Current()))
                     break;
 
                 BRepAdaptor_Curve curve(xp.Current());
@@ -1421,12 +1428,50 @@ struct ShapeInfo{
                 if(mySupportEdge) {
                     //if best point is on some edge, break the edge in half
                     if(xp.Current().IsEqual(mySupport)) {
-                        estart = mySupport;
-                        state = 1;
-                        eend = BRepBuilderAPI_MakeEdge(curve.Curve().Curve(), pend, myBestPt);
-                        mkWire.Add(BRepBuilderAPI_MakeEdge(curve.Curve().Curve(), myBestPt, pt));
+                        double d1 = pend.Distance(myBestPt);
+                        double d2 = pt.Distance(myBestPt);
+
+                        if(d1>min_dist && d2>min_dist) {
+                            BRepBuilderAPI_MakeEdge mkEdge1,mkEdge2;
+                            if(reversed) {
+                                mkEdge1.Init(curve.Curve().Curve(), myBestPt, myBestPt);
+                                mkEdge2.Init(curve.Curve().Curve(), pt, myBestPt);
+                            }else{
+                                mkEdge1.Init(curve.Curve().Curve(), pend, myBestPt);
+                                mkEdge2.Init(curve.Curve().Curve(), myBestPt, pt);
+                            }
+                            if(mkEdge1.IsDone() && mkEdge2.IsDone()) {
+                                if(reversed) {
+                                    eend = TopoDS::Edge(mkEdge1.Edge().Reversed());
+                                    mkWire.Add(TopoDS::Edge(mkEdge2.Edge().Reversed()));
+                                }else{
+                                    eend = mkEdge1.Edge();
+                                    mkWire.Add(mkEdge2.Edge());
+                                }
+                                estart = mySupport;
+                                state = 1;
+                                AREA_TRACE("edge broken "<<AREA_PT(pend)<<", " << AREA_PT(myBestPt)
+                                        << ", " << AREA_PT(pt) << ", " << d1 << ", "  << d2);
+                                continue;
+                            }
+                            AREA_WARN("edge break failed "<<AREA_PT(pend)<<", " << AREA_PT(myBestPt)
+                                    << ", " << AREA_PT(pt) << ", " << d1 << ", " << d2);
+                        }
+
+                        if(d1<d2) {
+                            AREA_TRACE("break edge->start");
+                            estart = xp.Current();
+                            state = 1;
+                            mkWire.Add(xp.Current());
+                        }else{
+                            AREA_TRACE("break edge->end");
+                            mySupportEdge = false;
+                            myBestPt = pt;
+                            continue;
+                        }
                     }
                 }else if(myBestPt.Distance(pend)<Precision::Confusion()){
+                    AREA_TRACE("break vertex");
                     //if best point is on some vertex
                     estart = xp.Current();
                     state = 1;
@@ -1443,13 +1488,14 @@ struct ShapeInfo{
         return myBestWire->wire;
     }
 
-    std::list<TopoDS_Shape> sortWires(gp_Pnt &pend) {
+    std::list<TopoDS_Shape> sortWires3D(gp_Pnt &pend,double min_dist) {
         std::list<TopoDS_Shape> wires;
         while(true) {
             AREA_TRACE("3D sort pt " << AREA_PT(myBestPt));
             if(myRebase) {
                 AREA_TRACE("3D sort rebase");
-                wires.push_back(rebaseWire(pend));
+                pend = myBestPt;
+                wires.push_back(rebaseWire(pend,min_dist));
             }else if(!myStart){
                 AREA_TRACE("3D sort reverse");
                 wires.push_back(myBestWire->wire.Reversed());
@@ -1619,7 +1665,7 @@ std::list<TopoDS_Shape> Area::sortWires(const std::list<TopoDS_Shape> &shapes,
                 0,-1,&pstart,&pend, PARAM_FIELDS(PARAM_FARG,AREA_PARAMS_SORT)));
             AREA_TIME_2D5;
         }else{
-            wires.splice(wires.end(),best_it->sortWires(pend));
+            wires.splice(wires.end(),best_it->sortWires3D(pend,min_dist));
             AREA_TIME_3D;
         }
         pstart = pend;

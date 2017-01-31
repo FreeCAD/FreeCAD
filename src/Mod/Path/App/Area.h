@@ -51,7 +51,7 @@
 #define AREA_PT(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
 #define AREA_PT2(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
 #ifdef AREA_TRACE_ENABLE
-#   define AREA_TRACE AREA_LOG
+#   define AREA_TRACE(_msg) AREA_LOG('('<<__LINE__<<"): " <<_msg)
 #else
 #   define AREA_TRACE(...) do{}while(0)
 #endif
@@ -69,11 +69,16 @@
 #define TIME_INIT2(_t1,_t2) TIME_INIT(_t1),_t2=_t1
 #define TIME_INIT3(_t1,_t2,_t3) TIME_INIT(_t1),_t2=_t1,_t3=_t1
 
-#define DURATION_PRINT(_d,_msg) \
-    AREA_LOG(_msg<< " time: " << _d.count()<<'s');
+#define _DURATION_PRINT(_l,_d,_msg) \
+    AREA_##_l(_msg<< " time: " << _d.count()<<'s');
+
+#define DURATION_PRINT(_d,_msg) _DURATION_PRINT(LOG,_d,_msg)
 
 #define TIME_PRINT(_t,_msg) \
     DURATION_PRINT(Path::getDuration(_t),_msg);
+
+#define TIME_TRACE(_t,_msg) \
+    _DURATION_PRINT(TRACE,Path::getDuration(_t),_msg);
 
 #define DURATION_INIT(_d) \
     std::chrono::TIME_UNIT _d(0)
