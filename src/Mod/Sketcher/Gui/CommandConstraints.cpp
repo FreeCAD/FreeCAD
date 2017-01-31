@@ -244,8 +244,8 @@ void finishDistanceConstraint(Gui::Command* cmd, Sketcher::SketchObject* sketch,
 
 void showNoConstraintBetweenExternal()
 {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                             QObject::tr("Cannot add a constraint between two external geometries!"));    
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                         QObject::tr("Cannot add a constraint between two external geometries!"));    
 }
 
 bool checkBothExternal(int GeoId1, int GeoId2)
@@ -833,7 +833,7 @@ class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerGenConstraint(const char* cursor[], CmdSketcherConstraint *_cmd)
-        : constraintCursor(cursor), cmd(_cmd) {}
+        : constraintCursor(cursor), cmd(_cmd), selFilterGate(nullptr) {}
     virtual ~DrawSketchHandlerGenConstraint()
     {
         Gui::Selection().rmvSelectionGate();
@@ -841,13 +841,11 @@ public:
 
     virtual void activated(ViewProviderSketch *)
     {
-        ongoingSequences = new std::set<int>(); //TODO: make it contain more values
-        _tempOnSequences = new std::set<int>();
         selFilterGate = new GenericConstraintSelection(sketchgui->getObject());
 
         resetOngoingSequences();
 
-        selSeq = *(new std::vector<SelIdPair>());
+        selSeq.clear();
 
         Gui::Selection().rmvSelectionGate();
         Gui::Selection().addSelectionGate(selFilterGate);
@@ -922,10 +920,10 @@ public:
                                           onSketchPos.x,
                                           onSketchPos.y,
                                           0.f);
-            _tempOnSequences->clear();
+            _tempOnSequences.clear();
             allowedSelTypes = 0;
-            for (std::set<int>::iterator token = ongoingSequences->begin();
-                 token != ongoingSequences->end(); ++token) {
+            for (std::set<int>::iterator token = ongoingSequences.begin();
+                 token != ongoingSequences.end(); ++token) {
                 if ((cmd->allowedSelSequences).at(*token).at(seqIndex) == newSelType) {
                     if (seqIndex == (cmd->allowedSelSequences).at(*token).size()-1) {
                         // TODO: One of the sequences is completed. Pass to cmd->applyConstraint
@@ -936,7 +934,7 @@ public:
 
                         return true;
                     }
-                    _tempOnSequences->insert(*token);
+                    _tempOnSequences.insert(*token);
                     allowedSelTypes = allowedSelTypes | (cmd->allowedSelSequences).at(*token).at(seqIndex+1);
                 }
             }
@@ -960,14 +958,14 @@ protected:
     int allowedSelTypes = 0;
 
     /// indices of currently ongoing sequences in cmd->allowedSequences
-    std::set<int> *ongoingSequences, *_tempOnSequences;
+    std::set<int> ongoingSequences, _tempOnSequences;
     /// Index within the selection sequences active
     unsigned int seqIndex;
 
     void resetOngoingSequences() {
-        ongoingSequences->clear();
+        ongoingSequences.clear();
         for (unsigned int i = 0; i < cmd->allowedSelSequences.size(); i++) {
-            ongoingSequences->insert(i);
+            ongoingSequences.insert(i);
         }
         seqIndex = 0;
 
@@ -1276,6 +1274,9 @@ void CmdSketcherConstrainVertical::activated(int iMsg)
     if (selection.size() != 1) {
 //        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
 //            QObject::tr("Select an edge from the sketch."));
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
