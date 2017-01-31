@@ -77,6 +77,13 @@ same algorithm</UserDocu>
         <UserDocu>Get current algorithm parameters as a dictionary.</UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="abort" Keyword="true">
+      <Documentation>
+          <UserDocu>abort(aborting=True): Static method to abort any ongoing operation\n
+To ensure no stray abortion is left in the previous operaion, it is advised to manually
+clear the aborting flag by calling abort(False) before starting a new operation. </UserDocu>
+      </Documentation>
+    </Methode>
     <Attribute Name="Sections" ReadOnly="true">
         <Documentation>
             <UserDocu>List of sections in this area.</UserDocu>

@@ -108,6 +108,8 @@ CAreaConfig::~CAreaConfig() {
 
 TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass);
 
+bool Area::s_aborting;
+
 Area::Area(const AreaParams *params)
 :myHaveFace(false)
 ,myHaveSolid(false)

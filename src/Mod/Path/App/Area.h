@@ -44,6 +44,10 @@
     str << "Path.Area: " << _msg;\
     Base::Console()._l("%s\n",str.str().c_str());\
     qApp->sendPostedEvents();\
+    if(Area::aborted()) {\
+        Area::abort(false);\
+        throw Base::AbortException("operation aborted");\
+    }\
 }while(0)
 
 #define AREA_LOG(_msg) _AREA_LOG(Log,_msg)
@@ -195,6 +199,7 @@ protected:
     bool myHaveSolid;
     bool myShapeDone;
     int mySkippedShapes;
+    static bool s_aborting;
 
     /** Called internally to combine children shapes for further processing */
     void build();
@@ -431,6 +436,14 @@ public:
     static void toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
             const AreaParams *params=NULL, const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
+
+    static void abort(bool aborting) {
+        s_aborting  = aborting;
+    }
+
+    static bool aborted() {
+        return s_aborting;
+    }
 
     PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
 };
