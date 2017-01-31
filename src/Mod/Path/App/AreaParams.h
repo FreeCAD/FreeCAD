@@ -155,8 +155,8 @@
 
 #define AREA_PARAMS_MIN_DIST \
     ((double, min_dist, MinDistance, 0.0, \
-        "minimum distance for the generated new wires. Wires maybe broken if the algorithm see fits.\n"\
-        "Set to zero to disable wire breaking."))
+        "minimum distance for the generated new wires. Wires maybe broken if the\n"\
+        "algorithm see fits. Set to zero to disable wire breaking."))
 
 /** Area wire sorting parameters */
 #define AREA_PARAMS_SORT \
