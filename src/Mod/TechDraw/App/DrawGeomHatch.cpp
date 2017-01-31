@@ -52,6 +52,10 @@
 #include <TopTools.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 #include <TopExp.hxx>
+#include <Precision.hxx>
+
+#include <cmath>
+
 #endif
 
 #include <App/Application.h>
@@ -59,6 +63,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "HatchLine.h"
 #include "DrawUtil.h"
@@ -73,6 +78,10 @@ using namespace TechDraw;
 using namespace TechDrawGeometry;
 using namespace std;
 
+App::PropertyFloatConstraint::Constraints DrawGeomHatch::scaleRange = {Precision::Confusion(),
+                                                                       std::numeric_limits<double>::max(),
+                                                                       pow(10,- Base::UnitsApi::getDecimals())};
+
 PROPERTY_SOURCE(TechDraw::DrawGeomHatch, App::DocumentObject)
 
 
@@ -84,6 +93,7 @@ DrawGeomHatch::DrawGeomHatch(void)
     ADD_PROPERTY_TYPE(FilePattern ,(""),vgroup,App::Prop_None,"The crosshatch pattern file for this area");
     ADD_PROPERTY_TYPE(NamePattern,(""),vgroup,App::Prop_None,"The name of the pattern");
     ADD_PROPERTY_TYPE(ScalePattern,(1.0),vgroup,App::Prop_None,"GeomHatch pattern size adjustment");
+    ScalePattern.setConstraints(&scaleRange);
 
     getParameters();
 
