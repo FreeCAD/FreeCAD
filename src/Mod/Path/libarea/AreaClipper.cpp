@@ -3,7 +3,6 @@
 // implements CArea methods using Angus Johnson's "Clipper"
 
 #include "Area.h"
-#include "clipper.hpp"
 using namespace ClipperLib;
 
 #define TPolygon Path
@@ -81,10 +80,10 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 		else
 			Segments=(int)ceil(-phit/dphi);
 
-		if (Segments < 1)
-			Segments=1;
-		if (Segments > 100)
-			Segments=100;
+        if (Segments < CArea::m_min_arc_points)
+            Segments = CArea::m_min_arc_points;
+        if (Segments > CArea::m_max_arc_points)
+            Segments=CArea::m_max_arc_points;
 
 		dphi=phit/(Segments);
 
@@ -303,6 +302,10 @@ static void MakePolyPoly( const CArea& area, TPolyPolygon &pp, bool reverse = tr
 	{
 		pts_for_AddVertex.clear();
 		const CCurve& curve = *It;
+
+        if(!curve.m_vertices.size()) continue;
+        if(!curve.IsClosed()) AddVertex(curve.m_vertices.front(),NULL);
+
 		const CVertex* prev_vertex = NULL;
 		for(std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)
 		{
@@ -338,6 +341,10 @@ static void MakePoly(const CCurve& curve, TPolygon &p)
 {
 	pts_for_AddVertex.clear();
 	const CVertex* prev_vertex = NULL;
+
+    if(!curve.m_vertices.size()) return;
+    if(!curve.IsClosed()) AddVertex(curve.m_vertices.front(),NULL);
+
 	for (std::list<CVertex>::const_iterator It2 = curve.m_vertices.begin(); It2 != curve.m_vertices.end(); It2++)
 	{
 		const CVertex& vertex = *It2;
@@ -469,6 +476,30 @@ void CArea::Offset(double inwards_value)
 	OffsetWithLoops(pp, pp2, inwards_value * m_units);
 	SetFromResult(*this, pp2, false);
 	this->Reorder();
+}
+
+void CArea::OffsetWithClipper(double offset, 
+                              JoinType joinType/* =jtRound */,
+                              EndType endType/* =etOpenRound */,
+                              double miterLimit/*  = 5.0 */,
+                              double roundPrecision/*  = 0.0 */)
+{
+    offset *= m_units*Clipper4Factor;
+    if(roundPrecision == 0.0) {
+        // Clipper roundPrecision definition:
+        // http://www.angusj.com/delphi/clipper/documentation/Docs/Units/ClipperLib/Classes/ClipperOffset/Properties/ArcTolerance.htm
+        double dphi=PI/CArea::m_def_arc_points;
+        roundPrecision = (1.0-cos(dphi))*fabs(offset);
+    }
+    ClipperOffset clipper(miterLimit,roundPrecision);
+	TPolyPolygon pp, pp2;
+	MakePolyPoly(*this, pp, false);
+    int i=0;
+    for(const CCurve &c : m_curves) 
+        clipper.AddPath(pp[i++],joinType,c.IsClosed()?etClosedPolygon:endType);
+    clipper.Execute(pp2,(long64)(offset));
+	SetFromResult(*this, pp2, false);
+    this->Reorder();
 }
 
 void CArea::Thicken(double value)

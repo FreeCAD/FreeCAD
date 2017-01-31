@@ -9,7 +9,10 @@
 #include "kurve/geometry.h"
 
 const Point operator*(const double &d, const Point &p){ return p * d;}
-double Point::tolerance = 0.001;
+
+// Change the tolerance to be the same as OCC Precision::Confusion()
+// double Point::tolerance = 0.001;
+double Point::tolerance = 1e-7;
 
 //static const double PI = 3.1415926535897932; duplicated in kurve/geometry.h
 
@@ -146,7 +149,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 	{
 		if(arc_found)
 		{
-			if(arc.AlmostALine())
+            if(arc.AlmostALine())
 			{
 				new_vertices.push_back(CVertex(arc.m_e, arc.m_user_data));
 			}
@@ -173,6 +176,7 @@ void CCurve::AddArcOrLines(bool check_for_arc, std::list<CVertex> &new_vertices,
 					new_vertices.push_back(*v);
 				}
 			}
+            arc_found = false;
 			might_be_an_arc.clear();
 			if(check_for_arc)might_be_an_arc.push_back(back_vt);
 		}
@@ -280,10 +284,10 @@ void CCurve::UnFitArcs()
 				else
 					Segments=(int)ceil(-phit/dphi);
 
-				if (Segments < 1)
-					Segments=1;
-				if (Segments > 100)
-					Segments=100;
+				if (Segments < CArea::m_min_arc_points)
+					Segments = CArea::m_min_arc_points;
+				if (Segments > CArea::m_max_arc_points)
+					Segments=CArea::m_max_arc_points;
 
 				dphi=phit/(Segments);
 

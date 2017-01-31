@@ -81,6 +81,8 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
 
     bool is_2d = d->offset->isDerivedFrom(Part::Offset2D::getClassTypeId());
     d->ui.selfIntersection->setVisible(!is_2d);
+    d->ui.algoType->setVisible(is_2d);
+    d->ui.labelAlgo->setVisible(is_2d);
     if(is_2d)
         d->ui.modeType->removeItem(2);//remove Recto-Verso mode, not supported by 2d offset
 
@@ -91,6 +93,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.selfIntersection->blockSignals(block);
     d->ui.modeType->blockSignals(block);
     d->ui.joinType->blockSignals(block);
+    d->ui.algoType->blockSignals(block);
     d->ui.spinOffset->blockSignals(block);
 
     //read values from feature
@@ -104,6 +107,9 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     long join = offset->Join.getValue();
     if (join >= 0 && join < d->ui.joinType->count())
         d->ui.joinType->setCurrentIndex(join);
+    long algo = offset->Algo.getValue();
+    if (algo >= 0 && algo < d->ui.algoType->count())
+        d->ui.algoType->setCurrentIndex(algo);
 
     //unblock signals
     block = false;
@@ -112,6 +118,7 @@ OffsetWidget::OffsetWidget(Part::Offset* offset, QWidget* parent)
     d->ui.selfIntersection->blockSignals(block);
     d->ui.modeType->blockSignals(block);
     d->ui.joinType->blockSignals(block);
+    d->ui.algoType->blockSignals(block);
     d->ui.spinOffset->blockSignals(block);
 
     d->ui.spinOffset->bind(d->offset->Value);
@@ -144,6 +151,13 @@ void OffsetWidget::on_modeType_activated(int val)
 void OffsetWidget::on_joinType_activated(int val)
 {
     d->offset->Join.setValue((long)val);
+    if (d->ui.updateView->isChecked())
+        d->offset->getDocument()->recomputeFeature(d->offset);
+}
+
+void OffsetWidget::on_algoType_activated(int val)
+{
+    d->offset->Algo.setValue((long)val);
     if (d->ui.updateView->isChecked())
         d->offset->getDocument()->recomputeFeature(d->offset);
 }
@@ -189,6 +203,8 @@ bool OffsetWidget::accept()
             name.c_str(),d->ui.modeType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Join = %i",
             name.c_str(),d->ui.joinType->currentIndex());
+        Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Algo = %i",
+            name.c_str(),d->ui.algoType->currentIndex());
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.Intersection = %s",
             name.c_str(),d->ui.intersection->isChecked() ? "True" : "False");
         Gui::Command::doCommand(Gui::Command::Doc,"App.ActiveDocument.%s.SelfIntersection = %s",

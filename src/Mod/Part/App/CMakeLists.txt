@@ -28,6 +28,7 @@ set(Part_LIBS
     ${OCC_LIBRARIES}
     ${OCC_DEBUG_LIBRARIES}
     FreeCADApp
+    area-native
 )
 
 if(FREETYPE_FOUND)
@@ -360,6 +361,8 @@ SET(Part_SRCS
     FaceMakerCheese.h
     FaceMakerBullseye.cpp
     FaceMakerBullseye.h
+    LibArea.cpp
+    LibArea.h
 )
 
 SET(Part_Scripts

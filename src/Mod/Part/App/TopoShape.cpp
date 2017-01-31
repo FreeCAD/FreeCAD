@@ -172,7 +172,6 @@
 #include <Base/Tools.h>
 #include <Base/Console.h>
 
-
 #include "TopoShape.h"
 #include "CrossSection.h"
 #include "TopoShapeFacePy.h"
@@ -183,6 +182,7 @@
 #include "Tools.h"
 #include "encodeFilename.h"
 #include "FaceMakerBullseye.h"
+#include "LibArea.h"
 
 using namespace Part;
 
@@ -2190,10 +2190,16 @@ TopoDS_Shape TopoShape::makeOffsetShape(double offset, double tol, bool intersec
     return outputShape;
 }
 
-TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, bool allowOpenResult, bool intersection) const
+TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, 
+        bool allowOpenResult, bool intersection, int algo) const
 {
     if (_Shape.IsNull())
         throw Base::ValueError("makeOffset2D: input shape is null!");
+
+    if(algo && intersection)
+        return Libarea::makeOffset(
+                _Shape,offset,joinType,fill,allowOpenResult,algo-1);
+
     if (allowOpenResult && OCC_VERSION_HEX < 0x060900)
         throw Base::AttributeError("openResult argument is not supported on OCC < 6.9.0.");
 
@@ -2221,7 +2227,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             //simply recursively process the children, independently
             TopoDS_Iterator it(_Shape);
             for( ; it.More() ; it.Next()){
-                shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection, algo) );
                 forceOutputCompound = true;
             }
         } else {
@@ -2230,7 +2236,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
             for( ; it.More() ; it.Next()){
                 if(it.Value().ShapeType() == TopAbs_COMPOUND){
                     //recursively process subcompounds
-                    shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection) );
+                    shapesToReturn.push_back( TopoShape(it.Value()).makeOffset2D(offset, joinType, fill, allowOpenResult, intersection,algo) );
                     forceOutputCompound = true;
                 } else {
                     shapesToProcess.push_back(it.Value());
@@ -2303,29 +2309,37 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //do the offset..
         TopoDS_Shape offsetShape;
-        BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
+        if (fabs(offset) > Precision::Confusion()){
+            if(algo) {
+                Libarea area(workingPlane);
+                for(TopoDS_Wire &w : sourceWires)
+                    area.Add(w);
+                return area.Offset(offset,algo-1,
+                        GeomAbs_JoinType(joinType),allowOpenResult,fill);
+            }else{
+                try {
+#if defined(__GNUC__) && defined (FC_OS_LINUX)
+                    Base::SignalException se;
+#endif
+                    BRepOffsetAPI_MakeOffset mkOffset(sourceWires[0], GeomAbs_JoinType(joinType)
 #if OCC_VERSION_HEX >= 0x060900
                                                 , allowOpenResult
 #endif
-                                               );
-        for(TopoDS_Wire &w : sourceWires)
-            if (&w != &(sourceWires[0])) //filter out first wire - it's already added
-                mkOffset.AddWire(w);
+                                        );
+                    for(TopoDS_Wire &w : sourceWires)
+                        if (&w != &(sourceWires[0])) //filter out first wire - it's already added
+                            mkOffset.AddWire(w);
 
-        if (fabs(offset) > Precision::Confusion()){
-            try {
-    #if defined(__GNUC__) && defined (FC_OS_LINUX)
-                Base::SignalException se;
-    #endif
-                mkOffset.Perform(offset);
+                        mkOffset.Perform(offset);
+                    offsetShape = mkOffset.Shape();
+                }
+                catch (Standard_Failure &){
+                    throw;
+                }
+                catch (...) {
+                    throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
+                }
             }
-            catch (Standard_Failure &){
-                throw;
-            }
-            catch (...) {
-                throw Base::Exception("BRepOffsetAPI_MakeOffset has crashed! (Unknown exception caught)");
-            }
-            offsetShape = mkOffset.Shape();
 
             if(offsetShape.IsNull())
                 throw Base::Exception("makeOffset2D: result of offseting is null!");
@@ -2351,13 +2365,11 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         std::list<TopoDS_Wire> wiresForMakingFaces;
         if (!fill){
-            if (haveFaces){
-                wiresForMakingFaces = offsetWires;
-            } else {
-                for(TopoDS_Wire &w : offsetWires)
-                    shapesToReturn.push_back(w);
-            }
-        } else {
+            for(TopoDS_Wire &w : offsetWires)
+                shapesToReturn.push_back(w);
+        } else if(haveFaces){
+            wiresForMakingFaces = offsetWires;
+        }else{
             //fill offset
             if (fabs(offset) < Precision::Confusion())
                 throw Base::ValueError("makeOffset2D: offset distance is zero. Can't fill offset.");
@@ -2425,7 +2437,6 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 //we want the connection order to be
                 //v1 -> openWire1 -> v2 -> (new edge) -> v4 -> openWire2(rev) -> v3 -> (new edge) -> v1
                 //let's check if it's the case. If not, we reverse one wire and swap its endpoints.
-
                 if (fabs(gp_Vec(BRep_Tool::Pnt(v2), BRep_Tool::Pnt(v3)).Magnitude() - fabs(offset)) <= BRep_Tool::Tolerance(v2) + BRep_Tool::Tolerance(v3)){
                     openWire2.Reverse();
                     std::swap(v3, v4);
@@ -2462,18 +2473,23 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
 
         //make faces
         if (wiresForMakingFaces.size()>0){
-            FaceMakerBullseye mkFace;
-            mkFace.setPlane(workingPlane);
-            for(TopoDS_Wire &w : wiresForMakingFaces){
-                mkFace.addWire(w);
-            }
-            mkFace.Build();
-            if (mkFace.Shape().IsNull())
-                throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
-            TopoDS_Shape result = mkFace.Shape();
-            if (haveFaces && shapesToProcess.size() == 1)
-                result.Orientation(shapesToProcess[0].Orientation());
+            TopoDS_Shape result;
+            try{
+                FaceMakerBullseye mkFace;
+                mkFace.setPlane(workingPlane);
+                for(TopoDS_Wire &w : wiresForMakingFaces)
+                    mkFace.addWire(w);
+                mkFace.Build();
+                if (mkFace.Shape().IsNull())
+                    throw Base::Exception("makeOffset2D: making face failed (null shape returned).");
+                result = mkFace.Shape();
+                if (haveFaces && shapesToProcess.size() == 1)
+                    result.Orientation(shapesToProcess[0].Orientation());
 
+            }catch (Base::Exception &e){
+                Base::Console().Warning("FaceMakerBullseye failed: %s\n", e.what());
+                result = offsetShape;
+            }
             ShapeExtend_Explorer xp;
             Handle_TopTools_HSequenceOfShape result_leaves = xp.SeqFromCompound(result, Standard_True);
             for(int i = 0; i < result_leaves->Length(); ++i)

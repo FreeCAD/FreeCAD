@@ -7,6 +7,7 @@
 #define AREA_HEADER
 
 #include "Curve.h"
+#include "clipper.hpp"
 
 enum PocketMode
 {
@@ -43,6 +44,9 @@ public:
 	static double m_accuracy;
 	static double m_units; // 1.0 for mm, 25.4 for inches. All points are multiplied by this before going to the engine
 	static bool m_fit_arcs;
+    static int m_min_arc_points;
+    static int m_def_arc_points;
+    static int m_max_arc_points;
 	static double m_processing_done; // 0.0 to 100.0, set inside MakeOnePocketCurve
 	static double m_single_area_processing_length;
 	static double m_after_MakeOffsets_length;
@@ -58,6 +62,11 @@ public:
 	static CArea UniteCurves(std::list<CCurve> &curves);
 	void Xor(const CArea& a2);
 	void Offset(double inwards_value);
+    void OffsetWithClipper(double offset, 
+                            ClipperLib::JoinType joinType=ClipperLib::jtRound, 
+                            ClipperLib::EndType endType=ClipperLib::etOpenRound,
+                            double miterLimit = 5.0, 
+                            double roundPrecision = 0.0);
 	void Thicken(double value);
 	void FitArcs();
 	unsigned int num_curves(){return static_cast<int>(m_curves.size());}
