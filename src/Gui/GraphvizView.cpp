@@ -193,7 +193,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
     QProcess * flatProc = thread->unflattenProcess();
     QStringList args, flatArgs;
     args << QLatin1String("-Tsvg");
-    flatArgs << QLatin1String("-c3 -l3");
+    flatArgs << QLatin1String("-c2 -l3");
 
 #ifdef FC_OS_LINUX
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
@@ -299,9 +299,10 @@ void GraphvizView::disconnectSignals()
 QByteArray GraphvizView::exportGraph(const QString& format)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Paths");
-    QProcess proc;
-    QStringList args;
+    QProcess dotProc, flatProc;
+    QStringList args, flatArgs;
     args << QString::fromLatin1("-T%1").arg(format);
+    flatArgs << QLatin1String("-c2 -l3");
 
 #ifdef FC_OS_LINUX
     QString path = QString::fromUtf8(hGrp->GetASCII("Graphviz", "/usr/bin").c_str());
@@ -311,21 +312,33 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 
 #ifdef FC_OS_WIN32
     QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
+    QString unflatten = QString::fromLatin1("\"%1/unflatten\"").arg(path);
 #else
     QString exe = QString::fromLatin1("%1/dot").arg(path);
+    QString unflatten = QString::fromLatin1("%1/unflatten").arg(path);
 #endif
-    proc.setEnvironment(QProcess::systemEnvironment());
-    proc.start(exe, args);
-    if (!proc.waitForStarted()) {
+    flatProc.setEnvironment(QProcess::systemEnvironment());
+    flatProc.start(unflatten, flatArgs);
+    if (!flatProc.waitForStarted()) {
+        return QByteArray();
+    }
+    flatProc.write(graphCode.c_str(), graphCode.size());
+    flatProc.closeWriteChannel();
+    if (!flatProc.waitForFinished())
+        return QByteArray();
+    
+    dotProc.setEnvironment(QProcess::systemEnvironment());
+    dotProc.start(exe, args);
+    if (!dotProc.waitForStarted()) {
         return QByteArray();
     }
 
-    proc.write(graphCode.c_str(), graphCode.size());
-    proc.closeWriteChannel();
-    if (!proc.waitForFinished())
+    dotProc.write(flatProc.readAll());
+    dotProc.closeWriteChannel();
+    if (!dotProc.waitForFinished())
         return QByteArray();
 
-    return proc.readAll();
+    return dotProc.readAll();
 }
 
 bool GraphvizView::onMsg(const char* pMsg,const char**)
