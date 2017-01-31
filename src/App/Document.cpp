@@ -471,9 +471,14 @@ void Document::exportGraphviz(std::ostream& out) const
             GraphList[cs] = &sub;
             get_property(sub, graph_name) = getClusterName(cs);
             
+            //build random color string
             std::stringstream stream;
-            stream << "#" << std::hex << distribution(seed) << distribution(seed) << distribution(seed) << 80;
-            get_property(sub, graph_graph_attribute)["bgcolor"] = stream.str();
+            stream << "#" << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed)
+                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) 
+                   << std::setfill('0') << std::setw(2)<< std::hex << distribution(seed) << 80;
+            std::string result(stream.str());
+
+            get_property(sub, graph_graph_attribute)["bgcolor"] = result;
             get_property(sub, graph_graph_attribute)["style"] = "rounded,filled";
             setGraphLabel(sub, cs);
  
