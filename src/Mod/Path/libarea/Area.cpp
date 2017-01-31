@@ -73,8 +73,8 @@ Point CArea::NearestPoint(const Point& p)const
 	return best_point;
 }
 
-void CArea::ChangeStartToNearest(const Point *point, double min_dist) {
-
+void CArea::ChangeStartToNearest(const Point *point, double min_dist) 
+{
 	for(std::list<CCurve>::iterator It=m_curves.begin(),ItNext=It; 
             It != m_curves.end(); It=ItNext) 
     {
@@ -99,8 +99,22 @@ void CArea::ChangeStartToNearest(const Point *point, double min_dist) {
         for(; It != m_curves.end(); ++It)
         {
             const CCurve& curve = *It;
-            Point near_point = curve.NearestPoint(p);
-            double dist = near_point.dist(p);
+            Point near_point;
+            double dist;
+            if(min_dist>Point::tolerance && !curve.IsClosed()) {
+                double d1 = curve.m_vertices.front().m_p.dist(p);
+                double d2 = curve.m_vertices.back().m_p.dist(p);
+                if(d1<d2) {
+                    dist = d1;
+                    near_point = curve.m_vertices.front().m_p;
+                }else{
+                    dist = d2;
+                    near_point = curve.m_vertices.back().m_p;
+                }
+            }else{
+                near_point = curve.NearestPoint(p);
+                dist = near_point.dist(p);
+            }
             if(dist < best_dist)
             {
                 best_dist = dist;
@@ -110,13 +124,16 @@ void CArea::ChangeStartToNearest(const Point *point, double min_dist) {
         }
         if(ItBest->IsClosed()) {
             ItBest->ChangeStart(best_point);
-        }else if(ItBest->m_vertices.back().m_p.dist(best_point)<=min_dist) {
-            ItBest->Reverse();
-        }else if(ItBest->m_vertices.front().m_p.dist(best_point)>min_dist) {
-            ItBest->Break(best_point);
-            m_curves.push_back(*ItBest);
-            m_curves.back().ChangeEnd(best_point);
-            ItBest->ChangeStart(best_point);
+        }else{
+            double dfront = ItBest->m_vertices.front().m_p.dist(best_point);
+            double dback = ItBest->m_vertices.back().m_p.dist(best_point);
+            if(min_dist>Point::tolerance && dfront>min_dist && dback>min_dist) {
+                ItBest->Break(best_point);
+                m_curves.push_back(*ItBest);
+                m_curves.back().ChangeEnd(best_point);
+                ItBest->ChangeStart(best_point);
+            }else if(dfront>dback)
+                ItBest->Reverse();
         }
         curves.splice(curves.end(),m_curves,ItBest);
         p = curves.back().m_vertices.back().m_p;

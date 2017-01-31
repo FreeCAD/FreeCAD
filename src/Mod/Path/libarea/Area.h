@@ -85,7 +85,7 @@ public:
 	void CurveIntersections(const CCurve& curve, std::list<Point> &pts)const; 
 	void InsideCurves(const CCurve& curve, std::list<CCurve> &curves_inside)const;
 
-    void ChangeStartToNearest(const Point *point=NULL, double min_dist=1.0);
+    void ChangeStartToNearest(const Point *pstart=NULL, double min_dist=1.0);
 
     //Avoid outside direct accessing static member variable because of Windows DLL issue
 #define CAREA_PARAM_DECLARE(_type,_name) \
