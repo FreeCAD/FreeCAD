@@ -238,14 +238,17 @@ void DlgGeneralImp::loadSettings()
         }
     }
 
-    int size = QApplication::style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     int current = getMainWindow()->iconSize().width();
-    this->toolbarIconSize->addItem(tr("Default (%1 x %1)").arg(size), QVariant((int)size));
-    this->toolbarIconSize->addItem(tr("Small (%1 x %1)").arg(16), QVariant((int)16));
-    this->toolbarIconSize->addItem(tr("Large (%1 x %1)").arg(32), QVariant((int)32));
-    this->toolbarIconSize->addItem(tr("Extra large (%1 x %1)").arg(48), QVariant((int)48));
+    this->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
+    this->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
+    this->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
+    this->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
     index = this->toolbarIconSize->findData(QVariant(current));
-    if (index > -1) this->toolbarIconSize->setCurrentIndex(index);
+    if (index < 0) {
+        this->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
+        index = this->toolbarIconSize->findData(QVariant(current));
+    } 
+    this->toolbarIconSize->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
