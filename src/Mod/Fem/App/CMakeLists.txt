@@ -113,7 +113,9 @@ SET(FemScripts_SRCS
     ccxFrdReader.py
     convert2TetGen.py
     importInpMesh.py
+    importVTKResults.py
     importZ88Mesh.py
+    importZ88Results.py
     Init.py
     InitGui.py
     FemAnalysis.py
@@ -139,7 +141,6 @@ SET(FemScripts_SRCS
     FemMaterial.py
     FemSelectionObserver.py
     TestFem.py
-    z88DispReader.py
     TaskPanelFemBeamSection.ui
     TaskPanelFemMeshGmsh.ui
     TaskPanelFemMeshGroup.ui
