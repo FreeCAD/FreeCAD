@@ -54,7 +54,7 @@ public:
     App::PropertyLinkSub     Source;                                   //the dvX & face(s) this crosshatch belongs to
     App::PropertyFile        FilePattern;
     App::PropertyString      NamePattern;
-    App::PropertyFloat       ScalePattern;
+    App::PropertyFloatConstraint ScalePattern;
 
     virtual short mustExecute() const;
     virtual App::DocumentObjectExecReturn *execute(void);
@@ -79,6 +79,8 @@ protected:
     std::vector<LineSet> m_lineSets;
 
 private:
+    static App::PropertyFloatConstraint::Constraints scaleRange;
+
 };
 
 typedef App::FeaturePythonT<DrawGeomHatch> DrawGeomHatchPython;

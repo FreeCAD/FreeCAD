@@ -48,7 +48,7 @@ public:
 
     App::PropertyFloat X;
     App::PropertyFloat Y;
-    App::PropertyFloat Scale;
+    App::PropertyFloatConstraint Scale;
 
     App::PropertyEnumeration ScaleType;
     App::PropertyFloat Rotation;
@@ -62,6 +62,7 @@ public:
     virtual void onDocumentRestored();
     virtual short mustExecute() const;
     //@}
+    void Restore(Base::XMLReader &reader);
 
     bool isInClip();
 
@@ -90,6 +91,7 @@ protected:
 
 private:
     static const char* ScaleTypeEnums[];
+    static App::PropertyFloatConstraint::Constraints scaleRange;
 };
 
 typedef App::FeaturePythonT<DrawView> DrawViewPython;
