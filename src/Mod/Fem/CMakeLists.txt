@@ -116,13 +116,16 @@ INSTALL(
 
         # solver Z88
         importZ88Mesh.py
-        z88DispReader.py
+        importZ88Results.py
         FemInputWriterZ88.py
         FemToolsZ88.py
         FemSolverZ88.py
         _FemSolverZ88.py
         _ViewProviderFemSolverZ88.py
         _CommandSolverZ88.py
+
+        # additional imports and exports
+        importVTKResults.py
 
     DESTINATION
         Mod/Fem
