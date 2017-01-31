@@ -100,10 +100,23 @@ static const AreaDoc myDocs[] = {
     },
 };
 
-struct AreaPyDoc {
-    AreaPyDoc() {
+static PyObject * abortArea(PyObject *, PyObject *args, PyObject *kwd) {
+    static char *kwlist[] = {"aborting", NULL};
+    PyObject *pObj = Py_True;
+    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O",kwlist,&pObj))
+        return 0;
+    Area::abort(PyObject_IsTrue(pObj));
+    return Py_None;
+}
+
+struct AreaPyModifier {
+    AreaPyModifier() {
         for(PyMethodDef &method : Path::AreaPy::Methods) {
             if(!method.ml_name) continue;
+            if(std::strcmp(method.ml_name,"abort")==0) {
+                method.ml_meth = (PyCFunction)abortArea;
+                method.ml_flags |= METH_STATIC;
+            }
             for(const AreaDoc &doc : myDocs) {
                 if(std::strcmp(method.ml_name,doc.name)==0) {
                     method.ml_doc = doc.doc;
@@ -114,7 +127,7 @@ struct AreaPyDoc {
     }
 };
 
-static AreaPyDoc doc;
+static AreaPyModifier mod;
 
 namespace Part {
 extern PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape);
@@ -376,6 +389,10 @@ PyObject* AreaPy::getParams(PyObject *args)
     return dict;
 }
 
+PyObject* AreaPy::abort(PyObject *, PyObject *) {
+    return 0;
+}
+
 PyObject* AreaPy::getParamsDesc(PyObject *args, PyObject *keywds)
 {
     PyObject *pcObj = Py_True;
@@ -424,5 +441,3 @@ int AreaPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }
-
-
