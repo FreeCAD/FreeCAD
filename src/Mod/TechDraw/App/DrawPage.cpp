@@ -27,12 +27,15 @@
 # include <sstream>
 # include <iostream>
 # include <iterator>
+#include <Precision.hxx>
+#include <cmath>
 #endif
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -56,6 +59,10 @@ using namespace std;
 //===========================================================================
 // DrawPage
 //===========================================================================
+
+App::PropertyFloatConstraint::Constraints DrawPage::scaleRange = {Precision::Confusion(),
+                                                                  std::numeric_limits<double>::max(),
+                                                                  pow(10,- Base::UnitsApi::getDecimals())};
 
 PROPERTY_SOURCE(TechDraw::DrawPage, App::DocumentObject)
 
@@ -87,7 +94,7 @@ DrawPage::DrawPage(void)
     }
 
     ADD_PROPERTY_TYPE(Scale, (1.0), group, App::Prop_None, "Scale factor for this Page");
-    //TODO: Page should create itself with default Template instead of Cmd figuring it out?
+    Scale.setConstraints(&scaleRange);
 }
 
 DrawPage::~DrawPage()
@@ -328,9 +335,75 @@ void DrawPage::unsetupObject()
     }
     Views.setValues(emptyViews);
 
+    //no template crash here?? if Template.getValue is null or invalid, this will fail.
     std::string templateName = Template.getValue()->getNameInDocument();
     Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
                                           docName.c_str(), templateName.c_str());
     Template.setValue(nullptr);
 }
+
+void DrawPage::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* schemaProp = getPropertyByName(PropName);
+        try {
+            if(schemaProp){
+                if (strcmp(schemaProp->getTypeId().getName(), TypeName) == 0){        //if the property type in obj == type in schema
+                    schemaProp->Restore(reader);                                      //nothing special to do
+                } else  {
+                    if (strcmp(PropName, "Scale") == 0) {
+                        if (schemaProp->isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId())){  //right property type
+                            schemaProp->Restore(reader);                                                  //nothing special to do
+                        } else {                                                                //Scale, but not PropertyFloatConstraint
+                            App::PropertyFloat tmp;
+                            if (strcmp(tmp.getTypeId().getName(),TypeName)) {                   //property in file is Float
+                                tmp.setContainer(this);
+                                tmp.Restore(reader);
+                                double tmpValue = tmp.getValue();
+                                if (tmpValue > 0.0) {
+                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(tmpValue);
+                                } else {
+                                    static_cast<App::PropertyFloatConstraint*>(schemaProp)->setValue(1.0);
+                                }
+                            } else {
+                                // has Scale prop that isn't Float! 
+                                Base::Console().Log("DrawPage::Restore - old Document Scale is Not Float!\n");
+                                // no idea
+                            }
+                        }
+                    } else {
+                        Base::Console().Log("DrawPage::Restore - old Document has unknown Property\n");
+                    }
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("PropertyContainer::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
+}
+
 
