@@ -114,6 +114,7 @@ SET(FemScripts_SRCS
     convert2TetGen.py
     importInpMesh.py
     importZ88Mesh.py
+    FemResultVTK.py
     Init.py
     InitGui.py
     FemAnalysis.py
