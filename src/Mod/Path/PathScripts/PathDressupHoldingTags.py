@@ -49,7 +49,7 @@ LOG_MODULE = 'PathDressupHoldingTags'
 
 if FreeCAD.GuiUp:
     from pivy import coin
-    from PySide import QtCore
+    from PySide import QtGui
 
 def debugEdge(edge, prefix, force = False):
     if force or PathLog.getLevel(LOG_MODULE) == PathLog.Level.DEBUG:
