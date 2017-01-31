@@ -423,7 +423,8 @@ void QGIViewPart::drawViewPart()
                     newFace->setHatchColor(fHatch->HatchColor.getValue());
                 }
             } 
-            newFace->setDrawEdges(true);
+            bool drawEdges = getFaceEdgesPref();
+            newFace->setDrawEdges(drawEdges);                                        //pref. for debugging only
             newFace->setZValue(ZVALUE::FACE);
             newFace->draw();
             newFace->setPrettyNormal();
@@ -926,4 +927,13 @@ void QGIViewPart::dumpPath(const char* text,QPainterPath path)
 QRectF QGIViewPart::boundingRect() const
 {
     return childrenBoundingRect();
+}
+
+bool QGIViewPart::getFaceEdgesPref(void)
+{
+    bool result = false;
+    Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
+        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/General");
+    result = hGrp->GetBool("DrawFaceEdges", 0l);
+    return result;
 }
