@@ -69,12 +69,12 @@ public:
     }
 
 public:
-    //int getMattingStyle() const {return m_mattingStyle;}
+    double getFudgeRadius(void);
 
 protected:
     Base::Vector3d toR3(const gp_Ax2 fromSystem, const Base::Vector3d fromPoint);
     void getParameters(void);
-    //int m_mattingStyle;
+    double m_fudge;
 
 };
 

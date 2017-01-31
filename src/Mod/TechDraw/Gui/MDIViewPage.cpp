@@ -38,6 +38,9 @@
     #include <QPrinter>
     #include <QPrintDialog>
     #include <QPrintPreviewDialog>
+    #include <boost/signal.hpp>
+    #include <boost/bind.hpp>
+
 #endif  // #ifndef _PreComp_
 
 #include <math.h>
@@ -77,6 +80,7 @@
 #include <Mod/TechDraw/App/DrawViewSymbol.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 
+#include "Rez.h"
 #include "QGIDrawingTemplate.h"
 #include "QGIView.h"
 #include "QGIViewPart.h"
@@ -145,6 +149,12 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
         m_view->scene(), SIGNAL(selectionChanged()),
         this           , SLOT  (selectionChanged())
        );
+       
+    //get informed by App side about deleted DocumentObjects
+    App::Document* appDoc = m_vpPage->getDocument()->getDocument();
+    auto bnd = boost::bind(&MDIViewPage::onDeleteObject, this, _1);
+    connectDeletedObject = appDoc->signalDeletedObject.connect(bnd);
+
 
      // A fresh page is added and we iterate through its collected children and add these to Canvas View  -MLP
      // if docobj is a featureviewcollection (ex orthogroup), add its child views. if there are ever children that have children,
@@ -169,8 +179,8 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
     auto pageTemplate( dynamic_cast<TechDraw::DrawTemplate *>(obj) );
     if( pageTemplate ) {
         //make sceneRect 1 pagesize bigger in every direction
-        double width  =  pageTemplate->Width.getValue();
-        double height =  pageTemplate->Height.getValue();
+        double width  =  Rez::guiX(pageTemplate->Width.getValue());
+        double height =  Rez::guiX(pageTemplate->Height.getValue());
         m_view->scene()->setSceneRect(QRectF(-width,-2.0 * height,3.0*width,3.0*height));
         attachTemplate(pageTemplate);
         viewAll();
@@ -180,6 +190,7 @@ MDIViewPage::MDIViewPage(ViewProviderPage *pageVp, Gui::Document* doc, QWidget* 
 
 MDIViewPage::~MDIViewPage()
 {
+    connectDeletedObject.disconnect();
 }
 
 
@@ -254,8 +265,8 @@ void MDIViewPage::attachTemplate(TechDraw::DrawTemplate *obj)
 
 QPointF MDIViewPage::getTemplateCenter(TechDraw::DrawTemplate *obj)
 {
-    double cx  =  obj->Width.getValue()/2.0;
-    double cy =  -obj->Height.getValue()/2.0;
+    double cx  =  Rez::guiX(obj->Width.getValue())/2.0;
+    double cy =  -Rez::guiX(obj->Height.getValue())/2.0;
     QPointF result(cx,cy);
     return result;
 }
@@ -317,7 +328,23 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
     return (qview != nullptr);
 }
 
+void MDIViewPage::removeView(QGIView *view)
+{
+    (void) m_view->removeView(view);
+}
 
+void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
+{
+    if (obj.isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
+        const App::DocumentObject* objPtr = &obj;
+        const TechDraw::DrawView* dv = static_cast<const TechDraw::DrawView*>(objPtr);
+        TechDraw::DrawPage* dvPg = dv->findParentPage();
+        if (dvPg == m_vpPage->getDrawPage()) {
+            //this is a DV that is on our page
+            (void) m_view->removeView(dv);
+        }
+    }
+}
 
 void MDIViewPage::updateTemplate(bool forceUpdate)
 {
@@ -347,10 +374,19 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 
 void MDIViewPage::updateDrawing(bool forceUpdate)
 {
-   // We cannot guarantee if the number of graphical representations (QGIVxxxx) have changed so check the number (MLP)
+    // We cannot guarantee if the number of graphical representations (QGIVxxxx) have changed so check the number (MLP)
+    // WF: this should be fixed now with onDeletedObject signal from App side?
+    // WF: the QGVP views list may still not be 100% reliable
+    // TODO: build list of QGIV's from scene everytime? 
+    //logging counters
+//    int qgvpIn = 0;
+//    int qgvpValid = 0;
+//    int qgvpClean = 0;
+//    int dpIn = 0;
     const std::vector<QGIView *> &graphicsList = m_view->getViews();
+//    qgvpIn = graphicsList.size();
     const std::vector<App::DocumentObject*> &pageChildren  = m_vpPage->getDrawPage()->Views.getValues();
-
+   
     // Count total # DocumentObjects in Page
     unsigned int docObjCount = 0;
     for(std::vector<App::DocumentObject*>::const_iterator it = pageChildren.begin(); it != pageChildren.end(); ++it) {
@@ -361,7 +397,12 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
         }
         docObjCount += 1;
     }
-
+//    dpIn = docObjCount;
+    
+    
+    //TODO: should prune QGVP.views first always, then check if view in Page missing QGIVP
+    //      this makes assumption that = numbers mean everythign is OK, but could be double failure - 1 extra QGIV, 1 DV missing graphics!
+    
     if(graphicsList.size() < docObjCount) {
         // there are more DocumentObjects than graphical representations (QGIVxxxx's)
         // Find which DocumentObjects have no graphical representation (QGIVxxxx)
@@ -373,31 +414,50 @@ void MDIViewPage::updateDrawing(bool forceUpdate)
             attachView(*it);
         }
     } else if(graphicsList.size() > docObjCount) {
-        // There are more graphical representations (QGIVxxxx) than DocumentObjects
-        // Remove the orphans
-        std::vector<QGIView *>::const_iterator itGraphics = graphicsList.begin();
+        // prune any invalid entries in QGVP.views
+        // TODO: revisit this mess.  is it still required with onDeletedItem signal implementation?
         std::vector<QGIView *> newGraphicsList;
-        bool fnd = false;
-        while(itGraphics != graphicsList.end()) {
-            fnd = orphanExists((*itGraphics)->getViewName(), pageChildren);
-            if(fnd) {
-                newGraphicsList.push_back(*itGraphics);
-            } else {
-                if (m_view->scene() == (*itGraphics)->scene()) {
-                    (*itGraphics)->hide();
-                    m_view->scene()->removeItem(*itGraphics);
-                } else {   // this "shouldn't" happen, but it does
-                    Base::Console().Log("ERROR - MDIViewPage::updateDrawing - %s already removed from QGraphicsScene\n",
-                                        (*itGraphics)->getViewName());
+        QList<QGraphicsItem *> items = m_view->scene()->items();
+        for (auto& v: graphicsList) {              //check that everything in QGVP views is valid
+            for (auto& i:items) {
+                if (v == i) {                      //this one is OK
+                    newGraphicsList.push_back(v);
+                    break;
                 }
             }
-            itGraphics++;
         }
-
-        // Update the QGVPage (QGraphicsView) list of QGIVxxxx
-        m_view->setViews(newGraphicsList);
+//        qgvpValid = newGraphicsList.size();
+        //newGraphicsList now only contains valid QGIV's
+        //now prune the ones without docObjs
+        std::vector<QGIView *> cleanItems;
+        for (auto& i: newGraphicsList) {
+            std::string viewName = (i->data(1).toString()).toStdString();
+            App::DocumentObject* dObj = getAppDocument()->getObject(viewName.c_str());
+            if (dObj == nullptr) {
+                //need to remove from group/scene
+                QGraphicsItemGroup* grp = i->group();
+                if (grp) {
+                    grp->removeFromGroup(i);
+                }
+                if (i->parentItem()) {    //not top level
+                    i->setParentItem(0);
+                }
+                if (i->scene()) {
+                    i->scene()->removeItem(i);
+                }
+                //should delete i too to prevent leak?  might be garbage pointer, though. 
+                //add to delete list and delete outside of loop
+           } else {
+               QGIView* v = static_cast<QGIView*>(i);
+               cleanItems.push_back(v);
+           }
+        }
+//    qgvpClean = cleanItems.size();
+    m_view->setViews(cleanItems);       
+//    Base::Console().Message("Log - MDIVP::updateDrawing pruning: docObjs: %d views in: %d valid views: %d views out: %d\n",
+//                            dpIn,qgvpIn,qgvpValid, qgvpClean);
     }
-
+    
     // Update all the QGIVxxxx
     const std::vector<QGIView *> &upviews = m_view->getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
@@ -421,7 +481,7 @@ void MDIViewPage::redraw1View(TechDraw::DrawView* dv)
     std::string dvName = dv->getNameInDocument();
     const std::vector<QGIView *> &upviews = m_view->getViews();
     for(std::vector<QGIView *>::const_iterator it = upviews.begin(); it != upviews.end(); ++it) {
-        std::string qgivName = (*it)->getViewObject()->getNameInDocument();
+        std::string qgivName = (*it)->getViewName();
         if(dvName == qgivName) {
             (*it)->updateView(true);
         }
@@ -457,7 +517,7 @@ bool MDIViewPage::hasQView(App::DocumentObject *obj)
 
     while(qview != views.end()) {
         // Unsure if we can compare pointers so rely on name
-        if(strcmp((*qview)->getViewObject()->getNameInDocument(), obj->getNameInDocument()) == 0) {
+        if(strcmp((*qview)->getViewName(), obj->getNameInDocument()) == 0) {
             return true;
         }
         qview++;
@@ -731,8 +791,8 @@ void MDIViewPage::print(QPrinter* printer)
     double width  =  0.0;
     double height =  0.0;
     if( pageTemplate ) {
-      width  =  pageTemplate->Width.getValue();
-      height =  pageTemplate->Height.getValue();
+      width  =  Rez::guiX(pageTemplate->Width.getValue());
+      height =  Rez::guiX(pageTemplate->Height.getValue());
     }
     QRectF sourceRect(0.0,-height,width,height);
 

@@ -131,6 +131,10 @@ text61 = translate("StartPage","Obtain a development version")
 text62 = translate("StartPage","<b>Development versions</b> are made available by community members from time to time and usually contain the latest changes, but are more likely to contain bugs.")
 text63 = translate("StartPage","See all commits")
 text64 = translate("StartPage","Load an FEM 2D example analysis")
+text65 = translate("StartPage","FreeCAD Standard File")
+text66 = translate("StartPage","Author")
+text67 = translate("StartPage","Company")
+text68 = translate("StartPage","License")
 
 # get FreeCAD version
 
@@ -372,6 +376,14 @@ page = """
             max-width: 300px;
             clear: both;
         }
+        
+        #description p span {
+            text-align: left;
+        }
+        
+        .disabled {
+            opacity: 0.5;
+        }
 
         pre {
             width: 300px !important;
@@ -559,8 +571,19 @@ def getInfo(filename):
             files=zfile.namelist()
             # check for meta-file if it's really a FreeCAD document
             if files[0] == "Document.xml":
-                html += "<p>FreeCAD Standard File</p>"
+                html += "<p><b>" + text65 + "</b></p>"
                 image="thumbnails/Thumbnail.png"
+                doc = zfile.read(files[0])
+                doc = doc.replace("\n"," ")
+                author = re.findall("Property name=\"CreatedBy.*?String value=\"(.*?)\"\/>",doc)
+                if author: 
+                    html += "<p>" + text66 + ": " + author[0] + "</p>"
+                company = re.findall("Property name=\"Company.*?String value=\"(.*?)\"\/>",doc)
+                if company: 
+                    html += "<p>" + text67 + ": " + company[0] + "</p>"
+                lic = re.findall("Property name=\"License.*?String value=\"(.*?)\"\/>",doc)
+                if lic: 
+                    html += "<p>" + text68 + ": " + lic[0] + "</p>"
                 if image in files:
                     image=zfile.read(image)
                     thumbfile = tempfile.mkstemp(suffix='.png')[1]
@@ -568,8 +591,9 @@ def getInfo(filename):
                     thumb.write(image)
                     thumb.close()
                     html += '<img src=file://'
-
                     html += thumbfile + '><br/>'
+        else:
+            print ("not a freecad file: "+os.path.splitext(filename)[1].upper())
     else:
         html += "<p>" + text41 + "</p>"
             
@@ -580,7 +604,7 @@ def getRecentFiles():
     rf = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/RecentFiles")
     ct = rf.GetInt("RecentFiles")
     html = '<ul>'
-    for i in range(3):
+    for i in range(4):
         if i < ct:
             mr = rf.GetString("MRU%d" % (i))
             if os.path.exists(mr):
@@ -591,11 +615,22 @@ def getRecentFiles():
                 else:
                     html += '<img src="blank.png" style="width: 16px">&nbsp;'
                 html += '<a '
-                html += 'onMouseover="show(\''+getInfo(mr)+'\')" '
+                html += 'onMouseover="show(\''+getInfo(mr).replace("'","&rsquo;")+'\')" '
                 html += 'onMouseout="show(\'\')" '
                 html += 'href="LoadMRU'+str(i)+'.py">'
                 html += fn
                 html += '</a></li>'
+            else:
+                fn = os.path.basename(mr)
+                html += '<li>'
+                if mr[-5:].upper() == "FCSTD":
+                    html += '<img src="freecad-doc.png" style="width: 16px">&nbsp;'
+                else:
+                    html += '<img src="blank.png" style="width: 16px">&nbsp;'
+                html += '<span class="disabled">'
+                html += fn
+                html += '</span></li>'
+                
     html += '</ul>'
     return html
 

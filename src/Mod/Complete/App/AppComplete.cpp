@@ -30,6 +30,7 @@
 #include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "CompleteConfiguration.h"
@@ -57,7 +58,7 @@ PyObject* initModule()
 
 
 /* Python entry */
-PyMODINIT_FUNC initComplete()
+PyMOD_INIT_FUNC(Complete)
 {
     // load dependent module
     try {
@@ -86,8 +87,9 @@ PyMODINIT_FUNC initComplete()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)Complete::initModule();
+    PyObject* mod = Complete::initModule();
     Base::Console().Log("Loading Complete module... done\n");
+    PyMOD_Return(mod);
 }

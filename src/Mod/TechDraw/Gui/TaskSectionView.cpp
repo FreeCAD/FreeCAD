@@ -285,10 +285,10 @@ bool TaskSectionView::accept()
 {
     if (strcmp(sectionDir,"unset") == 0) {
         Base::Console().Message("No direction selected!\n");
-        reject();
-        return false;
+        return reject();
     } else {
         updateValues();
+        Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
         return true;
     }
 }
@@ -301,6 +301,9 @@ bool TaskSectionView::reject()
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().%s.removeView(App.activeDocument().%s)",
                             PageName.c_str(),SectionName.c_str());
     Gui::Command::doCommand(Gui::Command::Gui,"App.activeDocument().removeObject('%s')",SectionName.c_str());
+    Gui::Command::doCommand(Gui::Command::Gui,"Gui.ActiveDocument.resetEdit()");
+    m_base->touch();
+    m_base->getDocument()->recompute();
     return false;
 }
 

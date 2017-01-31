@@ -27,6 +27,7 @@
 #include <QGraphicsScene>
 
 namespace TechDraw {
+class DrawView;
 class DrawViewPart;
 class DrawProjGroup;
 class DrawViewDimension;
@@ -78,7 +79,11 @@ public:
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
     const std::vector<QGIView *> & getViews() const { return views; }
+
     int addView(QGIView * view);
+    int removeView(QGIView *view);
+    int removeView(const TechDraw::DrawView* dv);
+
     void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
@@ -106,6 +111,8 @@ protected:
     static QColor SelectColor;
     static QColor PreselectColor;
     QColor getBackgroundColor();
+    
+    void removeViewFromScene(QGIView *view);
 
     QGITemplate *pageTemplate;
     std::vector<QGIView *> views;

@@ -52,6 +52,7 @@ void DlgPrefsTechDraw2Imp::saveSettings()
     colCenterLine->onSave();
     pcbSectionStyle->onSave();
     colSectionLine->onSave();
+    pcbArrow->onSave();
 }
 
 void DlgPrefsTechDraw2Imp::loadSettings()
@@ -65,6 +66,7 @@ void DlgPrefsTechDraw2Imp::loadSettings()
     colCenterLine->onRestore();
     pcbSectionStyle->onRestore();
     colSectionLine->onRestore();
+    pcbArrow->onRestore();
 }
 
 /**

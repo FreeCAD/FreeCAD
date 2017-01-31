@@ -20,7 +20,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************/
-
+from __future__ import print_function
 
 TOOLTIP='''
 This is an example postprocessor file for the Path workbench. It is used
@@ -42,11 +42,11 @@ if open.__module__ == '__builtin__':
 def export(objectslist, filename,argstring):
     "called when freecad exports a list of objects"
     if len(objectslist) > 1:
-        print "This script is unable to write more than one Path object"
+        print("This script is unable to write more than one Path object")
         return
     obj = objectslist[0]
     if not hasattr(obj, "Path"):
-        print "the given object is not a path"
+        print("the given object is not a path")
     gcode = obj.Path.toGCode()
     gcode = parse(gcode)
     gfile = pythonopen(filename, "wb")
@@ -56,7 +56,7 @@ def export(objectslist, filename,argstring):
 
 def parse(inputstring):
     "parse(inputstring): returns a parsed output string"
-    print "postprocessing..."
+    print("postprocessing...")
 
     output = ""
 
@@ -95,7 +95,7 @@ def parse(inputstring):
     output += "N" + str(linenr + 30) + " G17 G80 G40 G90\n"
     output += "N" + str(linenr + 40) + " M99\n"
 
-    print "done postprocessing."
+    print("done postprocessing.")
     return output
 
-print __name__ + " gcode postprocessor loaded."
+print(__name__ + " gcode postprocessor loaded.")

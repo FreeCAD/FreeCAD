@@ -25,10 +25,12 @@
 
 #include <QStandardItemModel>
 #include <QDialog>
+#include <QMap>
 
 class SoNode;
 
 namespace Gui {
+class Document;
 namespace Dialog {
 
 class Ui_SceneInspector;
@@ -53,11 +55,14 @@ public:
     bool setHeaderData (int section, Qt::Orientation orientation, const QVariant & value, int role = Qt::EditRole);
     /// insert the first node in tree
     void setNode(SoNode* node);
+    /// set names per node
+    void setNodeNames(const QMap<SoNode*, QString>& names);
     /// returns standard parent's flags
     Qt::ItemFlags flags (const QModelIndex & index) const;
 
 private:
     void setNode(QModelIndex, SoNode*);
+    QMap<SoNode*, QString> nodeNames;
 };
 
 /// Dialog window to display scenegraph model as a tree
@@ -69,13 +74,15 @@ public:
     DlgInspector(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DlgInspector();
 
-    void setNode(SoNode* node);
+    void setDocument(Gui::Document* doc);
 
 private Q_SLOTS:
     void on_refreshButton_clicked();
 
 protected:
     void changeEvent(QEvent *e);
+    void setNode(SoNode* node);
+    void setNodeNames(Gui::Document*);
 
 private:
     Ui_SceneInspector* ui;

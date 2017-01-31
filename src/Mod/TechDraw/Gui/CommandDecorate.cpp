@@ -49,12 +49,15 @@
 #include <Mod/TechDraw/App/DrawView.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawHatch.h>
+#include <Mod/TechDraw/App/DrawGeomHatch.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/Gui/QGVPage.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
+#include "TaskGeomHatch.h"
+#include "ViewProviderGeomHatch.h"
 #include "ViewProviderPage.h"
 
 using namespace TechDrawGui;
@@ -75,8 +78,8 @@ CmdTechDrawNewHatch::CmdTechDrawNewHatch()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Insert a hatched area into a view");
-    sToolTipText    = QT_TR_NOOP("Insert a hatched area into a view");
+    sMenuText       = QT_TR_NOOP("Hatch a Face using image file");
+    sToolTipText    = QT_TR_NOOP("Hatch a Face using image file");
     sWhatsThis      = "TechDraw_NewHatch";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-hatch";
@@ -120,6 +123,73 @@ void CmdTechDrawNewHatch::activated(int iMsg)
 }
 
 bool CmdTechDrawNewHatch::isActive(void)
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
+// TechDraw_NewGeomHatch
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawNewGeomHatch);
+
+CmdTechDrawNewGeomHatch::CmdTechDrawNewGeomHatch()
+  : Command("TechDraw_NewGeomHatch")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Apply geometric hatch to a Face");
+    sToolTipText    = QT_TR_NOOP("Apply geometric hatch to a Face");
+    sWhatsThis      = "TechDraw_NewGeomHatch";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/techdraw-geomhatch";
+}
+
+void CmdTechDrawNewGeomHatch::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (!_checkSelectionHatch(this)) {                 //same requirements as hatch - page, DrawViewXXX, face
+        return;
+    }
+
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+    auto objFeat( dynamic_cast<TechDraw::DrawViewPart *>(selection[0].getObject()) );
+    if( objFeat == nullptr ) {
+        return;
+    }
+    const std::vector<std::string> &subNames = selection[0].getSubNames();
+    TechDraw::DrawPage* page = objFeat->findParentPage();
+    std::string PageName = page->getNameInDocument();
+
+    std::string FeatName = getUniqueObjectName("GeomHatch");
+    std::stringstream featLabel;
+    featLabel << FeatName << "FX" << TechDraw::DrawUtil::getIndexFromName(subNames.at(0));
+
+    openCommand("Create GeomHatch");
+    doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawGeomHatch','%s')",FeatName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Label = '%s'",FeatName.c_str(),featLabel.str().c_str());
+
+    auto geomhatch( static_cast<TechDraw::DrawGeomHatch *>(getDocument()->getObject(FeatName.c_str())) );
+    geomhatch->Source.setValue(objFeat, subNames);
+    Gui::ViewProvider* vp = Gui::Application::Instance->getDocument(getDocument())->getViewProvider(geomhatch);
+    TechDrawGui::ViewProviderGeomHatch* hvp = dynamic_cast<TechDrawGui::ViewProviderGeomHatch*>(vp);
+//    if (!hvp) {
+
+    // dialog to fill in hatch values
+    Gui::Control().showDialog(new TaskDlgGeomHatch(geomhatch,hvp));
+
+
+    commitCommand();
+
+    //Horrible hack to force Tree update  ??still required??
+    double x = objFeat->X.getValue();
+    objFeat->X.setValue(x);
+    getDocument()->recompute();
+}
+
+bool CmdTechDrawNewGeomHatch::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
     bool haveView = DrawGuiUtil::needView(this);
@@ -230,6 +300,7 @@ void CreateTechDrawCommandsDecorate(void)
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
     rcCmdMgr.addCommand(new CmdTechDrawNewHatch());
+    rcCmdMgr.addCommand(new CmdTechDrawNewGeomHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
     rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
 }

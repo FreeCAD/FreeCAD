@@ -1,74 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-
-<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="32px"
-   height="32px"
-   id="svg2816"
-   version="1.1"
-   inkscape:version="0.47 r22583"
-   sodipodi:docname="Sketcher_ConstrainParallel.svg">
-  <defs
-     id="defs2818">
-    <inkscape:perspective
-       sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 16 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="32 : 16 : 1"
-       inkscape:persp3d-origin="16 : 10.666667 : 1"
-       id="perspective2824" />
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="64" height="64" id="svg2816" version="1.1" inkscape:version="0.48.5 r10040" sodipodi:docname="Sketcher_ConstrainParallel.svg">
+  <defs id="defs2818">
+    <linearGradient inkscape:collect="always" id="linearGradient3779">
+      <stop style="stop-color:#c4a000;stop-opacity:1" offset="0" id="stop3781"/>
+      <stop style="stop-color:#fce94f;stop-opacity:1" offset="1" id="stop3783"/>
+    </linearGradient>
+    <inkscape:perspective sodipodi:type="inkscape:persp3d" inkscape:vp_x="0 : 16 : 1" inkscape:vp_y="0 : 1000 : 0" inkscape:vp_z="32 : 16 : 1" inkscape:persp3d-origin="16 : 10.666667 : 1" id="perspective2824"/>
+    <linearGradient inkscape:collect="always" xlink:href="#linearGradient3779" id="linearGradient3785" x1="24.935808" y1="25.862068" x2="15.760358" y2="-25.862068" gradientUnits="userSpaceOnUse"/>
   </defs>
-  <sodipodi:namedview
-     id="base"
-     pagecolor="#ffffff"
-     bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
-     inkscape:pageshadow="2"
-     inkscape:zoom="11.197802"
-     inkscape:cx="14.481353"
-     inkscape:cy="17.875368"
-     inkscape:current-layer="layer1"
-     showgrid="true"
-     inkscape:grid-bbox="true"
-     inkscape:document-units="px"
-     inkscape:window-width="1280"
-     inkscape:window-height="952"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4"
-     inkscape:window-maximized="1" />
-  <metadata
-     id="metadata2821">
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="3.9590209" inkscape:cx="-90.098642" inkscape:cy="72.972363" inkscape:current-layer="layer1" showgrid="true" inkscape:grid-bbox="true" inkscape:document-units="px" inkscape:window-width="1920" inkscape:window-height="1137" inkscape:window-x="0" inkscape:window-y="27" inkscape:window-maximized="1" inkscape:snap-bbox="true" inkscape:snap-nodes="true" inkscape:snap-global="false">
+    <inkscape:grid type="xygrid" id="grid2985" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <metadata id="metadata2821">
     <rdf:RDF>
-      <cc:Work
-         rdf:about="">
+      <cc:Work rdf:about="">
         <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>Sketcher_ConstrainParallel</dc:title>
+        <dc:date>2011-10-10</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Sketcher/Gui/Resources/icons/Sketcher_ConstrainParallel.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     id="layer1"
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;fill:#ffff00;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
-       x="3.4828262"
-       y="30.303238"
-       id="text2818"><tspan
-         sodipodi:role="line"
-         id="tspan2820"
-         x="3.4828262"
-         y="30.303238">P</tspan></text>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer" transform="translate(0,32)">
+    <g style="font-size:82.30408478px;font-style:normal;font-weight:normal;fill:#ffff00;fill-opacity:1;stroke:#302b00;stroke-width:2.05392241;font-family:Bitstream Vera Sans" id="text2818" transform="matrix(0.98087829,0,0,0.96666668,7.5410072,-4.7599922e-7)">
+      <path d="m 15.760358,-21.724137 0,20.6896547 10.194945,0 c 3.777599,0 6.672508,-0.7270395 8.735502,-2.6828649 2.062923,-1.955758 2.478898,-5.0795279 2.478937,-8.6964448 -3.9e-5,-3.590041 0.02393,-5.285538 -2.038989,-7.24138 -2.062994,-1.955741 -5.397851,-2.068912 -9.17545,-2.068965 l -10.194945,0 m -8.1559561,-8.275862 18.3255191,0 c 6.724682,6e-5 11.801703,1.527185 15.231078,4.581379 3.456083,3.027514 5.184146,7.474931 5.184193,13.342264 -4.7e-5,5.9210007 -2.058348,10.6013891 -5.229715,13.561213 -3.171367,2.9598239 -7.004219,5.7565227 -15.160174,5.7565227 l -10.194945,0 L 15.722285,30 l -8.1178831,0 0,-59.999999" style="fill:url(#linearGradient3785);fill-opacity:1;stroke:#302b00;stroke-width:2.05392241" id="path2988" inkscape:connector-curvature="0" sodipodi:nodetypes="ccsscccccscczscccc"/>
+    </g>
+    <g style="font-size:82.30408477999999661px;font-style:normal;font-weight:normal;fill:none;fill-opacity:1;stroke:#fce94f;stroke-width:2.05392241000000020;font-family:Bitstream Vera Sans" id="text2818-3" transform="matrix(0.98087829,0,0,0.96666668,7.541007,-4.2954024e-7)">
+      <path d="m 13.721369,-23.793103 0,24.8275862 14.272923,0 c 3.100671,0 7.898444,-2.5588985 8.971551,-4.137931 2.08676,-3.0705801 2.242888,-6.2068965 2.242888,-9.3103442 0,-3.103449 0,-7.034483 -3.058483,-9.103449 -3.058484,-2.068965 -6.417346,-2.275809 -10.194945,-2.275862 l -12.233934,0 m -4.0779779,-4.137931 16.3119119,0 c 6.724682,0 10.843547,1.083737 14.272922,4.137931 3.058484,3.103449 4.077978,6.206897 4.077978,11.379311 0.131486,6.2144203 -1.856407,9.8329394 -5.097472,12.82758554 C 36.150248,3.1034487 33.091764,5.1724142 25.955303,5.1724142 l -12.233934,0 0,22.7586208 -4.0779779,0 0,-55.862069" style="fill:none;stroke:#fce94f;stroke-width:2.05392241" id="path2988-6" inkscape:connector-curvature="0" sodipodi:nodetypes="ccsscccccscccscccc"/>
+    </g>
   </g>
 </svg>

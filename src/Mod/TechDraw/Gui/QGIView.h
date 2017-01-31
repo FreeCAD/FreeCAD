@@ -27,8 +27,10 @@
 #include <QPen>
 #include <QFont>
 
+#include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
 #include <Base/Parameter.h>
+#include <Gui/ViewProvider.h>
 
 #include <Mod/TechDraw/App/DrawView.h>
 
@@ -87,6 +89,8 @@ public:
     virtual QColor getNormalColor(void);
     virtual QColor getPreColor(void);
     virtual QColor getSelectColor(void);
+    
+    static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
 
 protected:
     QGIView* getQGIVByName(std::string name);

@@ -44,13 +44,24 @@ public:
     /// destructor
     virtual ~ViewProviderViewSection();
 
+    App::PropertyBool   ShowCutSurface;
+    App::PropertyColor  CutSurfaceColor;
+    App::PropertyBool   HatchCutSurface;
+    App::PropertyColor  HatchColor;
+    App::PropertyFloat  WeightPattern;
+
 
     virtual void attach(App::DocumentObject *);
     virtual void setDisplayMode(const char* ModeName);
     /// returns a list of all possible modes
     virtual std::vector<std::string> getDisplayModes(void) const;
     virtual void updateData(const App::Property*);
+    virtual void onChanged(const App::Property *prop);
+
     virtual std::vector<App::DocumentObject*> claimChildren(void) const;
+
+    void updateGraphic(void);
+    void getParameters(void);
 
     virtual TechDraw::DrawViewSection* getViewObject() const;
 };

@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Command.h"
@@ -49,7 +50,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initPath()
+PyMOD_INIT_FUNC(Path)
 {
     // load dependent module
     try {
@@ -90,4 +91,6 @@ PyMODINIT_FUNC initPath()
     Path::FeatureAreaPython      ::init();
     Path::FeatureAreaView        ::init();
     Path::FeatureAreaViewPython  ::init();
+
+    PyMOD_Return(pathModule);
 }

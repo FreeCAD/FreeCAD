@@ -66,6 +66,7 @@ const char* DrawPage::ProjectionTypeEnums[] = { "First Angle",
 DrawPage::DrawPage(void)
 {
     static const char *group = "Page";
+    nowDeleting = false;
 
     ADD_PROPERTY_TYPE(Template, (0), group, (App::PropertyType)(App::Prop_None), "Attached Template");
     ADD_PROPERTY_TYPE(Views, (0), group, (App::PropertyType)(App::Prop_None), "Attached Views");
@@ -101,11 +102,13 @@ void DrawPage::onBeforeChange(const App::Property* prop)
 void DrawPage::onChanged(const App::Property* prop)
 {
     if (prop == &Template) {
-        if (!isRestoring()) {
+        if (!isRestoring() &&
+            !isDeleting()) {
         //TODO: reload if Template prop changes (ie different Template)
         }
     } else if (prop == &Views) {
-        if (!isRestoring()) {
+        if (!isRestoring() &&
+            !isDeleting() ) {
             //TODO: reload if Views prop changes (ie adds/deletes)
         }
     } else if(prop == &Scale) {
@@ -130,7 +133,7 @@ void DrawPage::onChanged(const App::Property* prop)
       // TODO: Also update Template graphic.
 
     }
-    App::DocumentObject::onChanged(prop);
+    App::DocumentObject::onChanged(prop);  //<<<<
 }
 
 App::DocumentObjectExecReturn *DrawPage::execute(void)
@@ -289,6 +292,10 @@ void DrawPage::onDocumentRestored()
         if (part != nullptr &&
             !part->hasGeometry()) {
             part->execute();
+//            std::vector<App::DocumentObject*> parent = part->getInList();
+//            for (auto& p: parent) {
+//                p->touch();
+//            }
         }
     }
     //second, make sure all the Dimensions have been executed so Measurements have References
@@ -302,3 +309,28 @@ void DrawPage::onDocumentRestored()
     recompute();
     App::DocumentObject::onDocumentRestored();
 }
+
+void DrawPage::unsetupObject()
+{
+    nowDeleting = true;
+
+    // Remove the Page's views & template from document
+    App::Document* doc = getDocument();
+    std::string docName = doc->getName();
+
+    const std::vector<App::DocumentObject*> currViews = Views.getValues();
+    std::vector<App::DocumentObject*> emptyViews;
+    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
+    for (; it != currViews.end(); it++) {
+        std::string viewName = (*it)->getNameInDocument();
+        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                          docName.c_str(), viewName.c_str());
+    }
+    Views.setValues(emptyViews);
+
+    std::string templateName = Template.getValue()->getNameInDocument();
+    Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                          docName.c_str(), templateName.c_str());
+    Template.setValue(nullptr);
+}
+
