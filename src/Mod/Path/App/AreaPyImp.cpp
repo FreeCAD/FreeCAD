@@ -91,12 +91,12 @@ static const AreaDoc myDocs[] = {
     {
         "sortWires",
 
-        "sortWires(index=-1, count=0, start=Vector()" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_MIN_DIST) "):\n"
+        "sortWires(index=-1, count=0, start=Vector(), allow_break=False, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) "):\n"
         "Returns a tuple (wires,end): sorted wires with minimized travel distance, and the endpoint of the wires.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         "\n* count (0): the number of sections to return. <=0 means all sections starting from index.\n"
         "\n* start (Vector()): a vector specifies the start point.\n"
-        PARAM_PY_DOC(ARG,AREA_PARAMS_MIN_DIST),
+        PARAM_PY_DOC(ARG,AREA_PARAMS_SORT),
     },
 };
 
@@ -151,7 +151,8 @@ PyObject* AreaPy::setPlane(PyObject *args) {
 
 #define GET_TOPOSHAPE(_p) static_cast<Part::TopoShapePy*>(_p)->getTopoShapePtr()->getShape()
     getAreaPtr()->setPlane(GET_TOPOSHAPE(pcObj));
-    return Py_None;
+    Py_INCREF(this);
+    return this;
 }
 
 PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
@@ -168,17 +169,17 @@ PyObject* AreaPy::getShape(PyObject *args, PyObject *keywds)
 }
 
 PyObject* AreaPy::sortWires(PyObject *args, PyObject *keywds){
-    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_MIN_DIST)
+    PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
     short index = -1;
     short count = 0;
     PyObject *start = NULL;
 
     static char *kwlist[] = {"index","count","start",
-        PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_MIN_DIST), NULL};
+        PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), NULL};
     if (!PyArg_ParseTupleAndKeywords(args, keywds,
-                "|hhO!" PARAM_PY_KWDS(AREA_PARAMS_MIN_DIST),
+                "|hhO!" PARAM_PY_KWDS(AREA_PARAMS_SORT),
                 kwlist,&index,&count,&(Base::VectorPy::Type),&start,
-                PARAM_REF(PARAM_FARG,AREA_PARAMS_MIN_DIST)))
+                PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT)))
         return 0;
 
     gp_Pnt pstart,pend;
@@ -188,7 +189,7 @@ PyObject* AreaPy::sortWires(PyObject *args, PyObject *keywds){
     }
     std::list<TopoDS_Shape> wires = getAreaPtr()->sortWires(
             index,count,&pstart,&pend,
-            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_MIN_DIST));
+            PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
     PyObject *list = PyList_New(0);
     for(auto &wire : wires)
         PyList_Append(list,Py::new_reference_to(
@@ -217,7 +218,8 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
 
     if (PyObject_TypeCheck(pcObj, &(Part::TopoShapePy::Type))) {
         getAreaPtr()->add(GET_TOPOSHAPE(pcObj),op);
-        return Py_None;
+        Py_INCREF(this);
+        return this;
     } else if (PyObject_TypeCheck(pcObj, &(PyList_Type)) ||
              PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
         Py::Sequence shapeSeq(pcObj);
@@ -233,7 +235,8 @@ PyObject* AreaPy::add(PyObject *args, PyObject *keywds)
             getAreaPtr()->add(GET_TOPOSHAPE(item),
                     PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_OPCODE));
         }
-        return Py_None;
+        Py_INCREF(this);
+        return this;
     }
 
     PyErr_SetString(PyExc_TypeError, "shape must be 'TopoShape' or list of 'TopoShape'");
@@ -356,7 +359,8 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
     getAreaPtr()->setParams(params);
-    return Py_None;
+    Py_INCREF(this);
+    return this;
 }
 
 PyObject* AreaPy::getParams(PyObject *args)

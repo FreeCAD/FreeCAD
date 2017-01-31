@@ -50,12 +50,14 @@ using namespace Path;
 
 PROPERTY_SOURCE(Path::FeatureShape, Path::Feature)
 
+PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_PATH)
 
 FeatureShape::FeatureShape()
 {
     ADD_PROPERTY(Sources,(0));
     ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Path start position");
-    PARAM_PROP_ADD("Path",AREA_PARAMS_PATH);
+    PARAM_PROP_ADD("Path",AREA_PARAMS_PATH_CONF);
+    PARAM_PROP_SET_ENUM(Enums,AREA_PARAMS_PATH_CONF);
 }
 
 FeatureShape::~FeatureShape()
@@ -83,7 +85,13 @@ App::DocumentObjectExecReturn *FeatureShape::execute(void)
             continue;
         shapes.push_back(shape);
     }
-    Area::toPath(path,shapes,&pstart,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
+
+    AreaParams params;
+#define AREA_PROP_GET(_param) \
+    params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
+    PARAM_FOREACH(AREA_PROP_GET,AREA_PARAMS_PATH_EXTRA)
+
+    Area::toPath(path,shapes,&params,&pstart,NULL,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
 
     Path.setValue(path);
     return App::DocumentObject::StdReturn;

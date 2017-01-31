@@ -126,13 +126,13 @@ public:
             PARAM_PY_DOC(ARG, AREA_PARAMS_PATH)
         );
         add_keyword_method("sortWires",&Module::sortWires,
-            "sortWires(shapes, start=Vector(), params=None, "  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT_WIRES) ")\n"
+            "sortWires(shapes, start=Vector(), params=None, "  PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) ")\n"
             "\nReturns (wires,end), where 'wires' is sorted accross Z value and with optimized travel distance,\n"
             "and 'end' is the ending position of the whole wires\n"
             "\n* shapes: input shape list\n"
             "\n* start (Vector()): optional start position.\n"
             "\n* params (None): optional dictionary for configuring Path.Area internally used to sort the wires.\n"
-            PARAM_PY_DOC(ARG, AREA_PARAMS_SORT_WIRES)
+            PARAM_PY_DOC(ARG, AREA_PARAMS_SORT)
         );
         initialize("This module is the Path module."); // register with Python
     }
@@ -320,14 +320,17 @@ private:
     Py::Object fromShapes(const Py::Tuple& args, const Py::Dict &kwds)
     {
         PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_PATH)
+        PARAM_PY_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_CONF)
         PyObject *pShapes=NULL;
         PyObject *start=NULL;
         static char* kwd_list[] = {"shapes", "start", 
-                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), NULL};
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_PATH), 
+                PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF), NULL};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
                     "O|O!" PARAM_PY_KWDS(AREA_PARAMS_PATH), kwd_list,
                     &pShapes, &(Base::VectorPy::Type), &start, 
-                    PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH)))
+                    PARAM_REF(PARAM_FARG,AREA_PARAMS_PATH),
+                    PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
             throw Py::Exception();
 
         std::list<TopoDS_Shape> shapes;
@@ -347,6 +350,12 @@ private:
             }
         }
 
+#define AREA_GET(_param) \
+        params.PARAM_FNAME(_param) = \
+            PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
+        AreaParams params;
+        PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
+
         gp_Pnt pstart;
         if(start) {
             Base::Vector3d vec = static_cast<Base::VectorPy*>(start)->value();
@@ -355,24 +364,26 @@ private:
 
         try {
             std::unique_ptr<Toolpath> path(new Toolpath);
-            Area::toPath(*path,shapes,&pstart,PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
+            Area::toPath(*path,shapes,&params, &pstart, NULL,
+                    PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_PATH));
             return Py::asObject(new PathPy(path.release()));
         } PATH_CATCH
     }
 
     Py::Object sortWires(const Py::Tuple& args, const Py::Dict &kwds)
     {
-        AreaParams params;
-        PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT_WIRES)
+        PARAM_PY_DECLARE_INIT(PARAM_FARG,AREA_PARAMS_SORT)
+        PARAM_PY_DECLARE_INIT(PARAM_FNAME,AREA_PARAMS_CONF)
         PyObject *pShapes=NULL;
         PyObject *start=NULL;
-        PyObject *pParams=NULL;
-        static char* kwd_list[] = {"shapes", "start", "params",
-                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT_WIRES), NULL};
+        static char* kwd_list[] = {"shapes", "start", 
+                PARAM_FIELD_STRINGS(ARG,AREA_PARAMS_SORT), 
+                PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF), NULL};
         if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), 
-                    "O|O!O!" PARAM_PY_KWDS(AREA_PARAMS_SORT_WIRES), kwd_list,
-                    &pShapes, &(Base::VectorPy::Type), &start, &PyDict_Type, &pParams,
-                    PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT_WIRES)))
+                    "O|O!" PARAM_PY_KWDS(AREA_PARAMS_SORT), kwd_list,
+                    &pShapes, &(Base::VectorPy::Type), &start, 
+                    PARAM_REF(PARAM_FARG,AREA_PARAMS_SORT),
+                    PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
             throw Py::Exception();
 
         std::list<TopoDS_Shape> shapes;
@@ -391,23 +402,8 @@ private:
             }
         }
 
-        if(pParams) {
-            static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
-            PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_CONF);
-#define AREA_SET(_param) \
-            PARAM_FNAME(_param) = \
-            PARAM_TYPED(PARAM_PY_CAST_,_param)(params.PARAM_FNAME(_param));
-            PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
-            if (!PyArg_ParseTupleAndKeywords(NULL, pParams, 
-                        "|" PARAM_PY_KWDS(AREA_PARAMS_CONF), kwlist, 
-                        PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
-                throw Py::Exception();
-
-#define AREA_GET(_param) \
-            params.PARAM_FNAME(_param) = \
-            PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
-            PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
-        }
+        AreaParams params;
+        PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
         gp_Pnt pstart,pend;
         if(start) {
@@ -417,7 +413,7 @@ private:
         
         try {
             std::list<TopoDS_Shape> wires = Area::sortWires(shapes,&params,&pstart,
-                    &pend, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT_WIRES));
+                    &pend, PARAM_PY_FIELDS(PARAM_FARG,AREA_PARAMS_SORT));
             PyObject *list = PyList_New(0);
             for(auto &wire : wires)
                 PyList_Append(list,Py::new_reference_to(

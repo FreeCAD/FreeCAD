@@ -64,10 +64,8 @@ FeatureArea::~FeatureArea()
 }
 
 Area &FeatureArea::getArea() {
-    if(!myBuild) {
-        myBuild = true;
+    if(!myBuild)
         execute();
-    }
     return myArea;
 }
 
@@ -85,6 +83,9 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
             return new App::DocumentObjectExecReturn("Linked shape object is empty");
     }
 
+    TIME_INIT(t);
+
+    myBuild = true;
     AreaParams params;
 
 #define AREA_PROP_GET(_param) \
@@ -102,19 +103,35 @@ App::DocumentObjectExecReturn *FeatureArea::execute(void)
                 PARAM_PROP_ARGS(AREA_PARAMS_OPCODE));
     }
 
-    this->Shape.setValue(myArea.getShape(-1));
+    myShapes.clear();
+    if(myArea.getSectionCount()==0) 
+        myShapes.push_back(myArea.getShape(-1));
+    else {
+        myShapes.reserve(myArea.getSectionCount());
+        for(int i=0;i<(int)myArea.getSectionCount();++i)
+            myShapes.push_back(myArea.getShape(i));
+    }
+
+    if(myShapes.empty())
+        Shape.setValue(TopoDS_Shape());
+    else if(myShapes.size()==1)
+        Shape.setValue(myShapes.front());
+    else{
+        BRep_Builder builder;
+        TopoDS_Compound compound;
+        builder.MakeCompound(compound);
+        for(auto &shape : myShapes) 
+            builder.Add(compound,shape);
+        Shape.setValue(compound);
+    }
+
+    TIME_PRINT(t,"feature execute");
     return Part::Feature::execute();
 }
 
-std::list<TopoDS_Shape> FeatureArea::getShapes() {
-    std::list<TopoDS_Shape> shapes;
-    Area &area = getArea();
-    if(area.getSectionCount()) {
-        for(int i=0;i<(int)area.getSectionCount();++i)
-            shapes.push_back(area.getShape(i));
-    }else
-        shapes.push_back(area.getShape());
-    return shapes;
+const std::vector<TopoDS_Shape> &FeatureArea::getShapes() {
+    getArea();
+    return myShapes;
 }
 
 short FeatureArea::mustExecute(void) const
@@ -156,32 +173,31 @@ std::list<TopoDS_Shape> FeatureAreaView::getShapes() {
     if (!pObj) return shapes;
     if(!pObj->isDerivedFrom(FeatureArea::getClassTypeId()))
         return shapes;
-    Area &area = static_cast<FeatureArea*>(pObj)->getArea();
 
-    if(!area.getSectionCount()) {
-        shapes.push_back(area.getShape());
+    auto all_shapes = static_cast<FeatureArea*>(pObj)->getShapes();
+
+    if(all_shapes.empty())
         return shapes;
-    }
 
     int index=SectionIndex.getValue(),count=SectionCount.getValue();
     if(index<0) {
-        index += ((int)area.getSectionCount());
+        index += ((int)all_shapes.size());
         if(index<0) return shapes;
         if(count<=0 || index+1-count<0) {
             count = index+1;
             index = 0;
         }else
             index -= count-1;
-    }else if(index >= (int)area.getSectionCount())
+    }else if(index >= (int)all_shapes.size())
         return shapes;
 
-    if(count<=0) count = area.getSectionCount();
+    if(count<=0) count = all_shapes.size();
     count += index;
-    if(count>(int)area.getSectionCount())
-        count = area.getSectionCount();
+    if(count>(int)all_shapes.size())
+        count = all_shapes.size();
     for(int i=index;i<count;++i)
-        shapes.push_back(area.getShape(i));
-    return shapes;
+        shapes.push_back(all_shapes[i]);
+    return std::move(shapes);
 }
 
 App::DocumentObjectExecReturn *FeatureAreaView::execute(void)

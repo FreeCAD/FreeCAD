@@ -71,10 +71,13 @@
     AREA_PARAMS_DEFLECTION \
     AREA_PARAMS_CLIPPER_FILL 
 
+#define AREA_PARAMS_FIT_ARCS \
+    ((bool,fit_arcs,FitArcs,true,"Enable arc fitting"))
+
 /** libarea algorithm option parameters */
 #define AREA_PARAMS_CAREA \
     ((double,tolerance,Tolerance,Precision::Confusion(),"Point coincidence tolerance"))\
-    ((bool,fit_arcs,FitArcs,true,"Enable arc fitting"))\
+    AREA_PARAMS_FIT_ARCS \
     ((bool,clipper_simple,Simplify,false,\
         "Simplify polygons after operation. See https://goo.gl/Mh9XK1"))\
     ((double,clipper_clean_distance,CleanDistance,0.0,\
@@ -150,11 +153,24 @@
     ((double,round_precision,RoundPreceision,0.0,\
         "Round joint precision. If =0, it defaults to Accuracy. \nSee https://goo.gl/4odfQh"))
 
+#define AREA_PARAMS_MIN_DIST \
+    ((double, min_dist, MinDistance, 0.0, \
+        "minimum distance for the generated new wires. Wires maybe broken if the algorithm see fits.\n"\
+        "Set to zero to disable wire breaking."))
+
+/** Area wire sorting parameters */
+#define AREA_PARAMS_SORT \
+    ((enum, sort_mode, SortMode, 1, "Wire sorting mode to optimize travel distance.\n"\
+        "'2D5' explode shapes into wires, and groups the shapes by its plane. The 'start' position\n"\
+        "chooses the first plane to start. The algorithm will then sort within the plane and then\n"\
+        "move on to the next nearest plane.\n"\
+        "'3D' makes no assumption of planarity. The sorting is done across 3D space\n",\
+        (None)(2D5)(3D)))\
+    AREA_PARAMS_MIN_DIST
+
 /** Area path generation parameters */
 #define AREA_PARAMS_PATH \
-    ((bool, sort, SortShape, true, \
-        "Whether to sort the shapes to optimize travel distance. You can customize wire\n"\
-        "sorting by calling sortWires() manually."))\
+    AREA_PARAMS_SORT \
     ((double, threshold, RetractThreshold, 0.0,\
         "If two wire's end points are separated within this threshold, they are consider\n"\
         "as connected. You may want to set this to the tool diameter to keep the tool down."))\
@@ -162,23 +178,17 @@
     ((double, clearance, Clearance, 0.0,\
         "When return from last retraction, this gives the pause height relative to the Z\n"\
         "value of the next move"))\
-    AREA_PARAMS_DEFLECTION
+    ((double,segmentation,Segmentation,0.0,\
+        "Break long curves into segments of this length. One use case is for PCB autolevel,\n"\
+        "so that more correction points can be inserted"))
 
-#define AREA_PARAMS_MIN_DIST \
-    ((double, min_dist, MinDistance, 1.0, \
-        "minimum distance for the generate new wires. Wires maybe broken if the\n"\
-        "algorithm see fits."))\
+#define AREA_PARAMS_PATH_EXTRA \
+    AREA_PARAMS_DEFLECTION \
+    AREA_PARAMS_FIT_ARCS
 
-/** Area wire sorting parameters */
-#define AREA_PARAMS_SORT_WIRES \
-    ((bool, explode, Explode, true,\
-        "If ture, the input shape will be exploded into wires before doing planar checking.\n"\
-        "Otherwise, and whole shape is considered to be in one plane without checking."))\
-    ((bool, top_z, TopZ, false, \
-        "If ture, the planes is ordered by the first the shapes first vertex Z value.\n"\
-        "Otherwise, by the highest Z of all of its vertexes."))\
-    AREA_PARAMS_MIN_DIST
-
+#define AREA_PARAMS_PATH_CONF \
+    AREA_PARAMS_PATH \
+    AREA_PARAMS_PATH_EXTRA 
 
 /** Group of all Area configuration parameters except CArea's*/
 #define AREA_PARAMS_AREA \
