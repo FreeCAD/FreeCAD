@@ -45,7 +45,7 @@ public:
     virtual ~FeatureArea();
 
     Area &getArea();
-    std::list<TopoDS_Shape> getShapes();
+    const std::vector<TopoDS_Shape> &getShapes();
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
@@ -63,6 +63,7 @@ public:
 private:
     bool myBuild;
     Area myArea;
+    std::vector<TopoDS_Shape> myShapes;
 };
 
 typedef App::FeaturePythonT<FeatureArea> FeatureAreaPython;
