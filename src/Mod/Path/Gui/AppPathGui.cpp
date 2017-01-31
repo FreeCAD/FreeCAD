@@ -52,11 +52,11 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initPathGui()
+PyMOD_INIT_FUNC(PathGui)
 {
      if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -64,9 +64,9 @@ PyMODINIT_FUNC initPathGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)PathGui::initModule();
+    PyObject* mod = PathGui::initModule();
     Base::Console().Log("Loading GUI of Path module... done\n");
 
     // instantiating the commands
@@ -88,4 +88,6 @@ PyMODINIT_FUNC initPathGui()
     
     // register preferences pages
     new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
+
+    PyMOD_Return(mod);
 }

@@ -165,8 +165,8 @@ class ObjectProfile:
         curve = PathKurveUtils.makeAreaCurve(edgelist, obj.Direction, startpoint, endpoint)
 
         '''The following line uses a profile function written for use with FreeCAD.  It's clean but incomplete.  It doesn't handle
-print "x = " + str(point.x)
-print "y - " + str(point.y)
+print("x = " + str(point.x))
+print("y - " + str(point.y))
             holding tags
             start location
             CRC

@@ -81,14 +81,20 @@ public:
      */
     double getPageHeight() const;
     const char* getPageOrientation() const;
+    bool isDeleting(void) { return nowDeleting; }
+
 
 protected:
     void onBeforeChange(const App::Property* prop);
     void onChanged(const App::Property* prop);
     virtual void onDocumentRestored();
+    virtual void unsetupObject();
+
 
 private:
     static const char* ProjectionTypeEnums[];
+    bool nowDeleting;
+
 };
 
 } //namespace TechDraw

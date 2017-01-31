@@ -35,6 +35,7 @@
 #include <Base/FileInfo.h>
 #include <Base/Console.h>
 
+#include "DrawPage.h"
 #include "DrawViewSymbol.h"
 
 using namespace TechDraw;
@@ -117,28 +118,42 @@ App::DocumentObjectExecReturn *DrawViewSymbol::execute(void)
 
 QRectF DrawViewSymbol::getRect() const
 {
-        std::string svg = Symbol.getValue();
         double w = 64.0;         //must default to something
         double h = 64.0;
-        string::const_iterator begin, end;
-        begin = svg.begin();
-        end = svg.end();
-        boost::match_results<std::string::const_iterator> what;
+        return (QRectF(0,0,w,h));
+//        std::string svg = Symbol.getValue();
+//        string::const_iterator begin, end;
+//        begin = svg.begin();
+//        end = svg.end();
+//        boost::match_results<std::string::const_iterator> what;
 
-        boost::regex e1 ("width=\"([0-9.]*?)[a-zA-Z]*?\"");
-        if (boost::regex_search(begin, end, what, e1)) {
-            //std::string wText = what[0].str();             //this is the whole match 'width="100"'
-            std::string wNum  = what[1].str();               //this is just the number 100
-            w = std::stod(wNum);
-        }
-        boost::regex e2 ("Height=\"([0-9.]*?)[a-zA-Z]*?\"");
-        if (boost::regex_search(begin, end, what, e1)) {
-            //std::string hText = what[0].str();
-            std::string hNum  = what[1].str();
-            h = std::stod(hNum);
-        }
-        return (QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h));
+//        boost::regex e1 ("width=\"([0-9.]*?)[a-zA-Z]*?\"");
+//        if (boost::regex_search(begin, end, what, e1)) {
+//            //std::string wText = what[0].str();             //this is the whole match 'width="100"'
+//            std::string wNum  = what[1].str();               //this is just the number 100
+//            w = std::stod(wNum);
+//        }
+//        
+//        boost::regex e2 ("height=\"([0-9.]*?)[a-zA-Z]*?\"");
+//        if (boost::regex_search(begin, end, what, e2)) {
+//            //std::string hText = what[0].str();
+//            std::string hNum  = what[1].str();
+//            h = std::stod(hNum);
+//        }
+//        return (QRectF(0,0,Scale.getValue() * w,Scale.getValue() * h));
+//we now have a w x h, but we don't really know what it means - px,mm,in,...
+        
 }
+
+//!Assume all svg files fit the page and/or the user will scale manually
+//see getRect() above
+bool DrawViewSymbol::checkFit(TechDraw::DrawPage* p) const
+{
+    (void)p;
+    bool result = true;
+    return result;
+}
+
 
 
 // Python Drawing feature ---------------------------------------------------------

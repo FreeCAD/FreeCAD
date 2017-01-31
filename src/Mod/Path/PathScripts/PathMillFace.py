@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+from __future__ import print_function
 import FreeCAD
 import Path
 from PySide import QtCore, QtGui
@@ -211,7 +212,7 @@ class ObjectFace:
 
     # To reload this from FreeCAD, use: import PathScripts.PathFace; reload(PathScripts.PathFace)
     def execute(self, obj):
-        print "in execute"
+        print("in execute")
 
         if not obj.Active:
             path = Path.Path("(inactive operation)")
@@ -260,7 +261,7 @@ class ObjectFace:
                     if isinstance (shape, Part.Face):
                         faces.append(shape)
                     else:
-                        print ('falling out')
+                        print('falling out')
                         return
             planeshape = Part.makeCompound(faces)
 

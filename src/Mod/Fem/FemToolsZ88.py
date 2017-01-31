@@ -190,11 +190,11 @@ class FemToolsZ88(FemTools.FemTools):
 
     def load_results_o2(self):
         import os
-        import z88DispReader
+        import importZ88Results
         disp_result_file = self.working_dir + '/z88o2.txt'
         if os.path.isfile(disp_result_file):
             result_name_prefix = 'Z88_' + self.solver.AnalysisType + '_'
-            z88DispReader.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
+            importZ88Results.import_z88_disp(disp_result_file, self.analysis, result_name_prefix)
             for m in self.analysis.Member:
                 if m.isDerivedFrom("Fem::FemResultObject"):
                     self.results_present = True

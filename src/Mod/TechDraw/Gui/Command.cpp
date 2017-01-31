@@ -350,9 +350,12 @@ void CmdTechDrawNewViewSection::activated(int iMsg)
 
     std::string FeatName = getUniqueObjectName("Section");
     std::string SourceName = dvp->Source.getValue()->getNameInDocument();
+    std::string BaseName = (dObj)->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawViewSection','%s')",FeatName.c_str());
     doCommand(Doc,"App.activeDocument().%s.Source = App.activeDocument().%s",FeatName.c_str(),SourceName.c_str());
-    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),(dObj)->getNameInDocument());
+    doCommand(Doc,"App.activeDocument().%s.BaseView = App.activeDocument().%s",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.Scale = App.activeDocument().%s.Scale",FeatName.c_str(),BaseName.c_str());
+    doCommand(Doc,"App.activeDocument().%s.ScaleType = App.activeDocument().%s.ScaleType",FeatName.c_str(),BaseName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),FeatName.c_str());
     App::DocumentObject *docObj = getDocument()->getObject(FeatName.c_str());
     TechDraw::DrawViewSection* dsv = dynamic_cast<TechDraw::DrawViewSection *>(docObj);
@@ -453,7 +456,7 @@ CmdTechDrawProjGroup::CmdTechDrawProjGroup()
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
     sMenuText       = QT_TR_NOOP("Insert Projection Group");
-    sToolTipText    = QT_TR_NOOP("Insert 2D Projections of a 3D part into the active drawing");
+    sToolTipText    = QT_TR_NOOP("Insert multiple views of a single part into the active drawing");
     sWhatsThis      = "TechDraw_ProjGroup";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/techdraw-projgroup";
@@ -478,7 +481,7 @@ void CmdTechDrawProjGroup::activated(int iMsg)
     Gui::WaitCursor wc;
 
     openCommand("Create Projection Group");
-    std::string multiViewName = getUniqueObjectName("cView");
+    std::string multiViewName = getUniqueObjectName("ProjGroup");
     std::string SourceName = (*shapes.begin())->getNameInDocument();
     doCommand(Doc,"App.activeDocument().addObject('TechDraw::DrawProjGroup','%s')",multiViewName.c_str());
     doCommand(Doc,"App.activeDocument().%s.addView(App.activeDocument().%s)",PageName.c_str(),multiViewName.c_str());

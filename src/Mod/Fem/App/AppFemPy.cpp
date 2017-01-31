@@ -281,16 +281,13 @@ private:
         std::string EncodedName = std::string(fileName);
         PyMem_Free(fileName);
 
-        if (!pcObj)
+        if (pcObj)
         {
-            App::DocumentObjectPy* objpy= static_cast<App::DocumentObjectPy*>(pcObj);
-            App::DocumentObject* obj = objpy->getDocumentObjectPtr();
-            if (!obj)
+            if (PyObject_TypeCheck(pcObj, &(App::DocumentObjectPy::Type)))
             {
-                App::Document* pcDoc = App::GetApplication().getActiveDocument();
-                obj = pcDoc->getActiveObject();
+                App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(pcObj)->getDocumentObjectPtr();
+                FemVTKTools::writeResult(EncodedName.c_str(), obj);
             }
-            FemVTKTools::readFluidicResult(EncodedName.c_str(), obj);
         }
         else
             FemVTKTools::writeResult(EncodedName.c_str());

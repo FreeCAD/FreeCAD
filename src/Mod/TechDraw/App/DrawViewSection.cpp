@@ -46,6 +46,7 @@
 #include <HLRBRep_Algo.hxx>
 #include <HLRAlgo_Projector.hxx>
 #include <HLRBRep_HLRToShape.hxx>
+#include <ShapeAnalysis.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
@@ -63,20 +64,24 @@
 # include <QFileInfo>
 
 #include <App/Application.h>
+#include <App/Document.h>
 #include <App/Material.h>
 #include <Base/BoundBox.h>
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <Base/Parameter.h>
 
 #include <Mod/Part/App/PartFeature.h>
 
 #include "Geometry.h"
 #include "GeometryObject.h"
+#include "HatchLine.h"
 #include "EdgeWalker.h"
 #include "DrawUtil.h"
 #include "DrawProjGroupItem.h"
 #include "DrawProjectSplit.h"
+#include "DrawGeomHatch.h"
 #include "DrawViewSection.h"
 
 using namespace TechDraw;
@@ -110,11 +115,17 @@ DrawViewSection::DrawViewSection()
     SectionDirection.setEnums(SectionDirEnums);
     ADD_PROPERTY_TYPE(SectionDirection,((long)0),sgroup, App::Prop_None, "Direction in Base View for this Section");
 
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Shade the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color to shade the cut surface");
-    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),fgroup,App::Prop_None,"Hatch the cut surface");
-    ADD_PROPERTY_TYPE(HatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
-    ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color of the hatch pattern");
+    ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+    ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
+    ADD_PROPERTY_TYPE(HatchScale,(1.0),fgroup,App::Prop_None,"Hatch pattern size adjustment");
+
+//    ADD_PROPERTY_TYPE(ShowCutSurface ,(true),fgroup,App::Prop_None,"Show/hide the cut surface");
+//    ADD_PROPERTY_TYPE(CutSurfaceColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color to shade the cut surface");
+//    ADD_PROPERTY_TYPE(HatchCutSurface ,(false),fgroup,App::Prop_None,"Hatch the cut surface");
+//    ADD_PROPERTY_TYPE(FileHatchPattern ,(""),fgroup,App::Prop_None,"The hatch pattern file for the cut surface");
+//    ADD_PROPERTY_TYPE(NameGeomPattern ,(""),fgroup,App::Prop_None,"The pattern name for geometric hatching");
+//    ADD_PROPERTY_TYPE(HatchColor,(0.0,0.0,0.0),fgroup,App::Prop_None,"The color of the hatch pattern");
+    
 
     getParameters();
 
@@ -158,6 +169,23 @@ void DrawViewSection::onChanged(const App::Property* prop)
             }
         }
     }
+    if (prop == &FileHatchPattern    ||
+        prop == &NameGeomPattern ) {
+      if ((!FileHatchPattern.isEmpty())  &&
+          (!NameGeomPattern.isEmpty())) {
+              std::vector<HatchLine> specs = 
+                               DrawGeomHatch::getDecodedSpecsFromFile(FileHatchPattern.getValue(),NameGeomPattern.getValue());
+              m_lineSets.clear();
+              for (auto& hl: specs) {
+                  //hl.dump("hl from section");
+                  LineSet ls;
+                  ls.setHatchLine(hl);
+                  m_lineSets.push_back(ls);
+              }
+                  
+      }
+    }
+
     DrawView::onChanged(prop);
 }
 
@@ -248,10 +276,12 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                                                      inputCenter,
                                                                      Scale.getValue());
 
+        sectionFaceWires.clear();
         TopoDS_Compound newFaces;
         BRep_Builder builder;
         builder.MakeCompound(newFaces);
         TopExp_Explorer expl(mirroredSection, TopAbs_FACE);
+        int idb = 0;
         for (; expl.More(); expl.Next()) {
             const TopoDS_Face& face = TopoDS::Face(expl.Current());
             TopoDS_Face pFace = projectFace(face,
@@ -259,8 +289,9 @@ App::DocumentObjectExecReturn *DrawViewSection::execute(void)
                                             Direction.getValue());
              if (!pFace.IsNull()) {
                  builder.Add(newFaces,pFace);
+                 sectionFaceWires.push_back(ShapeAnalysis::OuterWire(pFace));
              }
-
+             idb++;
         }
         sectionFaces = newFaces;
     }
@@ -505,6 +536,25 @@ Base::Vector3d DrawViewSection::getSectionVector (const std::string sectionName)
     return adjResult;
 }
 
+std::vector<LineSet> DrawViewSection::getDrawableLines(int i)
+{
+    std::vector<LineSet> result;
+    result = DrawGeomHatch::getDrawableLines(this,m_lineSets,i,HatchScale.getValue());
+    return result;
+}
+
+std::vector<TopoDS_Wire> DrawViewSection::getWireForFace(int idx) const
+{
+    std::vector<TopoDS_Wire> result;
+    result.push_back(sectionFaceWires.at(idx));
+    return result;
+}
+
+void DrawViewSection::unsetupObject()
+{
+    getBaseDVP()->touch();
+}
+
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;
@@ -528,26 +578,20 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
 void DrawViewSection::getParameters()
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
-        .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Colors");
-    App::Color cutColor = App::Color((uint32_t) hGrp->GetUnsigned("CutSurfaceColor", 0xC8C8C800));
-    CutSurfaceColor.setValue(cutColor);
-    App::Color hatchColor = App::Color((uint32_t) hGrp->GetUnsigned("SectionHatchColor", 0x00000000));
-    HatchColor.setValue(hatchColor);
-
-    hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw");
 
     std::string defaultDir = App::Application::getResourceDir() + "Mod/Drawing/patterns/";
     std::string defaultFileName = defaultDir + "simple.svg";
-    QString patternFileName = QString::fromStdString(hGrp->GetASCII("PatternFile",defaultFileName.c_str()));
+    QString patternFileName = QString::fromStdString(hGrp->GetASCII("FileHatch",defaultFileName.c_str()));
     if (patternFileName.isEmpty()) {
         patternFileName = QString::fromStdString(defaultFileName);
     }
     QFileInfo tfi(patternFileName);
         if (tfi.isReadable()) {
-            HatchPattern.setValue(patternFileName.toUtf8().constData());
+            FileHatchPattern.setValue(patternFileName.toUtf8().constData());
         }
-
+    std::string patternName = hGrp->GetASCII("PatternName","Diamond");
+    NameGeomPattern.setValue(patternName);
 }
 
 // Python Drawing feature ---------------------------------------------------------

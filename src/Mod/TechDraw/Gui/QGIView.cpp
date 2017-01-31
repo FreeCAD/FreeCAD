@@ -44,7 +44,12 @@
 #include <Base/Console.h>
 #include <Gui/Selection.h>
 #include <Gui/Command.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProvider.h>
 
+
+#include "Rez.h"
 #include "QGCustomBorder.h"
 #include "QGCustomLabel.h"
 #include "QGIView.h"
@@ -188,13 +193,9 @@ void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
         if (!isInnerView()) {
             double tempX = x(),
                    tempY = getY();
-//            getViewObject()->X.setValue(tempX);
-//            getViewObject()->Y.setValue(tempY);
-            getViewObject()->setPosition(tempX,tempY);
+            getViewObject()->setPosition(Rez::appX(tempX),Rez::appX(tempY));
         } else {
-//            getViewObject()->X.setValue(x());
-//            getViewObject()->Y.setValue(getYInClip(y()));
-            getViewObject()->setPosition(x(),getYInClip(y()));
+            getViewObject()->setPosition(Rez::appX(x()),Rez::appX(getYInClip(y())));
         }
         getViewObject()->setMouseMove(false);
     }
@@ -244,7 +245,7 @@ double QGIView::getYInClip(double y)
         if (parentView) {
             auto parentFeat( dynamic_cast<TechDraw::DrawViewClip*>(parentView->getViewObject()) );
             if (parentFeat) {
-                return parentFeat->Height.getValue() - y;
+                return Rez::guiX(parentFeat->Height.getValue()) - y;
             }
         }
     }
@@ -259,8 +260,8 @@ void QGIView::updateView(bool update)
     if (update ||
         getViewObject()->X.isTouched() ||
         getViewObject()->Y.isTouched()) {
-        double featX = getViewObject()->X.getValue();
-        double featY = getViewObject()->Y.getValue();
+        double featX = Rez::guiX(getViewObject()->X.getValue());
+        double featY = Rez::guiX(getViewObject()->Y.getValue());
         setPosition(featX,featY);
     }
 
@@ -269,6 +270,7 @@ void QGIView::updateView(bool update)
         //NOTE: QPainterPaths have to be rotated individually. This transform handles Rotation for everything else.
         //Scale is handled in GeometryObject for DVP & descendents
         //Objects not descended from DVP must setScale for themselves
+        //note that setTransform(,,rotation,,) is not the same as setRotation!!!
         double rot = getViewObject()->Rotation.getValue();
         QPointF centre = boundingRect().center();
         setTransform(QTransform().translate(centre.x(), centre.y()).rotate(-rot).translate(-centre.x(), -centre.y()));
@@ -295,11 +297,10 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 
     viewObj = obj;
     viewName = obj->getNameInDocument();
-
-    // Set the QGIGroup initial position based on the DrawView ( wrong. new views are always at Page center)
-//    float x = obj->X.getValue();
-//    float y = obj->Y.getValue();
-//    setPosition(x, y);
+    
+    //mark the actual QGraphicsItem so we can check what's in the scene later
+    setData(0,QString::fromUtf8("QGIV"));
+    setData(1,QString::fromUtf8(obj->getNameInDocument()));
 }
 
 void QGIView::toggleCache(bool state)
@@ -408,7 +409,7 @@ void QGIView::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    //painter->drawRect(boundingRect());
+    //painter->drawRect(boundingRect());          //good for debugging
 
     QGraphicsItemGroup::paint(painter, &myOption, widget);
 }
@@ -453,6 +454,15 @@ QGIView* QGIView::getQGIVByName(std::string name)
     }
     return 0;
 }
+
+/* static */
+Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
+{
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+    Gui::ViewProvider* result = guiDoc->getViewProvider(obj);
+    return result;
+}
+
 
 QColor QGIView::getNormalColor()
 {
@@ -501,7 +511,7 @@ double QGIView::getPrefFontSize()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter().
                                          GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/TechDraw/Labels");
     double fontSize = hGrp->GetFloat("LabelSize", 5.0);
-    return fontSize;
+    return Rez::guiX(fontSize);
 }
 
 void QGIView::dumpRect(char* text, QRectF r) {

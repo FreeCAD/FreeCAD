@@ -10,6 +10,7 @@ INSTALL(
         Init.py
         InitGui.py
         PathCommands.py
+        TestPathApp.py
     DESTINATION
         Mod/Path
 )
@@ -39,6 +40,7 @@ SET(PathScripts_SRCS
     PathScripts/PathJob.py
     PathScripts/PathKurveUtils.py
     PathScripts/PathLoadTool.py
+    PathScripts/PathLog.py
     PathScripts/PathMillFace.py
     PathScripts/PathPlane.py
     PathScripts/PathPocket.py
@@ -75,14 +77,6 @@ SET(PathScripts_SRCS
     PathScripts/opensbp_pre.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
-    PathTests/PathTestUtils.py
-    PathTests/TestPathDepthParams.py
-    PathTests/TestPathDressupHoldingTags.py
-    PathTests/TestPathGeom.py
-    PathTests/TestPathPost.py
-    PathTests/__init__.py
-    PathTests/test_linuxcnc_00.ngc
-    TestPathApp.py
 )
 
 SET(PathScripts_NC_SRCS
@@ -91,6 +85,18 @@ SET(PathScripts_NC_SRCS
     PathScripts/nc/__init__.py
     PathScripts/nc/format.py
     PathScripts/nc/iso_codes.py
+)
+
+SET(PathTests_SRCS
+    PathTests/PathTestUtils.py
+    PathTests/TestPathCore.py
+    PathTests/TestPathDepthParams.py
+    PathTests/TestPathDressupHoldingTags.py
+    PathTests/TestPathGeom.py
+    PathTests/TestPathLog.py
+    PathTests/TestPathPost.py
+    PathTests/__init__.py
+    PathTests/test_linuxcnc_00.ngc
 )
 
 SET(all_files
@@ -102,7 +108,17 @@ ADD_CUSTOM_TARGET(PathScripts ALL
     SOURCES ${all_files}
 )
 
+SET(test_files
+  TestPathApp.py
+  ${PathTests_SRCS}
+)
+
+ADD_CUSTOM_TARGET(PathTests ALL
+    SOURCES ${test_files}
+)
+
 fc_copy_sources(PathScripts "${CMAKE_BINARY_DIR}/Mod/Path" ${all_files})
+fc_copy_sources(PathTests "${CMAKE_BINARY_DIR}/Mod/Path" ${test_files})
 
 INSTALL(
     FILES
@@ -116,5 +132,12 @@ INSTALL(
         ${PathScripts_NC_SRCS}
     DESTINATION
         Mod/Path/PathScripts/nc
+)
+
+INSTALL(
+    FILES
+        ${PathTests_SRCS}
+    DESTINATION
+        Mod/Path/PathTests
 )
 

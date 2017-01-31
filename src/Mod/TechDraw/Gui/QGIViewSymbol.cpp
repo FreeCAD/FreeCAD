@@ -135,7 +135,7 @@ void QGIViewSymbol::symbolToSvg(QByteArray qba)
 
     prepareGeometryChange();
     if (!m_svgItem->load(&qba)) {
-        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewObject()->getNameInDocument());
+        Base::Console().Error("Error - Could not load Symbol into SVG renderer for %s\n", getViewName());
     }
     m_svgItem->centerAt(0.,0.);
 }

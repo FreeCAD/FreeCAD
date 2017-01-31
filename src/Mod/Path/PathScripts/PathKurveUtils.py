@@ -22,10 +22,12 @@
 # *                                                                         *
 # ***************************************************************************
 '''PathKurveUtils - functions needed for using libarea (created by Dan Heeks) for making simple CNC profile paths '''
+from __future__ import print_function
 import Part
 import math
 import area
 from PathScripts import PathUtils
+from PathScripts.PathGeom import PathGeom
 from nc.nc import *
 import PathScripts.nc.iso
 from PathScripts.nc.nc import *
@@ -71,7 +73,8 @@ def makeAreaCurve(edges, direction, startpt=None, endpt=None):
         # We first compare the last parameter of the first segment to see if it
         # matches either end of the second segment. If not, it must need
         # flipping.
-        if cleanededges[0].valueAt(cleanededges[0].LastParameter) in [cleanededges[1].valueAt(cleanededges[1].FirstParameter), cleanededges[1].valueAt(cleanededges[1].LastParameter)]:
+        p0L = cleanededges[0].valueAt(cleanededges[0].LastParameter)
+        if PathGeom.pointsCoincide(p0L, cleanededges[1].valueAt(cleanededges[1].FirstParameter)) or PathGeom.pointsCoincide(p0L, cleanededges[1].valueAt(cleanededges[1].LastParameter)):
             edge0 = cleanededges[0]
         else:
             edge0 = PathUtils.reverseEdge(cleanededges[0])
@@ -81,8 +84,7 @@ def makeAreaCurve(edges, direction, startpt=None, endpt=None):
         # Now iterate the rest of the edges matching the last parameter of the
         # previous segment.
         for edge in cleanededges[1:]:
-
-            if edge.valueAt(edge.FirstParameter) == edgelist[-1].valueAt(edgelist[-1].LastParameter):
+            if PathGeom.pointsCoincide(edge.valueAt(edge.FirstParameter), edgelist[-1].valueAt(edgelist[-1].LastParameter)):
                 nextedge = edge
             else:
                 nextedge = PathUtils.reverseEdge(edge)
@@ -141,7 +143,7 @@ def profile(curve, side_of_line, radius=1.0, vertfeed=0.0, horizfeed=0.0, offset
 
     output = ""
     output += "G0 Z" + str(clearance) + "\n"
-    print "in profile: 151"
+    print("in profile: 151")
     offset_curve = area.Curve(curve)
     if offset_curve.getNumVertices() <= 1:
         raise Exception, "Sketch has no elements!"
@@ -337,10 +339,10 @@ def profile2(curve, direction="on", radius=1.0, vertfeed=0.0,
                         using_area_for_offset = True
                         a = area.Area()
                         a.append(curve)
-                        print "curve, offset: " , str(curve), str(offset)
+                        print("curve, offset: " , str(curve), str(offset))
                         a.Offset(-offset)
                         for curve in a.getCurves():
-                            print "result curve: ", curve
+                            print("result curve: ", curve)
                             curve_cw = curve.IsClockwise()
                             if cw != curve_cw:
                                 curve.Reverse()
