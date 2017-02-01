@@ -32,25 +32,68 @@
 #include "AreaPy.cpp"
 
 
-struct AreaDoc {
-    const char *name;
-    const char *doc;
-};
+static PyObject * areaAbort(PyObject *, PyObject *args, PyObject *kwd) {
+    static char *kwlist[] = {"aborting", NULL};
+    PyObject *pObj = Py_True;
+    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O",kwlist,&pObj))
+        return 0;
+    Area::abort(PyObject_IsTrue(pObj));
+    return Py_None;
+}
 
-/** Generate doc string from parameter definitions
- * It will generate doc string and replace the one generated from xml 
- * */
-static const AreaDoc myDocs[] = {
+static PyObject * areaSetParams(PyObject *, PyObject *args, PyObject *kwd) {
+
+    static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_STATIC_CONF),NULL};
+
+    //Declare variables defined in the NAME field of the CONF parameter list
+    PARAM_PY_DECLARE(PARAM_FNAME,AREA_PARAMS_STATIC_CONF);
+
+    AreaStaticParams params = Area::getDefaultParams();
+
+#define AREA_SET(_param) \
+    PARAM_FNAME(_param) = \
+        PARAM_TYPED(PARAM_PY_CAST_,_param)(params.PARAM_FNAME(_param));
+    //populate the CONF variables with params
+    PARAM_FOREACH(AREA_SET,AREA_PARAMS_STATIC_CONF)
+
+    //Parse arguments to overwrite CONF variables 
+    if (!PyArg_ParseTupleAndKeywords(args, kwd, 
+                "|" PARAM_PY_KWDS(AREA_PARAMS_STATIC_CONF), kwlist, 
+                PARAM_REF(PARAM_FNAME,AREA_PARAMS_STATIC_CONF)))
+        return 0;
+
+#define AREA_GET(_param) \
+    params.PARAM_FNAME(_param) = \
+        PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
+    //populate 'params' with the CONF variables
+    PARAM_FOREACH(AREA_GET,AREA_PARAMS_STATIC_CONF)
+
+    Area::setDefaultParams(params);
+    return Py_None;
+}
+
+static PyObject* areaGetParams(PyObject *, PyObject *args) {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
+    const AreaStaticParams &params = Area::getDefaultParams();
+
+    PyObject *dict = PyDict_New();
+#define AREA_SRC(_param) params.PARAM_FNAME(_param)
+    PARAM_PY_DICT_SET_VALUE(dict,NAME,AREA_SRC,AREA_PARAMS_STATIC_CONF)
+    return dict;
+}
+
+
+static const PyMethodDef areaOverrides[] = {
     {
-        "setParams",
+        "setParams",NULL,0,
         "setParam(key=value...): Set algorithm parameters. You can call getParamsDesc() to \n"
         "get a list of supported parameters and their descriptions.\n"
-
         PARAM_PY_DOC(NAME,AREA_PARAMS_CONF)
     },
     {
-        "add",
-
+        "add",NULL,0,
         "add((shape...)," PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OPCODE) "):\n"
         "Add TopoShape(s) with given operation code\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_OPCODE)
@@ -62,24 +105,21 @@ static const AreaDoc myDocs[] = {
     },
 
     {
-        "makeOffset",
-
+        "makeOffset",NULL,0,
         "makeOffset(index=-1, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_OFFSET) "):\n"
         "Make an 2D offset of the shape.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_OFFSET),
     },
     {
-        "makePocket",
-
+        "makePocket",NULL,0,
         "makePocket(index=-1, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_POCKET) "):\n"
         "Generate pocket toolpath of the shape.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_POCKET),
     },
     {
-        "makeSections",
-
+        "makeSections",NULL,0,
         "makeSections(" PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SECTION_EXTRA) ", heights=[], plane=None):\n"
         "Make a list of area holding the sectioned children shapes on given heights\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_SECTION_EXTRA)
@@ -89,37 +129,46 @@ static const AreaDoc myDocs[] = {
         "of this Area is used.",
     },
     {
-        "sortWires",
-
+        "sortWires",NULL,0,
         "sortWires(index=-1, count=0, start=Vector(), allow_break=False, " PARAM_PY_ARGS_DOC(ARG,AREA_PARAMS_SORT) "):\n"
-        "Returns a tuple (wires,end): sorted wires with minimized travel distance, and the endpoint of the wires.\n"
+        "Returns a tuple (wires,end): sorted wires with minimized travel distance, and the endpoint\n"
+        "of the wires.\n"
         "\n* index (-1): the index of the section. -1 means all sections. No effect on planar shape.\n"
         "\n* count (0): the number of sections to return. <=0 means all sections starting from index.\n"
         "\n* start (Vector()): a vector specifies the start point.\n"
         PARAM_PY_DOC(ARG,AREA_PARAMS_SORT),
     },
+    {
+        "setDefaultParams",(PyCFunction)areaSetParams, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "setDefaultParams(" PARAM_PY_ARGS_DOC(NAME,AREA_PARAMS_EXTRA_CONF) ", key=value...):\n"
+        "Static method to set the default parameters of all following Path.Area, plus the following\n"
+        "additional parameters.\n"
+        PARAM_PY_DOC(NAME,AREA_PARAMS_EXTRA_CONF)
+    },
+    {
+        "getDefaultParams",(PyCFunction)areaGetParams, METH_VARARGS|METH_STATIC,
+        "getDefaultParams(): Static method to return the current default parameters."
+    },
+    {
+        "abort",(PyCFunction)areaAbort, METH_VARARGS|METH_KEYWORDS|METH_STATIC,
+        "abort(aborting=True): Static method to abort any ongoing operation\n"
+        "\nTo ensure no stray abortion is left in the previous operaion, it is advised to manually clear\n"
+        "the aborting flag by calling abort(False) before starting a new operation.",
+    },
 };
-
-static PyObject * abortArea(PyObject *, PyObject *args, PyObject *kwd) {
-    static char *kwlist[] = {"aborting", NULL};
-    PyObject *pObj = Py_True;
-    if (!PyArg_ParseTupleAndKeywords(args,kwd,"|O",kwlist,&pObj))
-        return 0;
-    Area::abort(PyObject_IsTrue(pObj));
-    return Py_None;
-}
 
 struct AreaPyModifier {
     AreaPyModifier() {
-        for(PyMethodDef &method : Path::AreaPy::Methods) {
+        for(auto &method : Path::AreaPy::Methods) {
             if(!method.ml_name) continue;
-            if(std::strcmp(method.ml_name,"abort")==0) {
-                method.ml_meth = (PyCFunction)abortArea;
-                method.ml_flags |= METH_STATIC;
-            }
-            for(const AreaDoc &doc : myDocs) {
-                if(std::strcmp(method.ml_name,doc.name)==0) {
-                    method.ml_doc = doc.doc;
+            for(auto &entry : areaOverrides) {
+                if(std::strcmp(method.ml_name,entry.ml_name)==0) {
+                    if(entry.ml_doc)
+                        method.ml_doc = entry.ml_doc;
+                    if(entry.ml_meth)
+                        method.ml_meth = entry.ml_meth;
+                    if(entry.ml_flags)
+                        method.ml_flags = entry.ml_flags;
                     break;
                 }
             }
@@ -344,6 +393,11 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
     return Py::new_reference_to(ret);
 }
 
+PyObject* AreaPy::setDefaultParams(PyObject *, PyObject *)
+{
+    return 0;
+}
+
 PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 {
     static char *kwlist[] = {PARAM_FIELD_STRINGS(NAME,AREA_PARAMS_CONF),NULL};
@@ -353,9 +407,6 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
 
     AreaParams params = getAreaPtr()->getParams();
 
-#define AREA_SET(_param) \
-    PARAM_FNAME(_param) = \
-        PARAM_TYPED(PARAM_PY_CAST_,_param)(params.PARAM_FNAME(_param));
     //populate the CONF variables with params
     PARAM_FOREACH(AREA_SET,AREA_PARAMS_CONF)
 
@@ -365,9 +416,6 @@ PyObject* AreaPy::setParams(PyObject *args, PyObject *keywds)
                 PARAM_REF(PARAM_FNAME,AREA_PARAMS_CONF)))
         return 0;
 
-#define AREA_GET(_param) \
-    params.PARAM_FNAME(_param) = \
-        PARAM_TYPED(PARAM_CAST_PY_,_param)(PARAM_FNAME(_param));
     //populate 'params' with the CONF variables
     PARAM_FOREACH(AREA_GET,AREA_PARAMS_CONF)
 
@@ -384,9 +432,13 @@ PyObject* AreaPy::getParams(PyObject *args)
     const AreaParams &params =getAreaPtr()->getParams();
 
     PyObject *dict = PyDict_New();
-#define AREA_SRC(_param) params.PARAM_FNAME(_param)
     PARAM_PY_DICT_SET_VALUE(dict,NAME,AREA_SRC,AREA_PARAMS_CONF)
     return dict;
+}
+
+PyObject* AreaPy::getDefaultParams(PyObject *)
+{
+    return 0;
 }
 
 PyObject* AreaPy::abort(PyObject *, PyObject *) {

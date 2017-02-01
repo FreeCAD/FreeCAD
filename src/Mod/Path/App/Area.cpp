@@ -111,7 +111,8 @@ TYPESYSTEM_SOURCE(Path::Area, Base::BaseClass);
 bool Area::s_aborting;
 
 Area::Area(const AreaParams *params)
-:myHaveFace(false)
+:myParams(s_params)
+,myHaveFace(false)
 ,myHaveSolid(false)
 ,myShapeDone(false)
 {
@@ -731,10 +732,7 @@ void Area::build() {
         return;
     }
 
-#ifdef AREA_TRACE_ENABLE
     TIME_INIT(t);
-#endif
-
     getPlane();
 
     try {
@@ -1832,3 +1830,31 @@ void Area::toPath(Toolpath &path, const std::list<TopoDS_Shape> &shapes,
         }
     }
 }
+
+void Area::abort(bool aborting) {
+    s_aborting = aborting;
+}
+
+bool Area::aborting() {
+    return s_aborting;
+}
+
+AreaStaticParams::AreaStaticParams()
+    :PARAM_INIT(PARAM_FNAME,AREA_PARAMS_EXTRA_CONF)
+{}
+    
+AreaStaticParams Area::s_params;
+
+void Area::setDefaultParams(const AreaStaticParams &params){
+    s_params = params;
+}
+
+const AreaStaticParams &Area::getDefaultParams() {
+    return s_params;
+}
+
+#define AREA_LOG_CHECK_DEFINE(_1,_2,_elem) \
+bool Area::BOOST_PP_CAT(_elem,Enabled)() {\
+    return s_params.LogLevel >= BOOST_PP_CAT(LogLevel,_elem);\
+}
+BOOST_PP_SEQ_FOR_EACH(AREA_LOG_CHECK_DEFINE,_,AREA_PARAM_LOG_LEVEL)
