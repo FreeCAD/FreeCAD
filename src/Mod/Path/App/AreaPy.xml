@@ -60,6 +60,16 @@ same algorithm</UserDocu>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
+    <Methode Name="setDefaultParams" Keyword="true">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getDefaultParams">
+      <Documentation>
+          <UserDocu></UserDocu>
+      </Documentation>
+    </Methode>
     <Methode Name="getParamsDesc" Keyword="true">
       <Documentation>
           <UserDocu>getParamsDesc(as_string=True): Returns a list of supported parameters and their descriptions.\n
@@ -79,9 +89,7 @@ same algorithm</UserDocu>
     </Methode>
     <Methode Name="abort" Keyword="true">
       <Documentation>
-          <UserDocu>abort(aborting=True): Static method to abort any ongoing operation\n
-To ensure no stray abortion is left in the previous operaion, it is advised to manually
-clear the aborting flag by calling abort(False) before starting a new operation. </UserDocu>
+          <UserDocu></UserDocu>
       </Documentation>
     </Methode>
     <Attribute Name="Sections" ReadOnly="true">

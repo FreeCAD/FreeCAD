@@ -37,14 +37,14 @@
 #include "Path.h"
 #include "AreaParams.h"
 
-// #define AREA_TRACE_ENABLE
-
 #define _AREA_LOG(_l,_msg) do {\
-    std::stringstream str;\
-    str << "Path.Area: " << _msg;\
-    Base::Console()._l("%s\n",str.str().c_str());\
+    if(Area::_l##Enabled()){\
+        std::stringstream str;\
+        str << "Path.Area: " << _msg;\
+        Base::Console()._l("%s\n",str.str().c_str());\
+    }\
     qApp->sendPostedEvents();\
-    if(Area::aborted()) {\
+    if(Area::aborting()) {\
         Area::abort(false);\
         throw Base::AbortException("operation aborted");\
     }\
@@ -52,13 +52,13 @@
 
 #define AREA_LOG(_msg) _AREA_LOG(Log,_msg)
 #define AREA_WARN(_msg) _AREA_LOG(Warning,_msg)
+#define AREA_ERR(_msg) _AREA_LOG(Error,_msg)
 #define AREA_PT(_pt) '('<<(_pt).X()<<", " << (_pt).Y()<<", " << (_pt).Z()<<')'
 #define AREA_PT2(_pt) '('<<(_pt).x<<", " << (_pt).y<<')'
-#ifdef AREA_TRACE_ENABLE
-#   define AREA_TRACE(_msg) AREA_LOG('('<<__LINE__<<"): " <<_msg)
-#else
-#   define AREA_TRACE(...) do{}while(0)
-#endif
+
+#define AREA_TRACE(_msg) do{\
+    if(Area::TraceEnabled()) AREA_LOG('('<<__LINE__<<"): " <<_msg);\
+}while(0)
 
 #define AREA_TIME_ENABLE
 
@@ -145,6 +145,12 @@ struct PathExport AreaParams: CAreaParams {
     AreaParams();
 };
 
+struct PathExport AreaStaticParams: AreaParams {
+    PARAM_DECLARE(PARAM_FNAME,AREA_PARAMS_EXTRA_CONF);
+
+    AreaStaticParams();
+};
+
 /** libarea configurator
  *
  * It is kind of troublesome with the fact that libarea uses static variables to
@@ -199,7 +205,9 @@ protected:
     bool myHaveSolid;
     bool myShapeDone;
     int mySkippedShapes;
+
     static bool s_aborting;
+    static AreaStaticParams s_params;
 
     /** Called internally to combine children shapes for further processing */
     void build();
@@ -437,15 +445,19 @@ public:
             const AreaParams *params=NULL, const gp_Pnt *pstart=NULL, gp_Pnt *pend=NULL,
             PARAM_ARGS_DEF(PARAM_FARG,AREA_PARAMS_PATH));
 
-    static void abort(bool aborting) {
-        s_aborting  = aborting;
-    }
-
-    static bool aborted() {
-        return s_aborting;
-    }
-
     PARAM_ENUM_DECLARE(AREA_PARAMS_PATH)
+
+    static void abort(bool aborting);
+    static bool aborting();
+
+    static void setDefaultParams(const AreaStaticParams &params);
+    static const AreaStaticParams &getDefaultParams();
+
+#define AREA_LOG_CHECK_DECLARE(_1,_2,_elem) \
+    static bool BOOST_PP_CAT(_elem,Enabled)();
+    BOOST_PP_SEQ_FOR_EACH(AREA_LOG_CHECK_DECLARE,_,AREA_PARAM_LOG_LEVEL)
+
+    PARAM_ENUM_DECLARE(AREA_PARAMS_LOG_LEVEL)
 };
 
 } //namespace Path

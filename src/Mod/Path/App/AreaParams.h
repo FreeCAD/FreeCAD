@@ -209,4 +209,15 @@
     AREA_PARAMS_CONF \
     AREA_PARAMS_OPCODE
 
+#define AREA_PARAM_LOG_LEVEL (Error)(Warning)(Log)(Trace)
+#define AREA_PARAMS_LOG_LEVEL \
+    ((enum, log_level, LogLevel, 1, "Area log level", AREA_PARAM_LOG_LEVEL))
+
+#define AREA_PARAMS_EXTRA_CONF \
+    AREA_PARAMS_LOG_LEVEL 
+
+#define AREA_PARAMS_STATIC_CONF \
+    AREA_PARAMS_CONF \
+    AREA_PARAMS_EXTRA_CONF
+
 #endif //PATH_AreaParam_H
