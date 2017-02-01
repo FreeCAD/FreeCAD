@@ -13,12 +13,6 @@ ADD_CUSTOM_TARGET(AddonManager ALL
 
 fc_copy_sources(AddonManager "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManager_SRCS})
 
-IF (BUILD_GUI)
-    fc_target_copy_resource(AddonManager
-        ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/AddonManager)
-ENDIF (BUILD_GUI)
-
 INSTALL(
     FILES
         ${AddonManager_SRCS}
