@@ -1,8 +1,7 @@
-# FreeCAD init script of the Image module
 # (c) 2001 Juergen Riegel
 
 #***************************************************************************
-#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                        *
+#*   (c) Juergen Riegel (juergen.riegel@web.de) 2002                       *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -24,16 +23,6 @@
 #*                                                                         *
 #*   Juergen Riegel 2002                                                   *
 #***************************************************************************/
-
-
-
-# Get the Parameter Group of this module
-ParGrp = App.ParamGet("System parameter:Modules").GetGroup("Image")
-
-# Set the needed information
-ParGrp.SetString("HelpIndex",        "Image/Help/index.html")
-ParGrp.SetString("WorkBenchName",    "Image")
-ParGrp.SetString("WorkBenchModule",  "ImageWorkbench.py")
 
 
 
