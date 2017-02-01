@@ -650,6 +650,7 @@ public:
       , startAngle(0)
       , endAngle(0)
       , arcRadius(0)
+      , firstsegment(true)
     {
     }
     virtual ~DrawSketchHandlerLineSet() {}
@@ -928,6 +929,8 @@ public:
                     previousCurve=-1;
                     firstPosId=Sketcher::none;
                     previousPosId=Sketcher::none;
+                    EditCurve.clear();
+                    sketchgui->drawEdit(EditCurve);
                     EditCurve.resize(2);
                     applyCursor();                
                     /* this is ok not to call to purgeHandler
@@ -979,6 +982,8 @@ public:
                     Base::Console().Error("Failed to add line: %s\n", e.what());
                     Gui::Command::abortCommand();
                 }
+                
+                firstsegment=false;
             }
             else if (SegmentMode == SEGMENT_MODE_Arc) { // We're dealing with an Arc
                 if (!boost::math::isnormal(arcRadius)) {
@@ -1001,6 +1006,8 @@ public:
                     Base::Console().Error("Failed to add arc: %s\n", e.what());
                     Gui::Command::abortCommand();
                 }
+                
+                firstsegment=false;
             }
 
             int lastCurve = getHighestCurveIndex();
@@ -1072,6 +1079,8 @@ public:
                     previousCurve=-1;
                     firstPosId=Sketcher::none;
                     previousPosId=Sketcher::none;
+                    EditCurve.clear();
+                    sketchgui->drawEdit(EditCurve);
                     EditCurve.resize(2);
                     applyCursor();                
                     /* this is ok not to call to purgeHandler
@@ -1132,6 +1141,43 @@ public:
         }
         return true;
     }
+    
+    virtual void quit(void) {
+        // We must see if we need to create a BSpline before cancelling everything
+        // and now just like any other Handler,
+        
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        
+        bool continuousMode = hGrp->GetBool("ContinuousCreationMode",true);
+        
+        if (firstsegment) {
+            // user when right-clicking with no segment in really wants to exit
+            DrawSketchHandler::quit();
+        }
+        else {
+
+            if(!continuousMode){
+                DrawSketchHandler::quit();
+            }
+            else {
+                // This code disregards existing data and enables the continuous creation mode.
+                Mode=STATUS_SEEK_First;
+                SegmentMode=SEGMENT_MODE_Line;
+                TransitionMode=TRANSITION_MODE_Free;
+                suppressTransition=false;
+                firstCurve=-1;
+                previousCurve=-1;
+                firstPosId=Sketcher::none;
+                previousPosId=Sketcher::none;
+                firstsegment=true;
+                EditCurve.clear();
+                sketchgui->drawEdit(EditCurve);
+                EditCurve.resize(2);
+                applyCursor();
+            }
+        }
+    }
+    
 protected:
     SELECT_MODE Mode;
     SEGMENT_MODE SegmentMode;
@@ -1148,6 +1194,8 @@ protected:
     Base::Vector2d CenterPoint;
     Base::Vector3d dirVec;
     double startAngle, endAngle, arcRadius;
+    
+    bool firstsegment;
 
     void updateTransitionData(int GeoId, Sketcher::PointPos PosId) {
 
