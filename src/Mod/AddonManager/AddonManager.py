@@ -575,6 +575,3 @@ def launchAddonMgr():
     if readWarning:
         dialog = AddonsInstaller()
         dialog.exec_()
-
-if __name__ == '__main__':
-    launchAddonMgr()
