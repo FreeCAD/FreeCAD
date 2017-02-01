@@ -16,8 +16,7 @@ fc_copy_sources(AddonManager "${CMAKE_BINARY_DIR}/Mod/AddonManager" ${AddonManag
 IF (BUILD_GUI)
     fc_target_copy_resource(AddonManager
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${CMAKE_BINARY_DIR}/Mod/AddonManager
-        AddonManager_rc.py)
+        ${CMAKE_BINARY_DIR}/Mod/AddonManager)
 ENDIF (BUILD_GUI)
 
 INSTALL(
