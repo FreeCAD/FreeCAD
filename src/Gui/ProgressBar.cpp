@@ -215,11 +215,14 @@ void Sequencer::setValue(int step)
                 showRemainingTime();
         }
         else {
-            d->bar->setValue(step);
-            if (d->bar->isVisible())
-                showRemainingTime();
-            d->bar->resetObserveEventFilter();
-            qApp->processEvents();
+            int elapsed = d->progressTime.restart();
+            if (elapsed > 500) {
+                d->bar->setValue(step);
+                if (d->bar->isVisible())
+                    showRemainingTime();
+                d->bar->resetObserveEventFilter();
+                qApp->processEvents();
+            }
         }
     }
 }
