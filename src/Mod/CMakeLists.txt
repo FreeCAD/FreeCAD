@@ -134,3 +134,8 @@ if(BUILD_TECHDRAW)
     add_subdirectory(Measure)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
+
+if(BUILD_ADDONMGR)
+  add_subdirectory(AddonManager)
+endif(BUILD_ADDONMGR)
+
