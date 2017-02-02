@@ -466,6 +466,11 @@ class Component:
                             if (Draft.getType(o) == "Roof"):
                                 continue
                         o.ViewObject.hide()
+        elif prop in ["Mesh"]:
+            if hasattr(obj,prop):
+                o = getattr(obj,prop)
+                if o:
+                    o.ViewObject.hide()            
 
     def processSubShapes(self,obj,base,placement=None):
         "Adds additions and subtractions to a base shape"
@@ -755,16 +760,15 @@ class ViewProviderComponent:
                         if not swalW:
                             continue
                     c.append(s)
-            if hasattr(self.Object,"Armatures"):
-                c.extend(self.Object.Armatures)
-            if hasattr(self.Object,"Group"):
-                c.extend(self.Object.Group)
-            if hasattr(self.Object,"Tool"):
-                if self.Object.Tool:
-                    c.append(self.Object.Tool)
-            if hasattr(self.Object,"Subvolume"):
-                if self.Object.Subvolume:
-                    c.append(self.Object.Subvolume)
+            for link in ["Armatures","Group"]:
+                if hasattr(self.Object,link):
+                    objlink = getattr(self.Object,link)
+                    c.extend(objlink)
+            for link in ["Tool","Subvolume","Mesh"]:
+                if hasattr(self.Object,link):
+                    objlink = getattr(self.Object,link)
+                    if objlink:
+                        c.append(objlink)
             return c
         return []
 
