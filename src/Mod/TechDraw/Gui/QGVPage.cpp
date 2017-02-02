@@ -471,8 +471,6 @@ QGIView * QGVPage::findParent(QGIView *view) const
 
 void QGVPage::setPageTemplate(TechDraw::DrawTemplate *obj)
 {
-    // Remove currently set background template
-    // Assign a base template class and create object dependent on
     removeTemplate();
 
     if(obj->isDerivedFrom(TechDraw::DrawParametricTemplate::getClassTypeId())) {
