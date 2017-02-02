@@ -92,7 +92,7 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
     }
 
     if (prop == &Visibility) {
-        if(Visibility.getValue()) {
+       if(Visibility.getValue()) {
             show();
         } else {
             hide();
