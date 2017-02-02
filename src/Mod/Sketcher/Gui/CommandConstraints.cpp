@@ -4767,10 +4767,22 @@ bool CmdSketcherConstrainAngle::isActive(void)
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainEqual);
+//DEF_STD_CMD_A(CmdSketcherConstrainEqual);
+
+class CmdSketcherConstrainEqual : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainEqual();
+    virtual ~CmdSketcherConstrainEqual(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainEqual"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
-    :Command("Sketcher_ConstrainEqual")
+    :CmdSketcherConstraint("Sketcher_ConstrainEqual")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -4781,6 +4793,9 @@ CmdSketcherConstrainEqual::CmdSketcherConstrainEqual()
     sPixmap         = "Constraint_EqualLength";
     sAccel          = "E";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge, SelEdge}}; // Only option for equal constraint
+    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainEqual::activated(int iMsg)
@@ -4791,8 +4806,12 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two edges from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select two edges from the sketch."));
+
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -4889,9 +4908,37 @@ void CmdSketcherConstrainEqual::activated(int iMsg)
     getSelection().clearSelection();
 }
 
-bool CmdSketcherConstrainEqual::isActive(void)
+void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+    QString strError;
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+
+    switch (seqIndex) {
+    case 0: // {SelEdge, SelEdge}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        // undo command open
+        openCommand("add equality constraint");
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Equal',%d,%d)) ",
+            Obj->getNameInDocument(), GeoId1, GeoId2);
+        // finish the transaction and update
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        return;
+    }
+    default:
+        break;
+    }
 }
 
 // ======================================================================================
