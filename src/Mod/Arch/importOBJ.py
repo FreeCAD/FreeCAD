@@ -1,7 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011                                                    *  
-#*   Yorik van Havre <yorik@uncreated.net>                                 *  
+#*   Copyright (c) 2011 Yorik van Havre <yorik@uncreated.net>              *  
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -21,7 +20,7 @@
 #*                                                                         *
 #***************************************************************************
 
-import FreeCAD, DraftGeomUtils, Part, Draft, Arch
+import FreeCAD, DraftGeomUtils, Part, Draft, Arch, Mesh
 if FreeCAD.GuiUp:
     from DraftTools import translate
 else:
@@ -58,17 +57,20 @@ def getIndices(shape,offset):
     elist = []
     flist = []
     curves = None
-    for e in shape.Edges:
-        try:
-            if not isinstance(e.Curve,Part.LineSegment):
-                if not curves:
-                    curves = shape.tessellate(1)
-                    FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
-                    break
-        except: # unimplemented curve type
-            curves = shape.tessellate(1)
-            FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
-            break
+    if isinstance(shape,Part.Shape):
+        for e in shape.Edges:
+            try:
+                if not isinstance(e.Curve,Part.LineSegment):
+                    if not curves:
+                        curves = shape.tessellate(1)
+                        FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+                        break
+            except: # unimplemented curve type
+                curves = shape.tessellate(1)
+                FreeCAD.Console.PrintWarning(translate("Arch","Found a shape containing curves, triangulating\n").decode('utf8'))
+                break
+    elif isinstance(shape,Mesh.Mesh):
+        curves = shape.Topology
     if curves:
         for v in curves[0]:
             vlist.append(" "+str(round(v.x,p))+" "+str(round(v.y,p))+" "+str(round(v.z,p)))
@@ -119,8 +121,28 @@ def export(exportList,filename):
     objectslist = Arch.pruneIncluded(objectslist)
     for obj in objectslist:
         if obj.isDerivedFrom("Part::Feature"):
-            if obj.ViewObject.isVisible():
-                vlist,elist,flist = getIndices(obj.Shape,offset)
+            mesh = None
+            if FreeCAD.GuiUp:
+                visible = obj.ViewObject.isVisible()
+                if obj.ViewObject.DisplayMode == "Mesh":
+                    if hasattr(obj,"Mesh"):
+                        if obj.Mesh:
+                            mesh = obj.Mesh.Mesh.copy()
+                            mesh.Placement = obj.Placement.multiply(obj.Mesh.Mesh.Placement)
+                    if not mesh:
+                        if hasattr(obj,"CloneOf"):
+                            if obj.CloneOf:
+                                if hasattr(obj.CloneOf,"Mesh"):
+                                    if obj.CloneOf.Mesh:
+                                        mesh = obj.CloneOf.Mesh.Mesh.copy()
+                                        mesh.Placement = obj.Placement.multiply(obj.CloneOf.Placement).multiply(obj.CloneOf.Mesh.Mesh.Placement)
+            else:
+                visible = True
+            if visible:
+                if mesh:
+                    vlist,elist,flist = getIndices(mesh,offset)
+                else:
+                    vlist,elist,flist = getIndices(obj.Shape,offset)
                 if vlist == None:
                     FreeCAD.Console.PrintError("Unable to export object "+obj.Label+". Skipping.\n")
                 else:
