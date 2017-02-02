@@ -351,10 +351,15 @@ int SelectionFilterlex(void);
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wsign-compare"
 # pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#elif defined (__GNUC__)
+# pragma GCC diagnostic push
+# pragma GCC diagnostic ignored "-Wsign-compare"
 #endif
 #include "lex.SelectionFilter.c"
 #if defined(__clang__)
 # pragma clang diagnostic pop
+#elif defined (__GNUC__)
+# pragma GCC diagnostic pop
 #endif
 #endif // DOXYGEN_SHOULD_SKIP_THIS
 }
