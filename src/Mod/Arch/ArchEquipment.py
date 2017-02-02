@@ -55,27 +55,15 @@ else:
 Roles = ["Furniture", "Hydro Equipment", "Electric Equipment"]
 
 
-def makeEquipment(baseobj=None,placement=None,name="Equipment",type=None):
-    "makeEquipment([baseobj,placement,name,type]): creates an equipment object from the given base object"
-    if type:
-        if type == "Part":
-            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+def makeEquipment(baseobj=None,placement=None,name="Equipment"):
+    "makeEquipment([baseobj,placement,name]): creates an equipment object from the given base object."
+    obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
+    _Equipment(obj)
+    if baseobj:
+        if baseobj.isDerivedFrom("Mesh::Feature"):
+            obj.Mesh = baseobj
         else:
-            obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
-        _Equipment(obj)
-        if baseobj:
             obj.Base = baseobj
-    else:
-        if baseobj:
-            if baseobj.isDerivedFrom("Mesh::Feature"):
-                obj = FreeCAD.ActiveDocument.addObject("Mesh::FeaturePython",name)
-            else:
-                obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-            _Equipment(obj)
-            obj.Base = baseobj
-        else:
-            obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
-            _Equipment(obj)
     obj.Label = translate("Arch",name)
     if placement:
         obj.Placement = placement
@@ -187,19 +175,40 @@ class _CommandEquipment:
     def Activated(self):
         s = FreeCADGui.Selection.getSelection()
         if not s:
-            FreeCAD.Console.PrintError(translate("Arch","You must select a base object first!"))
+            FreeCAD.Console.PrintError(translate("Arch","You must select a base shape object and optionally a mesh object"))
         else:
-            base = s[0].Name
+            base = ""
+            mesh = ""
+            if len(s) == 2:
+                if s[0].isDerivedFrom("Part::Feature"):
+                    base = s[0].Name
+                elif s[0].isDerivedFrom("Mesh::Feature"):
+                    mesh = s[0].Name
+                if s[1].isDerivedFrom("Part::Feature"):
+                    if mesh:
+                        base = s[1].Name
+                elif s[1].isDerivedFrom("Mesh::Feature"):
+                    if base:
+                        mesh = s[1].Name
+            else:
+                if s[0].isDerivedFrom("Part::Feature"):
+                    base = s[0].Name
+                elif s[0].isDerivedFrom("Mesh::Feature"):
+                    mesh = s[0].Name
             FreeCAD.ActiveDocument.openTransaction(str(translate("Arch","Create Equipment")))
             FreeCADGui.addModule("Arch")
-            FreeCADGui.doCommand("obj = Arch.makeEquipment(FreeCAD.ActiveDocument." + base + ")")
+            if base:
+                base = "FreeCAD.ActiveDocument." + base
+            FreeCADGui.doCommand("obj = Arch.makeEquipment(" + base + ")")
+            if mesh:
+                FreeCADGui.doCommand("obj.Mesh = FreeCAD.ActiveDocument." + mesh)
             FreeCADGui.addModule("Draft")
             FreeCADGui.doCommand("Draft.autogroup(obj)")
             FreeCAD.ActiveDocument.commitTransaction()
             FreeCAD.ActiveDocument.recompute()
             # get diffuse color info from base object
-            if hasattr(s[0].ViewObject,"DiffuseColor"):
-                FreeCADGui.doCommand("FreeCAD.ActiveDocument.Objects[-1].ViewObject.DiffuseColor = FreeCAD.ActiveDocument." + base + ".ViewObject.DiffuseColor")
+            if base and hasattr(s[0].ViewObject,"DiffuseColor"):
+                FreeCADGui.doCommand("FreeCAD.ActiveDocument.Objects[-1].ViewObject.DiffuseColor = " + base + ".ViewObject.DiffuseColor")
         return
 
 
@@ -255,14 +264,23 @@ class _Equipment(ArchComponent.Component):
         obj.addProperty("App::PropertyString","Url","Arch",QT_TRANSLATE_NOOP("App::Property","The url of the product page of this equipment"))
         obj.addProperty("App::PropertyVectorList","SnapPoints","Arch",QT_TRANSLATE_NOOP("App::Property","Additional snap points for this equipment"))
         obj.addProperty("App::PropertyFloat","EquipmentPower","Arch",QT_TRANSLATE_NOOP("App::Property","The electric power needed by this equipment in Watts"))
+        obj.addProperty("App::PropertyLink","Mesh","Arch",QT_TRANSLATE_NOOP("App::Property","An optional higher-resolution mesh representation for this object"))
+        #obj.addProperty("App::PropertyPlacement","MeshDelta","Arch",QT_TRANSLATE_NOOP("App::Property","Stores the delta between the object placement and the mesh placement"))
         self.Type = "Equipment"
         obj.Role = Roles
         obj.Proxy = self
         obj.setEditorMode("VerticalArea",2)
         obj.setEditorMode("HorizontalArea",2)
         obj.setEditorMode("PerimeterLength",2)
+        #obj.setEditorMode("MeshDelta",2)
 
     def onChanged(self,obj,prop):
+        #if prop == "Mesh":
+        #    if obj.Mesh:
+        #        delta = FreeCAD.Placement()
+        #        delta.Base = obj.Mesh.Placement.Base.sub(obj.Placement.Base)
+        #        delta.Rotation = FreeCAD.Rotation(obj.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1)),obj.Mesh.Placement.Rotation.multVec(FreeCAD.Vector(0,0,1)))
+        #        obj.MeshDelta = delta
         self.hideSubobjects(obj,prop)
         ArchComponent.Component.onChanged(self,obj,prop)
 
@@ -273,33 +291,11 @@ class _Equipment(ArchComponent.Component):
 
         pl = obj.Placement
         if obj.Base:
-            if obj.isDerivedFrom("Mesh::Feature"):
-                m = None
-                if obj.Base.isDerivedFrom("Part::Feature"):
-                    base = obj.Base.Shape.copy()
-                    base = self.processSubShapes(obj,base,pl)
-                    if base:
-                        import Mesh
-                        m = Mesh.Mesh(base.tessellate(1))
-
-                elif obj.Base.isDerivedFrom("Mesh::Feature"):
-                    m = obj.Base.Mesh.copy()
-                if m:
-                    if not pl.isNull():
-                        m.Placement = pl
-                    obj.Mesh = m
-            else:
-                base = None
-                if obj.Base.isDerivedFrom("Part::Feature"):
-                    base = obj.Base.Shape.copy()
-                elif obj.Base.isDerivedFrom("Mesh::Feature"):
-                    import Part
-                    base = Part.Shape()
-                    base.makeShapeFromMesh(obj.Base.Mesh.Topology,0.05)
-                    base = base.removeSplitteR()
-                if base:
-                    base = self.processSubShapes(obj,base,pl)
-                    self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
+            base = None
+            if obj.Base.isDerivedFrom("Part::Feature"):
+                base = obj.Base.Shape.copy()
+                base = self.processSubShapes(obj,base,pl)
+                self.applyShape(obj,base,pl,allowinvalid=False,allownosolid=True)
 
     def computeAreas(self,obj):
         return
@@ -320,6 +316,7 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         return ":/icons/Arch_Equipment_Tree.svg"
 
     def attach(self, vobj):
+        self.Object = vobj.Object
         from pivy import coin
         sep = coin.SoSeparator()
         self.coords = coin.SoCoordinate3()
@@ -330,8 +327,11 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
         sep.addChild(symbol)
         rn = vobj.RootNode
         rn.addChild(sep)
+        self.hiresgroup = coin.SoGroup()
+        self.meshcolor = coin.SoBaseColor()
+        self.hiresgroup.addChild(self.meshcolor)
+        vobj.addDisplayMode(self.hiresgroup,"Mesh");
         ArchComponent.ViewProviderComponent.attach(self,vobj)
-        
         
     def updateData(self, obj, prop):
         if prop == "SnapPoints":
@@ -340,6 +340,34 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.setValues([[p.x,p.y,p.z] for p in obj.SnapPoints])
             else:
                 self.coords.point.deleteValues(0)
+
+    def getDisplayModes(self,vobj):
+        modes=["Mesh"]
+        return modes
+
+    def setDisplayMode(self,mode):
+        if mode == "Mesh":
+            m = None
+            if hasattr(self,"Object"):
+                if hasattr(self.Object,"Mesh"):
+                    if self.Object.Mesh:
+                        m = self.Object.Mesh.ViewObject.RootNode
+                if not m:
+                    if hasattr(self.Object,"CloneOf"):
+                        if self.Object.CloneOf:
+                            if hasattr(self.Object.CloneOf,"Mesh"):
+                                if self.Object.CloneOf.Mesh:
+                                    m = self.Object.CloneOf.Mesh.ViewObject.RootNode
+            if m:
+                self.meshnode = m.copy()
+                self.meshnode.getChild(1).whichChild = 0
+                self.hiresgroup.addChild(self.meshnode)
+        else:
+            if hasattr(self,"meshnode"):
+                if self.meshnode:
+                    self.hiresgroup.removeChild(self.meshnode)
+                    del self.meshnode
+        return mode
 
 
 if FreeCAD.GuiUp:
