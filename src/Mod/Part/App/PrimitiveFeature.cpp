@@ -1096,6 +1096,11 @@ short Ellipse::mustExecute() const
 
 App::DocumentObjectExecReturn *Ellipse::execute(void)
 {
+    if (this->MinorRadius.getValue() > this->MajorRadius.getValue())
+        return new App::DocumentObjectExecReturn("Minor radius greater than major radius");
+    if (this->MinorRadius.getValue() < Precision::Confusion())
+        return new App::DocumentObjectExecReturn("Minor radius of ellipse too small");
+
     gp_Elips ellipse;
     ellipse.SetMajorRadius(this->MajorRadius.getValue());
     ellipse.SetMinorRadius(this->MinorRadius.getValue());
