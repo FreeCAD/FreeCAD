@@ -122,8 +122,8 @@ class AddonsInstaller(QtGui.QDialog):
 
     def retranslateUi(self):
         self.setWindowTitle(QtGui.QApplication.translate("AddonsInstaller",
-                                                         "Addons manager", None, QtGui.QApplication.UnicodeUTF8))
-        self.labelDescription.setText(QtGui.QApplication.translate("AddonsInstaller", "Downloading addons list...", None, QtGui.QApplication.UnicodeUTF8))
+                                                         "Addon manager", None, QtGui.QApplication.UnicodeUTF8))
+        self.labelDescription.setText(QtGui.QApplication.translate("AddonsInstaller", "Downloading addon list...", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonCancel.setText(QtGui.QApplication.translate("AddonsInstaller", "Close", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonInstall.setText(QtGui.QApplication.translate("AddonsInstaller", "Install / update", None, QtGui.QApplication.UnicodeUTF8))
         self.buttonRemove.setText(QtGui.QApplication.translate("AddonsInstaller", "Remove", None, QtGui.QApplication.UnicodeUTF8))
@@ -311,7 +311,7 @@ class UpdateWorker(QtCore.QThread):
             repos.append([name,url,state])
             self.addon_repo.emit([name,url,state])
         if not repos:
-            self.info_label.emit(QtGui.QApplication.translate("AddonsInstaller", "Unable to download addons list.", None, QtGui.QApplication.UnicodeUTF8))
+            self.info_label.emit(QtGui.QApplication.translate("AddonsInstaller", "Unable to download addon list.", None, QtGui.QApplication.UnicodeUTF8))
         else:
             self.info_label.emit(QtGui.QApplication.translate("AddonsInstaller", "Workbenches list was updated.", None, QtGui.QApplication.UnicodeUTF8))
         self.progressbar_show.emit(False)
