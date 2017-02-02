@@ -997,6 +997,46 @@ protected:
     }
 };
 
+
+/* XPM */
+static const char *cursor_genericconstraint[]={
+"32 32 3 1",
+"  c None",
+". c #FFFFFF",
+"+ c #FF0000",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+".....   .....                   ",
+"                                ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"      .                         ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",
+"                                ",};
+
 void CmdSketcherConstraint::activated(int /*iMsg*/)
 {
     ActivateHandler(getActiveGuiDocument(),
@@ -2867,7 +2907,7 @@ CmdSketcherConstrainPerpendicular::CmdSketcherConstrainPerpendicular()
                            {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
                            {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
                            {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
-                           {SelEdgeOrAxis, SelVertex, SelEdge}};
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}};
 ;
     constraintCursor = cursor_createperpconstraint;
 }
@@ -3242,7 +3282,6 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
 {
     SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
     Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
-    QString strError;
 
     int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
     Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
@@ -3414,7 +3453,7 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         break;
     }
     case 4: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
-    case 5: // {SelEdgeOrAxis, SelVertex, SelEdge}
+    case 5: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
     {
         //let's sink the point to be GeoId3.
         GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
@@ -3482,16 +3521,26 @@ void CmdSketcherConstrainPerpendicular::applyConstraint(std::vector<SelIdPair> &
         return;
 
     };
-    strError = QObject::tr("With 3 objects, there must be 2 curves and 1 point.", "tangent constraint");
-
 }
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainTangent);
+//DEF_STD_CMD_A(CmdSketcherConstrainTangent);
+
+class CmdSketcherConstrainTangent : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainTangent();
+    virtual ~CmdSketcherConstrainTangent(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainTangent"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
-    :Command("Sketcher_ConstrainTangent")
+    :CmdSketcherConstraint("Sketcher_ConstrainTangent")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -3502,6 +3551,14 @@ CmdSketcherConstrainTangent::CmdSketcherConstrainTangent()
     sPixmap         = "Constraint_Tangent";
     sAccel          = "T";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge, SelEdgeOrAxis}, {SelEdgeOrAxis, SelEdge}, /* Two Curves */
+                           {SelVertexOrRoot, SelEdge, SelEdgeOrAxis},
+                           {SelVertexOrRoot, SelEdgeOrAxis, SelEdge},
+                           {SelEdge, SelVertexOrRoot, SelEdgeOrAxis},
+                           {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}, /* Two Curves and a Point */
+                           {SelVertexOrRoot, SelVertex} /*Two Endpoints*/ /*No Place One Endpoint and One Curve*/};
+    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainTangent::activated(int iMsg)
@@ -3509,7 +3566,7 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     Q_UNUSED(iMsg);
     QString strBasicHelp =
             QObject::tr(
-             "There is a number of ways this constraint can be applied.\n\n"
+             "There are a number of ways this constraint can be applied.\n\n"
              "Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.",
              /*disambig.:*/ "tangent constraint");
 
@@ -3519,12 +3576,16 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
-        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            strError+strBasicHelp);
-        return;
+//        strError = QObject::tr("Select some geometry from the sketch.", "tangent constraint");
+//        if (!strError.isEmpty()) strError.append(QString::fromLatin1("\n\n"));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            strError+strBasicHelp);
 
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
+
+        return;
     }
 
     // get the needed lists and objects
@@ -3825,9 +3886,259 @@ void CmdSketcherConstrainTangent::activated(int iMsg)
     return;
 }
 
-bool CmdSketcherConstrainTangent::isActive(void)
+void CmdSketcherConstrainTangent::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+    QString strError;
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
+
+    switch (seqIndex) {
+    case 0: // {SelEdge, SelEdgeOrAxis}
+    case 1: // {SelEdgeOrAxis, SelEdge}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+
+        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+
+        if( geom1 && geom2 &&
+            ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+            geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+
+            // unsupported until tangent to BSpline at any point implemented.
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                                 QObject::tr("Tangency to BSpline edge currently unsupported."));
+            return;
+        }
+
+
+        if( geom1 && geom2 &&
+            ( geom1->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+              geom2->getTypeId() == Part::GeomEllipse::getClassTypeId() )){
+
+            if(geom1->getTypeId() != Part::GeomEllipse::getClassTypeId())
+                std::swap(GeoId1,GeoId2);
+
+            // GeoId1 is the ellipse
+            geom1 = Obj->getGeometry(GeoId1);
+            geom2 = Obj->getGeometry(GeoId2);
+
+            if( geom2->getTypeId() == Part::GeomEllipse::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ) {
+
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToEllipseviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                getSelection().clearSelection();
+                return;
+            }
+            else if( geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ) {
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                getSelection().clearSelection();
+                return;
+            }
+            else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                getSelection().clearSelection();
+                return;
+            }
+        }
+        else if( geom1 && geom2 &&
+            ( geom1->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+              geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() )){
+
+            if(geom1->getTypeId() != Part::GeomArcOfHyperbola::getClassTypeId())
+                std::swap(GeoId1,GeoId2);
+
+            // GeoId1 is the arc of hyperbola
+            geom1 = Obj->getGeometry(GeoId1);
+            geom2 = Obj->getGeometry(GeoId2);
+
+            if( geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
+
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToArcOfHyperbolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                getSelection().clearSelection();
+                return;
+            }
+            else if( geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ) {
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToArcOfParabolaviaNewPoint(Obj,geom2,geom1,GeoId2,GeoId1);
+                getSelection().clearSelection();
+                return;
+            }
+
+        }
+        else if( geom1 && geom2 &&
+            ( geom1->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+              geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() )){
+
+            if(geom1->getTypeId() != Part::GeomArcOfParabola::getClassTypeId())
+                std::swap(GeoId1,GeoId2);
+
+            // GeoId1 is the arc of hyperbola
+            geom1 = Obj->getGeometry(GeoId1);
+            geom2 = Obj->getGeometry(GeoId2);
+
+            if (geom2->getTypeId() == Part::GeomArcOfParabola::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomCircle::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId() ||
+                geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId() ) {
+
+                Gui::Command::openCommand("add tangent constraint point");
+                makeTangentToArcOfParabolaviaNewPoint(Obj,geom1,geom2,GeoId1,GeoId2);
+                getSelection().clearSelection();
+                return;
+            }
+        }
+
+        openCommand("add tangent constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d)) ",
+            Obj->getNameInDocument(),GeoId1,GeoId2);
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        return;
+    }
+    case 2: // {SelVertexOrRoot, SelEdge, SelEdgeOrAxis}
+    case 3: // {SelVertexOrRoot, SelEdgeOrAxis, SelEdge}
+    {
+        //let's sink the point to be GeoId3.
+        GeoId1 = selSeq.at(1).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(0).GeoId;
+        PosId3 = selSeq.at(0).PosId;
+
+        break;
+    }
+    case 4: // {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
+    case 5: // {SelEdgeOrAxis, SelVertexOrRoot, SelEdge}
+    {
+        //let's sink the point to be GeoId3.
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId3 = selSeq.at(1).PosId;
+
+        break;
+    }
+    case 6: // {SelVertexOrRoot, SelVertex}
+    {
+        // Different notation than the previous places
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
+
+        if (isSimpleVertex(Obj, GeoId1, PosId1) ||
+            isSimpleVertex(Obj, GeoId2, PosId2)) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a tangency constraint at an unconnected point!"));
+            return;
+        }
+
+        // This code supports simple bspline endpoint tangency to any other geometric curve
+        const Part::Geometry *geom1 = Obj->getGeometry(GeoId1);
+        const Part::Geometry *geom2 = Obj->getGeometry(GeoId2);
+
+        if( geom1 && geom2 &&
+            ( geom1->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() ||
+            geom2->getTypeId() == Part::GeomBSplineCurve::getClassTypeId() )){
+
+            if(geom1->getTypeId() != Part::GeomBSplineCurve::getClassTypeId()) {
+                std::swap(GeoId1,GeoId2);
+                std::swap(PosId1,PosId2);
+            }
+            // GeoId1 is the bspline now
+        } // end of code supports simple bspline endpoint tangency
+
+        openCommand("add tangent constraint");
+        Gui::Command::doCommand(
+            Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Tangent',%d,%d,%d,%d)) ",
+            Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2);
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        getSelection().clearSelection();
+        return;
+    }
+    default:
+        return;
+    }
+
+    if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2) && isVertex(GeoId3, PosId3)) {
+
+        openCommand("add tangent constraint");
+
+        try{
+            //add missing point-on-object constraints
+            if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            };
+
+            if(! IsPointAlreadyOnCurve(GeoId2, GeoId3, PosId3, Obj)){
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId2);
+            };
+
+            if(! IsPointAlreadyOnCurve(GeoId1, GeoId3, PosId3, Obj)){//FIXME: it's a good idea to add a check if the sketch is solved
+                Gui::Command::doCommand(
+                    Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('PointOnObject',%d,%d,%d)) ",
+                    Obj->getNameInDocument(),GeoId3,PosId3,GeoId1);
+            };
+
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('TangentViaPoint',%d,%d,%d,%d)) ",
+                Obj->getNameInDocument(), GeoId1,GeoId2,GeoId3,PosId3);
+        } catch (const Base::Exception& e) {
+            Base::Console().Error("%s\n", e.what());
+            QMessageBox::warning(Gui::getMainWindow(),
+                                 QObject::tr("Error"),
+                                 QString::fromLatin1(e.what()));
+            Gui::Command::abortCommand();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute) // toggling does not modify the DoF of the solver, however it may affect features depending on the sketch
+                Gui::Command::updateActive();
+                    return;
+        }
+
+        commitCommand();
+
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+        bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+        if(autoRecompute)
+            Gui::Command::updateActive();
+
+        getSelection().clearSelection();
+
+        return;
+
+    };
+
 }
 
 // ======================================================================================
