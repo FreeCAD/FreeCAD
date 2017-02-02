@@ -335,10 +335,12 @@ void DrawPage::unsetupObject()
     }
     Views.setValues(emptyViews);
 
-    //no template crash here?? if Template.getValue is null or invalid, this will fail.
-    std::string templateName = Template.getValue()->getNameInDocument();
-    Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
-                                          docName.c_str(), templateName.c_str());
+    App::DocumentObject* tmp = Template.getValue();
+    if (tmp != nullptr) {
+        std::string templateName = Template.getValue()->getNameInDocument();
+        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                              docName.c_str(), templateName.c_str());
+    }
     Template.setValue(nullptr);
 }
 
