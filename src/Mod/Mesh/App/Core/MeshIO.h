@@ -53,7 +53,8 @@ namespace MeshIO {
         NAS,
         PLY,
         APLY,
-        PY
+        PY,
+        AMF
     };
     enum Binding {
         OVERALL,

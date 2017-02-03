@@ -299,6 +299,16 @@ private:
 
         MeshObject global_mesh;
 
+        auto exportFormat( MeshOutput::GetFormat(EncodedName.c_str()) );
+
+        // Currently, AMF is the only export format where we export separate meshes
+        // into the same file.
+        auto combineMeshes( exportFormat != MeshIO::AMF );
+        if (!combineMeshes) {
+            Base::Console().Message("AMF Export isn't quite supported yet.");
+            return Py::None();
+        }
+
         Py::Sequence list(object);
         Base::Type meshId = Base::Type::fromName("Mesh::Feature");
         Base::Type partId = Base::Type::fromName("Part::Feature");
