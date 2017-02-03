@@ -29,7 +29,11 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoPerspectiveCamera.h>
 # include <QFile>
+# include <QFileInfo>
+# include <QFont>
+# include <QFontMetrics>
 # include <QMessageBox>
+# include <QPainter>
 # include <QTextStream>
 # include <boost/bind.hpp>
 #endif
@@ -1679,6 +1683,42 @@ void StdViewScreenShot::activated(int iMsg)
             else {
                 doCommand(Gui,"Gui.activeDocument().activeView().saveImage('%s',%d,%d,'%s')",
                             fn.toUtf8().constData(),w,h,background);
+            }
+
+            // When adding a watermark check if the image could be created
+            if (opt->addWatermark()) {
+                QFileInfo fi(fn);
+                QPixmap pixmap;
+                if (fi.exists() && pixmap.load(fn)) {
+                    QString name = qApp->applicationName();
+                    std::map<std::string, std::string>& config = App::Application::Config();
+                    QString url  = QString::fromLatin1(config["MaintainerUrl"].c_str());
+                    url = QUrl(url).host();
+
+                    QPixmap appicon = Gui::BitmapFactory().pixmap(config["AppIcon"].c_str());
+
+                    QPainter painter;
+                    painter.begin(&pixmap);
+
+                    painter.drawPixmap(8, h-15-appicon.height(), appicon);
+
+                    QFont font = painter.font();
+                    font.setPointSize(20);
+
+                    int n = QFontMetrics(font).width(name);
+                    int h = pixmap.height();
+
+                    painter.setFont(font);
+                    painter.drawText(8+appicon.width(), h-24, name);
+
+                    font.setPointSize(12);
+                    int u = QFontMetrics(font).width(url);
+                    painter.setFont(font);
+                    painter.drawText(8+appicon.width()+n-u, h-9, url);
+
+                    painter.end();
+                    pixmap.save(fn);
+                }
             }
         }
     }
