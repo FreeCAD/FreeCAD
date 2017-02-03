@@ -4943,10 +4943,22 @@ void CmdSketcherConstrainEqual::applyConstraint(std::vector<SelIdPair> &selSeq, 
 
 // ======================================================================================
 
-DEF_STD_CMD_A(CmdSketcherConstrainSymmetric);
+//DEF_STD_CMD_A(CmdSketcherConstrainSymmetric);
+
+class CmdSketcherConstrainSymmetric : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainSymmetric();
+    virtual ~CmdSketcherConstrainSymmetric(){}
+    virtual const char* className() const
+    { return "CmdSketcherConstrainSymmetric"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
-    :Command("Sketcher_ConstrainSymmetric")
+    :CmdSketcherConstraint("Sketcher_ConstrainSymmetric")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -4957,6 +4969,15 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
     sPixmap         = "Constraint_Symmetric";
     sAccel          = "S";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelEdge, SelVertexOrRoot},
+                           {SelVertex, SelEdge, SelVertexOrRoot},
+                           {SelVertexOrRoot, SelEdge, SelVertex},
+                           {SelVertex, SelEdgeOrAxis, SelVertex},
+                           {SelVertex, SelVertexOrRoot, SelVertex},
+                           {SelVertex, SelVertex, SelVertexOrRoot},
+                           {SelVertexOrRoot, SelVertex, SelVertex}};
+    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -4967,9 +4988,12 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
-                        "or a line and a symmetry point from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+//                        "or a line and a symmetry point from the sketch."));
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -5109,9 +5133,99 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                     "or a line and a symmetry point from the sketch."));
 }
 
-bool CmdSketcherConstrainSymmetric::isActive(void)
+void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
 {
-    return isCreateConstraintActive( getActiveGuiDocument() );
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+    QString strError;
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef, GeoId3 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none, PosId3 = Sketcher::none;
+
+    switch (seqIndex) {
+    case 0: //{{SelEdge, SelVertexOrRoot}
+    {
+        GeoId1 = GeoId2 = selSeq.at(0).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId1 = Sketcher::start; PosId2 = Sketcher::end; PosId3 = selSeq.at(1).PosId;
+
+        if (GeoId1 == GeoId3) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+            return;
+        }
+        break;
+    }
+    case 1: //{SelVertex, SelEdge, SelVertexOrRoot}
+    case 2: //{SelVertexOrRoot, SelEdge, SelVertex}
+    case 3: //{SelVertex, SelEdgeOrAxis, SelVertex}
+    {
+        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId;
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId3);
+        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (GeoId1 == GeoId2 && GeoId2 == GeoId3) {
+                QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint between a line and its end points!"));
+                return;
+            }
+
+            // undo command open
+            openCommand("add symmetric constraint");
+            Gui::Command::doCommand(
+                Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d)) ",
+                Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,GeoId3);
+
+            // finish the transaction and update
+            commitCommand();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+            bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+            if(autoRecompute)
+                Gui::Command::updateActive();
+        }
+        else {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("Select two points and a symmetry line, two points and a symmetry point "
+                            "or a line and a symmetry point from the sketch."));
+        }
+
+        return;
+    }
+    case 4: //{SelVertex, SelVertexOrRoot, SelVertex}
+    case 5: //{SelVertex, SelVertex, SelVertexOrRoot}
+    case 6: //{SelVertexOrRoot, SelVertex, SelVertex}
+    {
+        GeoId1 = selSeq.at(0).GeoId;  GeoId2 = selSeq.at(2).GeoId; GeoId3 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId;  PosId2 = selSeq.at(2).PosId; PosId3 = selSeq.at(1).PosId;
+
+        break;
+    }
+
+    default:
+        break;
+    }
+
+    // undo command open
+    openCommand("add symmetric constraint");
+    Gui::Command::doCommand(
+        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d)) ",
+        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,GeoId3,PosId3);
+
+    // finish the transaction and update
+    commitCommand();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher");
+    bool autoRecompute = hGrp->GetBool("AutoRecompute",false);
+
+    if(autoRecompute)
+        Gui::Command::updateActive();
+
+
+    // clear the selection (convenience)
+    getSelection().clearSelection();
+    return;
 }
 
 // ======================================================================================
