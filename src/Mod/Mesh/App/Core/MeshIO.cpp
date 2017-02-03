@@ -1628,6 +1628,9 @@ MeshIO::Format MeshOutput::GetFormat(const char* FileName)
     else if (file.hasExtension("nas") || file.hasExtension("bdf")) {
         return MeshIO::NAS;
     }
+    else if (file.hasExtension("amf")) {
+        return MeshIO::AMF;
+    }
     else {
         return MeshIO::Undefined;
     }
