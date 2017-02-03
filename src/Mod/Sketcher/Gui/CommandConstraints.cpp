@@ -2332,10 +2332,23 @@ void CmdSketcherConstrainPointOnObject::applyConstraint(std::vector<SelIdPair> &
 
 // ======================================================================================
 
-DEF_STD_CMD_AU(CmdSketcherConstrainDistanceX);
+//DEF_STD_CMD_AU(CmdSketcherConstrainDistanceX);
+
+class CmdSketcherConstrainDistanceX : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainDistanceX();
+    virtual ~CmdSketcherConstrainDistanceX(){}
+    virtual void updateAction(int mode);
+    virtual const char* className() const
+    { return "CmdSketcherConstrainDistanceX"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
-    :Command("Sketcher_ConstrainDistanceX")
+    :CmdSketcherConstraint("Sketcher_ConstrainDistanceX")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -2346,6 +2359,10 @@ CmdSketcherConstrainDistanceX::CmdSketcherConstrainDistanceX()
     sPixmap         = "Constraint_HorizontalDistance";
     sAccel          = "SHIFT+H";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
+                           {SelEdge}}; // Can't do single vertex because its a prefix for 2 vertices
+    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDistanceX::activated(int iMsg)
@@ -2356,8 +2373,12 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select vertexes from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select vertexes from the sketch."));
+
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -2471,6 +2492,68 @@ void CmdSketcherConstrainDistanceX::activated(int iMsg)
     return;
 }
 
+void CmdSketcherConstrainDistanceX::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
+
+    switch (seqIndex) {
+    case 0: // {SelVertex, SelVertexOrRoot}
+    case 1: // {SelRoot, SelVertex}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
+        break;
+    }
+    case 2: // {SelEdge}
+    {
+        GeoId1 = GeoId2 = selSeq.at(0).GeoId;
+        PosId1 = Sketcher::start; PosId2 = Sketcher::end;
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("This constraint only makes sense on a line segment or a pair of points"));
+            return;
+        }
+
+        break;
+    }
+    default:
+        break;
+    }
+
+    Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
+    Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
+    double ActLength = pnt2.x-pnt1.x;
+
+    //negative sign avoidance: swap the points to make value positive
+    if (ActLength < -Precision::Confusion()) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(PosId1,PosId2);
+        std::swap(pnt1, pnt2);
+        ActLength = -ActLength;
+    }
+
+    openCommand("add point to point horizontal distance constraint");
+    Gui::Command::doCommand(
+        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceX',%d,%d,%d,%d,%f)) ",
+        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+
+    if (checkBothExternal(GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+        Obj->getNameInDocument(),ConStr.size()-1,"False");
+        finishDistanceConstraint(this, Obj, false);
+    }
+    else
+        finishDistanceConstraint(this, Obj, true);
+}
+
 void CmdSketcherConstrainDistanceX::updateAction(int mode)
 {
     switch (mode) {
@@ -2485,17 +2568,26 @@ void CmdSketcherConstrainDistanceX::updateAction(int mode)
     }
 }
 
-bool CmdSketcherConstrainDistanceX::isActive(void)
-{
-    return isCreateConstraintActive( getActiveGuiDocument() );
-}
 
 // ======================================================================================
 
-DEF_STD_CMD_AU(CmdSketcherConstrainDistanceY);
+//DEF_STD_CMD_AU(CmdSketcherConstrainDistanceY);
+
+class CmdSketcherConstrainDistanceY : public CmdSketcherConstraint
+{
+public:
+    CmdSketcherConstrainDistanceY();
+    virtual ~CmdSketcherConstrainDistanceY(){}
+    virtual void updateAction(int mode);
+    virtual const char* className() const
+    { return "CmdSketcherConstrainDistanceY"; }
+protected:
+    virtual void activated(int iMsg);
+    virtual void applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex);
+};
 
 CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
-    :Command("Sketcher_ConstrainDistanceY")
+    :CmdSketcherConstraint("Sketcher_ConstrainDistanceY")
 {
     sAppModule      = "Sketcher";
     sGroup          = QT_TR_NOOP("Sketcher");
@@ -2506,6 +2598,10 @@ CmdSketcherConstrainDistanceY::CmdSketcherConstrainDistanceY()
     sPixmap         = "Constraint_VerticalDistance";
     sAccel          = "SHIFT+V";
     eType           = ForEdit;
+
+    allowedSelSequences = {{SelVertex, SelVertexOrRoot}, {SelRoot, SelVertex},
+                           {SelEdge}}; // Can't do single vertex because its a prefix for 2 vertices
+    constraintCursor = cursor_genericconstraint;
 }
 
 void CmdSketcherConstrainDistanceY::activated(int iMsg)
@@ -2516,8 +2612,12 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() != 1) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select vertexes from the sketch."));
+//        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+//            QObject::tr("Select vertexes from the sketch."));
+
+        ActivateHandler(getActiveGuiDocument(),
+                new DrawSketchHandlerGenConstraint(constraintCursor, this));
+        getSelection().clearSelection();
         return;
     }
 
@@ -2630,6 +2730,68 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
     return;
 }
 
+void CmdSketcherConstrainDistanceY::applyConstraint(std::vector<SelIdPair> &selSeq, int seqIndex)
+{
+    SketcherGui::ViewProviderSketch* sketchgui = static_cast<SketcherGui::ViewProviderSketch*>(getActiveGuiDocument()->getInEdit());
+    Sketcher::SketchObject* Obj = sketchgui->getSketchObject();
+
+    int GeoId1 = Constraint::GeoUndef, GeoId2 = Constraint::GeoUndef;
+    Sketcher::PointPos PosId1 = Sketcher::none, PosId2 = Sketcher::none;
+
+    switch (seqIndex) {
+    case 0: // {SelVertex, SelVertexOrRoot}
+    case 1: // {SelRoot, SelVertex}
+    {
+        GeoId1 = selSeq.at(0).GeoId; GeoId2 = selSeq.at(1).GeoId;
+        PosId1 = selSeq.at(0).PosId; PosId2 = selSeq.at(1).PosId;
+        break;
+    }
+    case 2: // {SelEdge}
+    {
+        GeoId1 = GeoId2 = selSeq.at(0).GeoId;
+        PosId1 = Sketcher::start; PosId2 = Sketcher::end;
+
+        const Part::Geometry *geom = Obj->getGeometry(GeoId1);
+        if (geom->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+            QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
+                QObject::tr("This constraint only makes sense on a line segment or a pair of points"));
+            return;
+        }
+
+        break;
+    }
+    default:
+        break;
+    }
+
+    Base::Vector3d pnt1 = Obj->getPoint(GeoId1,PosId1);
+    Base::Vector3d pnt2 = Obj->getPoint(GeoId2,PosId2);
+    double ActLength = pnt2.y-pnt1.y;
+
+    //negative sign avoidance: swap the points to make value positive
+    if (ActLength < -Precision::Confusion()) {
+        std::swap(GeoId1,GeoId2);
+        std::swap(PosId1,PosId2);
+        std::swap(pnt1, pnt2);
+        ActLength = -ActLength;
+    }
+
+    openCommand("add point to point vertical distance constraint");
+    Gui::Command::doCommand(
+        Doc,"App.ActiveDocument.%s.addConstraint(Sketcher.Constraint('DistanceY',%d,%d,%d,%d,%f)) ",
+        Obj->getNameInDocument(),GeoId1,PosId1,GeoId2,PosId2,ActLength);
+
+    if (checkBothExternal(GeoId1, GeoId2) || constraintCreationMode==Reference) { // it is a constraint on a external line, make it non-driving
+        const std::vector<Sketcher::Constraint *> &ConStr = Obj->Constraints.getValues();
+
+        Gui::Command::doCommand(Doc,"App.ActiveDocument.%s.setDriving(%i,%s)",
+        Obj->getNameInDocument(),ConStr.size()-1,"False");
+        finishDistanceConstraint(this, Obj,false);
+    }
+    else
+        finishDistanceConstraint(this, Obj,true);
+}
+
 void CmdSketcherConstrainDistanceY::updateAction(int mode)
 {
     switch (mode) {
@@ -2642,11 +2804,6 @@ void CmdSketcherConstrainDistanceY::updateAction(int mode)
             getAction()->setIcon(Gui::BitmapFactory().pixmap("Constraint_VerticalDistance"));
         break;
     }
-}
-
-bool CmdSketcherConstrainDistanceY::isActive(void)
-{
-    return isCreateConstraintActive( getActiveGuiDocument() );
 }
 
 //=================================================================================
