@@ -42,7 +42,8 @@ class _CommandSelectLoop:
     def GetResources(self):
         return {'Pixmap'  : 'Path-SelectLoop',
                 'MenuText': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Finish Selecting Loop"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Complete loop selection from two edges")}
+                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Path_SelectLoop","Complete loop selection from two edges"),
+                'CmdType': "ForEdit"}
 
     def IsActive(self):
         if bool(FreeCADGui.Selection.getSelection()) is False:
@@ -77,4 +78,3 @@ class _CommandSelectLoop:
 
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop',_CommandSelectLoop())
-

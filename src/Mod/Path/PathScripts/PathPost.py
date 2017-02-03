@@ -80,7 +80,6 @@ class DlgSelectPostProcessor:
 class CommandPathPost:
 
     def resolveFileName(self, job):
-        #print("resolveFileName(%s)" % job.Label)
         path = PathPreferences.defaultOutputFile()
         if job.OutputFile:
             path = job.OutputFile
@@ -135,7 +134,6 @@ class CommandPathPost:
             else:
                 filename = None
 
-        #print("resolveFileName(%s, %s) -> '%s'" % (path, policy, filename))
         return filename
 
     def resolvePostProcessor(self, job):
