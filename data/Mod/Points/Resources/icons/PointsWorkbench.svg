@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" version="1.0" viewBox="0 0 64 64" id="svg2" inkscape:version="0.48.5 r10040" width="100%" height="100%" sodipodi:docname="PointsWorkbench.svg">
+  <metadata id="metadata56">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>$committer</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:title>PointsWorkbench</dc:title>
+        <dc:date>2016-02-26</dc:date>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Points/Gui/Resources/icons/PointsWorkbench.svg</dc:identifier>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <cc:license>https://www.gnu.org/copyleft/lesser.html</cc:license>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs54"/>
+  <sodipodi:namedview pagecolor="#ffffff" bordercolor="#666666" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-width="1600" inkscape:window-height="837" id="namedview52" showgrid="true" inkscape:zoom="4.8326416" inkscape:cx="65.914387" inkscape:cy="30.751756" inkscape:window-x="0" inkscape:window-y="27" inkscape:window-maximized="1" inkscape:current-layer="svg2">
+    <inkscape:grid type="xygrid" id="grid3033" empspacing="2" visible="true" enabled="true" snapvisiblegridlinesonly="true"/>
+  </sodipodi:namedview>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(15,3)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-1" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(33,-1)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-2" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(59,-1)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-7" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(49,11)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-0" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(61,23)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-9" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(23,13)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-3" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(29,27)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-6" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(25,43)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-06" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(49,43)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-26" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(45,27)"/>
+  <path sodipodi:type="arc" style="fill:#d3d7cf;fill-opacity:1;stroke:#2e3436;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0.6" id="path3035-18" sodipodi:cx="-8" sodipodi:cy="8" sodipodi:rx="4" sodipodi:ry="4" d="m -4,8 a 4,4 0 1 1 -8,0 4,4 0 1 1 8,0 z" transform="translate(63,47)"/>
+</svg>
