@@ -19,7 +19,9 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-
+/* 
+ *  Copyright (c) 2017 Zheng, Lei <realthunder.dev@gmail.com> 
+ */
 
 #include "PreCompiled.h"
 
@@ -32,101 +34,66 @@
 #include <App/DocumentObjectPy.h>
 #include <Base/Placement.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopoDS_Edge.hxx>
-#include <TopoDS_Vertex.hxx>
-#include <TopoDS_Iterator.hxx>
 #include <TopExp_Explorer.hxx>
-#include <gp_Lin.hxx>
-#include <BRep_Tool.hxx>
-#include <BRepAdaptor_CompCurve.hxx>
-#include <BRepAdaptor_HCompCurve.hxx>
-#include <Approx_Curve3d.hxx>
-#include <BRepAdaptor_HCurve.hxx>
+#include <Standard_Failure.hxx>
+#include <Standard_Version.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 
+#include "FeatureArea.h"
 
 using namespace Path;
 
 PROPERTY_SOURCE(Path::FeatureShape, Path::Feature)
 
+PARAM_ENUM_STRING_DECLARE(static const char *Enums,AREA_PARAMS_PATH)
 
 FeatureShape::FeatureShape()
 {
-    ADD_PROPERTY_TYPE(Shape,(TopoDS_Shape()),"Path",App::Prop_None,"The shape data of this feature");
+    ADD_PROPERTY(Sources,(0));
+    ADD_PROPERTY_TYPE(StartPoint,(Base::Vector3d()),"Path",App::Prop_None,"Path start position");
+    PARAM_PROP_ADD("Path",AREA_PARAMS_PATH_CONF);
+    PARAM_PROP_SET_ENUM(Enums,AREA_PARAMS_PATH_CONF);
 }
 
 FeatureShape::~FeatureShape()
 {
 }
 
-short FeatureShape::mustExecute(void) const
-{
-    return Path::Feature::mustExecute();
-}
-
 App::DocumentObjectExecReturn *FeatureShape::execute(void)
 {
-    TopoDS_Shape shape = Shape.getValue();
-    if (!shape.IsNull()) {
-        if (shape.ShapeType() == TopAbs_WIRE) {
-            Path::Toolpath result;
-            bool first = true;
-            Base::Placement last;
-            
-            TopExp_Explorer ExpEdges (shape,TopAbs_EDGE);
-            while (ExpEdges.More()) {
-                const TopoDS_Edge& edge = TopoDS::Edge(ExpEdges.Current());
-                TopExp_Explorer ExpVerts(edge,TopAbs_VERTEX);
-                bool vfirst = true;
-                while (ExpVerts.More()) {
-                    const TopoDS_Vertex& vert = TopoDS::Vertex(ExpVerts.Current());
-                    gp_Pnt pnt = BRep_Tool::Pnt(vert);
-                    Base::Placement tpl;
-                    tpl.setPosition(Base::Vector3d(pnt.X(),pnt.Y(),pnt.Z()));
-                    if (first) {
-                        // add first point as a G0 move
-                        Path::Command cmd;
-                        std::ostringstream ctxt;
-                        ctxt << "G0 X" << tpl.getPosition().x << " Y" << tpl.getPosition().y << " Z" << tpl.getPosition().z;
-                        cmd.setFromGCode(ctxt.str());
-                        result.addCommand(cmd);
-                        first = false;
-                        vfirst = false;
-                    } else {
-                        if (vfirst)
-                            vfirst = false;
-                        else {
-                            Path::Command cmd;
-                            cmd.setFromPlacement(tpl);
-                
-                            // write arc data if needed
-                            BRepAdaptor_Curve adapt(edge);
-                            if (adapt.GetType() == GeomAbs_Circle) {
-                                gp_Circ circ = adapt.Circle();
-                                gp_Pnt c = circ.Location();
-                                bool clockwise = false;
-                                gp_Dir n = circ.Axis().Direction();
-                                if (n.Z() < 0)
-                                    clockwise = true;
-                                Base::Vector3d center = Base::Vector3d(c.X(),c.Y(),c.Z());
-                                // center coords must be relative to last point
-                                center -= last.getPosition();
-                                cmd.setCenter(center,clockwise);
-                            }
-                            result.addCommand(cmd);
-                        }
-                    }
-                    ExpVerts.Next();
-                    last = tpl;
-                }
-                ExpEdges.Next();
-            }
-            
-            Path.setValue(result);
-        }
+    Toolpath path;
+    std::vector<App::DocumentObject*> links = Sources.getValues();
+    if (links.empty()) {
+        Path.setValue(path);
+        return new App::DocumentObjectExecReturn("No shapes linked");
     }
+
+    const Base::Vector3d &v = StartPoint.getValue();
+    gp_Pnt pstart(v.x,v.y,v.z);
+
+    std::list<TopoDS_Shape> shapes;
+    for (std::vector<App::DocumentObject*>::iterator it = links.begin(); it != links.end(); ++it) {
+        if (!(*it && (*it)->isDerivedFrom(Part::Feature::getClassTypeId())))
+            continue;
+        const TopoDS_Shape &shape = static_cast<Part::Feature*>(*it)->Shape.getShape().getShape();
+        if (shape.IsNull())
+            continue;
+        shapes.push_back(shape);
+    }
+
+    AreaParams params;
+#define AREA_PROP_GET(_param) \
+    params.PARAM_FNAME(_param) = PARAM_FNAME(_param).getValue();
+    PARAM_FOREACH(AREA_PROP_GET,AREA_PARAMS_PATH_EXTRA)
+
+    Area::toPath(path,shapes,&params,&pstart,NULL,PARAM_PROP_ARGS(AREA_PARAMS_PATH));
+
+    Path.setValue(path);
     return App::DocumentObject::StdReturn;
 }
 

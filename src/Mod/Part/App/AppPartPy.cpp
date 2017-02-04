@@ -147,7 +147,7 @@ struct EdgePoints {
     TopoDS_Edge edge;
 };
 
-static std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
+PartExport std::list<TopoDS_Edge> sort_Edges(double tol3d, std::list<TopoDS_Edge>& edges)
 {
     tol3d = tol3d * tol3d;
     std::list<EdgePoints>  edge_points;

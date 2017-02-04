@@ -78,3 +78,28 @@ class _CommandSelectLoop:
 if FreeCAD.GuiUp:
     FreeCADGui.addCommand('Path_SelectLoop',_CommandSelectLoop())
 
+def findShape(shape,subname=None,subtype=None):
+    '''To find a higher oder shape containing the subshape with subname.
+        E.g. to find the wire containing 'Edge1' in shape,
+            findShape(shape,'Edge1','Wires')
+    '''
+    if not subname:
+        return shape
+    ret = shape.getElement(subname)
+    if not subtype or not ret or ret.isNull():
+        return ret;
+    if subname.startswith('Face'):
+        tp = 'Faces'
+    elif subname.startswith('Edge'):
+        tp = 'Edges'
+    elif subname.startswith('Vertex'):
+        tp = 'Vertex'
+    else:
+        return ret
+    for obj in getattr(shape,subtype):
+        for sobj in getattr(obj,tp):
+            if sobj.isEqual(ret):
+                return obj
+    return ret
+
+
