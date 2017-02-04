@@ -23,7 +23,7 @@
 #ifndef PATH_AREA_H
 #define PATH_AREA_H
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <chrono>
 #include <memory>
 #include <vector>
@@ -43,7 +43,7 @@
         str << "Path.Area: " << _msg;\
         Base::Console()._l("%s\n",str.str().c_str());\
     }\
-    qApp->sendPostedEvents();\
+    QCoreApplication::sendPostedEvents();\
     if(Area::aborting()) {\
         Area::abort(false);\
         throw Base::AbortException("operation aborted");\
