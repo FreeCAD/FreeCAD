@@ -746,6 +746,7 @@ namespace SketcherGui {
      * example, when in lock, horizontal, or vertical constraint modes.
      */
     enum SelType {
+        SelUnknown = 0,
         SelVertex = 1,
         SelRoot = 2,
         SelEdge = 4,
@@ -866,7 +867,7 @@ public:
         selIdPair.GeoId = Constraint::GeoUndef;
         selIdPair.PosId = Sketcher::none;
         std::stringstream ss;
-        SelType newSelType;
+        SelType newSelType = SelUnknown;
 
         //For each SelType allowed, check if button is released there and assign it to selIdPair
         int VtId = sketchgui->getPreselectPoint();
@@ -4318,7 +4319,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
                 const Part::GeomLineSegment *lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
 
                 // find the two closest line ends
-                Sketcher::PointPos PosId1,PosId2;
+                Sketcher::PointPos PosId1 = Sketcher::none;
+                Sketcher::PointPos PosId2 = Sketcher::none;
                 Base::Vector3d p1[2], p2[2];
                 p1[0] = lineSeg1->getStartPoint();
                 p1[1] = lineSeg1->getEndPoint();

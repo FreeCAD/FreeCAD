@@ -1343,7 +1343,7 @@ struct ShapeInfo{
             const TopoDS_Shape &wire = it->wire;
             TopoDS_Shape support;
             bool support_edge;
-            double d;
+            double d = 0;
             gp_Pnt p;
             bool done = false;
             bool is_start = false;
