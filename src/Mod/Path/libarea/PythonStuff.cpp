@@ -80,8 +80,8 @@ static void print_curve(const CCurve& c)
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
 	{
 		const CVertex& vertex = *It;
-		printf("vertex %d type = %d, x = %g, y = %g", i+1, vertex.m_type, vertex.m_p.x / CArea::m_units, vertex.m_p.y / CArea::m_units);
-		if(vertex.m_type)printf(", xc = %g, yc = %g", vertex.m_c.x / CArea::m_units, vertex.m_c.y / CArea::m_units);
+		printf("vertex %d type = %d, x = %g, y = %g", i+1, vertex.m_type, vertex.m_p.x / CArea::get_units(), vertex.m_p.y / CArea::get_units());
+		if(vertex.m_type)printf(", xc = %g, yc = %g", vertex.m_c.x / CArea::get_units(), vertex.m_c.y / CArea::get_units());
 		printf("\n");
 	}
 }
@@ -112,12 +112,12 @@ static CVertex LastVertex(const CCurve& curve)
 
 static void set_units(double units)
 {
-	CArea::m_units = units;
+	CArea::set_units(units);
 }
 
 static double get_units()
 {
-	return CArea::m_units;
+	return CArea::get_units();
 }
 
 static bool holes_linked()

@@ -98,6 +98,13 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
     endif()
 endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
 
+if(CMAKE_COMPILER_IS_CLANGXX)
+    # older boost.preprocessor turn off variadics for clang
+    add_definitions(-DBOOST_PP_VARIADICS=1)
+    message(STATUS "Force BOOST_PP_VARIADICS=1 for clang")
+endif()
+
+
 # ================================================================================
 # Output directories for install target
 

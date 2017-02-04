@@ -157,8 +157,9 @@ int TopoShapePy::PyInit(PyObject* args, PyObject*)
     return 0;
 }
 
+namespace Part {
 //common code.. maybe put somewhere else?
-Py::Object shape2pyshape(const TopoDS_Shape &shape)
+PartExport Py::Object shape2pyshape(const TopoDS_Shape &shape)
 {
     PyObject* ret = 0;
     if (!shape.IsNull()) {
@@ -204,6 +205,7 @@ Py::Object shape2pyshape(const TopoDS_Shape &shape)
 
     return Py::asObject(ret);
 }
+} //namespace Part
 
 PyObject* TopoShapePy::copy(PyObject *args)
 {
