@@ -262,6 +262,12 @@ if(BUILD_FEM)
     set(BUILD_SMESH ON)
 endif()
 
+# for Windows the minimum required cmake version is 3.4.3 to build the Path module
+if(WIN32 AND CMAKE_VERSION VERSION_LESS 3.4.3)
+    message(WARNING "Disable Path, requires cmake >= 3.4.3 in order to build this module")
+    set(BUILD_PATH OFF)
+endif()
+
 # ==============================================================================
 #inter-module dependencies
 
