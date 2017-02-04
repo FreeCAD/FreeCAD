@@ -1127,7 +1127,7 @@ bool GEOMUtils::FixShapeTolerance( TopoDS_Shape& shape,
 
 bool GEOMUtils::FixShapeCurves( TopoDS_Shape& shape )
 {
-  Standard_Real aT, aTolE, aD, aDMax;
+  Standard_Real aT, aTolE, aD, aDMax = 0.0;
   TopExp_Explorer aExpF, aExpE;
   NCollection_DataMap<TopoDS_Edge, Standard_Real, TopTools_ShapeMapHasher> aDMETol;
   aExpF.Init(shape, TopAbs_FACE);
