@@ -27,7 +27,8 @@ __url__ = ["http://www.freecadweb.org"]
 
 ## \defgroup DRAFTGEOMUTILS DraftGeomUtils
 #  \ingroup DRAFT
-#
+#  \brief Shape maniplulation utilities for the Draft workbench
+# 
 # Shapes manipulation utilities
 
 ## \addtogroup DRAFTGEOMUTILS

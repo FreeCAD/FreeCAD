@@ -30,6 +30,7 @@ __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry C
 __url__ = "http://www.freecadweb.org"
 
 ## \addtogroup DRAFT
+#  \brief Create and manipulate basic 2D objects
 #
 #  This module offers a range of tools to create and manipulate basic 2D objects
 #
