@@ -32,13 +32,12 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#include <OpenGL/gl.h>
 
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
-#if 0
-#define RENDER_GLARRAYS
-#endif
+// #define RENDER_GLARRAYS
 
 namespace PartGui {
 
@@ -141,6 +140,15 @@ private:
     std::vector<int32_t> index_array;
     std::vector<float> vertex_array;
 #endif
+
+// Define some VBO pointer for the current mesh
+   GLuint myvbo[2];
+   int vbo_loaded;
+   GLuint indice_array;
+   const GLubyte *GL_extension;
+   int vbo_available;
+
+
     SbColor selectionColor;
     SbColor highlightColor;
     SoColorPacker colorpacker;

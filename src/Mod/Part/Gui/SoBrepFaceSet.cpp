@@ -29,8 +29,10 @@
 # endif
 # ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
+# include <OpenGL/glext.h>
 # else
 # include <GL/gl.h>
+# include <GL/glext.h>
 # endif
 # include <float.h>
 # include <algorithm>
@@ -61,6 +63,8 @@
 #include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <stdio.h>
+#include <string.h>
 
 
 using namespace PartGui;
@@ -79,11 +83,38 @@ SoBrepFaceSet::SoBrepFaceSet()
     SO_NODE_ADD_FIELD(partIndex, (-1));
     SO_NODE_ADD_FIELD(highlightIndex, (-1));
     SO_NODE_ADD_FIELD(selectionIndex, (-1));
+
+// We are creating the VBO
+    vbo_available=0;
+#ifdef GL_NUM_EXTENSIONS
+// We are running OpenGL version higher than 3.0
+    GLint n,i;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &n);
+    for ( i = 0 ; i < n ; i++ )
+    { 
+	if ( strstr(glGetStringi(GL_EXTENSIONS, i),"GL_ARB_vertex_buffer_object") != NULL )
+		vbo_available=1;
+    }
+
+#else
+// We are probably running an old OpenGL version
+// Must check into the GL_EXTENSIONS string instead
+   GL_extension=glGetString(GL_EXTENSIONS);
+   if ( strstr((char *)GL_extension,(char *)"GL_ARB_vertex_buffer_object") != NULL )
+	vbo_available=1;
+#endif
+    if ( vbo_available )
+    {
+	    glGenBuffersARB(2, &myvbo[0]);
+	    vbo_loaded=0;
+	    indice_array=0;
+    }
     selectionIndex.setNum(0);
 }
 
 SoBrepFaceSet::~SoBrepFaceSet()
 {
+   glDeleteBuffers(2, &myvbo[0]);
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)
@@ -284,7 +315,7 @@ void SoBrepFaceSet::renderSimpleArray()
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
-
+    puts("rendering");
 #if 0
     glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
@@ -381,6 +412,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
+//    puts("Rendering Shape");
     renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     // Disable caching for this node
@@ -853,7 +885,9 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int texidx = 0;
 
     const SbVec3f * coords3d = NULL;
+    SbVec3f * cur_coords3d = NULL;
     coords3d = vertexlist->getArrayPtr3();
+    cur_coords3d = ( SbVec3f *)coords3d;
 
     const int32_t *viptr = vertexindices;
     const int32_t *viendptr = viptr + num_indices;
@@ -862,6 +896,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int32_t v1, v2, v3, v4, pi;
     SbVec3f dummynormal(0,0,1);
     int numverts = vertexlist->getNum();
+
 
     const SbVec3f *currnormal = &dummynormal;
     if (normals) currnormal = normals;
@@ -878,20 +913,141 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             matindices++;
     }
 
-    glBegin(GL_TRIANGLES);
-    while (viptr + 2 < viendptr) {
-        v1 = *viptr++;
-        v2 = *viptr++;
-        v3 = *viptr++;
+// First copy the vertex data into standard array
+// Second use GL_arrays instead of standard data
+    if ( vbo_available )
+    {
+    float * vertex_array = NULL;
+    GLuint * index_array = NULL;
+    SbVec3f *mynormal1,*mynormal2,*mynormal3;
+    int indice=0;
+    int early_exit=0;
+// vbo loaded is defining if we must pre-load data into the VBO
+    if (( vbo_loaded == 0 ) )
+    {
+	    vertex_array = ( float * ) malloc ( sizeof(float) * num_indices *6 );
+	    index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices *3 );
+	    while (viptr + 2 < viendptr) {
+	        v1 = *viptr++;
+	        v2 = *viptr++;
+	        v3 = *viptr++;
+	        // This test is for robustness upon buggy data sets
+	        if (v1 < 0 || v2 < 0 || v3 < 0 ||
+	            v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+	            early_exit=1;
+	            break;
+	        } 
+	        v4 = viptr < viendptr ? *viptr++ : -1;
+	        (void)v4;
 
-        // This test is for robustness upon buggy data sets
-        if (v1 < 0 || v2 < 0 || v3 < 0 ||
+		if (normals) {
+	            if (nbind == PER_VERTEX || nbind == PER_FACE) {
+	                currnormal = normals++;
+	                mynormal1=(SbVec3f *)currnormal;
+	            }
+	            else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+	                currnormal = &normals[*normalindices++];
+	                mynormal1 =(SbVec3f *) currnormal;
+	            }
+	        }
+		if (normals) {
+            if (nbind == PER_VERTEX) {
+                currnormal = normals++;
+                mynormal2 = (SbVec3f *)currnormal;
+            }
+            else if (nbind == PER_VERTEX_INDEXED) {
+                currnormal = &normals[*normalindices++];
+                mynormal2 = (SbVec3f *)currnormal;
+            }
+        }
+	if (normals) {
+            if (nbind == PER_VERTEX) {
+                currnormal = normals++;
+                mynormal3 =(SbVec3f *)currnormal;
+            }
+            else if (nbind == PER_VERTEX_INDEXED) {
+                currnormal = &normals[*normalindices++];
+                mynormal3 = (SbVec3f *)currnormal;
+            }
+        }
+	if (nbind == PER_VERTEX_INDEXED)
+            normalindices++;
+
+
+		/* I am building the Vertex dataset there and push it to a VBO */
+
+	        index_array[indice_array] = indice_array;
+	        index_array[indice_array+1] = indice_array+1;
+	        index_array[indice_array+2] = indice_array+2;
+	        indice_array+=3;	
+ 
+		((SbVec3f *)(cur_coords3d+v1 ))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
+		((SbVec3f *)(mynormal1))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
+		indice+=6;
+		((SbVec3f *)(cur_coords3d+v2))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
+		((SbVec3f *)(mynormal2))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
+		indice+=6;
+		((SbVec3f *)(cur_coords3d+v3))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
+		((SbVec3f *)(mynormal3))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
+		indice+=6;
+
+		/* ============================================================ */
+    	   }
+    }
+    if ( vbo_loaded == 0 )
+    {
+
+        glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_STREAM_DRAW_ARB);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * indice_array , &index_array[0], GL_STATIC_DRAW_ARB);
+
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+	vbo_loaded=1;
+    }
+    else
+    {
+
+    // GL_Vertex implementation with copy
+    // We must use VBO approach now
+
+    glBindBuffer(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+    glEnableClientState(GL_VERTEX_ARRAY); 
+    glEnableClientState(GL_NORMAL_ARRAY);
+
+
+    glVertexPointer(3,GL_FLOAT,6*sizeof(GLfloat),0);
+    glNormalPointer(GL_FLOAT,6*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
+
+    glDrawElements(GL_TRIANGLES, indice_array, GL_UNSIGNED_INT, (void *)0); 
+
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+    }
+
+    // The data is within the VBO we can clear it at application level
+
+    free(vertex_array);
+    free(index_array);
+    return;
+    }
+    glBegin(GL_TRIANGLES); 
+    while (viptr + 2 < viendptr) {
+                v1 = *viptr++;
+                v2 = *viptr++;
+                v3 = *viptr++;
+	if (v1 < 0 || v2 < 0 || v3 < 0 ||
             v1 >= numverts || v2 >= numverts || v3 >= numverts) {
             break;
         }
         v4 = viptr < viendptr ? *viptr++ : -1;
         (void)v4;
-
         /* vertex 1 *********************************************************/
         if (mbind == PER_PART) {
             if (trinr == 0)
@@ -924,7 +1080,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
                         vertexlist->get3(v1),
                         *currnormal);
         }
-
         glVertex3fv((const GLfloat*) (coords3d + v1));
 
         /* vertex 2 *********************************************************/
@@ -974,7 +1129,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
                             vertexlist->get3(v3),
                             *currnormal);
         }
-
         glVertex3fv((const GLfloat*) (coords3d + v3));
 
         if (mbind == PER_VERTEX_INDEXED)
