@@ -320,17 +320,13 @@ bool MDIViewPage::attachView(App::DocumentObject *obj)
     } else if (typeId.isDerivedFrom(TechDraw::DrawHatch::getClassTypeId()) ) {
         //Hatch is not attached like other Views (since it isn't really a View)
         return true;
+    //DrawGeomHatch??
 
     } else {
         Base::Console().Log("Logic Error - Unknown view type in MDIViewPage::attachView\n");
     }
 
     return (qview != nullptr);
-}
-
-void MDIViewPage::removeView(QGIView *view)
-{
-    (void) m_view->removeView(view);
 }
 
 void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
@@ -341,7 +337,7 @@ void MDIViewPage::onDeleteObject(const App::DocumentObject& obj)
         TechDraw::DrawPage* dvPg = dv->findParentPage();
         if (dvPg == m_vpPage->getDrawPage()) {
             //this is a DV that is on our page
-            (void) m_view->removeView(dv);
+            (void) m_view->removeQViewByDrawView(dv);
         }
     }
 }
@@ -374,88 +370,35 @@ void MDIViewPage::updateTemplate(bool forceUpdate)
 
 void MDIViewPage::updateDrawing(bool forceUpdate)
 {
-    // We cannot guarantee if the number of graphical representations (QGIVxxxx) have changed so check the number (MLP)
-    // WF: this should be fixed now with onDeletedObject signal from App side?
-    // WF: the QGVP views list may still not be 100% reliable
-    // TODO: build list of QGIV's from scene everytime? 
-    //logging counters
-//    int qgvpIn = 0;
-//    int qgvpValid = 0;
-//    int qgvpClean = 0;
-//    int dpIn = 0;
-    const std::vector<QGIView *> &graphicsList = m_view->getViews();
-//    qgvpIn = graphicsList.size();
-    const std::vector<App::DocumentObject*> &pageChildren  = m_vpPage->getDrawPage()->Views.getValues();
-   
-    // Count total # DocumentObjects in Page
-    unsigned int docObjCount = 0;
-    for(std::vector<App::DocumentObject*>::const_iterator it = pageChildren.begin(); it != pageChildren.end(); ++it) {
-        App::DocumentObject *docObj = *it;
-        if(docObj->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
-            TechDraw::DrawViewCollection *collection = dynamic_cast<TechDraw::DrawViewCollection *>(docObj);
-            docObjCount += collection->countChildren(); // Include self
+    // get all the DrawViews for this page, including the second level ones
+    // if we ever have collections of collections, we'll need to revisit this
+    std::vector<App::DocumentObject*> pChildren  = m_vpPage->getDrawPage()->Views.getValues();
+    std::vector<App::DocumentObject*> appendChildren;
+    for (auto& pc: pChildren) {
+        if(pc->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
+            TechDraw::DrawViewCollection *collect = dynamic_cast<TechDraw::DrawViewCollection *>(pc);
+            std::vector<App::DocumentObject*> cChildren = collect->Views.getValues();
+            appendChildren.insert(std::end(appendChildren), std::begin(cChildren), std::end(cChildren));
         }
-        docObjCount += 1;
     }
-//    dpIn = docObjCount;
-    
-    
-    //TODO: should prune QGVP.views first always, then check if view in Page missing QGIVP
-    //      this makes assumption that = numbers mean everythign is OK, but could be double failure - 1 extra QGIV, 1 DV missing graphics!
-    
-    if(graphicsList.size() < docObjCount) {
-        // there are more DocumentObjects than graphical representations (QGIVxxxx's)
-        // Find which DocumentObjects have no graphical representation (QGIVxxxx)
-        // Iterate over DocumentObjects without graphical representations and create the QGIVxxxx
-        // TODO think of a better algorithm to deal with any changes to views list
-        std::vector<App::DocumentObject*> notFnd;
-        findMissingViews(pageChildren, notFnd);
-        for(std::vector<App::DocumentObject*>::const_iterator it = notFnd.begin(); it != notFnd.end(); ++it) {
-            attachView(*it);
+    pChildren.insert(std::end(pChildren),std::begin(appendChildren),std::end(appendChildren));
+
+    // if dv doesn't have a graphic, make one
+    for (auto& dv: pChildren) {
+        QGIView* qv = m_view->findQViewForDocObj(dv);
+        if (qv == nullptr) {
+            attachView(dv);
         }
-    } else if(graphicsList.size() > docObjCount) {
-        // prune any invalid entries in QGVP.views
-        // TODO: revisit this mess.  is it still required with onDeletedItem signal implementation?
-        std::vector<QGIView *> newGraphicsList;
-        QList<QGraphicsItem *> items = m_view->scene()->items();
-        for (auto& v: graphicsList) {              //check that everything in QGVP views is valid
-            for (auto& i:items) {
-                if (v == i) {                      //this one is OK
-                    newGraphicsList.push_back(v);
-                    break;
-                }
-            }
+    }
+    
+    // if qView doesn't have a Feature, delete it
+    std::vector<QGIView*> qvs = m_view->getViews();
+    App::Document* doc = getAppDocument();
+    for (auto& qv: qvs) {
+        App::DocumentObject* obj = doc->getObject(qv->getViewName());
+        if (obj == nullptr) {
+            m_view->removeQView(qv);
         }
-//        qgvpValid = newGraphicsList.size();
-        //newGraphicsList now only contains valid QGIV's
-        //now prune the ones without docObjs
-        std::vector<QGIView *> cleanItems;
-        for (auto& i: newGraphicsList) {
-            std::string viewName = (i->data(1).toString()).toStdString();
-            App::DocumentObject* dObj = getAppDocument()->getObject(viewName.c_str());
-            if (dObj == nullptr) {
-                //need to remove from group/scene
-                QGraphicsItemGroup* grp = i->group();
-                if (grp) {
-                    grp->removeFromGroup(i);
-                }
-                if (i->parentItem()) {    //not top level
-                    i->setParentItem(0);
-                }
-                if (i->scene()) {
-                    i->scene()->removeItem(i);
-                }
-                //should delete i too to prevent leak?  might be garbage pointer, though. 
-                //add to delete list and delete outside of loop
-           } else {
-               QGIView* v = static_cast<QGIView*>(i);
-               cleanItems.push_back(v);
-           }
-        }
-//    qgvpClean = cleanItems.size();
-    m_view->setViews(cleanItems);       
-//    Base::Console().Message("Log - MDIVP::updateDrawing pruning: docObjs: %d views in: %d valid views: %d views out: %d\n",
-//                            dpIn,qgvpIn,qgvpValid, qgvpClean);
     }
     
     // Update all the QGIVxxxx
@@ -1004,7 +947,7 @@ void MDIViewPage::selectFeature(App::DocumentObject *obj, const bool isSelected)
     if (hatchObj) {                                                    //Hatch does not have a QGIV of it's own. mark parent as selected.
         objCopy = hatchObj->getSourceView();                           //possible to highlight subObject?
     }
-    QGIView *view = m_view->findView(objCopy);
+    QGIView *view = m_view->findQViewForDocObj(objCopy);
 
     blockSelection(true);
     if(view) {

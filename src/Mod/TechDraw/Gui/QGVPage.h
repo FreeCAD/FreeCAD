@@ -74,17 +74,20 @@ public:
     QGIView * addDrawViewImage(TechDraw::DrawViewImage *view);
 
 
-    QGIView * findView(App::DocumentObject *obj) const;
-    QGIView * findParent(QGIView *) const;
+    QGIView* findQViewForDocObj(App::DocumentObject *obj) const;
+    QGIView* getQGIVByName(std::string name);
+    QGIView* findParent(QGIView *) const;
 
     void addDimToParent(QGIViewDimension* dim, QGIView* parent);
-    const std::vector<QGIView *> & getViews() const { return views; }
+//    const std::vector<QGIView *> & getViews() const { return views; }    //only used in MDIVP
+    std::vector<QGIView *> getViews() const;   //only used in MDIVP
 
-    int addView(QGIView * view);
-    int removeView(QGIView *view);
-    int removeView(const TechDraw::DrawView* dv);
+    int addQView(QGIView * view);
+    int removeQView(QGIView *view);
+    int removeQViewByDrawView(const TechDraw::DrawView* dv);
+    void removeQViewFromScene(QGIView *view);
 
-    void setViews(const std::vector<QGIView *> &view) {views = view; }
+    //void setViews(const std::vector<QGIView *> &view) {views = view; }
     void setPageTemplate(TechDraw::DrawTemplate *pageTemplate);
 
     QGITemplate * getTemplate() const;
@@ -112,10 +115,9 @@ protected:
     static QColor PreselectColor;
     QColor getBackgroundColor();
     
-    void removeViewFromScene(QGIView *view);
 
     QGITemplate *pageTemplate;
-    std::vector<QGIView *> views;
+//    std::vector<QGIView *> views;                          //<<< why?  scene already has a list of all the views.
 
 private:
     RendererType m_renderer;
