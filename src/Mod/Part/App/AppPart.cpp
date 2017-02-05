@@ -227,7 +227,8 @@ PyMODINIT_FUNC initPart()
     // if we have mysterious crashes
     // The argument must be 'Standard_False' to avoid FPE caused by
     // Python's cmath module.
-#if !defined(_DEBUG)
+    // For Linux use segmentation_fault_handler in Application.cpp
+#if !defined(_DEBUG) && !defined(FC_OS_LINUX)
     OSD::SetSignal(Standard_False);
 #endif
 
