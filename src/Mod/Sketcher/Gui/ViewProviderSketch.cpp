@@ -135,6 +135,7 @@ SbColor ViewProviderSketch::FullyConstrainedColor       (0.0f,1.0f,0.0f);     //
 SbColor ViewProviderSketch::ConstrDimColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::ConstrIcoColor              (1.0f,0.149f,0.0f);   // #FF2600 -> (255, 38,  0)
 SbColor ViewProviderSketch::NonDrivingConstrDimColor    (0.0f,0.149f,1.0f);   // #0026FF -> (  0, 38,255)
+SbColor ViewProviderSketch::InformationColor            (0.0f,1.0f,0.0f);     // #00FF00 -> (  0,255,  0)
 SbColor ViewProviderSketch::PreselectColor              (0.88f,0.88f,0.0f);   // #E1E100 -> (225,225,  0)
 SbColor ViewProviderSketch::SelectColor                 (0.11f,0.68f,0.11f);  // #1CAD1C -> ( 28,173, 28)
 SbColor ViewProviderSketch::PreselectSelectedColor      (0.36f,0.48f,0.11f);  // #5D7B1C -> ( 93,123, 28)
@@ -178,6 +179,7 @@ struct EditData {
     textX(0),
     textPos(0),
     constrGroup(0),
+    infoGroup(0),
     pickStyleAxes(0)
     {}
 
@@ -240,6 +242,7 @@ struct EditData {
     SoTranslation *textPos;
 
     SoGroup       *constrGroup;
+    SoGroup       *infoGroup;
     SoPickStyle   *pickStyleAxes;
 };
 
@@ -293,6 +296,7 @@ ViewProviderSketch::ViewProviderSketch()
     zHighlight=0.009f;
     zText=0.011f;
     zEdit=0.001f;
+    zInfo=0.004f;
 
     xInit=0;
     yInit=0;
@@ -3188,6 +3192,13 @@ void ViewProviderSketch::draw(bool temp)
     assert(int(geomlist->size()) >= 2);
 
     edit->CurvIdToGeoId.clear();
+    
+    // everytime we start with empty information layer
+    edit->infoGroup->removeAllChildren();
+    
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+
     int GeoId = 0;
 
     // RootPoint
@@ -3416,6 +3427,94 @@ void ViewProviderSketch::draw(bool temp)
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(startp);
             Points.push_back(endp);
+            
+            //----------------------------------------------------------
+            // geometry information layer (degree, control polygon)
+            // polynom degree
+            SoSeparator *sep = new SoSeparator();
+            sep->ref();
+            // no caching for fluctuand data structures
+            sep->renderCaching = SoSeparator::OFF;
+            
+            // every information visual node gets its own material for to-be-implemented preselection and selection
+            SoMaterial *mat = new SoMaterial;
+            mat->ref();
+            mat->diffuseColor = InformationColor;
+
+            SoTranslation *translate = new SoTranslation;
+            
+            std::vector<Base::Vector3d> poles = spline->getPoles();
+            
+            Base::Vector3d midp = Base::Vector3d(0,0,0);
+            
+            for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
+                midp += (*it);
+            }
+            
+            midp /= poles.size();
+            
+            translate->translation.setValue(midp.x,midp.y,zInfo);
+
+            SoFont *font = new SoFont;
+            font->name.setValue("Helvetica");
+            font->size.setValue(fontSize);
+
+            SoText2 *degreetext = new SoText2;
+            degreetext->string = SbString(spline->getDegree());
+
+            sep->addChild(translate);
+            sep->addChild(mat);
+            sep->addChild(font);
+            sep->addChild(degreetext);
+
+            edit->infoGroup->addChild(sep);
+            sep->unref();
+            mat->unref();
+            
+            //----------------------------------------------------------
+            // control polygon
+            sep = new SoSeparator();
+            sep->ref();
+            // no caching for fluctuand data structures
+            sep->renderCaching = SoSeparator::OFF;
+            
+            // every information visual node gets its own material for to-be-implemented preselection and selection
+            mat = new SoMaterial;
+            mat->ref();
+            mat->diffuseColor = InformationColor;
+            
+            SoLineSet *lineset = new SoLineSet;
+            lineset->setName("InfoLineSet");
+            
+            SoCoordinate3 *coords = new SoCoordinate3;
+            
+            if(spline->isPeriodic()) {
+                coords->point.setNum(poles.size()+1);
+            }
+            else {
+                coords->point.setNum(poles.size());
+            }
+            
+            SbVec3f *vts = coords->point.startEditing();
+
+            int i=0;
+            for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
+                vts[i].setValue((*it).x,(*it).y,zInfo);
+            }
+            
+            if(spline->isPeriodic()) {
+                vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
+            }
+            
+            coords->point.finishEditing();
+            
+            sep->addChild(mat);
+            sep->addChild(coords);
+            sep->addChild(lineset);
+            
+            edit->infoGroup->addChild(sep);
+            sep->unref();
+            mat->unref();
         }
         else {
         }
@@ -4917,6 +5016,24 @@ void ViewProviderSketch::createEditInventorNodes(void)
     edit->constrGroup = new SoGroup();
     edit->constrGroup->setName("ConstraintGroup");
     edit->EditRoot->addChild(edit->constrGroup);
+    
+    // group node for the Geometry information visual +++++++++++++++++++++++++++++++++++
+    MtlBind = new SoMaterialBinding;
+    MtlBind->setName("InformationMaterialBinding");
+    MtlBind->value = SoMaterialBinding::OVERALL ;
+    edit->EditRoot->addChild(MtlBind);
+    
+    // use small line width for the information visual
+    DrawStyle = new SoDrawStyle;
+    DrawStyle->setName("InformationDrawStyle");
+    DrawStyle->lineWidth = 1;
+    edit->EditRoot->addChild(DrawStyle);
+    
+    // add the group where all the information entity has its SoSeparator
+    edit->infoGroup = new SoGroup();
+    edit->infoGroup->setName("InformationGroup");
+    edit->EditRoot->addChild(edit->infoGroup);
+    
 }
 
 void ViewProviderSketch::unsetEdit(int ModNum)
