@@ -88,13 +88,16 @@ SoBrepFaceSet::SoBrepFaceSet()
     vbo_available=0;
 #ifdef GL_NUM_EXTENSIONS
 // We are running OpenGL version higher than 3.0
-    GLint n,i;
+/*    GLint n,i;
     glGetIntegerv(GL_NUM_EXTENSIONS, &n);
     for ( i = 0 ; i < n ; i++ )
     { 
 	if ( strstr(glGetStringi(GL_EXTENSIONS, i),"GL_ARB_vertex_buffer_object") != NULL )
 		vbo_available=1;
     }
+*/
+// we are assuming that the VBO extension is available !
+   vbo_available=1;
 
 #else
 // We are probably running an old OpenGL version
