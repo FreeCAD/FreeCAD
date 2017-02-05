@@ -1524,7 +1524,10 @@ void DocumentObjectItem::displayStatusInfo()
     QString info = QString::fromLatin1(Obj->getStatusString());
     if ( Obj->mustExecute() == 1 )
         info += QString::fromLatin1(" (but must be executed)");
-    getMainWindow()->showMessage( info );
+    QString status = TreeWidget::tr("%1, Internal name: %2")
+            .arg(info)
+            .arg(QString::fromLatin1(Obj->getNameInDocument()));
+    getMainWindow()->showMessage(status);
 
     if (Obj->isError()) {
         QTreeWidget* tree = this->treeWidget();
