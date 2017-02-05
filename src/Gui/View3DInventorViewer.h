@@ -96,6 +96,7 @@ public:
         DisallowRotation=8,/**< switch of the rotation. */
         DisallowPanning=16,/**< switch of the panning. */
         DisallowZooming=32,/**< switch of the zooming. */
+	useVBO=64,/**< switch of the OpenGL VBO usage. */
     };
     //@}
     
@@ -339,6 +340,7 @@ public:
     bool hasAxisCross(void);
     
     void setEnabledFPSCounter(bool b);
+    void setEnableduseVBO(bool b);
 
     NavigationStyle* navigationStyle() const;
 
@@ -346,6 +348,8 @@ public:
     Gui::Document* getDocument();
 
     virtual PyObject *getPyObject(void);
+    bool vboEnabled;
+    bool get_vbo_state(); 
 
 protected:
     void renderScene();
