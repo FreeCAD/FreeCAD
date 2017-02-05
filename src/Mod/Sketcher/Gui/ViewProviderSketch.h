@@ -373,6 +373,7 @@ protected:
     static SbColor PreselectColor;
     static SbColor SelectColor;
     static SbColor PreselectSelectedColor;
+    static SbColor InformationColor;
 
     static SbTime prvClickTime;
     static SbVec3f prvClickPoint;
@@ -387,6 +388,7 @@ protected:
     float zText;
     float zEdit;
     float zHighLine;
+    float zInfo;
 
     // reference coordinates for relative operations
     double xInit,yInit;
