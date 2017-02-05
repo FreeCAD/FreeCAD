@@ -29,7 +29,7 @@ __url__ = ["http://www.freecadweb.org"]
 
 ## \defgroup DRAFTVECUTILS DraftVecUtils
 #  \ingroup DRAFT
-#  \brief Vector math utilities use in Draft workbench
+#  \brief Vector math utilities used in Draft workbench
 #
 # Vector math utilities
 
