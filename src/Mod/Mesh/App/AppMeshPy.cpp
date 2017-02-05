@@ -50,6 +50,7 @@
 #include "WildMagic4/Wm4ContBox3.h"
 
 #include "Mesh.h"
+#include "AmfExport.h"
 #include "FeatureMeshImport.h"
 #include <Mod/Mesh/App/MeshPy.h>
 
@@ -301,31 +302,35 @@ private:
 
         auto exportFormat( MeshOutput::GetFormat(EncodedName.c_str()) );
 
-        // Currently, AMF is the only export format where we export separate meshes
-        // into the same file.
-        auto combineMeshes( exportFormat != MeshIO::AMF );
-        if (!combineMeshes) {
-            Base::Console().Message("AMF Export isn't quite supported yet.");
-            return Py::None();
+        // TODO: Make a similar exporter class to replace global_mesh with
+        AmfExporter *exporter(nullptr);
+        if (exportFormat == MeshIO::AMF) {
+            exporter = new AmfExporter(EncodedName.c_str());
         }
 
-        Py::Sequence list(object);
         Base::Type meshId = Base::Type::fromName("Mesh::Feature");
         Base::Type partId = Base::Type::fromName("Part::Feature");
-        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-            PyObject* item = (*it).ptr();
+
+        Py::Sequence list(object);
+        for (auto it : list) {
+            PyObject* item = it.ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
+                auto countFacets( global_mesh.countFacets() );
+
                 if (obj->getTypeId().isDerivedFrom(meshId)) {
                     const MeshObject& mesh = static_cast<Mesh::Feature*>(obj)->Mesh.getValue();
                     MeshCore::MeshKernel kernel = mesh.getKernel();
                     kernel.Transform(mesh.getTransform());
 
-                    unsigned long countFacets = global_mesh.countFacets();
-                    if (countFacets == 0)
-                        global_mesh.setKernel(kernel);
-                    else
-                        global_mesh.addMesh(kernel);
+                    if (exporter) {
+                        exporter->addObject(kernel);
+                    } else {
+                        if (countFacets == 0)
+                            global_mesh.setKernel(kernel);
+                        else
+                            global_mesh.addMesh(kernel);
+                    }
 
                     // if the mesh already has persistent segments then use them instead
                     unsigned long numSegm = mesh.countSegments();
@@ -346,7 +351,6 @@ private:
                                 global_mesh.addSegment(new_segm);
                             }
                         }
-
                     }
                     else {
                         // now create a segment for the added mesh
@@ -357,11 +361,12 @@ private:
                         segm.setName(obj->Label.getValue());
                         global_mesh.addSegment(segm);
                     }
-                }
+                } // if (obj->getTypeId().isDerivedFrom(meshId))
                 else if (obj->getTypeId().isDerivedFrom(partId)) {
                     App::Property* shape = obj->getPropertyByName("Shape");
-                    Base::Reference<MeshObject> mesh(new MeshObject());
+
                     if (shape && shape->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+                        Base::Reference<MeshObject> mesh(new MeshObject());
                         std::vector<Base::Vector3d> aPoints;
                         std::vector<Data::ComplexGeoData::Facet> aTopo;
                         const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(shape)->getComplexData();
@@ -369,11 +374,18 @@ private:
                             data->getFaces(aPoints, aTopo, fTolerance);
                             mesh->addFacets(aTopo, aPoints);
 
-                            unsigned long countFacets = global_mesh.countFacets();
-                            if (countFacets == 0)
-                                global_mesh = *mesh;
-                            else
-                                global_mesh.addMesh(*mesh);
+                            if (exporter) {
+                                // TODO: Figure out Tranform-constellation-iterator interaction
+                                MeshCore::MeshKernel kernel = mesh->getKernel();
+                                kernel.Transform(mesh->getTransform());
+                                exporter->addObject(kernel);
+                           //     delete mesh;
+                            } else {
+                                if (countFacets == 0)
+                                    global_mesh = *mesh;
+                                else
+                                    global_mesh.addMesh(*mesh);
+                            }
 
                             // now create a segment for the added mesh
                             std::vector<unsigned long> indices;
@@ -391,14 +403,18 @@ private:
             }
         }
 
-        // if we have more than one segment set the 'save' flag
-        if (global_mesh.countSegments() > 1) {
-            for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
-                global_mesh.getSegment(i).save(true);
+        if (exporter) {
+            delete exporter;
+        } else {
+            // if we have more than one segment set the 'save' flag
+            if (global_mesh.countSegments() > 1) {
+                for (unsigned long i = 0; i < global_mesh.countSegments(); ++i) {
+                    global_mesh.getSegment(i).save(true);
+                }
             }
+            // export mesh compound
+            global_mesh.save(EncodedName.c_str());
         }
-        // export mesh compound
-        global_mesh.save(EncodedName.c_str());
 
         return Py::None();
     }
