@@ -845,11 +845,7 @@ class DrawSketchHandlerGenConstraint: public DrawSketchHandler
 {
 public:
     DrawSketchHandlerGenConstraint(const char* cursor[], CmdSketcherConstraint *_cmd)
-<<<<<<< 60ae927fcbae5a873045551206a68d6b12c36d02
-        : selFilterGate(nullptr), constraintCursor(cursor), cmd(_cmd) {}
-=======
         : constraintCursor(cursor), cmd(_cmd) {}
->>>>>>> Replace some of the allowedSelSequences with more general form
     virtual ~DrawSketchHandlerGenConstraint()
     {
         Gui::Selection().rmvSelectionGate();
