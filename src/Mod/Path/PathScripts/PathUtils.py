@@ -569,7 +569,7 @@ def findParentJob(obj):
     for i in obj.InList:
         if isinstance(i.Proxy, PathScripts.PathJob.ObjectPathJob):
             return i
-        if i.TypeId == "Path::FeaturePython":
+        if i.TypeId == "Path::FeaturePython" or i.TypeId == "Path::FeatureCompoundPython":
             grandParent = findParentJob(i)
             if grandParent is not None:
                 return grandParent
