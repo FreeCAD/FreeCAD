@@ -287,7 +287,9 @@ const char * QGIView::getViewName() const
 
 TechDraw::DrawView * QGIView::getViewObject() const
 {
-     return viewObj;
+    //DocumentObject* obj = doc->getObject(viewName.c_str());
+    //TechDraw::DrawView* dv = static_cast<TechDraw::DrawView*>(obj);
+    return viewObj;
 }
 
 void QGIView::setViewFeature(TechDraw::DrawView *obj)
