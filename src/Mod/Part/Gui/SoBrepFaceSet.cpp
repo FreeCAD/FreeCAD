@@ -940,6 +940,22 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	        v4 = viptr < viendptr ? *viptr++ : -1;
 	        (void)v4;
 
+		if (mbind == PER_PART) {
+            if (trinr == 0)
+                materials->send(matnr++, true);
+        }
+        else if (mbind == PER_PART_INDEXED) {
+            if (trinr == 0)
+                materials->send(*matindices++, true);
+        }
+        else if (mbind == PER_VERTEX || mbind == PER_FACE) {
+            materials->send(matnr++, true);
+        }
+        else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+            materials->send(*matindices++, true);
+        }
+
+
 		if (normals) {
 	            if (nbind == PER_VERTEX || nbind == PER_FACE) {
 	                currnormal = normals++;
@@ -950,6 +966,11 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	                mynormal1 =(SbVec3f *) currnormal;
 	            }
 	        }
+	if (mbind == PER_VERTEX)
+            materials->send(matnr++, true);
+        else if (mbind == PER_VERTEX_INDEXED)
+            materials->send(*matindices++, true);
+
 		if (normals) {
             if (nbind == PER_VERTEX) {
                 currnormal = normals++;
@@ -960,6 +981,11 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
                 mynormal2 = (SbVec3f *)currnormal;
             }
         }
+	if (mbind == PER_VERTEX)
+            materials->send(matnr++, true);
+        else if (mbind == PER_VERTEX_INDEXED)
+            materials->send(*matindices++, true);
+	
 	if (normals) {
             if (nbind == PER_VERTEX) {
                 currnormal = normals++;
@@ -996,6 +1022,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     }
     if ( vbo_loaded == 0 )
     {
+	// Push the content to the VBO
 
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
 	glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_STREAM_DRAW_ARB);
@@ -1013,6 +1040,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
     // GL_Vertex implementation with copy
     // We must use VBO approach now
+    // This is the rendering code
 
     glBindBuffer(GL_ARRAY_BUFFER_ARB, myvbo[0]);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
@@ -1037,6 +1065,9 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     free(index_array);
     return;
     }
+
+    // Legacy code without VBO support
+
     glBegin(GL_TRIANGLES); 
     while (viptr + 2 < viendptr) {
                 v1 = *viptr++;
