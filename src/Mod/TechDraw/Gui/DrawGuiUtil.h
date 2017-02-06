@@ -33,7 +33,7 @@ class TechDrawGuiExport DrawGuiUtil {
     public:
     static TechDraw::DrawPage* findPage(Gui::Command* cmd);
     static bool needPage(Gui::Command* cmd);
-    static bool needView(Gui::Command* cmd);
+    static bool needView(Gui::Command* cmd, bool partOnly = true);
 };
 
 } //end namespace TechDrawGui
