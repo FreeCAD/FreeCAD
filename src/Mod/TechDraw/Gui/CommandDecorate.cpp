@@ -291,7 +291,7 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 bool CmdTechDrawToggleFrame::isActive(void)
 {
     bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
+    bool haveView = DrawGuiUtil::needView(this,false);
     return (havePage && haveView);
 }
 

@@ -121,14 +121,22 @@ bool DrawGuiUtil::needPage(Gui::Command* cmd)
     return active;
 }
 
-bool DrawGuiUtil::needView(Gui::Command* cmd)
+bool DrawGuiUtil::needView(Gui::Command* cmd, bool partOnly)
 {
     bool haveView = false;
     if (cmd->hasActiveDocument()) {
-        auto drawPartType (TechDraw::DrawViewPart::getClassTypeId());
-        auto selParts = cmd->getDocument()->getObjectsOfType(drawPartType);
-        if (!selParts.empty()) {
-            haveView = true;
+        if (partOnly) {
+            auto drawPartType (TechDraw::DrawViewPart::getClassTypeId());
+            auto selParts = cmd->getDocument()->getObjectsOfType(drawPartType);
+            if (!selParts.empty()) {
+                haveView = true;
+            }
+        } else {
+            auto drawViewType (TechDraw::DrawView::getClassTypeId());
+            auto selParts = cmd->getDocument()->getObjectsOfType(drawViewType);
+            if (!selParts.empty()) {
+                haveView = true;
+            }
         }
     }
     return haveView;
