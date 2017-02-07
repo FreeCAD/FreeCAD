@@ -122,6 +122,11 @@
 #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
 #define CONSTRAINT_SEPARATOR_INDEX_SECOND_CONSTRAINTID 6
 
+// Macros to define information layer node child positions within type
+#define GEOINFO_BSPLINE_DEGREE_POS 0
+#define GEOINFO_BSPLINE_DEGREE_TEXT 3
+#define GEOINFO_BSPLINE_POLYGON 1
+
 using namespace SketcherGui;
 using namespace Sketcher;
 
@@ -836,7 +841,7 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                     const_cast<Gui::View3DInventorViewer *>(viewer)->setRenderType(Gui::View3DInventorViewer::Native);
                     
                     // a redraw is required in order to clear the rubberband
-                    draw(true);
+                    draw(true,false);
                     Mode = STATUS_NONE;
                     return true;
                 case STATUS_SKETCH_UseHandler:
@@ -1127,7 +1132,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 if (GeoId != Sketcher::Constraint::GeoUndef && PosId != Sketcher::none) {
                     if (getSketchObject()->getSolvedSketch().movePoint(GeoId, PosId, vec, relative) == 0) {
                         setPositionText(Base::Vector2d(x,y));
-                        draw(true);
+                        draw(true,false);
                         signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
                     } else {
                         signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch().SolveTime));
@@ -1141,7 +1146,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s &cursorPos, Gui::View3DInventor
                 Base::Vector3d vec(x-xInit,y-yInit,0);
                 if (getSketchObject()->getSolvedSketch().movePoint(edit->DragCurve, Sketcher::none, vec, relative) == 0) {
                     setPositionText(Base::Vector2d(x,y));
-                    draw(true);
+                    draw(true,false);
                     signalSolved(QString::fromLatin1("Solved in %1 sec").arg(getSketchObject()->getSolvedSketch().SolveTime));
                 } else {
                     signalSolved(QString::fromLatin1("Unsolved (%1 sec)").arg(getSketchObject()->getSolvedSketch().SolveTime));
@@ -1359,7 +1364,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d &toPo
     for (std::vector<Part::Geometry *>::const_iterator it=geomlist.begin(); it != geomlist.end(); ++it)
         if (*it) delete *it;
 
-    draw(true);
+    draw(true,false);
 }
 
 Base::Vector3d ViewProviderSketch::seekConstraintPosition(const Base::Vector3d &origPos,
@@ -3167,7 +3172,7 @@ float ViewProviderSketch::getScaleFactor()
     }
 }
 
-void ViewProviderSketch::draw(bool temp)
+void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer /*=true*/)
 {
     assert(edit);
 
@@ -3193,11 +3198,18 @@ void ViewProviderSketch::draw(bool temp)
 
     edit->CurvIdToGeoId.clear();
     
-    // everytime we start with empty information layer
-    edit->infoGroup->removeAllChildren();
+    // information layer
+    if(rebuildinformationlayer) {
+        // everytime we start with empty information layer
+        edit->infoGroup->removeAllChildren();
+    }
     
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     int fontSize = hGrp->GetInt("EditSketcherFontSize", 17);
+    
+    int currentInfoNode = 0;
+    
+    // end information layer
 
     int GeoId = 0;
 
@@ -3417,12 +3429,6 @@ void ViewProviderSketch::draw(bool temp)
             gp_Pnt end = curve->Value(last);
             Coords.push_back(Base::Vector3d(end.X(), end.Y(), end.Z()));
 
-            // abdullah: Poles thought as internal geometry
-            /*std::vector<Base::Vector3d> poles = spline->getPoles();
-            for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
-                Points.push_back(*it);
-            }*/
-
             Index.push_back(countSegments+1);
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(startp);
@@ -3431,18 +3437,6 @@ void ViewProviderSketch::draw(bool temp)
             //----------------------------------------------------------
             // geometry information layer (degree, control polygon)
             // polynom degree
-            SoSeparator *sep = new SoSeparator();
-            sep->ref();
-            // no caching for fluctuand data structures
-            sep->renderCaching = SoSeparator::OFF;
-            
-            // every information visual node gets its own material for to-be-implemented preselection and selection
-            SoMaterial *mat = new SoMaterial;
-            mat->ref();
-            mat->diffuseColor = InformationColor;
-
-            SoTranslation *translate = new SoTranslation;
-            
             std::vector<Base::Vector3d> poles = spline->getPoles();
             
             Base::Vector3d midp = Base::Vector3d(0,0,0);
@@ -3453,68 +3447,120 @@ void ViewProviderSketch::draw(bool temp)
             
             midp /= poles.size();
             
-            translate->translation.setValue(midp.x,midp.y,zInfo);
+            if(rebuildinformationlayer) {
+                SoSeparator *sep = new SoSeparator();
+                sep->ref();
+                // no caching for fluctuand data structures
+                sep->renderCaching = SoSeparator::OFF;
+                
+                // every information visual node gets its own material for to-be-implemented preselection and selection
+                SoMaterial *mat = new SoMaterial;
+                mat->ref();
+                mat->diffuseColor = InformationColor;
 
-            SoFont *font = new SoFont;
-            font->name.setValue("Helvetica");
-            font->size.setValue(fontSize);
+                SoTranslation *translate = new SoTranslation;
+                
+                translate->translation.setValue(midp.x,midp.y,zInfo);
 
-            SoText2 *degreetext = new SoText2;
-            degreetext->string = SbString(spline->getDegree());
+                SoFont *font = new SoFont;
+                font->name.setValue("Helvetica");
+                font->size.setValue(fontSize);
 
-            sep->addChild(translate);
-            sep->addChild(mat);
-            sep->addChild(font);
-            sep->addChild(degreetext);
+                SoText2 *degreetext = new SoText2;
+                degreetext->string = SbString(spline->getDegree());
 
-            edit->infoGroup->addChild(sep);
-            sep->unref();
-            mat->unref();
+                sep->addChild(translate);
+                sep->addChild(mat);
+                sep->addChild(font);
+                sep->addChild(degreetext);
+
+                edit->infoGroup->addChild(sep);
+                sep->unref();
+                mat->unref();
+            }
+            else {
+                SoSeparator *sep = static_cast<SoSeparator *>(edit->infoGroup->getChild(currentInfoNode));
+
+                static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(midp.x,midp.y,zInfo);
+
+                static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString(spline->getDegree());
+            }
+            
+            currentInfoNode++; // switch to next node
             
             //----------------------------------------------------------
             // control polygon
-            sep = new SoSeparator();
-            sep->ref();
-            // no caching for fluctuand data structures
-            sep->renderCaching = SoSeparator::OFF;
-            
-            // every information visual node gets its own material for to-be-implemented preselection and selection
-            mat = new SoMaterial;
-            mat->ref();
-            mat->diffuseColor = InformationColor;
-            
-            SoLineSet *lineset = new SoLineSet;
-            lineset->setName("InfoLineSet");
-            
-            SoCoordinate3 *coords = new SoCoordinate3;
-            
-            if(spline->isPeriodic()) {
-                coords->point.setNum(poles.size()+1);
+            if(rebuildinformationlayer) {
+                SoSeparator *sep = new SoSeparator();
+                sep->ref();
+                // no caching for fluctuand data structures
+                sep->renderCaching = SoSeparator::OFF;
+                
+                // every information visual node gets its own material for to-be-implemented preselection and selection
+                SoMaterial *mat = new SoMaterial;
+                mat->ref();
+                mat->diffuseColor = InformationColor;
+                
+                SoLineSet *lineset = new SoLineSet;
+                lineset->setName("InfoLineSet");
+                
+                SoCoordinate3 *coords = new SoCoordinate3;
+                
+                if(spline->isPeriodic()) {
+                    coords->point.setNum(poles.size()+1);
+                }
+                else {
+                    coords->point.setNum(poles.size());
+                }
+                
+                SbVec3f *vts = coords->point.startEditing();
+
+                int i=0;
+                for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
+                    vts[i].setValue((*it).x,(*it).y,zInfo);
+                }
+                
+                if(spline->isPeriodic()) {
+                    vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
+                }
+                
+                coords->point.finishEditing();
+                
+                sep->addChild(mat);
+                sep->addChild(coords);
+                sep->addChild(lineset);
+                
+                edit->infoGroup->addChild(sep);
+                sep->unref();
+                mat->unref();
             }
             else {
-                coords->point.setNum(poles.size());
-            }
-            
-            SbVec3f *vts = coords->point.startEditing();
+                SoSeparator *sep = static_cast<SoSeparator *>(edit->infoGroup->getChild(currentInfoNode));
 
-            int i=0;
-            for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
-                vts[i].setValue((*it).x,(*it).y,zInfo);
+                SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+
+                if(spline->isPeriodic()) {
+                    coords->point.setNum(poles.size()+1);
+                }
+                else {
+                    coords->point.setNum(poles.size());
+                }
+
+                SbVec3f *vts = coords->point.startEditing();
+
+                int i=0;
+                for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it, i++) {
+                    vts[i].setValue((*it).x,(*it).y,zInfo);
+                }
+
+                if(spline->isPeriodic()) {
+                    vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
+                }
+
+                coords->point.finishEditing();
+
             }
-            
-            if(spline->isPeriodic()) {
-                vts[poles.size()].setValue(poles[0].x,poles[0].y,zInfo);
-            }
-            
-            coords->point.finishEditing();
-            
-            sep->addChild(mat);
-            sep->addChild(coords);
-            sep->addChild(lineset);
-            
-            edit->infoGroup->addChild(sep);
-            sep->unref();
-            mat->unref();
+            currentInfoNode++; // switch to next node
         }
         else {
         }
@@ -4568,7 +4614,7 @@ void ViewProviderSketch::updateData(const App::Property *prop)
             getSketchObject()->getSolvedSketch().getGeometrySize()) {
             Gui::MDIView *mdi = Gui::Application::Instance->activeDocument()->getActiveView();
             if (mdi->isDerivedFrom(Gui::View3DInventor::getClassTypeId()))
-                draw(false);
+                draw(false,true);
             
             signalConstraintsChanged();
             signalElementsChanged();
@@ -4754,7 +4800,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
 
     getSketchObject()->solve(false);
     UpdateSolverInformation();
-    draw(false);
+    draw(false,true);
 
     connectUndoDocument = Gui::Application::Instance->activeDocument()
         ->signalUndoDocument.connect(boost::bind(&ViewProviderSketch::slotUndoDocument, this, _1));
@@ -5386,7 +5432,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string> &subList)
             // if the sketched could not be solved, we first redraw to update the UI geometry as
             // onChanged did not update it.
             UpdateSolverInformation();
-            draw();
+            draw(false,true);
             
             signalConstraintsChanged();
             signalElementsChanged();
