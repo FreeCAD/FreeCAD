@@ -147,6 +147,7 @@ private:
    GLuint indice_array;
    const GLubyte *GL_extension;
    int vbo_available;
+   SoState * current_state;
 
 
     SbColor selectionColor;
