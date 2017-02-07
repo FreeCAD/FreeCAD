@@ -110,7 +110,9 @@ public:
     void drawConstraintIcons();
 
     /// draw the sketch in the inventor nodes
-    void draw(bool temp=false);
+    /// temp => use temporary solver solution in SketchObject
+    /// recreateinformationscenography => forces a rebuild of the information layer scenography
+    void draw(bool temp=false, bool rebuildinformationlayer=true);
 
     /// draw the edit curve
     void drawEdit(const std::vector<Base::Vector2d> &EditCurve);
