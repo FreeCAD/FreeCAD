@@ -109,6 +109,9 @@ int main( int argc, char ** argv )
 #else
     setlocale(LC_NUMERIC, "C");
     _putenv("PYTHONPATH=");
+    // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
+    _putenv("PYTHONHOME=");
 #endif
 
 #if defined (FC_OS_WIN32)
