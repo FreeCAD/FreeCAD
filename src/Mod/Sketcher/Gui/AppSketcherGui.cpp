@@ -49,6 +49,7 @@ void CreateSketcherCommandsCreateGeo(void);
 void CreateSketcherCommandsConstraints(void);
 void CreateSketcherCommandsConstraintAccel(void);
 void CreateSketcherCommandsAlterGeo(void);
+void CreateSketcherCommandsBSpline(void);
 
 void loadSketcherResource()
 {
@@ -98,6 +99,7 @@ PyMODINIT_FUNC initSketcherGui()
     CreateSketcherCommandsConstraints();
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
+    CreateSketcherCommandsBSpline();
 
     SketcherGui::Workbench::init();
 
