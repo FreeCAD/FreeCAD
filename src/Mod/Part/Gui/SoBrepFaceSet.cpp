@@ -32,6 +32,7 @@
 #include <OpenGL/glext.h>
 #else
 #include <GL/gl.h>
+#define GL_GLEXT_PROTOTYPES
 #include <GL/glext.h>
 #endif
 #include <float.h>

@@ -32,8 +32,14 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+#ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
-
+#include <OpenGL/glext.h>
+#else
+#include <GL/gl.h>
+#define GL_GLEXT_PROTOTYPES
+#include <GL/glext.h>
+#endif
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
