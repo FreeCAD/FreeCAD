@@ -110,7 +110,7 @@ namespace SMESH{
      */
     class SMESHCONTROLS_EXPORT TMeshModifTracer
     {
-      unsigned long    myMeshModifTime;
+      VTK_MTIME_TYPE   myMeshModifTime;
       const SMDS_Mesh* myMesh;
     public:
       TMeshModifTracer();
