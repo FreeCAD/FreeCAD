@@ -79,11 +79,16 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     Gui::MenuItem* consaccel = new Gui::MenuItem();
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools(*consaccel);
+    
+    Gui::MenuItem* bsplines = new Gui::MenuItem();
+    bsplines->setCommand("Sketcher B-Spline tools");
+    addSketcherWorkbenchBSplines(*bsplines);
 
     addSketcherWorkbenchSketchActions( *sketch );
     *sketch << geom
             << cons
-            << consaccel;
+            << consaccel
+            << bsplines;
 
     return root;
 }
@@ -107,6 +112,11 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     Gui::ToolBarItem* consaccel = new Gui::ToolBarItem(root);
     consaccel->setCommand("Sketcher tools");
     addSketcherWorkbenchTools( *consaccel );
+    
+    Gui::ToolBarItem* bspline = new Gui::ToolBarItem(root);
+    bspline->setCommand("Sketcher B-Spline tools");
+    addSketcherWorkbenchBSplines( *bspline );
+
      return root;
 }
 
@@ -233,7 +243,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
             << "Sketcher_ConstrainAngle"
             << "Sketcher_ConstrainSnellsLaw"
             << "Separator"
-            << "Sketcher_ToggleDrivingConstraint";            
+            << "Sketcher_ToggleDrivingConstraint";
 }
 
 template <typename T>
@@ -269,6 +279,19 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
 }
 
 template <typename T>
+inline void SketcherAddWorkbenchBSplines(T& bspline);
+
+template <>
+inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
+    bspline << "Sketcher_BSplinePolygon";
+}
+
+template <>
+inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline){
+    bspline << "Sketcher_BSplinePolygon";
+}
+
+template <typename T>
 inline void SketcherAddWorkspaceSketchExtra(T& /*sketch*/){
 }
 
@@ -298,6 +321,10 @@ void addSketcherWorkbenchConstraints( Gui::MenuItem& cons ){
 void addSketcherWorkbenchTools( Gui::MenuItem& consaccel ){
     SketcherAddWorkbenchTools( consaccel );
 }
+void addSketcherWorkbenchBSplines( Gui::MenuItem& bspline ){
+    SketcherAddWorkbenchBSplines( bspline );
+}
+
 void addSketcherWorkbenchSketchActions( Gui::MenuItem& sketch ){
     Sketcher_addWorkbenchSketchActions( sketch );
 }
@@ -308,10 +335,17 @@ void addSketcherWorkbenchGeometries( Gui::MenuItem& geom ){
 void addSketcherWorkbenchConstraints( Gui::ToolBarItem& cons ){
     SketcherAddWorkbenchConstraints( cons );
 }
+
 void addSketcherWorkbenchTools( Gui::ToolBarItem& consaccel )
 {
     SketcherAddWorkbenchTools( consaccel );
 }
+
+void addSketcherWorkbenchBSplines( Gui::ToolBarItem& bspline )
+{
+    SketcherAddWorkbenchBSplines( bspline );
+}
+
 void addSketcherWorkbenchSketchActions( Gui::ToolBarItem& sketch ){
     Sketcher_addWorkbenchSketchActions( sketch );
 }
