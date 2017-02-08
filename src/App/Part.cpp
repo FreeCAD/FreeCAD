@@ -67,24 +67,17 @@ Part::~Part(void)
 {
 }
 
-App::Part *Part::getPartOfObject (const DocumentObject* obj, bool indirect) {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsOfType ( Part::getClassTypeId() );
-
-    for (auto partObj: grps) {
-        Part* part = static_cast <Part* >(partObj);
-        if ( indirect ) {
-            if ( part->geoHasObject (obj) ) {
-                return part;
-            }
-        } else {
-            if ( part->hasObject (obj) ) {
-                return part;
-            }
-        }
+App::Part *Part::getPartOfObject (const DocumentObject* obj) {
+    
+    //as a Part is a geofeaturegroup it must directly link to all objects it contains, even 
+    //if they are in additional groups etc.
+    auto list = obj->getInList();
+    for (auto obj : list) {
+        if(obj->isDerivedFrom(App::Part::getClassTypeId()))
+            return static_cast<App::Part*>(obj);
     }
 
-    return 0;
+    return nullptr;
 }
 
 

@@ -77,87 +77,18 @@ void GeoFeatureGroupExtension::transformPlacement(const Base::Placement &transfo
     this->placement().setValue(plm);
 }
 
-std::vector<App::DocumentObject*> GeoFeatureGroupExtension::getGeoSubObjects () const {
-    const auto & objs = Group.getValues();
-
-    std::set<const App::GroupExtension*> processedGroups;
-    std::set<App::DocumentObject*> rvSet;
-    std::set<App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
-
-    processedGroups.insert ( this );
-
-    while ( !curSearchSet.empty() ) {
-        rvSet.insert ( curSearchSet.begin (), curSearchSet.end () );
-
-        std::set<App::DocumentObject*> nextSearchSet;
-        for ( auto obj: curSearchSet) {
-            if ( isNonGeoGroup (obj) ) {
-                auto *grp = obj->getExtensionByType<App::GroupExtension>();
-                // Check if we havent already processed the element may happen in case of nontree structure
-                // Note: if the condition is false this generally indicates malformed structure
-                if ( processedGroups.find (grp) == processedGroups.end() ) {
-                    processedGroups.insert ( grp );
-                    const auto & objs = grp->Group.getValues();
-                    nextSearchSet.insert (objs.begin(), objs.end());
-                }
-            }
-        }
-        nextSearchSet.swap (curSearchSet);
-    }
-
-    return std::vector<App::DocumentObject*> ( rvSet.begin(), rvSet.end() );
-}
-
-bool GeoFeatureGroupExtension::geoHasObject (const DocumentObject* obj) const {
-    const auto & objs = Group.getValues();
-
-    if (!obj) {
-        return false;
-    }
-
-    std::set<const App::GroupExtension*> processedGroups;
-    std::set<const App::DocumentObject*> curSearchSet (objs.begin(), objs.end());
-
-    processedGroups.insert ( this );
-
-    while ( !curSearchSet.empty() ) {
-        if ( curSearchSet.find (obj) != curSearchSet.end() ) {
-            return true;
-        }
-        std::set<const App::DocumentObject*> nextSearchSet;
-        for ( auto obj: curSearchSet) {
-            if ( isNonGeoGroup (obj) ) {
-                auto *grp = obj->getExtensionByType<App::GroupExtension>();
-                if ( processedGroups.find (grp) == processedGroups.end() ) {
-                    processedGroups.insert ( grp );
-                    const auto & objs = grp->Group.getValues();
-                    nextSearchSet.insert (objs.begin(), objs.end());
-                }
-            }
-        }
-        nextSearchSet.swap (curSearchSet);
-    }
-    return false;
-}
-
-DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj, bool indirect)
+DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
-    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GeoFeatureGroupExtension* grp = (*it)->getExtensionByType<GeoFeatureGroupExtension>();
-        if ( indirect ) {
-            if (grp->geoHasObject(obj)) {
-                return grp->getExtendedObject();
-            }
-        } else {
-            if (grp->hasObject(obj)) {
-                return grp->getExtendedObject();
-            }
-        }
+    //compared to GroupExtension we do return here all geofeaturegroups including all extensions erived from it
+    //like origingroup. That is needed as we use this function to get all local coordinate systems. Also there 
+    //is no reason to distuinguish between geofeatuergroups, there is only between group/geofeaturegroup
+    auto list = obj->getInList();
+    for (auto obj : list) {
+        if(obj->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+            return obj;
     }
 
-    return 0;
+    return nullptr;
 }
 
 Base::Placement GeoFeatureGroupExtension::globalGroupPlacement() {
@@ -176,6 +107,25 @@ Base::Placement GeoFeatureGroupExtension::recursiveGroupPlacement(GeoFeatureGrou
     }
     
     return group->placement().getValue();
+}
+
+void GeoFeatureGroupExtension::addObject(App::DocumentObject* obj)  {
+    
+    if(!allowObject(obj))
+        return;
+    
+    //only one geofeaturegroup per object. This is the reason why we need to override addObject, 
+    //we need to check here for GeoFeatureGroups only. It is allowed to be at the same time in a 
+    //GeoFeatureGroup and a Group
+    auto *group = App::GeoFeatureGroupExtension::getGroupOfObject(obj);
+    if(group && group != getExtendedObject())
+        group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
+    
+    if (!hasObject(obj)) {
+        std::vector<DocumentObject*> grp = Group.getValues();
+        grp.push_back(obj);
+        Group.setValues(grp);
+    }
 }
 
 

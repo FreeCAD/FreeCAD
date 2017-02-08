@@ -33,6 +33,7 @@
 #include "Application.h"
 #include "Document.h"
 #include <App/GeoFeatureGroupExtension.h>
+#include <Base/Console.h>
 #include <Inventor/nodes/SoGroup.h>
 
 using namespace Gui;
@@ -55,8 +56,33 @@ ViewProviderGeoFeatureGroupExtension::~ViewProviderGeoFeatureGroupExtension()
 
 
 std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren3D(void) const {
+    
+    //all object in the group must be claimed in 3D, as we are a coordinate system for all of them
     auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
-    return ext ? ext->getGeoSubObjects() : std::vector<App::DocumentObject*>();
+    if(ext) {        
+        auto objs = ext->Group.getValues();
+        return objs;
+    }
+    return std::vector<App::DocumentObject*>();
+}
+
+std::vector<App::DocumentObject*> ViewProviderGeoFeatureGroupExtension::extensionClaimChildren(void) const {
+ 
+    //we must be carefull which objects to claim, as there might be stacked relations inside the coordinate system,
+    //like pad/sketch
+    auto* ext = getExtendedViewProvider()->getObject()->getExtensionByType<App::GeoFeatureGroupExtension>();
+    if(ext) {   
+        //filter out all objects with more than one inlink, as they are most likely hold by annother 
+        //object in the tree
+        std::vector<App::DocumentObject*> claim;
+        auto objs = ext->Group.getValues();
+        for(auto obj : objs) {            
+            if(obj->getInList().size()<=1)
+                claim.push_back(obj);
+        }
+        return claim;
+    }
+    return std::vector<App::DocumentObject*>();
 }
 
 void ViewProviderGeoFeatureGroupExtension::extensionAttach(App::DocumentObject* pcObject)
