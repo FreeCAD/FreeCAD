@@ -93,6 +93,7 @@
 # include <GC_MakeArcOfHyperbola.hxx>
 # include <GC_MakeLine.hxx>
 # include <GC_MakeSegment.hxx>
+# include <GCPnts_AbscissaPoint.hxx>
 # include <Precision.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <ShapeConstruct_Curve.hxx>
@@ -375,15 +376,25 @@ Base::Vector3d GeomCurve::secondDerivativeAtParameter(double u) const
     return Base::Vector3d(vec.X(),vec.Y(),vec.Z());
 }
 
-bool GeomCurve::normal(double u, gp_Dir& dir) const
+bool GeomCurve::normalAt(double u, Base::Vector3d& dir) const
 {
     Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
-    GeomLProp_CLProps prop(c,u,1,Precision::Confusion());
-    if (prop.IsTangentDefined()) {
-        prop.Normal(dir);
-        return true;
+    
+    try {
+        if (!c.IsNull()) {
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+            gp_Dir gdir;
+            prop.Normal(gdir);
+            dir = Base::Vector3d(gdir.X(), gdir.Y(), gdir.Z());
+            
+            return true;
+        }
     }
-
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+    
     return false;
 }
 
@@ -432,6 +443,74 @@ bool GeomCurve::closestParameterToBasicCurve(const Base::Vector3d& point, double
         return this->closestParameter(point, u);
     }
 }
+
+double GeomCurve::getFirstParameter() const
+{
+
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    
+    try {
+        if (!c.IsNull()) {
+            // pending check for RealFirst RealLast in case of infinite curve
+            return c->FirstParameter();
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+    
+}
+double GeomCurve::getLastParameter() const
+{
+    
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+
+    try {
+        if (!c.IsNull()) {
+            // pending check for RealFirst RealLast in case of infinite curve
+            return c->LastParameter();
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
+double GeomCurve::curvatureAt(double u) const 
+{
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+    
+    try {
+        if (!c.IsNull()) {
+            GeomLProp_CLProps prop(c,u,2,Precision::Confusion());
+            return prop.Curvature();
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
+double GeomCurve::length(double u, double v) const
+{
+
+    Handle_Geom_Curve c = Handle_Geom_Curve::DownCast(handle());
+
+    try {
+        if (!c.IsNull()) {
+            GeomAdaptor_Curve adaptor(c);
+            return GCPnts_AbscissaPoint::Length(adaptor,u,v,Precision::Confusion());
+        }
+    }
+    catch (Standard_Failure) {
+        Handle_Standard_Failure e = Standard_Failure::Caught();
+        throw Base::RuntimeError(e->GetMessageString());
+    }
+}
+
 
 // -------------------------------------------------
 
