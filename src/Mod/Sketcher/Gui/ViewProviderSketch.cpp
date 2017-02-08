@@ -3437,37 +3437,38 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             edit->CurvIdToGeoId.push_back(GeoId);
             Points.push_back(startp);
             Points.push_back(endp);
-            
+
             //----------------------------------------------------------
-            // geometry information layer (degree, control polygon)
-            // polynom degree
+            // geometry information layer
+
+            // polynom degree --------------------------------------------------------
             std::vector<Base::Vector3d> poles = spline->getPoles();
-            
+
             Base::Vector3d midp = Base::Vector3d(0,0,0);
-            
+
             for (std::vector<Base::Vector3d>::iterator it = poles.begin(); it != poles.end(); ++it) {
                 midp += (*it);
             }
-            
+
             midp /= poles.size();
-            
+
             if(rebuildinformationlayer) {
                 SoSwitch *sw = new SoSwitch();
-                
+
                 sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
-                
+
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
                 // no caching for fluctuand data structures
                 sep->renderCaching = SoSeparator::OFF;
-                
+
                 // every information visual node gets its own material for to-be-implemented preselection and selection
                 SoMaterial *mat = new SoMaterial;
                 mat->ref();
                 mat->diffuseColor = InformationColor;
 
                 SoTranslation *translate = new SoTranslation;
-                
+
                 translate->translation.setValue(midp.x,midp.y,zInfo);
 
                 SoFont *font = new SoFont;
@@ -3490,24 +3491,23 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             }
             else {
                 SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
-                
+
                 if(visibleInformationChanged)
                     sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
-                
+
                 SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
                 static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(midp.x,midp.y,zInfo);
 
                 static_cast<SoText2 *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_TEXT))->string = SbString(spline->getDegree());
             }
-            
+
             currentInfoNode++; // switch to next node
-            
-            //----------------------------------------------------------
-            // control polygon
+
+            // control polygon --------------------------------------------------------
             if(rebuildinformationlayer) {
                 SoSwitch *sw = new SoSwitch();
-                
+
                 sw->whichChild = hGrpsk->GetBool("BSplineControlPolygonVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
                 SoSeparator *sep = new SoSeparator();
@@ -3521,7 +3521,6 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 mat->diffuseColor = InformationColor;
                 
                 SoLineSet *lineset = new SoLineSet;
-                lineset->setName("InfoLineSet");
                 
                 SoCoordinate3 *coords = new SoCoordinate3;
                 
@@ -3586,6 +3585,128 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 coords->point.finishEditing();
 
             }
+            currentInfoNode++; // switch to next node
+            
+            // curvature graph --------------------------------------------------------
+
+            // reimplementation of python source:
+            // https://github.com/tomate44/CurvesWB/blob/master/ParametricComb.py
+            // by FreeCAD user Chris_G
+            
+            double firstparam = spline->getFirstParameter();
+            double lastparam =  spline->getLastParameter();
+            
+            const int ndiv = 64;
+            double step = (lastparam - firstparam ) / (ndiv -1);
+            
+            std::vector<double> paramlist(ndiv);
+            std::vector<Base::Vector3d> pointatcurvelist(ndiv);
+            std::vector<double> curvaturelist(ndiv);
+            std::vector<Base::Vector3d> normallist(ndiv);
+            double maxcurv = 0;
+            
+            double length = spline->length(firstparam,lastparam);
+            
+            for(int i = 0; i < ndiv; i++) {
+                paramlist[i] = firstparam + i * step;
+                pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
+                curvaturelist[i] = spline->curvatureAt(paramlist[i]);
+                
+                if(curvaturelist[i] > maxcurv)
+                    maxcurv = curvaturelist[i];
+                
+                spline->normalAt(paramlist[i],normallist[i]);
+            }
+            
+            double repscale = ( 0.5 * length ) / maxcurv; // just a factor to make it reasonably visible
+            
+            std::vector<Base::Vector3d> pointatcomblist(ndiv);
+            
+            for(int i = 0; i < ndiv; i++) {
+                pointatcomblist[i] = pointatcurvelist[i] + repscale * curvaturelist[i] * normallist[i];
+            }
+            
+            if(rebuildinformationlayer) {
+                SoSwitch *sw = new SoSwitch();
+
+                sw->whichChild = hGrpsk->GetBool("BSplineCurvatureGraphVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+
+                SoSeparator *sep = new SoSeparator();
+                sep->ref();
+                // no caching for fluctuand data structures
+                sep->renderCaching = SoSeparator::OFF;
+
+                // every information visual node gets its own material for to-be-implemented preselection and selection
+                SoMaterial *mat = new SoMaterial;
+                mat->ref();
+                mat->diffuseColor = InformationColor;
+
+                SoLineSet *lineset = new SoLineSet;
+
+                SoCoordinate3 *coords = new SoCoordinate3;
+
+                coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+                lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+
+                int32_t *index = lineset->numVertices.startEditing();
+                SbVec3f *vts = coords->point.startEditing();
+
+                for(int i = 0; i < ndiv; i++) {
+                    vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
+                    vts[2*i+1].setValue(pointatcomblist[i].x, pointatcomblist[i].y, zInfo);
+                    index[i] = 2;
+
+                    vts[2*ndiv+i].setValue(pointatcomblist[i].x, pointatcomblist[i].y, zInfo); // comb endpoint closing segment
+                }
+
+                index[ndiv] = ndiv; // comb endpoint closing segment
+
+                coords->point.finishEditing();
+                lineset->numVertices.finishEditing();
+
+                sep->addChild(mat);
+                sep->addChild(coords);
+                sep->addChild(lineset);
+
+                sw->addChild(sep);
+
+                edit->infoGroup->addChild(sw);
+                sep->unref();
+                mat->unref();
+            }
+            else {
+                SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
+
+                if(visibleInformationChanged)
+                    sw->whichChild = hGrpsk->GetBool("BSplineCurvatureGraphVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+
+                SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
+
+                SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
+
+                SoLineSet *lineset = static_cast<SoLineSet *>(sep->getChild(GEOINFO_BSPLINE_POLYGON+1));
+
+                coords->point.setNum(3*ndiv); // 2*ndiv +1 points of ndiv separate segments + ndiv points for last segment
+                lineset->numVertices.setNum(ndiv+1); // ndiv separate segments of radials + 1 segment connecting at comb end
+                
+                int32_t *index = lineset->numVertices.startEditing();
+                SbVec3f *vts = coords->point.startEditing();
+                
+                for(int i = 0; i < ndiv; i++) {
+                    vts[2*i].setValue(pointatcurvelist[i].x, pointatcurvelist[i].y, zInfo); // radials
+                    vts[2*i+1].setValue(pointatcomblist[i].x, pointatcomblist[i].y, zInfo);
+                    index[i] = 2;
+                    
+                    vts[2*ndiv+i].setValue(pointatcomblist[i].x, pointatcomblist[i].y, zInfo); // comb endpoint closing segment
+                }
+                
+                index[ndiv] = ndiv; // comb endpoint closing segment
+                
+                coords->point.finishEditing();
+                lineset->numVertices.finishEditing();
+
+            }
+
             currentInfoNode++; // switch to next node
         }
         else {
