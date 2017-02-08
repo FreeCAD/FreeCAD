@@ -107,6 +107,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 	vbo_available=1;
 #endif
     vbo_available=1;
+    update_vbo=0;
     if ( vbo_available )
     {
 	    glGenBuffersARB(2, &myvbo[0]);
@@ -118,7 +119,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 
 SoBrepFaceSet::~SoBrepFaceSet()
 {
-   glDeleteBuffers(2, &myvbo[0]);
+   glDeleteBuffersARB(2, &myvbo[0]);
 }
 
 void SoBrepFaceSet::doAction(SoAction* action)
@@ -288,13 +289,11 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
-
     renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
     // Disable caching for this node
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
-
     // Workaround for #0000433
 //#if !defined(FC_OS_WIN32)
     if (hl_idx >= 0)
@@ -319,7 +318,6 @@ void SoBrepFaceSet::renderSimpleArray()
 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_VERTEX_ARRAY);
-    puts("rendering");
 #if 0
     glInterleavedArrays(GL_N3F_V3F, 0, vertex_array.data());
     glDrawElements(GL_TRIANGLES, cnt, GL_UNSIGNED_INT, index_array.data());
@@ -421,9 +419,9 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
-//    puts("Rendering Shape");
     renderShape(static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+//    update_vbo=1;
     // Disable caching for this node
     SoGLCacheContextElement::shouldAutoCache(state, SoGLCacheContextElement::DONT_AUTO_CACHE);
 
@@ -781,9 +779,11 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
         // materials
         mbind = OVERALL;
         doTextures = false;
-
+	vbo_available=0;
+	update_vbo=1;
         renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+	vbo_available=1;
     }
     state->pop();
     
@@ -865,9 +865,10 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
             normals_s = &(normals[start]);
         else 
             nbind = OVERALL;
-
+	vbo_available=0;
         renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
+	vbo_available=1;
     }
     state->pop();
     
@@ -936,12 +937,29 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int early_exit=0;
     uint32_t RGBA,R,G,B,A;
     float Rf,Gf,Bf,Af; 
+
 // vbo loaded is defining if we must pre-load data into the VBO
-    if (( vbo_loaded == 0 ) )
+// TODO FINISHING THE COLOR SUPPORT !
+
+    if (( vbo_loaded == 0 ) || update_vbo )
     {
-	    glBegin(GL_TRIANGLES);
+	    if ( ( update_vbo ) && vbo_loaded )
+	    {
+		// TODO
+		// I must remember the buffer size ... If it has to be extended I must
+		// take care of that
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+	        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+		vertex_array=(float*)glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+		index_array=(GLuint *)glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+		indice_array=0;
+	    }
+	    else
+	    {
+	    //glBegin(GL_TRIANGLES);
 	    vertex_array = ( float * ) malloc ( sizeof(float) * num_indices *10 );
 	    index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices *3 );
+	    }
 	    while (viptr + 2 < viendptr) {
 	        v1 = *viptr++;
 	        v2 = *viptr++;
@@ -1029,7 +1047,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
 
 		/* I am building the Vertex dataset there and push it to a VBO */
-
 	        index_array[indice_array] = indice_array;
 	        index_array[indice_array+1] = indice_array+1;
 	        index_array[indice_array+2] = indice_array+2;
@@ -1115,32 +1132,38 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         }
 
     	   }
-	   glEnd();
-    }
-    if ( vbo_loaded == 0 )
-    {
+	   //glEnd();
+	if ((  ! update_vbo ) || (!vbo_loaded) )
+	{
 	// Push the content to the VBO
 
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_STREAM_DRAW_ARB);
+	glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
-
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * indice_array , &index_array[0], GL_STATIC_DRAW_ARB);
+	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+        glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
 	vbo_loaded=1;
+	update_vbo=0;
+	free(vertex_array);
+	free(index_array);
+	}
+	else
+	{
+		glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+		glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
+		update_vbo=0;
+	}
     }
-    else
-    {
 
     // GL_Vertex implementation with copy
     // We must use VBO approach now
     // This is the rendering code
 
-    glBindBuffer(GL_ARRAY_BUFFER_ARB, myvbo[0]);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+    glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
     glEnableClientState(GL_VERTEX_ARRAY); 
     glEnableClientState(GL_NORMAL_ARRAY);
     glEnableClientState(GL_COLOR_ARRAY);
@@ -1157,12 +1180,8 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     glDisableClientState(GL_VERTEX_ARRAY);
     glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
     glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
-    }
-
+//    update_vbo=1;
     // The data is within the VBO we can clear it at application level
-
-    free(vertex_array);
-    free(index_array);
     return;
     }
 
@@ -1185,26 +1204,21 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    {
                 materials->send(matnr++, true);
 		
-		printf("Material number %d\n",matnr);
     		uint32_t RGBA;
 		mycolor1=SoLazyElement::getDiffuse(current_state,matnr-1);
 		RGBA = mycolor1.getPackedValue();
-		printf("Value %08x\n",RGBA);
 	    }
         }
         else if (mbind == PER_PART_INDEXED) {
             if (trinr == 0)
 	    {
-		puts("coucou");
                 materials->send(*matindices++, true);
 	    }
         }
         else if (mbind == PER_VERTEX || mbind == PER_FACE) {
-		puts("coucou");
             materials->send(matnr++, true);
         }
         else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
-		puts("coucou");
             materials->send(*matindices++, true);
         }
 
@@ -1229,12 +1243,10 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         /* vertex 2 *********************************************************/
         if (mbind == PER_VERTEX)
         {
-		puts("coucou");
             materials->send(matnr++, true);
         }
         else if (mbind == PER_VERTEX_INDEXED)
         {
-		puts("coucou");
             materials->send(*matindices++, true);
         }
 
@@ -1261,12 +1273,10 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
         if (mbind == PER_VERTEX)
         {
             materials->send(matnr++, true);
-		puts("coucou");
         }
         else if (mbind == PER_VERTEX_INDEXED)
         {
             materials->send(*matindices++, true);
-		puts("coucou");
         }
 
         if (normals) {

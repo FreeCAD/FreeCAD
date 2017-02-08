@@ -324,8 +324,8 @@ ViewProviderPartExt::~ViewProviderPartExt()
 
 void ViewProviderPartExt::onChanged(const App::Property* prop)
 {
-    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     
+    Part::Feature* feature = dynamic_cast<Part::Feature*>(pcObject);
     if (prop == &Deviation) {
         if(Visibility.getValue() && feature && !feature->Shape.getValue().IsNull()) 
             updateVisual(feature->Shape.getValue());
@@ -799,6 +799,8 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
+    // vejmarie: Force VBO update of the part 
+    this->faceset->update_vbo=1;
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();

@@ -86,6 +86,7 @@ public:
     SoMFInt32 partIndex;
     SoSFInt32 highlightIndex;
     SoMFInt32 selectionIndex;
+   int vbo_available,update_vbo;
 
 protected:
     virtual ~SoBrepFaceSet();
@@ -146,9 +147,8 @@ private:
    int vbo_loaded;
    GLuint indice_array;
    const GLubyte *GL_extension;
-   int vbo_available;
    SoState * current_state;
-
+  
 
     SbColor selectionColor;
     SbColor highlightColor;
