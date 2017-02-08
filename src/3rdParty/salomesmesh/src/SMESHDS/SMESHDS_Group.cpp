@@ -177,7 +177,7 @@ SMDS_ElemIteratorPtr SMESHDS_Group::GetElements() const
  */
 //================================================================================
 
-int SMESHDS_Group::GetTic() const
+VTK_MTIME_TYPE SMESHDS_Group::GetTic() const
 {
   return myGroup.Tic();
 }

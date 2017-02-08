@@ -4836,7 +4836,7 @@ void SMDS_Mesh::Modified()
 }
 
 //! get last modification timeStamp
-unsigned long SMDS_Mesh::GetMTime() const
+VTK_MTIME_TYPE SMDS_Mesh::GetMTime() const
 {
   return this->myModifTime;
 }
