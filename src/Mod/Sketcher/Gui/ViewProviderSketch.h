@@ -122,6 +122,9 @@ public:
     /// Observer message from the Selection
     virtual void onSelectionChanged(const Gui::SelectionChanges& msg);
 
+    /// Show/Hide nodes from information layer
+    void showRestoreInformationLayer();
+    
     /** @name handler control */
     //@{
     /// sets an DrawSketchHandler in control
@@ -401,6 +404,8 @@ protected:
     Gui::Rubberband* rubberband;
     App::Part*          parentPart = nullptr;
     Part::BodyBase*     parentBody = nullptr;
+
+    bool visibleInformationChanged;
 };
 
 } // namespace PartGui

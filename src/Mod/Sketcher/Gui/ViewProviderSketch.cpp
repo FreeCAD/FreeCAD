@@ -271,7 +271,8 @@ PROPERTY_SOURCE(SketcherGui::ViewProviderSketch, PartGui::ViewProvider2DObject)
 
 ViewProviderSketch::ViewProviderSketch()
   : edit(0),
-    Mode(STATUS_NONE)
+    Mode(STATUS_NONE),
+    visibleInformationChanged(true)
 {
     ADD_PROPERTY_TYPE(Autoconstraints,(true),"Auto Constraints",(App::PropertyType)(App::Prop_None),"Create auto constraints");
     ADD_PROPERTY_TYPE(TempoVis,(Py::None()),"Visibility automation",(App::PropertyType)(App::Prop_None),"Object that handles hiding and showing other objects when entering/leaving sketch.");
@@ -326,6 +327,7 @@ ViewProviderSketch::ViewProviderSketch()
     
     //rubberband selection
     rubberband = new Gui::Rubberband();
+
 }
 
 ViewProviderSketch::~ViewProviderSketch()
@@ -3209,6 +3211,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     
     int currentInfoNode = 0;
     
+    ParameterGrp::handle hGrpsk = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    
     // end information layer
 
     int GeoId = 0;
@@ -3448,6 +3452,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             midp /= poles.size();
             
             if(rebuildinformationlayer) {
+                SoSwitch *sw = new SoSwitch();
+                
+                sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
                 // no caching for fluctuand data structures
@@ -3473,13 +3481,20 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 sep->addChild(mat);
                 sep->addChild(font);
                 sep->addChild(degreetext);
+                
+                sw->addChild(sep);
 
-                edit->infoGroup->addChild(sep);
+                edit->infoGroup->addChild(sw);
                 sep->unref();
                 mat->unref();
             }
             else {
-                SoSeparator *sep = static_cast<SoSeparator *>(edit->infoGroup->getChild(currentInfoNode));
+                SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
+                
+                if(visibleInformationChanged)
+                    sw->whichChild = hGrpsk->GetBool("BSplineDegreeVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                
+                SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
                 static_cast<SoTranslation *>(sep->getChild(GEOINFO_BSPLINE_DEGREE_POS))->translation.setValue(midp.x,midp.y,zInfo);
 
@@ -3491,6 +3506,10 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             //----------------------------------------------------------
             // control polygon
             if(rebuildinformationlayer) {
+                SoSwitch *sw = new SoSwitch();
+                
+                sw->whichChild = hGrpsk->GetBool("BSplineControlPolygonVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
                 // no caching for fluctuand data structures
@@ -3530,12 +3549,19 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 sep->addChild(coords);
                 sep->addChild(lineset);
                 
-                edit->infoGroup->addChild(sep);
+                sw->addChild(sep);
+                
+                edit->infoGroup->addChild(sw);
                 sep->unref();
                 mat->unref();
             }
             else {
-                SoSeparator *sep = static_cast<SoSeparator *>(edit->infoGroup->getChild(currentInfoNode));
+                SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
+                
+                if(visibleInformationChanged)
+                    sw->whichChild = hGrpsk->GetBool("BSplineControlPolygonVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                
+                SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
                 SoCoordinate3 *coords = static_cast<SoCoordinate3 *>(sep->getChild(GEOINFO_BSPLINE_POLYGON));
 
@@ -3565,6 +3591,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
         else {
         }
     }
+    
+    visibleInformationChanged=false; // whatever that changed in Information layer is already updated
 
     edit->CurvesCoordinate->point.setNum(Coords.size());
     edit->CurveSet->numVertices.setNum(Index.size());
@@ -5458,5 +5486,11 @@ Base::Placement ViewProviderSketch::getPlacement() {
         Plz = parentPart->Placement.getValue()*Plz;
     
     return Plz;
+}
+
+void ViewProviderSketch::showRestoreInformationLayer() {
+
+    visibleInformationChanged = true ;
+    draw(false,false);
 }
 
