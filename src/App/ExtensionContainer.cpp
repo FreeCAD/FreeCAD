@@ -68,11 +68,11 @@ void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext)
     _extensions[extension] = ext;
 }
 
-bool ExtensionContainer::hasExtension(Base::Type t) const {
+bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
 
     //check for the exact type
     bool found = _extensions.find(t) != _extensions.end();
-    if(!found) {
+    if(!found && derived) {
         //and for types derived from it, as they can be cast to the extension
         for(auto entry : _extensions) {            
             if(entry.first.isDerivedFrom(t))
@@ -94,10 +94,10 @@ bool ExtensionContainer::hasExtension(const std::string& name) const {
 }
 
 
-Extension* ExtensionContainer::getExtension(Base::Type t) const {
+Extension* ExtensionContainer::getExtension(Base::Type t, bool derived) const {
    
     auto result = _extensions.find(t);
-    if(result == _extensions.end()) {
+    if((result == _extensions.end()) && derived) {
         //we need to check for derived types
         for(auto entry : _extensions) {            
             if(entry.first.isDerivedFrom(t))

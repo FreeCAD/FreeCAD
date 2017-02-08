@@ -301,8 +301,10 @@ void Document::exportGraphviz(std::ostream& out) const
 
         void setGraphAttributes(const DocumentObject * obj) {
             assert(GraphList[obj] != 0);
-            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
-            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+            get_property(*GraphList[obj], graph_name) = getClusterName(obj);
+
+            get_property(*GraphList[obj], graph_graph_attribute)["bgcolor"] = "#e0e0e0";
+
             get_property(*GraphList[obj], graph_graph_attribute)["style"] = "rounded,filled";
             setGraphLabel(*GraphList[obj], obj);
         }
@@ -2886,11 +2888,11 @@ std::vector<DocumentObject*> Document::getObjectsOfType(const Base::Type& typeId
     return Objects;
 }
 
-std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId) const {
+std::vector< DocumentObject* > Document::getObjectsWithExtension(const Base::Type& typeId, bool derived) const {
 
     std::vector<DocumentObject*> Objects;
     for (std::vector<DocumentObject*>::const_iterator it = d->objectArray.begin(); it != d->objectArray.end(); ++it) {
-        if ((*it)->hasExtension(typeId))
+        if ((*it)->hasExtension(typeId, derived))
             Objects.push_back(*it);
     }
     return Objects;

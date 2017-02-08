@@ -65,27 +65,15 @@ App::Origin *OriginGroupExtension::getOrigin () const {
     }
 }
 
-App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj, bool indirect) {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension ( OriginGroupExtension::getExtensionClassTypeId() );
-    for (auto grpObj: grps) {
-        OriginGroupExtension* grp = dynamic_cast <OriginGroupExtension* >(grpObj->getExtension(
-                                                    OriginGroupExtension::getExtensionClassTypeId()));
-        
-        if(!grp) throw Base::TypeError("Wrong type in origin group extenion");
-            
-        if ( indirect ) {
-            if ( grp->geoHasObject (obj) ) {
-                return grp->getExtendedObject();
-            }
-        } else {
-            if ( grp->hasObject (obj) ) {
-                return grp->getExtendedObject();
-            }
-        }
+App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {
+    
+    auto list = obj->getInList();
+    for (auto obj : list) {
+        if(obj->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
+            return obj;
     }
 
-    return 0;
+    return nullptr;
 }
 
 short OriginGroupExtension::extensionMustExecute() {

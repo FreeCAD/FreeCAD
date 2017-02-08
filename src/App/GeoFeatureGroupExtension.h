@@ -34,7 +34,19 @@ namespace App
 {
 
 /**
- * The base class for placeable group of DocumentObjects
+ * @brief The base class for placeable group of DocumentObjects. It represents a local coordnate system
+ * 
+ * This class is the FreeCAD way of representing local coordinate systems. It groups its childs beneath 
+ * it and transforms them all with the GeoFeatureGroup placement. A few important properties:
+ * - Every child that belongs to the CS must be in the Group proeprty. Even if a sketch is part of a pad,
+ *   it must be in the Group property of the same GeoFeatureGroup as pad. This also holds for normal 
+ *   GroupExtensions. They can be added to a GeoFeatureGroup, but all objects that the group holds must 
+ *   also be added to the GeoFeatureGroup
+ * - Objects can be only in a single GeoFeatureGroup. It is not allowed to have a document object in 
+ *   multiple GeoFeatureGroups
+ * - PropertyLinks between different GeoFeatureGroups are forbidden. There are special link proeprties 
+ *   that allow such cross-CS links.
+ * - Expressions can cross GeoFeatureGroup borders
  */
 class AppExport GeoFeatureGroupExtension : public App::GroupExtension
 {
@@ -52,15 +64,10 @@ public:
      * @param transform (input).
      */
     virtual void transformPlacement(const Base::Placement &transform);
+    
     /// Constructor
     GeoFeatureGroupExtension(void);
     virtual ~GeoFeatureGroupExtension();
-
-    /// Returns all geometrically controlled objects: all objects of this group and it's non-geo subgroups
-    std::vector<App::DocumentObject*> getGeoSubObjects () const;
-
-    /// Returns true if either the group or one of it's non-geo subgroups has the object
-    bool geoHasObject (const DocumentObject* obj) const;
 
     /** Returns the geo feature group which contains this object.
      * In case this object is not part of any geoFeatureGroup 0 is returned.
@@ -69,7 +76,7 @@ public:
      * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static DocumentObject* getGroupOfObject(const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject(const DocumentObject* obj);
     
     /**
      * @brief Calculates the global placement of this group
@@ -88,6 +95,8 @@ public:
         return obj->hasExtension(GroupExtension::getExtensionClassTypeId()) && 
                !obj->hasExtension(GeoFeatureGroupExtension::getExtensionClassTypeId());
     }
+    
+    virtual void addObject(DocumentObject* obj);
     
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);

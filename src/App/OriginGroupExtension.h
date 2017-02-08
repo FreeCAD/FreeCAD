@@ -55,7 +55,7 @@ public:
      * @param indirect  if true return if the group that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static DocumentObject* getGroupOfObject (const DocumentObject* obj, bool indirect=true);
+    static DocumentObject* getGroupOfObject (const DocumentObject* obj);
 
     /// Returns true on changing OriginFeature set
     virtual short extensionMustExecute () override;
