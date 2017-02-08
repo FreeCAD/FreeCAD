@@ -91,7 +91,7 @@ public:
      * @param indirect  if true return if the part that so-called geoHas the object, @see geoHasObject()
      *                  default is true
      */
-    static App::Part* getPartOfObject (const DocumentObject* obj, bool indirect=true);
+    static App::Part* getPartOfObject (const DocumentObject* obj);
 
     virtual PyObject *getPyObject(void);
 };

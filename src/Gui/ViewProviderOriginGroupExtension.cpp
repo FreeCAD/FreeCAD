@@ -173,7 +173,7 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
 
     // calculate the bounding box for out content
     SbBox3f bbox(0,0,0, 0,0,0);
-    for(App::DocumentObject* obj : group->getGeoSubObjects()) {
+    for(App::DocumentObject* obj : group->Group.getValues()) {
         ViewProvider *vp = Gui::Application::Instance->getViewProvider(obj);
         if (!vp) {
             continue;

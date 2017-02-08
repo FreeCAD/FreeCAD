@@ -63,7 +63,8 @@ void GroupExtension::addObject(DocumentObject* obj)
     if(!allowObject(obj))
         return;
     
-    //only one group per object
+    //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
+    //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
     auto *group = App::GroupExtension::getGroupOfObject(obj);
     if(group && group != getExtendedObject())
         group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
@@ -207,15 +208,16 @@ int GroupExtension::countObjectsOfType(const Base::Type& typeId) const
 
 DocumentObject* GroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
-    const Document* doc = obj->getDocument();
-    std::vector<DocumentObject*> grps = doc->getObjectsWithExtension(GroupExtension::getExtensionClassTypeId());
-    for (std::vector<DocumentObject*>::const_iterator it = grps.begin(); it != grps.end(); ++it) {
-        GroupExtension* grp = (*it)->getExtensionByType<GroupExtension>();
-        if (grp->hasObject(obj))
-            return *it;
+    //note that we return here only Groups, but nothing derived from it, e.g. no GeoFeatureGroups. 
+    //That is important as there are clear differences between groups/geofeature groups (e.g. a object 
+    //can be in only one group, and only one geofeaturegroup, however, it can be in both at the same time)
+    auto list = obj->getInList();
+    for (auto obj : list) {
+        if(obj->hasExtension(App::GroupExtension::getExtensionClassTypeId(), false))
+            return obj;
     }
 
-    return 0;
+    return nullptr;
 }
 
 PyObject* GroupExtension::getExtensionPyObject(void) {
