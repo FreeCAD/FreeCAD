@@ -332,7 +332,7 @@ int SMESHDS_GroupOnFilter::getElementIds( void* ids, size_t idSize ) const
  */
 //================================================================================
 
-int SMESHDS_GroupOnFilter::GetTic() const
+VTK_MTIME_TYPE SMESHDS_GroupOnFilter::GetTic() const
 {
   return GetMesh()->GetMTime() * myPredicateTic;
 }
