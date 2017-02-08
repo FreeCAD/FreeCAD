@@ -247,11 +247,11 @@
     </message>
     <message>
         <source>Move up</source>
-        <translation>Noch oben verschieben</translation>
+        <translation>Nach oben verschieben</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation>Nache unten verschieben</translation>
+        <translation>Nach unten verschieben</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <name>Gui::Assistant</name>
     <message>
         <source>%1 Help</source>
-        <translation>%1 Help</translation>
+        <translation>%1-Hilfe</translation>
     </message>
     <message>
         <source>%1 help files not found (%2). You might need to install the %1 documentation package.</source>
@@ -567,7 +567,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAuthorization</name>
     <message>
         <source>Authorization</source>
-        <translation>Autorisiertung</translation>
+        <translation>Autorisierung</translation>
     </message>
     <message>
         <source>Password:</source>
@@ -652,7 +652,7 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Tool tip:</source>
-        <translation>Tooltipp:</translation>
+        <translation>Quick-Info:</translation>
     </message>
     <message>
         <source>Menu text:</source>
@@ -880,7 +880,7 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>Move down</source>
-        <translation>Nache unten verschieben</translation>
+        <translation>Nach unten verschieben</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item down.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -888,7 +888,7 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>Move up</source>
-        <translation>Noch oben verschieben</translation>
+        <translation>Nach oben verschieben</translation>
     </message>
     <message>
         <source>&lt;b&gt;Move the selected item up.&lt;/b&gt;&lt;p&gt;The item will be moved within the hierarchy level.&lt;/p&gt;</source>
@@ -1182,11 +1182,11 @@ Wählen Sie bitte eine andere Tastenkombination.</translation>
     </message>
     <message>
         <source>Indent size:</source>
-        <translation>Einrückungsbreite:</translation>
+        <translation>Einrückbreite:</translation>
     </message>
     <message>
         <source>Keep tabs</source>
-        <translation>Tanulator-Einrückung beibehalten</translation>
+        <translation>Tabulator-Einrückung beibehalten</translation>
     </message>
     <message>
         <source>Display Items</source>
@@ -1715,11 +1715,11 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>No source is defined.</source>
-        <translation>Kein Quellpafd angegeben.</translation>
+        <translation>Kein Quellpfad angegeben.</translation>
     </message>
     <message>
         <source>Empty destination</source>
-        <translation>Leerer Zeilpfad</translation>
+        <translation>Leerer Zielpfad</translation>
     </message>
     <message>
         <source>No destination is defined.</source>
@@ -2482,7 +2482,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>Macro recording settings</source>
-        <translation>Einstellugen für Makroaufzeichnung</translation>
+        <translation>Einstellungen für Makroaufzeichnung</translation>
     </message>
     <message>
         <source>Logging Commands</source>
@@ -2553,7 +2553,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     </message>
     <message>
         <source>User system:</source>
-        <translation>Einheitsystem:</translation>
+        <translation>Einheitensystem:</translation>
     </message>
     <message>
         <source>US customary (in/lb)</source>
@@ -2959,7 +2959,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>%1 of %2 (%3/sec) %4</source>
-        <translation>%1 of %2 (%3/Sek) %4</translation>
+        <translation>%1 von %2 (%3/Sek) %4</translation>
     </message>
     <message>
         <source>?</source>
@@ -2967,7 +2967,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>%1 of %2 - Stopped</source>
-        <translation>%1 of %2 - Gestoppt</translation>
+        <translation>%1 von %2 - Angehalten</translation>
     </message>
     <message>
         <source>bytes</source>
@@ -3187,7 +3187,7 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation>Neuer Bool&apos;scher Wert</translation>
+        <translation>Neuer Boolescher Wert</translation>
     </message>
     <message>
         <source>Existing item</source>
@@ -4184,7 +4184,7 @@ Wollen Sie sie beenden, ohne Ihre Daten zu speichern?</translation>
     </message>
     <message>
         <source>Unhandled PyCXX exception.</source>
-        <translation>Unbehnadelte PyCXX-Ausnahme.</translation>
+        <translation>Unbehandelte PyCXX-Ausnahme.</translation>
     </message>
     <message>
         <source>Unhandled FreeCAD exception.</source>
@@ -4398,7 +4398,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TaskView::TaskAppearance</name>
     <message>
         <source>Plot mode:</source>
-        <translation>Plotmodus:</translation>
+        <translation>Plot-Modus:</translation>
     </message>
     <message>
         <source>Point size:</source>
@@ -4425,7 +4425,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     <name>Gui::TaskView::TaskDialog</name>
     <message>
         <source>A dialog is already open in the task panel</source>
-        <translation>Ein Dialog im Arbeitspanel ist bereits geöffnet</translation>
+        <translation>Ein Dialog im Arbeitspaneele ist bereits geöffnet</translation>
     </message>
 </context>
 <context>
@@ -4466,7 +4466,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
         <source>Press CTRL and SHIFT buttons</source>
-        <translation>Drücken Sie STRG und die UMSCHALT-Tasten</translation>
+        <translation>Drücken Sie STRG und die Umschalt-Tasten</translation>
     </message>
 </context>
 <context>
@@ -4512,7 +4512,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
         <source>Finish editing object</source>
-        <translation>Berabeitungs des Objekts beenden</translation>
+        <translation>Bearbeitung des Objekts beenden</translation>
     </message>
     <message>
         <source>Activate document</source>
@@ -4709,7 +4709,7 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
     </message>
     <message>
         <source>Selection view</source>
-        <translation>Selektionsansicht</translation>
+        <translation>Auswahlansicht</translation>
     </message>
     <message>
         <source>Report view</source>
@@ -4890,7 +4890,7 @@ Wollen Sie fortfahren?</translation>
     </message>
     <message>
         <source>New Boolean item</source>
-        <translation>Neuer Bool&apos;scher Wert</translation>
+        <translation>Neuer Boolescher Wert</translation>
     </message>
     <message>
         <source>Choose an item:</source>
@@ -4986,7 +4986,7 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
     </message>
     <message>
         <source>Not enough memory available to display the data.</source>
-        <translation>Nicht genüged Speicher verfügbar, um die Daten darstellen zu können.</translation>
+        <translation>Nicht genügend Speicher verfügbar, um die Daten darstellen zu können.</translation>
     </message>
     <message>
         <source>Cannot find file %1</source>
@@ -4994,7 +4994,7 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
     </message>
     <message>
         <source>Cannot find file %1 neither in %2 nor in %3</source>
-        <translation>Kann Datei %1 weder in %2 nich in %3 finden</translation>
+        <translation>Kann Datei %1 weder in %2 noch in %3 finden</translation>
     </message>
     <message>
         <source>Save %1 Document</source>
@@ -5052,7 +5052,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>New boolean item</source>
-        <translation>Neuer Bool&apos;scher Wert</translation>
+        <translation>Neuer Boolescher Wert</translation>
     </message>
     <message>
         <source>Navigation styles</source>
@@ -5146,7 +5146,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>Box selection</source>
-        <translation>Recktecksauswahl</translation>
+        <translation>Rechteckauswahl</translation>
     </message>
 </context>
 <context>
@@ -5393,7 +5393,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>Opens a dialog to let you execute a recorded macro</source>
-        <translation>Öffnet Dialog zum Ausführen eines gespeichrten Makros</translation>
+        <translation>Öffnet Dialog zum Ausführen eines gespeicherten Makros</translation>
     </message>
     <message>
         <source>Macro</source>
@@ -5600,7 +5600,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>FreeCAD Forum</source>
-        <translation>FreeCAD Forum</translation>
+        <translation>FreeCAD-Forum</translation>
     </message>
     <message>
         <source>The FreeCAD forum, where you can find help from other users</source>
@@ -5740,7 +5740,7 @@ Beachten Sie, dass es auf den Punkt ankommt, auf den Sie klicken.</translation>
     </message>
     <message>
         <source>Start debugging of macro</source>
-        <translation>Starte das Makro Debugging</translation>
+        <translation>Starte Debuggen des Makros</translation>
     </message>
 </context>
 <context>
