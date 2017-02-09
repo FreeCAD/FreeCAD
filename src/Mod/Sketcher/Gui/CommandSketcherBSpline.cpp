@@ -199,7 +199,102 @@ bool CmdSketcherBSplineComb::isActive(void)
     return isSketcherBSplineActive( getActiveGuiDocument(), false );
 }
 
+// Composite drop down menu for show/hide geometry information layer
+DEF_STD_CMD_ACLU(CmdSketcherCompBSplineShowHideGeometryInformation);
 
+CmdSketcherCompBSplineShowHideGeometryInformation::CmdSketcherCompBSplineShowHideGeometryInformation()
+: Command("Sketcher_CompBSplineShowHideGeometryInformation")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Show/hide B-Spline information layer");
+    sToolTipText    = QT_TR_NOOP("Show/hide B-Spline information layer");
+    sWhatsThis      = "Sketcher_CompBSplineShowHideGeometryInformation";
+    sStatusTip      = sToolTipText;
+    eType           = ForEdit;
+}
+
+void CmdSketcherCompBSplineShowHideGeometryInformation::activated(int iMsg)
+{
+    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
+
+    Gui::Command * cmd;
+    
+    if (iMsg==0)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineDegree");
+    else if (iMsg==1)
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplinePolygon");
+    else if (iMsg==2) 
+        cmd = rcCmdMgr.getCommandByName("Sketcher_BSplineComb");
+    else
+        return;
+    
+    cmd->invoke(0);
+    
+    // Since the default icon is reset when enabing/disabling the command we have
+    // to explicitly set the icon of the used command.
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    assert(iMsg < a.size());
+    pcAction->setIcon(a[iMsg]->icon());
+}
+
+Gui::Action * CmdSketcherCompBSplineShowHideGeometryInformation::createAction(void)
+{
+    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
+    pcAction->setDropDownMenu(true);
+    applyCommandData(this->className(), pcAction);
+    
+    QAction* c1 = pcAction->addAction(QString());
+    c1->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineDegree"));
+    QAction* c2 = pcAction->addAction(QString());
+    c2->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplinePolygon"));
+    QAction* c3 = pcAction->addAction(QString());
+    c3->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplineComb"));
+    
+    _pcAction = pcAction;
+    languageChange();
+    
+    pcAction->setIcon(c2->icon());
+    int defaultId = 1;
+    pcAction->setProperty("defaultAction", QVariant(defaultId));
+    
+    return pcAction;
+}
+
+void CmdSketcherCompBSplineShowHideGeometryInformation::languageChange()
+{
+    Command::languageChange();
+    
+    if (!_pcAction)
+        return;
+    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
+    QList<QAction*> a = pcAction->actions();
+    
+    QAction* c1 = a[0];
+    c1->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline degree"));
+    c1->setToolTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-Splines"));
+    c1->setStatusTip(QApplication::translate("Sketcher_BSplineDegree","Switches between showing and hiding the degree for all B-Splines"));
+    QAction* c2 = a[1];
+    c2->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline control polygon"));
+    c2->setToolTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-Splines"));
+    c2->setStatusTip(QApplication::translate("Sketcher_BSplinePolygon","Switches between showing and hiding the control polygons for all B-Splines"));
+    QAction* c3 = a[2];
+    c3->setText(QApplication::translate("CmdSketcherCompBSplineShowHideGeometryInformation","Show/Hide B-Spline curvature comb"));
+    c3->setToolTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-Splines"));
+    c3->setStatusTip(QApplication::translate("Sketcher_BSplineComb","Switches between showing and hiding the curvature comb for all B-Splines"));
+
+}
+
+void CmdSketcherCompBSplineShowHideGeometryInformation::updateAction(int /*mode*/)
+{
+}
+
+bool CmdSketcherCompBSplineShowHideGeometryInformation::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
 
 
 
@@ -211,5 +306,5 @@ void CreateSketcherCommandsBSpline(void)
     rcCmdMgr.addCommand(new CmdSketcherBSplineDegree());
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
     rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
-
+    rcCmdMgr.addCommand(new CmdSketcherCompBSplineShowHideGeometryInformation());
 }
