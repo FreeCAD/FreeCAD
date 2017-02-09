@@ -3604,28 +3604,39 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             std::vector<double> curvaturelist(ndiv);
             std::vector<Base::Vector3d> normallist(ndiv);
             double maxcurv = 0;
-            
-            double length = spline->length(firstparam,lastparam);
-            
+
+            double maxdisttocenterofmass = 0;
+
+            //double length = spline->length(firstparam,lastparam);
+
             for(int i = 0; i < ndiv; i++) {
                 paramlist[i] = firstparam + i * step;
                 pointatcurvelist[i] = spline->pointAtParameter(paramlist[i]);
                 curvaturelist[i] = spline->curvatureAt(paramlist[i]);
-                
+
                 if(curvaturelist[i] > maxcurv)
                     maxcurv = curvaturelist[i];
-                
+
                 spline->normalAt(paramlist[i],normallist[i]);
+
+                double temp = ( pointatcurvelist[i] - midp ).Length();
+
+                if( temp > maxdisttocenterofmass )
+                    maxdisttocenterofmass = temp;
+
             }
-            
-            double repscale = ( 0.5 * length ) / maxcurv; // just a factor to make it reasonably visible
-            
+
+            double repscale;
+
+            repscale = ( 0.5 * maxdisttocenterofmass ) / maxcurv; // just a factor to make it reasonably visible
+            //repscale = ( 0.5 * length ) / maxcurv; // this is Chris_G's original
+
             std::vector<Base::Vector3d> pointatcomblist(ndiv);
-            
+
             for(int i = 0; i < ndiv; i++) {
                 pointatcomblist[i] = pointatcurvelist[i] + repscale * curvaturelist[i] * normallist[i];
             }
-            
+
             if(rebuildinformationlayer) {
                 SoSwitch *sw = new SoSwitch();
 
