@@ -111,6 +111,7 @@ public:
     /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
     /// The result is the combination of CSOutList and CSInList.
     static std::vector<App::DocumentObject*> getCSRelevantLinks(App::DocumentObject* obj);
+    
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
     static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
