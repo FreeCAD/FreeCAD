@@ -86,13 +86,6 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
     if (group->hasObject(obj))
         return false;  
 
-    //group into group?
-    if (obj->hasExtension(App::GroupExtension::getExtensionClassTypeId())) {
-        if (group->isChildOf(obj->getExtensionByType<App::GroupExtension>()))
-            return false;
-    }
-
-    //We need to find the correct App extension to ask if this is a supported type, there should only be one
     if (group->allowObject(obj))
         return true;
 
@@ -106,18 +99,6 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     App::Document* doc = grp->getDocument();
     Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
     gui->openCommand("Move object");
-
-    const App::DocumentObject* par = App::GroupExtension::getGroupOfObject(obj);
-    if (par) {
-        // allow an object to be in one group only
-        QString cmd;
-        cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").removeObject("
-                            "App.getDocument(\"%1\").getObject(\"%3\"))")
-                            .arg(QString::fromLatin1(doc->getName()))
-                            .arg(QString::fromLatin1(par->getNameInDocument()))
-                            .arg(QString::fromLatin1(obj->getNameInDocument()));
-        Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-    }
 
     // build Python command for execution
     QString cmd;

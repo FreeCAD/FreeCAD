@@ -31,6 +31,7 @@
 #include "GroupExtensionPy.h"
 #include "Document.h"
 #include "FeaturePythonPyImp.h"
+#include "GeoFeatureGroupExtension.h"
 
 using namespace App;
 
@@ -63,17 +64,23 @@ void GroupExtension::addObject(DocumentObject* obj)
     if(!allowObject(obj))
         return;
     
+    if (hasObject(obj))
+        return;
+        
     //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
     //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
     auto *group = App::GroupExtension::getGroupOfObject(obj);
     if(group && group != getExtendedObject())
         group->getExtensionByType<App::GroupExtension>()->removeObject(obj);
     
-    if (!hasObject(obj)) {
-        std::vector<DocumentObject*> grp = Group.getValues();
-        grp.push_back(obj);
-        Group.setValues(grp);
-    }
+    //if we are on a geofeaturegroup we need to ensure the object is too
+    auto geogrp = GeoFeatureGroupExtension::getGroupOfObject(getExtendedObject());
+    if( geogrp && (geogrp != GeoFeatureGroupExtension::getGroupOfObject(obj)) ) 
+        geogrp->getExtensionByType<GeoFeatureGroupExtension>()->addObject(obj);
+    
+    std::vector<DocumentObject*> grp = Group.getValues();
+    grp.push_back(obj);
+    Group.setValues(grp);
 }
 
 void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
