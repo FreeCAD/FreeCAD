@@ -98,8 +98,21 @@ public:
     
     virtual void addObject(DocumentObject* obj);
     
+    /// returns GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
+    /// including their linkes (recursively) except GeoFeatureGroups, where the recursion stops. Expressions 
+    /// links are ignored.
+    static std::vector<App::DocumentObject*> getCSOutList(App::DocumentObject* obj);
+    ///returns GeoFeatureGroup relevant objects that link to the given one. That meas all objects 
+    /// including their parents (recursively) except GeoFeatureGroups, where the recursion stops. Expression 
+    /// links are ignored
+    static std::vector<App::DocumentObject*> getCSInList(App::DocumentObject* obj);
+    /// Returns all links that are relevant for the coordinate system, meaning all recursive links to 
+    /// obj and from obj excluding expressions and stopping the recursion at other geofeaturegroups. 
+    /// The result is the combination of CSOutList and CSInList.
+    static std::vector<App::DocumentObject*> getCSRelevantLinks(App::DocumentObject* obj);
 private:
     Base::Placement recursiveGroupPlacement(GeoFeatureGroupExtension* group);
+    static std::vector<App::DocumentObject*> getObjectsFromLinks(App::DocumentObject*);
 };
 
 typedef ExtensionPythonT<GroupExtensionPythonT<GeoFeatureGroupExtension>> GeoFeatureGroupExtensionPython;
