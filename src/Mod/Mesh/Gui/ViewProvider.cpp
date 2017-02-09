@@ -440,12 +440,6 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     addDisplayMaskMode(pcWireRoot, "Wireframe");
 
     // faces+wires
-    Gui::SoFCSelection* selGroup = Gui::ViewProviderBuilder::createSelection();
-    selGroup->objectName = getObject()->getNameInDocument();
-    selGroup->documentName = getObject()->getDocument()->getName();
-    selGroup->subElementName = "Main";
-    selGroup->addChild(getShapeNode());
-
     // Avoid any Z-buffer artefacts, so that the lines always
     // appear on top of the faces
     SoPolygonOffset* offset = new SoPolygonOffset();
@@ -454,19 +448,11 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     offset->units = 1.0f;
 
     SoGroup* pcFlatWireRoot = new SoGroup();
-    pcFlatWireRoot->addChild(getCoordNode());
-    SoSeparator* sep = new SoSeparator();
-    sep->addChild(pcLineStyle);
-    sep->addChild(pcLightModel);
-    sep->addChild(binding);
-    sep->addChild(pLineColor);
-    sep->addChild(selGroup);
-    pcFlatWireRoot->addChild(sep);
+    SoSeparator* pcWireSep = new SoSeparator();
+    pcWireSep->addChild(pcWireRoot);
+    pcFlatWireRoot->addChild(pcWireSep);
     pcFlatWireRoot->addChild(offset);
-    pcFlatWireRoot->addChild(pShapeHints);
-    pcFlatWireRoot->addChild(pcShapeMaterial);
-    pcFlatWireRoot->addChild(pcMatBinding);
-    pcFlatWireRoot->addChild(getShapeNode());
+    pcFlatWireRoot->addChild(pcFlatRoot);
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
 
     if (getColorProperty()) {
