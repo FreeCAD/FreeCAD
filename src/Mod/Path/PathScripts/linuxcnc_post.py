@@ -41,6 +41,7 @@ Arguments for linuxcnc:
     --show-editor, --no-show-editor  ... pop up editor before writing output(--show-editor)
 '''
 import FreeCAD
+from FreeCAD import Units
 import datetime
 from PathScripts import PostUtils
 
@@ -60,6 +61,7 @@ LINENR = 100  # line number starting value
 
 # These globals will be reflected in the Machine configuration of the project
 UNITS = "G21"  # G21 for metric, G20 for us standard
+UNIT_FORMAT = 'in/min'
 MACHINE_NAME = "LinuxCNC"
 CORNER_MIN = {'x': 0, 'y': 0, 'z': 0}
 CORNER_MAX = {'x': 500, 'y': 300, 'z': 300}
@@ -242,8 +244,9 @@ def parse(pathobj):
                 if param in c.Parameters:
                     if param == 'F':
                         if c.Name not in ["G0", "G00"]: #linuxcnc doesn't use rapid speeds
+                            speed = Units.Quantity(c.Parameters['F'], FreeCAD.Units.Velocity)
                             outstring.append(
-                                param + format(c.Parameters['F'], '.2f'))
+                                param + format(float(speed.getValueAs(UNIT_FORMAT)), '.2f') )
                     elif param == 'T':
                         outstring.append(param + str(c.Parameters['T']))
                     else:
