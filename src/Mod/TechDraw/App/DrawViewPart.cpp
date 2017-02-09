@@ -90,6 +90,8 @@
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
 #include "DrawGeomHatch.h"
+#include "DrawViewDimension.h"
+#include "DrawPage.h"
 #include "EdgeWalker.h"
 
 
@@ -422,6 +424,20 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     return result;
 }
 
+std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
+{
+    std::vector<TechDraw::DrawViewDimension*> result;
+    std::vector<App::DocumentObject*> children = getInList();
+    for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
+        if ((*it)->getTypeId().isDerivedFrom(DrawViewDimension::getClassTypeId())) {
+            TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
+            result.push_back(dim);
+        }
+    }
+    return result;
+}
+
+
 const std::vector<TechDrawGeometry::Vertex *> & DrawViewPart::getVertexGeometry() const
 {
     return geometryObject->getVertexGeometry();
@@ -642,22 +658,46 @@ bool DrawViewPart::showSectionEdges(void)
     return m_sectionEdges;
 }
 
+//! remove features that are useless without this DVP
+//! hatches, geomhatches, dimensions,... 
 void DrawViewPart::unsetupObject()
 {
     nowDeleting = true;
-
-    // Remove the View's Hatches from document
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
 
+    // Remove the View's Hatches from document
     std::vector<TechDraw::DrawHatch*> hatches = getHatches();
-
     std::vector<TechDraw::DrawHatch*>::iterator it = hatches.begin();
     for (; it != hatches.end(); it++) {
         std::string viewName = (*it)->getNameInDocument();
         Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
                                           docName.c_str(), viewName.c_str());
     }
+    
+    // Remove the View's GeomHatches from document
+    std::vector<TechDraw::DrawGeomHatch*> gHatches = getGeomHatches();
+    std::vector<TechDraw::DrawGeomHatch*>::iterator it2 = gHatches.begin();
+    for (; it2 != gHatches.end(); it2++) {
+        std::string viewName = (*it2)->getNameInDocument();
+        Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                          docName.c_str(), viewName.c_str());
+    }
+
+    // Remove Dimensions which reference this DVP
+    // must use page->removeObject first
+    TechDraw::DrawPage* page = findParentPage();
+    if (page != nullptr) {
+        std::vector<TechDraw::DrawViewDimension*> dims = getDimensions();
+        std::vector<TechDraw::DrawViewDimension*>::iterator it3 = dims.begin();
+        for (; it3 != dims.end(); it3++) {
+              page->removeView(*it3);
+              std::string viewName = (*it3)->getNameInDocument();
+              Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
+                                                docName.c_str(), viewName.c_str());
+        }
+    }
+
 }
 
 

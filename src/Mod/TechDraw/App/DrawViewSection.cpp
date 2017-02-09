@@ -556,6 +556,7 @@ void DrawViewSection::unsetupObject()
     if (base != nullptr) {
         base->touch();
     }
+    DrawViewPart::unsetupObject();
 }
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
