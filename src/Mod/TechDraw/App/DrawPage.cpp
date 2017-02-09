@@ -325,14 +325,14 @@ void DrawPage::unsetupObject()
     App::Document* doc = getDocument();
     std::string docName = doc->getName();
 
-    const std::vector<App::DocumentObject*> currViews = Views.getValues();
-    std::vector<App::DocumentObject*> emptyViews;
-    std::vector<App::DocumentObject*>::const_iterator it = currViews.begin();
-    for (; it != currViews.end(); it++) {
-        std::string viewName = (*it)->getNameInDocument();
+    while (Views.getValues().size() > 0 ) {
+        const std::vector<App::DocumentObject*> currViews = Views.getValues();
+        App::DocumentObject* child = currViews.front();
+        std::string viewName = child->getNameInDocument();
         Base::Interpreter().runStringArg("App.getDocument(\"%s\").removeObject(\"%s\")",
                                           docName.c_str(), viewName.c_str());
     }
+    std::vector<App::DocumentObject*> emptyViews;      //probably superfluous
     Views.setValues(emptyViews);
 
     App::DocumentObject* tmp = Template.getValue();

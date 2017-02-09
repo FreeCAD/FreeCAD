@@ -57,6 +57,7 @@ class Face;
 namespace TechDraw {
 class DrawHatch;
 class DrawGeomHatch;
+class DrawViewDimension;
 class DrawProjectSplit;
 class DrawViewSection;
 }
@@ -100,6 +101,7 @@ public:
 
     std::vector<TechDraw::DrawHatch*> getHatches(void) const;
     std::vector<TechDraw::DrawGeomHatch*> getGeomHatches(void) const;
+    std::vector<TechDraw::DrawViewDimension*> getDimensions() const;
 
     //TODO: are there use-cases for Python access to TechDrawGeometry???
 

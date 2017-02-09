@@ -195,11 +195,10 @@ int QGVPage::addQView(QGIView *view)
                     Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
     if(parent) {
-//        // Transfer the child vierw to the parent
-//        QPointF posRef(0.,0.);
-
-//        QPointF mapPos = view->mapToItem(parent, posRef);              //setPos is called later.  this doesn't do anything?
-//        view->moveBy(-mapPos.x(), -mapPos.y());
+        // move child view to center of parent
+        QPointF posRef(0.,0.);
+        QPointF mapPos = view->mapToItem(parent, posRef);
+        view->moveBy(-mapPos.x(), -mapPos.y());
 
         parent->addToGroup(view);
     }
