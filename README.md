@@ -31,7 +31,7 @@ Precompiled (installable) packages are available for Windows and Mac on the
 On most Linux distributions, FreeCAD is directly installable from the 
 software center application.
 
-Other options are described at the [wiki Download page](http://www.freecadweb.org/wiki/index.php?title=Download).
+Other options are described at the [wiki Download page](http://www.freecadweb.org/wiki/Download).
 
 Build Status <img src="https://blog.travis-ci.com/images/travis-mascot-200px.png" height="30"/>
 ------------
@@ -58,11 +58,11 @@ you will usually need to compile them yourself.
 
 The pages below contain up-to-date build instructions:
 
-- [Linux](http://www.freecadweb.org/wiki/?title=CompileOnUnix)
-- [Windows](http://www.freecadweb.org/wiki/?title=CompileOnWindows)
-- [Mac OSX](http://www.freecadweb.org/wiki/?title=CompileOnMac)
-- [Cygwin](http://www.freecadweb.org/wiki/?title=CompileOnCygwin)
-- [MinGW](http://www.freecadweb.org/wiki/?title=CompileOnMinGW)
+- [Linux](http://www.freecadweb.org/wiki/CompileOnUnix)
+- [Windows](http://www.freecadweb.org/wiki/CompileOnWindows)
+- [Mac OSX](http://www.freecadweb.org/wiki/CompileOnMac)
+- [Cygwin](http://www.freecadweb.org/wiki/CompileOnCygwin)
+- [MinGW](http://www.freecadweb.org/wiki/CompileOnMinGW)
 
 Usage & Getting help
 --------------------
@@ -73,12 +73,12 @@ The FreeCAD wiki contains documentation on
 general FreeCAD usage, Python scripting, and development. These 
 pages might help you get started:
 
-- [Getting started](http://www.freecadweb.org/wiki/?title=Getting_started)
-- [Features list](http://www.freecadweb.org/wiki/?title=Feature_list)
-- [Frequent questions](http://www.freecadweb.org/wiki/?title=FAQ)
-- [Workbenches](http://www.freecadweb.org/wiki/?title=Workbench_Concept)
-- [Scripting](http://www.freecadweb.org/wiki/?title=Power_users_hub)
-- [Development](http://www.freecadweb.org/wiki/?title=Developer_hub)
+- [Getting started](http://www.freecadweb.org/wiki/Getting_started)
+- [Features list](http://www.freecadweb.org/wiki/Feature_list)
+- [Frequent questions](http://www.freecadweb.org/wiki/FAQ)
+- [Workbenches](http://www.freecadweb.org/wiki/Workbench_Concept)
+- [Scripting](http://www.freecadweb.org/wiki/Power_users_hub)
+- [Development](http://www.freecadweb.org/wiki/Developer_hub)
 
 The [FreeCAD forum](http://forum.freecadweb.org) is also a great place
 to find help and solve specific problems you might encounter when
