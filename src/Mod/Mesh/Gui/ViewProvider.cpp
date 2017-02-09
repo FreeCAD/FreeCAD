@@ -249,6 +249,10 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
     if (pcHighlight->selectionMode.getValue() == Gui::SoFCSelection::SEL_OFF)
         Selectable.setValue(false);
 
+    pcShapeGroup = new SoGroup();
+    pcShapeGroup->ref();
+    pcHighlight->addChild(pcShapeGroup);
+
     pOpenColor = new SoBaseColor();
     setOpenEdgeColorFrom(ShapeColor.getValue());
     pOpenColor->ref();
@@ -317,6 +321,7 @@ ViewProviderMesh::ViewProviderMesh() : pcOpenEdge(0)
 ViewProviderMesh::~ViewProviderMesh()
 {
     pcHighlight->unref();
+    pcShapeGroup->unref();
     pOpenColor->unref();
     pcLineStyle->unref();
     pcPointStyle->unref();
@@ -423,7 +428,10 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     // points
     SoGroup* pcPointRoot = new SoGroup();
     pcPointRoot->addChild(pcPointStyle);
-    pcPointRoot->addChild(pcFlatRoot);
+    pcPointRoot->addChild(pShapeHints);
+    pcPointRoot->addChild(pcShapeMaterial);
+    pcPointRoot->addChild(pcMatBinding);
+    pcPointRoot->addChild(pcHighlight);
     addDisplayMaskMode(pcPointRoot, "Point");
 
     // wires
@@ -447,12 +455,20 @@ void ViewProviderMesh::attach(App::DocumentObject *pcFeat)
     offset->factor = 1.0f;
     offset->units = 1.0f;
 
-    SoGroup* pcFlatWireRoot = new SoGroup();
     SoSeparator* pcWireSep = new SoSeparator();
-    pcWireSep->addChild(pcWireRoot);
+    pcWireSep->addChild(pcLineStyle);
+    pcWireSep->addChild(pcLightModel);
+    pcWireSep->addChild(binding);
+    pcWireSep->addChild(pLineColor);
+    pcWireSep->addChild(pcHighlight);
+
+    SoGroup* pcFlatWireRoot = new SoGroup();
     pcFlatWireRoot->addChild(pcWireSep);
     pcFlatWireRoot->addChild(offset);
-    pcFlatWireRoot->addChild(pcFlatRoot);
+    pcFlatWireRoot->addChild(pShapeHints);
+    pcFlatWireRoot->addChild(pcShapeMaterial);
+    pcFlatWireRoot->addChild(pcMatBinding);
+    pcFlatWireRoot->addChild(pcShapeGroup);
     addDisplayMaskMode(pcFlatWireRoot, "FlatWireframe");
 
     if (getColorProperty()) {
