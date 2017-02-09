@@ -42,40 +42,40 @@ class PathWorkbench (Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
         # load python modules
-        from PathScripts import PathProfile
-        from PathScripts import PathPocket
-        from PathScripts import PathDrilling
-        from PathScripts import PathDressup
-        from PathScripts import PathHop
-        from PathScripts import PathCopy
-        from PathScripts import PathFixture
-        from PathScripts import PathCompoundExtended
-        from PathScripts import PathJob
-        from PathScripts import PathToolLibraryManager
-        from PathScripts import PathStock
-        from PathScripts import PathPlane
-        from PathScripts import PathPost
-        from PathScripts import PathToolLenOffset
-        from PathScripts import PathLoadTool
-        from PathScripts import PathComment
-        from PathScripts import PathStop
-        from PathScripts import PathFromShape
         from PathScripts import PathArray
-        from PathScripts import PathFaceProfile
-        from PathScripts import PathFacePocket
-        from PathScripts import PathCustom
-        from PathScripts import PathInspect
-        from PathScripts import PathSimpleCopy
-        from PathScripts import PathHelix
-        from PathScripts import PathEngrave
-        from PathScripts import PathSurface
-        from PathScripts import PathSanity
-        from PathScripts import PathDressupDragknife
+        from PathScripts import PathComment
+        from PathScripts import PathCompoundExtended
         from PathScripts import PathContour
-        from PathScripts import PathProfileEdges
+        from PathScripts import PathCopy
+        from PathScripts import PathCustom
+        from PathScripts import PathDressup
         from PathScripts import PathDressupDogbone
-        from PathScripts import PathMillFace
+        from PathScripts import PathDressupDragknife
         from PathScripts import PathDressupHoldingTags
+        from PathScripts import PathDrilling
+        from PathScripts import PathEngrave
+        from PathScripts import PathFacePocket
+        from PathScripts import PathFaceProfile
+        from PathScripts import PathFixture
+        from PathScripts import PathFromShape
+        from PathScripts import PathHelix
+        from PathScripts import PathHop
+        from PathScripts import PathInspect
+        from PathScripts import PathJob
+        from PathScripts import PathLoadTool
+        from PathScripts import PathMillFace
+        from PathScripts import PathPlane
+        from PathScripts import PathPocket
+        from PathScripts import PathPost
+        from PathScripts import PathProfile
+        from PathScripts import PathProfileEdges
+        from PathScripts import PathSanity
+        from PathScripts import PathSimpleCopy
+        from PathScripts import PathStock
+        from PathScripts import PathStop
+        from PathScripts import PathSurface
+        from PathScripts import PathToolLenOffset
+        from PathScripts import PathToolLibraryManager
         import PathCommands
 
         # build commands list
@@ -86,7 +86,7 @@ class PathWorkbench (Workbench):
         threedopcmdlist = ["Path_Surfacing"]
         modcmdlist = ["Path_Copy", "Path_CompoundExtended", "Path_Array", "Path_SimpleCopy" ]
         dressupcmdlist = ["PathDressup_Dogbone", "PathDressup_DragKnife", "PathDressup_HoldingTags"]
-        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane"]
+        extracmdlist = ["Path_SelectLoop", "Path_Shape", "Path_Area", "Path_Area_Workplane", "Path_Stock"]
         #modcmdmore = ["Path_Hop",]
         #remotecmdlist = ["Path_Remote"]
 
