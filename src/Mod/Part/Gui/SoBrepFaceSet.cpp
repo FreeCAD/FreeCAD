@@ -24,19 +24,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#ifdef FC_OS_WIN32
-#include <windows.h>
-#endif
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#else
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
-#include <GL/glext.h>
-#endif
 #include <float.h>
 #include <algorithm>
 #include <Inventor/SoPickedPoint.h>
@@ -68,7 +55,6 @@
 #include <Gui/SoFCSelectionAction.h>
 #include <stdio.h>
 #include <string.h>
-#ifndef _PreComp_
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #endif
@@ -116,7 +102,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 #else
 // We are probably running an old OpenGL version
 // Must check into the GL_EXTENSIONS string instead
-   GL_extension=glGetString(GL_EXTENSIONS);
+   GL_extension=(char *)GetString(GL_EXTENSIONS);
    if ( strstr((char *)GL_extension,(char *)"GL_ARB_vertex_buffer_object") != NULL )
 	vbo_available=1;
 #endif
