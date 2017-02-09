@@ -32,6 +32,7 @@
 #include <App/PropertyStandard.h>
 
 
+class SoGroup;
 class SoSeparator;
 class SoEventCallback;
 class SbViewVolume;
@@ -210,6 +211,7 @@ private:
 
 protected:
     Gui::SoFCSelection  * pcHighlight;
+    SoGroup             * pcShapeGroup;
     SoDrawStyle         * pcLineStyle;
     SoDrawStyle         * pcPointStyle;
     SoSeparator         * pcOpenEdge;
