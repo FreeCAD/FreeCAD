@@ -102,7 +102,7 @@ SoBrepFaceSet::SoBrepFaceSet()
 #else
 // We are probably running an old OpenGL version
 // Must check into the GL_EXTENSIONS string instead
-   GL_extension=(char *)GetString(GL_EXTENSIONS);
+   GL_extension=(char *)glGetString(GL_EXTENSIONS);
    if ( strstr((char *)GL_extension,(char *)"GL_ARB_vertex_buffer_object") != NULL )
 	vbo_available=1;
 #endif
