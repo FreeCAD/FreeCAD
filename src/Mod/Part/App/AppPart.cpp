@@ -298,7 +298,7 @@ PyMODINIT_FUNC initPart()
 
     // General
     Base::Reference<ParameterGrp> hGenPGrp = hPartGrp->GetGroup("General");
-    if (hGenPGrp->GetBool("LineOld", true)) {
+    if (hGenPGrp->GetBool("LineOld", false)) {
         Base::Interpreter().addType(&Part::LinePy           ::Type,partModule,"_Line");
         Base::Interpreter().addType(&Part::LinePyOld        ::Type,partModule,"Line");
     }
