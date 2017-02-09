@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-
+#define GL_GLEXT_PROTOTYPES
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
@@ -68,6 +68,17 @@
 #include <Gui/SoFCSelectionAction.h>
 #include <stdio.h>
 #include <string.h>
+#ifndef _PreComp_
+#ifdef FC_OS_WIN32
+#include <windows.h>
+#endif
+#ifdef FC_OS_MACOSX
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
+#else
+#include <GL/gl.h>
+#include <GL/glext.h>
+#endif
 
 
 using namespace PartGui;

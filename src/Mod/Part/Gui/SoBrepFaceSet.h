@@ -32,16 +32,6 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
-#ifdef FC_OS_MACOSX
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
-#else
-#define GL_GLEXT_PROTOTYPES
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <GL/glx.h>
-#include <GL/glext.h>
-#endif
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
@@ -151,10 +141,10 @@ private:
 #endif
 
 // Define some VBO pointer for the current mesh
-   GLuint myvbo[2];
+   uint32_t myvbo[2];
    int vbo_loaded;
-   GLuint indice_array;
-   const GLubyte *GL_extension;
+   uint32_t indice_array;
+   const char *GL_extension;
    SoState * current_state;
   
 
