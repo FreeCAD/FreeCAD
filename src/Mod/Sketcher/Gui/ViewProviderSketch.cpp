@@ -3640,7 +3640,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             if(rebuildinformationlayer) {
                 SoSwitch *sw = new SoSwitch();
 
-                sw->whichChild = hGrpsk->GetBool("BSplineCurvatureGraphVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                sw->whichChild = hGrpsk->GetBool("BSplineCombVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
                 SoSeparator *sep = new SoSeparator();
                 sep->ref();
@@ -3689,7 +3689,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 SoSwitch *sw = static_cast<SoSwitch *>(edit->infoGroup->getChild(currentInfoNode));
 
                 if(visibleInformationChanged)
-                    sw->whichChild = hGrpsk->GetBool("BSplineCurvatureGraphVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
+                    sw->whichChild = hGrpsk->GetBool("BSplineCombVisible", true)?SO_SWITCH_ALL:SO_SWITCH_NONE;
 
                 SoSeparator *sep = static_cast<SoSeparator *>(sw->getChild(0));
 
