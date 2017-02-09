@@ -86,7 +86,50 @@ void ActivateBSplineHandler(Gui::Document *doc,DrawSketchHandler *handler)
     }
 }
 
-extern bool isPolygonShown;
+void ShowRestoreInformationLayer(SketcherGui::ViewProviderSketch* vp, char * visibleelementname)
+{
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    
+    bool status = hGrp->GetBool(visibleelementname, true);
+    
+    hGrp->SetBool(visibleelementname, !status);
+    
+    vp->showRestoreInformationLayer();
+}
+
+// Show/Hide BSpline degree
+DEF_STD_CMD_A(CmdSketcherBSplineDegree);
+
+CmdSketcherBSplineDegree::CmdSketcherBSplineDegree()
+:Command("Sketcher_BSplineDegree")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-Spline degree");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the degree for all B-Splines");
+    sWhatsThis      = "Sketcher_BSplineDegree";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineDegree";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherBSplineDegree::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Document * doc= getActiveGuiDocument();
+
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+
+    ShowRestoreInformationLayer(vp, "BSplineDegreeVisible");
+
+}
+
+bool CmdSketcherBSplineDegree::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
 
 // Show/Hide BSpline polygon
 DEF_STD_CMD_A(CmdSketcherBSplinePolygon);
@@ -100,13 +143,7 @@ CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
     sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the control polygons for all B-Splines");
     sWhatsThis      = "Sketcher_BSplinePolygon";
     sStatusTip      = sToolTipText;
-    
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    if(hGrp->GetBool("BSplinePolygonVisible", true))
-        sPixmap         = "Sketcher_BSplinePolygon_on";
-    else
-        sPixmap         = "Sketcher_BSplinePolygon_off";
-    
+    sPixmap         = "Sketcher_BSplinePolygon";
     sAccel          = "";
     eType           = ForEdit;
 }
@@ -114,35 +151,55 @@ CmdSketcherBSplinePolygon::CmdSketcherBSplinePolygon()
 void CmdSketcherBSplinePolygon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    
+
     Gui::Document * doc= getActiveGuiDocument();
 
     SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/General");
+    ShowRestoreInformationLayer(vp, "BSplineControlPolygonVisible");
 
-    bool status = hGrp->GetBool("BSplineControlPolygonVisible", true);
-
-    hGrp->SetBool("BSplineControlPolygonVisible", !status);
-
-    vp->showRestoreInformationLayer();
-
-    if(status) {
-        if (getAction()) {
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplinePolygon_on"));
-        }
-    }
-    else {
-        if (getAction()) {
-            getAction()->setIcon(Gui::BitmapFactory().pixmap("Sketcher_BSplinePolygon_off"));
-        }
-    }
 }
 
 bool CmdSketcherBSplinePolygon::isActive(void)
 {
     return isSketcherBSplineActive( getActiveGuiDocument(), false );
 }
+
+// Show/Hide BSpline comb
+DEF_STD_CMD_A(CmdSketcherBSplineComb);
+
+CmdSketcherBSplineComb::CmdSketcherBSplineComb()
+:Command("Sketcher_BSplineComb")
+{
+    sAppModule      = "Sketcher";
+    sGroup          = QT_TR_NOOP("Sketcher");
+    sMenuText       = QT_TR_NOOP("Show/Hide B-Spline curvature comb");
+    sToolTipText    = QT_TR_NOOP("Switches between showing and hiding the curvature comb for all B-Splines");
+    sWhatsThis      = "Sketcher_BSplineComb";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "Sketcher_BSplineComb";
+    sAccel          = "";
+    eType           = ForEdit;
+}
+
+void CmdSketcherBSplineComb::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    
+    Gui::Document * doc= getActiveGuiDocument();
+    
+    SketcherGui::ViewProviderSketch* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    
+    ShowRestoreInformationLayer(vp, "BSplineCombVisible");
+    
+}
+
+bool CmdSketcherBSplineComb::isActive(void)
+{
+    return isSketcherBSplineActive( getActiveGuiDocument(), false );
+}
+
+
 
 
 
@@ -151,6 +208,8 @@ void CreateSketcherCommandsBSpline(void)
 {
     Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdSketcherBSplineDegree());
     rcCmdMgr.addCommand(new CmdSketcherBSplinePolygon());
+    rcCmdMgr.addCommand(new CmdSketcherBSplineComb());
 
 }

@@ -283,12 +283,16 @@ inline void SketcherAddWorkbenchBSplines(T& bspline);
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::MenuItem>(Gui::MenuItem& bspline){
-    bspline << "Sketcher_BSplinePolygon";
+    bspline << "Sketcher_BSplineDegree"
+        << "Sketcher_BSplinePolygon"
+        << "Sketcher_BSplineComb";
 }
 
 template <>
 inline void SketcherAddWorkbenchBSplines<Gui::ToolBarItem>(Gui::ToolBarItem& bspline){
-    bspline << "Sketcher_BSplinePolygon";
+    bspline << "Sketcher_BSplineDegree"
+    << "Sketcher_BSplinePolygon"
+    << "Sketcher_BSplineComb";
 }
 
 template <typename T>
