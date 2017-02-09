@@ -1,7 +1,7 @@
 /** \page makingdocs Building this source documentation
 
 After running cmake (as per build instructions on the
-<a href="http://freecadweb.org/wiki/index.php?title=Main_Page">FreeCAD wiki</a>,
+<a href="http://freecadweb.org/wiki/Main_Page">FreeCAD wiki</a>,
 run 'make DevDoc' in your build directory.  HTML documentation
 will be built in doc/SourceDocu/html.
 
