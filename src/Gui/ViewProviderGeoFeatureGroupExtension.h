@@ -58,14 +58,9 @@ public:
     }
 
     virtual void extensionUpdateData(const App::Property*) override;
-    
-    virtual void extensionDropObject(App::DocumentObject*) override;
-    virtual void extensionDragObject(App::DocumentObject*) override;
-    
+
 protected:
     SoGroup *pcGroupChildren;
-    
-    std::vector<App::DocumentObject*> getLinkedObjects(App::DocumentObject* obj);    
 };
 
 typedef ViewProviderExtensionPythonT<Gui::ViewProviderGeoFeatureGroupExtension> ViewProviderGeoFeatureGroupExtensionPython;

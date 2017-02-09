@@ -133,6 +133,22 @@ void GeoFeatureGroupExtension::addObject(App::DocumentObject* object)  {
     
     Group.setValues(grp);
 }
+
+
+void GeoFeatureGroupExtension::removeObject(App::DocumentObject* object)  {
+       
+    //cross CoordinateSystem links are not allowed, so we need to remove the whole link group 
+    auto links = getCSRelevantLinks(object);
+    links.push_back(object);
+    
+    //remove all links out of group
+    std::vector<DocumentObject*> grp = Group.getValues();
+    for(auto link : links)
+        grp.erase(std::remove(grp.begin(), grp.end(), link), grp.end());
+    
+    Group.setValues(grp);
+}
+
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getObjectsFromLinks(DocumentObject* obj) {
 
     //we get all linked objects. We can't use outList() as this includes the links from expressions

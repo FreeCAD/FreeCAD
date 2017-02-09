@@ -69,6 +69,8 @@ public:
     /// Reset the visibility
     void resetTemporaryVisibility ();
     ///@}
+    
+    virtual bool canDragObjects() const {return false;};
 
     /// Returns default size. Use this if it is not possible to determine appropriate size by other means
     static double defaultSize() {return 10.;}
