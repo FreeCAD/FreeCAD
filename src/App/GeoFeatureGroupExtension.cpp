@@ -281,8 +281,6 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(Docu
     return result;
 }
 
-
-
 // Python feature ---------------------------------------------------------
 
 namespace App {

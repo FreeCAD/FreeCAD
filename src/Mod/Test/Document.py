@@ -869,6 +869,9 @@ class UndoRedoCases(unittest.TestCase):
     #adding the object to a geofeaturegroup, but not its group, should handle it automatically when used 
     #addObject
     
+    #to test: try add obj to second group, once by addObject, once by .Group = []
+    
+    
 
   def tearDown(self):
     # closing doc
