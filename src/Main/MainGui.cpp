@@ -98,16 +98,11 @@ int main( int argc, char ** argv )
     QFile::setEncodingFunction(myEncoderFunc);
     QFile::setDecodingFunction(myDecoderFunc);
 #endif
-    // Make sure that we use '.' as decimal point. See also
-    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
-    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
-    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #else
-    setlocale(LC_NUMERIC, "C");
     _putenv("PYTHONPATH=");
     // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
     // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515

@@ -1483,6 +1483,14 @@ void Application::runApplication(void)
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
+#ifdef Q_OS_UNIX
+    // Make sure that we use '.' as decimal point. See also
+    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
+    // and issue #0002891
+    // http://doc.qt.io/qt-5/qcoreapplication.html#locale-settings
+    setlocale(LC_NUMERIC, "C");
+#endif
+
     // check if a single or multiple instances can run
     it = cfg.find("SingleInstance");
     if (it != cfg.end() && mainApp.isRunning()) {
