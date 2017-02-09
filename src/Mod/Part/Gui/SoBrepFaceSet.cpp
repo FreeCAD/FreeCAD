@@ -53,6 +53,12 @@
 #include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
+#include <App/Application.h>
+#include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/Command.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <stdio.h>
 #include <string.h>
 #ifdef FC_OS_WIN32
@@ -233,7 +239,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
 
     SoTextureCoordinateBundle tb(action, true, false);
     SbBool doTextures = tb.needCoordinates();
-
     int32_t hl_idx = this->highlightIndex.getValue();
     int32_t num_selected = this->selectionIndex.getNum();
 
@@ -401,6 +406,14 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SbBool normalCacheUsed;
     SbColor mycolor1;
     uint32_t RGBA;
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    bool myvbo=viewer->get_vbo_state();
+
+
+
     SoMaterialBundle mb(action);
 
     SoTextureCoordinateBundle tb(action, true, false);
@@ -929,7 +942,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
 // First copy the vertex data into standard array
 // Second use GL_arrays instead of standard data
-    if ( vbo_available )
+
+    /* This code detect if the user activated VBO through the preference menu */
+
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+    Gui::View3DInventorViewer* viewer = view->getViewer();
+    bool ViewerVBO=viewer->get_vbo_state();
+
+    if (( vbo_available ) && ViewerVBO )
     {
     float * vertex_array = NULL;
     GLuint * index_array = NULL;

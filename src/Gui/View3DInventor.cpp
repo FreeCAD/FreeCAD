@@ -177,6 +177,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"BackgroundColor4");
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
+    OnChange(*hGrp,"useVBO");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -367,6 +368,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+    }
+    else if (strcmp(Reason,"useVBO") == 0) {
+	_viewer->setEnableduseVBO(rGrp.GetBool("useVBO",false));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set
