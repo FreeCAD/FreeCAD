@@ -94,11 +94,9 @@ bool ViewProviderGroupExtension::extensionCanDropObject(App::DocumentObject* obj
 
 void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
 
-    // Open command
     App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
     App::Document* doc = grp->getDocument();
     Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-    gui->openCommand("Move object");
 
     // build Python command for execution
     QString cmd;
@@ -109,8 +107,6 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
                         .arg(QString::fromLatin1(obj->getNameInDocument()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-
-    gui->commitCommand();
 }
 
 std::vector< App::DocumentObject* > ViewProviderGroupExtension::extensionClaimChildren(void) const {
