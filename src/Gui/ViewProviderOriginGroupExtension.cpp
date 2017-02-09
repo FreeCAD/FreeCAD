@@ -199,64 +199,6 @@ void ViewProviderOriginGroupExtension::updateOriginSize () {
     vpOrigin->Size.setValue ( size * 1.3 );
 }
 
-void ViewProviderOriginGroupExtension::extensionDragObject(App::DocumentObject* obj) {
-    
-    //links between different coordinate systems are not allowed, hence draging one object also needs
-    //to drag out all dependend objects
-    auto vec = getLinkedObjects(obj);
-       
-    //remove all origin objects
-    vec.erase(std::remove_if(vec.begin(), vec.end(), [this](App::DocumentObject* o) {
-        return o->isDerivedFrom(App::OriginFeature::getClassTypeId());}), vec.end());
-    
-    //add the original object
-    vec.push_back(obj);
-    
-    for(App::DocumentObject* obj : vec)
-        ViewProviderGroupExtension::extensionDragObject(obj);
-}
-
-void ViewProviderOriginGroupExtension::extensionDropObject(App::DocumentObject* obj) {
-    
-    // Open command
-    App::DocumentObject* grp = static_cast<App::DocumentObject*>(getExtendedViewProvider()->getObject());
-    App::Document* doc = grp->getDocument();
-    Gui::Document* gui = Gui::Application::Instance->getDocument(doc);
-    gui->openCommand("Move object");
-    
-    //links between different CS are not allowed, hence we need to enure if all dependencies are in 
-    //the same geofeaturegroup
-    auto vec = getLinkedObjects(obj);
-
-    //remove all origin objects
-    vec.erase(std::remove_if(vec.begin(), vec.end(), [](App::DocumentObject* o) {
-        return o->isDerivedFrom(App::OriginFeature::getClassTypeId());}), vec.end());
-
-    //remove all objects already in the correct group
-    vec.erase(std::remove_if(vec.begin(), vec.end(), [this](App::DocumentObject* o){    
-        return App::GroupExtension::getGroupOfObject(o) == this->getExtendedViewProvider()->getObject();
-    }), vec.end());
-
-    //add the original object
-    vec.push_back(obj);
-    
-    for(App::DocumentObject* o : vec) {
-        
-        // build Python command for execution
-        QString cmd;
-        cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
-                            "App.getDocument(\"%1\").getObject(\"%3\"))")
-                            .arg(QString::fromLatin1(doc->getName()))
-                            .arg(QString::fromLatin1(grp->getNameInDocument()))
-                            .arg(QString::fromLatin1(o->getNameInDocument()));
-
-        Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
-    }
-    gui->commitCommand();
-    
-}
-
-
 namespace Gui {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(Gui::ViewProviderOriginGroupExtensionPython, Gui::ViewProviderOriginGroupExtension)
 

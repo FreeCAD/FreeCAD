@@ -97,6 +97,7 @@ public:
     }
     
     virtual void addObject(DocumentObject* obj);
+    virtual void removeObject(DocumentObject* obj);
     
     /// returns GeoFeatureGroup relevant objects that are linked from the given one. That meas all linked objects
     /// including their linkes (recursively) except GeoFeatureGroups, where the recursion stops. Expressions 
