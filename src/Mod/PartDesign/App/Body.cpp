@@ -265,16 +265,19 @@ Body* Body::findBodyOf(const App::DocumentObject* feature)
 }
 
 
-void Body::addObject(App::DocumentObject *feature)
+std::vector<App::DocumentObject*> Body::addObject(App::DocumentObject *feature)
 {
     if(!isAllowed(feature))
         throw Base::Exception("Body: object is not allowed");
-       
+    
+    //TODO: features should not add all links
+    /*
     //only one group per object
     auto *group = App::GroupExtension::getGroupOfObject(feature);
     if(group && group != getExtendedObject())
         group->getExtensionByType<App::GroupExtension>()->removeObject(feature);
-       
+      */
+    
     insertObject (feature, getNextSolidFeature (), /*after = */ false);
     // Move the Tip if we added a solid
     if (isSolidFeature(feature)) {
@@ -345,7 +348,7 @@ void Body::insertObject(App::DocumentObject* feature, App::DocumentObject* targe
 }
 
 
-void Body::removeObject(App::DocumentObject* feature)
+std::vector<App::DocumentObject*> Body::removeObject(App::DocumentObject* feature)
 {
     App::DocumentObject* nextSolidFeature = getNextSolidFeature(feature);
     App::DocumentObject* prevSolidFeature = getPrevSolidFeature(feature);
