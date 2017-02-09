@@ -137,6 +137,10 @@ void ViewProviderDrawingView::hide(void)
 
 QGIView* ViewProviderDrawingView::getQView(void)
 {
+    //TODO: vp can get its MDIView with 1 call getActiveView()?
+    //      instead of going back to App side an up tree and back to Gui?
+    //MDIVPage* mdivp = static_cast<MDIVPage*>(getActiveView());
+    //qView = mdivp->getQGVPage()->findQViewForDocObj(getViewObject());
     QGIView *qView = nullptr;
     if (m_docReady){
         TechDraw::DrawView* dv = getViewObject();
@@ -147,7 +151,7 @@ QGIView* ViewProviderDrawingView::getQView(void)
             if (dvp) {
                 if (dvp->getMDIViewPage()) {
                     if (dvp->getMDIViewPage()->getQGVPage()) {
-                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findView(getViewObject()));
+                        qView = dynamic_cast<QGIView *>(dvp->getMDIViewPage()->getQGVPage()->findQViewForDocObj(getViewObject()));
                     }
                 }
             }

@@ -164,17 +164,28 @@ void QGVPage::drawBackground(QPainter *p, const QRectF &)
     p->drawRect(poly.boundingRect());
 
     p->restore();
-
 }
 
-int QGVPage::addView(QGIView *view)
+//! retrieve the QGIView objects currently in the scene
+std::vector<QGIView *> QGVPage::getViews() const
+{
+    std::vector<QGIView*> result;
+    QList<QGraphicsItem*> items = scene()->items();
+    for (auto& v:items) {
+        QGIView* qv = dynamic_cast<QGIView*>(v);
+        if (qv != nullptr) {
+            result.push_back(qv);
+        }
+    }
+    return result;
+}
+
+int QGVPage::addQView(QGIView *view)
 {
     auto ourScene( scene() );
     assert(ourScene);
 
     ourScene->addItem(view);
-
-    views.push_back(view);
 
     // Find if it belongs to a parent
     QGIView *parent = 0;
@@ -184,10 +195,9 @@ int QGVPage::addView(QGIView *view)
                     Rez::guiX(view->getViewObject()->Y.getValue() * -1));
 
     if(parent) {
-        // Transfer the child vierw to the parent
+        // move child view to center of parent
         QPointF posRef(0.,0.);
-
-        QPointF mapPos = view->mapToItem(parent, posRef);              //setPos is called later.  this doesn't do anything?
+        QPointF mapPos = view->mapToItem(parent, posRef);
         view->moveBy(-mapPos.x(), -mapPos.y());
 
         parent->addToGroup(view);
@@ -195,67 +205,40 @@ int QGVPage::addView(QGIView *view)
 
     view->setPos(viewPos);
 
-    return views.size();
+    return 0;
 }
 
-int QGVPage::removeView(QGIView *view)
+int QGVPage::removeQView(QGIView *view)
 {
-
-    std::vector<QGIView *> qviews = views;
-    std::vector<QGIView *> newViews;
-    
-    std::vector<QGIView *>::iterator qvit = qviews.begin();
-    std::vector<QGIView *>::iterator qvDel = qviews.end();
-    
-    for (; qvit != qviews.end(); qvit++) {
-        if ((*qvit) == view) {
-            qvDel = qvit;
-            break;
-        }
+    if (view != nullptr) {
+        removeQViewFromScene(view);
+        delete view;
     }
-    
-    if (qvDel == qviews.end()) {     //didn't find view in views
-        return views.size();
-    }
-
-    removeViewFromScene(view);
-
-    qviews.erase(qvDel);
-    views = qviews;
-    delete view;
-
-    return views.size();
+    return 0;
 }
 
-int QGVPage::removeView(const TechDraw::DrawView* dv)
+int QGVPage::removeQViewByDrawView(const TechDraw::DrawView* dv)
 {
-    std::vector<QGIView *> newViews;
-    QList<QGraphicsItem *> items = scene()->items();
+    std::vector<QGIView*> items = getViews();
     QString qsName = QString::fromUtf8(dv->getNameInDocument());
     bool found = false;
     QGIView* ourItem = nullptr;
     for (auto& i:items) {
         if (qsName == i->data(1).toString()) {          //is there really a QGIV for this DV in scene?
             found = true;
-            ourItem = static_cast<QGIView*>(i);
+            ourItem = i;
             break;
         }
     }
     if (found) {
-        for (auto&v :views) {
-            if (ourItem != v) {
-                newViews.push_back(v);
-            }
-        }
-        removeViewFromScene(ourItem);
+        removeQViewFromScene(ourItem);
         delete ourItem;
-        views = newViews;
     }
 
-    return views.size();
+    return 0;
 }
 
-void QGVPage::removeViewFromScene(QGIView *view)
+void QGVPage::removeQViewFromScene(QGIView *view)
 {
     QGraphicsItemGroup* grp = view->group();
     if (grp) {
@@ -278,7 +261,7 @@ QGIView * QGVPage::addViewPart(TechDraw::DrawViewPart *part)
 
     viewPart->setViewPartFeature(part);
 
-    addView(viewPart);
+    addQView(viewPart);
     return viewPart;
 }
 
@@ -288,7 +271,7 @@ QGIView * QGVPage::addViewSection(TechDraw::DrawViewPart *part)
 
     viewSection->setViewPartFeature(part);
 
-    addView(viewSection);
+    addQView(viewSection);
     return viewSection;
 }
 
@@ -296,7 +279,7 @@ QGIView * QGVPage::addProjectionGroup(TechDraw::DrawProjGroup *view) {
     auto qview( new QGIProjGroup );
 
     qview->setViewFeature(view);
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
@@ -305,7 +288,7 @@ QGIView * QGVPage::addDrawView(TechDraw::DrawView *view)
     auto qview( new QGIView );
 
     qview->setViewFeature(view);
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
@@ -314,31 +297,28 @@ QGIView * QGVPage::addDrawViewCollection(TechDraw::DrawViewCollection *view)
     auto qview( new QGIViewCollection );
 
     qview->setViewFeature(view);
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
 // TODO change to (App?) annotation object  ??
 QGIView * QGVPage::addDrawViewAnnotation(TechDraw::DrawViewAnnotation *view)
 {
-    // This essentially adds a null view feature to ensure view size is consistent
     auto qview( new QGIViewAnnotation );
 
     qview->setViewAnnoFeature(view);
 
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
 QGIView * QGVPage::addDrawViewSymbol(TechDraw::DrawViewSymbol *view)
 {
-    //QPoint qp(view->X.getValue(),view->Y.getValue());
-    // This essentially adds a null view feature to ensure view size is consistent
     auto qview( new QGIViewSymbol );
 
     qview->setViewFeature(view);
 
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
@@ -349,7 +329,7 @@ QGIView * QGVPage::addDrawViewClip(TechDraw::DrawViewClip *view)
     qview->setPosition(Rez::guiX(view->X.getValue()), Rez::guiX(view->Y.getValue()));
     qview->setViewFeature(view);
 
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
@@ -359,18 +339,17 @@ QGIView * QGVPage::addDrawViewSpreadsheet(TechDraw::DrawViewSpreadsheet *view)
 
     qview->setViewFeature(view);
 
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
 QGIView * QGVPage::addDrawViewImage(TechDraw::DrawViewImage *view)
 {
-    //QPoint qp(view->X.getValue(),view->Y.getValue());
     auto qview( new QGIViewImage );
 
     qview->setViewFeature(view);
 
-    addView(qview);
+    addQView(qview);
     return qview;
 }
 
@@ -383,12 +362,6 @@ QGIView * QGVPage::addViewDimension(TechDraw::DrawViewDimension *dim)
     ourScene->addItem(dimGroup);
 
     dimGroup->setViewPartFeature(dim);
-
-    // TODO consider changing dimension feature to use another property for label position
-    // Instead of calling addView - the view must for now be added manually
-
-    //Note dimension X,Y is different from other views -> can't use addView
-    views.push_back(dimGroup);
 
     // Find if it belongs to a parent
     QGIView *parent = 0;
@@ -412,10 +385,11 @@ void QGVPage::addDimToParent(QGIViewDimension* dim, QGIView* parent)
     dim->setZValue(ZVALUE::DIMENSION);
 }
 
-QGIView * QGVPage::findView(App::DocumentObject *obj) const
+//! find the graphic for a DocumentObject
+QGIView * QGVPage::findQViewForDocObj(App::DocumentObject *obj) const
 {
   if(obj) {
-    const std::vector<QGIView *> qviews = views;
+    const std::vector<QGIView *> qviews = getViews();
     for(std::vector<QGIView *>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
           if(strcmp(obj->getNameInDocument(), (*it)->getViewName()) == 0)
               return *it;
@@ -424,9 +398,27 @@ QGIView * QGVPage::findView(App::DocumentObject *obj) const
     return 0;
 }
 
+//! find the graphic for DocumentObject with name
+QGIView* QGVPage::getQGIVByName(std::string name)
+{
+    QList<QGraphicsItem*> qgItems = scene()->items();
+    QList<QGraphicsItem*>::iterator it = qgItems.begin();
+    for (; it != qgItems.end(); it++) {
+        QGIView* qv = dynamic_cast<QGIView*>((*it));
+        if (qv) {
+            const char* qvName = qv->getViewName();
+            if(name.compare(qvName) == 0) {
+                return (qv);
+            }
+        }
+    }
+    return nullptr;
+}
+
+
 QGIView * QGVPage::findParent(QGIView *view) const
 {
-    const std::vector<QGIView *> qviews = views;
+    const std::vector<QGIView *> qviews = getViews();
     TechDraw::DrawView *myView = view->getViewObject();
 
     //If type is dimension we check references first
