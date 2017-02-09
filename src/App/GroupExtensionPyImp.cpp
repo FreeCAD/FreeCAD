@@ -86,8 +86,12 @@ PyObject*  GroupExtensionPy::addObject(PyObject *args)
 
     GroupExtension* grp = getGroupExtensionPtr();
 
-    grp->addObject(docObj->getDocumentObjectPtr());
-    Py_Return;
+    auto vec = grp->addObject(docObj->getDocumentObjectPtr()); 
+    Py::List list;
+    for (App::DocumentObject* obj : vec)
+        list.append(Py::asObject(obj->getPyObject()));
+
+    return Py::new_reference_to(list);
 }
 
 PyObject*  GroupExtensionPy::removeObject(PyObject *args)
@@ -108,8 +112,12 @@ PyObject*  GroupExtensionPy::removeObject(PyObject *args)
 
     GroupExtension* grp = getGroupExtensionPtr();
 
-    grp->removeObject(docObj->getDocumentObjectPtr());
-    Py_Return;
+    auto vec = grp->removeObject(docObj->getDocumentObjectPtr());
+    Py::List list;
+    for (App::DocumentObject* obj : vec)
+        list.append(Py::asObject(obj->getPyObject()));
+
+    return Py::new_reference_to(list);
 }
 
 PyObject*  GroupExtensionPy::removeObjectsFromDocument(PyObject *args)

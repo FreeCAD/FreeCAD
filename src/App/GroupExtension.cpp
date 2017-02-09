@@ -59,13 +59,13 @@ DocumentObject* GroupExtension::addObject(const char* sType, const char* pObject
     return obj;
 }
 
-void GroupExtension::addObject(DocumentObject* obj)
+std::vector<DocumentObject*> GroupExtension::addObject(DocumentObject* obj)
 {
     if(!allowObject(obj))
-        return;
+        return std::vector<DocumentObject*>();
     
     if (hasObject(obj))
-        return;
+        return std::vector<DocumentObject*>();
         
     //only one group per object. Note that it is allowed to be in a group and geofeaturegroup. However,
     //getGroupOfObject() returns only normal groups, no GeoFeatureGroups. Hence this works.
@@ -81,6 +81,9 @@ void GroupExtension::addObject(DocumentObject* obj)
     std::vector<DocumentObject*> grp = Group.getValues();
     grp.push_back(obj);
     Group.setValues(grp);
+    
+    std::vector<DocumentObject*> vec = {obj};
+    return vec;
 }
 
 void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
@@ -106,7 +109,7 @@ void GroupExtension::addObjects(const std::vector<App::DocumentObject*>& objs)
         Group.setValues(grp);
 }
 
-void GroupExtension::removeObject(DocumentObject* obj)
+std::vector<DocumentObject*> GroupExtension::removeObject(DocumentObject* obj)
 {
     const std::vector<DocumentObject*> & grp = Group.getValues();
     std::vector<DocumentObject*> newGrp;
@@ -115,6 +118,9 @@ void GroupExtension::removeObject(DocumentObject* obj)
     if (grp.size() != newGrp.size()) {
         Group.setValues (newGrp);
     }
+    
+    std::vector<DocumentObject*> vec = {obj};
+    return vec;
 }
 
 void GroupExtension::removeObjectsFromDocument()
