@@ -229,8 +229,8 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSInList(DocumentObj
     //search the inlist for objects that have non-expression links to us
     for(App::DocumentObject* parent : obj->getInList()) {
                 
-        //not interested in other groups
-        if(parent->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId()))
+        //not interested in other groups (and here we mean all groups, normal ones and geofeaturegroup)
+        if(parent->hasExtension(App::GroupExtension::getExtensionClassTypeId()))
             continue;
         
         //check if the link is real or if it is a expression one (could also be both, so it is not 
