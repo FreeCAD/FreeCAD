@@ -68,7 +68,7 @@ public:
      * Add the feature into the body at the current insert point.
      * The insertion poin is the before next solid after the Tip feature
      */
-    virtual void addObject(App::DocumentObject*) override;
+    virtual std::vector<App::DocumentObject*> addObject(App::DocumentObject*) override;
 
     /**
      * Insert the feature into the body after the given feature.
@@ -84,7 +84,7 @@ public:
     void insertObject(App::DocumentObject* feature, App::DocumentObject* target, bool after=false);
 
     /// Remove the feature from the body
-    virtual void removeObject(DocumentObject* obj) override;
+    virtual std::vector<DocumentObject*> removeObject(DocumentObject* obj) override;
 
     /**
      * Checks if the given document object lays after the current insert point

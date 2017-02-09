@@ -174,9 +174,9 @@ void OriginGroupExtension::relinkToOrigin(App::DocumentObject* obj)
     }
 }
 
-void OriginGroupExtension::addObject(DocumentObject* obj) {
+std::vector< DocumentObject* > OriginGroupExtension::addObject(DocumentObject* obj) {
     relinkToOrigin(obj);
-    App::GeoFeatureGroupExtension::addObject(obj);
+    return App::GeoFeatureGroupExtension::addObject(obj);
 }
 
 
