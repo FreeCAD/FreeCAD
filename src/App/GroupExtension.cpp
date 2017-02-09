@@ -243,6 +243,30 @@ PyObject* GroupExtension::getExtensionPyObject(void) {
     return Py::new_reference_to(ExtensionPythonObject);
 }
 
+void GroupExtension::extensionOnChanged(const Property* p) {
+    
+    //we need to remove all object that have  other parent geofeature groups
+    if(strcmp(p->getName(), "Group")==0) {
+     
+        bool error = false;
+        auto corrected = Group.getValues();
+        for(auto obj : Group.getValues()) {
+            
+            auto grp = GroupExtension::getGroupOfObject(obj);
+            if(grp && (grp != getExtendedObject())) {
+                error = true;
+                corrected.erase(std::remove(corrected.begin(), corrected.end(), obj), corrected.end());
+            }
+        }  
+        if(error) {
+            Group.setValues(corrected);
+            throw Base::Exception("Object can only be in a single Group");
+        }
+    }
+    
+    App::Extension::extensionOnChanged(p);
+}
+
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::GroupExtensionPython, App::GroupExtension)

@@ -100,6 +100,8 @@ public:
     
     virtual PyObject* getExtensionPyObject(void);
 
+    virtual void extensionOnChanged(const Property* p) override;
+    
     /// Properties
     PropertyLinkList Group;
 
