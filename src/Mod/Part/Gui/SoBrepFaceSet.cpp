@@ -57,13 +57,14 @@
 #include <string.h>
 #ifdef FC_OS_WIN32
 #include <windows.h>
-#endif
+#else
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
 #else
 #include <GL/gl.h>
 #include <GL/glext.h>
+#endif
 #endif
 
 
