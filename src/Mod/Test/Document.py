@@ -836,7 +836,39 @@ class UndoRedoCases(unittest.TestCase):
     self.Doc.removeObject("Group")
     self.Doc.removeObject("Label_2")
     self.Doc.removeObject("Label_3")
-
+    
+  def testGroupAndGeoFeatureGroup(self):
+    
+    # an object can only be in one group at once, that must be enforced
+    obj1 = self.Doc.addObject("App::FeatureTest","obj1")
+    grp1 = self.Doc.addObject("App::DocumentObjectGroup","Group1")
+    grp2 = self.Doc.addObject("App::DocumentObjectGroup","Group2")
+    grp1.addObject(obj1)
+    self.failUnless(grp1.hasObject(obj1))
+    grp2.addObject(obj1)
+    self.failUnless(grp1.hasObject(obj1)==False)
+    self.failUnless(grp2.hasObject(obj1))
+    
+    # an object is allowed to be in a group and a geofeaturegroup
+    prt1 = self.Doc.addObject("App::Part","Part1")
+    prt2 = self.Doc.addObject("App::Part","Part2")
+    
+    prt1.addObject(grp2)
+    self.failUnless(grp2.hasObject(obj1))
+    self.failUnless(prt1.hasObject(grp2))
+    self.failUnless(prt1.hasObject(obj1))
+    
+    #it is not allowed to be in 2 geofeaturegroups 
+    prt2.addObject(grp2)
+    self.failUnless(grp2.hasObject(obj1))
+    self.failUnless(prt1.hasObject(grp2)==False)
+    self.failUnless(prt1.hasObject(obj1)==False)
+    self.failUnless(prt2.hasObject(grp2))
+    self.failUnless(prt2.hasObject(obj1))
+    
+    #adding the object to a geofeaturegroup, but not its group, should handle it automatically when used 
+    #addObject
+    
 
   def tearDown(self):
     # closing doc
