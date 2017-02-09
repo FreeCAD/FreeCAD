@@ -262,11 +262,23 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSInList(DocumentObj
 
 std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(DocumentObject* obj) {
 
-    auto vec1 = getCSInList(obj);
-    auto vec2 = getCSOutList(obj);
+    //we need to get the outlist of all inlist objects and ourself. This is needed to handle things
+    //like Booleans: the boolean is our parent, than there is a second object under it which relates 
+    //to obj and needs to be handled.
+    auto in = getCSInList(obj);
+    in.push_back(obj); //there may be nothing in inlist
+    std::vector<App::DocumentObject*> result;
+    for(auto o : in) {
+        
+        auto out = getCSOutList(o);
+        result.insert(result.end(), out.begin(), out.end());
+    }
     
-    vec1.insert(vec1.end(), vec2.begin(), vec2.end());
-    return vec1;
+    //there will be many douplicates
+    std::sort(result.begin(), result.end());
+    result.erase(std::unique(result.begin(), result.end()), result.end());
+    
+    return result;
 }
 
 
