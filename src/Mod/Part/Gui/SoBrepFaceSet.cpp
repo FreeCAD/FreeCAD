@@ -405,7 +405,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SbBool doTextures;
     SbBool normalCacheUsed;
     SbColor mycolor1;
-    uint32_t RGBA;
 
 
     SoMaterialBundle mb(action);
@@ -948,7 +947,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    GLuint * index_array = NULL;
 	    SbVec3f *mynormal1,*mynormal2,*mynormal3;
 	    int indice=0;
-	    int early_exit=0;
 	    uint32_t RGBA,R,G,B,A;
 	    float Rf,Gf,Bf,Af; 
 
@@ -1000,7 +998,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 		        // This test is for robustness upon buggy data sets
 		        if (v1 < 0 || v2 < 0 || v3 < 0 ||
 		            v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-		            early_exit=1;
 		            break;
 		        } 
 		        v4 = viptr < viendptr ? *viptr++ : -1;
@@ -1244,10 +1241,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             if (trinr == 0)
 	    {
                 materials->send(matnr++, true);
-		
-    		uint32_t RGBA;
-		mycolor1=SoLazyElement::getDiffuse(current_state,matnr-1);
-		RGBA = mycolor1.getPackedValue();
 	    }
         }
         else if (mbind == PER_PART_INDEXED) {
