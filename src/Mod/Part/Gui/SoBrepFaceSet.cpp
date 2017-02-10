@@ -921,8 +921,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int matnr = 0;
     int trinr = 0;
 
-// First copy the vertex data into standard array
-// Second use GL_arrays instead of standard data
 
     /* This code detect if the user activated VBO through the preference menu */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
@@ -938,276 +936,285 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    ViewerVBO=viewer->get_vbo_state();
     }
 
-    // bool ViewerVBO=false;
+    /*
+	vbo_available is used to determine if vbo is an avilable extension on the system .
+	This is not because end user wants VBO that it is available.
+
+    */
 
     if (( vbo_available ) && ViewerVBO )
     {
-    float * vertex_array = NULL;
-    GLuint * index_array = NULL;
-    SbVec3f *mynormal1,*mynormal2,*mynormal3;
-    int indice=0;
-    int early_exit=0;
-    uint32_t RGBA,R,G,B,A;
-    float Rf,Gf,Bf,Af; 
+	    float * vertex_array = NULL;
+	    GLuint * index_array = NULL;
+	    SbVec3f *mynormal1,*mynormal2,*mynormal3;
+	    int indice=0;
+	    int early_exit=0;
+	    uint32_t RGBA,R,G,B,A;
+	    float Rf,Gf,Bf,Af; 
 
-// vbo loaded is defining if we must pre-load data into the VBO
-// TODO FINISHING THE COLOR SUPPORT !
+	// vbo loaded is defining if we must pre-load data into the VBO. When the variable is set to 0
+	// it means that the VBO has not been initialized 
+	// update_vbo is tracking the need to update the content of the VBO which act as a buffer within
+	// the graphic card
+	// TODO FINISHING THE COLOR SUPPORT !
 
-    if (( vbo_loaded == 0 ) || update_vbo )
-    {
-	    if ( ( update_vbo ) && vbo_loaded )
+	    if (( vbo_loaded == 0 ) || update_vbo )
 	    {
-		// TODO
-		// I must remember the buffer size ... If it has to be extended I must
-		// take care of that
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
-	        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
-		vertex_array=(float*)glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
-		index_array=(GLuint *)glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
-		indice_array=0;
-	    }
-	    else
-	    {
-	    //glBegin(GL_TRIANGLES);
-	    vertex_array = ( float * ) malloc ( sizeof(float) * num_indices *10 );
-	    index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices *3 );
-	    }
-	    // glBegin(GL_TRIANGLES);
-            mycolor1=SoLazyElement::getDiffuse(current_state,0);
-            mycolor2=SoLazyElement::getDiffuse(current_state,0);
-            mycolor3=SoLazyElement::getDiffuse(current_state,0);
-            pi = piptr < piendptr ? *piptr++ : -1;
-            while (pi == 0) {
-           // It may happen that a part has no triangles
-               pi = piptr < piendptr ? *piptr++ : -1;
-               if (mbind == PER_PART)
-                   matnr++;
-               else if (mbind == PER_PART_INDEXED)
-                   matindices++;
-            }
-	    while (viptr + 2 < viendptr) {
-	        v1 = *viptr++;
-	        v2 = *viptr++;
-	        v3 = *viptr++;
-	        // This test is for robustness upon buggy data sets
-	        if (v1 < 0 || v2 < 0 || v3 < 0 ||
-	            v1 >= numverts || v2 >= numverts || v3 >= numverts) {
-	            early_exit=1;
-	            break;
-	        } 
-	        v4 = viptr < viendptr ? *viptr++ : -1;
-	        (void)v4;
-
-		if (mbind == PER_PART) {
-	            if (trinr == 0)
-	            {
-	                materials->send(matnr++, true);
-			mycolor1=SoLazyElement::getDiffuse(current_state,matnr-1);
-			mycolor2=mycolor1;
-			mycolor3=mycolor1;
+		    if ( ( update_vbo ) && vbo_loaded )
+		    {
+			// TODO
+			// We must remember the buffer size ... If it has to be extended we must
+			// take care of that
+	
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+		        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+			vertex_array=(float*)glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+			index_array=(GLuint *)glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
+			indice_array=0;
 		    }
-        	}
-	        else if (mbind == PER_PART_INDEXED) {
-	            if (trinr == 0)
-	                materials->send(*matindices++, true);
-        	}
-	        else if (mbind == PER_VERTEX || mbind == PER_FACE) {
-	            materials->send(matnr++, true);
-        	}
-	        else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
-	            materials->send(*matindices++, true);
-        	}
-
-
-		if (normals) {
-	            if (nbind == PER_VERTEX || nbind == PER_FACE) {
-	                currnormal = normals++;
-	                mynormal1=(SbVec3f *)currnormal;
-	            }
-	            else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
-	                currnormal = &normals[*normalindices++];
-	                mynormal1 =(SbVec3f *) currnormal;
-	            }
-	        }
-	if (mbind == PER_VERTEX)
-	{
-            materials->send(matnr++, true);
-	}
-        else if (mbind == PER_VERTEX_INDEXED)
-	{
-            materials->send(*matindices++, true);
-	}
-
-		if (normals) {
-            if (nbind == PER_VERTEX) {
-                currnormal = normals++;
-                mynormal2 = (SbVec3f *)currnormal;
-            }
-            else if (nbind == PER_VERTEX_INDEXED) {
-                currnormal = &normals[*normalindices++];
-                mynormal2 = (SbVec3f *)currnormal;
-            }
-        }
-	if (mbind == PER_VERTEX)
-	{
-            materials->send(matnr++, true);
-	}
-        else if (mbind == PER_VERTEX_INDEXED)
-	{
-            materials->send(*matindices++, true);
-	}
+		    else
+		    {
+			// We are allocating local buffer to transfer initial VBO content
+			    vertex_array = ( float * ) malloc ( sizeof(float) * num_indices *10 );
+			    index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices *3 );
+		    }
 	
-	if (normals) {
-            if (nbind == PER_VERTEX) {
-                currnormal = normals++;
-                mynormal3 =(SbVec3f *)currnormal;
-            }
-            else if (nbind == PER_VERTEX_INDEXED) {
-                currnormal = &normals[*normalindices++];
-                mynormal3 = (SbVec3f *)currnormal;
-            }
-        }
-	if (nbind == PER_VERTEX_INDEXED)
-            normalindices++;
+		    // Get the initial colors
+            	    mycolor1=SoLazyElement::getDiffuse(current_state,0);
+	            mycolor2=SoLazyElement::getDiffuse(current_state,0);
+	            mycolor3=SoLazyElement::getDiffuse(current_state,0);
 
+	            pi = piptr < piendptr ? *piptr++ : -1;
+	            while (pi == 0) {
+		           // It may happen that a part has no triangles
+		               pi = piptr < piendptr ? *piptr++ : -1;
+		               if (mbind == PER_PART)
+		                   matnr++;
+		               else if (mbind == PER_PART_INDEXED)
+		                   matindices++;
+            	    }
+		    while (viptr + 2 < viendptr) {
+		        v1 = *viptr++;
+		        v2 = *viptr++;
+		        v3 = *viptr++;
+		        // This test is for robustness upon buggy data sets
+		        if (v1 < 0 || v2 < 0 || v3 < 0 ||
+		            v1 >= numverts || v2 >= numverts || v3 >= numverts) {
+		            early_exit=1;
+		            break;
+		        } 
+		        v4 = viptr < viendptr ? *viptr++ : -1;
+		        (void)v4;
 
-		/* I am building the Vertex dataset there and push it to a VBO */
-	        index_array[indice_array] = indice_array;
-	        index_array[indice_array+1] = indice_array+1;
-	        index_array[indice_array+2] = indice_array+2;
-	        indice_array+=3;	
+			if (mbind == PER_PART) {
+		            if (trinr == 0)
+		            {
+		                materials->send(matnr++, true);
+				mycolor1=SoLazyElement::getDiffuse(current_state,matnr-1);
+				mycolor2=mycolor1;
+				mycolor3=mycolor1;
+			    }
+	        	}
+		        else if (mbind == PER_PART_INDEXED) {
+		            if (trinr == 0)
+		                materials->send(*matindices++, true);
+	        	}
+		        else if (mbind == PER_VERTEX || mbind == PER_FACE) {
+		            materials->send(matnr++, true);
+	        	}
+		        else if (mbind == PER_VERTEX_INDEXED || mbind == PER_FACE_INDEXED) {
+		            materials->send(*matindices++, true);
+	        	}
+			if (normals) {
+		            if (nbind == PER_VERTEX || nbind == PER_FACE) {
+		                currnormal = normals++;
+		                mynormal1=(SbVec3f *)currnormal;
+		            }
+		            else if (nbind == PER_VERTEX_INDEXED || nbind == PER_FACE_INDEXED) {
+		                currnormal = &normals[*normalindices++];
+		                mynormal1 =(SbVec3f *) currnormal;
+		            }
+		        }
+			if (mbind == PER_VERTEX)
+		            materials->send(matnr++, true);
+        		else if (mbind == PER_VERTEX_INDEXED)
+		            materials->send(*matindices++, true);
+			if (normals) {
+		            if (nbind == PER_VERTEX) {
+		                currnormal = normals++;
+		                mynormal2 = (SbVec3f *)currnormal;
+            		    }
+		            else if (nbind == PER_VERTEX_INDEXED) {
+               			 currnormal = &normals[*normalindices++];
+		                mynormal2 = (SbVec3f *)currnormal;
+            		    	}
+        		}
+			if (mbind == PER_VERTEX)
+		            materials->send(matnr++, true);
+		        else if (mbind == PER_VERTEX_INDEXED)
+		            materials->send(*matindices++, true);
+			if (normals) {
+		            if (nbind == PER_VERTEX) {
+		                currnormal = normals++;
+		                mynormal3 =(SbVec3f *)currnormal;
+		            }
+		            else if (nbind == PER_VERTEX_INDEXED) {
+		                currnormal = &normals[*normalindices++];
+		                mynormal3 = (SbVec3f *)currnormal;
+		            }
+        		}
+			if (nbind == PER_VERTEX_INDEXED)
+            			normalindices++;
+
+			/* We building the Vertex dataset there and push it to a VBO */
+			/* The Vertex array shall contain per element vertex_coordinates[3], 
+			   normal_coordinates[3], color_value[3] (RGBA format) */
+
+		        index_array[indice_array] = indice_array;
+		        index_array[indice_array+1] = indice_array+1;
+		        index_array[indice_array+2] = indice_array+2;
+		        indice_array+=3;	
  
-		((SbVec3f *)(cur_coords3d+v1 ))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
-		((SbVec3f *)(mynormal1))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
+			((SbVec3f *)(cur_coords3d+v1 ))->getValue(vertex_array[indice+0], 
+								  vertex_array[indice+1],
+								  vertex_array[indice+2]);
+			((SbVec3f *)(mynormal1))->getValue(vertex_array[indice+3], 
+							   vertex_array[indice+4],
+							   vertex_array[indice+5]);
 		
-		RGBA = mycolor1.getPackedValue();
-		R = ( RGBA & 0xFF000000 ) >> 24 ;
-                G = ( RGBA & 0xFF0000 ) >> 16;
-                B = ( RGBA & 0xFF00 ) >> 8;
-                A = ( RGBA & 0xFF );
+			/* We decode the Vertex1 color */
 
+			RGBA = mycolor1.getPackedValue();
+			R = ( RGBA & 0xFF000000 ) >> 24 ;
+	                G = ( RGBA & 0xFF0000 ) >> 16;
+	                B = ( RGBA & 0xFF00 ) >> 8;
+	                A = ( RGBA & 0xFF );
 
-
-		Rf = (((float )R) / 255.0);
-		Gf = (((float )G) / 255.0);
-		Bf = (((float )B) / 255.0);
-		Af = (((float )A) / 255.0);
+			Rf = (((float )R) / 255.0);
+			Gf = (((float )G) / 255.0);
+			Bf = (((float )B) / 255.0);
+			Af = (((float )A) / 255.0);
 	
-		vertex_array[indice+6] = Rf;
-		vertex_array[indice+7] = Gf;
-		vertex_array[indice+8] = Bf;
-		vertex_array[indice+9] = Af;
-		indice+=10;
+			vertex_array[indice+6] = Rf;
+			vertex_array[indice+7] = Gf;
+			vertex_array[indice+8] = Bf;
+			vertex_array[indice+9] = Af;
+			indice+=10;
 
-		((SbVec3f *)(cur_coords3d+v2))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
-		((SbVec3f *)(mynormal2))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
+			((SbVec3f *)(cur_coords3d+v2))->getValue(vertex_array[indice+0], 
+								 vertex_array[indice+1],
+								 vertex_array[indice+2]);
+			((SbVec3f *)(mynormal2))->getValue(vertex_array[indice+3], 
+							   vertex_array[indice+4],
+							   vertex_array[indice+5]);
 
-		RGBA = mycolor2.getPackedValue();
-		R = ( RGBA & 0xFF000000 ) >> 24 ;
-                G = ( RGBA & 0xFF0000 ) >> 16;
-                B = ( RGBA & 0xFF00 ) >> 8;
-                A = ( RGBA & 0xFF );
-
-
-                Rf = (((float )R) / 255.0);
-                Gf = (((float )G) / 255.0);
-                Bf = (((float )B) / 255.0);
-                Af = (((float )A) / 255.0);
+			RGBA = mycolor2.getPackedValue();
+			R = ( RGBA & 0xFF000000 ) >> 24 ;
+	                G = ( RGBA & 0xFF0000 ) >> 16;
+	                B = ( RGBA & 0xFF00 ) >> 8;
+	                A = ( RGBA & 0xFF );
 
 
-                vertex_array[indice+6] = Rf;
-                vertex_array[indice+7] = Gf;
-                vertex_array[indice+8] = Bf;
-                vertex_array[indice+9] = Af;
-                indice+=10;
+	                Rf = (((float )R) / 255.0);
+	                Gf = (((float )G) / 255.0);
+	                Bf = (((float )B) / 255.0);
+	                Af = (((float )A) / 255.0);
 
-		((SbVec3f *)(cur_coords3d+v3))->getValue(vertex_array[indice+0], vertex_array[indice+1],vertex_array[indice+2]);
-		((SbVec3f *)(mynormal3))->getValue(vertex_array[indice+3], vertex_array[indice+4],vertex_array[indice+5]);
 
-		RGBA = mycolor3.getPackedValue();
-                R = ( RGBA & 0xFF000000 ) >> 24 ;
-                G = ( RGBA & 0xFF0000 ) >> 16;
-                B = ( RGBA & 0xFF00 ) >> 8;
-                A = ( RGBA & 0xFF );
+	     	        vertex_array[indice+6] = Rf;
+	                vertex_array[indice+7] = Gf;
+	                vertex_array[indice+8] = Bf;
+	                vertex_array[indice+9] = Af;
+	                indice+=10;
 
-                Rf = (((float )R) / 255.0);
-                Gf = (((float )G) / 255.0);
-                Bf = (((float )B) / 255.0);
-                Af = (((float )A) / 255.0);
+			((SbVec3f *)(cur_coords3d+v3))->getValue(vertex_array[indice+0], 
+								 vertex_array[indice+1],
+								 vertex_array[indice+2]);
+			((SbVec3f *)(mynormal3))->getValue(vertex_array[indice+3], 
+							   vertex_array[indice+4],
+							   vertex_array[indice+5]);
 
-                vertex_array[indice+6] = Rf;
-                vertex_array[indice+7] = Gf;
-                vertex_array[indice+8] = Bf;
-                vertex_array[indice+9] = Af;
-                indice+=10;
+			RGBA = mycolor3.getPackedValue();
+	                R = ( RGBA & 0xFF000000 ) >> 24 ;
+	                G = ( RGBA & 0xFF0000 ) >> 16;
+	                B = ( RGBA & 0xFF00 ) >> 8;
+	                A = ( RGBA & 0xFF );
 
-		/* ============================================================ */
+	                Rf = (((float )R) / 255.0);
+	                Gf = (((float )G) / 255.0);
+	                Bf = (((float )B) / 255.0);
+	                Af = (((float )A) / 255.0);
+
+	                vertex_array[indice+6] = Rf;
+	                vertex_array[indice+7] = Gf;
+	                vertex_array[indice+8] = Bf;
+	                vertex_array[indice+9] = Af;
+	                indice+=10;
+
+			/* ============================================================ */
 		        trinr++;
-        if (pi == trinr) {
-            pi = piptr < piendptr ? *piptr++ : -1;
-            while (pi == 0) {
-                // It may happen that a part has no triangles
-                pi = piptr < piendptr ? *piptr++ : -1;
-                if (mbind == PER_PART)
-                    matnr++;
-                else if (mbind == PER_PART_INDEXED)
-                    matindices++;
-            }
-            trinr = 0;
-        }
+       			 if (pi == trinr) {
+		            pi = piptr < piendptr ? *piptr++ : -1;
+		            while (pi == 0) {
+		                // It may happen that a part has no triangles
+		                pi = piptr < piendptr ? *piptr++ : -1;
+		                if (mbind == PER_PART)
+		                    matnr++;
+		                else if (mbind == PER_PART_INDEXED)
+	                    matindices++;
+		            }
+	      		trinr = 0;
+        		}
 
-	   //glEnd();
-    	   }
-	if ((  ! update_vbo ) || (!vbo_loaded) )
-	{
-	// Push the content to the VBO
+    	   	}
+		if ((  ! update_vbo ) || (!vbo_loaded) )
+		{
+			// Push the content to the VBO
 
-        glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
-	glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
+		        glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+			glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
 
+			glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
+		        glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
+
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
+			glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
+
+			vbo_loaded=1;
+			update_vbo=0;
+			free(vertex_array);
+			free(index_array);
+		}
+		else
+		{
+			glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+			glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
+			update_vbo=0;
+		}
+    	}
+
+	// This is the VBO rendering code
+
+	glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
-        glBufferDataARB(GL_ELEMENT_ARRAY_BUFFER_ARB, sizeof(GLuint) * indice_array , &index_array[0], GL_DYNAMIC_DRAW_ARB);
+	glEnableClientState(GL_VERTEX_ARRAY); 
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
 
+
+	glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),0);
+	glNormalPointer(GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
+	glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));   
+
+	glDrawElements(GL_TRIANGLES, indice_array, GL_UNSIGNED_INT, (void *)0); 
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
-	vbo_loaded=1;
-	update_vbo=0;
-	free(vertex_array);
-	free(index_array);
-	}
-	else
-	{
-		glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
-		glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
-		update_vbo=0;
-	}
-    }
-
-    // GL_Vertex implementation with copy
-    // We must use VBO approach now
-    // This is the rendering code
-
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
-    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
-    glEnableClientState(GL_VERTEX_ARRAY); 
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_COLOR_ARRAY);
-
-
-    glVertexPointer(3,GL_FLOAT,10*sizeof(GLfloat),0);
-    glNormalPointer(GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(3*sizeof(GLfloat)));
-    glColorPointer(4,GL_FLOAT,10*sizeof(GLfloat),(GLvoid *)(6*sizeof(GLfloat)));   
-
-    glDrawElements(GL_TRIANGLES, indice_array, GL_UNSIGNED_INT, (void *)0); 
-
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glBindBufferARB(GL_ARRAY_BUFFER_ARB, 0);
-    glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, 0);
-//    update_vbo=1;
-    // The data is within the VBO we can clear it at application level
-    return;
+	    // The data is within the VBO we can clear it at application level
+    	return;
     }
 
     // Legacy code without VBO support
