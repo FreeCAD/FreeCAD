@@ -47,6 +47,7 @@
 
 #include <Mod/TechDraw/App/DrawViewClip.h>
 
+#include "Rez.h"
 #include "QGCustomRect.h"
 #include "QGCustomClip.h"
 #include "QGIViewClip.h"
@@ -64,12 +65,12 @@ QGIViewClip::QGIViewClip()
     m_cliparea = new QGCustomClip();
     addToGroup(m_cliparea);
     m_cliparea->setPos(0.,0.);
-    m_cliparea->setRect(0.,0.,5.,5.);
+    m_cliparea->setRect(0.,0.,Rez::guiX(5.),Rez::guiX(5.));
 
     m_frame = new QGCustomRect();
     addToGroup(m_frame);
     m_frame->setPos(0.,0.);
-    m_frame->setRect(0.,0.,5.,5.);
+    m_frame->setRect(0.,0.,Rez::guiX(5.),Rez::guiX(5.));
 }
 
 
@@ -120,7 +121,7 @@ void QGIViewClip::drawClip()
     prepareGeometryChange();
     double h = viewClip->Height.getValue();
     double w = viewClip->Width.getValue();
-    QRectF r = QRectF(0,0,w,h);
+    QRectF r = QRectF(0,0,Rez::guiX(w),Rez::guiX(h));
     m_frame->setRect(r);
     m_frame->setPos(0.,0.);
     if (viewClip->ShowFrame.getValue()) {
@@ -144,7 +145,7 @@ void QGIViewClip::drawClip()
                 qgiv->isInnerView(true);
                 double x = qgiv->getViewObject()->X.getValue();
                 double y = qgiv->getViewObject()->Y.getValue();
-                qgiv->setPosition(x,y);
+                qgiv->setPosition(Rez::guiX(x),Rez::guiX(y));
                 if (viewClip->ShowLabels.getValue()) {
                     qgiv->toggleBorder(true);
                 } else {
