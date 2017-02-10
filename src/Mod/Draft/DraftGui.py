@@ -1975,10 +1975,17 @@ class FacebinderTaskPanel:
         self.tree.clear()
         if self.obj:
             for f in self.obj.Faces:
-                item = QtGui.QTreeWidgetItem(self.tree)
-                item.setText(0,f[0].Name)
-                item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
-                item.setText(1,f[1])
+                if isinstance(f[1],tuple):
+                    for subf in f[1]:
+                        item = QtGui.QTreeWidgetItem(self.tree)
+                        item.setText(0,f[0].Name)
+                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setText(1,subf)  
+                else:
+                    item = QtGui.QTreeWidgetItem(self.tree)
+                    item.setText(0,f[0].Name)
+                    item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                    item.setText(1,f[1])
         self.retranslateUi(self.form)
 
     def addElement(self):
@@ -1991,8 +1998,14 @@ class FacebinderTaskPanel:
                             flist = self.obj.Faces
                             found = False
                             for face in flist:
-                                if (face[0] == obj.Name) and (face[1] == elt):
-                                    found = True
+                                if (face[0] == obj.Name):
+                                    if isinstance(face[1],tuple):
+                                        for subf in face[1]:
+                                            if subf == elt:
+                                                found = True
+                                    else:
+                                        if (face[1] == elt):
+                                            found = True
                             if not found:
                                 flist.append((obj,elt))
                                 self.obj.Faces = flist
@@ -2007,8 +2020,16 @@ class FacebinderTaskPanel:
                 elt = str(it.text(1))
                 flist = []
                 for face in self.obj.Faces:
-                    if (face[0].Name != obj.Name) or (face[1] != elt):
+                    if (face[0].Name != obj.Name):
                         flist.append(face)
+                    else:
+                        if isinstance(face[1],tuple):
+                            for subf in face[1]:
+                                if subf != elt:
+                                    flist.append((obj,subf))
+                        else:
+                            if (face[1] != elt):
+                                flist.append(face)
                 self.obj.Faces = flist
                 FreeCAD.ActiveDocument.recompute()
             self.update()
