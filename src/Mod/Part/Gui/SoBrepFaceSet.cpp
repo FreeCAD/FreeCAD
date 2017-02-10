@@ -920,15 +920,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 
     int matnr = 0;
     int trinr = 0;
-    pi = piptr < piendptr ? *piptr++ : -1;
-    while (pi == 0) {
-        // It may happen that a part has no triangles
-        pi = piptr < piendptr ? *piptr++ : -1;
-        if (mbind == PER_PART)
-            matnr++;
-        else if (mbind == PER_PART_INDEXED)
-            matindices++;
-    }
 
 // First copy the vertex data into standard array
 // Second use GL_arrays instead of standard data
@@ -946,7 +937,8 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    Gui::View3DInventorViewer* viewer = view->getViewer();
 	    ViewerVBO=viewer->get_vbo_state();
     }
-//    bool ViewerVBO=true;
+
+    // bool ViewerVBO=false;
 
     if (( vbo_available ) && ViewerVBO )
     {
@@ -984,7 +976,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             mycolor1=SoLazyElement::getDiffuse(current_state,0);
             mycolor2=SoLazyElement::getDiffuse(current_state,0);
             mycolor3=SoLazyElement::getDiffuse(current_state,0);
-
+            pi = piptr < piendptr ? *piptr++ : -1;
+            while (pi == 0) {
+           // It may happen that a part has no triangles
+               pi = piptr < piendptr ? *piptr++ : -1;
+               if (mbind == PER_PART)
+                   matnr++;
+               else if (mbind == PER_PART_INDEXED)
+                   matindices++;
+            }
 	    while (viptr + 2 < viendptr) {
 	        v1 = *viptr++;
 	        v2 = *viptr++;
@@ -1211,6 +1211,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     }
 
     // Legacy code without VBO support
+    pi = piptr < piendptr ? *piptr++ : -1;
+    while (pi == 0) {
+        // It may happen that a part has no triangles
+        pi = piptr < piendptr ? *piptr++ : -1;
+        if (mbind == PER_PART)
+            matnr++;
+        else if (mbind == PER_PART_INDEXED)
+            matindices++;
+    }
 
     glBegin(GL_TRIANGLES); 
     while (viptr + 2 < viendptr) {
