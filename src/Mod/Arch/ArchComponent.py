@@ -764,7 +764,7 @@ class ViewProviderComponent:
                 if hasattr(self.Object,link):
                     objlink = getattr(self.Object,link)
                     c.extend(objlink)
-            for link in ["Tool","Subvolume","Mesh"]:
+            for link in ["Tool","Subvolume","Mesh","Hires"]:
                 if hasattr(self.Object,link):
                     objlink = getattr(self.Object,link)
                     if objlink:
