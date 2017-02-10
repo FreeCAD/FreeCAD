@@ -57,6 +57,7 @@ public:
     //@{
     QString comment() const;
     int backgroundType() const;
+    bool addWatermark() const;
     //@}
 
 public Q_SLOTS:

@@ -665,7 +665,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
-                        obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
+                        obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
             elif baseobj:
                 obj = Arch.makeComponent(baseobj,name=name,delete=True)
 
@@ -675,7 +675,7 @@ def insert(filename,docname,skip=[],only=[],root=None):
             if ptype in ["IfcSite","IfcBuilding","IfcBuildingStorey"]:
                 for freecadtype,ifctypes in typesmap.items():
                     if ptype in ifctypes:
-                        obj = getattr(Arch,"make"+freecadtype)(baseobj=None,name=name)
+                        obj = getattr(Arch,"make"+freecadtype)(baseobj=baseobj,name=name)
             elif baseobj:
                 obj = FreeCAD.ActiveDocument.addObject("Part::Feature",name)
                 obj.Shape = shape

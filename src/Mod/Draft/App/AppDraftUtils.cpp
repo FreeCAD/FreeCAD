@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 namespace DraftUtils {
@@ -34,7 +35,7 @@ extern PyObject* initModule();
 }
 
 /* Python entry */
-PyMODINIT_FUNC initDraftUtils()
+PyMOD_INIT_FUNC(DraftUtils)
 {
     // load dependent module
     try {
@@ -42,8 +43,9 @@ PyMODINIT_FUNC initDraftUtils()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void)DraftUtils::initModule();
+    PyObject* mod = DraftUtils::initModule();
     Base::Console().Log("Loading DraftUtils module... done\n");
+    PyMOD_Return(mod);
 }

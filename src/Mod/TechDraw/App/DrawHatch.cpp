@@ -25,6 +25,9 @@
 
 #ifndef _PreComp_
 # include <sstream>
+#include <Precision.hxx>
+#include <cmath>
+
 #endif
 
 #include <iomanip>
@@ -37,6 +40,7 @@
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
 #include <Base/Parameter.h>
+#include <Base/UnitsApi.h>
 
 #include "DrawViewPart.h"
 #include "DrawHatch.h"
@@ -45,6 +49,10 @@
 
 using namespace TechDraw;
 using namespace std;
+
+App::PropertyFloatConstraint::Constraints DrawHatch::scaleRange = {Precision::Confusion(),
+                                                                  std::numeric_limits<double>::max(),
+                                                                  pow(10,- Base::UnitsApi::getDecimals())};
 
 PROPERTY_SOURCE(TechDraw::DrawHatch, App::DocumentObject)
 
@@ -62,6 +70,7 @@ DrawHatch::DrawHatch(void)
     ADD_PROPERTY_TYPE(HatchPattern ,(""),vgroup,App::Prop_None,"The hatch pattern file for this area");
     ADD_PROPERTY_TYPE(HatchColor,(fcColor),vgroup,App::Prop_None,"The color of the hatch pattern");
     ADD_PROPERTY_TYPE(HatchScale,(1.0),vgroup,App::Prop_None,"Hatch pattern size adjustment");
+    HatchScale.setConstraints(&scaleRange);
     DirProjection.setStatus(App::Property::ReadOnly,true);
 
     hGrp = App::GetApplication().GetUserParameter()

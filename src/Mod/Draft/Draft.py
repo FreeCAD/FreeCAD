@@ -30,6 +30,7 @@ __author__ = "Yorik van Havre, Werner Mayer, Martin Burbaum, Ken Cline, Dmitry C
 __url__ = "http://www.freecadweb.org"
 
 ## \addtogroup DRAFT
+#  \brief Create and manipulate basic 2D objects
 #
 #  This module offers a range of tools to create and manipulate basic 2D objects
 #
@@ -4752,7 +4753,7 @@ class _Wire(_DraftObject):
                 try:
                     shape = Part.Wire(edges)
                 except Part.OCCError:
-                    print "Error wiring edges"
+                    print("Error wiring edges")
                     shape = None
                 if "ChamferSize" in obj.PropertiesList:
                     if obj.ChamferSize.Value != 0:

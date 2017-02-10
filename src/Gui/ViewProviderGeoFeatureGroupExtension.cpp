@@ -98,7 +98,7 @@ std::vector< App::DocumentObject* > ViewProviderGeoFeatureGroupExtension::getLin
 
     if(!obj)
         return std::vector< App::DocumentObject* >();
-    
+
     //we get all linked objects, and that recursively
     std::vector< App::DocumentObject* > result;
     std::vector<App::Property*> list;
@@ -117,16 +117,23 @@ std::vector< App::DocumentObject* > ViewProviderGeoFeatureGroupExtension::getLin
             result.insert(result.end(), vec.begin(), vec.end());
         }
     }
-    
+
     //clear all null objects
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-    
+
     //collect all dependencies of those objects
+    std::vector< App::DocumentObject* > links;
     for(App::DocumentObject *obj : result) {
         auto vec = getLinkedObjects(obj);
-        result.insert(result.end(), vec.begin(), vec.end());
+        links.insert(links.end(), vec.begin(), vec.end());
     }
-    
+
+    if (!links.empty()) {
+        result.insert(result.end(), links.begin(), links.end());
+        std::sort(result.begin(), result.end());
+        result.erase(std::unique(result.begin(), result.end()), result.end());
+    }
+
     return result;
 }
 

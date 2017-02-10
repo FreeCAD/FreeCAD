@@ -52,8 +52,8 @@ public:
 protected Q_SLOTS:
     void on_displayItems_currentItemChanged(QTreeWidgetItem *i);
     void on_colorButton_changed();
-    void on_fontFamily_activated();
-    void on_fontSize_valueChanged();
+    void on_fontFamily_activated(const QString&);
+    void on_fontSize_valueChanged(const QString&);
 
 protected:
     void changeEvent(QEvent *e);

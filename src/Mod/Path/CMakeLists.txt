@@ -11,6 +11,7 @@ INSTALL(
         InitGui.py
         PathCommands.py
         TestPathApp.py
+
     DESTINATION
         Mod/Path
 )
@@ -71,10 +72,10 @@ SET(PathScripts_SRCS
     PathScripts/dynapath_post.py
     PathScripts/example_post.py
     PathScripts/example_pre.py
-    PathScripts/generic_post.py
     PathScripts/linuxcnc_post.py
     PathScripts/opensbp_post.py
     PathScripts/opensbp_pre.py
+    PathScripts/phillips_post.py
     PathScripts/rml_post.py
     PathScripts/slic3r_pre.py
 )

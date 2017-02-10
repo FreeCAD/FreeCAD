@@ -65,37 +65,52 @@ file(GLOB headers "${CMAKE_CURRENT_SOURCE_DIR}/*.h")
 
 # this makes the Python module
 add_library(
-  area
-  MODULE
+  area-native
+  SHARED
   ${AREA_SRC_COMMON}
   ${AREA_SRC_CLIPPER}
-  ${PYAREA_SRC}
+)
+
+add_library(
+    area
+    MODULE
+    ${PYAREA_SRC}
 )
 
 if(MSVC)
-    set(area_LIBS
-        ${Boost_LIBRARIES}
-        ${PYTHON_LIBRARIES}
+    set(area_native_LIBS
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB
         optimized MSVCRT.LIB
         optimized MSVCPRT.LIB
     )
-elseif(MINGW)
     set(area_LIBS
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
+        ${area_native_LIBS}
+    )
+elseif(MINGW)
+    set(area_native_LIBS
         Rpcrt4.lib
     )
+    set(area_LIBS
+        ${Boost_LIBRARIES}
+        ${PYTHON_LIBRARIES}
+        ${area_native_LIBS}
+    )
 else(MSVC)
+    set(area_native_LIBS
+        )
     set(area_LIBS
         ${Boost_LIBRARIES}
         ${PYTHON_LIBRARIES}
     )
 endif(MSVC)
 
-target_link_libraries(area ${area_LIBS})
+target_link_libraries(area-native ${area_native_LIBS})
+SET_BIN_DIR(area-native area-native)
 
+target_link_libraries(area area-native ${area_LIBS} ${area_native_LIBS})
 SET_BIN_DIR(area area)
 SET_PYTHON_PREFIX_SUFFIX(area)
 
@@ -108,8 +123,20 @@ execute_process(
 
 message(STATUS "area module (for Path Workbench) will be installed to: " ${CMAKE_INSTALL_LIBDIR})
 
+if(WIN32)
+    set_target_properties(area-native PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+    INSTALL(TARGETS area-native
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+else(WIN32)
+    INSTALL(TARGETS area-native
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    )
+endif(WIN32)
+
 # this installs the python library
 install(
     TARGETS area
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )

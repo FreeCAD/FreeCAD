@@ -88,11 +88,11 @@ PyObject* initModule()
 } // namespace MeshGui
 
 /* Python entry */
-PyMODINIT_FUNC initMeshGui()
+PyMOD_INIT_FUNC(MeshGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load dependent module
@@ -101,9 +101,9 @@ PyMODINIT_FUNC initMeshGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void) MeshGui::initModule();
+    PyObject* mod = MeshGui::initModule();
     Base::Console().Log("Loading GUI of Mesh module... done\n");
 
     // Register icons
@@ -154,4 +154,6 @@ PyMODINIT_FUNC initMeshGui()
 
     // add resources and reloads the translators
     loadMeshResource();
+
+    PyMOD_Return(mod);
 }

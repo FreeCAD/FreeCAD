@@ -38,7 +38,7 @@ __url__ = "http://www.freecadweb.org"
 # Generic stuff
 #---------------------------------------------------------------------------
 
-import os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
+import sys, os, FreeCAD, FreeCADGui, WorkingPlane, math, re, Draft, Draft_rc, DraftVecUtils
 from FreeCAD import Vector
 from DraftGui import todo,QtCore,QtGui
 from DraftSnap import *
@@ -78,11 +78,17 @@ try:
     _encoding = QtGui.QApplication.UnicodeUTF8
     def translate(context, text):
         "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
+        if sys.version_info.major >= 3:
+            return QtGui.QApplication.translate(context, text, None, _encoding)
+        else:
+            return QtGui.QApplication.translate(context, text, None, _encoding).encode("utf8")
 except AttributeError:
     def translate(context, text):
         "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None).encode("utf8")
+        if sys.version >= 3:
+            return QtGui.QApplication.translate(context, text, None)
+        else:
+            return QtGui.QApplication.translate(context, text, None).encode("utf8")
 
 def msg(text=None,mode=None):
     "prints the given message on the FreeCAD status bar"
@@ -728,7 +734,7 @@ class BezCurve(Line):
                 'ToolTip': QtCore.QT_TRANSLATE_NOOP("Draft_BezCurve", "Creates a Bezier curve. CTRL to snap, SHIFT to constrain")}
 
     def Activated(self):
-        Line.Activated(self,name=translate("draft","BezCurve").decode("utf8"))
+        Line.Activated(self,name=translate("draft","BezCurve"))
         if self.doc:
             self.bezcurvetrack = bezcurveTracker()
 
@@ -2664,8 +2670,8 @@ class Offset(Modifier):
     def numericRadius(self,rad):
         '''this function gets called by the toolbar when
         valid radius have been entered there'''
-        #print "dvec:",self.dvec
-        #print "rad:",rad
+        #print("dvec:",self.dvec)
+        #print("rad:",rad)
         if self.dvec:
             if isinstance(self.dvec,float):
                 if self.mode == "Circle":
@@ -2677,7 +2683,7 @@ class Offset(Modifier):
                         rad = r1 - rad
                     d = str(rad)
                 else:
-                    print "Draft.Offset error: Unhandled case"
+                    print("Draft.Offset error: Unhandled case")
             else:
                 self.dvec.normalize()
                 self.dvec.multiply(rad)
@@ -2857,7 +2863,7 @@ class Stretch(Modifier):
                             optype = 4
                         else:
                             optype = 0
-                        print "length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement
+                        print("length:",ops[0].Length,"height:",ops[0].Height," - ",ops[1]," - ",self.displacement)
                         done = False
                         if optype > 0:
                             v1 = ops[0].Placement.multVec(p2).sub(ops[0].Placement.multVec(p1))
@@ -4632,18 +4638,18 @@ class Point(Creator):
                 commitlist = []
                 if Draft.getParam("UsePartPrimitives",False):
                     # using
-                    commitlist.append(translate("draft","Create Point"),
+                    commitlist.append((translate("draft","Create Point"),
                                         ['point = FreeCAD.ActiveDocument.addObject("Part::Vertex","Point")',
                                          'point.X = '+str(self.stack[0][0]),
                                          'point.Y = '+str(self.stack[0][1]),
                                          'point.Z = '+str(self.stack[0][2]),
-                                         'Draft.autogroup(point)'])
+                                         'Draft.autogroup(point)']))
                 else:
                     # building command string
                     FreeCADGui.addModule("Draft")
-                    commitlist.append(translate("draft","Create Point"),
+                    commitlist.append((translate("draft","Create Point"),
                                         ['point = Draft.makePoint('+str(self.stack[0][0])+','+str(self.stack[0][1])+','+str(self.stack[0][2])+')',
-                                        'Draft.autogroup(point)'])
+                                         'Draft.autogroup(point)']))
                 todo.delayCommit(commitlist)
                 FreeCADGui.Snapper.off()
             self.finish()

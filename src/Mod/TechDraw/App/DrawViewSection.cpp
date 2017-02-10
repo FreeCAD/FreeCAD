@@ -552,15 +552,21 @@ std::vector<TopoDS_Wire> DrawViewSection::getWireForFace(int idx) const
 
 void DrawViewSection::unsetupObject()
 {
-    getBaseDVP()->touch();
+    TechDraw::DrawViewPart* base = getBaseDVP();
+    if (base != nullptr) {
+        base->touch();
+    }
+    DrawViewPart::unsetupObject();
 }
 
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP()
 {
     TechDraw::DrawViewPart* baseDVP = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
-        baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+    if (base != nullptr) {
+        if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+            baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
+        }
     }
     return baseDVP;
 }
@@ -569,8 +575,10 @@ TechDraw::DrawProjGroupItem* DrawViewSection::getBaseDPGI()
 {
     TechDraw::DrawProjGroupItem* baseDPGI = nullptr;
     App::DocumentObject* base = BaseView.getValue();
-    if (base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-        baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+    if (base != nullptr) {
+        if (base->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            baseDPGI = static_cast<TechDraw::DrawProjGroupItem*>(base);
+        }
     }
     return baseDPGI;
 }

@@ -139,6 +139,11 @@ int DlgSettingsImageImp::backgroundType() const
     return comboBackground->currentIndex();
 }
 
+bool DlgSettingsImageImp::addWatermark() const
+{
+    return checkWatermark->isChecked();
+}
+
 void DlgSettingsImageImp::onSelectedFilter(const QString& filter)
 {
     bool ok = (filter.startsWith(QLatin1String("JPG")) ||

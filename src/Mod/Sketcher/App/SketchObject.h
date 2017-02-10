@@ -193,7 +193,7 @@ public:
      \brief Deletes all unused (not further constrained) internal geometry
      \param GeoId - the geometry having the internal geometry to delete
      \param delgeoid - if true in addition to the unused internal geometry also deletes the GeoId geometry
-     \retval int - returns -1 on error
+     \retval int - returns -1 on error, otherwise the number of deleted elements
      */
     int DeleteUnusedInternalGeometry(int GeoId, bool delgeoid=false);
 
