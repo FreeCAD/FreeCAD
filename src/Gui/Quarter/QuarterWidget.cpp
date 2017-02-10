@@ -89,6 +89,12 @@
 #include "QuarterWidgetP.h"
 #include "QuarterP.h"
 
+#if QT_VERSION >= 0x050000
+#include <QWindow>
+#include <QGuiApplication>
+#endif
+
+
 using namespace SIM::Coin3D::Quarter;
 
 /*!
@@ -489,6 +495,23 @@ QuarterWidget::stereoMode(void) const
 }
 
 /*!
+  \property QuarterWidget::devicePixelRatio
+
+  \copydetails QuarterWidget::devicePixelRatio
+*/
+
+/*!
+  The ratio between logical and physical pixel sizes -- obtained from the window that
+the widget is located within, and updated whenver any change occurs, emitting a devicePixelRatioChanged signal.  Only available for version Qt 5.6 and above (will be 1.0 for all previous versions)
+ */
+
+qreal
+QuarterWidget::devicePixelRatio(void) const
+{
+  return PRIVATE(this)->device_pixel_ratio;
+}
+
+/*!
   Sets the Inventor scenegraph to be rendered
  */
 void
@@ -675,12 +698,42 @@ QuarterWidget::seek(void)
     }
   }
 }
+
+bool
+QuarterWidget::updateDevicePixelRatio(void) {
+#if QT_VERSION >= 0x050000
+    qreal dev_pix_ratio = 1.0;
+    QWidget* winwidg = window();
+    QWindow* win = NULL;
+    if(winwidg) {
+        win = winwidg->windowHandle();
+    }
+    if(win) {
+        dev_pix_ratio = win->devicePixelRatio();
+    }
+    else {
+        dev_pix_ratio = ((QGuiApplication*)QGuiApplication::instance())->devicePixelRatio();
+    }
+    if(PRIVATE(this)->device_pixel_ratio != dev_pix_ratio) {
+        PRIVATE(this)->device_pixel_ratio = dev_pix_ratio;
+        emit devicePixelRatioChanged(dev_pix_ratio);
+        return true;
+    }
+#endif
+    return false;
+}
+
 /*!
   Overridden from QGLWidget to resize the Coin scenegraph
  */
 void QuarterWidget::resizeEvent(QResizeEvent* event)
 {
-    SbViewportRegion vp(event->size().width(), event->size().height());
+    updateDevicePixelRatio();
+    qreal dev_pix_ratio = devicePixelRatio();
+    int width = static_cast<int>(dev_pix_ratio * event->size().width());
+    int height = static_cast<int>(dev_pix_ratio * event->size().height());
+
+    SbViewportRegion vp(width, height);
     PRIVATE(this)->sorendermanager->setViewportRegion(vp);
     PRIVATE(this)->soeventmanager->setViewportRegion(vp);
     if (scene())
