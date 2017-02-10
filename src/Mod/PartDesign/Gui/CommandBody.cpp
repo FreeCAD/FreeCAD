@@ -26,15 +26,19 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QInputDialog>
+# include <Inventor/nodes/SoCamera.h>
 #endif
 
 #include <Base/Console.h>
 #include <App/Part.h>
 #include <Gui/Command.h>
+#include <Gui/Document.h>
 #include <Gui/Application.h>
 #include <Gui/ActiveObjectList.h>
 #include <Gui/MainWindow.h>
-#include <Gui/MDIView.h>
+#include <Gui/ViewProviderOrigin.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -141,6 +145,7 @@ void CmdPartDesignBody::activated(int iMsg)
     std::vector<App::DocumentObject*> features =
         getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     App::DocumentObject* baseFeature = nullptr;
+    bool viewAll = features.empty();
 
 
     if (!features.empty()) {
@@ -164,8 +169,8 @@ void CmdPartDesignBody::activated(int iMsg)
                 QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Bad base feature"),
                         QObject::tr("Body can't be based on annother body."));
                 baseFeature = nullptr;
-            } else {
-
+            }
+            else {
                 partOfBaseFeature = App::Part::getPartOfObject(baseFeature);
                 if (partOfBaseFeature != 0  &&  partOfBaseFeature != actPart){
                     //prevent cross-part mess
@@ -211,6 +216,21 @@ void CmdPartDesignBody::activated(int iMsg)
                  actPart->getNameInDocument(), bodyName.c_str());
     }
 
+    // if no part feature was there then auto-adjust the camera
+    if (viewAll) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
+        Gui::View3DInventor* view = doc ? qobject_cast<Gui::View3DInventor*>(doc->getActiveView()) : nullptr;
+        if (view) {
+            SoCamera* camera = view->getViewer()->getCamera();
+            SbViewportRegion vpregion = view->getViewer()->getViewportRegion();
+            float aspectratio = vpregion.getViewportAspectRatio();
+
+            float size = Gui::ViewProviderOrigin::defaultSize();
+            SbBox3f bbox;
+            bbox.setBounds(-size,-size,-size,size,size,size);
+            camera->viewBoundingBox(bbox, aspectratio, 1.0f);
+        }
+    }
 
     updateActive();
 }
