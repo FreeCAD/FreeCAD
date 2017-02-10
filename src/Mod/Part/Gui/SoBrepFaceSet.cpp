@@ -788,7 +788,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
         mbind = OVERALL;
         doTextures = false;
 	vbo_available=0;
-	update_vbo=1;
+	// update_vbo=1;
         renderShape(static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 	vbo_available=1;
@@ -934,7 +934,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 // Second use GL_arrays instead of standard data
 
     /* This code detect if the user activated VBO through the preference menu */
-
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     Gui::View3DInventor* view;
     if ( doc != NULL )
@@ -947,8 +946,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    Gui::View3DInventorViewer* viewer = view->getViewer();
 	    ViewerVBO=viewer->get_vbo_state();
     }
-
-
+//    bool ViewerVBO=true;
 
     if (( vbo_available ) && ViewerVBO )
     {
@@ -986,6 +984,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             mycolor1=SoLazyElement::getDiffuse(current_state,0);
             mycolor2=SoLazyElement::getDiffuse(current_state,0);
             mycolor3=SoLazyElement::getDiffuse(current_state,0);
+
 	    while (viptr + 2 < viendptr) {
 	        v1 = *viptr++;
 	        v2 = *viptr++;
