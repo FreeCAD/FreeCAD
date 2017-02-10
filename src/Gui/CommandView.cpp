@@ -586,22 +586,27 @@ Gui::Action * StdCmdDrawStyle::createAction(void)
     a0->setIcon(BitmapFactory().iconFromTheme("DrawStyleAsIs"));
     a0->setChecked(true);
     a0->setObjectName(QString::fromLatin1("Std_DrawStyleAsIs"));
+    a0->setShortcut(QKeySequence(QString::fromUtf8("V,1")));
     QAction* a1 = pcAction->addAction(QString());
     a1->setCheckable(true);
     a1->setIcon(BitmapFactory().iconFromTheme("DrawStyleFlatLines"));
     a1->setObjectName(QString::fromLatin1("Std_DrawStyleFlatLines"));
+    a1->setShortcut(QKeySequence(QString::fromUtf8("V,2")));
     QAction* a2 = pcAction->addAction(QString());
     a2->setCheckable(true);
     a2->setIcon(BitmapFactory().iconFromTheme("DrawStyleShaded"));
     a2->setObjectName(QString::fromLatin1("Std_DrawStyleShaded"));
+    a2->setShortcut(QKeySequence(QString::fromUtf8("V,3")));
     QAction* a3 = pcAction->addAction(QString());
     a3->setCheckable(true);
     a3->setIcon(BitmapFactory().iconFromTheme("DrawStyleWireFrame"));
     a3->setObjectName(QString::fromLatin1("Std_DrawStyleWireframe"));
+    a3->setShortcut(QKeySequence(QString::fromUtf8("V,4")));
     QAction* a4 = pcAction->addAction(QString());
     a4->setCheckable(true);
     a4->setIcon(BitmapFactory().iconFromTheme("DrawStylePoints"));
     a4->setObjectName(QString::fromLatin1("Std_DrawStylePoints"));
+    a4->setShortcut(QKeySequence(QString::fromUtf8("V,5")));
     pcAction->setIcon(a0->icon());
 
     _pcAction = pcAction;
