@@ -63,8 +63,8 @@
 #include <string.h>
 #ifdef FC_OS_WIN32
 #include <windows.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/glext.h>
+#include <GL/gl.h>
+#include <GL/glext.h>
 #else
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
