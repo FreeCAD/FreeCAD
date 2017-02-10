@@ -92,6 +92,7 @@ public:
   bool processdelayqueue;
   QUrl navigationModeFile;
   SoScXMLStateMachine * currentStateMachine;
+  qreal device_pixel_ratio;
 
   static void rendercb(void * userdata, SoRenderManager *);
   static void prerendercb(void * userdata, SoRenderManager * manager);
