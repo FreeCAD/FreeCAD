@@ -39,10 +39,78 @@
 #include "Document.h"
 
 #include "PropertyLinks.h"
+#include "GeoFeatureGroupExtension.h"
 
 using namespace App;
 using namespace Base;
 using namespace std;
+
+
+void ensureDAG(PropertyContainer* container, App::DocumentObject* object) {
+    
+    if(!container || !object)
+        return;
+    
+    if(!container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        throw Base::Exception("Only DocumentObjects are allowed to use PropertyLinks");
+    
+    auto cont = static_cast<App::DocumentObject*>(container);
+    
+    //on restore we don't need to do anything
+    if(cont->isRestoring() || object->isRestoring())
+        return;
+    
+    //recursively traverse the object links and see if we reach the container, which would be a 
+    //cyclic graph --> not allowed
+    for(auto obj : object->getOutList()) {    
+        if(obj == cont)
+            throw Base::Exception("This link would create a cyclic dependency, hence it is rejected");
+        
+        ensureDAG(container, obj);
+    }
+};
+
+//helper functions to ensure correct geofeaturegroups. Each object is only allowed to be in a 
+//single group, and links are not allowed to cross GeoFeatureGroup borders
+void ensureCorrectGroups(PropertyContainer* container, App::DocumentObject* object) {
+    
+    //on object creation the container may be null, and linked objects may be null anyhow
+    if(!container || !object)
+        return;
+    
+    if(!container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        throw Base::Exception("Only DocumentObjects are allowed to use PropertyLinks");
+    
+    auto cont = static_cast<App::DocumentObject*>(container);
+    
+    //on restore we don't need to do anything
+    if(cont->isRestoring() || object->isRestoring())
+        return;
+    
+    auto objs = GeoFeatureGroupExtension::getCSRelevantLinks(object);
+    objs.push_back(object);
+    
+    for(auto obj : objs) {
+        App::DocumentObject* grp = GeoFeatureGroupExtension::getGroupOfObject(obj);
+        
+        //if the container is a GeoFeatureGroup there are two allowed possibilites:
+        //1. the objet is in no group, hence in a single one after adding
+        //2. the object is already in the container group
+        if(cont->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            
+            if(!grp || (grp == cont))      
+                return;
+        }
+        //if the container is a normal object there is only a single allowed possibility:
+        //1. The object has the exact same GeoFeatureGrou as the container (null included)
+        else if(grp == GeoFeatureGroupExtension::getGroupOfObject(cont)) {
+                return;
+        }
+            
+        //if we arrive here the container and the object don't have compatible GeoFeatureGroups
+        throw Base::Exception("Links are only allowed within a GeoFeatureGroup");
+    }
+};
 
 //**************************************************************************
 //**************************************************************************
@@ -72,6 +140,8 @@ PropertyLink::~PropertyLink()
 
 void PropertyLink::setValue(App::DocumentObject * lValue)
 {
+    ensureDAG(getContainer(), lValue);
+    ensureCorrectGroups(getContainer(), lValue);
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     // maintain the back link in the DocumentObject class
@@ -205,6 +275,9 @@ int PropertyLinkList::getSize(void) const
 
 void PropertyLinkList::setValue(DocumentObject* lValue)
 {
+    ensureDAG(getContainer(), lValue);
+    ensureCorrectGroups(getContainer(), lValue);
+    
 #ifndef USE_OLD_DAG   
     //maintain the back link in the DocumentObject class
     for(auto *obj : _lValueList)
@@ -228,6 +301,11 @@ void PropertyLinkList::setValue(DocumentObject* lValue)
 
 void PropertyLinkList::setValues(const std::vector<DocumentObject*>& lValue)
 {
+    for(auto obj : lValue) {
+        ensureDAG(getContainer(), obj);
+        ensureCorrectGroups(getContainer(), obj);
+    }
+    
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     //maintain the back link in the DocumentObject class
@@ -380,6 +458,9 @@ PropertyLinkSub::~PropertyLinkSub()
 
 void PropertyLinkSub::setValue(App::DocumentObject * lValue, const std::vector<std::string> &SubList)
 {
+    ensureDAG(getContainer(), lValue);
+    ensureCorrectGroups(getContainer(), lValue);
+    
     aboutToSetValue();
 #ifndef USE_OLD_DAG
     if (_pcLinkSub)
@@ -576,6 +657,9 @@ int PropertyLinkSubList::getSize(void) const
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue,const char* SubName)
 {
+    ensureDAG(getContainer(), lValue);
+    ensureCorrectGroups(getContainer(), lValue);
+    
 #ifndef USE_OLD_DAG
     //maintain backlinks
     for(auto *obj : _lValueList)
@@ -605,6 +689,11 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
+    for(auto obj : lValue) {
+        ensureDAG(getContainer(), obj);
+        ensureCorrectGroups(getContainer(), obj);
+    }
+    
 #ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
@@ -631,6 +720,11 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
     if (lValue.size() != lSubNames.size())
         throw Base::ValueError("PropertyLinkSubList::setValues: size of subelements list != size of objects list");
     
+    for(auto obj : lValue) {
+        ensureDAG(getContainer(), obj);
+        ensureCorrectGroups(getContainer(), obj);
+    }
+    
 #ifndef USE_OLD_DAG
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
@@ -651,6 +745,9 @@ void PropertyLinkSubList::setValues(const std::vector<DocumentObject*>& lValue,c
 
 void PropertyLinkSubList::setValue(DocumentObject* lValue, const std::vector<string> &SubList)
 {
+    ensureDAG(getContainer(), lValue);
+    ensureCorrectGroups(getContainer(), lValue);
+    
 #ifndef USE_OLD_DAG    
     //maintain backlinks. _lValueList can contain items multiple times, but we trust the document 
     //object to ensure that this works
