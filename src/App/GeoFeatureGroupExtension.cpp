@@ -274,9 +274,10 @@ std::vector< DocumentObject* > GeoFeatureGroupExtension::getCSRelevantLinks(Docu
         result.insert(result.end(), out.begin(), out.end());
     }
     
-    //there will be many douplicates
+    //there will be many douplicates and also the passed obj in
     std::sort(result.begin(), result.end());
     result.erase(std::unique(result.begin(), result.end()), result.end());
+    result.erase(std::remove(result.begin(), result.end(), obj), result.end());
     
     return result;
 }
