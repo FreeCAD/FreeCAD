@@ -63,6 +63,8 @@
 #include <string.h>
 #ifdef FC_OS_WIN32
 #include <windows.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
 #else
 #ifdef FC_OS_MACOSX
 #include <OpenGL/gl.h>
@@ -113,11 +115,36 @@ SoBrepFaceSet::SoBrepFaceSet()
    if ( strstr((char *)GL_extension,(char *)"GL_ARB_vertex_buffer_object") != NULL )
 	vbo_available=1;
 #endif
+
+#ifdef FC_OS_WIN32
+    /* Windows OpenGL implementation is very basic (aka 1.4) */
+/*    if ( myglGenBuffers == NULL )
+    {
+	    myglGenBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glGenBuffersARB");
+	    myglDeleteBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glDeleteBuffersARB");
+	    myglBindBuffers = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glBindBuffersARB");
+	    myglBufferData = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glBufferDataARB");
+	    myglMapBufferARB = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glMapBufferARB");
+	    myglunMapBufferARB = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glunMapBufferARB");
+	    myglEnableClientState = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glEnableClientState");
+	    myglDisableClientState = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glDisableClientState");
+	    myglVertexPointer = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glVertexPointer");
+	    myglNormalPointer = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glNormalPointer");
+	    myglColorPointer = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glColorPointer");
+	    myglDrawElements = (PFNGLGENBUFFERSPROC)wglGetProcAddress("glDrawElements");
+    }
+*/
+#endif
+
     vbo_available=1;
     update_vbo=0;
     if ( vbo_available )
     {
+#ifdef FC_OS_WIN32
+	    myglGenBuffers(2, &myvbo[0]);
+#else
 	    glGenBuffersARB(2, &myvbo[0]);
+#endif
 	    vbo_loaded=0;
 	    indice_array=0;
     }
@@ -920,6 +947,7 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     int matnr = 0;
     int trinr = 0;
 
+    
 
     /* This code detect if the user activated VBO through the preference menu */
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
