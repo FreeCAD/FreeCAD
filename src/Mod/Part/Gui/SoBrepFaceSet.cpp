@@ -407,12 +407,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     SbColor mycolor1;
     uint32_t RGBA;
 
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    Gui::View3DInventorViewer* viewer = view->getViewer();
-    bool myvbo=viewer->get_vbo_state();
-
-
 
     SoMaterialBundle mb(action);
 
@@ -921,10 +915,6 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     SbVec3f dummynormal(0,0,1);
     int numverts = vertexlist->getNum();
 
-    mycolor1=SoLazyElement::getDiffuse(current_state,0);
-    mycolor2=SoLazyElement::getDiffuse(current_state,0);
-    mycolor3=SoLazyElement::getDiffuse(current_state,0);
-
     const SbVec3f *currnormal = &dummynormal;
     if (normals) currnormal = normals;
 
@@ -946,9 +936,19 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
     /* This code detect if the user activated VBO through the preference menu */
 
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    Gui::View3DInventorViewer* viewer = view->getViewer();
-    bool ViewerVBO=viewer->get_vbo_state();
+    Gui::View3DInventor* view;
+    if ( doc != NULL )
+	  view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
+    else
+          view = NULL;
+    bool ViewerVBO=false;
+    if ( view != NULL )
+    {
+	    Gui::View3DInventorViewer* viewer = view->getViewer();
+	    ViewerVBO=viewer->get_vbo_state();
+    }
+
+
 
     if (( vbo_available ) && ViewerVBO )
     {
@@ -982,6 +982,10 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 	    vertex_array = ( float * ) malloc ( sizeof(float) * num_indices *10 );
 	    index_array = ( GLuint *) malloc ( sizeof(GLuint) * num_indices *3 );
 	    }
+	    // glBegin(GL_TRIANGLES);
+            mycolor1=SoLazyElement::getDiffuse(current_state,0);
+            mycolor2=SoLazyElement::getDiffuse(current_state,0);
+            mycolor3=SoLazyElement::getDiffuse(current_state,0);
 	    while (viptr + 2 < viendptr) {
 	        v1 = *viptr++;
 	        v2 = *viptr++;
@@ -1153,8 +1157,8 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
             trinr = 0;
         }
 
-    	   }
 	   //glEnd();
+    	   }
 	if ((  ! update_vbo ) || (!vbo_loaded) )
 	{
 	// Push the content to the VBO
