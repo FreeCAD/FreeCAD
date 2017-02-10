@@ -216,6 +216,9 @@ void CmdPartDesignBody::activated(int iMsg)
                  actPart->getNameInDocument(), bodyName.c_str());
     }
 
+    // The method 'SoCamera::viewBoundingBox' is still declared as protected in the Coin3d version
+    // for OSX. But since version 4.0 it should be public.
+#if !defined(Q_OS_MAC)
     // if no part feature was there then auto-adjust the camera
     if (viewAll) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
@@ -231,6 +234,7 @@ void CmdPartDesignBody::activated(int iMsg)
             camera->viewBoundingBox(bbox, aspectratio, 1.0f);
         }
     }
+#endif
 
     updateActive();
 }
