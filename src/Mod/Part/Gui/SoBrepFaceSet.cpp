@@ -20,8 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#define GL_GLEXT_PROTOTYPES
 #include "PreCompiled.h"
+
+#ifndef FC_OS_WIN32
+#define GL_GLEXT_PROTOTYPES
+#endif
 
 #ifndef _PreComp_
 #include <float.h>
@@ -75,9 +78,21 @@
 #endif
 #endif
 
+#if QT_VERSION < 0x50000
+#include <QGLContext>
+#else
+#include <QOpenGLContext>
+#endif
+
 
 using namespace PartGui;
 
+
+#if QT_VERSION < 0x50000
+#define _PROC(addr) QString::fromLatin1(addr)
+#else
+#define _PROC(addr) QByteArray(addr)
+#endif
 
 SO_NODE_SOURCE(SoBrepFaceSet);
 
@@ -135,16 +150,20 @@ SoBrepFaceSet::SoBrepFaceSet()
     }
 */
 #endif
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+   const QGLContext* gl = QGLContext::currentContext();
+#else
+   QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+   PFNGLGENBUFFERSPROC glGenBuffersARB = (PFNGLGENBUFFERSPROC)gl->getProcAddress(_PROC("glGenBuffersARB"));
+#endif
 
     vbo_available=1;
     update_vbo=0;
     if ( vbo_available )
     {
-#ifdef FC_OS_WIN32
-	    myglGenBuffers(2, &myvbo[0]);
-#else
 	    glGenBuffersARB(2, &myvbo[0]);
-#endif
 	    vbo_loaded=0;
 	    indice_array=0;
     }
@@ -153,6 +172,16 @@ SoBrepFaceSet::SoBrepFaceSet()
 
 SoBrepFaceSet::~SoBrepFaceSet()
 {
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+   const QGLContext* gl = QGLContext::currentContext();
+#else
+    QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+    if (!gl)
+        return;
+    PFNGLDELETEBUFFERSARBPROC glDeleteBuffersARB = (PFNGLDELETEBUFFERSARBPROC)gl->getProcAddress(_PROC("glDeleteBuffersARB"));
+#endif
    glDeleteBuffersARB(2, &myvbo[0]);
 }
 
@@ -992,7 +1021,16 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 			// We must remember the buffer size ... If it has to be extended we must
 			// take care of that
 	
-			glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+                const QGLContext* gl = QGLContext::currentContext();
+#else
+                QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+                PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) gl->getProcAddress(_PROC("glBindBufferARB"));
+                PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) gl->getProcAddress(_PROC("glMapBufferARB"));
+#endif
+                glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
 		        glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
 			vertex_array=(float*)glMapBufferARB(GL_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
 			index_array=(GLuint *)glMapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, GL_WRITE_ONLY_ARB);
@@ -1195,6 +1233,15 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 		if ((  ! update_vbo ) || (!vbo_loaded) )
 		{
 			// Push the content to the VBO
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+            const QGLContext* gl = QGLContext::currentContext();
+#else
+            QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+            PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)gl->getProcAddress(_PROC("glBindBufferARB"));
+            PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)gl->getProcAddress(_PROC("glBufferDataARB"));
+#endif
 
 		        glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
 			glBufferDataARB(GL_ARRAY_BUFFER_ARB, sizeof(float) * indice , vertex_array, GL_DYNAMIC_DRAW_ARB);
@@ -1212,13 +1259,29 @@ void SoBrepFaceSet::renderShape(const SoGLCoordinateElement * const vertexlist,
 		}
 		else
 		{
-			glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+            const QGLContext* gl = QGLContext::currentContext();
+#else
+            QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+            PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC)gl->getProcAddress(_PROC("glUnmapBufferARB"));
+#endif
+            glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
 			glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
 			update_vbo=0;
 		}
     	}
 
 	// This is the VBO rendering code
+#ifdef FC_OS_WIN32
+#if QT_VERSION < 0x50000
+        const QGLContext* gl = QGLContext::currentContext();
+#else
+        QOpenGLContext* gl = QOpenGLContext::currentContext();
+#endif
+   PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)gl->getProcAddress(_PROC("glBindBufferARB"));
+#endif
 
 	glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
 	glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
