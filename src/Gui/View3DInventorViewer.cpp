@@ -1453,6 +1453,7 @@ void View3DInventorViewer::renderScene(void)
     SoGLRenderAction* glra = this->getSoRenderManager()->getGLRenderAction();
     SoGLWidgetElement::set(glra->getState(), qobject_cast<QGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(glra->getState(), glra);
+    SoGLVBOActivatedElement::set(glra->getState(), this->vboEnabled);
     glra->apply(this->backgroundroot);
 
     navigation->updateAnimation();
