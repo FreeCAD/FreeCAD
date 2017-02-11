@@ -26,6 +26,7 @@
 # include <QApplication>
 # include <QMessageBox>
 # include <QInputDialog>
+# include <Inventor/C/basic.h>
 # include <Inventor/nodes/SoCamera.h>
 #endif
 
@@ -216,9 +217,9 @@ void CmdPartDesignBody::activated(int iMsg)
                  actPart->getNameInDocument(), bodyName.c_str());
     }
 
-    // The method 'SoCamera::viewBoundingBox' is still declared as protected in the Coin3d version
-    // for OSX. But since version 4.0 it should be public.
-#if !defined(Q_OS_MAC)
+    // The method 'SoCamera::viewBoundingBox' is still declared as protected in Coin3d versions
+    // older than 4.0.
+#if COIN_MAJOR_VERSION >= 4
     // if no part feature was there then auto-adjust the camera
     if (viewAll) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(getDocument());
