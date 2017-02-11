@@ -51,8 +51,14 @@ void ensureDAG(PropertyContainer* container, App::DocumentObject* object) {
     if(!container || !object)
         return;
     
+    //document containers and other non-object things don't need to be handled
     if(!container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        throw Base::Exception("Only DocumentObjects are allowed to use PropertyLinks");
+        return;
+    
+    //undo and redo do not need to be handled as they can only go to already checked stated (the link
+    //state during those actions can get messed up, we really don't want to check for that)
+    if(object->getDocument()->performsTransactionOperation())
+        return;
     
     auto cont = static_cast<App::DocumentObject*>(container);
     
@@ -71,15 +77,21 @@ void ensureDAG(PropertyContainer* container, App::DocumentObject* object) {
 };
 
 //helper functions to ensure correct geofeaturegroups. Each object is only allowed to be in a 
-//single group, and links are not allowed to cross GeoFeatureGroup borders
+//single geofeatueregroup, and links are not allowed to cross GeoFeatureGroup borders
 void ensureCorrectGroups(PropertyContainer* container, App::DocumentObject* object) {
     
     //on object creation the container may be null, and linked objects may be null anyhow
     if(!container || !object)
         return;
     
+    //document containers and other non-object things don't need to be handled
     if(!container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
-        throw Base::Exception("Only DocumentObjects are allowed to use PropertyLinks");
+        return;
+    
+    //undo and redo do not need to be handled as they can only go to already checked stated (the link
+    //state during those actions can get messed up, we really don't want to check for that)
+    if(object->getDocument()->performsTransactionOperation())
+        return;
     
     auto cont = static_cast<App::DocumentObject*>(container);
     

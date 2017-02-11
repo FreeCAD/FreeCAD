@@ -306,6 +306,8 @@ public:
     std::vector<std::string> getAvailableRedoNames() const;
     /// Will REDO  one step, returns  False if no redo was done (Redos == 0).
     bool redo() ;
+    /// returns true if the document is in an Transaction phase, e.g. currently performing a redo/undo or rollback
+    bool performsTransactionOperation();
     //@}
 
     /** @name dependency stuff */
