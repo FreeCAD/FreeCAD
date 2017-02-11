@@ -32,6 +32,7 @@
 #include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoReplacedElement.h>
 #include <vector>
+
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 
@@ -84,7 +85,6 @@ public:
     SoMFInt32 partIndex;
     SoSFInt32 highlightIndex;
     SoMFInt32 selectionIndex;
-   int vbo_available,update_vbo;
 
 protected:
     virtual ~SoBrepFaceSet();
@@ -112,7 +112,8 @@ private:
     };
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
-    void renderShape(const SoGLCoordinateElement * const vertexlist,
+    void renderShape(SoState * state,
+                     const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
                      int num_vertexindices,
                      const int32_t *partindices,
@@ -140,13 +141,14 @@ private:
     std::vector<float> vertex_array;
 #endif
 
-// Define some VBO pointer for the current mesh
-   uint32_t myvbo[2];
-   int vbo_loaded;
-   uint32_t indice_array;
-   const char *GL_extension;
-   SoState * current_state;
-  
+    // Define some VBO pointer for the current mesh
+    SbBool vboAvailable;
+public:
+    SbBool updateVbo;
+private:
+    uint32_t myvbo[2];
+    SbBool vboLoaded;
+    uint32_t indice_array;
 
     SbColor selectionColor;
     SbColor highlightColor;

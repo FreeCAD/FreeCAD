@@ -89,7 +89,7 @@ void AbstractSplitView::setupSettings()
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"UseAntialiasing");
     OnChange(*hGrp,"ShowFPS");
-    OnChange(*hGrp,"useVBO");
+    OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -227,11 +227,10 @@ void AbstractSplitView::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp
     else if (strcmp(Reason,"ShowFPS") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
             (*it)->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
-  	puts("updating FPS 1");
     }
-    else if (strcmp(Reason,"useVBO") == 0) {
+    else if (strcmp(Reason,"UseVBO") == 0) {
         for (std::vector<View3DInventorViewer*>::iterator it = _viewer.begin(); it != _viewer.end(); ++it)
-            (*it)->setEnableduseVBO(rGrp.GetBool("useVBO",false));
+            (*it)->setEnabledVBO(rGrp.GetBool("UseVBO",false));
     }
 
     else if (strcmp(Reason,"Orthographic") == 0) {
