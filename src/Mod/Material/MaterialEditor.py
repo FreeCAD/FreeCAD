@@ -19,6 +19,7 @@
 #*   USA                                                                   *
 #*                                                                         *
 #***************************************************************************
+from __future__ import print_function
 
 import FreeCAD, FreeCADGui, os
 from PySide import QtCore, QtGui, QtUiTools, QtSvg
@@ -248,7 +249,7 @@ class MaterialEditor:
             try:
                 import DrawingPatterns
             except:
-                print "DrawingPatterns not found"
+                print("DrawingPatterns not found")
             else:
                 pattern = DrawingPatterns.buildFileSwatch(pattern,size=96,png=True)
                 if pattern:
