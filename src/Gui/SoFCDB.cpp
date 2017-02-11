@@ -98,6 +98,7 @@ void Gui::SoFCDB::init()
     SoFCDocumentObjectAction        ::initClass();
     SoGLSelectAction                ::initClass();
     SoVisibleFaceAction             ::initClass();
+    SoUpdateVBOAction               ::initClass();
     SoBoxSelectionRenderAction      ::initClass();
     SoFCVectorizeSVGAction          ::initClass();
     SoFCVectorizeU3DAction          ::initClass();
@@ -189,6 +190,7 @@ void Gui::SoFCDB::finish()
     SoFCEnableSelectionAction       ::finish();
     SoFCEnableHighlightAction       ::finish();
     SoFCSelectionColorAction        ::finish();
+    SoUpdateVBOAction               ::finish();
     SoFCHighlightColorAction        ::finish();
     
     storage->unref();

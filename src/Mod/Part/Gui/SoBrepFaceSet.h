@@ -143,9 +143,7 @@ private:
 
     // Define some VBO pointer for the current mesh
     SbBool vboAvailable;
-public:
     SbBool updateVbo;
-private:
     uint32_t myvbo[2];
     SbBool vboLoaded;
     uint32_t indice_array;
