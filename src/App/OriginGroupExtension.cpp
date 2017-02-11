@@ -67,10 +67,20 @@ App::Origin *OriginGroupExtension::getOrigin () const {
 
 App::DocumentObject *OriginGroupExtension::getGroupOfObject (const DocumentObject* obj) {
     
+    if(!obj)
+        return nullptr;
+    
+    bool isOriginFeature = obj->isDerivedFrom(App::OriginFeature::getClassTypeId());
+    
     auto list = obj->getInList();
-    for (auto obj : list) {
-        if(obj->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
-            return obj;
+    for (auto o : list) {
+        if(o->hasExtension(App::OriginGroupExtension::getExtensionClassTypeId()))
+            return o;
+        else if (isOriginFeature && o->isDerivedFrom(App::Origin::getClassTypeId())) {
+            auto result = getGroupOfObject(o);
+            if(result)
+                return result;
+        }
     }
 
     return nullptr;

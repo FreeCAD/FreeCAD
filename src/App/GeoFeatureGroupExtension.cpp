@@ -32,6 +32,7 @@
 #include "GeoFeatureGroupExtension.h"
 #include "OriginFeature.h"
 #include "Origin.h"
+#include "OriginGroupExtension.h"
 //#include "GeoFeatureGroupPy.h"
 //#include "FeaturePythonPyImp.h"
 
@@ -81,6 +82,13 @@ void GeoFeatureGroupExtension::transformPlacement(const Base::Placement &transfo
 
 DocumentObject* GeoFeatureGroupExtension::getGroupOfObject(const DocumentObject* obj)
 {
+    if(!obj)
+        return nullptr;
+    
+    //we will find origins, but not origin features
+    if(obj->isDerivedFrom(App::OriginFeature::getClassTypeId())) 
+        return OriginGroupExtension::getGroupOfObject(obj);
+    
     //compared to GroupExtension we do return here all geofeaturegroups including all extensions erived from it
     //like origingroup. That is needed as we use this function to get all local coordinate systems. Also there 
     //is no reason to distuinguish between geofeatuergroups, there is only between group/geofeaturegroup

@@ -99,7 +99,7 @@ App::Plane *Origin::getPlane( const char *role ) const {
     }
 }
 
-bool Origin::hasObject (DocumentObject *obj) const {
+bool Origin::hasObject (const DocumentObject *obj) const {
     const auto & features = OriginFeatures.getValues ();
     return std::find (features.begin(), features.end(), obj) != features.end ();
 }

@@ -106,7 +106,7 @@ public:
     ///@}
 
     /// Returns true if the given object is part of the origin
-    bool hasObject (DocumentObject *obj) const;
+    bool hasObject (const DocumentObject *obj) const;
 
     /// Returns the default bounding box of the origin (use this if you confused what should be s )
     // TODO Delete me if not really needed (2015-09-01, Fat-Zer)

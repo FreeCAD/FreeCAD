@@ -863,6 +863,12 @@ bool Document::redo(void)
     return false;
 }
 
+bool Document::performsTransactionOperation() {
+    
+    return d->undoing || d->rollback;
+}
+
+
 std::vector<std::string> Document::getAvailableUndoNames() const
 {
     std::vector<std::string> vList;
