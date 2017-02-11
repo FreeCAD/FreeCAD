@@ -862,14 +862,28 @@ class UndoRedoCases(unittest.TestCase):
     self.failUnless(prt1.hasObject(obj1)==False)
     self.failUnless(prt2.hasObject(grp2))
     self.failUnless(prt2.hasObject(obj1))
+       
+    #to test: try add obj to second group by .Group = []
+    grp = prt1.Group
+    grp.append(grp2)
+    try:
+        prt1.Group=grp
+    except:
+        pass
+    else:
+        self.fail("No exception at cross geofeaturegroup links")
     
-    #adding the object to a geofeaturegroup, but not its group, should handle it automatically when used 
-    #addObject
-    
-    #to test: try add obj to second group, once by addObject, once by .Group = []
-    
-    #test set links over geofeaturegroup borders 
-    
+    prt2.addObject(grp1)
+    grp = grp1.Group
+    grp.append(obj1)
+    try:
+        grp1.Group = grp
+    except:
+        pass
+    else:
+        self.fail("No exception thrown when object is in multiple Groups")
+   
+        
 
   def tearDown(self):
     # closing doc
