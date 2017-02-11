@@ -113,6 +113,7 @@ private:
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
     void renderShape(SoState * state,
+                     SbBool hasVBO,
                      const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,
                      int num_vertexindices,
@@ -142,7 +143,7 @@ private:
 #endif
 
     // Define some VBO pointer for the current mesh
-    SbBool vboAvailable;
+    static SbBool vboAvailable;
     SbBool updateVbo;
     uint32_t myvbo[2];
     SbBool vboLoaded;
