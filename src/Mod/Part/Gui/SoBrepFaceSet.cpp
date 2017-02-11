@@ -96,6 +96,8 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepFaceSet);
 
+SbBool SoBrepFaceSet::vboAvailable = false;
+
 void SoBrepFaceSet::initClass()
 {
     SO_NODE_INIT_CLASS(SoBrepFaceSet, SoIndexedFaceSet, "IndexedFaceSet");
@@ -109,14 +111,11 @@ SoBrepFaceSet::SoBrepFaceSet()
     SO_NODE_ADD_FIELD(selectionIndex, (-1));
 
     static bool init = false;
-    static bool vertex_buffer_object = false;
     if (!init) {
         std::string ext = (const char*)(glGetString(GL_EXTENSIONS));
-        vertex_buffer_object = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
+        vboAvailable = (ext.find("GL_ARB_vertex_buffer_object") != std::string::npos);
         init = true;
     }
-
-    vboAvailable = vertex_buffer_object;
 
 #ifdef FC_OS_WIN32
 #if QT_VERSION < 0x50000
@@ -128,10 +127,10 @@ SoBrepFaceSet::SoBrepFaceSet()
 #endif
 
     updateVbo = false;
+    vboLoaded = false;
+    indice_array = 0;
     if (vboAvailable) {
         glGenBuffersARB(2, &myvbo[0]);
-        vboLoaded = false;
-        indice_array = 0;
     }
     selectionIndex.setNum(0);
 }
@@ -248,7 +247,7 @@ void SoBrepFaceSet::doAction(SoAction* action)
         }
     }
     // The recommended way to set 'updateVbo' is to reimplement the method 'notify'
-    // but the class made this method private so that we can't override it.
+    // but the base class made this method private so that we can't override it.
     // So, the alternative way is to write a custom SoAction class.
     else if (action->getTypeId() == Gui::SoUpdateVBOAction::getClassTypeId()) {
         this->updateVbo = true;
@@ -325,7 +324,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
 
-    renderShape(state, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
+    renderShape(state, vboAvailable, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
     // Disable caching for this node
@@ -452,7 +451,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
-    renderShape(state, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
+    renderShape(state, vboAvailable, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
     // Disable caching for this node
@@ -813,11 +812,8 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
         mbind = OVERALL;
         doTextures = false;
 
-        SbBool tmp = vboAvailable;
-        vboAvailable = false;
-        renderShape(state, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+        renderShape(state, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
-        vboAvailable = tmp;
     }
     state->pop();
     
@@ -900,11 +896,8 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
         else 
             nbind = OVERALL;
 
-        SbBool tmp = vboAvailable;
-        vboAvailable = false;
-        renderShape(state, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+        renderShape(state, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
-        vboAvailable = tmp;
     }
     state->pop();
     
@@ -913,6 +906,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
 }
 
 void SoBrepFaceSet::renderShape(SoState * state,
+                                SbBool hasVBO,
                                 const SoGLCoordinateElement * const vertexlist,
                                 const int32_t *vertexindices,
                                 int num_indices,
@@ -964,11 +958,11 @@ void SoBrepFaceSet::renderShape(SoState * state,
     }
 
     /*
-        vboAvailable is used to determine if vbo is an avilable extension on the system .
+        'hasVBO' is used to determine if vbo is an available extension on the system.
         This is not because end user wants VBO that it is available.
     */
 
-    if (vboAvailable && ViewerVBO) {
+    if (hasVBO && ViewerVBO) {
         float * vertex_array = NULL;
         GLuint * index_array = NULL;
         SbVec3f *mynormal1,*mynormal2,*mynormal3;
