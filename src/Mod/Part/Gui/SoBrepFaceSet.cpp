@@ -247,6 +247,12 @@ void SoBrepFaceSet::doAction(SoAction* action)
             }
         }
     }
+    // The recommended way to set 'updateVbo' is to reimplement the method 'notify'
+    // but the class made this method private so that we can't override it.
+    // So, the alternative way is to write a custom SoAction class.
+    else if (action->getTypeId() == Gui::SoUpdateVBOAction::getClassTypeId()) {
+        this->updateVbo = true;
+    }
 
     inherited::doAction(action);
 }
