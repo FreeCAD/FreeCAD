@@ -799,9 +799,10 @@ void ViewProviderPartExt::reload()
 
 void ViewProviderPartExt::updateData(const App::Property* prop)
 {
-    // vejmarie: Force VBO update of the part 
-    this->faceset->update_vbo=1;
     if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+        // vejmarie: Force VBO update of the part
+        this->faceset->updateVbo = true;
+
         // get the shape to show
         const TopoDS_Shape &cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
 

@@ -351,6 +351,9 @@ View3DInventorViewer::View3DInventorViewer(const QGLFormat& format, QWidget* par
 
 void View3DInventorViewer::init()
 {
+    fpsEnabled = false;
+    vboEnabled = false;
+
     Gui::Selection().Attach(this);
 
     // Coin should not clear the pixel-buffer, so the background image
@@ -787,9 +790,14 @@ void View3DInventorViewer::setEnabledFPSCounter(bool on)
     fpsEnabled = on;
 }
 
-void View3DInventorViewer::setEnableduseVBO(bool on)
+void View3DInventorViewer::setEnabledVBO(bool on)
 {
     vboEnabled = on;
+}
+
+bool View3DInventorViewer::isEnabledVBO() const
+{
+    return vboEnabled;
 }
 
 void View3DInventorViewer::setAxisCross(bool on)
@@ -1344,10 +1352,7 @@ void View3DInventorViewer::actualRedraw()
         break;
     }
 }
-bool View3DInventorViewer::get_vbo_state()
-{
-	return vboEnabled;
-}
+
 void View3DInventorViewer::renderFramebuffer()
 {
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
@@ -1449,7 +1454,6 @@ void View3DInventorViewer::renderScene(void)
     SoGLWidgetElement::set(glra->getState(), qobject_cast<QGLWidget*>(this->getGLWidget()));
     SoGLRenderActionElement::set(glra->getState(), glra);
     glra->apply(this->backgroundroot);
-
 
     navigation->updateAnimation();
 

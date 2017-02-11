@@ -55,7 +55,7 @@
          <string>Use OpenGL Vertex Buffer Object (experimental)</string>
         </property>
         <property name="prefEntry" stdset="0">
-         <cstring>useVBO</cstring>
+         <cstring>UseVBO</cstring>
         </property>
         <property name="prefPath" stdset="0">
          <cstring>View</cstring>
