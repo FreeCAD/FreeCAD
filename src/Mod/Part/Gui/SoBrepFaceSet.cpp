@@ -56,14 +56,8 @@
 #include "SoBrepFaceSet.h"
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/SoFCSelectionAction.h>
-#include <App/Application.h>
-#include <Gui/Application.h>
-#include <Gui/Document.h>
-#include <Gui/Command.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <stdio.h>
-#include <string.h>
+#include <Gui/SoFCInteractiveElement.h>
+
 #ifdef FC_OS_WIN32
 #include <windows.h>
 #include <GL/gl.h>
@@ -451,7 +445,12 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     if (!nindices) nindices = cindices;
     pindices = this->partIndex.getValues(0);
     numparts = this->partIndex.getNum();
-    renderShape(state, vboAvailable, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
+    SbBool hasVBO = vboAvailable;
+    if (hasVBO) {
+        // get the VBO status of the viewer
+        Gui::SoGLVBOActivatedElement::get(state, hasVBO);
+    }
+    renderShape(state, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
     // Disable caching for this node
@@ -944,25 +943,8 @@ void SoBrepFaceSet::renderShape(SoState * state,
     int matnr = 0;
     int trinr = 0;
 
-    /* This code detect if the user activated VBO through the preference menu */
-    Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    Gui::View3DInventor* view;
-    if (doc != NULL)
-        view = static_cast<Gui::View3DInventor*>(doc->getActiveView());
-    else
-        view = NULL;
-    bool ViewerVBO = false;
-    if (view != NULL) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
-        ViewerVBO = viewer->isEnabledVBO();
-    }
-
-    /*
-        'hasVBO' is used to determine if vbo is an available extension on the system.
-        This is not because end user wants VBO that it is available.
-    */
-
-    if (hasVBO && ViewerVBO) {
+    // Can we use vertex buffer objects?
+    if (hasVBO) {
         float * vertex_array = NULL;
         GLuint * index_array = NULL;
         SbVec3f *mynormal1,*mynormal2,*mynormal3;

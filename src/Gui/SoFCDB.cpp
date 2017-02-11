@@ -91,6 +91,7 @@ void Gui::SoFCDB::init()
     SoFCSelectionAction             ::initClass();
     SoFCDocumentAction              ::initClass();
     SoGLWidgetNode                  ::initClass();
+    SoGLVBOActivatedElement         ::initClass();
     SoFCEnableSelectionAction       ::initClass();
     SoFCEnableHighlightAction       ::initClass();
     SoFCSelectionColorAction        ::initClass();
