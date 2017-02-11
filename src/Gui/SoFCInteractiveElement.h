@@ -123,6 +123,31 @@ protected:
     virtual ~SoGLWidgetNode();
 };
 
+class GuiExport SoGLVBOActivatedElement : public SoElement {
+  typedef SoElement inherited;
+
+  SO_ELEMENT_HEADER(SoGLVBOActivatedElement);
+
+public:
+  static void initClass(void);
+
+  virtual void init(SoState * state);
+  virtual void push(SoState * state);
+  virtual void pop(SoState * state, const SoElement * prevTopElement);
+
+  virtual SbBool matches(const SoElement * element) const;
+  virtual SoElement * copyMatchInfo(void) const;
+
+  static  void set(SoState * state, SbBool);
+  static  void get(SoState * state, SbBool& active);
+
+protected:
+  virtual ~SoGLVBOActivatedElement();
+
+protected:
+  SbBool active;
+};
+
 } // namespace Gui
 
 #endif // GUI_SOFCINTERACTIVEELEMENT_H
