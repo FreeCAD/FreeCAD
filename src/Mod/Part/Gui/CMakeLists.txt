@@ -23,6 +23,12 @@ set(PartGui_LIBS
     FreeCADGui
 )
 
+if(MSVC)
+    include_directories(
+        ${CMAKE_SOURCE_DIR}/src/3rdParty/OpenGL/api
+    )
+endif(MSVC)
+
 if (BUILD_QT5)
     include_directories(
         ${Qt5Concurrent_INCLUDE_DIRS}
