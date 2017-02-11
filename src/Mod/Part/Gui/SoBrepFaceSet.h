@@ -112,7 +112,7 @@ private:
     };
     Binding findMaterialBinding(SoState * const state) const;
     Binding findNormalBinding(SoState * const state) const;
-    void renderShape(SoState * state,
+    void renderShape(SoGLRenderAction * action,
                      SbBool hasVBO,
                      const SoGLCoordinateElement * const vertexlist,
                      const int32_t *vertexindices,

@@ -72,6 +72,9 @@
 #endif
 #endif
 
+// Should come after glext.h to avoid warnings
+#include <Inventor/C/glue/gl.h>
+
 #if QT_VERSION < 0x50000
 #include <QGLContext>
 #else
@@ -450,7 +453,7 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
         // get the VBO status of the viewer
         Gui::SoGLVBOActivatedElement::get(state, hasVBO);
     }
-    renderShape(state, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
+    renderShape(action, hasVBO, static_cast<const SoGLCoordinateElement*>(coords), cindices, numindices,
         pindices, numparts, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
 
     // Disable caching for this node
@@ -811,7 +814,7 @@ void SoBrepFaceSet::renderHighlight(SoGLRenderAction *action)
         mbind = OVERALL;
         doTextures = false;
 
-        renderShape(state, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+        renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals, nindices, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
@@ -895,7 +898,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
         else 
             nbind = OVERALL;
 
-        renderShape(state, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
+        renderShape(action, false, static_cast<const SoGLCoordinateElement*>(coords), &(cindices[start]), length,
             &(pindices[id]), 1, normals_s, nindices_s, &mb, mindices, &tb, tindices, nbind, mbind, doTextures?1:0);
     }
     state->pop();
@@ -904,7 +907,7 @@ void SoBrepFaceSet::renderSelection(SoGLRenderAction *action)
         this->readUnlockNormalCache();
 }
 
-void SoBrepFaceSet::renderShape(SoState * state,
+void SoBrepFaceSet::renderShape(SoGLRenderAction * action,
                                 SbBool hasVBO,
                                 const SoGLCoordinateElement * const vertexlist,
                                 const int32_t *vertexindices,
@@ -959,18 +962,14 @@ void SoBrepFaceSet::renderShape(SoState * state,
         // TODO FINISHING THE COLOR SUPPORT !
 
         if (!vboLoaded || updateVbo) {
+            const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
             if (updateVbo && vboLoaded) {
                 // TODO
                 // We must remember the buffer size ... If it has to be extended we must
                 // take care of that
 #ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-                const QGLContext* gl = QGLContext::currentContext();
-#else
-                QOpenGLContext* gl = QOpenGLContext::currentContext();
-#endif
-                PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) gl->getProcAddress(_PROC("glBindBufferARB"));
-                PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) gl->getProcAddress(_PROC("glMapBufferARB"));
+                PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glBindBufferARB");
+                PFNGLMAPBUFFERARBPROC glMapBufferARB = (PFNGLMAPBUFFERARBPROC) cc_glglue_getprocaddress(glue, "glMapBufferARB");
 #endif
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
                 glBindBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB, myvbo[1]);
@@ -986,6 +985,7 @@ void SoBrepFaceSet::renderShape(SoState * state,
             }
 
             // Get the initial colors
+            SoState * state = action->getState();
             mycolor1=SoLazyElement::getDiffuse(state,0);
             mycolor2=SoLazyElement::getDiffuse(state,0);
             mycolor3=SoLazyElement::getDiffuse(state,0);
@@ -1177,13 +1177,8 @@ void SoBrepFaceSet::renderShape(SoState * state,
             if (!updateVbo || !vboLoaded) {
                 // Push the content to the VBO
 #ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-                const QGLContext* gl = QGLContext::currentContext();
-#else
-                QOpenGLContext* gl = QOpenGLContext::currentContext();
-#endif
-                PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)gl->getProcAddress(_PROC("glBindBufferARB"));
-                PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)gl->getProcAddress(_PROC("glBufferDataARB"));
+                PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
+                PFNGLBUFFERDATAARBPROC glBufferDataARB = (PFNGLBUFFERDATAARBPROC)cc_glglue_getprocaddress(glue, "glBufferDataARB");
 #endif
 
                 glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
@@ -1202,12 +1197,7 @@ void SoBrepFaceSet::renderShape(SoState * state,
             }
             else {
 #ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-                const QGLContext* gl = QGLContext::currentContext();
-#else
-                QOpenGLContext* gl = QOpenGLContext::currentContext();
-#endif
-                PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC)gl->getProcAddress(_PROC("glUnmapBufferARB"));
+                PFNGLUNMAPBUFFERARBPROC glUnmapBufferARB = (PFNGLUNMAPBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glUnmapBufferARB");
 #endif
                 glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
                 glUnmapBufferARB(GL_ELEMENT_ARRAY_BUFFER_ARB);
@@ -1217,12 +1207,8 @@ void SoBrepFaceSet::renderShape(SoState * state,
 
         // This is the VBO rendering code
 #ifdef FC_OS_WIN32
-#if QT_VERSION < 0x50000
-        const QGLContext* gl = QGLContext::currentContext();
-#else
-        QOpenGLContext* gl = QOpenGLContext::currentContext();
-#endif
-        PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)gl->getProcAddress(_PROC("glBindBufferARB"));
+        const cc_glglue * glue = cc_glglue_instance(action->getCacheContext());
+        PFNGLBINDBUFFERARBPROC glBindBufferARB = (PFNGLBINDBUFFERARBPROC)cc_glglue_getprocaddress(glue, "glBindBufferARB");
 #endif
 
         glBindBufferARB(GL_ARRAY_BUFFER_ARB, myvbo[0]);
