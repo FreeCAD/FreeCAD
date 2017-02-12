@@ -615,6 +615,9 @@ CmdPartDesignMoveFeature::CmdPartDesignMoveFeature()
 
 void CmdPartDesignMoveFeature::activated(int iMsg)
 {
+    QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Features moving is diabled"),
+            QObject::tr("Moving features is currently disabled as there is no way of handling origin connected moves"));
+    /*
     Q_UNUSED(iMsg);
     std::vector<App::DocumentObject*> features = getSelection().getObjectsOfType(Part::Feature::getClassTypeId());
     if (features.empty()) return;
@@ -731,7 +734,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         PartDesignGui::relinkToOrigin(feat, target);
     }
 
-    updateActive();
+    updateActive();*/
 }
 
 bool CmdPartDesignMoveFeature::isActive(void)

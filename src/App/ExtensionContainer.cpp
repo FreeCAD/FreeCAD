@@ -80,7 +80,7 @@ bool ExtensionContainer::hasExtension(Base::Type t, bool derived) const {
         }
         return false;
     }
-    return true;
+    return found;
 }
 
 bool ExtensionContainer::hasExtension(const std::string& name) const {
