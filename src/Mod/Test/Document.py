@@ -841,6 +841,8 @@ class UndoRedoCases(unittest.TestCase):
     grp1 = self.Doc.addObject("App::DocumentObjectGroup","Group1")
     grp2 = self.Doc.addObject("App::DocumentObjectGroup","Group2")
     grp1.addObject(obj1)
+    self.failUnless(obj1.getParentGroup()==grp1)
+    self.failUnless(obj1.getParentGeoFeatureGroup()==None)
     self.failUnless(grp1.hasObject(obj1))
     grp2.addObject(obj1)
     self.failUnless(grp1.hasObject(obj1)==False)
@@ -851,6 +853,8 @@ class UndoRedoCases(unittest.TestCase):
     prt2 = self.Doc.addObject("App::Part","Part2")
     
     prt1.addObject(grp2)
+    self.failUnless(grp2.getParentGeoFeatureGroup()==prt1)
+    self.failUnless(grp2.getParentGroup()==None)
     self.failUnless(grp2.hasObject(obj1))
     self.failUnless(prt1.hasObject(grp2))
     self.failUnless(prt1.hasObject(obj1))

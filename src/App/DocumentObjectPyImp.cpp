@@ -25,6 +25,8 @@
 #include "DocumentObject.h"
 #include "Document.h"
 #include "Expression.h"
+#include "GroupExtension.h"
+#include "GeoFeatureGroupExtension.h"
 
 // inclusion of the generated files (generated out of DocumentObjectPy.xml)
 #include <App/DocumentObjectPy.h>
@@ -309,6 +311,42 @@ PyObject*  DocumentObjectPy::recompute(PyObject *args)
     try {
         bool ok = getDocumentObjectPtr()->recomputeFeature();
         return Py_BuildValue("O", (ok ? Py_True : Py_False));
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::getParentGroup(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        auto grp = GroupExtension::getGroupOfObject(getDocumentObjectPtr());
+        if(!grp) {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+        return grp->getPyObject();
+    }
+    catch (const Base::Exception& e) {
+        throw Py::RuntimeError(e.what());
+    }
+}
+
+PyObject*  DocumentObjectPy::getParentGeoFeatureGroup(PyObject *args)
+{
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
+
+    try {
+        auto grp = GeoFeatureGroupExtension::getGroupOfObject(getDocumentObjectPtr());
+        if(!grp) {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+        return grp->getPyObject();
     }
     catch (const Base::Exception& e) {
         throw Py::RuntimeError(e.what());

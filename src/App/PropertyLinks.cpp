@@ -40,6 +40,7 @@
 
 #include "PropertyLinks.h"
 #include "GeoFeatureGroupExtension.h"
+#include "OriginFeature.h"
 
 using namespace App;
 using namespace Base;
@@ -86,6 +87,14 @@ void ensureCorrectGroups(PropertyContainer* container, App::DocumentObject* obje
     
     //document containers and other non-object things don't need to be handled
     if(!container->isDerivedFrom(App::DocumentObject::getClassTypeId()))
+        return;
+    
+    //links to origin feature can go over CS borders, as they are the same everywere anyway. This is 
+    //a workaround to allow moving of objects between GeoFeatureGroups that link to origin features. 
+    //During movement there is always a link in to the wron CS and the error would occure. If we 
+    //surpress the error at least the origin links can be fixed afterwards
+    //TODO: Find a more elegant solution
+    if(object->isDerivedFrom(App::OriginFeature::getClassTypeId()))
         return;
     
     //undo and redo do not need to be handled as they can only go to already checked stated (the link
