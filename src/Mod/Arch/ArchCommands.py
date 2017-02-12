@@ -241,11 +241,11 @@ def setAsSubcomponent(obj):
                 obj.ViewObject.Transparency = int(color[3]*100)
             obj.ViewObject.hide()
 
-def fixDAG(obj):
+def fixDAG(obj,force=False):
     '''fixDAG(object): Fixes non-DAG problems in windows and rebars
     by removing supports and external geometry from underlying sketches'''
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    if p.GetBool("archRemoveExternal",False):
+    if p.GetBool("archRemoveExternal",False) or force:
         if Draft.getType(obj) in ["Window","Rebar"]:
             if obj.Base:
                 if hasattr(obj.Base,"Support"):
