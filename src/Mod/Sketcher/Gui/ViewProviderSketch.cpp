@@ -3598,7 +3598,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             double firstparam = spline->getFirstParameter();
             double lastparam =  spline->getLastParameter();
             
-            const int ndiv = 64;
+            const int ndiv = poles.size()>4?poles.size()*16:64;
             double step = (lastparam - firstparam ) / (ndiv -1);
             
             std::vector<double> paramlist(ndiv);
