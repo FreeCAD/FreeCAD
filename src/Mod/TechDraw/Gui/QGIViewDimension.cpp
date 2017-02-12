@@ -1206,13 +1206,13 @@ void QGIViewDimension::draw()
                   double langle = labelangle;
                   if(labelangle < 0)
                     langle += M_PI * 2;
-                    if(endangle - startangle > 0) {
-                        if(langle > startangle && langle < endangle)
-                            isOutside = false;
-                    } else {
-                        if(langle < startangle && langle > endangle)
-                            isOutside = false;
-                    }
+                  if(endangle - startangle > 0) {
+                      if(langle > startangle && langle < endangle)
+                          isOutside = false;
+                  } else {
+                      if(langle < startangle && langle > endangle)
+                          isOutside = false;
+                  }
                 } else if(startangle < 0 && endangle < 0) {  //both are in negative side
                    double langle = labelangle;
                     if(labelangle > 0)
