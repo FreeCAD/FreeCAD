@@ -4312,7 +4312,9 @@ void SketchObject::rebuildExternalGeometry(void)
                                         circle->Construction = true;
                                         ExternalGeo.push_back(circle);
                                     } else {
-                                        throw Base::Exception("BSpline: Not yet supported geometry for external geometry");
+                                        Part::GeomBSplineCurve* bspline = new Part::GeomBSplineCurve(projCurve.BSpline());
+                                        bspline->Construction = true;
+                                        ExternalGeo.push_back(bspline);
                                     }
                                 } else if (projCurve.GetType() == GeomAbs_Hyperbola) {
                                     gp_Hypr e = projCurve.Hyperbola();
