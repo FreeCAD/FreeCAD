@@ -3636,7 +3636,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             std::vector<Base::Vector3d> pointatcomblist(ndiv);
 
             for(int i = 0; i < ndiv; i++) {
-                pointatcomblist[i] = pointatcurvelist[i] + repscale * curvaturelist[i] * normallist[i];
+                pointatcomblist[i] = pointatcurvelist[i] - repscale * curvaturelist[i] * normallist[i];
             }
 
             if(rebuildinformationlayer) {
