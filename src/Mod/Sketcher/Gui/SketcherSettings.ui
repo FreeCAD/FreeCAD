@@ -527,6 +527,19 @@
       <string>Sketch editing</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_6">
+        <property name="minimumSize">
+         <size>
+          <width>182</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Font size</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="1">
        <widget class="Gui::PrefSpinBox" name="EditSketcherFontSize">
         <property name="suffix">
@@ -562,19 +575,6 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_6">
-        <property name="minimumSize">
-         <size>
-          <width>182</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Font size</string>
-        </property>
-       </widget>
-      </item>
       <item row="2" column="1">
        <widget class="QComboBox" name="comboBox">
         <property name="currentIndex">
@@ -582,7 +582,7 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="0" colspan="2">
+      <item row="4" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="dialogOnDistanceConstraint">
         <property name="text">
          <string>Ask for value after creating a distance constraint</string>
@@ -598,9 +598,6 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
-       <widget class="QComboBox" name="EditSketcherMarkerSize"/>
-      </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
@@ -608,7 +605,10 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0" colspan="2">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="EditSketcherMarkerSize"/>
+      </item>
+      <item row="5" column="0" colspan="2">
        <widget class="Gui::PrefCheckBox" name="continueMode">
         <property name="text">
          <string>Geometry Creation &quot;Continue Mode&quot;</string>
@@ -624,7 +624,7 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
        <widget class="QGroupBox" name="groupBox_3">
         <property name="enabled">
          <bool>true</bool>
@@ -769,6 +769,29 @@
           </widget>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>Segments per geometry</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefSpinBox" name="SegmentsPerGeometry">
+        <property name="minimum">
+         <number>50</number>
+        </property>
+        <property name="maximum">
+         <number>1000</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>SegmentsPerGeometry</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
        </widget>
       </item>
      </layout>

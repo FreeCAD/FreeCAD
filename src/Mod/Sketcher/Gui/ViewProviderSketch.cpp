@@ -3216,6 +3216,8 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
     // end information layer
 
     int GeoId = 0;
+    
+    int stdcountsegments = hGrp->GetInt("SegmentsPerGeometry", 50);
 
     // RootPoint
     Points.push_back(Base::Vector3d(0.,0.,0.));
@@ -3241,7 +3243,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             const Part::GeomCircle *circle = static_cast<const Part::GeomCircle *>(*it);
             Handle_Geom_Circle curve = Handle_Geom_Circle::DownCast(circle->handle());
 
-            int countSegments = 50;
+            int countSegments = stdcountsegments;
             Base::Vector3d center = circle->getCenter();
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
@@ -3260,7 +3262,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
             const Part::GeomEllipse *ellipse = static_cast<const Part::GeomEllipse *>(*it);
             Handle_Geom_Ellipse curve = Handle_Geom_Ellipse::DownCast(ellipse->handle());
 
-            int countSegments = 50;
+            int countSegments = stdcountsegments;
             Base::Vector3d center = ellipse->getCenter();
             double segment = (2 * M_PI) / countSegments;
             for (int i=0; i < countSegments; i++) {
@@ -3285,7 +3287,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 std::swap(startangle, endangle);
 
             double range = endangle-startangle;
-            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            int countSegments = std::max(6, int(stdcountsegments * range / (2 * M_PI)));
             double segment = range / countSegments;
 
             Base::Vector3d center = arc->getCenter();
@@ -3318,7 +3320,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 std::swap(startangle, endangle);
 
             double range = endangle-startangle;
-            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            int countSegments = std::max(6, int(stdcountsegments * range / (2 * M_PI)));
             double segment = range / countSegments;
 
             Base::Vector3d center = arc->getCenter();
@@ -3351,7 +3353,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 std::swap(startangle, endangle);
 
             double range = endangle-startangle;
-            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            int countSegments = std::max(6, int(stdcountsegments * range / (2 * M_PI)));
             double segment = range / countSegments;
 
             Base::Vector3d center = aoh->getCenter();
@@ -3384,7 +3386,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 std::swap(startangle, endangle);
 
             double range = endangle-startangle;
-            int countSegments = std::max(6, int(50.0 * range / (2 * M_PI)));
+            int countSegments = std::max(6, int(stdcountsegments * range / (2 * M_PI)));
             double segment = range / countSegments;
 
             Base::Vector3d center = aop->getCenter();
@@ -3420,7 +3422,7 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationlayer
                 std::swap(first, last);
 
             double range = last-first;
-            int countSegments = 50;
+            int countSegments = stdcountsegments;
             double segment = range / countSegments;
 
             for (int i=0; i < countSegments; i++) {
