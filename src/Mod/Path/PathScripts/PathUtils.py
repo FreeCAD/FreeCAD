@@ -548,21 +548,33 @@ def getLastToolLoad(obj):
                 continue
     return tc
 
-# def getToolControllers(obj):
-#     controllers = []
-#     try:
-#         parent = obj.InList[0]
-#     except:
-#         parent = None
+def getToolControllers(obj):
+    controllers = []
+    try:
+        parent = obj.InList[0]
+    except:
+        parent = None
 
-#     if parent is not None and hasattr(parent, 'Group'):
-#         sibs = parent.Group
-#         for g in sibs:
-#             if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
-#                 controllers.append(g.Name)
-#     return controllers
+    if parent is not None and hasattr(parent, 'Group'):
+        sibs = parent.Group
+        for g in sibs:
+            if isinstance(g.Proxy, PathScripts.PathLoadTool.LoadTool):
+                controllers.append(g)
+    return controllers
 
+def findToolController(obj, name=""):
+    '''returns a tool controller with a given name.
+    If no name is specified, returns the first controller.
+    if no controller is found, returns None'''
 
+    controllers = getToolControllers(obj)
+    for c in controllers:
+        if c.Label == name:
+            return c
+    if len(controllers) > 0:
+        return controllers[0]
+    else:
+        return None
 
 def findParentJob(obj):
     '''retrieves a parent job object for an operation or other Path object'''
