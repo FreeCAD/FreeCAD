@@ -588,7 +588,8 @@ class TaskPanel(object):
                 label = QtGui.QLabel(labelstring)
                 label.setToolTip(self.obj.getDocumentationOfProperty(property))
 
-            widget.setText(str(getattr(self.obj, property)))
+            quantity = getattr(self.obj, property)
+            widget.setText(quantity.UserString)
             widget.setToolTip(self.obj.getDocumentationOfProperty(property))
 
             if max:
