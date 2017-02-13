@@ -140,7 +140,15 @@ of the nearest orthogonal projection of the point.</UserDocu>
 				</UserDocu>
 			</Documentation>
 		</Methode>
-		<Methode Name="approximateBSpline">
+        <Methode Name="toNurbs">
+            <Documentation>
+                <UserDocu>
+                    Converts a curve of any type (only part from First to Last)
+                    toNurbs([Float=First, Float=Last]) -> NURBS curve
+                </UserDocu>
+            </Documentation>
+        </Methode>
+        <Methode Name="approximateBSpline">
 			<Documentation>
 				<UserDocu>
 					Approximates a curve of any type to a B-Spline curve
