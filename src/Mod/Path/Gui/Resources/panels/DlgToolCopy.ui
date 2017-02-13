@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>367</width>
-    <height>119</height>
+    <height>98</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,16 +32,6 @@
    </item>
    <item>
     <widget class="QComboBox" name="cboTarget"/>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="chkMakeController">
-     <property name="text">
-      <string>Create Tool Controllers</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
