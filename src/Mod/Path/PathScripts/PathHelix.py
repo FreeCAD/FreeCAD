@@ -53,9 +53,10 @@ else:
 
 def z_cylinder(cyl):
     """ Test if cylinder is aligned to z-Axis"""
-    if cyl.Surface.Axis.x != 0.0:
+    axis = cyl.Surface.Axis
+    if abs(axis.x) > 1e-10 * abs(axis.z):
         return False
-    if cyl.Surface.Axis.y != 0.0:
+    if abs(axis.y) > 1e-10 * abs(axis.z):
         return False
     return True
 
