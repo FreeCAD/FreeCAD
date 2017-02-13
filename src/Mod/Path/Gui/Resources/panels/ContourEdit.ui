@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>352</width>
-    <height>455</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -31,7 +31,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>347</height>
+        <height>292</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -98,7 +98,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>347</height>
+        <height>292</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -148,7 +148,7 @@
         <x>0</x>
         <y>0</y>
         <width>334</width>
-        <height>347</height>
+        <height>292</height>
        </rect>
       </property>
       <attribute name="icon">
@@ -162,7 +162,7 @@
        <property name="fieldGrowthPolicy">
         <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
        </property>
-       <item row="0" column="1">
+       <item row="1" column="1">
         <widget class="QWidget" name="widget_3" native="true">
          <layout class="QGridLayout" name="gridLayout_5">
           <item row="0" column="0">
@@ -189,7 +189,7 @@
          </layout>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item row="2" column="1">
         <widget class="QWidget" name="widget_2" native="true">
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="0" column="0">
@@ -216,7 +216,7 @@
          </layout>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="QWidget" name="widget_4" native="true">
          <layout class="QGridLayout" name="gridLayout_6">
           <item row="0" column="0">
@@ -252,6 +252,28 @@
              <string>Roll Radius</string>
             </property>
            </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::StyledPanel</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>ToolController</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="uiToolController"/>
           </item>
          </layout>
         </widget>
